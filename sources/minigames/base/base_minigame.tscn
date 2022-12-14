@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://8awe4usnucyv"]
+
+[ext_resource type="Script" path="res://sources/minigames/base/base_minigame.gd" id="1_jdfsm"]
+[ext_resource type="PackedScene" uid="uid://r8rtrts18ax3" path="res://sources/minigames/base/minigame_ui.tscn" id="2_a3tib"]
+
+[node name="BaseMinigame" type="Node2D"]
+script = ExtResource("1_jdfsm")
+
+[node name="MinigameUI" parent="." instance=ExtResource("2_a3tib")]
+
+[connection signal="garden_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_garden_button_pressed"]
+[connection signal="kalulu_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_kalulu_button_pressed"]
+[connection signal="pause_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_pause_button_pressed"]
+[connection signal="stimulus_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_stimulus_button_pressed"]

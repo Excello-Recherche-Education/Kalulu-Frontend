@@ -24,6 +24,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://sources/utils/autoloads/lesson_logger.gd"
 }, {
+"base": "Node2D",
+"class": &"Minigame",
+"language": &"GDScript",
+"path": "res://sources/minigames/base/base_minigame.gd"
+}, {
 "base": "CanvasLayer",
 "class": &"MinigameUI",
 "language": &"GDScript",
@@ -43,6 +48,7 @@ _global_script_class_icons={
 "GameGlobalData": "",
 "LogResource": "",
 "Logger": "",
+"Minigame": "",
 "MinigameUI": "",
 "State": "",
 "StateMachine": ""
