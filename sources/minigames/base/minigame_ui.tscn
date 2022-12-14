@@ -1,0 +1,194 @@
+[gd_scene load_steps=19 format=3 uid="uid://r8rtrts18ax3"]
+
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://resources/minigames/minigame_ui/button_back_to_menu_up.png" id="1_f1uy8"]
+[ext_resource type="Script" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://resources/minigames/minigame_ui/button_back_to_menu_down.png" id="2_357qg"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://resources/minigames/minigame_ui/button_back_to_menu_disabled.png" id="3_di4tp"]
+[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://resources/minigames/minigame_ui/button_kalulu_up.png" id="4_ea5op"]
+[ext_resource type="Texture2D" uid="uid://03r3arvu1r2t" path="res://resources/minigames/minigame_ui/button_shell_up.png" id="4_r8wnf"]
+[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://resources/minigames/minigame_ui/button_kalulu_down.png" id="5_kfd0f"]
+[ext_resource type="Texture2D" uid="uid://clrnqn0fqjx3q" path="res://resources/minigames/minigame_ui/button_shell_down.png" id="5_lo8fb"]
+[ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://resources/minigames/minigame_ui/button_kalulu_disabled.png" id="6_n2h42"]
+[ext_resource type="Texture2D" uid="uid://53f3lscl7tws" path="res://resources/minigames/minigame_ui/button_shell_disabled.png" id="6_yxeeh"]
+[ext_resource type="Texture2D" uid="uid://bnqgwy3arrm4n" path="res://resources/minigames/minigame_ui/button_pause_up.png" id="7_vqw3l"]
+[ext_resource type="Texture2D" uid="uid://bjxt5vglohmk8" path="res://resources/minigames/minigame_ui/button_pause_down.png" id="8_e01yc"]
+[ext_resource type="Texture2D" uid="uid://b0luicu7cgho5" path="res://resources/minigames/minigame_ui/button_pause_disabled.png" id="9_ju5q0"]
+[ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://resources/minigames/minigame_ui/gauge.png" id="13_geo50"]
+[ext_resource type="Texture2D" uid="uid://db64tlixplfru" path="res://resources/minigames/minigame_ui/life_empty.png" id="13_mg1p3"]
+[ext_resource type="Texture2D" uid="uid://3om2awlftpxd" path="res://resources/minigames/minigame_ui/life.png" id="14_p5sco"]
+[ext_resource type="Texture2D" uid="uid://cfxpnn3uivakv" path="res://resources/minigames/minigame_ui/gauge_icon_ant_empty.png" id="17_a20nt"]
+[ext_resource type="Texture2D" uid="uid://b0ck8jxhicyke" path="res://resources/minigames/minigame_ui/gauge_icon_ant_full.png" id="18_gpcjx"]
+
+[node name="MinigameUI" type="CanvasLayer"]
+script = ExtResource("1_g5fl4")
+
+[node name="MainControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Interface" type="HBoxContainer" parent="MainControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftMargin" type="MarginContainer" parent="MainControl/Interface"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="LeftContainer" type="VBoxContainer" parent="MainControl/Interface/LeftMargin"]
+layout_mode = 2
+
+[node name="GardenButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("1_f1uy8")
+texture_pressed = ExtResource("2_357qg")
+texture_hover = ExtResource("1_f1uy8")
+texture_disabled = ExtResource("3_di4tp")
+texture_focused = ExtResource("1_f1uy8")
+stretch_mode = 5
+
+[node name="StimulusMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+
+[node name="StimulusButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+texture_normal = ExtResource("4_r8wnf")
+texture_pressed = ExtResource("5_lo8fb")
+texture_hover = ExtResource("4_r8wnf")
+texture_disabled = ExtResource("6_yxeeh")
+texture_focused = ExtResource("4_r8wnf")
+stretch_mode = 5
+
+[node name="PauseMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+
+[node name="PauseButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+texture_normal = ExtResource("7_vqw3l")
+texture_pressed = ExtResource("8_e01yc")
+texture_hover = ExtResource("7_vqw3l")
+texture_disabled = ExtResource("9_ju5q0")
+texture_focused = ExtResource("7_vqw3l")
+stretch_mode = 5
+
+[node name="KaluluButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("4_ea5op")
+texture_pressed = ExtResource("5_kfd0f")
+texture_hover = ExtResource("4_ea5op")
+texture_disabled = ExtResource("6_n2h42")
+texture_focused = ExtResource("4_ea5op")
+stretch_mode = 5
+
+[node name="CentralPadMargin" type="MarginContainer" parent="MainControl/Interface"]
+layout_mode = 2
+size_flags_horizontal = 7
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="RightMargin" type="MarginContainer" parent="MainControl/Interface"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="RightContainer" type="VBoxContainer" parent="MainControl/Interface/RightMargin"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="LivesContainer" type="MarginContainer" parent="MainControl/Interface/RightMargin/RightContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 75
+
+[node name="EmptyLivesRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/LivesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("13_mg1p3")
+stretch_mode = 1
+
+[node name="LivesRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/LivesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("14_p5sco")
+stretch_mode = 1
+
+[node name="ProgressionMargin" type="MarginContainer" parent="MainControl/Interface/RightMargin/RightContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="ProgressionGauge" type="NinePatchRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture = ExtResource("13_geo50")
+patch_margin_top = 33
+patch_margin_bottom = 33
+
+[node name="ProgressionEmptyIconsRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture = ExtResource("17_a20nt")
+stretch_mode = 1
+
+[node name="ProgressionFullIconsRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture = ExtResource("18_gpcjx")
+stretch_mode = 1
+
+[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin/StimulusButton" to="." method="_on_stimulus_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
