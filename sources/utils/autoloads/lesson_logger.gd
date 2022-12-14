@@ -3,6 +3,7 @@ class_name Logger
 
 const log_resource_class: = preload("res://sources/utils/minigame_resources/log.gd")
 
+# Contains the current log resource
 var log_resources: = {}
 
 

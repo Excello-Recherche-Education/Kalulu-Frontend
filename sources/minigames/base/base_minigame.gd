@@ -14,6 +14,9 @@ var stimuli: = {}
 var distractions: = {}
 
 
+# ------------ Initialisation ------------
+
+
 func _ready() -> void:
 	_find_stimuli_and_distractions()
 	
@@ -28,6 +31,9 @@ func _start() -> void:
 	return
 
 
+# ------------ Logs ------------
+
+
 func _save_logs() -> void:
 	LessonLogger.save_logs(logs, GameGlobals.teacher_id, GameGlobals.user_id, minigame_name, lesson, Time.get_time_string_from_system())
 	
@@ -38,7 +44,10 @@ func _reset_logs() -> void:
 	logs = {}
 
 
-func _back_to_the_garden() -> void:
+# ------------ UI ------------
+
+
+func _go_back_to_the_garden() -> void:
 	return
 
 
@@ -54,11 +63,8 @@ func _play_kalulu() -> void:
 	return
 
 
-# ------------ UI ------------
-
-
 func _on_minigame_ui_garden_button_pressed() -> void:
-	_back_to_the_garden()
+	_go_back_to_the_garden()
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:

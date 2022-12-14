@@ -6,6 +6,7 @@ signal stimulus_button_pressed
 signal pause_button_pressed
 signal kalulu_button_pressed
 
+# Using unique names to avoid changing the path if the interface architecture changes
 @onready var garden_button: TextureButton = get_node("%GardenButton")
 @onready var stimulus_button: TextureButton = get_node("%StimulusButton")
 @onready var pause_button: TextureButton = get_node("%PauseButton")
@@ -16,16 +17,21 @@ signal kalulu_button_pressed
 @onready var progression_empty_icons_rect: TextureRect = get_node("%ProgressionEmptyIconsRect")
 @onready var progression_full_icons_rect: TextureRect = get_node("%ProgressionFullIconsRect")
 
+# Lives management
 var max_number_of_lives: = 1
 var number_of_lives: = 1
 var empty_life_size: = 0.0
 var life_size: = 0.0
 
+# Progression management
 var max_progression: = 1
 var current_progression: = 1
 var progression_gauge_unit_size: = 0.0
 var progression_empty_icon_size: = 0.0
 var progression_full_icon_size: = 0.0
+
+
+# ------------ Initialisation ------------
 
 
 func _ready() -> void:
@@ -35,6 +41,9 @@ func _ready() -> void:
 	progression_gauge_unit_size = progression_gauge.custom_minimum_size.y
 	progression_empty_icon_size = progression_empty_icons_rect.custom_minimum_size.y
 	progression_full_icon_size = progression_full_icons_rect.custom_minimum_size.y
+
+
+# ------------ Lock/Unlock ------------
 
 
 func lock() -> void:
@@ -49,6 +58,9 @@ func unlock() -> void:
 	stimulus_button.disabled = false
 	pause_button.disabled = false
 	Kalulu_button.disabled = false
+
+
+# ------------ Lives ------------
 
 
 func set_maximum_number_of_lives(new_max_number_of_lives: int) -> void:
@@ -66,6 +78,9 @@ func set_number_of_lives(new_number_of_lives: int) -> void:
 	lives_rect.custom_minimum_size.x = new_number_of_lives * life_size
 
 
+# ------------ Progression ------------
+
+
 func set_max_progression(new_max_progression: int) -> void:
 	max_progression = new_max_progression
 	
@@ -80,6 +95,9 @@ func set_current_progression(new_current_progression: int) -> void:
 	current_progression = new_current_progression
 	
 	progression_full_icons_rect.custom_minimum_size.y = new_current_progression * progression_full_icon_size
+
+
+# ------------ Actions ------------
 
 
 func _on_garden_button_pressed() -> void:
