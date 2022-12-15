@@ -71,3 +71,4 @@ window/size/viewport_width=2560
 window/size/viewport_height=1800
 window/size/window_width_override=1280
 window/size/window_height_override=900
+window/stretch/mode="canvas_items"

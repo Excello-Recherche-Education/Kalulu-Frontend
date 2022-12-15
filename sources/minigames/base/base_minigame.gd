@@ -4,6 +4,10 @@ class_name Minigame
 @export var minigame_name: = "Minigame"
 @export var lives: = 5
 
+# Game root shall contain all the game tree.
+# This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
+@onready var game_root: = $GameRoot
+
 var lesson: String
 var minigame_difficulty: int
 var lesson_difficulty: int
@@ -56,7 +60,7 @@ func _play_stimulus() -> void:
 
 
 func _pause_game() -> void:
-	return
+	get_tree().paused = not get_tree().paused
 
 
 func _play_kalulu() -> void:
