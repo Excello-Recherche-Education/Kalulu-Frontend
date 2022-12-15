@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://r8rtrts18ax3"]
+[gd_scene load_steps=19 format=3 uid="uid://r8rtrts18ax3"]
 
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://resources/minigames/minigame_ui/button_back_to_menu_up.png" id="1_f1uy8"]
 [ext_resource type="Script" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
@@ -19,8 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://cfxpnn3uivakv" path="res://resources/minigames/minigame_ui/gauge_icon_ant_empty.png" id="17_a20nt"]
 [ext_resource type="Texture2D" uid="uid://b0ck8jxhicyke" path="res://resources/minigames/minigame_ui/gauge_icon_ant_full.png" id="18_gpcjx"]
 
-[sub_resource type="BitMap" id="BitMap_0odf6"]
-
 [node name="MinigameUI" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_g5fl4")
@@ -35,6 +33,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Interface" type="HBoxContainer" parent="MainControl"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,8 +42,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="LeftMargin" type="MarginContainer" parent="MainControl/Interface"]
-offset_right = 389.0
-offset_bottom = 1800.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 mouse_filter = 2
@@ -54,28 +52,20 @@ theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
 [node name="LeftContainer" type="VBoxContainer" parent="MainControl/Interface/LeftMargin"]
-offset_left = 50.0
-offset_top = 50.0
-offset_right = 339.0
-offset_bottom = 1750.0
+layout_mode = 2
 mouse_filter = 2
 
 [node name="GardenButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer"]
 unique_name_in_owner = true
-offset_right = 289.0
-offset_bottom = 422.0
+layout_mode = 2
 size_flags_vertical = 3
 texture_normal = ExtResource("1_f1uy8")
 texture_pressed = ExtResource("2_357qg")
-texture_hover = ExtResource("1_f1uy8")
 texture_disabled = ExtResource("3_di4tp")
-texture_focused = ExtResource("1_f1uy8")
 stretch_mode = 5
 
 [node name="StimulusMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
-offset_top = 426.0
-offset_right = 289.0
-offset_bottom = 848.0
+layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 3
 mouse_filter = 2
@@ -84,21 +74,14 @@ theme_override_constants/margin_right = 50
 
 [node name="StimulusButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin"]
 unique_name_in_owner = true
-offset_left = 50.0
-offset_right = 239.0
-offset_bottom = 422.0
+layout_mode = 2
 texture_normal = ExtResource("4_r8wnf")
 texture_pressed = ExtResource("5_lo8fb")
-texture_hover = ExtResource("4_r8wnf")
 texture_disabled = ExtResource("6_yxeeh")
-texture_focused = ExtResource("4_r8wnf")
-texture_click_mask = SubResource("BitMap_0odf6")
 stretch_mode = 5
 
 [node name="PauseMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
-offset_top = 852.0
-offset_right = 289.0
-offset_bottom = 1274.0
+layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 3
 mouse_filter = 2
@@ -107,33 +90,23 @@ theme_override_constants/margin_right = 50
 
 [node name="PauseButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin"]
 unique_name_in_owner = true
-offset_left = 50.0
-offset_right = 239.0
-offset_bottom = 422.0
+layout_mode = 2
 texture_normal = ExtResource("7_vqw3l")
 texture_pressed = ExtResource("8_e01yc")
-texture_hover = ExtResource("7_vqw3l")
 texture_disabled = ExtResource("9_ju5q0")
-texture_focused = ExtResource("7_vqw3l")
 stretch_mode = 5
 
 [node name="KaluluButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer"]
 unique_name_in_owner = true
-offset_top = 1278.0
-offset_right = 289.0
-offset_bottom = 1700.0
+layout_mode = 2
 size_flags_vertical = 3
 texture_normal = ExtResource("4_ea5op")
 texture_pressed = ExtResource("5_kfd0f")
-texture_hover = ExtResource("4_ea5op")
 texture_disabled = ExtResource("6_n2h42")
-texture_focused = ExtResource("4_ea5op")
 stretch_mode = 5
 
 [node name="CentralPadMargin" type="MarginContainer" parent="MainControl/Interface"]
-offset_left = 393.0
-offset_right = 2342.0
-offset_bottom = 1800.0
+layout_mode = 2
 size_flags_horizontal = 7
 size_flags_vertical = 3
 size_flags_stretch_ratio = 10.0
@@ -144,9 +117,7 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
 [node name="RightMargin" type="MarginContainer" parent="MainControl/Interface"]
-offset_left = 2346.0
-offset_right = 2560.0
-offset_bottom = 1800.0
+layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/margin_left = 50
@@ -155,16 +126,12 @@ theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
 [node name="RightContainer" type="VBoxContainer" parent="MainControl/Interface/RightMargin"]
-offset_left = 50.0
-offset_top = 50.0
-offset_right = 164.0
-offset_bottom = 1750.0
+layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 2
 
 [node name="LivesContainer" type="MarginContainer" parent="MainControl/Interface/RightMargin/RightContainer"]
-offset_right = 114.0
-offset_bottom = 164.0
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
@@ -176,10 +143,7 @@ theme_override_constants/margin_bottom = 75
 [node name="EmptyLivesRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/LivesContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 89.0
-offset_bottom = 89.0
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
@@ -189,10 +153,7 @@ stretch_mode = 1
 [node name="LivesRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/LivesContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 89.0
-offset_bottom = 89.0
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
@@ -200,10 +161,7 @@ texture = ExtResource("14_p5sco")
 stretch_mode = 1
 
 [node name="ProgressionMargin" type="MarginContainer" parent="MainControl/Interface/RightMargin/RightContainer"]
-offset_left = 50.0
-offset_top = 168.0
-offset_right = 114.0
-offset_bottom = 234.0
+layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 2
@@ -211,8 +169,7 @@ mouse_filter = 2
 [node name="ProgressionGauge" type="NinePatchRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
-offset_right = 64.0
-offset_bottom = 66.0
+layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 texture = ExtResource("13_geo50")
@@ -222,8 +179,7 @@ patch_margin_bottom = 33
 [node name="ProgressionEmptyIconsRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
-offset_right = 64.0
-offset_bottom = 64.0
+layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 2
@@ -233,9 +189,7 @@ stretch_mode = 1
 [node name="ProgressionFullIconsRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
-offset_top = 1.0
-offset_right = 64.0
-offset_bottom = 65.0
+layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 mouse_filter = 2
