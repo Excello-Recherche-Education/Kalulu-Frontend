@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://c8ntt5r3fjeh"]
+
+[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_lbq56"]
+[ext_resource type="Script" path="res://sources/minigames/crabs/crabs_minigame.gd" id="2_gierf"]
+[ext_resource type="Texture2D" uid="uid://bt7u67errbjls" path="res://resources/minigames/crabs/graphic/gauge_icon_crab_empty.png" id="3_s5o38"]
+[ext_resource type="AudioStream" uid="uid://4qo683e8atp4" path="res://resources/minigames/crabs/audio/kalulu/kalulu_help_crabs_language.mp3" id="3_vtu3m"]
+[ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://resources/minigames/crabs/graphic/gauge_icon_crab_full.png" id="4_a1dm5"]
+[ext_resource type="AudioStream" uid="uid://cmp7vupeq11ic" path="res://resources/minigames/crabs/audio/kalulu/kalulu_end_crabs_all.mp3" id="4_eh4op"]
+[ext_resource type="Texture2D" uid="uid://5bx8ugh178j1" path="res://resources/minigames/crabs/graphic/background.png" id="5_0ps1r"]
+
+[node name="Crabs" instance=ExtResource("1_lbq56")]
+script = ExtResource("2_gierf")
+difficulty = 4
+minigame_name = "Crabs"
+start_kalulu_speech = ExtResource("3_vtu3m")
+win_kalulu_speech = ExtResource("4_eh4op")
+
+[node name="MinigameUI" parent="." index="0"]
+empty_progression_icon = ExtResource("3_s5o38")
+full_progression_icon = ExtResource("4_a1dm5")
+
+[node name="Background" type="Sprite2D" parent="GameRoot" index="0"]
+position = Vector2(1280, 900)
+scale = Vector2(2, 2)
+texture = ExtResource("5_0ps1r")
+metadata/_edit_lock_ = true
+
+[node name="TopLeft" type="Node2D" parent="GameRoot" index="1"]
+position = Vector2(544, 631)
+
+[node name="BottomRight" type="Node2D" parent="GameRoot" index="2"]
+position = Vector2(2310, 1675)

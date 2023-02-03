@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://byq160dxpb3rl"]
+
+[ext_resource type="Script" path="res://sources/minigames/crabs/hole/hole.gd" id="1_05s8c"]
+[ext_resource type="Texture2D" uid="uid://tfigqbebxmal" path="res://resources/minigames/crabs/graphic/hole_back.png" id="2_f44i6"]
+[ext_resource type="Texture2D" uid="uid://7nrlmc7opox1" path="res://resources/minigames/crabs/graphic/hole_mask.png" id="3_ehfgm"]
+[ext_resource type="Texture2D" uid="uid://jl4sirrpr1l1" path="res://icon.svg" id="4_5yovx"]
+[ext_resource type="Texture2D" uid="uid://cwebei83ml5vs" path="res://resources/minigames/crabs/graphic/hole_front.png" id="5_mhdld"]
+[ext_resource type="Script" path="res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd" id="6_2rg3s"]
+
+[node name="Hole" type="Node2D"]
+position = Vector2(947, 568)
+script = ExtResource("1_05s8c")
+
+[node name="HoleBack" type="Sprite2D" parent="."]
+texture = ExtResource("2_f44i6")
+
+[node name="Mask" type="Sprite2D" parent="."]
+clip_children = 1
+position = Vector2(0, -51)
+texture = ExtResource("3_ehfgm")
+
+[node name="IconToHideTheMask" type="Sprite2D" parent="Mask"]
+position = Vector2(-1, 263)
+texture = ExtResource("4_5yovx")
+
+[node name="HoleFront" type="Sprite2D" parent="."]
+position = Vector2(0, 2)
+texture = ExtResource("5_mhdld")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="CrabAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+script = ExtResource("6_2rg3s")
+
+[connection signal="finished" from="CrabAudioStreamPlayer2D" to="CrabAudioStreamPlayer2D" method="_on_finished"]
