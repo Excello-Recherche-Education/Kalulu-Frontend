@@ -1,0 +1,419 @@
+[gd_scene load_steps=90 format=3 uid="uid://c4t2cq5vyj4ai"]
+
+[ext_resource type="Script" path="res://sources/minigames/base/kalulu.gd" id="1_iin3v"]
+[ext_resource type="Texture2D" uid="uid://berypn513y7ts" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0000.png" id="2_v1p5p"]
+[ext_resource type="Texture2D" uid="uid://ctkb46hb7gd47" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0001.png" id="3_a4uit"]
+[ext_resource type="Texture2D" uid="uid://c7111uqtcrkek" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0002.png" id="4_6rrrn"]
+[ext_resource type="Texture2D" uid="uid://dsbiou1nvx7n4" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0003.png" id="5_jujcv"]
+[ext_resource type="Texture2D" uid="uid://dtls2d4o1grgt" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0004.png" id="6_bianh"]
+[ext_resource type="Texture2D" uid="uid://ctdtir4machdd" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0005.png" id="7_4kwh7"]
+[ext_resource type="Texture2D" uid="uid://kd5rr141wuvd" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0006.png" id="8_i51sv"]
+[ext_resource type="Texture2D" uid="uid://dwposw1jvybvi" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0007.png" id="9_44s0s"]
+[ext_resource type="Texture2D" uid="uid://b4dwaw1eyn7h2" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0008.png" id="10_3mbo2"]
+[ext_resource type="Texture2D" uid="uid://cnx4dyv6u8j6q" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0009.png" id="11_w70lp"]
+[ext_resource type="Texture2D" uid="uid://dtiwcj457j2et" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0010.png" id="12_h5xrq"]
+[ext_resource type="Texture2D" uid="uid://bi3nngrurvdv" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0011.png" id="13_ortja"]
+[ext_resource type="Texture2D" uid="uid://dum0umkxfsvr" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0000.png" id="14_tr4s3"]
+[ext_resource type="Texture2D" uid="uid://eedcxhmtdfpt" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0001.png" id="15_8bctv"]
+[ext_resource type="Texture2D" uid="uid://bqahvqtfy8mm2" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0002.png" id="16_xt1p8"]
+[ext_resource type="Texture2D" uid="uid://qa6x66pvjkpl" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0003.png" id="17_jlybc"]
+[ext_resource type="Texture2D" uid="uid://c2aplxlmmdocq" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0004.png" id="18_xo3iq"]
+[ext_resource type="Texture2D" uid="uid://de4v2um8bgdrr" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0005.png" id="19_i6e61"]
+[ext_resource type="Texture2D" uid="uid://bvjex7ug0gblu" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0006.png" id="20_7qia4"]
+[ext_resource type="Texture2D" uid="uid://ccp1d4a7n33d2" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0008.png" id="21_6iwjd"]
+[ext_resource type="Texture2D" uid="uid://bmd11sl8vlkbu" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0009.png" id="22_llhj1"]
+[ext_resource type="Texture2D" uid="uid://xwrolsodxfwj" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0010.png" id="23_5jqtn"]
+[ext_resource type="Texture2D" uid="uid://fpmii24xherk" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle01_0011.png" id="24_ashsp"]
+[ext_resource type="Texture2D" uid="uid://q1c0u84gnlas" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0000.png" id="25_mec6u"]
+[ext_resource type="Texture2D" uid="uid://1jitvy4js6vs" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0001.png" id="26_20qf7"]
+[ext_resource type="Texture2D" uid="uid://i0e10jv7abau" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0002.png" id="27_u6h5d"]
+[ext_resource type="Texture2D" uid="uid://boclndp8mfhx7" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0003.png" id="28_dh1h1"]
+[ext_resource type="Texture2D" uid="uid://6j4jsvj7ijew" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0004.png" id="29_61c35"]
+[ext_resource type="Texture2D" uid="uid://c4jntnjjfaspt" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0005.png" id="30_pwm6b"]
+[ext_resource type="Texture2D" uid="uid://2few373mdjwu" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0006.png" id="31_2rr6i"]
+[ext_resource type="Texture2D" uid="uid://cmd2rlspcjsw" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0007.png" id="32_kdpqv"]
+[ext_resource type="Texture2D" uid="uid://3pejdlg4gvfx" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0008.png" id="33_163k6"]
+[ext_resource type="Texture2D" uid="uid://bc05ecw2vopvk" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0009.png" id="34_pfi3x"]
+[ext_resource type="Texture2D" uid="uid://cfadlsc1yqnm8" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0010.png" id="35_m2spn"]
+[ext_resource type="Texture2D" uid="uid://dfwoh4t5ciwhv" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_idle02_0011.png" id="36_3of4g"]
+[ext_resource type="Texture2D" uid="uid://bxea88k62e1aa" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0000.png" id="37_1ns1c"]
+[ext_resource type="Texture2D" uid="uid://btwa0vg4iipcd" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0001.png" id="38_fctqx"]
+[ext_resource type="Texture2D" uid="uid://cj7ei8wstn7hw" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0002.png" id="39_8mqck"]
+[ext_resource type="Texture2D" uid="uid://s28i672il66" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0003.png" id="40_xbtyg"]
+[ext_resource type="Texture2D" uid="uid://bs1uppljr8c1j" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0004.png" id="41_xhu8l"]
+[ext_resource type="Texture2D" uid="uid://cmc60bsqwblus" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0005.png" id="42_4s2al"]
+[ext_resource type="Texture2D" uid="uid://bea805v3kuijo" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0006.png" id="43_u35d3"]
+[ext_resource type="Texture2D" uid="uid://bj3w5qq5bg3uu" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0007.png" id="44_ua6l4"]
+[ext_resource type="Texture2D" uid="uid://bq2icekegojbo" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0008.png" id="45_i6boh"]
+[ext_resource type="Texture2D" uid="uid://iklrbski84cl" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0009.png" id="46_hipbh"]
+[ext_resource type="Texture2D" uid="uid://bijmoml1y7wvb" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0010.png" id="47_lp3ga"]
+[ext_resource type="Texture2D" uid="uid://c1k504v08kvc2" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0011.png" id="48_muc7j"]
+[ext_resource type="Texture2D" uid="uid://lwckax8t7tl6" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0012.png" id="49_d1dvd"]
+[ext_resource type="Texture2D" uid="uid://djduqpeuuxt40" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0013.png" id="50_pfvns"]
+[ext_resource type="Texture2D" uid="uid://ctv36bnfotdx5" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0014.png" id="51_eykem"]
+[ext_resource type="Texture2D" uid="uid://7f13jtlhl5oq" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_show_0015.png" id="52_l5vw5"]
+[ext_resource type="Texture2D" uid="uid://c7o0y7wjvotuf" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0000.png" id="53_qpo1c"]
+[ext_resource type="Texture2D" uid="uid://dbsx5sy02j3du" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0001.png" id="54_b50d3"]
+[ext_resource type="Texture2D" uid="uid://cuxydkhip7vgj" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0002.png" id="55_m13pt"]
+[ext_resource type="Texture2D" uid="uid://cjb1swlfloh1" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0003.png" id="56_argx0"]
+[ext_resource type="Texture2D" uid="uid://1gfia6ydt5ct" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0004.png" id="57_32hr2"]
+[ext_resource type="Texture2D" uid="uid://cebafgtvfq1wh" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0005.png" id="58_7mb26"]
+[ext_resource type="Texture2D" uid="uid://f6rlb07xqh3w" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0006.png" id="59_bg4vt"]
+[ext_resource type="Texture2D" uid="uid://wcmx3hflqgxa" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0007.png" id="60_j50df"]
+[ext_resource type="Texture2D" uid="uid://yl1gpuuy2l7g" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0008.png" id="61_imahc"]
+[ext_resource type="Texture2D" uid="uid://cgo8py1xybuhq" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0009.png" id="62_jg3dx"]
+[ext_resource type="Texture2D" uid="uid://csncsroueedfx" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0010.png" id="63_mybd8"]
+[ext_resource type="Texture2D" uid="uid://dljmjvqlnljw5" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk1_0011.png" id="64_40vt6"]
+[ext_resource type="Texture2D" uid="uid://cpfr4rjv6xw0f" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0000.png" id="65_1l1wf"]
+[ext_resource type="Texture2D" uid="uid://b1ycakbu1w2fb" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0001.png" id="66_vwx28"]
+[ext_resource type="Texture2D" uid="uid://bwbt8dclrfopx" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0002.png" id="67_6m5mo"]
+[ext_resource type="Texture2D" uid="uid://vn7orptuhyqw" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0003.png" id="68_q82v0"]
+[ext_resource type="Texture2D" uid="uid://bjla8n25s2wve" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0004.png" id="69_y4b0u"]
+[ext_resource type="Texture2D" uid="uid://bpufqx3c1575s" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0005.png" id="70_7xdev"]
+[ext_resource type="Texture2D" uid="uid://cglywtrymihck" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0006.png" id="71_aehdh"]
+[ext_resource type="Texture2D" uid="uid://d37o4pf4l4h72" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0007.png" id="72_binb4"]
+[ext_resource type="Texture2D" uid="uid://bbw1s5bg1tt5k" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0008.png" id="73_75l33"]
+[ext_resource type="Texture2D" uid="uid://bkgag2ys4rhm7" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0009.png" id="74_5voxi"]
+[ext_resource type="Texture2D" uid="uid://dh5wpxc4hr8i4" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0010.png" id="75_0dxvt"]
+[ext_resource type="Texture2D" uid="uid://dy0hj8s05p81n" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk2_0011.png" id="76_70p70"]
+[ext_resource type="Texture2D" uid="uid://lp8chel2geve" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0000.png" id="77_dpf6i"]
+[ext_resource type="Texture2D" uid="uid://d204sk1opwvq2" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0001.png" id="78_fad5w"]
+[ext_resource type="Texture2D" uid="uid://cgvccxcot7aan" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0002.png" id="79_35ub5"]
+[ext_resource type="Texture2D" uid="uid://bccqkgwd4r6sd" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0003.png" id="80_hsksw"]
+[ext_resource type="Texture2D" uid="uid://b7jpic8xukj4s" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0004.png" id="81_xjh4s"]
+[ext_resource type="Texture2D" uid="uid://ssjqyvgi0tq" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0005.png" id="82_m7k40"]
+[ext_resource type="Texture2D" uid="uid://b1lnl2080k8r1" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0006.png" id="83_o6usd"]
+[ext_resource type="Texture2D" uid="uid://ciqgubhp7y2ih" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0007.png" id="84_bn5od"]
+[ext_resource type="Texture2D" uid="uid://dip0ukd0mgymi" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0008.png" id="85_85606"]
+[ext_resource type="Texture2D" uid="uid://bnx1ev6hm87eq" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0009.png" id="86_w2qch"]
+[ext_resource type="Texture2D" uid="uid://e8jdvvlkpa4x" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0010.png" id="87_3tj2t"]
+[ext_resource type="Texture2D" uid="uid://cmo15wsithfdh" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_talk3_0011.png" id="88_gllhj"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_igr4d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_v1p5p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_a4uit")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_6rrrn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jujcv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_bianh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_4kwh7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_i51sv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_44s0s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_3mbo2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_w70lp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_h5xrq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ortja")
+}],
+"loop": true,
+"name": &"Hide",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_tr4s3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_8bctv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_xt1p8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_jlybc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_xo3iq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_i6e61")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_7qia4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_6iwjd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_llhj1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_5jqtn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_ashsp")
+}],
+"loop": true,
+"name": &"Idle1",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_mec6u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_20qf7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_u6h5d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_dh1h1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_61c35")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_pwm6b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_2rr6i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_kdpqv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_163k6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_pfi3x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_m2spn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_3of4g")
+}],
+"loop": true,
+"name": &"Idle2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("37_1ns1c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_fctqx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_8mqck")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_xbtyg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_xhu8l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_4s2al")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_u35d3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_ua6l4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_i6boh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_hipbh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_lp3ga")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_muc7j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_d1dvd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_pfvns")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_eykem")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_l5vw5")
+}],
+"loop": true,
+"name": &"Show",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("53_qpo1c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_b50d3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_m13pt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_argx0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_32hr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_7mb26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_bg4vt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_j50df")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_imahc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_jg3dx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_mybd8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_40vt6")
+}],
+"loop": true,
+"name": &"Talk1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("65_1l1wf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_vwx28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_6m5mo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_q82v0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_y4b0u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_7xdev")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_aehdh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_binb4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_75l33")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_5voxi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_0dxvt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_70p70")
+}],
+"loop": true,
+"name": &"Talk2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("77_dpf6i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_fad5w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_35ub5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_hsksw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("81_xjh4s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_m7k40")
+}, {
+"duration": 1.0,
+"texture": ExtResource("83_o6usd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_bn5od")
+}, {
+"duration": 1.0,
+"texture": ExtResource("85_85606")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_w2qch")
+}, {
+"duration": 1.0,
+"texture": ExtResource("87_3tj2t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_gllhj")
+}],
+"loop": true,
+"name": &"Talk3",
+"speed": 5.0
+}]
+
+[node name="Kalulu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_iin3v")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.164706, 0.164706, 0.164706, 0.67451)
+
+[node name="KaluluSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(653, 1350)
+scale = Vector2(1.5, 1.5)
+frames = SubResource("SpriteFrames_igr4d")
+animation = &"Talk3"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(653, 1421)
+scale = Vector2(1.5, 1.5)
+
+[connection signal="animation_finished" from="KaluluSprite" to="." method="_on_kalulu_sprite_animation_finished"]

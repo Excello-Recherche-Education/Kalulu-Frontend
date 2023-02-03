@@ -1,23 +1,29 @@
-[gd_scene load_steps=19 format=3 uid="uid://r8rtrts18ax3"]
+[gd_scene load_steps=25 format=3 uid="uid://weree6bnlt6f"]
 
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://resources/minigames/minigame_ui/button_back_to_menu_up.png" id="1_f1uy8"]
 [ext_resource type="Script" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://resources/minigames/minigame_ui/button_back_to_menu_down.png" id="2_357qg"]
-[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://resources/minigames/minigame_ui/button_back_to_menu_disabled.png" id="3_di4tp"]
-[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://resources/minigames/minigame_ui/button_kalulu_up.png" id="4_ea5op"]
-[ext_resource type="Texture2D" uid="uid://03r3arvu1r2t" path="res://resources/minigames/minigame_ui/button_shell_up.png" id="4_r8wnf"]
-[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://resources/minigames/minigame_ui/button_kalulu_down.png" id="5_kfd0f"]
-[ext_resource type="Texture2D" uid="uid://clrnqn0fqjx3q" path="res://resources/minigames/minigame_ui/button_shell_down.png" id="5_lo8fb"]
-[ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://resources/minigames/minigame_ui/button_kalulu_disabled.png" id="6_n2h42"]
-[ext_resource type="Texture2D" uid="uid://53f3lscl7tws" path="res://resources/minigames/minigame_ui/button_shell_disabled.png" id="6_yxeeh"]
-[ext_resource type="Texture2D" uid="uid://bnqgwy3arrm4n" path="res://resources/minigames/minigame_ui/button_pause_up.png" id="7_vqw3l"]
-[ext_resource type="Texture2D" uid="uid://bjxt5vglohmk8" path="res://resources/minigames/minigame_ui/button_pause_down.png" id="8_e01yc"]
-[ext_resource type="Texture2D" uid="uid://b0luicu7cgho5" path="res://resources/minigames/minigame_ui/button_pause_disabled.png" id="9_ju5q0"]
-[ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://resources/minigames/minigame_ui/gauge.png" id="13_geo50"]
-[ext_resource type="Texture2D" uid="uid://db64tlixplfru" path="res://resources/minigames/minigame_ui/life_empty.png" id="13_mg1p3"]
-[ext_resource type="Texture2D" uid="uid://3om2awlftpxd" path="res://resources/minigames/minigame_ui/life.png" id="14_p5sco"]
-[ext_resource type="Texture2D" uid="uid://cfxpnn3uivakv" path="res://resources/minigames/minigame_ui/gauge_icon_ant_empty.png" id="17_a20nt"]
-[ext_resource type="Texture2D" uid="uid://b0ck8jxhicyke" path="res://resources/minigames/minigame_ui/gauge_icon_ant_full.png" id="18_gpcjx"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://resources/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_0d0qn"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://resources/minigames/minigame_ui/graphic/button_back_to_menu_down.png" id="3_40b1i"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://resources/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="4_hrket"]
+[ext_resource type="Texture2D" uid="uid://03r3arvu1r2t" path="res://resources/minigames/minigame_ui/graphic/button_shell_up.png" id="5_fsvyi"]
+[ext_resource type="Texture2D" uid="uid://clrnqn0fqjx3q" path="res://resources/minigames/minigame_ui/graphic/button_shell_down.png" id="6_l57f6"]
+[ext_resource type="Texture2D" uid="uid://53f3lscl7tws" path="res://resources/minigames/minigame_ui/graphic/button_shell_disabled.png" id="7_khx6t"]
+[ext_resource type="Texture2D" uid="uid://bnqgwy3arrm4n" path="res://resources/minigames/minigame_ui/graphic/button_pause_up.png" id="8_as36f"]
+[ext_resource type="Texture2D" uid="uid://bjxt5vglohmk8" path="res://resources/minigames/minigame_ui/graphic/button_pause_down.png" id="9_p7u5m"]
+[ext_resource type="Texture2D" uid="uid://b0luicu7cgho5" path="res://resources/minigames/minigame_ui/graphic/button_pause_disabled.png" id="10_2r2bv"]
+[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://resources/minigames/minigame_ui/graphic/button_kalulu_up.png" id="11_50lta"]
+[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://resources/minigames/minigame_ui/graphic/button_kalulu_down.png" id="12_4i065"]
+[ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://resources/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="13_08mrs"]
+[ext_resource type="Texture2D" uid="uid://vcfpmwst262s" path="res://resources/minigames/minigame_ui/graphic/popin_background.png" id="14_7hmng"]
+[ext_resource type="Texture2D" uid="uid://db64tlixplfru" path="res://resources/minigames/minigame_ui/graphic/life_empty.png" id="14_8pcr4"]
+[ext_resource type="Texture2D" uid="uid://3om2awlftpxd" path="res://resources/minigames/minigame_ui/graphic/life.png" id="15_rxfiu"]
+[ext_resource type="Texture2D" uid="uid://f2ys2fy1il2k" path="res://resources/minigames/minigame_ui/graphic/popin_frontground.png" id="15_w2rjo"]
+[ext_resource type="Texture2D" uid="uid://dqtmyedk1ylbw" path="res://resources/minigames/minigame_ui/graphic/button_replay_up.png" id="16_eao58"]
+[ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://resources/minigames/minigame_ui/graphic/gauge.png" id="16_m3nil"]
+[ext_resource type="Texture2D" uid="uid://cfxpnn3uivakv" path="res://resources/minigames/minigame_ui/graphic/gauge_icon_ant_empty.png" id="17_bqwcj"]
+[ext_resource type="Texture2D" uid="uid://bvu8ud6hkwusb" path="res://resources/minigames/minigame_ui/graphic/button_replay_down.png" id="17_emg5g"]
+[ext_resource type="Texture2D" uid="uid://d4ffd4us2hrbs" path="res://resources/minigames/minigame_ui/graphic/button_replay_disabled.png" id="18_2y62r"]
+[ext_resource type="Texture2D" uid="uid://b0ck8jxhicyke" path="res://resources/minigames/minigame_ui/graphic/gauge_icon_ant_full.png" id="18_7tu1d"]
+[ext_resource type="PackedScene" uid="uid://c4t2cq5vyj4ai" path="res://sources/minigames/base/kalulu.tscn" id="19_wn4nd"]
 
 [node name="MinigameUI" type="CanvasLayer"]
 process_mode = 3
@@ -33,8 +39,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Interface" type="HBoxContainer" parent="MainControl"]
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -59,9 +64,9 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-texture_normal = ExtResource("1_f1uy8")
-texture_pressed = ExtResource("2_357qg")
-texture_disabled = ExtResource("3_di4tp")
+texture_normal = ExtResource("2_0d0qn")
+texture_pressed = ExtResource("3_40b1i")
+texture_disabled = ExtResource("4_hrket")
 stretch_mode = 5
 
 [node name="StimulusMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
@@ -75,9 +80,9 @@ theme_override_constants/margin_right = 50
 [node name="StimulusButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin"]
 unique_name_in_owner = true
 layout_mode = 2
-texture_normal = ExtResource("4_r8wnf")
-texture_pressed = ExtResource("5_lo8fb")
-texture_disabled = ExtResource("6_yxeeh")
+texture_normal = ExtResource("5_fsvyi")
+texture_pressed = ExtResource("6_l57f6")
+texture_disabled = ExtResource("7_khx6t")
 stretch_mode = 5
 
 [node name="PauseMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
@@ -91,18 +96,18 @@ theme_override_constants/margin_right = 50
 [node name="PauseButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin"]
 unique_name_in_owner = true
 layout_mode = 2
-texture_normal = ExtResource("7_vqw3l")
-texture_pressed = ExtResource("8_e01yc")
-texture_disabled = ExtResource("9_ju5q0")
+texture_normal = ExtResource("8_as36f")
+texture_pressed = ExtResource("9_p7u5m")
+texture_disabled = ExtResource("10_2r2bv")
 stretch_mode = 5
 
 [node name="KaluluButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-texture_normal = ExtResource("4_ea5op")
-texture_pressed = ExtResource("5_kfd0f")
-texture_disabled = ExtResource("6_n2h42")
+texture_normal = ExtResource("11_50lta")
+texture_pressed = ExtResource("12_4i065")
+texture_disabled = ExtResource("13_08mrs")
 stretch_mode = 5
 
 [node name="CentralPadMargin" type="MarginContainer" parent="MainControl/Interface"]
@@ -115,6 +120,51 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
+
+[node name="CenterMenu" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 450
+theme_override_constants/margin_top = 500
+theme_override_constants/margin_right = 500
+theme_override_constants/margin_bottom = 500
+
+[node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="Shadow" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("14_7hmng")
+
+[node name="Panel" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
+layout_mode = 2
+texture = ExtResource("15_w2rjo")
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 42
+theme_override_constants/margin_top = 42
+theme_override_constants/margin_right = 42
+theme_override_constants/margin_bottom = 42
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="TextureButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture_normal = ExtResource("16_eao58")
+texture_pressed = ExtResource("17_emg5g")
+texture_disabled = ExtResource("18_2y62r")
 
 [node name="RightMargin" type="MarginContainer" parent="MainControl/Interface"]
 layout_mode = 2
@@ -147,7 +197,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("13_mg1p3")
+texture = ExtResource("14_8pcr4")
 stretch_mode = 1
 
 [node name="LivesRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/LivesContainer"]
@@ -157,7 +207,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("14_p5sco")
+texture = ExtResource("15_rxfiu")
 stretch_mode = 1
 
 [node name="ProgressionMargin" type="MarginContainer" parent="MainControl/Interface/RightMargin/RightContainer"]
@@ -172,7 +222,7 @@ custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-texture = ExtResource("13_geo50")
+texture = ExtResource("16_m3nil")
 patch_margin_top = 33
 patch_margin_bottom = 33
 
@@ -183,7 +233,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("17_a20nt")
+texture = ExtResource("17_bqwcj")
 stretch_mode = 1
 
 [node name="ProgressionFullIconsRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
@@ -191,12 +241,17 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 4
+size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("18_gpcjx")
+texture = ExtResource("18_7tu1d")
 stretch_mode = 1
+
+[node name="Kalulu" parent="MainControl" instance=ExtResource("19_wn4nd")]
+visible = false
+layout_mode = 1
 
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin/StimulusButton" to="." method="_on_stimulus_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
+[connection signal="kalulu_speech_end" from="MainControl/Kalulu" to="." method="_on_kalulu_kalulu_speech_end"]

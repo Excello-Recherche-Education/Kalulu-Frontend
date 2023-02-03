@@ -8,57 +8,15 @@
 
 config_version=5
 
-_global_script_classes=[{
-"base": "Node",
-"class": &"GameGlobalData",
-"language": &"GDScript",
-"path": "res://sources/utils/autoloads/game_globals.gd"
-}, {
-"base": "Resource",
-"class": &"LogResource",
-"language": &"GDScript",
-"path": "res://sources/utils/minigame_resources/log.gd"
-}, {
-"base": "Node",
-"class": &"Logger",
-"language": &"GDScript",
-"path": "res://sources/utils/autoloads/lesson_logger.gd"
-}, {
-"base": "Node2D",
-"class": &"Minigame",
-"language": &"GDScript",
-"path": "res://sources/minigames/base/base_minigame.gd"
-}, {
-"base": "CanvasLayer",
-"class": &"MinigameUI",
-"language": &"GDScript",
-"path": "res://sources/minigames/base/minigame_ui.gd"
-}, {
-"base": "Node",
-"class": &"State",
-"language": &"GDScript",
-"path": "res://sources/utils/state_machine/state.gd"
-}, {
-"base": "Node",
-"class": &"StateMachine",
-"language": &"GDScript",
-"path": "res://sources/utils/state_machine/state_machine.gd"
-}]
-_global_script_class_icons={
-"GameGlobalData": "",
-"LogResource": "",
-"Logger": "",
-"Minigame": "",
-"MinigameUI": "",
-"State": "",
-"StateMachine": ""
-}
-
 [application]
 
 config/name="Kalulu"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout.debug="res://resources/debug_audio_bus_layout.tres"
 
 [autoload]
 
