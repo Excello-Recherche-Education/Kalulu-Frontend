@@ -30,6 +30,7 @@ texture = ExtResource("5_mhdld")
 [node name="Timer" type="Timer" parent="."]
 
 [node name="CrabAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+bus = &"Effects"
 script = ExtResource("6_2rg3s")
 
 [connection signal="finished" from="CrabAudioStreamPlayer2D" to="CrabAudioStreamPlayer2D" method="_on_finished"]

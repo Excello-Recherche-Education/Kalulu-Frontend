@@ -13,7 +13,7 @@ script = ExtResource("2_gierf")
 difficulty = 4
 minigame_name = "Crabs"
 max_number_of_lives = 5
-max_progression = 10
+max_progression = 5
 help_kalulu_speech = ExtResource("3_vtu3m")
 win_kalulu_speech = ExtResource("4_eh4op")
 

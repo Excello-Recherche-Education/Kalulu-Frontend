@@ -70,7 +70,7 @@ func _start() -> void:
 	
 	_on_hole_timer_timeout(stimuli[0])
 	
-	for i in range(3 * holes.size() / 4):
+	for i in range(int(3.0 * holes.size() / 4.0)):
 		_on_hole_crab_despawned(distractions[randi() % distractions.size()])
 		
 		await get_tree().create_timer(0.1).timeout
