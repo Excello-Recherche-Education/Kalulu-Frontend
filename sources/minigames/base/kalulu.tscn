@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=3 uid="uid://c4t2cq5vyj4ai"]
+[gd_scene load_steps=95 format=3 uid="uid://c4t2cq5vyj4ai"]
 
 [ext_resource type="Script" path="res://sources/minigames/base/kalulu.gd" id="1_iin3v"]
 [ext_resource type="Texture2D" uid="uid://berypn513y7ts" path="res://resources/minigames/minigame_ui/graphic/kalulu/kalulu_hide_0000.png" id="2_v1p5p"]
@@ -128,9 +128,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("13_ortja")
 }],
-"loop": true,
+"loop": false,
 "name": &"Hide",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -166,7 +166,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("24_ashsp")
 }],
-"loop": true,
+"loop": false,
 "name": &"Idle1",
 "speed": 12.0
 }, {
@@ -207,9 +207,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("36_3of4g")
 }],
-"loop": true,
+"loop": false,
 "name": &"Idle2",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -260,9 +260,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("52_l5vw5")
 }],
-"loop": true,
+"loop": false,
 "name": &"Show",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -301,9 +301,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("64_40vt6")
 }],
-"loop": true,
+"loop": false,
 "name": &"Talk1",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -342,9 +342,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("76_70p70")
 }],
-"loop": true,
+"loop": false,
 "name": &"Talk2",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -383,10 +383,20 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("88_gllhj")
 }],
-"loop": true,
+"loop": false,
 "name": &"Talk3",
-"speed": 5.0
+"speed": 12.0
 }]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6gsq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1hd4y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dvlyl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd4qd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iqd4x"]
 
 [node name="Kalulu" type="Control"]
 layout_mode = 3
@@ -407,13 +417,30 @@ grow_vertical = 2
 color = Color(0.164706, 0.164706, 0.164706, 0.67451)
 
 [node name="KaluluSprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(653, 1350)
+position = Vector2(565, 1407)
 scale = Vector2(1.5, 1.5)
-frames = SubResource("SpriteFrames_igr4d")
-animation = &"Talk3"
+sprite_frames = SubResource("SpriteFrames_igr4d")
+animation = &"Hide"
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-position = Vector2(653, 1421)
-scale = Vector2(1.5, 1.5)
+[node name="PassButton" type="Button" parent="KaluluSprite"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -135.0
+offset_top = -146.0
+offset_right = -165.0
+offset_bottom = -381.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y6gsq")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1hd4y")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dvlyl")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_cd4qd")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_iqd4x")
+flat = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"Voice"
 
 [connection signal="animation_finished" from="KaluluSprite" to="." method="_on_kalulu_sprite_animation_finished"]
+[connection signal="pressed" from="KaluluSprite/PassButton" to="." method="_on_pass_button_pressed"]

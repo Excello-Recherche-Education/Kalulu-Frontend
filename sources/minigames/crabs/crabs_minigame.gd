@@ -24,7 +24,6 @@ func _setup_minigame() -> void:
 	super._setup_minigame()
 	
 	# Progression management
-	max_progression = 10
 	current_progression = 0
 	
 	var max_difficulty: = 0
@@ -67,7 +66,7 @@ func _find_stimuli_and_distractions() -> void:
 
 # Launch the minigame
 func _start() -> void:
-	super._start()
+	await super._start()
 	
 	_on_hole_timer_timeout(stimuli[0])
 	
@@ -121,23 +120,3 @@ func _save_logs() -> void:
 
 func _reset_logs() -> void:
 	logs = {}
-
-
-# ------------ UI ------------
-
-# Callbacks
-
-func _go_back_to_the_garden() -> void:
-	return
-
-
-func _play_stimulus() -> void:
-	return
-
-
-func _pause_game() -> void:
-	get_tree().paused = not get_tree().paused
-
-
-func _play_kalulu() -> void:
-	return

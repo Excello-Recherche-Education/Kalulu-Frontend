@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://weree6bnlt6f"]
+[gd_scene load_steps=26 format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://resources/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_0d0qn"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://3om2awlftpxd" path="res://resources/minigames/minigame_ui/graphic/life.png" id="15_rxfiu"]
 [ext_resource type="Texture2D" uid="uid://f2ys2fy1il2k" path="res://resources/minigames/minigame_ui/graphic/popin_frontground.png" id="15_w2rjo"]
 [ext_resource type="Texture2D" uid="uid://dqtmyedk1ylbw" path="res://resources/minigames/minigame_ui/graphic/button_replay_up.png" id="16_eao58"]
+[ext_resource type="Texture2D" uid="uid://b6b8kb5l3yh04" path="res://resources/minigames/minigame_ui/graphic/large_flower_body.png" id="16_kd3me"]
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://resources/minigames/minigame_ui/graphic/gauge.png" id="16_m3nil"]
 [ext_resource type="Texture2D" uid="uid://cfxpnn3uivakv" path="res://resources/minigames/minigame_ui/graphic/gauge_icon_ant_empty.png" id="17_bqwcj"]
 [ext_resource type="Texture2D" uid="uid://bvu8ud6hkwusb" path="res://resources/minigames/minigame_ui/graphic/button_replay_down.png" id="17_emg5g"]
@@ -122,6 +123,7 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
 [node name="CenterMenu" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 450
@@ -146,19 +148,35 @@ texture = ExtResource("15_w2rjo")
 
 [node name="MarginContainer2" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
 layout_mode = 2
-theme_override_constants/margin_left = 42
-theme_override_constants/margin_top = 42
-theme_override_constants/margin_right = 42
-theme_override_constants/margin_bottom = 42
+theme_override_constants/margin_left = 92
+theme_override_constants/margin_top = 92
+theme_override_constants/margin_right = 92
+theme_override_constants/margin_bottom = 92
+
+[node name="Background" type="Control" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2"]
+modulate = Color(1, 1, 1, 0.396078)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_kd3me")
+stretch_mode = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2"]
 layout_mode = 2
+alignment = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="TextureButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer/MarginContainer"]
+[node name="RestartButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -254,4 +272,5 @@ layout_mode = 1
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin/StimulusButton" to="." method="_on_stimulus_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer/MarginContainer/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="kalulu_speech_end" from="MainControl/Kalulu" to="." method="_on_kalulu_kalulu_speech_end"]

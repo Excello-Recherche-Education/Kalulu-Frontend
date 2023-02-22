@@ -3,7 +3,7 @@ extends Control
 signal kalulu_speech_end
 
 @onready var kalulu_sprite: = $KaluluSprite
-@onready var audio_player: = $AudioStreamPlayer2D
+@onready var audio_player: = $AudioStreamPlayer
 
 
 func _ready() -> void:
@@ -44,3 +44,9 @@ func _on_kalulu_sprite_animation_finished() -> void:
 			kalulu_sprite.play("Talk2")
 		else:
 			kalulu_sprite.play("Talk3")
+
+
+func _on_pass_button_pressed() -> void:
+	if audio_player.playing:
+		audio_player.stop()
+		audio_player.finished.emit()
