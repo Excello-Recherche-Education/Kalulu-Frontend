@@ -1,3 +1,4 @@
+@tool
 extends Minigame
 
 @export var difficulty: = 1
@@ -11,8 +12,7 @@ const difficulty_settings: = {
 	4 : {"crab_rows": [4, 3, 4]},
 }
 
-@onready var top_left: = $GameRoot/TopLeft
-@onready var bottom_right: = $GameRoot/BottomRight
+@onready var crab_zone: = $GameRoot/CrabZone
 
 var holes: = []
 
@@ -35,12 +35,14 @@ func _setup_minigame() -> void:
 		difficulty = max_difficulty
 	
 	var settings: Dictionary = difficulty_settings[difficulty]
+	var top_left: Vector2 = crab_zone.position
+	var bottom_right: Vector2 = top_left + crab_zone.size
 	for i in range(settings["crab_rows"].size()):
 		var fi: = float(i + 1.0) / float(settings["crab_rows"].size() + 1.0)
-		var y: float = (1.0 - fi) * top_left.position.y + fi * bottom_right.position.y
+		var y: float = (1.0 - fi) * top_left.y + fi * bottom_right.y
 		for j in range(settings["crab_rows"][i]):
 			var fj: = float(j + 1.0) / float(settings["crab_rows"][i] + 1.0)
-			var x: float = fj * top_left.position.x + (1.0 - fj) * bottom_right.position.x
+			var x: float = fj * top_left.x + (1.0 - fj) * bottom_right.x
 			
 			var hole: = hole_class.instantiate()
 			game_root.add_child(hole)

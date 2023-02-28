@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://weree6bnlt6f"]
+[gd_scene load_steps=24 format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://resources/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_0d0qn"]
@@ -20,10 +20,8 @@
 [ext_resource type="Texture2D" uid="uid://dqtmyedk1ylbw" path="res://resources/minigames/minigame_ui/graphic/button_replay_up.png" id="16_eao58"]
 [ext_resource type="Texture2D" uid="uid://b6b8kb5l3yh04" path="res://resources/minigames/minigame_ui/graphic/large_flower_body.png" id="16_kd3me"]
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://resources/minigames/minigame_ui/graphic/gauge.png" id="16_m3nil"]
-[ext_resource type="Texture2D" uid="uid://cfxpnn3uivakv" path="res://resources/minigames/minigame_ui/graphic/gauge_icon_ant_empty.png" id="17_bqwcj"]
 [ext_resource type="Texture2D" uid="uid://bvu8ud6hkwusb" path="res://resources/minigames/minigame_ui/graphic/button_replay_down.png" id="17_emg5g"]
 [ext_resource type="Texture2D" uid="uid://d4ffd4us2hrbs" path="res://resources/minigames/minigame_ui/graphic/button_replay_disabled.png" id="18_2y62r"]
-[ext_resource type="Texture2D" uid="uid://b0ck8jxhicyke" path="res://resources/minigames/minigame_ui/graphic/gauge_icon_ant_full.png" id="18_7tu1d"]
 [ext_resource type="PackedScene" uid="uid://c4t2cq5vyj4ai" path="res://sources/minigames/base/kalulu.tscn" id="19_wn4nd"]
 
 [node name="MinigameUI" type="CanvasLayer"]
@@ -251,7 +249,6 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("17_bqwcj")
 stretch_mode = 1
 
 [node name="ProgressionFullIconsRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
@@ -261,7 +258,6 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("18_7tu1d")
 stretch_mode = 1
 
 [node name="Kalulu" parent="MainControl" instance=ExtResource("19_wn4nd")]

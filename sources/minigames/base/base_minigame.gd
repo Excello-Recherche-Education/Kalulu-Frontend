@@ -1,13 +1,21 @@
-extends Node2D
+@tool
+extends Control
 class_name Minigame
 
 @export var minigame_name: = "Minigame"
+
 @export var max_number_of_lives: = 0 :
-	set(value): _set_max_lives(value)
-	get: return _max_number_of_lives
+	set(value):
+		max_number_of_lives = value
+		if minigame_ui:
+			minigame_ui.set_maximum_number_of_lives(value)
+
 @export var max_progression: = 0 :
-	set(value): _set_max_progression(value)
-	get: return _max_progression
+	set(value):
+		max_progression = value
+		if minigame_ui:
+			minigame_ui.set_max_progression(value)
+
 @export var help_kalulu_speech: AudioStream
 @export var win_kalulu_speech: AudioStream
 @export var lose_kalulu_speech: AudioStream = preload("res://resources/minigames/kalulu/kalulu_lose_minigame_all.mp3")
@@ -32,18 +40,22 @@ var stimuli: = []
 var distractions: = []
 
 # Lives
-var _max_number_of_lives : = 0
 var current_lives: = 0 :
-	set(value): _set_current_lives(value)
-	get: return _current_lives
-var _current_lives: = 0
+	set(value):
+		if value == 0 and current_lives != 0:
+			_lose()
+		current_lives = value
+		if minigame_ui:
+			minigame_ui.set_number_of_lives(value)
 
 # Progression
-var _max_progression: = 0
 var current_progression: = 0 :
-	set(value): _set_current_progression(value)
-	get: return _current_progression
-var _current_progression: = 0
+	set(value):
+		if value == max_progression and current_progression != max_progression:
+			_win()
+		current_progression = value
+		if minigame_ui:
+			minigame_ui.set_current_progression(value)
 
 
 # ------------ Initialisation ------------
@@ -58,7 +70,8 @@ func _initialize() -> void:
 	
 	_find_stimuli_and_distractions()
 	
-	_start()
+	if not Engine.is_editor_hint():
+		_start()
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
@@ -167,34 +180,3 @@ func _on_minigame_ui_kalulu_button_pressed() -> void:
 
 func _on_minigame_ui_restart_button_pressed() -> void:
 	_reset()
-
-
-# ------------ setters/getters ------------
-
-
-func _set_max_lives(value: int) -> void:
-	_max_number_of_lives = value
-	if minigame_ui:
-		minigame_ui.set_maximum_number_of_lives(value)
-
-
-func _set_current_lives(value: int) -> void:
-	_current_lives = value
-	if minigame_ui:
-		minigame_ui.set_number_of_lives(value)
-	if current_lives == 0:
-		_lose()
-
-
-func _set_max_progression(value: int) -> void:
-	_max_progression = value
-	if minigame_ui:
-		minigame_ui.set_max_progression(value)
-
-
-func _set_current_progression(value: int) -> void:
-	_current_progression = value
-	if minigame_ui:
-		minigame_ui.set_current_progression(value)
-	if current_progression == max_progression:
-		_win()

@@ -1,3 +1,4 @@
+@tool
 extends CanvasLayer
 class_name MinigameUI
 

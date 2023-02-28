@@ -1,3 +1,4 @@
+@tool
 extends CanvasLayer
 
 signal animation_finished(animation_name: StringName)
