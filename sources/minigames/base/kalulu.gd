@@ -1,6 +1,6 @@
 extends Control
 
-signal kalulu_speech_end
+signal speech_ended
 
 @onready var kalulu_sprite: = $KaluluSprite
 @onready var audio_player: = $AudioStreamPlayer
@@ -25,7 +25,7 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 	await kalulu_sprite.animation_finished
 	hide()
 	
-	emit_signal("kalulu_speech_end")
+	speech_ended.emit()
 
 
 func _on_kalulu_sprite_animation_finished() -> void:
@@ -47,6 +47,6 @@ func _on_kalulu_sprite_animation_finished() -> void:
 
 
 func _on_pass_button_pressed() -> void:
-	if audio_player.playing:
+	if OS.has_feature("debug") and audio_player.playing:
 		audio_player.stop()
 		audio_player.finished.emit()

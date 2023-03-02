@@ -109,16 +109,3 @@ func _on_hole_crab_despawned(stimulus: Dictionary) -> void:
 	await get_tree().create_timer(randf_range(0.1, 2.0)).timeout
 	
 	_on_hole_timer_timeout(stimulus)
-
-
-# ------------ Logs ------------
-
-
-func _save_logs() -> void:
-	LessonLogger.save_logs(logs, GameGlobals.teacher_id, GameGlobals.user_id, minigame_name, lesson, Time.get_time_string_from_system())
-	
-	_reset_logs()
-
-
-func _reset_logs() -> void:
-	logs = {}

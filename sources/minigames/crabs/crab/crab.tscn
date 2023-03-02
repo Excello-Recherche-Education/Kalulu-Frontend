@@ -1,8 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://bwe3fp0vkpufb"]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
-[ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://resources/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
-[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://resources/fonts/DidactGothic-Regular.ttf" id="3_dei0e"]
+[ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
+[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="3_dei0e"]
 
 [sub_resource type="Animation" id="Animation_lftfb"]
 length = 0.001

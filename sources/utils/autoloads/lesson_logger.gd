@@ -7,8 +7,8 @@ const log_resource_class: = preload("res://sources/utils/minigame_resources/log.
 var log_resources: = {}
 
 
-func save_logs(logs: Dictionary, teacher_id: String, user_id: String, minigame_name: String, lesson: String, time: String) -> void:
-	var file_path: = "user://" + teacher_id + "/" + user_id + "/" + minigame_name + ".tres"
+func save_logs(logs: Dictionary, folder_path: String, minigame_name: String, lesson: String, time: String) -> void:
+	var file_path: = folder_path + minigame_name + ".tres"
 	
 	if not ResourceLoader.exists(file_path):
 		var log_resource: LogResource = log_resource_class.instance()

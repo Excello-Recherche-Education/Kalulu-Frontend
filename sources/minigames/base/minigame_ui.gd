@@ -5,28 +5,48 @@ class_name MinigameUI
 signal garden_button_pressed
 signal stimulus_button_pressed
 signal pause_button_pressed
-signal kalulu_button_pressed
-signal kalulu_speech_end
+
 signal restart_button_pressed
+
+signal master_volume_changed(volume: float)
+signal music_volume_changed(volume: float)
+signal voice_volume_changed(volume: float)
+signal effects_volume_changed(volume: float)
+
+signal kalulu_button_pressed
+signal kalulu_speech_ended
 
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture
 
 # Using unique names to avoid changing the path if the interface architecture changes
-@onready var garden_button: TextureButton = get_node("%GardenButton")
-@onready var stimulus_button: TextureButton = get_node("%StimulusButton")
-@onready var pause_button: TextureButton = get_node("%PauseButton")
-@onready var kalulu_button: TextureButton = get_node("%KaluluButton")
-@onready var empty_lives_rect: TextureRect = get_node("%EmptyLivesRect")
-@onready var lives_rect: TextureRect = get_node("%LivesRect")
-@onready var progression_gauge: NinePatchRect = get_node("%ProgressionGauge")
-@onready var progression_empty_icons_rect: TextureRect = get_node("%ProgressionEmptyIconsRect")
-@onready var progression_full_icons_rect: TextureRect = get_node("%ProgressionFullIconsRect")
-@onready var center_menu: MarginContainer = get_node("%CenterMenu")
-@onready var restart_button: TextureButton = get_node("%RestartButton")
+# Left panel
+@onready var garden_button: TextureButton = %GardenButton
+@onready var stimulus_button: TextureButton = %StimulusButton
+@onready var pause_button: TextureButton = %PauseButton
+@onready var kalulu_button: TextureButton = %KaluluButton
+
+#Right panel
+@onready var volume_button: TextureButton = %VolumeButton
+@onready var empty_lives_rect: TextureRect = %EmptyLivesRect
+@onready var lives_rect: TextureRect = %LivesRect
+@onready var progression_gauge: NinePatchRect = %ProgressionGauge
+@onready var progression_empty_icons_rect: TextureRect = %ProgressionEmptyIconsRect
+@onready var progression_full_icons_rect: TextureRect = %ProgressionFullIconsRect
+
+# Center menu
+@onready var center_menu: MarginContainer = %CenterMenu
+@onready var restart_button: TextureButton = %RestartButton
+
+# Volume menu
+@onready var volume_menu: Control = %VolumeMenu
+@onready var master_volume_slider: HSlider = %MasterVolumeSlider
+@onready var music_volume_slider: HSlider = %MusicVolumeSlider
+@onready var voice_volume_slider: HSlider = %VoiceVolumeSlider
+@onready var effects_volume_slider: HSlider = %EffectsVolumeSlider
 
 # Kalulu
-@onready var kalulu: = $MainControl/Kalulu
+@onready var kalulu: Control = %Kalulu
 
 # Lives management
 var empty_life_size: = 0.0
@@ -141,6 +161,45 @@ func _on_restart_button_pressed() -> void:
 	restart_button_pressed.emit()
 
 
+# ------------ Volume Menu ------------
+
+
+func set_master_volume_slider(volume: float) -> void:
+	master_volume_slider.value = volume
+
+
+func set_music_volume_slider(volume: float) -> void:
+	music_volume_slider.value = volume
+
+
+func set_voice_volume_slider(volume: float) -> void:
+	voice_volume_slider.value = volume
+
+
+func set_effects_volume_slider(volume: float) -> void:
+	effects_volume_slider.value = volume
+
+
+func _on_volume_button_pressed() -> void:
+	volume_menu.visible = not volume_menu.visible
+
+
+func _on_master_volume_slider_value_changed(volume: float) -> void:
+	master_volume_changed.emit(volume)
+
+
+func _on_music_volume_slider_value_changed(volume: float) -> void:
+	music_volume_changed.emit(volume)
+
+
+func _on_voice_volume_slider_value_changed(volume: float) -> void:
+	voice_volume_changed.emit(volume)
+
+
+func _on_effects_volume_slider_value_changed(volume: float) -> void:
+	effects_volume_changed.emit(volume)
+
+
 # ------------ Kalulu ------------
 
 
@@ -148,5 +207,5 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 	kalulu.play_kalulu_speech(speech)
 
 
-func _on_kalulu_kalulu_speech_end() -> void:
-	kalulu_speech_end.emit()
+func _on_kalulu_speech_ended() -> void:
+	kalulu_speech_ended.emit()

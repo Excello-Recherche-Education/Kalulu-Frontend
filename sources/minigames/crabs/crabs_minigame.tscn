@@ -1,23 +1,25 @@
-[gd_scene load_steps=8 format=3 uid="uid://c8ntt5r3fjeh"]
+[gd_scene load_steps=8 format=3 uid="uid://cjyj813i8bs0a"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_lbq56"]
 [ext_resource type="Script" path="res://sources/minigames/crabs/crabs_minigame.gd" id="2_gierf"]
-[ext_resource type="Texture2D" uid="uid://bt7u67errbjls" path="res://resources/minigames/crabs/graphic/gauge_icon_crab_empty.png" id="3_s5o38"]
-[ext_resource type="AudioStream" uid="uid://4qo683e8atp4" path="res://resources/minigames/crabs/audio/kalulu/kalulu_help_crabs_language.mp3" id="3_vtu3m"]
-[ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://resources/minigames/crabs/graphic/gauge_icon_crab_full.png" id="4_a1dm5"]
-[ext_resource type="AudioStream" uid="uid://cmp7vupeq11ic" path="res://resources/minigames/crabs/audio/kalulu/kalulu_end_crabs_all.mp3" id="4_eh4op"]
-[ext_resource type="Texture2D" uid="uid://5bx8ugh178j1" path="res://resources/minigames/crabs/graphic/background.png" id="5_0ps1r"]
+[ext_resource type="AudioStream" uid="uid://4qo683e8atp4" path="res://assets/minigames/crabs/audio/kalulu/kalulu_help_crabs_language.mp3" id="3_ki5ek"]
+[ext_resource type="AudioStream" uid="uid://cmp7vupeq11ic" path="res://assets/minigames/crabs/audio/kalulu/kalulu_end_crabs_all.mp3" id="4_cikjm"]
+[ext_resource type="Texture2D" uid="uid://bt7u67errbjls" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_empty.png" id="5_7vlrm"]
+[ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="6_1r44u"]
+[ext_resource type="Texture2D" uid="uid://5bx8ugh178j1" path="res://assets/minigames/crabs/graphic/background.png" id="7_s0cgt"]
 
 [node name="Crabs" instance=ExtResource("1_lbq56")]
 script = ExtResource("2_gierf")
 difficulty = 4
 minigame_name = "Crabs"
-help_kalulu_speech = ExtResource("3_vtu3m")
-win_kalulu_speech = ExtResource("4_eh4op")
+max_number_of_lives = 5
+max_progression = 5
+help_kalulu_speech = ExtResource("3_ki5ek")
+win_kalulu_speech = ExtResource("4_cikjm")
 
 [node name="MinigameUI" parent="." index="0"]
-empty_progression_icon = ExtResource("3_s5o38")
-full_progression_icon = ExtResource("4_a1dm5")
+empty_progression_icon = ExtResource("5_7vlrm")
+full_progression_icon = ExtResource("6_1r44u")
 
 [node name="GameRoot" parent="." index="3"]
 layout_mode = 1
@@ -34,7 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("5_0ps1r")
+texture = ExtResource("7_s0cgt")
 metadata/_edit_lock_ = true
 
 [node name="CrabZone" type="Control" parent="GameRoot" index="1"]

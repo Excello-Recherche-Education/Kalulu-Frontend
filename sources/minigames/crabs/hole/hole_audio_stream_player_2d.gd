@@ -1,19 +1,19 @@
 extends AudioStreamPlayer2D
 
 const crab_sound_list: = [
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
-	preload("res://resources/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
 ]
 
 var should_play: = false
