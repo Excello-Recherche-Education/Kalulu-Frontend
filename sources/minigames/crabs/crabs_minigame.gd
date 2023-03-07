@@ -68,7 +68,7 @@ func _find_stimuli_and_distractions() -> void:
 
 # Launch the minigame
 func _start() -> void:
-	await super._start()
+	super._start()
 	
 	_on_hole_timer_timeout(stimuli[0])
 	

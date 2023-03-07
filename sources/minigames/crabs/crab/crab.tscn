@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=16 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
 [ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]

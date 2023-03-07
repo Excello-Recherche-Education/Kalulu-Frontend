@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://cmoeum0oc0p2"]
+
+[ext_resource type="Script" path="res://sources/minigames/parakeets/parakeet.gd" id="1_dc5e0"]
+[ext_resource type="SpriteFrames" uid="uid://c4xffrugn6xgx" path="res://sources/minigames/parakeets/yellow_parakeet_spritesheet.tres" id="2_qdecy"]
+[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://resources/fonts/DidactGothic-Regular.ttf" id="5_k8sc4"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_chx0h"]
+font = ExtResource("5_k8sc4")
+font_size = 60
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2q8kg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aup5h"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mmhru"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b6a1p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45x46"]
+
+[node name="Parakeet" type="Node2D"]
+script = ExtResource("1_dc5e0")
+sad_duration = null
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+sprite_frames = ExtResource("2_qdecy")
+animation = &"sad"
+autoplay = "idle_front"
+offset = Vector2(2.08165e-12, -82)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -17.0
+offset_top = -108.0
+offset_right = 18.0
+offset_bottom = -26.0
+theme_override_fonts/font = ExtResource("5_k8sc4")
+text = "A"
+label_settings = SubResource("LabelSettings_chx0h")
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+offset_left = -91.0
+offset_top = -255.0
+offset_right = 90.0
+offset_bottom = 13.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2q8kg")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_aup5h")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_mmhru")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_b6a1p")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_45x46")
+
+[connection signal="animation_looped" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_looped"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

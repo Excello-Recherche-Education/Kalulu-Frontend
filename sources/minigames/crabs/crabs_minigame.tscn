@@ -21,14 +21,6 @@ win_kalulu_speech = ExtResource("4_cikjm")
 empty_progression_icon = ExtResource("5_7vlrm")
 full_progression_icon = ExtResource("6_1r44u")
 
-[node name="GameRoot" parent="." index="3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 layout_mode = 1
 anchors_preset = 15
@@ -46,3 +38,4 @@ offset_left = 545.0
 offset_top = 629.0
 offset_right = 2311.0
 offset_bottom = 1673.0
+metadata/_edit_lock_ = true

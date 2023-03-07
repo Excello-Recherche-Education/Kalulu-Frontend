@@ -71,11 +71,12 @@ func _ready() -> void:
 
 
 func _initialize() -> void:
-	_setup_minigame()
-	
 	_find_stimuli_and_distractions()
 	
+	_setup_minigame()
+	
 	if not Engine.is_editor_hint():
+		await _curtains_and_kalulu()
 		_start()
 
 
@@ -92,13 +93,18 @@ func _find_stimuli_and_distractions() -> void:
 	return
 
 
-# Launch the minigame
-func _start() -> void:
+# Open the curtains and Kalulu explains
+func _curtains_and_kalulu() -> void:
 	opening_curtain.play("open")
 	await opening_curtain.animation_finished
 	
 	minigame_ui.play_kalulu_speech(help_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
+
+
+# Launch the minigame
+func _start() -> void:
+	return
 
 
 # ------------ End ------------
