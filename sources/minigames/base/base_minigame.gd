@@ -42,20 +42,22 @@ var distractions: = []
 # Lives
 var current_lives: = 0 :
 	set(value):
-		if value == 0 and current_lives != 0:
-			_lose()
+		var previous_lives: = current_lives
 		current_lives = value
 		if minigame_ui:
 			minigame_ui.set_number_of_lives(value)
+		if value == 0 and previous_lives != 0:
+			_lose()
 
 # Progression
 var current_progression: = 0 :
 	set(value):
-		if value == max_progression and current_progression != max_progression:
-			_win()
+		var previous_progression: = current_progression
 		current_progression = value
 		if minigame_ui:
 			minigame_ui.set_current_progression(value)
+		if value == max_progression and previous_progression != max_progression:
+			_win()
 
 
 # ------------ Initialisation ------------

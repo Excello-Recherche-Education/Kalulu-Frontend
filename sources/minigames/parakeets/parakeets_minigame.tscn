@@ -14,6 +14,7 @@
 script = ExtResource("2_x6xn5")
 difficulty = 1
 fly_duration = 3.0
+max_number_of_lives = 5
 help_kalulu_speech = ExtResource("3_ofxb4")
 win_kalulu_speech = ExtResource("4_01e28")
 
@@ -233,3 +234,106 @@ offset_left = 186.0
 offset_top = 43.0
 offset_right = 226.0
 offset_bottom = 83.0
+
+[node name="FlyFrom" type="Control" parent="GameRoot" index="12"]
+anchors_preset = 0
+offset_left = 2832.0
+offset_top = 1157.0
+offset_right = 2872.0
+offset_bottom = 1197.0
+
+[node name="Position1" type="Control" parent="GameRoot/FlyFrom" index="0"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -2494.0
+offset_top = -1437.0
+offset_right = -2454.0
+offset_bottom = -1397.0
+
+[node name="Position2" type="Control" parent="GameRoot/FlyFrom" index="1"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -1738.0
+offset_top = -1398.0
+offset_right = -1698.0
+offset_bottom = -1358.0
+
+[node name="Position3" type="Control" parent="GameRoot/FlyFrom" index="2"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -944.0
+offset_top = -1341.0
+offset_right = -904.0
+offset_bottom = -1301.0
+
+[node name="Position4" type="Control" parent="GameRoot/FlyFrom" index="3"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 154.0
+offset_top = -916.0
+offset_right = 194.0
+offset_bottom = -876.0
+
+[node name="Position5" type="Control" parent="GameRoot/FlyFrom" index="4"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -4.0
+offset_top = -528.0
+offset_right = 36.0
+offset_bottom = -488.0
+
+[node name="Position6" type="Control" parent="GameRoot/FlyFrom" index="5"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -39.0
+offset_top = -205.0
+offset_right = 1.0
+offset_bottom = -165.0
+
+[node name="Position7" type="Control" parent="GameRoot/FlyFrom" index="6"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -33.0
+offset_top = 360.0
+offset_right = 7.0
+offset_bottom = 400.0
+
+[node name="Position8" type="Control" parent="GameRoot/FlyFrom" index="7"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -3198.0
+offset_top = 164.0
+offset_right = -3158.0
+offset_bottom = 204.0
+
+[node name="Position9" type="Control" parent="GameRoot/FlyFrom" index="8"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -3386.0
+offset_top = -297.0
+offset_right = -3346.0
+offset_bottom = -257.0
+
+[node name="Position10" type="Control" parent="GameRoot/FlyFrom" index="9"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -3068.0
+offset_top = -579.0
+offset_right = -3028.0
+offset_bottom = -539.0
+
+[node name="Position11" type="Control" parent="GameRoot/FlyFrom" index="10"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -3160.0
+offset_top = -967.0
+offset_right = -3120.0
+offset_bottom = -927.0
+
+[node name="Position12" type="Control" parent="GameRoot/FlyFrom" index="11"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -2744.0
+offset_top = -1312.0
+offset_right = -2704.0
+offset_bottom = -1272.0
