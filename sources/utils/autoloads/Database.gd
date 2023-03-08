@@ -15,7 +15,12 @@ func _exit_tree() -> void:
 
 
 func get_GP_for_lesson(lesson_nb: int) -> Array:
-	db.query_with_bindings("Select Grapheme, Phoneme FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb <= ?", [lesson_nb])
+	db.query_with_bindings("Select Grapheme, Phoneme FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb == ?", [lesson_nb])
+	return db.query_result
+
+
+func get_GP_before_lesson(lesson_nb: int) -> Array:
+	db.query_with_bindings("Select Grapheme, Phoneme FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb < ?", [lesson_nb])
 	return db.query_result
 
 
@@ -31,7 +36,7 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 
 # Import data from previous Kalulu version
 
-func _import_gps(db) -> void:
+func _import_gps() -> void:
 	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
 	var dict = JSON.parse_string(file.get_line())
 	for e in dict.values():
@@ -44,7 +49,7 @@ func _import_gps(db) -> void:
 		print(db.query_result)
 
 
-func _import_words(db) -> void:
+func _import_words() -> void:
 	var file = FileAccess.open("res://data3/words_list.json", FileAccess.READ)
 	var dict = JSON.parse_string(file.get_line())
 	for e in dict.values():
@@ -67,7 +72,7 @@ func _import_words(db) -> void:
 			})
 
 
-func _import_lessons(db) -> void:
+func _import_lessons() -> void:
 	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
 	var dict = JSON.parse_string(file.get_line())
 	for e in dict.values():

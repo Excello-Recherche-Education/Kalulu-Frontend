@@ -21,7 +21,7 @@ func set_button_active(active: bool) -> void:
 func set_stimulus(p_stimulus: Dictionary) -> void:
 	stimulus = p_stimulus
 	
-	label.text = stimulus["label"]
+	label.text = stimulus["Grapheme"]
 
 
 func _on_button_pressed() -> void:

@@ -2,6 +2,7 @@
 extends Minigame
 
 @export var difficulty: = 1
+@export var lesson_nb: = 4
 
 const hole_class: = preload("res://sources/minigames/crabs/hole/hole.tscn")
 const difficulty_settings: = {
@@ -56,14 +57,8 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	# TODO: fake stimuli and distractor for testing
-	# Replace in the future by a proper research
-	stimuli = [{"label": "a", "sound": ""}]
-	distractions = [
-		{"label": "e", "sound": ""},
-		{"label": "u", "sound": ""},
-		{"label": "o", "sound": ""},
-	]
+	stimuli = Database.get_GP_for_lesson(lesson_nb)
+	distractions = Database.get_GP_before_lesson(lesson_nb)
 
 
 # Launch the minigame
