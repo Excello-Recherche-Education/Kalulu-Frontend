@@ -15,12 +15,12 @@ func _exit_tree() -> void:
 
 
 func get_GP_for_lesson(lesson_nb: int) -> Array:
-	db.query_with_bindings("Select Grapheme, Phoneme FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb == ?", [lesson_nb])
+	db.query_with_bindings("Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb == ?", [lesson_nb])
 	return db.query_result
 
 
 func get_GP_before_lesson(lesson_nb: int) -> Array:
-	db.query_with_bindings("Select Grapheme, Phoneme FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb < ?", [lesson_nb])
+	db.query_with_bindings("Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb < ?", [lesson_nb])
 	return db.query_result
 
 
@@ -32,6 +32,16 @@ func get_GP_from_word(word: String) -> Array:
 func get_words_containing_grapheme(grapheme: String) -> Array:
 	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPS.ID = GPsInWords.GPID", [grapheme])
 	return db.query_result
+
+
+func copy_without_double_graphemes(input: Array) -> Array:
+	var output: = []
+	var graphemes: = {}
+	for val in input:
+		if not graphemes.has(val.Grapheme):
+			output.append(val)
+			graphemes[val.Grapheme] = true
+	return output
 
 
 # Import data from previous Kalulu version

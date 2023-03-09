@@ -13,7 +13,7 @@ signal pressed()
 var stimulus: Dictionary :
 	set(value):
 		stimulus = value
-		label.text = value.label
+		label.text = value.Grapheme
 
 const animations: = [
 	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),

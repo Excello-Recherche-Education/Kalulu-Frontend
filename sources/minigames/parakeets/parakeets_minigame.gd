@@ -24,6 +24,7 @@ const audio_streams: = [
 ]
 
 @export var difficulty: = 1
+@export var lesson_nb: = 4
 @export var fly_duration: = 3.0
 
 @onready var possible_positions_parent: = $GameRoot/PossiblePositions
@@ -79,7 +80,7 @@ func _setup_minigame() -> void:
 		parakeets.append_array([new_parakeet1, new_parakeet2])
 		var stimulus: Dictionary = stimuli2.pop_back()
 		var stimulus_up: = stimulus.duplicate()
-		stimulus_up.label = stimulus_up.label.to_upper()
+		stimulus_up.label = stimulus_up.Grapheme.to_upper()
 		new_parakeet1.stimulus = stimulus
 		new_parakeet2.stimulus = stimulus_up
 		new_parakeet1.pressed.connect(_on_parakeet_pressed.bind(new_parakeet1))
@@ -88,13 +89,10 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	# TODO: fake stimuli and distractor for testing
-	# Replace in the future by a proper research
-	stimuli = [
-		{"label": "a", "sound": ""},
-		{"label": "b", "sound": ""},
-		{"label": "c", "sound": ""},
-		]
+	var before: = Database.get_GP_before_lesson(lesson_nb)
+	var current: = Database.get_GP_for_lesson(lesson_nb)
+	before.append_array(current)
+	stimuli = Database.copy_without_double_graphemes(before)
 
 
 func _start() -> void:
@@ -129,7 +127,7 @@ func _on_parakeet_pressed(parakeet: Parakeet) -> void:
 
 
 func _on_selected_two() -> void:
-	if selected[0].stimulus.label.to_upper() == selected[1].stimulus.label.to_upper():
+	if selected[0].stimulus.Grapheme.to_upper() == selected[1].stimulus.Grapheme.to_upper():
 		_correct()
 	else:
 		_wrong()

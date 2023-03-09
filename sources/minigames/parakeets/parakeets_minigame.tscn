@@ -13,6 +13,7 @@
 [node name="Parakeets" instance=ExtResource("1_oeg4r")]
 script = ExtResource("2_x6xn5")
 difficulty = 1
+lesson_nb = 4
 fly_duration = 3.0
 max_number_of_lives = 5
 help_kalulu_speech = ExtResource("3_ofxb4")
