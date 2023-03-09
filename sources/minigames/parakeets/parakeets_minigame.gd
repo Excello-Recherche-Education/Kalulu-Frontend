@@ -27,13 +27,17 @@ const audio_streams: = [
 @export var lesson_nb: = 4
 @export var fly_duration: = 3.0
 
-@onready var possible_positions_parent: = $GameRoot/PossiblePositions
+@onready var branches: = $GameRoot/TreeTrunk/Branches
 @onready var possible_start_positions_parent: = $GameRoot/FlyFrom
 @onready var parakeets_node: = $GameRoot/Parakeets
-@onready var nest_positions: Array[Vector2] = [$GameRoot/TreeNestFront/Position1.global_position, $GameRoot/TreeNestFront/Position2.global_position]
+@onready var nest_positions: Array[Vector2] = [
+	$GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position1.global_position,
+	$GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position2.global_position
+	]
 @onready var fly_away_positions: Array[Vector2] = [$GameRoot/FlyAway/Position1.global_position, $GameRoot/FlyAway/Position2.global_position]
 @onready var audio_player: = $AudioStreamPlayer
 
+var possible_branch_positions: Array[Vector2]
 var parakeets: Array[Parakeet]
 var selected: Array[Parakeet]
 var state: = State.Locked
@@ -64,7 +68,7 @@ func _setup_minigame() -> void:
 	
 	var settings: Dictionary = difficulty_settings[difficulty]
 	
-	var pairs_count: int = settings.pairs_count
+	var pairs_count: int = min(settings.pairs_count, stimuli.size())
 	var possible_start_positions: Array = possible_start_positions_parent.get_children()
 	possible_start_positions.shuffle()
 	var stimuli2: = stimuli.duplicate()
@@ -96,7 +100,11 @@ func _find_stimuli_and_distractions() -> void:
 
 
 func _start() -> void:
-	var possible_positions: = possible_positions_parent.get_children()
+	var possible_positions: Array[Vector2] = []
+	for branch in branches.get_children():
+		for child in branch.get_children():
+			if "Position" in child.name:
+				possible_positions.append(child.global_position)
 	possible_positions.shuffle()
 	await _flying_arrival(possible_positions)
 	_present_parakeets()
@@ -226,14 +234,14 @@ func _turn(parakeet: Parakeet, to_back: bool) -> void:
 		await parakeet.turn_to_front()
 
 
-func _flying_arrival(to: Array) -> void:
+func _flying_arrival(to: Array[Vector2]) -> void:
 	assert(parakeets.size() <= to.size(), "Some parakeets don't have a destination")
 	var coroutine: = Coroutine.new()
 	audio_player.stream = audio_streams[Audio.Fly]
 	audio_player.play()
 	coroutine.add_future(audio_player.finished)
 	for i in parakeets.size():
-		coroutine.add_future(parakeets[i].fly_to.bind(to[i].global_position, fly_duration))
+		coroutine.add_future(parakeets[i].fly_to.bind(to[i], fly_duration))
 	await coroutine.join()
 	for parakeet in parakeets:
 		parakeet.idle()

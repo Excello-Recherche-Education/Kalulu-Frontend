@@ -55,6 +55,7 @@ func _on_animated_sprite_2d_animation_looped() -> void:
 
 func fly_to(target: Vector2, duration: float) -> void:
 	animated_sprite.play("fly")
+	label.position.y = -195
 	var tween: = create_tween()
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
@@ -68,6 +69,7 @@ func happy() -> void:
 
 func idle() -> void:
 	animated_sprite.play("idle_front")
+	label.position.y = -166
 
 
 func sad() -> void:

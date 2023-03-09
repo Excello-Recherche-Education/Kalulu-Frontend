@@ -1,12 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cmoeum0oc0p2"]
+[gd_scene load_steps=9 format=3 uid="uid://cmoeum0oc0p2"]
 
 [ext_resource type="Script" path="res://sources/minigames/parakeets/parakeet.gd" id="1_p0nqk"]
 [ext_resource type="SpriteFrames" uid="uid://wybpq21deku7" path="res://sources/minigames/parakeets/red_parakeet_animations.tres" id="2_05lo6"]
 [ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="5_k8sc4"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_chx0h"]
-font = ExtResource("5_k8sc4")
-font_size = 60
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2q8kg"]
 
@@ -22,21 +18,22 @@ font_size = 60
 script = ExtResource("1_p0nqk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(1.5, 1.5)
+scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_05lo6")
-animation = &"sad"
+animation = &"idle_front"
 autoplay = "idle_front"
 offset = Vector2(2.08165e-12, -82)
 
 [node name="Label" type="Label" parent="."]
-offset_left = -17.0
-offset_top = -108.0
-offset_right = 18.0
-offset_bottom = -26.0
+offset_left = -26.0
+offset_top = -166.0
+offset_right = 27.0
+offset_bottom = -44.0
 theme_override_fonts/font = ExtResource("5_k8sc4")
+theme_override_font_sizes/font_size = 90
 text = "A"
-label_settings = SubResource("LabelSettings_chx0h")
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Button" type="Button" parent="."]
 offset_left = -91.0
