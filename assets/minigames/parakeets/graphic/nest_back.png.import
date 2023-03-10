@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ct4ags1dnh17v"
-path="res://.godot/imported/red_parakeet_spritesheet.png-0abaeb72da65f3f9171b9c98cd8a4a99.ctex"
+uid="uid://sjxhvbq8ijbw"
+path="res://.godot/imported/nest_back.png-53077e9cc834226ab59b27932aea277d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/minigames/parakeets/graphic/red_parakeet_spritesheet.png"
-dest_files=["res://.godot/imported/red_parakeet_spritesheet.png-0abaeb72da65f3f9171b9c98cd8a4a99.ctex"]
+source_file="res://assets/minigames/parakeets/graphic/nest_back.png"
+dest_files=["res://.godot/imported/nest_back.png-53077e9cc834226ab59b27932aea277d.ctex"]
 
 [params]
 

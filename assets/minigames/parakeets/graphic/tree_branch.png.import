@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dd37d3qdrfrt0"
-path="res://.godot/imported/yellow_parakeet_spritesheet.png-a508947e4ab6a7946b97897395bc0bab.ctex"
+uid="uid://d3n327me83on7"
+path="res://.godot/imported/tree_branch.png-248292c987103b8803b8df6c2d4ab758.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/minigames/parakeets/graphic/yellow_parakeet_spritesheet.png"
-dest_files=["res://.godot/imported/yellow_parakeet_spritesheet.png-a508947e4ab6a7946b97897395bc0bab.ctex"]
+source_file="res://assets/minigames/parakeets/graphic/tree_branch.png"
+dest_files=["res://.godot/imported/tree_branch.png-248292c987103b8803b8df6c2d4ab758.ctex"]
 
 [params]
 

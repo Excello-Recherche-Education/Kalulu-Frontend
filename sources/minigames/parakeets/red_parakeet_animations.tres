@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=44 format=3 uid="uid://wybpq21deku7"]
 
-[ext_resource type="Texture2D" uid="uid://ct4ags1dnh17v" path="res://resources/minigames/parakeets/graphic/red_parakeet_spritesheet.png" id="1_xu2lq"]
+[ext_resource type="Texture2D" uid="uid://ct4ags1dnh17v" path="res://assets/minigames/parakeets/graphic/red_parakeet_spritesheet.png" id="1_xu2lq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2m73y"]
 atlas = ExtResource("1_xu2lq")

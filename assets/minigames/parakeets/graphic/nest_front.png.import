@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3n327me83on7"
-path="res://.godot/imported/tree_branch.png-877334a52a459a07156c7ee737467720.ctex"
+uid="uid://ctvnu3s3sgwwf"
+path="res://.godot/imported/nest_front.png-09be9ca357e19936e4d192ac0cc39aab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/minigames/parakeets/graphic/tree_branch.png"
-dest_files=["res://.godot/imported/tree_branch.png-877334a52a459a07156c7ee737467720.ctex"]
+source_file="res://assets/minigames/parakeets/graphic/nest_front.png"
+dest_files=["res://.godot/imported/nest_front.png-09be9ca357e19936e4d192ac0cc39aab.ctex"]
 
 [params]
 

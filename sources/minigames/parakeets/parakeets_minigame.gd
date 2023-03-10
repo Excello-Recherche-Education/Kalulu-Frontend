@@ -17,10 +17,10 @@ enum Audio {
 }
 
 const audio_streams: = [
-	preload("res://resources/minigames/parakeets/audio/parakeet_fly.mp3"),
-	preload("res://resources/minigames/parakeets/audio/parakeet_happy_short.mp3"),
-	preload("res://resources/minigames/parakeets/audio/parakeet_turn_over.mp3"),
-	preload("res://resources/minigames/parakeets/audio/parakeet_win.mp3"),
+	preload("res://assets/minigames/parakeets/audio/parakeet_fly.mp3"),
+	preload("res://assets/minigames/parakeets/audio/parakeet_happy_short.mp3"),
+	preload("res://assets/minigames/parakeets/audio/parakeet_turn_over.mp3"),
+	preload("res://assets/minigames/parakeets/audio/parakeet_win.mp3"),
 ]
 
 @export var difficulty: = 1
