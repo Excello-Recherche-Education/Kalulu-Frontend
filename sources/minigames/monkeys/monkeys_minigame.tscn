@@ -1,0 +1,137 @@
+[gd_scene load_steps=13 format=3 uid="uid://r5ug718aoo3u"]
+
+[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_6nhsm"]
+[ext_resource type="Script" path="res://sources/minigames/monkeys/monkeys_minigame.gd" id="2_12lw5"]
+[ext_resource type="AudioStream" uid="uid://du2r8wbs2dclx" path="res://assets/minigames/monkeys/audio/kalulu_intro_monkeys_language.mp3" id="3_hhwrg"]
+[ext_resource type="Texture2D" uid="uid://demg0gbj4lwic" path="res://assets/minigames/monkeys/graphic/background.png" id="3_xpybj"]
+[ext_resource type="Texture2D" uid="uid://b6k16tfsm2p4u" path="res://assets/minigames/monkeys/graphic/ground.png" id="4_m2hoh"]
+[ext_resource type="AudioStream" uid="uid://cu52j5ro8vhyg" path="res://assets/minigames/monkeys/audio/kalulu_end_monkeys_language.mp3" id="4_oe2vh"]
+[ext_resource type="Texture2D" uid="uid://eor7gaddgj5d" path="res://assets/minigames/monkeys/graphic/palmtree_01.png" id="5_2qxen"]
+[ext_resource type="Texture2D" uid="uid://fex5yvybinsx" path="res://assets/minigames/monkeys/graphic/palmtree_02.png" id="6_f5ri1"]
+[ext_resource type="PackedScene" uid="uid://b8r26vroslasj" path="res://sources/minigames/monkeys/king_monkey.tscn" id="7_43p1x"]
+[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="8_fem7m"]
+[ext_resource type="Texture2D" uid="uid://disgg14rdmp81" path="res://assets/minigames/monkeys/graphic/textplank.png" id="8_w0ndh"]
+
+[sub_resource type="FontVariation" id="FontVariation_br573"]
+base_font = ExtResource("8_fem7m")
+spacing_glyph = 20
+
+[node name="Monkeys" instance=ExtResource("1_6nhsm")]
+script = ExtResource("2_12lw5")
+difficulty = 4
+lesson_nb = 10
+words_count = 3
+help_kalulu_speech = ExtResource("3_hhwrg")
+win_kalulu_speech = ExtResource("4_oe2vh")
+
+[node name="Environment" type="VBoxContainer" parent="GameRoot" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Background" type="TextureRect" parent="GameRoot/Environment" index="0"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("3_xpybj")
+
+[node name="Ground" type="TextureRect" parent="GameRoot/Environment" index="1"]
+custom_minimum_size = Vector2(2.08165e-12, 250)
+layout_mode = 2
+texture = ExtResource("4_m2hoh")
+
+[node name="PalmTreeMonkeys" type="TextureRect" parent="GameRoot" index="1"]
+layout_mode = 0
+offset_left = 1646.0
+offset_top = 120.0
+offset_right = 2366.0
+offset_bottom = 1686.0
+texture = ExtResource("5_2qxen")
+
+[node name="Position2" type="Control" parent="GameRoot/PalmTreeMonkeys" index="0"]
+anchors_preset = 0
+offset_left = 362.0
+offset_top = 706.0
+offset_right = 402.0
+offset_bottom = 746.0
+
+[node name="Position3" type="Control" parent="GameRoot/PalmTreeMonkeys" index="1"]
+anchors_preset = 0
+offset_left = 362.0
+offset_top = 1084.0
+offset_right = 402.0
+offset_bottom = 1124.0
+
+[node name="Position4" type="Control" parent="GameRoot/PalmTreeMonkeys" index="2"]
+anchors_preset = 0
+offset_left = 362.0
+offset_top = 1474.0
+offset_right = 402.0
+offset_bottom = 1514.0
+
+[node name="Position" type="Control" parent="GameRoot/PalmTreeMonkeys" index="3"]
+anchors_preset = 0
+offset_left = 362.0
+offset_top = 220.0
+offset_right = 402.0
+offset_bottom = 260.0
+
+[node name="Position5" type="Control" parent="GameRoot/PalmTreeMonkeys" index="4"]
+anchors_preset = 0
+offset_left = 131.0
+offset_top = 395.0
+offset_right = 171.0
+offset_bottom = 435.0
+
+[node name="Position6" type="Control" parent="GameRoot/PalmTreeMonkeys" index="5"]
+anchors_preset = 0
+offset_left = 600.0
+offset_top = 395.0
+offset_right = 640.0
+offset_bottom = 435.0
+
+[node name="PlamTreeKing" type="TextureRect" parent="GameRoot" index="2"]
+layout_mode = 0
+offset_left = 370.0
+offset_top = 272.0
+offset_right = 1078.0
+offset_bottom = 1662.0
+texture = ExtResource("6_f5ri1")
+
+[node name="KingMonkey" parent="GameRoot/PlamTreeKing" index="0" instance=ExtResource("7_43p1x")]
+position = Vector2(362, 308)
+
+[node name="TextPlank" type="TextureRect" parent="GameRoot" index="3"]
+layout_mode = 0
+offset_left = 457.0
+offset_top = 1487.0
+offset_right = 1641.0
+offset_bottom = 1734.0
+texture = ExtResource("8_w0ndh")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameRoot/TextPlank" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 130
+theme_override_constants/margin_top = -10
+
+[node name="Label" type="RichTextLabel" parent="GameRoot/TextPlank/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_br573")
+theme_override_font_sizes/normal_font_size = 180
+text = "fort"
+
+[node name="Monkeys" type="Control" parent="GameRoot" index="4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

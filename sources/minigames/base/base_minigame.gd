@@ -50,14 +50,7 @@ var current_lives: = 0 :
 			_lose()
 
 # Progression
-var current_progression: = 0 :
-	set(value):
-		var previous_progression: = current_progression
-		current_progression = value
-		if minigame_ui:
-			minigame_ui.set_current_progression(value)
-		if value == max_progression and previous_progression != max_progression:
-			_win()
+var current_progression: = 0 : set = set_current_progression
 
 
 # ------------ Initialisation ------------
@@ -209,3 +202,12 @@ func _on_minigame_ui_voice_volume_changed(volume) -> void:
 
 func _on_minigame_ui_effects_volume_changed(volume) -> void:
 	UserDataManager.set_effects_volume(volume)
+
+
+func set_current_progression(p_current_progression: int) -> void:
+	var previous_progression: = current_progression
+	current_progression = p_current_progression
+	if minigame_ui:
+		minigame_ui.set_current_progression(p_current_progression)
+	if p_current_progression == max_progression and previous_progression != max_progression:
+		_win()

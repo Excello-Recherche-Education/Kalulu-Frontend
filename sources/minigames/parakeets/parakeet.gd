@@ -24,6 +24,7 @@ const animations: = [
 
 func _ready() -> void:
 	animated_sprite.sprite_frames = animations[randi() % animations.size()]
+	animated_sprite.play("idle_front")
 
 
 func _on_button_pressed() -> void:
@@ -49,8 +50,11 @@ func turn_to_front() -> void:
 
 
 func _on_animated_sprite_2d_animation_looped() -> void:
-	if animated_sprite.animation == "idle_front" and randi() % 4 == 0:
-		animated_sprite.play("idle_front_blink")
+	if animated_sprite.animation == "idle_front":
+		if randi() % 4 == 0:
+			animated_sprite.play("idle_front_blink")
+	elif animated_sprite.animation == "idle_front_blink":
+		animated_sprite.play("idle_front")
 
 
 func fly_to(target: Vector2, duration: float) -> void:

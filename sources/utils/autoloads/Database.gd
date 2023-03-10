@@ -8,6 +8,7 @@ const db_path: = "res://language_resources/fr/fr.db"
 func _ready() -> void:
 	db.path = db_path
 	db.open_db()
+	_update_gps_with_type()
 
 
 func _exit_tree() -> void:
@@ -34,6 +35,16 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 	return db.query_result
 
 
+func get_words_for_lesson(lesson_nb: int) -> Array:
+	db.query_with_bindings("SELECT DISTINCT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs INNER JOIN Lessons on Words.ID = GPsInWords.WordID AND GPS.ID = GPsInWords.GPID AND Lessons.GPID = GPs.ID AND Lessons.LessonNb <= ?", [lesson_nb])
+	return db.query_result
+
+
+func get_grapheme_distrators_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
+	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme From GPs stimuli INNER JOIN GPs distractor INNER JOIN Lessons ON stimuli.Grapheme=? AND distractor.type = stimuli.type AND distractor.Grapheme != stimuli.Grapheme AND Lessons.GPID = distractor.ID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
+	return db.query_result
+
+
 func copy_without_double_graphemes(input: Array) -> Array:
 	var output: = []
 	var graphemes: = {}
@@ -57,6 +68,22 @@ func _import_gps() -> void:
 			db.insert_row("GPs", {Grapheme=g, Phoneme=p})
 		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
 		print(db.query_result)
+
+
+func _update_gps_with_type() -> void:
+	var file = FileAccess.open("res://gp_list.json", FileAccess.READ)
+	var dict = JSON.parse_string(file.get_line())
+	for e in dict.values():
+		var g = e.GRAPHEME
+		var p = e.PHONEME
+		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
+		var id = db.query_result[0].ID
+		var type = 0
+		if e.CV == "V":
+			type = 1
+		elif e.CV == "C":
+			type = 2
+		db.query_with_bindings("UPDATE GPs SET Type=? WHERE id=?", [type, id])
 
 
 func _import_words() -> void:
