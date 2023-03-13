@@ -18,9 +18,13 @@ spacing_glyph = 20
 
 [node name="Monkeys" instance=ExtResource("1_6nhsm")]
 script = ExtResource("2_12lw5")
-difficulty = 4
+difficulty = 0
 lesson_nb = 10
 words_count = 3
+throw_to_king_duration = 1.2
+throw_to_monkey_duration = 0.7
+max_number_of_lives = 5
+max_progression = 3
 help_kalulu_speech = ExtResource("3_hhwrg")
 win_kalulu_speech = ExtResource("4_oe2vh")
 
@@ -135,3 +139,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ParabolaSummit" type="Control" parent="GameRoot" index="5"]
+anchors_preset = 0
+offset_left = 1316.0
+offset_top = 36.0
+offset_right = 1356.0
+offset_bottom = 76.0

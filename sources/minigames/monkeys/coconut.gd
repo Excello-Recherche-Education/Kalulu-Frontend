@@ -6,4 +6,5 @@ extends Node2D
 var text: String :
 	set(value):
 		text = value
-		label.text = text
+		if label:
+			label.text = text
