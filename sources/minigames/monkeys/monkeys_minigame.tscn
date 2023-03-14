@@ -20,11 +20,10 @@ spacing_glyph = 20
 script = ExtResource("2_12lw5")
 difficulty = 0
 lesson_nb = 10
-words_count = 3
 throw_to_king_duration = 1.2
 throw_to_monkey_duration = 0.7
 max_number_of_lives = 5
-max_progression = 3
+max_progression = 1
 help_kalulu_speech = ExtResource("3_hhwrg")
 win_kalulu_speech = ExtResource("4_oe2vh")
 

@@ -18,7 +18,7 @@ max_progression = 5
 help_kalulu_speech = ExtResource("3_ki5ek")
 win_kalulu_speech = ExtResource("4_cikjm")
 
-[node name="MinigameUI" parent="." index="0"]
+[node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("5_7vlrm")
 full_progression_icon = ExtResource("6_1r44u")
 

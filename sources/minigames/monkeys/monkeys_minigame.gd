@@ -13,7 +13,6 @@ const difficulty_settings: = {
 
 @export var difficulty: = 1
 @export var lesson_nb: = 4
-@export var words_count: = 3
 @export var throw_to_king_duration: = 1.2
 @export var throw_to_monkey_duration: = 0.4
 
@@ -59,14 +58,25 @@ func _setup_minigame() -> void:
 
 
 
-func set_current_progression(p_current_progression: int) -> void:
-	super(p_current_progression)
+func _on_current_progression_changed() -> void:
 	word_label.text = "_".repeat(stimuli[current_progression].Word.length())
-	_current_letter = 0
+	await _set_current_letter(0)
 
 
 func _set_current_letter(p_current_letter: int) -> void:
 	_current_letter = p_current_letter
+	if _current_letter >= stimuli[current_progression].GPs.size():
+		var coroutine: = Coroutine.new()
+		for monkey in monkeys:
+			coroutine.add_future(monkey.talk)
+		audio_player.stream = Database.get_audio_stream_for_word(stimuli[current_progression].Word)
+		audio_player.play()
+		if audio_player.playing:
+			coroutine.add_future(audio_player.finished)
+		await coroutine.join()
+		await set_current_progression(current_progression + 1)
+		return
+	
 	var ind_good: = randi_range(0, monkeys.size() - 1)
 	var grapheme_distractions: Array = distractions[current_progression][_current_letter]
 	grapheme_distractions.shuffle()
@@ -79,8 +89,7 @@ func _set_current_letter(p_current_letter: int) -> void:
 		else:
 			monkey.stimulus = grapheme_distractions[min(i - 1, grapheme_distractions.size() - 1)]
 		monkey.stunned = false
-	if _current_letter >= stimuli[current_progression].GPs.size() - 1:
-		current_progression += 1
+
 
 
 # Find the stimuli and distractions of the minigame.
@@ -89,7 +98,7 @@ func _find_stimuli_and_distractions() -> void:
 	words_list.shuffle()
 	stimuli = []
 	distractions = []
-	for i in words_count:
+	for i in max_progression:
 		var word = words_list[i].Word
 		var GPs: = Database.get_GP_from_word(word)
 		stimuli.append({
@@ -98,17 +107,24 @@ func _find_stimuli_and_distractions() -> void:
 		})
 		var grapheme_distractions: = []
 		for GP in GPs:
-			grapheme_distractions.append(Database.get_grapheme_distrators_for_grapheme(GP.Grapheme, lesson_nb))
+			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.Grapheme, lesson_nb))
 		distractions.append(grapheme_distractions)
 
 
 func _start() -> void:
-	await monkeys_grab_coconut()
+	await say_word_and_grab_coconuts()
 	lock(false)
 
 
-func monkeys_grab_coconut() -> void:
+func say_word_and_grab_coconuts() -> void:
+	if current_progression >= stimuli.size():
+		return
+	
 	var coroutine: = Coroutine.new()
+	audio_player.stream = Database.get_audio_stream_for_word(stimuli[current_progression].Word)
+	audio_player.play()
+	if audio_player.playing:
+		coroutine.add_future(audio_player.finished)
 	for monkey in monkeys:
 		coroutine.add_future(monkey.grab)
 	await coroutine.join()
@@ -146,7 +162,11 @@ func monkey_throw_to_king(monkey: Monkey) -> void:
 	tween.tween_property(coconut, "global_position:y", king.catch_position.global_position.y, throw_to_king_duration / 2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	await tween.finished
 	await king.catch(coconut)
-	await king.read()
+	
+	var coroutine: = Coroutine.new()
+	coroutine.add_future(king.read)
+	coroutine.add_future(monkey_talk.bind(monkey))
+	await coroutine.join()
 	
 	if monkey.stimulus == stimuli[current_progression].GPs[_current_letter]:
 		await king.start_right()
@@ -159,10 +179,10 @@ func monkey_throw_to_king(monkey: Monkey) -> void:
 		coconut.queue_free()
 		word_label.text = ""
 		for i in _current_letter + 1:
-			word_label.text += stimuli[current_progression].Word[i]
-		word_label.text += "_".repeat(stimuli[current_progression].Word.length() - _current_letter + 1)
-		_current_letter += 1
-		monkeys_grab_coconut()
+			word_label.text += stimuli[current_progression].GPs[i].Grapheme
+		word_label.text += "_".repeat(stimuli[current_progression].Word.length() - word_label.text.length())
+		await _set_current_letter(_current_letter + 1)
+		await say_word_and_grab_coconuts()
 	else:
 		await king.start_wrong()
 		king.finish_wrong()
@@ -182,5 +202,15 @@ func lock(p_value: = true) -> void:
 
 func _on_monkey_pressed(monkey: Monkey) -> void:
 	lock()
-	await monkey.talk()
+	monkey_talk(monkey)
 	lock(false)
+
+
+func monkey_talk(monkey: Monkey) -> void:
+	var coroutine: = Coroutine.new()
+	coroutine.add_future(monkey.talk)
+	audio_player.stream = Database.get_audio_stream_for_phoneme(monkey.stimulus.Phoneme)
+	audio_player.play()
+	if audio_player.playing:
+		coroutine.add_future(audio_player.finished)
+	await coroutine.join()

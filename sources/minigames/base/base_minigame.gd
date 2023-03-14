@@ -22,6 +22,7 @@ class_name Minigame
 
 @onready var minigame_ui: = $MinigameUI
 @onready var opening_curtain: = $OpeningCurtain
+@onready var audio_player: = $AudioStreamPlayer
 
 # Game root shall contain all the game tree.
 # This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
@@ -210,4 +211,10 @@ func set_current_progression(p_current_progression: int) -> void:
 	if minigame_ui:
 		minigame_ui.set_current_progression(p_current_progression)
 	if p_current_progression == max_progression and previous_progression != max_progression:
-		_win()
+		await _win()
+	else:
+		await _on_current_progression_changed()
+
+
+func _on_current_progression_changed() -> void:
+	pass

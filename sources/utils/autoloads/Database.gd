@@ -2,6 +2,16 @@ extends Node
 
 
 const db_path: = "res://language_resources/fr/fr.db"
+const words_path: = "res://language_resources/fr/words/"
+const _symbols_to_string = {
+	"#" : "sharp",
+	"@" : "at",
+	"*" : "star",
+	"$" : "usd",
+	"%" : "pcent",
+	"§" : "para"
+}
+
 @onready var db: = SQLite.new()
 
 
@@ -40,8 +50,8 @@ func get_words_for_lesson(lesson_nb: int) -> Array:
 	return db.query_result
 
 
-func get_grapheme_distrators_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
-	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme From GPs stimuli INNER JOIN GPs distractor INNER JOIN Lessons ON stimuli.Grapheme=? AND distractor.type = stimuli.type AND distractor.Grapheme != stimuli.Grapheme AND Lessons.GPID = distractor.ID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
+func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
+	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme, distractor.Phoneme From GPs stimuli INNER JOIN GPs distractor INNER JOIN Lessons ON stimuli.Grapheme=? AND distractor.type = stimuli.type AND distractor.Grapheme != stimuli.Grapheme AND Lessons.GPID = distractor.ID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
 	return db.query_result
 
 
@@ -53,6 +63,31 @@ func copy_without_double_graphemes(input: Array) -> Array:
 			output.append(val)
 			graphemes[val.Grapheme] = true
 	return output
+
+
+func get_audio_stream_for_word(word: String) -> AudioStream:
+	var GPs: = get_GP_from_word(word)
+	var file_name: = _phoneme_to_string(GPs[0].Phoneme)
+	for i in range(1, GPs.size()):
+		var GP = GPs[i]
+		file_name += "-" + _phoneme_to_string(GP.Phoneme)
+	file_name += ".mp3"
+	return load(words_path + file_name)
+
+
+func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
+	var file_name: = _phoneme_to_string(phoneme)
+	file_name += ".mp3"
+	return load(words_path + file_name)
+
+
+func _phoneme_to_string(phoneme: String) -> String:
+	if _symbols_to_string.has(phoneme):
+		return _symbols_to_string[phoneme]
+	elif phoneme == phoneme.to_lower():
+		return phoneme
+	else:
+		return "cap." + phoneme.to_lower()
 
 
 # Import data from previous Kalulu version

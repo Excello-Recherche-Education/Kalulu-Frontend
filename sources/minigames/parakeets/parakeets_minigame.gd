@@ -35,7 +35,6 @@ const audio_streams: = [
 	$GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position2.global_position
 	]
 @onready var fly_away_positions: Array[Vector2] = [$GameRoot/FlyAway/Position1.global_position, $GameRoot/FlyAway/Position2.global_position]
-@onready var audio_player: = $AudioStreamPlayer
 
 var possible_branch_positions: Array[Vector2]
 var parakeets: Array[Parakeet]
