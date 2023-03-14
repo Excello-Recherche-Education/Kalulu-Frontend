@@ -58,10 +58,11 @@ var current_progression: = 0 : set = set_current_progression
 
 
 func _ready() -> void:
-	minigame_ui.set_master_volume_slider(UserDataManager.get_master_volume())
-	minigame_ui.set_music_volume_slider(UserDataManager.get_music_volume())
-	minigame_ui.set_voice_volume_slider(UserDataManager.get_voice_volume())
-	minigame_ui.set_effects_volume_slider(UserDataManager.get_effects_volume())
+	if not OS.has_feature("editor"):
+		minigame_ui.set_master_volume_slider(UserDataManager.get_master_volume())
+		minigame_ui.set_music_volume_slider(UserDataManager.get_music_volume())
+		minigame_ui.set_voice_volume_slider(UserDataManager.get_voice_volume())
+		minigame_ui.set_effects_volume_slider(UserDataManager.get_effects_volume())
 	
 	_initialize()
 
