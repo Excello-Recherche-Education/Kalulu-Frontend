@@ -24,13 +24,19 @@ func _exit_tree() -> void:
 	db.close_db()
 
 
-func get_GP_for_lesson(lesson_nb: int) -> Array:
-	db.query_with_bindings("Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb == ?", [lesson_nb])
+func get_GP_for_lesson(lesson_nb: int, distinct: bool) -> Array:
+	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb == ?"
+	if distinct:
+		query += "GROUP BY Grapheme"
+	db.query_with_bindings(query, [lesson_nb])
 	return db.query_result
 
 
-func get_GP_before_lesson(lesson_nb: int) -> Array:
-	db.query_with_bindings("Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb < ?", [lesson_nb])
+func get_GP_before_lesson(lesson_nb: int, distinct: bool) -> Array:
+	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb < ?"
+	if distinct:
+		query += "GROUP BY Grapheme"
+	db.query_with_bindings(query, [lesson_nb])
 	return db.query_result
 
 
@@ -52,16 +58,6 @@ func get_words_for_lesson(lesson_nb: int) -> Array:
 func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
 	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme, distractor.Phoneme From GPs stimuli INNER JOIN GPs distractor INNER JOIN Lessons ON stimuli.Grapheme=? AND distractor.type = stimuli.type AND distractor.Grapheme != stimuli.Grapheme AND Lessons.GPID = distractor.ID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
 	return db.query_result
-
-
-func copy_without_double_graphemes(input: Array) -> Array:
-	var output: = []
-	var graphemes: = {}
-	for val in input:
-		if not graphemes.has(val.Grapheme):
-			output.append(val)
-			graphemes[val.Grapheme] = true
-	return output
 
 
 func get_audio_stream_for_word(word: String) -> AudioStream:

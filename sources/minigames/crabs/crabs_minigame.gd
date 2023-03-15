@@ -57,8 +57,8 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	stimuli = Database.copy_without_double_graphemes(Database.get_GP_for_lesson(lesson_nb))
-	distractions = Database.copy_without_double_graphemes(Database.get_GP_before_lesson(lesson_nb))
+	stimuli = Database.get_GP_for_lesson(lesson_nb, true)
+	distractions = Database.get_GP_before_lesson(lesson_nb, true)
 
 
 # Launch the minigame
