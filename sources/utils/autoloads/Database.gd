@@ -18,7 +18,6 @@ const _symbols_to_string = {
 func _ready() -> void:
 	db.path = db_path
 	db.open_db()
-	_update_gps_with_type()
 
 
 func _exit_tree() -> void:
@@ -157,3 +156,15 @@ func _import_lessons() -> void:
 			GPID = GP_id,
 			LessonNb = lesson_nb
 		})
+
+
+func _remove_unusable_words() -> void:
+	var file = FileAccess.open("res://words_list.json", FileAccess.READ)
+	var dict = JSON.parse_string(file.get_line())
+	for e in dict.values():
+		if e.USABLE_WORD_GAME == "0":
+			db.query_with_bindings("SELECT * FROM Words WHERE Word=?", [e.GRAPHEME])
+			if not db.query_result.is_empty():
+				var word_id = db.query_result[0]["ID"]
+				db.delete_rows("Words", "ID=%s" % word_id)
+		
