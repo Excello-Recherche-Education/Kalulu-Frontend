@@ -66,6 +66,8 @@ func _start() -> void:
 	super()
 	
 	_on_hole_timer_timeout(stimuli[0])
+	audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[0].Phoneme)
+	audio_player.play()
 	
 	for i in range(int(3.0 * holes.size() / 4.0)):
 		_on_hole_crab_despawned(distractions[randi() % distractions.size()])
@@ -81,6 +83,8 @@ func _on_hole_stimulus_hit(stimulus: Dictionary) -> void:
 		current_progression += 1
 	else:
 		current_lives -= 1
+	audio_player.stream = Database.get_audio_stream_for_phoneme(stimulus.Phoneme)
+	audio_player.play()
 
 
 func _on_hole_timer_timeout(stimulus: Dictionary) -> void:
@@ -90,7 +94,7 @@ func _on_hole_timer_timeout(stimulus: Dictionary) -> void:
 	var hole_found: = false
 	while not hole_found:
 		for i in holes_range:
-			if not holes[i].crab_spawned:
+			if not holes[i].crab:
 				holes[i].spawn_crab(stimulus)
 				hole_found = true
 				
@@ -104,3 +108,9 @@ func _on_hole_crab_despawned(stimulus: Dictionary) -> void:
 	await get_tree().create_timer(randf_range(0.1, 2.0)).timeout
 	
 	_on_hole_timer_timeout(stimulus)
+
+
+func _on_current_progression_changed() -> void:
+	if current_progression > 0:
+		audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[current_progression % stimuli.size()].Phoneme)
+		audio_player.play()

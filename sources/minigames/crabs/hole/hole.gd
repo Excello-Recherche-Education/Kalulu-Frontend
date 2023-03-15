@@ -1,10 +1,9 @@
 extends Node2D
-class_name CrabHole
 
 signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned(stimulus: Dictionary)
 
-const crab_class: = preload("res://sources/minigames/crabs/crab/crab.tscn")
+const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
 
 @onready var hole_back: = $HoleBack
 @onready var hole_front: = $HoleFront
@@ -13,27 +12,21 @@ const crab_class: = preload("res://sources/minigames/crabs/crab/crab.tscn")
 @onready var crab_audio_stream_player: = $CrabAudioStreamPlayer2D
 
 var crab: Crab
-var crab_hit: = false
-var crab_spawned: = false
 
 
 func spawn_crab(stimulus: Dictionary) -> void:
-	crab_spawned = true
-	
-	crab = crab_class.instantiate()
+	crab = Crab.instantiate()
 	mask.add_child(crab)
 	
-	crab.connect("crab_hit", _crab_hit)
-	
 	crab.position = Vector2(0, 200)
-	crab.set_stimulus(stimulus)
+	crab.stimulus = stimulus
 	
 	crab_audio_stream_player.start_playing()
 	
-	var first_tween: = create_tween()
-	first_tween.tween_property(crab, "position", Vector2(0.0, 100.0), randf_range(0.25, 2.0))
-	await first_tween.finished
-	first_tween.kill()
+	# Show the crab but not the stimulus
+	var tween: = create_tween()
+	tween.tween_property(crab, "position", Vector2(0.0, 100.0), randf_range(0.25, 2.0))
+	await tween.finished
 	
 	crab_audio_stream_player.stop_playing()
 	
@@ -42,42 +35,57 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	
 	crab_audio_stream_player.start_playing()
 	
-	var second_tween: = create_tween()
-	second_tween.tween_property(crab, "position", Vector2(0.0, -50.0), 0.25)
-	await second_tween.finished
-	second_tween.kill()
+	# The crab gets completely out
+	tween = create_tween()
+	tween.tween_property(crab, "position", Vector2(0.0, -50.0), 0.5)
+	crab.set_button_active(true)
+	if await is_button_pressed_with_limit(tween.finished):
+		return
 	
 	crab_audio_stream_player.stop_playing()
 	
-	crab_hit = false
-	crab.set_button_active(true)
-	
 	timer.start(randf_range(1.0, 2.5))
-	await timer.timeout
+	if await is_button_pressed_with_limit(timer.timeout):
+		return
+	
+	crab_audio_stream_player.start_playing()
+	tween = create_tween()
+	tween.tween_property(crab, "position", Vector2(0.0, 200.0), 0.5)
+	if await is_button_pressed_with_limit(tween.finished):
+		return
 	
 	crab.set_button_active(false)
-	
-	var final_tween: = create_tween()
-	if crab_hit:
-		final_tween.tween_property(crab, "position", Vector2(0.0, -200.0), 0.5)
-		final_tween.parallel().tween_property(crab, "rotation_degrees", 540.0, 0.5)
-	else:
-		crab_audio_stream_player.start_playing()
-	final_tween.tween_property(crab, "position", Vector2(0.0, 200.0), 0.25)
-	await final_tween.finished
 	
 	crab_audio_stream_player.stop_playing()
 	
 	crab.queue_free()
+	crab = null
 	
-	crab_spawned = false
-	
-	emit_signal("crab_despawned", stimulus)
+	crab_despawned.emit(stimulus)
 
 
-func _crab_hit(stimulus: Dictionary) -> void:
-	crab_hit = true
+func _on_crab_hit(stimulus: Dictionary) -> void:
+	var tween: = create_tween()
+	tween.tween_property(crab, "position", Vector2(0.0, -200.0), 0.5)
+	tween.parallel().tween_property(crab, "rotation_degrees", 540.0, 0.5)
+	await tween.finished
 	crab.set_button_active(false)
 	if not timer.is_stopped():
 		timer.start(0.4)
-	emit_signal("stimulus_hit", stimulus)
+	stimulus_hit.emit(stimulus)
+	crab_audio_stream_player.stop_playing()
+	crab.queue_free()
+	crab = null
+	
+	crab_despawned.emit(stimulus)
+
+
+func is_button_pressed_with_limit(future):
+	var coroutine: = Coroutine.new()
+	coroutine.add_future(crab.is_button_pressed)
+	coroutine.add_future(future)
+	await coroutine.join_either()
+	if coroutine.return_value[0]:
+		await _on_crab_hit(crab.stimulus)
+		return true
+	return false

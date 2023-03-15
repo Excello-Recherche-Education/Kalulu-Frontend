@@ -1,5 +1,6 @@
 extends Node2D
-class_name Crab
+
+const instance_scene: = "res://sources/minigames/crabs/crab/crab.tscn"
 
 signal crab_hit(stimulus: Dictionary)
 
@@ -7,7 +8,10 @@ signal crab_hit(stimulus: Dictionary)
 @onready var label: = $Label
 @onready var button: = $Button
 
-var stimulus: Dictionary
+var stimulus: Dictionary:
+	set(p_stimulus):
+		stimulus = p_stimulus
+		label.text = stimulus["Grapheme"]
 
 
 func _ready() -> void:
@@ -18,15 +22,14 @@ func set_button_active(active: bool) -> void:
 	button.disabled = not active
 
 
-func set_stimulus(p_stimulus: Dictionary) -> void:
-	stimulus = p_stimulus
-	
-	label.text = stimulus["Grapheme"]
-
-
 func _on_button_pressed() -> void:
-	emit_signal("crab_hit", stimulus)
+	crab_hit.emit(stimulus)
 	animation_player.play("hit")
+
+
+func is_button_pressed() -> bool:
+	await button.pressed
+	return true
 
 
 func _on_animation_player_animation_finished(animation_name: StringName) -> void:
@@ -34,5 +37,9 @@ func _on_animation_player_animation_finished(animation_name: StringName) -> void
 	if animation_name in idles:
 		var r: = randi() % idles.size()
 		animation_player.play(idles[r])
-	if animation_name == "hit":
+	elif animation_name == "hit":
 		animation_player.play("hurt")
+
+
+static func instantiate() -> Node2D:
+	return load(instance_scene).instantiate()
