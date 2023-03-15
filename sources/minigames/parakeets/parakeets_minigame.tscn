@@ -15,9 +15,7 @@ script = ExtResource("2_x6xn5")
 difficulty = 4
 lesson_nb = 4
 fly_duration = 3.0
-minigame_name = null
 max_number_of_lives = 5
-max_progression = null
 help_kalulu_speech = ExtResource("3_ofxb4")
 win_kalulu_speech = ExtResource("4_01e28")
 

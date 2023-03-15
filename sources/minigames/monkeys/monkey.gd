@@ -45,6 +45,12 @@ func _on_button_pressed() -> void:
 	pressed.emit()
 
 
+func play(animation: String) -> void:
+	animation_player.play(animation)
+	await animation_player.animation_finished
+	animation_player.play("idle")
+
+
 func talk() -> void:
 	animation_player.play("talk")
 	await animation_player.animation_finished
@@ -53,27 +59,9 @@ func talk() -> void:
 	animation_player.play("idle")
 
 
-func grab() -> void:
-	animation_player.play("grab")
-	await animation_player.animation_finished
-	animation_player.play("idle")
-
-
-func start_throw() -> void:
-	animation_player.play("start_throw")
-	await animation_player.animation_finished
-
-
-func finish_throw() -> void:
-	animation_player.play("finish_throw")
-	await animation_player.animation_finished
-	animation_player.play("idle")
-
-
 func hit(p_coconut: Node2D) -> void:
 	p_coconut.hide()
-	animation_player.play("hit")
-	await animation_player.animation_finished
+	await play("hit")
 	animation_player.play("stunned")
 	stunned = true
 

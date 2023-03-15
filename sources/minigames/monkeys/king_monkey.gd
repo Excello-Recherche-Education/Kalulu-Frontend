@@ -8,9 +8,7 @@ extends Node2D
 func catch(p_coconut: Node2D):
 	p_coconut.hide()
 	coconut.text = p_coconut.text
-	animation_player.play("catch")
-	await animation_player.animation_finished
-	animation_player.play("idle")
+	await play("catch")
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
@@ -23,28 +21,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		animation_player.play("idle")
 
 
-func start_right() -> void:
-	animation_player.play("start_right")
-	await animation_player.animation_finished
-
-
-func finish_right() -> void:
-	animation_player.play("finish_right")
+func play(animation: String) -> void:
+	animation_player.play(animation)
 	await animation_player.animation_finished
 	animation_player.play("idle")
-
-
-func start_wrong() -> void:
-	animation_player.play("start_wrong")
-	await animation_player.animation_finished
-
-
-func finish_wrong() -> void:
-	animation_player.play("finish_wrong")
-	await animation_player.animation_finished
-	animation_player.play("idle")
-
-
-func read() -> void:
-	animation_player.play("read")
-	await animation_player.animation_finished

@@ -179,7 +179,7 @@ func _parakeets_to_front(exceptions: Array[Parakeet] = []) -> void:
 			continue
 		
 		coroutine.add_future(_turn.bind(parakeet, false))
-	await coroutine.join()
+	await coroutine.join_all()
 
 
 func _present_parakeets() -> void:
@@ -187,7 +187,7 @@ func _present_parakeets() -> void:
 	var coroutine: = Coroutine.new()
 	for parakeet in parakeets:
 		coroutine.add_future(_turn.bind(parakeet, true))
-	await coroutine.join()
+	await coroutine.join_all()
 	state = State.Idle
 
 
@@ -203,7 +203,7 @@ func _make_selected_sad() -> void:
 	var coroutine: = Coroutine.new()
 	for parakeet in selected:
 		coroutine.add_future(parakeet.sad)
-	await coroutine.join()
+	await coroutine.join_all()
 
 
 func _make_selected_coo() -> void:
@@ -221,7 +221,7 @@ func _fly_to(targets: Array[Vector2]) -> void:
 	coroutine.add_future(audio_player.finished)
 	coroutine.add_future(selected[0].fly_to.bind(targets[0], fly_duration))
 	coroutine.add_future(selected[1].fly_to.bind(targets[1], fly_duration))
-	await coroutine.join()
+	await coroutine.join_all()
 
 
 func _turn(parakeet: Parakeet, to_back: bool) -> void:
@@ -241,6 +241,6 @@ func _flying_arrival(to: Array[Vector2]) -> void:
 	coroutine.add_future(audio_player.finished)
 	for i in parakeets.size():
 		coroutine.add_future(parakeets[i].fly_to.bind(to[i], fly_duration))
-	await coroutine.join()
+	await coroutine.join_all()
 	for parakeet in parakeets:
 		parakeet.idle()
