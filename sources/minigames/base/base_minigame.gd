@@ -58,7 +58,7 @@ var current_progression: = 0 : set = set_current_progression
 
 
 func _ready() -> void:
-	if not OS.has_feature("editor"):
+	if not Engine.is_editor_hint():
 		minigame_ui.set_master_volume_slider(UserDataManager.get_master_volume())
 		minigame_ui.set_music_volume_slider(UserDataManager.get_music_volume())
 		minigame_ui.set_voice_volume_slider(UserDataManager.get_voice_volume())
