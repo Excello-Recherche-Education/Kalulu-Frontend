@@ -9,6 +9,7 @@
 
 [node name="Hole" type="Node2D"]
 position = Vector2(947, 568)
+scale = Vector2(1.8, 1.8)
 script = ExtResource("1_05s8c")
 
 [node name="HoleBack" type="Sprite2D" parent="."]
