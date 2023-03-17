@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://weree6bnlt6f"]
+[gd_scene load_steps=31 format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_p2m3v"]
@@ -25,8 +25,11 @@
 [ext_resource type="Texture2D" uid="uid://blgoagm5j5jh2" path="res://assets/minigames/minigame_ui/graphic/volume_down.png" id="21_g5me6"]
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://assets/minigames/minigame_ui/graphic/gauge.png" id="22_6jd5r"]
 [ext_resource type="Texture2D" uid="uid://cuxo6l6hmin1y" path="res://assets/minigames/minigame_ui/graphic/volume_disabled.png" id="22_vw7wh"]
+[ext_resource type="Texture2D" uid="uid://bsojx7tmm435x" path="res://assets/minigames/minigame_ui/graphic/button_next_up.png" id="25_prvvp"]
 [ext_resource type="Texture2D" uid="uid://c3o1aolewrm4k" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_empty.png" id="26_0bgo4"]
+[ext_resource type="Texture2D" uid="uid://brrxuaco0l85j" path="res://assets/minigames/minigame_ui/graphic/button_next_down.png" id="26_f338x"]
 [ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="27_eee4l"]
+[ext_resource type="Texture2D" uid="uid://bsmq426v8148w" path="res://assets/minigames/minigame_ui/graphic/button_next_disabled.png" id="27_wdcsn"]
 
 [node name="MinigameUI" type="CanvasLayer"]
 process_mode = 3
@@ -174,18 +177,18 @@ texture = ExtResource("14_ubv3y")
 layout_mode = 2
 texture = ExtResource("15_ym1dd")
 
-[node name="MarginContainer2" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
+[node name="PauseMenu" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
 layout_mode = 2
 theme_override_constants/margin_left = 92
 theme_override_constants/margin_top = 92
 theme_override_constants/margin_right = 92
 theme_override_constants/margin_bottom = 92
 
-[node name="Background" type="Control" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2"]
+[node name="Background" type="Control" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu"]
 modulate = Color(1, 1, 1, 0.396078)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/Background"]
+[node name="TextureRect" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/Background"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -195,15 +198,14 @@ grow_vertical = 2
 texture = ExtResource("16_mdaib")
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu"]
 layout_mode = 2
 alignment = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 8
 
-[node name="RestartButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer/MarginContainer"]
+[node name="RestartButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -211,6 +213,15 @@ size_flags_vertical = 8
 texture_normal = ExtResource("17_ipxst")
 texture_pressed = ExtResource("18_5pefo")
 texture_disabled = ExtResource("19_mm65c")
+
+[node name="BackToMenuButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+texture_normal = ExtResource("25_prvvp")
+texture_pressed = ExtResource("26_f338x")
+texture_disabled = ExtResource("27_wdcsn")
 
 [node name="ProgressionMargin" type="MarginContainer" parent="MainControl/Interface"]
 layout_mode = 1
@@ -426,7 +437,8 @@ layout_mode = 1
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/VolumeContainer/VolumeButton" to="." method="_on_volume_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
-[connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer/MarginContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
 [connection signal="value_changed" from="MainControl/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
 [connection signal="value_changed" from="MainControl/VolumeMenu/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
 [connection signal="value_changed" from="MainControl/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VoiceVolumeSlider" to="." method="_on_voice_volume_slider_value_changed"]

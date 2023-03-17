@@ -114,3 +114,10 @@ func _on_current_progression_changed() -> void:
 	if current_progression > 0:
 		audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[current_progression % stimuli.size()].Phoneme)
 		audio_player.play()
+
+
+func _play_stimulus() -> void:
+	audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[current_progression].Phoneme)
+	audio_player.play()
+	if audio_player.playing:
+		await audio_player.finished

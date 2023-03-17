@@ -68,7 +68,8 @@ func _ready() -> void:
 
 
 func _initialize() -> void:
-	_find_stimuli_and_distractions()
+	if not Engine.is_editor_hint():
+		_find_stimuli_and_distractions()
 	
 	_setup_minigame()
 	
@@ -175,7 +176,11 @@ func _on_minigame_ui_garden_button_pressed() -> void:
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:
-	_play_stimulus()
+	get_tree().paused = true
+	minigame_ui.lock()
+	await _play_stimulus()
+	minigame_ui.unlock()
+	get_tree().paused = false
 
 
 func _on_minigame_ui_pause_button_pressed() -> void:
@@ -188,6 +193,14 @@ func _on_minigame_ui_kalulu_button_pressed() -> void:
 
 func _on_minigame_ui_restart_button_pressed() -> void:
 	_reset()
+
+
+func _on_minigame_ui_back_to_menu_pressed() -> void:
+	opening_curtain.play("close")
+	await opening_curtain.animation_finished
+	
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://sources/menus/minigame_selection.tscn")
 
 
 func _on_minigame_ui_master_volume_changed(volume) -> void:

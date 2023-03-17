@@ -1,3 +1,4 @@
+@tool
 extends Minigame
 
 const Parakeet: = preload("res://sources/minigames/parakeets/parakeet.gd")

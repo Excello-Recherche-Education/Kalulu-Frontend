@@ -7,6 +7,7 @@ signal stimulus_button_pressed
 signal pause_button_pressed
 
 signal restart_button_pressed
+signal back_to_menu_pressed
 
 signal master_volume_changed(volume: float)
 signal music_volume_changed(volume: float)
@@ -206,3 +207,7 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 
 func _on_kalulu_speech_ended() -> void:
 	kalulu_speech_ended.emit()
+
+
+func _on_back_to_menu_button_pressed() -> void:
+	back_to_menu_pressed.emit()
