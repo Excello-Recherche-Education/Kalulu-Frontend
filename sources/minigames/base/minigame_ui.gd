@@ -16,6 +16,9 @@ signal effects_volume_changed(volume: float)
 signal kalulu_button_pressed
 signal kalulu_speech_ended
 
+const empty_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/life_empty.png")
+const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/life.png")
+
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture
 
@@ -28,11 +31,6 @@ signal kalulu_speech_ended
 
 #Right panel
 @onready var volume_button: TextureButton = %VolumeButton
-@onready var empty_lives_rect: TextureRect = %EmptyLivesRect
-@onready var lives_rect: TextureRect = %LivesRect
-@onready var progression_gauge: NinePatchRect = %ProgressionGauge
-@onready var progression_empty_icons_rect: TextureRect = %ProgressionEmptyIconsRect
-@onready var progression_full_icons_rect: TextureRect = %ProgressionFullIconsRect
 
 # Center menu
 @onready var center_menu: MarginContainer = %CenterMenu
@@ -48,28 +46,10 @@ signal kalulu_speech_ended
 # Kalulu
 @onready var kalulu: Control = %Kalulu
 
-# Lives management
-var empty_life_size: = 0.0
-var life_size: = 0.0
-
-# Progression management
-var progression_gauge_unit_size: = 0.0
-var progression_empty_icon_size: = 0.0
-var progression_full_icon_size: = 0.0
-
-# ------------ Initialisation ------------
-
-
-func _ready() -> void:
-	progression_empty_icons_rect.texture = empty_progression_icon
-	progression_full_icons_rect.texture = full_progression_icon
-	
-	empty_life_size = empty_lives_rect.custom_minimum_size.x
-	life_size = lives_rect.custom_minimum_size.x
-	
-	progression_gauge_unit_size = progression_gauge.custom_minimum_size.y
-	progression_empty_icon_size = progression_empty_icons_rect.custom_minimum_size.y
-	progression_full_icon_size = progression_full_icons_rect.custom_minimum_size.y
+@onready var progression_container: = %ProgressionContainer
+@onready var model_progression_rect: = %ProgressionIconsRect
+@onready var lives_container: = %LivesContainer
+@onready var model_lives_rect: = %LivesIconsRect
 
 
 # ------------ Lock/Unlock ------------
@@ -93,39 +73,56 @@ func unlock() -> void:
 
 
 func set_maximum_number_of_lives(new_max_number_of_lives: int) -> void:
-	empty_lives_rect.custom_minimum_size.x = new_max_number_of_lives * empty_life_size
-	if new_max_number_of_lives <= 0:
-		empty_lives_rect.visible = false
-	else:
-		empty_lives_rect.visible = true
+	var lives_rects: = lives_container.get_children()
+	# Never remove the first
+	for i in range(1, lives_rects.size()):
+		if i >= new_max_number_of_lives:
+			lives_rects[i].queue_free()
+	for i in range(lives_rects.size(), new_max_number_of_lives):
+		var new_lives_rect: = model_lives_rect.duplicate()
+		new_lives_rect.texture = full_lives_icon
+		lives_container.add_child(new_lives_rect)
+	model_lives_rect.visible = new_max_number_of_lives >= 1
 
 
 func set_number_of_lives(new_number_of_lives: int) -> void:
-	lives_rect.custom_minimum_size.x = new_number_of_lives * life_size
-	if new_number_of_lives <= 0:
-		lives_rect.visible = false
-	else:
-		lives_rect.visible = true
+	var max_lives: = lives_container.get_child_count()
+	if new_number_of_lives > max_lives:
+		set_maximum_number_of_lives(new_number_of_lives)
+	var lives_rects: = lives_container.get_children()
+	for i in max_lives:
+		if i < max_lives - new_number_of_lives:
+			lives_rects[i].texture = empty_lives_icon
+		else:
+			lives_rects[i].texture = full_lives_icon
 
 
 # ------------ Progression ------------
 
 
 func set_max_progression(new_max_progression: int) -> void:
-	progression_gauge.custom_minimum_size.y = new_max_progression * progression_gauge_unit_size
-	progression_empty_icons_rect.custom_minimum_size.y = new_max_progression * progression_gauge_unit_size
-	if new_max_progression <= 0:
-		progression_empty_icons_rect.visible = false
-	else:
-		progression_empty_icons_rect.visible = true
+	var progression_rects: = progression_container.get_children()
+	# Never remove the first
+	for i in range(1, progression_rects.size()):
+		if i >= new_max_progression:
+			progression_rects[i].queue_free()
+	for i in range(progression_rects.size(), new_max_progression):
+		var new_progression_rect: = model_progression_rect.duplicate()
+		new_progression_rect.texture = empty_progression_icon
+		progression_container.add_child(new_progression_rect)
+	model_progression_rect.visible = new_max_progression >= 1
 
 
-func set_current_progression(new_current_progression: int) -> void:
-	progression_full_icons_rect.custom_minimum_size.y = new_current_progression * progression_full_icon_size
-	if new_current_progression <= 0:
-		progression_full_icons_rect.visible = false
-	else:
-		progression_full_icons_rect.visible = true
+func set_progression(new_progression: int) -> void:
+	var max_progression: = progression_container.get_child_count()
+	if new_progression > max_progression:
+		set_max_progression(new_progression)
+	var progression_rects: = progression_container.get_children()
+	for i in max_progression:
+		if i < new_progression:
+			progression_rects[i].texture = full_progression_icon
+		else:
+			progression_rects[i].texture = empty_progression_icon
 
 
 # ------------ Left Panel ------------

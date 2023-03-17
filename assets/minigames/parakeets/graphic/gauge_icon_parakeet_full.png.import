@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdv2kqagu7pd8"
-path="res://.godot/imported/gauge_icon_parakeet_full.png-ca3c868ccd74194c71c7dd96c8ccfe7b.ctex"
+uid="uid://di2qcv6jw8wh0"
+path="res://.godot/imported/gauge_icon_parakeet_full.png-fb753335411bdb1fed9e6e01ea37f918.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/minigame_ui/graphic/gauge_icon_parakeet_full.png"
-dest_files=["res://.godot/imported/gauge_icon_parakeet_full.png-ca3c868ccd74194c71c7dd96c8ccfe7b.ctex"]
+source_file="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png"
+dest_files=["res://.godot/imported/gauge_icon_parakeet_full.png-fb753335411bdb1fed9e6e01ea37f918.ctex"]
 
 [params]
 

@@ -210,7 +210,7 @@ func set_current_progression(p_current_progression: int) -> void:
 	var previous_progression: = current_progression
 	current_progression = p_current_progression
 	if minigame_ui:
-		minigame_ui.set_current_progression(p_current_progression)
+		minigame_ui.set_progression(p_current_progression)
 	if p_current_progression == max_progression and previous_progression != max_progression:
 		await _win()
 	else:

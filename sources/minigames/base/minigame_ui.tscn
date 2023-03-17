@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cweny8on01s4o"]
+[gd_scene load_steps=28 format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_p2m3v"]
@@ -19,17 +19,20 @@
 [ext_resource type="Texture2D" uid="uid://dqtmyedk1ylbw" path="res://assets/minigames/minigame_ui/graphic/button_replay_up.png" id="17_ipxst"]
 [ext_resource type="Texture2D" uid="uid://bvu8ud6hkwusb" path="res://assets/minigames/minigame_ui/graphic/button_replay_down.png" id="18_5pefo"]
 [ext_resource type="Texture2D" uid="uid://d4ffd4us2hrbs" path="res://assets/minigames/minigame_ui/graphic/button_replay_disabled.png" id="19_mm65c"]
-[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="19_wn4nd"]
+[ext_resource type="PackedScene" uid="uid://c4t2cq5vyj4ai" path="res://sources/minigames/base/kalulu.tscn" id="19_wn4nd"]
 [ext_resource type="Texture2D" uid="uid://db64tlixplfru" path="res://assets/minigames/minigame_ui/graphic/life_empty.png" id="20_jyeyb"]
 [ext_resource type="Texture2D" uid="uid://dkvf2b6b1keqf" path="res://assets/minigames/minigame_ui/graphic/volume_up.png" id="20_qsa3m"]
 [ext_resource type="Texture2D" uid="uid://blgoagm5j5jh2" path="res://assets/minigames/minigame_ui/graphic/volume_down.png" id="21_g5me6"]
-[ext_resource type="Texture2D" uid="uid://3om2awlftpxd" path="res://assets/minigames/minigame_ui/graphic/life.png" id="21_p2p43"]
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://assets/minigames/minigame_ui/graphic/gauge.png" id="22_6jd5r"]
 [ext_resource type="Texture2D" uid="uid://cuxo6l6hmin1y" path="res://assets/minigames/minigame_ui/graphic/volume_disabled.png" id="22_vw7wh"]
+[ext_resource type="Texture2D" uid="uid://c3o1aolewrm4k" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_empty.png" id="26_0bgo4"]
+[ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="27_eee4l"]
 
 [node name="MinigameUI" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_g5fl4")
+empty_progression_icon = ExtResource("26_0bgo4")
+full_progression_icon = ExtResource("27_eee4l")
 
 [node name="MainControl" type="Control" parent="."]
 layout_mode = 3
@@ -40,8 +43,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Interface" type="HBoxContainer" parent="MainControl"]
-layout_mode = 0
+[node name="Interface" type="Control" parent="MainControl"]
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -49,7 +52,12 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="LeftMargin" type="MarginContainer" parent="MainControl/Interface"]
-layout_mode = 2
+custom_minimum_size = Vector2(450, 2.08165e-12)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 300.0
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 mouse_filter = 2
@@ -87,6 +95,17 @@ texture_pressed = ExtResource("6_ojtbv")
 texture_disabled = ExtResource("7_cg081")
 stretch_mode = 5
 
+[node name="VolumeContainer" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+layout_mode = 2
+
+[node name="VolumeButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/VolumeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("20_qsa3m")
+texture_pressed = ExtResource("21_g5me6")
+texture_disabled = ExtResource("22_vw7wh")
+
 [node name="PauseMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
 layout_mode = 2
 size_flags_horizontal = 5
@@ -113,10 +132,18 @@ texture_disabled = ExtResource("13_2j53i")
 stretch_mode = 5
 
 [node name="CentralPadMargin" type="MarginContainer" parent="MainControl/Interface"]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -897.0
+offset_right = 897.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 7
 size_flags_vertical = 3
-size_flags_stretch_ratio = 10.0
+size_flags_stretch_ratio = 9.0
 mouse_filter = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
@@ -185,107 +212,82 @@ texture_normal = ExtResource("17_ipxst")
 texture_pressed = ExtResource("18_5pefo")
 texture_disabled = ExtResource("19_mm65c")
 
-[node name="RightMargin" type="MarginContainer" parent="MainControl/Interface"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="RightContainer" type="VBoxContainer" parent="MainControl/Interface/RightMargin"]
-layout_mode = 2
+[node name="ProgressionMargin" type="MarginContainer" parent="MainControl/Interface"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -210.0
+offset_bottom = 962.0
+grow_horizontal = 0
 size_flags_horizontal = 8
 mouse_filter = 2
+theme_override_constants/margin_top = 270
+theme_override_constants/margin_right = 40
 
-[node name="VolumeContainer" type="MarginContainer" parent="MainControl/Interface/RightMargin/RightContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/ProgressionMargin"]
 layout_mode = 2
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_bottom = 10
-
-[node name="VolumeButton" type="TextureButton" parent="MainControl/Interface/RightMargin/RightContainer/VolumeContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-texture_normal = ExtResource("20_qsa3m")
-texture_pressed = ExtResource("21_g5me6")
-texture_disabled = ExtResource("22_vw7wh")
-
-[node name="LivesContainer" type="MarginContainer" parent="MainControl/Interface/RightMargin/RightContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
 size_flags_vertical = 0
-mouse_filter = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 75
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 50
 
-[node name="EmptyLivesRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/LivesContainer"]
-unique_name_in_owner = true
+[node name="ProgressionGauge" type="NinePatchRect" parent="MainControl/Interface/ProgressionMargin/MarginContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-mouse_filter = 2
-texture = ExtResource("20_jyeyb")
-stretch_mode = 1
-
-[node name="LivesRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/LivesContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-mouse_filter = 2
-texture = ExtResource("21_p2p43")
-stretch_mode = 1
-
-[node name="ProgressionMargin" type="MarginContainer" parent="MainControl/Interface/RightMargin/RightContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-mouse_filter = 2
-
-[node name="ProgressionGauge" type="NinePatchRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
 texture = ExtResource("22_6jd5r")
 patch_margin_top = 33
 patch_margin_bottom = 33
 
-[node name="ProgressionEmptyIconsRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
+[node name="ProgressionContainer" type="VBoxContainer" parent="MainControl/Interface/ProgressionMargin/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(170, 2.08165e-12)
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-mouse_filter = 2
-stretch_mode = 1
 
-[node name="ProgressionFullIconsRect" type="TextureRect" parent="MainControl/Interface/RightMargin/RightContainer/ProgressionMargin"]
+[node name="ProgressionIconsRect" type="TextureRect" parent="MainControl/Interface/ProgressionMargin/MarginContainer/ProgressionContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
 mouse_filter = 2
-stretch_mode = 1
+texture = ExtResource("27_eee4l")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="LivesMargin" type="MarginContainer" parent="MainControl/Interface"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_bottom = 114.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+mouse_filter = 2
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 40
+
+[node name="LivesContainer" type="HBoxContainer" parent="MainControl/Interface/LivesMargin"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(2.08165e-12, 130)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LivesIconsRect" type="TextureRect" parent="MainControl/Interface/LivesMargin/LivesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("20_jyeyb")
+expand_mode = 2
+stretch_mode = 5
 
 [node name="VolumeMenu" type="Control" parent="MainControl"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 anchors_preset = 0
-offset_left = 2006.0
-offset_top = 266.0
-offset_right = 2487.0
-offset_bottom = 722.0
+offset_left = 357.0
+offset_top = 683.0
+offset_right = 838.0
+offset_bottom = 1139.0
 
 [node name="Panel" type="Panel" parent="MainControl/VolumeMenu"]
 layout_mode = 2
@@ -421,10 +423,10 @@ layout_mode = 1
 
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin/StimulusButton" to="." method="_on_stimulus_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/VolumeContainer/VolumeButton" to="." method="_on_volume_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer2/VBoxContainer/MarginContainer/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="MainControl/Interface/RightMargin/RightContainer/VolumeContainer/VolumeButton" to="." method="_on_volume_button_pressed"]
 [connection signal="value_changed" from="MainControl/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
 [connection signal="value_changed" from="MainControl/VolumeMenu/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
 [connection signal="value_changed" from="MainControl/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VoiceVolumeSlider" to="." method="_on_voice_volume_slider_value_changed"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0wgpc8yq2cay"
-path="res://.godot/imported/gauge_icon_chameleon_empty.png-5ba6126e2f28237267e95369c629bc73.ctex"
+uid="uid://c3okdxpi317x5"
+path="res://.godot/imported/gauge_icon_monkey_full.png-7fc9b507ab1a75c1d1dacf0938e9780f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/minigame_ui/graphic/gauge_icon_chameleon_empty.png"
-dest_files=["res://.godot/imported/gauge_icon_chameleon_empty.png-5ba6126e2f28237267e95369c629bc73.ctex"]
+source_file="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png"
+dest_files=["res://.godot/imported/gauge_icon_monkey_full.png-7fc9b507ab1a75c1d1dacf0938e9780f.ctex"]
 
 [params]
 

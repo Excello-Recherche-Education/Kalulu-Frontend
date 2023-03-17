@@ -8,6 +8,7 @@ signal dragged_into(vector, monkey)
 const instance_scene: = "res://sources/minigames/monkeys/monkey.tscn"
 
 @onready var coconut: = $Marker2D/Coconut
+@onready var coconut_pivot: = $Marker2D
 @onready var animation_player: = $AnimationPlayer
 @onready var drag_preview_label: = $Button/DragPreview/Label
 @onready var drag_preview: = $Button/DragPreview
@@ -28,6 +29,7 @@ var stimulus: Dictionary :
 		stimulus = value
 		coconut.text = value.Grapheme
 		drag_preview_label.text = value.Grapheme
+		coconut_pivot.hide()
 
 
 static func instantiate():

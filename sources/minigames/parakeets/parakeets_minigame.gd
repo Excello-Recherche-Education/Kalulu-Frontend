@@ -92,10 +92,7 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	var before: = Database.get_GP_before_lesson(lesson_nb)
-	var current: = Database.get_GP_for_lesson(lesson_nb)
-	before.append_array(current)
-	stimuli = Database.copy_without_double_graphemes(before)
+	stimuli = Database.get_GP_before_and_for_lesson(lesson_nb, true)
 
 
 func _start() -> void:

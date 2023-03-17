@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ek0ri3b6vwj1"]
+[gd_scene load_steps=12 format=3 uid="uid://ek0ri3b6vwj1"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_oeg4r"]
 [ext_resource type="Script" path="res://sources/minigames/parakeets/parakeets_minigame.gd" id="2_x6xn5"]
@@ -7,17 +7,23 @@
 [ext_resource type="AudioStream" uid="uid://c58a2q8b26vpn" path="res://assets/minigames/parakeets/audio/kalulu_end_parakeets_language.mp3" id="4_01e28"]
 [ext_resource type="Texture2D" uid="uid://clvh07xfgjmri" path="res://assets/minigames/parakeets/graphic/tree_trunk.png" id="4_unuga"]
 [ext_resource type="Texture2D" uid="uid://d3n327me83on7" path="res://assets/minigames/parakeets/graphic/tree_branch.png" id="5_46kss"]
+[ext_resource type="Texture2D" uid="uid://dpx72xoqt8lkq" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_empty.png" id="5_yt7mv"]
+[ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="6_46vnr"]
 [ext_resource type="Texture2D" uid="uid://sjxhvbq8ijbw" path="res://assets/minigames/parakeets/graphic/nest_back.png" id="6_g64mq"]
 [ext_resource type="Texture2D" uid="uid://ctvnu3s3sgwwf" path="res://assets/minigames/parakeets/graphic/nest_front.png" id="7_3mibn"]
 
 [node name="Parakeets" instance=ExtResource("1_oeg4r")]
 script = ExtResource("2_x6xn5")
-max_number_of_lives = 5
-help_kalulu_speech = ExtResource("3_ofxb4")
-win_kalulu_speech = ExtResource("4_01e28")
 difficulty = 4
 lesson_nb = 4
 fly_duration = 3.0
+max_number_of_lives = 5
+help_kalulu_speech = ExtResource("3_ofxb4")
+win_kalulu_speech = ExtResource("4_01e28")
+
+[node name="MinigameUI" parent="." index="1"]
+empty_progression_icon = ExtResource("5_yt7mv")
+full_progression_icon = ExtResource("6_46vnr")
 
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 layout_mode = 1

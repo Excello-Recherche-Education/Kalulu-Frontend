@@ -40,6 +40,14 @@ func get_GP_before_lesson(lesson_nb: int, distinct: bool) -> Array:
 	return db.query_result
 
 
+func get_GP_before_and_for_lesson(lesson_nb: int, distinct: bool) -> Array:
+	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb <= ?"
+	if distinct:
+		query += "GROUP BY Grapheme"
+	db.query_with_bindings(query, [lesson_nb])
+	return db.query_result
+
+
 func get_GP_from_word(word: String) -> Array:
 	db.query_with_bindings("SELECT Grapheme, Phoneme FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.Word=? INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID ORDER BY Position", [word])
 	return db.query_result
