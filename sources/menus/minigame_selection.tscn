@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dla6fxetre5pl"]
+[gd_scene load_steps=7 format=3 uid="uid://dla6fxetre5pl"]
 
 [ext_resource type="Script" path="res://sources/menus/minigame_selection.gd" id="1_8yhlq"]
 [ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="1_s5eb1"]
 [ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="2_prxem"]
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="3_wq58l"]
 [ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="4_b8s0s"]
+[ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="6_bke25"]
 
 [node name="MinigameSelection" type="Control"]
 layout_mode = 3
@@ -59,6 +60,17 @@ icon = ExtResource("4_b8s0s")
 icon_alignment = 2
 expand_icon = true
 
+[node name="FrogButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(500, 2.08165e-12)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_s5eb1")
+theme_override_font_sizes/font_size = 100
+text = "Frog"
+icon = ExtResource("6_bke25")
+icon_alignment = 2
+expand_icon = true
+
 [connection signal="pressed" from="VBoxContainer/MonkeysButton" to="." method="_on_monkeys_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/CrabsButton" to="." method="_on_crabs_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ParakeetsButton" to="." method="_on_parakeets_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/FrogButton" to="." method="_on_frog_button_pressed"]

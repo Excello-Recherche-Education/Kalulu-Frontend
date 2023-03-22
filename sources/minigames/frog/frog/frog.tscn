@@ -1,0 +1,198 @@
+[gd_scene load_steps=41 format=3 uid="uid://ca0ul885cbe41"]
+
+[ext_resource type="Script" path="res://sources/minigames/frog/frog/frog.gd" id="1_3i23t"]
+[ext_resource type="Texture2D" uid="uid://3i2kdog0hcd7" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_01_00.png" id="1_syiy8"]
+[ext_resource type="Texture2D" uid="uid://cnxaaavna1iut" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_01_01.png" id="2_4q8yu"]
+[ext_resource type="Texture2D" uid="uid://dl4ny8xqds5wd" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_01_02.png" id="3_bkha4"]
+[ext_resource type="Texture2D" uid="uid://cgxxr6yt214se" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_01_03.png" id="4_d22w8"]
+[ext_resource type="Texture2D" uid="uid://bdf0wkxihsdr5" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_01_04.png" id="5_kn1ir"]
+[ext_resource type="Texture2D" uid="uid://cxto67h464020" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_01_05.png" id="6_mgjb2"]
+[ext_resource type="Texture2D" uid="uid://b347142s3nerw" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_02_00.png" id="7_q3xnb"]
+[ext_resource type="Texture2D" uid="uid://crjy7fv8tmbl2" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_02_01.png" id="8_7euu5"]
+[ext_resource type="Texture2D" uid="uid://d0t2lbtlkvlq2" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_02_02.png" id="9_maitf"]
+[ext_resource type="Texture2D" uid="uid://c24h7imi6h3eg" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_02_03.png" id="10_nw786"]
+[ext_resource type="Texture2D" uid="uid://b45e74pq5os4b" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_02_04.png" id="11_4iyty"]
+[ext_resource type="Texture2D" uid="uid://c8lacn7niv7um" path="res://assets/minigames/frog/graphics/frog_animations/frog_front_idle_02_05.png" id="12_twnvy"]
+[ext_resource type="Texture2D" uid="uid://dw5sb4dk4nojh" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle02_01.png" id="13_jwiru"]
+[ext_resource type="Texture2D" uid="uid://cam2utbgn117b" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle02_02.png" id="14_huq2e"]
+[ext_resource type="Texture2D" uid="uid://bvquobk7ejruu" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle02_03.png" id="15_3glbm"]
+[ext_resource type="Texture2D" uid="uid://1mkfs4q3mcx4" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle02_04.png" id="16_vm1ly"]
+[ext_resource type="Texture2D" uid="uid://cwumb5swp18sl" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle02_05.png" id="17_rl57n"]
+[ext_resource type="Texture2D" uid="uid://djkxvpwwkw4yy" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle_01_00.png" id="18_wqok6"]
+[ext_resource type="Texture2D" uid="uid://dv8ymga36atdh" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle_01_01.png" id="19_43wjj"]
+[ext_resource type="Texture2D" uid="uid://brgjq3ta4dvg0" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle_01_02.png" id="20_iympc"]
+[ext_resource type="Texture2D" uid="uid://bftjipg8mutqi" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle_01_03.png" id="21_g2wtr"]
+[ext_resource type="Texture2D" uid="uid://dgctla7ilh5ar" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle_01_04.png" id="22_wluk2"]
+[ext_resource type="Texture2D" uid="uid://b4bbjeqpy1f5p" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle_01_05.png" id="23_tkkm6"]
+[ext_resource type="Texture2D" uid="uid://shsb7y1qaolu" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_idle_02_00.png" id="24_h50iq"]
+[ext_resource type="Texture2D" uid="uid://5y8s5jtfough" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_00.png" id="25_kiv4k"]
+[ext_resource type="Texture2D" uid="uid://02cx2u6mj0wc" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_01.png" id="26_pdad0"]
+[ext_resource type="Texture2D" uid="uid://oclmkmjyc03q" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_02.png" id="27_hmo0d"]
+[ext_resource type="Texture2D" uid="uid://dycytl4eumnfq" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_03.png" id="28_u3a50"]
+[ext_resource type="Texture2D" uid="uid://0egt6wqodpnx" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_04.png" id="29_11nc4"]
+[ext_resource type="Texture2D" uid="uid://bg622tvggx87w" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_05.png" id="30_sjuhf"]
+[ext_resource type="Texture2D" uid="uid://b36e360ka1xum" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_06.png" id="31_rmnnf"]
+[ext_resource type="Texture2D" uid="uid://bn4i0hr8eygu2" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_07.png" id="32_cgpdx"]
+[ext_resource type="Texture2D" uid="uid://c38s3q7j4ofns" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_08.png" id="33_xyt2u"]
+[ext_resource type="Texture2D" uid="uid://cvosw5qtv262k" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_09.png" id="34_lnnwi"]
+[ext_resource type="Texture2D" uid="uid://4j6sxetbqkhh" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_10.png" id="35_jfqpd"]
+[ext_resource type="Texture2D" uid="uid://fb6mfwl8pu33" path="res://assets/minigames/frog/graphics/frog_animations/frog_side_jump_11.png" id="36_q67ce"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7bxkc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_syiy8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4q8yu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bkha4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_d22w8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_kn1ir")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_mgjb2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_q3xnb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_7euu5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_maitf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_nw786")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_4iyty")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_twnvy")
+}],
+"loop": true,
+"name": &"idle_front",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_jwiru")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_huq2e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_3glbm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_vm1ly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_rl57n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_wqok6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_43wjj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_iympc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_g2wtr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_wluk2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_tkkm6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_h50iq")
+}],
+"loop": true,
+"name": &"idle_side",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_kiv4k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_pdad0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_hmo0d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_u3a50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_11nc4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_sjuhf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_rmnnf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_cgpdx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_xyt2u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_lnnwi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_jfqpd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_q67ce")
+}],
+"loop": false,
+"name": &"jump_side",
+"speed": 110.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lnxyi"]
+radius = 30.0
+height = 360.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h7qyi"]
+radius = 25.1794
+
+[node name="Frog" type="Node2D"]
+script = ExtResource("1_3i23t")
+jump_distance = 420.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-16, -47)
+sprite_frames = SubResource("SpriteFrames_7bxkc")
+animation = &"jump_side"
+autoplay = "idle_front"
+
+[node name="JumpArea" type="Area2D" parent="."]
+position = Vector2(0, -25)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpArea"]
+position = Vector2(120, 0)
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_lnxyi")
+
+[node name="FrogArea" type="Area2D" parent="."]
+position = Vector2(0, -25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FrogArea"]
+shape = SubResource("CircleShape2D_h7qyi")
