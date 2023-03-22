@@ -85,7 +85,6 @@ func _setup_minigame() -> void:
 	current_lives = max_number_of_lives
 
 
-
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	return
@@ -178,6 +177,7 @@ func _on_minigame_ui_garden_button_pressed() -> void:
 func _on_minigame_ui_stimulus_button_pressed() -> void:
 	get_tree().paused = true
 	minigame_ui.lock()
+	@warning_ignore("redundant_await")
 	await _play_stimulus()
 	minigame_ui.unlock()
 	get_tree().paused = false
@@ -227,6 +227,7 @@ func set_current_progression(p_current_progression: int) -> void:
 	if p_current_progression == max_progression and previous_progression != max_progression:
 		await _win()
 	else:
+		@warning_ignore("redundant_await")
 		await _on_current_progression_changed()
 
 

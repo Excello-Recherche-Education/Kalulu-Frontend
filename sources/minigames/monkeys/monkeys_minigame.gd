@@ -70,7 +70,6 @@ func _setup_minigame() -> void:
 	monkeys_node.set_drag_forwarding(Callable(), _monkeys_can_drop_data, _monkeys_drop_data)
 
 
-
 func _on_current_progression_changed() -> void:
 	word_label.text = "_".repeat(stimuli[current_progression].Word.length())
 	await _set_current_letter(0)

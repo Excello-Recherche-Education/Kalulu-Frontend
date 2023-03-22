@@ -11,4 +11,4 @@ func _on_crabs_button_pressed() -> void:
 
 
 func _on_parakeets_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://sources/minigames/parakeets/parakeets_minigame.gd")
+	get_tree().change_scene_to_file("res://sources/minigames/parakeets/parakeets_minigame.tscn")
