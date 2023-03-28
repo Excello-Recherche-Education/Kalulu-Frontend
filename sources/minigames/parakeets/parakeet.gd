@@ -3,17 +3,11 @@ extends Node2D
 
 const instance_scene: = "res://sources/minigames/parakeets/parakeet.tscn"
 
-signal pressed()
-
-@export var sad_duration: = 2.0
-
-@onready var animated_sprite: = $AnimatedSprite2D
-@onready var label: = $Label
-
-var stimulus: Dictionary :
-	set(value):
-		stimulus = value
-		label.text = value.Grapheme
+enum Colors {
+	Red,
+	Green,
+	Yellow,
+}
 
 const animations: = [
 	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),
@@ -21,9 +15,31 @@ const animations: = [
 	preload("res://sources/minigames/parakeets/yellow_parakeet_spritesheet.tres")
 ]
 
+signal pressed()
+
+@export var sad_duration: = 2.0
+@export var color: = Colors.Red:
+	set(value):
+		color = value
+		if animated_sprite:
+			animated_sprite.sprite_frames = animations[color]
+@export var uppercase: = true:
+	set(value):
+		uppercase = value
+		if label:
+			label.text = label.text.to_upper() if uppercase else label.text.to_lower()
+
+@onready var animated_sprite: = $AnimatedSprite2D
+@onready var label: = $Label
+
+var stimulus: Dictionary :
+	set(value):
+		stimulus = value
+		label.text = value.Grapheme.to_upper() if uppercase else value.Grapheme
+
 
 func _ready() -> void:
-	animated_sprite.sprite_frames = animations[randi() % animations.size()]
+	color = color
 	animated_sprite.play("idle_front")
 
 

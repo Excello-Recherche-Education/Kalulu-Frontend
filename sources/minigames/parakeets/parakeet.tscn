@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://cmoeum0oc0p2"]
 
 [ext_resource type="Script" path="res://sources/minigames/parakeets/parakeet.gd" id="1_p0nqk"]
-[ext_resource type="SpriteFrames" uid="uid://c4xffrugn6xgx" path="res://sources/minigames/parakeets/yellow_parakeet_spritesheet.tres" id="2_yx4ca"]
+[ext_resource type="SpriteFrames" uid="uid://wybpq21deku7" path="res://sources/minigames/parakeets/red_parakeet_animations.tres" id="2_k0dcm"]
 [ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="5_k8sc4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2q8kg"]
@@ -19,10 +19,9 @@ script = ExtResource("1_p0nqk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
-sprite_frames = ExtResource("2_yx4ca")
+sprite_frames = ExtResource("2_k0dcm")
 animation = &"idle_front"
 autoplay = "idle_front"
-frame_progress = 0.51529
 offset = Vector2(2.08165e-12, -82)
 
 [node name="Label" type="Label" parent="."]

@@ -109,6 +109,7 @@ func set_max_progression(new_max_progression: int) -> void:
 			progression_rects[i].queue_free()
 	for i in range(progression_rects.size(), new_max_progression):
 		var new_progression_rect: = model_progression_rect.duplicate()
+		new_progression_rect.show()
 		new_progression_rect.texture = empty_progression_icon
 		progression_container.add_child(new_progression_rect)
 	model_progression_rect.visible = new_max_progression >= 1

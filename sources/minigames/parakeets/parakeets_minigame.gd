@@ -74,19 +74,22 @@ func _setup_minigame() -> void:
 	var stimuli2: = stimuli.duplicate()
 	stimuli2.shuffle()
 	max_progression = pairs_count
+	var color: = randi_range(0, Parakeet.Colors.size() - 1) as Parakeet.Colors
 	for i in pairs_count:
 		var new_parakeet1: Parakeet = Parakeet.instantiate()
 		var new_parakeet2: Parakeet = Parakeet.instantiate()
 		parakeets_node.add_child(new_parakeet1)
 		parakeets_node.add_child(new_parakeet2)
+		new_parakeet1.color = color
+		new_parakeet2.color = color
+		new_parakeet1.uppercase = true
+		new_parakeet2.uppercase = false
 		new_parakeet1.global_position = possible_start_positions[2 * i].global_position
 		new_parakeet2.global_position = possible_start_positions[2 * i + 1].global_position
 		parakeets.append_array([new_parakeet1, new_parakeet2])
 		var stimulus: Dictionary = stimuli2.pop_back()
-		var stimulus_up: = stimulus.duplicate()
-		stimulus_up.label = stimulus_up.Grapheme.to_upper()
 		new_parakeet1.stimulus = stimulus
-		new_parakeet2.stimulus = stimulus_up
+		new_parakeet2.stimulus = stimulus
 		new_parakeet1.pressed.connect(_on_parakeet_pressed.bind(new_parakeet1))
 		new_parakeet2.pressed.connect(_on_parakeet_pressed.bind(new_parakeet2))
 
@@ -132,7 +135,7 @@ func _on_parakeet_pressed(parakeet: Parakeet) -> void:
 
 
 func _on_selected_two() -> void:
-	if selected[0].stimulus.Grapheme.to_upper() == selected[1].stimulus.Grapheme.to_upper():
+	if selected[0].stimulus.Grapheme == selected[1].stimulus.Grapheme:
 		_correct()
 	else:
 		_wrong()
