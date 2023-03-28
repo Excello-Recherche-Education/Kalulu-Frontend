@@ -1,10 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://ek0ri3b6vwj1"]
+[gd_scene load_steps=12 format=3 uid="uid://8cbihh6410yp"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_oeg4r"]
 [ext_resource type="Script" path="res://sources/minigames/parakeets/parakeets_minigame.gd" id="2_x6xn5"]
-[ext_resource type="AudioStream" uid="uid://csbrl2rxli4tp" path="res://assets/minigames/parakeets/audio/kalulu_intro_parakeets_language.mp3" id="3_ofxb4"]
+[ext_resource type="AudioStream" uid="uid://csbrl2rxli4tp" path="res://language_resources/french/minigames/parakeets/audio/kalulu/kalulu_intro_parakeets_language.mp3" id="3_ofxb4"]
 [ext_resource type="Texture2D" uid="uid://dv1ombj8eolb1" path="res://assets/minigames/parakeets/graphic/background.png" id="3_xjvte"]
-[ext_resource type="AudioStream" uid="uid://c58a2q8b26vpn" path="res://assets/minigames/parakeets/audio/kalulu_end_parakeets_language.mp3" id="4_01e28"]
+[ext_resource type="AudioStream" uid="uid://c58a2q8b26vpn" path="res://language_resources/french/minigames/parakeets/audio/kalulu/kalulu_end_parakeets_language.mp3" id="4_01e28"]
 [ext_resource type="Texture2D" uid="uid://clvh07xfgjmri" path="res://assets/minigames/parakeets/graphic/tree_trunk.png" id="4_unuga"]
 [ext_resource type="Texture2D" uid="uid://d3n327me83on7" path="res://assets/minigames/parakeets/graphic/tree_branch.png" id="5_46kss"]
 [ext_resource type="Texture2D" uid="uid://dpx72xoqt8lkq" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_empty.png" id="5_yt7mv"]

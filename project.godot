@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Kalulu"
-run/main_scene="res://sources/menus/minigame_selection.tscn"
+run/main_scene="res://sources/menus/language_selection/package_checker.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -41,3 +41,7 @@ enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
 
 theme/custom="res://resources/themes/kalulu_theme.tres"
 theme/custom_font="res://assets/fonts/DidactGothic-Regular.ttf"
+
+[internationalization]
+
+locale/translation_remaps={}

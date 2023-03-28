@@ -1,10 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://dlwnfq1mt2tla"]
+[gd_scene load_steps=18 format=3 uid="uid://cd5yhq6f6l88c"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_avl88"]
 [ext_resource type="Script" path="res://sources/minigames/frog/frog_minigame.gd" id="2_5vus4"]
 [ext_resource type="Texture2D" uid="uid://g1pr0xqbmwcb" path="res://assets/minigames/frog/graphics/background_river.png" id="2_xejtx"]
-[ext_resource type="AudioStream" uid="uid://brvigkassgx1b" path="res://assets/minigames/frog/audio/kalulu_end_frog_all.mp3" id="3_8qoit"]
-[ext_resource type="AudioStream" uid="uid://ve3na0ebxwsr" path="res://assets/minigames/frog/audio/kalulu_help_frog_language.mp3" id="3_cqjmm"]
+[ext_resource type="AudioStream" uid="uid://brvigkassgx1b" path="res://language_resources/french/minigames/frog/audio/kalulu/kalulu_end_frog_all.mp3" id="3_8qoit"]
+[ext_resource type="AudioStream" uid="uid://ve3na0ebxwsr" path="res://language_resources/french/minigames/frog/audio/kalulu/kalulu_help_frog_language.mp3" id="3_cqjmm"]
 [ext_resource type="Texture2D" uid="uid://cusulkkvcyxak" path="res://assets/minigames/frog/graphics/sand_left.png" id="3_si4ka"]
 [ext_resource type="Texture2D" uid="uid://c7im0b3uxb6ha" path="res://assets/minigames/frog/graphics/grass_left.png" id="4_wsj75"]
 [ext_resource type="Texture2D" uid="uid://tl6bs08l37ar" path="res://assets/minigames/frog/graphics/sand_right.png" id="5_2g3rn"]

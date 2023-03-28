@@ -1,8 +1,5 @@
 extends Node
 
-
-const db_path: = "res://language_resources/fr/fr.db"
-const words_path: = "res://language_resources/fr/words/"
 const _symbols_to_string = {
 	"#" : "sharp",
 	"@" : "at",
@@ -11,6 +8,15 @@ const _symbols_to_string = {
 	"%" : "pcent",
 	"§" : "para"
 }
+const base_path: =  "res://language_resources/"
+
+var language: = "french":
+	set(value):
+		language = value
+		db_path = base_path + language + "/language.db"
+		words_path = base_path + language + "/words/"
+var db_path: = base_path + language + "/language.db"
+var words_path: = base_path + language + "/words/"
 
 @onready var db: = SQLite.new()
 
