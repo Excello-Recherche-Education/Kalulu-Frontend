@@ -16,6 +16,7 @@ var return_value
 func resumable_call(callable: Callable) -> void:
 	assert(not is_completed, "This Coroutine was already used")
 	_is_started = true
+	@warning_ignore("redundant_await")
 	return_value = await callable.call(self)
 	is_completed = true
 

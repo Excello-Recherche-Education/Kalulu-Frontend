@@ -65,15 +65,18 @@ func spawn_crab(stimulus: Dictionary) -> void:
 
 
 func _on_crab_hit(stimulus: Dictionary) -> void:
+	crab.set_button_active(false)
+	crab_audio_stream_player.stop_playing()
+	stimulus_hit.emit(stimulus)
 	var tween: = create_tween()
 	tween.tween_property(crab, "position", Vector2(0.0, -200.0), 0.5)
 	tween.parallel().tween_property(crab, "rotation_degrees", 540.0, 0.5)
 	await tween.finished
-	crab.set_button_active(false)
+	tween = create_tween()
+	tween.tween_property(crab, "position", Vector2(0.0, 200.0), 0.5)
+	await tween.finished
 	if not timer.is_stopped():
 		timer.start(0.4)
-	stimulus_hit.emit(stimulus)
-	crab_audio_stream_player.stop_playing()
 	crab.queue_free()
 	crab = null
 	

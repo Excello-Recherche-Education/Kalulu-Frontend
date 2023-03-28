@@ -27,6 +27,7 @@ const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/lif
 # Left panel
 @onready var garden_button: TextureButton = %GardenButton
 @onready var stimulus_button: TextureButton = %StimulusButton
+@onready var stimulus_texture: TextureRect = %StimulusTexture
 @onready var pause_button: TextureButton = %PauseButton
 @onready var kalulu_button: TextureButton = %KaluluButton
 
@@ -51,6 +52,8 @@ const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/lif
 @onready var model_progression_rect: = %ProgressionIconsRect
 @onready var lives_container: = %LivesContainer
 @onready var model_lives_rect: = %LivesIconsRect
+
+@onready var animation_player: = $AnimationPlayer
 
 
 # ------------ Lock/Unlock ------------
@@ -212,3 +215,11 @@ func _on_kalulu_speech_ended() -> void:
 
 func _on_back_to_menu_button_pressed() -> void:
 	back_to_menu_pressed.emit()
+
+
+func repeat_stimulus_animation(appear: bool) -> void:
+	if appear:
+		animation_player.play("repeat_stimulus")
+	else:
+		animation_player.play_backwards("repeat_stimulus")
+	await animation_player.animation_finished

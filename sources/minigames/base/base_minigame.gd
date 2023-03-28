@@ -177,8 +177,10 @@ func _on_minigame_ui_garden_button_pressed() -> void:
 func _on_minigame_ui_stimulus_button_pressed() -> void:
 	get_tree().paused = true
 	minigame_ui.lock()
+	await minigame_ui.repeat_stimulus_animation(true)
 	@warning_ignore("redundant_await")
 	await _play_stimulus()
+	await minigame_ui.repeat_stimulus_animation(false)
 	minigame_ui.unlock()
 	get_tree().paused = false
 
