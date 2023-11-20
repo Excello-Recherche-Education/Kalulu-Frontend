@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbl3r8426473v"]
+
+[ext_resource type="Texture2D" uid="uid://ouhnm00r8rt6" path="res://assets/menus/plus_button.png" id="1_bx7x7"]
+[ext_resource type="Script" path="res://sources/language_tool/plus_button.gd" id="2_wbgmd"]
+
+[node name="Button" type="MarginContainer"]
+offset_left = 1.0
+offset_top = 144.0
+offset_right = 121.0
+offset_bottom = 264.0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+script = ExtResource("2_wbgmd")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+texture = ExtResource("1_bx7x7")
+expand_mode = 1
+
+[connection signal="gui_input" from="TextureRect" to="." method="_on_texture_rect_gui_input"]
+[connection signal="mouse_entered" from="TextureRect" to="." method="_on_texture_rect_mouse_entered"]
+[connection signal="mouse_exited" from="TextureRect" to="." method="_on_texture_rect_mouse_exited"]

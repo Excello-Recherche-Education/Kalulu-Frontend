@@ -24,7 +24,7 @@ var words_path: = base_path + language + "/words/"
 func _ready() -> void:
 	db.path = db_path
 	db.open_db()
-	_import_lessons()
+	#_import_lessons()
 
 
 func _exit_tree() -> void:

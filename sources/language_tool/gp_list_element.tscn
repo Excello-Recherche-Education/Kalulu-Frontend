@@ -1,0 +1,134 @@
+[gd_scene load_steps=8 format=3 uid="uid://l3ktlla1kreu"]
+
+[ext_resource type="Script" path="res://sources/language_tool/gp_list_element.gd" id="1_guuq2"]
+[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="1_pvlmp"]
+[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="3_1dwyr"]
+[ext_resource type="Texture2D" uid="uid://c5jiyxrmmjmdb" path="res://assets/menus/modify_button.png" id="4_eakjn"]
+[ext_resource type="Texture2D" uid="uid://b8tctfnsj3prx" path="res://assets/menus/minus_button.png" id="5_d5iin"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vy06h"]
+bg_color = Color(0.254902, 0.329412, 0.572549, 1)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_43k67"]
+
+[node name="GpListElement" type="MarginContainer"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -110.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_guuq2")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vy06h")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_43k67")
+tabs_visible = false
+use_hidden_tabs_for_min_size = true
+
+[node name="NormalContainer" type="HBoxContainer" parent="TabContainer"]
+layout_mode = 2
+
+[node name="Grapheme" type="Label" parent="TabContainer/NormalContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_pvlmp")
+theme_override_font_sizes/font_size = 100
+text = "G"
+horizontal_alignment = 1
+
+[node name="Phoneme" type="Label" parent="TabContainer/NormalContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_pvlmp")
+theme_override_font_sizes/font_size = 100
+text = "G"
+horizontal_alignment = 1
+
+[node name="Type" type="Label" parent="TabContainer/NormalContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_pvlmp")
+theme_override_font_sizes/font_size = 100
+text = "C"
+horizontal_alignment = 1
+
+[node name="EditButton" parent="TabContainer/NormalContainer" instance=ExtResource("3_1dwyr")]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="TextureRect" parent="TabContainer/NormalContainer/EditButton" index="0"]
+texture = ExtResource("4_eakjn")
+
+[node name="EditContainer" type="HBoxContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MinusButton" parent="TabContainer/EditContainer" instance=ExtResource("3_1dwyr")]
+layout_mode = 2
+
+[node name="TextureRect" parent="TabContainer/EditContainer/MinusButton" index="0"]
+texture = ExtResource("5_d5iin")
+
+[node name="GraphemeEdit" type="LineEdit" parent="TabContainer/EditContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_pvlmp")
+theme_override_font_sizes/font_size = 100
+text = "G"
+alignment = 1
+
+[node name="PhonemeEdit" type="LineEdit" parent="TabContainer/EditContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_pvlmp")
+theme_override_font_sizes/font_size = 100
+text = "G"
+alignment = 1
+
+[node name="TypeEdit" type="OptionButton" parent="TabContainer/EditContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_pvlmp")
+theme_override_font_sizes/font_size = 100
+alignment = 1
+item_count = 3
+popup/item_0/text = "Silent"
+popup/item_0/id = 0
+popup/item_1/text = "Vowel"
+popup/item_1/id = 1
+popup/item_2/text = "Consonant"
+popup/item_2/id = 2
+
+[node name="ValidateButton" parent="TabContainer/EditContainer" instance=ExtResource("3_1dwyr")]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="TextureRect" parent="TabContainer/EditContainer/ValidateButton" index="0"]
+texture = ExtResource("4_eakjn")
+
+[connection signal="pressed" from="TabContainer/NormalContainer/EditButton" to="." method="_on_edit_button_pressed"]
+[connection signal="pressed" from="TabContainer/EditContainer/MinusButton" to="." method="_on_minus_button_pressed"]
+[connection signal="pressed" from="TabContainer/EditContainer/ValidateButton" to="." method="_on_validate_button_pressed"]
+
+[editable path="TabContainer/NormalContainer/EditButton"]
+[editable path="TabContainer/EditContainer/MinusButton"]
+[editable path="TabContainer/EditContainer/ValidateButton"]
