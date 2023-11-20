@@ -28,7 +28,7 @@ func _on_button_pressed(button_id: int) -> void:
 	var package_path: = "user://" + package_name
 	if not FileAccess.file_exists(package_path):
 		print("Package not found, download it from the server")
-		var downloader: Control = load(downloader_scene_path).instance()
+		var downloader: Control = load(downloader_scene_path).instantiate()
 		add_child(downloader)
 		downloader.download_package(package_name)
 		await downloader.completed

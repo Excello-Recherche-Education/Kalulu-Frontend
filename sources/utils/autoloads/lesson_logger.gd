@@ -11,7 +11,7 @@ func save_logs(logs: Dictionary, folder_path: String, minigame_name: String, les
 	var file_path: = folder_path + minigame_name + ".tres"
 	
 	if not ResourceLoader.exists(file_path):
-		var log_resource: LogResource = log_resource_class.instance()
+		var log_resource: LogResource = log_resource_class.new()
 		ResourceSaver.save(log_resource, file_path, ResourceSaver.FLAG_COMPRESS)
 	
 	if not file_path in log_resources:

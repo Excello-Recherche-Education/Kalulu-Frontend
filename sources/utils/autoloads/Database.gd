@@ -24,6 +24,7 @@ var words_path: = base_path + language + "/words/"
 func _ready() -> void:
 	db.path = db_path
 	db.open_db()
+	_import_lessons()
 
 
 func _exit_tree() -> void:
@@ -154,7 +155,7 @@ func _import_words() -> void:
 
 
 func _import_lessons() -> void:
-	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
+	var file = FileAccess.open("res://new_gp_list.json", FileAccess.READ)
 	var dict = JSON.parse_string(file.get_line())
 	for e in dict.values():
 		var g = e.GRAPHEME
