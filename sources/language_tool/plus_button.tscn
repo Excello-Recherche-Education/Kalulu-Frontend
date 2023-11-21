@@ -8,6 +8,7 @@ offset_left = 1.0
 offset_top = 144.0
 offset_right = 121.0
 offset_bottom = 264.0
+size_flags_vertical = 4
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50

@@ -79,10 +79,10 @@ visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="MinusButton" parent="TabContainer/EditContainer" instance=ExtResource("3_1dwyr")]
+[node name="DeleteButton" parent="TabContainer/EditContainer" instance=ExtResource("3_1dwyr")]
 layout_mode = 2
 
-[node name="TextureRect" parent="TabContainer/EditContainer/MinusButton" index="0"]
+[node name="TextureRect" parent="TabContainer/EditContainer/DeleteButton" index="0"]
 texture = ExtResource("5_d5iin")
 
 [node name="GraphemeEdit" type="LineEdit" parent="TabContainer/EditContainer"]
@@ -126,9 +126,9 @@ layout_mode = 2
 texture = ExtResource("4_eakjn")
 
 [connection signal="pressed" from="TabContainer/NormalContainer/EditButton" to="." method="_on_edit_button_pressed"]
-[connection signal="pressed" from="TabContainer/EditContainer/MinusButton" to="." method="_on_minus_button_pressed"]
+[connection signal="pressed" from="TabContainer/EditContainer/DeleteButton" to="." method="_on_minus_button_pressed"]
 [connection signal="pressed" from="TabContainer/EditContainer/ValidateButton" to="." method="_on_validate_button_pressed"]
 
 [editable path="TabContainer/NormalContainer/EditButton"]
-[editable path="TabContainer/EditContainer/MinusButton"]
+[editable path="TabContainer/EditContainer/DeleteButton"]
 [editable path="TabContainer/EditContainer/ValidateButton"]

@@ -28,6 +28,15 @@ layout_mode = 2
 size_flags_vertical = 1
 script = null
 
+[node name="Grapheme" parent="VBoxContainer/GpListElement/TabContainer/NormalContainer" index="0"]
+text = "Grapheme"
+
+[node name="Phoneme" parent="VBoxContainer/GpListElement/TabContainer/NormalContainer" index="1"]
+text = "Phoneme"
+
+[node name="Type" parent="VBoxContainer/GpListElement/TabContainer/NormalContainer" index="2"]
+text = "Type"
+
 [node name="TextureRect" parent="VBoxContainer/GpListElement/TabContainer/NormalContainer/EditButton" index="0"]
 modulate = Color(1, 1, 1, 0)
 
@@ -68,6 +77,6 @@ theme_override_constants/separation = 0
 
 [editable path="VBoxContainer/GpListElement"]
 [editable path="VBoxContainer/GpListElement/TabContainer/NormalContainer/EditButton"]
-[editable path="VBoxContainer/GpListElement/TabContainer/EditContainer/MinusButton"]
+[editable path="VBoxContainer/GpListElement/TabContainer/EditContainer/DeleteButton"]
 [editable path="VBoxContainer/GpListElement/TabContainer/EditContainer/ValidateButton"]
 [editable path="VBoxContainer/GpListElement/SaveButton"]

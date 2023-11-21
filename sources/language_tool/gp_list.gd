@@ -36,6 +36,7 @@ func _on_plus_button_pressed() -> void:
 	element.phoneme = ""
 	element.type = 0
 	element.undo_redo = undo_redo
+	element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
 	undo_redo.add_do_method(elements_container.add_child.bind(element))
 	undo_redo.add_do_method(elements_container.move_child.bind(element, 0))
 	undo_redo.add_undo_method(elements_container.remove_child.bind(element))
