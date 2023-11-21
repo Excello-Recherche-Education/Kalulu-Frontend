@@ -9,7 +9,7 @@ var undo_redo: = UndoRedo.new()
 
 
 func _ready() -> void:
-	Database.db.query("SELECT Word, group_concat(Grapheme, ' ') as Graphemes
+	Database.db.query("SELECT Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes
 		FROM Words 
 		INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
 		INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID 
@@ -19,6 +19,7 @@ func _ready() -> void:
 		var element: = word_scene.instantiate()
 		element.word = e.Word
 		element.graphemes = e.Graphemes
+		element.phonemes = e.Phonemes
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
