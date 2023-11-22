@@ -14,6 +14,7 @@ corner_radius_bottom_left = 25
 
 [resource]
 Label/font_sizes/font_size = 42
+LineEdit/constants/caret_width = 4
 Panel/styles/panel = SubResource("StyleBoxFlat_f5t7u")
 PopupMenu/font_sizes/font_size = 100
 TooltipLabel/font_sizes/font_size = 80
