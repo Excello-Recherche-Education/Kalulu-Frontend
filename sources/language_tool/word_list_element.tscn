@@ -91,6 +91,7 @@ selecting_enabled = false
 
 [node name="Popup" parent="TabContainer/EditContainer/GraphemesEdit" instance=ExtResource("5_quigc")]
 unique_name_in_owner = true
+layout_mode = 0
 
 [node name="ValidateButton" parent="TabContainer/EditContainer" instance=ExtResource("1_g3tt5")]
 custom_minimum_size = Vector2(120, 120)
@@ -107,6 +108,7 @@ texture = ExtResource("2_i6x6b")
 [connection signal="text_changed" from="TabContainer/EditContainer/GraphemesEdit" to="." method="_on_graphemes_edit_text_changed"]
 [connection signal="GP_selected" from="TabContainer/EditContainer/GraphemesEdit/Popup" to="." method="_on_popup_gp_selected"]
 [connection signal="focus_changed" from="TabContainer/EditContainer/GraphemesEdit/Popup" to="." method="_on_popup_focus_changed"]
+[connection signal="new_GP_asked" from="TabContainer/EditContainer/GraphemesEdit/Popup" to="." method="_on_popup_new_gp_asked"]
 [connection signal="pressed" from="TabContainer/EditContainer/ValidateButton" to="." method="_on_validate_button_pressed"]
 
 [editable path="TabContainer/NormalContainer/EditButton"]

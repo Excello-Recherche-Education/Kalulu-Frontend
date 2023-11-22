@@ -4,8 +4,12 @@ var word_scene: = preload("res://sources/language_tool/word_list_element.tscn")
 
 @onready var elements_container: = $%ElementsContainer
 @onready var save_button: = $%SaveButton
+@onready var new_gp_layer: = $NewGPLayer
+@onready var new_gp: = $NewGPLayer/GpListElement
 
 var undo_redo: = UndoRedo.new()
+var in_new_gp_mode: = false:
+	set = set_in_new_gp_mode
 
 
 func _ready() -> void:
@@ -23,6 +27,7 @@ func _ready() -> void:
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
+		element.new_GP_asked.connect(_on_element_new_GP_asked)
 
 
 func _input(event: InputEvent) -> void:
@@ -56,3 +61,20 @@ func _on_plus_button_pressed() -> void:
 
 func _process(_delta: float) -> void:
 	save_button.visible = undo_redo.has_undo()
+
+
+func _on_element_new_GP_asked(grapheme: String) -> void:
+	in_new_gp_mode = true
+	new_gp.grapheme = grapheme
+	new_gp.edit_mode()
+
+
+func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
+	in_new_gp_mode = p_in_new_gp_mode
+	new_gp_layer.visible = in_new_gp_mode
+
+
+func _on_gp_list_element_validated() -> void:
+	new_gp.insert_in_database()
+	in_new_gp_mode = false
+	

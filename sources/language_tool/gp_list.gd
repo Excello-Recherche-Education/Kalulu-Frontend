@@ -46,9 +46,7 @@ func _on_plus_button_pressed() -> void:
 
 func _on_save_button_pressed() -> void:
 	for element in elements_container.get_children():
-		Database.db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=? AND Type=?", [element.grapheme, element.phoneme, element.type])
-		if Database.db.query_result.is_empty():
-			Database.db.insert_row("GPs", {Grapheme=element.grapheme, Phoneme=element.phoneme, Type=element.type})
+		element.insert_in_database()
 	var query: = "Select * FROM GPs"
 	Database.db.query(query)
 	var result: = Database.db.query_result

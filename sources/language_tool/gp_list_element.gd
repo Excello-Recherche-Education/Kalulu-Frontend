@@ -1,6 +1,7 @@
 extends MarginContainer
 
 signal delete_pressed()
+signal validated()
 
 enum Type {
 	Silent,
@@ -23,7 +24,11 @@ var phoneme: = "":
 	set = set_phoneme
 var type: = Type.Silent:
 	set = set_type
-var undo_redo: UndoRedo
+var undo_redo: UndoRedo:
+	get:
+		if not undo_redo:
+			undo_redo = UndoRedo.new()
+		return undo_redo
 
 
 func set_grapheme(p_grapheme: String) -> void:
@@ -70,6 +75,7 @@ func _on_validate_button_pressed() -> void:
 	undo_redo.add_undo_property(self, "type", type)
 	undo_redo.commit_action()
 	tab_container.current_tab = 0
+	validated.emit()
 
 
 func edit_mode() -> void:
@@ -78,3 +84,10 @@ func edit_mode() -> void:
 
 func _on_minus_button_pressed() -> void:
 	delete_pressed.emit()
+
+
+func insert_in_database() -> void:
+	Database.db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=? AND Type=?", [grapheme, phoneme, type])
+	if Database.db.query_result.is_empty():
+		Database.db.insert_row("GPs", {Grapheme=grapheme, Phoneme=phoneme, Type=type})
+	

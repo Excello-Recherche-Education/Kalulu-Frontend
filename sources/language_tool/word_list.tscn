@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfw7m0a7148fu"]
+[gd_scene load_steps=6 format=3 uid="uid://dfw7m0a7148fu"]
 
 [ext_resource type="Script" path="res://sources/language_tool/word_list.gd" id="1_m0usq"]
 [ext_resource type="PackedScene" uid="uid://dx33ijlgd8m3w" path="res://sources/language_tool/word_list_element.tscn" id="2_roh06"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="3_a6pn6"]
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="4_ar78n"]
+[ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="5_1f555"]
 
 [node name="WordList" type="Control"]
 layout_mode = 3
@@ -67,10 +68,42 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="NewGPLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Panel" type="Panel" parent="NewGPLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="NewGPLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -163.0
+offset_top = 100.0
+offset_right = 163.0
+offset_bottom = 232.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 100
+text = "New GP"
+
+[node name="GpListElement" parent="NewGPLayer" instance=ExtResource("5_1f555")]
+
+[node name="DeleteButton" parent="NewGPLayer/GpListElement/TabContainer/EditContainer" index="0"]
+visible = false
+
 [connection signal="pressed" from="VBoxContainer/WordListElement/PlusButton" to="." method="_on_plus_button_pressed"]
+[connection signal="validated" from="NewGPLayer/GpListElement" to="." method="_on_gp_list_element_validated"]
 
 [editable path="VBoxContainer/WordListElement"]
 [editable path="VBoxContainer/WordListElement/TabContainer/NormalContainer/EditButton"]
 [editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/MinusButton"]
 [editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/ValidateButton"]
 [editable path="VBoxContainer/WordListElement/SaveButton"]
+[editable path="NewGPLayer/GpListElement"]
+[editable path="NewGPLayer/GpListElement/TabContainer/NormalContainer/EditButton"]
+[editable path="NewGPLayer/GpListElement/TabContainer/EditContainer/DeleteButton"]
+[editable path="NewGPLayer/GpListElement/TabContainer/EditContainer/ValidateButton"]

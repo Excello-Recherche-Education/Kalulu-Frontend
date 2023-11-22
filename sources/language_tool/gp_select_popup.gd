@@ -1,9 +1,11 @@
-extends Control
+extends MarginContainer
 
 signal GP_selected(grapheme_ind: int, text: String)
 signal focus_changed(has_focus: bool)
+signal new_GP_asked()
 
 @onready var container: = $VBoxContainer
+@onready var button: = $Button
 
 
 var grapheme_ind: = -1
@@ -60,3 +62,19 @@ func _on_button_focus_entered() -> void:
 
 func _on_button_focus_exited() -> void:
 	focus_changed.emit(false)
+
+
+func no_gp_mode() -> void:
+	button.show()
+	container.hide()
+	size.y = 0
+
+
+func gp_mode() -> void:
+	button.hide()
+	container.show()
+	size.y = 0
+
+
+func _on_button_pressed() -> void:
+	new_GP_asked.emit()

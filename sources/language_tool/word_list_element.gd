@@ -1,6 +1,7 @@
 extends MarginContainer
 
 signal delete_pressed()
+signal new_GP_asked(grapheme: String)
 
 @onready var word_label: = $%Word
 @onready var graphemes_label: = $%Graphemes
@@ -137,9 +138,15 @@ func _on_graphemes_edit_gui_input(event: InputEvent) -> void:
 	popup_menu.size = Vector2(graphemes_edit.size.x, 0)
 	popup_menu.clear(grapheme_ind)
 	Database.db.query_with_bindings("Select Grapheme, Phoneme FROM GPs WHERE Grapheme=?", [graphemes_array[grapheme_ind]])
-	for result in Database.db.query_result:
+	var results: = Database.db.query_result
+	if results.is_empty():
+		popup_menu.no_gp_mode()
+	else:
+		popup_menu.gp_mode()
+	for result in results:
 		var is_already_selected: bool = result.Grapheme == graphemes_array[grapheme_ind] and grapheme_ind < phonemes_array.size() and result.Phoneme == phonemes_array[grapheme_ind]
 		popup_menu.add_item(result.Grapheme + "-" + result.Phoneme, is_already_selected)
+		
 
 
 func _on_graphemes_edit_focus_entered() -> void:
@@ -160,3 +167,11 @@ func _on_graphemes_edit_text_changed(_new_text: String) -> void:
 	if graphemes_array.size() < phonemes_array.size():
 		phonemes_array.remove_at(popup_menu.grapheme_ind)
 
+
+
+func _on_popup_new_gp_asked() -> void:
+	var graphemes_array: PackedStringArray = graphemes_edit.text.split(" ", false)
+	var grapheme: = ""
+	if popup_menu.grapheme_ind < graphemes_array.size():
+		grapheme = graphemes_array[popup_menu.grapheme_ind]
+	new_GP_asked.emit(grapheme)
