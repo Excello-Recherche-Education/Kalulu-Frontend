@@ -90,21 +90,53 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 100
 text = "New GP"
 
-[node name="GpListElement" parent="NewGPLayer" instance=ExtResource("5_1f555")]
+[node name="VBoxContainer" type="VBoxContainer" parent="NewGPLayer"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -222.0
+offset_bottom = 222.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="DeleteButton" parent="NewGPLayer/GpListElement/TabContainer/EditContainer" index="0"]
+[node name="Title" parent="NewGPLayer/VBoxContainer" instance=ExtResource("5_1f555")]
+layout_mode = 2
+script = null
+
+[node name="Grapheme" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="0"]
+text = "Grapheme"
+
+[node name="Phoneme" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="1"]
+text = "Phoneme"
+
+[node name="Type" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="2"]
+text = "Type"
+
+[node name="EditButton" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="3"]
+modulate = Color(1, 1, 1, 0)
+
+[node name="NewGP" parent="NewGPLayer/VBoxContainer" instance=ExtResource("5_1f555")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DeleteButton" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" index="0"]
 visible = false
 
 [connection signal="pressed" from="VBoxContainer/WordListElement/PlusButton" to="." method="_on_plus_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/WordListElement/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="validated" from="NewGPLayer/GpListElement" to="." method="_on_gp_list_element_validated"]
+[connection signal="validated" from="NewGPLayer/VBoxContainer/NewGP" to="." method="_on_gp_list_element_validated"]
 
 [editable path="VBoxContainer/WordListElement"]
 [editable path="VBoxContainer/WordListElement/TabContainer/NormalContainer/EditButton"]
 [editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/MinusButton"]
 [editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/ValidateButton"]
 [editable path="VBoxContainer/WordListElement/SaveButton"]
-[editable path="NewGPLayer/GpListElement"]
-[editable path="NewGPLayer/GpListElement/TabContainer/NormalContainer/EditButton"]
-[editable path="NewGPLayer/GpListElement/TabContainer/EditContainer/DeleteButton"]
-[editable path="NewGPLayer/GpListElement/TabContainer/EditContainer/ValidateButton"]
+[editable path="NewGPLayer/VBoxContainer/Title"]
+[editable path="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer/EditButton"]
+[editable path="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer/DeleteButton"]
+[editable path="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer/ValidateButton"]
+[editable path="NewGPLayer/VBoxContainer/NewGP"]
+[editable path="NewGPLayer/VBoxContainer/NewGP/TabContainer/NormalContainer/EditButton"]
+[editable path="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer/DeleteButton"]
+[editable path="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer/ValidateButton"]

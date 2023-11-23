@@ -11,7 +11,7 @@ const query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as 
 @onready var elements_container: = $%ElementsContainer
 @onready var save_button: = $%SaveButton
 @onready var new_gp_layer: = $NewGPLayer
-@onready var new_gp: = $NewGPLayer/GpListElement
+@onready var new_gp: = $%NewGP
 
 var undo_redo: = UndoRedo.new()
 var in_new_gp_mode: = false:
@@ -57,6 +57,7 @@ func _on_plus_button_pressed() -> void:
 	element.graphemes = ""
 	element.undo_redo = undo_redo
 	element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
+	element.new_GP_asked.connect(_on_element_new_GP_asked)
 	undo_redo.add_do_method(elements_container.add_child.bind(element))
 	undo_redo.add_do_method(elements_container.move_child.bind(element, 0))
 	undo_redo.add_undo_method(elements_container.remove_child.bind(element))
