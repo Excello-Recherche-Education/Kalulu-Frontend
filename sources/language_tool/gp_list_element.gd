@@ -24,6 +24,7 @@ var phoneme: = "":
 	set = set_phoneme
 var type: = Type.Silent:
 	set = set_type
+var id: int = -1
 var undo_redo: UndoRedo:
 	get:
 		if not undo_redo:
@@ -87,7 +88,15 @@ func _on_minus_button_pressed() -> void:
 
 
 func insert_in_database() -> void:
+	if id >= 0:
+		Database.db.query_with_bindings("SELECT * FROM GPs WHERE ID=?", [id])
+		if not Database.db.query_result.is_empty():
+			var e = Database.db.query_result[0]
+			if grapheme != e.Grapheme or phoneme != e.Phoneme or type != e.Type:
+				Database.db.update_rows("GPs", "ID=%s" % id, {Grapheme=grapheme, Phoneme=phoneme, Type=type})
+			return
+			
 	Database.db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=? AND Type=?", [grapheme, phoneme, type])
 	if Database.db.query_result.is_empty():
 		Database.db.insert_row("GPs", {Grapheme=grapheme, Phoneme=phoneme, Type=type})
-	
+		id = Database.db.last_insert_rowid

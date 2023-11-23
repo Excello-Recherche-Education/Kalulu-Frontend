@@ -2,6 +2,12 @@ extends Control
 
 var word_scene: = preload("res://sources/language_tool/word_list_element.tscn")
 
+const query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIds 
+		FROM Words 
+		INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
+		INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID 
+		GROUP BY Words.ID"
+
 @onready var elements_container: = $%ElementsContainer
 @onready var save_button: = $%SaveButton
 @onready var new_gp_layer: = $NewGPLayer
@@ -13,17 +19,16 @@ var in_new_gp_mode: = false:
 
 
 func _ready() -> void:
-	Database.db.query("SELECT Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes
-		FROM Words 
-		INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
-		INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID 
-		GROUP BY Words.ID")
+	Database.db.query(query)
+	
 	var results: = Database.db.query_result
 	for e in results:
 		var element: = word_scene.instantiate()
 		element.word = e.Word
 		element.graphemes = e.Graphemes
 		element.phonemes = e.Phonemes
+		element.id = e.WordId
+		element.set_gp_ids_from_string(e.GPIds)
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
@@ -77,4 +82,19 @@ func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
 func _on_gp_list_element_validated() -> void:
 	new_gp.insert_in_database()
 	in_new_gp_mode = false
-	
+
+
+func _on_save_button_pressed() -> void:
+	for element in elements_container.get_children():
+		element.insert_in_database()
+	Database.db.query(query)
+	var result: = Database.db.query_result
+	for e in result:
+		var found: = false
+		for element in elements_container.get_children():
+			if element.graphemes == e.Graphemes and element.phonemes == e.Phonemes and element.word == e.Word:
+				found = true
+				break
+		if not found:
+			Database.db.delete_rows("Words", "ID=%s" % e.WordId)
+	undo_redo.clear_history()

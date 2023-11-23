@@ -96,6 +96,7 @@ text = "New GP"
 visible = false
 
 [connection signal="pressed" from="VBoxContainer/WordListElement/PlusButton" to="." method="_on_plus_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/WordListElement/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="validated" from="NewGPLayer/GpListElement" to="." method="_on_gp_list_element_validated"]
 
 [editable path="VBoxContainer/WordListElement"]

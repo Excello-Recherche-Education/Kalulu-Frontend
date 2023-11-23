@@ -10,7 +10,7 @@ const _symbols_to_string = {
 }
 const base_path: =  "res://language_resources/"
 
-var language: = "french":
+var language: = "test":
 	set(value):
 		language = value
 		db_path = base_path + language + "/language.db"
@@ -23,6 +23,7 @@ var words_path: = base_path + language + "/words/"
 
 func _ready() -> void:
 	db.path = db_path
+	db.foreign_keys = true
 	db.open_db()
 	#_import_lessons()
 

@@ -18,6 +18,7 @@ func _ready() -> void:
 		element.phoneme = e.Phoneme
 		element.type = e.Type
 		element.undo_redo = undo_redo
+		element.id = e.ID
 		elements_container.add_child(element)
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
 

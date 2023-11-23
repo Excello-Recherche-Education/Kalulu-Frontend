@@ -1,6 +1,6 @@
 extends MarginContainer
 
-signal GP_selected(grapheme_ind: int, text: String)
+signal GP_selected(grapheme_ind: int, gp_id: int, text: String)
 signal focus_changed(has_focus: bool)
 signal new_GP_asked()
 
@@ -28,32 +28,33 @@ func clear(new_grapheme_ind: int) -> void:
 	if not children.is_empty():
 		if ind_selected == -1:
 			ind_selected = 0
-			GP_selected.emit(grapheme_ind, children[0].text)
+			GP_selected.emit(grapheme_ind, children[0].get_meta("gp_id"), children[0].text)
 	for child in children:
 		child.queue_free()
 	ind_selected = -1
 	grapheme_ind = new_grapheme_ind
 
 
-func add_item(text: String, selected: bool) -> void:
-	var button: = CheckBox.new()
-	button.text = text
-	button.set("theme_override_font_sizes/font_size", 100)
-	container.add_child(button)
+func add_item(gp_id: int, text: String, selected: bool) -> void:
+	var add_button: = CheckBox.new()
+	add_button.text = text
+	add_button.set("theme_override_font_sizes/font_size", 100)
+	container.add_child(add_button)
 	if selected:
-		ind_selected = button.get_index()
-	button.toggled.connect(_on_button_toggled.bind(button))
-	button.focus_entered.connect(_on_button_focus_entered)
-	button.focus_exited.connect(_on_button_focus_exited)
+		ind_selected = add_button.get_index()
+	add_button.toggled.connect(_on_button_toggled.bind(add_button))
+	add_button.focus_entered.connect(_on_button_focus_entered)
+	add_button.focus_exited.connect(_on_button_focus_exited)
+	add_button.set_meta("gp_id", gp_id)
 
 
-func _on_button_toggled(pressed: bool, button: CheckBox) -> void:
-	var ind: = button.get_index()
+func _on_button_toggled(pressed: bool, add_button: CheckBox) -> void:
+	var ind: = add_button.get_index()
 	if ind_selected != ind:
 		ind_selected = ind
 	if not pressed:
-		button.set_pressed_no_signal(not pressed)
-	GP_selected.emit(grapheme_ind, button.text)
+		add_button.set_pressed_no_signal(not pressed)
+	GP_selected.emit(grapheme_ind, add_button.get_meta("gp_id"), add_button.text)
 
 
 func _on_button_focus_entered() -> void:
