@@ -2,6 +2,7 @@ extends MarginContainer
 
 var gp_label_scene: = preload("res://sources/language_tool/lesson_gp_label.tscn")
 
+signal lesson_dropped(before: bool, number: int, dropped_number: int)
 
 var number: = 0:
 	set = set_number
@@ -24,7 +25,6 @@ func add_gp(new_gp: Dictionary) -> void:
 	gp_label.gp_id = new_gp.gp_id
 	gp_container.add_child(gp_label)
 	gp_label.gp_dropped.connect(_on_gp_dropped.bind(gp_label))
-	gp_label.gp_removed.connect(_on_gp_removed.bind(gp_label))
 
 
 func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
@@ -33,7 +33,6 @@ func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
 	new_gp_label.phoneme = data.phoneme
 	new_gp_label.gp_id = data.gp_id
 	new_gp_label.gp_dropped.connect(_on_gp_dropped.bind(new_gp_label))
-	new_gp_label.gp_removed.connect(_on_gp_removed.bind(new_gp_label))
 	gp_container.add_child(new_gp_label)
 	var children: = gp_container.get_children()
 	for i in children.size():
@@ -45,5 +44,43 @@ func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
 				gp_container.move_child(new_gp_label, i + 1)
 
 
-func _on_gp_removed(gp_label: Control) -> void:
-	gp_label.queue_free()
+func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:
+	return data.has("gp_id")
+
+
+func _drop_data_in_gp_container(_at_position: Vector2, data: Variant) -> void:
+	if not data.has("gp_id"):
+		return
+	var new_gp_label: = gp_label_scene.instantiate()
+	new_gp_label.grapheme = data.grapheme
+	new_gp_label.phoneme = data.phoneme
+	new_gp_label.gp_id = data.gp_id
+	new_gp_label.gp_dropped.connect(_on_gp_dropped.bind(new_gp_label))
+	gp_container.add_child(new_gp_label)
+
+
+func _ready() -> void:
+	gp_container.set_drag_forwarding(Callable(), _can_drop_in_gp_container, _drop_data_in_gp_container)
+
+
+func _get_drag_data(_at_position: Vector2) -> Variant:
+	set_drag_preview(self.duplicate())
+	return { number = number }
+
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	return data.has("number") and number != data.number
+
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	if not data.has("number"):
+		return
+	var before: = at_position.y < size.y
+	lesson_dropped.emit(before, number, data.number)
+
+
+func get_gp_ids() -> Array[int]:
+	var res: Array[int] = []
+	for gp in gp_container.get_children():
+		res.append(gp.gp_id)
+	return res

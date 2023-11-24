@@ -1,7 +1,6 @@
 extends Label
 
 signal gp_dropped(before: bool, data: Dictionary)
-signal gp_removed()
 
 var gp_id: = -1
 var grapheme: = "":
@@ -31,8 +30,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	}
 
 
-func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	print(at_position.x < size.x / 2)
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	return data.has("gp_id") and data.gp_id != gp_id
 
 
@@ -46,5 +44,5 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 func _notification(what: int) -> void:
 	if is_being_dragged and what == NOTIFICATION_DRAG_END:
 		is_being_dragged = false
-		if get_viewport().gui_is_drag_successful():
-			gp_removed.emit()
+		if is_drag_successful():
+			queue_free()
