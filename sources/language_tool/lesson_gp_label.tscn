@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://sources/language_tool/lesson_gp_label.gd" id="1_dfjts"]
 
 [node name="LessonGPLabel" type="Label"]
+mouse_filter = 0
 theme_override_font_sizes/font_size = 100
 text = "e-e"
 script = ExtResource("1_dfjts")
