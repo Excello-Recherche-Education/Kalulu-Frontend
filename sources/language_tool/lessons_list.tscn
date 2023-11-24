@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://b75ondy7h3ssl"]
+
+[ext_resource type="Script" path="res://sources/language_tool/lessons_list.gd" id="1_0e3ki"]
+[ext_resource type="PackedScene" uid="uid://di1ul6ixytmcj" path="res://sources/language_tool/lesson_container.tscn" id="2_lhjp5"]
+
+[node name="LessonsList" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0e3ki")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LessonContainer" parent="VBoxContainer" instance=ExtResource("2_lhjp5")]
+layout_mode = 2
+script = null
+
+[node name="NumberLabel" parent="VBoxContainer/LessonContainer/HBoxContainer" index="0"]
+text = "Number"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LessonsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[editable path="VBoxContainer/LessonContainer"]

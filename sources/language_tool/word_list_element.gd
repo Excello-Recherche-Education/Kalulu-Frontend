@@ -2,6 +2,15 @@ extends MarginContainer
 
 signal delete_pressed()
 signal new_GP_asked(grapheme: String)
+signal validated()
+
+@export var table: = "Words"
+@export var table_graph_column: = "Word"
+@export var sub_table: = "GPs"
+@export var sub_table_graph_column: = "Grapheme"
+@export var sub_table_phon_column: = "Phoneme"
+@export var relational_table: = "GPsInWords"
+@export var sub_table_id: = "GPID"
 
 @onready var word_label: = $%Word
 @onready var graphemes_label: = $%Graphemes
@@ -68,6 +77,7 @@ func set_phonemes(p_phonemes: String) -> void:
 func _ready() -> void:
 	set_word(word)
 	set_graphemes(graphemes)
+	popup_menu.button.text = "Add new %s" % sub_table
 
 
 func _on_edit_button_pressed() -> void:
@@ -95,6 +105,7 @@ func _on_validate_button_pressed() -> void:
 	undo_redo.add_undo_property(self, "word", word)
 	undo_redo.commit_action()
 	tab_container.current_tab = 0
+	validated.emit()
 
 
 func _get_selected_grapheme(graphemes_array: PackedStringArray) -> int:
@@ -150,15 +161,15 @@ func _on_graphemes_edit_gui_input(event: InputEvent) -> void:
 	popup_menu.position = graphemes_edit.global_position + Vector2(0, graphemes_edit.size.y)
 	popup_menu.size = Vector2(graphemes_edit.size.x, 0)
 	popup_menu.clear(grapheme_ind)
-	Database.db.query_with_bindings("Select * FROM GPs WHERE Grapheme=?", [graphemes_array[grapheme_ind]])
+	Database.db.query_with_bindings("Select * FROM %s WHERE %s=?" % [sub_table, sub_table_graph_column], [graphemes_array[grapheme_ind]])
 	var results: = Database.db.query_result
 	if results.is_empty():
 		popup_menu.no_gp_mode()
 	else:
 		popup_menu.gp_mode()
 	for result in results:
-		var is_already_selected: bool = result.Grapheme == graphemes_array[grapheme_ind] and grapheme_ind < phonemes_array.size() and result.Phoneme == phonemes_array[grapheme_ind]
-		popup_menu.add_item(result.ID, result.Grapheme + "-" + result.Phoneme, is_already_selected)
+		var is_already_selected: bool = result[sub_table_graph_column] == graphemes_array[grapheme_ind] and grapheme_ind < phonemes_array.size() and result[sub_table_phon_column] == phonemes_array[grapheme_ind]
+		popup_menu.add_item(result.ID, result[sub_table_graph_column] + "-" + result[sub_table_phon_column], is_already_selected)
 		
 
 
@@ -198,30 +209,51 @@ func set_gp_ids_from_string(p_gp_ids: String) -> void:
 
 func insert_in_database() -> void:
 	if id >= 0:
-		Database.db.query_with_bindings("SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPsInWords.ID, ' ') as GPsInWordsIDs 
-			FROM Words 
-			INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
-			INNER JOIN GPs ON GPS.ID = GPsInWords.GPID
-			WHERE Words.ID = ? 
-			GROUP BY Words.ID", [id])
+		var query: = "SELECT %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs 
+			FROM %s 
+			INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
+			INNER JOIN %s ON %s.ID = %s.%s
+			WHERE %s.ID = ? 
+			GROUP BY %s.ID" % [table_graph_column, sub_table_graph_column, sub_table_graph_column,
+				sub_table_phon_column, sub_table_phon_column,
+				relational_table, relational_table,
+				table,
+				relational_table, relational_table, relational_table, table, relational_table, table_graph_column,
+				sub_table, sub_table, relational_table, sub_table_id,
+				table,
+				table]
+		Database.db.query_with_bindings(query, [id])
+		print(query)
 		if not Database.db.query_result.is_empty():
 			var e = Database.db.query_result[0]
-			if word != e.Word:
-				Database.db.update_rows("Words", "ID=%s" % id, {Word=word})
-			if graphemes != e.Graphemes or phonemes != e.Phonemes:
-				var gps_in_words_ids: Array = Array(e.GPsInWordsIDs.split(" "))
+			if word != e[table_graph_column]:
+				Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word})
+			if graphemes != e[sub_table_graph_column + "s"] or phonemes != e[sub_table_phon_column + "s"]:
+				var gps_in_words_ids: Array = Array(e[relational_table + "IDs"].split(" "))
 				while gps_in_words_ids.size() > gp_ids.size():
-					Database.db.delete_rows("GPsInWords", "ID=%s" % int(gps_in_words_ids.pop_back()))
+					Database.db.delete_rows(relational_table, "ID=%s" % int(gps_in_words_ids.pop_back()))
 				for i in gps_in_words_ids.size():
 					var gps_in_words_id: = int(gps_in_words_ids[i])
-					Database.db.update_rows("GPsInWords", "ID=%s" % gps_in_words_id, {WordID=id, GPID=gp_ids[i], Position=i})
+					Database.db.update_rows(relational_table, "ID=%s" % gps_in_words_id, {
+						table_graph_column + "ID": id,
+						sub_table_id: gp_ids[i],
+						"Position": i
+						})
 				for i in range(gps_in_words_ids.size(), gp_ids.size()):
-					Database.db.insert_row("GPsInWords", {WordID=id, GPID=gp_ids[i], Position=i})
+					Database.db.insert_row(relational_table, {
+						table_graph_column + "ID": id,
+						sub_table_id: gp_ids[i],
+						"Position": i
+						})
 			return
 			
-	Database.db.query_with_bindings("SELECT * FROM Words WHERE Word=?", [word])
+	Database.db.query_with_bindings("SELECT * FROM %s WHERE %s=?" % [table, table_graph_column], [word])
 	if Database.db.query_result.is_empty():
-		Database.db.insert_row("Words", {Word=word})
+		Database.db.insert_row(table, {table_graph_column: word})
 		id = Database.db.last_insert_rowid
 		for i in gp_ids.size():
-			Database.db.insert_row("GPsInWords", {WordID=id, GPID=gp_ids[i], Position=i})
+			Database.db.insert_row(relational_table, {
+						table_graph_column + "ID": id,
+						sub_table_id: gp_ids[i],
+						"Position": i
+					})

@@ -10,7 +10,7 @@ const _symbols_to_string = {
 }
 const base_path: =  "res://language_resources/"
 
-var language: = "test":
+var language: = "french":
 	set(value):
 		language = value
 		db_path = base_path + language + "/language.db"

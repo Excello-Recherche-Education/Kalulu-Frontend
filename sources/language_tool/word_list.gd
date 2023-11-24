@@ -1,12 +1,6 @@
 extends Control
 
-var word_scene: = preload("res://sources/language_tool/word_list_element.tscn")
-
-const query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIds 
-		FROM Words 
-		INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
-		INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID 
-		GROUP BY Words.ID"
+@export var element_scene: = preload("res://sources/language_tool/word_list_element.tscn")
 
 @onready var elements_container: = $%ElementsContainer
 @onready var save_button: = $%SaveButton
@@ -16,23 +10,41 @@ const query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as 
 var undo_redo: = UndoRedo.new()
 var in_new_gp_mode: = false:
 	set = set_in_new_gp_mode
+var _e
 
 
 func _ready() -> void:
-	Database.db.query(query)
+	_e = element_scene.instantiate()
+	
+	Database.db.query(_get_query())
 	
 	var results: = Database.db.query_result
 	for e in results:
-		var element: = word_scene.instantiate()
-		element.word = e.Word
-		element.graphemes = e.Graphemes
-		element.phonemes = e.Phonemes
-		element.id = e.WordId
-		element.set_gp_ids_from_string(e.GPIds)
+		var element: = element_scene.instantiate()
+		element.word = e[_e.table_graph_column]
+		element.graphemes = e[_e.sub_table_graph_column + "s"]
+		element.phonemes = e[_e.sub_table_phon_column + "s"]
+		element.id = e[_e.table_graph_column + "Id"]
+		element.set_gp_ids_from_string(_e.sub_table_id + "s")
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
 		element.new_GP_asked.connect(_on_element_new_GP_asked)
+
+
+func _get_query() -> String:
+	return "SELECT %s.ID as %sId, %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %ss 
+			FROM %s 
+			INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
+			INNER JOIN %s ON %s.ID = %s.%s
+			GROUP BY %s.ID" % [_e.table, _e.table_graph_column,
+				_e.table_graph_column, _e.sub_table_graph_column, _e.sub_table_graph_column,
+				_e.sub_table_phon_column, _e.sub_table_phon_column,
+				_e.sub_table, _e.sub_table_id,
+				_e.table,
+				_e.relational_table, _e.relational_table, _e.relational_table, _e.table, _e.relational_table, _e.table_graph_column,
+				_e.sub_table, _e.sub_table, _e.relational_table, _e.sub_table_id,
+				_e.table]
 
 
 func _input(event: InputEvent) -> void:
@@ -52,7 +64,7 @@ func _on_element_delete_pressed(element: Control) -> void:
 
 func _on_plus_button_pressed() -> void:
 	undo_redo.create_action("add")
-	var element: = word_scene.instantiate()
+	var element: = element_scene.instantiate()
 	element.word = ""
 	element.graphemes = ""
 	element.undo_redo = undo_redo
@@ -71,7 +83,7 @@ func _process(_delta: float) -> void:
 
 func _on_element_new_GP_asked(grapheme: String) -> void:
 	in_new_gp_mode = true
-	new_gp.grapheme = grapheme
+	new_gp[_e.sub_table_graph_column.to_lower()] = grapheme
 	new_gp.edit_mode()
 
 
@@ -88,14 +100,15 @@ func _on_gp_list_element_validated() -> void:
 func _on_save_button_pressed() -> void:
 	for element in elements_container.get_children():
 		element.insert_in_database()
-	Database.db.query(query)
+	Database.db.query(_get_query())
 	var result: = Database.db.query_result
 	for e in result:
 		var found: = false
 		for element in elements_container.get_children():
-			if element.graphemes == e.Graphemes and element.phonemes == e.Phonemes and element.word == e.Word:
+			if element.graphemes == e[_e.sub_table_graph_column + "s"] and element.phonemes == e[_e.sub_table_phon_column + "s"] and element.word == e[_e.table_graph_column]:
 				found = true
 				break
 		if not found:
-			Database.db.delete_rows("Words", "ID=%s" % e.WordId)
+			Database.db.delete_rows(_e.table, "ID=%s" % e[_e.table_graph_column + "Id"])
 	undo_redo.clear_history()
+

@@ -45,6 +45,7 @@ size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 100
 text = "Bonjour"
 horizontal_alignment = 1
+clip_text = true
 
 [node name="Graphemes" type="Label" parent="TabContainer/NormalContainer"]
 unique_name_in_owner = true
