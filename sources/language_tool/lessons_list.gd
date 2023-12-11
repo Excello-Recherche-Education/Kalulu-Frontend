@@ -83,16 +83,20 @@ func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
 
 
 func _on_save_button_pressed() -> void:
-	Database.db.query("Select Grapheme, Phoneme, LessonNb, group_concat(GPID, ' ') as GPIds, group_concat(Lessons.ID, ' ') as LessonIds FROM Lessons
-		INNER JOIN GPs ON Lessons.GPID = GPs.ID
-		GROUP BY LessonNb 
-		ORDER BY LessonNb ")
+	Database.db.query("Select Lessons.ID as LessonId FROM Lessons")
 	
 	var result: = Database.db.query_result
+	for row in result:
+		Database.db.delete_rows("Lessons", "ID=%s" % row.LessonId)
 	var children: = lessons_container.get_children()
 	for i in children.size():
 		var child: = children[i]
 		for gp_id in child.get_gp_ids():
-			pass
+			Database.db.insert_row("Lessons",
+			{
+				GPID = gp_id,
+				LessonNb = i + 1
+			})
+
 		
 		
