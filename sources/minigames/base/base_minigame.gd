@@ -52,6 +52,7 @@ var current_lives: = 0 :
 
 # Progression
 var current_progression: = 0 : set = set_current_progression
+var current_number_of_hints: = 0
 
 
 # ------------ Initialisation ------------
@@ -64,6 +65,7 @@ func _ready() -> void:
 		minigame_ui.set_voice_volume_slider(UserDataManager.get_voice_volume())
 		minigame_ui.set_effects_volume_slider(UserDataManager.get_effects_volume())
 	
+	_reset_logs()
 	_initialize()
 
 
@@ -138,7 +140,27 @@ func _save_logs() -> void:
 
 
 func _reset_logs() -> void:
-	logs = {}
+	logs = {
+		"answers": []
+	}
+
+
+func _log_new_response(response: Dictionary, awaited_response: Dictionary, all_stimuli: Array[Dictionary], all_distractors: Array[Dictionary]) -> void:
+	var response_log: = {
+		"reponse": response,
+		"awaited_response": awaited_response,
+		"all_stimuli": all_stimuli,
+		"all_distractors": all_distractors,
+		"is_right": response == awaited_response,
+		"minigame": minigame_name,
+		"number_of_hints": current_number_of_hints,
+		"current_progression": current_progression,
+		"max_progression": max_progression,
+		"current_lives": current_lives,
+		"max_number_of_lives": max_number_of_lives,
+	}
+	
+	logs["answers"].append(response_log)
 
 
 # ------------ UI ------------
@@ -177,10 +199,14 @@ func _on_minigame_ui_garden_button_pressed() -> void:
 func _on_minigame_ui_stimulus_button_pressed() -> void:
 	get_tree().paused = true
 	minigame_ui.lock()
+	
 	await minigame_ui.repeat_stimulus_animation(true)
+	
 	@warning_ignore("redundant_await")
 	await _play_stimulus()
+	
 	await minigame_ui.repeat_stimulus_animation(false)
+	
 	minigame_ui.unlock()
 	get_tree().paused = false
 
@@ -219,6 +245,9 @@ func _on_minigame_ui_voice_volume_changed(volume) -> void:
 
 func _on_minigame_ui_effects_volume_changed(volume) -> void:
 	UserDataManager.set_effects_volume(volume)
+
+
+# ------------ Setter getters ------------
 
 
 func set_current_progression(p_current_progression: int) -> void:
