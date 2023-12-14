@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://v0lyity2xtdk"]
+
+[ext_resource type="Script" path="res://sources/look_and_learn/tracing_effects.gd" id="1_fwn5n"]
+[ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="2_3m3v8"]
+[ext_resource type="AudioStream" uid="uid://dlxvbjp63w6wm" path="res://assets/look_and_learn/effect.wav" id="3_m2u4r"]
+
+[sub_resource type="Gradient" id="Gradient_tmnc4"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5inok"]
+gradient = SubResource("Gradient_tmnc4")
+width = 32
+
+[sub_resource type="Curve" id="Curve_lgbaw"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_he5ko"]
+width = 32
+curve = SubResource("Curve_lgbaw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_me6ey"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 25.0
+spread = 180.0
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+gravity = Vector3(0, 98, 0)
+scale_curve = SubResource("CurveTexture_he5ko")
+color_ramp = SubResource("GradientTexture1D_5inok")
+
+[node name="TracingEffects" type="Node2D"]
+script = ExtResource("1_fwn5n")
+
+[node name="TracingParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_me6ey")
+texture = ExtResource("2_3m3v8")
+lifetime = 0.5
+visibility_rect = Rect2(-500, -500, 1000, 1000)
+
+[node name="TracingAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_m2u4r")
+volume_db = -5.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

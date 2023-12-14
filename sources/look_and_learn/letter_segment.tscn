@@ -1,0 +1,61 @@
+[gd_scene load_steps=13 format=3 uid="uid://cw72s41o5vn4e"]
+
+[ext_resource type="Script" path="res://sources/look_and_learn/letter_segment.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://baqbd52qcuxh1" path="res://sources/look_and_learn/tracing_path.tscn" id="2_hdjbu"]
+[ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="4"]
+[ext_resource type="AudioStream" uid="uid://bqlrlnas4fkfa" path="res://assets/look_and_learn/win.wav" id="5"]
+[ext_resource type="PackedScene" uid="uid://v0lyity2xtdk" path="res://sources/look_and_learn/tracing_effects.tscn" id="5_nsgma"]
+
+[sub_resource type="Gradient" id="9"]
+offsets = PackedFloat32Array(0, 0.51632, 1)
+colors = PackedColorArray(1, 0.46875, 0.46875, 1, 1, 0.991699, 0.46875, 1, 0.480469, 1, 0.622528, 1)
+
+[sub_resource type="GradientTexture1D" id="10"]
+gradient = SubResource("9")
+width = 64
+
+[sub_resource type="Gradient" id="Gradient_tmnc4"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5inok"]
+gradient = SubResource("Gradient_tmnc4")
+width = 32
+
+[sub_resource type="Curve" id="Curve_lgbaw"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_he5ko"]
+width = 32
+curve = SubResource("Curve_lgbaw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dpfdt"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+gravity = Vector3(0, 98, 0)
+scale_curve = SubResource("CurveTexture_he5ko")
+color_ramp = SubResource("GradientTexture1D_5inok")
+
+[node name="LetterSegment" type="Node2D"]
+script = ExtResource("1")
+color_gradient = SubResource("10")
+
+[node name="TracingPath" parent="." instance=ExtResource("2_hdjbu")]
+
+[node name="CompleteParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_dpfdt")
+texture = ExtResource("4")
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.8
+
+[node name="CompleteAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5")
+
+[node name="TracingEffects" parent="." instance=ExtResource("5_nsgma")]
+
+[connection signal="finished" from="CompleteAudioStreamPlayer" to="." method="_on_CompleteAudioStreamPlayer_finished"]

@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=3 uid="uid://baqbd52qcuxh1"]
+
+[ext_resource type="Script" path="res://sources/look_and_learn/tracing_path.gd" id="1_4lqdu"]
+[ext_resource type="Texture2D" uid="uid://bfgwv7jidb5bs" path="res://assets/look_and_learn/guide.svg" id="2_2guls"]
+[ext_resource type="Texture2D" uid="uid://doql1x228r1bv" path="res://assets/look_and_learn/arrow.svg" id="3_imidm"]
+[ext_resource type="Texture2D" uid="uid://gbygdv35ltjx" path="res://assets/look_and_learn/children_hand_180x180.png" id="4_ey17m"]
+
+[sub_resource type="Animation" id="2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TracingPath/GuidePathFollow/Guide/arrow:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="3"]
+resource_name = "animate"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TracingPath/GuidePathFollow/Guide/arrow:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(40, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ei5ps"]
+_data = {
+"RESET": SubResource("2"),
+"animate": SubResource("3")
+}
+
+[node name="TracingPath" type="Path2D"]
+script = ExtResource("1_4lqdu")
+
+[node name="Line2D" type="Line2D" parent="."]
+width = 50.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="GuidePathFollow" type="PathFollow2D" parent="."]
+loop = false
+
+[node name="GuideAnimationPlayer" type="AnimationPlayer" parent="GuidePathFollow"]
+root_node = NodePath("../../..")
+libraries = {
+"": SubResource("AnimationLibrary_ei5ps")
+}
+autoplay = "animate"
+
+[node name="Guide" type="Sprite2D" parent="GuidePathFollow"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_2guls")
+
+[node name="arrow" type="Sprite2D" parent="GuidePathFollow/Guide"]
+texture = ExtResource("3_imidm")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="GuidePathFollow/Guide"]
+remote_path = NodePath("../../../../TracingEffects/TracingParticles")
+update_rotation = false
+update_scale = false
+
+[node name="_Timer_17672" type="Timer" parent="GuidePathFollow"]
+wait_time = 0.2
+one_shot = true
+
+[node name="HandPathFollow2D" type="PathFollow2D" parent="."]
+rotates = false
+loop = false
+
+[node name="Sprite" type="Sprite2D" parent="HandPathFollow2D"]
+position = Vector2(90, 90)
+texture = ExtResource("4_ey17m")
+
+[node name="_Timer_17673" type="Timer" parent="HandPathFollow2D"]
+wait_time = 0.2
+one_shot = true
