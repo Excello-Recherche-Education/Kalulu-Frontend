@@ -59,7 +59,7 @@ func draw_segment(segment: SegmentBuild) -> void:
 	for point in segment.points:
 		relative_points.append(point - line.global_position)
 	
-	line.points = Bezier.bezier_sampling(relative_points, points_per_lines)
+	line.points = Bezier.bezier_sampling(relative_points, max(points_per_lines, relative_points.size()))
 
 
 func draw_all_segments() -> void:
