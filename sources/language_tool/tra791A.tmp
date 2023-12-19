@@ -1,0 +1,284 @@
+[gd_scene load_steps=11 format=3 uid="uid://d2dsqx38l6yqc"]
+
+[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_kgjbj"]
+[ext_resource type="Script" path="res://sources/language_tool/tracing_builder.gd" id="1_rm5fr"]
+[ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="3_2sbjh"]
+[ext_resource type="Script" path="res://sources/language_tool/segment_container.gd" id="4_v078u"]
+
+[sub_resource type="Gradient" id="Gradient_1lmt0"]
+offsets = PackedFloat32Array(0, 0.166667, 0.333333, 0.5, 0.666667, 0.833333, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.983333, 0, 1, 0, 1, 0.0833333, 1, 0, 0.983334, 1, 1, 0.028, 0, 0.84, 1, 0.566667, 0, 1, 1, 1, 0, 0.716667, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agg5x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_54blg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8xb3m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qds63"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ssy0w"]
+
+[node name="TracingBuilder" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rm5fr")
+gp = null
+gradient = SubResource("Gradient_1lmt0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 128
+text = "Tracing Builder"
+
+[node name="SaveButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" instance=ExtResource("1_kgjbj")]
+layout_mode = 2
+
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" index="0"]
+texture = ExtResource("3_2sbjh")
+
+[node name="LowerContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+alignment = 1
+script = ExtResource("4_v078u")
+
+[node name="DrawingContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer/DrawingContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="GraphemeLabel" type="Label" parent="VBoxContainer/LowerContainer/DrawingContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 512
+text = "O"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlacePointButton" type="Button" parent="VBoxContainer/LowerContainer/DrawingContainer/MarginContainer/GraphemeLabel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_agg5x")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_54blg")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8xb3m")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qds63")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ssy0w")
+
+[node name="ButtonsParent" type="Control" parent="VBoxContainer/LowerContainer/DrawingContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Lines" type="Node2D" parent="VBoxContainer/LowerContainer/DrawingContainer"]
+unique_name_in_owner = true
+
+[node name="SegmentContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer"]
+custom_minimum_size = Vector2(750, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/LowerContainer/SegmentContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AddSegmentContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AddSegmentContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "Lower Grapheme"
+
+[node name="AddSegmentButton" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_kgjbj")]
+layout_mode = 2
+
+[node name="AllSegmentContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AllSegmentContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AllSegmentContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SegmentsContainer" type="VBoxContainer" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AllSegmentContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="UpperContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+alignment = 1
+script = ExtResource("4_v078u")
+
+[node name="DrawingContainer" type="PanelContainer" parent="VBoxContainer/UpperContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/UpperContainer/DrawingContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="GraphemeLabel" type="Label" parent="VBoxContainer/UpperContainer/DrawingContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 512
+text = "O"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlacePointButton" type="Button" parent="VBoxContainer/UpperContainer/DrawingContainer/MarginContainer/GraphemeLabel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_agg5x")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_54blg")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8xb3m")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qds63")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ssy0w")
+
+[node name="ButtonsParent" type="Control" parent="VBoxContainer/UpperContainer/DrawingContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Lines" type="Node2D" parent="VBoxContainer/UpperContainer/DrawingContainer"]
+
+[node name="SegmentContainer" type="MarginContainer" parent="VBoxContainer/UpperContainer"]
+custom_minimum_size = Vector2(750, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/UpperContainer/SegmentContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AddSegmentContainer" type="PanelContainer" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AddSegmentContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "Lower Grapheme"
+
+[node name="AddSegmentButton" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_kgjbj")]
+layout_mode = 2
+
+[node name="AllSegmentContainer" type="PanelContainer" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AllSegmentContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AllSegmentContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SegmentsContainer" type="VBoxContainer" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AllSegmentContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/LowerContainer/DrawingContainer/MarginContainer/GraphemeLabel/PlacePointButton" to="." method="_on_place_lower_point_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/LowerContainer/DrawingContainer/MarginContainer/GraphemeLabel/PlacePointButton" to="VBoxContainer/LowerContainer" method="_on_place_point_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer/AddSegmentButton" to="." method="_on_add_lower_segment_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer/AddSegmentButton" to="VBoxContainer/LowerContainer" method="_on_add_segment_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/UpperContainer/DrawingContainer/MarginContainer/GraphemeLabel/PlacePointButton" to="." method="_on_place_lower_point_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/UpperContainer/DrawingContainer/MarginContainer/GraphemeLabel/PlacePointButton" to="VBoxContainer/UpperContainer" method="_on_place_point_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer/AddSegmentButton" to="." method="_on_add_lower_segment_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer/AddSegmentButton" to="VBoxContainer/UpperContainer" method="_on_add_segment_button_pressed"]
+
+[editable path="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton"]

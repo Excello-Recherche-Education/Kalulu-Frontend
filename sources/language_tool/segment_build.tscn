@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://cc3ni3cos6bya"]
+
+[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_6jo1k"]
+[ext_resource type="Script" path="res://sources/language_tool/segment_build.gd" id="1_vfx2k"]
+[ext_resource type="Texture2D" uid="uid://b8tctfnsj3prx" path="res://assets/menus/minus_button.png" id="2_kw4hw"]
+[ext_resource type="Texture2D" uid="uid://c5jiyxrmmjmdb" path="res://assets/menus/modify_button.png" id="3_dc4jl"]
+
+[node name="SegmentBuild" type="HBoxContainer"]
+custom_minimum_size = Vector2(750, 0)
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+alignment = 1
+script = ExtResource("1_vfx2k")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Points:"
+
+[node name="NumberOfPointsLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0
+"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 75)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="ModifyButton" parent="." instance=ExtResource("1_6jo1k")]
+layout_mode = 2
+
+[node name="TextureRect" parent="ModifyButton" index="0"]
+texture = ExtResource("3_dc4jl")
+
+[node name="DeleteButton" parent="." instance=ExtResource("1_6jo1k")]
+layout_mode = 2
+
+[node name="TextureRect" parent="DeleteButton" index="0"]
+texture = ExtResource("2_kw4hw")
+
+[connection signal="pressed" from="ModifyButton" to="." method="_on_modify_button_pressed"]
+[connection signal="pressed" from="DeleteButton" to="." method="_on_delete_button_pressed"]
+
+[editable path="ModifyButton"]
+[editable path="DeleteButton"]
