@@ -44,9 +44,9 @@ func _process(_delta: float) -> void:
 		current_button = null
 	
 	if is_instance_valid(current_button):
-		var ind: = current_segment.remove_point(current_button.global_position)
+		var ind: = current_segment.remove_point(current_button.global_position - lines.global_position)
 		current_button.global_position = get_global_mouse_position()
-		current_segment.add_point_at(current_button.global_position, ind)
+		current_segment.add_point_at(current_button.global_position - lines.global_position, ind)
 
 
 func draw_segment(segment: SegmentBuild) -> void:
@@ -55,11 +55,8 @@ func draw_segment(segment: SegmentBuild) -> void:
 	
 	var ind_seg: = segments_container.get_children().find(segment)
 	var line: Line2D = lines.get_child(ind_seg)
-	var relative_points: = []
-	for point in segment.points:
-		relative_points.append(point - line.global_position)
 	
-	line.points = Bezier.bezier_sampling(relative_points, max(points_per_lines, relative_points.size()))
+	line.points = Bezier.bezier_sampling(segment.points, max(points_per_lines, segment.points.size()))
 
 
 func draw_all_segments() -> void:
@@ -81,7 +78,7 @@ func match_segment_with_buttons() -> void:
 			button.point_up.connect(_on_button_point_up.bind(button))
 			button.minus_pressed.connect(_on_button_minus_pressed.bind(button))
 		
-		buttons[i].global_position = points[i]
+		buttons[i].global_position = points[i] + lines.global_position
 		buttons[i].set_index(i + 1)
 	
 	for i in range(buttons.size() - 1, points.size() - 1, -1):
@@ -99,7 +96,7 @@ func _on_button_point_up(_button: SegmentPointButton) -> void:
 
 func _on_button_minus_pressed(button: SegmentPointButton) -> void:
 	if is_instance_valid(current_segment):
-		current_segment.remove_point(button.global_position)
+		current_segment.remove_point(button.global_position - lines.global_position)
 	
 	buttons.erase(button)
 	button.queue_free()
@@ -107,7 +104,7 @@ func _on_button_minus_pressed(button: SegmentPointButton) -> void:
 
 func _on_place_point_button_pressed() -> void:
 	if is_instance_valid(current_segment):
-		current_segment.add_point(get_global_mouse_position())
+		current_segment.add_point(get_global_mouse_position() - lines.global_position)
 
 
 func _on_add_segment_button_pressed() -> void:

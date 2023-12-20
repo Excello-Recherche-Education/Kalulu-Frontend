@@ -36,8 +36,8 @@ func _next_letter() -> void:
 	Database.db.query("Select LowerTracingPath, UpperTracingPath FROM LettersTracingData WHERE Letter = '" + grapheme[current_letter] + "'")
 	
 	if not Database.db.query_result.is_empty():
-		var lower_path: = grapheme[current_letter] + "_lower"
-		var upper_path: = grapheme[current_letter] + "_upper"
+		var lower_path: String = Database.db.query_result[0]["LowerTracingPath"]
+		var upper_path: String = Database.db.query_result[0]["UpperTracingPath"]
 		
 		_load_segments(lower_container, lower_path)
 		_load_segments(upper_container, upper_path)

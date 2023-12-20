@@ -43,12 +43,18 @@ theme_override_constants/margin_bottom = 20
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
+[node name="Title" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 128
 text = "Tracing Builder"
+
+[node name="Help" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+text = "- Right click to add and move points
+- Left click on a point to delete it
+- Save to move to the next letter"
 
 [node name="SaveButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" instance=ExtResource("1_kgjbj")]
 layout_mode = 2
