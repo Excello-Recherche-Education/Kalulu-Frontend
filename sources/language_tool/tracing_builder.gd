@@ -1,6 +1,6 @@
 extends Control
 
-@export var grapheme: = "an"
+@export var grapheme: = "azertyuiopmlkjhgfdsqwxcvbnéàùèç"
 
 @export var gradient: Gradient
 
