@@ -60,18 +60,10 @@ texture = ExtResource("3_2sbjh")
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" parent="VBoxContainer/LowerContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer" index="0"]
-text = "Lower Grapheme"
-
 [node name="UpperContainer" parent="VBoxContainer" instance=ExtResource("4_frjng")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" parent="VBoxContainer/UpperContainer/SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer" index="0"]
-text = "Upper Grapheme"
-
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" to="." method="_on_save_button_pressed"]
 
 [editable path="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton"]
-[editable path="VBoxContainer/LowerContainer"]
-[editable path="VBoxContainer/UpperContainer"]

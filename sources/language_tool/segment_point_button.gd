@@ -9,7 +9,7 @@ signal minus_pressed()
 
 
 func _ready() -> void:
-	z_index = 10
+	z_index = 1000
 
 
 func set_index(ind: int) -> void:

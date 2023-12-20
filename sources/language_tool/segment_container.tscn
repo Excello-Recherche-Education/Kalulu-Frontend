@@ -92,7 +92,7 @@ mouse_filter = 2
 [node name="Label" type="Label" parent="SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
-text = "Grapheme"
+text = "Add segment"
 
 [node name="AddSegmentButton" parent="SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_h02qb")]
 layout_mode = 2
