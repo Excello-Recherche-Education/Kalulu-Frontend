@@ -1,18 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://cw72s41o5vn4e"]
+[gd_scene load_steps=11 format=3 uid="uid://cw72s41o5vn4e"]
 
 [ext_resource type="Script" path="res://sources/look_and_learn/letter_segment.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://baqbd52qcuxh1" path="res://sources/look_and_learn/tracing_path.tscn" id="2_hdjbu"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="4"]
 [ext_resource type="AudioStream" uid="uid://bqlrlnas4fkfa" path="res://assets/look_and_learn/win.wav" id="5"]
 [ext_resource type="PackedScene" uid="uid://v0lyity2xtdk" path="res://sources/look_and_learn/tracing_effects.tscn" id="5_nsgma"]
-
-[sub_resource type="Gradient" id="9"]
-offsets = PackedFloat32Array(0, 0.51632, 1)
-colors = PackedColorArray(1, 0.46875, 0.46875, 1, 1, 0.991699, 0.46875, 1, 0.480469, 1, 0.622528, 1)
-
-[sub_resource type="GradientTexture1D" id="10"]
-gradient = SubResource("9")
-width = 64
 
 [sub_resource type="Gradient" id="Gradient_tmnc4"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -39,8 +31,8 @@ scale_curve = SubResource("CurveTexture_he5ko")
 color_ramp = SubResource("GradientTexture1D_5inok")
 
 [node name="LetterSegment" type="Node2D"]
+z_index = 100
 script = ExtResource("1")
-color_gradient = SubResource("10")
 
 [node name="TracingPath" parent="." instance=ExtResource("2_hdjbu")]
 
@@ -58,4 +50,6 @@ stream = ExtResource("5")
 
 [node name="TracingEffects" parent="." instance=ExtResource("5_nsgma")]
 
+[connection signal="demo_finished" from="TracingPath" to="." method="_on_tracing_path_demo_finished"]
+[connection signal="finished" from="TracingPath" to="." method="_on_tracing_path_finished"]
 [connection signal="finished" from="CompleteAudioStreamPlayer" to="." method="_on_CompleteAudioStreamPlayer_finished"]

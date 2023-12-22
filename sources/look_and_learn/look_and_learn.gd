@@ -7,11 +7,10 @@ extends Control
 @onready var video_player: = %VideoStreamPlayer
 @onready var image: = %Image
 @onready var grapheme_label: = %GraphemeLabel
-@onready var tracing_manager: = $TracingManager
+@onready var tracing_manager: = %TracingManager
 @onready var grapheme_particles: = $GraphemeParticles
 
 var current_grapheme: = "a"
-var button_display: = "a A"
 
 var current_video: = 0
 var videos: = [
@@ -28,14 +27,10 @@ var sounds: = [
 ]
 
 var current_tracing: = 0
-var tracings: = [
-	"print_lower_",
-	"print_upper_",
-]
 
 
 func _ready() -> void:
-	grapheme_label.text = button_display
+	grapheme_label.text = current_grapheme.to_lower() + " " + current_grapheme.to_upper()
 	grapheme_particles.emitting = true
 
 
@@ -61,7 +56,7 @@ func play_images_and_sounds()  -> void:
 
 
 func load_tracing() -> void:
-	tracing_manager.setup([tracings[0] + current_grapheme])
+	tracing_manager.setup(current_grapheme)
 	current_tracing = 1
 
 
@@ -91,12 +86,4 @@ func _on_audio_stream_player_finished() -> void:
 
 
 func _on_tracing_manager_finished() -> void:
-	if current_tracing < tracings.size():
-		tracing_manager.reset()
-		
-		tracing_manager.setup([tracings[current_tracing] + current_grapheme])
-		current_tracing += 1
-		
-		tracing_manager.start()
-	else:
-		animation_player.play("end_tracing")
+	animation_player.play("end_tracing")
