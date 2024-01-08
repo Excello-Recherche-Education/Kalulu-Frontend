@@ -13,25 +13,32 @@ extends Control
 var current_grapheme: = "a"
 
 var current_video: = 0
-var videos: = [
-	preload("res://language_resources/french/look_and_learn/videos/cap.a_wide.ogv"),
-	preload("res://language_resources/french/look_and_learn/videos/cap.a_close.ogv"),
-]
+var videos: = []
 
 var current_image_and_sound: = 0
-var images: = [
-	preload("res://language_resources/french/look_and_learn/images/pineapple.png"),
-]
-var sounds: = [
-	preload("res://language_resources/french/look_and_learn/sounds/ananas.mp3"),
-]
-
-var current_tracing: = 0
+var images: = []
+var sounds: = []
 
 
 func _ready() -> void:
+	setup()
+
+
+func setup() -> void:
 	grapheme_label.text = current_grapheme.to_lower() + " " + current_grapheme.to_upper()
 	grapheme_particles.emitting = true
+	
+	videos = []
+	Database.db.query("Select VideoPath FROM GPsVideosPaths INNER JOIN GPs WHERE GPs.Grapheme = '" + current_grapheme + "'")
+	for r in Database.db.query_result:
+		videos.append(load(r["VideoPath"]))
+	
+	images = []
+	sounds = []
+	Database.db.query("Select ImagePath, SoundPath FROM GPsImagesAndSoundsPaths INNER JOIN GPs WHERE GPs.Grapheme = '" + current_grapheme + "'")
+	for r in Database.db.query_result:
+		images.append(load(r["ImagePath"]))
+		sounds.append(load(r["SoundPath"]))
 
 
 func play_videos() -> void:
@@ -57,7 +64,6 @@ func play_images_and_sounds()  -> void:
 
 func load_tracing() -> void:
 	tracing_manager.setup(current_grapheme)
-	current_tracing = 1
 
 
 func play_tracing() -> void:
