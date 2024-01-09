@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://b75ondy7h3ssl"]
+[gd_scene load_steps=7 format=3 uid="uid://b75ondy7h3ssl"]
 
 [ext_resource type="Script" path="res://sources/language_tool/lessons_list.gd" id="1_0e3ki"]
 [ext_resource type="PackedScene" uid="uid://di1ul6ixytmcj" path="res://sources/language_tool/lesson_container.tscn" id="2_lhjp5"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="3_jascd"]
+[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="4_g2qry"]
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="4_jdhgf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73um4"]
@@ -42,6 +43,12 @@ text = "GPs"
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/LessonContainer"]
 layout_mode = 2
 alignment = 2
+
+[node name="BackButton" parent="VBoxContainer/LessonContainer/HBoxContainer2" instance=ExtResource("3_jascd")]
+layout_mode = 2
+
+[node name="TextureRect" parent="VBoxContainer/LessonContainer/HBoxContainer2/BackButton" index="0"]
+texture = ExtResource("4_g2qry")
 
 [node name="SaveButton" parent="VBoxContainer/LessonContainer/HBoxContainer2" instance=ExtResource("3_jascd")]
 layout_mode = 2
@@ -87,8 +94,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[connection signal="pressed" from="VBoxContainer/LessonContainer/HBoxContainer2/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/LessonContainer/HBoxContainer2/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/LessonContainer/HBoxContainer2/PlusButton" to="." method="_on_plus_button_pressed"]
 
 [editable path="VBoxContainer/LessonContainer"]
+[editable path="VBoxContainer/LessonContainer/HBoxContainer2/BackButton"]
 [editable path="VBoxContainer/LessonContainer/HBoxContainer2/SaveButton"]

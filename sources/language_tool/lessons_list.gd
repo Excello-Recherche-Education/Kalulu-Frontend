@@ -11,7 +11,8 @@ var lessons: = {}
 
 func _ready() -> void:
 	Database.db.query("Select Grapheme, Phoneme, LessonNb, GPID FROM Lessons
-		INNER JOIN GPs ON Lessons.GPID = GPs.ID
+		INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
+		INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
 		ORDER BY LessonNb")
 	for e in Database.db.query_result:
 		if lessons.has(e.LessonNb):
@@ -25,7 +26,7 @@ func _ready() -> void:
 			lessons[e.LessonNb] = lesson_container
 	
 	Database.db.query("SELECT Grapheme, Phoneme, GPs.ID as GPID FROM GPs
-		WHERE NOT EXISTS(SELECT 1 FROM Lessons WHERE GPs.ID=Lessons.GPID)")
+		WHERE NOT EXISTS(SELECT 1 FROM GPsInLessons WHERE GPs.ID=GPsInLessons.GPID)")
 	for e in Database.db.query_result:
 		var gp_label: = gp_label_scene.instantiate()
 		unused_gp_container.add_child(gp_label)
@@ -91,12 +92,18 @@ func _on_save_button_pressed() -> void:
 	var children: = lessons_container.get_children()
 	for i in children.size():
 		var child: = children[i]
+		Database.db.insert_row("Lessons",
+		{
+			LessonNb = i + 1
+		})
+		var lesson_id: = Database.db.last_insert_rowid
 		for gp_id in child.get_gp_ids():
 			Database.db.insert_row("Lessons",
 			{
 				GPID = gp_id,
-				LessonNb = i + 1
+				LessonID = lesson_id,
 			})
 
-		
-		
+
+func _on_back_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")

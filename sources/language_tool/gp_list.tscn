@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnyl3pxt7dn8y"]
+[gd_scene load_steps=6 format=3 uid="uid://cnyl3pxt7dn8y"]
 
 [ext_resource type="Script" path="res://sources/language_tool/gp_list.gd" id="1_vqemo"]
 [ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="2_belwy"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="3_837c6"]
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="4_a4ww8"]
+[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="4_sg3ch"]
 
 [node name="GpList" type="Control"]
 layout_mode = 3
@@ -56,6 +57,17 @@ tooltip_text = "Add GP"
 [node name="TextureRect" parent="VBoxContainer/GpListElement/SaveButton" index="0"]
 texture = ExtResource("4_a4ww8")
 
+[node name="BackButton" parent="VBoxContainer/GpListElement" instance=ExtResource("3_837c6")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(120, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Add GP"
+
+[node name="TextureRect" parent="VBoxContainer/GpListElement/BackButton" index="0"]
+texture = ExtResource("4_sg3ch")
+
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
 custom_minimum_size = Vector2(2.08165e-12, 18)
 layout_mode = 2
@@ -74,9 +86,11 @@ theme_override_constants/separation = 0
 
 [connection signal="pressed" from="VBoxContainer/GpListElement/PlusButton" to="." method="_on_plus_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/GpListElement/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/GpListElement/BackButton" to="." method="_on_back_button_pressed"]
 
 [editable path="VBoxContainer/GpListElement"]
 [editable path="VBoxContainer/GpListElement/TabContainer/NormalContainer/EditButton"]
 [editable path="VBoxContainer/GpListElement/TabContainer/EditContainer/DeleteButton"]
 [editable path="VBoxContainer/GpListElement/TabContainer/EditContainer/ValidateButton"]
 [editable path="VBoxContainer/GpListElement/SaveButton"]
+[editable path="VBoxContainer/GpListElement/BackButton"]

@@ -2,8 +2,9 @@ extends Control
 
 var element_scene: = preload("res://sources/language_tool/gp_list_element.tscn")
 
-@onready var elements_container: = $%ElementsContainer
-@onready var save_button: = $%SaveButton
+@onready var elements_container: = %ElementsContainer
+@onready var save_button: = %SaveButton
+@onready var back_button: = %BackButton
 
 var undo_redo: = UndoRedo.new()
 
@@ -64,6 +65,7 @@ func _on_save_button_pressed() -> void:
 
 func _process(_delta: float) -> void:
 	save_button.visible = undo_redo.has_undo()
+	back_button.visible = not undo_redo.has_undo()
 
 
 func _on_element_delete_pressed(element: Control) -> void:
@@ -72,3 +74,7 @@ func _on_element_delete_pressed(element: Control) -> void:
 	undo_redo.add_undo_method(elements_container.add_child.bind(element))
 	undo_redo.add_undo_method(elements_container.move_child.bind(element, element.get_index()))
 	undo_redo.commit_action()
+
+
+func _on_back_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")

@@ -2,10 +2,11 @@ extends Control
 
 @export var element_scene: = preload("res://sources/language_tool/word_list_element.tscn")
 
-@onready var elements_container: = $%ElementsContainer
-@onready var save_button: = $%SaveButton
+@onready var elements_container: = %ElementsContainer
+@onready var save_button: = %SaveButton
 @onready var new_gp_layer: = $NewGPLayer
-@onready var new_gp: = $%NewGP
+@onready var new_gp: = %NewGP
+@onready var back_button: = %BackButton
 
 var undo_redo: = UndoRedo.new()
 var in_new_gp_mode: = false:
@@ -79,6 +80,7 @@ func _on_plus_button_pressed() -> void:
 
 func _process(_delta: float) -> void:
 	save_button.visible = undo_redo.has_undo()
+	back_button.visible = not undo_redo.has_undo()
 
 
 func _on_element_new_GP_asked(grapheme: String) -> void:
@@ -112,3 +114,7 @@ func _on_save_button_pressed() -> void:
 			Database.db.delete_rows(_e.table, "ID=%s" % e[_e.table_graph_column + "Id"])
 	undo_redo.clear_history()
 
+
+
+func _on_back_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")

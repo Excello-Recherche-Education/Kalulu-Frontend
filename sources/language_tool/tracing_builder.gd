@@ -88,3 +88,7 @@ func _on_save_button_pressed() -> void:
 		Database.db.query("INSERT INTO LettersTracingData (Letter, LowerTracingPath, UpperTracingPath) VALUES ('" + grapheme[current_letter] + "','" + lower_path + "','" + upper_path + "')")
 	
 	_next_letter()
+
+
+func _on_back_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")

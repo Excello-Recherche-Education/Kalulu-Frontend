@@ -33,7 +33,9 @@ func _exit_tree() -> void:
 
 
 func get_GP_for_lesson(lesson_nb: int, distinct: bool) -> Array:
-	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb == ?"
+	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs 
+	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
+	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb == ?"
 	if distinct:
 		query += "GROUP BY Grapheme"
 	db.query_with_bindings(query, [lesson_nb])
@@ -41,7 +43,9 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool) -> Array:
 
 
 func get_GP_before_lesson(lesson_nb: int, distinct: bool) -> Array:
-	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb < ?"
+	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs 
+	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
+	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb < ?"
 	if distinct:
 		query += "GROUP BY Grapheme"
 	db.query_with_bindings(query, [lesson_nb])
@@ -49,7 +53,9 @@ func get_GP_before_lesson(lesson_nb: int, distinct: bool) -> Array:
 
 
 func get_GP_before_and_for_lesson(lesson_nb: int, distinct: bool) -> Array:
-	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs INNER JOIN Lessons ON Lessons.GPID = GPs.ID AND Lessons.LessonNb <= ?"
+	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs 
+	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
+	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?"
 	if distinct:
 		query += "GROUP BY Grapheme"
 	db.query_with_bindings(query, [lesson_nb])
@@ -164,9 +170,18 @@ func _import_lessons() -> void:
 		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
 		var GP_id = db.query_result[0]["ID"]
 		var lesson_nb: = int(e.LESSON)
-		db.insert_row("Lessons", {
+		db.query_with_bindings("SELECT * FROM Lessons WHERE LessonNb=?", [lesson_nb])
+		var lesson_id: = -1
+		if db.query_result.is_empty():
+			db.insert_row("Lessons", {
+				LessonNb = lesson_nb
+			})
+			lesson_id = db.last_insert_rowid
+		else:
+			lesson_id = db.query_result[0]["ID"]
+		db.insert_row("GPsInLessons", {
 			GPID = GP_id,
-			LessonNb = lesson_nb
+			LessonID = lesson_id,
 		})
 
 
