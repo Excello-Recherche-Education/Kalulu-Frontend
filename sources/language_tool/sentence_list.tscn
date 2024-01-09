@@ -60,6 +60,7 @@ layout_mode = 2
 [editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/MinusButton"]
 [editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/ValidateButton"]
 [editable path="VBoxContainer/WordListElement/SaveButton"]
+[editable path="VBoxContainer/WordListElement/BackButton"]
 [editable path="NewGPLayer/VBoxContainer/Title"]
 [editable path="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer/EditButton"]
 [editable path="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer/DeleteButton"]

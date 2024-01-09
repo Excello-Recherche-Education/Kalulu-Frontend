@@ -73,12 +73,26 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 
 
 func get_words_for_lesson(lesson_nb: int) -> Array:
-	db.query_with_bindings("SELECT DISTINCT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs INNER JOIN Lessons on Words.ID = GPsInWords.WordID AND GPS.ID = GPsInWords.GPID AND Lessons.GPID = GPs.ID AND Lessons.LessonNb <= ?", [lesson_nb])
+	db.query_with_bindings("SELECT DISTINCT Word FROM Words 
+	INNER JOIN GPsInWords
+	INNER JOIN GPs 
+	INNER JOIN Lessons 
+	INNER JOIN GPsInLessons
+	ON Words.ID = GPsInWords.WordID AND GPS.ID = GPsInWords.GPID 
+	AND Lessons.ID = GPsInLessons.LessonID
+	AND GPsInLessons.GPID = GPs.ID AND Lessons.LessonNb <= ?", [lesson_nb])
 	return db.query_result
 
 
 func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
-	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme, distractor.Phoneme From GPs stimuli INNER JOIN GPs distractor INNER JOIN Lessons ON stimuli.Grapheme=? AND distractor.type = stimuli.type AND distractor.Grapheme != stimuli.Grapheme AND Lessons.GPID = distractor.ID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
+	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme, distractor.Phoneme From GPs stimuli 
+	INNER JOIN GPs distractor 
+	INNER JOIN Lessons 
+	INNER JOIN GPsInLessons
+	ON stimuli.Grapheme=? AND distractor.type = stimuli.type 
+	AND distractor.Grapheme != stimuli.Grapheme 
+	AND GPsInLessons.GPID = distractor.ID
+	AND Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
 	return db.query_result
 
 
