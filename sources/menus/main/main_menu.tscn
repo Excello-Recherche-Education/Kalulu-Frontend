@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://6v3nachs7j71"]
+
+[ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_afd4d"]
+[ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_77rmy"]
+[ext_resource type="PackedScene" uid="uid://dp4182l80ntvn" path="res://sources/menus/main/plants/flower.tscn" id="4_cdedv"]
+[ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="4_onj68"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0r1ij")
+
+[node name="NightSky" parent="." instance=ExtResource("1_afd4d")]
+layout_mode = 1
+
+[node name="PalmTop" parent="." instance=ExtResource("3_77rmy")]
+position = Vector2(728, 1096)
+scale = Vector2(2, 2)
+
+[node name="PalmBottom" parent="." instance=ExtResource("3_77rmy")]
+light_mask = 0
+position = Vector2(1720, 1800)
+scale = Vector2(2, 2)
+
+[node name="Bush" parent="." instance=ExtResource("4_onj68")]
+position = Vector2(704, 1824)
+scale = Vector2(2, 2)
+
+[node name="Flower" parent="." instance=ExtResource("4_cdedv")]
+position = Vector2(344, 1800)
+scale = Vector2(2, 2)
+
+[node name="Button" type="Button" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 2560.0
+offset_bottom = 1792.0
+
+[connection signal="pressed" from="Button" to="." method="_on_main_button_pressed"]

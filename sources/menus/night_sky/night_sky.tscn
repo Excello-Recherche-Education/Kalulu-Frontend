@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3 uid="uid://wdjp1sv55q4f"]
+
+[ext_resource type="Texture2D" uid="uid://bot613w0i1p2u" path="res://assets/particles/star.png" id="1_j3m5j"]
+[ext_resource type="Texture2D" uid="uid://clwx5ksla5icp" path="res://assets/gardens/gardens/grid_mask.png" id="2_md1dy"]
+
+[sub_resource type="Gradient" id="Gradient_oo2rt"]
+offsets = PackedFloat32Array(0, 0.381323, 0.735409)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ufvor"]
+gradient = SubResource("Gradient_oo2rt")
+
+[sub_resource type="Curve" id="Curve_t7bgt"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.657143, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.500271), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_2i3g2"]
+curve = SubResource("Curve_t7bgt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qhymc"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 1250.0
+emission_ring_inner_radius = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_2i3g2")
+color_ramp = SubResource("GradientTexture1D_ufvor")
+
+[node name="NightSky" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.00392157, 0.0980392, 1)
+
+[node name="StarsParticles" type="GPUParticles2D" parent="."]
+position = Vector2(1280, 896)
+amount = 500
+process_material = SubResource("ParticleProcessMaterial_qhymc")
+texture = ExtResource("1_j3m5j")
+lifetime = 8.0
+preprocess = 2.0
+speed_scale = 0.5
+explosiveness = 0.1
+randomness = 1.0
+visibility_rect = Rect2(0, 0, 0, 0)
+
+[node name="Light" type="PointLight2D" parent="."]
+position = Vector2(1284, 896)
+scale = Vector2(2.00625, 1.61429)
+energy = 3.0
+texture = ExtResource("2_md1dy")
+texture_scale = 2.0
