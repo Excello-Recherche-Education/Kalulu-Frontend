@@ -38,6 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Background" type="ColorRect" parent="."]
+light_mask = 512
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,6 +48,7 @@ grow_vertical = 2
 color = Color(0, 0.00392157, 0.0980392, 1)
 
 [node name="StarsParticles" type="GPUParticles2D" parent="."]
+light_mask = 0
 position = Vector2(1280, 896)
 amount = 500
 process_material = SubResource("ParticleProcessMaterial_qhymc")
@@ -62,5 +64,6 @@ visibility_rect = Rect2(0, 0, 0, 0)
 position = Vector2(1284, 896)
 scale = Vector2(2.00625, 1.61429)
 energy = 3.0
+range_item_cull_mask = 512
 texture = ExtResource("2_md1dy")
 texture_scale = 2.0
