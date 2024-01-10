@@ -1,4 +1,15 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dqjvrt5nrtwn1"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://dqjvrt5nrtwn1"]
+
+[ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
+[ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="2_hbp6q"]
+[ext_resource type="Texture2D" uid="uid://cacy10k45kq6u" path="res://assets/theme/up.svg" id="3_1nwm4"]
+[ext_resource type="Texture2D" uid="uid://b7fqrj816kdjg" path="res://assets/theme/refresh.svg" id="4_ymfot"]
+[ext_resource type="Texture2D" uid="uid://dxmj0s0yecf1q" path="res://assets/theme/visibility.svg" id="5_yja2v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nikxc"]
+bg_color = Color(0.254902, 0.329412, 0.572549, 1)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sfncn"]
 bg_color = Color(0.254902, 0.329412, 0.572549, 1)
@@ -11,9 +22,22 @@ border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
 [resource]
+AcceptDialog/styles/panel = SubResource("StyleBoxFlat_nikxc")
+Button/font_sizes/font_size = 32
+FileDialog/icons/back_folder = ExtResource("1_mdn6k")
+FileDialog/icons/forward_folder = ExtResource("2_hbp6q")
+FileDialog/icons/parent_folder = ExtResource("3_1nwm4")
+FileDialog/icons/reload = ExtResource("4_ymfot")
+FileDialog/icons/toggle_hidden = ExtResource("5_yja2v")
 Label/font_sizes/font_size = 42
 LineEdit/constants/caret_width = 4
+LineEdit/font_sizes/font_size = 32
+MenuBar/font_sizes/font_size = 32
+MenuButton/font_sizes/font_size = 32
+OptionButton/font_sizes/font_size = 32
 Panel/styles/panel = SubResource("StyleBoxFlat_sfncn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_3gh3j")
 PopupMenu/font_sizes/font_size = 100
+TextEdit/font_sizes/font_size = 32
 TooltipLabel/font_sizes/font_size = 80
+Tree/font_sizes/font_size = 32
