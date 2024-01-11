@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=3 uid="uid://m07xvvercaum"]
+
+[ext_resource type="Script" path="res://sources/language_tool/video_gp_description.gd" id="1_kww8f"]
+[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_liexj"]
+[ext_resource type="Texture2D" uid="uid://5fffpm7hc12k" path="res://assets/menus/upload.png" id="3_f6nbg"]
+[ext_resource type="Texture2D" uid="uid://b8tctfnsj3prx" path="res://assets/menus/minus_button.png" id="4_vccxx"]
+
+[node name="VideoGPDescription" type="HBoxContainer"]
+script = ExtResource("1_kww8f")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(1166, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="GPMenuButton" type="MenuButton" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "GP"
+alignment = 0
+
+[node name="VideoContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(1166, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VideoContainer"]
+layout_mode = 2
+
+[node name="VideoCheckBox" type="CheckBox" parent="VideoContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+button_mask = 0
+
+[node name="VideoUploadButton" parent="VideoContainer/HBoxContainer" instance=ExtResource("2_liexj")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TextureRect" parent="VideoContainer/HBoxContainer/VideoUploadButton" index="0"]
+texture = ExtResource("3_f6nbg")
+
+[node name="Button" parent="." instance=ExtResource("2_liexj")]
+layout_mode = 2
+
+[node name="TextureRect" parent="Button" index="0"]
+texture = ExtResource("4_vccxx")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(1500, 1000)
+always_on_top = true
+popup_window = true
+ok_button_text = "Ouvrir"
+file_mode = 0
+access = 2
+
+[connection signal="pressed" from="VideoContainer/HBoxContainer/VideoUploadButton" to="." method="_on_video_upload_button_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+
+[editable path="VideoContainer/HBoxContainer/VideoUploadButton"]
+[editable path="Button"]

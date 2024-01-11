@@ -14,7 +14,7 @@ const language_folder: = "french/"
 const image_folder: = "look_and_learn/images/"
 const sound_folder: = "look_and_learn/sounds/"
 const image_extension: = ".png"
-const sound_extension: = ".mp4"
+const sound_extension: = ".mp3"
 
 var gp: = ""
 var gp_list: = {}
