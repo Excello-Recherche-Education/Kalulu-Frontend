@@ -1,5 +1,6 @@
 extends Control
 
+signal cleared
 signal disappeared
 
 @export var lilypad_crossing_time: = 5.0
@@ -10,7 +11,8 @@ const lilypad_class: = preload("res://sources/minigames/frog/lilypad/lilypad.tsc
 @onready var spawn_timer: = $SpawnTimer
 
 var is_cleared: = false
-var stimuli: = []
+var stimuli: = []:
+	set = _set_stimuli
 var are_they_distractors: = []
 var ready_to_spawn: = false
 var despawned_lilypads: = []
@@ -21,6 +23,9 @@ var bottom_point: = Vector2.ZERO
 var center_point: = Vector2.ZERO
 var lilypad_scale: = 1.0
 var top_to_bottom: = true
+
+var last_stimuli: = []
+var potential_size: = 0
 
 
 func _ready() -> void:
@@ -33,12 +38,22 @@ func _ready() -> void:
 		
 		lilypad.frog_land.connect(_on_lilypad_frog_land.bind(lilypad))
 		lilypad.frog_fall.connect(_on_lilypad_frog_fall.bind(lilypad))
+	
+	
 
 
 func _process(_delta: float) -> void:
 	if ready_to_spawn and stimuli.size() != 0:
-		var index: = randi() % stimuli.size()
-		_spawn_lilypad(stimuli[index], are_they_distractors[index])
+		var potential_stimuli: = stimuli.duplicate()
+		for stimulus in last_stimuli:
+			potential_stimuli.erase(stimulus)
+		
+		var index: = randi() % potential_stimuli.size()
+		_spawn_lilypad(potential_stimuli[index], are_they_distractors[index])
+		
+		last_stimuli.append(potential_stimuli[index])
+		if last_stimuli.size() > potential_size:
+			last_stimuli.pop_front()
 
 
 func disappear() -> void:
@@ -118,6 +133,8 @@ func _on_lilypad_frog_land(lilypad: Node2D) -> void:
 	spawn_timer.stop()
 	ready_to_spawn = false
 	is_cleared = true
+	
+	cleared.emit()
 
 
 func _on_lilypad_frog_fall(lilypad: Node2D) -> void:
@@ -145,3 +162,9 @@ func _on_resized() -> void:
 	center_point = rect.size / 2.0
 	
 	lilypad_scale = rect.size.x / 100.0
+
+
+func _set_stimuli(value: Array) -> void:
+	stimuli = value
+	
+	potential_size = max(0, min(stimuli.size() - 2, 4))

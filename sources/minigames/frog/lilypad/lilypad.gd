@@ -15,10 +15,7 @@ var stimulus: Dictionary:
 var is_distractor: = true:
 	set(value):
 		is_distractor = value
-		if is_distractor:
-			label.set("theme_override_colors/font_color", Color.BLACK)
-		else:
-			label.set("theme_override_colors/font_color", Color.WHITE)
+		label.set("theme_override_colors/font_color", Color.BLACK)
 
 
 func _ready() -> void:

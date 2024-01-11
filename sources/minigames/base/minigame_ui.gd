@@ -56,6 +56,10 @@ const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/lif
 @onready var animation_player: = $AnimationPlayer
 
 
+func _ready() -> void:
+	model_progression_rect.texture = empty_progression_icon
+
+
 # ------------ Lock/Unlock ------------
 
 

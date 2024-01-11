@@ -14,6 +14,7 @@ signal flooded
 @onready var jump_area_collision: = $JumpArea/CollisionShape2D
 @onready var frog_area: = $FrogArea
 
+var can_jump: = true
 var follow_mouse: = false
 var is_jumping: = false
 var land_area: Area2D
@@ -45,6 +46,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _jump(direction: Vector2) -> void:
+	if not can_jump:
+		return
+	
 	_search_for_land_area()
 	
 	# Checking if there is somewhere to land

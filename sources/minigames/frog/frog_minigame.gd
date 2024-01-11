@@ -90,6 +90,8 @@ func _create_tracks() -> void:
 		track.stimuli = track_stimuli
 		track.are_they_distractors = are_distractors
 		track.top_to_bottom = i % 2
+	
+	lilypad_tracks[current_word.GPs.size() - 1].cleared.connect(_on_last_lilypad_cleared)
 
 
 func _play_current_word() -> void:
@@ -116,6 +118,15 @@ func _on_frog_flooded() -> void:
 	
 	for track in lilypad_tracks:
 		track.restart()
+
+
+func _on_last_lilypad_cleared() -> void:
+	frog.can_jump = false
+	
+	await get_tree().create_timer(1.0).timeout
+	
+	frog.can_jump = true
+	frog._jump(Vector2.RIGHT)
 
 
 func _on_end_area_area_entered(area: Area2D) -> void:
