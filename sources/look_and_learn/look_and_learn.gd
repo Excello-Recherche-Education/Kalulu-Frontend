@@ -10,7 +10,17 @@ extends Control
 @onready var tracing_manager: = %TracingManager
 @onready var grapheme_particles: = $GraphemeParticles
 
+const resource_folder: = "res://language_resources/"
+const language_folder: = "french/"
+const image_folder: = "look_and_learn/images/"
+const sound_folder: = "look_and_learn/sounds/"
+const video_folder: = "look_and_learn/video/"
+const video_extension: = ".ogv"
+const image_extension: = ".png"
+const sound_extension: = ".mp3"
+
 var current_grapheme: = "a"
+var current_phoneme: = "a"
 
 var current_video: = 0
 var videos: = []
@@ -29,16 +39,26 @@ func setup() -> void:
 	grapheme_particles.emitting = true
 	
 	videos = []
-	Database.db.query("Select VideoPath FROM GPsVideosPaths INNER JOIN GPs WHERE GPs.Grapheme = '" + current_grapheme + "'")
-	for r in Database.db.query_result:
-		videos.append(load(r["VideoPath"]))
+	if FileAccess.file_exists(_video_file_path()):
+		videos.append(load(_video_file_path()))
 	
 	images = []
 	sounds = []
-	Database.db.query("Select ImagePath, SoundPath FROM GPsImagesAndSoundsPaths INNER JOIN GPs WHERE GPs.Grapheme = '" + current_grapheme + "'")
-	for r in Database.db.query_result:
-		images.append(load(r["ImagePath"]))
-		sounds.append(load(r["SoundPath"]))
+	if FileAccess.file_exists(_image_file_path()) and FileAccess.file_exists(_sound_file_path()):
+		images.append(load(_image_file_path()))
+		sounds.append(load(_sound_file_path()))
+
+
+func _image_file_path() -> String:
+	return resource_folder + language_folder + image_folder + current_grapheme + "-" + current_phoneme + image_extension
+
+
+func _sound_file_path() -> String:
+	return resource_folder + language_folder + sound_folder + current_grapheme + "-" + current_phoneme + sound_extension
+
+
+func _video_file_path() -> String:
+	return resource_folder + language_folder + video_folder + current_grapheme + "-" + current_phoneme + video_extension
 
 
 func play_videos() -> void:
