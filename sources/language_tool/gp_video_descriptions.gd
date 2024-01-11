@@ -14,3 +14,7 @@ func _on_plus_button_pressed() -> void:
 	description_line.delete.connect(_on_description_line_delete.bind(description_line))
 	
 	description_container.add_child(description_line)
+
+
+func _on_back_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")

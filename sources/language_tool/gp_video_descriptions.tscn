@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c40wqlao0hl03"]
+[gd_scene load_steps=4 format=3 uid="uid://c40wqlao0hl03"]
 
 [ext_resource type="Script" path="res://sources/language_tool/gp_video_descriptions.gd" id="1_nggwi"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_qd3s2"]
+[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_kfx0p"]
 
 [node name="GpVideoDescriptions" type="Control"]
 layout_mode = 3
@@ -57,6 +58,12 @@ vertical_alignment = 1
 [node name="PlusButton" parent="VBoxContainer/PanelContainer/HBoxContainer" instance=ExtResource("2_qd3s2")]
 layout_mode = 2
 
+[node name="BackButton" parent="VBoxContainer/PanelContainer/HBoxContainer" instance=ExtResource("2_qd3s2")]
+layout_mode = 2
+
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/HBoxContainer/BackButton" index="0"]
+texture = ExtResource("3_kfx0p")
+
 [node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 
@@ -65,3 +72,6 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [connection signal="pressed" from="VBoxContainer/PanelContainer/HBoxContainer/PlusButton" to="." method="_on_plus_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+
+[editable path="VBoxContainer/PanelContainer/HBoxContainer/BackButton"]
