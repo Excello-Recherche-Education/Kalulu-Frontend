@@ -1,10 +1,69 @@
-[gd_scene load_steps=6 format=3 uid="uid://6v3nachs7j71"]
+[gd_scene load_steps=22 format=3 uid="uid://6v3nachs7j71"]
 
 [ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_afd4d"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_77rmy"]
 [ext_resource type="PackedScene" uid="uid://dp4182l80ntvn" path="res://sources/menus/main/plants/flower.tscn" id="4_cdedv"]
 [ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="4_onj68"]
+[ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="6_bi65i"]
+[ext_resource type="Texture2D" uid="uid://cgrl5x2iqbiwg" path="res://assets/menus/main/title.png" id="7_ftt26"]
+[ext_resource type="Texture2D" uid="uid://cgwun1jhj53bi" path="res://assets/menus/main/play_button.png" id="7_lr7j4"]
+[ext_resource type="Texture2D" uid="uid://dnf3vxy6ufjep" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0000.png" id="9_hpvpr"]
+[ext_resource type="Texture2D" uid="uid://ce23fmhay24mm" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0001.png" id="10_mwedq"]
+[ext_resource type="Texture2D" uid="uid://c0lsue0gmds65" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0002.png" id="11_vl1qv"]
+[ext_resource type="Texture2D" uid="uid://ddxcg568un1ln" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0003.png" id="12_vi0a0"]
+[ext_resource type="Texture2D" uid="uid://gg3vv2jh66dm" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0004.png" id="13_fv8gh"]
+[ext_resource type="Texture2D" uid="uid://dgqr4lmpipuho" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0005.png" id="14_2nb1c"]
+[ext_resource type="Texture2D" uid="uid://bpvgjnuw5qbuq" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0006.png" id="15_2d2et"]
+[ext_resource type="Texture2D" uid="uid://mh3kskf8ss3a" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0007.png" id="16_rw4fg"]
+[ext_resource type="Texture2D" uid="uid://ctotfj3me6lbh" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0008.png" id="17_afgw0"]
+[ext_resource type="Texture2D" uid="uid://dfw5q1ohg441o" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0009.png" id="18_ohrwx"]
+[ext_resource type="Texture2D" uid="uid://b55qca7adp2f0" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0010.png" id="19_c6744"]
+[ext_resource type="Texture2D" uid="uid://bk53ofcrf8nal" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0011.png" id="20_ym6ye"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_a1243"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_hpvpr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_mwedq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_vl1qv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_vi0a0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_fv8gh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_2nb1c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_2d2et")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_rw4fg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_afgw0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ohrwx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_c6744")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_ym6ye")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -18,21 +77,33 @@ script = ExtResource("1_0r1ij")
 [node name="NightSky" parent="." instance=ExtResource("1_afd4d")]
 layout_mode = 1
 
-[node name="PalmTop" parent="." instance=ExtResource("3_77rmy")]
-position = Vector2(728, 1096)
+[node name="Plants" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PalmTop" parent="Plants" instance=ExtResource("3_77rmy")]
+position = Vector2(500, 1096)
 scale = Vector2(2, 2)
 
-[node name="PalmBottom" parent="." instance=ExtResource("3_77rmy")]
+[node name="PalmBottom" parent="Plants" instance=ExtResource("3_77rmy")]
 light_mask = 0
-position = Vector2(1720, 1800)
+position = Vector2(1620, 1800)
 scale = Vector2(2, 2)
 
-[node name="Bush" parent="." instance=ExtResource("4_onj68")]
-position = Vector2(704, 1824)
+[node name="Bush" parent="Plants" instance=ExtResource("4_onj68")]
+position = Vector2(730, 1824)
 scale = Vector2(2, 2)
 
-[node name="Flower" parent="." instance=ExtResource("4_cdedv")]
-position = Vector2(344, 1800)
+[node name="Flower" parent="Plants" instance=ExtResource("4_cdedv")]
+position = Vector2(330, 1800)
+scale = Vector2(2, 2)
+
+[node name="LargeFlower" parent="Plants" instance=ExtResource("6_bi65i")]
+position = Vector2(2000, 1875)
 scale = Vector2(2, 2)
 
 [node name="Button" type="Button" parent="."]
@@ -42,5 +113,46 @@ self_modulate = Color(1, 1, 1, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1792.0
+
+[node name="Node2D" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="Node2D"]
+custom_minimum_size = Vector2(868, 868)
+layout_mode = 2
+offset_left = -434.0
+offset_top = -248.0
+offset_right = 434.0
+offset_bottom = 620.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture = ExtResource("7_lr7j4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_a1243")
+autoplay = "default"
+frame = 11
+frame_progress = 1.0
+
+[node name="Title" type="TextureRect" parent="."]
+layout_mode = 2
+offset_left = 956.0
+offset_top = 256.0
+offset_right = 1603.0
+offset_bottom = 428.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("7_ftt26")
 
 [connection signal="pressed" from="Button" to="." method="_on_main_button_pressed"]
