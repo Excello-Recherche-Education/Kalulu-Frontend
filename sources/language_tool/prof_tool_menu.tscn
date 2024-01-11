@@ -57,6 +57,17 @@ theme_override_font_sizes/font_size = 100
 text = "Tracing Builder
 "
 
+[node name="DataLoaderButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "GP Image/Sound Loader"
+
+[node name="DataLoaderButton2" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "GP Video Loader
+"
+
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
@@ -74,3 +85,5 @@ text = "Kalulu Language Tool"
 [connection signal="pressed" from="CenterContainer/VBoxContainer/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/LessonListButton" to="." method="_on_lesson_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TracingBuilderButton" to="." method="_on_tracing_builder_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxkg7t6myxtyi"]
+[gd_scene load_steps=3 format=3 uid="uid://csle2f1s86fg5"]
 
 [ext_resource type="Script" path="res://sources/language_tool/gp_image_and_sound_descriptions.gd" id="1_8rkii"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_tjhx5"]

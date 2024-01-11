@@ -19,3 +19,11 @@ func _on_lesson_list_button_pressed() -> void:
 
 func _on_tracing_builder_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/tracing_builder.tscn")
+
+
+func _on_data_loader_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/gp_image_and_sound_descriptions.tscn")
+
+
+func _on_data_loader_button_2_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/gp_video_descriptions.tscn")
