@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://wbwrlja5v5gc"]
+
+[ext_resource type="PackedScene" uid="uid://b1rkn0uwoyd7l" path="res://sources/gardens/gardens.tscn" id="1_4b1e3"]
+[ext_resource type="Script" path="res://sources/gardens/gardens_edit_tool.gd" id="2_gxq1k"]
+
+[node name="GardensEditTool" instance=ExtResource("1_4b1e3")]
+mouse_filter = 2
+script = ExtResource("2_gxq1k")
+
+[node name="HBoxContainer" parent="ScrollContainer" index="0"]
+mouse_filter = 2
+
+[node name="Control" parent="ScrollContainer/HBoxContainer" index="0"]
+mouse_filter = 2
+
+[node name="GardenParent" parent="ScrollContainer/HBoxContainer" index="1"]
+mouse_filter = 2
+
+[node name="Control2" parent="ScrollContainer/HBoxContainer" index="2"]
+mouse_filter = 2

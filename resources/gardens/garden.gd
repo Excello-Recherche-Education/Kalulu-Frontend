@@ -46,7 +46,7 @@ func set_flowers(p_flowers: Array[GardenLayout.Flower]) -> void:
 		var flower_control: = flower_controls[i]
 		flower_control.texture = load(flower_path_model % [flower.color+1, flower.type+1, "Large"])
 		flower_control.position = flower.position
-		flower_control.size = Vector2.ZERO
+		flower_control.size = flower_control.get_combined_minimum_size() * 2
 
 
 func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> void:
@@ -58,8 +58,8 @@ func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> v
 		var lesson_button: = p_lesson_buttons[i]
 		var lesson_button_control: = lesson_button_controls[i]
 		lesson_button_control.texture = lesson_button_texture
-		lesson_button_control.position = lesson_button.position
-		lesson_button_control.size = Vector2.ZERO
+		lesson_button_control.size = lesson_button_control.get_combined_minimum_size() * 2
+		lesson_button_control.position = Vector2(lesson_button.position) - lesson_button_control.size / 4
 
 
 func set_background(p_color: int) -> void:
