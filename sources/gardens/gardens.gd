@@ -77,7 +77,7 @@ func set_up_path() -> void:
 
 func _ready() -> void:
 	if not gardens_layout:
-		gardens_layout = load("user://gardens_layout.tres")
+		gardens_layout = load("res://resources/gardens/gardens_layout.tres")
 	else:
 		set_gardens_layout(gardens_layout)
 	get_gardens_db_data()

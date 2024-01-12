@@ -58,6 +58,7 @@ func set_flowers(p_flowers: Array[GardenLayout.Flower]) -> void:
 func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> void:
 	for lesson_button_control in lesson_button_controls:
 		lesson_button_control.texture = null
+		lesson_button_control.visible = false
 	for i in p_lesson_buttons.size():
 		if i >= lesson_button_controls.size():
 			break
@@ -66,6 +67,7 @@ func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> v
 		lesson_button_control.texture = lesson_button_texture
 		lesson_button_control.size = lesson_button_control.get_combined_minimum_size() * 3
 		lesson_button_control.position = Vector2(lesson_button.position) - lesson_button_control.size / 4
+		lesson_button_control.visible = true
 
 
 func set_background(p_color: int) -> void:
