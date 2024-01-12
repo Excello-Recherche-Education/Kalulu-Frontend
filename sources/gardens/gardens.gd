@@ -11,6 +11,7 @@ const garden_scene: = preload("res://resources/gardens/garden.tscn")
 @onready var scroll_container: = $ScrollContainer
 
 var curve: Curve2D
+var lessons: = {}
 
 
 func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
@@ -21,6 +22,27 @@ func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
 	set_up_path()
 
 
+func get_gardens_db_data() -> void:
+	Database.db.query("Select Grapheme, Phoneme, LessonNb, GPID FROM Lessons
+		INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
+		INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
+		ORDER BY LessonNb")
+	for e in Database.db.query_result:
+		if not lessons.has(e.LessonNb):
+			lessons[e.LessonNb] = []
+		lessons[e.LessonNb].append({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
+
+
+func set_up_lessons_text() -> void:
+	var lesson_ind: = 1
+	for garden_control in garden_parent.get_children():
+		for i in garden_control.lesson_button_controls.size():
+			if not lesson_ind in lessons:
+				break
+			garden_control.set_lesson_label(i, lessons[lesson_ind][0].grapheme)
+			lesson_ind += 1
+
+
 func _process(_delta: float) -> void:
 	line.position.x = - scroll_container.scroll_horizontal
 
@@ -29,7 +51,7 @@ func add_gardens() -> void:
 	if not garden_parent:
 		return
 	for child in garden_parent.get_children():
-		child.queue_free()
+		child.free()
 	for garden_layout in gardens_layout.gardens:
 		var garden: = garden_scene.instantiate()
 		garden_parent.add_child(garden)
@@ -54,4 +76,9 @@ func set_up_path() -> void:
 
 
 func _ready() -> void:
-	set_gardens_layout(gardens_layout)
+	if not gardens_layout:
+		gardens_layout = load("user://gardens_layout.tres")
+	else:
+		set_gardens_layout(gardens_layout)
+	get_gardens_db_data()
+	set_up_lessons_text()

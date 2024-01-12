@@ -18,3 +18,37 @@ mouse_filter = 2
 
 [node name="Control2" parent="ScrollContainer/HBoxContainer" index="2"]
 mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." index="1"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -623.0
+offset_top = -140.0
+offset_right = 623.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="ChangeFlowerColorButton" type="Button" parent="HBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Flowers color +"
+
+[node name="ChangeFlowerColorButton2" type="Button" parent="HBoxContainer" index="1"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Flowers color -"
+
+[node name="ResetGardenButton" type="Button" parent="HBoxContainer" index="2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Reset Garden
+"
+
+[connection signal="pressed" from="HBoxContainer/ChangeFlowerColorButton" to="." method="_on_change_flower_color_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/ChangeFlowerColorButton2" to="." method="_on_change_flower_color_button_2_pressed"]
+[connection signal="pressed" from="HBoxContainer/ResetGardenButton" to="." method="_on_reset_garden_button_pressed"]

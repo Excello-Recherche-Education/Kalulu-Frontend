@@ -19,6 +19,12 @@ const lesson_button_texture: = preload("res://assets/gardens/buttons/lesson_dot_
 	%Button3,
 	%Button4,
 ]
+@onready var lesson_labels: Array[Label] = [
+	%LessonLabel1,
+	%LessonLabel2,
+	%LessonLabel3,
+	%LessonLabel4,
+]
 
 
 @export var garden_layout: GardenLayout:
@@ -46,7 +52,7 @@ func set_flowers(p_flowers: Array[GardenLayout.Flower]) -> void:
 		var flower_control: = flower_controls[i]
 		flower_control.texture = load(flower_path_model % [flower.color+1, flower.type+1, "Large"])
 		flower_control.position = flower.position
-		flower_control.size = flower_control.get_combined_minimum_size() * 2
+		flower_control.size = flower_control.get_combined_minimum_size() * 3
 
 
 func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> void:
@@ -58,7 +64,7 @@ func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> v
 		var lesson_button: = p_lesson_buttons[i]
 		var lesson_button_control: = lesson_button_controls[i]
 		lesson_button_control.texture = lesson_button_texture
-		lesson_button_control.size = lesson_button_control.get_combined_minimum_size() * 2
+		lesson_button_control.size = lesson_button_control.get_combined_minimum_size() * 3
 		lesson_button_control.position = Vector2(lesson_button.position) - lesson_button_control.size / 4
 
 
@@ -70,3 +76,8 @@ func set_background(p_color: int) -> void:
 
 func _ready() -> void:
 	set_garden_layout(garden_layout)
+
+
+func set_lesson_label(ind: int, text: String) -> void:
+	assert(ind < lesson_labels.size())
+	lesson_labels[ind].text = text

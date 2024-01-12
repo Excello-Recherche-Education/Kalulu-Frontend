@@ -1,22 +1,15 @@
 extends "res://sources/gardens/gardens.gd"
 
 const garden_textures_nb: = 20
+const flower_types_nb: = 5
 const gardens_layout_resource_path: = "user://gardens_layout.tres"
 
-var lessons: = {}
+
 var dragging_element
 var drag_data: = {}
 
 
 func _init_gardens_layout() -> void:
-	Database.db.query("Select Grapheme, Phoneme, LessonNb, GPID FROM Lessons
-		INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
-		INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
-		ORDER BY LessonNb")
-	for e in Database.db.query_result:
-		if not lessons.has(e.LessonNb):
-			lessons[e.LessonNb] = []
-		lessons[e.LessonNb].append({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
 	gardens_layout.gardens.clear()
 	for i in lessons.size():
 		if i % 4 == 0:
@@ -40,6 +33,7 @@ func _ready() -> void:
 		gardens_layout.resource_path = gardens_layout_resource_path
 		_init_gardens_layout()
 	gardens_layout = load(gardens_layout_resource_path)
+	super()
 	set_up_click_detection()
 
 
@@ -64,6 +58,14 @@ func _on_flower_gui_input(event: InputEvent, garden_control_ind: int, flower_ind
 			flower_ind = flower_ind
 		}
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("right_click"):
+		var flower: = gardens_layout.gardens[garden_control_ind].flowers[flower_ind]
+		flower.type += 1
+		if flower.type >= flower_types_nb:
+			flower.type = 0
+		gardens_layout.gardens[garden_control_ind].flowers = gardens_layout.gardens[garden_control_ind].flowers
+		garden_parent.get_child(garden_control_ind).set_flowers(gardens_layout.gardens[garden_control_ind].flowers)
+		ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
 
 
 func _on_lesson_button_gui_input(event: InputEvent, garden_control_ind: int, lesson_button_ind: int, lesson_button_control: Control) -> void:
@@ -85,9 +87,13 @@ func _process(delta: float) -> void:
 			dragging_element.position = dragging_element.get_parent().get_local_mouse_position()
 			if drag_data.type == "lesson_button":
 				gardens_layout.gardens[drag_data.garden_ind].lesson_buttons[drag_data.lesson_button_ind].position = dragging_element.position
+				gardens_layout.gardens[drag_data.garden_ind].lesson_buttons = gardens_layout.gardens[drag_data.garden_ind].lesson_buttons
+				garden_parent.get_child(drag_data.garden_ind).set_lesson_buttons(gardens_layout.gardens[drag_data.garden_ind].lesson_buttons)
 				set_up_path()
 		elif drag_data.type == "path_middle":
 			gardens_layout.gardens[drag_data.garden_ind].lesson_buttons[drag_data.sub_ind].path_out_position = garden_parent.get_child(drag_data.garden_ind).get_local_mouse_position() - Vector2(gardens_layout.gardens[drag_data.garden_ind].lesson_buttons[drag_data.sub_ind].position)
+			gardens_layout.gardens[drag_data.garden_ind].lesson_buttons = gardens_layout.gardens[drag_data.garden_ind].lesson_buttons
+			garden_parent.get_child(drag_data.garden_ind).set_lesson_buttons(gardens_layout.gardens[drag_data.garden_ind].lesson_buttons)
 			set_up_path()
 
 
@@ -96,12 +102,12 @@ func _input(event: InputEvent) -> void:
 		return
 	if event.is_action_released("left_click"):
 		if drag_data.type == "flower":
-			dragging_element.z_index = 1
+			dragging_element.z_index = 2
 			gardens_layout.gardens[drag_data.garden_ind].flowers[drag_data.flower_ind].position = dragging_element.position
 			gardens_layout.gardens[drag_data.garden_ind].flowers = gardens_layout.gardens[drag_data.garden_ind].flowers
 			ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
 		elif drag_data.type == "lesson_button":
-			dragging_element.z_index = 0
+			dragging_element.z_index = 1
 			gardens_layout.gardens[drag_data.garden_ind].lesson_buttons[drag_data.lesson_button_ind].position = dragging_element.position
 			gardens_layout.gardens[drag_data.garden_ind].lesson_buttons = gardens_layout.gardens[drag_data.garden_ind].lesson_buttons
 			ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
@@ -141,3 +147,50 @@ func get_garden_and_sub_ind_from_ind(ind: int) -> Array[int]:
 				return [garden_control_ind, lesson_button_ind]
 			count += 1
 	return [-1, -1]
+
+
+func get_best_showing_garden() -> int:
+	for garden_ind in garden_parent.get_child_count():
+		var garden_control: Control = garden_parent.get_child(garden_ind)
+		if abs(garden_control.global_position.x) < garden_control.size.x / 2:
+			return garden_ind
+	return -1
+
+
+func _on_change_flower_color_button_pressed() -> void:
+	var garden_ind: = get_best_showing_garden()
+	var flowers: = gardens_layout.gardens[garden_ind].flowers
+	for flower in flowers:
+		flower.color += 1
+		if flower.color >= garden_textures_nb:
+			flower.color = 0
+	gardens_layout.gardens[garden_ind].flowers = flowers
+	garden_parent.get_child(garden_ind).set_flowers(flowers)
+	ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
+
+
+func _on_change_flower_color_button_2_pressed() -> void:
+	var garden_ind: = get_best_showing_garden()
+	var flowers: = gardens_layout.gardens[garden_ind].flowers
+	for flower in flowers:
+		flower.color -= 1
+		if flower.color < 0:
+			flower.color = garden_textures_nb - 1
+	gardens_layout.gardens[garden_ind].flowers = flowers
+	garden_parent.get_child(garden_ind).set_flowers(flowers)
+	ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
+
+
+func _on_reset_garden_button_pressed() -> void:
+	var garden_ind: = get_best_showing_garden()
+	var flowers: = gardens_layout.gardens[garden_ind].flowers
+	for i in flowers.size():
+		flowers[i] = GardenLayout.Flower.new()
+	gardens_layout.gardens[garden_ind].flowers = flowers
+	garden_parent.get_child(garden_ind).set_flowers(flowers)
+	var lesson_buttons: = gardens_layout.gardens[garden_ind].lesson_buttons
+	for i in lesson_buttons.size():
+		lesson_buttons[i] = GardenLayout.LessonButton.new()
+	gardens_layout.gardens[garden_ind].lesson_buttons = lesson_buttons
+	garden_parent.get_child(garden_ind).set_lesson_buttons(lesson_buttons)
+	ResourceSaver.save(gardens_layout, gardens_layout.resource_path)

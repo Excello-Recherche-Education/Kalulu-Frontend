@@ -8,7 +8,7 @@ class Flower:
 	var type: = 0
 	var position: = Vector2i.ZERO
 	
-	func _init(p_color: int, p_type: int, p_position: Vector2i) -> void:
+	func _init(p_color: int = 0, p_type: int = 0, p_position: Vector2i = Vector2i.ZERO) -> void:
 		color = p_color
 		type = p_type
 		position = p_position
@@ -28,7 +28,7 @@ class LessonButton:
 	var position: = Vector2i.ZERO
 	var path_out_position: = Vector2i.ZERO
 	
-	func _init(p_position: Vector2i, p_path_out_position: Vector2i) -> void:
+	func _init(p_position: Vector2i = Vector2i.ZERO, p_path_out_position: Vector2i = Vector2i.ZERO) -> void:
 		position = p_position
 		path_out_position = p_path_out_position
 	
