@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://6v3nachs7j71"]
+[gd_scene load_steps=14 format=3 uid="uid://6v3nachs7j71"]
 
 [ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_afd4d"]
@@ -8,62 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="6_bi65i"]
 [ext_resource type="Texture2D" uid="uid://cgrl5x2iqbiwg" path="res://assets/menus/main/title.png" id="7_ftt26"]
 [ext_resource type="Texture2D" uid="uid://cgwun1jhj53bi" path="res://assets/menus/main/play_button.png" id="7_lr7j4"]
-[ext_resource type="Texture2D" uid="uid://dnf3vxy6ufjep" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0000.png" id="9_hpvpr"]
-[ext_resource type="Texture2D" uid="uid://ce23fmhay24mm" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0001.png" id="10_mwedq"]
-[ext_resource type="Texture2D" uid="uid://c0lsue0gmds65" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0002.png" id="11_vl1qv"]
-[ext_resource type="Texture2D" uid="uid://ddxcg568un1ln" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0003.png" id="12_vi0a0"]
-[ext_resource type="Texture2D" uid="uid://gg3vv2jh66dm" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0004.png" id="13_fv8gh"]
-[ext_resource type="Texture2D" uid="uid://dgqr4lmpipuho" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0005.png" id="14_2nb1c"]
-[ext_resource type="Texture2D" uid="uid://bpvgjnuw5qbuq" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0006.png" id="15_2d2et"]
-[ext_resource type="Texture2D" uid="uid://mh3kskf8ss3a" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0007.png" id="16_rw4fg"]
-[ext_resource type="Texture2D" uid="uid://ctotfj3me6lbh" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0008.png" id="17_afgw0"]
-[ext_resource type="Texture2D" uid="uid://dfw5q1ohg441o" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0009.png" id="18_ohrwx"]
-[ext_resource type="Texture2D" uid="uid://b55qca7adp2f0" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0010.png" id="19_c6744"]
-[ext_resource type="Texture2D" uid="uid://bk53ofcrf8nal" path="res://assets/menus/main/kalulu/kalulu_tc_idle01_0011.png" id="20_ym6ye"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_a1243"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("9_hpvpr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_mwedq")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_vl1qv")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_vi0a0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_fv8gh")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_2nb1c")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_2d2et")
-}, {
-"duration": 1.0,
-"texture": ExtResource("16_rw4fg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_afgw0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_ohrwx")
-}, {
-"duration": 1.0,
-"texture": ExtResource("19_c6744")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_ym6ye")
-}],
-"loop": true,
-"name": &"default",
-"speed": 12.0
-}]
+[ext_resource type="Script" path="res://sources/menus/main/kalulu.gd" id="8_cxg8l"]
+[ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="10_icqmp"]
+[ext_resource type="Texture2D" uid="uid://bbip3wpyidt1q" path="res://assets/menus/main/play_button_mask.png" id="20_oqrk5"]
+[ext_resource type="FontFile" uid="uid://b74ghiuvt8u45" path="res://assets/fonts/ScriptEcoleNormal.otf" id="22_jby16"]
+[ext_resource type="AudioStream" uid="uid://b8pn5vqgp6jlt" path="res://assets/menus/main/ui_title_card_music.mp3" id="23_ajpnn"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -74,7 +23,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0r1ij")
 
-[node name="NightSky" parent="." instance=ExtResource("1_afd4d")]
+[node name="Background" parent="." instance=ExtResource("1_afd4d")]
 layout_mode = 1
 
 [node name="Plants" type="Control" parent="."]
@@ -106,44 +55,6 @@ scale = Vector2(2, 2)
 position = Vector2(2000, 1875)
 scale = Vector2(2, 2)
 
-[node name="Button" type="Button" parent="."]
-visible = false
-modulate = Color(1, 1, 1, 0)
-self_modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_right = 2560.0
-offset_bottom = 1792.0
-
-[node name="Node2D" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Background" type="TextureRect" parent="Node2D"]
-custom_minimum_size = Vector2(868, 868)
-layout_mode = 2
-offset_left = -434.0
-offset_top = -248.0
-offset_right = 434.0
-offset_bottom = 620.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-size_flags_vertical = 8
-texture = ExtResource("7_lr7j4")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D"]
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_a1243")
-autoplay = "default"
-frame = 11
-frame_progress = 1.0
-
 [node name="Title" type="TextureRect" parent="."]
 layout_mode = 2
 offset_left = 956.0
@@ -155,4 +66,111 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 texture = ExtResource("7_ftt26")
 
+[node name="Kalulu" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_cxg8l")
+
+[node name="Background" type="TextureRect" parent="Kalulu"]
+custom_minimum_size = Vector2(868, 868)
+layout_mode = 2
+offset_left = -434.0
+offset_top = -250.0
+offset_right = 434.0
+offset_bottom = 618.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture = ExtResource("7_lr7j4")
+
+[node name="Sprite" parent="Kalulu" instance=ExtResource("10_icqmp")]
+position = Vector2(0, -6.10352e-05)
+scale = Vector2(2, 2)
+animation = &"Tc_Idle1"
+
+[node name="Light" type="PointLight2D" parent="Kalulu"]
+position = Vector2(-5, 377)
+scale = Vector2(2.26133, 2.05467)
+energy = 1.15
+blend_mode = 2
+range_item_cull_mask = 2
+texture = ExtResource("20_oqrk5")
+
+[node name="SpeechPlayer" type="AudioStreamPlayer" parent="Kalulu"]
+
+[node name="Informations" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -112.0
+offset_right = 467.0
+grow_vertical = 0
+
+[node name="BuildVersionTitle" type="Label" parent="Informations"]
+layout_mode = 2
+offset_right = 251.0
+offset_bottom = 56.0
+theme_override_fonts/font = ExtResource("22_jby16")
+text = " Build Version :"
+vertical_alignment = 1
+
+[node name="BuildVersionValue" type="Label" parent="Informations"]
+layout_mode = 2
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_bottom = 56.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("22_jby16")
+text = "?"
+vertical_alignment = 1
+
+[node name="DeviceIDTitle" type="Label" parent="Informations"]
+layout_mode = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -56.0
+offset_right = 193.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("22_jby16")
+text = " Device Id :"
+vertical_alignment = 1
+
+[node name="DeviceIDValue" type="Label" parent="Informations"]
+layout_mode = 2
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -56.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("22_jby16")
+text = "?"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("23_ajpnn")
+autoplay = true
+
 [connection signal="pressed" from="Button" to="." method="_on_main_button_pressed"]
+[connection signal="finished" from="MusicStreamPlayer" to="." method="_on_music_stream_player_finished"]

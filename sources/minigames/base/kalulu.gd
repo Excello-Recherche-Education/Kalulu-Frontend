@@ -27,25 +27,6 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 	
 	speech_ended.emit()
 
-
-func _on_kalulu_sprite_animation_finished() -> void:
-	if kalulu_sprite.animation in ["Idle1", "Idle2"]:
-		var r: = randf()
-		if r < 0.5:
-			kalulu_sprite.play("Idle1")
-		else:
-			kalulu_sprite.play("Idle2")
-	
-	if kalulu_sprite.animation in ["Talk1", "Talk2", "Talk3"]:
-		var r: = randf()
-		if r < 1.0 / 3.0:
-			kalulu_sprite.play("Talk1")
-		elif r < 2.0 / 3.0:
-			kalulu_sprite.play("Talk2")
-		else:
-			kalulu_sprite.play("Talk3")
-
-
 func _on_pass_button_pressed() -> void:
 	if OS.has_feature("debug") and audio_player.playing:
 		audio_player.stop()

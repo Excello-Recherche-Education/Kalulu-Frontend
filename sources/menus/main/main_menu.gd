@@ -1,15 +1,16 @@
 extends Control
 
+@onready var music_player : AudioStreamPlayer = $MusicStreamPlayer
+@onready var version_label : Label = $Informations/BuildVersionValue
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
+	version_label.text = ProjectSettings.get_setting("application/config/version")
 
 
 func _on_main_button_pressed():
-	print("PLAY !")
+	print(UserDataManager.teacher)
+
+
+func _on_music_stream_player_finished():
+	music_player.stream_paused = false
+	music_player.play()

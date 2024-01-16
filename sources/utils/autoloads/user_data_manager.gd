@@ -1,19 +1,28 @@
 @tool
 extends Node
 
-var teacher: String = ""
+
+var teacher: String = "" :
+	set(teacher_name):
+		student = ""
+
+
 var student: String = "" :
 	set(student_name):
 		student = student_name
 		if student_settings:
 			_save_student_settings()
-		load_student_settings()
+		
+		if student :
+			load_student_settings()
+		else :
+			student_settings = null
 
+var language_settings: LanguageSettings
 var student_settings: UserSettings
 var student_progression: UserProgression
 
-
-func _ready() -> void:
+func _ready():
 	teacher = "toto"
 	student = "titi"
 	
@@ -21,7 +30,6 @@ func _ready() -> void:
 	load_student_progression()
 	
 	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
-
 
 func load_student_settings() -> void:
 	# Load User settings

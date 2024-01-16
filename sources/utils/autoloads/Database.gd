@@ -39,6 +39,9 @@ func _ready() -> void:
 	db_path = db_path
 	#_import_words_csv()
 	#_import_look_and_learn_data()
+	db.foreign_keys = true
+	db.open_db()
+	#_import_lessons()
 
 
 func _exit_tree() -> void:
@@ -136,6 +139,8 @@ func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
 	AND Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
 	return db.query_result
 
+func get_audio_stream_for_path(path: String) -> AudioStream:
+	return load(base_path + language + "/" + path)
 
 func get_min_lesson_for_gp_id(gp_id: int) -> int:
 	db.query_with_bindings("SELECT Lessons.LessonNb as i FROM Lessons
