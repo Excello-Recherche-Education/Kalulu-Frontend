@@ -12,12 +12,13 @@ signal validated()
 @export var relational_table: = "GPsInWords"
 @export var sub_table_id: = "GPID"
 
-@onready var word_label: = $%Word
-@onready var graphemes_label: = $%Graphemes
-@onready var word_edit: = $%WordEdit
-@onready var graphemes_edit: = $%GraphemesEdit
+@onready var word_label: = %Word
+@onready var graphemes_label: = %Graphemes
+@onready var word_edit: = %WordEdit
+@onready var graphemes_edit: = %GraphemesEdit
 @onready var tab_container: = $TabContainer
-@onready var popup_menu: = $%Popup
+@onready var popup_menu: = %Popup
+@onready var lesson_label: = %Lesson
 
 var word: = "":
 	set = set_word
@@ -25,6 +26,8 @@ var graphemes: = "":
 	set = set_graphemes
 var phonemes: = "":
 	set = set_phonemes
+var lesson: = 0:
+	set = set_lesson
 var undo_redo: UndoRedo:
 	get:
 		if not undo_redo:
@@ -55,6 +58,12 @@ func set_graphemes(p_graphemes: String) -> void:
 	unvalidated_graphemes = graphemes
 
 
+func set_lesson(p_lesson: int) -> void:
+	lesson = p_lesson
+	if lesson_label:
+		lesson_label.text = str(p_lesson)
+
+
 func _set_graphemes_label() -> void:
 	var graphemes_array: = graphemes.split(" ", false)
 	var phonemes_array: = phonemes.split(" ", false)
@@ -77,6 +86,7 @@ func set_phonemes(p_phonemes: String) -> void:
 func _ready() -> void:
 	set_word(word)
 	set_graphemes(graphemes)
+	set_lesson(lesson)
 	popup_menu.button.text = "Add new %s" % sub_table
 
 
@@ -105,7 +115,16 @@ func _on_validate_button_pressed() -> void:
 	undo_redo.add_undo_property(self, "word", word)
 	undo_redo.commit_action()
 	tab_container.current_tab = 0
+	update_lesson()
 	validated.emit()
+
+
+func update_lesson() -> void:
+	var m: = -1
+	for gp_id in gp_ids:
+		var i: = Database.get_min_lesson_for_gp_id(gp_id)
+		m = max(m, i)
+	lesson = m
 
 
 func _get_selected_grapheme(graphemes_array: PackedStringArray) -> int:

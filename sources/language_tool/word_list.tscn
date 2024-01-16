@@ -29,19 +29,27 @@ theme_override_constants/separation = 0
 layout_mode = 2
 script = null
 
-[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="0"]
+[node name="Lesson" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="0"]
+text = "Lesson"
+horizontal_alignment = 2
+
+[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
 text = "Word"
 
-[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
+[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
 text = "Graphemes"
 
-[node name="EditButton" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
+[node name="EditButton" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="3"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="PlusButton" parent="VBoxContainer/WordListElement" instance=ExtResource("3_a6pn6")]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/WordListElement"]
+layout_mode = 2
+theme_override_constants/margin_right = 200
+
+[node name="PlusButton" parent="VBoxContainer/WordListElement/MarginContainer" instance=ExtResource("3_a6pn6")]
 custom_minimum_size = Vector2(120, 2.08165e-12)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 8
 tooltip_text = "Add GP"
 
 [node name="SaveButton" parent="VBoxContainer/WordListElement" instance=ExtResource("3_a6pn6")]
@@ -134,7 +142,7 @@ layout_mode = 2
 [node name="DeleteButton" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" index="0"]
 visible = false
 
-[connection signal="pressed" from="VBoxContainer/WordListElement/PlusButton" to="." method="_on_plus_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/WordListElement/MarginContainer/PlusButton" to="." method="_on_plus_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/WordListElement/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/WordListElement/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="validated" from="NewGPLayer/VBoxContainer/NewGP" to="." method="_on_gp_list_element_validated"]

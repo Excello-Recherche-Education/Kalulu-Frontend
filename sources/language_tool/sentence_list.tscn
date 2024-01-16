@@ -1,16 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbmcpgfokf0in"]
+[gd_scene load_steps=5 format=3 uid="uid://dbmcpgfokf0in"]
 
 [ext_resource type="PackedScene" uid="uid://dfw7m0a7148fu" path="res://sources/language_tool/word_list.tscn" id="1_bfjhw"]
 [ext_resource type="PackedScene" uid="uid://cy14lm72cd7cy" path="res://sources/language_tool/sentence_list_element.tscn" id="2_4jv4m"]
+[ext_resource type="Script" path="res://sources/language_tool/sentence_list.gd" id="2_q3ll5"]
 [ext_resource type="PackedScene" uid="uid://dx33ijlgd8m3w" path="res://sources/language_tool/word_list_element.tscn" id="3_jl0ks"]
 
 [node name="SentenceList" instance=ExtResource("1_bfjhw")]
+script = ExtResource("2_q3ll5")
 element_scene = ExtResource("2_4jv4m")
 
-[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="0"]
+[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
 text = "Sentence"
 
-[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
+[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
 text = "Words"
 
 [node name="Label" parent="NewGPLayer" index="1"]
@@ -40,13 +42,13 @@ grow_vertical = 2
 layout_mode = 2
 script = null
 
-[node name="Word" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="0"]
+[node name="Word" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="1"]
 text = "Word"
 
-[node name="Graphemes" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="1"]
+[node name="Graphemes" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="2"]
 text = "Graphemes"
 
-[node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="2"]
+[node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="3"]
 modulate = Color(1, 1, 1, 0)
 
 [node name="NewGP" parent="NewGPLayer/VBoxContainer2" index="1" instance=ExtResource("3_jl0ks")]

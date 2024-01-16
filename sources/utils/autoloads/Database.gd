@@ -96,6 +96,29 @@ func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
 	return db.query_result
 
 
+func get_min_lesson_for_gp_id(gp_id: int) -> int:
+	db.query_with_bindings("SELECT Lessons.LessonNb as i FROM Lessons
+	INNER JOIN GPsInLessons ON Lessons.ID = GPsInLessons.LessonID AND GPsInLessons.GPID = ?", [gp_id])
+	if db.query_result.is_empty():
+		return -1
+	return db.query_result[0].i
+
+
+func get_min_lesson_for_word_id(word_id: int) -> int:
+	db.query_with_bindings("SELECT MAX(Lessons.LessonNb) as i FROM Lessons
+	INNER JOIN GPsInLessons ON Lessons.ID = GPsInLessons.LessonID
+	INNER JOIN GPsInWords ON GPsInWords.GPID = GPsInLessons.GPID AND GPsInWords.WordID = ?", [word_id])
+	return db.query_result[0].i
+
+
+func get_min_lesson_for_sentence_id(sentence_id: int) -> int:
+	db.query_with_bindings("SELECT MAX(Lessons.LessonNb) as i FROM Lessons
+	INNER JOIN GPsInLessons ON Lessons.ID = GPsInLessons.LessonID
+	INNER JOIN WordsInSentences ON WordsInSentences.SentenceID = ?
+	INNER JOIN GPsInWords ON GPsInWords.GPID = GPsInLessons.GPID AND GPsInWords.WordID = WordsInSentences.WordID", [sentence_id])
+	return db.query_result[0].i
+
+
 func get_audio_stream_for_word(word: String) -> AudioStream:
 	var GPs: = get_GP_from_word(word)
 	var file_name: = _phoneme_to_string(GPs[0].Phoneme)

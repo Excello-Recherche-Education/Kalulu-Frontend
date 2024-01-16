@@ -26,11 +26,12 @@ func _ready() -> void:
 		element.graphemes = e[_e.sub_table_graph_column + "s"]
 		element.phonemes = e[_e.sub_table_phon_column + "s"]
 		element.id = e[_e.table_graph_column + "Id"]
-		element.set_gp_ids_from_string(_e.sub_table_id + "s")
+		element.set_gp_ids_from_string(e[_e.sub_table_id + "s"])
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
 		element.new_GP_asked.connect(_on_element_new_GP_asked)
+		element.update_lesson()
 
 
 func _get_query() -> String:
@@ -96,6 +97,7 @@ func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
 
 func _on_gp_list_element_validated() -> void:
 	new_gp.insert_in_database()
+	new_gp.update_lesson()
 	in_new_gp_mode = false
 
 

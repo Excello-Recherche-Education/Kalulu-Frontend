@@ -38,6 +38,16 @@ use_hidden_tabs_for_min_size = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
+[node name="Lesson" type="Label" parent="TabContainer/NormalContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+theme_override_font_sizes/font_size = 100
+text = "7"
+horizontal_alignment = 1
+clip_text = true
+
 [node name="Word" type="Label" parent="TabContainer/NormalContainer"]
 unique_name_in_owner = true
 layout_mode = 2
