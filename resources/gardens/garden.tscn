@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://mf4fc4l3dkrn"]
+[gd_scene load_steps=7 format=3 uid="uid://btg3qd8eld1mm"]
 
 [ext_resource type="Script" path="res://resources/gardens/garden.gd" id="1_5owem"]
 [ext_resource type="Script" path="res://resources/gardens/garden_layout.gd" id="2_8g7o4"]
@@ -100,6 +100,7 @@ vertical_alignment = 1
 
 [node name="Button2" type="TextureRect" parent="Buttons"]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 0
 offset_left = 500.0
@@ -142,6 +143,7 @@ vertical_alignment = 1
 
 [node name="Button3" type="TextureRect" parent="Buttons"]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 0
 offset_left = 500.0
@@ -184,6 +186,7 @@ vertical_alignment = 1
 
 [node name="Button4" type="TextureRect" parent="Buttons"]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 0
 offset_left = 500.0

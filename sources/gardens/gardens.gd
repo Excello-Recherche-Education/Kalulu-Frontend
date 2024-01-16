@@ -1,7 +1,7 @@
-@tool
 extends Control
 
 const garden_scene: = preload("res://resources/gardens/garden.tscn")
+const garden_size: = 2400
 
 @export var gardens_layout: GardensLayout:
 	set = set_gardens_layout
@@ -12,6 +12,9 @@ const garden_scene: = preload("res://resources/gardens/garden.tscn")
 
 var curve: Curve2D
 var lessons: = {}
+var is_scrolling: = false
+var scroll_beginning_garden: = 0
+var tween: Tween
 
 
 func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
@@ -82,3 +85,35 @@ func _ready() -> void:
 		set_gardens_layout(gardens_layout)
 	get_gardens_db_data()
 	set_up_lessons_text()
+
+
+func _on_scroll_container_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		is_scrolling = true
+		scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
+		if tween:
+			tween.stop()
+			tween = null
+	elif event.is_action_released("left_click"):
+		is_scrolling = false
+		var shift_value: int = scroll_container.scroll_horizontal - scroll_beginning_garden * garden_size
+		var target_scroll: int = scroll_beginning_garden * garden_size
+		var is_garden_changed: = false
+		if shift_value < - 400:
+			target_scroll -= garden_size
+			is_garden_changed = true
+		elif shift_value > 400:
+			target_scroll += garden_size
+			is_garden_changed = true
+		tween = create_tween()
+		tween.set_ease(Tween.EASE_OUT)
+		tween.set_trans(Tween.TRANS_SPRING)
+		tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 1)
+		if is_garden_changed:
+			var garden_ind: int = target_scroll / garden_size
+			garden_parent.get_child(garden_ind).pop_animation()
+		
+		
+	if is_scrolling and event is InputEventMouseMotion:
+		scroll_container.scroll_horizontal -= event.relative.x
+
