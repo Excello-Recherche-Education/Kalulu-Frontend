@@ -3,13 +3,14 @@ extends HBoxContainer
 signal delete
 
 @onready var gp_menu_button: = %GPMenuButton
-@onready var image_check_box: = %ImageCheckBox
+@onready var image_preview: = %ImagePreview
+@onready var sound_preview: = %SoundPreview
 @onready var image_upload_button: = %ImageUploadButton
-@onready var sound_check_box: = %SoundCheckBox
 @onready var sound_upload_button: = %SoundUploadButton
 @onready var file_dialog: = $FileDialog
+@onready var sound_player: = $AudioStreamPlayer
 
-const resource_folder: = "res://language_resources/"
+const resource_folder: = "user://language_resources/"
 const language_folder: = "french/"
 const image_folder: = "look_and_learn/images/"
 const sound_folder: = "look_and_learn/sounds/"
@@ -17,18 +18,8 @@ const image_extension: = ".png"
 const sound_extension: = ".mp3"
 
 var gp: = ""
-var gp_list: = {}
 
 
-func _ready() -> void:
-	var popup: PopupMenu = gp_menu_button.get_popup()
-	
-	Database.db.query("Select * FROM GPs")
-	for res in Database.db.query_result:
-		popup.add_check_item(res["Grapheme"] + "-" + res["Phoneme"], res["ID"])
-		gp_list[res["ID"]] = res["Grapheme"] + "-" + res["Phoneme"]
-	
-	gp_menu_button.get_popup().id_pressed.connect(_on_gp_menu_button_popup_id_pressed)
 
 
 func _image_file_selected(file_path: String) -> void:
@@ -39,8 +30,19 @@ func _image_file_selected(file_path: String) -> void:
 			DirAccess.remove_absolute(current_file)
 		
 		DirAccess.copy_absolute(file_path, current_file)
-		
-		image_check_box.button_pressed = true
+		set_image_preview(current_file)
+
+
+func set_image_preview(img_path: String) -> void:
+	var image: = Image.load_from_file(img_path)
+	image_preview.texture = ImageTexture.create_from_image(image)
+
+
+func set_sound_preview(sound_path: String) -> void:
+	var file = FileAccess.open(sound_path, FileAccess.READ)
+	var sound = AudioStreamMP3.new()
+	sound.data = file.get_buffer(file.get_length())
+	sound_player.stream = sound
 
 
 func _image_file_path() -> String:
@@ -55,19 +57,25 @@ func _sound_file_selected(file_path: String) -> void:
 		
 		DirAccess.copy_absolute(file_path, current_file)
 		
-		sound_check_box.button_pressed = true
+		set_sound_preview(current_file)
+		sound_preview.show()
 
 
 func _sound_file_path() -> String:
 	return resource_folder + language_folder + sound_folder + gp + sound_extension
 
 
-func _on_gp_menu_button_popup_id_pressed(id: int) -> void:
-	gp = gp_list[id]
+func set_gp(p_gp: String) -> void:
+	gp = p_gp
 	gp_menu_button.text = gp
 	
-	image_check_box.button_pressed = FileAccess.file_exists(_image_file_path())
-	sound_check_box.button_pressed = FileAccess.file_exists(_sound_file_path())
+	if FileAccess.file_exists(_image_file_path()):
+		set_image_preview(_image_file_path())
+	if FileAccess.file_exists(_sound_file_path()):
+		set_sound_preview(_sound_file_path())
+		sound_preview.show()
+	else:
+		sound_preview.hide()
 
 
 func _on_image_upload_button_pressed() -> void:
@@ -98,3 +106,8 @@ func _on_sound_upload_button_pressed() -> void:
 
 func _on_button_pressed() -> void:
 	delete.emit()
+
+
+func _on_sound_preview_pressed() -> void:
+	if sound_player.stream:
+		sound_player.play()

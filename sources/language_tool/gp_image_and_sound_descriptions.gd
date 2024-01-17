@@ -5,15 +5,17 @@ extends Control
 const description_line_class: = preload("res://sources/language_tool/image_and_sound_gp_description.tscn")
 
 
-func _on_description_line_delete(description_line: Control) -> void:
-	description_line.queue_free()
-
-
-func _on_plus_button_pressed() -> void:
-	var description_line: = description_line_class.instantiate()
-	description_line.delete.connect(_on_description_line_delete.bind(description_line))
+func _ready() -> void:
+	var _description_line: = description_line_class.instantiate()
+	DirAccess.make_dir_recursive_absolute(_description_line.resource_folder + _description_line.language_folder + _description_line.image_folder)
+	DirAccess.make_dir_recursive_absolute(_description_line.resource_folder + _description_line.language_folder + _description_line.sound_folder)
+	_description_line.queue_free()
 	
-	description_container.add_child(description_line)
+	Database.db.query("Select * FROM GPs")
+	for res in Database.db.query_result:
+		var description_line: = description_line_class.instantiate()
+		description_container.add_child(description_line)
+		description_line.set_gp(res["Grapheme"] + "-" + res["Phoneme"])
 
 
 func _on_back_button_pressed() -> void:

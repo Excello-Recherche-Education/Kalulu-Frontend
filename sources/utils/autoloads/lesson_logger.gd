@@ -1,5 +1,4 @@
 extends Node
-class_name Logger
 
 const log_resource_class: = preload("res://sources/utils/minigame_resources/log.gd")
 

@@ -19,6 +19,7 @@ theme_override_constants/margin_bottom = 10
 [node name="GPMenuButton" type="MenuButton" parent="MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 theme_override_font_sizes/font_size = 64
 text = "GP"
 alignment = 0
@@ -34,8 +35,15 @@ theme_override_constants/margin_bottom = 10
 [node name="HBoxContainer" type="HBoxContainer" parent="ImageContainer"]
 layout_mode = 2
 
+[node name="ImagePreview" type="TextureRect" parent="ImageContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+expand_mode = 1
+
 [node name="ImageCheckBox" type="CheckBox" parent="ImageContainer/HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 button_mask = 0
 
@@ -57,8 +65,16 @@ theme_override_constants/margin_bottom = 10
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3"]
 layout_mode = 2
 
+[node name="SoundPreview" type="Button" parent="MarginContainer3/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 2.08165e-12)
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Play"
+
 [node name="SoundCheckBox" type="CheckBox" parent="MarginContainer3/HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 button_mask = 0
 
@@ -70,6 +86,7 @@ layout_mode = 2
 texture = ExtResource("2_0hqnp")
 
 [node name="Button" parent="." instance=ExtResource("1_uutsu")]
+visible = false
 layout_mode = 2
 
 [node name="TextureRect" parent="Button" index="0"]
@@ -85,7 +102,10 @@ ok_button_text = "Ouvrir"
 file_mode = 0
 access = 2
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
 [connection signal="pressed" from="ImageContainer/HBoxContainer/ImageUploadButton" to="." method="_on_image_upload_button_pressed"]
+[connection signal="pressed" from="MarginContainer3/HBoxContainer/SoundPreview" to="." method="_on_sound_preview_pressed"]
 [connection signal="pressed" from="MarginContainer3/HBoxContainer/SoundUploadButton" to="." method="_on_sound_upload_button_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 
