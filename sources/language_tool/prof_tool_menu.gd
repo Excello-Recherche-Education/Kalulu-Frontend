@@ -50,3 +50,6 @@ func _on_export_button_pressed() -> void:
 		for e in sentences_by_lesson.get(i, []):
 			print(e.Sentence)
 		print("\n\n")
+	var folder_zipper: = FolderZipper.new()
+	folder_zipper.open("language_export.zip", ZIPPacker.APPEND_CREATE)
+	folder_zipper.write_folder_recursive("user://", "language_resources/")

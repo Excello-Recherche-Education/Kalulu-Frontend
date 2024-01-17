@@ -7,7 +7,7 @@ signal delete
 @onready var video_upload_button: = %VideoUploadButton
 @onready var file_dialog: = $FileDialog
 
-const resource_folder: = "res://language_resources/"
+const resource_folder: = "user://language_resources/"
 const language_folder: = "french/"
 const video_folder: = "look_and_learn/video/"
 const video_extension: = ".ogv"
