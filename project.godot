@@ -25,9 +25,10 @@ buses/default_bus_layout="res://resources/audio_buses/main_audio_bus_layout.tres
 
 [autoload]
 
-Database="*res://sources/utils/autoloads/Database.gd"
-UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 LessonLogger="*res://sources/utils/autoloads/lesson_logger.gd"
+UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
+Database="*res://sources/utils/autoloads/Database.gd"
+MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
 
 [display]
 

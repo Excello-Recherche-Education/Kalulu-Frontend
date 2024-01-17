@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://dtcgj6ee8jt2t"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_hauef"]
-[ext_resource type="AudioStream" uid="uid://bmijth0bydhw7" path="res://language_resources/french/minigames/jellyfish/audio/kalulu_help_jellyfish_language.mp3" id="2_7li38"]
+[ext_resource type="AudioStream" uid="uid://bmijth0bydhw7" path="res://language_resources/fr/minigames/jellyfish/audio/kalulu_help_jellyfish_language.mp3" id="2_7li38"]
 [ext_resource type="Script" path="res://sources/minigames/jellyfish/jellyfish_minigame.gd" id="2_gnjlp"]
-[ext_resource type="AudioStream" uid="uid://bluyy10ia8sek" path="res://language_resources/french/minigames/jellyfish/audio/kalulu_intro_jellyfish_language.mp3" id="3_6sswr"]
-[ext_resource type="AudioStream" uid="uid://b08hs14t1auv7" path="res://language_resources/french/minigames/jellyfish/audio/kalulu_end_jellyfish_all.mp3" id="3_ar7nu"]
+[ext_resource type="AudioStream" uid="uid://bluyy10ia8sek" path="res://language_resources/fr/minigames/jellyfish/audio/kalulu_intro_jellyfish_language.mp3" id="3_6sswr"]
+[ext_resource type="AudioStream" uid="uid://b08hs14t1auv7" path="res://language_resources/fr/minigames/jellyfish/audio/kalulu_end_jellyfish_all.mp3" id="3_ar7nu"]
 [ext_resource type="Texture2D" uid="uid://c0shai0eqdrbf" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_empty.png" id="4_1m7js"]
 [ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="5_4gwjw"]
 [ext_resource type="Texture2D" uid="uid://c7oq86cgq7okn" path="res://assets/minigames/jellyfish/graphic/backgroung.png" id="6_sn7hv"]
