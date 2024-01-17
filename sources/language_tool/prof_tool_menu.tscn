@@ -80,6 +80,16 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 120
 text = "Kalulu Language Tool"
 
+[node name="ExportButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 1614.0
+offset_right = 766.0
+offset_bottom = 1754.0
+theme_override_font_sizes/font_size = 100
+text = "Export
+"
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/GPListButton" to="." method="_on_gp_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/WordListButton" to="." method="_on_word_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
@@ -87,3 +97,4 @@ text = "Kalulu Language Tool"
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TracingBuilderButton" to="." method="_on_tracing_builder_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]
+[connection signal="pressed" from="ExportButton" to="." method="_on_export_button_pressed"]

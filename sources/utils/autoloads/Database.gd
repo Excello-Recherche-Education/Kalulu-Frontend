@@ -72,15 +72,26 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 	return db.query_result
 
 
-func get_words_for_lesson(lesson_nb: int) -> Array:
-	db.query_with_bindings("SELECT DISTINCT Word FROM Words 
-	INNER JOIN GPsInWords
-	INNER JOIN GPs 
-	INNER JOIN Lessons 
-	INNER JOIN GPsInLessons
-	ON Words.ID = GPsInWords.WordID AND GPS.ID = GPsInWords.GPID 
-	AND Lessons.ID = GPsInLessons.LessonID
-	AND GPsInLessons.GPID = GPs.ID AND Lessons.LessonNb <= ?", [lesson_nb])
+func get_words_for_lesson(lesson_nb: int, only_new: = false) -> Array:
+	var query: = "SELECT * FROM Words
+	INNER JOIN 
+	(SELECT WordID, count() as Count FROM GPsInWords
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID
+		GROUP BY WordID
+		) TotalCount ON TotalCount.WordID = Words.ID
+	INNER JOIN 
+	(SELECT WordID, count() as Count FROM GPsInWords
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		GROUP BY WordID
+		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
+	if only_new:
+		query += " INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID
+			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID
+			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
+		db.query_with_bindings(query, [lesson_nb, lesson_nb])
+	else:
+		db.query_with_bindings(query, [lesson_nb])
 	return db.query_result
 
 
@@ -116,6 +127,16 @@ func get_min_lesson_for_sentence_id(sentence_id: int) -> int:
 	INNER JOIN GPsInLessons ON Lessons.ID = GPsInLessons.LessonID
 	INNER JOIN WordsInSentences ON WordsInSentences.SentenceID = ?
 	INNER JOIN GPsInWords ON GPsInWords.GPID = GPsInLessons.GPID AND GPsInWords.WordID = WordsInSentences.WordID", [sentence_id])
+	return db.query_result[0].i
+
+
+func get_sentences() -> Array[Dictionary]:
+	db.query("SELECT * FROM Sentences")
+	return db.query_result
+
+
+func get_lessons_count() -> int:
+	db.query("SELECT MAX(Lessons.LessonNb) as i FROM Lessons")
 	return db.query_result[0].i
 
 
