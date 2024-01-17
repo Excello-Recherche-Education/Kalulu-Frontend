@@ -372,7 +372,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("27_eee4l")
+texture = ExtResource("26_0bgo4")
 expand_mode = 4
 stretch_mode = 5
 

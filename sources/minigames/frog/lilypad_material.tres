@@ -1,0 +1,34 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://cbs2x6nv6jl63"]
+
+[ext_resource type="Shader" path="res://sources/minigames/frog/flood.gdshader" id="1_yfhcb"]
+
+[sub_resource type="Gradient" id="Gradient_q5on4"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6xjnx"]
+frequency = 0.05
+fractal_type = 3
+fractal_gain = 0.1
+fractal_weighted_strength = 1.0
+fractal_ping_pong_strength = 4.0
+domain_warp_enabled = true
+domain_warp_amplitude = 20.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 2.0
+domain_warp_fractal_gain = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_noqed"]
+width = 128
+height = 128
+seamless_blend_skirt = 0.0
+color_ramp = SubResource("Gradient_q5on4")
+noise = SubResource("FastNoiseLite_6xjnx")
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_yfhcb")
+shader_parameter/burn_color = Color(0.156863, 0.192157, 1, 1)
+shader_parameter/burn_size = 0.5
+shader_parameter/dissolve_amount = 0.0
+shader_parameter/emission_amount = 1.0
+shader_parameter/dissolve_texture = SubResource("NoiseTexture2D_noqed")

@@ -1,43 +1,33 @@
-[gd_scene load_steps=18 format=3 uid="uid://cd5yhq6f6l88c"]
+[gd_scene load_steps=16 format=3 uid="uid://dl5wx8l0awoi0"]
 
-[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_avl88"]
-[ext_resource type="Script" path="res://sources/minigames/frog/frog_minigame.gd" id="2_5vus4"]
-[ext_resource type="Texture2D" uid="uid://g1pr0xqbmwcb" path="res://assets/minigames/frog/graphics/background_river.png" id="2_xejtx"]
-[ext_resource type="AudioStream" uid="uid://brvigkassgx1b" path="res://language_resources/french/minigames/frog/audio/kalulu/kalulu_end_frog_all.mp3" id="3_8qoit"]
-[ext_resource type="AudioStream" uid="uid://ve3na0ebxwsr" path="res://language_resources/french/minigames/frog/audio/kalulu/kalulu_help_frog_language.mp3" id="3_cqjmm"]
-[ext_resource type="Texture2D" uid="uid://cusulkkvcyxak" path="res://assets/minigames/frog/graphics/sand_left.png" id="3_si4ka"]
-[ext_resource type="Texture2D" uid="uid://c7im0b3uxb6ha" path="res://assets/minigames/frog/graphics/grass_left.png" id="4_wsj75"]
-[ext_resource type="Texture2D" uid="uid://tl6bs08l37ar" path="res://assets/minigames/frog/graphics/sand_right.png" id="5_2g3rn"]
-[ext_resource type="Texture2D" uid="uid://jvpu77isfi5b" path="res://assets/minigames/frog/graphics/gauge_icon_frog_empty.png" id="5_o5eq5"]
-[ext_resource type="Texture2D" uid="uid://dg4n6nv84tl3u" path="res://assets/minigames/frog/graphics/grass_right.png" id="6_2y56j"]
-[ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="6_bm4cp"]
-[ext_resource type="Texture2D" uid="uid://ct24yoo1efipg" path="res://assets/minigames/frog/graphics/reed_01.png" id="7_acpkk"]
-[ext_resource type="Texture2D" uid="uid://b51kxs3qm3wiw" path="res://assets/minigames/frog/graphics/rock.png" id="7_e20fa"]
-[ext_resource type="Texture2D" uid="uid://djg2gkxxjgqwx" path="res://assets/minigames/frog/graphics/reed_02.png" id="8_2571k"]
-[ext_resource type="PackedScene" uid="uid://ca0ul885cbe41" path="res://sources/minigames/frog/frog/frog.tscn" id="13_phlg8"]
+[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_ng5er"]
+[ext_resource type="Script" path="res://sources/minigames/frog/frog_minigame.gd" id="2_0xg3r"]
+[ext_resource type="Texture2D" uid="uid://jvpu77isfi5b" path="res://assets/minigames/frog/graphics/gauge_icon_frog_empty.png" id="2_e38i1"]
+[ext_resource type="Texture2D" uid="uid://g1pr0xqbmwcb" path="res://assets/minigames/frog/graphics/background_river.png" id="2_wg03r"]
+[ext_resource type="Texture2D" uid="uid://cusulkkvcyxak" path="res://assets/minigames/frog/graphics/sand_left.png" id="3_eaixk"]
+[ext_resource type="AudioStream" uid="uid://ve3na0ebxwsr" path="res://language_resources/french/minigames/frog/audio/kalulu/kalulu_help_frog_language.mp3" id="3_qavay"]
+[ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="3_vjlmb"]
+[ext_resource type="AudioStream" uid="uid://brvigkassgx1b" path="res://language_resources/french/minigames/frog/audio/kalulu/kalulu_end_frog_all.mp3" id="4_agvjd"]
+[ext_resource type="Texture2D" uid="uid://c7im0b3uxb6ha" path="res://assets/minigames/frog/graphics/grass_left.png" id="4_mvhry"]
+[ext_resource type="Texture2D" uid="uid://tl6bs08l37ar" path="res://assets/minigames/frog/graphics/sand_right.png" id="5_6ofrr"]
+[ext_resource type="Texture2D" uid="uid://dg4n6nv84tl3u" path="res://assets/minigames/frog/graphics/grass_right.png" id="6_bvdcd"]
+[ext_resource type="Texture2D" uid="uid://ct24yoo1efipg" path="res://assets/minigames/frog/graphics/reed_01.png" id="7_161vn"]
+[ext_resource type="Texture2D" uid="uid://djg2gkxxjgqwx" path="res://assets/minigames/frog/graphics/reed_02.png" id="8_ps7uv"]
+[ext_resource type="Texture2D" uid="uid://b51kxs3qm3wiw" path="res://assets/minigames/frog/graphics/rock.png" id="13_lifwj"]
+[ext_resource type="PackedScene" uid="uid://bloyucpsbvpx8" path="res://sources/minigames/frog/frog.tscn" id="13_o6mls"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_a0wpy"]
-radius = 100.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_by6y7"]
-size = Vector2(437, 1800)
-
-[node name="FrogMinigame" instance=ExtResource("1_avl88")]
-mouse_filter = 2
-script = ExtResource("2_5vus4")
+[node name="FrogMinigame" instance=ExtResource("1_ng5er")]
+script = ExtResource("2_0xg3r")
 difficulty = 1
 lesson_nb = 4
 max_number_of_lives = 5
 max_progression = 3
-help_kalulu_speech = ExtResource("3_cqjmm")
-win_kalulu_speech = ExtResource("3_8qoit")
+help_kalulu_speech = ExtResource("3_qavay")
+win_kalulu_speech = ExtResource("4_agvjd")
 
 [node name="MinigameUI" parent="." index="1"]
-empty_progression_icon = ExtResource("5_o5eq5")
-full_progression_icon = ExtResource("6_bm4cp")
-
-[node name="GameRoot" parent="." index="3"]
-mouse_filter = 2
+empty_progression_icon = ExtResource("2_e38i1")
+full_progression_icon = ExtResource("3_vjlmb")
 
 [node name="Background" type="Control" parent="GameRoot" index="0"]
 layout_mode = 1
@@ -56,7 +46,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("2_xejtx")
+texture = ExtResource("2_wg03r")
 
 [node name="LeftSand" type="TextureRect" parent="GameRoot/Background" index="1"]
 layout_mode = 1
@@ -65,7 +55,7 @@ anchor_bottom = 1.0
 offset_right = 676.0
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("3_si4ka")
+texture = ExtResource("3_eaixk")
 
 [node name="LeftGrass" type="TextureRect" parent="GameRoot/Background" index="2"]
 layout_mode = 1
@@ -74,7 +64,7 @@ anchor_bottom = 1.0
 offset_right = 478.0
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("4_wsj75")
+texture = ExtResource("4_mvhry")
 
 [node name="RightSand" type="TextureRect" parent="GameRoot/Background" index="3"]
 layout_mode = 1
@@ -86,7 +76,7 @@ offset_left = -492.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("5_2g3rn")
+texture = ExtResource("5_6ofrr")
 
 [node name="RightGrass" type="TextureRect" parent="GameRoot/Background" index="4"]
 layout_mode = 1
@@ -98,96 +88,123 @@ offset_left = -365.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("6_2y56j")
+texture = ExtResource("6_bvdcd")
 
-[node name="Scenery" type="Control" parent="GameRoot" index="1"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 2
+[node name="Rocks" type="Control" parent="GameRoot/Background" index="5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Rock" type="TextureRect" parent="GameRoot/Scenery" index="0"]
+[node name="Rock" type="TextureRect" parent="GameRoot/Background/Rocks" index="0"]
 layout_mode = 0
 offset_left = 461.0
-offset_top = 127.0
+offset_top = 129.0
 offset_right = 556.0
-offset_bottom = 345.0
+offset_bottom = 347.0
 mouse_filter = 2
-texture = ExtResource("7_acpkk")
+texture = ExtResource("7_161vn")
 
-[node name="Rock2" type="TextureRect" parent="GameRoot/Scenery" index="1"]
+[node name="Rock2" type="TextureRect" parent="GameRoot/Background/Rocks" index="1"]
 layout_mode = 0
 offset_left = 260.0
 offset_top = 1134.0
 offset_right = 355.0
 offset_bottom = 1352.0
 mouse_filter = 2
-texture = ExtResource("7_acpkk")
+texture = ExtResource("7_161vn")
 
-[node name="Rock3" type="TextureRect" parent="GameRoot/Scenery" index="2"]
+[node name="Rock3" type="TextureRect" parent="GameRoot/Background/Rocks" index="2"]
 layout_mode = 0
 offset_left = 2172.0
 offset_top = 184.0
 offset_right = 2337.0
 offset_bottom = 432.0
 mouse_filter = 2
-texture = ExtResource("8_2571k")
+texture = ExtResource("8_ps7uv")
 
-[node name="Rock4" type="TextureRect" parent="GameRoot/Scenery" index="3"]
+[node name="Rock4" type="TextureRect" parent="GameRoot/Background/Rocks" index="3"]
 layout_mode = 0
 offset_left = 2268.0
 offset_top = 1098.0
 offset_right = 2467.0
 offset_bottom = 1388.0
 mouse_filter = 2
-texture = ExtResource("8_2571k")
+texture = ExtResource("8_ps7uv")
 
-[node name="Rock5" type="TextureRect" parent="GameRoot/Scenery" index="4"]
+[node name="Rock5" type="TextureRect" parent="GameRoot/Background/Rocks" index="4"]
 layout_mode = 0
 offset_left = 263.0
 offset_top = 1383.0
 offset_right = 470.0
 offset_bottom = 1679.0
 mouse_filter = 2
-texture = ExtResource("8_2571k")
+texture = ExtResource("8_ps7uv")
 
-[node name="Rock6" type="TextureRect" parent="GameRoot/Scenery" index="5"]
+[node name="Rock6" type="TextureRect" parent="GameRoot/Background/Rocks" index="5"]
 layout_mode = 0
 offset_left = 221.0
 offset_top = 467.0
 offset_right = 428.0
 offset_bottom = 763.0
 mouse_filter = 2
-texture = ExtResource("8_2571k")
+texture = ExtResource("8_ps7uv")
 
-[node name="Rock7" type="TextureRect" parent="GameRoot/Scenery" index="6"]
+[node name="Rock7" type="TextureRect" parent="GameRoot/Background/Rocks" index="6"]
 layout_mode = 0
 offset_left = 2342.0
 offset_top = 467.0
 offset_right = 2457.0
 offset_bottom = 736.0
 mouse_filter = 2
-texture = ExtResource("7_acpkk")
+texture = ExtResource("7_161vn")
 
-[node name="Rock8" type="TextureRect" parent="GameRoot/Scenery" index="7"]
+[node name="Rock8" type="TextureRect" parent="GameRoot/Background/Rocks" index="7"]
 layout_mode = 0
-offset_left = 2362.0
-offset_top = 810.0
-offset_right = 2477.0
-offset_bottom = 1079.0
+offset_left = 2200.0
+offset_top = 1465.0
+offset_right = 2315.0
+offset_bottom = 1734.0
 mouse_filter = 2
-texture = ExtResource("7_acpkk")
+texture = ExtResource("7_161vn")
 
-[node name="Rock9" type="TextureRect" parent="GameRoot/Scenery" index="8"]
+[node name="Rock9" type="TextureRect" parent="GameRoot/Background/Rocks" index="8"]
 layout_mode = 0
 offset_left = 2347.0
 offset_top = 1413.0
 offset_right = 2462.0
 offset_bottom = 1682.0
 mouse_filter = 2
-texture = ExtResource("7_acpkk")
+texture = ExtResource("7_161vn")
 
-[node name="Start" type="Control" parent="GameRoot" index="2"]
+[node name="Rock10" type="TextureRect" parent="GameRoot/Background/Rocks" index="9"]
+layout_mode = 0
+offset_left = 191.0
+offset_top = 242.0
+offset_right = 286.0
+offset_bottom = 460.0
+mouse_filter = 2
+texture = ExtResource("7_161vn")
+
+[node name="Rock11" type="TextureRect" parent="GameRoot/Background/Rocks" index="10"]
+layout_mode = 0
+offset_left = 458.0
+offset_top = 1137.0
+offset_right = 553.0
+offset_bottom = 1355.0
+mouse_filter = 2
+texture = ExtResource("7_161vn")
+
+[node name="GameElements" type="Control" parent="GameRoot" index="1"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Start" type="Control" parent="GameRoot/GameElements" index="0"]
+unique_name_in_owner = true
+layout_mode = 3
 anchors_preset = 0
 offset_left = 478.0
 offset_top = 900.0
@@ -195,28 +212,25 @@ offset_right = 518.0
 offset_bottom = 940.0
 mouse_filter = 2
 
-[node name="Rock" type="TextureRect" parent="GameRoot/Start" index="0"]
+[node name="Rock" type="TextureRect" parent="GameRoot/GameElements/Start" index="0"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -143.0
-offset_top = -170.0
-offset_right = 68.0
-offset_bottom = 79.0
+offset_left = -291.0
+offset_top = -313.0
+offset_right = -80.0
+offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 mouse_filter = 2
-texture = ExtResource("7_e20fa")
+texture = ExtResource("13_lifwj")
 
-[node name="Area2D" type="Area2D" parent="GameRoot/Start" index="1"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GameRoot/Start/Area2D" index="0"]
-shape = SubResource("CircleShape2D_a0wpy")
-
-[node name="End" type="Control" parent="GameRoot" index="3"]
+[node name="End" type="Control" parent="GameRoot/GameElements" index="1"]
+unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
 offset_left = 2341.5
@@ -225,39 +239,56 @@ offset_right = 2381.5
 offset_bottom = 940.0
 mouse_filter = 2
 
-[node name="Rock" type="TextureRect" parent="GameRoot/End" index="0"]
+[node name="Rock" type="TextureRect" parent="GameRoot/GameElements/End" index="0"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -140.5
-offset_top = -175.0
-offset_right = 70.5
-offset_bottom = 74.0
+offset_left = -268.5
+offset_top = -300.0
+offset_right = -57.5
+offset_bottom = -51.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 mouse_filter = 2
-texture = ExtResource("7_e20fa")
+texture = ExtResource("13_lifwj")
 
-[node name="Area2D" type="Area2D" parent="GameRoot/End" index="1"]
+[node name="FrogSpawnPoint" type="Control" parent="GameRoot/GameElements" index="2"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -228.0
+offset_top = 900.0
+offset_right = -228.0
+offset_bottom = 900.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GameRoot/End/Area2D" index="0"]
-shape = SubResource("RectangleShape2D_by6y7")
+[node name="FrogDespawnPoint" type="Control" parent="GameRoot/GameElements" index="3"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 2788.0
+offset_top = 900.0
+offset_right = 2788.0
+offset_bottom = 900.0
 
-[node name="RiverContainer" type="HBoxContainer" parent="GameRoot" index="4"]
-layout_mode = 0
-offset_left = 710.0
-offset_top = -500.0
-offset_right = 2030.0
-offset_bottom = 2300.0
-mouse_filter = 2
-theme_override_constants/separation = 50
+[node name="LilypadTracksContainer" type="HBoxContainer" parent="GameRoot" index="2"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 654.0
+offset_top = -250.0
+offset_right = -479.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
 alignment = 1
 
-[node name="Frog" parent="GameRoot" index="5" instance=ExtResource("13_phlg8")]
-position = Vector2(478, 900)
-
-[connection signal="area_entered" from="GameRoot/End/Area2D" to="." method="_on_end_area_area_entered"]
-[connection signal="flooded" from="GameRoot/Frog" to="." method="_on_frog_flooded"]
+[node name="Frog" parent="GameRoot" index="3" instance=ExtResource("13_o6mls")]
+unique_name_in_owner = true
+offset_left = 478.0
+offset_top = 900.0
+offset_right = 478.0
+offset_bottom = 900.0
