@@ -1,5 +1,6 @@
 [gd_resource type="Theme" load_steps=9 format=3 uid="uid://dqjvrt5nrtwn1"]
 
+[ext_resource type="FontFile" uid="uid://b74ghiuvt8u45" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_shpmh"]
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="2_hbp6q"]
 [ext_resource type="Texture2D" uid="uid://cacy10k45kq6u" path="res://assets/theme/up.svg" id="3_1nwm4"]
@@ -30,14 +31,34 @@ FileDialog/icons/parent_folder = ExtResource("3_1nwm4")
 FileDialog/icons/reload = ExtResource("4_ymfot")
 FileDialog/icons/toggle_hidden = ExtResource("5_yja2v")
 Label/font_sizes/font_size = 42
+Label/fonts/font = ExtResource("1_shpmh")
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/colors/font_outline_color = Color(0, 0, 0, 1)
+LineEdit/colors/font_placeholder_color = Color(1, 1, 1, 0.6)
 LineEdit/constants/caret_width = 4
+LineEdit/constants/outline_size = 1
 LineEdit/font_sizes/font_size = 32
+LineEdit/fonts/font = ExtResource("1_shpmh")
+OptionButton/colors/font_color = Color(1, 1, 1, 1)
+OptionButton/colors/font_outline_color = Color(0, 0, 0, 1)
+OptionButton/constants/arrow_margin = 20
+OptionButton/constants/modulate_arrow = 1
+OptionButton/constants/outline_size = 1
+OptionButton/font_sizes/font_size = 70
+OptionButton/fonts/font = ExtResource("1_shpmh")
+Panel/styles/panel = SubResource("StyleBoxFlat_sfncn")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_3gh3j")
 MenuBar/font_sizes/font_size = 32
 MenuButton/font_sizes/font_size = 32
 OptionButton/font_sizes/font_size = 32
 Panel/styles/panel = SubResource("StyleBoxFlat_sfncn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_3gh3j")
+PopupMenu/colors/font_color = Color(1, 1, 1, 1)
+PopupMenu/colors/font_outline_color = Color(0, 0, 0, 1)
+PopupMenu/constants/outline_size = 1
 PopupMenu/font_sizes/font_size = 100
+PopupMenu/fonts/font = ExtResource("1_shpmh")
+PopupMenu/fonts/font_separator = ExtResource("1_shpmh")
 TextEdit/font_sizes/font_size = 32
 TooltipLabel/font_sizes/font_size = 80
 Tree/font_sizes/font_size = 32

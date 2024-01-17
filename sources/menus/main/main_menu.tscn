@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://6v3nachs7j71"]
+[gd_scene load_steps=22 format=3 uid="uid://6v3nachs7j71"]
 
 [ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_afd4d"]
@@ -10,6 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://cgwun1jhj53bi" path="res://assets/menus/main/play_button.png" id="7_lr7j4"]
 [ext_resource type="Script" path="res://sources/menus/main/kalulu.gd" id="8_cxg8l"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="10_icqmp"]
+[ext_resource type="Script" path="res://sources/menus/main/login.gd" id="12_6bu7q"]
+[ext_resource type="Texture2D" uid="uid://bsojx7tmm435x" path="res://assets/minigames/minigame_ui/graphic/button_next_up.png" id="12_km7h0"]
+[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="13_j3nb7"]
+[ext_resource type="Texture2D" uid="uid://brrxuaco0l85j" path="res://assets/minigames/minigame_ui/graphic/button_next_down.png" id="13_oqjai"]
+[ext_resource type="Script" path="res://sources/menus/main/language_field.gd" id="13_rs3hd"]
+[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="14_3lr3g"]
+[ext_resource type="Texture2D" uid="uid://bsmq426v8148w" path="res://assets/minigames/minigame_ui/graphic/button_next_disabled.png" id="14_11c6x"]
+[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="15_pcmnw"]
 [ext_resource type="Texture2D" uid="uid://bbip3wpyidt1q" path="res://assets/menus/main/play_button_mask.png" id="20_oqrk5"]
 [ext_resource type="FontFile" uid="uid://b74ghiuvt8u45" path="res://assets/fonts/ScriptEcoleNormal.otf" id="22_jby16"]
 [ext_resource type="AudioStream" uid="uid://b8pn5vqgp6jlt" path="res://assets/menus/main/ui_title_card_music.mp3" id="23_ajpnn"]
@@ -55,17 +63,6 @@ scale = Vector2(2, 2)
 position = Vector2(2000, 1875)
 scale = Vector2(2, 2)
 
-[node name="Title" type="TextureRect" parent="."]
-layout_mode = 2
-offset_left = 956.0
-offset_top = 256.0
-offset_right = 1603.0
-offset_bottom = 428.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-texture = ExtResource("7_ftt26")
-
 [node name="Kalulu" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -76,6 +73,17 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("8_cxg8l")
+
+[node name="Title" type="TextureRect" parent="Kalulu"]
+layout_mode = 2
+offset_left = -324.0
+offset_top = -644.0
+offset_right = 323.0
+offset_bottom = -472.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("7_ftt26")
 
 [node name="Background" type="TextureRect" parent="Kalulu"]
 custom_minimum_size = Vector2(868, 868)
@@ -103,74 +111,211 @@ blend_mode = 2
 range_item_cull_mask = 2
 texture = ExtResource("20_oqrk5")
 
+[node name="Button" type="Button" parent="Kalulu"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1280.0
+offset_top = -904.0
+offset_right = 1280.0
+offset_bottom = 904.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="SpeechPlayer" type="AudioStreamPlayer" parent="Kalulu"]
+
+[node name="Login" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -649.0
+offset_top = -308.0
+offset_right = 649.0
+offset_bottom = 308.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("12_6bu7q")
+
+[node name="BackButton" type="TextureButton" parent="Login"]
+layout_mode = 0
+offset_left = -567.0
+offset_top = -528.0
+offset_right = -427.0
+offset_bottom = -388.0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("13_j3nb7")
+texture_pressed = ExtResource("14_3lr3g")
+
+[node name="EmailField" type="LineEdit" parent="Login"]
+layout_mode = 1
+offset_top = 80.0
+offset_right = 800.0
+offset_bottom = 193.0
+theme = ExtResource("15_pcmnw")
+theme_type_variation = &"1"
+theme_override_font_sizes/font_size = 70
+placeholder_text = "Email"
+
+[node name="Label" type="Label" parent="Login/EmailField"]
+layout_mode = 0
+offset_top = -80.0
+offset_right = 412.0
+theme = ExtResource("15_pcmnw")
+text = "Teacher login"
+
+[node name="PasswordField" type="LineEdit" parent="Login"]
+layout_mode = 1
+offset_top = 223.0
+offset_right = 800.0
+offset_bottom = 336.0
+theme = ExtResource("15_pcmnw")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 1
+placeholder_text = "Password"
+secret = true
+
+[node name="DeviceIDField" type="LineEdit" parent="Login"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_top = 80.0
+offset_bottom = 193.0
+grow_horizontal = 0
+theme = ExtResource("15_pcmnw")
+
+[node name="Label" type="Label" parent="Login/DeviceIDField"]
+layout_mode = 1
+offset_top = -80.0
+offset_right = 412.0
+theme = ExtResource("15_pcmnw")
+text = "Tablet number"
+
+[node name="LanguageField" type="OptionButton" parent="Login"]
+layout_mode = 0
+offset_top = 356.0
+offset_right = 800.0
+offset_bottom = 469.0
+theme = ExtResource("15_pcmnw")
+script = ExtResource("13_rs3hd")
+
+[node name="ValidateButton" type="TextureButton" parent="Login"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -321.0
+offset_top = -310.0
+offset_right = -181.0
+offset_bottom = -170.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("12_km7h0")
+texture_pressed = ExtResource("13_oqjai")
+texture_disabled = ExtResource("14_11c6x")
+
+[node name="ErrorMessage" type="Label" parent="Login"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -76.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Please verify your data"
 
 [node name="Informations" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -112.0
-offset_right = 467.0
+offset_top = -176.0
+offset_right = 624.0
 grow_vertical = 0
 
 [node name="BuildVersionTitle" type="Label" parent="Informations"]
 layout_mode = 2
-offset_right = 251.0
+offset_left = 10.0
+offset_right = 261.0
 offset_bottom = 56.0
 theme_override_fonts/font = ExtResource("22_jby16")
-text = " Build Version :"
+theme_override_font_sizes/font_size = 30
+text = "Build Version :"
 vertical_alignment = 1
 
 [node name="BuildVersionValue" type="Label" parent="Informations"]
-layout_mode = 2
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -150.0
+layout_mode = 1
+offset_left = 250.0
+offset_right = 400.0
 offset_bottom = 56.0
-grow_horizontal = 0
 theme_override_fonts/font = ExtResource("22_jby16")
+theme_override_font_sizes/font_size = 30
+text = "?"
+vertical_alignment = 1
+
+[node name="TeacherTitle" type="Label" parent="Informations"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 56.0
+offset_right = 261.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 30
+text = "Logged as :"
+vertical_alignment = 1
+
+[node name="TeacherValue" type="Label" parent="Informations"]
+layout_mode = 1
+offset_left = 250.0
+offset_top = 56.0
+offset_right = 500.0
+offset_bottom = 112.0
+theme_override_fonts/font = ExtResource("22_jby16")
+theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
 
 [node name="DeviceIDTitle" type="Label" parent="Informations"]
-layout_mode = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -56.0
-offset_right = 193.0
-grow_vertical = 0
+layout_mode = 1
+offset_left = 10.0
+offset_top = 112.0
+offset_right = 261.0
+offset_bottom = 168.0
 theme_override_fonts/font = ExtResource("22_jby16")
-text = " Device Id :"
+theme_override_font_sizes/font_size = 30
+text = "Device Id :"
 vertical_alignment = 1
 
 [node name="DeviceIDValue" type="Label" parent="Informations"]
-layout_mode = 2
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -150.0
-offset_top = -56.0
-grow_horizontal = 0
-grow_vertical = 0
+layout_mode = 1
+offset_left = 250.0
+offset_top = 112.0
+offset_right = 400.0
+offset_bottom = 168.0
 theme_override_fonts/font = ExtResource("22_jby16")
+theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
-
-[node name="Button" type="Button" parent="."]
-modulate = Color(1, 1, 1, 0)
-self_modulate = Color(1, 1, 1, 0)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("23_ajpnn")
 autoplay = true
 
-[connection signal="pressed" from="Button" to="." method="_on_main_button_pressed"]
+[connection signal="pressed" from="Kalulu/Button" to="." method="_on_main_button_pressed"]
+[connection signal="pressed" from="Login/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Login/ValidateButton" to="Login" method="_on_validate_button_pressed"]
 [connection signal="finished" from="MusicStreamPlayer" to="." method="_on_music_stream_player_finished"]

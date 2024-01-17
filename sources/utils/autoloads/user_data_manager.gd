@@ -56,6 +56,14 @@ func set_language(language : String) -> void:
 		_save_language_settings()
 
 
+func login(language : String, teacher : String, device_id : String) -> void:
+	if language_settings:
+		language_settings.language = language
+		language_settings.teacher = teacher
+		language_settings.device_id = device_id
+		_save_language_settings()
+
+
 func load_student_settings() -> void:
 	# Load User settings
 	if FileAccess.file_exists(get_student_settings_path()):
