@@ -1,4 +1,7 @@
 extends Resource
 class_name LanguageSettings
 
-var language : String
+@export var language : String :
+	set(value):
+		language = value
+		Database.language = value

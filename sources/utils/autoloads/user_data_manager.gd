@@ -22,6 +22,7 @@ var language_settings: LanguageSettings
 var student_settings: UserSettings
 var student_progression: UserProgression
 
+
 func _ready():
 	teacher = "toto"
 	student = "titi"
@@ -30,6 +31,30 @@ func _ready():
 	load_student_progression()
 	
 	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
+	load_language_settings()
+
+
+func load_language_settings() -> void:
+	if FileAccess.file_exists(get_language_settings_path()):
+		language_settings = load(get_language_settings_path())
+	if not language_settings:
+		language_settings = LanguageSettings.new()
+		_save_language_settings()
+
+
+func _save_language_settings() -> void:
+	ResourceSaver.save(language_settings, get_language_settings_path())
+
+
+func get_language_settings_path() -> String:
+	return "user://language.tres"
+
+
+func set_language(language : String) -> void:
+	if language_settings:
+		language_settings.language = language
+		_save_language_settings()
+
 
 func load_student_settings() -> void:
 	# Load User settings
