@@ -3,7 +3,7 @@ extends HBoxContainer
 signal delete
 
 @onready var gp_menu_button: = %GPMenuButton
-@onready var video_check_box: = %VideoCheckBox
+@onready var video_player: = %VideoStreamPlayer
 @onready var video_upload_button: = %VideoUploadButton
 @onready var file_dialog: = $FileDialog
 
@@ -13,18 +13,6 @@ const video_folder: = "look_and_learn/video/"
 const video_extension: = ".ogv"
 
 var gp: = ""
-var gp_list: = {}
-
-
-func _ready() -> void:
-	var popup: PopupMenu = gp_menu_button.get_popup()
-	
-	Database.db.query("Select * FROM GPs")
-	for res in Database.db.query_result:
-		popup.add_check_item(res["Grapheme"] + "-" + res["Phoneme"], res["ID"])
-		gp_list[res["ID"]] = res["Grapheme"] + "-" + res["Phoneme"]
-	
-	gp_menu_button.get_popup().id_pressed.connect(_on_gp_menu_button_popup_id_pressed)
 
 
 func _video_file_selected(file_path: String) -> void:
@@ -36,18 +24,23 @@ func _video_file_selected(file_path: String) -> void:
 		
 		DirAccess.copy_absolute(file_path, current_file)
 		
-		video_check_box.button_pressed = true
+		set_video_preview(current_file)
 
 
 func _video_file_path() -> String:
 	return resource_folder + language_folder + video_folder + gp + video_extension
 
 
-func _on_gp_menu_button_popup_id_pressed(id: int) -> void:
-	gp = gp_list[id]
+func set_video_preview(video_path: String) -> void:
+	video_player.stream = load(video_path)
+
+
+func set_gp(p_gp: String) -> void:
+	gp = p_gp
 	gp_menu_button.text = gp
 	
-	video_check_box.button_pressed = FileAccess.file_exists(_video_file_path())
+	if FileAccess.file_exists(_video_file_path()):
+		set_video_preview(_video_file_path())
 
 
 func _on_video_upload_button_pressed() -> void:
@@ -65,3 +58,8 @@ func _on_video_upload_button_pressed() -> void:
 
 func _on_button_pressed() -> void:
 	delete.emit()
+
+
+func _on_video_stream_player_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click") and video_player.stream:
+		video_player.play()

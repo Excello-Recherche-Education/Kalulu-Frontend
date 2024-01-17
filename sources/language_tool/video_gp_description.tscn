@@ -34,10 +34,10 @@ theme_override_constants/margin_bottom = 10
 [node name="HBoxContainer" type="HBoxContainer" parent="VideoContainer"]
 layout_mode = 2
 
-[node name="VideoCheckBox" type="CheckBox" parent="VideoContainer/HBoxContainer"]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="VideoContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 2.08165e-12)
 layout_mode = 2
-button_mask = 0
 
 [node name="VideoUploadButton" parent="VideoContainer/HBoxContainer" instance=ExtResource("2_liexj")]
 unique_name_in_owner = true
@@ -62,6 +62,7 @@ ok_button_text = "Ouvrir"
 file_mode = 0
 access = 2
 
+[connection signal="gui_input" from="VideoContainer/HBoxContainer/VideoStreamPlayer" to="." method="_on_video_stream_player_gui_input"]
 [connection signal="pressed" from="VideoContainer/HBoxContainer/VideoUploadButton" to="." method="_on_video_upload_button_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 

@@ -56,6 +56,7 @@ text = "Video"
 vertical_alignment = 1
 
 [node name="PlusButton" parent="VBoxContainer/PanelContainer/HBoxContainer" instance=ExtResource("2_qd3s2")]
+visible = false
 layout_mode = 2
 
 [node name="BackButton" parent="VBoxContainer/PanelContainer/HBoxContainer" instance=ExtResource("2_qd3s2")]
@@ -66,8 +67,12 @@ texture = ExtResource("3_kfx0p")
 
 [node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="DescriptionsContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="DescriptionsContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer2/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
