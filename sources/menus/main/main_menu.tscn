@@ -111,7 +111,7 @@ blend_mode = 2
 range_item_cull_mask = 2
 texture = ExtResource("20_oqrk5")
 
-[node name="Button" type="Button" parent="Kalulu"]
+[node name="PlayButton" type="Button" parent="Kalulu"]
 modulate = Color(1, 1, 1, 0)
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -227,7 +227,7 @@ texture_normal = ExtResource("12_km7h0")
 texture_pressed = ExtResource("13_oqjai")
 texture_disabled = ExtResource("14_11c6x")
 
-[node name="ErrorMessage" type="Label" parent="Login"]
+[node name="FieldMissingError" type="Label" parent="Login"]
 visible = false
 layout_mode = 1
 anchors_preset = 12
@@ -237,7 +237,19 @@ anchor_bottom = 1.0
 offset_top = -76.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "Please verify your data"
+text = "Please fill all the fields"
+
+[node name="LoginError" type="Label" parent="Login"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -76.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Invalid username or password"
 
 [node name="Informations" type="Control" parent="."]
 layout_mode = 1
@@ -315,7 +327,8 @@ vertical_alignment = 1
 stream = ExtResource("23_ajpnn")
 autoplay = true
 
-[connection signal="pressed" from="Kalulu/Button" to="." method="_on_main_button_pressed"]
+[connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
+[connection signal="logged_in" from="Login" to="." method="_on_login_in"]
 [connection signal="pressed" from="Login/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Login/ValidateButton" to="Login" method="_on_validate_button_pressed"]
 [connection signal="finished" from="MusicStreamPlayer" to="." method="_on_music_stream_player_finished"]

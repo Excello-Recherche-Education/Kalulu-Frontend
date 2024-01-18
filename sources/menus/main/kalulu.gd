@@ -18,6 +18,9 @@ func _ready():
 
 
 func _process(delta):
+	if not visible:
+		return
+	
 	if not isSpeaking:
 		elapsedTime += delta
 	if elapsedTime > 20:

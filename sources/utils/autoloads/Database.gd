@@ -35,7 +35,7 @@ var words_path: = base_path + language + "/words/"
 
 
 func _ready() -> void:
-	language = UserDataManager.language_settings.language
+	language = UserDataManager.device_settings.language
 	db.path = db_path
 	db.foreign_keys = true
 	db.open_db()

@@ -29,6 +29,7 @@ var current_image_and_sound: = 0
 var images: = []
 var sounds: = []
 
+
 var current_tracing: = 0
 
 
