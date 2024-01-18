@@ -51,5 +51,4 @@ func _on_export_button_pressed() -> void:
 			print(e.Sentence)
 		print("\n\n")
 	var folder_zipper: = FolderZipper.new()
-	folder_zipper.open("language_export.zip", ZIPPacker.APPEND_CREATE)
-	folder_zipper.write_folder_recursive("user://", "language_resources/")
+	folder_zipper.compress("user://language_resources/", "user://language_export.zip")
