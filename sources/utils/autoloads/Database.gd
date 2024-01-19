@@ -74,20 +74,20 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 
 func get_words_for_lesson(lesson_nb: int, only_new: = false) -> Array:
 	var query: = "SELECT * FROM Words
+	 INNER JOIN 
+	(SELECT WordID, count() as Count FROM GPsInWords 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+		GROUP BY WordID 
+		) TotalCount ON TotalCount.WordID = Words.ID 
 	INNER JOIN 
-	(SELECT WordID, count() as Count FROM GPsInWords
-		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID
-		GROUP BY WordID
-		) TotalCount ON TotalCount.WordID = Words.ID
-	INNER JOIN 
-	(SELECT WordID, count() as Count FROM GPsInWords
-		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
-		GROUP BY WordID
+	(SELECT WordID, count() as Count FROM GPsInWords 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ? 
+		GROUP BY WordID 
 		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
 	if only_new:
-		query += " INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID
-			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID
+		query += " INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID 
+			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
 			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
 		db.query_with_bindings(query, [lesson_nb, lesson_nb])
 	else:

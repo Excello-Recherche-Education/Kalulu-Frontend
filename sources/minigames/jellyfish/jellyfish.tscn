@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://cpkwyypyikpfc"]
+
+[ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="1_1b85n"]
+[ext_resource type="Script" path="res://sources/minigames/jellyfish/jellyfish.gd" id="1_06uwq"]
+[ext_resource type="SpriteFrames" uid="uid://dkemftb4jdxvs" path="res://sources/minigames/jellyfish/green_jellyfish_animations.tres" id="2_afbbq"]
+[ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="3_vllju"]
+[ext_resource type="PackedScene" uid="uid://c6klih3h3ws6f" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
+
+[node name="Jellyfish" type="MarginContainer"]
+custom_minimum_size = Vector2(400, 400)
+offset_right = 200.0
+offset_bottom = 200.0
+script = ExtResource("1_06uwq")
+
+[node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("1_1b85n")
+sprites = [NodePath("AnimatedSprite2D")]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
+unique_name_in_owner = true
+scale = Vector2(1.84332, 1.84332)
+sprite_frames = ExtResource("2_afbbq")
+animation = &"idle"
+centered = false
+
+[node name="PercentMarginContainer" type="Container" parent="."]
+layout_mode = 2
+script = ExtResource("3_vllju")
+margin_left_ratio = 0.2
+margin_top_ratio = 0.1
+margin_right_ratio = 0.2
+margin_bottom_ratio = 0.6
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="PercentMarginContainer"]
+layout_mode = 2
+
+[node name="AutoSizeLabel" parent="PercentMarginContainer/AspectRatioContainer" instance=ExtResource("4_26xiq")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" parent="PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
+text = "A"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+
+[editable path="PercentMarginContainer/AspectRatioContainer/AutoSizeLabel"]
