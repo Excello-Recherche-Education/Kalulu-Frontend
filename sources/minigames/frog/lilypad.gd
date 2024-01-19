@@ -6,6 +6,7 @@ signal disappeared()
 @onready var animation_player: = $AnimationPlayer
 @onready var button: = $TextureButton
 @onready var label: = %Label
+@onready var highlight_fx: = $HighlightFX
 
 var stimulus: Dictionary:
 	set = _set_stimulus
@@ -16,6 +17,16 @@ var is_distractor: = true
 
 func disappear() -> void:
 	animation_player.play("disappear")
+
+
+func highlight() -> void:
+	if not is_distractor:
+		highlight_fx.play()
+
+
+func stop_highlight() -> void:
+	if not is_distractor:
+		highlight_fx.stop()
 
 
 func get_real_size() -> Vector2:

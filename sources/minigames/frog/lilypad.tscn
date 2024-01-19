@@ -1,9 +1,25 @@
-[gd_scene load_steps=8 format=3 uid="uid://bkswcqcmf7a0r"]
+[gd_scene load_steps=9 format=3 uid="uid://bkswcqcmf7a0r"]
 
 [ext_resource type="Material" uid="uid://cbs2x6nv6jl63" path="res://sources/minigames/frog/lilypad_material.tres" id="1_pbo2v"]
 [ext_resource type="Script" path="res://sources/minigames/frog/lilypad.gd" id="2_pdqed"]
 [ext_resource type="Texture2D" uid="uid://bl4csvpvhsgqh" path="res://assets/minigames/frog/graphics/lilypad_enabled.png" id="3_1ueu4"]
 [ext_resource type="Texture2D" uid="uid://bafwfqkof2og7" path="res://assets/minigames/frog/graphics/lilypad_disabled.png" id="4_0e8ya"]
+[ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="5_1llgv"]
+
+[sub_resource type="Animation" id="Animation_852sr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureButton:material:shader_parameter/dissolve_amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_qb6cr"]
 resource_name = "disappear"
@@ -19,21 +35,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
-}
-
-[sub_resource type="Animation" id="Animation_852sr"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TextureButton:material:shader_parameter/dissolve_amount")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3tohd"]
@@ -52,6 +53,8 @@ script = ExtResource("2_pdqed")
 libraries = {
 "": SubResource("AnimationLibrary_3tohd")
 }
+
+[node name="HighlightFX" parent="." instance=ExtResource("5_1llgv")]
 
 [node name="TextureButton" type="TextureButton" parent="."]
 material = ExtResource("1_pbo2v")

@@ -16,6 +16,7 @@ class_name Minigame
 		if minigame_ui:
 			minigame_ui.set_max_progression(value)
 
+@export var intro_kalulu_speech: AudioStream
 @export var help_kalulu_speech: AudioStream
 @export var win_kalulu_speech: AudioStream
 @export var lose_kalulu_speech: AudioStream = preload("res://language_resources/french/minigames/kalulu/kalulu_lose_minigame_all.mp3")
@@ -45,6 +46,14 @@ var current_lives: = 0 :
 	set(value):
 		var previous_lives: = current_lives
 		current_lives = value
+		if current_lives < previous_lives:
+			consecutive_errors += previous_lives - current_lives
+		
+		if previous_lives == max_number_of_lives and current_lives < previous_lives:
+			_first_error_hint()
+		elif consecutive_errors >= 2:
+			_two_errors_hint()
+		
 		if minigame_ui:
 			minigame_ui.set_number_of_lives(value)
 		if value == 0 and previous_lives != 0:
@@ -53,6 +62,7 @@ var current_lives: = 0 :
 # Progression
 var current_progression: = 0 : set = set_current_progression
 var current_number_of_hints: = 0
+var consecutive_errors: = 0
 
 
 # ------------ Initialisation ------------
@@ -97,7 +107,7 @@ func _curtains_and_kalulu() -> void:
 	opening_curtain.play("open")
 	await opening_curtain.animation_finished
 	
-	minigame_ui.play_kalulu_speech(help_kalulu_speech)
+	minigame_ui.play_kalulu_speech(intro_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
 
 
@@ -163,13 +173,17 @@ func _log_new_response(response: Dictionary, awaited_response: Dictionary, all_s
 	logs["answers"].append(response_log)
 
 
-# ------------ UI ------------
-
-# Callbacks
+# ------------ UI Callbacks ------------
 
 
 func _go_back_to_the_garden() -> void:
-	return
+	opening_curtain.play("close")
+	await opening_curtain.animation_finished
+	
+	_save_logs()
+	
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://sources/menus/minigame_selection.tscn")
 
 
 func _play_stimulus() -> void:
@@ -189,7 +203,38 @@ func _play_kalulu() -> void:
 	get_tree().paused = false
 
 
-# Connections
+func _highlight() -> void:
+	pass
+
+
+func _first_error_hint() -> void:
+	minigame_ui.play_kalulu_speech(help_kalulu_speech)
+
+
+func _two_errors_hint() -> void:
+	minigame_ui.play_kalulu_speech(help_kalulu_speech)
+	_highlight()
+
+
+# ------------ Setter getters ------------
+
+
+func set_current_progression(p_current_progression: int) -> void:
+	var previous_progression: = current_progression
+	current_progression = p_current_progression
+	
+	consecutive_errors = 0
+	
+	if minigame_ui:
+		minigame_ui.set_progression(p_current_progression)
+	if p_current_progression == max_progression and previous_progression != max_progression:
+		await _win()
+	else:
+		@warning_ignore("redundant_await")
+		await _on_current_progression_changed()
+
+
+# ------------ Connections ------------
 
 
 func _on_minigame_ui_garden_button_pressed() -> void:
@@ -224,11 +269,7 @@ func _on_minigame_ui_restart_button_pressed() -> void:
 
 
 func _on_minigame_ui_back_to_menu_pressed() -> void:
-	opening_curtain.play("close")
-	await opening_curtain.animation_finished
-	
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://sources/menus/minigame_selection.tscn")
+	_go_back_to_the_garden()
 
 
 func _on_minigame_ui_master_volume_changed(volume) -> void:
@@ -245,21 +286,6 @@ func _on_minigame_ui_voice_volume_changed(volume) -> void:
 
 func _on_minigame_ui_effects_volume_changed(volume) -> void:
 	UserDataManager.set_effects_volume(volume)
-
-
-# ------------ Setter getters ------------
-
-
-func set_current_progression(p_current_progression: int) -> void:
-	var previous_progression: = current_progression
-	current_progression = p_current_progression
-	if minigame_ui:
-		minigame_ui.set_progression(p_current_progression)
-	if p_current_progression == max_progression and previous_progression != max_progression:
-		await _win()
-	else:
-		@warning_ignore("redundant_await")
-		await _on_current_progression_changed()
 
 
 func _on_current_progression_changed() -> void:

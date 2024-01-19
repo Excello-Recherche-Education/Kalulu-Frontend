@@ -1,7 +1,7 @@
 extends Minigame
 
 @export var difficulty: = 1
-@export var lesson_nb: = 4
+@export var lesson_nb: = 10
 
 @onready var start: = %Start
 @onready var end: = %End
@@ -32,8 +32,21 @@ func _find_stimuli_and_distractions() -> void:
 		})
 		var grapheme_distractions: = []
 		for GP in GPs:
-			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.Grapheme, lesson_nb))
+			var distractors: = Database.get_distractors_for_grapheme(GP.Grapheme, lesson_nb)
+			distractors.shuffle()
+			while distractors.size() > 4:
+				distractors.pop_front()
+			grapheme_distractions.append(distractors)
 		distractions.append(grapheme_distractions)
+
+
+func _play_stimulus() -> void:
+	_play_current_word()
+
+
+func _highlight() -> void:
+	for track in lilypad_tracks_container.get_children():
+		track.is_highlighting = true
 
 
 func _start() -> void:

@@ -11,6 +11,8 @@ const lilypad_crossing_time: = 5.0
 var is_cleared: = false
 var is_enabled: = false:
 	set = _set_enabled
+var is_highlighting: = false:
+	set = _set_highlighting
 
 var ready_to_spawn: = false
 var top_to_bottom: = true
@@ -85,6 +87,11 @@ func _spawn_lilypad() -> void:
 	lilypad.stimulus = potential_stimuli[i]
 	lilypad.is_distractor = are_potential_distractors[i]
 	
+	if is_highlighting:
+		lilypad.highlight()
+	else:
+		lilypad.stop_highlight()
+	
 	stimuli_queue.append(potential_stimuli[i])
 	if stimuli_queue.size() > stimuli_queue_size:
 		stimuli_queue.pop_front()
@@ -106,6 +113,15 @@ func _set_enabled(value: bool) -> void:
 	
 	for lilypad in lilypads:
 		lilypad.disabled = not is_enabled
+
+
+func _set_highlighting(value: bool) -> void:
+	is_highlighting = value
+	for lilypad in lilypads:
+		if is_highlighting:
+			lilypad.highlight()
+		else:
+			lilypad.stop_highlight()
 
 
 func _set_stimuli(value: Array) -> void:

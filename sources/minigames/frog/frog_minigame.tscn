@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://dl5wx8l0awoi0"]
+[gd_scene load_steps=17 format=3 uid="uid://dl5wx8l0awoi0"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_ng5er"]
 [ext_resource type="Script" path="res://sources/minigames/frog/frog_minigame.gd" id="2_0xg3r"]
 [ext_resource type="Texture2D" uid="uid://jvpu77isfi5b" path="res://assets/minigames/frog/graphics/gauge_icon_frog_empty.png" id="2_e38i1"]
 [ext_resource type="Texture2D" uid="uid://g1pr0xqbmwcb" path="res://assets/minigames/frog/graphics/background_river.png" id="2_wg03r"]
+[ext_resource type="AudioStream" uid="uid://cy45c8ugt1nl6" path="res://language_resources/french/minigames/frog/audio/kalulu/kalulu_intro_frog_language.mp3" id="3_4xc1f"]
 [ext_resource type="Texture2D" uid="uid://cusulkkvcyxak" path="res://assets/minigames/frog/graphics/sand_left.png" id="3_eaixk"]
 [ext_resource type="AudioStream" uid="uid://ve3na0ebxwsr" path="res://language_resources/french/minigames/frog/audio/kalulu/kalulu_help_frog_language.mp3" id="3_qavay"]
 [ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="3_vjlmb"]
@@ -19,9 +20,10 @@
 [node name="FrogMinigame" instance=ExtResource("1_ng5er")]
 script = ExtResource("2_0xg3r")
 difficulty = 1
-lesson_nb = 4
+lesson_nb = 10
 max_number_of_lives = 5
 max_progression = 3
+intro_kalulu_speech = ExtResource("3_4xc1f")
 help_kalulu_speech = ExtResource("3_qavay")
 win_kalulu_speech = ExtResource("4_agvjd")
 

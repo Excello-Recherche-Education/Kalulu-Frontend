@@ -19,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://dqtmyedk1ylbw" path="res://assets/minigames/minigame_ui/graphic/button_replay_up.png" id="17_ipxst"]
 [ext_resource type="Texture2D" uid="uid://bvu8ud6hkwusb" path="res://assets/minigames/minigame_ui/graphic/button_replay_down.png" id="18_5pefo"]
 [ext_resource type="Texture2D" uid="uid://d4ffd4us2hrbs" path="res://assets/minigames/minigame_ui/graphic/button_replay_disabled.png" id="19_mm65c"]
-[ext_resource type="PackedScene" uid="uid://c4t2cq5vyj4ai" path="res://sources/minigames/base/kalulu.tscn" id="19_wn4nd"]
+[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="19_wn4nd"]
 [ext_resource type="Texture2D" uid="uid://db64tlixplfru" path="res://assets/minigames/minigame_ui/graphic/life_empty.png" id="20_jyeyb"]
 [ext_resource type="Texture2D" uid="uid://dkvf2b6b1keqf" path="res://assets/minigames/minigame_ui/graphic/volume_up.png" id="20_qsa3m"]
 [ext_resource type="Texture2D" uid="uid://blgoagm5j5jh2" path="res://assets/minigames/minigame_ui/graphic/volume_down.png" id="21_g5me6"]
