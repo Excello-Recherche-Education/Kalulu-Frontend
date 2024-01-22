@@ -66,16 +66,16 @@ func start(start_point: Vector2, end_point: Vector2) -> void:
 	firework_audio_player.play()
 
 
-func create_path(start: Vector2, end: Vector2) -> void:
-	var current := start
-	var segment_length := start.distance_to(end) / segments
+func create_path(start_point: Vector2, end_point: Vector2) -> void:
+	var current := start_point
+	var segment_length := start_point.distance_to(end_point) / segments
 	
-	var general_direction: = (end - start).normalized()
+	var general_direction: = (end_point - start_point).normalized()
 	
-	curve.add_point(start, -segment_length * general_direction / 2.0, segment_length * general_direction / 2.0)
+	curve.add_point(start_point, -segment_length * general_direction / 2.0, segment_length * general_direction / 2.0)
 	for _segment in range(segments):
 		var angle := randf_range(-spread_angle / 2, spread_angle / 2)
-		var new := current + (current.direction_to(end) * segment_length).rotated(angle)
+		var new := current + (current.direction_to(end_point) * segment_length).rotated(angle)
 		var direction: = (new - current).normalized()
 		curve.add_point(new, -segment_length * direction / 2.0, segment_length * direction / 2.0)
 		current = new
