@@ -150,6 +150,7 @@ libraries = {
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("1_qd4na")
+bus = &"Effects"
 
 [node name="Halo" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)

@@ -24,10 +24,15 @@ class_name Minigame
 @onready var minigame_ui: = $MinigameUI
 @onready var opening_curtain: = $OpeningCurtain
 @onready var audio_player: = $AudioStreamPlayer
+@onready var fireworks: = $Fireworks
 
 # Game root shall contain all the game tree.
 # This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
 @onready var game_root: = $GameRoot
+
+# Sounds
+const win_sound_fx: = preload("res://assets/sfx/sfx_game_over_win.mp3")
+const lose_sound_fx: = preload("res://assets/sfx/sfx_game_over_lose.mp3")
 
 # Lesson
 var lesson: String
@@ -51,7 +56,7 @@ var current_lives: = 0 :
 		
 		if previous_lives == max_number_of_lives and current_lives < previous_lives:
 			_first_error_hint()
-		elif consecutive_errors >= 2:
+		elif consecutive_errors == 2:
 			_two_errors_hint()
 		
 		if minigame_ui:
@@ -128,6 +133,12 @@ func _reset() -> void:
 
 
 func _win() -> void:
+	audio_player.stream = win_sound_fx
+	audio_player.play()
+	
+	fireworks.start()
+	await fireworks.finished
+	
 	minigame_ui.play_kalulu_speech(win_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
 	
@@ -135,6 +146,10 @@ func _win() -> void:
 
 
 func _lose() -> void:
+	audio_player.stream = lose_sound_fx
+	audio_player.play()
+	await audio_player.finished
+	
 	minigame_ui.play_kalulu_speech(lose_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
 	
@@ -212,7 +227,6 @@ func _first_error_hint() -> void:
 
 
 func _two_errors_hint() -> void:
-	minigame_ui.play_kalulu_speech(help_kalulu_speech)
 	_highlight()
 
 

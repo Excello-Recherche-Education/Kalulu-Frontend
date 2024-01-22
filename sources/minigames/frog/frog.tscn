@@ -253,6 +253,7 @@ libraries = {
 autoplay = "idle_front_1"
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+bus = &"Effects"
 
 [node name="Sprite" type="Sprite2D" parent="."]
 material = ExtResource("2_i6km5")

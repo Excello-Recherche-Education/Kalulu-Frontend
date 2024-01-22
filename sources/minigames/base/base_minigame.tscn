@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://8awe4usnucyv"]
+[gd_scene load_steps=5 format=3 uid="uid://8awe4usnucyv"]
 
 [ext_resource type="Script" path="res://sources/minigames/base/base_minigame.gd" id="1_jdfsm"]
 [ext_resource type="PackedScene" uid="uid://weree6bnlt6f" path="res://sources/minigames/base/minigame_ui.tscn" id="2_a3tib"]
 [ext_resource type="PackedScene" path="res://sources/minigames/base/opening_curtain.tscn" id="3_p5ryr"]
+[ext_resource type="PackedScene" uid="uid://d1gkvqxe1n8o8" path="res://sources/utils/fx/fireworks.tscn" id="4_yekwo"]
 
 [node name="BaseMinigame" type="Control"]
 process_mode = 3
@@ -15,6 +16,7 @@ grow_vertical = 2
 script = ExtResource("1_jdfsm")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"Effects"
 
 [node name="MinigameUI" parent="." instance=ExtResource("2_a3tib")]
 
@@ -28,6 +30,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Fireworks" parent="." instance=ExtResource("4_yekwo")]
 
 [connection signal="back_to_menu_pressed" from="MinigameUI" to="." method="_on_minigame_ui_back_to_menu_pressed"]
 [connection signal="effects_volume_changed" from="MinigameUI" to="." method="_on_minigame_ui_effects_volume_changed"]

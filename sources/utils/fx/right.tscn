@@ -205,7 +205,7 @@ blend_mode = 1
 [sub_resource type="Gradient" id="Gradient_u3fxj"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_1y1y0"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_b6rlx"]
 gradient = SubResource("Gradient_u3fxj")
 width = 32
 
@@ -214,7 +214,7 @@ max_value = 0.8
 _data = [Vector2(0, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.08937, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_ebpu0"]
+[sub_resource type="CurveTexture" id="CurveTexture_mx7tb"]
 width = 32
 curve = SubResource("Curve_4x1t7")
 
@@ -225,8 +225,8 @@ initial_velocity_min = 100.0
 initial_velocity_max = 200.0
 angular_velocity_max = 720.0
 gravity = Vector3(0, 98, 0)
-scale_curve = SubResource("CurveTexture_ebpu0")
-color_ramp = SubResource("GradientTexture1D_1y1y0")
+scale_curve = SubResource("CurveTexture_mx7tb")
+color_ramp = SubResource("GradientTexture1D_b6rlx")
 
 [node name="RightFX" type="Node2D"]
 script = ExtResource("1_83pnv")
@@ -238,6 +238,7 @@ libraries = {
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_ebh1q")
+bus = &"Effects"
 
 [node name="Rays" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
