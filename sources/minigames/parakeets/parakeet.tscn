@@ -20,8 +20,9 @@ script = ExtResource("1_p0nqk")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_k0dcm")
-animation = &"idle_front"
+animation = &"idle_front_blink"
 autoplay = "idle_front"
+frame_progress = 0.68306
 offset = Vector2(2.08165e-12, -82)
 
 [node name="Label" type="Label" parent="."]

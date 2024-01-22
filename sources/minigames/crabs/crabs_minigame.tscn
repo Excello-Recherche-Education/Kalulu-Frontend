@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bxh1torc05k7p"]
+[gd_scene load_steps=9 format=3 uid="uid://bxh1torc05k7p"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_lbq56"]
 [ext_resource type="Script" path="res://sources/minigames/crabs/crabs_minigame.gd" id="2_gierf"]
 [ext_resource type="AudioStream" uid="uid://4qo683e8atp4" path="res://language_resources/french/minigames/crabs/audio/kalulu/kalulu_help_crabs_language.mp3" id="3_8pn05"]
+[ext_resource type="AudioStream" uid="uid://c2qmghbq5c2x6" path="res://language_resources/french/minigames/crabs/audio/kalulu/kalulu_intro_crabs_language.mp3" id="3_shwct"]
 [ext_resource type="AudioStream" uid="uid://cmp7vupeq11ic" path="res://language_resources/french/minigames/crabs/audio/kalulu/kalulu_end_crabs_all.mp3" id="4_bmrol"]
 [ext_resource type="Texture2D" uid="uid://bt7u67errbjls" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_empty.png" id="5_7vlrm"]
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="6_1r44u"]
@@ -15,6 +16,7 @@ lesson_nb = 3
 minigame_name = "Crabs"
 max_number_of_lives = 5
 max_progression = 5
+intro_kalulu_speech = ExtResource("3_shwct")
 help_kalulu_speech = ExtResource("3_8pn05")
 win_kalulu_speech = ExtResource("4_bmrol")
 

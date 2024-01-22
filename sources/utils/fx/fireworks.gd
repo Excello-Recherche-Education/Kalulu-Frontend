@@ -24,12 +24,12 @@ func _on_FireDelayTimer_timeout() -> void:
 		finished.emit()
 		return
 	
-	var start: Vector2 = starts[randi() % starts.size()].global_position
-	var end: Vector2 = ends[randi() % ends.size()].global_position
+	var start_point: Vector2 = starts[randi() % starts.size()].global_position
+	var end_point: Vector2 = ends[randi() % ends.size()].global_position
 	
 	var rocket: = firework_class.instantiate()
 	rockets.add_child(rocket)
-	rocket.start(start, end + Vector2(randf_range(-25.0, 25.0), randf_range(-25.0, 25.0)))
+	rocket.start(start_point, end_point + Vector2(randf_range(-25.0, 25.0), randf_range(-25.0, 25.0)))
 	
 	count += 1
 	fire_delay_timer.start(randf_range(0.1, 0.25))

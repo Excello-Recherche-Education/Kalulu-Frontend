@@ -51,10 +51,10 @@ func _ready() -> void:
 	blast_audio_player.stream = blast_sounds[randi() % blast_sounds.size()]
 
 
-func start(start: Vector2, end: Vector2) -> void:
+func start(start_point: Vector2, end_point: Vector2) -> void:
 	explosion_particles.modulate = colors[ind_color]
 	
-	create_path(start, end)
+	create_path(start_point, end_point)
 	
 	var travel_time: = randf_range(0.5, 1.0)
 	traveling_timer.start(travel_time)
@@ -74,8 +74,8 @@ func create_path(start: Vector2, end: Vector2) -> void:
 	
 	curve.add_point(start, -segment_length * general_direction / 2.0, segment_length * general_direction / 2.0)
 	for _segment in range(segments):
-		var rotation := randf_range(-spread_angle / 2, spread_angle / 2)
-		var new := current + (current.direction_to(end) * segment_length).rotated(rotation)
+		var angle := randf_range(-spread_angle / 2, spread_angle / 2)
+		var new := current + (current.direction_to(end) * segment_length).rotated(angle)
 		var direction: = (new - current).normalized()
 		curve.add_point(new, -segment_length * direction / 2.0, segment_length * direction / 2.0)
 		current = new
