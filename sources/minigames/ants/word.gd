@@ -5,11 +5,23 @@ signal no_answer()
 
 @onready var area: = $Area2D
 @onready var label: = %Label
+@onready var right_fx: = $RightFX
+@onready var wrong_fx: = $WrongFX
 
 var stimulus: String:
 	set = _set_stimulus
 var follow_mouse: = false
 var current_anchor: CanvasItem
+
+
+func right() -> void:
+	right_fx.play()
+	await right_fx.finished
+
+
+func wrong() -> void:
+	wrong_fx.play()
+	await wrong_fx.finished
 
 
 func _process(_delta: float) -> void:

@@ -112,7 +112,7 @@ func _start_ants() -> void:
 		var ant: = ants.get_child(i)
 		var tween: = create_tween()
 		var k: = float(i) / float(number_of_ants - 1)
-		tween.tween_property(ant, "global_position", k * ants_start.global_position + (1.0 - k) * ants_end.global_position, 2.0)
+		tween.tween_property(ant, "global_position", k * ants_start.global_position + (1.0 - k) * ants_end.global_position, 1.0)
 		await tween.finished
 	
 	for word in words.get_children():
@@ -144,8 +144,16 @@ func _on_word_answer(answer: bool, word: TextureButton) -> void:
 				break
 		
 		if is_right:
+			for i in range(words.get_child_count() - 1):
+				words.get_child(i).right()
+			await words.get_child(words.get_child_count() - 1).right()
+			
 			current_progression += 1
 		else:
+			for i in range(words.get_child_count() - 1):
+				words.get_child(i).wrong()
+			await words.get_child(words.get_child_count() - 1).wrong()
+			
 			current_lives -= 1
 			
 			for i in range(ants.get_child_count()):
