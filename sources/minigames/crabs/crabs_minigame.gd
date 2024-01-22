@@ -49,7 +49,7 @@ func _setup_minigame() -> void:
 			game_root.add_child(hole)
 			hole.position = Vector2(x, y)
 			
-			hole.connect("stimulus_hit", _on_hole_stimulus_hit)
+			hole.connect("stimulus_hit", _on_hole_stimulus_hit.bind(hole))
 			hole.connect("crab_despawned", _on_hole_crab_despawned)
 			
 			holes.append(hole)
@@ -78,13 +78,21 @@ func _start() -> void:
 # ------------ Crabs ------------
 
 
-func _on_hole_stimulus_hit(stimulus: Dictionary) -> void:
+func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Node2D) -> void:
 	if stimulus in stimuli:
+		await hole.right()
 		current_progression += 1
 	else:
+		await hole.wrong()
 		current_lives -= 1
 	audio_player.stream = Database.get_audio_stream_for_phoneme(stimulus.Phoneme)
 	audio_player.play()
+
+
+func _on_hole_crab_despawned(stimulus: Dictionary) -> void:
+	await get_tree().create_timer(randf_range(0.1, 2.0)).timeout
+	
+	_on_hole_timer_timeout(stimulus)
 
 
 func _on_hole_timer_timeout(stimulus: Dictionary) -> void:
@@ -102,12 +110,6 @@ func _on_hole_timer_timeout(stimulus: Dictionary) -> void:
 		
 		if not hole_found:
 			await get_tree().create_timer(randf_range(0.1, 0.5)).timeout
-
-
-func _on_hole_crab_despawned(stimulus: Dictionary) -> void:
-	await get_tree().create_timer(randf_range(0.1, 2.0)).timeout
-	
-	_on_hole_timer_timeout(stimulus)
 
 
 func _on_current_progression_changed() -> void:

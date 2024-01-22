@@ -64,6 +64,27 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab_despawned.emit(stimulus)
 
 
+func is_button_pressed_with_limit(future):
+	var coroutine: = Coroutine.new()
+	coroutine.add_future(crab.is_button_pressed)
+	coroutine.add_future(future)
+	await coroutine.join_either()
+	if coroutine.return_value[0]:
+		await _on_crab_hit(crab.stimulus)
+		return true
+	return false
+
+
+func right() -> void:
+	if is_instance_valid(crab):
+		await crab.right()
+
+
+func wrong() -> void:
+	if is_instance_valid(crab):
+		await crab.wrong()
+
+
 func _on_crab_hit(stimulus: Dictionary) -> void:
 	crab.set_button_active(false)
 	crab_audio_stream_player.stop_playing()
@@ -81,14 +102,3 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	crab = null
 	
 	crab_despawned.emit(stimulus)
-
-
-func is_button_pressed_with_limit(future):
-	var coroutine: = Coroutine.new()
-	coroutine.add_future(crab.is_button_pressed)
-	coroutine.add_future(future)
-	await coroutine.join_either()
-	if coroutine.return_value[0]:
-		await _on_crab_hit(crab.stimulus)
-		return true
-	return false

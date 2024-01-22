@@ -1,8 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://bwe3fp0vkpufb"]
+[gd_scene load_steps=18 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
 [ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
 [ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="3_dei0e"]
+[ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_3hx0j"]
+[ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_3sw4w"]
 
 [sub_resource type="Animation" id="Animation_lftfb"]
 length = 0.001
@@ -111,10 +113,10 @@ font_size = 42
 script = ExtResource("1_5hgg8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle1"
 libraries = {
 "": SubResource("AnimationLibrary_ifo73")
 }
+autoplay = "idle1"
 
 [node name="Crab" type="Sprite2D" parent="."]
 light_mask = 1024
@@ -143,6 +145,12 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_g8ffa")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_fwwak")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_tdur1")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_1h5my")
+
+[node name="RightFX" parent="." instance=ExtResource("4_3hx0j")]
+scale = Vector2(0.5, 0.5)
+
+[node name="WrongFX" parent="." instance=ExtResource("5_3sw4w")]
+scale = Vector2(0.5, 0.5)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
