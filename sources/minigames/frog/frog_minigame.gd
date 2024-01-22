@@ -124,6 +124,8 @@ func _on_track_lilypad_in_center(lilypad: Control, track: Control) -> void:
 	await frog.jumped
 	
 	if lilypad.is_distractor:
+		await lilypad.wrong()
+		
 		lilypad.disappear()
 		frog.drown()
 		await frog.drowned
@@ -147,6 +149,11 @@ func _on_track_lilypad_in_center(lilypad: Control, track: Control) -> void:
 		if all_cleared:
 			frog.jump_to(end.global_position)
 			await frog.jumped
+			
+			for other_track in lilypad_tracks_container.get_children():
+				if other_track != track:
+					other_track.right()
+			await track.right()
 			
 			frog.jump_to(frog_despawn_point.global_position)
 			await frog.jumped

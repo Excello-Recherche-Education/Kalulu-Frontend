@@ -102,6 +102,20 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_play_frog_sound"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_0dpgo"]
 resource_name = "idle_side_1"
@@ -158,6 +172,20 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_play_frog_sound"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_ir23o"]
 resource_name = "jump"
@@ -187,6 +215,20 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_play_jump_sound"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_at27w"]
 _data = {
@@ -209,6 +251,8 @@ libraries = {
 "": SubResource("AnimationLibrary_at27w")
 }
 autoplay = "idle_front_1"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 
 [node name="Sprite" type="Sprite2D" parent="."]
 material = ExtResource("2_i6km5")

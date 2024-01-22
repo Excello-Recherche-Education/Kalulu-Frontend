@@ -7,6 +7,8 @@ signal disappeared()
 @onready var button: = $TextureButton
 @onready var label: = %Label
 @onready var highlight_fx: = $HighlightFX
+@onready var right_fx: = $RightFX
+@onready var wrong_fx: = $WrongFX
 
 var stimulus: Dictionary:
 	set = _set_stimulus
@@ -22,6 +24,16 @@ func disappear() -> void:
 func highlight() -> void:
 	if not is_distractor:
 		highlight_fx.play()
+
+
+func right() -> void:
+	right_fx.play()
+	await right_fx.finished
+
+
+func wrong() -> void:
+	wrong_fx.play()
+	await wrong_fx.finished
 
 
 func stop_highlight() -> void:

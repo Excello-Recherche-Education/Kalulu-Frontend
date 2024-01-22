@@ -2,6 +2,7 @@ extends Control
 
 signal lilypad_in_center(lilypad: Control)
 
+@onready var audio_player: = $AudioStreamPlayer2D
 @onready var spawn_timer: = $SpawnTimer
 
 const lilypad_class: = preload("res://sources/minigames/frog/lilypad.tscn")
@@ -52,6 +53,11 @@ func start() -> void:
 
 func stop() -> void:
 	ready_to_spawn = false
+
+
+func right() -> void:
+	for lilypad in lilypads:
+		await lilypad.right()
 
 
 func _spawn_lilypad() -> void:
@@ -130,6 +136,8 @@ func _set_stimuli(value: Array) -> void:
 
 
 func _on_lilypad_pressed(lilypad: Control) -> void:
+	audio_player.play()
+	
 	ready_to_spawn = false
 	
 	for tween in tweens:

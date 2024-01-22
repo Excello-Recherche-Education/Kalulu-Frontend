@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://byqqa5hk1hmv5"]
+[gd_scene load_steps=3 format=3 uid="uid://byqqa5hk1hmv5"]
 
 [ext_resource type="Script" path="res://sources/minigames/frog/lilypad_track.gd" id="1_0nn04"]
+[ext_resource type="AudioStream" uid="uid://b2idirdf5bdrl" path="res://assets/minigames/frog/audio/frog_taplily.mp3" id="2_8qte0"]
 
 [node name="LilypadTrack" type="Control"]
 layout_mode = 3
@@ -12,6 +13,9 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_0nn04")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_8qte0")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 one_shot = true
