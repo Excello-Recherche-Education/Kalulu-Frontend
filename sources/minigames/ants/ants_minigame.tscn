@@ -69,7 +69,7 @@ alignment = 1
 
 [node name="AntsSpawn" type="Node2D" parent="GameRoot" index="2"]
 unique_name_in_owner = true
-position = Vector2(-1000, 1642)
+position = Vector2(-120, 1642)
 
 [node name="AntsStart" type="Node2D" parent="GameRoot" index="3"]
 unique_name_in_owner = true
