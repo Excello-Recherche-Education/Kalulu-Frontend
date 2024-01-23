@@ -7,10 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://c6klih3h3ws6f" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
 
 [node name="Jellyfish" type="MarginContainer"]
-custom_minimum_size = Vector2(400, 400)
+custom_minimum_size = Vector2(569.954, 569.954)
 offset_right = 200.0
 offset_bottom = 200.0
 script = ExtResource("1_06uwq")
+color = 1
 
 [node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
 layout_mode = 2
@@ -20,9 +21,10 @@ sprites = [NodePath("AnimatedSprite2D")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
-scale = Vector2(1.84332, 1.84332)
+scale = Vector2(2.62212, 2.62212)
 sprite_frames = ExtResource("2_afbbq")
 animation = &"idle"
+frame_progress = 0.23456
 centered = false
 
 [node name="PercentMarginContainer" type="Container" parent="."]
