@@ -1,6 +1,6 @@
 extends Control
 
-const next_scene_path: = "res://sources/menus/minigame_selection.tscn"
+const next_scene_path: = "res://sources/menus/login/login.tscn"
 
 @onready var music_player : AudioStreamPlayer = $MusicStreamPlayer
 @onready var version_label : Label = $Informations/BuildVersionValue
@@ -13,7 +13,7 @@ const next_scene_path: = "res://sources/menus/minigame_selection.tscn"
 func _ready():
 	version_label.text = ProjectSettings.get_setting("application/config/version")
 	teacher_label.text = UserDataManager.device_settings.teacher
-	device_id_label.text = UserDataManager.device_settings.device_id
+	device_id_label.text = str(UserDataManager.device_settings.device_id)
 
 
 func _on_main_button_pressed():

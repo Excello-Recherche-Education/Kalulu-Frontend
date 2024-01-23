@@ -14,7 +14,7 @@ var elapsedTime : float = 0.0
 
 
 func _ready():
-	start_speech()
+	_play_speech(Database.get_audio_stream_for_path(tuto_speech_path))
 
 
 func _process(delta):
@@ -24,8 +24,7 @@ func _process(delta):
 	if not isSpeaking:
 		elapsedTime += delta
 	if elapsedTime > 20:
-		_play_speech(Database.get_audio_stream_for_path(feedback_speech_path))
-
+		start_speech()
 
 func _play_speech(speech : AudioStream):
 	isSpeaking = true
@@ -42,7 +41,7 @@ func _play_speech(speech : AudioStream):
 
 
 func start_speech():
-	_play_speech(Database.get_audio_stream_for_path(tuto_speech_path))
+	_play_speech(Database.get_audio_stream_for_path(feedback_speech_path))
 
 
 func stop_speech():

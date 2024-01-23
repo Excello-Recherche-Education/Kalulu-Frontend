@@ -4,10 +4,10 @@ extends Node
 
 var student: String = "" :
 	set(student_name):
-		student = student_name
 		if student_settings:
 			_save_student_settings()
-		
+			
+		student = student_name
 		if student :
 			load_student_settings()
 		else :
@@ -50,7 +50,7 @@ func set_language(language : String) -> void:
 		_save_device_settings()
 
 
-func login(language : String, teacher : String, password : String, device_id : String) -> bool:
+func login(language : String, teacher : String, password : String, device_id : int) -> bool:
 	
 	if teacher not in DeviceSettings.possible_logins or password != DeviceSettings.possible_logins[teacher]:
 		return false
@@ -100,12 +100,12 @@ func get_teacher_folder() -> String:
 
 
 func get_student_folder() -> String:
-	var file_path: = get_teacher_folder() + student + "/"
+	var file_path: = device_settings.get_folder_path() + student + "/"
 	return file_path
 
 
 func get_student_settings_path() -> String:
-	var file_path: = get_student_folder() + "settings.tres"
+	var file_path: =  get_student_folder() + "settings.tres"
 	return file_path
 
 
