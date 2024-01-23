@@ -113,10 +113,12 @@ func _on_jellyfish_pressed(jellyfish: Control) -> void:
 	var is_right: = false
 	if jellyfish.stimulus in stimuli:
 		is_right = true
-		current_progression += 1
 		jellyfish.happy()
+		jellyfish.right()
+		current_progression += 1
 	else:
 		jellyfish.hit()
+		jellyfish.wrong()
 		current_lives -= 1
 		audio_player.stream = Database.get_audio_stream_for_phoneme(jellyfish.stimulus.Phoneme)
 		audio_player.play()

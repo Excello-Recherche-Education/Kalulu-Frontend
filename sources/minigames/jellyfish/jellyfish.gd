@@ -27,6 +27,8 @@ const sizes: = [
 
 @onready var animated_sprite: = %AnimatedSprite2D
 @onready var label: = %AutoSizeLabel.get_node("Label")
+@onready var right_fx: = $RightFX
+@onready var wrong_fx: = $WrongFX
 
 var stimulus: Dictionary :
 	set(value):
@@ -51,6 +53,16 @@ func idle() -> void:
 
 func hit() -> void:
 	animated_sprite.play("hit")
+
+
+func right() -> void:
+	right_fx.play()
+	await right_fx.finished
+
+
+func wrong() -> void:
+	wrong_fx.play()
+	await wrong_fx.finished
 
 
 func _on_gui_input(event: InputEvent) -> void:
