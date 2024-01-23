@@ -1,5 +1,6 @@
 extends Control
 
+@export var lesson_nb: = 1
 @export var current_button_pressed: = 0
 
 @onready var animation_player: = $AnimationPlayer
@@ -19,8 +20,7 @@ const video_extension: = ".ogv"
 const image_extension: = ".png"
 const sound_extension: = ".mp3"
 
-var current_grapheme: = "a"
-var current_phoneme: = "a"
+var gp_list: Array[Dictionary]
 
 var current_video: = 0
 var videos: = []
@@ -29,36 +29,33 @@ var current_image_and_sound: = 0
 var images: = []
 var sounds: = []
 
+var current_tracing: = 0
+
 
 func _ready() -> void:
 	setup()
 
 
 func setup() -> void:
-	grapheme_label.text = current_grapheme.to_lower() + " " + current_grapheme.to_upper()
-	grapheme_particles.emitting = true
+	gp_list = Database.get_GP_for_lesson(lesson_nb, true)
 	
-	videos = []
-	if FileAccess.file_exists(_video_file_path()):
-		videos.append(load(_video_file_path()))
+	current_video = 0
+	current_image_and_sound = 0
+	current_tracing = 0
 	
 	images = []
 	sounds = []
-	if FileAccess.file_exists(_image_file_path()) and FileAccess.file_exists(_sound_file_path()):
-		images.append(load(_image_file_path()))
-		sounds.append(load(_sound_file_path()))
-
-
-func _image_file_path() -> String:
-	return resource_folder + language_folder + image_folder + current_grapheme + "-" + current_phoneme + image_extension
-
-
-func _sound_file_path() -> String:
-	return resource_folder + language_folder + sound_folder + current_grapheme + "-" + current_phoneme + sound_extension
-
-
-func _video_file_path() -> String:
-	return resource_folder + language_folder + video_folder + current_grapheme + "-" + current_phoneme + video_extension
+	videos = []
+	for gp in gp_list:
+		var gp_image: = Database.get_gp_look_and_learn_image(gp)
+		var gp_sound: = Database.get_gp_look_and_learn_sound(gp)
+		if gp_image and gp_sound:
+			images.append(gp_image)
+			sounds.append(gp_sound)
+		
+		var gp_video: = Database.get_gp_look_and_learn_video(gp)
+		if gp_video:
+			videos.append(gp_video)
 
 
 func play_videos() -> void:
@@ -83,7 +80,8 @@ func play_images_and_sounds()  -> void:
 
 
 func load_tracing() -> void:
-	tracing_manager.setup(current_grapheme)
+	tracing_manager.setup(gp_list[current_tracing]["Grapheme"])
+	current_tracing += 1
 
 
 func play_tracing() -> void:
@@ -112,4 +110,9 @@ func _on_audio_stream_player_finished() -> void:
 
 
 func _on_tracing_manager_finished() -> void:
-	animation_player.play("end_tracing")
+	if current_tracing < gp_list.size():
+		tracing_manager.setup(gp_list[current_tracing]["Grapheme"])
+		tracing_manager.start()
+		current_tracing += 1
+	else:
+		animation_player.play("end_tracing")

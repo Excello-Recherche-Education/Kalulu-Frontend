@@ -10,22 +10,13 @@ signal delete
 @onready var file_dialog: = $FileDialog
 @onready var sound_player: = $AudioStreamPlayer
 
-const resource_folder: = "user://language_resources/"
-const language_folder: = "french/"
-const image_folder: = "look_and_learn/images/"
-const sound_folder: = "look_and_learn/sounds/"
-const image_extension: = ".png"
-const sound_extension: = ".mp3"
-
-var gp: = ""
-
-
+var gp: Dictionary
 
 
 func _image_file_selected(file_path: String) -> void:
 	file_dialog.files_selected.connect(_image_file_selected.bind(file_dialog))
 	if FileAccess.file_exists(file_path):
-		var current_file: = _image_file_path()
+		var current_file: = Database.get_gp_look_and_learn_image_path(gp)
 		if FileAccess.file_exists(current_file):
 			DirAccess.remove_absolute(current_file)
 		
@@ -45,13 +36,9 @@ func set_sound_preview(sound_path: String) -> void:
 	sound_player.stream = sound
 
 
-func _image_file_path() -> String:
-	return resource_folder + language_folder + image_folder + gp + image_extension
-
-
 func _sound_file_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
-		var current_file: = resource_folder + language_folder + sound_folder + gp + sound_extension
+		var current_file: = Database.get_gp_look_and_learn_sound_path(gp)
 		if FileAccess.file_exists(current_file):
 			DirAccess.remove_absolute(current_file)
 		
@@ -61,27 +48,26 @@ func _sound_file_selected(file_path: String) -> void:
 		sound_preview.show()
 
 
-func _sound_file_path() -> String:
-	return resource_folder + language_folder + sound_folder + gp + sound_extension
-
-
-func set_gp(p_gp: String) -> void:
-	gp = p_gp
-	gp_menu_button.text = gp
+func set_gp(value: Dictionary) -> void:
+	gp = value
+	gp_menu_button.text = gp["Grapheme"] + "-" + gp["Phoneme"]
 	
-	if FileAccess.file_exists(_image_file_path()):
-		set_image_preview(_image_file_path())
-	if FileAccess.file_exists(_sound_file_path()):
-		set_sound_preview(_sound_file_path())
+	var image_path: = Database.get_gp_look_and_learn_image_path(gp)
+	if FileAccess.file_exists(image_path):
+		set_image_preview(image_path)
+	
+	var sound_path: = Database.get_gp_look_and_learn_sound_path(gp)
+	if FileAccess.file_exists(sound_path):
+		set_sound_preview(sound_path)
 		sound_preview.show()
 	else:
 		sound_preview.hide()
 
 
 func _on_image_upload_button_pressed() -> void:
-	if gp != "":
+	if not gp.is_empty():
 		file_dialog.filters = []
-		file_dialog.add_filter("*" + image_extension, "Images")
+		file_dialog.add_filter("*" + Database.image_extension, "Images")
 		
 		for connection in file_dialog.file_selected.get_connections():
 			connection["signal"].disconnect(connection["callable"])
@@ -92,9 +78,9 @@ func _on_image_upload_button_pressed() -> void:
 
 
 func _on_sound_upload_button_pressed() -> void:
-	if gp != "":
+	if not gp.is_empty():
 		file_dialog.filters = []
-		file_dialog.add_filter("*" + sound_extension, "Sounds")
+		file_dialog.add_filter("*" + Database.sound_extension, "Sounds")
 		
 		for connection in file_dialog.file_selected.get_connections():
 			connection["signal"].disconnect(connection["callable"])

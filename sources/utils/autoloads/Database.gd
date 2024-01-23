@@ -10,6 +10,13 @@ const _symbols_to_string = {
 }
 const base_path: =  "res://language_resources/"
 
+const look_and_learn_images: = "/look_and_learn/images/"
+const look_and_learn_sounds: = "/look_and_learn/sounds/"
+const look_and_learn_videos: = "/look_and_learn/video/"
+const video_extension: = ".ogv"
+const image_extension: = ".png"
+const sound_extension: = ".mp3"
+
 var language: = "french":
 	set(value):
 		language = value
@@ -154,6 +161,52 @@ func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
 	var file_name: = _phoneme_to_string(phoneme)
 	file_name += ".mp3"
 	return load(words_path + file_name)
+
+
+func get_gp_look_and_learn_image(gp: Dictionary) -> Texture:
+	var path: = get_gp_look_and_learn_image_path(gp)
+	if FileAccess.file_exists(path):
+		if ResourceLoader.exists(path):
+			return load(path)
+		else:
+			var image: = Image.load_from_file(path)
+			var texture: = ImageTexture.create_from_image(image)
+			return texture
+	
+	return null
+
+
+func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
+	var path: = get_gp_look_and_learn_sound_path(gp)
+	if FileAccess.file_exists(path):
+		if ResourceLoader.exists(path):
+			return load(path)
+		else:
+			var sound: = AudioStreamOggVorbis.load_from_file(path)
+			return sound
+	
+	return AudioStreamOggVorbis.new()
+
+
+func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:
+	var path: = get_gp_look_and_learn_video_path(gp)
+	if FileAccess.file_exists(path):
+		var video: = load(path)
+		return video
+	
+	return null
+
+
+func get_gp_look_and_learn_image_path(gp: Dictionary) -> String:
+	return base_path + language + look_and_learn_images + gp["Grapheme"] + "-" + gp["Phoneme"] + image_extension
+
+
+func get_gp_look_and_learn_sound_path(gp: Dictionary) -> String:
+	return base_path + language + look_and_learn_sounds + gp["Grapheme"] + "-" + gp["Phoneme"] + sound_extension
+
+
+func get_gp_look_and_learn_video_path(gp: Dictionary) -> String:
+	return base_path + language + look_and_learn_videos + gp["Grapheme"] + "-" + gp["Phoneme"] + video_extension
 
 
 func _phoneme_to_string(phoneme: String) -> String:
