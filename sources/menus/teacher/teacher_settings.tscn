@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://ci7ueo06f24k3"]
+
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_v06h8"]
+
+[node name="TeacherSettings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" parent="." instance=ExtResource("1_v06h8")]
+layout_mode = 1

@@ -4,6 +4,7 @@ extends Control
 
 const back_scene_path: = "res://sources/menus/main/main_menu.tscn"
 const next_scene_path: = "res://sources/menus/minigame_selection.tscn"
+const teacher_scene_path: = "res://sources/menus/teacher/teacher_settings.tscn"
 const icons_textures = [
 	preload("res://assets/menus/login/symbol01.png"),
 	preload("res://assets/menus/login/symbol02.png"),
@@ -31,9 +32,7 @@ func _ready():
 		button.connect("pressed", _on_button_pressed.bind(button))
 	
 	await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(help_speech_path))
-	
-	# music_player.stream = load("res://assets/menus/main/intro_title_card.mp3")
-	# music_player.play()
+	music_player.play()
 
 
 func _reset_password():
@@ -97,10 +96,4 @@ func _on_teacher_button_button_up():
 
 
 func _on_teacher_timer_timeout():
-	# TODO
-	print("Teacher screen")
-
-
-func _on_music_stream_player_finished():
-	music_player.stream_paused = false
-	music_player.play()
+	get_tree().change_scene_to_file(teacher_scene_path)

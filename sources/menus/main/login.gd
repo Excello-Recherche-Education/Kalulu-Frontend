@@ -20,7 +20,7 @@ func _on_validate_button_pressed() -> void:
 	# TODO Check login and password
 	
 	# Login
-	if UserDataManager.login(language_field.get_selected_language(), email_field.text, password_field.text, device_id_field.value):
+	if UserDataManager.login(language_field.get_selected_language(), email_field.text, password_field.text, int(device_id_field.value)):
 		logged_in.emit()
 	else:
 		login_message.visible = true

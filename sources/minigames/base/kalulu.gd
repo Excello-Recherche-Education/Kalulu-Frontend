@@ -2,6 +2,10 @@ extends Control
 
 signal speech_ended
 
+const show_sound := preload("res://assets/kalulu/audio/ui_button_on.mp3")
+const hide_sound := preload("res://assets/kalulu/audio/ui_button_off.mp3")
+
+
 @onready var kalulu_sprite: = $KaluluSprite
 @onready var audio_player: = $AudioStreamPlayer
 
@@ -12,6 +16,10 @@ func _ready() -> void:
 
 func play_kalulu_speech(speech: AudioStream) -> void:
 	show()
+	
+	audio_player.stream = show_sound
+	audio_player.play()
+	
 	kalulu_sprite.play("Show")
 	await kalulu_sprite.animation_finished
 	
@@ -20,6 +28,9 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 	audio_player.play()
 	
 	await audio_player.finished
+	
+	audio_player.stream = hide_sound
+	audio_player.play()
 	
 	kalulu_sprite.play("Hide")
 	await kalulu_sprite.animation_finished

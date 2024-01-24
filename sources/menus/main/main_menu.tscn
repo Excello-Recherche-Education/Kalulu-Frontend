@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://6v3nachs7j71"]
+[gd_scene load_steps=20 format=3 uid="uid://6v3nachs7j71"]
 
 [ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_afd4d"]
@@ -19,8 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://bsmq426v8148w" path="res://assets/minigames/minigame_ui/graphic/button_next_disabled.png" id="14_11c6x"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="15_pcmnw"]
 [ext_resource type="Texture2D" uid="uid://bbip3wpyidt1q" path="res://assets/menus/main/play_button_mask.png" id="20_oqrk5"]
-[ext_resource type="FontFile" uid="uid://b74ghiuvt8u45" path="res://assets/fonts/ScriptEcoleNormal.otf" id="22_jby16"]
-[ext_resource type="AudioStream" uid="uid://b8pn5vqgp6jlt" path="res://assets/menus/main/ui_title_card_music.mp3" id="23_ajpnn"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -129,6 +127,59 @@ grow_vertical = 2
 
 [node name="SpeechPlayer" type="AudioStreamPlayer" parent="Kalulu"]
 
+[node name="UserSelection" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Form" type="Control" parent="UserSelection"]
+custom_minimum_size = Vector2(850, 300)
+layout_mode = 1
+anchor_left = 0.333984
+anchor_top = 0.416667
+anchor_right = 0.666016
+anchor_bottom = 0.583333
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SignInTeacher" type="Button" parent="UserSelection/Form"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.168
+grow_horizontal = 2
+text = "Sign-in teacher account
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="SignInParent" type="Button" parent="UserSelection/Form"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.416
+anchor_right = 1.0
+anchor_bottom = 0.584
+grow_horizontal = 2
+grow_vertical = 2
+text = "Sign-in parent account
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="CreateAccount" type="Button" parent="UserSelection/Form"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.832
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Create an account"
+metadata/_edit_use_anchors_ = true
+
 [node name="Login" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -181,7 +232,6 @@ layout_mode = 1
 offset_top = 80.0
 offset_right = 800.0
 offset_bottom = 193.0
-theme = ExtResource("15_pcmnw")
 theme_type_variation = &"1"
 theme_override_font_sizes/font_size = 70
 placeholder_text = "Email"
@@ -191,14 +241,13 @@ layout_mode = 0
 offset_top = -80.0
 offset_right = 412.0
 theme = ExtResource("15_pcmnw")
-text = "Teacher login"
+text = "Login"
 
 [node name="PasswordField" type="LineEdit" parent="Login/Form"]
 layout_mode = 1
 offset_top = 223.0
 offset_right = 800.0
 offset_bottom = 336.0
-theme = ExtResource("15_pcmnw")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 1
 placeholder_text = "Password"
@@ -213,7 +262,6 @@ offset_left = -400.0
 offset_top = 80.0
 offset_bottom = 193.0
 grow_horizontal = 0
-theme = ExtResource("15_pcmnw")
 min_value = 1.0
 max_value = 6.0
 value = 1.0
@@ -223,7 +271,6 @@ rounded = true
 layout_mode = 1
 offset_top = -80.0
 offset_right = 412.0
-theme = ExtResource("15_pcmnw")
 text = "Tablet number"
 
 [node name="LanguageField" type="OptionButton" parent="Login/Form"]
@@ -231,7 +278,6 @@ layout_mode = 0
 offset_top = 356.0
 offset_right = 800.0
 offset_bottom = 469.0
-theme = ExtResource("15_pcmnw")
 script = ExtResource("13_rs3hd")
 
 [node name="ValidateButton" type="TextureButton" parent="Login/Form"]
@@ -290,7 +336,6 @@ layout_mode = 2
 offset_left = 10.0
 offset_right = 261.0
 offset_bottom = 56.0
-theme_override_fonts/font = ExtResource("22_jby16")
 theme_override_font_sizes/font_size = 30
 text = "Build Version :"
 vertical_alignment = 1
@@ -300,7 +345,6 @@ layout_mode = 1
 offset_left = 250.0
 offset_right = 400.0
 offset_bottom = 56.0
-theme_override_fonts/font = ExtResource("22_jby16")
 theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
@@ -321,7 +365,6 @@ offset_left = 250.0
 offset_top = 56.0
 offset_right = 500.0
 offset_bottom = 112.0
-theme_override_fonts/font = ExtResource("22_jby16")
 theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
@@ -332,7 +375,6 @@ offset_left = 10.0
 offset_top = 112.0
 offset_right = 261.0
 offset_bottom = 168.0
-theme_override_fonts/font = ExtResource("22_jby16")
 theme_override_font_sizes/font_size = 30
 text = "Device Id :"
 vertical_alignment = 1
@@ -343,17 +385,12 @@ offset_left = 250.0
 offset_top = 112.0
 offset_right = 400.0
 offset_bottom = 168.0
-theme_override_fonts/font = ExtResource("22_jby16")
 theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
 
-[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("23_ajpnn")
-autoplay = true
-
 [connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
+[connection signal="pressed" from="UserSelection/Form/SignInTeacher" to="." method="_on_sign_in_teacher_pressed"]
 [connection signal="logged_in" from="Login" to="." method="_on_login_in"]
 [connection signal="pressed" from="Login/InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Login/Form/ValidateButton" to="Login" method="_on_validate_button_pressed"]
-[connection signal="finished" from="MusicStreamPlayer" to="." method="_on_music_stream_player_finished"]

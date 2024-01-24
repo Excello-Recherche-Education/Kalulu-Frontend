@@ -22,10 +22,12 @@ func _ready():
 	student = "titi"
 	
 	load_device_settings()
+	TeacherSettings.new(TeacherSettings.Type.Teacher, 6, 32)
 	load_student_settings()
 	load_student_progression()
 	
 	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
+	
 
 
 func load_device_settings() -> void:

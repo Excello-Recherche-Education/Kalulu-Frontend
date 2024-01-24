@@ -25,6 +25,10 @@ border_color = Color(0, 0, 0, 1)
 [resource]
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_nikxc")
 Button/font_sizes/font_size = 32
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/outline_size = 1
+Button/fonts/font = ExtResource("1_shpmh")
 FileDialog/icons/back_folder = ExtResource("1_mdn6k")
 FileDialog/icons/forward_folder = ExtResource("2_hbp6q")
 FileDialog/icons/parent_folder = ExtResource("3_1nwm4")

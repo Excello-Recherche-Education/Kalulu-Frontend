@@ -1,6 +1,13 @@
 extends Resource
 class_name DeviceSettings
 
+
+# List of current known logins for teachers
+const possible_logins: = {
+	"kalulu" : "kalulu",
+}
+
+
 @export var language : String :
 	set(value):
 		language = value
@@ -10,14 +17,8 @@ class_name DeviceSettings
 @export var device_id : int
 
 
-# List of current known logins for teachers
-const possible_logins: = {
-	"kalulu" : "kalulu",
-}
-
-
 func _init():
-	# Gets the OS language and Checks if it is supported
+	# Gets the OS language and checks if it is supported
 	var osLanguage = OS.get_locale_language();
 	if osLanguage and osLanguage in DirAccess.open("res://language_resources").get_directories():
 		language = osLanguage
@@ -30,6 +31,5 @@ func _init():
 
 
 func get_folder_path() -> String:
-	var file_path := "user://" + teacher + "/" + str(device_id) + "/" + language + "/"
+	var file_path := "user:/".path_join(teacher).path_join(str(device_id)).path_join(language)
 	return file_path
-

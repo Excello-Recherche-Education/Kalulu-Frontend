@@ -1,7 +1,8 @@
-[gd_scene load_steps=25 format=3 uid="uid://2wab3q35ssta"]
+[gd_scene load_steps=26 format=3 uid="uid://2wab3q35ssta"]
 
 [ext_resource type="Texture2D" uid="uid://d3rhl050u0ahl" path="res://assets/menus/login/password_background.png" id="1_mw5cp"]
 [ext_resource type="Script" path="res://sources/menus/login/login.gd" id="1_spyuf"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="3_0my6t"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="3_5b1v0"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="4_3vuah"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="5_vd33f"]
@@ -23,7 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://ch87nxu2c0vf8" path="res://assets/menus/login/button_symbol05_down.png" id="19_ty7yo"]
 [ext_resource type="Texture2D" uid="uid://eg5jrfombxb8" path="res://assets/menus/login/button_symbol06_up.png" id="20_xaifc"]
 [ext_resource type="Texture2D" uid="uid://dce53jiyk6gy6" path="res://assets/menus/login/button_symbol06_down.png" id="21_banah"]
-[ext_resource type="AudioStream" uid="uid://b8pn5vqgp6jlt" path="res://assets/menus/main/ui_title_card_music.mp3" id="22_w2yxs"]
+[ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="24_4xfja"]
 
 [node name="Login" type="Control"]
 layout_mode = 3
@@ -42,6 +43,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_mw5cp")
+
+[node name="NightSky" parent="." instance=ExtResource("3_0my6t")]
+visible = false
+layout_mode = 1
 
 [node name="InterfaceLeft" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(450, 0)
@@ -201,12 +206,10 @@ visible = false
 layout_mode = 1
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("22_w2yxs")
-autoplay = true
+stream = ExtResource("24_4xfja")
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="button_down" from="InterfaceRight/TeacherButton" to="." method="_on_teacher_button_button_down"]
 [connection signal="button_up" from="InterfaceRight/TeacherButton" to="." method="_on_teacher_button_button_up"]
 [connection signal="timeout" from="InterfaceRight/TeacherButton/TeacherTimer" to="." method="_on_teacher_timer_timeout"]
-[connection signal="finished" from="MusicStreamPlayer" to="." method="_on_music_stream_player_finished"]
