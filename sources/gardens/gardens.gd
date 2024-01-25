@@ -7,22 +7,33 @@ const garden_size: = 2400
 	set = set_gardens_layout
 
 @onready var garden_parent: = %GardenParent
-@onready var line: = $ScrollContainer/Line2D
+@onready var locked_line: = $ScrollContainer/LockedLine
+@onready var unlocked_line: = $ScrollContainer/UnlockedLine
 @onready var scroll_container: = $ScrollContainer
 
-var curve: Curve2D
 var lessons: = {}
+var points: = []
 var is_scrolling: = false
 var scroll_beginning_garden: = 0
 var tween: Tween
 
 
-func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
-	gardens_layout = p_gardens_layout
-	add_gardens()
-	if garden_parent:
-		await get_tree().process_frame
-	set_up_path()
+func _ready() -> void:
+	if not gardens_layout:
+		gardens_layout = load("res://resources/gardens/gardens_layout.tres")
+	else:
+		set_gardens_layout(gardens_layout)
+	get_gardens_db_data()
+	set_up_lessons_text()
+	
+	await get_tree().process_frame
+	UserDataManager.student_progression.unlocks_changed.connect(_on_progression_unlocks_changed)
+	_on_progression_unlocks_changed()
+
+
+func _process(_delta: float) -> void:
+	locked_line.position.x = - scroll_container.scroll_horizontal
+	unlocked_line.position.x = - scroll_container.scroll_horizontal
 
 
 func get_gardens_db_data() -> void:
@@ -46,8 +57,12 @@ func set_up_lessons_text() -> void:
 			lesson_ind += 1
 
 
-func _process(_delta: float) -> void:
-	line.position.x = - scroll_container.scroll_horizontal
+func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
+	gardens_layout = p_gardens_layout
+	add_gardens()
+	if garden_parent:
+		await get_tree().process_frame
+	set_up_path()
 
 
 func add_gardens() -> void:
@@ -64,7 +79,8 @@ func add_gardens() -> void:
 func set_up_path() -> void:
 	if not garden_parent:
 		return
-	curve = Curve2D.new()
+	points = []
+	var curve: = Curve2D.new()
 	for i in gardens_layout.gardens.size():
 		var garden_layout: = gardens_layout.gardens[i]
 		var garden_control: = garden_parent.get_child(i)
@@ -75,16 +91,65 @@ func set_up_path() -> void:
 			if curve.point_count > 1:
 				point_in_position = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position
 			curve.add_point(point_position, point_in_position, lesson_button.path_out_position)
-	line.points = curve.get_baked_points()
+			points.append([point_position, point_in_position, lesson_button.path_out_position])
+	locked_line.points = curve.get_baked_points()
 
 
-func _ready() -> void:
-	if not gardens_layout:
-		gardens_layout = load("res://resources/gardens/gardens_layout.tres")
-	else:
-		set_gardens_layout(gardens_layout)
-	get_gardens_db_data()
-	set_up_lessons_text()
+func _on_progression_unlocks_changed() -> void:
+	if not garden_parent:
+		return
+	
+	var lesson_ind: = 1
+	for garden_control in garden_parent.get_children():
+		if not lesson_ind in lessons:
+			break
+		var garden_unlocks: = 0.0
+		var garden_total_unlocks: = 0.0
+		for i in garden_control.lesson_button_controls.size():
+			if not lesson_ind in lessons:
+				break
+			
+			if UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] >= UserProgression.Status.Unlocked:
+				if UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] == UserProgression.Status.Unlocked:
+					garden_unlocks += 1.0
+				if UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] == UserProgression.Status.Completed:
+					garden_unlocks += 2.0
+				garden_control.lesson_button_controls[i].disabled = false
+			else:
+				garden_control.lesson_button_controls[i].disabled = true
+			
+			garden_total_unlocks += 1.0
+			
+			for k in range(3):
+				garden_total_unlocks += 1.0
+				match UserDataManager.student_progression.unlocks[lesson_ind]["games"][k]:
+					UserProgression.Status.Unlocked:
+						garden_unlocks += 1.0
+					UserProgression.Status.Completed:
+						garden_unlocks += 2.0
+			
+			var unlocks_ratio: = garden_unlocks / garden_total_unlocks
+			var total_flowers: float = unlocks_ratio * garden_control.flower_controls.size() * 4.0
+			var flower_ind: = 0
+			while total_flowers > 0 and flower_ind < garden_control.flower_controls.size():
+				if total_flowers >= 3.0:
+					garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Large
+					total_flowers -= 3.0
+				elif total_flowers >= 2.0:
+					garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Medium
+					total_flowers -= 2.0
+				elif total_flowers >= 1.0:
+					garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Small
+					total_flowers -= 1.0
+				flower_ind += 1
+			
+			lesson_ind += 1
+	
+	lesson_ind = 1
+	var curve: = Curve2D.new()
+	for i in range(UserDataManager.student_progression.get_max_unlocked_lesson()):
+		curve.add_point(points[i][0], points[i][1], points[i][2])
+	unlocked_line.points = curve.get_baked_points()
 
 
 func _on_scroll_container_gui_input(event: InputEvent) -> void:

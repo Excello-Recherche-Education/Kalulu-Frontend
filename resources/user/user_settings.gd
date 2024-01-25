@@ -1,6 +1,8 @@
 extends Resource
 class_name UserSettings
 
+@export var version: = 1.0
+
 @export var master_volume: = 0.0 :
 	set(volume):
 		master_volume = volume
@@ -24,5 +26,3 @@ class_name UserSettings
 		effects_volume = volume
 		var ind: = AudioServer.get_bus_index("Effects")
 		AudioServer.set_bus_volume_db(ind, volume)
-
-var user_name: String

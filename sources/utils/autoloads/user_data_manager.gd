@@ -10,11 +10,17 @@ var student: String = "" :
 		load_student_settings()
 
 var student_settings: UserSettings
+var student_progression: UserProgression
 
 
 func _ready() -> void:
 	teacher = "toto"
 	student = "titi"
+	
+	load_student_settings()
+	load_student_progression()
+	
+	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
 
 
 func load_student_settings() -> void:
@@ -28,8 +34,22 @@ func load_student_settings() -> void:
 		_save_student_settings()
 
 
+func load_student_progression() -> void:
+	if FileAccess.file_exists(get_student_progression_path()):
+		student_progression = load(get_student_progression_path())
+	
+	if not student_progression:
+		student_progression = UserProgression.new()
+		DirAccess.make_dir_recursive_absolute(get_student_folder())
+		_save_student_progression()
+
+
 func _save_student_settings() -> void:
 	ResourceSaver.save(student_settings, get_student_settings_path())
+
+
+func _save_student_progression() -> void:
+	ResourceSaver.save(student_progression, get_student_progression_path())
 
 
 func get_teacher_folder() -> String:
@@ -44,6 +64,11 @@ func get_student_folder() -> String:
 
 func get_student_settings_path() -> String:
 	var file_path: = get_student_folder() + "settings.tres"
+	return file_path
+
+
+func get_student_progression_path() -> String:
+	var file_path: = get_student_folder() + "progression.tres"
 	return file_path
 
 
@@ -111,10 +136,15 @@ func get_effects_volume() -> float:
 	return value
 
 
+func _on_user_progression_unlocks_changed() -> void:
+	_save_student_progression()
+
+
 # Convert the volume from [-80, 6]db to [0, 100] and back
 func normalize_slider(volume) -> float:
 	var value: = pow((volume + 80.0) / 86, 5.0) * 100.0
 	return value
+
 
 func denormalize_volume(value: float) -> float:
 	var volume: = pow(float(value) / 100.0, 0.2) * 86 - 80

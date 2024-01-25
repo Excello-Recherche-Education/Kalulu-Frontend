@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GardensLayout" load_steps=19 format=3]
+[gd_resource type="Resource" script_class="GardensLayout" load_steps=19 format=3 uid="uid://8v0g8bpx5mh0"]
 
 [ext_resource type="Script" path="res://resources/gardens/garden_layout.gd" id="1_gyv0f"]
 [ext_resource type="Script" path="res://resources/gardens/gardens_layout.gd" id="2_w74ow"]

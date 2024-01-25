@@ -69,7 +69,7 @@ texture_normal = ExtResource("4_0eml6")
 texture_pressed = ExtResource("5_5t0qs")
 texture_hover = ExtResource("6_n2wsf")
 texture_disabled = ExtResource("7_wct1x")
-texture_focused = ExtResource("4_0eml6")
+texture_focused = ExtResource("6_n2wsf")
 
 [node name="LessonLabel1" type="Label" parent="Buttons/Button1"]
 unique_name_in_owner = true
@@ -100,7 +100,7 @@ texture_normal = ExtResource("4_0eml6")
 texture_pressed = ExtResource("5_5t0qs")
 texture_hover = ExtResource("6_n2wsf")
 texture_disabled = ExtResource("7_wct1x")
-texture_focused = ExtResource("4_0eml6")
+texture_focused = ExtResource("6_n2wsf")
 
 [node name="LessonLabel2" type="Label" parent="Buttons/Button2"]
 unique_name_in_owner = true
@@ -131,7 +131,7 @@ texture_normal = ExtResource("4_0eml6")
 texture_pressed = ExtResource("5_5t0qs")
 texture_hover = ExtResource("6_n2wsf")
 texture_disabled = ExtResource("7_wct1x")
-texture_focused = ExtResource("4_0eml6")
+texture_focused = ExtResource("6_n2wsf")
 
 [node name="LessonLabel3" type="Label" parent="Buttons/Button3"]
 unique_name_in_owner = true
@@ -162,7 +162,7 @@ texture_normal = ExtResource("4_0eml6")
 texture_pressed = ExtResource("5_5t0qs")
 texture_hover = ExtResource("6_n2wsf")
 texture_disabled = ExtResource("7_wct1x")
-texture_focused = ExtResource("4_0eml6")
+texture_focused = ExtResource("6_n2wsf")
 
 [node name="LessonLabel4" type="Label" parent="Buttons/Button4"]
 unique_name_in_owner = true
