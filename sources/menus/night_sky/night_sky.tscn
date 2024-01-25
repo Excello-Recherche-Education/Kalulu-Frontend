@@ -5,7 +5,7 @@
 
 [sub_resource type="Gradient" id="Gradient_oo2rt"]
 offsets = PackedFloat32Array(0, 0.381323, 0.735409)
-colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ufvor"]
 gradient = SubResource("Gradient_oo2rt")
@@ -25,7 +25,7 @@ emission_ring_radius = 1250.0
 emission_ring_inner_radius = 50.0
 gravity = Vector3(0, 0, 0)
 scale_min = 0.5
-scale_max = 1.5
+scale_max = 2.0
 scale_curve = SubResource("CurveTexture_2i3g2")
 color_ramp = SubResource("GradientTexture1D_ufvor")
 
@@ -50,20 +50,23 @@ color = Color(0, 0.00392157, 0.0980392, 1)
 [node name="StarsParticles" type="GPUParticles2D" parent="."]
 light_mask = 0
 position = Vector2(1280, 896)
-amount = 500
+amount = 300
 process_material = SubResource("ParticleProcessMaterial_qhymc")
 texture = ExtResource("1_j3m5j")
 lifetime = 8.0
-preprocess = 2.0
-speed_scale = 0.5
+preprocess = 6.0
+speed_scale = 0.25
 explosiveness = 0.1
 randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
 
 [node name="Light" type="PointLight2D" parent="."]
-position = Vector2(1284, 896)
-scale = Vector2(2.00625, 1.61429)
-energy = 3.0
+light_mask = 512
+position = Vector2(1284, 900.001)
+scale = Vector2(2.00625, 1.60715)
+color = Color(1, 1, 0.886275, 1)
+energy = 8.0
+blend_mode = 2
 range_item_cull_mask = 512
 texture = ExtResource("2_md1dy")
 texture_scale = 2.0

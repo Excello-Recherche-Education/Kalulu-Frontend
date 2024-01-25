@@ -25,11 +25,8 @@ func _init():
 	
 	if not language:
 		language = "fr"
-		
-	teacher = ""
-	device_id = 0
 
 
 func get_folder_path() -> String:
-	var file_path := "user:/".path_join(teacher).path_join(str(device_id)).path_join(language)
+	var file_path := "user://".path_join(teacher).path_join(str(device_id)).path_join(language)
 	return file_path

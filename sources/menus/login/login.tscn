@@ -1,9 +1,10 @@
-[gd_scene load_steps=26 format=3 uid="uid://2wab3q35ssta"]
+[gd_scene load_steps=27 format=3 uid="uid://2wab3q35ssta"]
 
 [ext_resource type="Texture2D" uid="uid://d3rhl050u0ahl" path="res://assets/menus/login/password_background.png" id="1_mw5cp"]
 [ext_resource type="Script" path="res://sources/menus/login/login.gd" id="1_spyuf"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="3_0my6t"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="3_5b1v0"]
+[ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_yrwu8"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="4_3vuah"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="5_vd33f"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_0dhup"]
@@ -35,6 +36,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_spyuf")
 
+[node name="NightSky" parent="." instance=ExtResource("3_0my6t")]
+layout_mode = 1
+
+[node name="Palm" parent="." instance=ExtResource("3_yrwu8")]
+position = Vector2(1280, 1800)
+scale = Vector2(2.5, 2.5)
+
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -43,10 +51,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_mw5cp")
-
-[node name="NightSky" parent="." instance=ExtResource("3_0my6t")]
-visible = false
-layout_mode = 1
 
 [node name="InterfaceLeft" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(450, 0)

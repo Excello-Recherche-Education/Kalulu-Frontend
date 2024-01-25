@@ -1,7 +1,5 @@
 extends Control
 
-# [123, 124, 125, 126, 132, 134, 135, 136, 142, 143, 145, 146, 152, 153, 154, 213, 214, 215, 216, 231, 234, 235, 236, 241, 243, 245, 246, 251, 253, 254, 321, 324, 325, 326, 312, 314, 315, 316, 342, 341, 345, 346, 352, 351, 354, 423, 421, 425, 426, 432, 431, 435, 436, 412, 413, 415, 416, 452, 453, 451, 523, 524, 521, 526, 532, 534, 531, 536, 542, 543, 541, 546, 512, 513, 514, 623, 624, 625, 621, 632, 634, 635, 631, 642, 643, 645, 641, 652, 653, 654]
-
 const back_scene_path: = "res://sources/menus/main/main_menu.tscn"
 const next_scene_path: = "res://sources/menus/minigame_selection.tscn"
 const teacher_scene_path: = "res://sources/menus/teacher/teacher_settings.tscn"
@@ -64,15 +62,12 @@ func _on_button_pressed(button : TextureButton):
 
 
 func _check_password():
-	var test = ""
+	var code = ""
 	for char_ in password:
-		test += char_
+		code += char_
 	
-	if test == "123":
+	if UserDataManager.login_student(code):
 		await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(right_password_speech_path))
-		
-		UserDataManager.student = test
-		
 		get_tree().change_scene_to_file(next_scene_path)
 	else:
 		await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(wrong_password_speech_path))

@@ -14,6 +14,7 @@ var student: String = "" :
 			student_settings = null
 
 var device_settings: DeviceSettings
+var teacher_settings: TeacherSettings
 var student_settings: UserSettings
 var student_progression: UserProgression
 
@@ -22,13 +23,45 @@ func _ready():
 	student = "titi"
 	
 	load_device_settings()
-	TeacherSettings.new(TeacherSettings.Type.Teacher, 6, 32)
+	if device_settings.teacher:
+		load_teacher_settings()
 	load_student_settings()
 	load_student_progression()
 	
 	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
-	
 
+
+func login(language : String, teacher : String, password : String, device_id : int) -> bool:
+	
+	if teacher not in DeviceSettings.possible_logins or password != DeviceSettings.possible_logins[teacher]:
+		return false
+	
+	if not device_settings:
+		return false
+	
+	# Handles device settings
+	device_settings.language = language
+	device_settings.teacher = teacher
+	device_settings.device_id = device_id
+	_save_device_settings()
+	
+	# Handles teacher settings
+	load_teacher_settings()
+	
+	return true
+
+
+func login_student(code : String) -> bool:
+	
+	if not device_settings or not teacher_settings:
+		return false
+	
+	for s in teacher_settings.students:
+		if s.code == code and s.device == device_settings.device_id:
+			student = code
+			return true
+	
+	return false
 
 func load_device_settings() -> void:
 	if FileAccess.file_exists(get_device_settings_path()):
@@ -46,26 +79,22 @@ func get_device_settings_path() -> String:
 	return "user://device_settings.tres"
 
 
-func set_language(language : String) -> void:
-	if device_settings:
-		device_settings.language = language
-		_save_device_settings()
+func load_teacher_settings() -> void:
+	if FileAccess.file_exists(get_teacher_settings_path()):
+		teacher_settings = load(get_teacher_settings_path())
+	if not teacher_settings:
+		teacher_settings = TeacherSettings.new()
+		# Default values for now
+		teacher_settings.setup_students(15, 90)
+		_save_teacher_settings()
 
 
-func login(language : String, teacher : String, password : String, device_id : int) -> bool:
-	
-	if teacher not in DeviceSettings.possible_logins or password != DeviceSettings.possible_logins[teacher]:
-		return false
-	
-	if device_settings:
-		device_settings.language = language
-		device_settings.teacher = teacher
-		device_settings.device_id = device_id
-		_save_device_settings()
-		return true
-		
-	return false
+func _save_teacher_settings():
+	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
+
+func get_teacher_settings_path() -> String:
+	return "user://".path_join(device_settings.teacher).path_join("teacher_settings.tres")
 
 func load_student_settings() -> void:
 	# Load User settings
@@ -102,12 +131,12 @@ func get_teacher_folder() -> String:
 
 
 func get_student_folder() -> String:
-	var file_path: = device_settings.get_folder_path() + student + "/"
+	var file_path: = device_settings.get_folder_path().path_join(student)
 	return file_path
 
 
 func get_student_settings_path() -> String:
-	var file_path: =  get_student_folder() + "settings.tres"
+	var file_path: =  get_student_folder().path_join("settings.tres")
 	return file_path
 
 
