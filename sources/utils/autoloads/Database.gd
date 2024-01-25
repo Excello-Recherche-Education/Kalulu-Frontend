@@ -22,16 +22,22 @@ var language: = "french":
 		language = value
 		db_path = base_path + language + "/language.db"
 		words_path = base_path + language + "/words/"
-var db_path: = base_path + language + "/language.db"
+var db_path: = base_path + language + "/language.db":
+	set(value):
+		db_path = value
+		if db:
+			db.close_db()
+			db.path = db_path
+			db.foreign_keys = true
+			db.open_db()
 var words_path: = base_path + language + "/words/"
 
 @onready var db: = SQLite.new()
 
 
 func _ready() -> void:
-	db.path = db_path
-	db.foreign_keys = true
-	db.open_db()
+	db_path = db_path
+
 	#_import_lessons()
 
 
@@ -100,6 +106,23 @@ func get_words_for_lesson(lesson_nb: int, only_new: = false) -> Array:
 	else:
 		db.query_with_bindings(query, [lesson_nb])
 	return db.query_result
+
+
+func get_sentences_for_lesson(p_lesson_nb: int, only_new: = false) -> Array:
+	var sentences_by_lesson: = {}
+	var sentences: = get_sentences()
+	for sentence in sentences:
+		var lesson_nb: = get_min_lesson_for_sentence_id(sentence.ID)
+		var a = sentences_by_lesson.get(lesson_nb, [])
+		a.append(sentence)
+		sentences_by_lesson[lesson_nb] = a
+	if only_new:
+		return sentences_by_lesson.get(p_lesson_nb, [])
+	
+	var ret: Array = []
+	for i in p_lesson_nb:
+		ret.append_array(sentences_by_lesson.get(i, []))
+	return ret
 
 
 func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:

@@ -90,6 +90,56 @@ theme_override_font_sizes/font_size = 100
 text = "Export
 "
 
+[node name="LanguageSelectButton" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 147.0
+offset_top = 113.0
+offset_right = 560.0
+offset_bottom = 258.0
+theme_override_font_sizes/font_size = 60
+alignment = 1
+item_count = 1
+popup/item_0/text = "New"
+popup/item_0/id = 0
+
+[node name="NewLanguageContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(1000, 1000)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -605.0
+offset_top = -705.0
+offset_right = 650.0
+offset_bottom = 650.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NewLanguageContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 100
+
+[node name="Label" type="Label" parent="NewLanguageContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 100
+text = "Enter new language name"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="NewLanguageContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="NewLanguageContainer/CenterContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(800, 2.08165e-12)
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/GPListButton" to="." method="_on_gp_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/WordListButton" to="." method="_on_word_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
@@ -98,3 +148,5 @@ text = "Export
 [connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]
 [connection signal="pressed" from="ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="item_selected" from="LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]
+[connection signal="text_submitted" from="NewLanguageContainer/CenterContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
