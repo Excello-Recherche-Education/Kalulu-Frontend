@@ -38,7 +38,7 @@ var words_path: = base_path + language + "/words/"
 func _ready() -> void:
 	db_path = db_path
 
-	#_import_lessons()
+	#_import_look_and_learn_data()
 
 
 func _exit_tree() -> void:
@@ -254,6 +254,28 @@ func _import_gps() -> void:
 			db.insert_row("GPs", {Grapheme=g, Phoneme=p})
 		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
 		print(db.query_result)
+
+
+func _import_look_and_learn_data() -> void:
+	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
+	var dict = JSON.parse_string(file.get_line())
+	for e in dict.values():
+		var file_path: = base_path.path_join(language).path_join(look_and_learn_images).path_join(e.IMAGE) + image_extension
+		DirAccess.copy_absolute(file_path, get_gp_look_and_learn_image_path({
+			Grapheme = e.GRAPHEME,
+			Phoneme = e.PHONEME,
+		}))
+		file_path = base_path.path_join(language).path_join(look_and_learn_sounds).path_join(e.AUDIO) + sound_extension
+		DirAccess.copy_absolute(file_path, get_gp_look_and_learn_sound_path({
+			Grapheme = e.GRAPHEME,
+			Phoneme = e.PHONEME,
+		}))
+		file_path = (base_path.path_join(language).path_join(look_and_learn_videos).trim_suffix("/") + "s").path_join(e.FILENAME) + "_wide" + video_extension
+		DirAccess.copy_absolute(file_path, get_gp_look_and_learn_video_path({
+			Grapheme = e.GRAPHEME,
+			Phoneme = e.PHONEME,
+		}))
+		
 
 
 func _update_gps_with_type() -> void:
