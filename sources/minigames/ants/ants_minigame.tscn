@@ -13,7 +13,7 @@
 [node name="AntsMinigame" instance=ExtResource("1_jqkff")]
 script = ExtResource("2_05d1y")
 difficulty = 3
-lesson_nb = 4
+lesson_nb = 100
 max_number_of_lives = 5
 max_progression = 3
 intro_kalulu_speech = ExtResource("3_tm6c3")

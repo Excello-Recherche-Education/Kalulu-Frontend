@@ -10,6 +10,7 @@ const garden_size: = 2400
 @onready var locked_line: = $ScrollContainer/LockedLine
 @onready var unlocked_line: = $ScrollContainer/UnlockedLine
 @onready var scroll_container: = $ScrollContainer
+@onready var parallax_background: = %ParallaxBackground
 
 var lessons: = {}
 var points: = []
@@ -34,6 +35,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	locked_line.position.x = - scroll_container.scroll_horizontal
 	unlocked_line.position.x = - scroll_container.scroll_horizontal
+	parallax_background.scroll_offset.x = - scroll_container.scroll_horizontal
 
 
 func get_gardens_db_data() -> void:
@@ -116,41 +118,43 @@ func _on_progression_unlocks_changed() -> void:
 					garden_unlocks += 2.0
 				garden_control.lesson_button_controls[i].disabled = false
 			else:
-				if ProjectSettings.get("application/custom/unlock_everything.debug"):
+				if ProjectSettings.get_setting_with_override("application/custom/unlock_everything"):
 					garden_control.lesson_button_controls[i].disabled = false
 				else:
 					garden_control.lesson_button_controls[i].disabled = true
 			
-			garden_total_unlocks += 1.0
+			garden_total_unlocks += 2.0
 			
 			for k in range(3):
-				garden_total_unlocks += 1.0
+				garden_total_unlocks += 2.0
 				match UserDataManager.student_progression.unlocks[lesson_ind]["games"][k]:
 					UserProgression.Status.Unlocked:
 						garden_unlocks += 1.0
 					UserProgression.Status.Completed:
 						garden_unlocks += 2.0
 			
-			var unlocks_ratio: = garden_unlocks / garden_total_unlocks
-			var total_flowers: float = unlocks_ratio * garden_control.flower_controls.size() * 4.0
-			var flower_ind: = 0
-			while total_flowers > 0 and flower_ind < garden_control.flower_controls.size():
-				if total_flowers >= 3.0:
-					garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Large
-					total_flowers -= 3.0
-				elif total_flowers >= 2.0:
-					garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Medium
-					total_flowers -= 2.0
-				elif total_flowers >= 1.0:
-					garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Small
-					total_flowers -= 1.0
-				flower_ind += 1
-			
 			lesson_ind += 1
+		
+		var unlocks_ratio: = garden_unlocks / garden_total_unlocks
+		var total_flowers: float = unlocks_ratio * garden_control.flower_controls.size() * 4.0
+		var flower_ind: = 0
+		while total_flowers > 0 and flower_ind < garden_control.flower_controls.size():
+			if total_flowers >= 3.0:
+				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Large
+				total_flowers -= 3.0
+			elif total_flowers >= 2.0:
+				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Medium
+				total_flowers -= 2.0
+			elif total_flowers >= 1.0:
+				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Small
+				total_flowers -= 1.0
+			flower_ind += 1
+		
+		garden_control.update_flowers()
 	
 	lesson_ind = 1
 	var curve: = Curve2D.new()
-	for i in range(UserDataManager.student_progression.get_max_unlocked_lesson()):
+	for i in range(UserDataManager.student_progression.get_max_unlocked_lesson() + 1):
 		curve.add_point(points[i][0], points[i][1], points[i][2])
 	unlocked_line.points = curve.get_baked_points()
 

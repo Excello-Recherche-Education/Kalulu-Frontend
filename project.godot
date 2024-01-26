@@ -15,7 +15,7 @@ run/main_scene="res://sources/menus/language_selection/package_checker.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 custom/unlock_everything=false
-custom/unlock_everything.debug=true
+custom/unlock_everything.debug=false
 
 [audio]
 

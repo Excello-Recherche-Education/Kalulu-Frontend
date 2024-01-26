@@ -1,7 +1,7 @@
 extends Minigame
 
 @export var difficulty: = 3
-@export var lesson_nb: = 4
+@export var lesson_nb: = 100
 
 @onready var sentence: = %Sentence
 @onready var ants_spawn: = %AntsSpawn
@@ -20,15 +20,13 @@ var answers: = []
 
 
 func _find_stimuli_and_distractions() -> void:
-	#var sentences_list: = Database.get_sentences_for_lesson(lesson_nb)
-	var sentences_list: = [
-		{Sentence = "Il est beau le bateau"},
-		{Sentence = "Il est beau le lavabo"},
-		{Sentence = "Il est laid le bidet"},
-	]
+	var sentences_list: = Database.get_sentences_for_lesson(lesson_nb)
 	sentences_list.shuffle()
 	stimuli = []
 	distractions = []
+	
+	max_progression = min(max_progression, sentences_list.size())
+	
 	for i in max_progression:
 		var stimulus: String = sentences_list[i].Sentence
 		stimuli.append(stimulus)
