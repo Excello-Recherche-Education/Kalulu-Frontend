@@ -25,7 +25,7 @@ func _ready() -> void:
 	else:
 		set_gardens_layout(gardens_layout)
 	get_gardens_db_data()
-	set_up_lessons_text()
+	set_up_lessons()
 	
 	await get_tree().process_frame
 	UserDataManager.student_progression.unlocks_changed.connect(_on_progression_unlocks_changed)
@@ -49,13 +49,14 @@ func get_gardens_db_data() -> void:
 		lessons[e.LessonNb].append({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
 
 
-func set_up_lessons_text() -> void:
+func set_up_lessons() -> void:
 	var lesson_ind: = 1
 	for garden_control in garden_parent.get_children():
 		for i in garden_control.lesson_button_controls.size():
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(i, lessons[lesson_ind][0].grapheme)
+			garden_control.lesson_button_controls.pressed.connect(_on_garden_lesson_button_pressed.bind(lesson_ind))
 			lesson_ind += 1
 
 
@@ -95,6 +96,10 @@ func set_up_path() -> void:
 			curve.add_point(point_position, point_in_position, lesson_button.path_out_position)
 			points.append([point_position, point_in_position, lesson_button.path_out_position])
 	locked_line.points = curve.get_baked_points()
+
+
+func _on_garden_lesson_button_pressed(_lesson_ind: int) -> void:
+	pass
 
 
 func _on_progression_unlocks_changed() -> void:
