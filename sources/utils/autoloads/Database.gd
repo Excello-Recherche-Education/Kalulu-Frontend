@@ -37,7 +37,7 @@ var words_path: = base_path + language + "/words/"
 
 func _ready() -> void:
 	db_path = db_path
-
+	#_import_words_csv()
 	#_import_look_and_learn_data()
 
 
@@ -351,3 +351,43 @@ func _remove_unusable_words() -> void:
 				var word_id = db.query_result[0]["ID"]
 				db.delete_rows("Words", "ID=%s" % word_id)
 		
+
+
+func _import_words_csv() -> void:
+	var file = FileAccess.open("res://data3/Copy of Manulex-infra-2.csv", FileAccess.READ)
+	file.get_line()
+	while not file.eof_reached():
+		var line: = file.get_csv_line()
+		var word: = line[0]
+		var gp_list: = line[2].trim_prefix("(").trim_suffix(")").split(".")
+		var gp_ids: = []
+		for gp in gp_list:
+			var split: = gp.split("-")
+			var grapheme: = split[0]
+			var phoneme: = split[1]
+			db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme = ? AND Phoneme = ?", [grapheme, phoneme])
+			var gp_id: = -1
+			if db.query_result.is_empty():
+				db.insert_row("GPs", {
+					Grapheme = grapheme,
+					Phoneme = phoneme,
+					InGame = 0,
+				})
+				gp_id = db.last_insert_rowid
+			else:
+				gp_id = db.query_result[0].ID
+			gp_ids.append(gp_id)
+		db.query_with_bindings("SELECT * FROM Words WHERE Word = ?", [word])
+		if db.query_result.is_empty():
+			db.insert_row("Words", {
+				Word = word,
+				InGame = 0,
+			})
+			var word_id: = db.last_insert_rowid
+			for i in gp_ids.size():
+				var gp_id: int = gp_ids[i]
+				db.insert_row("GPsInWords", {
+					WordID = word_id,
+					GPID = gp_id,
+					Position = i
+				})
