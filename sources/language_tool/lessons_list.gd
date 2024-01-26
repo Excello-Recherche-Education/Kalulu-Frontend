@@ -84,25 +84,29 @@ func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
 
 
 func _on_save_button_pressed() -> void:
-	Database.db.query("Select Lessons.ID as LessonId FROM Lessons")
-	
-	var result: = Database.db.query_result
-	for row in result:
-		Database.db.delete_rows("Lessons", "ID=%s" % row.LessonId)
+	Database.db.query("DELETE FROM GPsInLessons")
 	var children: = lessons_container.get_children()
 	for i in children.size():
 		var child: = children[i]
-		Database.db.insert_row("Lessons",
-		{
-			LessonNb = i + 1
-		})
-		var lesson_id: = Database.db.last_insert_rowid
-		for gp_id in child.get_gp_ids():
+		Database.db.query_with_bindings("SELECT * FROM Lessons WHERE LessonNb = ?", [i + 1])
+		var lesson_id: = -1
+		if Database.db.query_result.is_empty():
 			Database.db.insert_row("Lessons",
+			{
+				LessonNb = i + 1
+			})
+			lesson_id = Database.db.last_insert_rowid
+		else:
+			lesson_id = Database.db.query_result[0].ID
+		
+		for gp_id in child.get_gp_ids():
+			Database.db.insert_row("GPsInLessons",
 			{
 				GPID = gp_id,
 				LessonID = lesson_id,
 			})
+	
+	Database.db.query_with_bindings("DELETE FROM Lessons WHERE LessonNb > ?", [children.size()])
 
 
 func _on_back_button_pressed() -> void:
