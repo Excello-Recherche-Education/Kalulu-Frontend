@@ -36,6 +36,8 @@ func get_max_unlocked_lesson() -> int:
 	for i in range(unlocks.size()):
 		if unlocks[i + 1]["look_and_learn"] >= Status.Unlocked:
 			max_unlocked_level = i
+		else:
+			break
 	
 	return max_unlocked_level
 

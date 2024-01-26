@@ -116,7 +116,10 @@ func _on_progression_unlocks_changed() -> void:
 					garden_unlocks += 2.0
 				garden_control.lesson_button_controls[i].disabled = false
 			else:
-				garden_control.lesson_button_controls[i].disabled = true
+				if ProjectSettings.get("application/custom/unlock_everything.debug"):
+					garden_control.lesson_button_controls[i].disabled = false
+				else:
+					garden_control.lesson_button_controls[i].disabled = true
 			
 			garden_total_unlocks += 1.0
 			
