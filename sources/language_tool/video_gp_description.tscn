@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://m07xvvercaum"]
+[gd_scene load_steps=7 format=3 uid="uid://m07xvvercaum"]
 
 [ext_resource type="Script" path="res://sources/language_tool/video_gp_description.gd" id="1_kww8f"]
+[ext_resource type="Texture2D" uid="uid://b1227jts6lw67" path="res://assets/theme/play.svg" id="2_dbuc8"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_liexj"]
 [ext_resource type="Texture2D" uid="uid://5fffpm7hc12k" path="res://assets/menus/upload.png" id="3_f6nbg"]
 [ext_resource type="Texture2D" uid="uid://b8tctfnsj3prx" path="res://assets/menus/minus_button.png" id="4_vccxx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tny0s"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="VideoGPDescription" type="HBoxContainer"]
 script = ExtResource("1_kww8f")
@@ -36,8 +40,33 @@ layout_mode = 2
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="VideoContainer/HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(200, 2.08165e-12)
 layout_mode = 2
+
+[node name="Panel" type="Panel" parent="VideoContainer/HBoxContainer/VideoStreamPlayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tny0s")
+
+[node name="TextureRect" type="TextureRect" parent="VideoContainer/HBoxContainer/VideoStreamPlayer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -75.0
+offset_right = 75.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_dbuc8")
 
 [node name="VideoUploadButton" parent="VideoContainer/HBoxContainer" instance=ExtResource("2_liexj")]
 unique_name_in_owner = true

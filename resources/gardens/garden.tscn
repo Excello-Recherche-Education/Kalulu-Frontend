@@ -5,9 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://b5kildofgmthb" path="res://assets/gardens/gardens/garden_01_open.png" id="3_p7iv3"]
 [ext_resource type="Texture2D" uid="uid://c4s2ixkggh5jj" path="res://assets/theme/button_normal.svg" id="4_0eml6"]
 [ext_resource type="Texture2D" uid="uid://dp4l4vvcgj31" path="res://assets/theme/button_pressed.svg" id="5_5t0qs"]
-[ext_resource type="Texture2D" uid="uid://dr1crgd6cs6nx" path="res://assets/gardens/flowers/Plant_03_01_Small.png" id="5_g6tta"]
 [ext_resource type="Texture2D" uid="uid://bhasq68660k56" path="res://assets/theme/button_focused.svg" id="6_n2wsf"]
 [ext_resource type="Texture2D" uid="uid://c0rumwiaimvxy" path="res://assets/theme/button_disabled.svg" id="7_wct1x"]
+[ext_resource type="Texture2D" uid="uid://dg4wcuidmagd8" path="res://assets/gardens/flowers/Plant_03_01_NotStarted.png" id="8_tdxbf"]
 
 [sub_resource type="Resource" id="Resource_pwltf"]
 script = ExtResource("2_8g7o4")
@@ -60,10 +60,8 @@ mouse_filter = 2
 unique_name_in_owner = true
 z_index = 1
 layout_mode = 0
-offset_left = -75.0
-offset_top = -75.0
-offset_right = 225.0
-offset_bottom = 225.0
+offset_right = 300.0
+offset_bottom = 300.0
 pivot_offset = Vector2(150, 150)
 texture_normal = ExtResource("4_0eml6")
 texture_pressed = ExtResource("5_5t0qs")
@@ -89,6 +87,7 @@ vertical_alignment = 1
 
 [node name="Button2" type="TextureButton" parent="Buttons"]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 0
 offset_left = -75.0
@@ -120,6 +119,7 @@ vertical_alignment = 1
 
 [node name="Button3" type="TextureButton" parent="Buttons"]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 0
 offset_left = -75.0
@@ -151,6 +151,7 @@ vertical_alignment = 1
 
 [node name="Button4" type="TextureButton" parent="Buttons"]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 0
 offset_left = -75.0
@@ -194,10 +195,10 @@ unique_name_in_owner = true
 z_index = 2
 layout_mode = 0
 offset_left = 500.0
-offset_right = 905.0
-offset_bottom = 447.0
-pivot_offset = Vector2(202.5, 223.5)
-texture = ExtResource("5_g6tta")
+offset_right = 647.0
+offset_bottom = 90.0
+pivot_offset = Vector2(73.5, 45)
+texture = ExtResource("8_tdxbf")
 
 [node name="Flower2" type="TextureRect" parent="Flowers"]
 unique_name_in_owner = true

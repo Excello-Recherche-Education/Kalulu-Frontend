@@ -7,14 +7,14 @@ const description_line_class: = preload("res://sources/language_tool/video_gp_de
 
 func _ready() -> void:
 	var _description_line: = description_line_class.instantiate()
-	DirAccess.make_dir_recursive_absolute(_description_line.resource_folder + _description_line.language_folder + _description_line.video_folder)
+	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.look_and_learn_videos)
 	_description_line.queue_free()
 	
 	Database.db.query("Select * FROM GPs")
-	for res in Database.db.query_result:
+	for gp in Database.db.query_result:
 		var description_line: = description_line_class.instantiate()
 		description_container.add_child(description_line)
-		description_line.set_gp(res["Grapheme"] + "-" + res["Phoneme"])
+		description_line.set_gp(gp)
 
 
 func _on_back_button_pressed() -> void:
