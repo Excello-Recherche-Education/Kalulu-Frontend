@@ -123,6 +123,8 @@ func _on_track_lilypad_in_center(lilypad: Control, track: Control) -> void:
 	frog.jump_to(lilypad.global_position)
 	await frog.jumped
 	
+	_log_new_response(lilypad.stimulus, track.stimuli[0])
+	
 	if lilypad.is_distractor:
 		await lilypad.wrong()
 		

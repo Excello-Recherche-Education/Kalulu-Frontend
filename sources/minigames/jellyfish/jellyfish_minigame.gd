@@ -33,14 +33,21 @@ var blocking_jellyfish: Array[Control] = []
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	stimuli = Database.get_GP_for_lesson(lesson_nb, true)
-	distractions = Database.get_GP_before_lesson(lesson_nb, true)
+	var all_distractions: = Database.get_GP_before_lesson(lesson_nb, true)
+	all_distractions.shuffle()
+	
+	var number_of_distractions: int = min((max_progression - 1) / 2, all_distractions.size())
+	var current_distractions: = all_distractions.slice(0, number_of_distractions)
+	
+	stimuli.append_array(current_distractions)
+	distractions = stimuli.duplicate()
 
 
 # Launch the minigame
 func _start() -> void:
 	super()
 	
-	audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[0].Phoneme)
+	audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[current_progression % stimuli.size()].Phoneme)
 	audio_player.play()
 	spawn_timer.start()
 
@@ -67,7 +74,7 @@ func _spawn() -> void:
 	var new_jellyfish: = jellyfish_scene.instantiate()
 	spawning_space.add_child(new_jellyfish)
 	var is_stimulus: = randf() < _get_difficulty_settings().stimuli_ratio
-	new_jellyfish.stimulus = stimuli[0] if is_stimulus else distractions[randi() % distractions.size()]
+	new_jellyfish.stimulus = stimuli[current_progression % stimuli.size()] if is_stimulus else stimuli[randi() % stimuli.size()]
 	var permitted_range: = 0
 	var left_border: = 0
 	# blocking jellyfish is supposed to be ordered
@@ -104,6 +111,7 @@ func _spawn() -> void:
 
 func _on_jellyfish_pressed(jellyfish: Control) -> void:
 	# already clicked
+	_log_new_response(jellyfish.stimulus, stimuli[current_progression % stimuli.size()])
 	if jellyfish.get_parent() != spawning_space:
 		return
 	var jellyfish_position: = jellyfish.global_position
@@ -111,7 +119,7 @@ func _on_jellyfish_pressed(jellyfish: Control) -> void:
 	spawning_space.add_sibling(jellyfish)
 	jellyfish.global_position = jellyfish_position
 	var is_right: = false
-	if jellyfish.stimulus in stimuli:
+	if jellyfish.stimulus == stimuli[current_progression % stimuli.size()]:
 		is_right = true
 		jellyfish.happy()
 		jellyfish.right()

@@ -165,6 +165,13 @@ func get_sentences() -> Array[Dictionary]:
 	return db.query_result
 
 
+func get_words_in_sentence(sentence_id: int) -> Array[Dictionary]:
+	db.query_with_bindings("SELECT * FROM WordsInSentences
+	INNER JOIN Words ON Words.ID = WordsInSentences.WordID
+	WHERE SentenceID = ?", [sentence_id])
+	return db.query_result
+
+
 func get_lessons_count() -> int:
 	db.query("SELECT MAX(Lessons.LessonNb) as i FROM Lessons")
 	return db.query_result[0].i

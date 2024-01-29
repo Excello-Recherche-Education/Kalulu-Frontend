@@ -76,13 +76,11 @@ func is_button_pressed_with_limit(future):
 
 
 func right() -> void:
-	if is_instance_valid(crab):
-		await crab.right()
+	await crab.right()
 
 
 func wrong() -> void:
-	if is_instance_valid(crab):
-		await crab.wrong()
+	await crab.wrong()
 
 
 func _on_crab_hit(stimulus: Dictionary) -> void:

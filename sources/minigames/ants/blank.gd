@@ -6,7 +6,7 @@ const images: = [
 	"res://assets/minigames/ants/graphics/hole_04.png",
 ]
 
-var stimulus: String
+var stimulus: Dictionary
 
 
 func _ready() -> void:

@@ -14,7 +14,7 @@ const blank_class: = preload("res://sources/minigames/ants/blank.tscn")
 const ant_class: = preload("res://sources/minigames/ants/ant.tscn")
 const word_class: = preload("res://sources/minigames/ants/word.tscn")
 
-var current_sentence: String
+var current_sentence: Dictionary
 var answersed: = []
 var answers: = []
 
@@ -28,7 +28,7 @@ func _find_stimuli_and_distractions() -> void:
 	max_progression = min(max_progression, sentences_list.size())
 	
 	for i in max_progression:
-		var stimulus: String = sentences_list[i].Sentence
+		var stimulus: Dictionary = sentences_list[i]
 		stimuli.append(stimulus)
 
 
@@ -56,7 +56,7 @@ func _next_sentence() -> void:
 	await get_tree().process_frame
 	
 	current_sentence = stimuli.pop_front()
-	var current_words: = current_sentence.split(" ")
+	var current_words: = Database.get_words_in_sentence(current_sentence.ID)
 	
 	var number_of_blanks: int = maxi(2, mini(difficulty, current_words.size()))
 	var blanks: = range(current_words.size())
@@ -67,9 +67,14 @@ func _next_sentence() -> void:
 	answers = []
 	answersed = []
 	for i in range(current_words.size()):
+		var current_word: Dictionary
+		for word in current_words:
+			if word.Position == i:
+				current_word = word
+				break
 		if i in blanks:
 			var blank: = blank_class.instantiate()
-			blank.stimulus = current_words[i]
+			blank.stimulus = current_word
 			sentence.add_child(blank)
 			
 			var ant: = ant_class.instantiate()
@@ -79,7 +84,7 @@ func _next_sentence() -> void:
 			var word: = word_class.instantiate()
 			words.add_child(word)
 			
-			word.stimulus = current_words[i]
+			word.stimulus = current_word
 			word.current_anchor = ant
 			
 			answersed.append(false)
@@ -91,7 +96,7 @@ func _next_sentence() -> void:
 			var label: = Label.new()
 			sentence.add_child(label)
 			
-			label.text = current_words[i] + " "
+			label.text = current_word.Word + " "
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			label.set("theme_override_font_sizes/font_size", 72)
@@ -124,8 +129,10 @@ func _on_current_progression_changed() -> void:
 		_win()
 
 
-func _on_word_answer(answer: bool, word: TextureButton) -> void:
-	answers[word.get_index()] = answer
+func _on_word_answer(stimulus: Dictionary, expected_stimulus: Dictionary, word: TextureButton) -> void:
+	_log_new_response(stimulus, expected_stimulus)
+	
+	answers[word.get_index()] = stimulus == expected_stimulus
 	answersed[word.get_index()] = true
 	
 	var all_answered: = true

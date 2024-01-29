@@ -170,13 +170,11 @@ func _reset_logs() -> void:
 	}
 
 
-func _log_new_response(response: Dictionary, awaited_response: Dictionary, all_stimuli: Array[Dictionary], all_distractors: Array[Dictionary]) -> void:
+func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> void:
 	var response_log: = {
 		"reponse": response,
-		"awaited_response": awaited_response,
-		"all_stimuli": all_stimuli,
-		"all_distractors": all_distractors,
-		"is_right": response == awaited_response,
+		"awaited_response": current_stimulus,
+		"is_right": response == current_stimulus,
 		"minigame": minigame_name,
 		"number_of_hints": current_number_of_hints,
 		"current_progression": current_progression,

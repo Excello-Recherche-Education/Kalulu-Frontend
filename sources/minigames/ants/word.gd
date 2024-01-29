@@ -8,7 +8,7 @@ signal no_answer()
 @onready var right_fx: = $RightFX
 @onready var wrong_fx: = $WrongFX
 
-var stimulus: String:
+var stimulus: Dictionary:
 	set = _set_stimulus
 var follow_mouse: = false
 var current_anchor: CanvasItem
@@ -34,10 +34,10 @@ func _process(_delta: float) -> void:
 			global_position = current_anchor.global_position
 
 
-func _set_stimulus(value: String) -> void:
+func _set_stimulus(value: Dictionary) -> void:
 	stimulus = value
 	
-	label.text = stimulus
+	label.text = stimulus.Word
 
 
 func _on_button_down() -> void:
@@ -62,4 +62,4 @@ func _on_button_up() -> void:
 	if destination is Area2D:
 		no_answer.emit()
 	else:
-		answer.emit(stimulus == destination.stimulus)
+		answer.emit(stimulus, destination.stimulus)

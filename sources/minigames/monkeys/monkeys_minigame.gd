@@ -235,6 +235,8 @@ func _on_wrong_coconut(coconut: Node2D, monkey: Monkey) -> void:
 
 
 func monkey_throw_to_king(monkey: Monkey) -> void:
+	_log_new_response(monkey.stimulus, stimuli[current_progression])
+	
 	lock()
 	var coconut: = await _get_coconut_from_monkey_to_king(monkey)
 	

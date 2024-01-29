@@ -2,7 +2,7 @@
 extends Minigame
 
 @export var difficulty: = 1
-@export var lesson_nb: = 4
+@export var lesson_nb: = 15
 
 const hole_class: = preload("res://sources/minigames/crabs/hole/hole.tscn")
 const difficulty_settings: = {
@@ -55,22 +55,28 @@ func _setup_minigame() -> void:
 			holes.append(hole)
 
 
-# Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	stimuli = Database.get_GP_for_lesson(lesson_nb, true)
-	distractions = Database.get_GP_before_lesson(lesson_nb, true)
+	var all_distractions: = Database.get_GP_before_lesson(lesson_nb, true)
+	all_distractions.shuffle()
+	
+	var number_of_distractions: int = min((max_progression - 1) / 2, all_distractions.size())
+	var current_distractions: = all_distractions.slice(0, number_of_distractions)
+	
+	stimuli.append_array(current_distractions)
+	distractions = stimuli.duplicate()
 
 
 # Launch the minigame
 func _start() -> void:
 	super()
 	
-	_on_hole_timer_timeout(stimuli[0])
-	audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[0].Phoneme)
+	_on_hole_timer_timeout(stimuli[current_progression % stimuli.size()])
+	audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[current_progression % stimuli.size()].Phoneme)
 	audio_player.play()
 	
 	for i in range(int(3.0 * holes.size() / 4.0)):
-		_on_hole_crab_despawned(distractions[randi() % distractions.size()])
+		_on_hole_crab_despawned(stimuli[randi() % stimuli.size()])
 		
 		await get_tree().create_timer(0.1).timeout
 
@@ -79,14 +85,15 @@ func _start() -> void:
 
 
 func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Node2D) -> void:
-	if stimulus in stimuli:
-		await hole.right()
+	_log_new_response(stimulus, stimuli[current_progression % stimuli.size()])
+	if stimulus == stimuli[current_progression % stimuli.size()]:
+		hole.right()
 		current_progression += 1
 	else:
-		await hole.wrong()
+		audio_player.stream = Database.get_audio_stream_for_phoneme(stimulus.Phoneme)
+		audio_player.play()
+		hole.wrong()
 		current_lives -= 1
-	audio_player.stream = Database.get_audio_stream_for_phoneme(stimulus.Phoneme)
-	audio_player.play()
 
 
 func _on_hole_crab_despawned(stimulus: Dictionary) -> void:
@@ -103,7 +110,7 @@ func _on_hole_timer_timeout(stimulus: Dictionary) -> void:
 	while not hole_found:
 		for i in holes_range:
 			if not holes[i].crab:
-				holes[i].spawn_crab(stimulus)
+				holes[i].spawn_crab(stimuli[randi() % stimuli.size()])
 				hole_found = true
 				
 				break
