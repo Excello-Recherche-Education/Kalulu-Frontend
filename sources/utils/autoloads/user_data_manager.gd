@@ -20,8 +20,6 @@ var student_progression: UserProgression
 
 
 func _ready():
-	student = "titi"
-	
 	load_device_settings()
 	if device_settings.teacher:
 		load_teacher_settings()
