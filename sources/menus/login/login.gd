@@ -11,6 +11,7 @@ const icons_textures = [
 	preload("res://assets/menus/login/symbol05.png"),
 	preload("res://assets/menus/login/symbol06.png")
 ]
+const button_sound := preload("res://assets/menus/login/ui_play_button.mp3")
 const help_speech_path : String = "main_menu/audio/login_screen_help_code.mp3"
 const wrong_password_speech_path : String = "main_menu/audio/login_screen_feedback_wrong_password.mp3"
 const right_password_speech_path : String = "main_menu/audio/login_screen_feedback_right_password.mp3"
@@ -18,16 +19,18 @@ const right_password_speech_path : String = "main_menu/audio/login_screen_feedba
 
 @onready var kalulu: Control = $Kalulu
 @onready var music_player : AudioStreamPlayer = $MusicStreamPlayer
-@onready var buttons: GridContainer = $Buttons
-@onready var icons : HBoxContainer = $Icons
+@onready var device_number_label := $DeviceNumber
+@onready var icons := [%Icon1, %Icon2, %Icon3]
+@onready var keyboard := $CodeKeyboard
 @onready var teacher_timer : Timer = $InterfaceRight/TeacherButton/TeacherTimer
 
 var password : Array = []
 
 func _ready():
-	# Connect buttons
-	for button in buttons.get_children(false):
-		button.connect("pressed", _on_button_pressed.bind(button))
+	
+	if UserDataManager.teacher_settings.type == TeacherSettings.Type.Teacher:
+		device_number_label.show()
+		device_number_label.text += str(UserDataManager.device_settings.device_id)
 	
 	await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(help_speech_path))
 	music_player.play()
@@ -35,27 +38,21 @@ func _ready():
 
 func _reset_password():
 	password = []
-	for button in buttons.get_children(false):
-		button.set_modulate(Color(1,1,1))
-		button.set_disabled(false)
 	
-	for icon in icons.get_children(false):
+	keyboard.reset_buttons()
+	
+	for icon in icons:
 		icon.texture = null
 
 
-func _on_button_pressed(button : TextureButton):
+func _on_code_keyboard_button_pressed(key : String):
 	
-	var index : int = button.name.to_int()
+	var index : int = key.to_int()
 	
-	password.append(button.name)
-	
-	button.set_modulate(Color(0.5,0.5,0.5))
-	button.set_disabled(true)
-	
+	password.append(key)
 	var password_size = password.size()
 	
-	var test = icons.get_node(str(password_size))
-	test.texture = icons_textures[index-1]
+	icons[password_size-1].texture = icons_textures[index-1]
 	
 	if password_size == 3:
 		_check_password()

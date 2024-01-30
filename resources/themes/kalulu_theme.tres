@@ -18,9 +18,17 @@ border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3gh3j"]
-bg_color = Color(0.376471, 0.470588, 0.780392, 1)
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
+bg_color = Color(0.133333, 0.133333, 0.188235, 0.698039)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
 
 [resource]
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_nikxc")
