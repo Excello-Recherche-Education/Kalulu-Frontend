@@ -9,7 +9,7 @@ func _ready():
 	for language_locale in dir.get_directories():
 		add_item(TranslationServer.get_locale_name(language_locale), idx)
 		items.append(language_locale)
-		if language_locale == UserDataManager.device_settings.language:
+		if language_locale == UserDataManager.get_device_settings().language:
 			select(idx)
 		idx+=1
 

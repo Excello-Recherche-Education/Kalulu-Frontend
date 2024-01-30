@@ -13,12 +13,12 @@ const next_scene_path: = "res://sources/menus/login/login.tscn"
 
 func _ready():
 	version_label.text = ProjectSettings.get_setting("application/config/version")
-	teacher_label.text = UserDataManager.device_settings.teacher
-	device_id_label.text = str(UserDataManager.device_settings.device_id)
+	teacher_label.text = UserDataManager.get_device_settings().teacher
+	device_id_label.text = str(UserDataManager.get_device_settings().device_id)
 
 
 func _on_main_button_pressed():
-	if UserDataManager.device_settings.teacher:
+	if UserDataManager.get_device_settings().teacher:
 		get_tree().change_scene_to_file(next_scene_path)
 	else:
 		kalulu.hide()

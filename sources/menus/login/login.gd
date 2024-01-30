@@ -30,7 +30,7 @@ func _ready():
 	
 	if UserDataManager.teacher_settings.type == TeacherSettings.Type.Teacher:
 		device_number_label.show()
-		device_number_label.text += str(UserDataManager.device_settings.device_id)
+		device_number_label.text += str(UserDataManager.get_device_settings().device_id)
 	
 	await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(help_speech_path))
 	music_player.play()

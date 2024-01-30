@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="4_3vuah"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="5_j0bnd"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="5_vd33f"]
-[ext_resource type="PackedScene" path="res://sources/menus/code_keyboard.tscn" id="5_xwrca"]
+[ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/code_keyboard.tscn" id="5_xwrca"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_0dhup"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="7_2wdoi"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="8_nxlxw"]
@@ -43,6 +43,7 @@ offset_top = 100.0
 offset_right = 158.5
 offset_bottom = 176.0
 grow_horizontal = 2
+theme_override_font_sizes/font_size = 70
 text = "DEVICE n°"
 
 [node name="Icons" type="HBoxContainer" parent="."]

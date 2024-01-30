@@ -153,6 +153,7 @@ anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.168
 grow_horizontal = 2
+theme_override_font_sizes/font_size = 70
 text = "Sign-in teacher account
 "
 metadata/_edit_use_anchors_ = true
@@ -165,6 +166,7 @@ anchor_right = 1.0
 anchor_bottom = 0.584
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_font_sizes/font_size = 70
 text = "Sign-in parent account
 "
 metadata/_edit_use_anchors_ = true
@@ -177,6 +179,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_font_sizes/font_size = 70
 text = "Create an account"
 metadata/_edit_use_anchors_ = true
 
@@ -241,6 +244,7 @@ layout_mode = 0
 offset_top = -80.0
 offset_right = 412.0
 theme = ExtResource("15_pcmnw")
+theme_override_font_sizes/font_size = 70
 text = "Login"
 
 [node name="PasswordField" type="LineEdit" parent="Login/Form"]
@@ -248,8 +252,7 @@ layout_mode = 1
 offset_top = 223.0
 offset_right = 800.0
 offset_bottom = 336.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 70
 placeholder_text = "Password"
 secret = true
 
@@ -262,6 +265,7 @@ offset_left = -400.0
 offset_top = 80.0
 offset_bottom = 193.0
 grow_horizontal = 0
+theme = ExtResource("15_pcmnw")
 min_value = 1.0
 max_value = 6.0
 value = 1.0
@@ -271,6 +275,7 @@ rounded = true
 layout_mode = 1
 offset_top = -80.0
 offset_right = 412.0
+theme_override_font_sizes/font_size = 70
 text = "Tablet number"
 
 [node name="LanguageField" type="OptionButton" parent="Login/Form"]
@@ -278,6 +283,7 @@ layout_mode = 0
 offset_top = 356.0
 offset_right = 800.0
 offset_bottom = 469.0
+theme_override_font_sizes/font_size = 70
 script = ExtResource("13_rs3hd")
 
 [node name="ValidateButton" type="TextureButton" parent="Login/Form"]
