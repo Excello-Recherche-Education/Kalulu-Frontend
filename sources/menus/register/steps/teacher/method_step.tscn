@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://buhnx0oblueuq"]
+
+[ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_ksrhk"]
+
+[node name="MethodStep" instance=ExtResource("1_ksrhk")]
+question_txt = "Choose the education method you are using"
+
+[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
+text = "Choose the education method you are using"
+
+[node name="method" type="ItemList" parent="FormContainer" index="0"]
+layout_mode = 2
+theme_override_constants/h_separation = 25
+theme_override_constants/v_separation = 25
+theme_override_font_sizes/font_size = 70
+auto_height = true
+item_count = 2
+item_0/text = "Complete"
+item_1/text = "App Only"

@@ -1,0 +1,75 @@
+[gd_scene load_steps=7 format=3 uid="uid://b7cfjs2iipagq"]
+
+[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="1_g16n6"]
+[ext_resource type="Script" path="res://sources/menus/register/register_screen.gd" id="1_the3k"]
+[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="2_ufjlu"]
+[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="3_svtfb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rcyk"]
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhfkq"]
+bg_color = Color(0, 0.607843, 0.831373, 1)
+
+[node name="RegisterScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_the3k")
+
+[node name="ProgressBarContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 256.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 231
+theme_override_constants/margin_bottom = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ProgressBarContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="BackButton" type="TextureButton" parent="ProgressBarContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(156, 156)
+layout_mode = 2
+size_flags_horizontal = 0
+texture_normal = ExtResource("1_g16n6")
+texture_pressed = ExtResource("2_ufjlu")
+texture_disabled = ExtResource("3_svtfb")
+stretch_mode = 5
+
+[node name="ProgressBar" type="ProgressBar" parent="ProgressBarContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_styles/background = SubResource("StyleBoxFlat_0rcyk")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bhfkq")
+step = 1.0
+value = 50.0
+
+[node name="Steps" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_top = 0.142222
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="ProgressBarContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

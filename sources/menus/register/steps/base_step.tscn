@@ -1,0 +1,101 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxd3i06rqpxf0"]
+
+[ext_resource type="Script" path="res://sources/menus/register/steps/base_step.gd" id="1_02ocl"]
+[ext_resource type="Script" path="res://addons/godot-form-validator/form_validator.gd" id="2_jbdsv"]
+
+[node name="BaseRegisterForm" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_02ocl")
+
+[node name="RightMargin" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(450, 2.08165e-12)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -450.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="RightContainer" type="VBoxContainer" parent="RightMargin"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="ValidateButton" type="Button" parent="RightMargin/RightContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Next"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -775.0
+offset_right = 775.0
+offset_bottom = 502.0
+grow_horizontal = 2
+
+[node name="QuestionContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="QuestionLabel" type="Label" parent="PanelContainer/QuestionContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1500, 500)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 70
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="FormValidator" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("2_jbdsv")
+auto_validate = true
+
+[node name="FormContainer" type="VBoxContainer" parent="FormValidator"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1624, 812)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -812.0
+offset_top = -812.0
+offset_right = 812.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 25
+alignment = 1
+
+[connection signal="pressed" from="RightMargin/RightContainer/ValidateButton" to="." method="_on_validate_button_pressed"]
