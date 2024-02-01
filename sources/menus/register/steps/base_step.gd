@@ -4,65 +4,40 @@ class_name Step
 
 signal completed
 
-const checked_properties := [
-	"value",
-	"text"
-]
-
 @onready var question_label : Label = %QuestionLabel
 @onready var form_validator : FormValidator = %FormValidator
+@onready var form_binder : FormBinder = %FormBinder
 @onready var form_container : Control = %FormContainer
 
-@export var question_txt : String
-@export var object : Resource
+@export var data : Resource
 
 func _ready():
-	if question_txt:
-		question_label.text = question_txt
-	
-	_fill_form()
+	form_binder.read(data)
 
 
-func _fill_form():
-	if not object:
+func _on_form_validator_control_validated(control, passed, messages):
+	var label = find_child(control.name + "Error", true, false) as Label
+	if not label:
 		return
 	
-	for node in form_container.get_children(false):
-		if node.name in object:
-			for property_name in checked_properties:
-				if property_name in node:
-					node.set(property_name, object.get(node.name))
-		else:
-			push_warning("Property not found in object for node: " + node.name + ". All nodes inside FormContainer must reflects a property from the resource.")
-
-
-func _write_object() -> bool:
-	if not object:
-		return false
-	
-	for node in form_container.get_children(false):
-		var value
-		if node.name in object:
-			for property_name in checked_properties:
-				if property_name in node:
-					value = node.get(property_name)
-			
-			if value:
-				object.set(node.name, value)
-			else:
-				return false
-			
-	return true
+	if passed:
+		label.hide()
+	else:
+		label.text = ". ".join(messages)
+		label.show()
 
 
 func _on_validate_button_pressed():
-	
-	print(form_validator.validate())
+	# Validate the fields
+	if not form_validator.validate():
+		push_warning("Validation failed (" + str(self) + ")")
+		return
 	
 	# Writes data in object
-	if _write_object():
-		# Emit completed signal
-		emit_signal("completed")
-	else:
-		# TODO Show error message
-		print("Please fill all the fields")
+	if not form_binder.write():
+		push_warning("Impossible to write data in object (" + str(self) + ")")
+		return
+	
+	# Emit completed signal
+	emit_signal("completed")
+
