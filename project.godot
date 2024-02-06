@@ -29,7 +29,6 @@ LessonLogger="*res://sources/utils/autoloads/lesson_logger.gd"
 Database="*res://sources/utils/autoloads/Database.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
-LessonLogger="*res://sources/utils/autoloads/lesson_logger.gd"
 Validation="*res://addons/godot-form-validator/validation.gd"
 
 [display]

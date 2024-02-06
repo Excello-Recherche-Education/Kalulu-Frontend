@@ -1,6 +1,7 @@
 extends Control
 
-const next_scene_path: = "res://sources/menus/login/login.tscn"
+const next_scene_path := "res://sources/menus/login/login.tscn"
+const register_scene_path := "res://sources/menus/register/register.tscn"
 
 @onready var version_label : Label = $Informations/BuildVersionValue
 @onready var teacher_label : Label = $Informations/TeacherValue
@@ -39,3 +40,7 @@ func _on_back_button_pressed():
 
 func _on_login_in():
 	get_tree().change_scene_to_file(next_scene_path)
+
+
+func _on_register_pressed():
+	get_tree().change_scene_to_file(register_scene_path)

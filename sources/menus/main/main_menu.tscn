@@ -171,7 +171,7 @@ text = "Sign-in parent account
 "
 metadata/_edit_use_anchors_ = true
 
-[node name="CreateAccount" type="Button" parent="UserSelection/Form"]
+[node name="Register" type="Button" parent="UserSelection/Form"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.832
@@ -397,6 +397,7 @@ vertical_alignment = 1
 
 [connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
 [connection signal="pressed" from="UserSelection/Form/SignInTeacher" to="." method="_on_sign_in_teacher_pressed"]
+[connection signal="pressed" from="UserSelection/Form/Register" to="." method="_on_register_pressed"]
 [connection signal="logged_in" from="Login" to="." method="_on_login_in"]
 [connection signal="pressed" from="Login/InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Login/Form/ValidateButton" to="Login" method="_on_validate_button_pressed"]

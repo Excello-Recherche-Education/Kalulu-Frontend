@@ -15,11 +15,15 @@ extends Control
 
 var current_steps : Array[Step]
 
+@onready var kalulu := %Kalulu
 @onready var register_data := UserSettings.new() # TODO Change the resource
 @onready var progress_bar := %ProgressBar
 @onready var steps := %Steps
 
 func _ready():
+	
+	kalulu.play("Tc_Idle1")
+	
 	current_steps = [account_type_step.instantiate()]
 	_go_to_step(progress_bar.value)
 
@@ -99,9 +103,8 @@ func _on_step_completed(step : Step, values : Dictionary):
 
 func _remove_future_steps():
 	# Free memory
-	for i in current_steps.size():
-		if i > progress_bar.value:
-			current_steps[i].queue_free()
+	for i in range(progress_bar.value + 1, current_steps.size(), 1):
+		current_steps[i].queue_free()
 	
 	# Resize the array to remove unwanted steps
 	current_steps.resize(progress_bar.value + 1)

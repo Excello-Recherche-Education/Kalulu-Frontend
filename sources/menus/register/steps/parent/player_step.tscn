@@ -18,11 +18,10 @@ skip_validation = false
 rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.gd")]([SubResource("Resource_kw8sn")])
 
 [node name="PlayerStep" instance=ExtResource("1_ggdon")]
-step_name = ""
 question = "Enter the informations of player %d"
 
 [node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
-text = "Enter the informations of student %d"
+text = "Enter the informations of player %d"
 
 [node name="LevelContainer" type="VBoxContainer" parent="FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
