@@ -26,7 +26,6 @@ func _ready():
 
 
 func login(language : String, teacher : String, password : String, device_id : int) -> bool:
-	
 	if teacher not in DeviceSettings.possible_logins or password != DeviceSettings.possible_logins[teacher]:
 		return false
 	
@@ -34,7 +33,8 @@ func login(language : String, teacher : String, password : String, device_id : i
 		return false
 	
 	# Handles device settings
-	_device_settings.language = language
+	if _device_settings.language != language:
+		_device_settings.language = language
 	_device_settings.teacher = teacher
 	_device_settings.device_id = device_id
 	_save_device_settings()
@@ -69,6 +69,7 @@ func _load_device_settings() -> void:
 		_device_settings = load(get_device_settings_path())
 	if not _device_settings:
 		_device_settings = DeviceSettings.new()
+		_device_settings.init_OS_language()
 		_save_device_settings()
 
 

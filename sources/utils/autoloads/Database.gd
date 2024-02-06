@@ -35,8 +35,8 @@ var words_path: = base_path + language + "/words/"
 
 
 func _ready() -> void:
-	language = UserDataManager.get_device_settings().language
-	db_path = db_path
+	pass
+	# db_path = db_path
 	#_import_words_csv()
 	#_import_look_and_learn_data()
 

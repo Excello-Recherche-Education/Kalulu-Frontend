@@ -17,7 +17,7 @@ const possible_logins: = {
 @export var device_id : int
 
 
-func _init():
+func init_OS_language() -> void:
 	# Gets the OS language and checks if it is supported
 	var osLanguage = OS.get_locale_language();
 	if osLanguage and osLanguage in DirAccess.open("res://language_resources").get_directories():
