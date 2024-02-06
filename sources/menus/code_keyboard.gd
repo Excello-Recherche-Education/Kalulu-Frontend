@@ -7,7 +7,7 @@ signal button_pressed
 
 func _ready():
 	for button in buttons.get_children(false):
-		button.connect("pressed", _on_button_pressed.bind(button))
+		button.pressed.connect(_on_button_pressed.bind(button))
 
 func _on_button_pressed(button : TextureButton):
 	sound_player.play()
