@@ -2,19 +2,23 @@
 extends Control
 class_name Step
 
-signal completed
+signal completed(step : Step, values : Dictionary)
 
 @onready var question_label : Label = %QuestionLabel
 @onready var form_validator : FormValidator = %FormValidator
 @onready var form_binder : FormBinder = %FormBinder
 @onready var form_container : Control = %FormContainer
 
+@export var step_name : String
+@export_multiline var question : String
 @export var data : Resource
 
 func _ready():
 	form_binder.read(data)
+	question_label.text = question
 
 
+# Display error messages
 func _on_form_validator_control_validated(control, passed, messages):
 	var label = find_child(control.name + "Error", true, false) as Label
 	if not label:
@@ -30,6 +34,8 @@ func _on_form_validator_control_validated(control, passed, messages):
 func _on_validate_button_pressed():
 	# Validate the fields
 	if not form_validator.validate():
+		print(form_validator._control_validator_map)
+		print(form_validator.get_messages())
 		push_warning("Validation failed (" + str(self) + ")")
 		return
 	
@@ -39,5 +45,5 @@ func _on_validate_button_pressed():
 		return
 	
 	# Emit completed signal
-	emit_signal("completed")
+	emit_signal("completed", self, form_binder.values_changed)
 

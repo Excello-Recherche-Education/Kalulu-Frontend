@@ -3,6 +3,8 @@ extends Control
 class_name FormBinder
 
 @export var data : Resource
+
+var values_changed: Dictionary = {}
 var _control_binder_map: Dictionary = {}
 
 func _ready():
@@ -45,7 +47,7 @@ func write() -> bool:
 	
 	for control in _control_binder_map.keys():
 		var binder = _control_binder_map[control]
-		
+		values_changed[binder.property_name] = binder.get_value()
 		if binder.property_name in data:
 			data.set(binder.property_name, binder.get_value())
 		else:

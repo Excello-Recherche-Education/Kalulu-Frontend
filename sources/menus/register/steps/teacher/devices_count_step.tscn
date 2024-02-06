@@ -4,9 +4,8 @@
 [ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="2_asuou"]
 
 [node name="DevicesCountStep" instance=ExtResource("1_w3urq")]
-
-[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
-text = "Choose the number of devices you are using"
+step_name = "devices"
+question = "Choose the number of devices"
 
 [node name="DevicesCountField" type="SpinBox" parent="FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2

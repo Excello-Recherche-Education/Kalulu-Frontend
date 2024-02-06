@@ -12,6 +12,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_02ocl")
+step_name = null
+question = null
 
 [node name="RightMargin" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(450, 2.08165e-12)
@@ -83,7 +85,14 @@ script = ExtResource("2_nw61e")
 
 [node name="FormBinder" type="Control" parent="FormValidator"]
 unique_name_in_owner = true
-anchors_preset = 0
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
 script = ExtResource("3_mk32l")
 
 [node name="FormContainer" type="VBoxContainer" parent="FormValidator/FormBinder"]

@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://irtjwltfbatm"]
+
+[ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_nli7s"]
+[ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="2_u3nk8"]
+
+[node name="PlayersCountStep" instance=ExtResource("1_nli7s")]
+step_name = "players"
+question = "Choose the number of players"
+
+[node name="PlayersCountField" type="SpinBox" parent="FormValidator/FormBinder/FormContainer" index="0"]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/FormContainer/PlayersCountField" index="2"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_u3nk8")
+property_name = "students_count"

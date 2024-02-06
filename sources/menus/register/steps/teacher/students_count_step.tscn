@@ -6,9 +6,8 @@
 
 [node name="StudentsCountStep" instance=ExtResource("1_par6r")]
 script = ExtResource("2_susi5")
-
-[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
-text = "Choose the total number of students"
+step_name = "students"
+question = "Choose the number of students on device %d"
 
 [node name="StudentsCountField" type="SpinBox" parent="FormValidator/FormBinder/FormContainer" index="0"]
 unique_name_in_owner = true
