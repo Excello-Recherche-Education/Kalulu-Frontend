@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bcoalg24yap4x"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://cj241oskmxqgv"]
 
 [ext_resource type="Shader" path="res://sources/minigames/frog/flood.gdshader" id="1_obtft"]
 

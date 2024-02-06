@@ -49,8 +49,8 @@ func _setup_minigame() -> void:
 			game_root.add_child(hole)
 			hole.position = Vector2(x, y)
 			
-			hole.connect("stimulus_hit", _on_hole_stimulus_hit.bind(hole))
-			hole.connect("crab_despawned", _on_hole_crab_despawned)
+			hole.stimulus_hit.connect(_on_hole_stimulus_hit.bind(hole))
+			hole.crab_despawned.connect(_on_hole_crab_despawned)
 			
 			holes.append(hole)
 

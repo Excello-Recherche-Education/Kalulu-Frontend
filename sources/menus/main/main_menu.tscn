@@ -1,0 +1,402 @@
+[gd_scene load_steps=20 format=3 uid="uid://6v3nachs7j71"]
+
+[ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_afd4d"]
+[ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_77rmy"]
+[ext_resource type="PackedScene" uid="uid://dp4182l80ntvn" path="res://sources/menus/main/plants/flower.tscn" id="4_cdedv"]
+[ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="4_onj68"]
+[ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="6_bi65i"]
+[ext_resource type="Texture2D" uid="uid://cgrl5x2iqbiwg" path="res://assets/menus/main/title.png" id="7_ftt26"]
+[ext_resource type="Texture2D" uid="uid://cgwun1jhj53bi" path="res://assets/menus/main/play_button.png" id="7_lr7j4"]
+[ext_resource type="Script" path="res://sources/menus/main/kalulu.gd" id="8_cxg8l"]
+[ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="10_icqmp"]
+[ext_resource type="Script" path="res://sources/menus/main/login.gd" id="12_6bu7q"]
+[ext_resource type="Texture2D" uid="uid://bsojx7tmm435x" path="res://assets/minigames/minigame_ui/graphic/button_next_up.png" id="12_km7h0"]
+[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="13_j3nb7"]
+[ext_resource type="Texture2D" uid="uid://brrxuaco0l85j" path="res://assets/minigames/minigame_ui/graphic/button_next_down.png" id="13_oqjai"]
+[ext_resource type="Script" path="res://sources/menus/main/language_field.gd" id="13_rs3hd"]
+[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="14_3lr3g"]
+[ext_resource type="Texture2D" uid="uid://bsmq426v8148w" path="res://assets/minigames/minigame_ui/graphic/button_next_disabled.png" id="14_11c6x"]
+[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="15_pcmnw"]
+[ext_resource type="Texture2D" uid="uid://bbip3wpyidt1q" path="res://assets/menus/main/play_button_mask.png" id="20_oqrk5"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0r1ij")
+
+[node name="Background" parent="." instance=ExtResource("1_afd4d")]
+layout_mode = 1
+
+[node name="Plants" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PalmTop" parent="Plants" instance=ExtResource("3_77rmy")]
+position = Vector2(500, 1096)
+scale = Vector2(2, 2)
+
+[node name="PalmBottom" parent="Plants" instance=ExtResource("3_77rmy")]
+light_mask = 0
+position = Vector2(1620, 1800)
+scale = Vector2(2, 2)
+
+[node name="Bush" parent="Plants" instance=ExtResource("4_onj68")]
+position = Vector2(730, 1824)
+scale = Vector2(2, 2)
+
+[node name="Flower" parent="Plants" instance=ExtResource("4_cdedv")]
+position = Vector2(330, 1800)
+scale = Vector2(2, 2)
+
+[node name="LargeFlower" parent="Plants" instance=ExtResource("6_bi65i")]
+position = Vector2(2000, 1875)
+scale = Vector2(2, 2)
+
+[node name="Kalulu" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_cxg8l")
+
+[node name="Title" type="TextureRect" parent="Kalulu"]
+layout_mode = 2
+offset_left = -324.0
+offset_top = -644.0
+offset_right = 323.0
+offset_bottom = -472.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("7_ftt26")
+
+[node name="Background" type="TextureRect" parent="Kalulu"]
+custom_minimum_size = Vector2(868, 868)
+layout_mode = 2
+offset_left = -434.0
+offset_top = -250.0
+offset_right = 434.0
+offset_bottom = 618.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture = ExtResource("7_lr7j4")
+
+[node name="Sprite" parent="Kalulu" instance=ExtResource("10_icqmp")]
+position = Vector2(0, -6.10352e-05)
+scale = Vector2(2, 2)
+animation = &"Tc_Idle1"
+
+[node name="Light" type="PointLight2D" parent="Kalulu"]
+position = Vector2(-5, 377)
+scale = Vector2(2.26133, 2.05467)
+energy = 1.15
+blend_mode = 2
+range_item_cull_mask = 2
+texture = ExtResource("20_oqrk5")
+
+[node name="PlayButton" type="Button" parent="Kalulu"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1280.0
+offset_top = -904.0
+offset_right = 1280.0
+offset_bottom = 904.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SpeechPlayer" type="AudioStreamPlayer" parent="Kalulu"]
+
+[node name="UserSelection" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Form" type="Control" parent="UserSelection"]
+custom_minimum_size = Vector2(850, 300)
+layout_mode = 1
+anchor_left = 0.333984
+anchor_top = 0.416667
+anchor_right = 0.666016
+anchor_bottom = 0.583333
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SignInTeacher" type="Button" parent="UserSelection/Form"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.168
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 70
+text = "Sign-in teacher account
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="SignInParent" type="Button" parent="UserSelection/Form"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.416
+anchor_right = 1.0
+anchor_bottom = 0.584
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 70
+text = "Sign-in parent account
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="CreateAccount" type="Button" parent="UserSelection/Form"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.832
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 70
+text = "Create an account"
+metadata/_edit_use_anchors_ = true
+
+[node name="Login" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("12_6bu7q")
+
+[node name="InterfaceLeft" type="MarginContainer" parent="Login"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 450.0
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Container" type="VBoxContainer" parent="Login/InterfaceLeft"]
+layout_mode = 2
+
+[node name="BackButton" type="TextureButton" parent="Login/InterfaceLeft/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("13_j3nb7")
+texture_pressed = ExtResource("14_3lr3g")
+stretch_mode = 4
+
+[node name="Form" type="Control" parent="Login"]
+custom_minimum_size = Vector2(1350, 620)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -675.0
+offset_top = -310.0
+offset_right = 675.0
+offset_bottom = 310.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EmailField" type="LineEdit" parent="Login/Form"]
+layout_mode = 1
+offset_top = 80.0
+offset_right = 800.0
+offset_bottom = 193.0
+theme_type_variation = &"1"
+theme_override_font_sizes/font_size = 70
+placeholder_text = "Email"
+
+[node name="Label" type="Label" parent="Login/Form/EmailField"]
+layout_mode = 0
+offset_top = -80.0
+offset_right = 412.0
+theme = ExtResource("15_pcmnw")
+theme_override_font_sizes/font_size = 70
+text = "Login"
+
+[node name="PasswordField" type="LineEdit" parent="Login/Form"]
+layout_mode = 1
+offset_top = 223.0
+offset_right = 800.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 70
+placeholder_text = "Password"
+secret = true
+
+[node name="DeviceIDField" type="SpinBox" parent="Login/Form"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_top = 80.0
+offset_bottom = 193.0
+grow_horizontal = 0
+theme = ExtResource("15_pcmnw")
+min_value = 1.0
+max_value = 6.0
+value = 1.0
+rounded = true
+
+[node name="Label" type="Label" parent="Login/Form/DeviceIDField"]
+layout_mode = 1
+offset_top = -80.0
+offset_right = 412.0
+theme_override_font_sizes/font_size = 70
+text = "Tablet number"
+
+[node name="LanguageField" type="OptionButton" parent="Login/Form"]
+layout_mode = 0
+offset_top = 356.0
+offset_right = 800.0
+offset_bottom = 469.0
+theme_override_font_sizes/font_size = 70
+script = ExtResource("13_rs3hd")
+
+[node name="ValidateButton" type="TextureButton" parent="Login/Form"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -321.0
+offset_top = -310.0
+offset_right = -181.0
+offset_bottom = -170.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("12_km7h0")
+texture_pressed = ExtResource("13_oqjai")
+texture_disabled = ExtResource("14_11c6x")
+
+[node name="FieldMissingError" type="Label" parent="Login/Form"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -76.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Please fill all the fields"
+
+[node name="LoginError" type="Label" parent="Login/Form"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -76.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Invalid username or password"
+
+[node name="Informations" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -176.0
+offset_right = 624.0
+grow_vertical = 0
+
+[node name="BuildVersionTitle" type="Label" parent="Informations"]
+layout_mode = 2
+offset_left = 10.0
+offset_right = 261.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 30
+text = "Build Version :"
+vertical_alignment = 1
+
+[node name="BuildVersionValue" type="Label" parent="Informations"]
+layout_mode = 1
+offset_left = 250.0
+offset_right = 400.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 30
+text = "?"
+vertical_alignment = 1
+
+[node name="TeacherTitle" type="Label" parent="Informations"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 56.0
+offset_right = 261.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 30
+text = "Logged as :"
+vertical_alignment = 1
+
+[node name="TeacherValue" type="Label" parent="Informations"]
+layout_mode = 1
+offset_left = 250.0
+offset_top = 56.0
+offset_right = 500.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 30
+text = "?"
+vertical_alignment = 1
+
+[node name="DeviceIDTitle" type="Label" parent="Informations"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 112.0
+offset_right = 261.0
+offset_bottom = 168.0
+theme_override_font_sizes/font_size = 30
+text = "Device Id :"
+vertical_alignment = 1
+
+[node name="DeviceIDValue" type="Label" parent="Informations"]
+layout_mode = 1
+offset_left = 250.0
+offset_top = 112.0
+offset_right = 400.0
+offset_bottom = 168.0
+theme_override_font_sizes/font_size = 30
+text = "?"
+vertical_alignment = 1
+
+[connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
+[connection signal="pressed" from="UserSelection/Form/SignInTeacher" to="." method="_on_sign_in_teacher_pressed"]
+[connection signal="logged_in" from="Login" to="." method="_on_login_in"]
+[connection signal="pressed" from="Login/InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Login/Form/ValidateButton" to="Login" method="_on_validate_button_pressed"]

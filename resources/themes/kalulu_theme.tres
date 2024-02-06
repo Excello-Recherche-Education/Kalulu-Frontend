@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://dqjvrt5nrtwn1"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dqjvrt5nrtwn1"]
 
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
+[ext_resource type="FontFile" uid="uid://b74ghiuvt8u45" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_shpmh"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="2_hbp6q"]
 [ext_resource type="Texture2D" uid="uid://cacy10k45kq6u" path="res://assets/theme/up.svg" id="3_1nwm4"]
 [ext_resource type="Texture2D" uid="uid://b7fqrj816kdjg" path="res://assets/theme/refresh.svg" id="4_ymfot"]
@@ -17,27 +18,56 @@ border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3gh3j"]
-bg_color = Color(0.376471, 0.470588, 0.780392, 1)
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
+bg_color = Color(0.133333, 0.133333, 0.188235, 0.698039)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
 
 [resource]
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_nikxc")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/outline_size = 1
 Button/font_sizes/font_size = 32
+Button/fonts/font = ExtResource("1_shpmh")
 FileDialog/icons/back_folder = ExtResource("1_mdn6k")
 FileDialog/icons/forward_folder = ExtResource("2_hbp6q")
 FileDialog/icons/parent_folder = ExtResource("3_1nwm4")
 FileDialog/icons/reload = ExtResource("4_ymfot")
 FileDialog/icons/toggle_hidden = ExtResource("5_yja2v")
 Label/font_sizes/font_size = 42
+Label/fonts/font = ExtResource("1_shpmh")
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/colors/font_outline_color = Color(0, 0, 0, 1)
+LineEdit/colors/font_placeholder_color = Color(1, 1, 1, 0.6)
 LineEdit/constants/caret_width = 4
+LineEdit/constants/outline_size = 1
 LineEdit/font_sizes/font_size = 32
+LineEdit/fonts/font = ExtResource("1_shpmh")
 MenuBar/font_sizes/font_size = 32
 MenuButton/font_sizes/font_size = 32
+OptionButton/colors/font_color = Color(1, 1, 1, 1)
+OptionButton/colors/font_outline_color = Color(0, 0, 0, 1)
+OptionButton/constants/arrow_margin = 20
+OptionButton/constants/modulate_arrow = 1
+OptionButton/constants/outline_size = 1
 OptionButton/font_sizes/font_size = 32
+OptionButton/fonts/font = ExtResource("1_shpmh")
 Panel/styles/panel = SubResource("StyleBoxFlat_sfncn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_3gh3j")
+PopupMenu/colors/font_color = Color(1, 1, 1, 1)
+PopupMenu/colors/font_outline_color = Color(0, 0, 0, 1)
+PopupMenu/constants/outline_size = 1
 PopupMenu/font_sizes/font_size = 100
+PopupMenu/fonts/font = ExtResource("1_shpmh")
+PopupMenu/fonts/font_separator = ExtResource("1_shpmh")
 TextEdit/font_sizes/font_size = 32
 TooltipLabel/font_sizes/font_size = 80
 Tree/font_sizes/font_size = 32

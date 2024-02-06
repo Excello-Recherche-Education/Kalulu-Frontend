@@ -9,7 +9,6 @@ const _symbols_to_string = {
 	"§" : "para"
 }
 const base_path: =  "res://language_resources/"
-
 const look_and_learn_images: = "/look_and_learn/images/"
 const look_and_learn_sounds: = "/look_and_learn/sounds/"
 const look_and_learn_videos: = "/look_and_learn/video/"
@@ -17,7 +16,7 @@ const video_extension: = ".ogv"
 const image_extension: = ".png"
 const sound_extension: = ".mp3"
 
-var language: = "french":
+var language: String:
 	set(value):
 		language = value
 		db_path = base_path + language + "/language.db"
@@ -36,7 +35,8 @@ var words_path: = base_path + language + "/words/"
 
 
 func _ready() -> void:
-	db_path = db_path
+	pass
+	# db_path = db_path
 	#_import_words_csv()
 	#_import_look_and_learn_data()
 
@@ -136,6 +136,8 @@ func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
 	AND Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
 	return db.query_result
 
+func get_audio_stream_for_path(path: String) -> AudioStream:
+	return load(base_path + language + "/" + path)
 
 func get_min_lesson_for_gp_id(gp_id: int) -> int:
 	db.query_with_bindings("SELECT Lessons.LessonNb as i FROM Lessons

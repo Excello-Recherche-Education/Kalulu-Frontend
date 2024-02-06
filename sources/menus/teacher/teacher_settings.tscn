@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://ci7ueo06f24k3"]
+
+[ext_resource type="Script" path="res://sources/menus/teacher/teacher_settings.gd" id="1_ojivk"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_v06h8"]
+[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="3_hvu1i"]
+[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_045cm"]
+[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_e3piv"]
+
+[node name="TeacherSettings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ojivk")
+
+[node name="Background" parent="." instance=ExtResource("1_v06h8")]
+layout_mode = 1
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Print teacher settings"
+
+[node name="InterfaceLeft" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Container" type="VBoxContainer" parent="InterfaceLeft"]
+layout_mode = 2
+
+[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+texture_normal = ExtResource("3_hvu1i")
+texture_pressed = ExtResource("4_045cm")
+texture_disabled = ExtResource("5_e3piv")
+stretch_mode = 4
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]

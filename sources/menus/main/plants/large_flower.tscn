@@ -1,0 +1,164 @@
+[gd_scene load_steps=6 format=3 uid="uid://nwur175781jf"]
+
+[ext_resource type="Texture2D" uid="uid://bprn8svgct15r" path="res://assets/menus/main/plants/large_flower_petal.png" id="1_5q7s4"]
+[ext_resource type="Texture2D" uid="uid://b6l305fj6ynnv" path="res://assets/menus/main/plants/large_flower_body.png" id="2_mfmfc"]
+
+[sub_resource type="Animation" id="Animation_8h6yt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Petals/LeftPivot60:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.0472]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Petals/RightPivot60:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0472]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Petals/LeftPivot30:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.523599]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Petals/RightPivot30:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.523599]
+}
+
+[sub_resource type="Animation" id="Animation_wj5s5"]
+resource_name = "Spread"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Petals/LeftPivot60:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [-1.22173, -1.0472, -0.785398, -1.0472, -1.22173]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Petals/RightPivot60:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.22173, 1.0472, 0.785398, 1.0472, 1.22173]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Petals/LeftPivot30:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.523599, -0.349066, -0.523599]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Petals/RightPivot30:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.523599, 0.349066, 0.523599]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_47w0h"]
+_data = {
+"RESET": SubResource("Animation_8h6yt"),
+"Spread": SubResource("Animation_wj5s5")
+}
+
+[node name="LargeFlower" type="Node2D"]
+
+[node name="Petals" type="Node2D" parent="."]
+
+[node name="LeftPivot60" type="Node2D" parent="Petals"]
+position = Vector2(0, -520)
+rotation = -1.0472
+
+[node name="Petal" type="Sprite2D" parent="Petals/LeftPivot60"]
+position = Vector2(0, -120)
+texture = ExtResource("1_5q7s4")
+
+[node name="LeftPivot30" type="Node2D" parent="Petals"]
+position = Vector2(0, -520)
+rotation = -0.523599
+
+[node name="Petal" type="Sprite2D" parent="Petals/LeftPivot30"]
+position = Vector2(0, -120)
+texture = ExtResource("1_5q7s4")
+
+[node name="RightPivot60" type="Node2D" parent="Petals"]
+position = Vector2(0, -520)
+rotation = 1.0472
+
+[node name="Petal" type="Sprite2D" parent="Petals/RightPivot60"]
+position = Vector2(0, -120)
+texture = ExtResource("1_5q7s4")
+
+[node name="RightPivot30" type="Node2D" parent="Petals"]
+position = Vector2(0, -520)
+rotation = 0.523599
+
+[node name="Petal" type="Sprite2D" parent="Petals/RightPivot30"]
+position = Vector2(0, -120)
+texture = ExtResource("1_5q7s4")
+
+[node name="Center" type="Sprite2D" parent="Petals"]
+position = Vector2(0, -640)
+texture = ExtResource("1_5q7s4")
+
+[node name="Body" type="Sprite2D" parent="."]
+position = Vector2(0, -336)
+texture = ExtResource("2_mfmfc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_47w0h")
+}
+autoplay = "Spread"
