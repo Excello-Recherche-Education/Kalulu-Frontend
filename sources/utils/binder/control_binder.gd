@@ -30,13 +30,16 @@ func get_value():
 
 
 func set_value(value):
-	
-	print("Writing " + str(value) + " in " + str(self.owner))
-	
 	if not control:
 		return
 		
 	if control is Range:
-		control.value = float(value)
+		if value is float:
+			control.value = value
+		elif value is int:
+			control.value = float(value)
 	elif control is LineEdit or control is TextEdit:
 		control.text = str(value)
+	elif control is ItemList:
+		if value is int:
+			control.select(value, true)

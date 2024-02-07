@@ -4,7 +4,6 @@ class_name FormBinder
 
 @export var data : Resource
 
-var values_changed: Dictionary = {}
 var _control_binder_map: Dictionary = {}
 
 func _ready():
@@ -33,10 +32,8 @@ func read(resource : Resource) -> void:
 		
 		if binder.property_name in data:
 			var property_value = data.get(binder.property_name)
-			if typeof(property_value) == typeof(binder.get_value()):
-				binder.set_value(property_value)
-			else:
-				push_warning("Property typing and control doesn't match for property '" + binder.property_name + "' (" + str(binder.control) + ")")
+			binder.set_value(property_value)
+			#push_warning("Property typing and control doesn't match for property '" + binder.property_name + "' (" + str(property_value) + ") and " + str(binder.control))
 		else:
 			push_warning("Property " + binder.property_name + " not found in " + data.get_class())
 
@@ -47,7 +44,6 @@ func write() -> bool:
 	
 	for control in _control_binder_map.keys():
 		var binder = _control_binder_map[control]
-		values_changed[binder.property_name] = binder.get_value()
 		if binder.property_name in data:
 			data.set(binder.property_name, binder.get_value())
 		else:

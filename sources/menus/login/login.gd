@@ -28,7 +28,7 @@ var password : Array = []
 
 func _ready():
 	
-	if UserDataManager.teacher_settings.type == TeacherSettings.Type.Teacher:
+	if UserDataManager.teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
 		device_number_label.show()
 		device_number_label.text += str(UserDataManager.get_device_settings().device_id)
 	

@@ -18,31 +18,33 @@ skip_validation = false
 rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.gd")]([SubResource("Resource_kw8sn")])
 
 [node name="MethodStep" instance=ExtResource("1_ksrhk")]
-step_name = ""
 question = "Choose the education method"
 
-[node name="MethodContainer" type="VBoxContainer" parent="FormValidator/FormBinder/FormContainer" index="0"]
+[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
+text = "Choose the education method"
+
+[node name="MethodContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
 
-[node name="MethodSelectError" type="Label" parent="FormValidator/FormBinder/FormContainer/MethodContainer" index="0"]
+[node name="MethodSelectError" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer" index="0"]
 visible = false
 layout_mode = 2
 text = "Test"
 vertical_alignment = 1
 
-[node name="MethodSelect" type="ItemList" parent="FormValidator/FormBinder/FormContainer/MethodContainer" index="1"]
+[node name="MethodSelect" type="ItemList" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer" index="1"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 auto_height = true
 item_count = 2
-item_0/text = "Complete"
-item_1/text = "App Only"
+item_0/text = "App Only"
+item_1/text = "Complete"
 
-[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/FormContainer/MethodContainer/MethodSelect" index="1"]
+[node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/MethodSelect" index="1"]
 script = ExtResource("2_03dua")
 validator = SubResource("Resource_ar6ux")
 
-[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/FormContainer/MethodContainer/MethodSelect" index="2"]
+[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/MethodSelect" index="2"]
 anchors_preset = 0
 script = ExtResource("4_1k1yt")
-property_name = "method"
+property_name = "education_method"

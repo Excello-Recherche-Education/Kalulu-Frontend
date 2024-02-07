@@ -1,12 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://b7cfjs2iipagq"]
+[gd_scene load_steps=8 format=3 uid="uid://b7cfjs2iipagq"]
 
 [ext_resource type="Script" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="2_tirf6"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_25mko"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="4_tnnid"]
-[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="5_cac24"]
-[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="6_6v5qs"]
-[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="7_hg5ef"]
 [ext_resource type="Script" path="res://sources/menus/register/ProgressBar.gd" id="8_h8kqu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rcyk"]
@@ -38,39 +35,24 @@ scale = Vector2(2, 2)
 
 [node name="Kalulu" parent="." instance=ExtResource("4_tnnid")]
 unique_name_in_owner = true
-position = Vector2(231, 1488)
+position = Vector2(256, 1320)
 animation = &"Tc_Idle1"
 
 [node name="ProgressBarContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 256.0
+offset_bottom = 173.0
 grow_horizontal = 2
-theme_override_constants/margin_left = 25
+theme_override_constants/margin_left = 150
 theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 231
+theme_override_constants/margin_right = 150
 theme_override_constants/margin_bottom = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ProgressBarContainer"]
-layout_mode = 2
-theme_override_constants/separation = 50
-
-[node name="BackButton" type="TextureButton" parent="ProgressBarContainer/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(156, 156)
-layout_mode = 2
-size_flags_horizontal = 0
-texture_normal = ExtResource("5_cac24")
-texture_pressed = ExtResource("6_6v5qs")
-texture_disabled = ExtResource("7_hg5ef")
-stretch_mode = 5
-
-[node name="ProgressBar" type="ProgressBar" parent="ProgressBarContainer/HBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="ProgressBarContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
+size_flags_vertical = 1
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
 theme_override_font_sizes/font_size = 50
@@ -89,5 +71,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
-
-[connection signal="pressed" from="ProgressBarContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

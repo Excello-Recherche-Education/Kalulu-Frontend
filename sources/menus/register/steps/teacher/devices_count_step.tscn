@@ -7,13 +7,16 @@
 step_name = "devices"
 question = "Choose the number of devices"
 
-[node name="DevicesCountField" type="SpinBox" parent="FormValidator/FormBinder/FormContainer" index="0"]
+[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
+text = "Choose the number of devices"
+
+[node name="DevicesCountField" type="SpinBox" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
 min_value = 1.0
 max_value = 90.0
 value = 1.0
 
-[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/FormContainer/DevicesCountField" index="2"]
+[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/DevicesCountField" index="2"]
 anchors_preset = 0
 script = ExtResource("2_asuou")
 property_name = "devices_count"

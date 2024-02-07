@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://c73wkbttv0ou0"]
+[gd_scene load_steps=9 format=3 uid="uid://c73wkbttv0ou0"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_g51ml"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/control_validator.gd" id="2_hidu6"]
+[ext_resource type="Script" path="res://sources/menus/register/steps/account_type_step.gd" id="2_k6524"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_54aao"]
 [ext_resource type="Script" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_bdvqa"]
 [ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="5_w7o0m"]
@@ -18,19 +19,26 @@ skip_validation = false
 rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.gd")]([SubResource("Resource_kw8sn")])
 
 [node name="AccountTypeStep" instance=ExtResource("1_g51ml")]
+script = ExtResource("2_k6524")
 step_name = "type"
 question = "Choose the type of account"
 
-[node name="TypeContainer" type="VBoxContainer" parent="FormValidator/FormBinder/FormContainer" index="0"]
+[node name="BackButton" parent="LeftMargin/LeftContainer" index="0"]
+text = "Cancel"
+
+[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
+text = "Choose the type of account"
+
+[node name="TypeContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
 
-[node name="TypeSelectError" type="Label" parent="FormValidator/FormBinder/FormContainer/TypeContainer" index="0"]
+[node name="TypeSelectError" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer" index="0"]
 visible = false
 layout_mode = 2
 text = "Test"
 vertical_alignment = 1
 
-[node name="TypeSelect" type="ItemList" parent="FormValidator/FormBinder/FormContainer/TypeContainer" index="1"]
+[node name="TypeSelect" type="ItemList" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer" index="1"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 auto_height = true
@@ -38,11 +46,11 @@ item_count = 2
 item_0/text = "Teacher"
 item_1/text = "Parent"
 
-[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/FormContainer/TypeContainer/TypeSelect" index="1"]
+[node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer/TypeSelect" index="1"]
 script = ExtResource("2_hidu6")
 validator = SubResource("Resource_n0ht0")
 
-[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/FormContainer/TypeContainer/TypeSelect" index="2"]
+[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer/TypeSelect" index="2"]
 anchors_preset = 0
 script = ExtResource("5_w7o0m")
-property_name = "type"
+property_name = "account_type"

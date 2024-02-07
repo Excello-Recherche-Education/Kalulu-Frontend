@@ -1,22 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://cyhoa68y1yyyg"]
+[gd_scene load_steps=3 format=3 uid="uid://cyhoa68y1yyyg"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_par6r"]
-[ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="2_hpxb0"]
 [ext_resource type="Script" path="res://sources/menus/register/steps/teacher/students_count_step.gd" id="2_susi5"]
 
 [node name="StudentsCountStep" instance=ExtResource("1_par6r")]
 script = ExtResource("2_susi5")
+device_id = 0
 step_name = "students"
 question = "Choose the number of students on device %d"
 
-[node name="StudentsCountField" type="SpinBox" parent="FormValidator/FormBinder/FormContainer" index="0"]
+[node name="StudentsCountField" type="SpinBox" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 max_value = 90.0
 value = 1.0
-
-[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/FormContainer/StudentsCountField" index="2"]
-anchors_preset = 0
-script = ExtResource("2_hpxb0")
-property_name = "students_count"

@@ -25,6 +25,28 @@ func _ready():
 		_load_teacher_settings()
 
 
+func register(register_settings : TeacherSettings) -> bool:
+	if not register_settings:
+		return false
+	
+	print(register_settings)
+	
+	# TODO Register on the distant server (Nakama ?)
+	
+	# Handles device settings
+	var device_settings := get_device_settings()
+	device_settings.teacher = register_settings.email
+	device_settings.device_id = 1
+	_save_device_settings()
+	
+	# Save the teacher settings on disk
+	DirAccess.make_dir_recursive_absolute(get_teacher_folder())
+	teacher_settings = register_settings
+	_save_teacher_settings()
+	
+	return true
+
+
 func login(language : String, teacher : String, password : String, device_id : int) -> bool:
 	if teacher not in DeviceSettings.possible_logins or password != DeviceSettings.possible_logins[teacher]:
 		return false
@@ -46,14 +68,15 @@ func login(language : String, teacher : String, password : String, device_id : i
 
 
 func login_student(code : String) -> bool:
-	
 	if not _device_settings or not teacher_settings:
 		return false
 	
-	for s in teacher_settings.students:
-		if s.code == code and s.device == _device_settings.device_id:
-			student = code
-			return true
+	var students = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
+	if students:
+		for s in students:
+			if s.code == code:
+				student = code
+				return true
 	
 	return false
 
@@ -85,10 +108,9 @@ func _load_teacher_settings() -> void:
 	if FileAccess.file_exists(get_teacher_settings_path()):
 		teacher_settings = load(get_teacher_settings_path())
 	if not teacher_settings:
-		teacher_settings = TeacherSettings.new()
-		# Default values for now
-		teacher_settings.setup_students(15, 90)
-		_save_teacher_settings()
+		_device_settings.teacher = ""
+		_device_settings.device_id = 0
+		_save_device_settings()
 
 
 func _save_teacher_settings():

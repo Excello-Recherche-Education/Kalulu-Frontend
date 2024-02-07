@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://dqjvrt5nrtwn1"]
+[gd_resource type="Theme" load_steps=14 format=3 uid="uid://dqjvrt5nrtwn1"]
 
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="2_hbp6q"]
@@ -10,6 +10,38 @@
 bg_color = Color(0.254902, 0.329412, 0.572549, 1)
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_osxio"]
+bg_color = Color(0.603922, 0.631373, 0.701961, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.537255, 0.537255, 0.545098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xiby0"]
+bg_color = Color(0.117647, 0.160784, 0.356863, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.854902, 0.85098, 0.862745, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xitiu"]
+bg_color = Color(0.109804, 0.156863, 0.368627, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.854902, 0.85098, 0.862745, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qwwu7"]
+bg_color = Color(0.117647, 0.160784, 0.356863, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.854902, 0.85098, 0.862745, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sfncn"]
 bg_color = Color(0.254902, 0.329412, 0.572549, 1)
@@ -23,7 +55,16 @@ border_color = Color(0, 0, 0, 1)
 
 [resource]
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_nikxc")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.85098, 0.858824, 0.866667, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/icon_max_width = 70
 Button/font_sizes/font_size = 32
+Button/fonts/font = ExtResource("1_shpmh")
+Button/styles/disabled = SubResource("StyleBoxFlat_osxio")
+Button/styles/hover = SubResource("StyleBoxFlat_xiby0")
+Button/styles/normal = SubResource("StyleBoxFlat_xitiu")
+Button/styles/pressed = SubResource("StyleBoxFlat_qwwu7")
 FileDialog/icons/back_folder = ExtResource("1_mdn6k")
 FileDialog/icons/forward_folder = ExtResource("2_hbp6q")
 FileDialog/icons/parent_folder = ExtResource("3_1nwm4")
