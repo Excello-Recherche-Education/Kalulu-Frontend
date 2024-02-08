@@ -25,13 +25,14 @@ func _ready():
 		_load_teacher_settings()
 
 
+# Registering and logging in #
+
 func register(register_settings : TeacherSettings) -> bool:
 	if not register_settings:
 		return false
 	
-	print(register_settings)
-	
 	# TODO Register on the distant server (Nakama ?)
+	# The server will check if an account with the provided mail already exists
 	
 	# Handles device settings
 	var device_settings := get_device_settings()
@@ -46,13 +47,22 @@ func register(register_settings : TeacherSettings) -> bool:
 	
 	return true
 
-
 func login(language : String, teacher : String, password : String, device_id : int) -> bool:
-	if teacher not in DeviceSettings.possible_logins or password != DeviceSettings.possible_logins[teacher]:
+	if not _device_settings or not teacher or not password or device_id == 0:
 		return false
 	
-	if not _device_settings:
+	var path := _get_teacher_settings_path(teacher)
+	
+	if not FileAccess.file_exists(path):
 		return false
+	
+	var temp_teacher_settings = load(path) as TeacherSettings
+	
+	if not temp_teacher_settings or temp_teacher_settings.password != password or device_id not in temp_teacher_settings.students.keys():
+		return false
+	
+	# Handles teacher settings
+	teacher_settings = temp_teacher_settings
 	
 	# Handles device settings
 	if _device_settings.language != language:
@@ -61,11 +71,21 @@ func login(language : String, teacher : String, password : String, device_id : i
 	_device_settings.device_id = device_id
 	_save_device_settings()
 	
-	# Handles teacher settings
-	_load_teacher_settings()
-	
 	return true
 
+func logout() -> void:
+	
+	# Handles device settings
+	_device_settings.teacher = ""
+	_device_settings.device_id = 0
+	_save_device_settings()
+	
+	# Handles teacher settings
+	teacher_settings = null
+	
+	# Handles student settings
+	if student:
+		student = ""
 
 func login_student(code : String) -> bool:
 	if not _device_settings or not teacher_settings:
@@ -81,11 +101,15 @@ func login_student(code : String) -> bool:
 	return false
 
 
+# Device settings #
+
+func get_device_settings_path() -> String:
+	return "user://device_settings.tres"
+
 func get_device_settings() -> DeviceSettings:
 	if not _device_settings:
 		_load_device_settings()
 	return _device_settings
-
 
 func _load_device_settings() -> void:
 	if FileAccess.file_exists(get_device_settings_path()):
@@ -95,14 +119,20 @@ func _load_device_settings() -> void:
 		_device_settings.init_OS_language()
 		_save_device_settings()
 
-
 func _save_device_settings() -> void:
 	ResourceSaver.save(_device_settings, get_device_settings_path())
 
 
-func get_device_settings_path() -> String:
-	return "user://device_settings.tres"
+# Teacher settings #
 
+func get_teacher_folder() -> String:
+	return "user://".path_join(_device_settings.teacher)
+
+func _get_teacher_settings_path(teacher : String) -> String:
+	return "user://".path_join(teacher).path_join("teacher_settings.tres")
+
+func get_teacher_settings_path() -> String:
+	return _get_teacher_settings_path(_device_settings.teacher)
 
 func _load_teacher_settings() -> void:
 	if FileAccess.file_exists(get_teacher_settings_path()):
@@ -112,14 +142,17 @@ func _load_teacher_settings() -> void:
 		_device_settings.device_id = 0
 		_save_device_settings()
 
-
 func _save_teacher_settings():
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
 
-func get_teacher_settings_path() -> String:
-	return "user://".path_join(_device_settings.teacher).path_join("teacher_settings.tres")
+# Student settings #
 
+func get_student_folder() -> String:
+	return _device_settings.get_folder_path().path_join(student)
+
+func get_student_settings_path() -> String:
+	return get_student_folder().path_join("settings.tres")
 
 func _load_student_settings() -> void:
 	# Load User settings
@@ -131,6 +164,15 @@ func _load_student_settings() -> void:
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_settings()
 
+func _save_student_settings() -> void:
+	ResourceSaver.save(student_settings, get_student_settings_path())
+
+
+# Student progression #
+
+func get_student_progression_path() -> String:
+	var file_path: = get_student_folder().path_join("progression.tres")
+	return file_path
 
 func _load_student_progression() -> void:
 	if FileAccess.file_exists(get_student_progression_path()):
@@ -143,34 +185,14 @@ func _load_student_progression() -> void:
 	
 		student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
 
-
-func _save_student_settings() -> void:
-	ResourceSaver.save(student_settings, get_student_settings_path())
-
-
 func _save_student_progression() -> void:
 	ResourceSaver.save(student_progression, get_student_progression_path())
 
-
-func get_teacher_folder() -> String:
-	var file_path: = "user://" + _device_settings.teacher + "/"
-	return file_path
+func _on_user_progression_unlocks_changed() -> void:
+	_save_student_progression()
 
 
-func get_student_folder() -> String:
-	var file_path: = _device_settings.get_folder_path().path_join(student)
-	return file_path
-
-
-func get_student_settings_path() -> String:
-	var file_path: =  get_student_folder().path_join("settings.tres")
-	return file_path
-
-
-func get_student_progression_path() -> String:
-	var file_path: = get_student_folder().path_join("progression.tres")
-	return file_path
-
+# Sound settings #
 
 func set_master_volume(value: float) -> void:
 	if student_settings:
@@ -178,13 +200,11 @@ func set_master_volume(value: float) -> void:
 		student_settings.master_volume = volume
 		_save_student_settings()
 
-
 func set_music_volume(value: float) -> void:
 	if student_settings:
 		var volume: = denormalize_volume(value)
 		student_settings.music_volume = volume
 		_save_student_settings()
-
 
 func set_voice_volume(value: float) -> void:
 	if student_settings:
@@ -192,13 +212,11 @@ func set_voice_volume(value: float) -> void:
 		student_settings.voice_volume = volume
 		_save_student_settings()
 
-
 func set_effects_volume(value: float) -> void:
 	if student_settings:
 		var volume: = denormalize_volume(value)
 		student_settings.effects_volume = volume
 		_save_student_settings()
-
 
 func get_master_volume() -> float:
 	var value: = 0.0
@@ -208,7 +226,6 @@ func get_master_volume() -> float:
 	
 	return value
 
-
 func get_music_volume() -> float:
 	var value: = 0.0
 	if student_settings:
@@ -216,7 +233,6 @@ func get_music_volume() -> float:
 		value = normalize_slider(volume)
 	
 	return value
-
 
 func get_voice_volume() -> float:
 	var value: = 0.0
@@ -226,7 +242,6 @@ func get_voice_volume() -> float:
 	
 	return value
 
-
 func get_effects_volume() -> float:
 	var value: = 0.0
 	if student_settings:
@@ -235,16 +250,10 @@ func get_effects_volume() -> float:
 	
 	return value
 
-
-func _on_user_progression_unlocks_changed() -> void:
-	_save_student_progression()
-
-
 # Convert the volume from [-80, 6]db to [0, 100] and back
 func normalize_slider(volume) -> float:
 	var value: = pow((volume + 80.0) / 86, 5.0) * 100.0
 	return value
-
 
 func denormalize_volume(value: float) -> float:
 	var volume: = pow(float(value) / 100.0, 0.2) * 86 - 80

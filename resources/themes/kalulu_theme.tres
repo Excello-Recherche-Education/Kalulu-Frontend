@@ -1,6 +1,7 @@
 [gd_resource type="Theme" load_steps=14 format=3 uid="uid://dqjvrt5nrtwn1"]
 
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
+[ext_resource type="FontFile" uid="uid://c7hsjkvr1pbud" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_shpmh"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="2_hbp6q"]
 [ext_resource type="Texture2D" uid="uid://cacy10k45kq6u" path="res://assets/theme/up.svg" id="3_1nwm4"]
 [ext_resource type="Texture2D" uid="uid://b7fqrj816kdjg" path="res://assets/theme/refresh.svg" id="4_ymfot"]
