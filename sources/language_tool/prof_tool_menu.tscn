@@ -140,6 +140,25 @@ custom_minimum_size = Vector2(800, 2.08165e-12)
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(1500, 1000)
+always_on_top = true
+popup_window = true
+ok_button_text = "Ouvrir"
+file_mode = 0
+access = 2
+
+[node name="AddWordListButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 301.0
+offset_right = 563.0
+offset_bottom = 375.0
+theme_override_font_sizes/font_size = 60
+text = "Change word list"
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/GPListButton" to="." method="_on_gp_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/WordListButton" to="." method="_on_word_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
@@ -150,3 +169,4 @@ theme_override_font_sizes/font_size = 100
 [connection signal="pressed" from="ExportButton" to="." method="_on_export_button_pressed"]
 [connection signal="item_selected" from="LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]
 [connection signal="text_submitted" from="NewLanguageContainer/CenterContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="AddWordListButton" to="." method="_on_add_word_list_button_pressed"]

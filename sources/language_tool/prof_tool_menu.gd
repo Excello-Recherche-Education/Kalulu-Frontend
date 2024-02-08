@@ -7,9 +7,12 @@ var save_file: ProfToolSave
 @onready var language_select_button: = %LanguageSelectButton
 @onready var new_language_container: = %NewLanguageContainer
 @onready var line_edit: = %LineEdit
+@onready var file_dialog: = $FileDialog
+@onready var add_word_list_button: = $AddWordListButton
 
 
 func _ready() -> void:
+	_update_add_word_list_button()
 	if not ResourceLoader.exists(save_file_path):
 		save_file = ProfToolSave.new()
 		save_file.resource_path = save_file_path
@@ -24,7 +27,13 @@ func _ready() -> void:
 			Database.language = save_file.selected_language
 			language_select_button.select(ind)
 		ind += 1
-	
+
+
+func _update_add_word_list_button() -> void:
+	if FileAccess.file_exists(Database.get_additional_word_list_path()):
+		add_word_list_button.text = "Change Word List"
+	else:
+		add_word_list_button.text = "Add Word List"
 
 
 func _on_gp_list_button_pressed() -> void:
@@ -105,3 +114,23 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 	save_file.selected_language = new_text
 	ResourceSaver.save(save_file, save_file_path)
 	get_tree().reload_current_scene()
+
+
+
+func _word_list_file_selected(file_path: String) -> void:
+	if FileAccess.file_exists(file_path):
+		DirAccess.copy_absolute(file_path, Database.get_additional_word_list_path())
+		Database.load_additional_word_list()
+
+
+func _on_add_word_list_button_pressed() -> void:
+	file_dialog.filters = []
+	file_dialog.add_filter("*.csv", "csv")
+	
+	for connection in file_dialog.file_selected.get_connections():
+		connection["signal"].disconnect(connection["callable"])
+	
+	file_dialog.file_selected.connect(_word_list_file_selected)
+	
+	file_dialog.show()
+	_update_add_word_list_button()

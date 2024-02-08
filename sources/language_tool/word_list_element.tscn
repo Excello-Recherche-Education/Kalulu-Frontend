@@ -113,6 +113,7 @@ texture = ExtResource("2_i6x6b")
 
 [connection signal="pressed" from="TabContainer/NormalContainer/EditButton" to="." method="_on_edit_button_pressed"]
 [connection signal="pressed" from="TabContainer/EditContainer/MinusButton" to="." method="_on_minus_button_pressed"]
+[connection signal="text_submitted" from="TabContainer/EditContainer/WordEdit" to="." method="_on_word_edit_text_submitted"]
 [connection signal="focus_entered" from="TabContainer/EditContainer/GraphemesEdit" to="." method="_on_graphemes_edit_focus_entered"]
 [connection signal="focus_exited" from="TabContainer/EditContainer/GraphemesEdit" to="." method="_on_graphemes_edit_focus_exited"]
 [connection signal="gui_input" from="TabContainer/EditContainer/GraphemesEdit" to="." method="_on_graphemes_edit_gui_input"]

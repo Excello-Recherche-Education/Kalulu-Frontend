@@ -276,3 +276,57 @@ func insert_in_database() -> void:
 						sub_table_id: gp_ids[i],
 						"Position": i
 					})
+
+
+func _already_in_database(text: String) -> int:
+	var query: = "SELECT ID, %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs 
+	FROM %s 
+	INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
+	INNER JOIN %s ON %s.ID = %s.%s
+	WHERE %s.%s = ? 
+	GROUP BY %s.ID" % [table_graph_column, sub_table_graph_column, sub_table_graph_column,
+		sub_table_phon_column, sub_table_phon_column,
+		relational_table, relational_table,
+		table,
+		relational_table, relational_table, relational_table, table, relational_table, table_graph_column,
+		sub_table, sub_table, relational_table, sub_table_id,
+		table, table_graph_column,
+		table]
+	Database.db.query_with_bindings(query, [text])
+	if not Database.db.query_result.is_empty():
+		var e = Database.db.query_result[0]
+		graphemes_edit.text = e[sub_table_graph_column + "s"]
+		id = e.ID
+		return id
+	return -1
+
+
+func _add_from_additional_word_list(new_text: String) -> int:
+	if new_text in Database.additional_word_list:
+		var res: = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH)
+		id = res[0]
+		gp_ids = res[1]
+		unvalidated_gp_ids = gp_ids
+		graphemes = " ".join(Database.additional_word_list[new_text].GPMATCH.trim_prefix('(').trim_suffix(')').split('.'))
+		return id
+	return -1
+
+
+func _try_to_complete_from_word(new_text: String) -> int:
+	var id: = _already_in_database(new_text)
+	if id >= 0:
+		return id
+	
+	id = _add_from_additional_word_list(new_text)
+	if id >= 0:
+		return id
+	
+	return -1
+
+
+func _on_word_edit_text_submitted(new_text: String) -> void:
+	if _try_to_complete_from_word(new_text) >= 0:
+		_on_validate_button_pressed()
+		update_lesson()
+		
+	graphemes_edit.grab_focus()

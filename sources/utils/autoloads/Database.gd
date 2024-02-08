@@ -12,6 +12,7 @@ const base_path: =  "res://language_resources/"
 const look_and_learn_images: = "/look_and_learn/images/"
 const look_and_learn_sounds: = "/look_and_learn/sounds/"
 const look_and_learn_videos: = "/look_and_learn/video/"
+const additional_word_list_path: = "word_list.csv"
 const video_extension: = ".ogv"
 const image_extension: = ".png"
 const sound_extension: = ".mp3"
@@ -30,15 +31,39 @@ var db_path: = base_path + language + "/language.db":
 			db.foreign_keys = true
 			db.open_db()
 var words_path: = base_path + language + "/words/"
+var additional_word_list: Dictionary
 
 @onready var db: = SQLite.new()
 
 
 func _ready() -> void:
-	pass
+	load_additional_word_list()
 	# db_path = db_path
 	#_import_words_csv()
 	#_import_look_and_learn_data()
+
+
+func get_additional_word_list_path() -> String:
+	return base_path.path_join(additional_word_list_path)
+
+
+func load_additional_word_list() -> void:
+	additional_word_list.clear()
+	var word_list_path: = get_additional_word_list_path()
+	if FileAccess.file_exists(word_list_path):
+		var file: = FileAccess.open(word_list_path, FileAccess.READ)
+		var title_line: = file.get_csv_line()
+		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
+			push_error("word list should have columns ORTHO, PHON and GPMATCH")
+			return
+		var ortho_index: = title_line.find("ORTHO")
+		while not file.eof_reached():
+			var line: = file.get_csv_line()
+			var data: = {}
+			for i in line.size():
+				data[title_line[i]] = line[i]
+			additional_word_list[line[ortho_index]] = data
+		file.close()
 
 
 func _exit_tree() -> void:
@@ -367,36 +392,41 @@ func _import_words_csv() -> void:
 	file.get_line()
 	while not file.eof_reached():
 		var line: = file.get_csv_line()
-		var word: = line[0]
-		var gp_list: = line[2].trim_prefix("(").trim_suffix(")").split(".")
-		var gp_ids: = []
-		for gp in gp_list:
-			var split: = gp.split("-")
-			var grapheme: = split[0]
-			var phoneme: = split[1]
-			db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme = ? AND Phoneme = ?", [grapheme, phoneme])
-			var gp_id: = -1
-			if db.query_result.is_empty():
-				db.insert_row("GPs", {
-					Grapheme = grapheme,
-					Phoneme = phoneme,
-					InGame = 0,
-				})
-				gp_id = db.last_insert_rowid
-			else:
-				gp_id = db.query_result[0].ID
-			gp_ids.append(gp_id)
-		db.query_with_bindings("SELECT * FROM Words WHERE Word = ?", [word])
+		_import_word_from_csv(line[0], line[2])
+
+
+func _import_word_from_csv(ortho: String, gpmatch: String) -> Array:
+	var gp_list: = gpmatch.trim_prefix("(").trim_suffix(")").split(".")
+	var gp_ids: Array[int] = []
+	for gp in gp_list:
+		var split: = gp.split("-")
+		var grapheme: = split[0]
+		var phoneme: = split[1]
+		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme = ? AND Phoneme = ?", [grapheme, phoneme])
+		var gp_id: = -1
 		if db.query_result.is_empty():
-			db.insert_row("Words", {
-				Word = word,
-				InGame = 0,
+			db.insert_row("GPs", {
+				Grapheme = grapheme,
+				Phoneme = phoneme,
 			})
-			var word_id: = db.last_insert_rowid
-			for i in gp_ids.size():
-				var gp_id: int = gp_ids[i]
-				db.insert_row("GPsInWords", {
-					WordID = word_id,
-					GPID = gp_id,
-					Position = i
-				})
+			gp_id = db.last_insert_rowid
+		else:
+			gp_id = db.query_result[0].ID
+		gp_ids.append(gp_id)
+	db.query_with_bindings("SELECT * FROM Words WHERE Word = ?", [ortho])
+	var word_id: = -1
+	if db.query_result.is_empty():
+		db.insert_row("Words", {
+			Word = ortho,
+		})
+		word_id = db.last_insert_rowid
+		for i in gp_ids.size():
+			var gp_id: int = gp_ids[i]
+			db.insert_row("GPsInWords", {
+				WordID = word_id,
+				GPID = gp_id,
+				Position = i
+			})
+	else:
+		word_id = db.query_result[0].ID
+	return [word_id, gp_ids]
