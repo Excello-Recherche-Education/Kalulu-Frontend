@@ -11,10 +11,14 @@ func update_lesson() -> void:
 
 
 func _add_from_additional_word_list(new_text: String) -> int:
+	var punc: = "'!()[]{};:'\"\\,<>./?@#$%^&*_~"
+	var new_text_clean: = new_text.to_lower()
+	for char in punc:
+		new_text_clean = new_text_clean.replace(char, " ")
 	var word_list_element: = word_list_element_scene.instantiate()
 	var all_found: = true
 	var word_ids: Array[int] = []
-	for word in new_text.split(" "):
+	for word in new_text_clean.split(" "):
 		var word_id: int = word_list_element._try_to_complete_from_word(word)
 		word_ids.append(word_id)
 		if word_id < 0:
@@ -23,7 +27,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 	if all_found:
 		gp_ids = word_ids
 		unvalidated_gp_ids = gp_ids
-		graphemes = new_text
+		graphemes = new_text_clean
 		
 		Database.db.insert_row("Sentences", {
 			Sentence = new_text,

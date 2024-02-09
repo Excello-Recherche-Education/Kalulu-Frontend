@@ -279,12 +279,12 @@ func insert_in_database() -> void:
 
 
 func _already_in_database(text: String) -> int:
-	var query: = "SELECT ID, %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs 
+	var query: = "SELECT %s.ID, %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs 
 	FROM %s 
 	INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
 	INNER JOIN %s ON %s.ID = %s.%s
 	WHERE %s.%s = ? 
-	GROUP BY %s.ID" % [table_graph_column, sub_table_graph_column, sub_table_graph_column,
+	GROUP BY %s.ID" % [table, table_graph_column, sub_table_graph_column, sub_table_graph_column,
 		sub_table_phon_column, sub_table_phon_column,
 		relational_table, relational_table,
 		table,
@@ -295,7 +295,8 @@ func _already_in_database(text: String) -> int:
 	Database.db.query_with_bindings(query, [text])
 	if not Database.db.query_result.is_empty():
 		var e = Database.db.query_result[0]
-		graphemes_edit.text = e[sub_table_graph_column + "s"]
+		if graphemes_edit:
+			graphemes_edit.text = e[sub_table_graph_column + "s"]
 		id = e.ID
 		return id
 	return -1
