@@ -8,7 +8,7 @@ const _symbols_to_string = {
 	"%" : "pcent",
 	"§" : "para"
 }
-const base_path: =  "res://language_resources/"
+const base_path: =  "user://language_resources/"
 const look_and_learn_images: = "/look_and_learn/images/"
 const look_and_learn_sounds: = "/look_and_learn/sounds/"
 const look_and_learn_videos: = "/look_and_learn/video/"
@@ -17,7 +17,7 @@ const video_extension: = ".ogv"
 const image_extension: = ".png"
 const sound_extension: = ".mp3"
 
-var language: String:
+var language: String = "french":
 	set(value):
 		language = value
 		db_path = base_path + language + "/language.db"

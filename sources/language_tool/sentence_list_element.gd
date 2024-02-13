@@ -2,6 +2,12 @@ extends "res://sources/language_tool/word_list_element.gd"
 
 const word_list_element_scene: = preload("res://sources/language_tool/word_list_element.tscn")
 
+
+func _ready() -> void:
+	super()
+	graphemes_label.hide()
+
+
 func update_lesson() -> void:
 	var m: = -1
 	for gp_id in gp_ids:
@@ -18,7 +24,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 	var word_list_element: = word_list_element_scene.instantiate()
 	var all_found: = true
 	var word_ids: Array[int] = []
-	for word in new_text_clean.split(" "):
+	for word in new_text_clean.split(" ", false):
 		var word_id: int = word_list_element._try_to_complete_from_word(word)
 		word_ids.append(word_id)
 		if word_id < 0:

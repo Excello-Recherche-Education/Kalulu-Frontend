@@ -10,6 +10,7 @@ script = ExtResource("2_q3ll5")
 element_scene = ExtResource("2_4jv4m")
 
 [node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
+visible = false
 text = "Sentence"
 
 [node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]

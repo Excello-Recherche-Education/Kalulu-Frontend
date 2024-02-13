@@ -44,6 +44,10 @@ func _on_word_list_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/word_list.tscn")
 
 
+func _on_syllable_list_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/syllable_list.tscn")
+
+
 func _on_sentence_list_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/sentence_list.tscn")
 
@@ -134,3 +138,5 @@ func _on_add_word_list_button_pressed() -> void:
 	
 	file_dialog.show()
 	_update_add_word_list_button()
+
+

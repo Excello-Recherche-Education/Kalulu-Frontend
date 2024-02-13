@@ -41,6 +41,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Word List"
 
+[node name="SyllableListButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Syllable List"
+
 [node name="SentenceListButton" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
@@ -73,9 +78,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -552.5
-offset_right = 552.5
-offset_bottom = 158.0
+offset_left = -550.0
+offset_top = 40.0
+offset_right = 555.0
+offset_bottom = 198.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 120
 text = "Kalulu Language Tool"
@@ -161,6 +167,7 @@ text = "Change word list"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/GPListButton" to="." method="_on_gp_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/WordListButton" to="." method="_on_word_list_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/SyllableListButton" to="." method="_on_syllable_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/LessonListButton" to="." method="_on_lesson_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TracingBuilderButton" to="." method="_on_tracing_builder_button_pressed"]

@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7036ue2wmauy"]
+
+[ext_resource type="PackedScene" uid="uid://dfw7m0a7148fu" path="res://sources/language_tool/word_list.tscn" id="1_wq0y5"]
+[ext_resource type="PackedScene" uid="uid://rimsx0i5seyp" path="res://sources/language_tool/syllable_list_element.tscn" id="2_r4j7q"]
+
+[node name="SyllableList" instance=ExtResource("1_wq0y5")]
+element_scene = ExtResource("2_r4j7q")
+
+[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
+text = "Syllable"
+
+[editable path="VBoxContainer/WordListElement"]
+[editable path="VBoxContainer/WordListElement/TabContainer/NormalContainer/EditButton"]
+[editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/MinusButton"]
+[editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/ValidateButton"]
+[editable path="VBoxContainer/WordListElement/SaveButton"]
+[editable path="VBoxContainer/WordListElement/BackButton"]
+[editable path="NewGPLayer/VBoxContainer/Title"]
+[editable path="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer/EditButton"]
+[editable path="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer/DeleteButton"]
+[editable path="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer/ValidateButton"]
+[editable path="NewGPLayer/VBoxContainer/NewGP"]
+[editable path="NewGPLayer/VBoxContainer/NewGP/TabContainer/NormalContainer/EditButton"]
+[editable path="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer/DeleteButton"]
+[editable path="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer/ValidateButton"]
