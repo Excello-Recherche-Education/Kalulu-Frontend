@@ -33,13 +33,16 @@ script = null
 text = "Lesson"
 horizontal_alignment = 2
 
-[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
+[node name="ExceptionCheckBox" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
+visible = false
+
+[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
 text = "Word"
 
-[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
+[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="3"]
 text = "Graphemes"
 
-[node name="EditButton" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="3"]
+[node name="EditButton" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="4"]
 modulate = Color(1, 1, 1, 0)
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/WordListElement"]

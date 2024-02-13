@@ -9,11 +9,11 @@
 script = ExtResource("2_q3ll5")
 element_scene = ExtResource("2_4jv4m")
 
-[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
+[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
 visible = false
 text = "Sentence"
 
-[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
+[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="3"]
 text = "Words"
 
 [node name="Label" parent="NewGPLayer" index="1"]
@@ -43,13 +43,13 @@ grow_vertical = 2
 layout_mode = 2
 script = null
 
-[node name="Word" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="1"]
+[node name="Word" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="2"]
 text = "Word"
 
-[node name="Graphemes" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="2"]
+[node name="Graphemes" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="3"]
 text = "Graphemes"
 
-[node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="3"]
+[node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="4"]
 modulate = Color(1, 1, 1, 0)
 
 [node name="NewGP" parent="NewGPLayer/VBoxContainer2" index="1" instance=ExtResource("3_jl0ks")]

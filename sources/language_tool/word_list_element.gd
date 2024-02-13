@@ -19,6 +19,8 @@ signal validated()
 @onready var tab_container: = $TabContainer
 @onready var popup_menu: = %Popup
 @onready var lesson_label: = %Lesson
+@onready var exception_checkbox: = %ExceptionCheckBox
+@onready var exception_edit_checkbox: = %ExceptionEditCheckBox
 
 var word: = "":
 	set = set_word
@@ -39,6 +41,16 @@ var prev_caret_position: int = 0
 var unvalidated_graphemes: = ""
 var unvalidated_phonemes: = ""
 var unvalidated_gp_ids: Array[int] = []
+var exception: = 0:
+	set = set_exception
+
+
+func set_exception(p_exception: bool) -> void:
+	exception = p_exception
+	if exception_checkbox:
+		exception_checkbox.button_pressed = bool(exception)
+	if exception_edit_checkbox:
+		exception_edit_checkbox.button_pressed = bool(exception)
 
 
 func set_word(p_word: String) -> void:
@@ -87,6 +99,7 @@ func _ready() -> void:
 	set_word(word)
 	set_graphemes(graphemes)
 	set_lesson(lesson)
+	set_exception(exception)
 	popup_menu.button.text = "Add new %s" % sub_table
 
 
@@ -109,10 +122,12 @@ func _on_validate_button_pressed() -> void:
 	undo_redo.add_do_property(self, "phonemes", unvalidated_phonemes)
 	undo_redo.add_do_property(self, "gp_ids", unvalidated_gp_ids.duplicate())
 	undo_redo.add_do_property(self, "word", word_edit.text)
+	undo_redo.add_do_property(self, "exception", int(exception_edit_checkbox.button_pressed))
 	undo_redo.add_undo_property(self, "graphemes", graphemes)
 	undo_redo.add_undo_property(self, "phonemes", phonemes)
 	undo_redo.add_undo_property(self, "gp_ids", gp_ids.duplicate())
 	undo_redo.add_undo_property(self, "word", word)
+	undo_redo.add_undo_property(self, "exception", int(exception_checkbox.button_pressed))
 	undo_redo.commit_action()
 	tab_container.current_tab = 0
 	update_lesson()
@@ -228,14 +243,14 @@ func set_gp_ids_from_string(p_gp_ids: String) -> void:
 
 func insert_in_database() -> void:
 	if id >= 0:
-		var query: = "SELECT %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs 
+		var query: = "SELECT %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs, %s.Exception
 			FROM %s 
 			INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
 			INNER JOIN %s ON %s.ID = %s.%s
 			WHERE %s.ID = ? 
 			GROUP BY %s.ID" % [table_graph_column, sub_table_graph_column, sub_table_graph_column,
 				sub_table_phon_column, sub_table_phon_column,
-				relational_table, relational_table,
+				relational_table, relational_table, table,
 				table,
 				relational_table, relational_table, relational_table, table, relational_table, table_graph_column,
 				sub_table, sub_table, relational_table, sub_table_id,
@@ -245,8 +260,8 @@ func insert_in_database() -> void:
 		print(query)
 		if not Database.db.query_result.is_empty():
 			var e = Database.db.query_result[0]
-			if word != e[table_graph_column]:
-				Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word})
+			if word != e[table_graph_column] or exception != e.Exception:
+				Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word, "Exception": exception})
 			if graphemes != e[sub_table_graph_column + "s"] or phonemes != e[sub_table_phon_column + "s"]:
 				var gps_in_words_ids: Array = Array(e[relational_table + "IDs"].split(" "))
 				while gps_in_words_ids.size() > gp_ids.size():
@@ -331,3 +346,7 @@ func _on_word_edit_text_submitted(new_text: String) -> void:
 		update_lesson()
 		
 	graphemes_edit.grab_focus()
+
+
+func _on_exception_check_box_toggled(toggled_on: bool) -> void:
+	pass # Replace with function body.

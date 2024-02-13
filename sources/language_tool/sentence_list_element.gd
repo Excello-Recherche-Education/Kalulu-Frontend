@@ -2,6 +2,8 @@ extends "res://sources/language_tool/word_list_element.gd"
 
 const word_list_element_scene: = preload("res://sources/language_tool/word_list_element.tscn")
 
+var words_not_founds: = []
+
 
 func _ready() -> void:
 	super()
@@ -23,12 +25,14 @@ func _add_from_additional_word_list(new_text: String) -> int:
 		new_text_clean = new_text_clean.replace(char, " ")
 	var word_list_element: = word_list_element_scene.instantiate()
 	var all_found: = true
+	words_not_founds.clear()
 	var word_ids: Array[int] = []
 	for word in new_text_clean.split(" ", false):
 		var word_id: int = word_list_element._try_to_complete_from_word(word)
 		word_ids.append(word_id)
 		if word_id < 0:
 			all_found = false
+			words_not_founds.append(word)
 	word_list_element.free()
 	if all_found:
 		gp_ids = word_ids
@@ -47,4 +51,8 @@ func _add_from_additional_word_list(new_text: String) -> int:
 				Position = i
 			})
 		return id
+	graphemes_edit.text = ""
+	graphemes_edit.placeholder_text = "Not found:"
+	for word_not_found in words_not_founds:
+		graphemes_edit.placeholder_text += " " + word_not_found 
 	return -1

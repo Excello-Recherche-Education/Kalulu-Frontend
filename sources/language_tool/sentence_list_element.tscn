@@ -13,15 +13,21 @@ sub_table_phon_column = "Word"
 relational_table = "WordsInSentences"
 sub_table_id = "WordID"
 
-[node name="Word" parent="TabContainer/NormalContainer" index="1"]
+[node name="ExceptionCheckBox" parent="TabContainer/NormalContainer" index="1"]
+visible = false
+
+[node name="Word" parent="TabContainer/NormalContainer" index="2"]
 size_flags_vertical = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="WordEdit" parent="TabContainer/EditContainer" index="1"]
+[node name="ExceptionEditCheckBox" parent="TabContainer/EditContainer" index="1"]
+visible = false
+
+[node name="WordEdit" parent="TabContainer/EditContainer" index="2"]
 placeholder_text = "Press enter for autocomplete"
 
-[node name="GraphemesEdit" parent="TabContainer/EditContainer" index="2"]
+[node name="GraphemesEdit" parent="TabContainer/EditContainer" index="3"]
 placeholder_text = "Each word in the sentence"
 
 [editable path="TabContainer/NormalContainer/EditButton"]
