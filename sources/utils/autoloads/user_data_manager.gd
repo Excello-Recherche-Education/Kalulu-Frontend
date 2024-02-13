@@ -47,7 +47,7 @@ func register(register_settings : TeacherSettings) -> bool:
 	
 	return true
 
-func login(language : String, teacher : String, password : String, device_id : int) -> bool:
+func login(type : TeacherSettings.AccountType, language : String, teacher : String, password : String, device_id : int) -> bool:
 	if not _device_settings or not teacher or not password or device_id == 0:
 		return false
 	
@@ -58,7 +58,7 @@ func login(language : String, teacher : String, password : String, device_id : i
 	
 	var temp_teacher_settings = load(path) as TeacherSettings
 	
-	if not temp_teacher_settings or temp_teacher_settings.password != password or device_id not in temp_teacher_settings.students.keys():
+	if not temp_teacher_settings or temp_teacher_settings.password != password or temp_teacher_settings.account_type != type or device_id not in temp_teacher_settings.students.keys():
 		return false
 	
 	# Handles teacher settings

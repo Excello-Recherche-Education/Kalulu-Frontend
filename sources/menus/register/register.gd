@@ -1,7 +1,15 @@
 extends Control
 
 const main_menu_path := "res://sources/menus/main/main_menu.tscn"
-const login_menu_path := "res://sources/menus/login/login.tscn"
+const next_scene_path := "res://sources/menus/teacher/teacher_settings.tscn"
+const symbols_names = {
+	"1" : "star",
+	"2" : "bar",
+	"3" : "circle",
+	"4" : "plus",
+	"5" : "square",
+	"6" : "triangle",
+}
 
 @onready var teacher_steps : Array[PackedScene] = [
 	preload("res://sources/menus/register/steps/teacher/method_step.tscn"),
@@ -16,17 +24,22 @@ const login_menu_path := "res://sources/menus/login/login.tscn"
 @onready var students_step : PackedScene = preload("res://sources/menus/register/steps/teacher/students_count_step.tscn")
 @onready var player_step : PackedScene = preload("res://sources/menus/register/steps/parent/player_step.tscn")
 
+var base_password_label_text : String
+var password : String = ""
 var current_steps : Array[Step]
 
-@onready var kalulu := %Kalulu
+@onready var opening_curtain := %OpeningCurtain
 @onready var register_data := TeacherSettings.new()
 @onready var progress_bar := %ProgressBar
+@onready var adult_check := %AdultCheck
+@onready var code_keyboard : CodeKeyboard = %CodeKeyboard
+@onready var password_label : Label = %PasswordLabel
 @onready var steps := %Steps
 
 func _ready():
-	kalulu.play("Tc_Idle1")
-	current_steps = [account_type_step.instantiate()]
-	_go_to_step(progress_bar.value)
+	base_password_label_text = password_label.text
+	_reset_password()
+	opening_curtain.play("open")
 
 
 func _go_to_step(step_index: int):
@@ -49,6 +62,30 @@ func _go_to_step(step_index: int):
 	
 	# Handles progress bar
 	progress_bar.set_value_with_tween(step_index)
+
+
+func _reset_password():
+	password = TeacherSettings.available_codes.pick_random()
+	var password_array = password.split("")
+	password_label.text = base_password_label_text % [symbols_names[password_array[0]], symbols_names[password[1]], symbols_names[password[2]]]
+
+
+func _on_code_keyboard_password_entered(code):
+	if password != code:
+		code_keyboard.reset_password()
+		_reset_password()
+		return
+	
+	opening_curtain.play("close")
+	await opening_curtain.animation_finished
+	
+	adult_check.hide()
+	progress_bar.show()
+	
+	current_steps = [account_type_step.instantiate()]
+	_go_to_step(progress_bar.value)
+	
+	opening_curtain.play("open")
 
 
 func _on_step_back(_step : Step):
@@ -98,7 +135,7 @@ func _on_step_completed(step : Step):
 	
 	if progress_bar.value == current_steps.size()-1:
 		if UserDataManager.register(register_data):
-			get_tree().change_scene_to_file(login_menu_path)
+			get_tree().change_scene_to_file(next_scene_path)
 		else:
 			print("Impossible to register")
 	else:
@@ -112,3 +149,7 @@ func _remove_future_steps():
 	
 	# Resize the array to remove unwanted steps
 	current_steps.resize(progress_bar.value + 1)
+
+
+func _on_back_button_pressed():
+	get_tree().change_scene_to_file(main_menu_path)

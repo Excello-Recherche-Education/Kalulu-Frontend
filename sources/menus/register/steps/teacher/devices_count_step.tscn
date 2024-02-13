@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://do5e7c1oxkn5g"]
+[gd_scene load_steps=4 format=3 uid="uid://do5e7c1oxkn5g"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_w3urq"]
 [ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="2_asuou"]
+[ext_resource type="Theme" uid="uid://cd7ftmo5x4c2r" path="res://resources/themes/kalulu_theme_big.tres" id="2_ux74f"]
 
 [node name="DevicesCountStep" instance=ExtResource("1_w3urq")]
 step_name = "devices"
@@ -12,6 +13,7 @@ text = "Choose the number of devices"
 
 [node name="DevicesCountField" type="SpinBox" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
+theme = ExtResource("2_ux74f")
 min_value = 1.0
 max_value = 90.0
 value = 1.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://6v3nachs7j71"]
+[gd_scene load_steps=31 format=3 uid="uid://6v3nachs7j71"]
 
 [ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="1_afd4d"]
@@ -11,14 +11,55 @@
 [ext_resource type="Script" path="res://sources/menus/main/kalulu.gd" id="8_cxg8l"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="10_icqmp"]
 [ext_resource type="Script" path="res://sources/menus/main/login.gd" id="12_6bu7q"]
-[ext_resource type="Texture2D" uid="uid://bsojx7tmm435x" path="res://assets/minigames/minigame_ui/graphic/button_next_up.png" id="12_km7h0"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="13_j3nb7"]
-[ext_resource type="Texture2D" uid="uid://brrxuaco0l85j" path="res://assets/minigames/minigame_ui/graphic/button_next_down.png" id="13_oqjai"]
 [ext_resource type="Script" path="res://sources/menus/main/language_field.gd" id="13_rs3hd"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="14_3lr3g"]
-[ext_resource type="Texture2D" uid="uid://bsmq426v8148w" path="res://assets/minigames/minigame_ui/graphic/button_next_disabled.png" id="14_11c6x"]
+[ext_resource type="Script" path="res://addons/godot-form-validator/form_validator.gd" id="15_e88oj"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="15_pcmnw"]
+[ext_resource type="Theme" uid="uid://cd7ftmo5x4c2r" path="res://resources/themes/kalulu_theme_big.tres" id="16_bq28s"]
+[ext_resource type="Script" path="res://addons/godot-form-validator/control_validator.gd" id="18_iunlb"]
+[ext_resource type="Script" path="res://addons/godot-form-validator/rules/required_rule.gd" id="19_o524c"]
+[ext_resource type="Script" path="res://addons/godot-form-validator/validators/range_validator.gd" id="20_6xsd1"]
+[ext_resource type="Script" path="res://addons/godot-form-validator/rules/email_rule.gd" id="20_jk8lq"]
 [ext_resource type="Texture2D" uid="uid://bbip3wpyidt1q" path="res://assets/menus/main/play_button_mask.png" id="20_oqrk5"]
+[ext_resource type="Script" path="res://addons/godot-form-validator/validators/line_edit_validator.gd" id="21_1bl4i"]
+
+[sub_resource type="Resource" id="Resource_mh75v"]
+script = ExtResource("19_o524c")
+fail_message = "A value is required."
+
+[sub_resource type="Resource" id="Resource_owox8"]
+script = ExtResource("20_6xsd1")
+validation_order = 1
+validation_method = 1
+skip_validation = false
+rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.gd")]([SubResource("Resource_mh75v")])
+
+[sub_resource type="Resource" id="Resource_j516d"]
+script = ExtResource("19_o524c")
+fail_message = "A value is required."
+
+[sub_resource type="Resource" id="Resource_ayewh"]
+script = ExtResource("20_jk8lq")
+fail_message = "Value must be a valid email address."
+
+[sub_resource type="Resource" id="Resource_hxkvx"]
+script = ExtResource("21_1bl4i")
+validation_order = 1
+validation_method = 1
+skip_validation = false
+rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.gd")]([SubResource("Resource_j516d"), SubResource("Resource_ayewh")])
+
+[sub_resource type="Resource" id="Resource_b08p8"]
+script = ExtResource("19_o524c")
+fail_message = "A value is required."
+
+[sub_resource type="Resource" id="Resource_k2y4u"]
+script = ExtResource("21_1bl4i")
+validation_order = 1
+validation_method = 1
+skip_validation = false
+rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.gd")]([SubResource("Resource_b08p8")])
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -136,54 +177,44 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Form" type="Control" parent="UserSelection"]
+[node name="Form" type="VBoxContainer" parent="UserSelection"]
 custom_minimum_size = Vector2(850, 300)
 layout_mode = 1
-anchor_left = 0.333984
-anchor_top = 0.416667
-anchor_right = 0.666016
-anchor_bottom = 0.583333
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -425.0
+offset_top = -160.0
+offset_right = 425.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+theme_override_constants/separation = 25
 
 [node name="SignInTeacher" type="Button" parent="UserSelection/Form"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.168
-grow_horizontal = 2
+layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Sign-in teacher account
 "
 metadata/_edit_use_anchors_ = true
 
 [node name="SignInParent" type="Button" parent="UserSelection/Form"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.416
-anchor_right = 1.0
-anchor_bottom = 0.584
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Sign-in parent account
 "
 metadata/_edit_use_anchors_ = true
 
 [node name="Register" type="Button" parent="UserSelection/Form"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.832
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Create an account"
 metadata/_edit_use_anchors_ = true
 
-[node name="Login" type="Control" parent="."]
+[node name="LoginForm" type="Control" parent="."]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -193,7 +224,163 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("12_6bu7q")
 
-[node name="InterfaceLeft" type="MarginContainer" parent="Login"]
+[node name="TeacherLabel" type="Label" parent="LoginForm"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 168.0
+offset_bottom = 286.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 90
+text = "Teacher login"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ParentLabel" type="Label" parent="LoginForm"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 168.0
+offset_bottom = 286.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 90
+text = "Parent login"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LoginFormValidator" type="Control" parent="LoginForm"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("15_e88oj")
+
+[node name="FormContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator"]
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -406.0
+offset_right = 500.0
+offset_bottom = 406.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="LanguageContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LanguageLabel" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/LanguageContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Language"
+
+[node name="LanguageField" type="OptionButton" parent="LoginForm/LoginFormValidator/FormContainer/LanguageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Combobox"
+theme_override_font_sizes/font_size = 70
+script = ExtResource("13_rs3hd")
+
+[node name="DeviceIDContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="DeviceIDLabel" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Device number"
+
+[node name="DeviceIDField" type="SpinBox" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("16_bq28s")
+min_value = 1.0
+max_value = 6.0
+value = 1.0
+rounded = true
+metadata/_edit_use_anchors_ = true
+
+[node name="DeviceIDValidator" type="Node" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer/DeviceIDField"]
+script = ExtResource("18_iunlb")
+validator = SubResource("Resource_owox8")
+
+[node name="DeviceIDFieldError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
+visible = false
+layout_mode = 2
+
+[node name="EmailContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="EmailLabel" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
+layout_mode = 2
+theme = ExtResource("15_pcmnw")
+theme_override_font_sizes/font_size = 70
+text = "Login"
+
+[node name="EmailField" type="LineEdit" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"1"
+theme_override_font_sizes/font_size = 70
+placeholder_text = "Email"
+
+[node name="EmailValidator" type="Node" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer/EmailField"]
+script = ExtResource("18_iunlb")
+validator = SubResource("Resource_hxkvx")
+
+[node name="EmailFieldError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
+visible = false
+layout_mode = 2
+
+[node name="PasswordContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PasswordField" type="LineEdit" parent="LoginForm/LoginFormValidator/FormContainer/PasswordContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+placeholder_text = "Password"
+secret = true
+
+[node name="PasswordValidator" type="Node" parent="LoginForm/LoginFormValidator/FormContainer/PasswordContainer/PasswordField"]
+script = ExtResource("18_iunlb")
+validator = SubResource("Resource_k2y4u")
+
+[node name="PasswordFieldError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/PasswordContainer"]
+visible = false
+layout_mode = 2
+
+[node name="ValidateButton" type="Button" parent="LoginForm/LoginFormValidator/FormContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 70
+text = "Log in"
+
+[node name="LoginError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Invalid username or password"
+
+[node name="InterfaceLeft" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -205,128 +392,15 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="Container" type="VBoxContainer" parent="Login/InterfaceLeft"]
+[node name="Container" type="VBoxContainer" parent="InterfaceLeft"]
 layout_mode = 2
 
-[node name="BackButton" type="TextureButton" parent="Login/InterfaceLeft/Container"]
+[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
 layout_mode = 2
 size_flags_vertical = 3
 texture_normal = ExtResource("13_j3nb7")
 texture_pressed = ExtResource("14_3lr3g")
 stretch_mode = 4
-
-[node name="Form" type="Control" parent="Login"]
-custom_minimum_size = Vector2(1350, 620)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -675.0
-offset_top = -310.0
-offset_right = 675.0
-offset_bottom = 310.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="EmailField" type="LineEdit" parent="Login/Form"]
-layout_mode = 1
-offset_top = 80.0
-offset_right = 800.0
-offset_bottom = 193.0
-theme_type_variation = &"1"
-theme_override_font_sizes/font_size = 70
-placeholder_text = "Email"
-
-[node name="Label" type="Label" parent="Login/Form/EmailField"]
-layout_mode = 0
-offset_top = -80.0
-offset_right = 412.0
-theme = ExtResource("15_pcmnw")
-theme_override_font_sizes/font_size = 70
-text = "Login"
-
-[node name="PasswordField" type="LineEdit" parent="Login/Form"]
-layout_mode = 1
-offset_top = 223.0
-offset_right = 800.0
-offset_bottom = 336.0
-theme_override_font_sizes/font_size = 70
-placeholder_text = "Password"
-secret = true
-
-[node name="DeviceIDField" type="SpinBox" parent="Login/Form"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -400.0
-offset_top = 80.0
-offset_bottom = 193.0
-grow_horizontal = 0
-theme = ExtResource("15_pcmnw")
-min_value = 1.0
-max_value = 6.0
-value = 1.0
-rounded = true
-
-[node name="Label" type="Label" parent="Login/Form/DeviceIDField"]
-layout_mode = 1
-offset_top = -80.0
-offset_right = 412.0
-theme_override_font_sizes/font_size = 70
-text = "Tablet number"
-
-[node name="LanguageField" type="OptionButton" parent="Login/Form"]
-layout_mode = 0
-offset_top = 356.0
-offset_right = 800.0
-offset_bottom = 469.0
-theme_override_font_sizes/font_size = 70
-script = ExtResource("13_rs3hd")
-
-[node name="ValidateButton" type="TextureButton" parent="Login/Form"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -321.0
-offset_top = -310.0
-offset_right = -181.0
-offset_bottom = -170.0
-grow_horizontal = 0
-grow_vertical = 0
-scale = Vector2(2, 2)
-texture_normal = ExtResource("12_km7h0")
-texture_pressed = ExtResource("13_oqjai")
-texture_disabled = ExtResource("14_11c6x")
-
-[node name="FieldMissingError" type="Label" parent="Login/Form"]
-visible = false
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -76.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "Please fill all the fields"
-
-[node name="LoginError" type="Label" parent="Login/Form"]
-visible = false
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -76.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "Invalid username or password"
 
 [node name="Informations" type="Control" parent="."]
 layout_mode = 1
@@ -397,7 +471,9 @@ vertical_alignment = 1
 
 [connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
 [connection signal="pressed" from="UserSelection/Form/SignInTeacher" to="." method="_on_sign_in_teacher_pressed"]
+[connection signal="pressed" from="UserSelection/Form/SignInParent" to="." method="_on_sign_in_parent_pressed"]
 [connection signal="pressed" from="UserSelection/Form/Register" to="." method="_on_register_pressed"]
-[connection signal="logged_in" from="Login" to="." method="_on_login_in"]
-[connection signal="pressed" from="Login/InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="Login/Form/ValidateButton" to="Login" method="_on_validate_button_pressed"]
+[connection signal="logged_in" from="LoginForm" to="." method="_on_login_in"]
+[connection signal="control_validated" from="LoginForm/LoginFormValidator" to="LoginForm" method="_on_login_form_validator_control_validated"]
+[connection signal="pressed" from="LoginForm/LoginFormValidator/FormContainer/ValidateButton" to="LoginForm" method="_on_validate_button_pressed"]
+[connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]

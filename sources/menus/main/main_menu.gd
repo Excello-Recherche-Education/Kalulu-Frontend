@@ -9,7 +9,8 @@ const register_scene_path := "res://sources/menus/register/register.tscn"
 
 @onready var kalulu : Control = $Kalulu
 @onready var user_selection : Control = $UserSelection
-@onready var login : Control = $Login
+@onready var login_form : Control = %LoginForm
+@onready var interface_left : MarginContainer = %InterfaceLeft
 
 
 func _ready():
@@ -25,22 +26,31 @@ func _on_main_button_pressed():
 		kalulu.hide()
 		kalulu.stop_speech()
 		user_selection.show()
+		interface_left.show()
+
+
+func _on_back_button_pressed():
+	login_form.hide()
+	user_selection.hide()
+	kalulu.show()
+	interface_left.hide()
 
 
 func _on_sign_in_teacher_pressed():
 	user_selection.hide()
-	login.show()
+	kalulu.hide()
+	login_form.show_form(true)
 
 
-func _on_back_button_pressed():
-	login.hide()
-	kalulu.show()
-	kalulu.start_speech()
-
-
-func _on_login_in():
-	get_tree().change_scene_to_file(next_scene_path)
+func _on_sign_in_parent_pressed():
+	user_selection.hide()
+	kalulu.hide()
+	login_form.show_form(false)
 
 
 func _on_register_pressed():
 	get_tree().change_scene_to_file(register_scene_path)
+
+
+func _on_login_in():
+	get_tree().change_scene_to_file(next_scene_path)

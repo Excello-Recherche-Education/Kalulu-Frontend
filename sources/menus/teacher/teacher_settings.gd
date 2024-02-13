@@ -9,7 +9,8 @@ func _on_back_button_pressed():
 
 
 func _on_button_pressed():
-	print(UserDataManager.teacher_settings.students)
+	if UserDataManager.teacher_settings:
+		print(UserDataManager.teacher_settings.students)
 
 
 func _on_logout_button_pressed():

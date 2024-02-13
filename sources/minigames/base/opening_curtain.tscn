@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://cp27bjh6v5bkj"]
 
 [ext_resource type="Script" path="res://sources/minigames/base/opening_curtain.gd" id="1_xih0r"]
 [ext_resource type="Texture2D" uid="uid://4u85b8th4uuv" path="res://assets/minigames/minigame_ui/graphic/curtain/bush.png" id="1_yhjvv"]

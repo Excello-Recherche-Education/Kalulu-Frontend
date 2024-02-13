@@ -21,6 +21,9 @@ func _process(delta):
 	if not visible:
 		return
 	
+	if not sprite.is_playing():
+		sprite.play("Tc_Idle1")
+	
 	if not isSpeaking:
 		elapsedTime += delta
 	if elapsedTime > 20:
