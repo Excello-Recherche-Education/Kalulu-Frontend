@@ -1,7 +1,7 @@
 extends Control
 
 const main_menu_path := "res://sources/menus/main/main_menu.tscn"
-const next_scene_path := "res://sources/menus/teacher/teacher_settings.tscn"
+const next_scene_path := "res://sources/menus/settings/teacher_settings.tscn"
 const symbols_names = {
 	"1" : "star",
 	"2" : "bar",
@@ -18,9 +18,12 @@ const symbols_names = {
 @onready var parent_steps : Array[PackedScene] = [
 	preload("res://sources/menus/register/steps/parent/players_count_step.tscn")
 ]
-
+@onready var last_steps: Array[PackedScene] = [
+	preload("res://sources/menus/register/steps/credentials_step.tscn"),
+	preload("res://sources/menus/register/steps/general_conditions_step.tscn"),
+	preload("res://sources/menus/register/steps/recap_step.tscn")
+]
 @onready var account_type_step : PackedScene = preload("res://sources/menus/register/steps/account_type_step.tscn")
-@onready var credential_step : PackedScene = preload("res://sources/menus/register/steps/credentials_step.tscn")
 @onready var students_step : PackedScene = preload("res://sources/menus/register/steps/teacher/students_count_step.tscn")
 @onready var player_step : PackedScene = preload("res://sources/menus/register/steps/parent/player_step.tscn")
 
@@ -106,7 +109,7 @@ func _on_step_completed(step : Step):
 			elif register_data.account_type == TeacherSettings.AccountType.Parent:
 				for scene in parent_steps:
 					current_steps.append(scene.instantiate())
-			progress_bar.max_value = current_steps.size()
+			progress_bar.max_value = current_steps.size() + 3
 		"devices":
 			# Adds students steps for teachers
 			_remove_future_steps()
@@ -118,7 +121,8 @@ func _on_step_completed(step : Step):
 					current_steps.append(students_step_scene)
 				else:
 					students_step_scene.queue_free()
-			current_steps.append(credential_step.instantiate())
+			for scene in last_steps:
+					current_steps.append(scene.instantiate())
 			progress_bar.max_value = current_steps.size()
 		"players":
 			# Adds students steps for parents
@@ -130,7 +134,8 @@ func _on_step_completed(step : Step):
 				student_step_scene.data = student
 				current_steps.append(student_step_scene)
 				student_count += 1
-			current_steps.append(credential_step.instantiate())
+			for scene in last_steps:
+				current_steps.append(scene.instantiate())
 			progress_bar.max_value = current_steps.size()
 	
 	if progress_bar.value == current_steps.size()-1:

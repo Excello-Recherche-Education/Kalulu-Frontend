@@ -1,0 +1,76 @@
+[gd_scene load_steps=3 format=3 uid="uid://0arkj3ss1fbj"]
+
+[ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_crpog"]
+[ext_resource type="Script" path="res://sources/menus/register/steps/recap_step.gd" id="2_0vlqx"]
+
+[node name="RecapStep" instance=ExtResource("1_crpog")]
+script = ExtResource("2_0vlqx")
+
+[node name="ValidateButton" parent="RightMargin/RightContainer" index="0"]
+text = "Validate"
+
+[node name="PanelContainer" parent="." index="2"]
+offset_left = -1024.0
+offset_right = 1024.0
+offset_bottom = 1344.0
+
+[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
+visible = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" index="1"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Title" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Registration summary"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="Email" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Email address : %s"
+
+[node name="AccountType" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Account type : %s"
+
+[node name="EducationMethod" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Education method : %s"
+
+[node name="DevicesCount" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Number of devices : %d"
+
+[node name="StudentsCount" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="4"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Number of students : %d"
+
+[node name="RecapContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="5"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Background" parent="." index="3"]
+visible = false

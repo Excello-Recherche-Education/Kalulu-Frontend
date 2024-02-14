@@ -16,7 +16,7 @@ enum EducationMethod {
 @export var account_type : AccountType
 @export var education_method : EducationMethod
 @export var devices_count : int
-@export var students : Dictionary
+@export var students : Dictionary # int : Array[StudentData]
 @export var email : String
 @export var password : String # Temporary
 
@@ -35,6 +35,18 @@ func get_new_code() -> String :
 		code = available_codes.pick_random()
 	return code
 
+
+func get_students_count() -> int :
+	if not students:
+		return 0
+	
+	var count = 0
+	for device in students.keys():
+		var students_array = students[device] as Array
+		if students_array:
+			count += students[device].size()
+	
+	return count
 
 func _to_string():
 	return "{Account Type: %s, Education Method: %s, Devices count: %d, Students: %s, Email: %s, Password: %s}" % [AccountType.keys()[account_type], EducationMethod.keys()[education_method], devices_count, str(students), email, password]

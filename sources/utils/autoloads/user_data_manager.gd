@@ -145,6 +145,93 @@ func _load_teacher_settings() -> void:
 func _save_teacher_settings():
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
+func add_device() -> bool:
+	if not teacher_settings:
+		return false
+	
+	# Checks if the logged user is a teacher (only teachers have several devices)
+	if teacher_settings.account_type != TeacherSettings.AccountType.Teacher:
+		return false
+	
+	# Gets the last device number
+	if not teacher_settings.students:
+		return false
+	
+	var device_id = teacher_settings.students.keys().back() + 1
+	
+	# Adds the new device
+	var students_array : Array[StudentData] = []
+	teacher_settings.students[device_id] = students_array
+	
+	# Saves the settings
+	_save_teacher_settings()
+	
+	return true
+
+func delete_device(device_id : int) -> bool:
+	
+	# Gets the list of students on the device
+	
+	# Deletes students saves
+	
+	# Removes the device
+	
+	# Saves the settings
+	
+	return true
+
+func add_student(device_id : int, student_data : StudentData) -> bool:
+	if not teacher_settings:
+		return false
+	
+	# Finds the device
+	if not teacher_settings.students or not teacher_settings.students.has(device_id):
+		return false
+	
+	# Checks the student
+	if not student_data:
+		return false
+	
+	# Generates a password
+	student_data.code = teacher_settings.get_new_code()
+	if not student_data.code:
+		return false
+	
+	# Adds the student on the device
+	teacher_settings.students[device_id].append(student_data)
+	
+	# Saves the settings
+	_save_teacher_settings()
+	
+	return true
+
+func add_default_student(device_id : int) -> bool:
+	return add_student(device_id, StudentData.new())
+
+func delete_student(device_id : int, code : String) -> bool:
+	if not teacher_settings:
+		return false
+	
+	# Finds the device
+	if not teacher_settings.students or not teacher_settings.students.has(device_id):
+		return false
+	
+	# Finds the student
+	var student_data : StudentData
+	for s in teacher_settings.students[device_id]:
+		if s.code == code:
+			student_data = s
+			break
+	
+	# Deletes the saves TODO
+	
+	# Removes the student
+	teacher_settings.students[device_id].erase(student_data)
+	
+	# Saves the settings
+	_save_teacher_settings()
+	
+	return true
 
 # Student settings #
 

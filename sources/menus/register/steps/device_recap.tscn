@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsvgeiocp4y36"]
+
+[ext_resource type="Script" path="res://sources/menus/register/steps/device_recap.gd" id="1_q1dk1"]
+
+[node name="DeviceRecap" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_bottom = 25
+script = ExtResource("1_q1dk1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Device 1 :"
+
+[node name="StudentsContainer" type="GridContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+columns = 2

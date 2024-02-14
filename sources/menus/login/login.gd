@@ -3,7 +3,7 @@ extends Control
 const teacher_password : String = "42"
 const back_scene_path: = "res://sources/menus/main/main_menu.tscn"
 const next_scene_path: = "res://sources/menus/minigame_selection.tscn"
-const teacher_scene_path: = "res://sources/menus/teacher/teacher_settings.tscn"
+const teacher_scene_path: = "res://sources/menus/settings/teacher_settings.tscn"
 const help_speech_path : String = "main_menu/audio/login_screen_help_code.mp3"
 const wrong_password_speech_path : String = "main_menu/audio/login_screen_feedback_wrong_password.mp3"
 const right_password_speech_path : String = "main_menu/audio/login_screen_feedback_right_password.mp3"
