@@ -75,18 +75,20 @@ func _on_data_loader_button_2_pressed() -> void:
 
 
 func _on_export_filename_selected(filename: String) -> void:
+	var summary_file: = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
 	for i in Database.get_lessons_count():
-		print("Lesson %s --------------------" % i)
-		print("\t \t Words ---")
+		summary_file.store_line("Lesson %s --------------------" % i)
+		summary_file.store_line("\t \t Words ---")
 		var words: = ""
 		for e in Database.get_words_for_lesson(i, true):
 			words += e.Word + ", "
-		print(words.trim_suffix(", "))
-		print("\n")
-		print("\t \t Sentences ---")
+		summary_file.store_line(words.trim_suffix(", "))
+		summary_file.store_line("\n")
+		summary_file.store_line("\t \t Sentences ---")
 		for e in Database.get_sentences_for_lesson(i, true):
-			print(e.Sentence)
-		print("\n\n")
+			summary_file.store_line(e.Sentence)
+		summary_file.store_line("\n\n")
+	summary_file.close()
 	var folder_zipper: = FolderZipper.new()
 	folder_zipper.compress(base_path.path_join(Database.language), filename)
 
