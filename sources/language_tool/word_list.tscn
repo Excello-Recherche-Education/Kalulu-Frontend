@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dfw7m0a7148fu"]
+[gd_scene load_steps=8 format=3 uid="uid://dfw7m0a7148fu"]
 
 [ext_resource type="Script" path="res://sources/language_tool/word_list.gd" id="1_m0usq"]
 [ext_resource type="PackedScene" uid="uid://dx33ijlgd8m3w" path="res://sources/language_tool/word_list_element.tscn" id="2_roh06"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="4_ar78n"]
 [ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="5_1f555"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="5_h04hf"]
+[ext_resource type="Script" path="res://sources/language_tool/ScrollContainer.gd" id="6_0r6vt"]
 
 [node name="WordList" type="Control"]
 layout_mode = 3
@@ -83,6 +84,7 @@ color = Color(0, 0, 0, 1)
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+script = ExtResource("6_0r6vt")
 
 [node name="ElementsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true

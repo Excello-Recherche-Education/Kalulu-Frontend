@@ -96,18 +96,33 @@ theme_override_font_sizes/font_size = 100
 text = "Export
 "
 
-[node name="LanguageSelectButton" type="OptionButton" parent="."]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 147.0
-offset_top = 113.0
-offset_right = 560.0
-offset_bottom = 258.0
+offset_left = 85.0
+offset_top = 117.0
+offset_right = 626.0
+offset_bottom = 515.0
+theme_override_constants/separation = 50
+
+[node name="ImportLanguageButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Import language data"
+
+[node name="LanguageSelectButton" type="OptionButton" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(2.08165e-12, 150)
+layout_mode = 2
 theme_override_font_sizes/font_size = 60
 alignment = 1
 item_count = 1
 popup/item_0/text = "New"
 popup/item_0/id = 0
+
+[node name="AddWordListButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Change word list"
 
 [node name="NewLanguageContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -156,15 +171,6 @@ ok_button_text = "Ouvrir"
 file_mode = 0
 access = 2
 
-[node name="AddWordListButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 150.0
-offset_top = 301.0
-offset_right = 563.0
-offset_bottom = 375.0
-theme_override_font_sizes/font_size = 60
-text = "Change word list"
-
 [connection signal="pressed" from="CenterContainer/VBoxContainer/GPListButton" to="." method="_on_gp_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/WordListButton" to="." method="_on_word_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/SyllableListButton" to="." method="_on_syllable_list_button_pressed"]
@@ -174,6 +180,7 @@ text = "Change word list"
 [connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]
 [connection signal="pressed" from="ExportButton" to="." method="_on_export_button_pressed"]
-[connection signal="item_selected" from="LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/ImportLanguageButton" to="." method="_on_import_language_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/AddWordListButton" to="." method="_on_add_word_list_button_pressed"]
 [connection signal="text_submitted" from="NewLanguageContainer/CenterContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
-[connection signal="pressed" from="AddWordListButton" to="." method="_on_add_word_list_button_pressed"]

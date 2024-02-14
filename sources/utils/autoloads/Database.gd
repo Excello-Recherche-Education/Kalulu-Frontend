@@ -17,7 +17,7 @@ const video_extension: = ".ogv"
 const image_extension: = ".png"
 const sound_extension: = ".mp3"
 
-var language: String = "french":
+var language: String = "fr":
 	set(value):
 		language = value
 		db_path = base_path + language + "/language.db"
@@ -184,6 +184,8 @@ func get_min_lesson_for_sentence_id(sentence_id: int) -> int:
 	INNER JOIN GPsInLessons ON Lessons.ID = GPsInLessons.LessonID
 	INNER JOIN WordsInSentences ON WordsInSentences.SentenceID = ?
 	INNER JOIN GPsInWords ON GPsInWords.GPID = GPsInLessons.GPID AND GPsInWords.WordID = WordsInSentences.WordID", [sentence_id])
+	if not db.query_result[0].i:
+		return -1
 	return db.query_result[0].i
 
 
@@ -294,7 +296,7 @@ func _import_look_and_learn_data() -> void:
 	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
 	var dict = JSON.parse_string(file.get_line())
 	for e in dict.values():
-		var file_path: = base_path.path_join(language).path_join(look_and_learn_images).path_join(e.IMAGE) + image_extension
+		var file_path: = "res://data3/".path_join(look_and_learn_images).path_join(e.IMAGE) + image_extension
 		DirAccess.copy_absolute(file_path, get_gp_look_and_learn_image_path({
 			Grapheme = e.GRAPHEME,
 			Phoneme = e.PHONEME,

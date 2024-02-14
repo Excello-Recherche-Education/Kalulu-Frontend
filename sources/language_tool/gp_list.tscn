@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cnyl3pxt7dn8y"]
+[gd_scene load_steps=7 format=3 uid="uid://cnyl3pxt7dn8y"]
 
 [ext_resource type="Script" path="res://sources/language_tool/gp_list.gd" id="1_vqemo"]
 [ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="2_belwy"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="3_837c6"]
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="4_a4ww8"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="4_sg3ch"]
+[ext_resource type="Script" path="res://sources/language_tool/ScrollContainer.gd" id="6_t1l1g"]
 
 [node name="GpList" type="Control"]
 layout_mode = 3
@@ -76,6 +77,7 @@ color = Color(0, 0, 0, 1)
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+script = ExtResource("6_t1l1g")
 
 [node name="ElementsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c40wqlao0hl03"]
+[gd_scene load_steps=5 format=3 uid="uid://c1fn2kk0005ce"]
 
 [ext_resource type="Script" path="res://sources/language_tool/gp_video_descriptions.gd" id="1_nggwi"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_qd3s2"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_kfx0p"]
+[ext_resource type="Script" path="res://sources/language_tool/ScrollContainer.gd" id="4_o8dkr"]
 
 [node name="GpVideoDescriptions" type="Control"]
 layout_mode = 3
@@ -71,6 +72,7 @@ size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PanelContainer2"]
 layout_mode = 2
+script = ExtResource("4_o8dkr")
 
 [node name="DescriptionsContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer2/ScrollContainer"]
 unique_name_in_owner = true

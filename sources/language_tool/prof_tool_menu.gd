@@ -8,7 +8,7 @@ var save_file: ProfToolSave
 @onready var new_language_container: = %NewLanguageContainer
 @onready var line_edit: = %LineEdit
 @onready var file_dialog: = $FileDialog
-@onready var add_word_list_button: = $AddWordListButton
+@onready var add_word_list_button: = $VBoxContainer/AddWordListButton
 
 
 func _ready() -> void:
@@ -18,7 +18,12 @@ func _ready() -> void:
 		save_file.resource_path = save_file_path
 		ResourceSaver.save(save_file, save_file_path)
 	save_file = load(save_file_path)
-	
+	_display_available_languages()
+
+
+func _display_available_languages() -> void:
+	for item in range(1, language_select_button.item_count):
+		language_select_button.remove_item(item)
 	var available_languages: = _get_available_languages()
 	var ind: = 1
 	for available_language in available_languages:
@@ -82,7 +87,7 @@ func _on_export_button_pressed() -> void:
 			print(e.Sentence)
 		print("\n\n")
 	var folder_zipper: = FolderZipper.new()
-	folder_zipper.compress("user://language_resources/", "user://language_export.zip")
+	folder_zipper.compress(base_path.path_join(Database.language), "user://language_export.zip")
 
 
 func _get_available_languages() -> Array[String]:
@@ -95,8 +100,6 @@ func _get_available_languages() -> Array[String]:
 			if dir.current_is_dir():
 				if FileAccess.file_exists(base_path.path_join(file_name).path_join("language.db")):
 					available_languages.append(file_name)
-			else:
-				continue
 			file_name = dir.get_next()
 	return available_languages
 
@@ -140,3 +143,21 @@ func _on_add_word_list_button_pressed() -> void:
 	_update_add_word_list_button()
 
 
+
+
+func _on_import_language_button_pressed() -> void:
+	file_dialog.filters = []
+	file_dialog.add_filter("*.zip", "zip")
+	
+	for connection in file_dialog.file_selected.get_connections():
+		connection["signal"].disconnect(connection["callable"])
+	
+	file_dialog.file_selected.connect(_language_data_selected)
+	
+	file_dialog.show()
+
+
+func _language_data_selected(file_path: String) -> void:
+	if FileAccess.file_exists(file_path):
+		var folder_unzipper: = FolderUnzipper.new()
+		folder_unzipper.extract(file_path, base_path, false)
