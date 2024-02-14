@@ -7,9 +7,6 @@ extends Control
 @onready var lower_container: = %LowerContainer
 @onready var upper_container: = %UpperContainer
 
-const resource_folder: = "res://language_resources/"
-const language_folder: = "french/"
-const tracing_data_folder: = "tracing_data/"
 const extension: = ".csv"
 
 var current_letter: = -1
@@ -72,7 +69,7 @@ func _save_segments(segments: Array, path: String) -> void:
 
 
 func real_path(path: String) -> String:
-	return resource_folder + language_folder + tracing_data_folder + path + extension
+	return Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder).path_join(path) + extension
 
 
 func _on_save_button_pressed() -> void:
