@@ -171,6 +171,14 @@ ok_button_text = "Ouvrir"
 file_mode = 0
 access = 2
 
+[node name="FileDialogExport" type="FileDialog" parent="."]
+initial_position = 2
+size = Vector2i(1500, 1000)
+always_on_top = true
+popup_window = true
+ok_button_text = "Enregistrer"
+access = 2
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/GPListButton" to="." method="_on_gp_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/WordListButton" to="." method="_on_word_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/SyllableListButton" to="." method="_on_syllable_list_button_pressed"]

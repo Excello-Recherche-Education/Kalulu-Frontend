@@ -8,6 +8,7 @@ var save_file: ProfToolSave
 @onready var new_language_container: = %NewLanguageContainer
 @onready var line_edit: = %LineEdit
 @onready var file_dialog: = $FileDialog
+@onready var file_dialog_export: = $FileDialogExport
 @onready var add_word_list_button: = $VBoxContainer/AddWordListButton
 
 
@@ -73,7 +74,7 @@ func _on_data_loader_button_2_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/gp_video_descriptions.tscn")
 
 
-func _on_export_button_pressed() -> void:
+func _on_export_filename_selected(filename: String) -> void:
 	for i in Database.get_lessons_count():
 		print("Lesson %s --------------------" % i)
 		print("\t \t Words ---")
@@ -87,7 +88,7 @@ func _on_export_button_pressed() -> void:
 			print(e.Sentence)
 		print("\n\n")
 	var folder_zipper: = FolderZipper.new()
-	folder_zipper.compress(base_path.path_join(Database.language), "user://language_export.zip")
+	folder_zipper.compress(base_path.path_join(Database.language), filename)
 
 
 func _get_available_languages() -> Array[String]:
@@ -155,6 +156,18 @@ func _on_import_language_button_pressed() -> void:
 	file_dialog.file_selected.connect(_language_data_selected)
 	
 	file_dialog.show()
+
+
+func _on_export_button_pressed() -> void:
+	file_dialog_export.filters = []
+	file_dialog_export.add_filter("*.zip", "zip")
+	
+	for connection in file_dialog_export.file_selected.get_connections():
+		connection["signal"].disconnect(connection["callable"])
+	
+	file_dialog_export.file_selected.connect(_on_export_filename_selected)
+	
+	file_dialog_export.show()
 
 
 func _language_data_selected(file_path: String) -> void:
