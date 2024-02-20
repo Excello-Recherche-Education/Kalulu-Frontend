@@ -59,6 +59,7 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 
 
 func _save_segments(segments: Array, path: String) -> void:
+	DirAccess.make_dir_recursive_absolute(Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder))
 	var file: = FileAccess.open(real_path(path), FileAccess.WRITE)
 	for segment in segments:
 		var values: PackedStringArray = []
