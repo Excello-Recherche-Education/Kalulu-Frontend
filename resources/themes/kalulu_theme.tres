@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=23 format=3 uid="uid://dqjvrt5nrtwn1"]
+[gd_resource type="Theme" load_steps=30 format=3 uid="uid://dqjvrt5nrtwn1"]
 
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
 [ext_resource type="FontFile" uid="uid://c7hsjkvr1pbud" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_shpmh"]
@@ -177,6 +177,14 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_61sv1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8tujn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3fet0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c4e5a"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sfncn"]
 bg_color = Color(0.254902, 0.329412, 0.572549, 1)
 border_width_bottom = 2
@@ -186,6 +194,13 @@ border_color = Color(0, 0, 0, 1)
 bg_color = Color(0.376471, 0.470588, 0.780392, 1)
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nolh0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_unu58"]
+bg_color = Color(0.458824, 0.392157, 0.658824, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_602tu"]
 
 [resource]
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_nikxc")
@@ -217,6 +232,12 @@ FileDialog/icons/forward_folder = ExtResource("2_hbp6q")
 FileDialog/icons/parent_folder = ExtResource("3_1nwm4")
 FileDialog/icons/reload = ExtResource("4_ymfot")
 FileDialog/icons/toggle_hidden = ExtResource("5_yja2v")
+ItemList/colors/guide_color = Color(1, 1, 1, 0)
+ItemList/constants/v_separation = 10
+ItemList/styles/cursor = SubResource("StyleBoxEmpty_61sv1")
+ItemList/styles/cursor_unfocused = SubResource("StyleBoxEmpty_8tujn")
+ItemList/styles/focus = SubResource("StyleBoxEmpty_3fet0")
+ItemList/styles/hovered = SubResource("StyleBoxEmpty_c4e5a")
 Label/font_sizes/font_size = 42
 LineEdit/constants/caret_width = 4
 LineEdit/font_sizes/font_size = 32
@@ -228,6 +249,9 @@ PanelContainer/styles/panel = SubResource("StyleBoxFlat_3gh3j")
 PopupMenu/font_sizes/font_size = 100
 PopupMenu/fonts/font = ExtResource("1_shpmh")
 PopupMenu/fonts/font_separator = ExtResource("1_shpmh")
+ProgressBar/fonts/font = ExtResource("1_shpmh")
+ProgressBar/styles/background = SubResource("StyleBoxEmpty_nolh0")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_unu58")
 TabBar/font_sizes/font_size = 70
 TabBar/fonts/font = ExtResource("1_shpmh")
 TabContainer/colors/drop_mark_color = Color(1, 1, 1, 1)
@@ -236,6 +260,7 @@ TabContainer/constants/outline_size = 1
 TabContainer/constants/side_margin = 0
 TabContainer/font_sizes/font_size = 70
 TabContainer/fonts/font = ExtResource("1_shpmh")
+TabContainer/styles/panel = SubResource("StyleBoxEmpty_602tu")
 TabContainer/styles/tab_disabled = null
 TabContainer/styles/tab_focus = null
 TabContainer/styles/tab_hovered = null

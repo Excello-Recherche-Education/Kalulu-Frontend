@@ -168,18 +168,6 @@ func add_device() -> bool:
 	
 	return true
 
-func delete_device(device_id : int) -> bool:
-	
-	# Gets the list of students on the device
-	
-	# Deletes students saves
-	
-	# Removes the device
-	
-	# Saves the settings
-	
-	return true
-
 func add_student(device_id : int, student_data : StudentData) -> bool:
 	if not teacher_settings:
 		return false
@@ -232,6 +220,7 @@ func delete_student(device_id : int, code : String) -> bool:
 	_save_teacher_settings()
 	
 	return true
+
 
 # Student settings #
 

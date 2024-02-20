@@ -5,4 +5,7 @@
 [node name="PlayersCountStep" instance=ExtResource("1_6th8p")]
 device_id = 1
 step_name = "players"
-question = "Choose the number of splayers"
+question = "Choose the number of players"
+
+[node name="StudentsCountFieldLabel" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/StudentsCountContainer" index="0"]
+text = "Players :"

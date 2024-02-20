@@ -14,7 +14,7 @@ signal next(step : Step)
 @export_multiline var question : String
 @export var data : Resource
 
-func _ready():
+func on_enter() -> void:
 	form_binder.read(data)
 	question_label.text = question
 

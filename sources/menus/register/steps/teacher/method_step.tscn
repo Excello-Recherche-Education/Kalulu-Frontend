@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://buhnx0oblueuq"]
+[gd_scene load_steps=9 format=3 uid="uid://buhnx0oblueuq"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_ksrhk"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/control_validator.gd" id="2_03dua"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_qewnl"]
 [ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="4_1k1yt"]
 [ext_resource type="Script" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_rimto"]
+[ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="6_sf33v"]
 
 [sub_resource type="Resource" id="Resource_kw8sn"]
 script = ExtResource("3_qewnl")
@@ -23,16 +24,21 @@ question = "Choose the education method"
 [node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
 text = "Choose the education method"
 
-[node name="MethodContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
+[node name="MethodContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
 
-[node name="MethodSelectError" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer" index="0"]
-visible = false
+[node name="MethodSelectLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer" index="0"]
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
-text = "Test"
-vertical_alignment = 1
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 70
+text = "Method :"
 
-[node name="MethodSelect" type="ItemList" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MethodSelect" type="ItemList" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 auto_height = true
@@ -40,11 +46,18 @@ item_count = 2
 item_0/text = "App Only"
 item_1/text = "Complete"
 
-[node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/MethodSelect" index="1"]
+[node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="1"]
 script = ExtResource("2_03dua")
 validator = SubResource("Resource_ar6ux")
 
-[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/MethodSelect" index="2"]
+[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="2"]
 anchors_preset = 0
 script = ExtResource("4_1k1yt")
 property_name = "education_method"
+
+[node name="MethodSelectError" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/VBoxContainer" index="1"]
+visible = false
+layout_mode = 2
+text = "Test"
+label_settings = ExtResource("6_sf33v")
+vertical_alignment = 1

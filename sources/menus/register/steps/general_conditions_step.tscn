@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dimxdgkufgo12"]
+[gd_scene load_steps=4 format=3 uid="uid://dimxdgkufgo12"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_up4b7"]
 [ext_resource type="Script" path="res://sources/menus/register/steps/general_conditions_step.gd" id="2_5ibpi"]
+[ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="3_qdoff"]
 
 [node name="GeneralConditionsStep" instance=ExtResource("1_up4b7")]
 script = ExtResource("2_5ibpi")
@@ -73,6 +74,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Please click accept to move forward"
+label_settings = ExtResource("3_qdoff")
 
 [node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="1"]
 visible = false

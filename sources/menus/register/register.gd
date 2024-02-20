@@ -62,6 +62,7 @@ func _go_to_step(step_index: int):
 	# Connect the step
 	next_step.back.connect(_on_step_back)
 	next_step.next.connect(_on_step_completed)
+	next_step.on_enter()
 	
 	# Handles progress bar
 	progress_bar.set_value_with_tween(step_index)
