@@ -23,11 +23,13 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 	kalulu_sprite.play("Show")
 	await kalulu_sprite.animation_finished
 	
-	kalulu_sprite.play("Talk1")
-	audio_player.stream = speech
-	audio_player.play()
-	
-	await audio_player.finished
+	if speech:
+		kalulu_sprite.play("Talk1")
+		audio_player.stream = speech
+		audio_player.play()
+		await audio_player.finished
+	else:
+		push_warning("Speech not found")
 	
 	audio_player.stream = hide_sound
 	audio_player.play()

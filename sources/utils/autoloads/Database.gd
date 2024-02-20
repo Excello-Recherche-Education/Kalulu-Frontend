@@ -163,7 +163,10 @@ func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
 	return db.query_result
 
 func get_audio_stream_for_path(path: String) -> AudioStream:
-	return load(base_path + language + "/" + path)
+	var full_path : String = base_path.path_join(language).path_join(path)
+	if not FileAccess.file_exists(full_path):
+		return null
+	return load(full_path)
 
 func get_min_lesson_for_gp_id(gp_id: int) -> int:
 	db.query_with_bindings("SELECT Lessons.LessonNb as i FROM Lessons

@@ -10,6 +10,10 @@ var isSpeaking : bool = false :
 	set(value):
 		isSpeaking = value
 		elapsedTime = 0
+		if isSpeaking:
+			sprite.play("Tc_Talk1")
+		else:
+			sprite.play("Tc_Idle1")
 var elapsedTime : float = 0.0
 
 
@@ -30,15 +34,16 @@ func _process(delta):
 		start_speech()
 
 func _play_speech(speech : AudioStream):
+	if not speech:
+		push_warning("Speech not found")
+		isSpeaking = false
+		return
+	
 	isSpeaking = true
 	
-	sprite.play("Tc_Talk1")
 	speech_player.stream = speech
 	speech_player.play()
-	
 	await speech_player.finished
-	
-	sprite.play("Tc_Idle1")
 	
 	isSpeaking = false
 
