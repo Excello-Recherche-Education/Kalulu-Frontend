@@ -91,6 +91,7 @@ columns = 5
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+script = ExtResource("6_ej5w8")
 
 [node name="LessonsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
