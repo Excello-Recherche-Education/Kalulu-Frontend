@@ -81,6 +81,7 @@ offset_left = -775.0
 offset_right = 775.0
 offset_bottom = 502.0
 grow_horizontal = 2
+theme_type_variation = &"PanelKalulu"
 
 [node name="QuestionContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2

@@ -91,6 +91,7 @@ anchor_right = 0.807031
 anchor_bottom = 0.391111
 grow_horizontal = 2
 grow_vertical = 2
+theme_type_variation = &"PanelKalulu"
 metadata/_edit_use_anchors_ = true
 
 [node name="LabelContainer" type="MarginContainer" parent="AdultCheck/PanelContainer"]

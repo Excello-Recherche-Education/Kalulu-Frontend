@@ -25,6 +25,7 @@ offset_right = 411.0
 offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_type_variation = &"PanelKalulu"
 
 [node name="MarginContainer" type="MarginContainer" parent="StudentContainer"]
 layout_mode = 2

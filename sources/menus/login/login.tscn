@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://2wab3q35ssta"]
+[gd_scene load_steps=13 format=3 uid="uid://2wab3q35ssta"]
 
 [ext_resource type="Script" path="res://sources/menus/login/login.gd" id="1_spyuf"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="3_0my6t"]
@@ -10,9 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_0dhup"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="7_2wdoi"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="8_nxlxw"]
-[ext_resource type="Texture2D" uid="uid://b4xm8a5y2lf3h" path="res://assets/menus/login/button_teacher_1.png" id="9_7lscf"]
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="9_k74e3"]
-[ext_resource type="Texture2D" uid="uid://g2igusggq16s" path="res://assets/menus/login/button_teacher_0.png" id="10_ro1l5"]
 [ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="24_4xfja"]
 
 [node name="Login" type="Control"]
@@ -94,13 +92,11 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="TeacherButton" type="TextureButton" parent="InterfaceRight"]
-custom_minimum_size = Vector2(0, 140)
+[node name="TeacherButton" type="Button" parent="InterfaceRight"]
 layout_mode = 2
 size_flags_vertical = 8
-texture_normal = ExtResource("9_7lscf")
-texture_pressed = ExtResource("10_ro1l5")
-stretch_mode = 5
+theme_override_font_sizes/font_size = 70
+text = "Teacher"
 
 [node name="TeacherTimer" type="Timer" parent="InterfaceRight/TeacherButton"]
 wait_time = 5.0
