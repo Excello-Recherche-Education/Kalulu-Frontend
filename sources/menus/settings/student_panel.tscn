@@ -7,7 +7,7 @@
 custom_minimum_size = Vector2(822, 500)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 500.0
+offset_right = 822.0
 offset_bottom = 500.0
 size_flags_horizontal = 3
 script = ExtResource("1_teefe")
@@ -48,6 +48,8 @@ vertical_alignment = 1
 [node name="PasswordVisualizer" parent="StudentContainer/MarginContainer/VBoxContainer" instance=ExtResource("1_7chbh")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+password = "123"
 
 [node name="DetailsButton" type="TextureButton" parent="StudentContainer"]
 layout_mode = 2

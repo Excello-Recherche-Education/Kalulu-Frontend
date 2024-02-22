@@ -8,7 +8,8 @@ const device_tab_scene : PackedScene = preload("res://sources/menus/settings/dev
 @onready var devices_tab_container : TabContainer = %DevicesTabContainer
 
 func _ready():
-	_refresh_devices_tabs()
+	await _refresh_devices_tabs()
+	OpeningCurtain.open()
 
 
 func _refresh_devices_tabs() -> void:
@@ -28,10 +29,12 @@ func _refresh_devices_tabs() -> void:
 
 
 func _on_back_button_pressed():
+	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(login_menu_path)
 
 
 func _on_logout_button_pressed():
+	await OpeningCurtain.close()
 	UserDataManager.logout()
 	get_tree().change_scene_to_file(main_menu_path)
 

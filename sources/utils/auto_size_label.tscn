@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://c6klih3h3ws6f"]
+[gd_scene load_steps=2 format=3 uid="uid://bgio7muqck2bu"]
 
 [ext_resource type="Script" path="res://sources/utils/auto_size_label.gd" id="1_j2tjj"]
 

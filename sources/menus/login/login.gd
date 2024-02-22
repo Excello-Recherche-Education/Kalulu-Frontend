@@ -19,6 +19,8 @@ func _ready():
 		device_number_label.show()
 		device_number_label.text += str(UserDataManager.get_device_settings().device_id)
 	
+	await OpeningCurtain.open()
+	
 	await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(help_speech_path))
 	music_player.play()
 
@@ -26,6 +28,7 @@ func _ready():
 func _on_code_keyboard_password_entered(password):
 	if UserDataManager.login_student(password):
 		await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(right_password_speech_path))
+		await OpeningCurtain.close()
 		get_tree().change_scene_to_file(next_scene_path)
 	else:
 		await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(wrong_password_speech_path))
@@ -50,4 +53,5 @@ func _on_teacher_button_button_up():
 
 
 func _on_teacher_timer_timeout():
+	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(teacher_scene_path)

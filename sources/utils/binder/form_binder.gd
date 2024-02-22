@@ -33,7 +33,6 @@ func read(resource : Resource) -> void:
 		if binder.property_name in data:
 			var property_value = data.get(binder.property_name)
 			binder.set_value(property_value)
-			#push_warning("Property typing and control doesn't match for property '" + binder.property_name + "' (" + str(property_value) + ") and " + str(binder.control))
 		else:
 			push_warning("Property " + binder.property_name + " not found in " + data.get_class())
 

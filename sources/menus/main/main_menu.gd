@@ -1,5 +1,6 @@
 extends Control
 
+const adult_check_scene_path := "res://sources/menus/adult_check/adult_check.tscn"
 const next_scene_path := "res://sources/menus/login/login.tscn"
 const register_scene_path := "res://sources/menus/register/register.tscn"
 
@@ -17,11 +18,12 @@ func _ready():
 	version_label.text = ProjectSettings.get_setting("application/config/version")
 	teacher_label.text = UserDataManager.get_device_settings().teacher
 	device_id_label.text = str(UserDataManager.get_device_settings().device_id)
+	OpeningCurtain.open()
 
 
 func _on_main_button_pressed():
 	if UserDataManager.get_device_settings().teacher:
-		get_tree().change_scene_to_file(next_scene_path)
+		_on_login_in()
 	else:
 		kalulu.hide()
 		kalulu.stop_speech()
@@ -49,7 +51,14 @@ func _on_sign_in_parent_pressed():
 
 
 func _on_register_pressed():
-	get_tree().change_scene_to_file(register_scene_path)
+	await OpeningCurtain.close()
+	
+	var adult_check_scene : AdultCheck = load(adult_check_scene_path).instantiate()
+	adult_check_scene.last_scene = get_tree().current_scene.scene_file_path
+	adult_check_scene.next_scene = register_scene_path
+	
+	get_tree().get_root().get_child(get_tree().get_root().get_child_count() -1).queue_free()
+	get_tree().get_root().add_child(adult_check_scene)
 
 
 func _on_login_in():

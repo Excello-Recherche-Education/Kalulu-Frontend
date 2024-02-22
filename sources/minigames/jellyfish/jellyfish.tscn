@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="1_1b85n"]
 [ext_resource type="Script" path="res://sources/minigames/jellyfish/jellyfish.gd" id="1_06uwq"]
-[ext_resource type="SpriteFrames" uid="uid://dkemftb4jdxvs" path="res://sources/minigames/jellyfish/green_jellyfish_animations.tres" id="2_afbbq"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_edt4e"]
 [ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="3_vllju"]
-[ext_resource type="PackedScene" uid="uid://c6klih3h3ws6f" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
+[ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
+[ext_resource type="SpriteFrames" uid="uid://dkemftb4jdxvs" path="res://sources/minigames/jellyfish/green_jellyfish_animations.tres" id="4_tdfu4"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
 
 [node name="Jellyfish" type="MarginContainer"]
-custom_minimum_size = Vector2(569.954, 569.954)
+custom_minimum_size = Vector2(538.853, 538.853)
 offset_right = 200.0
 offset_bottom = 200.0
 script = ExtResource("1_06uwq")
@@ -26,10 +26,10 @@ sprites = [NodePath("AnimatedSprite2D")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
-scale = Vector2(2.62212, 2.62212)
-sprite_frames = ExtResource("2_afbbq")
+scale = Vector2(2.47926, 2.47926)
+sprite_frames = ExtResource("4_tdfu4")
 animation = &"idle"
-frame_progress = 0.241534
+frame_progress = 0.520072
 centered = false
 
 [node name="PercentMarginContainer" type="Container" parent="."]
@@ -52,7 +52,6 @@ text = "A"
 
 [node name="WrongFX" parent="." instance=ExtResource("6_w1tlu")]
 position = Vector2(284, 142.25)
-scale = Vector2(1, 1)
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 
