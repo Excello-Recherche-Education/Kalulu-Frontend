@@ -5,6 +5,7 @@
 
 [node name="RecapStep" instance=ExtResource("1_crpog")]
 script = ExtResource("2_0vlqx")
+infos = ""
 
 [node name="ValidateButton" parent="RightMargin/RightContainer" index="0"]
 text = "Validate"
@@ -14,56 +15,56 @@ offset_left = -1024.0
 offset_right = 1024.0
 offset_bottom = 1344.0
 
-[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
+[node name="VBoxContainer" parent="PanelContainer/QuestionContainer" index="0"]
 visible = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" index="1"]
+[node name="SummaryContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" index="1"]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Title" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer" index="0"]
+[node name="Title" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Registration summary"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" index="1"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/QuestionContainer/SummaryContainer" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 20
 
-[node name="Email" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="0"]
+[node name="Email" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="AccountType" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="1"]
+[node name="AccountType" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="EducationMethod" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="2"]
+[node name="EducationMethod" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="DevicesCount" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="3"]
+[node name="DevicesCount" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="StudentsCount" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="4"]
+[node name="StudentsCount" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="4"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="RecapContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="5"]
+[node name="RecapContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="5"]
 unique_name_in_owner = true
 layout_mode = 2
 

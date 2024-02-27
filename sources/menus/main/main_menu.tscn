@@ -193,6 +193,22 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 25
 
+[node name="LanguageContainer" type="VBoxContainer" parent="UserSelection/Form"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LanguageLabel" type="Label" parent="UserSelection/Form/LanguageContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Language"
+
+[node name="LanguageField" type="OptionButton" parent="UserSelection/Form/LanguageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Combobox"
+theme_override_font_sizes/font_size = 70
+script = ExtResource("13_rs3hd")
+
 [node name="SignInTeacher" type="Button" parent="UserSelection/Form"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
@@ -277,22 +293,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 25
 alignment = 1
-
-[node name="LanguageContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="LanguageLabel" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/LanguageContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 70
-text = "Language"
-
-[node name="LanguageField" type="OptionButton" parent="LoginForm/LoginFormValidator/FormContainer/LanguageContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Combobox"
-theme_override_font_sizes/font_size = 70
-script = ExtResource("13_rs3hd")
 
 [node name="DeviceIDContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
 unique_name_in_owner = true
@@ -470,6 +470,7 @@ text = "?"
 vertical_alignment = 1
 
 [connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
+[connection signal="item_selected" from="UserSelection/Form/LanguageContainer/LanguageField" to="UserSelection/Form/LanguageContainer/LanguageField" method="_on_item_selected"]
 [connection signal="pressed" from="UserSelection/Form/SignInTeacher" to="." method="_on_sign_in_teacher_pressed"]
 [connection signal="pressed" from="UserSelection/Form/SignInParent" to="." method="_on_sign_in_parent_pressed"]
 [connection signal="pressed" from="UserSelection/Form/Register" to="." method="_on_register_pressed"]

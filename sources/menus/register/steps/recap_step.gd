@@ -22,12 +22,16 @@ func on_enter():
 	if teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
 		education_method.text = "Education method : %s" % TeacherSettings.EducationMethod.keys()[teacher_settings.education_method]
 		education_method.show()
+		
+		devices_count.text = "Number of devices : %d" % teacher_settings.students.size()
+		devices_count.show()
+		
+		students_count.text = "Number of students : %d" % teacher_settings.get_students_count()
+		students_count.show()
 	else:
 		education_method.hide()
-	
-	devices_count.text = "Number of devices : %d" % teacher_settings.students.size()
-	
-	students_count.text = "Number of students : %d" % teacher_settings.get_students_count()
+		devices_count.hide()
+		students_count.hide()
 	
 	for child in recap_container.get_children(false):
 		child.queue_free()

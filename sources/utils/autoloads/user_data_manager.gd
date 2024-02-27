@@ -47,7 +47,7 @@ func register(register_settings : TeacherSettings) -> bool:
 	
 	return true
 
-func login(type : TeacherSettings.AccountType, language : String, teacher : String, password : String, device_id : int) -> bool:
+func login(type : TeacherSettings.AccountType, teacher : String, password : String, device_id : int) -> bool:
 	if not _device_settings or not teacher or not password or device_id == 0:
 		return false
 	
@@ -65,8 +65,6 @@ func login(type : TeacherSettings.AccountType, language : String, teacher : Stri
 	teacher_settings = temp_teacher_settings
 	
 	# Handles device settings
-	if _device_settings.language != language:
-		_device_settings.language = language
 	_device_settings.teacher = teacher
 	_device_settings.device_id = device_id
 	_save_device_settings()
@@ -102,6 +100,12 @@ func login_student(code : String) -> bool:
 
 
 # Device settings #
+
+func set_language(language : String) -> void:
+	print("Setting language")
+	if _device_settings:
+		_device_settings.language = language
+		_save_device_settings()
 
 func get_device_settings_path() -> String:
 	return "user://device_settings.tres"

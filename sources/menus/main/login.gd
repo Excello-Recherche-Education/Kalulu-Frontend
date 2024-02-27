@@ -5,7 +5,6 @@ signal logged_in
 @onready var teacher_label : Label = %TeacherLabel
 @onready var parent_label : Label = %ParentLabel
 @onready var validator : FormValidator = %LoginFormValidator
-@onready var language_field : OptionButton = %LanguageField
 @onready var email_field : LineEdit = %EmailField
 @onready var password_field : LineEdit = %PasswordField
 @onready var device_id_container : VBoxContainer = %DeviceIDContainer
@@ -58,7 +57,7 @@ func _on_validate_button_pressed() -> void:
 		return
 	
 	# Login
-	if UserDataManager.login(account_type, language_field.get_selected_language(), email_field.text, password_field.text, int(device_id_field.value)):
+	if UserDataManager.login(account_type, email_field.text, password_field.text, int(device_id_field.value)):
 		logged_in.emit()
 	else:
 		login_message.visible = true

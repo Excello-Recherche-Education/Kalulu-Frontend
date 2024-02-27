@@ -6,6 +6,7 @@
 device_id = 1
 step_name = "players"
 question = "Choose the number of players"
+infos = "You will be able do modify the players later in the settings"
 
 [node name="StudentsCountFieldLabel" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/StudentsCountContainer" index="0"]
 text = "Players :"

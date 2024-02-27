@@ -15,6 +15,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_02ocl")
+infos = null
 
 [node name="LeftMargin" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(450, 2.08165e-12)
@@ -88,15 +89,26 @@ layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 
-[node name="QuestionLabel" type="Label" parent="PanelContainer/QuestionContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(1500, 500)
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer"]
 layout_mode = 2
-size_flags_vertical = 1
+
+[node name="QuestionLabel" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1500, 0)
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_font_sizes/font_size = 70
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="InfoLabel" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Background" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(1624, 812)

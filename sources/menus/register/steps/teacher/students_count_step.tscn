@@ -9,6 +9,7 @@ script = ExtResource("2_susi5")
 device_id = 0
 step_name = "students"
 question = "Choose the number of students on device %d"
+infos = "You will be able do modify the students for each device later in the settings"
 
 [node name="StudentsCountContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
