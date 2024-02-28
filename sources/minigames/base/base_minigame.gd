@@ -86,6 +86,9 @@ func _ready() -> void:
 		minigame_ui.set_music_volume_slider(UserDataManager.get_music_volume())
 		minigame_ui.set_voice_volume_slider(UserDataManager.get_voice_volume())
 		minigame_ui.set_effects_volume_slider(UserDataManager.get_effects_volume())
+		
+		# Stop the current music
+		MusicManager.stop()
 	
 	_reset_logs()
 	_initialize()

@@ -1,5 +1,6 @@
 @tool
 extends MarginContainer
+class_name Jellyfish
 
 signal pressed()
 
@@ -27,20 +28,32 @@ const sizes: = [
 
 @onready var animated_sprite: = %AnimatedSprite2D
 @onready var label: = %AutoSizeLabel.get_node("Label")
+@onready var highlight_fx: = $HighlightFX
 @onready var right_fx: = $RightFX
 @onready var wrong_fx: = $WrongFX
 
 var stimulus: Dictionary :
 	set(value):
 		stimulus = value
-		label.text = value.Grapheme
+		if label:
+			if value.has("Grapheme"):
+				label.text = value.Grapheme
+			else:
+				label.text = ""
+		
 
 
 func _ready() -> void:
+	stimulus = stimulus
+	
 	var f = randf()
 	color = Colors.Red if f < 0.7 else Colors.Green
 	animated_sprite.play("idle")
 	animated_sprite.frame = randi_range(0, animated_sprite.sprite_frames.get_frame_count("idle") - 1)
+
+
+func is_idle() -> bool:
+	return animated_sprite.animation == "idle"
 
 
 func happy() -> void:
@@ -53,6 +66,10 @@ func idle() -> void:
 
 func hit() -> void:
 	animated_sprite.play("hit")
+
+
+func highlight() -> void:
+	highlight_fx.play()
 
 
 func right() -> void:
@@ -72,6 +89,6 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func delete() -> void:
 	var tween: = create_tween()
-	tween.tween_property(self, "modulate:a", 0, 1)
+	tween.tween_property(self, "modulate:a", 0, 2)
 	await tween.finished
 	queue_free()
