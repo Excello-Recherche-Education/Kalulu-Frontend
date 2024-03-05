@@ -72,6 +72,10 @@ func highlight() -> void:
 	highlight_fx.play()
 
 
+func stop_highlight() -> void:
+	highlight_fx.stop()
+
+
 func right() -> void:
 	right_fx.play()
 	await right_fx.finished

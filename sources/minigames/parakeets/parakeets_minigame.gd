@@ -24,7 +24,6 @@ const audio_streams: = [
 	preload("res://assets/minigames/parakeets/audio/parakeet_win.mp3"),
 ]
 
-@export var difficulty: = 1
 @export var fly_duration: = 3.0
 
 @onready var branches: = $GameRoot/TreeTrunk/Branches

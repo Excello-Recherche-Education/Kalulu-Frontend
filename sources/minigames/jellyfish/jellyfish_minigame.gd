@@ -1,17 +1,16 @@
-extends Minigame
+extends HearAndFindMinigame
 
 const jellyfish_scene: = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
 
 class DifficultySettings:
 	var spawn_time: = 4.0
-	var stimuli_ratio: = 0.6
+	var stimuli_ratio: = 0.75
 	var velocity: = 150
 	
 	func _init(p_spawn_time: float, p_stimuli_ratio: float, p_velocity: int) -> void:
 		spawn_time = p_spawn_time
 		stimuli_ratio = p_stimuli_ratio
 		velocity = p_velocity
-
 
 var difficulty_settings: = {
 	0: DifficultySettings.new(4, 0.75, 150),
@@ -21,54 +20,11 @@ var difficulty_settings: = {
 	4: DifficultySettings.new(1, 0.25, 300),
 }
 
-@export var lesson_nb: = 4
-@export var difficulty: = 0
-
 var blocking_jellyfish: Array[Jellyfish] = []
 
 @onready var spawning_space: Control = %SpawningSpace
 @onready var spawn_timer: = $SpawnTimer
-
-
-func _find_stimuli_and_distractions() -> void:
-	
-	# Gets the stimuli (only vowels for now) for the current lesson
-	var current_lesson_stimuli = Database.get_vowels_for_lesson(lesson_nb)
-	
-	# Calculate the number of stimuli to add from this lesson (70% of the maximum progression)
-	@warning_ignore("narrowing_conversion")
-	var number_of_stimuli: int = max_progression * 0.7
-	
-	# Adds the right number of stimuli from current lesson
-	while stimuli.size() < number_of_stimuli:
-		stimuli.append(current_lesson_stimuli[randi() % current_lesson_stimuli.size()])
-	
-	# Gets other stimuli from previous errors or lessons
-	var previous_lesson_stimuli = Database.get_vowels_before_lesson(lesson_nb)
-	while stimuli.size() < max_progression:
-		stimuli.append(previous_lesson_stimuli[randi() % previous_lesson_stimuli.size()])
-	
-	# Shuffle the stimuli
-	stimuli.shuffle()
-	
-	# For each stimuli get the distractors
-	var all_learned_stimuli = previous_lesson_stimuli
-	all_learned_stimuli.append_array(current_lesson_stimuli)
-	for stimulus in stimuli:
-		var stimulus_distractors := []
-		
-		for distractor in all_learned_stimuli:
-			if stimulus.Grapheme != distractor.Grapheme and stimulus.Phoneme != distractor.Phoneme:
-				stimulus_distractors.append(distractor)
-		
-		# Adds fake distractors (allow to have empty jellyfishes) if there are less than 4 distractors
-		while stimulus_distractors.size() < 4:
-			stimulus_distractors.append({})
-	
-		distractions.append(stimulus_distractors)
-	
-	print(stimuli)
-	print(distractions)
+@onready var highlight_timer := $HighlightTimer
 
 
 func _start() -> void:
@@ -93,10 +49,16 @@ func _process(delta: float) -> void:
 
 
 func _highlight():
-	# TODO Revoir, il faut highlight les méduses jusqu'à ce que la bonne réponse soit trouvée ? Ou pendant un certain temps ? Ou on laisse comme ça ?
 	for jellyfish: Jellyfish in spawning_space.get_children():
 		if jellyfish.stimulus and jellyfish.stimulus.Grapheme == _get_current_stimulus().Grapheme:
 			jellyfish.highlight()
+	highlight_timer.start()
+
+
+func _stop_highlight():
+	for jellyfish: Jellyfish in spawning_space.get_children():
+		jellyfish.stop_highlight()
+	highlight_timer.stop()
 
 
 func _spawn() -> void:
@@ -159,34 +121,6 @@ func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
 
 
-func _get_current_stimulus() -> Dictionary :
-	if stimuli.size() == 0:
-		return {}
-	return stimuli[current_progression % stimuli.size()]
-
-
-# TODO Peut être à déplacer dans un script attaché à l'AudioStreamPlayer de BaseMinigame
-func _play_phoneme(phoneme : String) -> void:
-	var phoneme_audiostream = Database.get_audio_stream_for_phoneme(phoneme) as AudioStream
-	if not phoneme_audiostream:
-		push_warning("AudioStream not found for phoneme " + phoneme)
-		return
-	
-	audio_player.stream = phoneme_audiostream
-	audio_player.play()
-	
-	if audio_player.playing:
-		await audio_player.finished
-
-
-func _play_current_stimulus_phoneme()-> void:
-	var current_stimulus: = _get_current_stimulus()
-	if not current_stimulus or not current_stimulus.has("Phoneme"):
-		return
-	
-	await _play_phoneme(current_stimulus.Phoneme)
-
-
 # ------------ Connections ------------
 
 
@@ -209,6 +143,7 @@ func _on_jellyfish_pressed(jellyfish: Jellyfish) -> void:
 		jellyfish.happy()
 		jellyfish.right()
 		current_progression += 1
+		_stop_highlight()
 	else:
 		jellyfish.hit()
 		jellyfish.wrong()
@@ -216,7 +151,7 @@ func _on_jellyfish_pressed(jellyfish: Jellyfish) -> void:
 		
 		# Play the pressed jellyfish phoneme
 		if jellyfish.stimulus and jellyfish.stimulus.Phoneme:
-			await _play_phoneme(jellyfish.stimulus.Phoneme)
+			await audio_player.play_phoneme(jellyfish.stimulus.Phoneme)
 	
 	# Remove the jellyfish
 	await jellyfish.delete()
@@ -228,6 +163,10 @@ func _on_jellyfish_pressed(jellyfish: Jellyfish) -> void:
 	# Replay the current stimulus
 	if not is_right:
 		_play_current_stimulus_phoneme()
+
+
+func _on_highlight_timer_timeout():
+	_highlight()
 
 
 # ------------ UI Callbacks ------------

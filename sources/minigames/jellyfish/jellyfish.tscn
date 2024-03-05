@@ -6,14 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_5uhvd"]
 [ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="3_vllju"]
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
-[ext_resource type="SpriteFrames" uid="uid://dquynn3nx52o" path="res://sources/minigames/jellyfish/red_jellyfish_animations.tres" id="4_d8s11"]
+[ext_resource type="SpriteFrames" uid="uid://dkemftb4jdxvs" path="res://sources/minigames/jellyfish/green_jellyfish_animations.tres" id="5_0850m"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
 
 [node name="Jellyfish" type="MarginContainer"]
-custom_minimum_size = Vector2(466.955, 466.955)
+custom_minimum_size = Vector2(527.703, 527.703)
 offset_right = 200.0
 offset_bottom = 200.0
 script = ExtResource("1_06uwq")
+color = 1
 
 [node name="HighlightFX" parent="." instance=ExtResource("3_5uhvd")]
 layout_mode = 2
@@ -31,10 +32,10 @@ sprites = [NodePath("AnimatedSprite2D")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
-scale = Vector2(2.50538, 2.50538)
-sprite_frames = ExtResource("4_d8s11")
+scale = Vector2(2.42857, 2.42857)
+sprite_frames = ExtResource("5_0850m")
 animation = &"idle"
-frame_progress = 0.106154
+frame_progress = 0.79521
 centered = false
 
 [node name="PercentMarginContainer" type="Container" parent="."]

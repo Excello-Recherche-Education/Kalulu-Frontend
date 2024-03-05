@@ -1,7 +1,5 @@
 extends Minigame
 
-@export var difficulty: = 1
-
 @onready var start: = %Start
 @onready var end: = %End
 

@@ -4,7 +4,9 @@ class_name Minigame
 
 @export var minigame_name: = "Minigame"
 
-@export var lesson_nb: = 10
+@export var lesson_nb: = 1
+@export_range(0, 4) var difficulty: = 0
+@export_range(0, 1) var stimuli_ratio : float = 0.7
 @export var minigame_number: = 1
 
 @export_group("Difficulty")
@@ -27,7 +29,8 @@ class_name Minigame
 @export var lose_kalulu_speech: AudioStream = preload("res://language_resources/fr/minigames/kalulu/kalulu_lose_minigame_all.mp3")
 
 @onready var minigame_ui: = $MinigameUI
-@onready var audio_player: = $AudioStreamPlayer
+@onready var opening_curtain: = $OpeningCurtain
+@onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
 @onready var fireworks: = $Fireworks
 
 # Game root shall contain all the game tree.

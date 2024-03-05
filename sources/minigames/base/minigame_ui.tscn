@@ -344,7 +344,8 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -210.0
-offset_bottom = 962.0
+offset_right = -70.0
+offset_bottom = 440.0
 grow_horizontal = 0
 size_flags_horizontal = 8
 mouse_filter = 2
@@ -364,7 +365,7 @@ patch_margin_bottom = 33
 
 [node name="ProgressionContainer" type="VBoxContainer" parent="MainControl/Interface/ProgressionMargin/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(170, 2.08165e-12)
+custom_minimum_size = Vector2(135, 0)
 layout_mode = 2
 
 [node name="ProgressionIconsRect" type="TextureRect" parent="MainControl/Interface/ProgressionMargin/MarginContainer/ProgressionContainer"]

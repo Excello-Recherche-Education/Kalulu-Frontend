@@ -1,8 +1,6 @@
 @tool
 extends Minigame
 
-@export var difficulty: = 1
-
 const hole_class: = preload("res://sources/minigames/crabs/hole/hole.tscn")
 const difficulty_settings: = {
 	0: {"crab_rows": [2, 1]},

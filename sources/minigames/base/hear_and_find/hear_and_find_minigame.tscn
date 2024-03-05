@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://clbi7qphyh0so"]
+
+[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_fbfdj"]
+[ext_resource type="Script" path="res://sources/minigames/base/hear_and_find/hear_and_find_minigame.gd" id="2_v8ldm"]
+
+[node name="HearAndFindMinigame" instance=ExtResource("1_fbfdj")]
+script = ExtResource("2_v8ldm")
+max_number_of_lives = 3
+max_progression = 10

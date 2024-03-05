@@ -23,7 +23,6 @@ enum Audio {
 	SendToMonkey,
 }
 
-@export var difficulty: = 1
 @export var throw_to_king_duration: = 1.2
 @export var throw_to_monkey_duration: = 0.4
 @export var throw_to_planck_duration: = 0.8

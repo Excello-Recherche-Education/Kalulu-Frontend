@@ -31,17 +31,21 @@ var db_path: = base_path + language + "/language.db":
 			db.path = db_path
 			db.foreign_keys = true
 			db.open_db()
+			
+			_init_db()
+			
 var words_path: = base_path + language + "/words/"
 var additional_word_list: Dictionary
 
 @onready var db: = SQLite.new()
 
 
-func _ready() -> void:
+func _init_db() -> void:
 	load_additional_word_list()
 	# db_path = db_path
 	#_import_words_csv()
 	#_import_look_and_learn_data()
+	_import_syllables()
 
 
 func get_additional_word_list_path() -> String:
@@ -72,7 +76,7 @@ func _exit_tree() -> void:
 
 
 func get_GP_for_lesson(lesson_nb: int, distinct: bool) -> Array:
-	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs 
+	var query: = "Select Grapheme, Phoneme, Type, LessonNb FROM GPs 
 	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
 	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb == ?"
 	if distinct:
@@ -82,7 +86,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool) -> Array:
 
 
 func get_GP_before_lesson(lesson_nb: int, distinct: bool) -> Array:
-	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs 
+	var query: = "Select Grapheme, Phoneme, Type, LessonNb FROM GPs 
 	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
 	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb < ?"
 	if distinct:
@@ -92,29 +96,11 @@ func get_GP_before_lesson(lesson_nb: int, distinct: bool) -> Array:
 
 
 func get_GP_before_and_for_lesson(lesson_nb: int, distinct: bool) -> Array:
-	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs 
+	var query: = "Select Grapheme, Phoneme, Type, LessonNb FROM GPs 
 	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
 	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?"
 	if distinct:
 		query += "GROUP BY Grapheme"
-	db.query_with_bindings(query, [lesson_nb])
-	return db.query_result
-
-
-func get_vowels_for_lesson(lesson_nb: int) -> Array:
-	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs 
-	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
-	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb == ?
-	WHERE Type=1"
-	db.query_with_bindings(query, [lesson_nb])
-	return db.query_result
-
-
-func get_vowels_before_lesson(lesson_nb: int) -> Array:
-	var query: = "Select Grapheme, Phoneme, LessonNb FROM GPs 
-	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
-	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb < ?
-	WHERE Type=1"
 	db.query_with_bindings(query, [lesson_nb])
 	return db.query_result
 
@@ -128,6 +114,39 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPS.ID = GPsInWords.GPID", [grapheme])
 	return db.query_result
 
+
+func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array:
+	var query: = "SELECT Syllable as Grapheme, GROUP_CONCAT(p, '-') AS Phoneme, GROUP_CONCAT(g, '.') AS GPs, nb as LessonNb
+FROM (
+	SELECT Syllables.ID as sID, Syllables.Syllable, GPs.Grapheme AS g, GPs.Phoneme AS p, VerifiedCount.LessonNb AS nb
+	FROM Syllables 
+	INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID
+	INNER JOIN Gps ON GPs.ID = GPsInSyllables.GPID
+	INNER JOIN (SELECT SyllableID, count() as Count FROM GPsInSyllables 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+		GROUP BY SyllableID 
+) TotalCount ON TotalCount.SyllableID = Syllables.ID 
+	INNER JOIN (SELECT SyllableID, count() as Count, max(LessonNb) AS LessonNb FROM GPsInSyllables 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		GROUP BY SyllableID 
+) VerifiedCount ON VerifiedCount.SyllableID = Syllables.ID AND VerifiedCount.Count = TotalCount.Count
+   ORDER BY GPsInSyllables.Position
+   )"
+	if only_new:
+		query += " INNER JOIN GPsInSyllables ON GPsInSyllables.SyllableID = sID
+INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?
+GROUP BY sID"
+		db.query_with_bindings(query, [lesson_nb, lesson_nb])
+	else:
+		query += " GROUP BY sID"
+		db.query_with_bindings(query, [lesson_nb])
+	
+	var result = db.query_result
+	for syllable in result:
+		syllable.GPs = syllable.GPs.split(".")
+	return result
 
 func get_words_for_lesson(lesson_nb: int, only_new: = false) -> Array:
 	var query: = "SELECT * FROM Words
@@ -180,11 +199,6 @@ func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
 	AND Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
 	return db.query_result
 
-func get_audio_stream_for_path(path: String) -> AudioStream:
-	var full_path : String = base_path.path_join(language).path_join(path)
-	if not FileAccess.file_exists(full_path):
-		return null
-	return load(full_path)
 
 func get_min_lesson_for_gp_id(gp_id: int) -> int:
 	db.query_with_bindings("SELECT Lessons.LessonNb as i FROM Lessons
@@ -226,6 +240,10 @@ func get_words_in_sentence(sentence_id: int) -> Array[Dictionary]:
 func get_lessons_count() -> int:
 	db.query("SELECT MAX(Lessons.LessonNb) as i FROM Lessons")
 	return db.query_result[0].i
+
+
+func get_audio_stream_for_path(path: String) -> AudioStream:
+	return load(base_path + language + "/" + path)
 
 
 func get_audio_stream_for_word(word: String) -> AudioStream:
@@ -333,7 +351,6 @@ func _import_look_and_learn_data() -> void:
 			Grapheme = e.GRAPHEME,
 			Phoneme = e.PHONEME,
 		}))
-		
 
 
 func _update_gps_with_type() -> void:
@@ -351,6 +368,46 @@ func _update_gps_with_type() -> void:
 			type = 2
 		db.query_with_bindings("UPDATE GPs SET Type=? WHERE id=?", [type, id])
 
+
+func _import_syllables() -> void:
+	var file = FileAccess.open("res://data3/words_list.json", FileAccess.READ)
+	var dict = JSON.parse_string(file.get_line())
+	
+	for e in dict.values():
+		if e.NB_GRAPHEME == 2 and e.NB_LETTER <= 3:
+			
+			# Inserts syllable
+			db.query_with_bindings("SELECT * FROM Syllables WHERE Syllable=?", [e.GRAPHEME])
+			if db.query_result.is_empty():
+				db.insert_row("Syllables", {Syllable=e.GRAPHEME})
+			
+			# Inserts GPs in syllable
+			db.query_with_bindings("SELECT * FROM Syllables WHERE Syllable=?", [e.GRAPHEME])
+			var syllable_id = db.query_result[0]["ID"]
+			
+			# Checks if GPsInSyllables is already inserted
+			db.query_with_bindings("SELECT ID FROM GPsInSyllables WHERE SyllableID=?", [syllable_id])
+			if db.query_result.is_empty():
+				var GP_list_str: String = e.GPMATCH
+				var GP_list: = GP_list_str.split(".")
+				
+				for i in GP_list.size():
+					var GP_str = GP_list[i]
+					var GP = GP_str.split("-")
+					
+					# Checks if GP exists
+					db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [GP[0], GP[1]])
+					if db.query_result.is_empty():
+						push_error("GP not found for " + GP_str)
+						continue
+					
+					var GP_id = db.query_result[0]["ID"]
+					db.insert_row("GPsInSyllables", {
+						SyllableID = syllable_id,
+						GPID = GP_id,
+						Position = i,
+					})
+				
 
 func _import_words() -> void:
 	var file = FileAccess.open("res://data3/words_list.json", FileAccess.READ)
