@@ -41,7 +41,7 @@ var additional_word_list: Dictionary
 
 
 func _init_db() -> void:
-	load_additional_word_list()
+	# load_additional_word_list()
 	# db_path = db_path
 	#_import_words_csv()
 	#_import_look_and_learn_data()
@@ -257,9 +257,15 @@ func get_audio_stream_for_word(word: String) -> AudioStream:
 
 
 func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
-	var file_name: = _phoneme_to_string(phoneme)
-	file_name += ".mp3"
-	return load(words_path + file_name)
+	var phoneme_array := phoneme.split("-")
+	var path: = words_path + _phoneme_to_string(phoneme_array[0])
+	for i in range(1, phoneme_array.size()):
+		path += "-" + _phoneme_to_string(phoneme_array[i])
+	path += ".mp3"
+	
+	if FileAccess.file_exists(path) and ResourceLoader.exists(path):
+		return load(path)
+	return null
 
 
 func get_gp_look_and_learn_image(gp: Dictionary) -> Texture:
