@@ -6,23 +6,45 @@
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_5uhvd"]
 [ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="3_vllju"]
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
-[ext_resource type="SpriteFrames" uid="uid://dkemftb4jdxvs" path="res://sources/minigames/jellyfish/green_jellyfish_animations.tres" id="5_0850m"]
+[ext_resource type="SpriteFrames" uid="uid://dquynn3nx52o" path="res://sources/minigames/jellyfish/red_jellyfish_animations.tres" id="5_gc31w"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
 
 [node name="Jellyfish" type="MarginContainer"]
-custom_minimum_size = Vector2(527.703, 527.703)
-offset_right = 200.0
-offset_bottom = 200.0
+custom_minimum_size = Vector2(400, 400)
+offset_right = 400.0
+offset_bottom = 400.0
+scale = Vector2(1.02491, 1.02491)
 script = ExtResource("1_06uwq")
-color = 1
 
-[node name="HighlightFX" parent="." instance=ExtResource("3_5uhvd")]
+[node name="BackFX" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 1
+
+[node name="RightFX" parent="BackFX" instance=ExtResource("2_edt4e")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HighlightFX" parent="BackFX" instance=ExtResource("3_5uhvd")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-
-[node name="RightFX" parent="." instance=ExtResource("2_edt4e")]
-position = Vector2(284, 142.25)
 
 [node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
 layout_mode = 2
@@ -32,10 +54,10 @@ sprites = [NodePath("AnimatedSprite2D")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
-scale = Vector2(2.42857, 2.42857)
-sprite_frames = ExtResource("5_0850m")
+scale = Vector2(2.15054, 2.15054)
+sprite_frames = ExtResource("5_gc31w")
 animation = &"idle"
-frame_progress = 0.79521
+frame_progress = 0.472967
 centered = false
 
 [node name="PercentMarginContainer" type="Container" parent="."]
@@ -56,8 +78,24 @@ layout_mode = 2
 [node name="Label" parent="PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
 text = ""
 
-[node name="WrongFX" parent="." instance=ExtResource("6_w1tlu")]
-position = Vector2(284, 142.25)
+[node name="FrontFX" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 1
+
+[node name="WrongFX" parent="FrontFX" instance=ExtResource("6_w1tlu")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 

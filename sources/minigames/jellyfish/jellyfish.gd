@@ -14,23 +14,26 @@ const animations: = [
 	preload("res://sources/minigames/jellyfish/green_jellyfish_animations.tres"),
 ]
 
-const sizes: = [
-	Vector2(400, 400),
-	Vector2(500, 500),
+const scales: = [
+	Vector2(1.,1.),
+	Vector2(1.25, 1.25)
 ]
+
+const scale_factor : float = 0.2
 
 @export var color: = Colors.Red:
 	set(value):
 		color = value
 		if animated_sprite:
 			animated_sprite.sprite_frames = animations[color]
-		custom_minimum_size = sizes[color] * (1. + randf() * 0.2)
+		scale = scales[color] * (1. + randf() * scale_factor)
+
 
 @onready var animated_sprite: = %AnimatedSprite2D
 @onready var label: = %AutoSizeLabel.get_node("Label")
-@onready var highlight_fx: = $HighlightFX
-@onready var right_fx: = $RightFX
-@onready var wrong_fx: = $WrongFX
+@onready var highlight_fx: = %HighlightFX
+@onready var right_fx: = %RightFX
+@onready var wrong_fx: = %WrongFX
 
 var stimulus: Dictionary :
 	set(value):
@@ -40,7 +43,6 @@ var stimulus: Dictionary :
 				label.text = value.Grapheme
 			else:
 				label.text = ""
-		
 
 
 func _ready() -> void:
@@ -88,6 +90,7 @@ func wrong() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		print("CLICK")
 		pressed.emit()
 
 

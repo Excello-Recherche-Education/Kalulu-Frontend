@@ -54,7 +54,7 @@ func _find_stimuli_and_distractions() -> void:
 		# Difficulty 1 
 		# Any previously learned item w/ all letters different
 		for gp in all_GPs:
-				if gp.Grapheme != stimulus.Grapheme and gp.Phoneme != stimulus.Phoneme:
+				if gp.Type == 1 and gp.Grapheme != stimulus.Grapheme and gp.Phoneme != stimulus.Phoneme:
 					stimulus_distractors.append(gp)
 		if GPs:
 			for syllable in all_syllables:
@@ -88,7 +88,7 @@ func _get_current_stimulus() -> Dictionary :
 	return stimuli[current_progression % stimuli.size()]
 
 
-func _play_current_stimulus_phoneme()-> void:
+func _play_current_stimulus_phoneme() -> void:
 	var current_stimulus: = _get_current_stimulus()
 	if not current_stimulus or not current_stimulus.has("Phoneme"):
 		return

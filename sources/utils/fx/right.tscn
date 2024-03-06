@@ -228,7 +228,9 @@ gravity = Vector3(0, 98, 0)
 scale_curve = SubResource("CurveTexture_mx7tb")
 color_ramp = SubResource("GradientTexture1D_b6rlx")
 
-[node name="RightFX" type="Node2D"]
+[node name="RightFX" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_83pnv")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
