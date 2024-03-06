@@ -1,6 +1,8 @@
 extends Minigame
 class_name HearAndFindMinigame
 
+# Find the stimuli and distractions of the minigame.
+# For this type of minigame, only vowels and syllables are allowed
 func _find_stimuli_and_distractions() -> void:
 	var current_lesson_stimuli = []
 	var previous_lesson_stimuli = []
@@ -82,14 +84,40 @@ func _find_stimuli_and_distractions() -> void:
 		distractions.append(stimulus_distractors)
 
 
-func _get_current_stimulus() -> Dictionary :
+# Get the current stimulus which needs to be found to increase progression
+func _get_current_stimulus() -> Dictionary:
 	if stimuli.size() == 0:
 		return {}
 	return stimuli[current_progression % stimuli.size()]
 
 
+# Verify if the provided stimulus is right, if it has the same grapheme as the current stimulus
+func _is_stimulus_right(stimulus : Dictionary) -> bool:
+	if not stimulus or not stimulus.has("Grapheme"):
+		return false
+	
+	var current_stimulus := _get_current_stimulus()
+	if not current_stimulus or not current_stimulus.has("Grapheme"):
+		return false
+	
+	return stimulus.Grapheme == current_stimulus.Grapheme
+
+
+# Play the phoneme of the current stimulus
 func _play_current_stimulus_phoneme() -> void:
 	var current_stimulus: = _get_current_stimulus()
 	if not current_stimulus or not current_stimulus.has("Phoneme"):
 		return
 	await audio_player.play_phoneme(current_stimulus.Phoneme)
+
+
+# ------------ UI Callbacks ------------
+
+
+func _on_current_progression_changed() -> void:
+	if current_progression > 0:
+		_play_current_stimulus_phoneme()
+
+
+func _play_stimulus() -> void:
+	await _play_current_stimulus_phoneme()

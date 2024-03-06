@@ -1,105 +1,101 @@
 @tool
-extends Minigame
+extends HearAndFindMinigame
 
-const hole_class: = preload("res://sources/minigames/crabs/hole/hole.tscn")
-const difficulty_settings: = {
-	0: {"crab_rows": [2, 1]},
-	1 : {"crab_rows": [3, 2]},
-	2 : {"crab_rows": [4, 3]},
-	3 : {"crab_rows": [4, 3, 2]},
-	4 : {"crab_rows": [4, 3, 4]},
-}
+const hole_scene: = preload("res://sources/minigames/crabs/hole/hole.tscn")
+
+class DifficultySettings:
+	var stimuli_ratio: = 0.75
+	var rows: = [2, 1]
+	
+	func _init(p_stimuli_ratio: float, p_rows: Array[int]) -> void:
+		stimuli_ratio = p_stimuli_ratio
+		rows = p_rows
+
+var difficulty_settings: Array[DifficultySettings] = [
+	DifficultySettings.new(0.75, [2, 1]),
+	DifficultySettings.new(0.66, [3, 2]),
+	DifficultySettings.new(0.33, [4, 3]),
+	DifficultySettings.new(0.25, [4, 3, 2]),
+	DifficultySettings.new(0.25, [4, 3, 4])
+]
 
 @onready var crab_zone: = $GameRoot/CrabZone
 
-var holes: = []
+var holes: Array[Hole] = []
 
 
 # ------------ Initialisation ------------
+
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
 	super._setup_minigame()
 	
-	# Progression management
-	current_progression = 0
+	var settings: = _get_difficulty_settings()
 	
-	var max_difficulty: = 0
-	for d in difficulty_settings.keys():
-		if d > max_difficulty:
-			max_difficulty = d
-	
-	if difficulty > max_difficulty:
-		difficulty = max_difficulty
-	
-	var settings: Dictionary = difficulty_settings[difficulty]
+	# Spawns the good amount of holes and places them
 	var top_left: Vector2 = crab_zone.position
 	var bottom_right: Vector2 = top_left + crab_zone.size
-	for i in range(settings["crab_rows"].size()):
-		var fi: = float(i + 1.0) / float(settings["crab_rows"].size() + 1.0)
+	for i in range(settings.rows.size()):
+		var fi: = float(i + 1.0) / float(settings.rows.size() + 1.0)
 		var y: float = (1.0 - fi) * top_left.y + fi * bottom_right.y
-		for j in range(settings["crab_rows"][i]):
-			var fj: = float(j + 1.0) / float(settings["crab_rows"][i] + 1.0)
+		for j in range(settings.rows[i]):
+			var fj: = float(j + 1.0) / float(settings.rows[i] + 1.0)
 			var x: float = fj * top_left.x + (1.0 - fj) * bottom_right.x
 			
-			var hole: = hole_class.instantiate()
+			var hole: Hole = hole_scene.instantiate()
 			game_root.add_child(hole)
 			hole.position = Vector2(x, y)
 			
-			hole.stimulus_hit.connect(_on_hole_stimulus_hit.bind(hole))
-			hole.crab_despawned.connect(_on_hole_crab_despawned)
+			if not Engine.is_editor_hint():
+				hole.stimulus_hit.connect(_on_hole_stimulus_hit.bind(hole))
+				hole.crab_despawned.connect(_on_hole_crab_despawned)
 			
 			holes.append(hole)
-
-
-func _find_stimuli_and_distractions() -> void:
-	stimuli = Database.get_GP_for_lesson(lesson_nb, true)
-	var all_distractions: = Database.get_GP_before_lesson(lesson_nb, true)
-	all_distractions.shuffle()
-	
-	var number_of_distractions: int = min((max_progression - 1) / 2, all_distractions.size())
-	var current_distractions: = all_distractions.slice(0, number_of_distractions)
-	
-	stimuli.append_array(current_distractions)
-	distractions = stimuli.duplicate()
 
 
 # Launch the minigame
 func _start() -> void:
 	super()
 	
-	_on_hole_timer_timeout(stimuli[current_progression % stimuli.size()])
-	audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[current_progression % stimuli.size()].Phoneme)
-	audio_player.play()
+	_play_current_stimulus_phoneme()
 	
 	for i in range(int(3.0 * holes.size() / 4.0)):
-		_on_hole_crab_despawned(stimuli[randi() % stimuli.size()])
-		
+		_on_hole_crab_despawned()
 		await get_tree().create_timer(0.1).timeout
+
+
+func _get_difficulty_settings() -> DifficultySettings:
+	return difficulty_settings[difficulty]
 
 
 # ------------ Crabs ------------
 
 
 func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Node2D) -> void:
-	_log_new_response(stimulus, stimuli[current_progression % stimuli.size()])
-	if stimulus == stimuli[current_progression % stimuli.size()]:
+	# Logs the response
+	_log_new_response(stimulus, _get_current_stimulus())
+	
+	var is_right: = _is_stimulus_right(stimulus)
+	if is_right:
 		hole.right()
 		current_progression += 1
 	else:
-		audio_player.stream = Database.get_audio_stream_for_phoneme(stimulus.Phoneme)
-		audio_player.play()
 		hole.wrong()
 		current_lives -= 1
+		
+		# Play the pressed crab phoneme
+		if stimulus and stimulus.Phoneme:
+			await audio_player.play_phoneme(stimulus.Phoneme)
 
 
-func _on_hole_crab_despawned(stimulus: Dictionary) -> void:
+func _on_hole_crab_despawned() -> void:
 	await get_tree().create_timer(randf_range(0.1, 2.0)).timeout
 	
-	_on_hole_timer_timeout(stimulus)
+	_on_hole_timer_timeout()
 
 
-func _on_hole_timer_timeout(_stimulus: Dictionary) -> void:
+func _on_hole_timer_timeout() -> void:
 	var holes_range: = range(holes.size())
 	holes_range.shuffle()
 	
@@ -107,23 +103,16 @@ func _on_hole_timer_timeout(_stimulus: Dictionary) -> void:
 	while not hole_found:
 		for i in holes_range:
 			if not holes[i].crab:
-				holes[i].spawn_crab(stimuli[randi() % stimuli.size()])
+				# Define if the crab is a stimulus or a distraction
+				var is_stimulus: = randf() < _get_difficulty_settings().stimuli_ratio
+				if is_stimulus:
+					holes[i].spawn_crab(_get_current_stimulus())
+				else:
+					var current_distractors : Array = distractions[current_progression % distractions.size()]
+					holes[i].spawn_crab(current_distractors[randi() % current_distractors.size()])
 				hole_found = true
 				
 				break
 		
 		if not hole_found:
 			await get_tree().create_timer(randf_range(0.1, 0.5)).timeout
-
-
-func _on_current_progression_changed() -> void:
-	if current_progression > 0:
-		audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[current_progression % stimuli.size()].Phoneme)
-		audio_player.play()
-
-
-func _play_stimulus() -> void:
-	audio_player.stream = Database.get_audio_stream_for_phoneme(stimuli[current_progression % stimuli.size()].Phoneme)
-	audio_player.play()
-	if audio_player.playing:
-		await audio_player.finished

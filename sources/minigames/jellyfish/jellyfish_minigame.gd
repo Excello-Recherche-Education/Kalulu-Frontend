@@ -12,13 +12,13 @@ class DifficultySettings:
 		stimuli_ratio = p_stimuli_ratio
 		velocity = p_velocity
 
-var difficulty_settings: = {
-	0: DifficultySettings.new(4, 0.75, 150),
-	1: DifficultySettings.new(3, 0.66, 175),
-	2: DifficultySettings.new(2, 0.33, 200),
-	3: DifficultySettings.new(1, 0.25, 250),
-	4: DifficultySettings.new(1, 0.25, 300),
-}
+var difficulty_settings: Array[DifficultySettings] = [
+	DifficultySettings.new(4, 0.75, 150),
+	DifficultySettings.new(3, 0.66, 175),
+	DifficultySettings.new(2, 0.33, 200),
+	DifficultySettings.new(1, 0.25, 250),
+	DifficultySettings.new(1, 0.25, 300)
+]
 
 var blocking_jellyfish: Array[Jellyfish] = []
 
@@ -138,7 +138,7 @@ func _on_jellyfish_pressed(jellyfish: Jellyfish) -> void:
 	_log_new_response(jellyfish.stimulus, _get_current_stimulus())
 	
 	# Check if the stimulus is right
-	var is_right: bool = jellyfish.stimulus.Grapheme == _get_current_stimulus().Grapheme
+	var is_right: = _is_stimulus_right(jellyfish.stimulus)
 	if is_right:
 		jellyfish.happy()
 		jellyfish.right()
@@ -167,15 +167,3 @@ func _on_jellyfish_pressed(jellyfish: Jellyfish) -> void:
 
 func _on_highlight_timer_timeout():
 	_highlight()
-
-
-# ------------ UI Callbacks ------------
-
-
-func _on_current_progression_changed() -> void:
-	if current_progression > 0:
-		_play_current_stimulus_phoneme()
-
-
-func _play_stimulus() -> void:
-	await _play_current_stimulus_phoneme()

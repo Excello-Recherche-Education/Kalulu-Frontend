@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://bxh1torc05k7p"]
 
-[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_lbq56"]
+[ext_resource type="PackedScene" uid="uid://clbi7qphyh0so" path="res://sources/minigames/base/hear_and_find/hear_and_find_minigame.tscn" id="1_lbq56"]
 [ext_resource type="Script" path="res://sources/minigames/crabs/crabs_minigame.gd" id="2_gierf"]
 [ext_resource type="AudioStream" uid="uid://4qo683e8atp4" path="res://language_resources/pt/minigames/crabs/audio/kalulu/kalulu_help_crabs_language.mp3" id="3_8pn05"]
 [ext_resource type="AudioStream" uid="uid://c2qmghbq5c2x6" path="res://language_resources/fr/minigames/crabs/audio/kalulu/kalulu_intro_crabs_language.mp3" id="3_shwct"]
@@ -9,10 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="6_1r44u"]
 [ext_resource type="Texture2D" uid="uid://5bx8ugh178j1" path="res://assets/minigames/crabs/graphic/background.png" id="7_s0cgt"]
 
-[node name="Crabs" instance=ExtResource("1_lbq56")]
+[node name="CrabsMinigame" instance=ExtResource("1_lbq56")]
 script = ExtResource("2_gierf")
 difficulty = 2
 minigame_name = "Crabs"
+difficulty = 4
 lesson_nb = 3
 max_number_of_lives = 5
 max_progression = 5

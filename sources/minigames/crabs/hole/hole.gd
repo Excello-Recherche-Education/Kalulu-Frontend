@@ -1,9 +1,10 @@
 extends Node2D
+class_name Hole
 
 signal stimulus_hit(stimulus: Dictionary)
-signal crab_despawned(stimulus: Dictionary)
+signal crab_despawned()
 
-const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
+const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
 @onready var hole_back: = $HoleBack
 @onready var hole_front: = $HoleFront
@@ -15,7 +16,7 @@ var crab: Crab
 
 
 func spawn_crab(stimulus: Dictionary) -> void:
-	crab = Crab.instantiate()
+	crab = crab_scene.instantiate()
 	mask.add_child(crab)
 	
 	crab.position = Vector2(0, 200)
@@ -61,7 +62,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab.queue_free()
 	crab = null
 	
-	crab_despawned.emit(stimulus)
+	crab_despawned.emit()
 
 
 func is_button_pressed_with_limit(future):
@@ -99,4 +100,4 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	crab.queue_free()
 	crab = null
 	
-	crab_despawned.emit(stimulus)
+	crab_despawned.emit()

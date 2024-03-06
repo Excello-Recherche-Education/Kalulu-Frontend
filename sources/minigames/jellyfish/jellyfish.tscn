@@ -13,7 +13,7 @@
 custom_minimum_size = Vector2(400, 400)
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.08314, 1.08314)
+scale = Vector2(1.19098, 1.19098)
 script = ExtResource("1_06uwq")
 
 [node name="BackFX" type="Control" parent="."]
