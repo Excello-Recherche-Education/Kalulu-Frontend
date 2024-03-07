@@ -1,103 +1,189 @@
-[gd_scene load_steps=18 format=3 uid="uid://bwe3fp0vkpufb"]
+[gd_scene load_steps=36 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
 [ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
-[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="3_dei0e"]
+[ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="3_e1twq"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_3hx0j"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_3sw4w"]
+[ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="6_bn4pr"]
+[ext_resource type="PackedScene" uid="uid://c6klih3h3ws6f" path="res://sources/utils/auto_size_label.tscn" id="7_kyqqg"]
 
-[sub_resource type="Animation" id="Animation_lftfb"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Crab:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
+[sub_resource type="AtlasTexture" id="AtlasTexture_87f4k"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(0, 537, 205, 179)
 
-[sub_resource type="Animation" id="Animation_b2qjc"]
-resource_name = "hit"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Crab:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [18, 19, 20, 21]
-}
+[sub_resource type="AtlasTexture" id="AtlasTexture_sqcrh"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(205, 537, 205, 179)
 
-[sub_resource type="Animation" id="Animation_aahhw"]
-resource_name = "hurt"
-length = 0.6
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Crab:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [12, 13, 14, 15, 16, 17]
-}
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2w0i"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(410, 537, 205, 179)
 
-[sub_resource type="Animation" id="Animation_5butr"]
-resource_name = "idle1"
-length = 0.6
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Crab:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5]
-}
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrrke"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(615, 537, 205, 179)
 
-[sub_resource type="Animation" id="Animation_0cnq1"]
-resource_name = "idle2"
-length = 0.6
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Crab:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [6, 7, 8, 9, 10, 11]
-}
+[sub_resource type="AtlasTexture" id="AtlasTexture_qy7uv"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(0, 358, 205, 179)
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_ifo73"]
-_data = {
-"RESET": SubResource("Animation_lftfb"),
-"hit": SubResource("Animation_b2qjc"),
-"hurt": SubResource("Animation_aahhw"),
-"idle1": SubResource("Animation_5butr"),
-"idle2": SubResource("Animation_0cnq1")
-}
+[sub_resource type="AtlasTexture" id="AtlasTexture_tlaef"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(205, 358, 205, 179)
 
-[sub_resource type="LabelSettings" id="LabelSettings_lys05"]
-font = ExtResource("3_dei0e")
-font_size = 42
+[sub_resource type="AtlasTexture" id="AtlasTexture_y1ryk"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(410, 358, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21sj3"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(615, 358, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xg4k0"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(820, 358, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7e85e"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(1025, 358, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ks64g"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(0, 0, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dybw2"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(205, 0, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1f1v1"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(410, 0, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20nk8"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(615, 0, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flod0"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(820, 0, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qs7l7"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(1025, 0, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5tsqm"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(0, 179, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7nsjt"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(205, 179, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppf1x"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(410, 179, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sv8g8"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(615, 179, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8tw4"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(820, 179, 205, 179)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0ec4"]
+atlas = ExtResource("2_yu4q0")
+region = Rect2(1025, 179, 205, 179)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g5q5i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87f4k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sqcrh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2w0i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrrke")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qy7uv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tlaef")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y1ryk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_21sj3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xg4k0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7e85e")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ks64g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dybw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1f1v1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20nk8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flod0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qs7l7")
+}],
+"loop": false,
+"name": &"idle1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5tsqm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7nsjt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppf1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sv8g8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l8tw4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h0ec4")
+}],
+"loop": false,
+"name": &"idle2",
+"speed": 10.0
+}]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tnp5x"]
 
@@ -109,48 +195,88 @@ font_size = 42
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1h5my"]
 
-[node name="Crab" type="Node2D"]
+[node name="Crab" type="MarginContainer"]
+custom_minimum_size = Vector2(205, 179)
+offset_right = 205.0
+offset_bottom = 179.0
 script = ExtResource("1_5hgg8")
 
-[node name="RightFX" parent="." instance=ExtResource("4_3hx0j")]
+[node name="BackFX" type="Control" parent="."]
+layout_mode = 2
+
+[node name="RightFX" parent="BackFX" instance=ExtResource("4_3hx0j")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_ifo73")
-}
+[node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
+layout_mode = 2
+script = ExtResource("3_e1twq")
+sprites = [NodePath("AnimatedSprite2D")]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_g5q5i")
+animation = &"idle1"
 autoplay = "idle1"
+frame = 5
+frame_progress = 1.0
+centered = false
+offset = Vector2(-5, 0)
 
-[node name="Crab" type="Sprite2D" parent="."]
-light_mask = 1024
-visibility_layer = 1024
-texture = ExtResource("2_yu4q0")
-offset = Vector2(-5, -8)
-hframes = 6
-vframes = 4
+[node name="PercentMarginContainer" type="Container" parent="."]
+layout_mode = 2
+script = ExtResource("6_bn4pr")
+margin_left_ratio = 0.2
+margin_top_ratio = 0.4
+margin_right_ratio = 0.2
+margin_bottom_ratio = 0.3
 
-[node name="Label" type="Label" parent="."]
-offset_left = -56.0
-offset_top = -33.0
-offset_right = 55.0
-offset_bottom = 52.0
-label_settings = SubResource("LabelSettings_lys05")
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="PercentMarginContainer"]
+layout_mode = 2
+
+[node name="AutoSizeLabel" parent="PercentMarginContainer/AspectRatioContainer" instance=ExtResource("7_kyqqg")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" parent="PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
+text = ""
+
+[node name="FrontFX" type="Control" parent="."]
+layout_mode = 2
+
+[node name="WrongFX" parent="FrontFX" instance=ExtResource("5_3sw4w")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="Button" type="Button" parent="."]
-offset_left = -56.0
-offset_top = -33.0
-offset_right = 55.0
-offset_bottom = 52.0
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tnp5x")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_g8ffa")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_fwwak")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_tdur1")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_1h5my")
 
-[node name="WrongFX" parent="." instance=ExtResource("5_3sw4w")]
-scale = Vector2(0.5, 0.5)
-
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="animation_finished" from="SpriteControl/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+
+[editable path="PercentMarginContainer/AspectRatioContainer/AutoSizeLabel"]

@@ -1,13 +1,14 @@
-extends Node2D
+@tool
+extends MarginContainer
 class_name Crab
 
 signal crab_hit(stimulus: Dictionary)
 
-@onready var animation_player: = $AnimationPlayer
-@onready var label: = $Label
+@onready var animated_sprite: = %AnimatedSprite2D
+@onready var label: = %AutoSizeLabel.get_node("Label")
 @onready var button: = $Button
-@onready var right_fx: = $RightFX
-@onready var wrong_fx: = $WrongFX
+@onready var right_fx: = %RightFX
+@onready var wrong_fx: = %WrongFX
 
 
 var stimulus: Dictionary:
@@ -16,12 +17,7 @@ var stimulus: Dictionary:
 
 func _ready() -> void:
 	set_button_active(false)
-
-
-func _process(_delta: float) -> void:
-#	right_fx.global_rotation = 0.0
-#	wrong_fx.global_rotation = 0.0
-	pass
+	animated_sprite.play("idle1")
 
 
 func set_button_active(active: bool) -> void:
@@ -51,13 +47,15 @@ func _set_stimulus(value: Dictionary) -> void:
 
 func _on_button_pressed() -> void:
 	crab_hit.emit(stimulus)
-	animation_player.play("hit")
+	animated_sprite.play("hit")
 
 
-func _on_animation_player_animation_finished(animation_name: StringName) -> void:
-	var idles: = ["idle1", "idle2"]
-	if animation_name in idles:
-		var r: = randi() % idles.size()
-		animation_player.play(idles[r])
-	elif animation_name == "hit":
-		animation_player.play("hurt")
+func _on_animated_sprite_2d_animation_finished() -> void:
+	match animated_sprite.animation:
+		"idle1", "idle2":
+			if randf() < 0.5 :
+				animated_sprite.play("idle1") 
+			else : 
+				animated_sprite.play("idle2")
+		"hit":
+			animated_sprite.play("hurt")

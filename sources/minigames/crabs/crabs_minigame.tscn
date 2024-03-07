@@ -13,6 +13,7 @@
 script = ExtResource("2_gierf")
 difficulty = 2
 minigame_name = "Crabs"
+lesson_nb = 30
 difficulty = 4
 lesson_nb = 3
 max_number_of_lives = 5

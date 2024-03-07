@@ -60,6 +60,7 @@ func _start() -> void:
 	
 	_play_current_stimulus_phoneme()
 	
+	# Spawn a set amount of crabs in random holes
 	for i in range(int(3.0 * holes.size() / 4.0)):
 		_on_hole_crab_despawned()
 		await get_tree().create_timer(0.1).timeout
