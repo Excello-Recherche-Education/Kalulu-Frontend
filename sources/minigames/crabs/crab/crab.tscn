@@ -226,10 +226,10 @@ sprites = [NodePath("AnimatedSprite2D")]
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
 position = Vector2(103, 90)
+scale = Vector2(1e-05, 1e-05)
 sprite_frames = SubResource("SpriteFrames_g5q5i")
-animation = &"idle2"
+animation = &"idle1"
 autoplay = "idle1"
-frame_progress = 0.00802341
 centered = false
 offset = Vector2(-108, -90)
 

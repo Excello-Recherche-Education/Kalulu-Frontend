@@ -9,6 +9,7 @@ const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
 @onready var hole_back: = $HoleBack
 @onready var hole_front: = $HoleFront
 @onready var mask: = $Mask
+@onready var sand_vfx: SandVFX = $SandVFX
 @onready var timer: = $Timer
 @onready var crab_audio_stream_player: = $CrabAudioStreamPlayer2D
 
@@ -26,6 +27,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab.stimulus = stimulus
 	
 	# Show the crab but not the stimulus
+	sand_vfx.start()
 	crab_audio_stream_player.start_playing()
 	var tween: = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, 20), randf_range(0.25, 2.0))
@@ -36,6 +38,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	await timer.timeout
 	
 	# The crab gets completely out
+	sand_vfx.stop()
 	crab_audio_stream_player.start_playing()
 	tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, -130.0), 0.5)
@@ -49,12 +52,14 @@ func spawn_crab(stimulus: Dictionary) -> void:
 		return
 	
 	# The crab disappears in the hole
+	sand_vfx.start()
 	crab_audio_stream_player.start_playing()
 	tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, 100.0), 0.5)
 	if await is_button_pressed_with_limit(tween.finished):
 		return
 	crab_audio_stream_player.stop_playing()
+	sand_vfx.stop()
 	
 	crab.queue_free()
 	crab = null

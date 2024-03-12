@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bggrf54kye5vl"]
+[gd_scene load_steps=8 format=3 uid="uid://bggrf54kye5vl"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/hole/hole.gd" id="1_05s8c"]
 [ext_resource type="Texture2D" uid="uid://tfigqbebxmal" path="res://assets/minigames/crabs/graphic/hole_back.png" id="2_osih7"]
 [ext_resource type="Texture2D" uid="uid://7nrlmc7opox1" path="res://assets/minigames/crabs/graphic/hole_mask.png" id="3_ietrg"]
 [ext_resource type="Texture2D" uid="uid://jl4sirrpr1l1" path="res://icon.svg" id="4_5yovx"]
 [ext_resource type="Texture2D" uid="uid://cwebei83ml5vs" path="res://assets/minigames/crabs/graphic/hole_front.png" id="5_ahgwg"]
+[ext_resource type="PackedScene" uid="uid://dt8ynpufhqs5w" path="res://sources/utils/fx/sand.tscn" id="5_vress"]
 [ext_resource type="Script" path="res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd" id="6_2rg3s"]
 
 [node name="Hole" type="Node2D"]
@@ -23,6 +24,10 @@ texture = ExtResource("3_ietrg")
 [node name="IconToHideTheMask" type="Sprite2D" parent="Mask"]
 position = Vector2(-1, 263)
 texture = ExtResource("4_5yovx")
+
+[node name="SandVFX" parent="." instance=ExtResource("5_vress")]
+offset_top = 57.7778
+offset_bottom = 57.7778
 
 [node name="HoleFront" type="Sprite2D" parent="."]
 position = Vector2(0, 2)
