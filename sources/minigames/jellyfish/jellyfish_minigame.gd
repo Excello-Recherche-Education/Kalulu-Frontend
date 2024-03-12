@@ -64,15 +64,17 @@ func _stop_highlight():
 func _spawn() -> void:
 	# Instantiate a new jellyfish
 	var new_jellyfish : Jellyfish = jellyfish_scene.instantiate()
+	spawning_space.add_child(new_jellyfish)
 	
-	# TODO Find the right size for the jellyfish
+	# Find the right size for the jellyfish
+	var jellyfish_width: = new_jellyfish.size.x * new_jellyfish.scale.x
 	
 	# Check if there is enough space to spawn the jellyfish and find a spot
 	var permitted_range: = 0
 	var left_border: = 0
 	# Blocking jellyfish is supposed to be ordered
 	for blocking in blocking_jellyfish:
-		permitted_range += max(0, blocking.position.x - left_border - new_jellyfish.size.x)
+		permitted_range += max(0, blocking.position.x - left_border - jellyfish_width)
 		left_border = blocking.position.x + blocking.size.x
 	permitted_range += max(0, spawning_space.size.x - left_border)
 	if permitted_range <= 0:
@@ -92,7 +94,7 @@ func _spawn() -> void:
 	left_border = 0
 	# Blocking jellyfish is supposed to be ordered
 	for blocking in blocking_jellyfish:
-		var local_permitted_range = max(0, blocking.position.x - left_border - new_jellyfish.size.x)
+		var local_permitted_range = max(0, blocking.position.x - left_border - jellyfish_width)
 		if local_permitted_range <= random_spawn:
 			random_spawn -= local_permitted_range
 		else:
@@ -114,9 +116,6 @@ func _spawn() -> void:
 	
 	# Connects the new jellyfish with the pressed signal
 	new_jellyfish.pressed.connect(_on_jellyfish_pressed.bind(new_jellyfish))
-	
-	# Adds the jellyfish into the scene
-	spawning_space.add_child(new_jellyfish)
 
 
 func _get_difficulty_settings() -> DifficultySettings:
