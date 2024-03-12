@@ -65,6 +65,8 @@ func _spawn() -> void:
 	# Instantiate a new jellyfish
 	var new_jellyfish : Jellyfish = jellyfish_scene.instantiate()
 	
+	# TODO Find the right size for the jellyfish
+	
 	# Check if there is enough space to spawn the jellyfish and find a spot
 	var permitted_range: = 0
 	var left_border: = 0

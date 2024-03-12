@@ -249,7 +249,7 @@ unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_g5q5i")
 animation = &"idle1"
 autoplay = "idle1"
-frame_progress = 0.236195
+frame_progress = 0.751507
 centered = false
 offset = Vector2(-5, 0)
 
@@ -272,6 +272,9 @@ layout_mode = 2
 [node name="AutoSizeLabel" parent="Body/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("7_kyqqg")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="Label" parent="Body/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
+text = ""
 
 [node name="FrontFX" type="Control" parent="."]
 layout_mode = 1

@@ -1,5 +1,5 @@
 @tool
-extends MarginContainer
+extends Control
 class_name Jellyfish
 
 signal pressed()
@@ -27,6 +27,9 @@ const scale_factor : float = 0.2
 		if animated_sprite:
 			animated_sprite.sprite_frames = animations[color]
 		scale = scales[color] * (1. + randf() * scale_factor)
+		
+		# Handles sprite size
+		$SpriteControl.resized.emit()
 
 
 @onready var animated_sprite: = %AnimatedSprite2D

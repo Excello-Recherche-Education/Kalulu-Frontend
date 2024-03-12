@@ -6,22 +6,27 @@
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_5uhvd"]
 [ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="3_vllju"]
 [ext_resource type="PackedScene" uid="uid://c6klih3h3ws6f" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
-[ext_resource type="SpriteFrames" uid="uid://dkemftb4jdxvs" path="res://sources/minigames/jellyfish/green_jellyfish_animations.tres" id="5_cbptq"]
+[ext_resource type="SpriteFrames" uid="uid://dquynn3nx52o" path="res://sources/minigames/jellyfish/red_jellyfish_animations.tres" id="5_bh1cr"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
 
-[node name="Jellyfish" type="MarginContainer"]
+[node name="Jellyfish" type="Control"]
 custom_minimum_size = Vector2(400, 400)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.49766, 1.49766)
+scale = Vector2(1.12849, 1.12849)
 script = ExtResource("1_06uwq")
-color = 1
 
 [node name="BackFX" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 0.55
 size_flags_vertical = 0
 mouse_filter = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="RightFX" parent="BackFX" instance=ExtResource("2_edt4e")]
 unique_name_in_owner = true
@@ -48,22 +53,32 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_1b85n")
 sprites = [NodePath("AnimatedSprite2D")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
-position = Vector2(200.8, 109.84)
-scale = Vector2(1e-05, 1e-05)
-sprite_frames = ExtResource("5_cbptq")
+scale = Vector2(2.15054, 2.15054)
+sprite_frames = ExtResource("5_bh1cr")
 animation = &"idle"
+frame_progress = 0.139471
 centered = false
-offset = Vector2(-93.3722, -51.0754)
+offset = Vector2(-0.000205994, 0.00019455)
 
 [node name="PercentMarginContainer" type="Container" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_vllju")
 margin_left_ratio = 0.2
 margin_top_ratio = 0.1
@@ -83,8 +98,12 @@ text = ""
 [node name="FrontFX" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 0.55
 size_flags_vertical = 0
 mouse_filter = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="WrongFX" parent="FrontFX" instance=ExtResource("6_w1tlu")]
 unique_name_in_owner = true
