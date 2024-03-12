@@ -29,18 +29,18 @@ func _find_stimuli_and_distractions() -> void:
 	# If there is no previous stimuli, only adds from current lesson
 	if previous_lesson_stimuli.is_empty():
 		while stimuli.size() < max_progression:
-			stimuli.append(current_lesson_stimuli[randi() % current_lesson_stimuli.size()])
+			stimuli.append(current_lesson_stimuli.pick_random())
 	else:
 		# Calculate the number of stimuli to add from this lesson (70% of the maximum progression)
 		@warning_ignore("narrowing_conversion")
 		var number_of_stimuli: int = max_progression * stimuli_ratio
 		while stimuli.size() < number_of_stimuli:
-			stimuli.append(current_lesson_stimuli[randi() % current_lesson_stimuli.size()])
+			stimuli.append(current_lesson_stimuli.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
 		# TODO Handle previous errors
 		while stimuli.size() < max_progression:
-			stimuli.append(previous_lesson_stimuli[randi() % previous_lesson_stimuli.size()])
+			stimuli.append(previous_lesson_stimuli.pick_random())
 	
 	# Shuffle the stimuli
 	stimuli.shuffle()

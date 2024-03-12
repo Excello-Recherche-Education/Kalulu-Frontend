@@ -195,14 +195,21 @@ animations = [{
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1h5my"]
 
-[node name="Crab" type="MarginContainer"]
+[node name="Crab" type="Control"]
 custom_minimum_size = Vector2(205, 179)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 205.0
 offset_bottom = 179.0
 script = ExtResource("1_5hgg8")
 
 [node name="BackFX" type="Control" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="RightFX" parent="BackFX" instance=ExtResource("4_3hx0j")]
 unique_name_in_owner = true
@@ -218,41 +225,61 @@ scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
-layout_mode = 2
+[node name="Body" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(103, 104)
+
+[node name="SpriteControl" type="Control" parent="Body" node_paths=PackedStringArray("sprites")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_e1twq")
 sprites = [NodePath("AnimatedSprite2D")]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body/SpriteControl"]
 unique_name_in_owner = true
-position = Vector2(103, 90)
-scale = Vector2(1e-05, 1e-05)
 sprite_frames = SubResource("SpriteFrames_g5q5i")
-animation = &"idle1"
+animation = &"idle2"
 autoplay = "idle1"
+frame_progress = 0.302072
 centered = false
-offset = Vector2(-108, -90)
+offset = Vector2(-5, 0)
 
-[node name="PercentMarginContainer" type="Container" parent="."]
-layout_mode = 2
+[node name="PercentMarginContainer" type="Container" parent="Body"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("6_bn4pr")
 margin_left_ratio = 0.2
 margin_top_ratio = 0.4
 margin_right_ratio = 0.2
 margin_bottom_ratio = 0.3
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="PercentMarginContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Body/PercentMarginContainer"]
 layout_mode = 2
 
-[node name="AutoSizeLabel" parent="PercentMarginContainer/AspectRatioContainer" instance=ExtResource("7_kyqqg")]
+[node name="AutoSizeLabel" parent="Body/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("7_kyqqg")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" parent="PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
-text = ""
-
 [node name="FrontFX" type="Control" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="WrongFX" parent="FrontFX" instance=ExtResource("5_3sw4w")]
 unique_name_in_owner = true
@@ -269,7 +296,12 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Button" type="Button" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tnp5x")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_g8ffa")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_fwwak")
@@ -277,7 +309,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_tdur1")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_1h5my")
 disabled = true
 
-[connection signal="animation_finished" from="SpriteControl/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="animation_finished" from="Body/SpriteControl/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 
-[editable path="PercentMarginContainer/AspectRatioContainer/AutoSizeLabel"]
+[editable path="Body/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel"]

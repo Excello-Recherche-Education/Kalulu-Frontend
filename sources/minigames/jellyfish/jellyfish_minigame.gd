@@ -83,7 +83,7 @@ func _spawn() -> void:
 		new_jellyfish.stimulus = _get_current_stimulus()
 	else:
 		var current_distractors : Array = distractions[current_progression % distractions.size()]
-		new_jellyfish.stimulus = current_distractors[randi() % current_distractors.size()]
+		new_jellyfish.stimulus = current_distractors.pick_random()
 	
 	# Randomize the spawn and adds the jellyfish into the scene
 	var random_spawn: = randi_range(0, permitted_range - 1)

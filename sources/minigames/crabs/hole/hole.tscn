@@ -9,7 +9,6 @@
 [ext_resource type="Script" path="res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd" id="6_2rg3s"]
 
 [node name="Hole" type="Node2D"]
-position = Vector2(947, 568)
 scale = Vector2(1.8, 1.8)
 script = ExtResource("1_05s8c")
 

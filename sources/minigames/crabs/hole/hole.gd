@@ -97,8 +97,7 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	# Move the crab up and rotate
 	var tween: = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, -180), 0.5)
-	# TODO FIX
-	tween.parallel().tween_property(crab.animated_sprite, "rotation_degrees", 540.0, 0.5)
+	tween.parallel().tween_property(crab.body, "rotation_degrees", 540.0, 0.5)
 	await tween.finished
 
 	# Make the crab disappear in the hole

@@ -1,9 +1,10 @@
 @tool
-extends MarginContainer
+extends Control
 class_name Crab
 
 signal crab_hit(stimulus: Dictionary)
 
+@onready var body: Control = $Body
 @onready var animated_sprite: = %AnimatedSprite2D
 @onready var label: = %AutoSizeLabel.get_node("Label")
 @onready var button: = $Button

@@ -73,7 +73,7 @@ func _get_difficulty_settings() -> DifficultySettings:
 # ------------ Crabs ------------
 
 
-func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Node2D) -> void:
+func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Hole) -> void:
 	# Logs the response
 	_log_new_response(stimulus, _get_current_stimulus())
 	
@@ -110,7 +110,7 @@ func _on_hole_timer_timeout() -> void:
 					holes[i].spawn_crab(_get_current_stimulus())
 				else:
 					var current_distractors : Array = distractions[current_progression % distractions.size()]
-					holes[i].spawn_crab(current_distractors[randi() % current_distractors.size()])
+					holes[i].spawn_crab(current_distractors.pick_random())
 				hole_found = true
 				
 				break
