@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://d2dsqx38l6yqc"]
+[gd_scene load_steps=9 format=3 uid="uid://d2dsqx38l6yqc"]
 
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_kgjbj"]
 [ext_resource type="Script" path="res://sources/language_tool/tracing_builder.gd" id="1_rm5fr"]
@@ -12,6 +12,13 @@ offsets = PackedFloat32Array(0, 0.166667, 0.333333, 0.5, 0.666667, 0.833333, 1)
 colors = PackedColorArray(1, 0, 0, 1, 1, 0.983333, 0, 1, 0, 1, 0.0833333, 1, 0, 0.983334, 1, 1, 0.028, 0, 0.84, 1, 0.566667, 0, 1, 1, 1, 0, 0.716667, 1)
 metadata/_snap_enabled = true
 metadata/_snap_count = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3vyn"]
+bg_color = Color(0.121569, 0.121569, 0.470588, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
 
 [node name="TracingBuilder" type="Control"]
 layout_mode = 3
@@ -66,7 +73,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 42
-text = "- Unsaved changes when switching letters will be lost"
+text = "- Unsaved changes will be lost"
 
 [node name="SaveButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" instance=ExtResource("1_kgjbj")]
 layout_mode = 2
@@ -83,13 +90,38 @@ expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
 layout_mode = 2
-theme_override_constants/margin_top = 42
-theme_override_constants/margin_bottom = 42
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
 
-[node name="LetterPicker" type="OptionButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/VBoxContainer3"]
+layout_mode = 2
+text = "Select letter:"
+
+[node name="LetterPicker" type="OptionButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/VBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_v3vyn")
+
+[node name="CopyFrom" type="MenuButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer2/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Copy from"
 
 [node name="BackButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" instance=ExtResource("1_kgjbj")]
 layout_mode = 2
@@ -109,7 +141,7 @@ layout_mode = 2
 [connection signal="gui_input" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton/SaveOk" to="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" method="_on_texture_rect_gui_input"]
 [connection signal="mouse_entered" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton/SaveOk" to="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" method="_on_texture_rect_mouse_entered"]
 [connection signal="mouse_exited" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton/SaveOk" to="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" method="_on_texture_rect_mouse_exited"]
-[connection signal="item_selected" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/LetterPicker" to="." method="_on_letter_picker_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/VBoxContainer3/LetterPicker" to="." method="_on_letter_picker_item_selected"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="changed" from="VBoxContainer/LowerContainer" to="." method="_on_lower_container_changed"]
 [connection signal="changed" from="VBoxContainer/UpperContainer" to="." method="_on_upper_container_changed"]
