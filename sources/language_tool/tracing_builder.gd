@@ -1,14 +1,15 @@
 extends Control
 
-@export var grapheme: = "azertyuiopmlkjhgfdsqwxcvbnéàùèç"
-
 @export var gradient: Gradient
 
 @onready var lower_container: = %LowerContainer
 @onready var upper_container: = %UpperContainer
+@onready var letter_picker: = %LetterPicker
+@onready var save_ok: = %SaveOk
 
 const extension: = ".csv"
 
+var letters: Array[String] = []
 var current_letter: = -1
 
 
@@ -16,21 +17,33 @@ func _ready() -> void:
 	lower_container.gradient = gradient
 	upper_container.gradient = gradient
 	
+	_find_all_letters()
 	_next_letter()
 
 
+func _find_all_letters() -> void:
+	letters = []
+	
+	var query: = "Select * FROM GPs"
+	Database.db.query(query)
+	var result: = Database.db.query_result
+	for element in result:
+		for letter in element.Grapheme:
+			if not letter in letters:
+				letters.append(letter)
+				letter_picker.add_item(letter)
+
+
 func _next_letter() -> void:
-	current_letter += 1
-	if current_letter >= grapheme.length():
-		current_letter = 0
+	current_letter = (current_letter + 1) % letters.size()
 	
-	lower_container.reset()
-	upper_container.reset()
+	await lower_container.reset()
+	await upper_container.reset()
 	
-	lower_container.grapheme_label.text = grapheme[current_letter].to_lower()
-	upper_container.grapheme_label.text = grapheme[current_letter].to_upper()
+	lower_container.grapheme_label.text = letters[current_letter].to_lower()
+	upper_container.grapheme_label.text = letters[current_letter].to_upper()
 	
-	Database.db.query("Select LowerTracingPath, UpperTracingPath FROM LettersTracingData WHERE Letter = '" + grapheme[current_letter] + "'")
+	Database.db.query("Select LowerTracingPath, UpperTracingPath FROM LettersTracingData WHERE Letter = '" + letters[current_letter] + "'")
 	
 	if not Database.db.query_result.is_empty():
 		var lower_path: String = Database.db.query_result[0]["LowerTracingPath"]
@@ -38,6 +51,9 @@ func _next_letter() -> void:
 		
 		_load_segments(lower_container, lower_path)
 		_load_segments(upper_container, upper_path)
+	
+	letter_picker.selected = current_letter
+	save_ok.visible = true
 
 
 func _load_segments(segment_container: SegmentContainer, path: String) -> void:
@@ -74,19 +90,32 @@ func real_path(path: String) -> String:
 
 
 func _on_save_button_pressed() -> void:
-	var lower_path: = grapheme[current_letter] + "_lower"
-	var upper_path: = grapheme[current_letter] + "_upper"
+	var lower_path: = letters[current_letter] + "_lower"
+	var upper_path: = letters[current_letter] + "_upper"
 	
 	_save_segments(lower_container.segments_container.get_children(), lower_path)
 	_save_segments(upper_container.segments_container.get_children(), upper_path)
 	
-	Database.db.query("Select LowerTracingPath, UpperTracingPath FROM LettersTracingData WHERE Letter = '" + grapheme[current_letter] + "'")
+	Database.db.query("Select LowerTracingPath, UpperTracingPath FROM LettersTracingData WHERE Letter = '" + letters[current_letter] + "'")
 	
 	if Database.db.query_result.is_empty():
-		Database.db.query("INSERT INTO LettersTracingData (Letter, LowerTracingPath, UpperTracingPath) VALUES ('" + grapheme[current_letter] + "','" + lower_path + "','" + upper_path + "')")
+		Database.db.query("INSERT INTO LettersTracingData (Letter, LowerTracingPath, UpperTracingPath) VALUES ('" + letters[current_letter] + "','" + lower_path + "','" + upper_path + "')")
 	
-	_next_letter()
+	save_ok.visible = true
 
 
 func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")
+
+
+func _on_letter_picker_item_selected(index: int) -> void:
+	current_letter = index - 1
+	_next_letter()
+
+
+func _on_lower_container_changed() -> void:
+	save_ok.visible = false
+
+
+func _on_upper_container_changed() -> void:
+	save_ok.visible = false

@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://d2dsqx38l6yqc"]
+[gd_scene load_steps=7 format=3 uid="uid://d2dsqx38l6yqc"]
 
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_kgjbj"]
 [ext_resource type="Script" path="res://sources/language_tool/tracing_builder.gd" id="1_rm5fr"]
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="3_2sbjh"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="4_83j0b"]
 [ext_resource type="PackedScene" uid="uid://bvb8iewnsnsoj" path="res://sources/language_tool/segment_container.tscn" id="4_frjng"]
-[ext_resource type="Texture2D" uid="uid://cs7v0nap5hadi" path="res://assets/menus/save_ok.png" id="4_m23be"]
 
 [sub_resource type="Gradient" id="Gradient_1lmt0"]
 offsets = PackedFloat32Array(0, 0.166667, 0.333333, 0.5, 0.666667, 0.833333, 1)
@@ -22,6 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_rm5fr")
+grapheme = null
 gradient = SubResource("Gradient_1lmt0")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -74,22 +74,8 @@ layout_mode = 2
 [node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" index="0"]
 texture = ExtResource("3_2sbjh")
 
-[node name="SaveOk" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 120)
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
 layout_mode = 2
-texture = ExtResource("4_m23be")
-expand_mode = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
-layout_mode = 2
-theme_override_constants/margin_top = 42
-theme_override_constants/margin_bottom = 42
-
-[node name="LetterPicker" type="OptionButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 64
 
 [node name="BackButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" instance=ExtResource("1_kgjbj")]
 layout_mode = 2
@@ -106,13 +92,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="gui_input" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton/SaveOk" to="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" method="_on_texture_rect_gui_input"]
-[connection signal="mouse_entered" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton/SaveOk" to="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" method="_on_texture_rect_mouse_entered"]
-[connection signal="mouse_exited" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton/SaveOk" to="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" method="_on_texture_rect_mouse_exited"]
-[connection signal="item_selected" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/LetterPicker" to="." method="_on_letter_picker_item_selected"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="changed" from="VBoxContainer/LowerContainer" to="." method="_on_lower_container_changed"]
-[connection signal="changed" from="VBoxContainer/UpperContainer" to="." method="_on_upper_container_changed"]
 
 [editable path="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton"]
 [editable path="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton"]

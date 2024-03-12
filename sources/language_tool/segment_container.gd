@@ -1,7 +1,10 @@
 extends HBoxContainer
 class_name SegmentContainer
 
+signal changed()
+
 @export var points_per_lines: = 25
+@export var points_per_gradient: = 7
 
 @onready var grapheme_label: = %GraphemeLabel
 @onready var buttons_parent: = %ButtonsParent
@@ -26,6 +29,8 @@ func reset() -> void:
 	
 	current_segment = null
 	current_button = null
+	
+	await get_tree().process_frame
 
 
 func load_segment(points: Array) -> void:
@@ -88,10 +93,14 @@ func match_segment_with_buttons() -> void:
 
 func _on_button_point_down(button: SegmentPointButton) -> void:
 	current_button = button
+	
+	changed.emit()
 
 
 func _on_button_point_up(_button: SegmentPointButton) -> void:
 	current_button = null
+	
+	changed.emit()
 
 
 func _on_button_minus_pressed(button: SegmentPointButton) -> void:
@@ -100,11 +109,15 @@ func _on_button_minus_pressed(button: SegmentPointButton) -> void:
 	
 	buttons.erase(button)
 	button.queue_free()
+	
+	changed.emit()
 
 
 func _on_place_point_button_pressed() -> void:
 	if is_instance_valid(current_segment):
 		current_segment.add_point(get_global_mouse_position() - lines.global_position)
+		
+		changed.emit()
 
 
 func _on_add_segment_button_pressed() -> void:
@@ -123,20 +136,23 @@ func _on_add_segment_button_pressed() -> void:
 	line.joint_mode = Line2D.LINE_JOINT_ROUND
 	lines.add_child(line)
 	
-	var segments: = segments_container.get_children()
-	var all_lines: = lines.get_children()
-	for i in range(segments.size()):
-		var color: = gradient.sample(float(i) / float(segments.size() - 1))
-		segments[i].set_color(color)
-		all_lines[i].default_color = color
+	var i: = segments_container.get_child_count()
+	var r: = float(i % points_per_gradient) / float(points_per_gradient)
+	var color: = gradient.sample(r)
+	segment_build.set_color(color)
+	line.default_color = color
 	
 	match_segment_with_buttons()
+	
+	changed.emit()
 
 
 func _on_segment_modify(segment: SegmentBuild) -> void:
 	current_segment = segment
 	
 	match_segment_with_buttons()
+	
+	changed.emit()
 
 
 func _on_segment_delete(segment: SegmentBuild) -> void:
@@ -151,3 +167,5 @@ func _on_segment_delete(segment: SegmentBuild) -> void:
 	
 	var ind_seg: = segments_container.get_children().find(segment)
 	lines.get_child(ind_seg).queue_free()
+	
+	changed.emit()
