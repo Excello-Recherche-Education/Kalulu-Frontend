@@ -20,6 +20,12 @@ func _ready():
 	timer.wait_time = particles.lifetime
 
 
+func play():
+	particles.texture = textures.pick_random()
+	particles.amount = randi_range(6, 18)
+	particles.restart()
+
+
 func start():
 	_on_timer_timeout()
 
@@ -29,7 +35,5 @@ func stop():
 
 
 func _on_timer_timeout():
-	particles.texture = textures.pick_random()
-	particles.amount = randi_range(6, 18)
-	particles.restart()
+	play()
 	timer.start()

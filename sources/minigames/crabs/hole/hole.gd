@@ -52,14 +52,13 @@ func spawn_crab(stimulus: Dictionary) -> void:
 		return
 	
 	# The crab disappears in the hole
-	sand_vfx.start()
 	crab_audio_stream_player.start_playing()
 	tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, 100.0), 0.5)
 	if await is_button_pressed_with_limit(tween.finished):
 		return
+	sand_vfx.play()
 	crab_audio_stream_player.stop_playing()
-	sand_vfx.stop()
 	
 	crab.queue_free()
 	crab = null
@@ -104,6 +103,7 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, 100.0), 0.5)
 	await tween.finished
+	sand_vfx.play()
 	
 	# No idea what this does
 	if not timer.is_stopped():
