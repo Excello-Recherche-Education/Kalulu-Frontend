@@ -29,7 +29,6 @@ var blocking_jellyfish: Array[Jellyfish] = []
 
 func _start() -> void:
 	super()
-	_play_current_stimulus_phoneme()
 	spawn_timer.start()
 
 
@@ -115,7 +114,7 @@ func _spawn() -> void:
 	blocking_jellyfish.insert(found_ind, new_jellyfish)
 	
 	# Connects the new jellyfish with the pressed signal
-	new_jellyfish.pressed.connect(_on_jellyfish_pressed.bind(new_jellyfish))
+	new_jellyfish.pressed.connect(_on_stimulus_pressed.bind(new_jellyfish))
 
 
 func _get_difficulty_settings() -> DifficultySettings:
@@ -130,10 +129,12 @@ func _on_spawn_timer_timeout() -> void:
 	spawn_timer.wait_time = _get_difficulty_settings().spawn_time
 
 
-func _on_jellyfish_pressed(jellyfish: Jellyfish) -> void:
+func _on_stimulus_pressed(jellyfish: Jellyfish) -> bool:
+	if not super(jellyfish):
+		return false
 	
 	# Disconnect the jellyfish
-	jellyfish.pressed.disconnect(_on_jellyfish_pressed)
+	jellyfish.pressed.disconnect(_on_stimulus_pressed)
 	
 	# Log the answer
 	_log_new_response(jellyfish.stimulus, _get_current_stimulus())
@@ -164,6 +165,8 @@ func _on_jellyfish_pressed(jellyfish: Jellyfish) -> void:
 	# Replay the current stimulus
 	if not is_right:
 		_play_current_stimulus_phoneme()
+	
+	return true
 
 
 func _on_highlight_timer_timeout():

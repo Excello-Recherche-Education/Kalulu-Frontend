@@ -76,6 +76,12 @@ func is_button_pressed_with_limit(future):
 	return false
 
 
+func set_crab_button_active(is_active : bool):
+	if not crab:
+		return
+	crab.set_button_active(is_active)
+
+
 func right() -> void:
 	await crab.right()
 
@@ -85,13 +91,12 @@ func wrong() -> void:
 
 
 func _on_crab_hit(stimulus: Dictionary) -> void:
+	stimulus_hit.emit(stimulus)
 	
 	var crab_x : float = -crab.size.x / 2
 	
 	crab.set_button_active(false)
 	crab_audio_stream_player.stop_playing()
-	
-	stimulus_hit.emit(stimulus)
 	
 	# Move the crab up and rotate
 	var tween: = create_tween()

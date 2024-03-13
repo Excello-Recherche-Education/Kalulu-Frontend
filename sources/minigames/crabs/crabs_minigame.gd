@@ -50,16 +50,15 @@ func _setup_minigame() -> void:
 			if not Engine.is_editor_hint():
 				hole.stimulus_hit.connect(_on_hole_stimulus_hit.bind(hole))
 				hole.crab_despawned.connect(_on_hole_crab_despawned)
-			
+				
+				stimuli_heard.connect(hole.set_crab_button_active)
+				
 			holes.append(hole)
 
 
 # Launch the minigame
 func _start() -> void:
 	super()
-	
-	_play_current_stimulus_phoneme()
-	
 	# Spawn a set amount of crabs in random holes
 	for i in range(int(3.0 * holes.size() / 4.0)):
 		_on_hole_crab_despawned()
@@ -74,8 +73,13 @@ func _get_difficulty_settings() -> DifficultySettings:
 
 
 func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Hole) -> void:
+	if not is_stimulus_heard:
+		return
+	
 	# Logs the response
 	_log_new_response(stimulus, _get_current_stimulus())
+	
+	# TODO Déplacer les animations des crabes ici
 	
 	var is_right: = _is_stimulus_right(stimulus)
 	if is_right:

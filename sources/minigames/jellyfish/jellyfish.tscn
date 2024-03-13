@@ -68,7 +68,7 @@ unique_name_in_owner = true
 scale = Vector2(2.15054, 2.15054)
 sprite_frames = ExtResource("5_bh1cr")
 animation = &"idle"
-frame_progress = 0.139471
+frame_progress = 0.678924
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 

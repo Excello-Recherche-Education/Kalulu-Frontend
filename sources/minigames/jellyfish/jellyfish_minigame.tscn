@@ -11,8 +11,9 @@
 
 [node name="JellyfishMinigame" instance=ExtResource("1_hauef")]
 script = ExtResource("2_gnjlp")
-lesson_nb = 6
+lesson_nb = 12
 difficulty = 4
+stimuli_ratio = 0.6
 intro_kalulu_speech = ExtResource("3_6sswr")
 help_kalulu_speech = ExtResource("2_7li38")
 win_kalulu_speech = ExtResource("3_ar7nu")

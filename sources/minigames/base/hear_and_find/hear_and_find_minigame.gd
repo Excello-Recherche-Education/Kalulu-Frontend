@@ -1,6 +1,27 @@
 extends Minigame
 class_name HearAndFindMinigame
 
+signal stimuli_heard(is_heard : bool)
+
+# Time before a new stimulus when the previous one is found
+@export var between_stimuli_time : float = 2.
+# Time before the current stimulus is repeated
+@export var stimulus_repeat_time : float = 15
+
+@onready var stimulus_timer: Timer = $StimulusTimer
+
+# Define if the current stimulus have been heard by the player. The stimuli can't be pressed if this is false
+var is_stimulus_heard: bool = false:
+	set(value):
+		is_stimulus_heard = value
+		stimuli_heard.emit(value)
+
+
+func _start() -> void:
+	stimulus_timer.wait_time = stimulus_repeat_time
+	_play_current_stimulus_phoneme()
+
+
 # Find the stimuli and distractions of the minigame.
 # For this type of minigame, only vowels and syllables are allowed
 func _find_stimuli_and_distractions() -> void:
@@ -109,6 +130,25 @@ func _play_current_stimulus_phoneme() -> void:
 	if not current_stimulus or not current_stimulus.has("Phoneme"):
 		return
 	await audio_player.play_phoneme(current_stimulus.Phoneme)
+	
+	is_stimulus_heard = true
+	
+	stimulus_timer.start()
+
+
+# ------------ Connections ------------
+
+
+func _on_stimulus_pressed(node) -> bool:
+	if not is_stimulus_heard:
+		return false
+	
+	stimulus_timer.stop()
+	return true
+
+
+func _on_stimulus_timer_timeout():
+	_play_current_stimulus_phoneme()
 
 
 # ------------ UI Callbacks ------------
@@ -116,6 +156,8 @@ func _play_current_stimulus_phoneme() -> void:
 
 func _on_current_progression_changed() -> void:
 	if current_progression > 0:
+		is_stimulus_heard = false
+		await get_tree().create_timer(between_stimuli_time).timeout
 		_play_current_stimulus_phoneme()
 
 
