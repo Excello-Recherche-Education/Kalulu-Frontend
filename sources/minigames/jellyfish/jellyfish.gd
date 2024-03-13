@@ -2,7 +2,7 @@
 extends Control
 class_name Jellyfish
 
-signal pressed()
+signal pressed(stimulus: Dictionary)
 
 enum Colors {
 	Red,
@@ -93,7 +93,7 @@ func wrong() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
-		pressed.emit()
+		pressed.emit(stimulus)
 
 
 func delete() -> void:

@@ -121,6 +121,14 @@ func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
 
 
+func _on_current_progression_changed() -> void:
+	spawn_timer.stop()
+	for jellyfish: Jellyfish in spawning_space.get_children():
+		jellyfish.delete()
+	super()
+	spawn_timer.start()
+
+
 # ------------ Connections ------------
 
 
@@ -129,15 +137,12 @@ func _on_spawn_timer_timeout() -> void:
 	spawn_timer.wait_time = _get_difficulty_settings().spawn_time
 
 
-func _on_stimulus_pressed(jellyfish: Jellyfish) -> bool:
-	if not super(jellyfish):
+func _on_stimulus_pressed(stimulus, jellyfish: Jellyfish) -> bool:
+	if not super(stimulus, jellyfish):
 		return false
 	
 	# Disconnect the jellyfish
 	jellyfish.pressed.disconnect(_on_stimulus_pressed)
-	
-	# Log the answer
-	_log_new_response(jellyfish.stimulus, _get_current_stimulus())
 	
 	# Check if the stimulus is right
 	var is_right: = _is_stimulus_right(jellyfish.stimulus)

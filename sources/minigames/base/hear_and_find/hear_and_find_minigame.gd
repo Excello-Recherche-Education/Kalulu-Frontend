@@ -28,17 +28,15 @@ func _find_stimuli_and_distractions() -> void:
 	var current_lesson_stimuli = []
 	var previous_lesson_stimuli = []
 	
-	var all_GPs = Database.get_GP_before_and_for_lesson(lesson_nb, false)
+	var all_GPs = Database.get_GP_before_and_for_lesson(lesson_nb, false, true, true)
 	var all_syllables = Database.get_syllables_for_lesson(lesson_nb, false)
 	
 	# Find the GPs for current lesson
 	for gp in all_GPs:
-		# Adds the vowels (Type = 1)
-		if gp.Type == 1:
-			if gp.LessonNb == lesson_nb:
-				current_lesson_stimuli.append(gp)
-			else:
-				previous_lesson_stimuli.append(gp)
+		if gp.LessonNb == lesson_nb:
+			current_lesson_stimuli.append(gp)
+		else:
+			previous_lesson_stimuli.append(gp)
 	
 	# Find the syllables for current lesson
 	for syllable in all_syllables:
@@ -47,24 +45,57 @@ func _find_stimuli_and_distractions() -> void:
 		else:
 			previous_lesson_stimuli.append(syllable)
 	
+	# Shuffle everything
+	current_lesson_stimuli.shuffle()
+	previous_lesson_stimuli.shuffle()
+	
+	# Calculate the number of stimuli to add from this lesson
+	@warning_ignore("narrowing_conversion")
+	var number_of_stimuli: int = max_progression * stimuli_ratio
+	
 	# If there is no previous stimuli, only adds from current lesson
 	if previous_lesson_stimuli.is_empty():
 		while stimuli.size() < max_progression:
 			stimuli.append(current_lesson_stimuli.pick_random())
 	else:
-		# Calculate the number of stimuli to add from this lesson (70% of the maximum progression)
-		@warning_ignore("narrowing_conversion")
-		var number_of_stimuli: int = max_progression * stimuli_ratio
-		while stimuli.size() < number_of_stimuli:
-			stimuli.append(current_lesson_stimuli.pick_random())
+		
+		# If there are more stimuli in current lesson than needed
+		if current_lesson_stimuli.size() >= number_of_stimuli:
+			for i in number_of_stimuli:
+				stimuli.append(current_lesson_stimuli[i])
+		else:
+			stimuli.append_array(current_lesson_stimuli)
+		
+		# We if there are not enough stimuli from current lesson, we want at least half the target number of stimuli
+		if stimuli.size() < number_of_stimuli/2:
+			while stimuli.size() < number_of_stimuli/2:
+				stimuli.append(current_lesson_stimuli.pick_random())
+		
+		
+		print("--------------- CURRENT LESSON STIMULI :")
+		print(stimuli)
 		
 		# Gets other stimuli from previous errors or lessons
 		# TODO Handle previous errors
+		var spaces_left : int = max_progression - stimuli.size()
+		if previous_lesson_stimuli.size() >= spaces_left:
+			for i in max_progression - stimuli.size():
+				stimuli.append(previous_lesson_stimuli[i])
+		else:
+			stimuli.append_array(previous_lesson_stimuli)
+		
+		print("--------------- WITH PREVIOUS LESSON STIMULI :")
+		print(stimuli)
+		
+		# If there are not enough stimuli, fill the rest with current lesson
 		while stimuli.size() < max_progression:
-			stimuli.append(previous_lesson_stimuli.pick_random())
+			stimuli.append(current_lesson_stimuli.pick_random())
 	
 	# Shuffle the stimuli
 	stimuli.shuffle()
+	
+	print("--------------- COMPLETE SHUFFLED STIMULI :")
+	print(stimuli)
 	
 	# For each stimuli get the distractors
 	for stimulus in stimuli:
@@ -77,7 +108,7 @@ func _find_stimuli_and_distractions() -> void:
 		# Difficulty 1 
 		# Any previously learned item w/ all letters different
 		for gp in all_GPs:
-				if gp.Type == 1 and gp.Grapheme != stimulus.Grapheme and gp.Phoneme != stimulus.Phoneme:
+				if gp.Grapheme != stimulus.Grapheme and gp.Phoneme != stimulus.Phoneme and (not gp.OtherPhoneme or not gp.OtherPhoneme.has(stimulus.Phoneme)):
 					stimulus_distractors.append(gp)
 		if GPs:
 			for syllable in all_syllables:
@@ -103,6 +134,7 @@ func _find_stimuli_and_distractions() -> void:
 			stimulus_distractors.append({})
 	
 		distractions.append(stimulus_distractors)
+	
 
 
 # Get the current stimulus which needs to be found to increase progression
@@ -112,16 +144,9 @@ func _get_current_stimulus() -> Dictionary:
 	return stimuli[current_progression % stimuli.size()]
 
 
-# Verify if the provided stimulus is right, if it has the same grapheme as the current stimulus
 func _is_stimulus_right(stimulus : Dictionary) -> bool:
-	if not stimulus or not stimulus.has("Grapheme"):
-		return false
-	
 	var current_stimulus := _get_current_stimulus()
-	if not current_stimulus or not current_stimulus.has("Grapheme"):
-		return false
-	
-	return stimulus.Grapheme == current_stimulus.Grapheme
+	return stimulus == current_stimulus
 
 
 # Play the phoneme of the current stimulus
@@ -129,21 +154,24 @@ func _play_current_stimulus_phoneme() -> void:
 	var current_stimulus: = _get_current_stimulus()
 	if not current_stimulus or not current_stimulus.has("Phoneme"):
 		return
-	await audio_player.play_phoneme(current_stimulus.Phoneme)
 	
 	is_stimulus_heard = true
-	
+	await audio_player.play_phoneme(current_stimulus.Phoneme)
 	stimulus_timer.start()
 
 
 # ------------ Connections ------------
 
 
-func _on_stimulus_pressed(_node) -> bool:
+func _on_stimulus_pressed(stimulus : Dictionary, _node) -> bool:
 	if not is_stimulus_heard:
 		return false
 	
 	stimulus_timer.stop()
+	
+	# Log the answer
+	_log_new_response(stimulus, _get_current_stimulus())
+	
 	return true
 
 

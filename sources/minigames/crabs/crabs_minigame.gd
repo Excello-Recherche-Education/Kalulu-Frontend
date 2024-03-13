@@ -21,6 +21,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 
 @onready var crab_zone: = $GameRoot/CrabZone
 
+var stopped : bool = true
 var holes: Array[Hole] = []
 
 
@@ -48,7 +49,7 @@ func _setup_minigame() -> void:
 			hole.position = Vector2(x, y)
 			
 			if not Engine.is_editor_hint():
-				hole.stimulus_hit.connect(_on_hole_stimulus_hit.bind(hole))
+				hole.stimulus_hit.connect(_on_stimulus_pressed.bind(hole))
 				hole.crab_despawned.connect(_on_hole_crab_despawned)
 				stimulus_heard.connect(hole.on_stimulus_heard)
 				
@@ -58,25 +59,16 @@ func _setup_minigame() -> void:
 # Launch the minigame
 func _start() -> void:
 	super()
-	# Spawn a set amount of crabs in random holes
-	for i in range(int(3.0 * holes.size() / 4.0)):
-		_on_hole_crab_despawned()
-		await get_tree().create_timer(0.1).timeout
+	_spawn_crabs()
 
 
 func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
 
 
-# ------------ Crabs ------------
-
-
-func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Hole) -> void:
-	if not is_stimulus_heard:
-		return
-	
-	# Logs the response
-	_log_new_response(stimulus, _get_current_stimulus())
+func _on_stimulus_pressed(stimulus: Dictionary, hole: Hole) -> bool:
+	if not super(stimulus, hole):
+		return false
 	
 	var is_right: = _is_stimulus_right(stimulus)
 	if is_right:
@@ -89,9 +81,33 @@ func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Hole) -> void:
 		# Play the pressed crab phoneme
 		if stimulus and stimulus.Phoneme:
 			await audio_player.play_phoneme(stimulus.Phoneme)
+	
+	return true
+
+
+func _on_current_progression_changed() -> void:
+	# TODO Stop the spawning of new crabs
+	stopped = true
+	# TODO Make all crabs despawn
+	# Play the new stimulus
+	await super()
+	# TODO Restarts the spawning of crabs
+	_spawn_crabs()
+
+
+# ------------ Crabs ------------
+
+# Spawn a set amount of crabs in random holes
+func _spawn_crabs() -> void:
+	stopped = false
+	for i in range(int(3.0 * holes.size() / 4.0)):
+		_on_hole_crab_despawned()
+		await get_tree().create_timer(0.1).timeout
 
 
 func _on_hole_crab_despawned() -> void:
+	if stopped:
+		return
 	await get_tree().create_timer(randf_range(0.1, 2.0)).timeout
 	
 	_on_hole_timer_timeout()

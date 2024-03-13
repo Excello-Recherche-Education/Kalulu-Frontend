@@ -76,6 +76,9 @@ func spawn_crab(stimulus: Dictionary) -> void:
 
 
 func despawn_crab() -> void:
+	if not crab:
+		return
+	
 	var crab_x : float = -crab.size.x / 2
 	
 	crab_visible = false
