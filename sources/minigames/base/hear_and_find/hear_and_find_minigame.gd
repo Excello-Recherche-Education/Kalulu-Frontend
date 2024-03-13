@@ -1,7 +1,7 @@
 extends Minigame
 class_name HearAndFindMinigame
 
-signal stimuli_heard(is_heard : bool)
+signal stimulus_heard(is_heard : bool)
 
 # Time before a new stimulus when the previous one is found
 @export var between_stimuli_time : float = 2.
@@ -14,7 +14,7 @@ signal stimuli_heard(is_heard : bool)
 var is_stimulus_heard: bool = false:
 	set(value):
 		is_stimulus_heard = value
-		stimuli_heard.emit(value)
+		stimulus_heard.emit(value)
 
 
 func _start() -> void:
@@ -139,7 +139,7 @@ func _play_current_stimulus_phoneme() -> void:
 # ------------ Connections ------------
 
 
-func _on_stimulus_pressed(node) -> bool:
+func _on_stimulus_pressed(_node) -> bool:
 	if not is_stimulus_heard:
 		return false
 	

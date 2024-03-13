@@ -15,6 +15,16 @@ const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
 var crab: Crab
 
+var stimulus_heard: bool = false:
+	set(value):
+		stimulus_heard = value
+		_set_crab_button_active(stimulus_heard and crab_visible)
+
+var crab_visible: bool = false:
+	set(value):
+		crab_visible = value
+		_set_crab_button_active(stimulus_heard and crab_visible)
+
 
 func spawn_crab(stimulus: Dictionary) -> void:
 	# Instantiate a new crab
@@ -42,7 +52,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab_audio_stream_player.start_playing()
 	tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, -130.0), 0.5)
-	crab.set_button_active(true)
+	crab_visible = true
 	if await is_button_pressed_with_limit(tween.finished):
 		return
 	crab_audio_stream_player.stop_playing()
@@ -65,37 +75,10 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab_despawned.emit()
 
 
-func is_button_pressed_with_limit(future):
-	var coroutine: = Coroutine.new()
-	coroutine.add_future(crab.is_button_pressed)
-	coroutine.add_future(future)
-	await coroutine.join_either()
-	if coroutine.return_value[0]:
-		await _on_crab_hit(crab.stimulus)
-		return true
-	return false
-
-
-func set_crab_button_active(is_active : bool):
-	if not crab:
-		return
-	crab.set_button_active(is_active)
-
-
-func right() -> void:
-	await crab.right()
-
-
-func wrong() -> void:
-	await crab.wrong()
-
-
-func _on_crab_hit(stimulus: Dictionary) -> void:
-	stimulus_hit.emit(stimulus)
-	
+func despawn_crab() -> void:
 	var crab_x : float = -crab.size.x / 2
 	
-	crab.set_button_active(false)
+	crab_visible = false
 	crab_audio_stream_player.stop_playing()
 	
 	# Move the crab up and rotate
@@ -118,3 +101,37 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	crab = null
 	
 	crab_despawned.emit()
+
+
+func is_button_pressed_with_limit(future) -> bool:
+	var coroutine: = Coroutine.new()
+	coroutine.add_future(crab.is_button_pressed)
+	coroutine.add_future(future)
+	await coroutine.join_either()
+	if coroutine.return_value[0]:
+		await _on_crab_hit(crab.stimulus)
+		return true
+	return false
+
+
+func _set_crab_button_active(is_active : bool):
+	if crab:
+		crab.set_button_active(is_active)
+
+
+func right() -> void:
+	crab.right()
+	despawn_crab()
+
+
+func wrong() -> void:
+	crab.wrong()
+	despawn_crab()
+
+
+func _on_crab_hit(stimulus: Dictionary) -> void:
+	stimulus_hit.emit(stimulus)
+
+
+func on_stimulus_heard(is_heard : bool):
+	stimulus_heard = is_heard

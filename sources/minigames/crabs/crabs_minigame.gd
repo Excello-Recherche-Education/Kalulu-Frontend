@@ -50,8 +50,7 @@ func _setup_minigame() -> void:
 			if not Engine.is_editor_hint():
 				hole.stimulus_hit.connect(_on_hole_stimulus_hit.bind(hole))
 				hole.crab_despawned.connect(_on_hole_crab_despawned)
-				
-				stimuli_heard.connect(hole.set_crab_button_active)
+				stimulus_heard.connect(hole.on_stimulus_heard)
 				
 			holes.append(hole)
 
@@ -78,8 +77,6 @@ func _on_hole_stimulus_hit(stimulus: Dictionary, hole: Hole) -> void:
 	
 	# Logs the response
 	_log_new_response(stimulus, _get_current_stimulus())
-	
-	# TODO Déplacer les animations des crabes ici
 	
 	var is_right: = _is_stimulus_right(stimulus)
 	if is_right:
