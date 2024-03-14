@@ -21,7 +21,6 @@ var difficulty_settings: Array[DifficultySettings] = [
 
 @onready var crab_zone: = $GameRoot/CrabZone
 
-var stopped : bool = true
 var holes: Array[Hole] = []
 
 
@@ -86,12 +85,9 @@ func _on_stimulus_pressed(stimulus: Dictionary, hole: Hole) -> bool:
 
 
 func _on_current_progression_changed() -> void:
-	# TODO Stop the spawning of new crabs
-	stopped = true
-	# TODO Make all crabs despawn
 	# Play the new stimulus
-	await super()
-	# TODO Restarts the spawning of crabs
+	super()
+	# Restarts the spawning of crabs
 	_spawn_crabs()
 
 
@@ -99,17 +95,14 @@ func _on_current_progression_changed() -> void:
 
 # Spawn a set amount of crabs in random holes
 func _spawn_crabs() -> void:
-	stopped = false
 	for i in range(int(3.0 * holes.size() / 4.0)):
 		_on_hole_crab_despawned()
 		await get_tree().create_timer(0.1).timeout
 
 
 func _on_hole_crab_despawned() -> void:
-	if stopped:
+	if await _await_for_future_or_stimulus_found(get_tree().create_timer(randf_range(0.1, 2.0)).timeout):
 		return
-	await get_tree().create_timer(randf_range(0.1, 2.0)).timeout
-	
 	_on_hole_timer_timeout()
 
 
@@ -129,8 +122,14 @@ func _on_hole_timer_timeout() -> void:
 					var current_distractors : Array = distractions[current_progression % distractions.size()]
 					holes[i].spawn_crab(current_distractors.pick_random())
 				hole_found = true
-				
 				break
 		
 		if not hole_found:
-			await get_tree().create_timer(randf_range(0.1, 0.5)).timeout
+			if await _await_for_future_or_stimulus_found(get_tree().create_timer(randf_range(0.1, 0.5)).timeout):
+				hole_found = true
+
+
+func _on_stimulus_found():
+	# Despawn all the crabs
+	for hole in holes:
+		hole.stop.emit()

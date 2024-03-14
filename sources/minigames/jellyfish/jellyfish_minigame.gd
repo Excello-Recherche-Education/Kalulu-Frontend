@@ -49,7 +49,7 @@ func _process(delta: float) -> void:
 
 func _highlight():
 	for jellyfish: Jellyfish in spawning_space.get_children():
-		if jellyfish.stimulus and jellyfish.stimulus.Grapheme == _get_current_stimulus().Grapheme:
+		if jellyfish.stimulus and _is_stimulus_right(jellyfish.stimulus):
 			jellyfish.highlight()
 	highlight_timer.start()
 
@@ -122,10 +122,9 @@ func _get_difficulty_settings() -> DifficultySettings:
 
 
 func _on_current_progression_changed() -> void:
-	spawn_timer.stop()
-	for jellyfish: Jellyfish in spawning_space.get_children():
-		jellyfish.delete()
+	# Play the new stimulus
 	super()
+	# Restarts the spawning of jellyfishes
 	spawn_timer.start()
 
 
@@ -159,9 +158,9 @@ func _on_stimulus_pressed(stimulus, jellyfish: Jellyfish) -> bool:
 		# Play the pressed jellyfish phoneme
 		if jellyfish.stimulus and jellyfish.stimulus.Phoneme:
 			await audio_player.play_phoneme(jellyfish.stimulus.Phoneme)
-	
-	# Remove the jellyfish
-	await jellyfish.delete()
+		
+		# Remove the jellyfish
+		await jellyfish.delete()
 	
 	# Handle the blocking array
 	if jellyfish in blocking_jellyfish:
@@ -176,3 +175,10 @@ func _on_stimulus_pressed(stimulus, jellyfish: Jellyfish) -> bool:
 
 func _on_highlight_timer_timeout():
 	_highlight()
+
+
+func _on_stimulus_found():
+	spawn_timer.stop()
+	# Clear all the jellyfishes
+	for jellyfish: Jellyfish in spawning_space.get_children():
+		jellyfish.delete()

@@ -15,7 +15,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.12849, 1.12849)
+scale = Vector2(1.07673, 1.07673)
 script = ExtResource("1_06uwq")
 
 [node name="BackFX" type="Control" parent="."]
@@ -68,7 +68,7 @@ unique_name_in_owner = true
 scale = Vector2(2.15054, 2.15054)
 sprite_frames = ExtResource("5_bh1cr")
 animation = &"idle"
-frame_progress = 0.678924
+frame_progress = 0.365226
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 

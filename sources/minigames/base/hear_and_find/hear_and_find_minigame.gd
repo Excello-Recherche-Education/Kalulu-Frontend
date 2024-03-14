@@ -2,6 +2,7 @@ extends Minigame
 class_name HearAndFindMinigame
 
 signal stimulus_heard(is_heard : bool)
+signal stimulus_found()
 
 # Time before a new stimulus when the previous one is found
 @export var between_stimuli_time : float = 2.
@@ -19,7 +20,7 @@ var is_stimulus_heard: bool = false:
 
 func _start() -> void:
 	stimulus_timer.wait_time = stimulus_repeat_time
-	_play_current_stimulus_phoneme()
+	await _play_current_stimulus_phoneme()
 
 
 # Find the stimuli and distractions of the minigame.
@@ -144,6 +145,11 @@ func _get_current_stimulus() -> Dictionary:
 	return stimuli[current_progression % stimuli.size()]
 
 
+func _is_stimulus_found() -> bool:
+	await stimulus_found
+	return true
+
+
 func _is_stimulus_right(stimulus : Dictionary) -> bool:
 	var current_stimulus := _get_current_stimulus()
 	return stimulus == current_stimulus
@@ -160,23 +166,43 @@ func _play_current_stimulus_phoneme() -> void:
 	stimulus_timer.start()
 
 
+func _await_for_future_or_stimulus_found(future : Signal) -> bool:
+	var coroutine: = Coroutine.new()
+	coroutine.add_future(_is_stimulus_found)
+	coroutine.add_future(future)
+	await coroutine.join_either()
+	
+	# If the stimulus was found BEFORE the future
+	if coroutine.return_value[0]:
+		return true
+	return false
+
 # ------------ Connections ------------
 
 
-func _on_stimulus_pressed(stimulus : Dictionary, _node) -> bool:
+func _on_stimulus_pressed(stimulus : Dictionary, node) -> bool:
 	if not is_stimulus_heard:
 		return false
 	
+	# Stop the repeat timer
 	stimulus_timer.stop()
 	
 	# Log the answer
 	_log_new_response(stimulus, _get_current_stimulus())
+	
+	# Emit signal if needed
+	if _is_stimulus_right(stimulus):
+		stimulus_found.emit()
 	
 	return true
 
 
 func _on_stimulus_timer_timeout():
 	_play_current_stimulus_phoneme()
+
+
+func _on_stimulus_found():
+	pass
 
 
 # ------------ UI Callbacks ------------

@@ -3,6 +3,7 @@ class_name Hole
 
 signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned()
+signal stop()
 
 const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
@@ -30,9 +31,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	# Instantiate a new crab
 	crab = crab_scene.instantiate()
 	mask.add_child(crab)
-	
 	var crab_x : float = -crab.size.x / 2
-	
 	crab.position = Vector2(crab_x, 100)
 	crab.stimulus = stimulus
 	
@@ -41,11 +40,14 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab_audio_stream_player.start_playing()
 	var tween: = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, 20), randf_range(0.25, 2.0))
-	await tween.finished
+	if await is_button_pressed_with_limit(tween.finished):
+		return
 	crab_audio_stream_player.stop_playing()
 	
+	# Wait a bit before going out
 	timer.start(randf_range(0.25, 1.5))
-	await timer.timeout
+	if await is_button_pressed_with_limit(timer.timeout):
+		return
 	
 	# The crab gets completely out
 	sand_vfx.stop()
@@ -103,16 +105,33 @@ func despawn_crab() -> void:
 	crab.queue_free()
 	crab = null
 	
-	crab_despawned.emit()
+	#crab_despawned.emit()
 
 
-func is_button_pressed_with_limit(future) -> bool:
+func is_button_pressed_with_limit(future : Signal) -> bool:
 	var coroutine: = Coroutine.new()
 	coroutine.add_future(crab.is_button_pressed)
+	coroutine.add_future(_is_stopped)
 	coroutine.add_future(future)
 	await coroutine.join_either()
+	
+	# If the crab is pressed
 	if coroutine.return_value[0]:
 		await _on_crab_hit(crab.stimulus)
+		return true
+	
+	# If the crab is stopped
+	if coroutine.return_value[1]:
+		
+		# Make the crab disappear in the hole
+		var crab_x : float = -crab.size.x / 2
+		var tween: = create_tween()
+		tween.tween_property(crab, "position", Vector2(crab_x, 100.0), 0.5)
+		await tween.finished
+		sand_vfx.play()
+		
+		crab.queue_free()
+		crab = null
 		return true
 	return false
 
@@ -138,3 +157,8 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 
 func on_stimulus_heard(is_heard : bool):
 	stimulus_heard = is_heard
+
+
+func _is_stopped() -> bool:
+	await stop
+	return true

@@ -32,6 +32,13 @@ MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
 Validation="*res://addons/godot-form-validator/validation.gd"
 OpeningCurtain="*res://sources/minigames/base/opening_curtain.tscn"
 
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+gdscript/warnings/unsafe_property_access=1
+gdscript/warnings/unsafe_method_access=1
+gdscript/warnings/unsafe_call_argument=1
+
 [display]
 
 window/size/viewport_width=2560
