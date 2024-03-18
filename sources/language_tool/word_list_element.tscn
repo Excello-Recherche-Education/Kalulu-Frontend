@@ -31,7 +31,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_emsyu")
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_t1yui")
 tabs_visible = false
-use_hidden_tabs_for_min_size = true
 
 [node name="NormalContainer" type="HBoxContainer" parent="TabContainer"]
 layout_mode = 2
@@ -79,26 +78,47 @@ layout_mode = 2
 [node name="TextureRect" parent="TabContainer/NormalContainer/EditButton" index="0"]
 texture = ExtResource("2_i6x6b")
 
-[node name="EditContainer" type="HBoxContainer" parent="TabContainer"]
+[node name="EditContainer" type="VBoxContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="MinusButton" parent="TabContainer/EditContainer" instance=ExtResource("1_g3tt5")]
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EditContainer"]
 layout_mode = 2
-tooltip_text = "Delete list element"
 
-[node name="TextureRect" parent="TabContainer/EditContainer/MinusButton" index="0"]
-texture = ExtResource("3_mgblq")
+[node name="ValidateButton" parent="TabContainer/EditContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+tooltip_text = "Validate edits"
 
-[node name="ExceptionEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer"]
+[node name="TextureRect" parent="TabContainer/EditContainer/HBoxContainer/ValidateButton" index="0"]
+texture = ExtResource("2_i6x6b")
+
+[node name="ExceptionEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Don't show the word alone in Kalulu games"
 theme_override_font_sizes/font_size = 50
 text = "Exception"
 expand_icon = true
 
-[node name="WordEdit" type="LineEdit" parent="TabContainer/EditContainer"]
+[node name="MinusButton" parent="TabContainer/EditContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+layout_mode = 2
+tooltip_text = "Delete list element"
+
+[node name="TextureRect" parent="TabContainer/EditContainer/HBoxContainer/MinusButton" index="0"]
+texture = ExtResource("3_mgblq")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TabContainer/EditContainer"]
+layout_mode = 2
+
+[node name="WordEditLabel" type="Label" parent="TabContainer/EditContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Word: "
+
+[node name="WordEdit" type="LineEdit" parent="TabContainer/EditContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -110,43 +130,45 @@ alignment = 1
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/EditContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Fill in this element's components"
 vertical_scroll_mode = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EditContainer/ScrollContainer"]
 layout_mode = 2
+alignment = 1
+
+[node name="GPsEditLabel" type="Label" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "GPs: "
 
 [node name="GraphemesEditContainer" type="HBoxContainer" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
+alignment = 1
 
 [node name="AddGPButton" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Add element"
 
 [node name="RemoveGPButton2" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="TextureRect" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2" index="0"]
 tooltip_text = "Remove element"
 texture = ExtResource("3_mgblq")
 
-[node name="ValidateButton" parent="TabContainer/EditContainer" instance=ExtResource("1_g3tt5")]
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 2
-
-[node name="TextureRect" parent="TabContainer/EditContainer/ValidateButton" index="0"]
-texture = ExtResource("2_i6x6b")
-
 [connection signal="pressed" from="TabContainer/NormalContainer/EditButton" to="." method="_on_edit_button_pressed"]
-[connection signal="pressed" from="TabContainer/EditContainer/MinusButton" to="." method="_on_minus_button_pressed"]
-[connection signal="text_submitted" from="TabContainer/EditContainer/WordEdit" to="." method="_on_word_edit_text_submitted"]
-[connection signal="pressed" from="TabContainer/EditContainer/ScrollContainer/HBoxContainer/AddGPButton" to="." method="_on_add_gp_button_pressed"]
+[connection signal="pressed" from="TabContainer/EditContainer/HBoxContainer/ValidateButton" to="." method="_on_validate_button_pressed"]
+[connection signal="pressed" from="TabContainer/EditContainer/HBoxContainer/MinusButton" to="." method="_on_minus_button_pressed"]
+[connection signal="text_submitted" from="TabContainer/EditContainer/HBoxContainer2/WordEdit" to="." method="_on_word_edit_text_submitted"]
+[connection signal="pressed" from="TabContainer/EditContainer/ScrollContainer/HBoxContainer/AddGPButton" to="." method="_on_empty_add_gp_button_pressed"]
 [connection signal="pressed" from="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2" to="." method="_on_remove_gp_button_2_pressed"]
-[connection signal="pressed" from="TabContainer/EditContainer/ValidateButton" to="." method="_on_validate_button_pressed"]
 
 [editable path="TabContainer/NormalContainer/EditButton"]
-[editable path="TabContainer/EditContainer/MinusButton"]
+[editable path="TabContainer/EditContainer/HBoxContainer/ValidateButton"]
+[editable path="TabContainer/EditContainer/HBoxContainer/MinusButton"]
 [editable path="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2"]
-[editable path="TabContainer/EditContainer/ValidateButton"]

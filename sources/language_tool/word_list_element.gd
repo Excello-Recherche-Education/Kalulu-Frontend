@@ -5,6 +5,7 @@ signal new_GP_asked(i: int)
 signal validated()
 
 const gp_list_button_scene: = preload("res://sources/language_tool/gp_list_button.tscn")
+const plus_button_scene: = preload("res://sources/language_tool/plus_button.tscn")
 
 @export var table: = "Words"
 @export var table_graph_column: = "Word"
@@ -22,6 +23,8 @@ const gp_list_button_scene: = preload("res://sources/language_tool/gp_list_butto
 @onready var exception_checkbox: = %ExceptionCheckBox
 @onready var exception_edit_checkbox: = %ExceptionEditCheckBox
 @onready var graphemes_edit_container: = %GraphemesEditContainer
+@onready var add_gp_button: = %AddGPButton
+@onready var remove_gp_button: = %RemoveGPButton2
 
 var word: = "":
 	set = set_word
@@ -77,17 +80,25 @@ func add_gp_list_button(gp_id: int, ind_gp_id: int) -> void:
 	var gp_list_button: = gp_list_button_scene.instantiate()
 	gp_list_button.set_gp_list(sub_elements_list)
 	graphemes_edit_container.add_child(gp_list_button)
+	graphemes_edit_container.move_child(gp_list_button, 2 * ind_gp_id)
 	gp_list_button.select_id(gp_id)
-	gp_list_button.gp_selected.connect(_on_gp_list_button_selected.bind(ind_gp_id))
-	gp_list_button.new_selected.connect(_on_gp_list_button_new_selected.bind(ind_gp_id))
+	gp_list_button.gp_selected.connect(_on_gp_list_button_selected.bind(gp_list_button))
+	gp_list_button.new_selected.connect(_on_gp_list_button_new_selected.bind(gp_list_button))
+	var plus_button: = plus_button_scene.instantiate()
+	plus_button.size = Vector2(50, 50)
+	graphemes_edit_container.add_child(plus_button)
+	graphemes_edit_container.move_child(plus_button, 2 * ind_gp_id + 1)
+	plus_button.pressed.connect(_on_add_gp_button_pressed.bind(gp_list_button))
 
 
-func _on_gp_list_button_selected(gp_id: int, ind_gp_id: int) -> void:
+func _on_gp_list_button_selected(gp_id: int, element: Node) -> void:
+	var ind_gp_id: = element.get_index() / 2
 	unvalidated_gp_ids[ind_gp_id] = gp_id
 	word_edit.text = get_graphemes(unvalidated_gp_ids)
 
 
-func _on_gp_list_button_new_selected(ind_gp_id: int) -> void:
+func _on_gp_list_button_new_selected(element: Node) -> void:
+	var ind_gp_id: = element.get_index() / 2
 	new_GP_asked.emit(ind_gp_id)
 
 
@@ -119,6 +130,8 @@ func _ready() -> void:
 	set_gp_ids(gp_ids)
 	set_lesson(lesson)
 	set_exception(exception)
+	%WordEditLabel.text = table_graph_column + ": "
+	%GPsEditLabel.text = sub_table + ": "
 
 
 func _on_edit_button_pressed() -> void:
@@ -272,21 +285,35 @@ func _on_word_edit_text_submitted(new_text: String) -> void:
 		update_lesson()
 
 
-func _on_add_gp_button_pressed() -> void:
-	var gp_id: int = sub_elements_list.keys()[0]
-	unvalidated_gp_ids.append(gp_id)
-	add_gp_list_button(gp_id, unvalidated_gp_ids.size() - 1)
-
-
 func _on_remove_gp_button_2_pressed() -> void:
+	if graphemes_edit_container.get_child_count() < 2:
+		return
 	unvalidated_gp_ids.pop_back()
-	var node: = graphemes_edit_container.get_child(graphemes_edit_container.get_child_count() - 1)
-	node.queue_free()
+	graphemes_edit_container.get_child(graphemes_edit_container.get_child_count() - 1).queue_free()
+	graphemes_edit_container.get_child(graphemes_edit_container.get_child_count() - 2).queue_free()
 	word_edit.text = get_graphemes(unvalidated_gp_ids)
+
+
+func _process(_delta: float) -> void:
+	add_gp_button.visible = graphemes_edit_container.get_child_count() <= 0
+	remove_gp_button.visible = graphemes_edit_container.get_child_count() > 0
 
 
 func new_gp_asked_added(ind: int, id: int) -> void:
 	unvalidated_gp_ids[ind] = id
 	set_graphemes_edit(unvalidated_gp_ids)
 	word_edit.text = get_graphemes(unvalidated_gp_ids)
-	
+
+
+func _on_add_gp_button_pressed(element: Node) -> void:
+	var ind_gp_id: = element.get_index() / 2
+	var gp_id: int = sub_elements_list.keys()[0]
+	unvalidated_gp_ids.insert(ind_gp_id + 1, gp_id)
+	add_gp_list_button(gp_id, ind_gp_id + 1)
+
+
+
+func _on_empty_add_gp_button_pressed() -> void:
+	var gp_id: int = sub_elements_list.keys()[0]
+	unvalidated_gp_ids.append(gp_id)
+	add_gp_list_button(gp_id, unvalidated_gp_ids.size() - 1)
