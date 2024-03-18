@@ -70,6 +70,7 @@ horizontal_alignment = 1
 [node name="EditButton" parent="TabContainer/NormalContainer" instance=ExtResource("3_1dwyr")]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
+tooltip_text = "Edit"
 
 [node name="TextureRect" parent="TabContainer/NormalContainer/EditButton" index="0"]
 texture = ExtResource("4_eakjn")

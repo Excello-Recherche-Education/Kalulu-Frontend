@@ -1,0 +1,75 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8jcsq6l6tfyd"]
+
+[ext_resource type="Script" path="res://sources/language_tool/list_title.gd" id="1_6a540"]
+[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_ej3gu"]
+[ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="2_dorlw"]
+[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_e0h3c"]
+
+[node name="ListTitle" type="MarginContainer"]
+offset_right = 2552.0
+offset_bottom = 220.0
+script = ExtResource("1_6a540")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+
+[node name="Label" type="Label" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 100
+text = "GP List"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(600, 2.08165e-12)
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+placeholder_text = "search"
+alignment = 1
+
+[node name="PlusButton" parent="HBoxContainer/HBoxContainer" instance=ExtResource("1_ej3gu")]
+custom_minimum_size = Vector2(120, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Add GP"
+
+[node name="SaveButton" parent="HBoxContainer/HBoxContainer" instance=ExtResource("1_ej3gu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Save"
+
+[node name="TextureRect" parent="HBoxContainer/HBoxContainer/SaveButton" index="0"]
+texture = ExtResource("2_dorlw")
+
+[node name="BackButton" parent="HBoxContainer/HBoxContainer" instance=ExtResource("1_ej3gu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Back (no save)"
+
+[node name="TextureRect" parent="HBoxContainer/HBoxContainer/BackButton" index="0"]
+texture = ExtResource("3_e0h3c")
+
+[connection signal="text_changed" from="HBoxContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="pressed" from="HBoxContainer/HBoxContainer/PlusButton" to="." method="_on_plus_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+
+[editable path="HBoxContainer/HBoxContainer/SaveButton"]
+[editable path="HBoxContainer/HBoxContainer/BackButton"]

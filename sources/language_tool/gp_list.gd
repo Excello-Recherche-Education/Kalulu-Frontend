@@ -3,14 +3,12 @@ extends Control
 var element_scene: = preload("res://sources/language_tool/gp_list_element.tscn")
 
 @onready var elements_container: = %ElementsContainer
-@onready var save_button: = %SaveButton
-@onready var back_button: = %BackButton
 
 var undo_redo: = UndoRedo.new()
 
 
 func _ready() -> void:
-	var query: = "Select * FROM GPs"
+	var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
 	Database.db.query(query)
 	var result: = Database.db.query_result
 	for e in result:
@@ -22,6 +20,9 @@ func _ready() -> void:
 		element.id = e.ID
 		elements_container.add_child(element)
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
+	
+	for pseudo_button in [%Grapheme, %Phoneme, %Type]:
+		pseudo_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 
 func _input(event: InputEvent) -> void:
@@ -63,11 +64,6 @@ func _on_save_button_pressed() -> void:
 	undo_redo.clear_history()
 
 
-func _process(_delta: float) -> void:
-	save_button.visible = undo_redo.has_undo()
-	back_button.visible = not undo_redo.has_undo()
-
-
 func _on_element_delete_pressed(element: Control) -> void:
 	undo_redo.create_action("delete")
 	undo_redo.add_do_method(elements_container.remove_child.bind(element))
@@ -78,3 +74,49 @@ func _on_element_delete_pressed(element: Control) -> void:
 
 func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")
+
+
+
+func _on_grapheme_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		_reorder_by("grapheme")
+
+
+func _reorder_by(property_name: String) -> void:
+	var c: = elements_container.get_children()
+	c.sort_custom(sorting_function.bind(property_name))
+	for e in elements_container.get_children():
+		elements_container.remove_child(e)
+	for e in c:
+		elements_container.add_child(e)
+
+
+func sorting_function(a, b, property_name) -> bool:
+	return a.get(property_name) < b.get(property_name)
+
+
+func _on_type_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		_reorder_by("type")
+
+
+func _on_phoneme_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		_reorder_by("phoneme")
+
+
+func _on_list_title_add_pressed() -> void:
+	_on_plus_button_pressed()
+
+
+func _on_list_title_back_pressed() -> void:
+	_on_back_button_pressed()
+
+
+func _on_list_title_new_search(new_text: String) -> void:
+	for e in elements_container.get_children():
+		e.visible = e.grapheme.begins_with(new_text)
+
+
+func _on_list_title_save_pressed() -> void:
+	_on_save_button_pressed()

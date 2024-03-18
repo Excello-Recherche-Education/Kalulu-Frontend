@@ -27,4 +27,7 @@ func _on_texture_rect_mouse_exited() -> void:
 func _on_texture_rect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		pressed.emit()
-		
+
+
+func _ready() -> void:
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
