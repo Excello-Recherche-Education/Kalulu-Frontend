@@ -1,5 +1,7 @@
 extends "res://sources/language_tool/word_list_element.gd"
 
+signal not_found(text: String)
+
 const word_list_element_scene: = preload("res://sources/language_tool/word_list_element.tscn")
 
 var words_not_founds: = []
@@ -37,7 +39,6 @@ func _add_from_additional_word_list(new_text: String) -> int:
 	if all_found:
 		gp_ids = word_ids
 		unvalidated_gp_ids = gp_ids
-		graphemes = new_text_clean
 		
 		Database.db.insert_row("Sentences", {
 			Sentence = new_text,
@@ -51,8 +52,15 @@ func _add_from_additional_word_list(new_text: String) -> int:
 				Position = i
 			})
 		return id
-	graphemes_edit.text = ""
-	graphemes_edit.placeholder_text = "Not found:"
+	var not_found_text: = "Not found:"
 	for word_not_found in words_not_founds:
-		graphemes_edit.placeholder_text += " " + word_not_found 
+		not_found_text += " " + word_not_found 
+	not_found.emit(not_found_text)
 	return -1
+
+
+func get_graphemes(p_gp_ids: Array[int]) -> String:
+	var res: Array[String] = []
+	for gp_id in p_gp_ids:
+		res.append(sub_elements_list[gp_id].grapheme)
+	return " ".join(res)

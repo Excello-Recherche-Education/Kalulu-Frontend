@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dx33ijlgd8m3w"]
+[gd_scene load_steps=7 format=3 uid="uid://dx33ijlgd8m3w"]
 
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_g3tt5"]
 [ext_resource type="Script" path="res://sources/language_tool/word_list_element.gd" id="1_q2ekb"]
 [ext_resource type="Texture2D" uid="uid://c5jiyxrmmjmdb" path="res://assets/menus/modify_button.png" id="2_i6x6b"]
 [ext_resource type="Texture2D" uid="uid://b8tctfnsj3prx" path="res://assets/menus/minus_button.png" id="3_mgblq"]
-[ext_resource type="PackedScene" uid="uid://dqgqvjcjj07i3" path="res://sources/language_tool/gp_select_popup.tscn" id="5_quigc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_emsyu"]
 bg_color = Color(0.254902, 0.329412, 0.572549, 1)
@@ -87,6 +86,7 @@ theme_override_constants/separation = 0
 
 [node name="MinusButton" parent="TabContainer/EditContainer" instance=ExtResource("1_g3tt5")]
 layout_mode = 2
+tooltip_text = "Delete list element"
 
 [node name="TextureRect" parent="TabContainer/EditContainer/MinusButton" index="0"]
 texture = ExtResource("3_mgblq")
@@ -104,20 +104,33 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 70
 text = "bonjour"
+placeholder_text = "Press enter for autocomplete"
 alignment = 1
 
-[node name="GraphemesEdit" type="LineEdit" parent="TabContainer/EditContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/EditContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_scroll_mode = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EditContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="GraphemesEditContainer" type="HBoxContainer" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 70
-text = "b on j ou r"
-alignment = 1
-selecting_enabled = false
+size_flags_vertical = 3
 
-[node name="Popup" parent="TabContainer/EditContainer/GraphemesEdit" instance=ExtResource("5_quigc")]
-unique_name_in_owner = true
-layout_mode = 0
+[node name="AddGPButton" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+layout_mode = 2
+tooltip_text = "Add element"
+
+[node name="RemoveGPButton2" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+layout_mode = 2
+
+[node name="TextureRect" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2" index="0"]
+tooltip_text = "Remove element"
+texture = ExtResource("3_mgblq")
 
 [node name="ValidateButton" parent="TabContainer/EditContainer" instance=ExtResource("1_g3tt5")]
 custom_minimum_size = Vector2(120, 120)
@@ -129,14 +142,11 @@ texture = ExtResource("2_i6x6b")
 [connection signal="pressed" from="TabContainer/NormalContainer/EditButton" to="." method="_on_edit_button_pressed"]
 [connection signal="pressed" from="TabContainer/EditContainer/MinusButton" to="." method="_on_minus_button_pressed"]
 [connection signal="text_submitted" from="TabContainer/EditContainer/WordEdit" to="." method="_on_word_edit_text_submitted"]
-[connection signal="focus_entered" from="TabContainer/EditContainer/GraphemesEdit" to="." method="_on_graphemes_edit_focus_entered"]
-[connection signal="focus_exited" from="TabContainer/EditContainer/GraphemesEdit" to="." method="_on_graphemes_edit_focus_exited"]
-[connection signal="gui_input" from="TabContainer/EditContainer/GraphemesEdit" to="." method="_on_graphemes_edit_gui_input"]
-[connection signal="GP_selected" from="TabContainer/EditContainer/GraphemesEdit/Popup" to="." method="_on_popup_gp_selected"]
-[connection signal="focus_changed" from="TabContainer/EditContainer/GraphemesEdit/Popup" to="." method="_on_popup_focus_changed"]
-[connection signal="new_GP_asked" from="TabContainer/EditContainer/GraphemesEdit/Popup" to="." method="_on_popup_new_gp_asked"]
+[connection signal="pressed" from="TabContainer/EditContainer/ScrollContainer/HBoxContainer/AddGPButton" to="." method="_on_add_gp_button_pressed"]
+[connection signal="pressed" from="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2" to="." method="_on_remove_gp_button_2_pressed"]
 [connection signal="pressed" from="TabContainer/EditContainer/ValidateButton" to="." method="_on_validate_button_pressed"]
 
 [editable path="TabContainer/NormalContainer/EditButton"]
 [editable path="TabContainer/EditContainer/MinusButton"]
+[editable path="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2"]
 [editable path="TabContainer/EditContainer/ValidateButton"]

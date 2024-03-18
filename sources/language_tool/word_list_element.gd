@@ -1,8 +1,10 @@
 extends MarginContainer
 
 signal delete_pressed()
-signal new_GP_asked(grapheme: String)
+signal new_GP_asked(i: int)
 signal validated()
+
+const gp_list_button_scene: = preload("res://sources/language_tool/gp_list_button.tscn")
 
 @export var table: = "Words"
 @export var table_graph_column: = "Word"
@@ -15,19 +17,14 @@ signal validated()
 @onready var word_label: = %Word
 @onready var graphemes_label: = %Graphemes
 @onready var word_edit: = %WordEdit
-@onready var graphemes_edit: = %GraphemesEdit
 @onready var tab_container: = $TabContainer
-@onready var popup_menu: = %Popup
 @onready var lesson_label: = %Lesson
 @onready var exception_checkbox: = %ExceptionCheckBox
 @onready var exception_edit_checkbox: = %ExceptionEditCheckBox
+@onready var graphemes_edit_container: = %GraphemesEditContainer
 
 var word: = "":
 	set = set_word
-var graphemes: = "":
-	set = set_graphemes
-var phonemes: = "":
-	set = set_phonemes
 var lesson: = 0:
 	set = set_lesson
 var undo_redo: UndoRedo:
@@ -36,13 +33,12 @@ var undo_redo: UndoRedo:
 			undo_redo = UndoRedo.new()
 		return undo_redo
 var id: = -1
-var gp_ids: Array[int] = []
-var prev_caret_position: int = 0
-var unvalidated_graphemes: = ""
-var unvalidated_phonemes: = ""
+var gp_ids: Array[int] = []:
+	set = set_gp_ids
 var unvalidated_gp_ids: Array[int] = []
 var exception: = 0:
 	set = set_exception
+var sub_elements_list: Dictionary
 
 
 func set_exception(p_exception: bool) -> void:
@@ -61,13 +57,55 @@ func set_word(p_word: String) -> void:
 		word_edit.text = word
 
 
-func set_graphemes(p_graphemes: String) -> void:
-	graphemes = p_graphemes
+func set_gp_ids(p_gp_ids: Array[int]) -> void:
+	gp_ids = p_gp_ids
 	if graphemes_label:
-		_set_graphemes_label()
-	if graphemes_edit:
-		graphemes_edit.text = graphemes
-	unvalidated_graphemes = graphemes
+		graphemes_label.text = get_gps(gp_ids)
+
+
+func set_graphemes_edit(p_gp_ids: Array[int]) -> void:
+	if graphemes_edit_container:
+		for child in graphemes_edit_container.get_children():
+			graphemes_edit_container.remove_child(child)
+			child.queue_free()
+		for ind_gp_id in p_gp_ids.size():
+			var gp_id: = p_gp_ids[ind_gp_id]
+			add_gp_list_button(gp_id, ind_gp_id)
+
+
+func add_gp_list_button(gp_id: int, ind_gp_id: int) -> void:
+	var gp_list_button: = gp_list_button_scene.instantiate()
+	gp_list_button.set_gp_list(sub_elements_list)
+	graphemes_edit_container.add_child(gp_list_button)
+	gp_list_button.select_id(gp_id)
+	gp_list_button.gp_selected.connect(_on_gp_list_button_selected.bind(ind_gp_id))
+	gp_list_button.new_selected.connect(_on_gp_list_button_new_selected.bind(ind_gp_id))
+
+
+func _on_gp_list_button_selected(gp_id: int, ind_gp_id: int) -> void:
+	unvalidated_gp_ids[ind_gp_id] = gp_id
+	word_edit.text = get_graphemes(unvalidated_gp_ids)
+
+
+func _on_gp_list_button_new_selected(ind_gp_id: int) -> void:
+	new_GP_asked.emit(ind_gp_id)
+
+
+func get_graphemes(p_gp_ids: Array[int]) -> String:
+	var res: = ""
+	for gp_id in p_gp_ids:
+		res += sub_elements_list[gp_id].grapheme
+	return res
+
+
+func get_gps(p_gp_ids: Array[int]) -> String:
+	var res: = ""
+	for gp_id in p_gp_ids:
+		res += sub_elements_list[gp_id].grapheme
+		res += "-"
+		res += sub_elements_list[gp_id].phoneme
+		res += " "
+	return res
 
 
 func set_lesson(p_lesson: int) -> void:
@@ -76,31 +114,11 @@ func set_lesson(p_lesson: int) -> void:
 		lesson_label.text = str(p_lesson)
 
 
-func _set_graphemes_label() -> void:
-	var graphemes_array: = graphemes.split(" ", false)
-	var phonemes_array: = phonemes.split(" ", false)
-	graphemes_label.text = ""
-	for i in graphemes_array.size():
-		if i > 0:
-			graphemes_label.text += " "
-		graphemes_label.text += graphemes_array[i]
-		if i < phonemes_array.size():
-			graphemes_label.text += "-" + phonemes_array[i]
-
-
-func set_phonemes(p_phonemes: String) -> void:
-	phonemes = p_phonemes
-	if graphemes_label:
-		_set_graphemes_label()
-	unvalidated_phonemes = phonemes
-
-
 func _ready() -> void:
 	set_word(word)
-	set_graphemes(graphemes)
+	set_gp_ids(gp_ids)
 	set_lesson(lesson)
 	set_exception(exception)
-	popup_menu.button.text = "Add new %s" % sub_table
 
 
 func _on_edit_button_pressed() -> void:
@@ -108,6 +126,7 @@ func _on_edit_button_pressed() -> void:
 
 
 func edit_mode() -> void:
+	set_graphemes_edit(gp_ids)
 	tab_container.current_tab = 1
 
 
@@ -116,15 +135,10 @@ func _on_minus_button_pressed() -> void:
 
 
 func _on_validate_button_pressed() -> void:
-	popup_menu.clear(-1)
 	undo_redo.create_action("validated")
-	undo_redo.add_do_property(self, "graphemes", unvalidated_graphemes)
-	undo_redo.add_do_property(self, "phonemes", unvalidated_phonemes)
 	undo_redo.add_do_property(self, "gp_ids", unvalidated_gp_ids.duplicate())
 	undo_redo.add_do_property(self, "word", word_edit.text)
 	undo_redo.add_do_property(self, "exception", int(exception_edit_checkbox.button_pressed))
-	undo_redo.add_undo_property(self, "graphemes", graphemes)
-	undo_redo.add_undo_property(self, "phonemes", phonemes)
 	undo_redo.add_undo_property(self, "gp_ids", gp_ids.duplicate())
 	undo_redo.add_undo_property(self, "word", word)
 	undo_redo.add_undo_property(self, "exception", int(exception_checkbox.button_pressed))
@@ -140,91 +154,6 @@ func update_lesson() -> void:
 		var i: = Database.get_min_lesson_for_gp_id(gp_id)
 		m = max(m, i)
 	lesson = m
-
-
-func _get_selected_grapheme(graphemes_array: PackedStringArray) -> int:
-	var graphemes_count: = []
-	graphemes_count.resize(graphemes_array.size())
-	var grapheme_ind: = 0
-	for i in graphemes_array.size():
-		if i == 0:
-			graphemes_count[i] = graphemes_array[i].length()
-		else:
-			graphemes_count[i] = graphemes_count[i-1] + 1 + graphemes_array[i].length()
-		if graphemes_count[i] >= graphemes_edit.caret_column:
-			grapheme_ind = i
-			break
-	return grapheme_ind
-
-
-func _on_popup_gp_selected(ind: int, gp_id: int, text: String) -> void:
-	var graphemes_array: PackedStringArray = graphemes_edit.text.split(" ", false)
-	var phonemes_array: PackedStringArray = unvalidated_phonemes.split(" ", false)
-	if ind >= graphemes_array.size():
-		return
-	#var grapheme_ind: = _get_selected_grapheme(graphemes_array)
-	var gp_array: PackedStringArray = text.split("-")
-	graphemes_array[ind] = gp_array[0]
-	if phonemes_array.size() <= ind:
-		phonemes_array.resize(ind + 1)
-	if unvalidated_gp_ids.size() <= ind:
-		unvalidated_gp_ids.resize(ind + 1)
-	phonemes_array[ind] = gp_array[1]
-	unvalidated_gp_ids[ind] = gp_id
-	unvalidated_graphemes = " ".join(graphemes_array)
-	unvalidated_phonemes = " ".join(phonemes_array)
-	graphemes_edit.grab_focus()
-	graphemes_edit.caret_column = prev_caret_position
-
-
-func _on_graphemes_edit_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		return
-	prev_caret_position = graphemes_edit.caret_column
-	var graphemes_array: PackedStringArray = graphemes_edit.text.split(" ", false)
-	if graphemes_array.is_empty():
-		return
-	var phonemes_array: PackedStringArray = unvalidated_phonemes.split(" ", false)
-	var grapheme_ind: int = _get_selected_grapheme(graphemes_array)
-	if phonemes_array.size() > graphemes_array.size():
-		phonemes_array.remove_at(grapheme_ind + 1)
-		unvalidated_gp_ids.remove_at(grapheme_ind + 1)
-		unvalidated_graphemes = " ".join(graphemes_array)
-		unvalidated_phonemes = " ".join(phonemes_array)
-	popup_menu.show()
-	popup_menu.position = graphemes_edit.global_position + Vector2(0, graphemes_edit.size.y)
-	popup_menu.size = Vector2(graphemes_edit.size.x, 0)
-	popup_menu.clear(grapheme_ind)
-	Database.db.query_with_bindings("Select * FROM %s WHERE %s=?" % [sub_table, sub_table_graph_column], [graphemes_array[grapheme_ind]])
-	var results: = Database.db.query_result
-	if results.is_empty():
-		popup_menu.no_gp_mode()
-	else:
-		popup_menu.gp_mode()
-	for result in results:
-		var is_already_selected: bool = result[sub_table_graph_column] == graphemes_array[grapheme_ind] and grapheme_ind < phonemes_array.size() and result[sub_table_phon_column] == phonemes_array[grapheme_ind]
-		popup_menu.add_item(result.ID, result[sub_table_graph_column] + "-" + result[sub_table_phon_column], is_already_selected)
-		
-
-
-func _on_graphemes_edit_focus_entered() -> void:
-	popup_menu.show()
-
-
-func _on_graphemes_edit_focus_exited() -> void:
-	popup_menu.hide()
-
-
-func _on_popup_focus_changed(p_has_focus: bool) -> void:
-	popup_menu.visible = p_has_focus
-
-
-func _on_popup_new_gp_asked() -> void:
-	var graphemes_array: PackedStringArray = graphemes_edit.text.split(" ", false)
-	var grapheme: = ""
-	if popup_menu.grapheme_ind < graphemes_array.size():
-		grapheme = graphemes_array[popup_menu.grapheme_ind]
-	new_GP_asked.emit(grapheme)
 
 
 func gp_ids_from_string(p_gp_ids: String) -> Array[int]:
@@ -243,14 +172,14 @@ func set_gp_ids_from_string(p_gp_ids: String) -> void:
 
 func insert_in_database() -> void:
 	if id >= 0:
-		var query: = "SELECT %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs, %s.Exception
+		var query: = "SELECT %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs, group_concat(%s.ID, ' ') as %sIDs, %s.Exception
 			FROM %s 
 			INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
 			INNER JOIN %s ON %s.ID = %s.%s
 			WHERE %s.ID = ? 
 			GROUP BY %s.ID" % [table_graph_column, sub_table_graph_column, sub_table_graph_column,
 				sub_table_phon_column, sub_table_phon_column,
-				relational_table, relational_table, table,
+				relational_table, relational_table, sub_table, sub_table, table,
 				table,
 				relational_table, relational_table, relational_table, table, relational_table, table_graph_column,
 				sub_table, sub_table, relational_table, sub_table_id,
@@ -262,7 +191,7 @@ func insert_in_database() -> void:
 			var e = Database.db.query_result[0]
 			if word != e[table_graph_column] or exception != e.Exception:
 				Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word, "Exception": exception})
-			if graphemes != e[sub_table_graph_column + "s"] or phonemes != e[sub_table_phon_column + "s"]:
+			if " ".join(gp_ids) != e[sub_table + "IDs"]:
 				var gps_in_words_ids: Array = Array(e[relational_table + "IDs"].split(" "))
 				while gps_in_words_ids.size() > gp_ids.size():
 					Database.db.delete_rows(relational_table, "ID=%s" % int(gps_in_words_ids.pop_back()))
@@ -310,8 +239,6 @@ func _already_in_database(text: String) -> int:
 	Database.db.query_with_bindings(query, [text])
 	if not Database.db.query_result.is_empty():
 		var e = Database.db.query_result[0]
-		if graphemes_edit:
-			graphemes_edit.text = e[sub_table_graph_column + "s"]
 		id = e.ID
 		return id
 	return -1
@@ -323,7 +250,6 @@ func _add_from_additional_word_list(new_text: String) -> int:
 		id = res[0]
 		gp_ids = res[1]
 		unvalidated_gp_ids = gp_ids
-		graphemes = " ".join(Database.additional_word_list[new_text].GPMATCH.trim_prefix('(').trim_suffix(')').split('.'))
 		return id
 	return -1
 
@@ -344,9 +270,23 @@ func _on_word_edit_text_submitted(new_text: String) -> void:
 	if _try_to_complete_from_word(new_text) >= 0:
 		_on_validate_button_pressed()
 		update_lesson()
-		
-	graphemes_edit.grab_focus()
 
 
-func _on_exception_check_box_toggled(toggled_on: bool) -> void:
-	pass # Replace with function body.
+func _on_add_gp_button_pressed() -> void:
+	var gp_id: int = sub_elements_list.keys()[0]
+	unvalidated_gp_ids.append(gp_id)
+	add_gp_list_button(gp_id, unvalidated_gp_ids.size() - 1)
+
+
+func _on_remove_gp_button_2_pressed() -> void:
+	unvalidated_gp_ids.pop_back()
+	var node: = graphemes_edit_container.get_child(graphemes_edit_container.get_child_count() - 1)
+	node.queue_free()
+	word_edit.text = get_graphemes(unvalidated_gp_ids)
+
+
+func new_gp_asked_added(ind: int, id: int) -> void:
+	unvalidated_gp_ids[ind] = id
+	set_graphemes_edit(unvalidated_gp_ids)
+	word_edit.text = get_graphemes(unvalidated_gp_ids)
+	

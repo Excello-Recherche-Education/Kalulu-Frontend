@@ -14,9 +14,24 @@ var undo_redo: = UndoRedo.new()
 var in_new_gp_mode: = false:
 	set = set_in_new_gp_mode
 var _e
+var sub_elements_list: Dictionary = {}
+var new_gp_asked_element
+var new_gp_asked_ind: int
+
+
+func create_sub_elements_list() -> void:
+	sub_elements_list.clear()
+	Database.db.query("Select * FROM GPs ORDER BY GPs.Grapheme")
+	for e in Database.db.query_result:
+		sub_elements_list[e.ID] = {
+			grapheme = e.Grapheme,
+			phoneme = e.Phoneme,
+		}
 
 
 func _ready() -> void:
+	create_sub_elements_list()
+	
 	_e = element_scene.instantiate()
 	
 	Database.db.query(_get_query())
@@ -24,23 +39,22 @@ func _ready() -> void:
 	var results: = Database.db.query_result
 	for e in results:
 		var element: = element_scene.instantiate()
+		element.sub_elements_list = sub_elements_list
 		element.word = e[_e.table_graph_column]
-		element.graphemes = e[_e.sub_table_graph_column + "s"]
-		element.phonemes = e[_e.sub_table_phon_column + "s"]
 		element.id = e[_e.table_graph_column + "Id"]
 		element.exception = e.Exception
 		element.set_gp_ids_from_string(e[_e.sub_table_id + "s"])
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
-		element.new_GP_asked.connect(_on_element_new_GP_asked)
+		element.new_GP_asked.connect(_on_element_new_GP_asked.bind(element))
 		element.update_lesson()
 	
 	title.set_title(_e.table_graph_column + " List")
 	lesson_title.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	word_title.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	word_title.text = _e.table_graph_column
-	graphemes_title.text = _e.sub_table_graph_column + "s"
+	graphemes_title.text = _e.sub_table
 
 
 func _get_query() -> String:
@@ -76,11 +90,11 @@ func _on_element_delete_pressed(element: Control) -> void:
 func _on_plus_button_pressed() -> void:
 	undo_redo.create_action("add")
 	var element: = element_scene.instantiate()
+	element.sub_elements_list = sub_elements_list
 	element.word = ""
-	element.graphemes = ""
 	element.undo_redo = undo_redo
 	element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
-	element.new_GP_asked.connect(_on_element_new_GP_asked)
+	element.new_GP_asked.connect(_on_element_new_GP_asked.bind(element))
 	undo_redo.add_do_method(elements_container.add_child.bind(element))
 	undo_redo.add_do_method(elements_container.move_child.bind(element, 0))
 	undo_redo.add_undo_method(elements_container.remove_child.bind(element))
@@ -88,9 +102,10 @@ func _on_plus_button_pressed() -> void:
 	element.edit_mode()
 
 
-func _on_element_new_GP_asked(grapheme: String) -> void:
+func _on_element_new_GP_asked(ind: int, element) -> void:
 	in_new_gp_mode = true
-	new_gp[_e.sub_table_graph_column.to_lower()] = grapheme
+	new_gp_asked_element = element
+	new_gp_asked_ind = ind
 	new_gp.edit_mode()
 
 
@@ -101,8 +116,13 @@ func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
 
 func _on_gp_list_element_validated() -> void:
 	new_gp.insert_in_database()
-	new_gp.update_lesson()
+	if new_gp.has_method("update_lesson"):
+		new_gp.update_lesson()
 	in_new_gp_mode = false
+	create_sub_elements_list()
+	for element in elements_container.get_children():
+		element.sub_elements_list = sub_elements_list
+	new_gp_asked_element.new_gp_asked_added(new_gp_asked_ind, new_gp.id)
 
 
 func _on_save_button_pressed() -> void:
@@ -113,7 +133,7 @@ func _on_save_button_pressed() -> void:
 	for e in result:
 		var found: = false
 		for element in elements_container.get_children():
-			if element.graphemes == e[_e.sub_table_graph_column + "s"] and element.phonemes == e[_e.sub_table_phon_column + "s"] and element.word == e[_e.table_graph_column]:
+			if " ".join(element.gp_ids) == e[_e.sub_table_id + "s"] and element.word == e[_e.table_graph_column]:
 				found = true
 				break
 		if not found:

@@ -24,12 +24,7 @@ autowrap_mode = 2
 [node name="ExceptionEditCheckBox" parent="TabContainer/EditContainer" index="1"]
 visible = false
 
-[node name="WordEdit" parent="TabContainer/EditContainer" index="2"]
-placeholder_text = "Press enter for autocomplete"
-
-[node name="GraphemesEdit" parent="TabContainer/EditContainer" index="3"]
-placeholder_text = "Each word in the sentence"
-
 [editable path="TabContainer/NormalContainer/EditButton"]
 [editable path="TabContainer/EditContainer/MinusButton"]
+[editable path="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2"]
 [editable path="TabContainer/EditContainer/ValidateButton"]
