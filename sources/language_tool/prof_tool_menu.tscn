@@ -27,47 +27,57 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+[node name="TabContainer" type="TabContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+use_hidden_tabs_for_min_size = true
+
+[node name="Language" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="GPListButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="GPListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP List"
 
-[node name="WordListButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="WordListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Word List"
 
-[node name="SyllableListButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="SyllableListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Syllable List"
 
-[node name="SentenceListButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="SentenceListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Sentence List"
 
-[node name="LessonListButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="LessonListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Lesson List"
 
-[node name="TracingBuilderButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="Data" type="VBoxContainer" parent="CenterContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="TracingBuilderButton" type="Button" parent="CenterContainer/TabContainer/Data"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Tracing Builder
 "
 
-[node name="DataLoaderButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="DataLoaderButton" type="Button" parent="CenterContainer/TabContainer/Data"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP Image/Sound Loader"
 
-[node name="DataLoaderButton2" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="DataLoaderButton2" type="Button" parent="CenterContainer/TabContainer/Data"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP Video Loader
@@ -178,14 +188,14 @@ popup_window = true
 ok_button_text = "Enregistrer"
 access = 2
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/GPListButton" to="." method="_on_gp_list_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/WordListButton" to="." method="_on_word_list_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/SyllableListButton" to="." method="_on_syllable_list_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/LessonListButton" to="." method="_on_lesson_list_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/TracingBuilderButton" to="." method="_on_tracing_builder_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Language/GPListButton" to="." method="_on_gp_list_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Language/WordListButton" to="." method="_on_word_list_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Language/SyllableListButton" to="." method="_on_syllable_list_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Language/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Language/LessonListButton" to="." method="_on_lesson_list_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Data/TracingBuilderButton" to="." method="_on_tracing_builder_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Data/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Data/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]
 [connection signal="pressed" from="ExportButton" to="." method="_on_export_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ImportLanguageButton" to="." method="_on_import_language_button_pressed"]
 [connection signal="item_selected" from="VBoxContainer/LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]
