@@ -9,13 +9,6 @@
 script = ExtResource("2_q3ll5")
 element_scene = ExtResource("2_4jv4m")
 
-[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
-visible = false
-text = "Sentence"
-
-[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="3"]
-text = "Words"
-
 [node name="Label" parent="NewGPLayer" index="1"]
 text = "New Word"
 
@@ -58,12 +51,6 @@ layout_mode = 2
 
 [connection signal="validated" from="NewGPLayer/VBoxContainer2/NewGP" to="." method="_on_gp_list_element_validated"]
 
-[editable path="VBoxContainer/WordListElement"]
-[editable path="VBoxContainer/WordListElement/TabContainer/NormalContainer/EditButton"]
-[editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/MinusButton"]
-[editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/ValidateButton"]
-[editable path="VBoxContainer/WordListElement/SaveButton"]
-[editable path="VBoxContainer/WordListElement/BackButton"]
 [editable path="NewGPLayer/VBoxContainer/Title"]
 [editable path="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer/EditButton"]
 [editable path="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer/DeleteButton"]

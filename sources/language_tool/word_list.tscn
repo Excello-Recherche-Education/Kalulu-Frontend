@@ -1,11 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfw7m0a7148fu"]
+[gd_scene load_steps=5 format=3 uid="uid://dfw7m0a7148fu"]
 
 [ext_resource type="Script" path="res://sources/language_tool/word_list.gd" id="1_m0usq"]
-[ext_resource type="PackedScene" uid="uid://dx33ijlgd8m3w" path="res://sources/language_tool/word_list_element.tscn" id="2_roh06"]
-[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="3_a6pn6"]
-[ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="4_ar78n"]
+[ext_resource type="PackedScene" uid="uid://b8jcsq6l6tfyd" path="res://sources/language_tool/list_title.tscn" id="2_6no2x"]
 [ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="5_1f555"]
-[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="5_h04hf"]
 [ext_resource type="Script" path="res://sources/language_tool/ScrollContainer.gd" id="6_0r6vt"]
 
 [node name="WordList" type="Control"]
@@ -26,55 +23,46 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="WordListElement" parent="VBoxContainer" instance=ExtResource("2_roh06")]
+[node name="ListTitle" parent="VBoxContainer" instance=ExtResource("2_6no2x")]
+unique_name_in_owner = true
 layout_mode = 2
-script = null
 
-[node name="Lesson" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(2.08165e-12, 200)
+layout_mode = 2
+
+[node name="Lesson" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_font_sizes/font_size = 90
 text = "Lesson"
-horizontal_alignment = 2
+horizontal_alignment = 1
 
-[node name="ExceptionCheckBox" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="1"]
-visible = false
-
-[node name="Word" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="2"]
+[node name="Word" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_font_sizes/font_size = 90
 text = "Word"
+horizontal_alignment = 1
 
-[node name="Graphemes" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="3"]
+[node name="Graphemes" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_font_sizes/font_size = 90
 text = "Graphemes"
-
-[node name="EditButton" parent="VBoxContainer/WordListElement/TabContainer/NormalContainer" index="4"]
-modulate = Color(1, 1, 1, 0)
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/WordListElement"]
-layout_mode = 2
-theme_override_constants/margin_right = 200
-
-[node name="PlusButton" parent="VBoxContainer/WordListElement/MarginContainer" instance=ExtResource("3_a6pn6")]
-custom_minimum_size = Vector2(120, 2.08165e-12)
-layout_mode = 2
-size_flags_horizontal = 8
-tooltip_text = "Add GP"
-
-[node name="SaveButton" parent="VBoxContainer/WordListElement" instance=ExtResource("3_a6pn6")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 2.08165e-12)
-layout_mode = 2
-size_flags_horizontal = 8
-tooltip_text = "Add GP"
-
-[node name="TextureRect" parent="VBoxContainer/WordListElement/SaveButton" index="0"]
-texture = ExtResource("4_ar78n")
-
-[node name="BackButton" parent="VBoxContainer/WordListElement" instance=ExtResource("3_a6pn6")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 2.08165e-12)
-layout_mode = 2
-size_flags_horizontal = 8
-tooltip_text = "Add GP"
-
-[node name="TextureRect" parent="VBoxContainer/WordListElement/BackButton" index="0"]
-texture = ExtResource("5_h04hf")
+horizontal_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
 custom_minimum_size = Vector2(2.08165e-12, 18)
@@ -147,17 +135,14 @@ layout_mode = 2
 [node name="DeleteButton" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" index="0"]
 visible = false
 
-[connection signal="pressed" from="VBoxContainer/WordListElement/MarginContainer/PlusButton" to="." method="_on_plus_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/WordListElement/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/WordListElement/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="add_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_add_pressed"]
+[connection signal="back_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_back_pressed"]
+[connection signal="new_search" from="VBoxContainer/ListTitle" to="." method="_on_list_title_new_search"]
+[connection signal="save_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_save_pressed"]
+[connection signal="gui_input" from="VBoxContainer/MarginContainer/HBoxContainer/Lesson" to="." method="_on_lesson_gui_input"]
+[connection signal="gui_input" from="VBoxContainer/MarginContainer/HBoxContainer/Word" to="." method="_on_word_gui_input"]
 [connection signal="validated" from="NewGPLayer/VBoxContainer/NewGP" to="." method="_on_gp_list_element_validated"]
 
-[editable path="VBoxContainer/WordListElement"]
-[editable path="VBoxContainer/WordListElement/TabContainer/NormalContainer/EditButton"]
-[editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/MinusButton"]
-[editable path="VBoxContainer/WordListElement/TabContainer/EditContainer/ValidateButton"]
-[editable path="VBoxContainer/WordListElement/SaveButton"]
-[editable path="VBoxContainer/WordListElement/BackButton"]
 [editable path="NewGPLayer/VBoxContainer/Title"]
 [editable path="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer/EditButton"]
 [editable path="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer/DeleteButton"]
