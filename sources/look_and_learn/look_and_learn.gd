@@ -42,7 +42,7 @@ func _ready() -> void:
 
 
 func setup() -> void:
-	gp_list = Database.get_GP_for_lesson(lesson_nb, true)
+	gp_list = Database.get_GP_for_lesson(lesson_nb, true, true)
 	
 	grapheme_label.text = ""
 	for gp in gp_list:

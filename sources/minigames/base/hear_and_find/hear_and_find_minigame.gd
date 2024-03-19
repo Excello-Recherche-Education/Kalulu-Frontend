@@ -29,8 +29,8 @@ func _find_stimuli_and_distractions() -> void:
 	var current_lesson_stimuli = []
 	var previous_lesson_stimuli = []
 	
-	var all_GPs = Database.get_GP_before_and_for_lesson(lesson_nb, false, true, true)
-	var all_syllables = Database.get_syllables_for_lesson(lesson_nb, false)
+	var all_GPs: = Database.get_GP_for_lesson(lesson_nb, false, false, true, true)
+	var all_syllables: = Database.get_syllables_for_lesson(lesson_nb, false)
 	
 	# Find the GPs for current lesson
 	for gp in all_GPs:
@@ -85,9 +85,6 @@ func _find_stimuli_and_distractions() -> void:
 		else:
 			stimuli.append_array(previous_lesson_stimuli)
 		
-		print("--------------- WITH PREVIOUS LESSON STIMULI :")
-		print(stimuli)
-		
 		# If there are not enough stimuli, fill the rest with current lesson
 		while stimuli.size() < max_progression:
 			stimuli.append(current_lesson_stimuli.pick_random())
@@ -95,7 +92,7 @@ func _find_stimuli_and_distractions() -> void:
 	# Shuffle the stimuli
 	stimuli.shuffle()
 	
-	print("--------------- COMPLETE SHUFFLED STIMULI :")
+	print("--------------- ALL STIMULI :")
 	print(stimuli)
 	
 	# For each stimuli get the distractors
@@ -109,7 +106,7 @@ func _find_stimuli_and_distractions() -> void:
 		# Difficulty 1 
 		# Any previously learned item w/ all letters different
 		for gp in all_GPs:
-				if gp.Grapheme != stimulus.Grapheme and gp.Phoneme != stimulus.Phoneme and (not gp.OtherPhoneme or not gp.OtherPhoneme.has(stimulus.Phoneme)):
+				if gp.Grapheme != stimulus.Grapheme and gp.Phoneme != stimulus.Phoneme and (not gp.OtherPhonemes or not gp.OtherPhonemes.has(stimulus.Phoneme)):
 					stimulus_distractors.append(gp)
 		if GPs:
 			for syllable in all_syllables:

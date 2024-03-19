@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_oeg4r"]
 [ext_resource type="Script" path="res://sources/minigames/parakeets/parakeets_minigame.gd" id="2_x6xn5"]
-[ext_resource type="AudioStream" uid="uid://csbrl2rxli4tp" path="res://language_resources/fr/minigames/parakeets/audio/kalulu/kalulu_intro_parakeets_language.mp3" id="3_ofxb4"]
+[ext_resource type="AudioStream" uid="uid://csbrl2rxli4tp" path="res://language_resources/pt/minigames/parakeets/audio/kalulu/kalulu_intro_parakeets_language.mp3" id="3_ofxb4"]
 [ext_resource type="Texture2D" uid="uid://dv1ombj8eolb1" path="res://assets/minigames/parakeets/graphic/background.png" id="3_xjvte"]
-[ext_resource type="AudioStream" uid="uid://c58a2q8b26vpn" path="res://language_resources/fr/minigames/parakeets/audio/kalulu/kalulu_end_parakeets_language.mp3" id="4_01e28"]
+[ext_resource type="AudioStream" uid="uid://c58a2q8b26vpn" path="res://language_resources/pt/minigames/parakeets/audio/kalulu/kalulu_end_parakeets_language.mp3" id="4_01e28"]
 [ext_resource type="AudioStream" uid="uid://comucfkvgwnsv" path="res://language_resources/fr/minigames/parakeets/audio/kalulu/kalulu_help_parakeets_language.mp3" id="4_nosoh"]
 [ext_resource type="Texture2D" uid="uid://clvh07xfgjmri" path="res://assets/minigames/parakeets/graphic/tree_trunk.png" id="4_unuga"]
 [ext_resource type="Texture2D" uid="uid://d3n327me83on7" path="res://assets/minigames/parakeets/graphic/tree_branch.png" id="5_46kss"]
@@ -15,9 +15,9 @@
 
 [node name="Parakeets" instance=ExtResource("1_oeg4r")]
 script = ExtResource("2_x6xn5")
-difficulty = 4
-lesson_nb = 4
 fly_duration = 3.0
+lesson_nb = 4
+difficulty = 4
 max_number_of_lives = 5
 intro_kalulu_speech = ExtResource("3_ofxb4")
 help_kalulu_speech = ExtResource("4_nosoh")

@@ -22,7 +22,7 @@ scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_k0dcm")
 animation = &"idle_front_blink"
 autoplay = "idle_front"
-frame_progress = 0.68306
+frame_progress = 0.71793
 offset = Vector2(2.08165e-12, -82)
 
 [node name="Label" type="Label" parent="."]

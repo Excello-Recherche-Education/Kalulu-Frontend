@@ -40,6 +40,10 @@ var additional_word_list: Dictionary
 @onready var db: = SQLite.new()
 
 
+func _exit_tree() -> void:
+	db.close_db()
+
+
 func _init_db() -> void:
 	# load_additional_word_list()
 	# db_path = db_path
@@ -71,45 +75,23 @@ func load_additional_word_list() -> void:
 		file.close()
 
 
-func _exit_tree() -> void:
-	db.close_db()
-
-func get_GP_for_lesson(lesson_nb: int, distinct: bool) -> Array:
-	var query: = "Select Grapheme, Phoneme, Type, LessonNb FROM GPs 
-	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
-	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb == ?"
-	if distinct:
-		query += "GROUP BY Grapheme"
-	db.query_with_bindings(query, [lesson_nb])
-	return db.query_result
-
-
-func get_GP_before_lesson(lesson_nb: int, distinct: bool) -> Array:
-	var query: = "Select Grapheme, Phoneme, Type, LessonNb FROM GPs 
-	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPs.ID 
-	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb < ?"
-	if distinct:
-		query += "GROUP BY Grapheme"
-	db.query_with_bindings(query, [lesson_nb])
-	return db.query_result
-
-
-func get_GP_before_and_for_lesson(lesson_nb: int, distinct: bool, only_vowels: bool = false, with_other_phonemes: bool = false) -> Array:
+func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false) -> Array:
 	
 	var parameters := []
+	var symbol: = "<=" if not only_new else "=="
 	var query: = "SELECT Grapheme, Phoneme, "
 	
 	if with_other_phonemes:
 		query += "(SELECT group_concat(Phoneme) FROM GPs g2 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = g2.ID 
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb " + symbol + " ?
 		WHERE g.Grapheme = g2.Grapheme AND g.Phoneme != g2.Phoneme)
-	AS OtherPhoneme, "
+	AS OtherPhonemes, "
 		parameters.append(lesson_nb)
 	
 	query += "Type, LessonNb FROM GPs g
 	INNER JOIN GPsInLessons ON GPsInLessons.GPID = g.ID 
-	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?"
+	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb " + symbol + " ?"
 	parameters.append(lesson_nb)
 	
 	if only_vowels:
@@ -118,14 +100,16 @@ func get_GP_before_and_for_lesson(lesson_nb: int, distinct: bool, only_vowels: b
 	if distinct:
 		query += " GROUP BY Grapheme"
 	
+	query += " ORDER BY LessonNb ASC"
+	
 	db.query_with_bindings(query, parameters)
 	
 	var result = db.query_result
 	
 	if with_other_phonemes:
 		for GP in result:
-			if GP.OtherPhoneme:
-				GP.OtherPhoneme = GP.OtherPhoneme.split(",")
+			if GP.OtherPhonemes:
+				GP.OtherPhonemes = GP.OtherPhonemes.split(",")
 	
 	return result
 
@@ -172,6 +156,7 @@ GROUP BY sID"
 	for syllable in result:
 		syllable.GPs = syllable.GPs.split(".")
 	return result
+
 
 func get_words_for_lesson(lesson_nb: int, only_new: = false) -> Array:
 	var query: = "SELECT * FROM Words
@@ -438,7 +423,7 @@ func _import_syllables() -> void:
 						GPID = GP_id,
 						Position = i,
 					})
-				
+
 
 func _import_words() -> void:
 	var file = FileAccess.open("res://data3/words_list.json", FileAccess.READ)
@@ -496,7 +481,6 @@ func _remove_unusable_words() -> void:
 			if not db.query_result.is_empty():
 				var word_id = db.query_result[0]["ID"]
 				db.delete_rows("Words", "ID=%s" % word_id)
-		
 
 
 func _import_words_csv() -> void:
