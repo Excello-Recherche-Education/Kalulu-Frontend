@@ -1,7 +1,7 @@
 extends Control
 class_name HighlightFX
 
-@onready var animation_player: = $AnimationPlayer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var is_playing : bool = false
 

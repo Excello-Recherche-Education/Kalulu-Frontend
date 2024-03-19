@@ -23,8 +23,8 @@ var difficulty_settings: Array[DifficultySettings] = [
 var blocking_jellyfish: Array[Jellyfish] = []
 
 @onready var spawning_space: Control = %SpawningSpace
-@onready var spawn_timer: = $SpawnTimer
-@onready var highlight_timer := $HighlightTimer
+@onready var spawn_timer: Timer = $SpawnTimer
+@onready var highlight_timer: Timer = $HighlightTimer
 
 
 func _start() -> void:
@@ -47,14 +47,14 @@ func _process(delta: float) -> void:
 			jellyfish.queue_free()
 
 
-func _highlight():
+func _highlight() -> void:
 	for jellyfish: Jellyfish in spawning_space.get_children():
 		if jellyfish.stimulus and _is_stimulus_right(jellyfish.stimulus):
 			jellyfish.highlight()
 	highlight_timer.start()
 
 
-func _stop_highlight():
+func _stop_highlight() -> void:
 	for jellyfish: Jellyfish in spawning_space.get_children():
 		jellyfish.stop_highlight()
 	highlight_timer.stop()
@@ -69,8 +69,8 @@ func _spawn() -> void:
 	var jellyfish_width: = new_jellyfish.size.x * new_jellyfish.scale.x
 	
 	# Check if there is enough space to spawn the jellyfish and find a spot
-	var permitted_range: = 0
-	var left_border: = 0
+	var permitted_range: = 0.
+	var left_border: = 0.
 	# Blocking jellyfish is supposed to be ordered
 	for blocking in blocking_jellyfish:
 		permitted_range += max(0, blocking.position.x - left_border - jellyfish_width)
@@ -89,11 +89,11 @@ func _spawn() -> void:
 		new_jellyfish.stimulus = current_distractors.pick_random()
 	
 	# Randomize the spawn and adds the jellyfish into the scene
-	var random_spawn: = randi_range(0, permitted_range - 1)
+	var random_spawn: = randf_range(0, permitted_range - 1)
 	left_border = 0
 	# Blocking jellyfish is supposed to be ordered
 	for blocking in blocking_jellyfish:
-		var local_permitted_range = max(0, blocking.position.x - left_border - jellyfish_width)
+		var local_permitted_range: float = max(0, blocking.position.x - left_border - jellyfish_width)
 		if local_permitted_range <= random_spawn:
 			random_spawn -= local_permitted_range
 		else:
@@ -136,8 +136,12 @@ func _on_spawn_timer_timeout() -> void:
 	spawn_timer.wait_time = _get_difficulty_settings().spawn_time
 
 
-func _on_stimulus_pressed(stimulus, jellyfish: Jellyfish) -> bool:
-	if not super(stimulus, jellyfish):
+func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
+	if not super(stimulus, node):
+		return false
+	
+	var jellyfish: = node as Jellyfish
+	if not jellyfish:
 		return false
 	
 	# Disconnect the jellyfish
@@ -173,11 +177,11 @@ func _on_stimulus_pressed(stimulus, jellyfish: Jellyfish) -> bool:
 	return true
 
 
-func _on_highlight_timer_timeout():
+func _on_highlight_timer_timeout() -> void:
 	_highlight()
 
 
-func _on_stimulus_found():
+func _on_stimulus_found() -> void:
 	spawn_timer.stop()
 	# Clear all the jellyfishes
 	for jellyfish: Jellyfish in spawning_space.get_children():

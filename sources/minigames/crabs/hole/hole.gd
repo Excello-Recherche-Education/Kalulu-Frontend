@@ -12,11 +12,11 @@ const crab_middle_y: float = 20.
 const crab_out_y: float = -130.
 const crab_up_y: float = -180.
 
-@onready var hole_back: = $HoleBack
-@onready var hole_front: = $HoleFront
-@onready var mask: = $Mask
+@onready var hole_back: Sprite2D = $HoleBack
+@onready var hole_front: Sprite2D = $HoleFront
+@onready var mask: Sprite2D = $Mask
 @onready var sand_vfx: SandVFX = $SandVFX
-@onready var timer: = $Timer
+@onready var timer: Timer = $Timer
 @onready var crab_audio_stream_player: CrabAudioStreamPlayer = $CrabAudioStreamPlayer2D
 
 var crab: Crab
@@ -31,7 +31,7 @@ var crab_visible: bool = false:
 		_set_crab_button_active(stimulus_heard and crab_visible)
 
 
-func _process(_delta):
+func _process(_delta : float) -> void:
 	if not crab:
 		if sand_vfx.is_playing:
 			sand_vfx.stop()
@@ -146,7 +146,7 @@ func wrong() -> void:
 	crab.wrong()
 
 
-func _set_crab_button_active(is_active : bool):
+func _set_crab_button_active(is_active : bool) -> void:
 	if crab:
 		crab.set_button_active(is_active)
 
@@ -174,7 +174,7 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	crab = null
 
 
-func on_stimulus_heard(is_heard : bool):
+func on_stimulus_heard(is_heard : bool) -> void:
 	stimulus_heard = is_heard
 
 

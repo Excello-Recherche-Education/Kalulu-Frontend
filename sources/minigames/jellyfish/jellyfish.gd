@@ -29,14 +29,14 @@ const scale_factor : float = 0.2
 		scale = scales[color] * (1. + randf() * scale_factor)
 		
 		# Handles sprite size
-		$SpriteControl.resized.emit()
+		sprite_control.resized.emit()
 
-
-@onready var animated_sprite: = %AnimatedSprite2D
-@onready var label: = %AutoSizeLabel.get_node("Label")
-@onready var highlight_fx: = %HighlightFX
-@onready var right_fx: = %RightFX
-@onready var wrong_fx: = %WrongFX
+@onready var sprite_control: SpriteControl = $SpriteControl
+@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
+@onready var label: Label = %AutoSizeLabel.get_node("Label")
+@onready var highlight_fx: HighlightFX = %HighlightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var wrong_fx: WrongFX = %WrongFX
 
 var stimulus: Dictionary :
 	set(value):
@@ -51,7 +51,7 @@ var stimulus: Dictionary :
 func _ready() -> void:
 	stimulus = stimulus
 	
-	var f = randf()
+	var f: = randf()
 	color = Colors.Red if f < 0.7 else Colors.Green
 	animated_sprite.play("idle")
 	animated_sprite.frame = randi_range(0, animated_sprite.sprite_frames.get_frame_count("idle") - 1)

@@ -20,7 +20,7 @@ var student_settings: UserSettings
 var student_progression: UserProgression
 
 
-func _ready():
+func _ready() -> void:
 	if get_device_settings().teacher:
 		_load_teacher_settings()
 
@@ -146,7 +146,7 @@ func _load_teacher_settings() -> void:
 		_device_settings.device_id = 0
 		_save_device_settings()
 
-func _save_teacher_settings():
+func _save_teacher_settings() -> void:
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
 func add_device() -> bool:
@@ -331,7 +331,7 @@ func get_effects_volume() -> float:
 	return value
 
 # Convert the volume from [-80, 6]db to [0, 100] and back
-func normalize_slider(volume) -> float:
+func normalize_slider(volume: float) -> float:
 	var value: = pow((volume + 80.0) / 86, 5.0) * 100.0
 	return value
 

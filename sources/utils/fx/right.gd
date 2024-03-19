@@ -3,7 +3,7 @@ class_name RightFX
 
 signal finished()
 
-@onready var animation_player: = $AnimationPlayer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 func play() -> void:

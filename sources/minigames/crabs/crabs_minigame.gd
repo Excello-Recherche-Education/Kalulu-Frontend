@@ -19,7 +19,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.25, [4, 3, 4])
 ]
 
-@onready var crab_zone: = $GameRoot/CrabZone
+@onready var crab_zone: Control = $GameRoot/CrabZone
 
 var holes: Array[Hole] = []
 var is_highlighting : bool = false
@@ -36,11 +36,11 @@ func _setup_minigame() -> void:
 	# Spawns the good amount of holes and places them
 	var top_left: Vector2 = crab_zone.position
 	var bottom_right: Vector2 = top_left + crab_zone.size
-	for i in range(settings.rows.size()):
+	for i: int in range(settings.rows.size()):
 		var fi: = float(i + 1.0) / float(settings.rows.size() + 1.0)
 		var y: float = (1.0 - fi) * top_left.y + fi * bottom_right.y
-		for j in range(settings.rows[i]):
-			var fj: = float(j + 1.0) / float(settings.rows[i] + 1.0)
+		for j: int in range(settings.rows[i]):
+			var fj: = float(j + 1.0) / float(settings.rows[i] as int + 1.0)
 			var x: float = fj * top_left.x + (1.0 - fj) * bottom_right.x
 			
 			var hole: Hole = hole_scene.instantiate()
@@ -66,15 +66,19 @@ func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
 
 
-func _highlight():
+func _highlight() -> void:
 	is_highlighting = true
 	for hole in holes:
 		if hole.crab and hole.crab_visible and _is_stimulus_right(hole.crab.stimulus):
 			hole.highlight()
 
 
-func _on_stimulus_pressed(stimulus: Dictionary, hole: Hole) -> bool:
-	if not super(stimulus, hole):
+func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
+	if not super(stimulus, node):
+		return false
+	
+	var hole: = node as Hole
+	if not hole:
 		return false
 	
 	var is_right: = _is_stimulus_right(stimulus)
@@ -86,9 +90,12 @@ func _on_stimulus_pressed(stimulus: Dictionary, hole: Hole) -> bool:
 		hole.wrong()
 		current_lives -= 1
 		
+		# Spawn another crab
+		_on_hole_crab_despawned()
+		
 		# Play the pressed crab phoneme
 		if stimulus and stimulus.Phoneme:
-			await audio_player.play_phoneme(stimulus.Phoneme)
+			await audio_player.play_phoneme(stimulus.Phoneme as String)
 	
 	return true
 
@@ -126,7 +133,7 @@ func _on_hole_timer_timeout() -> void:
 	
 	var hole_found: = false
 	while not hole_found:
-		for i in holes_range:
+		for i: int in holes_range:
 			if not holes[i].crab:
 				# Define if the crab is a stimulus or a distraction
 				var is_stimulus: = randf() < _get_difficulty_settings().stimuli_ratio
@@ -143,7 +150,7 @@ func _on_hole_timer_timeout() -> void:
 				hole_found = true
 
 
-func _on_stimulus_found():
+func _on_stimulus_found() -> void:
 	# Despawn all the crabs
 	for hole in holes:
 		hole.stop.emit()

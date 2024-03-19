@@ -13,5 +13,6 @@ enum Level {
 @export var level : Level
 @export var age : int
 
+
 func _to_string():
 	return "{Code: %s, Name: %s, Level: %s, Age: %d}" % [code, name, Level.keys()[level], age]

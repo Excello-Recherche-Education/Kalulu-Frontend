@@ -5,12 +5,12 @@ class_name Crab
 signal crab_hit(stimulus: Dictionary)
 
 @onready var body: Control = $Body
-@onready var animated_sprite: = %AnimatedSprite2D
-@onready var label: = %AutoSizeLabel.get_node("Label")
-@onready var button: = $Button
-@onready var highlight_fx: = %HighlightFX
-@onready var right_fx: = %RightFX
-@onready var wrong_fx: = %WrongFX
+@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
+@onready var label: Label = %AutoSizeLabel.get_node("Label")
+@onready var button: Button = $Button
+@onready var highlight_fx: HighlightFX = %HighlightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var wrong_fx: WrongFX = %WrongFX
 
 
 var stimulus: Dictionary:

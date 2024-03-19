@@ -4,7 +4,7 @@ extends Container
 
 @export_multiline var ref_size_text: = ""
 var ref_size: Vector2
-@onready var label: = $Label
+@onready var label: Label = $Label
 
 
 func _notification(what: int) -> void:

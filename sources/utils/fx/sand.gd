@@ -17,26 +17,26 @@ const textures: Array[Resource] = [
 
 var is_playing : bool = false
 
-func _ready():
+func _ready() -> void:
 	timer.wait_time = particles.lifetime
 
 
-func play():
+func play() -> void:
 	particles.texture = textures.pick_random()
 	particles.amount = randi_range(6, 18)
 	particles.restart()
 
 
-func start():
+func start() -> void:
 	is_playing = true
 	_on_timer_timeout()
 
 
-func stop():
+func stop() -> void:
 	is_playing = false
 	timer.stop()
 
 
-func _on_timer_timeout():
+func _on_timer_timeout() -> void:
 	play()
 	timer.start()

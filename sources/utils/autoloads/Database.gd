@@ -104,7 +104,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	
 	db.query_with_bindings(query, parameters)
 	
-	var result = db.query_result
+	var result: = db.query_result
 	
 	if with_other_phonemes:
 		for GP in result:
@@ -152,8 +152,8 @@ GROUP BY sID"
 		query += " GROUP BY sID"
 		db.query_with_bindings(query, [lesson_nb])
 	
-	var result = db.query_result
-	for syllable in result:
+	var result: = db.query_result
+	for syllable: Dictionary in result:
 		syllable.GPs = syllable.GPs.split(".")
 	return result
 

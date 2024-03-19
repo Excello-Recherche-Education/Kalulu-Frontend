@@ -26,21 +26,21 @@ func _start() -> void:
 # Find the stimuli and distractions of the minigame.
 # For this type of minigame, only vowels and syllables are allowed
 func _find_stimuli_and_distractions() -> void:
-	var current_lesson_stimuli = []
-	var previous_lesson_stimuli = []
+	var current_lesson_stimuli: Array[Dictionary] = []
+	var previous_lesson_stimuli: Array[Dictionary] = []
 	
 	var all_GPs: = Database.get_GP_for_lesson(lesson_nb, false, false, true, true)
 	var all_syllables: = Database.get_syllables_for_lesson(lesson_nb, false)
 	
 	# Find the GPs for current lesson
-	for gp in all_GPs:
+	for gp: Dictionary in all_GPs:
 		if gp.LessonNb == lesson_nb:
 			current_lesson_stimuli.append(gp)
 		else:
 			previous_lesson_stimuli.append(gp)
 	
 	# Find the syllables for current lesson
-	for syllable in all_syllables:
+	for syllable: Dictionary in all_syllables:
 		if syllable.LessonNb == lesson_nb:
 			current_lesson_stimuli.append(syllable)
 		else:
@@ -68,8 +68,10 @@ func _find_stimuli_and_distractions() -> void:
 			stimuli.append_array(current_lesson_stimuli)
 		
 		# We if there are not enough stimuli from current lesson, we want at least half the target number of stimuli
-		if stimuli.size() < number_of_stimuli/2:
-			while stimuli.size() < number_of_stimuli/2:
+		@warning_ignore("integer_division")
+		var minimal_stimuli : int = number_of_stimuli/2
+		if stimuli.size() < minimal_stimuli:
+			while stimuli.size() < minimal_stimuli:
 				stimuli.append(current_lesson_stimuli.pick_random())
 		
 		
@@ -96,7 +98,7 @@ func _find_stimuli_and_distractions() -> void:
 	print(stimuli)
 	
 	# For each stimuli get the distractors
-	for stimulus in stimuli:
+	for stimulus: Dictionary in stimuli:
 		var stimulus_distractors := []
 		
 		var GPs : Array
@@ -105,18 +107,18 @@ func _find_stimuli_and_distractions() -> void:
 		
 		# Difficulty 1 
 		# Any previously learned item w/ all letters different
-		for gp in all_GPs:
+		for gp: Dictionary in all_GPs:
 				if gp.Grapheme != stimulus.Grapheme and gp.Phoneme != stimulus.Phoneme and (not gp.OtherPhonemes or not gp.OtherPhonemes.has(stimulus.Phoneme)):
 					stimulus_distractors.append(gp)
 		if GPs:
-			for syllable in all_syllables:
+			for syllable: Dictionary in all_syllables:
 				if syllable.GPs[0] not in GPs and syllable.GPs[1] not in GPs:
 					stimulus_distractors.append(syllable)
 			
 		
 		# Higher difficulties only changes syllables distractors
 		if difficulty > 1 and GPs:
-			for syllable in all_syllables:
+			for syllable: Dictionary in all_syllables:
 				# Difficulty 2-3
 				# If the item has 2 GP ('cha'), distractors should have only a single letter change ('la' or 'che')
 				if (syllable.GPs[0] == stimulus.GPs[0] and syllable.GPs[1] != stimulus.GPs[1]) or (syllable.GPs[0] != stimulus.GPs[0] and syllable.GPs[1] == stimulus.GPs[1]):
@@ -177,7 +179,7 @@ func _await_for_future_or_stimulus_found(future : Signal) -> bool:
 # ------------ Connections ------------
 
 
-func _on_stimulus_pressed(stimulus : Dictionary, node) -> bool:
+func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 	if not is_stimulus_heard:
 		return false
 	
@@ -194,11 +196,11 @@ func _on_stimulus_pressed(stimulus : Dictionary, node) -> bool:
 	return true
 
 
-func _on_stimulus_timer_timeout():
+func _on_stimulus_timer_timeout() -> void:
 	_play_current_stimulus_phoneme()
 
 
-func _on_stimulus_found():
+func _on_stimulus_found() -> void:
 	pass
 
 
