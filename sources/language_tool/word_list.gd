@@ -56,6 +56,7 @@ func _ready() -> void:
 	word_title.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	word_title.text = _e.table_graph_column
 	graphemes_title.text = _e.sub_table
+	_reorder_by("lesson")
 
 
 func _get_query() -> String:
@@ -185,3 +186,19 @@ func _on_lesson_gui_input(event: InputEvent) -> void:
 func _on_word_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		_reorder_by(_e.table_graph_column.to_lower())
+
+
+func _on_list_title_import_path_selected(path: String) -> void:
+	var file: = FileAccess.open(path, FileAccess.READ)
+	var line: = file.get_csv_line()
+	if line.size() < 2 or line[0] != "ORTHO" or line[1] != "GPMATCH":
+		error_label.text = "Column names should be ORTHO, GPMATCH"
+		return
+	while not file.eof_reached():
+		line = file.get_csv_line()
+		if line.size() < 2:
+			continue
+		if _e._already_in_database(line[0]) >= 0:
+			continue
+		Database._import_word_from_csv(line[0], line[1])
+	get_tree().reload_current_scene()

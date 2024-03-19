@@ -192,12 +192,11 @@ func _create_GP_csv() -> void:
 func _create_words_csv() -> void:
 	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["ORTHO", "GPMATCH"])
-	var query: = "Select Words.Word, group_concat(GPs.Grapheme, ' ') as Graphemes, group_concat(GPs.Phoneme, ' ') as Phonemes
-	FROM Words
-	INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID
-	INNER JOIN GPs ON GPsInWords.GPID = GPs.ID
-	GROUP BY Words.ID
-	ORDER BY Words.Word"
+	var query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception 
+			FROM Words 
+			INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
+			INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
+			GROUP BY Words.ID"
 	Database.db.query(query)
 	var result: = Database.db.query_result
 	for e in result:

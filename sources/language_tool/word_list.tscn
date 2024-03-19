@@ -142,6 +142,7 @@ visible = false
 
 [connection signal="add_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_add_pressed"]
 [connection signal="back_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_back_pressed"]
+[connection signal="import_path_selected" from="VBoxContainer/ListTitle" to="." method="_on_list_title_import_path_selected"]
 [connection signal="new_search" from="VBoxContainer/ListTitle" to="." method="_on_list_title_new_search"]
 [connection signal="save_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_save_pressed"]
 [connection signal="gui_input" from="VBoxContainer/MarginContainer/HBoxContainer/Lesson" to="." method="_on_lesson_gui_input"]
