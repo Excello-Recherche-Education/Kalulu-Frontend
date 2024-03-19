@@ -1,4 +1,5 @@
 extends AudioStreamPlayer2D
+class_name CrabAudioStreamPlayer
 
 const crab_sound_list: = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
@@ -16,19 +17,19 @@ const crab_sound_list: = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
 ]
 
-var should_play: = false
+var is_playing: = false
 
 
 func start_playing() -> void:
-	should_play = true
+	is_playing = true
 	_on_finished()
 
 
 func stop_playing() -> void:
-	should_play = false
+	is_playing = false
 
 
 func _on_finished() -> void:
-	if should_play:
+	if is_playing:
 		stream = crab_sound_list[randi() % crab_sound_list.size()]
 		playing = true

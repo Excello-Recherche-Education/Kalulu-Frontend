@@ -22,7 +22,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 @onready var crab_zone: = $GameRoot/CrabZone
 
 var holes: Array[Hole] = []
-
+var is_highlighting : bool = false
 
 # ------------ Initialisation ------------
 
@@ -48,6 +48,7 @@ func _setup_minigame() -> void:
 			hole.position = Vector2(x, y)
 			
 			if not Engine.is_editor_hint():
+				hole.crab_out.connect(_on_hole_crab_out.bind(hole))
 				hole.stimulus_hit.connect(_on_stimulus_pressed.bind(hole))
 				hole.crab_despawned.connect(_on_hole_crab_despawned)
 				stimulus_heard.connect(hole.on_stimulus_heard)
@@ -65,6 +66,13 @@ func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
 
 
+func _highlight():
+	is_highlighting = true
+	for hole in holes:
+		if hole.crab and hole.crab_visible and _is_stimulus_right(hole.crab.stimulus):
+			hole.highlight()
+
+
 func _on_stimulus_pressed(stimulus: Dictionary, hole: Hole) -> bool:
 	if not super(stimulus, hole):
 		return false
@@ -73,6 +81,7 @@ func _on_stimulus_pressed(stimulus: Dictionary, hole: Hole) -> bool:
 	if is_right:
 		hole.right()
 		current_progression += 1
+		is_highlighting = false
 	else:
 		hole.wrong()
 		current_lives -= 1
@@ -98,6 +107,11 @@ func _spawn_crabs() -> void:
 	for i in range(int(3.0 * holes.size() / 4.0)):
 		_on_hole_crab_despawned()
 		await get_tree().create_timer(0.1).timeout
+
+
+func _on_hole_crab_out(hole : Hole) -> void:
+	if is_highlighting and _is_stimulus_right(hole.crab.stimulus):
+		hole.highlight()
 
 
 func _on_hole_crab_despawned() -> void:

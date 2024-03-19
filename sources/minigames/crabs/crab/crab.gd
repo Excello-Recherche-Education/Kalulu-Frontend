@@ -8,6 +8,7 @@ signal crab_hit(stimulus: Dictionary)
 @onready var animated_sprite: = %AnimatedSprite2D
 @onready var label: = %AutoSizeLabel.get_node("Label")
 @onready var button: = $Button
+@onready var highlight_fx: = %HighlightFX
 @onready var right_fx: = %RightFX
 @onready var wrong_fx: = %WrongFX
 
@@ -28,6 +29,14 @@ func set_button_active(active: bool) -> void:
 func is_button_pressed() -> bool:
 	await button.pressed
 	return true
+
+
+func highlight() -> void:
+	highlight_fx.play()
+
+
+func is_highlighted() -> bool:
+	return highlight_fx.is_playing
 
 
 func right() -> void:

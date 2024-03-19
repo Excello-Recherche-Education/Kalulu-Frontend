@@ -15,6 +15,7 @@ const textures: Array[Resource] = [
 @onready var particles : GPUParticles2D = $Particles
 @onready var timer : Timer = $Timer
 
+var is_playing : bool = false
 
 func _ready():
 	timer.wait_time = particles.lifetime
@@ -27,10 +28,12 @@ func play():
 
 
 func start():
+	is_playing = true
 	_on_timer_timeout()
 
 
 func stop():
+	is_playing = false
 	timer.stop()
 
 

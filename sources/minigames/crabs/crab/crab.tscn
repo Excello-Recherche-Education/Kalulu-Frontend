@@ -1,8 +1,9 @@
-[gd_scene load_steps=36 format=3 uid="uid://bwe3fp0vkpufb"]
+[gd_scene load_steps=37 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
 [ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
 [ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="3_e1twq"]
+[ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_is4em"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_3hx0j"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_3sw4w"]
 [ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="6_bn4pr"]
@@ -225,6 +226,18 @@ scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="HighlightFX" parent="BackFX" instance=ExtResource("3_is4em")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
 [node name="Body" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -249,7 +262,7 @@ unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_g5q5i")
 animation = &"idle1"
 autoplay = "idle1"
-frame_progress = 0.0800428
+frame_progress = 0.441566
 centered = false
 offset = Vector2(-5, 0)
 
