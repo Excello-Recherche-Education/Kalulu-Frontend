@@ -1,7 +1,5 @@
 extends "res://sources/language_tool/word_list.gd"
 
-@onready var not_found_label: = %NotFoundLabel
-
 
 func create_sub_elements_list() -> void:
 	super()
@@ -51,4 +49,4 @@ func _on_plus_button_pressed() -> void:
 
 
 func _on_not_found(text: String) -> void:
-	not_found_label.text = text
+	error_label.text = text

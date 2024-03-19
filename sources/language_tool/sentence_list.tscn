@@ -9,11 +9,6 @@
 script = ExtResource("2_q3ll5")
 element_scene = ExtResource("2_4jv4m")
 
-[node name="NotFoundLabel" type="Label" parent="VBoxContainer" index="4"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 60
-
 [node name="Label" parent="NewGPLayer" index="1"]
 text = "New Word"
 

@@ -176,3 +176,36 @@ func _language_data_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
 		var folder_unzipper: = FolderUnzipper.new()
 		folder_unzipper.extract(file_path, base_path, false)
+
+
+func _create_GP_csv() -> void:
+	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
+	gp_list_file.store_csv_line(["Grapheme", "Phoneme", "Type"])
+	var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
+	Database.db.query(query)
+	var result: = Database.db.query_result
+	var types_text: = ["Silent", "Vowel", "Consonant"]
+	for e in result:
+		gp_list_file.store_csv_line([e.Grapheme, e.Phoneme, types_text[e.Type]])
+
+
+func _create_words_csv() -> void:
+	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
+	gp_list_file.store_csv_line(["ORTHO", "GPMATCH"])
+	var query: = "Select Words.Word, group_concat(GPs.Grapheme, ' ') as Graphemes, group_concat(GPs.Phoneme, ' ') as Phonemes
+	FROM Words
+	INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID
+	INNER JOIN GPs ON GPsInWords.GPID = GPs.ID
+	GROUP BY Words.ID
+	ORDER BY Words.Word"
+	Database.db.query(query)
+	var result: = Database.db.query_result
+	for e in result:
+		var gpmatch: = "("
+		var graphemes: PackedStringArray = e.Graphemes.split(" ")
+		var phonemes: PackedStringArray = e.Phonemes.split(" ")
+		for i in graphemes.size() - 1:
+			gpmatch += graphemes[i] + "-" + phonemes[i] + "."
+		var i: = graphemes.size() - 1
+		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
+		gp_list_file.store_csv_line([e.Word, gpmatch])

@@ -34,6 +34,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = 50
+
+[node name="Button" type="Button" parent="HBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = " Import CSV file "
+
 [node name="LineEdit" type="LineEdit" parent="HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(600, 2.08165e-12)
 layout_mode = 2
@@ -67,6 +76,17 @@ tooltip_text = "Back (no save)"
 [node name="TextureRect" parent="HBoxContainer/HBoxContainer/BackButton" index="0"]
 texture = ExtResource("3_e0h3c")
 
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(1500, 1000)
+always_on_top = true
+popup_window = true
+ok_button_text = "Ouvrir"
+file_mode = 0
+access = 2
+
+[connection signal="pressed" from="HBoxContainer/HBoxContainer/MarginContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="text_changed" from="HBoxContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="HBoxContainer/HBoxContainer/PlusButton" to="." method="_on_plus_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]

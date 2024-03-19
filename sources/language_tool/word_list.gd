@@ -9,6 +9,7 @@ extends Control
 @onready var lesson_title: = %Lesson
 @onready var word_title: = %Word
 @onready var graphemes_title: = %Graphemes
+@onready var error_label: = %ErrorLabel
 
 var undo_redo: = UndoRedo.new()
 var in_new_gp_mode: = false:

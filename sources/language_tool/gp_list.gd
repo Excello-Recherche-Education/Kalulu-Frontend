@@ -3,6 +3,7 @@ extends Control
 var element_scene: = preload("res://sources/language_tool/gp_list_element.tscn")
 
 @onready var elements_container: = %ElementsContainer
+@onready var error_label: = %ErrorLabel
 
 var undo_redo: = UndoRedo.new()
 
@@ -120,3 +121,30 @@ func _on_list_title_new_search(new_text: String) -> void:
 
 func _on_list_title_save_pressed() -> void:
 	_on_save_button_pressed()
+
+
+func _on_list_title_import_path_selected(path: String) -> void:
+	var file: = FileAccess.open(path, FileAccess.READ)
+	var line: = file.get_csv_line()
+	if line.size() < 3 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type":
+		error_label.text = "Column names should be Grapheme, Phoneme, Type"
+		return
+	var types_text: = ["Silent", "Vowel", "Consonant"]
+	var insert_count: = 0
+	while not file.eof_reached():
+		line = file.get_csv_line()
+		if line.size() < 3:
+			continue
+		var type: = types_text.find(line[2])
+		if type < 0:
+			error_label.text = "Type should be Silent, Vowel or Consonant"
+		Database.db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme = ?
+		AND Phoneme = ? AND Type = ?", [line[0], line[1], type])
+		if Database.db.query_result.is_empty():
+			Database.db.insert_row("GPs", {
+				Grapheme = line[0],
+				Phoneme = line[1],
+				Type = type,
+			})
+			insert_count += 1
+	get_tree().reload_current_scene()
