@@ -41,6 +41,8 @@ func connect_not_found() -> void:
 	for element in elements_container.get_children():
 		if not element.not_found.is_connected(_on_not_found):
 			element.not_found.connect(_on_not_found)
+	if not _e.not_found.is_connected(_on_not_found):
+		_e.not_found.connect(_on_not_found)
 
 
 func _on_plus_button_pressed() -> void:
@@ -50,3 +52,26 @@ func _on_plus_button_pressed() -> void:
 
 func _on_not_found(text: String) -> void:
 	error_label.text = text
+
+
+func _on_list_title_import_path_selected(path: String) -> void:
+	var file: = FileAccess.open(path, FileAccess.READ)
+	var line: = file.get_csv_line()
+	if line.size() < 1 or line[0] != "Sentence":
+		error_label.text = "Column name should be Sentence"
+		return
+	var inserted_one: = false
+	while not file.eof_reached():
+		line = file.get_csv_line()
+		if line.size() < 1 or line[0] == "":
+			continue
+			
+		var id: int = _e._already_in_database(line[0])
+		if id >= 0:
+			continue
+		
+		id = _e._add_from_additional_word_list(line[0])
+		if id >= 0:
+			inserted_one = true
+	if inserted_one:
+		get_tree().reload_current_scene()
