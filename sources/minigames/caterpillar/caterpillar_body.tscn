@@ -1,0 +1,72 @@
+[gd_scene load_steps=15 format=3 uid="uid://dryu60mtiqv3"]
+
+[ext_resource type="Texture2D" uid="uid://b10j7xa7pso3w" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_idle_1_0000.png" id="1_2884l"]
+[ext_resource type="Script" path="res://sources/minigames/caterpillar/caterpillar_body.gd" id="1_vvkkg"]
+[ext_resource type="Texture2D" uid="uid://kkavneaje7ra" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_idle_1_0001.png" id="2_r8mkw"]
+[ext_resource type="Texture2D" uid="uid://ddsgq1gatqu0f" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_idle_1_0002.png" id="3_iyvc5"]
+[ext_resource type="Texture2D" uid="uid://bdkcewub7o4bs" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_idle_1_0003.png" id="4_ejyrg"]
+[ext_resource type="Texture2D" uid="uid://c36k5xax8ycw8" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_idle_1_0004.png" id="5_wiekb"]
+[ext_resource type="Texture2D" uid="uid://cypc4gngcxkl2" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_idle_1_0005.png" id="6_8ul1u"]
+[ext_resource type="Texture2D" uid="uid://dnfw1mfbyxr5" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_walk_0001.png" id="7_g82q5"]
+[ext_resource type="Texture2D" uid="uid://dpvakr5hu5vpl" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_walk_0002.png" id="8_bhhph"]
+[ext_resource type="Texture2D" uid="uid://b2n60a44wnc3l" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_walk_0003.png" id="9_ybl87"]
+[ext_resource type="Texture2D" uid="uid://ciyvvrebsilsc" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_walk_0004.png" id="10_yck3v"]
+[ext_resource type="Texture2D" uid="uid://dglxepw3sraye" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_walk_0005.png" id="11_tnnjk"]
+[ext_resource type="Texture2D" uid="uid://hwk6152g66qr" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_walk_0007.png" id="12_wkhrj"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_236fx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_2884l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_r8mkw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_iyvc5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ejyrg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wiekb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_8ul1u")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_g82q5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_bhhph")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ybl87")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_yck3v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_tnnjk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_wkhrj")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 12.0
+}]
+
+[node name="CaterpillarBody" type="Node2D"]
+script = ExtResource("1_vvkkg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(32, -64)
+sprite_frames = SubResource("SpriteFrames_236fx")
+animation = &"idle"

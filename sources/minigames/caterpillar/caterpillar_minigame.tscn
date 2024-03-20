@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c2160x4hwd3y2"]
+[gd_scene load_steps=10 format=3 uid="uid://c2160x4hwd3y2"]
 
 [ext_resource type="PackedScene" uid="uid://cisurm74fqg2i" path="res://sources/minigames/base/hear_and_sequentials_steps/hear_and_sequentials_steps_minigame.tscn" id="1_ntn14"]
 [ext_resource type="Script" path="res://sources/minigames/caterpillar/caterpillar_minigame.gd" id="2_ycf8p"]
@@ -8,9 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://bqurji8fhnr48" path="res://assets/minigames/caterpillar/graphics/gauge_icon_caterpillar_empty.png" id="6_xkfwj"]
 [ext_resource type="Texture2D" uid="uid://bmdhpgxmur1vo" path="res://assets/minigames/caterpillar/graphics/gauge_icon_caterpillar_full.png" id="7_u5jxc"]
 [ext_resource type="Texture2D" uid="uid://cdc5fnfdssjnt" path="res://assets/minigames/caterpillar/graphics/background.png" id="8_q64mq"]
+[ext_resource type="PackedScene" uid="uid://cqx0qux4msnm7" path="res://sources/minigames/caterpillar/caterpillar.tscn" id="9_m0xwi"]
 
 [node name="CaterpillarMinigame" instance=ExtResource("1_ntn14")]
 script = ExtResource("2_ycf8p")
+difficulty = 2
 lesson_nb = 10
 minigame_name = "Caterpillar"
 max_number_of_lives = 5
@@ -32,3 +34,14 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 texture = ExtResource("8_q64mq")
+
+[node name="BranchesZone" type="Control" parent="GameRoot" index="1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Caterpillar" parent="GameRoot" index="2" instance=ExtResource("9_m0xwi")]
+position = Vector2(420, 0)
