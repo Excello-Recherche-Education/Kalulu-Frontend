@@ -1,0 +1,34 @@
+[gd_scene load_steps=9 format=3 uid="uid://c2160x4hwd3y2"]
+
+[ext_resource type="PackedScene" uid="uid://cisurm74fqg2i" path="res://sources/minigames/base/hear_and_sequentials_steps/hear_and_sequentials_steps_minigame.tscn" id="1_ntn14"]
+[ext_resource type="Script" path="res://sources/minigames/caterpillar/caterpillar_minigame.gd" id="2_ycf8p"]
+[ext_resource type="AudioStream" uid="uid://v7l30moqeb3a" path="res://language_resources/fr/minigames/caterpillar/audios/kalulu_intro_caterpillar_language.mp3" id="3_c1qkc"]
+[ext_resource type="AudioStream" uid="uid://dcg0pilstkntl" path="res://language_resources/fr/minigames/caterpillar/audios/kalulu_help_caterpillar_language.mp3" id="4_hxq1y"]
+[ext_resource type="AudioStream" uid="uid://cvibc3htr6lcr" path="res://language_resources/fr/minigames/caterpillar/audios/kalulu_end_caterpillar_all.mp3" id="5_dlir8"]
+[ext_resource type="Texture2D" uid="uid://bqurji8fhnr48" path="res://assets/minigames/caterpillar/graphics/gauge_icon_caterpillar_empty.png" id="6_xkfwj"]
+[ext_resource type="Texture2D" uid="uid://bmdhpgxmur1vo" path="res://assets/minigames/caterpillar/graphics/gauge_icon_caterpillar_full.png" id="7_u5jxc"]
+[ext_resource type="Texture2D" uid="uid://cdc5fnfdssjnt" path="res://assets/minigames/caterpillar/graphics/background.png" id="8_q64mq"]
+
+[node name="CaterpillarMinigame" instance=ExtResource("1_ntn14")]
+script = ExtResource("2_ycf8p")
+lesson_nb = 10
+minigame_name = "Caterpillar"
+max_number_of_lives = 5
+max_progression = 3
+intro_kalulu_speech = ExtResource("3_c1qkc")
+help_kalulu_speech = ExtResource("4_hxq1y")
+win_kalulu_speech = ExtResource("5_dlir8")
+
+[node name="MinigameUI" parent="." index="1"]
+empty_progression_icon = ExtResource("6_xkfwj")
+full_progression_icon = ExtResource("7_u5jxc")
+
+[node name="Background" type="TextureRect" parent="GameRoot" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+texture = ExtResource("8_q64mq")

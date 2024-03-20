@@ -3,10 +3,14 @@
 importer="csv_translation"
 type="Translation"
 <<<<<<< HEAD
+<<<<<<< HEAD
 uid="uid://dh6pc6oshep4t"
 =======
 uid="uid://4yf2petk28t8"
 >>>>>>> 75bb22e1 (Adds commentary to the jellyfish minigame. Reworks the jellyfish pressed interaction. Corrects the stimuli and distractions. Adds the highlight fx to the jellyfishes)
+=======
+uid="uid://bqpoj7ltdn8ub"
+>>>>>>> ebb4f288 (Adds the hear and sequentials steps minigame scene. Initial setup for the caterpillar minigame. Adds all the assets for the caterpillar minigame.)
 
 [deps]
 
