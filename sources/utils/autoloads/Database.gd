@@ -253,7 +253,10 @@ func get_lessons_count() -> int:
 
 
 func get_audio_stream_for_path(path: String) -> AudioStream:
-	return load(base_path + language + "/" + path)
+	var full_path : String = base_path.path_join(language).path_join(path)
+	if not FileAccess.file_exists(full_path):
+		return null
+	return load(full_path)
 
 
 func get_audio_stream_for_word(word: String) -> AudioStream:

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://b7cfjs2iipagq"]
 
 [ext_resource type="Script" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
-[ext_resource type="PackedScene" uid="uid://cp27bjh6v5bkj" path="res://sources/minigames/base/opening_curtain.tscn" id="2_kfcp0"]
+[ext_resource type="PackedScene" uid="uid://cp27bjh6v5bkj" path="res://sources/utils/autoloads/opening_curtain.tscn" id="2_kfcp0"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_tirf6"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_25mko"]
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_23tyx"]

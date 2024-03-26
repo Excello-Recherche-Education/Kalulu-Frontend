@@ -29,7 +29,6 @@ class_name Minigame
 @export var lose_kalulu_speech: AudioStream = preload("res://language_resources/fr/minigames/kalulu/kalulu_lose_minigame_all.mp3")
 
 @onready var minigame_ui: = $MinigameUI
-@onready var opening_curtain: = $OpeningCurtain
 @onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
 @onready var fireworks: = $Fireworks
 

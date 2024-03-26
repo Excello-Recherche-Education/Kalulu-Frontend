@@ -30,7 +30,7 @@ Database="*res://sources/utils/autoloads/Database.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
 Validation="*res://addons/godot-form-validator/validation.gd"
-OpeningCurtain="*res://sources/minigames/base/opening_curtain.tscn"
+OpeningCurtain="*res://sources/utils/autoloads/opening_curtain.tscn"
 
 [debug]
 
