@@ -8,24 +8,32 @@
 [ext_resource type="PackedScene" uid="uid://cm7e5ir8ykhpv" path="res://sources/minigames/caterpillar/caterpillar_head.tscn" id="17_ty72k"]
 
 [node name="Caterpillar" type="Node2D"]
+scale = Vector2(2, 2)
 script = ExtResource("1_addut")
 
 [node name="BodyParts" type="Node2D" parent="."]
 
-[node name="Body" parent="BodyParts" instance=ExtResource("2_vrjdf")]
+[node name="CaterpillarBody" parent="BodyParts" instance=ExtResource("2_vrjdf")]
+
+[node name="CaterpillarBody2" parent="BodyParts" instance=ExtResource("2_vrjdf")]
+position = Vector2(64, 0)
+
+[node name="CaterpillarBody3" parent="BodyParts" instance=ExtResource("2_vrjdf")]
+position = Vector2(128, 0)
 
 [node name="Tail" type="Node2D" parent="."]
 
 [node name="Tail1" type="Sprite2D" parent="Tail"]
-position = Vector2(0, -88)
+position = Vector2(0, -99)
 texture = ExtResource("14_dchxm")
 
 [node name="Tail2" type="Sprite2D" parent="Tail"]
-position = Vector2(-8, -112)
+position = Vector2(-13, -112)
 texture = ExtResource("15_i1gfi")
 
 [node name="Tail3" type="Sprite2D" parent="Tail"]
-position = Vector2(-21, -117)
+position = Vector2(-24, -117)
 texture = ExtResource("16_w74x8")
 
 [node name="Head" parent="." instance=ExtResource("17_ty72k")]
+position = Vector2(128, 0)

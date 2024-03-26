@@ -8,9 +8,12 @@ script = ExtResource("1_bohwm")
 metadata/_edit_use_anchors_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(80, 1)
+scale = Vector2(80, 1.2)
 texture = ExtResource("3_8458b")
 offset = Vector2(16, 0)
+
+[node name="Leaves" type="Node2D" parent="."]
+position = Vector2(2688, 0)
 
 [node name="Button" type="Button" parent="."]
 offset_top = -304.0
@@ -18,4 +21,7 @@ offset_right = 2560.0
 offset_bottom = 16.0
 flat = true
 
+[node name="LeafTimer" type="Timer" parent="."]
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="timeout" from="LeafTimer" to="." method="_on_leaf_timer_timeout"]

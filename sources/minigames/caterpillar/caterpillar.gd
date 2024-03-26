@@ -21,12 +21,13 @@ func move(y : float) -> void:
 	coroutine.add_future(_tween_body_part(head, move_y).finished)
 	
 	# Move body
-	for body_part: CaterpillarBody in body_parts.get_children(false):
-		await get_tree().create_timer(0.1).timeout
+	for i: int in body_parts.get_child_count(false):
+		await get_tree().create_timer(0.01).timeout
+		var body_part: CaterpillarBody = body_parts.get_child(-i-1)
 		coroutine.add_future(_tween_body_part(body_part, move_y).finished)
 	
 	# Move tail
-	await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.01).timeout
 	coroutine.add_future(_tween_body_part(tail, move_y).finished)
 	
 	await coroutine.join_all()
@@ -35,5 +36,5 @@ func move(y : float) -> void:
 
 func _tween_body_part(part: Node2D, move_y: float) -> Tween:
 	var tween: = create_tween()
-	tween.tween_property(part, "global_position", Vector2(part.global_position.x, part.global_position.y - move_y), 0.5)
+	tween.tween_property(part, "global_position", Vector2(part.global_position.x, part.global_position.y - move_y), 0.2)
 	return tween

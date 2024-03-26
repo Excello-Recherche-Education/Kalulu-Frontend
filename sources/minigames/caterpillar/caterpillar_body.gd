@@ -4,10 +4,6 @@ class_name CaterpillarBody
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-func _ready():
-	idle()
-
-
 func idle():
 	animated_sprite.play("idle")
 

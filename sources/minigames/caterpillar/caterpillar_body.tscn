@@ -67,6 +67,20 @@ animations = [{
 script = ExtResource("1_vvkkg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(32, -64)
 sprite_frames = SubResource("SpriteFrames_236fx")
-animation = &"idle"
+animation = &"walk"
+autoplay = "walk"
+frame_progress = 0.0810001
+offset = Vector2(32, -64)
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = -1
+offset_top = -104.0
+offset_right = 64.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 26
+text = "mmm"
+horizontal_alignment = 1
+vertical_alignment = 1

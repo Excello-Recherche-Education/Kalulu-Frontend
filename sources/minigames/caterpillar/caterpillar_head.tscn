@@ -125,8 +125,9 @@ animations = [{
 script = ExtResource("1_775bq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(104, -96)
+position = Vector2(112, -96)
 sprite_frames = SubResource("SpriteFrames_x8rro")
 animation = &"idle1"
+frame_progress = 0.360292
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animation_finished"]
