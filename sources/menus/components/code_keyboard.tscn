@@ -1,6 +1,6 @@
-[gd_scene load_steps=16 format=3 uid="uid://djduptonofbh4"]
+[gd_scene load_steps=17 format=3 uid="uid://djduptonofbh4"]
 
-[ext_resource type="Script" path="res://sources/menus/code_keyboard.gd" id="1_4kb0k"]
+[ext_resource type="Script" path="res://sources/menus/components/code_keyboard.gd" id="1_4kb0k"]
 [ext_resource type="Texture2D" uid="uid://d3rhl050u0ahl" path="res://assets/menus/login/password_background.png" id="1_qy2tt"]
 [ext_resource type="Texture2D" uid="uid://de8087qre3hqd" path="res://assets/menus/login/button_symbol01_up.png" id="2_lewtn"]
 [ext_resource type="Texture2D" uid="uid://ce2dk2so7yo85" path="res://assets/menus/login/button_symbol01_down.png" id="3_6vmwg"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://eg5jrfombxb8" path="res://assets/menus/login/button_symbol06_up.png" id="12_3eke6"]
 [ext_resource type="Texture2D" uid="uid://dce53jiyk6gy6" path="res://assets/menus/login/button_symbol06_down.png" id="13_mhbsr"]
 [ext_resource type="AudioStream" uid="uid://dlsgs8uralt8n" path="res://assets/menus/login/ui_play_button.mp3" id="15_tcy0b"]
+[ext_resource type="PackedScene" uid="uid://c5ey1jk06asiq" path="res://sources/menus/components/password_visualizer.tscn" id="17_gt2pl"]
 
 [node name="CodeKeyboard" type="Control"]
 layout_mode = 3
@@ -24,6 +25,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4kb0k")
+
+[node name="PasswordVisualizer" parent="." instance=ExtResource("17_gt2pl")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -706.0
+offset_top = -572.0
+offset_right = 706.0
+offset_bottom = -132.0
+grow_horizontal = 2
+grow_vertical = 2
+key_size = 420
+metadata/_edit_use_anchors_ = true
 
 [node name="Keyboard" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(1624, 812)

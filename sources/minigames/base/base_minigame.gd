@@ -22,7 +22,6 @@ class_name Minigame
 @export var lose_kalulu_speech: AudioStream = preload("res://language_resources/fr/minigames/kalulu/kalulu_lose_minigame_all.mp3")
 
 @onready var minigame_ui: = $MinigameUI
-@onready var opening_curtain: = $OpeningCurtain
 @onready var audio_player: = $AudioStreamPlayer
 @onready var fireworks: = $Fireworks
 
@@ -109,8 +108,7 @@ func _find_stimuli_and_distractions() -> void:
 
 # Open the curtains and Kalulu explains
 func _curtains_and_kalulu() -> void:
-	opening_curtain.play("open")
-	await opening_curtain.animation_finished
+	await OpeningCurtain.open()
 	
 	minigame_ui.play_kalulu_speech(intro_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
@@ -125,8 +123,7 @@ func _start() -> void:
 
 
 func _reset() -> void:
-	opening_curtain.play("close")
-	await opening_curtain.animation_finished
+	await OpeningCurtain.close()
 	
 	get_tree().paused = false
 	get_tree().reload_current_scene()
@@ -190,8 +187,7 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 
 
 func _go_back_to_the_garden() -> void:
-	opening_curtain.play("close")
-	await opening_curtain.animation_finished
+	await OpeningCurtain.close()
 	
 	_save_logs()
 	

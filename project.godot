@@ -29,6 +29,8 @@ LessonLogger="*res://sources/utils/autoloads/lesson_logger.gd"
 Database="*res://sources/utils/autoloads/Database.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
+Validation="*res://addons/godot-form-validator/validation.gd"
+OpeningCurtain="*res://sources/minigames/base/opening_curtain.tscn"
 
 [display]
 
@@ -40,7 +42,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg")
 
 [gui]
 

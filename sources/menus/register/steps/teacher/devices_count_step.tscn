@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://do5e7c1oxkn5g"]
+
+[ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_w3urq"]
+[ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="2_asuou"]
+[ext_resource type="Theme" uid="uid://cd7ftmo5x4c2r" path="res://resources/themes/kalulu_theme_big.tres" id="2_ux74f"]
+
+[node name="DevicesCountStep" instance=ExtResource("1_w3urq")]
+step_name = "devices"
+question = "Choose the number of devices"
+infos = "You will be able to modify the devices later in the settings"
+
+[node name="DevicesCountContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
+layout_mode = 2
+
+[node name="DevicesCountLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/DevicesCountContainer" index="0"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 70
+text = "Devices :"
+
+[node name="DevicesCountField" type="SpinBox" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/DevicesCountContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_ux74f")
+min_value = 1.0
+max_value = 90.0
+value = 1.0
+
+[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/DevicesCountContainer/DevicesCountField" index="2"]
+anchors_preset = 0
+script = ExtResource("2_asuou")
+property_name = "devices_count"

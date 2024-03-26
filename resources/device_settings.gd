@@ -1,13 +1,6 @@
 extends Resource
 class_name DeviceSettings
 
-
-# List of current known logins for teachers
-const possible_logins: = {
-	"kalulu" : "kalulu",
-}
-
-
 @export var language : String :
 	set(value):
 		language = value

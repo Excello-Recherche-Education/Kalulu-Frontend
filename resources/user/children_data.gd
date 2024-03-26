@@ -8,12 +8,10 @@ enum Level {
 	Adult
 }
 
-@export var name : String
-@export var age : int
-@export var level : Level
-@export var device : int
 @export var code : String
-
+@export var name : String
+@export var level : Level
+@export var age : int
 
 func _to_string():
-	return "{Device: %s, Code: %s}" % [device, code]
+	return "{Code: %s, Name: %s, Level: %s, Age: %d}" % [code, name, Level.keys()[level], age]

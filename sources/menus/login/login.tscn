@@ -1,19 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://2wab3q35ssta"]
+[gd_scene load_steps=13 format=3 uid="uid://2wab3q35ssta"]
 
 [ext_resource type="Script" path="res://sources/menus/login/login.gd" id="1_spyuf"]
-[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/night_sky/night_sky.tscn" id="3_0my6t"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="3_0my6t"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="3_5b1v0"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_yrwu8"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="4_3vuah"]
-[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="5_j0bnd"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="5_vd33f"]
-[ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/code_keyboard.tscn" id="5_xwrca"]
+[ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/components/code_keyboard.tscn" id="5_xwrca"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_0dhup"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="7_2wdoi"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="8_nxlxw"]
-[ext_resource type="Texture2D" uid="uid://b4xm8a5y2lf3h" path="res://assets/menus/login/button_teacher_1.png" id="9_7lscf"]
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="9_k74e3"]
-[ext_resource type="Texture2D" uid="uid://g2igusggq16s" path="res://assets/menus/login/button_teacher_0.png" id="10_ro1l5"]
 [ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="24_4xfja"]
 
 [node name="Login" type="Control"]
@@ -45,59 +42,6 @@ offset_bottom = 176.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 70
 text = "DEVICE n°"
-
-[node name="Icons" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -676.0
-offset_top = -565.0
-offset_right = 676.0
-offset_bottom = -145.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 46
-
-[node name="Panel1" type="PanelContainer" parent="Icons"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("5_j0bnd")
-metadata/_edit_use_anchors_ = true
-
-[node name="Icon1" type="TextureRect" parent="Icons/Panel1"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(420, 420)
-layout_mode = 2
-stretch_mode = 4
-
-[node name="Panel2" type="PanelContainer" parent="Icons"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("5_j0bnd")
-metadata/_edit_use_anchors_ = true
-
-[node name="Icon2" type="TextureRect" parent="Icons/Panel2"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(420, 420)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel3" type="PanelContainer" parent="Icons"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("5_j0bnd")
-metadata/_edit_use_anchors_ = true
-
-[node name="Icon3" type="TextureRect" parent="Icons/Panel3"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(420, 420)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
 [node name="CodeKeyboard" parent="." instance=ExtResource("5_xwrca")]
 layout_mode = 1
@@ -148,13 +92,11 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="TeacherButton" type="TextureButton" parent="InterfaceRight"]
-custom_minimum_size = Vector2(0, 140)
+[node name="TeacherButton" type="Button" parent="InterfaceRight"]
 layout_mode = 2
 size_flags_vertical = 8
-texture_normal = ExtResource("9_7lscf")
-texture_pressed = ExtResource("10_ro1l5")
-stretch_mode = 5
+theme_override_font_sizes/font_size = 70
+text = "Teacher"
 
 [node name="TeacherTimer" type="Timer" parent="InterfaceRight/TeacherButton"]
 wait_time = 5.0
@@ -166,7 +108,7 @@ layout_mode = 1
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("24_4xfja")
 
-[connection signal="button_pressed" from="CodeKeyboard" to="." method="_on_code_keyboard_button_pressed"]
+[connection signal="password_entered" from="CodeKeyboard" to="." method="_on_code_keyboard_password_entered"]
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="button_down" from="InterfaceRight/TeacherButton" to="." method="_on_teacher_button_button_down"]

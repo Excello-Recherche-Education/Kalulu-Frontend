@@ -1,0 +1,69 @@
+[gd_scene load_steps=9 format=3 uid="uid://b7cfjs2iipagq"]
+
+[ext_resource type="Script" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
+[ext_resource type="PackedScene" uid="uid://cp27bjh6v5bkj" path="res://sources/minigames/base/opening_curtain.tscn" id="2_kfcp0"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_tirf6"]
+[ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_25mko"]
+[ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_23tyx"]
+[ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_i6t6f"]
+[ext_resource type="PackedScene" uid="uid://dp4182l80ntvn" path="res://sources/menus/main/plants/flower.tscn" id="7_iqya7"]
+[ext_resource type="Script" path="res://sources/menus/register/ProgressBar.gd" id="8_h8kqu"]
+
+[node name="RegisterScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jsnxc")
+
+[node name="OpeningCurtain" parent="." instance=ExtResource("2_kfcp0")]
+unique_name_in_owner = true
+
+[node name="NightSky" parent="." instance=ExtResource("2_tirf6")]
+layout_mode = 1
+
+[node name="LargeFlower" parent="NightSky" instance=ExtResource("5_23tyx")]
+position = Vector2(2064, 1794)
+scale = Vector2(2, 2)
+
+[node name="Bush" parent="NightSky" instance=ExtResource("6_i6t6f")]
+position = Vector2(2224, 1824)
+
+[node name="Palm" parent="NightSky" instance=ExtResource("3_25mko")]
+position = Vector2(1280, 1800)
+scale = Vector2(2, 2)
+
+[node name="Flower" parent="NightSky" instance=ExtResource("7_iqya7")]
+position = Vector2(304, 1800)
+
+[node name="ProgressBarContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 173.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 50
+
+[node name="ProgressBar" type="ProgressBar" parent="ProgressBarContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+max_value = 10.0
+step = 0.1
+show_percentage = false
+script = ExtResource("8_h8kqu")
+
+[node name="Steps" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_top = 0.142222
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true

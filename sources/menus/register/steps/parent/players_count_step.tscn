@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://irtjwltfbatm"]
+
+[ext_resource type="PackedScene" uid="uid://cyhoa68y1yyyg" path="res://sources/menus/register/steps/teacher/students_count_step.tscn" id="1_6th8p"]
+
+[node name="PlayersCountStep" instance=ExtResource("1_6th8p")]
+device_id = 1
+step_name = "players"
+question = "Choose the number of players"
+infos = "You will be able do modify the players later in the settings"
+
+[node name="StudentsCountFieldLabel" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/StudentsCountContainer" index="0"]
+text = "Players :"
