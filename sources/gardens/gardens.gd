@@ -56,7 +56,7 @@ func set_up_lessons() -> void:
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(i, lessons[lesson_ind][0].grapheme)
-			garden_control.lesson_button_controls.pressed.connect(_on_garden_lesson_button_pressed.bind(lesson_ind))
+			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(lesson_ind))
 			lesson_ind += 1
 
 
