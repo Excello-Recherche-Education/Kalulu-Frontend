@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://b07jfpiwtajh"]
+
+[ext_resource type="Texture2D" uid="uid://cohwkrkiyo5rg" path="res://assets/minigames/caterpillar/graphics/berry.png" id="1_3ncmx"]
+[ext_resource type="Script" path="res://sources/minigames/caterpillar/berry.gd" id="1_36web"]
+[ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_4ywgh"]
+[ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="4_gmtk0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aq0kv"]
+size = Vector2(34, 128)
+
+[node name="Berry" type="Area2D"]
+scale = Vector2(2, 2)
+script = ExtResource("1_36web")
+
+[node name="HighlightFX" parent="." instance=ExtResource("2_4ywgh")]
+position = Vector2(32, -76)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_3ncmx")
+offset = Vector2(32, -80)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(16, -64)
+shape = SubResource("RectangleShape2D_aq0kv")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(104, -64)
+
+[node name="Label" type="Label" parent="."]
+offset_top = -104.0
+offset_right = 64.0
+offset_bottom = -48.0
+theme_override_font_sizes/font_size = 26
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WrongFX" parent="." instance=ExtResource("4_gmtk0")]
+position = Vector2(32, -76)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

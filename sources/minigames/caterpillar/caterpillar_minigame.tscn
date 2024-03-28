@@ -44,3 +44,7 @@ grow_vertical = 2
 
 [node name="Caterpillar" parent="GameRoot" index="2" instance=ExtResource("9_m0xwi")]
 position = Vector2(384, 0)
+
+[node name="BerryTimer" type="Timer" parent="GameRoot" index="3"]
+
+[connection signal="timeout" from="GameRoot/BerryTimer" to="." method="_on_berry_timer_timeout"]
