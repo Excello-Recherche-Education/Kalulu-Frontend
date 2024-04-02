@@ -82,7 +82,6 @@ func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
 		lessons[child.number] = child
 
 
-
 func _on_save_button_pressed() -> void:
 	Database.db.query("DELETE FROM GPsInLessons")
 	var children: = lessons_container.get_children()
