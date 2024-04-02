@@ -14,7 +14,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "Export list of words not found"
+text = "-> Click here to export the list of words not found <-"
 
 [node name="Label" parent="NewGPLayer" index="1"]
 text = "New Word"

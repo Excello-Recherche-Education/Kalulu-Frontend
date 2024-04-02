@@ -120,7 +120,11 @@ func _on_language_select_button_item_selected(index: int) -> void:
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	DirAccess.make_dir_recursive_absolute(base_path.path_join(new_text))
-	DirAccess.copy_absolute("res://language_resources/model_database.db", base_path.path_join(new_text).path_join("language.db"))
+	var file: = FileAccess.open("res://language_resources/model_database.db", FileAccess.READ)
+	var dest: = FileAccess.open(base_path.path_join(new_text).path_join("language.db"), FileAccess.WRITE)
+	dest.store_buffer(file.get_buffer(file.get_length()))
+	file.close()
+	dest.close()
 	save_file.selected_language = new_text
 	ResourceSaver.save(save_file, save_file_path)
 	get_tree().reload_current_scene()
