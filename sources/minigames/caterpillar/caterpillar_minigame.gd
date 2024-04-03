@@ -50,13 +50,12 @@ func _setup_minigame() -> void:
 		var branch: Branch = branch_scene.instantiate()
 		branch.velocity = settings.velocity
 		branches_zone.add_child(branch)
-		# branch.set_size(Vector2(branch.size.x, branch_size))
 		branch.set_position(Vector2(0, branch_size * (i+1)))
 		
 		if not Engine.is_editor_hint():
 			branch.branch_pressed.connect(_on_branch_pressed.bind(branch))
+			branch.berry_pressed.connect(_play_phoneme)
 			
-		
 		branches.append(branch)
 		branches_spawn_indexes.append(i)
 	
@@ -79,6 +78,20 @@ func _start() -> void:
 
 func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
+
+
+func _clear_berries() -> void:
+	for branch: Branch in branches:
+		branch.clear_berries()
+
+
+# TODO Remove after merge, use the global function instead
+func _play_phoneme(gp: Dictionary) -> void:
+	if gp and gp.has("Phoneme"):
+		audio_player.stream = Database.get_audio_stream_for_phoneme(gp.Phoneme)
+		audio_player.play()
+		if audio_player.playing:
+			await audio_player.finished
 
 
 # -------------- CONNECTIONS -------------- #
@@ -109,22 +122,32 @@ func _on_berry_timer_timeout() -> void:
 
 func _on_berry_eaten(berry: Berry) -> void:
 	if _is_GP_right(berry.gp):
+		_clear_berries()
 		await caterpillar.eat_berry(berry)
+		await _play_current_GP()
 		current_word_progression += 1
 	else:
 		await caterpillar.spit_berry(berry)
+		await _play_phoneme(berry.gp)
 		current_lives -= 1
 
 
-func _on_current_word_progression_changed() -> void:
-	# Clean old berries
-	for branch: Branch in branches:
-		branch.clear_berries()
-
-
 func _on_current_progression_changed() -> void:
-		# Reset the caterpillar
+	# Stops the berries
+	berry_timer.stop()
+	
+	# Clean old berries
+	_clear_berries()
+	
+	# Show the word for some time
+	await get_tree().create_timer(3).timeout
+	
+	# Reset the caterpillar
 	await caterpillar.reset()
+	
 	# Play the new stimulus
 	super()
+	
+	# Start the timer again
+	berry_timer.start()
 

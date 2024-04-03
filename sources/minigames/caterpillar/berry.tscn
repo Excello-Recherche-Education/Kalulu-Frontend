@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b07jfpiwtajh"]
+[gd_scene load_steps=7 format=3 uid="uid://b07jfpiwtajh"]
 
 [ext_resource type="Texture2D" uid="uid://cohwkrkiyo5rg" path="res://assets/minigames/caterpillar/graphics/berry.png" id="1_3ncmx"]
 [ext_resource type="Script" path="res://sources/minigames/caterpillar/berry.gd" id="1_36web"]
@@ -8,34 +8,66 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aq0kv"]
 size = Vector2(34, 128)
 
+[sub_resource type="Curve2D" id="Curve2D_w7ms2"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 346.679, 10.5307, -346.679, -10.5307, -310, -305.6, 73.0181, -1091.4, -73.0181, 1091.4, -1440, 2351.2, 0, 0, 0, 0, -1580, 5072.8)
+}
+point_count = 4
+
 [node name="Berry" type="Area2D"]
 scale = Vector2(2, 2)
 script = ExtResource("1_36web")
 
 [node name="HighlightFX" parent="." instance=ExtResource("2_4ywgh")]
 position = Vector2(32, -76)
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_3ncmx")
-offset = Vector2(32, -80)
+scale = Vector2(0.5, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(16, -64)
 shape = SubResource("RectangleShape2D_aq0kv")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(104, -64)
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(32, -78.2222)
+scale = Vector2(0.4, 0.555556)
+curve = SubResource("Curve2D_w7ms2")
 
-[node name="Label" type="Label" parent="."]
-offset_top = -104.0
-offset_right = 64.0
-offset_bottom = -48.0
-theme_override_font_sizes/font_size = 26
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+rotation = -1.92631
+rotates = false
+loop = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Path2D/PathFollow2D"]
+position = Vector2(-104.15, -124.006)
+rotation = 1.92631
+scale = Vector2(2.5, 1.8)
+texture = ExtResource("1_3ncmx")
+offset = Vector2(32, -80)
+
+[node name="Label" type="Label" parent="Path2D/PathFollow2D/Sprite2D"]
+unique_name_in_owner = true
+offset_left = -8.0
+offset_top = -116.0
+offset_right = 68.0
+offset_bottom = -40.0
+theme_override_font_sizes/font_size = 30
 text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Path2D/PathFollow2D/Sprite2D"]
+position = Vector2(104, -64)
+scale = Vector2(1, 1)
+
 [node name="WrongFX" parent="." instance=ExtResource("4_gmtk0")]
 position = Vector2(32, -76)
+scale = Vector2(0.5, 0.5)
 
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[node name="Button" type="Button" parent="."]
+offset_left = -16.0
+offset_top = -128.0
+offset_right = 80.0
+offset_bottom = -32.0
+theme_type_variation = &"InvisibleButton"
+
+[connection signal="screen_exited" from="Path2D/PathFollow2D/Sprite2D/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

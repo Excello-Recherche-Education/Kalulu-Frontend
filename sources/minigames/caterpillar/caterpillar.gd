@@ -7,6 +7,8 @@ signal berry_eaten(berry: Berry)
 const body_part_scene: PackedScene = preload("res://sources/minigames/caterpillar/caterpillar_body.tscn")
 
 const body_part_width: int = 64
+const body_part_move_time: float = 0.25
+const body_part_wait_time: float = 0.025
 
 @onready var head: CaterpillarHead = $Head
 @onready var body_parts: Node2D = $BodyParts
@@ -21,29 +23,28 @@ func move(y : float) -> void:
 		return
 	
 	is_moving = true
-	var move_y: float = head.global_position.y - y
 	var coroutine: = Coroutine.new()
 	
 	# Move head
-	coroutine.add_future(_tween_body_part(head, move_y).finished)
+	coroutine.add_future(_tween_body_part(head, y).finished)
 	
 	# Move body
 	for i: int in body_parts.get_child_count(false):
-		await get_tree().create_timer(0.01).timeout
+		await get_tree().create_timer(body_part_wait_time).timeout
 		var body_part: CaterpillarBody = body_parts.get_child(-i-1)
-		coroutine.add_future(_tween_body_part(body_part, move_y).finished)
+		coroutine.add_future(_tween_body_part(body_part, y).finished)
 	
 	# Move tail
-	await get_tree().create_timer(0.01).timeout
-	coroutine.add_future(_tween_body_part(tail, move_y).finished)
+	await get_tree().create_timer(body_part_wait_time).timeout
+	coroutine.add_future(_tween_body_part(tail, y).finished)
 	
 	await coroutine.join_all()
 	is_moving = false
 
 
-func _tween_body_part(part: Node2D, move_y: float) -> Tween:
+func _tween_body_part(part: Node2D, y: float) -> Tween:
 	var tween: = create_tween()
-	tween.tween_property(part, "global_position:y", part.global_position.y - move_y, 0.2)
+	tween.tween_property(part, "global_position:y", y, body_part_move_time)
 	return tween
 
 
@@ -68,13 +69,12 @@ func eat_berry(berry: Berry) -> void:
 		body_part.modulate.a = 0
 		
 		tween.tween_property(head, "position", pos, 0.2)
-		tween.parallel().tween_property(berry, "global_position", Vector2(head.global_position.x + body_part_width * 2, head.global_position.y), 0.2)
+		tween.parallel().tween_property(berry, "global_position:x",head.global_position.x + body_part_width * 2, 0.2)
 		tween.parallel().tween_property(berry, "modulate:a", 0, 1)
 		tween.parallel().tween_property(body_part, "modulate:a", 1, 1)
 	else:
-		tween.tween_property(berry, "global_position", Vector2(head.global_position.x + body_part_width * 2, head.global_position.y), 0.2)
+		tween.tween_property(berry, "global_position:x", head.global_position.x + body_part_width * 2, 0.2)
 		tween.parallel().tween_property(berry, "modulate:a", 0, 1)
-	
 	
 	head.eat()
 	body_part.gp = berry.gp
@@ -87,13 +87,25 @@ func eat_berry(berry: Berry) -> void:
 
 
 func spit_berry(berry: Berry) -> void:
-	head.spit()
-	await berry.wrong()
-	berry.queue_free()
+	is_eating = true
+	
+	var pos_x : float = berry.global_position.x
+	
+	var tween: = create_tween()
+	tween.tween_property(berry, "global_position:x", head.global_position.x + body_part_width * 3, 0.1)
+	await head.eat()
+	
+	tween = create_tween()
+	tween.tween_property(berry, "global_position:x", pos_x, 0.1)
+	berry.wrong()
+	await head.spit()
+	tween = create_tween()
+	tween.tween_property(berry, "modulate:a", 0, 1)
+	
+	is_eating = false
 
 
 func reset() -> void:
-	
 	# Move the head and the body parts back
 	var tween: = create_tween()
 	tween.tween_property(head, "position:x", 0, 0.2)

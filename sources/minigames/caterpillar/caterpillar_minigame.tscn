@@ -12,6 +12,7 @@
 
 [node name="CaterpillarMinigame" instance=ExtResource("1_ntn14")]
 script = ExtResource("2_ycf8p")
+difficulty = 3
 lesson_nb = 10
 minigame_name = "Caterpillar"
 max_number_of_lives = 5

@@ -77,10 +77,20 @@ func _is_GP_right(gp: Dictionary) -> bool:
 	return gp == _get_GP()
 
 
+# TODO Revoir après merge
+func _play_current_GP() -> void:
+	audio_player.stream = Database.get_audio_stream_for_phoneme(_get_GP().Phoneme)
+	audio_player.play()
+	if audio_player.playing:
+		await audio_player.finished
+
+
 # ------------- UI Callbacks ------------- #
 
+
+# TODO Revoir après merge
 func _play_stimulus() -> void:
-	audio_player.stream = Database.get_audio_stream_for_word(stimuli[current_progression].Word)
+	audio_player.stream = Database.get_audio_stream_for_word(_get_current_stimulus().Word)
 	audio_player.play()
 	if audio_player.playing:
 		await audio_player.finished

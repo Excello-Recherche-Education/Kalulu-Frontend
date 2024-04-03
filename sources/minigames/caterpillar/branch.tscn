@@ -1,17 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://d2f7q1tbsmwdx"]
+[gd_scene load_steps=3 format=3 uid="uid://d2f7q1tbsmwdx"]
 
 [ext_resource type="Script" path="res://sources/minigames/caterpillar/branch.gd" id="1_bohwm"]
 [ext_resource type="Texture2D" uid="uid://cddv3a264muei" path="res://assets/minigames/caterpillar/graphics/branch_mid.png" id="3_8458b"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ltx20"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d822j"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t8dj8"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lget4"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qckmt"]
 
 [node name="Branch" type="Node2D"]
 script = ExtResource("1_bohwm")
@@ -25,20 +15,17 @@ offset = Vector2(16, 0)
 [node name="Leaves" type="Node2D" parent="."]
 position = Vector2(2688, 0)
 
-[node name="Berries" type="Node2D" parent="."]
-position = Vector2(2688, 0)
-
 [node name="Button" type="Button" parent="."]
 offset_top = -304.0
 offset_right = 2560.0
 offset_bottom = 16.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_ltx20")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_d822j")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_t8dj8")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_lget4")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_qckmt")
+theme_type_variation = &"InvisibleButton"
+
+[node name="Berries" type="Node2D" parent="."]
+position = Vector2(2688, 0)
 
 [node name="LeafTimer" type="Timer" parent="."]
+wait_time = 4.68803
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="timeout" from="LeafTimer" to="." method="_on_leaf_timer_timeout"]
