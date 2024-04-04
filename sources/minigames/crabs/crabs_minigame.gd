@@ -2,7 +2,6 @@
 extends Minigame
 
 @export var difficulty: = 1
-@export var lesson_nb: = 15
 
 const hole_class: = preload("res://sources/minigames/crabs/hole/hole.tscn")
 const difficulty_settings: = {
@@ -102,7 +101,7 @@ func _on_hole_crab_despawned(stimulus: Dictionary) -> void:
 	_on_hole_timer_timeout(stimulus)
 
 
-func _on_hole_timer_timeout(stimulus: Dictionary) -> void:
+func _on_hole_timer_timeout(_stimulus: Dictionary) -> void:
 	var holes_range: = range(holes.size())
 	holes_range.shuffle()
 	

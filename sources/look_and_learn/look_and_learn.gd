@@ -1,5 +1,8 @@
 extends Control
 
+const MinigameSelection: = preload("res://sources/lesson_screen/minigame_selection.gd")
+const minigame_selection_scene: = preload("res://sources/lesson_screen/minigame_selection.tscn")
+
 @export var lesson_nb: = 1
 @export var current_button_pressed: = 0
 
@@ -35,10 +38,15 @@ var current_tracing: = 0
 
 func _ready() -> void:
 	setup()
+	OpeningCurtain.open()
 
 
 func setup() -> void:
 	gp_list = Database.get_GP_for_lesson(lesson_nb, true)
+	
+	grapheme_label.text = ""
+	for gp in gp_list:
+		grapheme_label.text += "%s-%s" % [gp.Grapheme, gp.Phoneme]
 	
 	current_video = 0
 	current_image_and_sound = 0
@@ -116,4 +124,13 @@ func _on_tracing_manager_finished() -> void:
 		tracing_manager.start()
 		current_tracing += 1
 	else:
+		UserDataManager.student_progression.look_and_learn_completed(lesson_nb)
 		animation_player.play("end_tracing")
+		await animation_player.animation_finished
+		
+		var minigame_selection: MinigameSelection = minigame_selection_scene.instantiate()
+		minigame_selection.lesson_number = lesson_nb
+		
+		get_tree().root.add_child(minigame_selection)
+		get_tree().current_scene = minigame_selection
+		queue_free()

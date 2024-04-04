@@ -56,8 +56,8 @@ func game_completed(lesson_number: int, game_number: int) -> void:
 	
 	var all_completed: = true
 	for i in range(3):
-		all_completed &= unlocks[lesson_number]["games"] == Status.Completed
+		all_completed = all_completed and unlocks[lesson_number]["games"][i] == Status.Completed
 	
 	if all_completed and unlocks.has(lesson_number + 1):
-		unlocks[lesson_number + 1] = Status.Unlocked
+		unlocks[lesson_number + 1]["look_and_learn"] = Status.Unlocked
 		unlocks_changed.emit()

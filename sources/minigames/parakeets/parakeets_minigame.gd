@@ -25,7 +25,6 @@ const audio_streams: = [
 ]
 
 @export var difficulty: = 1
-@export var lesson_nb: = 4
 @export var fly_duration: = 3.0
 
 @onready var branches: = $GameRoot/TreeTrunk/Branches

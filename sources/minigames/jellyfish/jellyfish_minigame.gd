@@ -21,7 +21,6 @@ var difficulty_settings: = {
 	4: DifficultySettings.new(1, 0.2, 300),
 }
 
-@export var lesson_nb: = 10
 @export var difficulty: = 0
 
 var blocking_jellyfish: Array[Control] = []

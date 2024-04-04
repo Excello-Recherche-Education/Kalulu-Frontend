@@ -4,6 +4,10 @@ class_name Minigame
 
 @export var minigame_name: = "Minigame"
 
+@export var lesson_nb: = 10
+@export var minigame_number: = 1
+
+@export_group("Difficulty")
 @export var max_number_of_lives: = 0 :
 	set(value):
 		max_number_of_lives = value
@@ -16,6 +20,7 @@ class_name Minigame
 		if minigame_ui:
 			minigame_ui.set_max_progression(value)
 
+@export_group("Speechs")
 @export var intro_kalulu_speech: AudioStream
 @export var help_kalulu_speech: AudioStream
 @export var win_kalulu_speech: AudioStream
@@ -29,12 +34,15 @@ class_name Minigame
 # This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
 @onready var game_root: = $GameRoot
 
+# Minigame selection garden sub menu
+const MinigameSelection: = preload("res://sources/lesson_screen/minigame_selection.gd")
+const minigame_selection_scene: = preload("res://sources/lesson_screen/minigame_selection.tscn")
+
 # Sounds
 const win_sound_fx: = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const lose_sound_fx: = preload("res://assets/sfx/sfx_game_over_lose.mp3")
 
 # Lesson
-var lesson: String
 var minigame_difficulty: int
 var lesson_difficulty: int
 
@@ -130,6 +138,8 @@ func _reset() -> void:
 
 
 func _win() -> void:
+	UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
+	
 	audio_player.stream = win_sound_fx
 	audio_player.play()
 	
@@ -139,7 +149,7 @@ func _win() -> void:
 	minigame_ui.play_kalulu_speech(win_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
 	
-	_reset()
+	_go_back_to_the_garden()
 
 
 func _lose() -> void:
@@ -157,7 +167,7 @@ func _lose() -> void:
 
 
 func _save_logs() -> void:
-	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), minigame_name, lesson, Time.get_time_string_from_system())
+	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), minigame_name, lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
@@ -187,12 +197,17 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 
 
 func _go_back_to_the_garden() -> void:
+	get_tree().paused = false
 	await OpeningCurtain.close()
 	
 	_save_logs()
 	
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://sources/menus/minigame_selection.tscn")
+	var minigame_selection: MinigameSelection = minigame_selection_scene.instantiate()
+	minigame_selection.lesson_number = lesson_nb
+	
+	get_tree().root.add_child(minigame_selection)
+	get_tree().current_scene = minigame_selection
+	queue_free()
 
 
 func _play_stimulus() -> void:

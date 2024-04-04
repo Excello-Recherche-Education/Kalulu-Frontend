@@ -83,13 +83,8 @@ func _is_grapheme_valid(grapheme: String) -> bool:
 
 
 func _get_letter_tracings(letter: String) -> Dictionary:
-	Database.db.query("Select LowerTracingPath, UpperTracingPath FROM LettersTracingData WHERE Letter = '" + letter + "'")
-	
-	var lower_path: String = Database.db.query_result[0]["LowerTracingPath"]
-	var upper_path: String = Database.db.query_result[0]["UpperTracingPath"]
-	
-	var lower_tracing: = _load_tracing(lower_path)
-	var upper_tracing: = _load_tracing(upper_path)
+	var lower_tracing: = _load_tracing(_lower_path(letter))
+	var upper_tracing: = _load_tracing(_upper_path(letter))
 	
 	return {"lower": lower_tracing, "upper": upper_tracing}
 
@@ -116,8 +111,17 @@ func _load_tracing(path: String) -> Array:
 	return segments
 
 
+func _lower_path(letter: String) -> String:
+	return letter + "_lower"
+
+
+func _upper_path(letter: String) -> String:
+	return letter + "_upper"
+
+
 func _real_path(path: String) -> String:
-	return resource_folder + language_folder + tracing_data_folder + path + extension
+	return Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder).path_join(path) + extension
+
 
 
 # --- Start ---

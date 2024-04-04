@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw820nbyowrqy"]
+
+[ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="1_ngos0"]
+[ext_resource type="Script" path="res://sources/lesson_screen/lesson_label_button.gd" id="2_vgde5"]
+
+[node name="LessonLabelButton" instance=ExtResource("1_ngos0")]
+script = ExtResource("2_vgde5")
+text = ""
+
+[node name="Label" type="Label" parent="." index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1

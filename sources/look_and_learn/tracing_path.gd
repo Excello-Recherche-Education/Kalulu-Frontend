@@ -31,8 +31,9 @@ func _ready() -> void:
 
 
 func _exit_tree():
-	if is_instance_valid(remaining_curve):
-		remaining_curve.free()
+	pass
+	#if is_instance_valid(remaining_curve):
+		#remaining_curve.free()
 
 
 func _process(delta: float) -> void:

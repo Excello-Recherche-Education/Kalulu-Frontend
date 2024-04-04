@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://btx8xh83urtuj"]
+
+[ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="1_s27fs"]
+[ext_resource type="Script" path="res://sources/lesson_screen/lesson_texture_button.gd" id="2_8xu3x"]
+
+[node name="LessonTextureButton" instance=ExtResource("1_s27fs")]
+script = ExtResource("2_8xu3x")
+texture = null
+
+[node name="TextureRect" type="TextureRect" parent="." index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

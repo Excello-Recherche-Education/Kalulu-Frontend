@@ -1,7 +1,6 @@
 extends Minigame
 
 @export var difficulty: = 3
-@export var lesson_nb: = 100
 
 @onready var sentence: = %Sentence
 @onready var ants_spawn: = %AntsSpawn

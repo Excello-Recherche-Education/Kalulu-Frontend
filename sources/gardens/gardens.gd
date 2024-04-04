@@ -3,6 +3,9 @@ extends Control
 const garden_scene: = preload("res://resources/gardens/garden.tscn")
 const garden_size: = 2400
 
+const MinigameSelection: = preload("res://sources/lesson_screen/minigame_selection.gd")
+const minigame_selection_scene: = preload("res://sources/lesson_screen/minigame_selection.tscn")
+
 @export var gardens_layout: GardensLayout:
 	set = set_gardens_layout
 
@@ -20,6 +23,7 @@ var tween: Tween
 
 
 func _ready() -> void:
+	OpeningCurtain.open()
 	if not gardens_layout:
 		gardens_layout = load("res://resources/gardens/gardens_layout.tres")
 	else:
@@ -98,8 +102,15 @@ func set_up_path() -> void:
 	locked_line.points = curve.get_baked_points()
 
 
-func _on_garden_lesson_button_pressed(_lesson_ind: int) -> void:
-	pass
+func _on_garden_lesson_button_pressed(lesson_ind: int) -> void:
+	await OpeningCurtain.close()
+	
+	var minigame_selection: MinigameSelection = minigame_selection_scene.instantiate()
+	minigame_selection.lesson_number = lesson_ind
+	
+	get_tree().root.add_child(minigame_selection)
+	get_tree().current_scene = minigame_selection
+	queue_free()
 
 
 func _on_progression_unlocks_changed() -> void:
