@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://ck3nw3pk611qk"]
+
+[ext_resource type="Script" path="res://sources/minigames/fish/fish_texture_rect.gd" id="1_wln62"]
+[ext_resource type="Texture2D" uid="uid://cscx0pq6raxdo" path="res://assets/minigames/fish/fish.png" id="1_xh3of"]
+
+[node name="FishTextureRect" type="Control"]
+layout_mode = 3
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wln62")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.5014
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("1_xh3of")
+expand_mode = 1

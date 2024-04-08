@@ -49,6 +49,7 @@ const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/lif
 @onready var kalulu: Control = %Kalulu
 
 @onready var progression_container: = %ProgressionContainer
+@onready var progression_gauge: = %ProgressionGauge
 @onready var model_progression_rect: = %ProgressionIconsRect
 @onready var lives_container: = %LivesContainer
 @onready var model_lives_rect: = %LivesIconsRect

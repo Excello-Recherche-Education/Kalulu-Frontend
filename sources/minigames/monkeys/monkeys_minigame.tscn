@@ -20,10 +20,10 @@ spacing_glyph = 20
 [node name="Monkeys" instance=ExtResource("1_6nhsm")]
 script = ExtResource("2_12lw5")
 difficulty = 0
-lesson_nb = 10
 throw_to_king_duration = 1.2
 throw_to_monkey_duration = 0.8
 throw_to_planck_duration = 0.9
+minigame_number = 1
 max_number_of_lives = 5
 max_progression = 2
 intro_kalulu_speech = ExtResource("3_ek5u5")

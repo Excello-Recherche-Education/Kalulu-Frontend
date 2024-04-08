@@ -357,6 +357,7 @@ layout_mode = 2
 size_flags_vertical = 0
 
 [node name="ProgressionGauge" type="NinePatchRect" parent="MainControl/Interface/ProgressionMargin/MarginContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("22_6jd5r")
