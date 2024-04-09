@@ -56,7 +56,6 @@ vertical_alignment = 1
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Path2D/PathFollow2D/Sprite2D"]
 position = Vector2(104, -64)
-scale = Vector2(1, 1)
 
 [node name="WrongFX" parent="." instance=ExtResource("4_gmtk0")]
 position = Vector2(32, -76)

@@ -12,11 +12,11 @@
 
 [node name="CaterpillarMinigame" instance=ExtResource("1_ntn14")]
 script = ExtResource("2_ycf8p")
-difficulty = 3
-lesson_nb = 10
+time_between_words = 3.0
+lesson_nb = 12
 minigame_name = "Caterpillar"
 max_number_of_lives = 5
-max_progression = 3
+max_progression = 5
 intro_kalulu_speech = ExtResource("3_c1qkc")
 help_kalulu_speech = ExtResource("4_hxq1y")
 win_kalulu_speech = ExtResource("5_dlir8")
@@ -47,5 +47,6 @@ grow_vertical = 2
 position = Vector2(384, 0)
 
 [node name="BerryTimer" type="Timer" parent="GameRoot" index="3"]
+wait_time = 2.5
 
 [connection signal="timeout" from="GameRoot/BerryTimer" to="." method="_on_berry_timer_timeout"]

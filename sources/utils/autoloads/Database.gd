@@ -140,7 +140,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 
 
 func get_GP_from_word(word: String) -> Array:
-	db.query_with_bindings("SELECT Grapheme, Phoneme FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.Word=? INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID ORDER BY Position", [word])
+	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.Word=? INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID ORDER BY Position", [word])
 	return db.query_result
 
 
@@ -149,26 +149,68 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 	return db.query_result
 
 
-func get_words_for_lesson(lesson_nb: int, only_new: = false) -> Array:
-	var query: = "SELECT * FROM Words
+func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array:
+	var query: = "SELECT Syllable as Grapheme, GROUP_CONCAT(p, '-') AS Phoneme, GROUP_CONCAT(g, '.') AS GPs, nb as LessonNb
+FROM (
+	SELECT Syllables.ID as sID, Syllables.Syllable, GPs.Grapheme AS g, GPs.Phoneme AS p, VerifiedCount.LessonNb AS nb
+	FROM Syllables 
+	INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID
+	INNER JOIN Gps ON GPs.ID = GPsInSyllables.GPID
+	INNER JOIN (SELECT SyllableID, count() as Count FROM GPsInSyllables 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+		GROUP BY SyllableID 
+) TotalCount ON TotalCount.SyllableID = Syllables.ID 
+	INNER JOIN (SELECT SyllableID, count() as Count, max(LessonNb) AS LessonNb FROM GPsInSyllables 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		GROUP BY SyllableID 
+) VerifiedCount ON VerifiedCount.SyllableID = Syllables.ID AND VerifiedCount.Count = TotalCount.Count
+   ORDER BY GPsInSyllables.Position
+   )"
+	if only_new:
+		query += " INNER JOIN GPsInSyllables ON GPsInSyllables.SyllableID = sID
+INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?
+GROUP BY sID"
+		db.query_with_bindings(query, [lesson_nb, lesson_nb])
+	else:
+		query += " GROUP BY sID"
+		db.query_with_bindings(query, [lesson_nb])
+	
+	var result: = db.query_result
+	for syllable: Dictionary in result:
+		syllable.GPs = syllable.GPs.split(".")
+	return result
+
+
+func get_words_for_lesson(lesson_nb: int, only_new: = false, max_length: = 99) -> Array:
+	var parameters: Array = []
+	var query: = "SELECT Words.ID, Words.Word, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb
+FROM Words
 	 INNER JOIN 
 	(SELECT WordID, count() as Count FROM GPsInWords 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
 		GROUP BY WordID 
 		) TotalCount ON TotalCount.WordID = Words.ID 
 	INNER JOIN 
-	(SELECT WordID, count() as Count FROM GPsInWords 
+	(SELECT WordID, count() as Count, max(LessonNb) as MaxLessonNb FROM GPsInWords 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ? 
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
 		GROUP BY WordID 
 		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
+	parameters.append(lesson_nb)
+	
 	if only_new:
 		query += " INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID 
 			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
 			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
-		db.query_with_bindings(query, [lesson_nb, lesson_nb])
-	else:
-		db.query_with_bindings(query, [lesson_nb])
+		parameters.append(lesson_nb)
+	
+	query += " WHERE TotalCount.Count <= ? 
+	ORDER BY LessonNb, GPsCount ASC"
+	parameters.append(max_length)
+	
+	db.query_with_bindings(query, parameters)
 	return db.query_result
 
 

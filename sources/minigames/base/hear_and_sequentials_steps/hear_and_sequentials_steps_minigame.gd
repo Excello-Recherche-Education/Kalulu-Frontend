@@ -4,28 +4,78 @@ class_name HearAndSequentialsStepsMinigame
 # TODO Remove when the jellyfish_minigame branch is merged and rebased
 @export var difficulty: = 1
 @export var lesson_nb: = 4
+@export_range(0, 1) var current_lesson_stimuli_ratio : float = 0.7
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	var words_list: = Database.get_words_for_lesson(lesson_nb)
-	words_list.shuffle()
-	for i in max_progression:
-		var word = words_list[i].Word
-		var GPs: = Database.get_GP_from_word(word)
-		stimuli.append({
-			Word = word,
-			GPs = GPs,
-		})
+	# Get the currently known words list
+	var words_list: = Database.get_words_for_lesson(lesson_nb, false, 6)
+	if words_list.is_empty():
+		return
+	var current_lesson_words: = []
+	var previous_lesson_words: = []
+	
+	for word: Dictionary in words_list:
+		if word.LessonNb == lesson_nb:
+			current_lesson_words.append(word)
+		else:
+			previous_lesson_words.append(word)
+	
+	# Shuffle everything
+	current_lesson_words.shuffle()
+	previous_lesson_words.shuffle()
+	
+	# Calculate the number of stimuli to add from this lesson
+	var number_of_stimuli: int = floori(max_progression * current_lesson_stimuli_ratio)
+	
+	# If there is no previous stimuli, only adds from current lesson
+	if previous_lesson_words.is_empty():
+		while stimuli.size() < max_progression:
+			stimuli.append(current_lesson_words.pick_random())
+	else:
+		if not current_lesson_words.is_empty():
+			# If there are more stimuli in current lesson than needed
+			# TODO Add the smallest word for the lesson
+			if current_lesson_words.size() >= number_of_stimuli:
+				for i in number_of_stimuli:
+					stimuli.append(current_lesson_words[i])
+			else:
+				stimuli.append_array(current_lesson_words)
+			
+			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
+			var minimal_stimuli : int = floori(number_of_stimuli/2)
+			if stimuli.size() < minimal_stimuli:
+				while stimuli.size() < minimal_stimuli:
+					stimuli.append(current_lesson_words.pick_random())
+		
+		# Gets other stimuli from previous errors or lessons
+		# TODO Handle remediation engine
+		var spaces_left : int = max_progression - stimuli.size()
+		if previous_lesson_words.size() >= spaces_left:
+			for i in max_progression - stimuli.size():
+				stimuli.append(previous_lesson_words[i])
+		else:
+			stimuli.append_array(previous_lesson_words)
+		
+		# If there are not enough stimuli, fill the rest with current lesson
+		while stimuli.size() < max_progression:
+			stimuli.append(current_lesson_words.pick_random())
+	
+	# Shuffle the stimuli
+	stimuli.shuffle()
+	
+	# Find the GPs and distractors for each word
+	for stimulus: Dictionary in stimuli:
+		stimulus["GPs"] = Database.get_GP_from_word(stimulus.Word)
 		var grapheme_distractions: = []
-		for GP in GPs:
+		for GP in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.Grapheme, lesson_nb))
 		distractions.append(grapheme_distractions)
-	
-	print(stimuli)
-	print(distractions)
+		
+		print(stimulus)
 
 
 # Launch the minigame

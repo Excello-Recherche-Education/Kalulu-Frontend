@@ -5,6 +5,8 @@ class_name CaterpillarMinigame
 
 const branch_scene: = preload("res://sources/minigames/caterpillar/branch.tscn")
 
+@export var time_between_words: float = 3.
+
 
 class DifficultySettings:
 	var branches: = 2
@@ -140,7 +142,7 @@ func _on_current_progression_changed() -> void:
 	_clear_berries()
 	
 	# Show the word for some time
-	await get_tree().create_timer(3).timeout
+	await get_tree().create_timer(time_between_words).timeout
 	
 	# Reset the caterpillar
 	await caterpillar.reset()

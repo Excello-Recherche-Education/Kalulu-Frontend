@@ -7,3 +7,4 @@
 script = ExtResource("2_nc3s1")
 difficulty = 1
 lesson_nb = 4
+current_lesson_stimuli_ratio = 0.7
