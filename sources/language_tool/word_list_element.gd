@@ -259,7 +259,8 @@ func _already_in_database(text: String) -> int:
 
 func _add_from_additional_word_list(new_text: String) -> int:
 	if new_text in Database.additional_word_list:
-		var res: = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH)
+		var is_word: = table == "Words"
+		var res: = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH, is_word)
 		id = res[0]
 		gp_ids = res[1]
 		unvalidated_gp_ids = gp_ids

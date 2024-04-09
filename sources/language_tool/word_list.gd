@@ -200,5 +200,6 @@ func _on_list_title_import_path_selected(path: String) -> void:
 			continue
 		if _e._already_in_database(line[0]) >= 0:
 			continue
-		Database._import_word_from_csv(line[0], line[1])
+		var is_word: bool = _e.table == "Words"
+		Database._import_word_from_csv(line[0], line[1], is_word)
 	get_tree().reload_current_scene()

@@ -57,6 +57,7 @@ func _drop_data_in_gp_container(_at_position: Vector2, data: Variant) -> void:
 	new_gp_label.gp_id = data.gp_id
 	new_gp_label.gp_dropped.connect(_on_gp_dropped.bind(new_gp_label))
 	gp_container.add_child(new_gp_label)
+	gp_container.move_child(new_gp_label, 0)
 
 
 func _ready() -> void:
@@ -68,15 +69,18 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	return { number = number }
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return data.has("number") and number != data.number
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	return (data.has("number") and number != data.number) or _can_drop_in_gp_container(at_position, data)
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	if not data.has("number"):
+	if not (data.has("number") or data.has("gp_id")):
 		return
-	var before: = at_position.y < size.y
-	lesson_dropped.emit(before, number, data.number)
+	if data.has("number"):
+		var before: = at_position.y < size.y
+		lesson_dropped.emit(before, number, data.number)
+	else:
+		_drop_data_in_gp_container(at_position, data)
 
 
 func get_gp_ids() -> Array[int]:

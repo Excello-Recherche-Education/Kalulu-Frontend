@@ -494,7 +494,7 @@ func _import_words_csv() -> void:
 		_import_word_from_csv(line[0], line[2])
 
 
-func _import_word_from_csv(ortho: String, gpmatch: String) -> Array:
+func _import_word_from_csv(ortho: String, gpmatch: String, is_word: = true) -> Array:
 	var gp_list: = gpmatch.trim_prefix("(").trim_suffix(")").split(".")
 	var gp_ids: Array[int] = []
 	for gp in gp_list:
@@ -512,20 +512,36 @@ func _import_word_from_csv(ortho: String, gpmatch: String) -> Array:
 		else:
 			gp_id = db.query_result[0].ID
 		gp_ids.append(gp_id)
-	db.query_with_bindings("SELECT * FROM Words WHERE Word = ?", [ortho])
+	if is_word:
+		db.query_with_bindings("SELECT * FROM Words WHERE Word = ?", [ortho])
+	else:
+		db.query_with_bindings("SELECT * FROM Syllables WHERE Syllable = ?", [ortho])
 	var word_id: = -1
 	if db.query_result.is_empty():
-		db.insert_row("Words", {
-			Word = ortho,
-		})
-		word_id = db.last_insert_rowid
-		for i in gp_ids.size():
-			var gp_id: int = gp_ids[i]
-			db.insert_row("GPsInWords", {
-				WordID = word_id,
-				GPID = gp_id,
-				Position = i
+		if is_word:
+			db.insert_row("Words", {
+				Word = ortho,
 			})
+			word_id = db.last_insert_rowid
+			for i in gp_ids.size():
+				var gp_id: int = gp_ids[i]
+				db.insert_row("GPsInWords", {
+					WordID = word_id,
+					GPID = gp_id,
+					Position = i
+				})
+		else:
+			db.insert_row("Syllables", {
+				Syllable = ortho,
+			})
+			word_id = db.last_insert_rowid
+			for i in gp_ids.size():
+				var gp_id: int = gp_ids[i]
+				db.insert_row("GPsInSyllables", {
+					SyllableID = word_id,
+					GPID = gp_id,
+					Position = i
+				})
 	else:
 		word_id = db.query_result[0].ID
 	return [word_id, gp_ids]

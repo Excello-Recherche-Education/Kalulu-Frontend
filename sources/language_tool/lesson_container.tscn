@@ -20,10 +20,12 @@ script = ExtResource("1_vwysl")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lnyia")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="NumberLabel" type="Label" parent="HBoxContainer"]
 unique_name_in_owner = true
@@ -37,6 +39,7 @@ horizontal_alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="Padding" type="Control" parent="HBoxContainer/HBoxContainer"]
 layout_mode = 2

@@ -8,5 +8,6 @@ table_graph_column = "Syllable"
 relational_table = "GPsInSyllables"
 
 [editable path="TabContainer/NormalContainer/EditButton"]
-[editable path="TabContainer/EditContainer/MinusButton"]
-[editable path="TabContainer/EditContainer/ValidateButton"]
+[editable path="TabContainer/EditContainer/HBoxContainer/ValidateButton"]
+[editable path="TabContainer/EditContainer/HBoxContainer/MinusButton"]
+[editable path="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2"]
