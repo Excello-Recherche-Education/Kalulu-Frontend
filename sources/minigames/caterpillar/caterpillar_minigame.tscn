@@ -13,8 +13,9 @@
 [node name="CaterpillarMinigame" instance=ExtResource("1_ntn14")]
 script = ExtResource("2_ycf8p")
 time_between_words = 3.0
-lesson_nb = 12
 minigame_name = "Caterpillar"
+lesson_nb = 12
+current_lesson_stimuli_ratio = 0.7
 max_number_of_lives = 5
 max_progression = 5
 intro_kalulu_speech = ExtResource("3_c1qkc")

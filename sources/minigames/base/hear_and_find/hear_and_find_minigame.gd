@@ -50,10 +50,6 @@ func _find_stimuli_and_distractions() -> void:
 	current_lesson_stimuli.shuffle()
 	previous_lesson_stimuli.shuffle()
 	
-	# Calculate the number of stimuli to add from this lesson
-	@warning_ignore("narrowing_conversion")
-	var number_of_stimuli: int = max_progression * stimuli_ratio
-	
 	# If there is no previous stimuli, only adds from current lesson
 	if previous_lesson_stimuli.is_empty():
 		while stimuli.size() < max_progression:
@@ -61,15 +57,15 @@ func _find_stimuli_and_distractions() -> void:
 	else:
 		
 		# If there are more stimuli in current lesson than needed
-		if current_lesson_stimuli.size() >= number_of_stimuli:
-			for i in number_of_stimuli:
+		if current_lesson_stimuli.size() >= current_lesson_stimuli_number:
+			for i in current_lesson_stimuli_number:
 				stimuli.append(current_lesson_stimuli[i])
 		else:
 			stimuli.append_array(current_lesson_stimuli)
 		
 		# We if there are not enough stimuli from current lesson, we want at least half the target number of stimuli
 		@warning_ignore("integer_division")
-		var minimal_stimuli : int = number_of_stimuli/2
+		var minimal_stimuli : int = current_lesson_stimuli_number/2
 		if stimuli.size() < minimal_stimuli:
 			while stimuli.size() < minimal_stimuli:
 				stimuli.append(current_lesson_stimuli.pick_random())

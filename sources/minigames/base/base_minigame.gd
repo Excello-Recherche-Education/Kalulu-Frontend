@@ -6,7 +6,7 @@ class_name Minigame
 
 @export var lesson_nb: = 1
 @export_range(0, 4) var difficulty: = 0
-@export_range(0, 1) var stimuli_ratio : float = 0.7
+@export_range(0, 1) var current_lesson_stimuli_ratio : float = 0.7
 @export var minigame_number: = 1
 
 @export_group("Difficulty")
@@ -29,6 +29,9 @@ class_name Minigame
 # Game root shall contain all the game tree.
 # This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
 @onready var game_root: = $GameRoot
+
+# Expected number of stimuli from current lesson
+@onready var current_lesson_stimuli_number: int = floori(max_progression * current_lesson_stimuli_ratio)
 
 # Sounds
 const win_sound_fx: = preload("res://assets/sfx/sfx_game_over_win.mp3")

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=50 format=3 uid="uid://dqjvrt5nrtwn1"]
+[gd_resource type="Theme" load_steps=55 format=3 uid="uid://dqjvrt5nrtwn1"]
 
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
 [ext_resource type="FontFile" uid="uid://c7hsjkvr1pbud" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_shpmh"]
@@ -177,14 +177,6 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_61sv1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8tujn"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3fet0"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c4e5a"]
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cpwf5"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4sj8"]
@@ -194,6 +186,14 @@ corner_detail = 5
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ygb25"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ks3at"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_61sv1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8tujn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3fet0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c4e5a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sfncn"]
 bg_color = Color(0.254902, 0.329412, 0.572549, 1)
@@ -415,13 +415,6 @@ FileDialog/icons/forward_folder = ExtResource("2_hbp6q")
 FileDialog/icons/parent_folder = ExtResource("3_1nwm4")
 FileDialog/icons/reload = ExtResource("4_ymfot")
 FileDialog/icons/toggle_hidden = ExtResource("5_yja2v")
-ItemList/colors/guide_color = Color(1, 1, 1, 0)
-ItemList/constants/v_separation = 10
-ItemList/fonts/font = ExtResource("1_shpmh")
-ItemList/styles/cursor = SubResource("StyleBoxEmpty_61sv1")
-ItemList/styles/cursor_unfocused = SubResource("StyleBoxEmpty_8tujn")
-ItemList/styles/focus = SubResource("StyleBoxEmpty_3fet0")
-ItemList/styles/hovered = SubResource("StyleBoxEmpty_c4e5a")
 InvisibleButton/base_type = &"Button"
 InvisibleButton/colors/font_color = Color(0, 0, 0, 0)
 InvisibleButton/colors/font_disabled_color = Color(0, 0, 0, 0)
@@ -441,6 +434,13 @@ InvisibleButton/styles/focus = SubResource("StyleBoxEmpty_g4sj8")
 InvisibleButton/styles/hover = SubResource("StyleBoxEmpty_kwe2i")
 InvisibleButton/styles/normal = SubResource("StyleBoxEmpty_ygb25")
 InvisibleButton/styles/pressed = SubResource("StyleBoxEmpty_ks3at")
+ItemList/colors/guide_color = Color(1, 1, 1, 0)
+ItemList/constants/v_separation = 10
+ItemList/fonts/font = ExtResource("1_shpmh")
+ItemList/styles/cursor = SubResource("StyleBoxEmpty_61sv1")
+ItemList/styles/cursor_unfocused = SubResource("StyleBoxEmpty_8tujn")
+ItemList/styles/focus = SubResource("StyleBoxEmpty_3fet0")
+ItemList/styles/hovered = SubResource("StyleBoxEmpty_c4e5a")
 Label/font_sizes/font_size = 42
 Label/fonts/font = ExtResource("1_shpmh")
 LineEdit/constants/caret_width = 4

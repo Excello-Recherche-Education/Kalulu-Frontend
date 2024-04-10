@@ -5,6 +5,7 @@ class_name CaterpillarMinigame
 
 const branch_scene: = preload("res://sources/minigames/caterpillar/branch.tscn")
 
+
 @export var time_between_words: float = 3.
 
 
