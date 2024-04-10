@@ -1,5 +1,5 @@
 @tool
-extends HearAndSequentialsStepsMinigame
+extends WordsMinigame
 class_name CaterpillarMinigame
 
 

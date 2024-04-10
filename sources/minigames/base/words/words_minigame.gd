@@ -1,5 +1,5 @@
 extends Minigame
-class_name HearAndSequentialsStepsMinigame
+class_name WordsMinigame
 
 
 var current_word_progression: int = 0: set = _set_current_word_progression

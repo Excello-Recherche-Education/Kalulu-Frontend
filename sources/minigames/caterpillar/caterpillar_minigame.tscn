@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://c2160x4hwd3y2"]
 
-[ext_resource type="PackedScene" uid="uid://cisurm74fqg2i" path="res://sources/minigames/base/hear_and_sequentials_steps/hear_and_sequentials_steps_minigame.tscn" id="1_ntn14"]
+[ext_resource type="PackedScene" uid="uid://cisurm74fqg2i" path="res://sources/minigames/base/words/words_minigame.tscn" id="1_ntn14"]
 [ext_resource type="Script" path="res://sources/minigames/caterpillar/caterpillar_minigame.gd" id="2_ycf8p"]
 [ext_resource type="AudioStream" uid="uid://v7l30moqeb3a" path="res://language_resources/fr/minigames/caterpillar/audios/kalulu_intro_caterpillar_language.mp3" id="3_c1qkc"]
 [ext_resource type="AudioStream" uid="uid://dcg0pilstkntl" path="res://language_resources/fr/minigames/caterpillar/audios/kalulu_help_caterpillar_language.mp3" id="4_hxq1y"]
@@ -15,7 +15,6 @@ script = ExtResource("2_ycf8p")
 time_between_words = 3.0
 minigame_name = "Caterpillar"
 lesson_nb = 12
-current_lesson_stimuli_ratio = 0.7
 max_number_of_lives = 5
 max_progression = 5
 intro_kalulu_speech = ExtResource("3_c1qkc")
