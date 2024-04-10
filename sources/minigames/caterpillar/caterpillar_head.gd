@@ -4,6 +4,7 @@ class_name CaterpillarHead
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var audio_stream_player: CaterpillarAudioStreamPlayer = $CaterpillarAudioStreamPlayer
+@onready var spit_vfx: SpitVFX = $SpitFX
 
 func _ready():
 	idle()
@@ -24,6 +25,7 @@ func eat():
 
 func spit():
 	animated_sprite.play("spit")
+	spit_vfx.play()
 	await animated_sprite.animation_finished
 
 

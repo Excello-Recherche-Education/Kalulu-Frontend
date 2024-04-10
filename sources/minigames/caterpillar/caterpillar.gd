@@ -66,12 +66,14 @@ func eat_berry(berry: Berry) -> void:
 		body_part = body_part_scene.instantiate()
 		body_parts.add_child(body_part)
 		body_part.position = pos
-		body_part.modulate.a = 0
+		#body_part.modulate.a = 0
+		body_part.scale.x = 0
 		
 		tween.tween_property(head, "position", pos, .2)
 		tween.parallel().tween_property(berry, "global_position:x",head.global_position.x + body_part_width * 2, .2)
-		tween.parallel().tween_property(berry, "modulate:a", 0, .5)
-		tween.parallel().tween_property(body_part, "modulate:a", 1, .5)
+		tween.parallel().tween_property(berry, "modulate:a", 0, .2)
+		#tween.parallel().tween_property(body_part, "modulate:a", 1, .5)
+		tween.parallel().tween_property(body_part, "scale:x", 1, .2)
 	else:
 		tween.tween_property(berry, "global_position:x", head.global_position.x + body_part_width * 2, 0.2)
 		tween.parallel().tween_property(berry, "modulate:a", 0, 1)
