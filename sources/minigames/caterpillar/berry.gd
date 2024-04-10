@@ -31,7 +31,7 @@ func fall() -> void:
 	if is_eaten:
 		return
 	collision_shape.set_deferred("disabled", true)
-	await get_tree().create_timer(randf_range(0., 0.5)).timeout
+	await get_tree().create_timer(randf_range(0., 0.1)).timeout
 	var tween: = get_tree().create_tween()
 	tween.tween_property(path_follow, "progress_ratio", 1, 2)
 

@@ -123,6 +123,9 @@ func _on_berry_timer_timeout() -> void:
 
 
 func _on_berry_eaten(berry: Berry) -> void:
+	# Pause the timer
+	berry_timer.paused = true
+	
 	if _is_GP_right(berry.gp):
 		_clear_berries()
 		await caterpillar.eat_berry(berry)
@@ -132,6 +135,9 @@ func _on_berry_eaten(berry: Berry) -> void:
 		await caterpillar.spit_berry(berry)
 		await _play_phoneme(berry.gp)
 		current_lives -= 1
+	
+	# Unpause timer
+	berry_timer.paused = false
 
 
 func _on_current_progression_changed() -> void:
@@ -140,6 +146,8 @@ func _on_current_progression_changed() -> void:
 	
 	# Clean old berries
 	_clear_berries()
+	
+	# TODO Play the stimulus just found
 	
 	# Show the word for some time
 	await get_tree().create_timer(time_between_words).timeout

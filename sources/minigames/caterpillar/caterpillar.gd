@@ -68,10 +68,10 @@ func eat_berry(berry: Berry) -> void:
 		body_part.position = pos
 		body_part.modulate.a = 0
 		
-		tween.tween_property(head, "position", pos, 0.2)
-		tween.parallel().tween_property(berry, "global_position:x",head.global_position.x + body_part_width * 2, 0.2)
-		tween.parallel().tween_property(berry, "modulate:a", 0, 1)
-		tween.parallel().tween_property(body_part, "modulate:a", 1, 1)
+		tween.tween_property(head, "position", pos, .2)
+		tween.parallel().tween_property(berry, "global_position:x",head.global_position.x + body_part_width * 2, .2)
+		tween.parallel().tween_property(berry, "modulate:a", 0, .5)
+		tween.parallel().tween_property(body_part, "modulate:a", 1, .5)
 	else:
 		tween.tween_property(berry, "global_position:x", head.global_position.x + body_part_width * 2, 0.2)
 		tween.parallel().tween_property(berry, "modulate:a", 0, 1)

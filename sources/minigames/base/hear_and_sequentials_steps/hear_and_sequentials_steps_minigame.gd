@@ -3,8 +3,15 @@ class_name HearAndSequentialsStepsMinigame
 
 # TODO Remove when the jellyfish_minigame branch is merged and rebased
 @export var difficulty: = 1
+
 @export var lesson_nb: = 4
+
+# Ratio of stimuli from current lesson
 @export_range(0, 1) var current_lesson_stimuli_ratio : float = 0.7
+
+# Number of stimuli to add from this lesson
+@onready var number_of_stimuli: int = floori(max_progression * current_lesson_stimuli_ratio)
+# TODO End Remove
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
@@ -28,9 +35,6 @@ func _find_stimuli_and_distractions() -> void:
 	current_lesson_words.shuffle()
 	previous_lesson_words.shuffle()
 	
-	# Calculate the number of stimuli to add from this lesson
-	var number_of_stimuli: int = floori(max_progression * current_lesson_stimuli_ratio)
-	
 	# If there is no previous stimuli, only adds from current lesson
 	if previous_lesson_words.is_empty():
 		while stimuli.size() < max_progression:
@@ -38,7 +42,6 @@ func _find_stimuli_and_distractions() -> void:
 	else:
 		if not current_lesson_words.is_empty():
 			# If there are more stimuli in current lesson than needed
-			# TODO Add the smallest word for the lesson
 			if current_lesson_words.size() >= number_of_stimuli:
 				for i in number_of_stimuli:
 					stimuli.append(current_lesson_words[i])
