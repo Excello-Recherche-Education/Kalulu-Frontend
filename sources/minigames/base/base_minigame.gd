@@ -224,10 +224,8 @@ func _pause_game() -> void:
 
 
 func _play_kalulu() -> void:
-	get_tree().paused = true
 	minigame_ui.play_kalulu_speech(help_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
-	get_tree().paused = false
 
 
 func _highlight() -> void:

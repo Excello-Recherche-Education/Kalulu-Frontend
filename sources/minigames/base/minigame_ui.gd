@@ -211,11 +211,13 @@ func _on_effects_volume_slider_value_changed(volume: float) -> void:
 
 
 func play_kalulu_speech(speech: AudioStream) -> void:
+	get_tree().paused = true
 	kalulu.play_kalulu_speech(speech)
 
 
 func _on_kalulu_speech_ended() -> void:
 	kalulu_speech_ended.emit()
+	get_tree().paused = false
 
 
 func _on_back_to_menu_button_pressed() -> void:

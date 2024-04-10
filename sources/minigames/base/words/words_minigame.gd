@@ -94,6 +94,13 @@ func _set_current_word_progression(p_current_word_progression: int) -> void:
 		await _on_current_word_progression_changed()
 
 
+# Gets the previous stimulus which is already found
+func _get_previous_stimulus() -> Dictionary:
+	if stimuli.size() == 0 or current_progression == 0:
+		return {}
+	return stimuli[(current_progression-1) % stimuli.size()]
+
+
 # Get the current stimulus which needs to be found to increase progression
 func _get_current_stimulus() -> Dictionary:
 	if stimuli.size() == 0:
@@ -117,14 +124,6 @@ func _get_distractor() -> Dictionary:
 # Check if the provided GP is the expected answer
 func _is_GP_right(gp: Dictionary) -> bool:
 	return gp == _get_GP()
-
-
-# TODO Revoir après merge
-func _play_current_GP() -> void:
-	audio_player.stream = Database.get_audio_stream_for_phoneme(_get_GP().Phoneme)
-	audio_player.play()
-	if audio_player.playing:
-		await audio_player.finished
 
 
 # ------------- UI Callbacks ------------- #
