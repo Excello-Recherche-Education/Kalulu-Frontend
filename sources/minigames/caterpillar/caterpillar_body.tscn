@@ -77,8 +77,7 @@ scale = Vector2(0.5, 0.5)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_236fx")
 animation = &"walk"
-autoplay = "walk"
-frame_progress = 0.0810001
+frame_progress = 0.649697
 offset = Vector2(32, -64)
 
 [node name="Label" type="Label" parent="."]
@@ -86,6 +85,6 @@ offset_left = -8.0
 offset_top = -116.0
 offset_right = 68.0
 offset_bottom = -40.0
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 vertical_alignment = 1

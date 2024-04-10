@@ -15,6 +15,10 @@ var gp: Dictionary:
 			label.text = ""
 
 
+func _ready():
+	walk()
+
+
 func idle():
 	animated_sprite.play("idle")
 

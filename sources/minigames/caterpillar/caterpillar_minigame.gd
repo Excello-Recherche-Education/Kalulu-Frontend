@@ -34,6 +34,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 @onready var branches_zone: Control = $GameRoot/BranchesZone
 @onready var caterpillar: Caterpillar = $GameRoot/Caterpillar
 @onready var berry_timer: Timer = $GameRoot/BerryTimer
+@onready var highlight_timer: Timer = $GameRoot/HighlightTimer
 
 
 var branches: Array[Branch] = []
@@ -78,6 +79,11 @@ func _start() -> void:
 	super._start()
 	berry_timer.start()
 
+
+func _highlight() -> void:
+	for branch: Branch in branches:
+		branch.highlight_berries(_get_GP())
+	highlight_timer.start()
 
 func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
@@ -125,6 +131,7 @@ func _on_berry_eaten(berry: Berry) -> void:
 	
 	if _is_GP_right(berry.gp):
 		_clear_berries()
+		highlight_timer.stop()
 		await caterpillar.eat_berry(berry)
 		await audio_player.play_phoneme(_get_GP().Phoneme)
 		current_word_progression += 1
@@ -155,3 +162,6 @@ func _on_current_progression_changed() -> void:
 	# Start the timer again
 	berry_timer.start()
 
+
+func _on_highlight_timer_timeout():
+	_highlight()

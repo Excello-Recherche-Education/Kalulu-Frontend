@@ -22,6 +22,10 @@ var is_eaten: bool = false:
 			collision_shape.set_deferred("disabled", true)
 
 
+func highlight() -> void:
+	highlight_fx.play()
+
+
 func wrong() -> void:
 	wrong_fx.play()
 	await wrong_fx.finished

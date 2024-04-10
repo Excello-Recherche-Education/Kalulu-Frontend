@@ -12,12 +12,20 @@ const berry_scene: PackedScene = preload("res://sources/minigames/caterpillar/be
 @onready var berries: Node2D = $Berries
 @onready var leaf_timer: Timer = $LeafTimer
 
-var velocity: float = 400.0
+var velocity: float = 0.0
 
 
 func _ready():
+	# Adds some leaves from start
+	var pos: = -leaves.position.x + velocity * randf_range(0,2)
+	while pos < 0:
+		var leaf: Leaf = leaf_scene.instantiate()
+		leaves.add_child(leaf)
+		leaf.position.x = pos
+		pos = pos + velocity * randf_range(2, 5)
+	
 	if not Engine.is_editor_hint():
-		leaf_timer.wait_time = randf_range(0, 2)
+		leaf_timer.wait_time = randf_range(2.0, 5.0)
 		leaf_timer.start()
 
 
@@ -32,7 +40,7 @@ func _process(delta):
 			berry.position.x -= velocity * delta
 
 
-func spawn_berry(gp: Dictionary):
+func spawn_berry(gp: Dictionary) -> void:
 	var berry : Berry = berry_scene.instantiate()
 	berries.add_child(berry)
 	berry.gp = gp
@@ -44,6 +52,13 @@ func clear_berries() -> void:
 	for berry: Berry in berries.get_children():
 		berry.fall()
 
+
+func highlight_berries(gp: Dictionary) -> void:
+	for berry: Berry in berries.get_children():
+		if berry.gp == gp:
+			berry.highlight()
+
+
 # ---------- CONNECTIONS ---------- # 
 
 func _on_button_pressed():
@@ -51,7 +66,7 @@ func _on_button_pressed():
 
 
 func _on_leaf_timer_timeout():
-	var leaf: Node2D = leaf_scene.instantiate()
+	var leaf: Leaf = leaf_scene.instantiate()
 	leaves.add_child(leaf)
 	
 	leaf_timer.wait_time = randf_range(2.0, 5.0)
