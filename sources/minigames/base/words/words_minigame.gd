@@ -1,6 +1,8 @@
 extends Minigame
 class_name WordsMinigame
 
+# Define the maximum number of GP inside each words
+@export var max_number_of_GPs: int = 6
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
@@ -8,7 +10,7 @@ var max_word_progression: int = 0
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
-	var words_list: = Database.get_words_for_lesson(lesson_nb, false, 6)
+	var words_list: = Database.get_words_for_lesson(lesson_nb, false, max_number_of_GPs)
 	if words_list.is_empty():
 		return
 	var current_lesson_words: = []

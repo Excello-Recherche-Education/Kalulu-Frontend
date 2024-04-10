@@ -59,7 +59,8 @@ shader_parameter/y_offset = 0.0
 
 [node name="FrogMinigame" instance=ExtResource("1_ng5er")]
 script = ExtResource("2_0xg3r")
-lesson_nb = 10
+max_number_of_GPs = 6
+lesson_nb = 12
 difficulty = 1
 max_number_of_lives = 5
 max_progression = 3

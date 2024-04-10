@@ -1,4 +1,9 @@
-extends Minigame
+extends WordsMinigame
+class_name FrogMinigame
+
+
+const lilypad_track_scene: = preload("res://sources/minigames/frog/lilypad_track.tscn")
+
 
 @onready var start: = %Start
 @onready var end: = %End
@@ -9,13 +14,12 @@ extends Minigame
 @onready var lilypad_tracks_container: = %LilypadTracksContainer
 @onready var frog: = %Frog
 
-const lilypad_track_class: = preload("res://sources/minigames/frog/lilypad_track.tscn")
 
 var current_word: Dictionary
 var current_distractors: Array
 
 
-func _find_stimuli_and_distractions() -> void:
+func _old_find_stimuli_and_distractions() -> void:
 	var words_list: = Database.get_words_for_lesson(lesson_nb)
 	words_list.shuffle()
 	stimuli = []
@@ -37,17 +41,13 @@ func _find_stimuli_and_distractions() -> void:
 		distractions.append(grapheme_distractions)
 
 
-func _play_stimulus() -> void:
-	_play_current_word()
+func _start() -> void:
+	_get_new_word()
 
 
 func _highlight() -> void:
 	for track in lilypad_tracks_container.get_children():
 		track.is_highlighting = true
-
-
-func _start() -> void:
-	_get_new_word()
 
 
 func _get_new_word() -> void:
@@ -76,7 +76,7 @@ func _update_current_word() -> void:
 
 func _create_tracks() -> void:
 	for i in range(current_word.GPs.size()):
-		var track: = lilypad_track_class.instantiate()
+		var track: = lilypad_track_scene.instantiate()
 		lilypad_tracks_container.add_child(track)
 		
 		track.top_to_bottom = i % 2
