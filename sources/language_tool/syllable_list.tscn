@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://bjcps2m8tncdl"]
+[gd_scene load_steps=4 format=3 uid="uid://bjcps2m8tncdl"]
 
 [ext_resource type="PackedScene" uid="uid://dfw7m0a7148fu" path="res://sources/language_tool/word_list.tscn" id="1_wq0y5"]
+[ext_resource type="Script" path="res://sources/language_tool/syllable_list.gd" id="2_1tsvn"]
 [ext_resource type="PackedScene" uid="uid://rimsx0i5seyp" path="res://sources/language_tool/syllable_list_element.tscn" id="2_r4j7q"]
 
 [node name="SyllableList" instance=ExtResource("1_wq0y5")]
+script = ExtResource("2_1tsvn")
 element_scene = ExtResource("2_r4j7q")
 
 [editable path="NewGPLayer/VBoxContainer/Title"]

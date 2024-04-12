@@ -191,15 +191,12 @@ func _on_word_gui_input(event: InputEvent) -> void:
 func _on_list_title_import_path_selected(path: String) -> void:
 	var file: = FileAccess.open(path, FileAccess.READ)
 	var line: = file.get_csv_line()
-	if line.size() < 2 or line[0] != "ORTHO" or line[1] != "GPMATCH":
-		error_label.text = "Column names should be ORTHO, GPMATCH"
+	if line.size() < 1 or line[0] != "ORTHO":
+		error_label.text = "Column names should be ORTHO"
 		return
 	while not file.eof_reached():
 		line = file.get_csv_line()
-		if line.size() < 2:
+		if line.size() < 1:
 			continue
-		if _e._already_in_database(line[0]) >= 0:
-			continue
-		var is_word: bool = _e.table == "Words"
-		Database._import_word_from_csv(line[0], line[1], is_word)
+		_e._try_to_complete_from_word(line[0])
 	get_tree().reload_current_scene()

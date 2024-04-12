@@ -10,6 +10,7 @@ var save_file: ProfToolSave
 @onready var file_dialog: = $FileDialog
 @onready var file_dialog_export: = $FileDialogExport
 @onready var add_word_list_button: = $VBoxContainer/AddWordListButton
+@onready var error_label: = %ErrorLabel
 
 
 func _ready() -> void:
@@ -89,6 +90,10 @@ func _on_export_filename_selected(filename: String) -> void:
 			summary_file.store_line(e.Sentence)
 		summary_file.store_line("\n\n")
 	summary_file.close()
+	
+	_create_GP_csv()
+	_create_words_csv()
+	
 	var folder_zipper: = FolderZipper.new()
 	folder_zipper.compress(base_path.path_join(Database.language), filename)
 
@@ -134,7 +139,8 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 func _word_list_file_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
 		DirAccess.copy_absolute(file_path, Database.get_additional_word_list_path())
-		Database.load_additional_word_list()
+		var msg: = Database.load_additional_word_list()
+		error_label.text = msg
 
 
 func _on_add_word_list_button_pressed() -> void:

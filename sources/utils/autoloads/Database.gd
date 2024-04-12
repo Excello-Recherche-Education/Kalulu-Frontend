@@ -56,15 +56,16 @@ func get_additional_word_list_path() -> String:
 	return base_path.path_join(additional_word_list_path)
 
 
-func load_additional_word_list() -> void:
+func load_additional_word_list() -> String:
 	additional_word_list.clear()
 	var word_list_path: = get_additional_word_list_path()
 	if FileAccess.file_exists(word_list_path):
 		var file: = FileAccess.open(word_list_path, FileAccess.READ)
 		var title_line: = file.get_csv_line()
 		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
-			push_error("word list should have columns ORTHO, PHON and GPMATCH")
-			return
+			var msg: = "word list should have columns ORTHO, PHON and GPMATCH"
+			push_error(msg)
+			return msg
 		var ortho_index: = title_line.find("ORTHO")
 		while not file.eof_reached():
 			var line: = file.get_csv_line()
@@ -73,6 +74,7 @@ func load_additional_word_list() -> void:
 				data[title_line[i]] = line[i]
 			additional_word_list[line[ortho_index]] = data
 		file.close()
+	return ""
 
 
 func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false) -> Array:
@@ -251,6 +253,8 @@ func get_words_in_sentence(sentence_id: int) -> Array[Dictionary]:
 
 func get_lessons_count() -> int:
 	db.query("SELECT MAX(Lessons.LessonNb) as i FROM Lessons")
+	if db.query_result.is_empty() or not db.query_result[0].i:
+		return 0
 	return db.query_result[0].i
 
 
