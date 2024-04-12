@@ -222,6 +222,8 @@ func get_min_lesson_for_word_id(word_id: int) -> int:
 	db.query_with_bindings("SELECT MAX(Lessons.LessonNb) as i FROM Lessons
 	INNER JOIN GPsInLessons ON Lessons.ID = GPsInLessons.LessonID
 	INNER JOIN GPsInWords ON GPsInWords.GPID = GPsInLessons.GPID AND GPsInWords.WordID = ?", [word_id])
+	if db.query_result.is_empty() or not db.query_result[0].i:
+		return -1
 	return db.query_result[0].i
 
 
