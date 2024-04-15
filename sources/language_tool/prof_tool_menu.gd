@@ -93,6 +93,8 @@ func _on_export_filename_selected(filename: String) -> void:
 	
 	_create_GP_csv()
 	_create_words_csv()
+	_create_syllable_csv()
+	_create_sentence_csv()
 	
 	var folder_zipper: = FolderZipper.new()
 	folder_zipper.compress(base_path.path_join(Database.language), filename)
@@ -218,3 +220,38 @@ func _create_words_csv() -> void:
 		var i: = graphemes.size() - 1
 		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
 		gp_list_file.store_csv_line([e.Word, gpmatch])
+
+
+func _create_syllable_csv() -> void:
+	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("syllables_list.csv"), FileAccess.WRITE)
+	gp_list_file.store_csv_line(["ORTHO", "GPMATCH"])
+	var query: = "SELECT Syllables.ID as SyllableId, Syllable, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Syllables.Exception 
+			FROM Syllables 
+			INNER JOIN ( SELECT * FROM GPsInSyllables ORDER BY GPsInSyllables.Position ) GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID 
+			INNER JOIN GPs ON GPs.ID = GPsInSyllables.GPID
+			GROUP BY Syllables.ID"
+	Database.db.query(query)
+	var result: = Database.db.query_result
+	for e in result:
+		var gpmatch: = "("
+		var graphemes: PackedStringArray = e.Graphemes.split(" ")
+		var phonemes: PackedStringArray = e.Phonemes.split(" ")
+		for i in graphemes.size() - 1:
+			gpmatch += graphemes[i] + "-" + phonemes[i] + "."
+		var i: = graphemes.size() - 1
+		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
+		gp_list_file.store_csv_line([e.Syllable, gpmatch])
+
+
+func _create_sentence_csv() -> void:
+	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("sentences_list.csv"), FileAccess.WRITE)
+	gp_list_file.store_csv_line(["Sentence"])
+	var query: = "SELECT Sentences.ID as SentenceId, Sentence, group_concat(Word, ' ') as Words, group_concat(Word, ' ') as Words, group_concat(Words.ID, ' ') as WordIDs, Sentences.Exception 
+			FROM Sentences 
+			INNER JOIN ( SELECT * FROM WordsInSentences ORDER BY WordsInSentences.Position ) WordsInSentences ON Sentences.ID = WordsInSentences.SentenceID 
+			INNER JOIN Words ON Words.ID = WordsInSentences.WordID
+			GROUP BY Sentences.ID"
+	Database.db.query(query)
+	var result: = Database.db.query_result
+	for e in result:
+		gp_list_file.store_csv_line([e.Sentence])
