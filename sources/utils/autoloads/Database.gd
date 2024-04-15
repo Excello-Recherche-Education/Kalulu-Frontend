@@ -69,6 +69,8 @@ func load_additional_word_list() -> String:
 		var ortho_index: = title_line.find("ORTHO")
 		while not file.eof_reached():
 			var line: = file.get_csv_line()
+			if line.size() != title_line.size():
+				return "Formatting error on: %s" % line
 			var data: = {}
 			for i in line.size():
 				data[title_line[i]] = line[i]
