@@ -188,15 +188,27 @@ func _on_word_gui_input(event: InputEvent) -> void:
 		_reorder_by(_e.table_graph_column.to_lower())
 
 
-func _on_list_title_import_path_selected(path: String) -> void:
+func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	var file: = FileAccess.open(path, FileAccess.READ)
 	var line: = file.get_csv_line()
 	if line.size() < 1 or line[0] != "ORTHO":
 		error_label.text = "Column names should be ORTHO"
 		return
+	var all_data = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
 		if line.size() < 1:
 			continue
 		_e._try_to_complete_from_word(line[0])
+		all_data[line[0]] = true
 	get_tree().reload_current_scene()
+	
+	# delete elements that are not in file
+	if match_to_file:
+		var query: = "Select * FROM Words"
+		Database.db.query(query)
+		var result: = Database.db.query_result
+		for e in result:
+			if not e.Word in all_data:
+				Database.db.delete_rows("Words", "ID=%s" % e.ID)
+		

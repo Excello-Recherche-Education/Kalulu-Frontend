@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dfw7m0a7148fu"]
 
 [ext_resource type="Script" path="res://sources/language_tool/word_list.gd" id="1_m0usq"]
-[ext_resource type="PackedScene" uid="uid://b8jcsq6l6tfyd" path="res://sources/language_tool/list_title.tscn" id="2_6no2x"]
+[ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="2_6no2x"]
 [ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="5_1f555"]
 [ext_resource type="Script" path="res://sources/language_tool/ScrollContainer.gd" id="6_0r6vt"]
 

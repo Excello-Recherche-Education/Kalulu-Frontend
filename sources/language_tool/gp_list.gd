@@ -123,7 +123,7 @@ func _on_list_title_save_pressed() -> void:
 	_on_save_button_pressed()
 
 
-func _on_list_title_import_path_selected(path: String) -> void:
+func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	var file: = FileAccess.open(path, FileAccess.READ)
 	var line: = file.get_csv_line()
 	if line.size() < 3 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type":
@@ -131,6 +131,7 @@ func _on_list_title_import_path_selected(path: String) -> void:
 		return
 	var types_text: = ["Silent", "Vowel", "Consonant"]
 	var insert_count: = 0
+	var all_data: = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
 		if line.size() < 3:
@@ -140,6 +141,7 @@ func _on_list_title_import_path_selected(path: String) -> void:
 			error_label.text = "Type should be Silent, Vowel or Consonant"
 		Database.db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme = ?
 		AND Phoneme = ? AND Type = ?", [line[0], line[1], type])
+		all_data[[line[0], line[1], type]] = true
 		if Database.db.query_result.is_empty():
 			Database.db.insert_row("GPs", {
 				Grapheme = line[0],
@@ -148,3 +150,11 @@ func _on_list_title_import_path_selected(path: String) -> void:
 			})
 			insert_count += 1
 	get_tree().reload_current_scene()
+	
+	if match_to_file:
+		var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
+		Database.db.query(query)
+		var result: = Database.db.query_result
+		for e in result:
+			if not [e.Grapheme, e.Phoneme, e.Type] in all_data:
+				Database.db.delete_rows("GPs", "ID=%s" % e.ID)

@@ -62,7 +62,7 @@ func _on_not_found_csv(text: String) -> void:
 	not_found_list += text + "\n"
 
 
-func _on_list_title_import_path_selected(path: String) -> void:
+func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	var file: = FileAccess.open(path, FileAccess.READ)
 	var line: = file.get_csv_line()
 	if line.size() < 1 or line[0] != "Sentence":
@@ -70,11 +70,13 @@ func _on_list_title_import_path_selected(path: String) -> void:
 		return
 	var inserted_one: = false
 	var not_found_one: = false
+	var all_data: = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
 		if line.size() < 1 or line[0] == "":
 			continue
 			
+		all_data[line[0]] = true
 		var id: int = _e._already_in_database(line[0])
 		if id >= 0:
 			continue
@@ -84,6 +86,16 @@ func _on_list_title_import_path_selected(path: String) -> void:
 			inserted_one = true
 		else:
 			not_found_one = true
+	
+	# delete elements that are not in file
+	if match_to_file:
+		var query: = "Select * FROM Sentences"
+		Database.db.query(query)
+		var result: = Database.db.query_result
+		for e in result:
+			if not e.Sentence in all_data:
+				Database.db.delete_rows("Sentences", "ID=%s" % e.ID)
+				inserted_one = true
 		
 	if inserted_one:
 		get_tree().reload_current_scene()
