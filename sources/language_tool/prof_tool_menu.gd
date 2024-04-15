@@ -143,6 +143,29 @@ func _word_list_file_selected(file_path: String) -> void:
 		DirAccess.copy_absolute(file_path, Database.get_additional_word_list_path())
 		var msg: = Database.load_additional_word_list()
 		error_label.text = msg
+		# Check that the words we have in database have the correct gpmatch, if not update them
+		var query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception 
+				FROM Words 
+				INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
+				INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
+				GROUP BY Words.ID"
+		Database.db.query(query)
+		var result: = Database.db.query_result
+		var word_list_element = load("res://sources/language_tool/word_list_element.tscn").instantiate()
+		for e in result:
+			var is_same: = true
+			var master_gpmatch = Database.additional_word_list[e.Word].GPMATCH
+			var master_gplist: PackedStringArray = master_gpmatch.trim_prefix("(").trim_suffix(")").split(".")
+			var graphemes: PackedStringArray = e.Graphemes.split(" ")
+			var phonemes: PackedStringArray = e.Phonemes.split(" ")
+			if master_gplist.size() != graphemes.size():
+				is_same = false
+			else:
+				for i in master_gplist.size():
+					is_same = is_same and (graphemes[i] + "-" + phonemes[i] == master_gplist[i])
+			if not is_same:
+				Database.db.delete_rows("Words", "ID=%s" % e.WordId)
+				word_list_element._add_from_additional_word_list(e.Word)
 
 
 func _on_add_word_list_button_pressed() -> void:
