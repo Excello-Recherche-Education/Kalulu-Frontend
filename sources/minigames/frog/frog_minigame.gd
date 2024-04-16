@@ -6,22 +6,22 @@ const lilypad_track_scene: = preload("res://sources/minigames/frog/lilypad_track
 
 
 class DifficultySettings:
-	var targetsPerLane: = 1
+	var stimuli_ratio: = 0.75
 	var padsSpeedDisabled: = 100.0
 	var padsSpeed: = 200.0
 	
-	func _init(p_targetsPerLane: int, p_padsSpeedDisabled: float, p_padsSpeed: float) -> void:
-		targetsPerLane = p_targetsPerLane
+	func _init(p_stimuli_ratio: float, p_padsSpeedDisabled: float, p_padsSpeed: float) -> void:
+		stimuli_ratio = p_stimuli_ratio
 		padsSpeedDisabled = p_padsSpeedDisabled
 		padsSpeed = p_padsSpeed
 
 
 var difficulty_settings: Array[DifficultySettings] = [
-	DifficultySettings.new(1, 100., 200.),
-	DifficultySettings.new(2, 150., 250.),
-	DifficultySettings.new(2, 200., 300.),
-	DifficultySettings.new(3, 250., 350.),
-	DifficultySettings.new(3, 300., 400.)
+	DifficultySettings.new(0.75, 100., 200.),
+	DifficultySettings.new(0.66, 150., 250.),
+	DifficultySettings.new(0.33, 200., 300.),
+	DifficultySettings.new(0.25, 250., 350.),
+	DifficultySettings.new(0.25, 300., 400.)
 ]
 
 
@@ -102,6 +102,7 @@ func _create_tracks() -> void:
 		track_stimuli.append(current_word.GPs[i])
 		track_stimuli.append_array(current_distractors[i])
 		track.stimuli = track_stimuli
+		track.difficulty_settings = difficulty_settings[difficulty]
 		
 		var are_distractors: = []
 		are_distractors.append(false)

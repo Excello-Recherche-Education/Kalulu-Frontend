@@ -4,24 +4,25 @@ class_name LilypadTrack
 
 signal lilypad_in_center(lilypad: Lilypad)
 
+
+const lilypad_class: = preload("res://sources/minigames/frog/lilypad.tscn")
+const lilypad_crossing_time: = 5.0
+
+
 @onready var audio_player: = $AudioStreamPlayer2D
 @onready var spawn_timer: = $SpawnTimer
 
-const lilypad_class: = preload("res://sources/minigames/frog/lilypad.tscn")
-const number_of_lilypads: = 25
-const lilypad_crossing_time: = 5.0
 
+var ready_to_spawn: = false
 var is_cleared: = false
 var is_enabled: = false:
 	set = _set_enabled
 var is_highlighting: = false:
 	set = _set_highlighting
 
-var ready_to_spawn: = false
 var top_to_bottom: = true
 
 var lilypads: Array[Lilypad] = []
-var tweens: Array[Tween] = []
 
 var stimuli: = []:
 	set = _set_stimuli
@@ -30,14 +31,31 @@ var are_distractors: = []
 var stimuli_queue: = []
 var stimuli_queue_size: = 0
 
+var difficulty_settings: FrogMinigame.DifficultySettings
+var lilypad_size: Vector2
+var is_stopped: bool = false
+
+func _process(delta):
+	if is_stopped:
+		return
+	for lilypad: Lilypad in lilypads:
+		if top_to_bottom:
+			lilypad.position.y += _get_velocity() * delta
+		else:
+			lilypad.position.y -= _get_velocity() * delta
+
+
+func _get_velocity() -> float:
+	if is_enabled:
+		return difficulty_settings.padsSpeed
+	return difficulty_settings.padsSpeedDisabled
+
 
 func reset() -> void:
 	is_cleared = false
 	ready_to_spawn = false
 	is_enabled = false
-	
-	for tween in tweens:
-		tween.stop()
+	is_stopped = true
 	
 	for lilypad: Lilypad in lilypads:
 		lilypad.disappear()
@@ -47,10 +65,12 @@ func reset() -> void:
 
 func start() -> void:
 	ready_to_spawn = true
+	is_stopped = false
 
 
 func stop() -> void:
 	ready_to_spawn = false
+	is_stopped = true
 
 
 func right() -> void:
@@ -75,7 +95,7 @@ func _spawn_lilypad() -> void:
 		end_point = global_position + Vector2(size.x / 2.0, size.y)
 	lilypad.global_position = start_point
 	
-	var lilypad_size: Vector2 = lilypad.get_real_size()
+	lilypad_size = lilypad.get_real_size()
 	if size.x < lilypad_size.x:
 		var s: float = size.x / lilypad_size.x
 		lilypad.scale = Vector2(s, s)
@@ -99,12 +119,6 @@ func _spawn_lilypad() -> void:
 	stimuli_queue.append(potential_stimuli[i])
 	if stimuli_queue.size() > stimuli_queue_size:
 		stimuli_queue.pop_front()
-	
-	var tween: = create_tween()
-	tween.finished.connect(_on_tween_finished.bind(lilypad, tween))
-	
-	tween.tween_property(lilypad, "global_position", end_point, lilypad_crossing_time)
-	tweens.append(tween)
 
 
 func _despawn_lilypad(lilypad: Lilypad) -> void:
@@ -135,12 +149,7 @@ func _set_stimuli(value: Array) -> void:
 
 func _on_lilypad_pressed(lilypad: Lilypad) -> void:
 	audio_player.play()
-	
-	ready_to_spawn = false
-	
-	for tween in tweens:
-		tween.kill()
-	tweens = []
+	stop()
 	
 	for other_lilypad in lilypads:
 		if other_lilypad != lilypad:
@@ -148,32 +157,24 @@ func _on_lilypad_pressed(lilypad: Lilypad) -> void:
 	
 	var center_tween: = create_tween()
 	center_tween.finished.connect(_on_center_tween_finished.bind(lilypad, center_tween))
-	
 	center_tween.tween_property(lilypad, "global_position", global_position + size / 2.0, 0.5)
-	
-	tweens.append(center_tween)
 
 
 func _on_lilypad_disappeared(lilypad: Lilypad) -> void:
 	_despawn_lilypad(lilypad)
 
 
-func _on_tween_finished(lilypad: Lilypad, tween: Tween) -> void:
-	lilypad.disappear()
-	
-	tweens.erase(tween)
-	tween.kill()
-
-
 func _on_center_tween_finished(lilypad: Lilypad, center_tween: Tween) -> void:
 	lilypad_in_center.emit(lilypad)
-	
 	center_tween.kill()
-	tweens.erase(center_tween)
 
 
 func _on_spawn_timer_timeout() -> void:
 	if ready_to_spawn:
 		_spawn_lilypad()
 	
-	spawn_timer.start(randf_range(0.75, 1.5))
+	# Makes sure the lilypads don't overlap
+	if lilypad_size:
+		spawn_timer.start(randf_range(lilypad_size.y / _get_velocity(), lilypad_size.y * 2 / _get_velocity()))
+	else:
+		spawn_timer.start(randf_range(0.75, 1.5))
