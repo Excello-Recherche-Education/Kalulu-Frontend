@@ -185,6 +185,29 @@ func get_words_for_lesson(lesson_nb: int, only_new: = false) -> Array:
 	return db.query_result
 
 
+func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array:
+	var query: = "SELECT * FROM Syllables
+	 INNER JOIN 
+	(SELECT SyllableID, count() as Count FROM GPsInSyllables 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+		GROUP BY SyllableID 
+		) TotalCount ON TotalCount.SyllableID = Syllables.ID 
+	INNER JOIN 
+	(SELECT SyllableID, count() as Count FROM GPsInSyllables 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ? 
+		GROUP BY SyllableID 
+		) VerifiedCount ON VerifiedCount.SyllableID = Syllables.ID AND VerifiedCount.Count = TotalCount.Count"
+	if only_new:
+		query += " INNER JOIN GPsInSyllables ON GPsInSyllables.SyllableID = Syllables.ID 
+			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
+		db.query_with_bindings(query, [lesson_nb, lesson_nb])
+	else:
+		db.query_with_bindings(query, [lesson_nb])
+	return db.query_result
+
+
 func get_sentences_for_lesson(p_lesson_nb: int, only_new: = false) -> Array:
 	var sentences_by_lesson: = {}
 	var sentences: = get_sentences()

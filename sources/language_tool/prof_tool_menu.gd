@@ -85,6 +85,12 @@ func _on_export_filename_selected(filename: String) -> void:
 			words += e.Word + ", "
 		summary_file.store_line(words.trim_suffix(", "))
 		summary_file.store_line("\n")
+		summary_file.store_line("\t \t Syllables ---")
+		var syllables: = ""
+		for e in Database.get_syllables_for_lesson(i, true):
+			syllables += e.Syllable + ", "
+		summary_file.store_line(syllables.trim_suffix(", "))
+		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Sentences ---")
 		for e in Database.get_sentences_for_lesson(i, true):
 			summary_file.store_line(e.Sentence)
