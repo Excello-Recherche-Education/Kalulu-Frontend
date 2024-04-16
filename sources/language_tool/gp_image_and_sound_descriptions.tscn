@@ -80,6 +80,15 @@ layout_mode = 2
 [node name="TextureRect" parent="VBoxContainer/PanelContainer/HBoxContainer/BackButton" index="0"]
 texture = ExtResource("3_04mkx")
 
+[node name="PanelContainer3" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Search"
+alignment = 1
+
 [node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -94,5 +103,6 @@ layout_mode = 2
 
 [connection signal="pressed" from="VBoxContainer/PanelContainer/HBoxContainer/PlusButton" to="." method="_on_plus_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="text_changed" from="VBoxContainer/PanelContainer3/LineEdit" to="." method="_on_line_edit_text_changed"]
 
 [editable path="VBoxContainer/PanelContainer/HBoxContainer/BackButton"]

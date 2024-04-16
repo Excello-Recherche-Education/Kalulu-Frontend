@@ -26,7 +26,22 @@ func _ready() -> void:
 		description_line.set_gp(res)
 		description_line.image_preview.hide()
 		description_line.image_upload_button.hide()
+	
+	Database.db.query("SELECT * FROM Words")
+	for res in Database.db.query_result:
+		var description_line: = description_line_class.instantiate()
+		description_container.add_child(description_line)
+		res.Grapheme = res.Word
+		res.Phoneme = ""
+		description_line.set_gp(res)
+		description_line.image_preview.hide()
+		description_line.image_upload_button.hide()
 
 
 func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")
+
+
+func _on_line_edit_text_changed(new_text: String) -> void:
+	for description_line in description_container.get_children():
+		description_line.visible = description_line.gp_menu_button.text.begins_with(new_text)
