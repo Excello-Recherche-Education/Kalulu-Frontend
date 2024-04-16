@@ -110,6 +110,10 @@ func _get_current_stimulus() -> Dictionary:
 	return stimuli[current_progression % stimuli.size()]
 
 
+func _get_current_distractors() -> Array:
+	return distractions[current_progression]
+
+
 # Get the current GP to find
 func _get_GP() -> Dictionary:
 	var stimulus: = _get_current_stimulus()
@@ -120,7 +124,7 @@ func _get_GP() -> Dictionary:
 
 # Get a random distractor for the current GP
 func _get_distractor() -> Dictionary:
-	return distractions[current_progression][current_word_progression].pick_random()
+	return _get_current_distractors()[current_word_progression].pick_random()
 
 
 # Check if the provided GP is the expected answer

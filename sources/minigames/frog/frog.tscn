@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://sources/minigames/frog/frog.gd" id="1_68f6f"]
 [ext_resource type="Texture2D" uid="uid://begtyjietpcyo" path="res://assets/minigames/frog/graphics/frog.png" id="1_c6opx"]
-[ext_resource type="Material" uid="uid://bcoalg24yap4x" path="res://sources/minigames/frog/frog_material.tres" id="2_i6km5"]
+[ext_resource type="Material" uid="uid://cj241oskmxqgv" path="res://sources/minigames/frog/frog_material.tres" id="2_i6km5"]
 
 [sub_resource type="Animation" id="Animation_42msv"]
 length = 0.001

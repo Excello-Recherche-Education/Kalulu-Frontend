@@ -1,6 +1,8 @@
 extends Control
+class_name LilypadTrack
 
-signal lilypad_in_center(lilypad: Control)
+
+signal lilypad_in_center(lilypad: Lilypad)
 
 @onready var audio_player: = $AudioStreamPlayer2D
 @onready var spawn_timer: = $SpawnTimer
@@ -18,8 +20,8 @@ var is_highlighting: = false:
 var ready_to_spawn: = false
 var top_to_bottom: = true
 
-var lilypads: = []
-var tweens: = []
+var lilypads: Array[Lilypad] = []
+var tweens: Array[Tween] = []
 
 var stimuli: = []:
 	set = _set_stimuli
@@ -27,10 +29,6 @@ var are_distractors: = []
 
 var stimuli_queue: = []
 var stimuli_queue_size: = 0
-
-
-func delete() -> void:
-	await reset()
 
 
 func reset() -> void:
@@ -41,7 +39,7 @@ func reset() -> void:
 	for tween in tweens:
 		tween.stop()
 	
-	for lilypad in lilypads:
+	for lilypad: Lilypad in lilypads:
 		lilypad.disappear()
 	
 	await get_tree().create_timer(0.5).timeout
@@ -56,12 +54,12 @@ func stop() -> void:
 
 
 func right() -> void:
-	for lilypad in lilypads:
+	for lilypad: Lilypad in lilypads:
 		await lilypad.right()
 
 
 func _spawn_lilypad() -> void:
-	var lilypad: = lilypad_class.instantiate()
+	var lilypad: Lilypad = lilypad_class.instantiate()
 	lilypads.append(lilypad)
 	
 	lilypad.pressed.connect(_on_lilypad_pressed.bind(lilypad))
@@ -109,7 +107,7 @@ func _spawn_lilypad() -> void:
 	tweens.append(tween)
 
 
-func _despawn_lilypad(lilypad: Control) -> void:
+func _despawn_lilypad(lilypad: Lilypad) -> void:
 	lilypads.erase(lilypad)
 	lilypad.queue_free()
 
@@ -135,7 +133,7 @@ func _set_stimuli(value: Array) -> void:
 	stimuli_queue_size = max(0, stimuli.size() - 3)
 
 
-func _on_lilypad_pressed(lilypad: Control) -> void:
+func _on_lilypad_pressed(lilypad: Lilypad) -> void:
 	audio_player.play()
 	
 	ready_to_spawn = false
@@ -156,18 +154,18 @@ func _on_lilypad_pressed(lilypad: Control) -> void:
 	tweens.append(center_tween)
 
 
-func _on_lilypad_disappeared(lilypad: Control) -> void:
+func _on_lilypad_disappeared(lilypad: Lilypad) -> void:
 	_despawn_lilypad(lilypad)
 
 
-func _on_tween_finished(lilypad: Control, tween: Tween) -> void:
+func _on_tween_finished(lilypad: Lilypad, tween: Tween) -> void:
 	lilypad.disappear()
 	
 	tweens.erase(tween)
 	tween.kill()
 
 
-func _on_center_tween_finished(lilypad: Control, center_tween: Tween) -> void:
+func _on_center_tween_finished(lilypad: Lilypad, center_tween: Tween) -> void:
 	lilypad_in_center.emit(lilypad)
 	
 	center_tween.kill()
