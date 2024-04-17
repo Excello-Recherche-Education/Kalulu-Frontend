@@ -94,10 +94,12 @@ func _start_tracks() -> void:
 #region Connections
 
 func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
+	# Log the answer
+	_log_new_response(lilypad.stimulus, track.gp)
+	
+	# Makes the frog jumps on the lilypad
 	frog.jump_to(lilypad.global_position)
 	await frog.jumped
-	
-	_log_new_response(lilypad.stimulus, track.gp)
 	
 	if lilypad.is_distractor:
 		await lilypad.wrong()

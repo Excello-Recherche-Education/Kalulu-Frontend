@@ -126,6 +126,9 @@ func _on_berry_timer_timeout() -> void:
 
 
 func _on_berry_eaten(berry: Berry) -> void:
+	# Log the answer
+	_log_new_response(berry.gp, _get_GP())
+	
 	# Pause the timer
 	berry_timer.paused = true
 	
