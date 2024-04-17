@@ -3,6 +3,7 @@ extends MarginContainer
 signal delete_pressed()
 signal new_GP_asked(i: int)
 signal validated()
+signal GPs_updated()
 
 const gp_list_button_scene: = preload("res://sources/language_tool/gp_list_button.tscn")
 const plus_button_scene: = preload("res://sources/language_tool/plus_button.tscn")
@@ -264,6 +265,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 	if new_text in Database.additional_word_list:
 		var is_word: = table == "Words"
 		var res: = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH, is_word)
+		GPs_updated.emit()
 		id = res[0]
 		gp_ids = res[1]
 		unvalidated_gp_ids = gp_ids

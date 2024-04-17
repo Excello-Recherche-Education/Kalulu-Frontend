@@ -49,6 +49,7 @@ func _ready() -> void:
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
 		element.new_GP_asked.connect(_on_element_new_GP_asked.bind(element))
+		element.GPs_updated.connect(_on_GPs_updated)
 		element.update_lesson()
 	
 	title.set_title(_e.table_graph_column + " List")
@@ -97,6 +98,7 @@ func _on_plus_button_pressed() -> void:
 	element.undo_redo = undo_redo
 	element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
 	element.new_GP_asked.connect(_on_element_new_GP_asked.bind(element))
+	element.GPs_updated.connect(_on_GPs_updated)
 	undo_redo.add_do_method(elements_container.add_child.bind(element))
 	undo_redo.add_do_method(elements_container.move_child.bind(element, 0))
 	undo_redo.add_undo_method(elements_container.remove_child.bind(element))
@@ -125,6 +127,12 @@ func _on_gp_list_element_validated() -> void:
 	for element in elements_container.get_children():
 		element.sub_elements_list = sub_elements_list
 	new_gp_asked_element.new_gp_asked_added(new_gp_asked_ind, new_gp.id)
+
+
+func _on_GPs_updated() -> void:
+	create_sub_elements_list()
+	for element in elements_container.get_children():
+		element.sub_elements_list = sub_elements_list
 
 
 func _on_save_button_pressed() -> void:
