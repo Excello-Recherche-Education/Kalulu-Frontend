@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cnyl3pxt7dn8y"]
 
 [ext_resource type="Script" path="res://sources/language_tool/gp_list.gd" id="1_vqemo"]
-[ext_resource type="PackedScene" uid="uid://b8jcsq6l6tfyd" path="res://sources/language_tool/list_title.tscn" id="2_irm5b"]
+[ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="2_irm5b"]
 [ext_resource type="Script" path="res://sources/language_tool/ScrollContainer.gd" id="6_t1l1g"]
 
 [node name="GpList" type="Control"]
