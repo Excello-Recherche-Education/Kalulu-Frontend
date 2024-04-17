@@ -188,6 +188,11 @@ func set_gp_ids_from_string(p_gp_ids: String) -> void:
 
 
 func insert_in_database() -> void:
+	if id < 0:
+		Database.db.query_with_bindings("SELECT * FROM %s WHERE %s=?" % [table, table_graph_column], [word])
+		if not Database.db.query_result.is_empty():
+			id = Database.db.query_result[0].ID
+	
 	if id >= 0:
 		var query: = "SELECT %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs, group_concat(%s.ID, ' ') as %sIDs, %s.Exception
 			FROM %s 
@@ -226,6 +231,19 @@ func insert_in_database() -> void:
 						"Position": i
 						})
 			return
+		else:
+			Database.db.query_with_bindings("SELECT * FROM %s WHERE %s=?" % [table, table_graph_column], [word])
+			if not Database.db.query_result.is_empty():
+				var e = Database.db.query_result[0]
+				id = e.ID
+				if word != e[table_graph_column] or exception != e.Exception:
+					Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word, "Exception": exception})
+				for i in range(gp_ids.size()):
+					Database.db.insert_row(relational_table, {
+						table_graph_column + "ID": id,
+						sub_table_id: gp_ids[i],
+						"Position": i
+						})
 			
 	Database.db.query_with_bindings("SELECT * FROM %s WHERE %s=?" % [table, table_graph_column], [word])
 	if Database.db.query_result.is_empty():
