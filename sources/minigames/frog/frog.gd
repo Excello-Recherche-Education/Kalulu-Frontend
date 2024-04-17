@@ -3,9 +3,9 @@ extends Control
 signal drowned()
 signal jumped()
 
-@onready var animation_player: = $AnimationPlayer
-@onready var audio_player: = $AudioStreamPlayer2D
-@onready var sprite: = $Sprite
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var sprite: Sprite2D = $Sprite
 
 const jump_sounds: = [
 	preload("res://assets/minigames/frog/audio/frog_jump_random_01.mp3"),

@@ -4,12 +4,12 @@ class_name Lilypad
 signal pressed()
 signal disappeared()
 
-@onready var animation_player: = $AnimationPlayer
-@onready var button: = $TextureButton
-@onready var label: = %Label
-@onready var highlight_fx: = $HighlightFX
-@onready var right_fx: = $RightFX
-@onready var wrong_fx: = $WrongFX
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var button: TextureButton = $TextureButton
+@onready var label: Label = %Label
+@onready var highlight_fx: HighlightFX = $HighlightFX
+@onready var right_fx: RightFX = $RightFX
+@onready var wrong_fx: WrongFX = $WrongFX
 
 var stimulus: Dictionary:
 	set = _set_stimulus
@@ -66,6 +66,5 @@ func _on_texture_button_pressed() -> void:
 	pressed.emit()
 
 
-func _on_visible_on_screen_notifier_2d_screen_exited():
-	#await get_tree().create_timer(3).timeout
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	disappear()
