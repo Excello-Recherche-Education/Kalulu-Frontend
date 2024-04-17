@@ -100,6 +100,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 	# Makes the frog jumps on the lilypad
 	frog.jump_to(lilypad.global_position)
 	await frog.jumped
+	lilypad.water_ring()
 	
 	if lilypad.is_distractor:
 		await lilypad.wrong()

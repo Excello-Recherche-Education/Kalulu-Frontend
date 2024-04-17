@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://blioxuf8hvad4"]
+
+[ext_resource type="Script" path="res://sources/minigames/frog/water_ring_fx.gd" id="1_1kibe"]
+[ext_resource type="Texture2D" uid="uid://ba3pksf5lbjml" path="res://assets/vfx/water_fx.png" id="2_o655d"]
+
+[sub_resource type="Gradient" id="Gradient_cfyxj"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6qqd3"]
+gradient = SubResource("Gradient_cfyxj")
+
+[sub_resource type="Curve" id="Curve_1dvj3"]
+max_value = 2.0
+_data = [Vector2(0, 0.851735), 0.0, 0.0, 0, 0, Vector2(0.32626, 1.55475), 1.41985, 1.41985, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_snsu0"]
+curve = SubResource("Curve_1dvj3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7w1vm"]
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_max = 1.25
+scale_curve = SubResource("CurveTexture_snsu0")
+color_ramp = SubResource("GradientTexture1D_6qqd3")
+
+[node name="WaterRingFX" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_1kibe")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_7w1vm")
+texture = ExtResource("2_o655d")
+lifetime = 3.0
+one_shot = true
+explosiveness = 0.95
