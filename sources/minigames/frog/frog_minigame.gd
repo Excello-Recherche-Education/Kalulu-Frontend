@@ -35,29 +35,6 @@ var difficulty_settings: Array[DifficultySettings] = [
 @onready var frog: = %Frog
 
 
-# TODO Remove
-func _old_find_stimuli_and_distractions() -> void:
-	var words_list: = Database.get_words_for_lesson(lesson_nb)
-	words_list.shuffle()
-	stimuli = []
-	distractions = []
-	for i in max_progression:
-		var word = words_list[i].Word
-		var GPs: = Database.get_GP_from_word(word)
-		stimuli.append({
-			Word = word,
-			GPs = GPs,
-		})
-		var grapheme_distractions: = []
-		for GP in GPs:
-			var distractors: = Database.get_distractors_for_grapheme(GP.Grapheme, lesson_nb)
-			distractors.shuffle()
-			while distractors.size() > 4:
-				distractors.pop_front()
-			grapheme_distractions.append(distractors)
-		distractions.append(grapheme_distractions)
-
-
 func _setup_word_progression() -> void:
 	await _free_tracks()
 	super()
@@ -93,22 +70,12 @@ func _create_tracks() -> void:
 	
 	for i in range(current_word.GPs.size()):
 		var track: LilypadTrack = lilypad_track_scene.instantiate()
-		track.name = str(i) + "_" + current_word.GPs[i].Grapheme
 		lilypad_tracks_container.add_child(track)
 		
 		track.top_to_bottom = i % 2
-		
-		var track_stimuli: = []
-		track_stimuli.append(current_word.GPs[i])
-		track_stimuli.append_array(current_distractors[i])
-		track.stimuli = track_stimuli
 		track.difficulty_settings = difficulty_settings[difficulty]
-		
-		var are_distractors: = []
-		are_distractors.append(false)
-		for j in range(current_distractors[i].size()):
-			are_distractors.append(true)
-		track.are_distractors = are_distractors
+		track.gp = current_word.GPs[i]
+		track.distractors = current_distractors[i]
 		
 		track.lilypad_in_center.connect(_on_track_lilypad_in_center.bind(track))
 
@@ -127,7 +94,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 	frog.jump_to(lilypad.global_position)
 	await frog.jumped
 	
-	_log_new_response(lilypad.stimulus, track.stimuli[0])
+	_log_new_response(lilypad.stimulus, track.gp)
 	
 	if lilypad.is_distractor:
 		await lilypad.wrong()

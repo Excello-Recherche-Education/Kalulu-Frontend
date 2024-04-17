@@ -279,6 +279,7 @@ func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
 	INNER JOIN GPsInLessons
 	ON stimuli.Grapheme=? AND distractor.type = stimuli.type 
 	AND distractor.Grapheme != stimuli.Grapheme 
+	AND distractor.Phoneme != stimuli.Phoneme
 	AND GPsInLessons.GPID = distractor.ID
 	AND Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
 	return db.query_result

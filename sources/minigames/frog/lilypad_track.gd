@@ -12,28 +12,22 @@ const lilypad_crossing_time: = 5.0
 @onready var audio_player: = $AudioStreamPlayer2D
 @onready var spawn_timer: = $SpawnTimer
 
-
+var top_to_bottom: = true
 var ready_to_spawn: = false
 var is_cleared: = false
 var is_enabled: = false:
 	set = _set_enabled
 var is_highlighting: = false:
 	set = _set_highlighting
-
-var top_to_bottom: = true
-
-var lilypads: Array[Lilypad] = []
-
-var stimuli: = []:
-	set = _set_stimuli
-var are_distractors: = []
-
-var stimuli_queue: = []
-var stimuli_queue_size: = 0
+var is_stopped: bool = false
 
 var difficulty_settings: FrogMinigame.DifficultySettings
+var gp: Dictionary = {}
+var distractors: Array[Dictionary] = []
+
+var lilypads: Array[Lilypad] = []
 var lilypad_size: Vector2
-var is_stopped: bool = false
+
 
 func _process(delta):
 	if is_stopped:
@@ -77,54 +71,49 @@ func right() -> void:
 	for lilypad: Lilypad in lilypads:
 		await lilypad.right()
 
+#region Lilypads
 
 func _spawn_lilypad() -> void:
 	var lilypad: Lilypad = lilypad_class.instantiate()
 	lilypads.append(lilypad)
-	
-	lilypad.pressed.connect(_on_lilypad_pressed.bind(lilypad))
-	lilypad.disappeared.connect(_on_lilypad_disappeared.bind(lilypad))
 	add_child(lilypad)
 	
 	lilypad.disabled = not is_enabled
 	
-	var start_point: = global_position + Vector2(size.x / 2.0, size.y)
-	var end_point: = global_position + Vector2(size.x / 2.0, 0.0)
 	if top_to_bottom:
-		start_point = global_position + Vector2(size.x / 2.0, 0.0)
-		end_point = global_position + Vector2(size.x / 2.0, size.y)
-	lilypad.global_position = start_point
+		lilypad.global_position = global_position + Vector2(size.x / 2.0, 0.0)
+	else:
+		lilypad.global_position = global_position + Vector2(size.x / 2.0, size.y)
 	
 	lilypad_size = lilypad.get_real_size()
 	if size.x < lilypad_size.x:
 		var s: float = size.x / lilypad_size.x
 		lilypad.scale = Vector2(s, s)
+		lilypad_size *= s
 	
-	var potential_stimuli: = stimuli.duplicate()
-	var are_potential_distractors: = are_distractors.duplicate()
-	for stimulus in stimuli_queue:
-		var ind: = potential_stimuli.find(stimulus)
-		potential_stimuli.remove_at(ind)
-		are_potential_distractors.remove_at(ind)
-	
-	var i: = randi() % potential_stimuli.size()
-	lilypad.stimulus = potential_stimuli[i]
-	lilypad.is_distractor = are_potential_distractors[i]
+	var is_stimulus: = randf() < difficulty_settings.stimuli_ratio
+	lilypad.is_distractor = !is_stimulus
+	if is_stimulus:
+		lilypad.stimulus = gp
+	else:
+		lilypad.stimulus = distractors.pick_random()
 	
 	if is_highlighting:
 		lilypad.highlight()
 	else:
 		lilypad.stop_highlight()
 	
-	stimuli_queue.append(potential_stimuli[i])
-	if stimuli_queue.size() > stimuli_queue_size:
-		stimuli_queue.pop_front()
+	lilypad.pressed.connect(_on_lilypad_pressed.bind(lilypad))
+	lilypad.disappeared.connect(_on_lilypad_disappeared.bind(lilypad))
 
 
 func _despawn_lilypad(lilypad: Lilypad) -> void:
 	lilypads.erase(lilypad)
 	lilypad.queue_free()
 
+#endregion
+
+#region Setters
 
 func _set_enabled(value: bool) -> void:
 	is_enabled = value
@@ -141,11 +130,9 @@ func _set_highlighting(value: bool) -> void:
 		else:
 			lilypad.stop_highlight()
 
+#endregion
 
-func _set_stimuli(value: Array) -> void:
-	stimuli = value
-	stimuli_queue_size = max(0, stimuli.size() - 3)
-
+#region Connections
 
 func _on_lilypad_pressed(lilypad: Lilypad) -> void:
 	audio_player.play()
@@ -178,3 +165,5 @@ func _on_spawn_timer_timeout() -> void:
 		spawn_timer.start(randf_range(lilypad_size.y / _get_velocity(), lilypad_size.y * 2 / _get_velocity()))
 	else:
 		spawn_timer.start(randf_range(0.75, 1.5))
+
+#endregion
