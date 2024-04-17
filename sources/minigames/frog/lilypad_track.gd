@@ -135,6 +135,8 @@ func _set_highlighting(value: bool) -> void:
 #region Connections
 
 func _on_lilypad_pressed(lilypad: Lilypad) -> void:
+	if is_cleared:
+		return
 	audio_player.play()
 	stop()
 	

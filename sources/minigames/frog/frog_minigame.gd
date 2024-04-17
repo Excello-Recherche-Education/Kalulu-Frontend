@@ -81,10 +81,13 @@ func _create_tracks() -> void:
 
 
 func _start_tracks() -> void:
+	var is_first_track_enabled: bool = false
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		await track.reset()
+		if not is_first_track_enabled:
+			track.is_enabled = true
+			is_first_track_enabled = true
 		track.start()
-	lilypad_tracks_container.get_child(0).is_enabled = true
 
 #endregion
 
