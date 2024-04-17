@@ -108,6 +108,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		lilypad.disappear()
 		frog.drown()
 		await frog.drowned
+		await audio_player.play_phoneme(lilypad.stimulus.Phoneme)
 		
 		current_lives -= 1
 		current_word_progression = 0
@@ -117,6 +118,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 	else:
 		track.stop()
 		track.is_cleared = true
+		await audio_player.play_phoneme(lilypad.stimulus.Phoneme)
 		current_word_progression += 1
 
 
@@ -136,6 +138,9 @@ func _on_current_progression_changed() -> void:
 	# Play the animation on each pad
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		track.right()
+	
+	# Replay the stimulus
+	await audio_player.play_word(_get_previous_stimulus().Word)
 	
 	# Makes the frog jumps out of screen
 	frog.jump_to(frog_despawn_point.global_position)
