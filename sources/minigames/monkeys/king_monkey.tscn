@@ -404,10 +404,10 @@ rotation = -0.174533
 [node name="Coconut" parent="Marker2D" instance=ExtResource("3_dsell")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
 libraries = {
 "": SubResource("AnimationLibrary_m40ug")
 }
+autoplay = "idle"
 
 [node name="CatchPosition" type="Marker2D" parent="."]
 position = Vector2(156, -126)

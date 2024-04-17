@@ -74,7 +74,15 @@ func _find_stimuli_and_distractions() -> void:
 
 # Launch the minigame
 func _start() -> void:
+	if stimuli.is_empty():
+		_win()
+		return
 	_setup_word_progression()
+
+
+# Find and set the parameters of the minigame, like the number of lives or the victory conditions.
+func _setup_minigame() -> void:
+	super()
 
 
 # Setups the word progression for current progression
@@ -124,6 +132,7 @@ func _get_GP() -> Dictionary:
 
 # Get a random distractor for the current GP
 func _get_distractor() -> Dictionary:
+	# TODO Make a pool to avoid getting the same distractor twice
 	return _get_current_distractors()[current_word_progression].pick_random()
 
 

@@ -14,13 +14,21 @@
 base_font = ExtResource("8_fem7m")
 spacing_glyph = 20
 
-[node name="Monkeys" instance=ExtResource("1_6nhsm")]
+[node name="MonkeysMinigame" instance=ExtResource("1_6nhsm")]
 script = ExtResource("2_12lw5")
+time_between_words = null
 throw_to_king_duration = 1.2
 throw_to_monkey_duration = 0.8
-throw_to_planck_duration = 0.9
+throw_to_plank_duration = 0.8
+max_number_of_GPs = 6
+lesson_nb = 12
+difficulty = 4
 max_number_of_lives = 5
 max_progression = 2
+intro_kalulu_speech = ExtResource("3_ek5u5")
+help_kalulu_speech = ExtResource("3_khjvy")
+win_kalulu_speech = ExtResource("4_oe2vh")
+lose_kalulu_speech = null
 
 [node name="Environment" type="VBoxContainer" parent="GameRoot" index="0"]
 layout_mode = 1

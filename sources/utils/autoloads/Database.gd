@@ -182,7 +182,7 @@ GROUP BY sID"
 		syllable.GPs = syllable.GPs.split(".")
 	return result
 
-
+# TODO Gets the GP IDs for the future remediation engine
 func get_words_for_lesson(lesson_nb: int, only_new: = false, max_length: = 99) -> Array:
 	var parameters: Array = []
 	var query: = "SELECT Words.ID, Words.Word, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb

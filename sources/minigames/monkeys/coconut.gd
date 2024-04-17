@@ -1,4 +1,6 @@
 extends Node2D
+class_name Coconut
+
 
 @onready var label: = $Label
 

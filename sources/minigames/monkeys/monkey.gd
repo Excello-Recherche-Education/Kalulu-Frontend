@@ -1,11 +1,9 @@
 @tool
 extends Node2D
+class_name Monkey
 
 signal pressed()
 signal dragged_into_self()
-signal dragged_into(vector, monkey)
-
-const instance_scene: = "res://sources/minigames/monkeys/monkey.tscn"
 
 @onready var coconut: = $Marker2D/Coconut
 @onready var coconut_pivot: = $Marker2D
@@ -30,10 +28,6 @@ var stimulus: Dictionary :
 		coconut.text = value.Grapheme
 		drag_preview_label.text = value.Grapheme
 		coconut_pivot.hide()
-
-
-static func instantiate():
-	return load(instance_scene).instantiate()
 
 
 func _ready() -> void:
@@ -103,8 +97,6 @@ func _can_drop_data(_at_position: Vector2, _data) -> bool:
 func _drop_data(at_position: Vector2, data) -> void:
 	if data.monkey == self:
 		dragged_into_self.emit()
-	else:
-		dragged_into.emit(button.global_position + at_position - data.start_position, data.monkey)
 
 
 func _on_drag_preview_tree_exiting() -> void:

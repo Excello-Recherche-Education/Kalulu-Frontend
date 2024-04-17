@@ -1,15 +1,8 @@
 @tool
-extends Minigame
+extends WordsMinigame
 
-const Monkey: = preload("res://sources/minigames/monkeys/monkey.gd")
+const monkey_scene: = preload("res://sources/minigames/monkeys/monkey.tscn")
 
-const difficulty_settings: = {
-	0 : {"distractors_count": 1},
-	1 : {"distractors_count": 2},
-	2 : {"distractors_count": 3},
-	3 : {"distractors_count": 4},
-	4 : {"distractors_count": 5},
-}
 
 const audio_streams: = [
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),
@@ -19,146 +12,91 @@ const audio_streams: = [
 
 enum Audio {
 	SendToKing,
-	SendToPlanck,
+	SendToPlank,
 	SendToMonkey,
 }
 
+
+class DifficultySettings:
+	var distractors_count: = 1
+	
+	func _init(p_distractors_count: int) -> void:
+		distractors_count = p_distractors_count
+
+
+var difficulty_settings: Array[DifficultySettings] = [
+	DifficultySettings.new(1),
+	DifficultySettings.new(2),
+	DifficultySettings.new(3),
+	DifficultySettings.new(4),
+	DifficultySettings.new(5)
+]
+
+
+@export var time_between_words: float = 3.
 @export var throw_to_king_duration: = 1.2
 @export var throw_to_monkey_duration: = 0.4
-@export var throw_to_planck_duration: = 0.8
+@export var throw_to_plank_duration: = 0.8
 
-@onready var monkeys_node: = $GameRoot/Monkeys
-@onready var possible_positions_parent: = $GameRoot/PalmTreeMonkeys
-@onready var king: = $GameRoot/PlamTreeKing/KingMonkey
-@onready var word_label: = $GameRoot/TextPlank/MarginContainer/Label
-@onready var parabola_summit: = $GameRoot/ParabolaSummit
-@onready var text_plank: = $GameRoot/TextPlank
+@onready var monkeys_node: Control = $GameRoot/Monkeys
+@onready var possible_positions_parent: TextureRect = $GameRoot/PalmTreeMonkeys
+@onready var king: KingMonkey = $GameRoot/PlamTreeKing/KingMonkey
+@onready var word_label: RichTextLabel = $GameRoot/TextPlank/MarginContainer/Label
+@onready var parabola_summit: Control = $GameRoot/ParabolaSummit
+@onready var text_plank: TextureRect = $GameRoot/TextPlank
 
 var monkeys: Array[Monkey] = []
-var _current_letter: = 0: set = _set_current_letter
+var is_locked: bool = true: 
+	set(value):
+		is_locked = value
+		for monkey in monkeys:
+			monkey.locked = value
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
-	super._setup_minigame()
+	super()
 	
-	var max_difficulty: = 0
-	for d in difficulty_settings.keys():
-		if d > max_difficulty:
-			max_difficulty = d
-	
-	if difficulty > max_difficulty:
-		difficulty = max_difficulty
-	
-	var settings: Dictionary = difficulty_settings[difficulty]
+	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
 	var possible_positions: = possible_positions_parent.get_children()
 	for i in settings.distractors_count + 1:
-		var monkey: Monkey = Monkey.instantiate()
+		var monkey: Monkey = monkey_scene.instantiate()
 		monkeys_node.add_child(monkey)
-		monkey.global_position = possible_positions[i].global_position
-		monkey.dragged_into.connect(_on_coconut_drag_end)
 		monkeys.append(monkey)
+		
+		monkey.global_position = possible_positions[i].global_position
+		
 		monkey.pressed.connect(_on_monkey_pressed.bind(monkey))
 		monkey.dragged_into_self.connect(_on_monkey_pressed.bind(monkey))
 	
-	# Will set up first word and monkeys
-	current_progression = 0
+	monkeys_node.set_drag_forwarding(
+		func(at_position: Vector2):
+			return null,
+		func(_at_position: Vector2, _data): 
+			return true,
+		func(at_position: Vector2, data):
+			if (at_position - data.start_position).x < 0:
+				_on_coconut_thrown(data.monkey)
+	)
 	
-	monkeys_node.set_drag_forwarding(Callable(), _monkeys_can_drop_data, _monkeys_drop_data)
+	_reset_plank_label()
 
 
-func _on_current_progression_changed() -> void:
-	word_label.text = "_".repeat(stimuli[current_progression].Word.length())
-	await _set_current_letter(0)
+func _reset_plank_label() -> void:
+	word_label.text = "_".repeat(_get_current_stimulus().Word.length())
 
 
-func _all_monkeys_say_word(word: String) -> void:
-	if audio_player.playing:
-		await audio_player.finished
+func _play_monkey_stimulus(monkey: Monkey) -> void:
 	var coroutine: = Coroutine.new()
-	for monkey in monkeys:
-		coroutine.add_future(monkey.talk)
-	audio_player.stream = Database.get_audio_stream_for_word(word)
-	audio_player.play()
+	
+	coroutine.add_future(monkey.talk)
+	
+	audio_player.play_phoneme(monkey.stimulus.Phoneme)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
-	await coroutine.join_all()
-	await set_current_progression(current_progression + 1)
-
-
-func _set_current_letter(p_current_letter: int) -> void:
-	_current_letter = p_current_letter
-	if _current_letter >= stimuli[current_progression].GPs.size():
-		await _all_monkeys_say_word(stimuli[current_progression].Word)
-		return
 	
-	var ind_good: = randi_range(0, monkeys.size() - 1)
-	var grapheme_distractions: Array = distractions[current_progression][_current_letter]
-	grapheme_distractions.shuffle()
-	for i in monkeys.size():
-		var monkey: = monkeys[i]
-		if i == ind_good:
-			monkey.stimulus = stimuli[current_progression].GPs[_current_letter]
-		elif i < ind_good:
-			monkey.stimulus = grapheme_distractions[min(i, grapheme_distractions.size() - 1)]
-		else:
-			monkey.stimulus = grapheme_distractions[min(i - 1, grapheme_distractions.size() - 1)]
-		monkey.stunned = false
-
-
-
-# Find the stimuli and distractions of the minigame.
-func _find_stimuli_and_distractions() -> void:
-	var words_list: = Database.get_words_for_lesson(lesson_nb)
-	words_list.shuffle()
-	stimuli = []
-	distractions = []
-	for i in max_progression:
-		var word = words_list[i].Word
-		var GPs: = Database.get_GP_from_word(word)
-		stimuli.append({
-			Word = word,
-			GPs = GPs,
-		})
-		var grapheme_distractions: = []
-		for GP in GPs:
-			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.Grapheme, lesson_nb))
-		distractions.append(grapheme_distractions)
-
-
-func _start() -> void:
-	await say_word_and_grab_coconuts()
-	lock(false)
-
-
-func say_word_and_grab_coconuts() -> void:
-	if current_progression >= stimuli.size():
-		return
-	
-	if audio_player.playing:
-		await audio_player.finished
-	var coroutine: = Coroutine.new()
-	audio_player.stream = Database.get_audio_stream_for_word(stimuli[current_progression].Word)
-	audio_player.play()
-	if audio_player.playing:
-		coroutine.add_future(audio_player.finished)
-	for monkey in monkeys:
-		coroutine.add_future(monkey.play.bind("grab"))
 	await coroutine.join_all()
-
-
-func _monkeys_drop_data(at_position: Vector2, data) -> void:
-	_on_coconut_drag_end(at_position - data.start_position, data.monkey)
-
-
-func _monkeys_can_drop_data(_at_position: Vector2, _data) -> bool:
-	return true
-
-
-func _on_coconut_drag_end(vector: Vector2, monkey: Monkey) -> void:
-	if vector.x < 0:
-		monkey_throw_to_king(monkey)
 
 
 func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
@@ -185,91 +123,101 @@ func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
 	await king.catch(coconut)
 	return coconut
 
-
-# All monkeys talk but the sound is from a specific monkey, given as parameter
-func _king_reads_and_monkeys_talk(monkey: Monkey) -> void:
-	var coroutine: = Coroutine.new()
-	coroutine.add_future(king.play.bind("read"))
-	coroutine.add_future(monkey_talk.bind(monkey))
-	await coroutine.join_all()
-
-
-func _on_right_coconut(coconut: Node2D) -> void:
-	await king.play("start_right")
-	
-	audio_player.stream = audio_streams[Audio.SendToPlanck]
-	audio_player.play()
-	
-	king.play("finish_right")
-	var tween: = create_tween()
-	coconut.show()
-	coconut.global_transform = king.coconut.global_transform
-	tween.tween_property(coconut, "global_position:y", text_plank.global_position.y, throw_to_planck_duration).set_trans(Tween.TRANS_LINEAR)
-	await tween.finished
-	coconut.queue_free()
-	word_label.text = ""
-	for i in _current_letter + 1:
-		word_label.text += stimuli[current_progression].GPs[i].Grapheme
-	word_label.text += "_".repeat(stimuli[current_progression].Word.length() - word_label.text.length())
-	await _set_current_letter(_current_letter + 1)
-	await say_word_and_grab_coconuts()
-
-
-func _on_wrong_coconut(coconut: Node2D, monkey: Monkey) -> void:
-	await king.play("start_wrong")
-	
-	audio_player.stream = audio_streams[Audio.SendToMonkey]
-	audio_player.play()
-	
-	king.play("finish_wrong")
-	coconut.show()
-	coconut.global_transform = king.coconut.global_transform
-	var tween: = create_tween()
-	tween.tween_property(coconut, "global_position", monkey.hit_position.global_position, throw_to_monkey_duration).set_trans(Tween.TRANS_LINEAR)
-	await tween.finished
-	await monkey.hit(coconut)
-	current_lives -= 1
-	coconut.queue_free()
-
-
-func monkey_throw_to_king(monkey: Monkey) -> void:
-	_log_new_response(monkey.stimulus, stimuli[current_progression])
-	
-	lock()
-	var coconut: = await _get_coconut_from_monkey_to_king(monkey)
-	
-	await _king_reads_and_monkeys_talk(monkey)
-	
-	if monkey.stimulus == stimuli[current_progression].GPs[_current_letter]:
-		await _on_right_coconut(coconut)
-	else:
-		await _on_wrong_coconut(coconut, monkey)
-	lock(false)
-
-
-func lock(p_value: = true) -> void:
-	for monkey in monkeys:
-		monkey.locked = p_value
-
+#region Connections
 
 func _on_monkey_pressed(monkey: Monkey) -> void:
-	lock()
-	monkey_talk(monkey)
-	lock(false)
+	is_locked = true
+	await _play_monkey_stimulus(monkey)
+	is_locked = false
 
 
-func monkey_talk(monkey: Monkey) -> void:
+func _on_coconut_thrown(monkey: Monkey) -> void:
+	# Log the answer
+	_log_new_response(monkey.stimulus, stimuli[current_progression])
+	
+	is_locked = true
+	var coconut: = await _get_coconut_from_monkey_to_king(monkey)
+	
+	# All monkeys talk but the sound is from a specific monkey
 	var coroutine: = Coroutine.new()
-	coroutine.add_future(monkey.talk)
-	audio_player.stream = Database.get_audio_stream_for_phoneme(monkey.stimulus.Phoneme)
-	audio_player.play()
+	coroutine.add_future(king.play.bind("read"))
+	coroutine.add_future(_play_monkey_stimulus.bind(monkey))
+	await coroutine.join_all()
+	
+	if _is_GP_right(monkey.stimulus):
+		
+		await king.play("start_right")
+	
+		audio_player.stream = audio_streams[Audio.SendToPlank]
+		audio_player.play()
+		
+		king.play("finish_right")
+		var tween: = create_tween()
+		coconut.show()
+		coconut.global_transform = king.coconut.global_transform
+		tween.tween_property(coconut, "global_position:y", text_plank.global_position.y, throw_to_plank_duration).set_trans(Tween.TRANS_LINEAR)
+		await tween.finished
+		coconut.queue_free()
+		
+		word_label.text = ""
+		for i in current_word_progression +1:
+			word_label.text += stimuli[current_progression].GPs[i].Grapheme
+		word_label.text += "_".repeat(stimuli[current_progression].Word.length() - word_label.text.length())
+	
+		current_word_progression += 1
+	else:
+		await king.play("start_wrong")
+	
+		audio_player.stream = audio_streams[Audio.SendToMonkey]
+		audio_player.play()
+		
+		king.play("finish_wrong")
+		coconut.show()
+		coconut.global_transform = king.coconut.global_transform
+		var tween: = create_tween()
+		tween.tween_property(coconut, "global_position", monkey.hit_position.global_position, throw_to_monkey_duration).set_trans(Tween.TRANS_LINEAR)
+		await tween.finished
+		await monkey.hit(coconut)
+		current_lives -= 1
+		coconut.queue_free()
+	is_locked = false
+
+
+func _on_current_word_progression_changed() -> void:
+	var ind_good: = randi_range(0, monkeys.size() - 1)
+	for i in monkeys.size():
+		var monkey: = monkeys[i]
+		if i == ind_good:
+			monkey.stimulus = _get_GP()
+		else:
+			monkey.stimulus = _get_distractor()
+		monkey.stunned = false
+	
+	var coroutine: = Coroutine.new()
+	if audio_player.playing:
+		coroutine.add_future(audio_player.finished)
+	for monkey in monkeys:
+		coroutine.add_future(monkey.play.bind("grab"))
+	await coroutine.join_all()
+	
+	is_locked = false
+
+
+func _on_current_progression_changed() -> void:
+	# Replay the stimulus
+	await get_tree().create_timer(time_between_words/2).timeout
+	var coroutine: = Coroutine.new()
+	for monkey in monkeys:
+		coroutine.add_future(monkey.talk)
+	audio_player.play_word(_get_previous_stimulus().Word)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	await coroutine.join_all()
+	await get_tree().create_timer(time_between_words/2).timeout
+	
+	# Starts a new round
+	super()
+	
+	_reset_plank_label()
 
-
-func _play_stimulus() -> void:
-	audio_player.stream = Database.get_audio_stream_for_word(stimuli[current_progression].Word)
-	audio_player.play()
-	if audio_player.playing:
-		await audio_player.finished
+#endregion
