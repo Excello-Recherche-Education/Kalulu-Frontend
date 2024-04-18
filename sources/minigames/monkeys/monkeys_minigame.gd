@@ -2,8 +2,6 @@
 extends WordsMinigame
 
 const monkey_scene: = preload("res://sources/minigames/monkeys/monkey.tscn")
-
-
 const audio_streams: = [
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_right.mp3"),
@@ -184,6 +182,8 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 
 
 func _on_current_word_progression_changed() -> void:
+	super()
+	
 	var ind_good: = randi_range(0, monkeys.size() - 1)
 	for i in monkeys.size():
 		var monkey: = monkeys[i]

@@ -1,7 +1,6 @@
 extends Control
 class_name LilypadTrack
 
-
 signal lilypad_in_center(lilypad: Lilypad)
 
 
@@ -24,6 +23,8 @@ var is_stopped: bool = false
 var difficulty_settings: FrogMinigame.DifficultySettings
 var gp: Dictionary = {}
 var distractors: Array[Dictionary] = []
+var distractors_queue: Array[Dictionary] = []
+var distractors_queue_size: int = 5
 
 var lilypads: Array[Lilypad] = []
 var lilypad_size: Vector2
@@ -71,6 +72,16 @@ func right() -> void:
 	for lilypad: Lilypad in lilypads:
 		await lilypad.right()
 
+
+func pick_distractor() -> Dictionary:
+	if distractors_queue.is_empty():
+		distractors_queue = distractors.duplicate()
+		distractors_queue.shuffle()
+		while distractors_queue.size() > distractors_queue_size:
+			distractors_queue.pop_front()
+	return distractors_queue.pop_front()
+
+
 #region Lilypads
 
 func _spawn_lilypad() -> void:
@@ -96,7 +107,7 @@ func _spawn_lilypad() -> void:
 	if is_stimulus:
 		lilypad.stimulus = gp
 	else:
-		lilypad.stimulus = distractors.pick_random()
+		lilypad.stimulus = pick_distractor()
 	
 	if is_highlighting:
 		lilypad.highlight()

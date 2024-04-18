@@ -85,6 +85,7 @@ func _highlight() -> void:
 		branch.highlight_berries(_get_GP())
 	highlight_timer.start()
 
+
 func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
 

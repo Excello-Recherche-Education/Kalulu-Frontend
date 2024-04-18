@@ -76,6 +76,7 @@ func _create_tracks() -> void:
 		track.difficulty_settings = difficulty_settings[difficulty]
 		track.gp = current_word.GPs[i]
 		track.distractors = current_distractors[i]
+		track.distractors_queue_size = distractors_queue_size
 		
 		track.lilypad_in_center.connect(_on_track_lilypad_in_center.bind(track))
 

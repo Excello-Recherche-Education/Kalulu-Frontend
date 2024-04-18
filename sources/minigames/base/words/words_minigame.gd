@@ -3,9 +3,13 @@ class_name WordsMinigame
 
 # Define the maximum number of GP inside each words
 @export var max_number_of_GPs: int = 6
+# Define the size of the distractor queue for each GP
+@export var distractors_queue_size: int = 6
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
+
+var current_gp_distractors_queue: Array[Dictionary] = []
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
@@ -104,6 +108,13 @@ func _set_current_word_progression(p_current_word_progression: int) -> void:
 		await _on_current_word_progression_changed()
 
 
+func _reset_distractors_queue() -> void:
+	current_gp_distractors_queue = distractions[current_progression][current_word_progression].duplicate()
+	current_gp_distractors_queue.shuffle()
+	while current_gp_distractors_queue.size() > distractors_queue_size:
+		current_gp_distractors_queue.pop_front()
+
+
 # Gets the previous stimulus which is already found
 func _get_previous_stimulus() -> Dictionary:
 	if stimuli.size() == 0 or current_progression == 0:
@@ -118,6 +129,7 @@ func _get_current_stimulus() -> Dictionary:
 	return stimuli[current_progression % stimuli.size()]
 
 
+# Get the distractors for current word
 func _get_current_distractors() -> Array:
 	return distractions[current_progression]
 
@@ -132,8 +144,9 @@ func _get_GP() -> Dictionary:
 
 # Get a random distractor for the current GP
 func _get_distractor() -> Dictionary:
-	# TODO Make a pool to avoid getting the same distractor twice
-	return _get_current_distractors()[current_word_progression].pick_random()
+	if current_gp_distractors_queue.is_empty():
+		_reset_distractors_queue()
+	return current_gp_distractors_queue.pop_front()
 
 
 # Check if the provided GP is the expected answer
@@ -152,7 +165,7 @@ func _play_stimulus() -> void:
 
 
 func _on_current_word_progression_changed() -> void:
-	pass
+	_reset_distractors_queue()
 
 
 func _on_current_progression_changed() -> void:
