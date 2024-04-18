@@ -5,6 +5,7 @@ class_name Monkey
 signal pressed()
 signal dragged_into_self()
 
+@onready var stars: AnimatedSprite2D = $Stars
 @onready var coconut: Coconut = $Marker2D/Coconut
 @onready var coconut_pivot: Marker2D = $Marker2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -19,6 +20,7 @@ var locked: = true:
 var stunned: = false:
 	set(value):
 		stunned = value
+		stars.visible = stunned
 		locked = true
 
 

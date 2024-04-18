@@ -1,10 +1,90 @@
-[gd_scene load_steps=22 format=3 uid="uid://bp0b4xkr7nwed"]
+[gd_scene load_steps=41 format=3 uid="uid://bp0b4xkr7nwed"]
 
 [ext_resource type="Script" path="res://sources/minigames/monkeys/monkey.gd" id="1_cvvgu"]
+[ext_resource type="Texture2D" uid="uid://cgf8gkpp0hpuf" path="res://assets/minigames/monkeys/graphic/stunned_00.png" id="2_6848f"]
 [ext_resource type="Texture2D" uid="uid://d0jobqj4fvrwy" path="res://assets/minigames/monkeys/graphic/monkey_spritesheet.png" id="2_awb1x"]
+[ext_resource type="Texture2D" uid="uid://bvd3a7sqts1r4" path="res://assets/minigames/monkeys/graphic/stunned_01.png" id="3_8nt41"]
 [ext_resource type="PackedScene" uid="uid://2mwfjg3c68p1" path="res://sources/minigames/monkeys/coconut.tscn" id="3_tws3c"]
 [ext_resource type="Texture2D" uid="uid://bh28uja7gs8u4" path="res://assets/minigames/monkeys/graphic/coconut.png" id="4_8r7im"]
+[ext_resource type="Texture2D" uid="uid://dk26el7ws6d2j" path="res://assets/minigames/monkeys/graphic/stunned_02.png" id="4_yysvf"]
 [ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="5_4f7ge"]
+[ext_resource type="Texture2D" uid="uid://droijuh1ny7q4" path="res://assets/minigames/monkeys/graphic/stunned_03.png" id="5_nogsj"]
+[ext_resource type="Texture2D" uid="uid://cemh8hixdbh6w" path="res://assets/minigames/monkeys/graphic/stunned_04.png" id="6_07xob"]
+[ext_resource type="Texture2D" uid="uid://b8vkcmm1amyl5" path="res://assets/minigames/monkeys/graphic/stunned_05.png" id="7_cqirh"]
+[ext_resource type="Texture2D" uid="uid://dt3pil0041p2c" path="res://assets/minigames/monkeys/graphic/stunned_06.png" id="8_bqihf"]
+[ext_resource type="Texture2D" uid="uid://ci5elguo33dtu" path="res://assets/minigames/monkeys/graphic/stunned_07.png" id="9_kvu7a"]
+[ext_resource type="Texture2D" uid="uid://2fu36atb0no2" path="res://assets/minigames/monkeys/graphic/stunned_08.png" id="10_osi05"]
+[ext_resource type="Texture2D" uid="uid://ugv8mre58ihd" path="res://assets/minigames/monkeys/graphic/stunned_09.png" id="11_6k358"]
+[ext_resource type="Texture2D" uid="uid://bt4ttcxkp56kh" path="res://assets/minigames/monkeys/graphic/stunned_10.png" id="12_l6b7q"]
+[ext_resource type="Texture2D" uid="uid://bvercbqrcb0lt" path="res://assets/minigames/monkeys/graphic/stunned_11.png" id="13_lbgqc"]
+[ext_resource type="Texture2D" uid="uid://bcxl33adbfcdx" path="res://assets/minigames/monkeys/graphic/stunned_12.png" id="14_iqadn"]
+[ext_resource type="Texture2D" uid="uid://hm5etiiy88dy" path="res://assets/minigames/monkeys/graphic/stunned_13.png" id="15_iwb7o"]
+[ext_resource type="Texture2D" uid="uid://y3pftagev00e" path="res://assets/minigames/monkeys/graphic/stunned_14.png" id="16_fu3xs"]
+[ext_resource type="Texture2D" uid="uid://bahcmlqnc3lb5" path="res://assets/minigames/monkeys/graphic/stunned_15.png" id="17_io6kh"]
+[ext_resource type="Texture2D" uid="uid://cx2wrsp34gocj" path="res://assets/minigames/monkeys/graphic/stunned_16.png" id="18_hl1xy"]
+[ext_resource type="Texture2D" uid="uid://c4ey737pdl0h8" path="res://assets/minigames/monkeys/graphic/stunned_17.png" id="19_1bn1b"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eq3s8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_6848f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_8nt41")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_yysvf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_nogsj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_07xob")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_cqirh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_bqihf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_kvu7a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_osi05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_6k358")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_l6b7q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_lbgqc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_iqadn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_iwb7o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_fu3xs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_io6kh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_hl1xy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_1bn1b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [sub_resource type="Animation" id="Animation_64f28"]
 length = 0.001
@@ -469,6 +549,13 @@ signal dragging()
 
 [node name="Monkey" type="Node2D"]
 script = ExtResource("1_cvvgu")
+
+[node name="Stars" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(0, -232)
+sprite_frames = SubResource("SpriteFrames_eq3s8")
+autoplay = "default"
+frame_progress = 0.635856
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(2, 2)
