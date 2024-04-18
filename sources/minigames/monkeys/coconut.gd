@@ -2,7 +2,7 @@ extends Node2D
 class_name Coconut
 
 
-@onready var label: = $Label
+@onready var label: Label = $Label
 
 
 var text: String :

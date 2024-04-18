@@ -5,13 +5,13 @@ class_name Monkey
 signal pressed()
 signal dragged_into_self()
 
-@onready var coconut: = $Marker2D/Coconut
-@onready var coconut_pivot: = $Marker2D
-@onready var animation_player: = $AnimationPlayer
-@onready var drag_preview_label: = $Button/DragPreview/Label
-@onready var drag_preview: = $Button/DragPreview
-@onready var button: = $Button
-@onready var hit_position: = $HitPosition
+@onready var coconut: Coconut = $Marker2D/Coconut
+@onready var coconut_pivot: Marker2D = $Marker2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var drag_preview_label: Label = $Button/DragPreview/Label
+@onready var drag_preview: TextureRect = $Button/DragPreview
+@onready var button: Button = $Button
+@onready var hit_position: Marker2D = $HitPosition
 
 var locked: = true:
 	set(value):
@@ -55,7 +55,7 @@ func talk() -> void:
 	animation_player.play("idle")
 
 
-func hit(p_coconut: Node2D) -> void:
+func hit(p_coconut: Coconut) -> void:
 	p_coconut.hide()
 	await play("hit")
 	animation_player.play("stunned")
@@ -76,11 +76,11 @@ func _on_button_dragging() -> void:
 	coconut.hide()
 
 
-func _get_drag_data(at_position: Vector2):
+func _get_drag_data(at_position: Vector2) -> Variant:
 	if locked:
 		return null
 	
-	var _drag_preview = drag_preview.duplicate()
+	var _drag_preview: TextureRect = drag_preview.duplicate()
 	_drag_preview.show()
 	button.set_drag_preview(_drag_preview)
 	coconut.hide()
@@ -90,11 +90,11 @@ func _get_drag_data(at_position: Vector2):
 	}
 
 
-func _can_drop_data(_at_position: Vector2, _data) -> bool:
+func _can_drop_data(_at_position: Vector2, _data: Dictionary) -> bool:
 	return true
 
 
-func _drop_data(at_position: Vector2, data) -> void:
+func _drop_data(_at_position: Vector2, data: Dictionary) -> void:
 	if data.monkey == self:
 		dragged_into_self.emit()
 

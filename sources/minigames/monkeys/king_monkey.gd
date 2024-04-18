@@ -1,12 +1,12 @@
 extends Node2D
 class_name KingMonkey
 
-@onready var animation_player: = $AnimationPlayer
-@onready var coconut: = $Marker2D/Coconut
-@onready var catch_position: = $CatchPosition
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var coconut: Coconut = $Marker2D/Coconut
+@onready var catch_position: Marker2D = $CatchPosition
 
 
-func catch(p_coconut: Node2D):
+func catch(p_coconut: Coconut) -> void:
 	p_coconut.hide()
 	coconut.text = p_coconut.text
 	await play("catch")
