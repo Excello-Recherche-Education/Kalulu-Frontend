@@ -16,26 +16,26 @@ func _ready() -> void:
 		var description_line: = description_line_class.instantiate()
 		description_container.add_child(description_line)
 		description_line.set_gp(res)
-	
-	Database.db.query("SELECT * FROM Syllables")
-	for res in Database.db.query_result:
-		var description_line: = description_line_class.instantiate()
-		description_container.add_child(description_line)
-		res.Grapheme = res.Syllable
-		res.Phoneme = ""
-		description_line.set_gp(res)
-		description_line.image_preview.hide()
-		description_line.image_upload_button.hide()
-	
-	Database.db.query("SELECT * FROM Words")
-	for res in Database.db.query_result:
-		var description_line: = description_line_class.instantiate()
-		description_container.add_child(description_line)
-		res.Grapheme = res.Word
-		res.Phoneme = ""
-		description_line.set_gp(res)
-		description_line.image_preview.hide()
-		description_line.image_upload_button.hide()
+	#
+	#Database.db.query("SELECT * FROM Syllables WHERE Syllables.Exception=0")
+	#for res in Database.db.query_result:
+		#var description_line: = description_line_class.instantiate()
+		#description_container.add_child(description_line)
+		#res.Grapheme = res.Syllable
+		#res.Phoneme = ""
+		#description_line.set_gp(res)
+		#description_line.image_preview.hide()
+		#description_line.image_upload_button.hide()
+	#
+	#Database.db.query("SELECT * FROM Words WHERE Words.Exception=0")
+	#for res in Database.db.query_result:
+		#var description_line: = description_line_class.instantiate()
+		#description_container.add_child(description_line)
+		#res.Grapheme = res.Word
+		#res.Phoneme = ""
+		#description_line.set_gp(res)
+		#description_line.image_preview.hide()
+		#description_line.image_upload_button.hide()
 
 
 func _on_back_button_pressed() -> void:

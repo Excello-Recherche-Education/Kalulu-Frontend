@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfpx5q6dd2gq7"]
+[gd_scene load_steps=5 format=3 uid="uid://cfpx5q6dd2gq7"]
 
 [ext_resource type="Script" path="res://sources/language_tool/image_and_sound_gp_description.gd" id="1_rm4b8"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_uutsu"]
 [ext_resource type="Texture2D" uid="uid://5fffpm7hc12k" path="res://assets/menus/upload.png" id="2_0hqnp"]
+[ext_resource type="Texture2D" uid="uid://b8tctfnsj3prx" path="res://assets/menus/minus_button.png" id="3_q62yc"]
 
 [node name="ImageAndSoundGPDescription" type="HBoxContainer"]
+offset_right = 2780.0
+offset_bottom = 240.0
 script = ExtResource("1_rm4b8")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -40,6 +43,13 @@ custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 expand_mode = 1
 
+[node name="ImageClearButton" parent="ImageContainer/HBoxContainer" instance=ExtResource("1_uutsu")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TextureRect" parent="ImageContainer/HBoxContainer/ImageClearButton" index="0"]
+texture = ExtResource("3_q62yc")
+
 [node name="ImageUploadButton" parent="ImageContainer/HBoxContainer" instance=ExtResource("1_uutsu")]
 unique_name_in_owner = true
 layout_mode = 2
@@ -65,6 +75,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Play"
 
+[node name="SoundClearButton" parent="MarginContainer3/HBoxContainer" instance=ExtResource("1_uutsu")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TextureRect" parent="MarginContainer3/HBoxContainer/SoundClearButton" index="0"]
+texture = ExtResource("3_q62yc")
+
 [node name="SoundUploadButton" parent="MarginContainer3/HBoxContainer" instance=ExtResource("1_uutsu")]
 unique_name_in_owner = true
 layout_mode = 2
@@ -84,9 +101,13 @@ access = 2
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
+[connection signal="pressed" from="ImageContainer/HBoxContainer/ImageClearButton" to="." method="_on_image_clear_button_pressed"]
 [connection signal="pressed" from="ImageContainer/HBoxContainer/ImageUploadButton" to="." method="_on_image_upload_button_pressed"]
 [connection signal="pressed" from="MarginContainer3/HBoxContainer/SoundPreview" to="." method="_on_sound_preview_pressed"]
+[connection signal="pressed" from="MarginContainer3/HBoxContainer/SoundClearButton" to="." method="_on_sound_clear_button_pressed"]
 [connection signal="pressed" from="MarginContainer3/HBoxContainer/SoundUploadButton" to="." method="_on_sound_upload_button_pressed"]
 
+[editable path="ImageContainer/HBoxContainer/ImageClearButton"]
 [editable path="ImageContainer/HBoxContainer/ImageUploadButton"]
+[editable path="MarginContainer3/HBoxContainer/SoundClearButton"]
 [editable path="MarginContainer3/HBoxContainer/SoundUploadButton"]

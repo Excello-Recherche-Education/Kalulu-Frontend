@@ -9,6 +9,8 @@ signal delete
 @onready var sound_upload_button: = %SoundUploadButton
 @onready var file_dialog: = $FileDialog
 @onready var sound_player: = $AudioStreamPlayer
+@onready var image_clear_button: = %ImageClearButton
+@onready var sound_clear_button: = %SoundClearButton
 
 var gp: Dictionary
 
@@ -25,15 +27,31 @@ func _image_file_selected(file_path: String) -> void:
 
 
 func set_image_preview(img_path: String) -> void:
-	var image: = Image.load_from_file(img_path)
-	image_preview.texture = ImageTexture.create_from_image(image)
+	if img_path.is_empty():
+		image_clear_button.hide()
+		image_upload_button.show()
+		image_preview.texture = null
+	else:
+		var image: = Image.load_from_file(img_path)
+		image_preview.texture = ImageTexture.create_from_image(image)
+		image_clear_button.show()
+		image_upload_button.hide()
 
 
 func set_sound_preview(sound_path: String) -> void:
-	var file = FileAccess.open(sound_path, FileAccess.READ)
-	var sound = AudioStreamMP3.new()
-	sound.data = file.get_buffer(file.get_length())
-	sound_player.stream = sound
+	if sound_path.is_empty():
+		sound_clear_button.hide()
+		sound_upload_button.show()
+		sound_player.stream = null
+		sound_preview.hide()
+	else:
+		var file = FileAccess.open(sound_path, FileAccess.READ)
+		var sound = AudioStreamMP3.new()
+		sound.data = file.get_buffer(file.get_length())
+		sound_player.stream = sound
+		sound_clear_button.show()
+		sound_upload_button.hide()
+		sound_preview.show()
 
 
 func _sound_file_selected(file_path: String) -> void:
@@ -55,6 +73,8 @@ func set_gp(value: Dictionary) -> void:
 	var image_path: = Database.get_gp_look_and_learn_image_path(gp)
 	if FileAccess.file_exists(image_path):
 		set_image_preview(image_path)
+	else:
+		image_clear_button.hide()
 	
 	var sound_path: = Database.get_gp_look_and_learn_sound_path(gp)
 	if FileAccess.file_exists(sound_path):
@@ -62,6 +82,7 @@ func set_gp(value: Dictionary) -> void:
 		sound_preview.show()
 	else:
 		sound_preview.hide()
+		sound_clear_button.hide()
 
 
 func _on_image_upload_button_pressed() -> void:
@@ -97,3 +118,19 @@ func _on_button_pressed() -> void:
 func _on_sound_preview_pressed() -> void:
 	if sound_player.stream:
 		sound_player.play()
+
+
+func _on_image_clear_button_pressed():
+	var current_file: = Database.get_gp_look_and_learn_image_path(gp)
+	if FileAccess.file_exists(current_file):
+		DirAccess.remove_absolute(current_file)
+	
+	set_image_preview("")
+
+
+func _on_sound_clear_button_pressed():
+	var current_file: = Database.get_gp_look_and_learn_sound_path(gp)
+	if FileAccess.file_exists(current_file):
+		DirAccess.remove_absolute(current_file)
+	
+	set_sound_preview("")
