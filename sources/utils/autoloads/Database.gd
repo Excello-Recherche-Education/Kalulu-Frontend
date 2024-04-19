@@ -12,6 +12,7 @@ const base_path: =  "user://language_resources/"
 const look_and_learn_images: = "/look_and_learn/images/"
 const look_and_learn_sounds: = "/look_and_learn/sounds/"
 const look_and_learn_videos: = "/look_and_learn/video/"
+const language_sounds: = "/language_sounds/"
 const tracing_data_folder: = "tracing_data/"
 const additional_word_list_path: = "word_list.csv"
 const video_extension: = ".ogv"
@@ -363,6 +364,14 @@ func get_gp_look_and_learn_sound_path(gp: Dictionary) -> String:
 
 func get_gp_look_and_learn_video_path(gp: Dictionary) -> String:
 	return base_path + language + look_and_learn_videos + gp["Grapheme"] + "-" + gp["Phoneme"] + video_extension
+
+
+func get_syllable_sound_path(syllable: Dictionary) -> String:
+	return base_path + language + language_sounds + syllable.Syllable + sound_extension
+
+
+func get_word_sound_path(word: Dictionary) -> String:
+	return base_path + language + language_sounds + word.Word + sound_extension
 
 
 func _phoneme_to_string(phoneme: String) -> String:

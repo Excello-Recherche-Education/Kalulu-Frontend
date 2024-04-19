@@ -75,6 +75,10 @@ func _on_data_loader_button_2_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/gp_video_descriptions.tscn")
 
 
+func _on_game_sounds_button_pressed():
+	get_tree().change_scene_to_file("res://sources/language_tool/in_game_sounds.tscn")
+
+
 func _on_export_filename_selected(filename: String) -> void:
 	var summary_file: = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
 	for i in Database.get_lessons_count():
@@ -305,3 +309,4 @@ func _create_sentence_csv() -> void:
 				break
 			lesson = max(lesson, i)
 		gp_list_file.store_csv_line([e.Sentence, lesson])
+

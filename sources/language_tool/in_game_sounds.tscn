@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dirpfv4una0fi"]
+
+[ext_resource type="PackedScene" uid="uid://dk8seaie6lxn1" path="res://sources/language_tool/gp_image_and_sound_descriptions.tscn" id="1_7ykws"]
+[ext_resource type="Script" path="res://sources/language_tool/in_game_sounds.gd" id="2_hmn1q"]
+
+[node name="InGameSounds" instance=ExtResource("1_7ykws")]
+script = ExtResource("2_hmn1q")
+
+[node name="MarginContainer2" parent="VBoxContainer/PanelContainer/HBoxContainer" index="1"]
+visible = false
+
+[editable path="VBoxContainer/PanelContainer/HBoxContainer/BackButton"]

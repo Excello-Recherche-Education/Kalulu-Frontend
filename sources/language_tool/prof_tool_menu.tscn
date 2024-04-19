@@ -61,26 +61,37 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Lesson List"
 
-[node name="Data" type="VBoxContainer" parent="CenterContainer/TabContainer"]
+[node name="LookAndLearnData" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="TracingBuilderButton" type="Button" parent="CenterContainer/TabContainer/Data"]
+[node name="TracingBuilderButton" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Tracing Builder
 "
 
-[node name="DataLoaderButton" type="Button" parent="CenterContainer/TabContainer/Data"]
+[node name="DataLoaderButton" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP Image/Sound Loader"
 
-[node name="DataLoaderButton2" type="Button" parent="CenterContainer/TabContainer/Data"]
+[node name="DataLoaderButton2" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP Video Loader
+"
+
+[node name="GameData" type="VBoxContainer" parent="CenterContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="GameSoundsButton" type="Button" parent="CenterContainer/TabContainer/GameData"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "GP/syllable/word sounds
 "
 
 [node name="Label" type="Label" parent="."]
@@ -205,9 +216,10 @@ theme_override_font_sizes/font_size = 60
 [connection signal="pressed" from="CenterContainer/TabContainer/Language/SyllableListButton" to="." method="_on_syllable_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/Language/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/Language/LessonListButton" to="." method="_on_lesson_list_button_pressed"]
-[connection signal="pressed" from="CenterContainer/TabContainer/Data/TracingBuilderButton" to="." method="_on_tracing_builder_button_pressed"]
-[connection signal="pressed" from="CenterContainer/TabContainer/Data/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
-[connection signal="pressed" from="CenterContainer/TabContainer/Data/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/LookAndLearnData/TracingBuilderButton" to="." method="_on_tracing_builder_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/LookAndLearnData/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/LookAndLearnData/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/GameData/GameSoundsButton" to="." method="_on_game_sounds_button_pressed"]
 [connection signal="pressed" from="ExportButton" to="." method="_on_export_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ImportLanguageButton" to="." method="_on_import_language_button_pressed"]
 [connection signal="item_selected" from="VBoxContainer/LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]

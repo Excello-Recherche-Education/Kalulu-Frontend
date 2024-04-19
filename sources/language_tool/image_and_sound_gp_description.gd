@@ -13,12 +13,14 @@ signal delete
 @onready var sound_clear_button: = %SoundClearButton
 
 var gp: Dictionary
+var get_image_path: Callable = Database.get_gp_look_and_learn_image_path
+var get_sound_path: Callable = Database.get_gp_look_and_learn_sound_path
 
 
 func _image_file_selected(file_path: String) -> void:
 	file_dialog.files_selected.connect(_image_file_selected.bind(file_dialog))
 	if FileAccess.file_exists(file_path):
-		var current_file: = Database.get_gp_look_and_learn_image_path(gp)
+		var current_file: String = get_image_path.call(gp)
 		if FileAccess.file_exists(current_file):
 			DirAccess.remove_absolute(current_file)
 		
@@ -56,7 +58,7 @@ func set_sound_preview(sound_path: String) -> void:
 
 func _sound_file_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
-		var current_file: = Database.get_gp_look_and_learn_sound_path(gp)
+		var current_file: String = get_sound_path.call(gp)
 		if FileAccess.file_exists(current_file):
 			DirAccess.remove_absolute(current_file)
 		
@@ -68,15 +70,17 @@ func _sound_file_selected(file_path: String) -> void:
 
 func set_gp(value: Dictionary) -> void:
 	gp = value
-	gp_menu_button.text = gp["Grapheme"] + "-" + gp["Phoneme"]
+	gp_menu_button.text = gp["Grapheme"]
+	if gp.has("Phoneme"):
+		gp_menu_button.text += "-" + gp["Phoneme"]
 	
-	var image_path: = Database.get_gp_look_and_learn_image_path(gp)
+	var image_path: String = get_image_path.call(gp)
 	if FileAccess.file_exists(image_path):
 		set_image_preview(image_path)
 	else:
 		image_clear_button.hide()
 	
-	var sound_path: = Database.get_gp_look_and_learn_sound_path(gp)
+	var sound_path: String = get_sound_path.call(gp)
 	if FileAccess.file_exists(sound_path):
 		set_sound_preview(sound_path)
 		sound_preview.show()
@@ -121,7 +125,7 @@ func _on_sound_preview_pressed() -> void:
 
 
 func _on_image_clear_button_pressed():
-	var current_file: = Database.get_gp_look_and_learn_image_path(gp)
+	var current_file: String = get_image_path.call(gp)
 	if FileAccess.file_exists(current_file):
 		DirAccess.remove_absolute(current_file)
 	
@@ -129,8 +133,12 @@ func _on_image_clear_button_pressed():
 
 
 func _on_sound_clear_button_pressed():
-	var current_file: = Database.get_gp_look_and_learn_sound_path(gp)
+	var current_file: String = get_sound_path.call(gp)
 	if FileAccess.file_exists(current_file):
 		DirAccess.remove_absolute(current_file)
 	
 	set_sound_preview("")
+
+
+func hide_image_part() -> void:
+	%ImageContainer.hide()
