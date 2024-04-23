@@ -1,0 +1,110 @@
+[gd_scene load_steps=18 format=3 uid="uid://cnt2q4hqn1wsq"]
+
+[ext_resource type="Texture2D" uid="uid://bryeqjo7o8qlv" path="res://assets/minigames/monkeys/graphic/broken_coconut_01.png" id="1_ivxel"]
+[ext_resource type="Script" path="res://sources/minigames/monkeys/broken_coconut_fx.gd" id="1_vwvtm"]
+[ext_resource type="Gradient" uid="uid://coc7rxa1sptom" path="res://sources/minigames/monkeys/fade_out_gradient.tres" id="2_d6ibk"]
+[ext_resource type="Texture2D" uid="uid://cx8qphwv0boe5" path="res://assets/minigames/monkeys/graphic/broken_coconut_02.png" id="2_kd03l"]
+[ext_resource type="Texture2D" uid="uid://p5yp028d4s4b" path="res://assets/minigames/monkeys/graphic/broken_coconut_03.png" id="2_logsj"]
+[ext_resource type="Texture2D" uid="uid://dif3xpncwixbh" path="res://assets/vfx/fx_09.png" id="5_5n842"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o67aw"]
+gradient = ExtResource("2_d6ibk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_iijg8"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, -1, 1)
+angle_max = 90.0
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 250.0
+initial_velocity_max = 300.0
+gravity = Vector3(0, 98, 0)
+color_ramp = SubResource("GradientTexture1D_o67aw")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mpadx"]
+gradient = ExtResource("2_d6ibk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ivqj5"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 64.0
+angle_max = 360.0
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 250.0
+initial_velocity_max = 350.0
+gravity = Vector3(0, 98, 0)
+color_ramp = SubResource("GradientTexture1D_mpadx")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ug0v0"]
+gradient = ExtResource("2_d6ibk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d8slu"]
+particle_flag_disable_z = true
+angle_max = 90.0
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 250.0
+initial_velocity_max = 300.0
+gravity = Vector3(0, 98, 0)
+color_ramp = SubResource("GradientTexture1D_ug0v0")
+
+[sub_resource type="Gradient" id="Gradient_k4jun"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_owuer"]
+gradient = SubResource("Gradient_k4jun")
+
+[sub_resource type="Curve" id="Curve_u1y4t"]
+min_value = 0.5
+max_value = 2.0
+_data = [Vector2(0, 0.5), 0.0, 1.38153, 0, 0, Vector2(0.983547, 2), 1.5246, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2nhtu"]
+curve = SubResource("Curve_u1y4t")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b1p8e"]
+particle_flag_disable_z = true
+angle_max = 360.0
+direction = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_2nhtu")
+color_ramp = SubResource("GradientTexture1D_owuer")
+
+[node name="BrokenCoconutFX" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_vwvtm")
+
+[node name="TopParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_iijg8")
+texture = ExtResource("1_ivxel")
+lifetime = 3.0
+one_shot = true
+
+[node name="ShardsParticles" type="GPUParticles2D" parent="."]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_ivqj5")
+texture = ExtResource("2_logsj")
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+
+[node name="BottomParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_d8slu")
+texture = ExtResource("2_kd03l")
+lifetime = 3.0
+one_shot = true
+
+[node name="LinesParticles" type="GPUParticles2D" parent="."]
+position = Vector2(0, -16)
+emitting = false
+amount = 3
+process_material = SubResource("ParticleProcessMaterial_b1p8e")
+texture = ExtResource("5_5n842")
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+
+[connection signal="finished" from="ShardsParticles" to="." method="_on_shards_particles_finished"]

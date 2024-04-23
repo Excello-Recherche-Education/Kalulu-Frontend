@@ -155,7 +155,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		coconut.global_transform = king.coconut.global_transform
 		tween.tween_property(coconut, "global_position:y", text_plank.global_position.y, throw_to_plank_duration).set_trans(Tween.TRANS_LINEAR)
 		await tween.finished
-		coconut.queue_free()
+		coconut.explode()
 		
 		word_label.text = ""
 		for i in current_word_progression +1:
