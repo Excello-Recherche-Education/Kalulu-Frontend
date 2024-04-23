@@ -9,6 +9,8 @@ const minigame_selection_scene: = preload("res://sources/lesson_screen/minigame_
 @export var gardens_layout: GardensLayout:
 	set = set_gardens_layout
 
+@export var starting_garden: = 0
+
 @onready var garden_parent: = %GardenParent
 @onready var locked_line: = $ScrollContainer/LockedLine
 @onready var unlocked_line: = $ScrollContainer/UnlockedLine
@@ -34,6 +36,8 @@ func _ready() -> void:
 	await get_tree().process_frame
 	UserDataManager.student_progression.unlocks_changed.connect(_on_progression_unlocks_changed)
 	_on_progression_unlocks_changed()
+	
+	scroll_container.scroll_horizontal = garden_size * starting_garden
 
 
 func _process(_delta: float) -> void:
@@ -205,3 +209,7 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 	if is_scrolling and event is InputEventMouseMotion:
 		scroll_container.scroll_horizontal -= event.relative.x
 
+
+
+func _on_back_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")

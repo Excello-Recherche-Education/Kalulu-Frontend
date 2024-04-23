@@ -1,0 +1,648 @@
+[gd_scene load_steps=40 format=3 uid="uid://dlqtn4yhqno8t"]
+
+[ext_resource type="Script" path="res://sources/menus/brain/brain.gd" id="1_1rwi2"]
+[ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="1_poeho"]
+[ext_resource type="Texture2D" uid="uid://dqjvrit8c3m6s" path="res://assets/brain_screen/blue_palm.png" id="2_6qag6"]
+[ext_resource type="Resource" uid="uid://8v0g8bpx5mh0" path="res://resources/gardens/gardens_layout.tres" id="2_qeplj"]
+[ext_resource type="Texture2D" uid="uid://crba20yq2ljox" path="res://assets/brain_screen/head.png" id="2_w21ae"]
+[ext_resource type="Texture2D" uid="uid://bjop68a8t82p3" path="res://assets/brain_screen/bush.png" id="3_bpmau"]
+[ext_resource type="Texture2D" uid="uid://dwqffehmm0eku" path="res://assets/brain_screen/button_garden_01.png" id="3_h8d14"]
+[ext_resource type="Texture2D" uid="uid://hh5mcytp75s5" path="res://assets/brain_screen/button_garden_02.png" id="4_0d7o0"]
+[ext_resource type="Texture2D" uid="uid://cb1tb1y336cej" path="res://assets/brain_screen/flower_1.png" id="4_tic4g"]
+[ext_resource type="Texture2D" uid="uid://cpsu38a5vetxa" path="res://assets/brain_screen/button_garden_03.png" id="5_5g67s"]
+[ext_resource type="Texture2D" uid="uid://lbefktgranwp" path="res://assets/brain_screen/flower_2.png" id="5_a51h3"]
+[ext_resource type="Texture2D" uid="uid://b6b8kb5l3yh04" path="res://assets/minigames/minigame_ui/graphic/large_flower_body.png" id="6_kxju7"]
+[ext_resource type="Texture2D" uid="uid://iqbog5cbav5k" path="res://assets/brain_screen/button_garden_04.png" id="6_ma84f"]
+[ext_resource type="Texture2D" uid="uid://mtw8qtti0q4v" path="res://assets/brain_screen/button_garden_05.png" id="7_ejtr0"]
+[ext_resource type="Texture2D" uid="uid://x1sgh6fae8dp" path="res://assets/brain_screen/button_garden_06.png" id="8_j3f61"]
+[ext_resource type="Texture2D" uid="uid://can2kf8ec0qge" path="res://assets/brain_screen/button_garden_07.png" id="9_mfa08"]
+[ext_resource type="Texture2D" uid="uid://cjplidh2jtsx6" path="res://assets/brain_screen/button_garden_08.png" id="10_3lr1g"]
+[ext_resource type="Texture2D" uid="uid://bhjq8p6a13dni" path="res://assets/brain_screen/button_garden_09.png" id="11_g1567"]
+[ext_resource type="Texture2D" uid="uid://dw88f46ouyqxi" path="res://assets/brain_screen/button_garden_10.png" id="12_gekn5"]
+[ext_resource type="Texture2D" uid="uid://d1kacbsx80i65" path="res://assets/brain_screen/button_garden_11.png" id="13_bwdw7"]
+[ext_resource type="Texture2D" uid="uid://devi7aqkoady8" path="res://assets/brain_screen/button_garden_12.png" id="14_ho6b5"]
+[ext_resource type="Texture2D" uid="uid://cahpqdsgapvum" path="res://assets/brain_screen/button_garden_13.png" id="15_woe01"]
+[ext_resource type="Texture2D" uid="uid://biyyyywuqqtg5" path="res://assets/brain_screen/button_garden_14.png" id="16_7bvji"]
+[ext_resource type="Texture2D" uid="uid://csxtaqncbp1n2" path="res://assets/brain_screen/button_garden_15.png" id="17_nfgsr"]
+[ext_resource type="Texture2D" uid="uid://tw4sjseidr46" path="res://assets/brain_screen/button_garden_16.png" id="18_4fld7"]
+[ext_resource type="Texture2D" uid="uid://c154y48nwo8e3" path="res://assets/brain_screen/button_garden_17.png" id="19_uavbd"]
+[ext_resource type="Texture2D" uid="uid://bxi4wg5tiqkk3" path="res://assets/brain_screen/button_garden_18.png" id="20_20x1w"]
+[ext_resource type="Texture2D" uid="uid://bo7pfq3btf6qu" path="res://assets/brain_screen/button_garden_19.png" id="21_4qrpc"]
+[ext_resource type="Texture2D" uid="uid://bbfmoqx1fg0kq" path="res://assets/brain_screen/button_garden_20.png" id="22_4pwu6"]
+[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="28_6xael"]
+[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="29_16cxq"]
+[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="30_drpbx"]
+[ext_resource type="Texture2D" uid="uid://dx7w01wdyq0b5" path="res://assets/particles/bigstar_x36_15fps.png" id="33_bjun2"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iw28k"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_tojqi"]
+_data = [Vector2(0, 0), 0.0, 3.27039, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.04285, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_w1l0b"]
+width = 32
+curve = SubResource("Curve_tojqi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x00r2"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1280, 900, 1)
+angle_max = 360.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.25
+alpha_curve = SubResource("CurveTexture_w1l0b")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4xkmy"]
+particles_animation = true
+particles_anim_h_frames = 18
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4003t"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 100.0
+angle_max = 360.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+radial_velocity_min = 75.0
+radial_velocity_max = 250.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.25
+anim_speed_min = 2.0
+anim_speed_max = 2.0
+
+[node name="Brain" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1rwi2")
+locked_color = Color(0, 0.0156863, 0.164706, 1)
+unlocked_colors = Array[Color]([Color(0.588235, 0.439216, 0.878431, 1), Color(1, 0.909804, 0.137255, 1), Color(0.929412, 0.603922, 0.709804, 1), Color(0.658824, 0.262745, 0.286275, 1), Color(0.247059, 0.196078, 0.647059, 1), Color(0.619608, 0.976471, 0.670588, 1), Color(0.764706, 0.760784, 0.768627, 1), Color(1, 0.686275, 0.341176, 1), Color(0.305882, 0.996078, 0.894118, 1), Color(0.478431, 0.819608, 1, 1), Color(0.764706, 0.760784, 0.768627, 1), Color(1, 0.909804, 0.137255, 1), Color(0.658824, 0.262745, 0.286275, 1), Color(0.929412, 0.603922, 0.709804, 1), Color(0.619608, 0.976471, 0.670588, 1), Color(0.247059, 0.196078, 0.647059, 1), Color(0.305882, 0.996078, 0.894118, 1), Color(0.478431, 0.819608, 1, 1), Color(1, 0.686275, 0.341176, 1), Color(0.588235, 0.439216, 0.878431, 1)])
+gardens_layout = ExtResource("2_qeplj")
+
+[node name="ControlBackground" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="ControlBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.00392157, 0, 0.105882, 1)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ControlBackground"]
+material = SubResource("CanvasItemMaterial_iw28k")
+position = Vector2(1280, 900)
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_x00r2")
+texture = ExtResource("1_poeho")
+lifetime = 5.0
+preprocess = 5.0
+randomness = 0.5
+visibility_rect = Rect2(-12800, -900, 25600, 1800)
+local_coords = true
+
+[node name="TextureRect" type="TextureRect" parent="ControlBackground"]
+layout_mode = 0
+offset_left = 1276.0
+offset_top = 820.0
+offset_right = 2792.0
+offset_bottom = 1856.0
+texture = ExtResource("2_6qag6")
+
+[node name="TextureRect4" type="TextureRect" parent="ControlBackground"]
+layout_mode = 0
+offset_left = -389.0
+offset_top = 606.0
+offset_right = 1436.0
+offset_bottom = 1853.0
+texture = ExtResource("2_6qag6")
+
+[node name="TextureRect5" type="TextureRect" parent="ControlBackground"]
+layout_mode = 0
+offset_left = -22.0
+offset_top = 1046.0
+offset_right = 1275.0
+offset_bottom = 1824.0
+texture = ExtResource("3_bpmau")
+
+[node name="TextureRect2" type="TextureRect" parent="ControlBackground"]
+layout_mode = 0
+offset_left = -299.0
+offset_top = 88.0
+offset_right = 929.0
+offset_bottom = 1803.0
+texture = ExtResource("4_tic4g")
+
+[node name="TextureRect6" type="TextureRect" parent="ControlBackground"]
+layout_mode = 0
+offset_left = 1347.0
+offset_top = 55.0
+offset_right = 2337.0
+offset_bottom = 1815.0
+texture = ExtResource("6_kxju7")
+
+[node name="TextureRect3" type="TextureRect" parent="ControlBackground"]
+layout_mode = 0
+offset_left = 1874.0
+offset_top = 727.0
+offset_right = 2486.0
+offset_bottom = 1815.0
+texture = ExtResource("5_a51h3")
+
+[node name="HeadContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Head" type="TextureRect" parent="HeadContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_w21ae")
+stretch_mode = 5
+
+[node name="BackButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 80.0
+offset_right = 220.0
+offset_bottom = 220.0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("28_6xael")
+texture_pressed = ExtResource("29_16cxq")
+texture_disabled = ExtResource("30_drpbx")
+
+[node name="GardenButtons" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="GardenButton1" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 804.0
+offset_top = 1215.0
+offset_right = 922.0
+offset_bottom = 1327.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(59, 56)
+disabled = true
+texture_normal = ExtResource("3_h8d14")
+
+[node name="Particles1" type="GPUParticles2D" parent="GardenButtons/GardenButton1"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(59, 56)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton2" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 577.0
+offset_top = 1109.0
+offset_right = 677.0
+offset_bottom = 1212.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(50, 51.5)
+disabled = true
+texture_normal = ExtResource("4_0d7o0")
+
+[node name="Particles2" type="GPUParticles2D" parent="GardenButtons/GardenButton2"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(50, 51.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton3" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 483.0
+offset_top = 892.0
+offset_right = 602.0
+offset_bottom = 994.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(59.5, 51)
+disabled = true
+texture_normal = ExtResource("5_5g67s")
+
+[node name="Particles3" type="GPUParticles2D" parent="GardenButtons/GardenButton3"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(59.5, 51)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton4" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 457.0
+offset_top = 638.0
+offset_right = 570.0
+offset_bottom = 757.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(56.5, 59.5)
+disabled = true
+texture_normal = ExtResource("6_ma84f")
+
+[node name="Particles4" type="GPUParticles2D" parent="GardenButtons/GardenButton4"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(56.5, 59.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton5" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 553.0
+offset_top = 406.0
+offset_right = 665.0
+offset_bottom = 522.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(56, 58)
+disabled = true
+texture_normal = ExtResource("7_ejtr0")
+
+[node name="Particles5" type="GPUParticles2D" parent="GardenButtons/GardenButton5"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(56, 58)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton6" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 729.0
+offset_top = 233.0
+offset_right = 848.0
+offset_bottom = 344.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(59.5, 55.5)
+disabled = true
+texture_normal = ExtResource("8_j3f61")
+
+[node name="Particles6" type="GPUParticles2D" parent="GardenButtons/GardenButton6"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(59.5, 55.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton7" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 976.0
+offset_top = 159.0
+offset_right = 1088.0
+offset_bottom = 257.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(56, 49)
+disabled = true
+texture_normal = ExtResource("9_mfa08")
+
+[node name="Particles7" type="GPUParticles2D" parent="GardenButtons/GardenButton7"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(56, 49)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton8" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1250.0
+offset_top = 161.0
+offset_right = 1359.0
+offset_bottom = 258.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(54.5, 48.5)
+disabled = true
+texture_normal = ExtResource("10_3lr1g")
+
+[node name="Particles8" type="GPUParticles2D" parent="GardenButtons/GardenButton8"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(54.5, 48.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton9" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1526.0
+offset_top = 203.0
+offset_right = 1668.0
+offset_bottom = 335.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(71, 66)
+disabled = true
+texture_normal = ExtResource("11_g1567")
+
+[node name="Particles9" type="GPUParticles2D" parent="GardenButtons/GardenButton9"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(71, 66)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton10" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1692.0
+offset_top = 373.0
+offset_right = 1800.0
+offset_bottom = 502.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(54, 64.5)
+disabled = true
+texture_normal = ExtResource("12_gekn5")
+
+[node name="Particles10" type="GPUParticles2D" parent="GardenButtons/GardenButton10"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(54, 64.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton11" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1492.0
+offset_top = 522.0
+offset_right = 1628.0
+offset_bottom = 613.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(68, 45.5)
+disabled = true
+texture_normal = ExtResource("13_bwdw7")
+
+[node name="Particles11" type="GPUParticles2D" parent="GardenButtons/GardenButton11"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(68, 45.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton12" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1268.0
+offset_top = 390.0
+offset_right = 1383.0
+offset_bottom = 481.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(57.5, 45.5)
+disabled = true
+texture_normal = ExtResource("14_ho6b5")
+
+[node name="Particles12" type="GPUParticles2D" parent="GardenButtons/GardenButton12"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(57.5, 47.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton13" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1023.0
+offset_top = 412.0
+offset_right = 1125.0
+offset_bottom = 541.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(51, 64.5)
+disabled = true
+texture_normal = ExtResource("15_woe01")
+
+[node name="Particles13" type="GPUParticles2D" parent="GardenButtons/GardenButton13"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(51, 64.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton14" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 802.0
+offset_top = 506.0
+offset_right = 896.0
+offset_bottom = 604.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(47, 49)
+disabled = true
+texture_normal = ExtResource("16_7bvji")
+
+[node name="Particles14" type="GPUParticles2D" parent="GardenButtons/GardenButton14"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(47, 49)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton15" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 728.0
+offset_top = 744.0
+offset_right = 835.0
+offset_bottom = 849.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(53.5, 52.5)
+disabled = true
+texture_normal = ExtResource("17_nfgsr")
+
+[node name="Particles15" type="GPUParticles2D" parent="GardenButtons/GardenButton15"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(53.5, 52.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton16" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 824.0
+offset_top = 976.0
+offset_right = 989.0
+offset_bottom = 1076.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(82.5, 50)
+disabled = true
+texture_normal = ExtResource("18_4fld7")
+
+[node name="Particles16" type="GPUParticles2D" parent="GardenButtons/GardenButton16"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(82.5, 50)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton17" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 995.0
+offset_top = 759.0
+offset_right = 1099.0
+offset_bottom = 867.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(52, 54)
+disabled = true
+texture_normal = ExtResource("19_uavbd")
+
+[node name="Particles17" type="GPUParticles2D" parent="GardenButtons/GardenButton17"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(52, 54)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton18" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1221.0
+offset_top = 631.0
+offset_right = 1342.0
+offset_bottom = 726.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(60.5, 47.5)
+disabled = true
+texture_normal = ExtResource("20_20x1w")
+
+[node name="Particles18" type="GPUParticles2D" parent="GardenButtons/GardenButton18"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(60.5, 47.5)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton19" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1434.0
+offset_top = 768.0
+offset_right = 1527.0
+offset_bottom = 874.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(46.5, 53)
+disabled = true
+texture_normal = ExtResource("21_4qrpc")
+
+[node name="Particles19" type="GPUParticles2D" parent="GardenButtons/GardenButton19"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(46.5, 53)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[node name="GardenButton20" type="TextureButton" parent="GardenButtons"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.0156863, 0.164706, 1)
+layout_mode = 0
+offset_left = 1220.0
+offset_top = 863.0
+offset_right = 1339.0
+offset_bottom = 957.0
+scale = Vector2(2.5, 2.5)
+pivot_offset = Vector2(59.5, 47)
+disabled = true
+texture_normal = ExtResource("22_4pwu6")
+
+[node name="Particles20" type="GPUParticles2D" parent="GardenButtons/GardenButton20"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_4xkmy")
+position = Vector2(59.5, 47)
+scale = Vector2(0.4, 0.4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_4003t")
+texture = ExtResource("33_bjun2")
+
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
