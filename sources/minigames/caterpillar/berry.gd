@@ -15,6 +15,8 @@ var gp: Dictionary:
 		if gp.has("Grapheme"):
 			label.text = gp.Grapheme
 
+var is_distractor: bool = false
+
 var is_eaten: bool = false: 
 	set(value):
 		is_eaten = value
@@ -23,7 +25,8 @@ var is_eaten: bool = false:
 
 
 func highlight() -> void:
-	highlight_fx.play()
+	if not is_distractor:
+		highlight_fx.play()
 
 
 func wrong() -> void:

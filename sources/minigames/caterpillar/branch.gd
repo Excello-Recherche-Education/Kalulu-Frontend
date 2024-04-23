@@ -13,6 +13,17 @@ const berry_scene: PackedScene = preload("res://sources/minigames/caterpillar/be
 @onready var leaf_timer: Timer = $LeafTimer
 
 var velocity: float = 0.0
+var is_highlighting: = false:
+	set = _set_highlighting
+
+
+func _set_highlighting(value: bool) -> void:
+	is_highlighting = value
+	for berry: Berry in berries.get_children():
+		if is_highlighting:
+			berry.highlight()
+		else:
+			berry.stop_highlight()
 
 
 func _ready():
@@ -40,10 +51,13 @@ func _process(delta):
 			berry.position.x -= velocity * delta
 
 
-func spawn_berry(gp: Dictionary) -> void:
+func spawn_berry(gp: Dictionary, is_distractor: bool) -> void:
 	var berry : Berry = berry_scene.instantiate()
 	berries.add_child(berry)
 	berry.gp = gp
+	berry.is_distractor = is_distractor
+	if is_highlighting:
+		berry.highlight()
 	
 	berry.pressed.connect(_on_berry_pressed)
 
@@ -51,12 +65,6 @@ func spawn_berry(gp: Dictionary) -> void:
 func clear_berries() -> void:
 	for berry: Berry in berries.get_children():
 		berry.fall()
-
-
-func highlight_berries(gp: Dictionary) -> void:
-	for berry: Berry in berries.get_children():
-		if berry.gp == gp:
-			berry.highlight()
 
 
 # ---------- CONNECTIONS ---------- # 

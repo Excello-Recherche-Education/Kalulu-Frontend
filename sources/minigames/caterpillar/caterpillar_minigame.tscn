@@ -49,8 +49,4 @@ position = Vector2(384, 0)
 [node name="BerryTimer" type="Timer" parent="GameRoot" index="3"]
 wait_time = 2.5
 
-[node name="HighlightTimer" type="Timer" parent="GameRoot" index="4"]
-wait_time = 3.0
-
 [connection signal="timeout" from="GameRoot/BerryTimer" to="." method="_on_berry_timer_timeout"]
-[connection signal="timeout" from="GameRoot/HighlightTimer" to="." method="_on_highlight_timer_timeout"]
