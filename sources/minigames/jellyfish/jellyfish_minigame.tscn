@@ -37,10 +37,6 @@ offset_right = 600.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SpawnTimer" type="Timer" parent="." index="4"]
+[node name="SpawnTimer" type="Timer" parent="GameRoot" index="2"]
 
-[node name="HighlightTimer" type="Timer" parent="." index="5"]
-wait_time = 5.0
-
-[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
-[connection signal="timeout" from="HighlightTimer" to="." method="_on_highlight_timer_timeout"]
+[connection signal="timeout" from="GameRoot/SpawnTimer" to="." method="_on_spawn_timer_timeout"]

@@ -20,12 +20,12 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(1, 0.25, 300)
 ]
 
-var blocking_jellyfish: Array[Jellyfish] = []
 
 @onready var spawning_space: Control = %SpawningSpace
-@onready var spawn_timer: Timer = $SpawnTimer
-@onready var highlight_timer: Timer = $HighlightTimer
+@onready var spawn_timer: Timer = $GameRoot/SpawnTimer
 
+var blocking_jellyfish: Array[Jellyfish] = []
+var is_highlighting: bool = false
 
 func _start() -> void:
 	super()
@@ -48,16 +48,16 @@ func _process(delta: float) -> void:
 
 
 func _highlight() -> void:
+	is_highlighting = true
 	for jellyfish: Jellyfish in spawning_space.get_children():
 		if jellyfish.stimulus and _is_stimulus_right(jellyfish.stimulus):
 			jellyfish.highlight()
-	highlight_timer.start()
 
 
 func _stop_highlight() -> void:
+	is_highlighting = false
 	for jellyfish: Jellyfish in spawning_space.get_children():
 		jellyfish.stop_highlight()
-	highlight_timer.stop()
 
 
 func _spawn() -> void:
@@ -84,6 +84,8 @@ func _spawn() -> void:
 	var is_stimulus: = randf() < _get_difficulty_settings().stimuli_ratio
 	if is_stimulus:
 		new_jellyfish.stimulus = _get_current_stimulus()
+		if is_highlighting:
+			new_jellyfish.highlight()
 	else:
 		var current_distractors : Array = distractions[current_progression % distractions.size()]
 		new_jellyfish.stimulus = current_distractors.pick_random()
@@ -156,7 +158,7 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 		_stop_highlight()
 	else:
 		jellyfish.hit()
-		jellyfish.wrong()
+		await jellyfish.wrong()
 		current_lives -= 1
 		
 		# Play the pressed jellyfish phoneme
@@ -175,10 +177,6 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 		_play_current_stimulus_phoneme()
 	
 	return true
-
-
-func _on_highlight_timer_timeout() -> void:
-	_highlight()
 
 
 func _on_stimulus_found() -> void:
