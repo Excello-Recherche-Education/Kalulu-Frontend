@@ -22,8 +22,6 @@ func _set_highlighting(value: bool) -> void:
 	for berry: Berry in berries.get_children():
 		if is_highlighting:
 			berry.highlight()
-		else:
-			berry.stop_highlight()
 
 
 func _ready():
