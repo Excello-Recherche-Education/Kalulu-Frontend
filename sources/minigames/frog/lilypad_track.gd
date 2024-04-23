@@ -128,13 +128,12 @@ func _despawn_lilypad(lilypad: Lilypad) -> void:
 
 func _set_enabled(value: bool) -> void:
 	is_enabled = value
-	
 	for lilypad in lilypads:
 		lilypad.disabled = not is_enabled
 
 
 func _set_highlighting(value: bool) -> void:
-	is_highlighting = value
+	is_highlighting = is_enabled and value
 	for lilypad in lilypads:
 		if is_highlighting:
 			lilypad.highlight()

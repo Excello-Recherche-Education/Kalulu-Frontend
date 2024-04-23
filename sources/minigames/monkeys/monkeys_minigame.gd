@@ -81,6 +81,12 @@ func _setup_minigame() -> void:
 	_reset_plank_label()
 
 
+func _highlight() -> void:
+	for monkey: Monkey in monkeys:
+		if _is_GP_right(monkey.stimulus):
+			monkey.highlight()
+
+
 func _reset_plank_label() -> void:
 	word_label.text = "_".repeat(_get_current_stimulus().Word.length())
 
@@ -98,6 +104,9 @@ func _play_monkey_stimulus(monkey: Monkey) -> void:
 
 
 func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
+	
+	monkey.stop_highlight()
+	
 	await monkey.play("start_throw")
 	monkey.play("finish_throw")
 	

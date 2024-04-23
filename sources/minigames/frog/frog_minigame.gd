@@ -44,7 +44,9 @@ func _setup_word_progression() -> void:
 
 func _highlight() -> void:
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
-		track.is_highlighting = true
+		if track.is_enabled:
+			track.is_highlighting = true
+			break
 
 
 func _reset_frog() -> void:
@@ -118,6 +120,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		await _reset_frog()
 	else:
 		track.stop()
+		track.is_highlighting = false
 		track.is_cleared = true
 		await audio_player.play_phoneme(lilypad.stimulus.Phoneme)
 		current_word_progression += 1

@@ -76,6 +76,7 @@ tracks/5/keys = {
 [sub_resource type="Animation" id="Animation_ud7pl"]
 resource_name = "win"
 length = 3.0
+loop_mode = 1
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -243,3 +244,5 @@ texture = ExtResource("1_s57yc")
 modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("2_3sm6p")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -9,6 +9,7 @@
 script = ExtResource("1_yojn5")
 
 [node name="HighlightFX" parent="." instance=ExtResource("2_8nuxj")]
+scale = Vector2(0.5, 0.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(2, 2)

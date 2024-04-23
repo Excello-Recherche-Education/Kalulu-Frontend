@@ -64,6 +64,14 @@ func hit(p_coconut: Coconut) -> void:
 	stunned = true
 
 
+func highlight() -> void:
+	coconut.highlight_fx.play()
+
+
+func stop_highlight() -> void:
+	coconut.highlight_fx.stop()
+
+
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "idle":
 		if randf() < 0.25:
