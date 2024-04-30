@@ -29,7 +29,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 
 @onready var water: TextureRect = $GameRoot/Water
 @onready var island: Island = $GameRoot/Island
-@onready var turtles: Control = $GameRoot/Turtles
+@onready var turtles: Control = %Turtles
 @onready var spawn_location: PathFollow2D = $GameRoot/SpawnPath/SpawnLocation
 @onready var spawn_timer: Timer = $GameRoot/SpawnTimer
 
@@ -39,7 +39,6 @@ var turtle_count: int = 0:
 		if turtle_count >= max_turtle_count and value < max_turtle_count:
 			can_spawn_turtle.emit()
 		turtle_count = value
-var last_spawn_location_ratio: float
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
@@ -56,11 +55,11 @@ func _setup_minigame() -> void:
 
 func _start() -> void:
 	super._start()
-	spawn_timer.start()
+	_on_spawn_timer_timeout()
 
 
 func _spawn_water_ring(position: Vector2):
-	print(position)
+	#print(position)
 	pass
 
 
@@ -76,11 +75,13 @@ func _on_spawn_timer_timeout():
 	var position_found: bool = false
 	while not position_found:
 		spawn_location.progress_ratio = randf()
-		
+		var all_position_ok: bool = true
 		# Check if there are other turtles near
 		for other_turtle: Turtle in turtles.get_children():
-			if other_turtle.position.distance_to(spawn_location.position) < 4:
+			if other_turtle.position.distance_squared_to(spawn_location.position) < 250000:
+				all_position_ok = false
 				break
+		position_found = all_position_ok
 	
 	turtle.position = spawn_location.position
 	turtle.velocity = settings.velocity
@@ -103,4 +104,15 @@ func _on_spawn_timer_timeout():
 	
 	# Restarts timer
 	spawn_timer.start()
+
+
+func _on_island_area_entered(area):
+	var turtle = area.owner as Turtle
+	if not turtle:
+		return
 	
+	# Check if the turtle is a distractor or the awaited GP TODO
+	await turtle.wrong()
+	
+	# Make the turtle disappear
+	turtle.disappear()

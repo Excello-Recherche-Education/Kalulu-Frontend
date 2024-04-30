@@ -7,6 +7,6 @@ shader = ExtResource("1_3btqb")
 shader_parameter/WATER_COL = Color(0.352941, 0.713726, 0.67451, 1)
 shader_parameter/WATER2_COL = Color(0.329412, 0.670588, 0.619608, 1)
 shader_parameter/FOAM_COL = Color(0.65098, 0.882353, 0.847059, 1)
-shader_parameter/distortion_speed = 0.66
+shader_parameter/distortion_speed = 0.75
 shader_parameter/tile = Vector2(0.4, 0.4)
 shader_parameter/offset = Vector2(0, 0)

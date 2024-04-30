@@ -16,6 +16,7 @@ point_count = 5
 
 [node name="TurtlesMinigame" instance=ExtResource("1_geqym")]
 script = ExtResource("2_f5de7")
+difficulty = 1
 minigame_number = 1
 max_number_of_lives = 5
 max_progression = 5
@@ -38,6 +39,7 @@ texture = ExtResource("6_l6je2")
 position = Vector2(1280, 830)
 
 [node name="Turtles" type="Control" parent="GameRoot" index="2"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -54,4 +56,5 @@ position = Vector2(-256, -256)
 [node name="SpawnTimer" type="Timer" parent="GameRoot" index="4"]
 one_shot = true
 
+[connection signal="area_entered" from="GameRoot/Island" to="." method="_on_island_area_entered"]
 [connection signal="timeout" from="GameRoot/SpawnTimer" to="." method="_on_spawn_timer_timeout"]

@@ -3,7 +3,6 @@ class_name Island
 
 @onready var label : Label = $Label
 
-
-func _on_area_entered(area):
-	print(area)
-	print(area.owner)
+var stimulus: Dictionary:
+	set(value):
+		label.text = "_".repeat(stimulus.Word.length())

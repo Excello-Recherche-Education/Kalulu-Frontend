@@ -6,21 +6,20 @@ signal animation_changed(position: Vector2)
 @onready var body: Node2D = $Body
 @onready var sprite: AnimatedSprite2D = $Body/AnimatedSprite2D
 @onready var label: Label = $Label
-@onready var head_area: Area2D = %HeadArea
-@onready var body_area: Area2D = %BodyArea
+@onready var head_area_collision_shape: CollisionShape2D = $Body/HeadArea/CollisionShape2D
+@onready var body_area_collision_shape: CollisionShape2D = $Body/BodyArea/CollisionShape2D
 @onready var highlight_fx: HighlightFX = $HighlightFX
 @onready var right_fx: RightFX = $RightFX
 @onready var wrong_fx: WrongFX = $WrongFX
 
-@onready var button: Button = $Button
-
 var velocity: float = 0.
 var direction: Vector2 = Vector2(0,-1):
 	set = _set_direction
-
+var is_moving: bool = true
 
 func _process(delta):
-	position = position + velocity * delta * direction
+	if is_moving:
+		position += velocity * delta * direction
 
 
 func _set_direction(new_direction: Vector2) -> void:
@@ -53,19 +52,23 @@ func highlight(value: bool = true) -> void:
 
 
 func right() -> void:
+	is_moving = false
 	sprite.play("victory")
 	right_fx.play()
 	await right_fx.finished
 
 
 func wrong() -> void:
+	is_moving = false
 	wrong_fx.play()
 	await wrong_fx.finished
 
 
 func disappear() -> void:
+	is_moving = false
+	head_area_collision_shape.set_deferred("disabled", true)
+	body_area_collision_shape.set_deferred("disabled", true)
 	sprite.play("disappear")
-
 
 #endregion
 
@@ -89,5 +92,9 @@ func _on_animated_sprite_2d_animation_finished():
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	queue_free()
+
+
+func _on_body_area_area_entered(area):
+	disappear()
 
 #endregion
