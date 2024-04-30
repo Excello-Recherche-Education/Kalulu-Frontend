@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://chuny571miwxm"]
+
+[ext_resource type="Script" path="res://sources/minigames/turtles/island.gd" id="1_bl1e4"]
+[ext_resource type="Texture2D" uid="uid://c3i6riv7blkux" path="res://assets/minigames/turtles/graphic/turtle_Island.png" id="1_shxj4"]
+
+[node name="Island" type="Area2D"]
+script = ExtResource("1_bl1e4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_shxj4")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -192.0
+offset_right = 191.0
+offset_bottom = 226.0
+theme_override_font_sizes/font_size = 94
+text = "_______"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(2, 2)
+polygon = PackedVector2Array(144, -148, 176, -124, 192, -100, 204, -84, 220, -52, 228, -20, 228, 20, 216, 56, 196, 84, 172, 108, 152, 120, 120, 132, 76, 144, 36, 148, -40, 156, -8, 152, -56, 160, -72, 160, -88, 160, -112, 152, -132, 144, -152, 136, -168, 124, -200, 100, -220, 72, -228, 36, -224, 4, -200, -28, -164, -52, -120, -68, -72, -80, -24, -132, 8, -152, 56, -164, 100, -160)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
