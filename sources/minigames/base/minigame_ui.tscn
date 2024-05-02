@@ -171,19 +171,19 @@ texture = ExtResource("5_d6rvg")
 stretch_mode = 5
 
 [node name="LeftMargin" type="MarginContainer" parent="MainControl/Interface"]
-custom_minimum_size = Vector2(450, 2.08165e-12)
+custom_minimum_size = Vector2(375, 0)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 300.0
+offset_right = 375.0
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 mouse_filter = 2
 theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_bottom = 10
 
 [node name="LeftContainer" type="VBoxContainer" parent="MainControl/Interface/LeftMargin"]
 layout_mode = 2
@@ -200,11 +200,10 @@ stretch_mode = 5
 
 [node name="StimulusMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
 layout_mode = 2
-size_flags_horizontal = 5
 size_flags_vertical = 3
 mouse_filter = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_right = 50
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_right = 60
 
 [node name="StimulusButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin"]
 unique_name_in_owner = true
@@ -216,22 +215,22 @@ stretch_mode = 5
 
 [node name="VolumeContainer" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="VolumeButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/VolumeContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
 texture_normal = ExtResource("20_qsa3m")
 texture_pressed = ExtResource("21_g5me6")
 texture_disabled = ExtResource("22_vw7wh")
+stretch_mode = 3
 
 [node name="PauseMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
 layout_mode = 2
-size_flags_horizontal = 5
 size_flags_vertical = 3
 mouse_filter = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_right = 50
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_right = 60
 
 [node name="PauseButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin"]
 unique_name_in_owner = true
@@ -241,10 +240,13 @@ texture_pressed = ExtResource("9_bxlyd")
 texture_disabled = ExtResource("10_h64tq")
 stretch_mode = 5
 
-[node name="KaluluButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer"]
-unique_name_in_owner = true
+[node name="KaluluButtonMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="KaluluButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/KaluluButtonMargin"]
+unique_name_in_owner = true
+layout_mode = 2
 texture_normal = ExtResource("11_n2mcy")
 texture_pressed = ExtResource("12_crt1m")
 texture_disabled = ExtResource("13_2j53i")
@@ -559,7 +561,7 @@ libraries = {
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin/StimulusButton" to="." method="_on_stimulus_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/VolumeContainer/VolumeButton" to="." method="_on_volume_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin/PauseButton" to="." method="_on_pause_button_pressed"]
-[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButtonMargin/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
 [connection signal="value_changed" from="MainControl/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]

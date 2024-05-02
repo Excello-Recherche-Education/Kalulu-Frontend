@@ -32,7 +32,8 @@ grow_vertical = 2
 color = Color(0.164706, 0.164706, 0.164706, 0.67451)
 
 [node name="KaluluSprite" parent="." instance=ExtResource("2_gi4rq")]
-position = Vector2(568, 1408)
+position = Vector2(320, 1344)
+scale = Vector2(2, 2)
 
 [node name="PassButton" type="Button" parent="KaluluSprite"]
 anchors_preset = 15
