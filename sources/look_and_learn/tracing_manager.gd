@@ -4,6 +4,8 @@ signal finished()
 
 const letter_segment_class: = preload("res://sources/look_and_learn/letter_segment.tscn")
 
+@export var label_settings: LabelSettings
+
 @onready var lower_labels: = %LowerLabels
 @onready var upper_labels: = %UpperLabels
 
@@ -57,7 +59,7 @@ func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lowe
 	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.set("theme_override_font_sizes/font_size", 512)
+	label.label_settings = label_settings
 	
 	if lower:
 		label.text = letter.to_lower()
