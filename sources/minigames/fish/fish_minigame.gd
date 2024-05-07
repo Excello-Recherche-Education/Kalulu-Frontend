@@ -50,68 +50,12 @@ func _ready() -> void:
 
 
 func _find_stimuli_and_distractions() -> void:
-	stimuli = [
-		"il",
-		"ma",
-		"mal",
-		"lama",
-		"lasso",
-		"va",
-		"ri",
-		"vol",
-		"sur",
-		"allé",
-		"vélo",
-		"roulé",
-		"amour",
-		"né",
-		"un",
-		"une",
-		"rat",
-		"lame",
-		"sale",
-		"olive",
-		"ville",
-		"je",
-		"le",
-		"fée",
-		"sol",
-		"fort",
-		"joli",
-		"niche"
-	]
-	distractions = [
-		"ul",
-		"um",
-		"lum",
-		"muma",
-		"slaso",
-		"oa",
-		"ir",
-		"vul",
-		"sru",
-		"léli",
-		"lévu",
-		"louré",
-		"aroum",
-		"én",
-		"na",
-		"enu",
-		"tra",
-		"mila",
-		"esla",
-		"olvie",
-		"vlile",
-		"uj",
-		"ul",
-		"ifé",
-		"slo",
-		"trof",
-		"lijo",
-		"chani"
-	]
+	var data_array: = Database.get_pseudowords_for_lesson(lesson_nb)
 	words_to_present.clear()
 	words_to_present_next.clear()
+	for data: Dictionary in data_array:
+		stimuli.append(data.Word)
+		distractions.append(data.Pseudoword)
 	for word: String in stimuli:
 		words_to_present.append(word)
 	for word: String in distractions:

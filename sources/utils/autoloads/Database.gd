@@ -192,6 +192,24 @@ func get_sentences_for_lesson(p_lesson_nb: int, only_new: = false) -> Array:
 	return ret
 
 
+func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
+	var query: = "SELECT * FROM Pseudowords
+	 INNER JOIN Words ON Words.ID = Pseudowords.WordID 
+	 INNER JOIN 
+	(SELECT WordID, count() as Count FROM GPsInWords 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+		GROUP BY WordID 
+		) TotalCount ON TotalCount.WordID = Words.ID 
+	INNER JOIN 
+	(SELECT WordID, count() as Count FROM GPsInWords 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ? 
+		GROUP BY WordID 
+		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
+	db.query_with_bindings(query, [p_lesson_nb])
+	return db.query_result
+
+
 func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
 	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme, distractor.Phoneme From GPs stimuli 
 	INNER JOIN GPs distractor 
