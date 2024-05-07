@@ -73,3 +73,7 @@ right_click={
 [internationalization]
 
 locale/translation_remaps={}
+
+[rendering]
+
+viewport/hdr_2d=true

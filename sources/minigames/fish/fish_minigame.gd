@@ -14,12 +14,20 @@ const fish_texture_rect_scene: = preload("res://sources/minigames/fish/fish_text
 @onready var real_wrong_fx: = %RealWrongFX
 @onready var real_right_fx: = %RealRightFX
 @onready var fish_animated_sprite: = %FishAnimatedSprite
+@onready var progress_gauge: = %ProgressionGaugePercentMarginContainer
+@onready var progress_gauge_goal: = %ProgressionGaugeGoalPercentMarginContainer2
+@onready var progress_gauge_internal: = %ProgressionGaugeInternal
+
 
 @export var game_duration: = 4 * 60
+@export var minimum_correct_ratio: = 0.8
+@export var winning_color: = Color.WHITE
 
 var tween: Tween
 var words_to_present: Array[String] = []
 var words_to_present_next: Array[String] = []
+var progress_gauge_max_margin: = 0.95
+var total_number_of_words: = 30
 
 
 func _fish_get_drag_data(_at_position: Vector2) -> Variant:
@@ -38,6 +46,7 @@ func _ready() -> void:
 	minigame_ui.progression_container.hide()
 	minigame_ui.progression_gauge.hide()
 	label.hide()
+	progress_gauge_max_margin = progress_gauge.margin_top_ratio
 
 
 func _find_stimuli_and_distractions() -> void:
@@ -108,6 +117,8 @@ func _find_stimuli_and_distractions() -> void:
 	for word: String in distractions:
 		words_to_present.append(word)
 	words_to_present.shuffle()
+	total_number_of_words = words_to_present.size()
+	progress_gauge_goal.margin_top_ratio = (1. - minimum_correct_ratio) * progress_gauge_max_margin
 
 
 func _start() -> void:
@@ -131,7 +142,10 @@ func _present_next_word() -> void:
 
 
 func _on_time_out() -> void:
-	_lose()
+	if _get_win_ratio() >= minimum_correct_ratio:
+		_win()
+	else:
+		_lose()
 
 
 func _beacon_can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -165,6 +179,18 @@ func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 		else:
 			false_wrong_fx.play()
 		words_to_present_next.append(words_to_present.pop_front())
+	_update_progression_gauge()
+	_present_next_word()
+
+
+func _update_progression_gauge() -> void:
+	progress_gauge.margin_top_ratio = progress_gauge_max_margin - progress_gauge_max_margin / total_number_of_words * (total_number_of_words - words_to_present.size() - words_to_present_next.size())
+	if _get_win_ratio() >= minimum_correct_ratio:
+		progress_gauge_internal.modulate = winning_color
+
+
+func _get_win_ratio() -> float:
+	return 1. - float(words_to_present.size() + words_to_present_next.size()) / total_number_of_words
 
 
 func _on_fish_animated_sprite_animation_finished() -> void:

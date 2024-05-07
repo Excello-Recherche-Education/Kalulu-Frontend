@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://df5derhil64ca"]
+[gd_scene load_steps=69 format=3 uid="uid://df5derhil64ca"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_itrpi"]
 [ext_resource type="Script" path="res://sources/minigames/fish/fish_minigame.gd" id="2_68jip"]
@@ -16,6 +16,10 @@
 [ext_resource type="Texture2D" uid="uid://4ci6gmg0c15o" path="res://assets/minigames/minigame_ui/graphic/white_gauge.png" id="12_w5m1b"]
 [ext_resource type="Texture2D" uid="uid://disgg14rdmp81" path="res://assets/minigames/monkeys/graphic/textplank.png" id="13_3p0ue"]
 [ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="14_b3ilp"]
+
+[sub_resource type="Environment" id="Environment_5bcb7"]
+background_mode = 3
+glow_enabled = true
 
 [sub_resource type="Curve2D" id="Curve2D_8d1qx"]
 _data = {
@@ -123,6 +127,57 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_n6305"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flag:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.0628319]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flag:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(186, 170)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Flag:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(204, 472)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Beacon:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_t78yv"]
 resource_name = "idle"
 length = 0.6
@@ -174,57 +229,6 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5, 0]
-}
-
-[sub_resource type="Animation" id="Animation_n6305"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Flag:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.0628319]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Flag:size")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(186, 170)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Flag:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(204, 472)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Beacon:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tmg6i"]
@@ -478,7 +482,12 @@ animations = [{
 [node name="FishMinigame" instance=ExtResource("1_itrpi")]
 script = ExtResource("2_68jip")
 game_duration = 240
+minimum_correct_ratio = 0.8
+winning_color = Color(2.988, 2.328, 0.6, 1)
 minigame_number = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
+environment = SubResource("Environment_5bcb7")
 
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 layout_mode = 1
@@ -540,11 +549,17 @@ centered = false
 
 [node name="FalseWrongFX" parent="GameRoot/Beacon1" index="1" instance=ExtResource("11_ueo10")]
 unique_name_in_owner = true
-position = Vector2(306, 533)
+offset_left = 306.0
+offset_top = 533.0
+offset_right = 306.0
+offset_bottom = 533.0
 
 [node name="FalseRightFX" parent="GameRoot/Beacon1" index="2" instance=ExtResource("9_mcq4c")]
 unique_name_in_owner = true
-position = Vector2(306, 521)
+offset_left = 306.0
+offset_top = 521.0
+offset_right = 306.0
+offset_bottom = 521.0
 
 [node name="Beacon2" type="Control" parent="GameRoot" index="5" node_paths=PackedStringArray("sprites")]
 unique_name_in_owner = true
@@ -583,11 +598,17 @@ speed_scale = 0.5
 
 [node name="RealWrongFX" parent="GameRoot/Beacon2" index="3" instance=ExtResource("11_ueo10")]
 unique_name_in_owner = true
-position = Vector2(306, 533)
+offset_left = 306.0
+offset_top = 533.0
+offset_right = 306.0
+offset_bottom = 533.0
 
 [node name="RealRightFX" parent="GameRoot/Beacon2" index="4" instance=ExtResource("9_mcq4c")]
 unique_name_in_owner = true
-position = Vector2(306, 521)
+offset_left = 306.0
+offset_top = 521.0
+offset_right = 306.0
+offset_bottom = 521.0
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="GameRoot" index="6"]
 layout_mode = 0
@@ -633,7 +654,25 @@ texture = ExtResource("11_p5wnc")
 patch_margin_top = 33
 patch_margin_bottom = 33
 
-[node name="PercentMarginContainer" type="Container" parent="GameRoot/ProgressionGauge" index="0"]
+[node name="ProgressionGaugeGoalPercentMarginContainer2" type="Container" parent="GameRoot/ProgressionGauge" index="0"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_b3ilp")
+margin_top_ratio = 0.19
+
+[node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugeGoalPercentMarginContainer2" index="0"]
+layout_mode = 2
+texture = ExtResource("11_p5wnc")
+patch_margin_top = 33
+patch_margin_bottom = 33
+
+[node name="ProgressionGaugePercentMarginContainer" type="Container" parent="GameRoot/ProgressionGauge" index="1"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -643,7 +682,7 @@ grow_vertical = 2
 script = ExtResource("14_b3ilp")
 margin_top_ratio = 0.95
 
-[node name="ProgressionGauge2" type="NinePatchRect" parent="GameRoot/ProgressionGauge/PercentMarginContainer" index="0"]
+[node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugePercentMarginContainer" index="0"]
 unique_name_in_owner = true
 modulate = Color(0.996078, 0.776471, 0.2, 1)
 layout_mode = 2

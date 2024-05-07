@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cjrhhxq1x7n8r"]
 
 [ext_resource type="Script" path="res://sources/language_tool/fish_word_list.gd" id="1_bdlmx"]
-[ext_resource type="PackedScene" path="res://sources/language_tool/list_title.tscn" id="1_mlni4"]
+[ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="1_mlni4"]
 [ext_resource type="Script" path="res://sources/language_tool/ScrollContainer.gd" id="2_okviq"]
 
 [node name="FishWordList" type="Control"]
