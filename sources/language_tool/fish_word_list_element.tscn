@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://f7s5uqqaoavv"]
+
+[ext_resource type="Script" path="res://sources/language_tool/fish_word_list_element.gd" id="1_ni50l"]
+[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_ywxuc"]
+[ext_resource type="Texture2D" uid="uid://b8tctfnsj3prx" path="res://assets/menus/minus_button.png" id="3_qu268"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0dyeu"]
+bg_color = Color(0.254902, 0.329412, 0.572549, 1)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[node name="FishWordListElement" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 632.0
+offset_bottom = -948.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_ni50l")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0dyeu")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 70
+alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 70
+placeholder_text = "pseudoword"
+alignment = 1
+
+[node name="LessonLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+horizontal_alignment = 1
+
+[node name="Button" parent="HBoxContainer" instance=ExtResource("2_ywxuc")]
+layout_mode = 2
+
+[node name="TextureRect" parent="HBoxContainer/Button" index="0"]
+texture = ExtResource("3_qu268")
+
+[connection signal="item_selected" from="HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="text_changed" from="HBoxContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
+
+[editable path="HBoxContainer/Button"]

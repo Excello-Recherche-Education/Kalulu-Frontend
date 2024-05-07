@@ -219,7 +219,6 @@ func get_min_lesson_for_word_id(word_id: int) -> int:
 	ORDER BY Position", [word_id])
 	var m: = -1
 	for result in db.query_result:
-		print(result)
 		var i: = Database.get_min_lesson_for_gp_id(result.GPID)
 		if i < 0:
 			m = -1
