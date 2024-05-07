@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwi4v0us2td1q"]
+
+[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_2m4af"]
+[ext_resource type="Script" path="res://sources/language_tool/kalulu_speeches.gd" id="1_ea2f2"]
+[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="5_5r4nk"]
+
+[node name="KaluluSpeeches" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ea2f2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 72
+text = "Kalulu Speeches"
+
+[node name="BackButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_2m4af")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/BackButton" index="0"]
+texture = ExtResource("5_5r4nk")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SpeechContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+
+[editable path="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/BackButton"]

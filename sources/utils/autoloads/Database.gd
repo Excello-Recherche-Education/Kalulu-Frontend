@@ -13,6 +13,7 @@ const look_and_learn_images: = "/look_and_learn/images/"
 const look_and_learn_sounds: = "/look_and_learn/sounds/"
 const look_and_learn_videos: = "/look_and_learn/video/"
 const language_sounds: = "/language_sounds/"
+const kalulu_folder: = "/kalulu/"
 const tracing_data_folder: = "tracing_data/"
 const additional_word_list_path: = "word_list.csv"
 const video_extension: = ".ogv"
@@ -355,6 +356,22 @@ func get_syllable_sound_path(syllable: Dictionary) -> String:
 
 func get_word_sound_path(word: Dictionary) -> String:
 	return base_path + language + language_sounds + word.Word + sound_extension
+
+
+func get_kalulu_speech_path(speech_category: String, speech_name: String) -> String:
+	return base_path + language + language_sounds + kalulu_folder + speech_category + "_" + speech_name + sound_extension
+
+
+func load_external_sound(path: String) -> AudioStreamMP3:
+	if not FileAccess.file_exists(path):
+		return null
+	
+	var file: = FileAccess.open(path, FileAccess.READ)
+	var audio_stream: = AudioStreamMP3.new()
+	audio_stream.data = file.get_buffer(file.get_length())
+	file.close()
+	
+	return audio_stream
 
 
 func _phoneme_to_string(phoneme: String) -> String:

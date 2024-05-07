@@ -14,24 +14,32 @@ const right_password_speech_path : String = "main_menu/audio/login_screen_feedba
 @onready var keyboard : CodeKeyboard = $CodeKeyboard
 @onready var teacher_timer : Timer = $InterfaceRight/TeacherButton/TeacherTimer
 
+var help_speech: AudioStream
+var wrong_password_speech: AudioStream
+var right_password_speech: AudioStream
+
 func _ready():
+	help_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "help_code"))
+	wrong_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_wrong_password"))
+	right_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_right_password"))
+	
 	if UserDataManager.teacher_settings and UserDataManager.teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
 		device_number_label.show()
 		device_number_label.text += str(UserDataManager.get_device_settings().device_id)
 	
 	await OpeningCurtain.open()
 	
-	await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(help_speech_path))
+	await kalulu.play_kalulu_speech(help_speech)
 	music_player.play()
 
 
 func _on_code_keyboard_password_entered(password):
 	if UserDataManager.login_student(password):
-		await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(right_password_speech_path))
+		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()
 		get_tree().change_scene_to_file(next_scene_path)
 	else:
-		await kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(wrong_password_speech_path))
+		await kalulu.play_kalulu_speech(wrong_password_speech)
 		keyboard.reset_password()
 
 
@@ -40,7 +48,7 @@ func _on_back_button_pressed():
 
 
 func _on_kalulu_button_pressed():
-	kalulu.play_kalulu_speech(Database.get_audio_stream_for_path(help_speech_path))
+	kalulu.play_kalulu_speech(help_speech)
 
 
 func _on_teacher_button_button_down():

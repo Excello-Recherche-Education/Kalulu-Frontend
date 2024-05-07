@@ -3,8 +3,8 @@ extends Control
 @onready var speech_player : AudioStreamPlayer = $SpeechPlayer
 @onready var sprite: = $Sprite
 
-const tuto_speech_path : String = "main_menu/audio/title_screen_tuto_welcome_oneshot.mp3"
-const feedback_speech_path :String = "main_menu/audio/title_screen_feedback_welcome.mp3"
+var tuto_speech :AudioStreamMP3
+var feedback_speech :AudioStreamMP3
 
 var isSpeaking : bool = false :
 	set(value):
@@ -18,7 +18,9 @@ var elapsedTime : float = 0.0
 
 
 func _ready():
-	_play_speech(Database.get_audio_stream_for_path(tuto_speech_path))
+	tuto_speech = Database.load_external_sound(Database.get_kalulu_speech_path("title_screen", "tuto_welcome_oneshot"))
+	feedback_speech = Database.load_external_sound(Database.get_kalulu_speech_path("title_screen", "feedback_welcome"))
+	_play_speech(tuto_speech)
 
 
 func _process(delta):
@@ -49,7 +51,7 @@ func _play_speech(speech : AudioStream):
 
 
 func start_speech():
-	_play_speech(Database.get_audio_stream_for_path(feedback_speech_path))
+	_play_speech(feedback_speech)
 
 
 func stop_speech():

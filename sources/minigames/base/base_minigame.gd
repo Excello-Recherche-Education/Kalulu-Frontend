@@ -22,12 +22,6 @@ class_name Minigame
 		if minigame_ui:
 			minigame_ui.set_max_progression(value)
 
-@export_group("Speechs")
-@export var intro_kalulu_speech: AudioStream
-@export var help_kalulu_speech: AudioStream
-@export var win_kalulu_speech: AudioStream
-@export var lose_kalulu_speech: AudioStream = preload("res://language_resources/fr/minigames/kalulu/kalulu_lose_minigame_all.mp3")
-
 @onready var minigame_ui: = $MinigameUI
 @onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
 @onready var fireworks: = $Fireworks
@@ -78,11 +72,21 @@ var current_progression: = 0 : set = set_current_progression
 var current_number_of_hints: = 0
 var consecutive_errors: = 0
 
+#Speeches
+var intro_kalulu_speech: AudioStreamMP3
+var help_kalulu_speech: AudioStreamMP3
+var win_kalulu_speech: AudioStreamMP3
+var lose_kalulu_speech: AudioStreamMP3
 
 # ------------ Initialisation ------------
 
 
 func _ready() -> void:
+	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "intro"))
+	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "help"))
+	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "win"))
+	lose_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path("minigame", "lose"))
+	
 	if not Engine.is_editor_hint():
 		minigame_ui.set_master_volume_slider(UserDataManager.get_master_volume())
 		minigame_ui.set_music_volume_slider(UserDataManager.get_music_volume())
