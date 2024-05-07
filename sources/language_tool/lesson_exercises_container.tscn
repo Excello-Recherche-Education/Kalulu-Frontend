@@ -14,6 +14,8 @@ border_color = Color(0, 0, 0, 1)
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
 script = ExtResource("1_ov6jd")
 
 [node name="Panel" type="Panel" parent="."]
