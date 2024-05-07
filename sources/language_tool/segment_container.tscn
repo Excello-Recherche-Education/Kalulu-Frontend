@@ -1,7 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvb8iewnsnsoj"]
+[gd_scene load_steps=10 format=3 uid="uid://bvb8iewnsnsoj"]
 
 [ext_resource type="Script" path="res://sources/language_tool/segment_container.gd" id="1_07lpk"]
+[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="2_4s1sg"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_h02qb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_md77l"]
+font = ExtResource("2_4s1sg")
+font_size = 512
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agg5x"]
 
@@ -44,6 +49,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 512
 text = "Gra"
+label_settings = SubResource("LabelSettings_md77l")
 horizontal_alignment = 1
 vertical_alignment = 1
 
