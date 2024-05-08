@@ -1,10 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://df5oba70wj13y"]
+[gd_scene load_steps=7 format=3 uid="uid://df5oba70wj13y"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_jqkff"]
 [ext_resource type="Script" path="res://sources/minigames/ants/ants_minigame.gd" id="2_05d1y"]
-[ext_resource type="AudioStream" uid="uid://cq3jst5eicj61" path="res://language_resources/fr/minigames/ants/kalulu_help_ants_language.mp3" id="3_gw5oy"]
-[ext_resource type="AudioStream" uid="uid://bbwhlhq0am7ah" path="res://language_resources/fr/minigames/ants/kalulu_intro_ants_language.mp3" id="3_tm6c3"]
-[ext_resource type="AudioStream" uid="uid://75l87cekwytu" path="res://language_resources/fr/minigames/ants/kalulu_end_ants_language.mp3" id="4_llnrn"]
 [ext_resource type="Texture2D" uid="uid://bfeos6fwrmrhc" path="res://assets/minigames/ants/graphics/gauge_icon_ant_empty.png" id="5_jm3ut"]
 [ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="6_qfybu"]
 [ext_resource type="Texture2D" uid="uid://b2mj2s3o22i8p" path="res://assets/minigames/ants/graphics/background.png" id="7_ihrng"]
@@ -16,9 +13,6 @@ lesson_nb = 100
 difficulty = 3
 max_number_of_lives = 5
 max_progression = 3
-intro_kalulu_speech = ExtResource("3_tm6c3")
-help_kalulu_speech = ExtResource("3_gw5oy")
-win_kalulu_speech = ExtResource("4_llnrn")
 
 [node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("5_jm3ut")

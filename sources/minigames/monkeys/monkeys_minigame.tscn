@@ -1,12 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://c20bhtvqds4p6"]
+[gd_scene load_steps=11 format=3 uid="uid://c20bhtvqds4p6"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_6nhsm"]
 [ext_resource type="Script" path="res://sources/minigames/monkeys/monkeys_minigame.gd" id="2_12lw5"]
-[ext_resource type="AudioStream" uid="uid://du2r8wbs2dclx" path="res://language_resources/fr/minigames/monkeys/audio/kalulu/kalulu_intro_monkeys_language.mp3" id="3_ek5u5"]
-[ext_resource type="AudioStream" uid="uid://bu50kgapsbns2" path="res://language_resources/fr/minigames/monkeys/audio/kalulu/kalulu_help_monkeys_language.mp3" id="3_khjvy"]
 [ext_resource type="Texture2D" uid="uid://demg0gbj4lwic" path="res://assets/minigames/monkeys/graphic/background.png" id="3_xpybj"]
 [ext_resource type="Texture2D" uid="uid://b6k16tfsm2p4u" path="res://assets/minigames/monkeys/graphic/ground.png" id="4_m2hoh"]
-[ext_resource type="AudioStream" uid="uid://cu52j5ro8vhyg" path="res://language_resources/fr/minigames/monkeys/audio/kalulu/kalulu_end_monkeys_language.mp3" id="4_oe2vh"]
 [ext_resource type="Texture2D" uid="uid://eor7gaddgj5d" path="res://assets/minigames/monkeys/graphic/palmtree_01.png" id="5_2qxen"]
 [ext_resource type="Texture2D" uid="uid://fex5yvybinsx" path="res://assets/minigames/monkeys/graphic/palmtree_02.png" id="6_f5ri1"]
 [ext_resource type="PackedScene" uid="uid://b8r26vroslasj" path="res://sources/minigames/monkeys/king_monkey.tscn" id="7_43p1x"]
@@ -19,16 +16,11 @@ spacing_glyph = 20
 
 [node name="Monkeys" instance=ExtResource("1_6nhsm")]
 script = ExtResource("2_12lw5")
-difficulty = 0
 throw_to_king_duration = 1.2
 throw_to_monkey_duration = 0.8
 throw_to_planck_duration = 0.9
-minigame_number = 1
 max_number_of_lives = 5
 max_progression = 2
-intro_kalulu_speech = ExtResource("3_ek5u5")
-help_kalulu_speech = ExtResource("3_khjvy")
-win_kalulu_speech = ExtResource("4_oe2vh")
 
 [node name="Environment" type="VBoxContainer" parent="GameRoot" index="0"]
 layout_mode = 1
