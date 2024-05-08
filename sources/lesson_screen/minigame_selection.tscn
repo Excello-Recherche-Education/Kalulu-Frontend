@@ -1,28 +1,18 @@
-[gd_scene load_steps=23 format=3 uid="uid://c8ni7hyi07s5k"]
+[gd_scene load_steps=13 format=3 uid="uid://bpfcoj3q7kgu7"]
 
-[ext_resource type="Script" path="res://sources/lesson_screen/minigame_selection.gd" id="1_hxnuv"]
-[ext_resource type="PackedScene" uid="uid://bxh1torc05k7p" path="res://sources/minigames/crabs/crabs_minigame.tscn" id="2_um8sp"]
-[ext_resource type="PackedScene" uid="uid://dtcgj6ee8jt2t" path="res://sources/minigames/jellyfish/jellyfish_minigame.tscn" id="3_lhigl"]
-[ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="4_fy7i7"]
-[ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="5_dbnyn"]
-[ext_resource type="PackedScene" uid="uid://c20bhtvqds4p6" path="res://sources/minigames/monkeys/monkeys_minigame.tscn" id="5_ffxjw"]
-[ext_resource type="PackedScene" uid="uid://8cbihh6410yp" path="res://sources/minigames/parakeets/parakeets_minigame.tscn" id="6_yxpg8"]
-[ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="7_6uj2l"]
-[ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="9_n17tn"]
-[ext_resource type="PackedScene" uid="uid://df5oba70wj13y" path="res://sources/minigames/ants/ants_minigame.tscn" id="10_t0lb8"]
-[ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="11_ou387"]
-[ext_resource type="Texture2D" uid="uid://2ernt4f1aqmy" path="res://assets/gardens/gardens/garden_01_locked.png" id="12_f4imk"]
-[ext_resource type="Texture2D" uid="uid://c8hth11pvcilr" path="res://assets/gardens/flowers/Plant_01_01_Large.png" id="13_fa1bn"]
-[ext_resource type="Texture2D" uid="uid://c4n80pwuotwh1" path="res://assets/gardens/flowers/Plant_01_02_Large.png" id="14_86pa0"]
-[ext_resource type="Texture2D" uid="uid://dhp4eusoopbhn" path="res://assets/gardens/flowers/Plant_01_03_Large.png" id="15_r2cwu"]
-[ext_resource type="Texture2D" uid="uid://b1o4eemvfxy81" path="res://assets/gardens/flowers/Plant_01_04_Large.png" id="16_iobvh"]
-[ext_resource type="Texture2D" uid="uid://vmhtniwsv524" path="res://assets/gardens/flowers/Plant_01_05_Large.png" id="17_wmwk3"]
-[ext_resource type="Texture2D" uid="uid://cffuqacgb1jra" path="res://assets/lesson_screen/branches.png" id="19_55sxo"]
-[ext_resource type="PackedScene" uid="uid://bw820nbyowrqy" path="res://sources/lesson_screen/lesson_label_button.tscn" id="19_omgl0"]
-[ext_resource type="PackedScene" uid="uid://btx8xh83urtuj" path="res://sources/lesson_screen/lesson_texture_button.tscn" id="20_44v85"]
-[ext_resource type="Texture2D" uid="uid://7sk0g1gcuu7d" path="res://assets/lesson_screen/back.png" id="21_hxufp"]
+[ext_resource type="Script" path="res://sources/lesson_screen/minigame_selection.gd" id="1_n4mw5"]
+[ext_resource type="Texture2D" uid="uid://2ernt4f1aqmy" path="res://assets/gardens/gardens/garden_01_locked.png" id="2_ef1vk"]
+[ext_resource type="Texture2D" uid="uid://c8hth11pvcilr" path="res://assets/gardens/flowers/Plant_01_01_Large.png" id="3_vkqqi"]
+[ext_resource type="Texture2D" uid="uid://c4n80pwuotwh1" path="res://assets/gardens/flowers/Plant_01_02_Large.png" id="4_koenr"]
+[ext_resource type="Texture2D" uid="uid://dhp4eusoopbhn" path="res://assets/gardens/flowers/Plant_01_03_Large.png" id="5_b8m4c"]
+[ext_resource type="Texture2D" uid="uid://b1o4eemvfxy81" path="res://assets/gardens/flowers/Plant_01_04_Large.png" id="6_5xf33"]
+[ext_resource type="Texture2D" uid="uid://vmhtniwsv524" path="res://assets/gardens/flowers/Plant_01_05_Large.png" id="7_egaq6"]
+[ext_resource type="Texture2D" uid="uid://cffuqacgb1jra" path="res://assets/lesson_screen/branches.png" id="8_enx57"]
+[ext_resource type="PackedScene" uid="uid://bw820nbyowrqy" path="res://sources/lesson_screen/lesson_label_button.tscn" id="9_s4245"]
+[ext_resource type="PackedScene" uid="uid://btx8xh83urtuj" path="res://sources/lesson_screen/lesson_texture_button.tscn" id="10_ub1y4"]
+[ext_resource type="Texture2D" uid="uid://7sk0g1gcuu7d" path="res://assets/lesson_screen/back.png" id="11_8lyii"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fk8rp"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdyw6"]
 bg_color = Color(0.34902, 0.133333, 0.74902, 1)
 corner_radius_top_left = 42
 corner_radius_top_right = 42
@@ -31,20 +21,8 @@ corner_radius_bottom_left = 42
 
 [node name="MinigameSelection" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_hxnuv")
-grapheme_minigames = Array[PackedScene]([ExtResource("2_um8sp"), ExtResource("3_lhigl")])
-grapheme_minigames_icons = Array[Texture]([ExtResource("4_fy7i7"), ExtResource("5_dbnyn")])
-syllable_minigames = Array[PackedScene]([ExtResource("6_yxpg8")])
-syllable_minigames_icons = Array[Texture]([ExtResource("7_6uj2l")])
-words_minigames = Array[PackedScene]([ExtResource("5_ffxjw")])
-words_minigames_icons = Array[Texture]([ExtResource("9_n17tn")])
-sentences_minigames = Array[PackedScene]([ExtResource("10_t0lb8")])
-sentences_minigames_icons = Array[Texture]([ExtResource("11_ou387")])
+anchors_preset = 0
+script = ExtResource("1_n4mw5")
 
 [node name="BackgroundRect" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -52,13 +30,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -640.0
-offset_top = -450.0
-offset_right = 640.0
-offset_bottom = 450.0
+offset_left = -430.0
+offset_top = -366.0
+offset_right = 2990.0
+offset_bottom = 2153.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("12_f4imk")
+texture = ExtResource("2_ef1vk")
 
 [node name="Plants" type="Control" parent="."]
 unique_name_in_owner = true
@@ -75,7 +53,7 @@ offset_left = 390.0
 offset_top = 160.0
 offset_right = 484.0
 offset_bottom = 383.0
-texture = ExtResource("13_fa1bn")
+texture = ExtResource("3_vkqqi")
 
 [node name="TextureRect2" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -83,7 +61,7 @@ offset_left = 1992.0
 offset_top = 331.0
 offset_right = 2103.0
 offset_bottom = 559.0
-texture = ExtResource("14_86pa0")
+texture = ExtResource("4_koenr")
 
 [node name="TextureRect3" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -91,7 +69,7 @@ offset_left = 772.0
 offset_top = 1394.0
 offset_right = 866.0
 offset_bottom = 1617.0
-texture = ExtResource("13_fa1bn")
+texture = ExtResource("3_vkqqi")
 
 [node name="TextureRect4" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -99,7 +77,7 @@ offset_left = 694.0
 offset_top = 774.0
 offset_right = 805.0
 offset_bottom = 960.0
-texture = ExtResource("15_r2cwu")
+texture = ExtResource("5_b8m4c")
 
 [node name="TextureRect5" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -107,7 +85,7 @@ offset_left = 2045.0
 offset_top = 1073.0
 offset_right = 2130.0
 offset_bottom = 1209.0
-texture = ExtResource("16_iobvh")
+texture = ExtResource("6_5xf33")
 
 [node name="TextureRect6" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -115,7 +93,7 @@ offset_left = 390.0
 offset_top = 1228.0
 offset_right = 437.0
 offset_bottom = 1353.0
-texture = ExtResource("17_wmwk3")
+texture = ExtResource("7_egaq6")
 
 [node name="TextureRect7" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -123,7 +101,7 @@ offset_left = 2337.0
 offset_top = 1300.0
 offset_right = 2431.0
 offset_bottom = 1523.0
-texture = ExtResource("13_fa1bn")
+texture = ExtResource("3_vkqqi")
 
 [node name="TextureRect8" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -131,7 +109,7 @@ offset_left = 804.0
 offset_top = 53.0
 offset_right = 915.0
 offset_bottom = 281.0
-texture = ExtResource("14_86pa0")
+texture = ExtResource("4_koenr")
 
 [node name="TextureRect9" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -139,7 +117,7 @@ offset_left = 2278.0
 offset_top = 67.0
 offset_right = 2389.0
 offset_bottom = 253.0
-texture = ExtResource("15_r2cwu")
+texture = ExtResource("5_b8m4c")
 
 [node name="TextureRect10" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -147,7 +125,7 @@ offset_left = 1583.0
 offset_top = 1516.0
 offset_right = 1694.0
 offset_bottom = 1702.0
-texture = ExtResource("15_r2cwu")
+texture = ExtResource("5_b8m4c")
 
 [node name="TextureRect11" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -155,7 +133,7 @@ offset_left = 249.0
 offset_top = 646.0
 offset_right = 334.0
 offset_bottom = 782.0
-texture = ExtResource("16_iobvh")
+texture = ExtResource("6_5xf33")
 
 [node name="TextureRect12" type="TextureRect" parent="Plants"]
 layout_mode = 0
@@ -163,7 +141,7 @@ offset_left = 2195.0
 offset_top = 633.0
 offset_right = 2242.0
 offset_bottom = 758.0
-texture = ExtResource("17_wmwk3")
+texture = ExtResource("7_egaq6")
 
 [node name="Buttons" type="Control" parent="."]
 layout_mode = 1
@@ -179,9 +157,9 @@ offset_left = 1024.0
 offset_top = 644.0
 offset_right = 1536.0
 offset_bottom = 1156.0
-texture = ExtResource("19_55sxo")
+texture = ExtResource("8_enx57")
 
-[node name="LessonButton" parent="Buttons" instance=ExtResource("19_omgl0")]
+[node name="LessonButton" parent="Buttons" instance=ExtResource("9_s4245")]
 layout_mode = 0
 offset_left = 1152.0
 offset_top = 772.0
@@ -190,7 +168,7 @@ offset_bottom = 1028.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
-[node name="ExerciseButton1" parent="Buttons" instance=ExtResource("19_omgl0")]
+[node name="ExerciseButton1" parent="Buttons" instance=ExtResource("9_s4245")]
 layout_mode = 0
 offset_left = 1152.0
 offset_top = 388.0
@@ -199,7 +177,7 @@ offset_bottom = 644.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
-[node name="ExerciseButton2" parent="Buttons" instance=ExtResource("19_omgl0")]
+[node name="ExerciseButton2" parent="Buttons" instance=ExtResource("9_s4245")]
 layout_mode = 0
 offset_left = 820.0
 offset_top = 972.0
@@ -208,7 +186,7 @@ offset_bottom = 1228.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
-[node name="ExerciseButton3" parent="Buttons" instance=ExtResource("19_omgl0")]
+[node name="ExerciseButton3" parent="Buttons" instance=ExtResource("9_s4245")]
 layout_mode = 0
 offset_left = 1480.0
 offset_top = 972.0
@@ -232,7 +210,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_fk8rp")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wdyw6")
 
 [node name="MarginContainer" type="MarginContainer" parent="MinigameChoiceContainer"]
 layout_mode = 2
@@ -252,29 +230,19 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 50
 
-[node name="LessonTextureButton" parent="MinigameChoiceContainer/MarginContainer/VBoxContainer/MinigameButtonContainer" instance=ExtResource("20_44v85")]
+[node name="MinigameChoiceBackButton" parent="MinigameChoiceContainer/MarginContainer/VBoxContainer" instance=ExtResource("10_ub1y4")]
 layout_mode = 2
-size_flags_horizontal = 1
-size_flags_vertical = 1
+texture = ExtResource("11_8lyii")
 
-[node name="LessonTextureButton2" parent="MinigameChoiceContainer/MarginContainer/VBoxContainer/MinigameButtonContainer" instance=ExtResource("20_44v85")]
-layout_mode = 2
-size_flags_horizontal = 1
-size_flags_vertical = 1
-
-[node name="MinigameChoiceBackButton" parent="MinigameChoiceContainer/MarginContainer/VBoxContainer" instance=ExtResource("20_44v85")]
-layout_mode = 2
-texture = ExtResource("21_hxufp")
-
-[node name="BackButton" parent="." instance=ExtResource("20_44v85")]
-layout_mode = 2
+[node name="BackButton" parent="." instance=ExtResource("10_ub1y4")]
+layout_mode = 0
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 320.0
 offset_bottom = 320.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource("21_hxufp")
+texture = ExtResource("11_8lyii")
 
 [connection signal="pressed" from="Buttons/LessonButton" to="." method="_on_lesson_button_pressed"]
 [connection signal="pressed" from="Buttons/ExerciseButton1" to="." method="_on_exercise_button_1_pressed"]
