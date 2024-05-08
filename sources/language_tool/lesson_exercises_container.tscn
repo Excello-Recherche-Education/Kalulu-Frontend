@@ -10,53 +10,53 @@ bg_color = Color(0.254902, 0.329412, 0.572549, 1)
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
-[node name="LessonExercisesContainer" type="MarginContainer"]
+[node name="LessonExercisesContainer" type="PanelContainer"]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_right = 25
+theme_override_styles/panel = SubResource("StyleBoxFlat_qwmcw")
 script = ExtResource("1_ov6jd")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_qwmcw")
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="LessonIDLabel" type="Label" parent="HBoxContainer"]
+[node name="LessonIDLabel" type="Label" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LessonGPs" type="HBoxContainer" parent="HBoxContainer"]
+[node name="LessonGPs" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="ExerciseButton1" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+[node name="ExerciseButton1" type="OptionButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ExerciseButton2" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+[node name="ExerciseButton2" type="OptionButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ExerciseButton3" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+[node name="ExerciseButton3" type="OptionButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="SaveButton" parent="HBoxContainer" instance=ExtResource("2_10y14")]
+[node name="SaveButton" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_10y14")]
 layout_mode = 2
 
-[node name="TextureRect" parent="HBoxContainer/SaveButton" index="0"]
+[node name="TextureRect" parent="MarginContainer/HBoxContainer/SaveButton" index="0"]
 texture = ExtResource("3_ssxih")
 
-[node name="OKTexture" type="TextureRect" parent="HBoxContainer/SaveButton/TextureRect" index="0"]
+[node name="OKTexture" type="TextureRect" parent="MarginContainer/HBoxContainer/SaveButton/TextureRect" index="0"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 3
@@ -72,13 +72,13 @@ scale = Vector2(0.2, 0.2)
 pivot_offset = Vector2(512, 512)
 texture = ExtResource("4_0353f")
 
-[node name="Control" type="Control" parent="HBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(220, 220)
 layout_mode = 2
 
-[connection signal="item_selected" from="HBoxContainer/HBoxContainer/ExerciseButton1" to="." method="_on_exercise_button_1_item_selected"]
-[connection signal="item_selected" from="HBoxContainer/HBoxContainer/ExerciseButton2" to="." method="_on_exercise_button_2_item_selected"]
-[connection signal="item_selected" from="HBoxContainer/HBoxContainer/ExerciseButton3" to="." method="_on_exercise_button_3_item_selected"]
-[connection signal="pressed" from="HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer/ExerciseButton1" to="." method="_on_exercise_button_1_item_selected"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer/ExerciseButton2" to="." method="_on_exercise_button_2_item_selected"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer/ExerciseButton3" to="." method="_on_exercise_button_3_item_selected"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
 
-[editable path="HBoxContainer/SaveButton"]
+[editable path="MarginContainer/HBoxContainer/SaveButton"]

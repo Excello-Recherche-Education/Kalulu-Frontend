@@ -1,4 +1,4 @@
-extends MarginContainer
+extends PanelContainer
 
 @export var lesson_number: = -1:
 	set = _set_lesson_number
