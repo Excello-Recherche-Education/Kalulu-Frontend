@@ -7,6 +7,10 @@ extends PanelContainer
 @onready var lesson_gps: HBoxContainer = %LessonGPs
 @onready var exercise_buttons: Array[OptionButton] = [%ExerciseButton1, %ExerciseButton2, %ExerciseButton3]
 @onready var ok_texture: TextureRect = %OKTexture
+@onready var number_of_g_ps: Label = %NumberOfGPs
+@onready var number_of_syllables: Label = %NumberOfSyllables
+@onready var number_of_words: Label = %NumberOfWords
+@onready var number_of_sentences: Label = %NumberOfSentences
 
 
 func _ready() -> void:
@@ -35,7 +39,6 @@ func _set_lesson_number(value: int) -> void:
 		var gp: = Label.new()
 		gp.text = e.Grapheme + "-" + e.Phoneme
 		lesson_gps.add_child(gp)
-		
 	
 	Database.db.query("Select Exercise1, Exercise2, Exercise3, LessonNb FROM LessonsExercises
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
@@ -45,6 +48,16 @@ func _set_lesson_number(value: int) -> void:
 		exercise_buttons[0].select(exercise_buttons[0].get_item_index(e.Exercise1))
 		exercise_buttons[1].select(exercise_buttons[0].get_item_index(e.Exercise2))
 		exercise_buttons[2].select(exercise_buttons[0].get_item_index(e.Exercise3))
+	
+	var gps_in_lesson: = Database.get_GP_for_lesson(lesson_number, true)
+	var syllables_in_lesson: = Database.get_syllables_for_lesson(lesson_number)
+	var words_in_lesson: = Database.get_words_for_lesson(lesson_number)
+	var sentences_in_lesson: = Database.get_sentences_for_lesson(lesson_number)
+	
+	number_of_g_ps.text = str(gps_in_lesson.size())
+	number_of_syllables.text = str(syllables_in_lesson.size())
+	number_of_words.text = str(words_in_lesson.size())
+	number_of_sentences.text = str(sentences_in_lesson.size())
 	
 	ok_texture.visible = true
 

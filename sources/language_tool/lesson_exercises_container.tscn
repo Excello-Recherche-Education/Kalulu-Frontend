@@ -36,18 +36,73 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
 layout_mode = 2
 
-[node name="ExerciseButton1" type="OptionButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "GPs:"
+
+[node name="NumberOfGPs" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ExerciseButton2" type="OptionButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+text = "Syllables:"
+
+[node name="NumberOfSyllables" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ExerciseButton3" type="OptionButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+text = "Words:"
+
+[node name="NumberOfWords" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer4"]
+layout_mode = 2
+text = "Sentences:"
+
+[node name="NumberOfSentences" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ExerciseButton1" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ExerciseButton2" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ExerciseButton3" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -77,9 +132,9 @@ texture = ExtResource("4_0353f")
 custom_minimum_size = Vector2(220, 220)
 layout_mode = 2
 
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer/ExerciseButton1" to="." method="_on_exercise_button_1_item_selected"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer/ExerciseButton2" to="." method="_on_exercise_button_2_item_selected"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer/ExerciseButton3" to="." method="_on_exercise_button_3_item_selected"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer/ExerciseButton1" to="." method="_on_exercise_button_1_item_selected"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer/ExerciseButton2" to="." method="_on_exercise_button_2_item_selected"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer/ExerciseButton3" to="." method="_on_exercise_button_3_item_selected"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
 
 [editable path="MarginContainer/HBoxContainer/SaveButton"]
