@@ -7,6 +7,44 @@ const lesson_exercice_container_scene: = preload("res://sources/language_tool/le
 
 
 func _ready() -> void:
+	var query: = "SELECT name FROM sqlite_master WHERE type='table' AND name='ExerciseTypes'"
+	Database.db.query(query)
+	if Database.db.query_result.is_empty():
+		Database.db.query("CREATE TABLE ExerciseTypes (ID INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, Type TEXT NOT NULL)")
+		Database.db.insert_row("ExerciseTypes",
+		{
+			Type = "Grapheme",
+		})
+		Database.db.insert_row("ExerciseTypes",
+		{
+			Type = "Syllable",
+		})
+		Database.db.insert_row("ExerciseTypes",
+		{
+			Type = "Words",
+		})
+		Database.db.insert_row("ExerciseTypes",
+		{
+			Type = "Sentences",
+		})
+	
+	query = "SELECT name FROM sqlite_master WHERE type='table' AND name='LessonsExercises'"
+	Database.db.query(query)
+	if Database.db.query_result.is_empty():
+		Database.db.query("CREATE TABLE 'LessonsExercises' (
+			'ID'	INTEGER NOT NULL UNIQUE,
+			'LessonID'	INTEGER NOT NULL,
+			'Exercise1'	INTEGER NOT NULL,
+			'Exercise2'	INTEGER NOT NULL,
+			'Exercise3'	INTEGER NOT NULL,
+			PRIMARY KEY('ID' AUTOINCREMENT),
+			FOREIGN KEY('Exercise3') REFERENCES 'ExerciseTypes'('ID') ON UPDATE CASCADE ON DELETE CASCADE,
+			FOREIGN KEY('Exercise2') REFERENCES 'ExerciseTypes'('ID') ON UPDATE CASCADE ON DELETE CASCADE,
+			FOREIGN KEY('Exercise1') REFERENCES 'ExerciseTypes'('ID') ON UPDATE CASCADE ON DELETE CASCADE,
+			FOREIGN KEY('LessonID') REFERENCES 'Lessons'('ID') ON UPDATE CASCADE ON DELETE CASCADE
+		)")
+	
+	
 	Database.db.query("Select * FROM Lessons")
 	
 	for e in Database.db.query_result:
