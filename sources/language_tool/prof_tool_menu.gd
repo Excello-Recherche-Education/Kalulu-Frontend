@@ -83,6 +83,10 @@ func _on_pseudowords_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/fish_word_list.tscn")
 
 
+func _on_kalulu_speeches_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/language_tool/kalulu_speeches.tscn")
+
+
 func _on_export_filename_selected(filename: String) -> void:
 	var summary_file: = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
 	for i in Database.get_lessons_count():
@@ -313,7 +317,3 @@ func _create_sentence_csv() -> void:
 				break
 			lesson = max(lesson, i)
 		gp_list_file.store_csv_line([e.Sentence, lesson])
-
-
-
-

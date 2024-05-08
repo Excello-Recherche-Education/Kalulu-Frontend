@@ -61,6 +61,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Lesson List"
 
+[node name="KaluluSpeechesButton" type="Button" parent="CenterContainer/TabContainer/Language"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Kalulu Speeches"
+
 [node name="LookAndLearnData" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 visible = false
 layout_mode = 2
@@ -222,6 +227,7 @@ theme_override_font_sizes/font_size = 60
 [connection signal="pressed" from="CenterContainer/TabContainer/Language/SyllableListButton" to="." method="_on_syllable_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/Language/SentenceListButton" to="." method="_on_sentence_list_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/Language/LessonListButton" to="." method="_on_lesson_list_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Language/KaluluSpeechesButton" to="." method="_on_kalulu_speeches_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/LookAndLearnData/TracingBuilderButton" to="." method="_on_tracing_builder_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/LookAndLearnData/DataLoaderButton" to="." method="_on_data_loader_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/LookAndLearnData/DataLoaderButton2" to="." method="_on_data_loader_button_2_pressed"]
