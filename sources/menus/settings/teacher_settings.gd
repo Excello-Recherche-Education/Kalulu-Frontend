@@ -55,3 +55,7 @@ func _on_add_student_button_pressed():
 func _on_add_device_button_pressed():
 	if UserDataManager.add_device():
 		_refresh_devices_tabs()
+
+
+func _on_lesson_unlocks_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://sources/menus/settings/lesson_unlocks.tscn")

@@ -90,7 +90,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Delete device"
 
+[node name="LessonUnlocksButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Unlock lessons"
+
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/LessonUnlocksButton" to="." method="_on_lesson_unlocks_button_pressed"]

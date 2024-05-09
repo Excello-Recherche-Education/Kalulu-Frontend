@@ -8,11 +8,11 @@ var student: String = "" :
 			_save_student_settings()
 			
 		student = student_name
+		student_settings = null
+		student_progression = null
 		if student :
 			_load_student_settings()
 			_load_student_progression()
-		else :
-			student_settings = null
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings

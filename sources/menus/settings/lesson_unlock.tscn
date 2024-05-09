@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://dht5umof6hqqy"]
+
+[ext_resource type="Script" path="res://sources/menus/settings/lesson_unlock.gd" id="1_rlnlh"]
+
+[node name="LessonUnlock" type="MarginContainer"]
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+script = ExtResource("1_rlnlh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LessonLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 64
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="LookAndLearnOptionButton" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExerciseOptionButton1" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExerciseOptionButton2" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExerciseOptionButton3" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Pad" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 350
+
+[connection signal="item_selected" from="HBoxContainer/HBoxContainer/LookAndLearnOptionButton" to="." method="_on_look_and_learn_option_button_item_selected"]
+[connection signal="item_selected" from="HBoxContainer/HBoxContainer/ExerciseOptionButton1" to="." method="_on_exercise_option_button_1_item_selected"]
+[connection signal="item_selected" from="HBoxContainer/HBoxContainer/ExerciseOptionButton2" to="." method="_on_exercise_option_button_2_item_selected"]
+[connection signal="item_selected" from="HBoxContainer/HBoxContainer/ExerciseOptionButton3" to="." method="_on_exercise_option_button_3_item_selected"]
