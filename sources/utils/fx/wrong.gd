@@ -4,10 +4,12 @@ class_name WrongFX
 signal finished()
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 
 func play() -> void:
 	animation_player.play("wrong")
+	audio_player.play()
 
 
 func _on_animation_player_animation_finished(animation_name: StringName) -> void:

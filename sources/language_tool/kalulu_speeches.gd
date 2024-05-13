@@ -54,6 +54,16 @@ func _ready() -> void:
 			"help": "",
 			"end": "",
 		},
+		"fish": {
+			"intro": "",
+			"intro_test_game_first_word": "",
+			"lose_test_game_first_word": "",
+			"win_test_game_first_word": "",
+			"lose_test_game_second_word": "",
+			"win_test_game_second_word": "",
+			"end": "",
+			"lose": "",
+		}
 	}
 	
 	for speech_title in speeches.keys():

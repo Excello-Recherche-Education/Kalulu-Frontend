@@ -154,7 +154,7 @@ func get_words_for_lesson(lesson_nb: int, only_new: = false) -> Array:
 
 
 func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array:
-	var query: = "SELECT * FROM Syllables
+	var query: = "SELECT *, LessonNb FROM Syllables
 	 INNER JOIN 
 	(SELECT SyllableID, count() as Count FROM GPsInSyllables 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 

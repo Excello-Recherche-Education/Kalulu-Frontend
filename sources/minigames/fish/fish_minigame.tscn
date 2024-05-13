@@ -484,6 +484,7 @@ script = ExtResource("2_68jip")
 game_duration = 240
 minimum_correct_ratio = 0.8
 winning_color = Color(2.988, 2.328, 0.6, 1)
+minigame_name = "fish"
 lesson_nb = 50
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
