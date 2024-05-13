@@ -25,7 +25,7 @@ func _ready() -> void:
 func _load_speech() -> void:
 	var current_file: String = Database.get_kalulu_speech_path(speech_category, speech_name)
 	if FileAccess.file_exists(current_file):
-		var audio_stream: = Database.load_external_sound(current_file)
+		audio_stream_player.stream = Database.load_external_sound(current_file)
 		play_button.show()
 	else:
 		play_button.hide()
@@ -64,5 +64,5 @@ func _on_file_dialog_file_selected(file_path: String) -> void:
 		
 		DirAccess.copy_absolute(file_path, current_file)
 		
-		var audio_stream: = Database.load_external_sound(current_file)
+		audio_stream_player.stream = Database.load_external_sound(current_file)
 		play_button.show()
