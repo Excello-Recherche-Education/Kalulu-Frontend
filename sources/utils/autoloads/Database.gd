@@ -82,6 +82,24 @@ func load_additional_word_list() -> String:
 	return ""
 
 
+func get_exercice_for_lesson(lesson_nb: int) -> Array[String]:
+	var query: = "Select Exercise1, Exercise2, Exercise3 FROM LessonsExercises
+	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
+	WHERE LessonNB == %o" % lesson_nb
+	Database.db.query(query)
+	
+	var answer: Array[String]
+	for res in Database.db.query_result:
+		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == %o" % res.Exercise1)
+		answer.append(Database.db.query_result[0].Type)
+		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == %o" % res.Exercise2)
+		answer.append(Database.db.query_result[0].Type)
+		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == %o" % res.Exercise3)
+		answer.append(Database.db.query_result[0].Type)
+	
+	return answer
+
+
 func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false) -> Array:
 	
 	var parameters := []

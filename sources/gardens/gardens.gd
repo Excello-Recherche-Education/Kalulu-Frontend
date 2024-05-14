@@ -112,25 +112,13 @@ func get_gardens_db_data() -> void:
 
 
 func _setup_minigame_selection() -> void:
-	var query: = "Select Grapheme, Phoneme, Exercise1, Exercise2, Exercise3 FROM Lessons
-		INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
-		INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
-		INNER JOIN LessonsExercises ON Lessons.ID = LessonsExercises.LessonID
-		WHERE LessonNB == %o" % current_lesson_number
-	Database.db.query(query)
-	var lesson_dict: = Database.db.query_result[0]
-	Database.db.query("Select Type FROM ExerciseTypes
-		WHERE ID == %o" % lesson_dict.Exercise1)
-	var exercise1: String = Database.db.query_result[0].Type
-	Database.db.query("Select Type FROM ExerciseTypes
-		WHERE ID == %o" % lesson_dict.Exercise2)
-	var exercise2: String = Database.db.query_result[0].Type
-	Database.db.query("Select Type FROM ExerciseTypes
-		WHERE ID == %o" % lesson_dict.Exercise3)
-	var exercise3: String = Database.db.query_result[0].Type
+	var exercises: = Database.get_exercice_for_lesson(current_lesson_number)
+	var exercise1: String = exercises[0]
+	var exercise2: String = exercises[1]
+	var exercise3: String = exercises[2]
 	
 	if lesson_button:
-		lesson_button.text = "%s-%s" % [lesson_dict.Grapheme, lesson_dict.Phoneme]
+		lesson_button.text = lessons[current_lesson_number][0].grapheme
 		lesson_button.display_text = true
 	if exercise_button_1:
 		exercise_button_1.text = exercise1
