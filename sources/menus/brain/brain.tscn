@@ -87,7 +87,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1rwi2")
-locked_color = Color(0, 0.0156863, 0.164706, 1)
+locked_color = Color(0.000455221, 0.0669486, 0.35333, 1)
 unlocked_colors = Array[Color]([Color(0.588235, 0.439216, 0.878431, 1), Color(1, 0.909804, 0.137255, 1), Color(0.929412, 0.603922, 0.709804, 1), Color(0.658824, 0.262745, 0.286275, 1), Color(0.247059, 0.196078, 0.647059, 1), Color(0.619608, 0.976471, 0.670588, 1), Color(0.764706, 0.760784, 0.768627, 1), Color(1, 0.686275, 0.341176, 1), Color(0.305882, 0.996078, 0.894118, 1), Color(0.478431, 0.819608, 1, 1), Color(0.764706, 0.760784, 0.768627, 1), Color(1, 0.909804, 0.137255, 1), Color(0.658824, 0.262745, 0.286275, 1), Color(0.929412, 0.603922, 0.709804, 1), Color(0.619608, 0.976471, 0.670588, 1), Color(0.247059, 0.196078, 0.647059, 1), Color(0.305882, 0.996078, 0.894118, 1), Color(0.478431, 0.819608, 1, 1), Color(1, 0.686275, 0.341176, 1), Color(0.588235, 0.439216, 0.878431, 1)])
 gardens_layout = ExtResource("2_qeplj")
 
@@ -220,6 +220,7 @@ texture_normal = ExtResource("3_h8d14")
 
 [node name="Particles1" type="GPUParticles2D" parent="GardenButtons/GardenButton1"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(59, 56)
 scale = Vector2(0.4, 0.4)
@@ -242,6 +243,7 @@ texture_normal = ExtResource("4_0d7o0")
 
 [node name="Particles2" type="GPUParticles2D" parent="GardenButtons/GardenButton2"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(50, 51.5)
 scale = Vector2(0.4, 0.4)
@@ -264,6 +266,7 @@ texture_normal = ExtResource("5_5g67s")
 
 [node name="Particles3" type="GPUParticles2D" parent="GardenButtons/GardenButton3"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(59.5, 51)
 scale = Vector2(0.4, 0.4)
@@ -286,6 +289,7 @@ texture_normal = ExtResource("6_ma84f")
 
 [node name="Particles4" type="GPUParticles2D" parent="GardenButtons/GardenButton4"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(56.5, 59.5)
 scale = Vector2(0.4, 0.4)
@@ -308,6 +312,7 @@ texture_normal = ExtResource("7_ejtr0")
 
 [node name="Particles5" type="GPUParticles2D" parent="GardenButtons/GardenButton5"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(56, 58)
 scale = Vector2(0.4, 0.4)
@@ -330,6 +335,7 @@ texture_normal = ExtResource("8_j3f61")
 
 [node name="Particles6" type="GPUParticles2D" parent="GardenButtons/GardenButton6"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(59.5, 55.5)
 scale = Vector2(0.4, 0.4)
@@ -352,6 +358,7 @@ texture_normal = ExtResource("9_mfa08")
 
 [node name="Particles7" type="GPUParticles2D" parent="GardenButtons/GardenButton7"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(56, 49)
 scale = Vector2(0.4, 0.4)
@@ -374,6 +381,7 @@ texture_normal = ExtResource("10_3lr1g")
 
 [node name="Particles8" type="GPUParticles2D" parent="GardenButtons/GardenButton8"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(54.5, 48.5)
 scale = Vector2(0.4, 0.4)
@@ -396,6 +404,7 @@ texture_normal = ExtResource("11_g1567")
 
 [node name="Particles9" type="GPUParticles2D" parent="GardenButtons/GardenButton9"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(71, 66)
 scale = Vector2(0.4, 0.4)
@@ -418,6 +427,7 @@ texture_normal = ExtResource("12_gekn5")
 
 [node name="Particles10" type="GPUParticles2D" parent="GardenButtons/GardenButton10"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(54, 64.5)
 scale = Vector2(0.4, 0.4)
@@ -440,6 +450,7 @@ texture_normal = ExtResource("13_bwdw7")
 
 [node name="Particles11" type="GPUParticles2D" parent="GardenButtons/GardenButton11"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(68, 45.5)
 scale = Vector2(0.4, 0.4)
@@ -462,6 +473,7 @@ texture_normal = ExtResource("14_ho6b5")
 
 [node name="Particles12" type="GPUParticles2D" parent="GardenButtons/GardenButton12"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(57.5, 47.5)
 scale = Vector2(0.4, 0.4)
@@ -484,6 +496,7 @@ texture_normal = ExtResource("15_woe01")
 
 [node name="Particles13" type="GPUParticles2D" parent="GardenButtons/GardenButton13"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(51, 64.5)
 scale = Vector2(0.4, 0.4)
@@ -506,6 +519,7 @@ texture_normal = ExtResource("16_7bvji")
 
 [node name="Particles14" type="GPUParticles2D" parent="GardenButtons/GardenButton14"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(47, 49)
 scale = Vector2(0.4, 0.4)
@@ -528,6 +542,7 @@ texture_normal = ExtResource("17_nfgsr")
 
 [node name="Particles15" type="GPUParticles2D" parent="GardenButtons/GardenButton15"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(53.5, 52.5)
 scale = Vector2(0.4, 0.4)
@@ -550,6 +565,7 @@ texture_normal = ExtResource("18_4fld7")
 
 [node name="Particles16" type="GPUParticles2D" parent="GardenButtons/GardenButton16"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(82.5, 50)
 scale = Vector2(0.4, 0.4)
@@ -572,6 +588,7 @@ texture_normal = ExtResource("19_uavbd")
 
 [node name="Particles17" type="GPUParticles2D" parent="GardenButtons/GardenButton17"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(52, 54)
 scale = Vector2(0.4, 0.4)
@@ -594,6 +611,7 @@ texture_normal = ExtResource("20_20x1w")
 
 [node name="Particles18" type="GPUParticles2D" parent="GardenButtons/GardenButton18"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(60.5, 47.5)
 scale = Vector2(0.4, 0.4)
@@ -616,6 +634,7 @@ texture_normal = ExtResource("21_4qrpc")
 
 [node name="Particles19" type="GPUParticles2D" parent="GardenButtons/GardenButton19"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(46.5, 53)
 scale = Vector2(0.4, 0.4)
@@ -638,6 +657,7 @@ texture_normal = ExtResource("22_4pwu6")
 
 [node name="Particles20" type="GPUParticles2D" parent="GardenButtons/GardenButton20"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(59.5, 47)
 scale = Vector2(0.4, 0.4)
