@@ -85,7 +85,7 @@ func _ready() -> void:
 
 
 func _on_garden_button_pressed(button_number: int) -> void:
-	OpeningCurtain.close()
+	await OpeningCurtain.close()
 	
 	var gardens: = gardens_scene.instantiate()
 	gardens.starting_garden = button_number

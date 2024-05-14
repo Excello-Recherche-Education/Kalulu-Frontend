@@ -950,6 +950,7 @@ lifetime = 0.5
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
+[connection signal="pressed" from="LeftContainer/MarginContainer/GardenButton" to="." method="_on_garden_button_pressed"]
 [connection signal="finished" from="Frame/Mask/ColorRect/TracingManager" to="." method="_on_tracing_manager_finished"]
 [connection signal="finished" from="Frame/Mask/VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]
 [connection signal="pressed" from="GraphemeButton" to="." method="_on_grapheme_button_pressed"]

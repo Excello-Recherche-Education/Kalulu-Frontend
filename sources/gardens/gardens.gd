@@ -209,18 +209,6 @@ func _fill_minigame_choice(exercise_type: String, is_completed: bool, minigame_n
 		button.pressed.connect(_on_minigame_button_pressed.bind(exercise_scenes[i], minigame_number))
 
 
-func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
-	await OpeningCurtain.close()
-	
-	var minigame: Minigame = minigame_scene.instantiate()
-	minigame.lesson_nb = current_lesson_number
-	minigame.minigame_number = minigame_number
-	
-	get_tree().root.add_child(minigame)
-	get_tree().current_scene = minigame
-	queue_free()
-
-
 func set_up_lessons() -> void:
 	var lesson_ind: = 1
 	for garden_ind in garden_parent.get_child_count():
@@ -325,6 +313,18 @@ func _on_exercise_button_2_pressed() -> void:
 func _on_exercise_button_3_pressed() -> void:
 	_fill_minigame_choice(exercise_button_3.text, exercise_button_3.completed, 2)
 	minigame_choice_container.visible = true
+
+
+func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
+	await OpeningCurtain.close()
+	
+	var minigame: Minigame = minigame_scene.instantiate()
+	minigame.lesson_nb = current_lesson_number
+	minigame.minigame_number = minigame_number
+	
+	get_tree().root.add_child(minigame)
+	get_tree().current_scene = minigame
+	queue_free()
 
 
 func _on_progression_unlocks_changed() -> void:
@@ -450,6 +450,7 @@ func _on_back_button_pressed() -> void:
 		minigame_selection.visible = false
 		back_button.disabled = false
 	else:
+		await OpeningCurtain.close()
 		get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
 
 

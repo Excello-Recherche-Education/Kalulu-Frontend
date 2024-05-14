@@ -1,8 +1,5 @@
 extends Control
 
-const MinigameSelection: = preload("res://sources/lesson_screen/minigame_selection.gd")
-const minigame_selection_scene: = preload("res://sources/lesson_screen/minigame_selection.tscn")
-
 @export var lesson_nb: = 1
 @export var current_button_pressed: = 0
 
@@ -128,9 +125,12 @@ func _on_tracing_manager_finished() -> void:
 		animation_player.play("end_tracing")
 		await animation_player.animation_finished
 		
-		var minigame_selection: MinigameSelection = minigame_selection_scene.instantiate()
-		minigame_selection.lesson_number = lesson_nb
+		await OpeningCurtain.close()
 		
-		get_tree().root.add_child(minigame_selection)
-		get_tree().current_scene = minigame_selection
-		queue_free()
+		get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
+
+
+func _on_garden_button_pressed() -> void:
+	await OpeningCurtain.close()
+	
+	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
