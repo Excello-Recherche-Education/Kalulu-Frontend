@@ -11,11 +11,15 @@ signal animation_changed(position: Vector2)
 @onready var highlight_fx: HighlightFX = $HighlightFX
 @onready var right_fx: RightFX = $RightFX
 @onready var wrong_fx: WrongFX = $WrongFX
+@onready var delete_timer: Timer = $DeleteTimer
+
 
 var velocity: float = 0.
 var direction: Vector2 = Vector2(0,-1):
 	set = _set_direction
 var is_moving: bool = true
+var is_visible_on_screen: bool = false
+
 
 func _process(delta):
 	if is_moving:
@@ -90,11 +94,23 @@ func _on_animated_sprite_2d_animation_finished():
 		queue_free()
 
 
+func _on_visible_on_screen_notifier_2d_screen_entered():
+	is_visible_on_screen = true
+
+
 func _on_visible_on_screen_notifier_2d_screen_exited():
-	queue_free()
+	is_visible_on_screen = false
+	delete_timer.start()
+
+
+func _on_delete_timer_timeout():
+	if not is_visible_on_screen:
+		queue_free()
 
 
 func _on_body_area_area_entered(area):
 	disappear()
 
 #endregion
+
+

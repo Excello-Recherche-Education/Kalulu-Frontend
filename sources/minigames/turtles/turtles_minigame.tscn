@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://tkfgc7fdyw1a"]
+[gd_scene load_steps=10 format=3 uid="uid://tkfgc7fdyw1a"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_geqym"]
 [ext_resource type="Script" path="res://sources/minigames/turtles/turtles_minigame.gd" id="2_f5de7"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://chuny571miwxm" path="res://sources/minigames/turtles/island.tscn" id="5_bgryf"]
 [ext_resource type="Material" uid="uid://cpfvnjrabobgn" path="res://sources/minigames/turtles/turtles_water_material.tres" id="5_k74dt"]
 [ext_resource type="Texture2D" uid="uid://caiayxwsgup2e" path="res://assets/minigames/turtles/graphic/turtle_background.png" id="6_l6je2"]
+[ext_resource type="Script" path="res://sources/minigames/turtles/water.gd" id="7_qasbb"]
 
 [sub_resource type="Curve2D" id="Curve2D_m26pb"]
 _data = {
@@ -17,7 +18,6 @@ point_count = 5
 [node name="TurtlesMinigame" instance=ExtResource("1_geqym")]
 script = ExtResource("2_f5de7")
 difficulty = 1
-minigame_number = 1
 max_number_of_lives = 5
 max_progression = 5
 
@@ -34,6 +34,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_l6je2")
+script = ExtResource("7_qasbb")
 
 [node name="Island" parent="GameRoot" index="1" instance=ExtResource("5_bgryf")]
 position = Vector2(1280, 830)

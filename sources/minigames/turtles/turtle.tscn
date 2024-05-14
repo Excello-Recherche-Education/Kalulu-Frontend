@@ -244,8 +244,14 @@ offset_top = -216.0
 offset_right = 152.0
 offset_bottom = 192.0
 
+[node name="DeleteTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="animation_changed" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="screen_entered" from="Body/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="Body/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="area_entered" from="Body/BodyArea" to="." method="_on_body_area_area_entered"]
 [connection signal="swipe" from="SwipeDetector" to="." method="_on_swipe_detector_swipe"]
+[connection signal="timeout" from="DeleteTimer" to="." method="_on_delete_timer_timeout"]

@@ -8,6 +8,9 @@ const turtle_scene: PackedScene = preload("res://sources/minigames/turtles/turtl
 # Defines the maximum number of turtles visible on screen
 const max_turtle_count: int = 5
 
+# Defines the minimum distance between turtles when spawning them
+const min_distance: int = 500
+
 
 class DifficultySettings:
 	var velocity: float = 250.
@@ -58,11 +61,6 @@ func _start() -> void:
 	_on_spawn_timer_timeout()
 
 
-func _spawn_water_ring(position: Vector2):
-	#print(position)
-	pass
-
-
 func _on_spawn_timer_timeout():
 	# Checks if there are too many turtle, and wait for one to despawn
 	if turtle_count >= max_turtle_count:
@@ -76,9 +74,9 @@ func _on_spawn_timer_timeout():
 	while not position_found:
 		spawn_location.progress_ratio = randf()
 		var all_position_ok: bool = true
-		# Check if there are other turtles near
+		# Check if there are other turtles nearby
 		for other_turtle: Turtle in turtles.get_children():
-			if other_turtle.position.distance_squared_to(spawn_location.position) < 250000:
+			if other_turtle.position.distance_squared_to(spawn_location.position) < min_distance * min_distance:
 				all_position_ok = false
 				break
 		position_found = all_position_ok
@@ -86,7 +84,7 @@ func _on_spawn_timer_timeout():
 	turtle.position = spawn_location.position
 	turtle.velocity = settings.velocity
 	
-	turtle.animation_changed.connect(_spawn_water_ring)
+	turtle.animation_changed.connect(water.spawn_water_ring)
 	turtle.tree_exited.connect(
 		func() -> void:
 			turtle_count -= 1
