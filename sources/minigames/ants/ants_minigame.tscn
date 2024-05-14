@@ -25,6 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Background" type="TextureRect" parent="GameRoot/Scenery" index="0"]
 layout_mode = 1
@@ -33,6 +34,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("7_ihrng")
 
 [node name="TextureRect" type="TextureRect" parent="GameRoot/Scenery" index="1"]
@@ -43,6 +45,7 @@ anchor_bottom = 1.0
 offset_bottom = -102.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("8_b7hhi")
 
 [node name="Sentence" type="HBoxContainer" parent="GameRoot" index="1"]
@@ -59,6 +62,7 @@ offset_right = 1007.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 alignment = 1
 
 [node name="AntsSpawn" type="Node2D" parent="GameRoot" index="2"]

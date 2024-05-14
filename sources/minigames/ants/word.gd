@@ -1,5 +1,7 @@
 extends TextureButton
 
+const Ant: = preload("res://sources/minigames/ants/ant.gd")
+
 signal answer(good: bool)
 signal no_answer()
 
@@ -51,15 +53,18 @@ func _on_button_up() -> void:
 	var min_distance: float = (current_anchor.global_position - global_position).length()
 	for other_area in area.get_overlapping_areas():
 		var other: CanvasItem = other_area
-		if other_area.owner:
+		if not other_area is Ant:
 			other = other_area.owner
 		var dist: float = (other.global_position - global_position).length()
 		if dist < min_distance:
 			destination = other
 			min_distance = dist
 	
+	current_anchor.set_monitorable(true)
 	current_anchor = destination
-	if destination is Area2D:
+	if destination is Ant:
+		destination.set_monitorable(false)
 		no_answer.emit()
 	else:
+		destination.set_monitorable(false)
 		answer.emit(stimulus, destination.stimulus)

@@ -95,6 +95,7 @@ _data = {
 }
 
 [node name="Ant" type="Area2D"]
+scale = Vector2(2, 2)
 collision_mask = 0
 monitoring = false
 script = ExtResource("2_7hdpa")
@@ -115,6 +116,6 @@ hframes = 6
 vframes = 4
 
 [node name="Anchor" type="Node2D" parent="."]
-position = Vector2(-409, -286)
+position = Vector2(-191.5, -186)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

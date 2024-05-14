@@ -1,3 +1,4 @@
+@tool
 extends Node
 
 const _symbols_to_string = {
@@ -264,7 +265,8 @@ func get_sentences() -> Array[Dictionary]:
 func get_words_in_sentence(sentence_id: int) -> Array[Dictionary]:
 	db.query_with_bindings("SELECT * FROM WordsInSentences
 	INNER JOIN Words ON Words.ID = WordsInSentences.WordID
-	WHERE SentenceID = ?", [sentence_id])
+	WHERE SentenceID = ?
+	ORDER BY WordsInSentences.Position", [sentence_id])
 	return db.query_result
 
 

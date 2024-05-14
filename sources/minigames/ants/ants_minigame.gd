@@ -1,3 +1,4 @@
+@tool
 extends Minigame
 
 @onready var sentence: = %Sentence
@@ -18,15 +19,17 @@ var answers: = []
 
 func _find_stimuli_and_distractions() -> void:
 	var sentences_list: = Database.get_sentences_for_lesson(lesson_nb)
-	sentences_list.shuffle()
+	#sentences_list.shuffle()
 	stimuli = []
 	distractions = []
 	
 	max_progression = min(max_progression, sentences_list.size())
 	
-	for i in max_progression:
+	for i in range(4, 4 + max_progression):
 		var stimulus: Dictionary = sentences_list[i]
-		stimuli.append(stimulus)
+		var current_words: = Database.get_words_in_sentence(stimulus.ID)
+		if current_words.size() >= 2:
+			stimuli.append(stimulus)
 
 
 func _start() -> void:
@@ -64,11 +67,7 @@ func _next_sentence() -> void:
 	answers = []
 	answersed = []
 	for i in range(current_words.size()):
-		var current_word: Dictionary
-		for word in current_words:
-			if word.Position == i:
-				current_word = word
-				break
+		var current_word: = current_words[i]
 		if i in blanks:
 			var blank: = blank_class.instantiate()
 			blank.stimulus = current_word
@@ -83,6 +82,7 @@ func _next_sentence() -> void:
 			
 			word.stimulus = current_word
 			word.current_anchor = ant
+			word.current_anchor.set_monitorable(false)
 			
 			answersed.append(false)
 			answers.append(false)

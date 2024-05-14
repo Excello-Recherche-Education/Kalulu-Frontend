@@ -8,6 +8,12 @@ const images: = [
 
 var stimulus: Dictionary
 
+@onready var area: = $Area2D
+
 
 func _ready() -> void:
 	texture = load(images[randi() % images.size()])
+
+
+func set_monitorable(p_monitorable: bool) -> void:
+	area.monitorable = p_monitorable
