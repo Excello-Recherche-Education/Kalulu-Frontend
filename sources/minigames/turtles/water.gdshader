@@ -13,6 +13,19 @@ const float TWOPI = 6.283185307;
 const float SIXPI = 18.84955592;
 
 
+float linearToSRGB(float input) {
+    if(input < 0.040449907){
+		return input/12.92;
+	}else{
+		return pow(((input+0.055)/1.055),2.4);
+	}
+}
+
+vec3 correctHDR(vec3 targetColor) {
+	vec3 convertedColor = vec3(linearToSRGB(targetColor.r),linearToSRGB(targetColor.g),linearToSRGB(targetColor.b));
+	return convertedColor;
+}
+
 float circ(vec2 pos, vec2 c, float s)
 {
     c = abs(pos - c);
@@ -114,7 +127,7 @@ vec3 water(vec2 uv, vec3 cdir, float iTime)
     uv += a * h;
     h = sin(0.841471 * uv.x - 0.540302 * uv.y + iTime);
     uv += a * h;
-    
+
     // Texture distortion
     float d1 = mod(uv.x + uv.y, TWOPI);
     float d2 = mod((uv.x + uv.y + 0.25) * 1.3, SIXPI);
@@ -124,9 +137,9 @@ vec3 water(vec2 uv, vec3 cdir, float iTime)
     	sin(d1) * 0.15 + sin(d2) * 0.05,
     	cos(d1) * 0.15 + cos(d2) * 0.05
     );
-    
-    vec3 ret = mix(WATER_COL.rgb, WATER2_COL.rgb, waterlayer(uv + dist.xy));
-    ret = mix(ret, FOAM_COL.rgb, waterlayer(vec2(1.0) - uv - dist.yx));
+
+    vec3 ret = mix(correctHDR(WATER_COL.rgb), correctHDR(WATER2_COL.rgb), waterlayer(uv + dist.xy));
+    ret = mix(ret, correctHDR(FOAM_COL.rgb), waterlayer(vec2(1.0) - uv - dist.yx));
     return ret;
 }
 
