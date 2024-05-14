@@ -30,7 +30,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 ]
 
 
-@onready var water: TextureRect = $GameRoot/Water
+@onready var water: Water = $GameRoot/Water
 @onready var island: Island = $GameRoot/Island
 @onready var turtles: Control = %Turtles
 @onready var spawn_location: PathFollow2D = $GameRoot/SpawnPath/SpawnLocation
@@ -61,7 +61,7 @@ func _start() -> void:
 	_on_spawn_timer_timeout()
 
 
-func _on_spawn_timer_timeout():
+func _on_spawn_timer_timeout() -> void:
 	# Checks if there are too many turtle, and wait for one to despawn
 	if turtle_count >= max_turtle_count:
 		await can_spawn_turtle
@@ -104,8 +104,8 @@ func _on_spawn_timer_timeout():
 	spawn_timer.start()
 
 
-func _on_island_area_entered(area):
-	var turtle = area.owner as Turtle
+func _on_island_area_entered(area: Area2D) -> void:
+	var turtle: = area.owner as Turtle
 	if not turtle:
 		return
 	
