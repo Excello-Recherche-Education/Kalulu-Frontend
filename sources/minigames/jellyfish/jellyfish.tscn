@@ -15,7 +15,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.19924, 1.19924)
+scale = Vector2(1.04778, 1.04778)
 script = ExtResource("1_06uwq")
 
 [node name="BackFX" type="Control" parent="."]
@@ -65,10 +65,9 @@ sprites = [NodePath("AnimatedSprite2D")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
-scale = Vector2(1.84332, 1.84332)
+scale = Vector2(2.15054, 2.15054)
 sprite_frames = ExtResource("5_js27p")
 animation = &"idle"
-frame_progress = 0.929322
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 

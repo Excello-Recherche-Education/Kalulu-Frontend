@@ -26,10 +26,6 @@ lesson_nb = 12
 difficulty = 4
 max_number_of_lives = 5
 max_progression = 5
-intro_kalulu_speech = ExtResource("3_ek5u5")
-help_kalulu_speech = ExtResource("3_khjvy")
-win_kalulu_speech = ExtResource("4_oe2vh")
-lose_kalulu_speech = null
 
 [node name="Environment" type="VBoxContainer" parent="GameRoot" index="0"]
 layout_mode = 1
