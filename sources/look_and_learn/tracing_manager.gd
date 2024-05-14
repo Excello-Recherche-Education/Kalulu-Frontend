@@ -34,12 +34,13 @@ func reset() -> void:
 	
 	lower_labels.visible = true
 	upper_labels.visible = false
+	await get_tree().process_frame
 
 
 # --- Setup ---
 
 func setup(grapheme: String) -> void:
-	reset()
+	await reset()
 	
 	if not _is_grapheme_valid(grapheme):
 		finished.emit()

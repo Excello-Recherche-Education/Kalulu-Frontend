@@ -90,7 +90,7 @@ func play_images_and_sounds()  -> void:
 
 
 func load_tracing() -> void:
-	tracing_manager.setup(gp_list[current_tracing]["Grapheme"])
+	await tracing_manager.setup(gp_list[current_tracing]["Grapheme"])
 	current_tracing += 1
 
 
@@ -121,7 +121,7 @@ func _on_audio_stream_player_finished() -> void:
 
 func _on_tracing_manager_finished() -> void:
 	if current_tracing < gp_list.size():
-		tracing_manager.setup(gp_list[current_tracing]["Grapheme"])
+		await tracing_manager.setup(gp_list[current_tracing]["Grapheme"])
 		tracing_manager.start()
 		current_tracing += 1
 	else:
