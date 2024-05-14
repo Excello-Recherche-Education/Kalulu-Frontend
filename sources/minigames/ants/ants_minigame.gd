@@ -19,13 +19,13 @@ var answers: = []
 
 func _find_stimuli_and_distractions() -> void:
 	var sentences_list: = Database.get_sentences_for_lesson(lesson_nb)
-	#sentences_list.shuffle()
+	sentences_list.shuffle()
 	stimuli = []
 	distractions = []
 	
 	max_progression = min(max_progression, sentences_list.size())
 	
-	for i in range(4, 4 + max_progression):
+	for i in max_progression:
 		var stimulus: Dictionary = sentences_list[i]
 		var current_words: = Database.get_words_in_sentence(stimulus.ID)
 		if current_words.size() >= 2:
@@ -145,6 +145,10 @@ func _on_word_answer(stimulus: Dictionary, expected_stimulus: Dictionary, word: 
 				is_right = false
 				break
 		
+		for word_i in words.get_children():
+			word_i.current_anchor.set_monitorable(true)
+			word_i.disabled = true
+		
 		if is_right:
 			for i in range(words.get_child_count() - 1):
 				words.get_child(i).right()
@@ -161,7 +165,10 @@ func _on_word_answer(stimulus: Dictionary, expected_stimulus: Dictionary, word: 
 			for i in range(ants.get_child_count()):
 				answersed[i] = false
 				words.get_child(i).current_anchor = ants.get_child(i)
-
+				ants.get_child(i).set_monitorable(false)
+		
+		for word_i in words.get_children():
+			word_i.disabled = false
 
 func _on_word_no_answer(word: TextureButton) -> void:
 	answersed[word.get_index()] = false
