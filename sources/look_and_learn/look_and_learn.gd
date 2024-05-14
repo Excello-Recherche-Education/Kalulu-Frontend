@@ -29,9 +29,7 @@ var current_image_and_sound: = 0
 var images: = []
 var sounds: = []
 
-var garden_ind: = 0
-var garden_button_global_position: = Vector2.ZERO
-var garden_lesson: = 0
+var gardens_data: Dictionary
 
 
 var current_tracing: = 0
@@ -136,11 +134,7 @@ func _on_tracing_manager_finished() -> void:
 func _back_to_gardens() -> void:
 	await OpeningCurtain.close()
 	
-	_back_to_gardens_data(get_tree(), {
-		current_button_global_position = garden_button_global_position,
-		current_lesson_number = garden_lesson,
-		current_garden = garden_ind,
-		})
+	_back_to_gardens_data(get_tree(), gardens_data)
 	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
 
 

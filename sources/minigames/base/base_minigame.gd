@@ -77,6 +77,9 @@ var help_kalulu_speech: AudioStreamMP3
 var win_kalulu_speech: AudioStreamMP3
 var lose_kalulu_speech: AudioStreamMP3
 
+# data to go back to the right place in gardens
+var gardens_data: Dictionary
+
 # ------------ Initialisation ------------
 
 
@@ -210,7 +213,15 @@ func _go_back_to_the_garden() -> void:
 	
 	_save_logs()
 	
+	_back_to_gardens_data(get_tree(), gardens_data)
 	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
+
+
+static func _back_to_gardens_data(tree: SceneTree, data: Dictionary) -> void:
+	await tree.create_timer(0).timeout
+	var current_scene: = tree.current_scene
+	current_scene.starting_garden = data.current_garden
+	current_scene._on_garden_lesson_button_pressed(data.current_button_global_position, data.current_lesson_number, data.current_garden)
 
 
 func _play_stimulus() -> void:

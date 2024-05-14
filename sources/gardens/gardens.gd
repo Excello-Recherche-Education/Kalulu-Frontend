@@ -295,9 +295,9 @@ func _on_lesson_button_pressed() -> void:
 	await OpeningCurtain.close()
 	
 	_switch_to_look_and_learn_data(get_tree(), {
-		garden_button_global_position = current_button_global_position,
-		garden_lesson = current_lesson_number,
-		garden_ind = current_garden,
+		current_button_global_position = current_button_global_position,
+		current_lesson_number = current_lesson_number,
+		current_garden = current_garden,
 		})
 	get_tree().change_scene_to_packed(look_and_learn_scene)
 
@@ -305,9 +305,7 @@ func _on_lesson_button_pressed() -> void:
 static func _switch_to_look_and_learn_data(tree: SceneTree, data: Dictionary) -> void:
 	await tree.create_timer(0).timeout
 	var current_scene: = tree.current_scene
-	for key in data:
-		if key in current_scene:
-			current_scene[key] = data[key]
+	current_scene.gardens_data = data
 
 
 func _on_exercise_button_1_pressed() -> void:
@@ -328,13 +326,21 @@ func _on_exercise_button_3_pressed() -> void:
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
 	await OpeningCurtain.close()
 	
-	var minigame: Minigame = minigame_scene.instantiate()
-	minigame.lesson_nb = current_lesson_number
-	minigame.minigame_number = minigame_number
-	
-	get_tree().root.add_child(minigame)
-	get_tree().current_scene = minigame
-	queue_free()
+	_switch_to_minigame_data(get_tree(), {
+		current_button_global_position = current_button_global_position,
+		current_lesson_number = current_lesson_number,
+		current_garden = current_garden,
+		minigame_number = minigame_number,
+		})
+	get_tree().change_scene_to_packed(minigame_scene)
+
+
+static func _switch_to_minigame_data(tree: SceneTree, data: Dictionary) -> void:
+	await tree.create_timer(0).timeout
+	var current_scene: = tree.current_scene
+	current_scene.gardens_data = data
+	current_scene.minigame_number = data.minigame_number
+	current_scene.lesson_nb = data.current_lesson_number
 
 
 func _on_progression_unlocks_changed() -> void:
