@@ -71,14 +71,25 @@ func _ready() -> void:
 	_on_progression_unlocks_changed()
 	
 	if starting_garden == -1:
-		for i in UserDataManager.student_progression.unlocks.keys():
-			var unlock: Dictionary = UserDataManager.student_progression.unlocks[i]
-			var look_and_learn_unlocked: bool = unlock["look_and_learn"] == UserProgression.Status.Unlocked
-			var exercice_unlock_1: bool = unlock["games"][0] == UserProgression.Status.Unlocked
-			var exercice_unlock_2: bool = unlock["games"][1] == UserProgression.Status.Unlocked
-			var exercice_unlock_3: bool = unlock["games"][2] == UserProgression.Status.Unlocked
-			if look_and_learn_unlocked or exercice_unlock_1 or exercice_unlock_2 or exercice_unlock_3:
-				starting_garden = i
+		var lesson_ind: = 1
+		for garden_ind in garden_parent.get_child_count():
+			var garden_control: = garden_parent.get_child(garden_ind)
+			if starting_garden != -1:
+				break
+			if not lesson_ind in lessons:
+				break
+			for i in garden_control.lesson_button_controls.size():
+				if not lesson_ind in lessons:
+					break
+				var unlock: Dictionary = UserDataManager.student_progression.unlocks[lesson_ind]
+				var look_and_learn_unlocked: bool = unlock["look_and_learn"] == UserProgression.Status.Unlocked
+				var exercice_unlock_1: bool = unlock["games"][0] == UserProgression.Status.Unlocked
+				var exercice_unlock_2: bool = unlock["games"][1] == UserProgression.Status.Unlocked
+				var exercice_unlock_3: bool = unlock["games"][2] == UserProgression.Status.Unlocked
+				if look_and_learn_unlocked or exercice_unlock_1 or exercice_unlock_2 or exercice_unlock_3:
+					starting_garden = garden_ind
+					break
+				lesson_ind += 1
 	
 	scroll_container.scroll_horizontal = garden_size * starting_garden
 
