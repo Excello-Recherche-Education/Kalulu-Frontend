@@ -29,6 +29,10 @@ var current_image_and_sound: = 0
 var images: = []
 var sounds: = []
 
+var garden_ind: = 0
+var garden_button_global_position: = Vector2.ZERO
+var garden_lesson: = 0
+
 
 var current_tracing: = 0
 
@@ -125,12 +129,28 @@ func _on_tracing_manager_finished() -> void:
 		animation_player.play("end_tracing")
 		await animation_player.animation_finished
 		
-		await OpeningCurtain.close()
-		
-		get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
+		_back_to_gardens()
+
+
+
+func _back_to_gardens() -> void:
+	await OpeningCurtain.close()
+	
+	_back_to_gardens_data(get_tree(), {
+		current_button_global_position = garden_button_global_position,
+		current_lesson_number = garden_lesson,
+		current_garden = garden_ind,
+		})
+	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
 
 
 func _on_garden_button_pressed() -> void:
-	await OpeningCurtain.close()
+	_back_to_gardens()
+
+
+static func _back_to_gardens_data(tree: SceneTree, data: Dictionary) -> void:
+	await tree.create_timer(0).timeout
+	var current_scene: = tree.current_scene
+	current_scene.starting_garden = data.current_garden
+	current_scene._on_garden_lesson_button_pressed(data.current_button_global_position, data.current_lesson_number, data.current_garden)
 	
-	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")

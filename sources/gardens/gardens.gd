@@ -55,6 +55,7 @@ var tween: Tween
 var in_minigame_selection: = false
 var current_lesson_number: = -1
 var current_garden: = -1
+var current_button_global_position: = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -217,7 +218,7 @@ func set_up_lessons() -> void:
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(i, lessons[lesson_ind][0].grapheme)
-			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.lesson_button_controls[i], lesson_ind, garden_ind))
+			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.lesson_button_controls[i].global_position, lesson_ind, garden_ind))
 			lesson_ind += 1
 
 
@@ -259,7 +260,8 @@ func set_up_path() -> void:
 	locked_line.points = curve.get_baked_points()
 
 
-func _on_garden_lesson_button_pressed(current_button: TextureButton, lesson_ind: int, garden_ind: int) -> void:
+func _on_garden_lesson_button_pressed(button_global_position: Vector2, lesson_ind: int, garden_ind: int, tween_duration: = 0.5) -> void:
+	current_button_global_position = button_global_position
 	current_lesson_number = lesson_ind
 	current_garden = garden_ind
 	in_minigame_selection = true
@@ -271,12 +273,12 @@ func _on_garden_lesson_button_pressed(current_button: TextureButton, lesson_ind:
 		other_button.disabled = true
 	
 	var tween: = create_tween().set_parallel(true)
-	tween.tween_property(minigame_selection, "modulate:a", 1.0, 0.5)
-	tween.tween_property(locked_line, "modulate:a", 0.0, 0.5)
-	tween.tween_property(unlocked_line, "modulate:a", 0.0, 0.5)
-	tween.tween_property(garden_parent.get_child(current_garden).buttons, "modulate:a", 0.0, 0.5)
-	tween.tween_property(camera_2d, "zoom", Vector2(2.0, 2.0), 0.5)
-	tween.tween_property(camera_2d, "global_position", current_button.global_position, 0.5)
+	tween.tween_property(minigame_selection, "modulate:a", 1.0, tween_duration)
+	tween.tween_property(locked_line, "modulate:a", 0.0, tween_duration)
+	tween.tween_property(unlocked_line, "modulate:a", 0.0, tween_duration)
+	tween.tween_property(garden_parent.get_child(current_garden).buttons, "modulate:a", 0.0, tween_duration)
+	tween.tween_property(camera_2d, "zoom", Vector2(2.0, 2.0), tween_duration)
+	tween.tween_property(camera_2d, "global_position", button_global_position, tween_duration)
 	await tween.finished
 	
 	locked_line.visible = false
@@ -292,12 +294,20 @@ func _on_garden_lesson_button_pressed(current_button: TextureButton, lesson_ind:
 func _on_lesson_button_pressed() -> void:
 	await OpeningCurtain.close()
 	
-	var look_and_learn: LookAndLearn = look_and_learn_scene.instantiate()
-	look_and_learn.lesson_nb = current_lesson_number
-	
-	get_tree().root.add_child(look_and_learn)
-	get_tree().current_scene = look_and_learn
-	queue_free()
+	_switch_to_look_and_learn_data(get_tree(), {
+		garden_button_global_position = current_button_global_position,
+		garden_lesson = current_lesson_number,
+		garden_ind = current_garden,
+		})
+	get_tree().change_scene_to_packed(look_and_learn_scene)
+
+
+static func _switch_to_look_and_learn_data(tree: SceneTree, data: Dictionary) -> void:
+	await tree.create_timer(0).timeout
+	var current_scene: = tree.current_scene
+	for key in data:
+		if key in current_scene:
+			current_scene[key] = data[key]
 
 
 func _on_exercise_button_1_pressed() -> void:

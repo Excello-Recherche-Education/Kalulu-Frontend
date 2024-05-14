@@ -1,6 +1,7 @@
 @tool
 extends WordsMinigame
 
+const KingMonkey: = preload("res://sources/minigames/monkeys/king_monkey.gd")
 const monkey_scene: = preload("res://sources/minigames/monkeys/monkey.tscn")
 const audio_streams: = [
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),

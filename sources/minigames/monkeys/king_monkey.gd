@@ -1,5 +1,4 @@
 extends Node2D
-class_name KingMonkey
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var coconut: Coconut = $Marker2D/Coconut
