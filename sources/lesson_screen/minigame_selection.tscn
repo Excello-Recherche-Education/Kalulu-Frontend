@@ -167,8 +167,6 @@ offset_right = 1408.0
 offset_bottom = 1028.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-images = Array[Texture]([])
-display_text = false
 
 [node name="ExerciseButton1" parent="Buttons" instance=ExtResource("9_s4245")]
 layout_mode = 0
@@ -178,8 +176,6 @@ offset_right = 1408.0
 offset_bottom = 644.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-images = Array[Texture]([])
-display_text = false
 
 [node name="ExerciseButton2" parent="Buttons" instance=ExtResource("9_s4245")]
 layout_mode = 0
@@ -189,8 +185,6 @@ offset_right = 1076.0
 offset_bottom = 1228.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-images = Array[Texture]([])
-display_text = false
 
 [node name="ExerciseButton3" parent="Buttons" instance=ExtResource("9_s4245")]
 layout_mode = 0
@@ -200,8 +194,6 @@ offset_right = 1736.0
 offset_bottom = 1228.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-images = Array[Texture]([])
-display_text = false
 
 [node name="MinigameChoiceContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true

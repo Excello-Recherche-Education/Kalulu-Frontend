@@ -43,6 +43,8 @@ const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_lea
 @onready var exercise_button_3: TextureButton = %ExerciseButton3
 @onready var minigame_choice_container: PanelContainer = %MinigameChoiceContainer
 @onready var minigame_button_container: HBoxContainer = %MinigameButtonContainer
+@onready var camera_2d: Camera2D = $Camera2D
+@onready var back_button: TextureButton = %BackButton
 
 var lessons: = {}
 var points: = []
@@ -228,7 +230,7 @@ func set_up_lessons() -> void:
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(i, lessons[lesson_ind][0].grapheme)
-			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(lesson_ind, garden_ind))
+			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.lesson_button_controls[i], lesson_ind, garden_ind))
 			lesson_ind += 1
 
 
@@ -270,16 +272,34 @@ func set_up_path() -> void:
 	locked_line.points = curve.get_baked_points()
 
 
-func _on_garden_lesson_button_pressed(lesson_ind: int, garden_ind: int) -> void:
+func _on_garden_lesson_button_pressed(current_button: TextureButton, lesson_ind: int, garden_ind: int) -> void:
 	current_lesson_number = lesson_ind
 	current_garden = garden_ind
 	in_minigame_selection = true
 	_setup_minigame_selection()
 	
+	minigame_selection.visible = true
+	back_button.disabled = true
+	for other_button: TextureButton in garden_parent.get_child(current_garden).lesson_button_controls:
+		other_button.disabled = true
+	
+	var tween: = create_tween().set_parallel(true)
+	tween.tween_property(minigame_selection, "modulate:a", 1.0, 0.5)
+	tween.tween_property(locked_line, "modulate:a", 0.0, 0.5)
+	tween.tween_property(unlocked_line, "modulate:a", 0.0, 0.5)
+	tween.tween_property(garden_parent.get_child(current_garden).buttons, "modulate:a", 0.0, 0.5)
+	tween.tween_property(camera_2d, "zoom", Vector2(2.0, 2.0), 0.5)
+	tween.tween_property(camera_2d, "global_position", current_button.global_position, 0.5)
+	await tween.finished
+	
 	locked_line.visible = false
 	unlocked_line.visible = false
 	garden_parent.get_child(current_garden).buttons.visible = false
-	minigame_selection.visible = true
+	back_button.disabled = false
+	lesson_button.disabled = false
+	exercise_button_1.disabled = false
+	exercise_button_2.disabled = false
+	exercise_button_3.disabled = false
 
 
 func _on_lesson_button_pressed() -> void:
@@ -404,12 +424,32 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 
 func _on_back_button_pressed() -> void:
 	if in_minigame_selection:
-		in_minigame_selection = false
-		minigame_selection.visible = false
 		minigame_choice_container.visible = false
 		locked_line.visible = true
 		unlocked_line.visible = true
 		garden_parent.get_child(current_garden).buttons.visible = true
+		
+		lesson_button.disabled = true
+		exercise_button_1.disabled = true
+		exercise_button_2.disabled = true
+		exercise_button_3.disabled = true
+		back_button.disabled = true
+		
+		var tween: = create_tween().set_parallel(true)
+		tween.tween_property(minigame_selection, "modulate:a", 0.0, 0.5)
+		tween.tween_property(locked_line, "modulate:a", 1.0, 0.5)
+		tween.tween_property(unlocked_line, "modulate:a", 1.0, 0.5)
+		tween.tween_property(garden_parent.get_child(current_garden).buttons, "modulate:a", 1.0, 0.5)
+		tween.tween_property(camera_2d, "zoom", Vector2(1.0, 1.0), 0.5)
+		tween.tween_property(camera_2d, "global_position", Vector2(1280.0, 900.0), 0.5)
+		await tween.finished
+		
+		for other_button: TextureButton in garden_parent.get_child(current_garden).lesson_button_controls:
+			other_button.disabled = false
+		
+		in_minigame_selection = false
+		minigame_selection.visible = false
+		back_button.disabled = false
 	else:
 		get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
 
