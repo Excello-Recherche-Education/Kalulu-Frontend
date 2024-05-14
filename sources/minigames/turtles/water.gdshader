@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-
+uniform bool HDR_correction = true;
 uniform vec4 WATER_COL : source_color =  vec4(0.176471, 0.635294, 0.85098, 1.0);
 uniform vec4 WATER2_COL : source_color =  vec4(0.0588235, 0.529412, 0.776471, 1.0);
 uniform vec4 FOAM_COL : source_color = vec4(0.87451, 0.988235, 1, 1.0);
@@ -22,8 +22,11 @@ float linearToSRGB(float input) {
 }
 
 vec3 correctHDR(vec3 targetColor) {
-	vec3 convertedColor = vec3(linearToSRGB(targetColor.r),linearToSRGB(targetColor.g),linearToSRGB(targetColor.b));
+	if(HDR_correction){
+		vec3 convertedColor = vec3(linearToSRGB(targetColor.r),linearToSRGB(targetColor.g),linearToSRGB(targetColor.b));
 	return convertedColor;
+	}
+	return targetColor;
 }
 
 float circ(vec2 pos, vec2 c, float s)
