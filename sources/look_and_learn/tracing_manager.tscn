@@ -5,7 +5,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6xos"]
 font = ExtResource("2_rhj0u")
-font_size = 512
+font_size = 768
 
 [node name="TracingManager" type="Control"]
 layout_mode = 3

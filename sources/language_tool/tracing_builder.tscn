@@ -129,13 +129,21 @@ layout_mode = 2
 [node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton" index="0"]
 texture = ExtResource("4_83j0b")
 
-[node name="LowerContainer" parent="VBoxContainer" instance=ExtResource("4_frjng")]
-unique_name_in_owner = true
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
 
-[node name="UpperContainer" parent="VBoxContainer" instance=ExtResource("4_frjng")]
+[node name="Lower" parent="VBoxContainer/TabContainer" instance=ExtResource("4_frjng")]
 unique_name_in_owner = true
 layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Upper" parent="VBoxContainer/TabContainer" instance=ExtResource("4_frjng")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="gui_input" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton/SaveOk" to="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" method="_on_texture_rect_gui_input"]
@@ -143,8 +151,8 @@ layout_mode = 2
 [connection signal="mouse_exited" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton/SaveOk" to="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" method="_on_texture_rect_mouse_exited"]
 [connection signal="item_selected" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/VBoxContainer3/LetterPicker" to="." method="_on_letter_picker_item_selected"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="changed" from="VBoxContainer/LowerContainer" to="." method="_on_lower_container_changed"]
-[connection signal="changed" from="VBoxContainer/UpperContainer" to="." method="_on_upper_container_changed"]
+[connection signal="changed" from="VBoxContainer/TabContainer/Lower" to="." method="_on_lower_container_changed"]
+[connection signal="changed" from="VBoxContainer/TabContainer/Upper" to="." method="_on_upper_container_changed"]
 
 [editable path="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton"]
 [editable path="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton"]

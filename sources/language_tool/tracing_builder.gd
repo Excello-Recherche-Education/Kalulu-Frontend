@@ -2,8 +2,8 @@ extends Control
 
 @export var gradient: Gradient
 
-@onready var lower_container: = %LowerContainer
-@onready var upper_container: = %UpperContainer
+@onready var lower_container: = %Lower
+@onready var upper_container: = %Upper
 @onready var letter_picker: = %LetterPicker
 @onready var save_ok: = %SaveOk
 @onready var copy_from: = %CopyFrom

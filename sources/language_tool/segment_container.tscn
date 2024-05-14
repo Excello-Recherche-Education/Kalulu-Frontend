@@ -6,22 +6,23 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_md77l"]
 font = ExtResource("2_4s1sg")
-font_size = 512
+font_size = 768
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agg5x"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ssy0w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qds63"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_54blg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8xb3m"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qds63"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ssy0w"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agg5x"]
 
 [node name="SegmentContainer" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -766.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
@@ -38,17 +39,17 @@ mouse_filter = 2
 [node name="MarginContainer" type="MarginContainer" parent="DrawingContainer"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 
 [node name="GraphemeLabel" type="Label" parent="DrawingContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 512
-text = "Gra"
+text = "LpYg"
 label_settings = SubResource("LabelSettings_md77l")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -60,11 +61,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_agg5x")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ssy0w")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qds63")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_54blg")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8xb3m")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_qds63")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ssy0w")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_agg5x")
 
 [node name="ButtonsParent" type="Control" parent="DrawingContainer/MarginContainer"]
 unique_name_in_owner = true
