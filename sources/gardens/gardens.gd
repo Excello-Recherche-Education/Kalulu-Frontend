@@ -3,25 +3,56 @@ extends Control
 const garden_scene: = preload("res://resources/gardens/garden.tscn")
 const garden_size: = 2400
 
-const MinigameSelection: = preload("res://sources/lesson_screen/minigame_selection.gd")
-const minigame_selection_scene: = preload("res://sources/lesson_screen/minigame_selection.tscn")
+const LessonTextureButton: = preload("res://sources/lesson_screen/lesson_texture_button.gd")
+const lesson_texture_button_scene: = preload("res://sources/lesson_screen/lesson_texture_button.tscn")
+
+const LookAndLearn: = preload("res://sources/look_and_learn/look_and_learn.gd")
+const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_learn.tscn")
 
 @export var gardens_layout: GardensLayout:
 	set = set_gardens_layout
 
-@export var starting_garden: = 0
+@export var starting_garden: = -1
+
+@export_group("Minigames")
+@export_subgroup("Syllable")
+@export var syllable_minigames: Array[PackedScene]
+@export var syllable_minigames_icons: Array[Texture]
+
+@export_subgroup("Words")
+@export var words_minigames: Array[PackedScene]
+@export var words_minigames_icons: Array[Texture]
+
+@export_subgroup("Sentences")
+@export var sentences_minigames: Array[PackedScene]
+@export var sentences_minigames_icons: Array[Texture]
+
+@export_subgroup("Boss")
+@export var boss_minigames: Array[PackedScene]
+@export var boss_minigames_icons: Array[Texture]
 
 @onready var garden_parent: = %GardenParent
-@onready var locked_line: = $ScrollContainer/LockedLine
-@onready var unlocked_line: = $ScrollContainer/UnlockedLine
-@onready var scroll_container: = $ScrollContainer
+@onready var locked_line: Line2D = $ScrollContainer/LockedLine
+@onready var unlocked_line: Line2D = $ScrollContainer/UnlockedLine
+@onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var parallax_background: = %ParallaxBackground
+@onready var minigame_selection: Control = %MinigameSelection
+@onready var lesson_button: TextureButton = %LessonButton
+@onready var exercise_button_1: TextureButton = %ExerciseButton1
+@onready var exercise_button_2: TextureButton = %ExerciseButton2
+@onready var exercise_button_3: TextureButton = %ExerciseButton3
+@onready var minigame_choice_container: PanelContainer = %MinigameChoiceContainer
+@onready var minigame_button_container: HBoxContainer = %MinigameButtonContainer
 
 var lessons: = {}
 var points: = []
 var is_scrolling: = false
 var scroll_beginning_garden: = 0
 var tween: Tween
+
+var in_minigame_selection: = false
+var current_lesson_number: = -1
+var current_garden: = -1
 
 
 func _ready() -> void:
@@ -36,6 +67,16 @@ func _ready() -> void:
 	await get_tree().process_frame
 	UserDataManager.student_progression.unlocks_changed.connect(_on_progression_unlocks_changed)
 	_on_progression_unlocks_changed()
+	
+	if starting_garden == -1:
+		for i in UserDataManager.student_progression.unlocks.keys():
+			var unlock: Dictionary = UserDataManager.student_progression.unlocks[i]
+			var look_and_learn_unlocked: bool = unlock["look_and_learn"] == UserProgression.Status.Unlocked
+			var exercice_unlock_1: bool = unlock["games"][0] == UserProgression.Status.Unlocked
+			var exercice_unlock_2: bool = unlock["games"][1] == UserProgression.Status.Unlocked
+			var exercice_unlock_3: bool = unlock["games"][2] == UserProgression.Status.Unlocked
+			if look_and_learn_unlocked or exercice_unlock_1 or exercice_unlock_2 or exercice_unlock_3:
+				starting_garden = i
 	
 	scroll_container.scroll_horizontal = garden_size * starting_garden
 
@@ -57,14 +98,137 @@ func get_gardens_db_data() -> void:
 		lessons[e.LessonNb].append({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
 
 
+func _setup_minigame_selection() -> void:
+	var query: = "Select Grapheme, Phoneme, Exercise1, Exercise2, Exercise3 FROM Lessons
+		INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
+		INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
+		INNER JOIN LessonsExercises ON Lessons.ID = LessonsExercises.LessonID
+		WHERE LessonNB == %o" % current_lesson_number
+	Database.db.query(query)
+	var lesson_dict: = Database.db.query_result[0]
+	Database.db.query("Select Type FROM ExerciseTypes
+		WHERE ID == %o" % lesson_dict.Exercise1)
+	var exercise1: String = Database.db.query_result[0].Type
+	Database.db.query("Select Type FROM ExerciseTypes
+		WHERE ID == %o" % lesson_dict.Exercise2)
+	var exercise2: String = Database.db.query_result[0].Type
+	Database.db.query("Select Type FROM ExerciseTypes
+		WHERE ID == %o" % lesson_dict.Exercise3)
+	var exercise3: String = Database.db.query_result[0].Type
+	
+	if lesson_button:
+		lesson_button.text = "%s-%s" % [lesson_dict.Grapheme, lesson_dict.Phoneme]
+		lesson_button.display_text = true
+	if exercise_button_1:
+		exercise_button_1.text = exercise1
+		if exercise1 == "Syllable":
+			exercise_button_1.images = syllable_minigames_icons
+		elif exercise1 == "Words":
+			exercise_button_1.images = words_minigames_icons
+		elif exercise1 == "Sentences":
+			exercise_button_1.images = sentences_minigames_icons
+		elif exercise1 == "Boss":
+			exercise_button_1.images = boss_minigames_icons
+		exercise_button_1.load_images()
+	if exercise_button_2:
+		exercise_button_2.text = exercise2
+		if exercise2 == "Syllable":
+			exercise_button_2.images = syllable_minigames_icons
+		elif exercise2 == "Words":
+			exercise_button_2.images = words_minigames_icons
+		elif exercise2 == "Sentences":
+			exercise_button_2.images = sentences_minigames_icons
+		elif exercise2 == "Boss":
+			exercise_button_2.images = boss_minigames_icons
+		exercise_button_2.load_images()
+	if exercise_button_3:
+		exercise_button_3.text = exercise3
+		if exercise3 == "Syllable":
+			exercise_button_3.images = syllable_minigames_icons
+		elif exercise3 == "Words":
+			exercise_button_3.images = words_minigames_icons
+		elif exercise3 == "Sentences":
+			exercise_button_3.images = sentences_minigames_icons
+		elif exercise3 == "Boss":
+			exercise_button_3.images = boss_minigames_icons
+		exercise_button_3.load_images()
+	
+	if UserDataManager.student_progression :
+		var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[current_lesson_number]
+		if lesson_button:
+			if lesson_unlocks["look_and_learn"] == UserProgression.Status.Locked:
+				lesson_button.disabled = true
+			else:
+				lesson_button.completed = lesson_unlocks["look_and_learn"] == UserProgression.Status.Completed
+		
+		if exercise_button_1:
+			if lesson_unlocks["games"][0] == UserProgression.Status.Locked:
+				exercise_button_1.disabled = true
+			else:
+				exercise_button_1.completed = lesson_unlocks["games"][0] == UserProgression.Status.Completed
+		
+		if exercise_button_2:
+			if lesson_unlocks["games"][0] == UserProgression.Status.Locked:
+				exercise_button_2.disabled = true
+			else:
+				exercise_button_2.completed = lesson_unlocks["games"][1] == UserProgression.Status.Completed
+		
+		if exercise_button_3:
+			if lesson_unlocks["games"][0] == UserProgression.Status.Locked:
+				exercise_button_3.disabled = true
+			else:
+				exercise_button_3.completed = lesson_unlocks["games"][2] == UserProgression.Status.Completed
+
+
+func _fill_minigame_choice(exercise_type: String, is_completed: bool, minigame_number: int) -> void:
+	for button in minigame_button_container.get_children():
+		button.queue_free()
+	
+	var exercise_scenes: Array[PackedScene]
+	var exercise_icons: Array[Texture]
+	if exercise_type == "Syllable":
+		exercise_scenes = syllable_minigames
+		exercise_icons = syllable_minigames_icons
+	elif exercise_type == "Words":
+		exercise_scenes = words_minigames
+		exercise_icons = words_minigames_icons
+	elif exercise_type == "Sentences":
+		exercise_scenes = sentences_minigames
+		exercise_icons = sentences_minigames_icons
+	elif exercise_type == "Boss":
+		exercise_scenes = boss_minigames
+		exercise_icons = boss_minigames_icons
+	
+	for i in range(exercise_scenes.size()):
+		var button: LessonTextureButton = lesson_texture_button_scene.instantiate()
+		minigame_button_container.add_child(button)
+		button.completed = is_completed
+		button.texture = exercise_icons[i]
+		
+		button.pressed.connect(_on_minigame_button_pressed.bind(exercise_scenes[i], minigame_number))
+
+
+func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
+	await OpeningCurtain.close()
+	
+	var minigame: Minigame = minigame_scene.instantiate()
+	minigame.lesson_nb = current_lesson_number
+	minigame.minigame_number = minigame_number
+	
+	get_tree().root.add_child(minigame)
+	get_tree().current_scene = minigame
+	queue_free()
+
+
 func set_up_lessons() -> void:
 	var lesson_ind: = 1
-	for garden_control in garden_parent.get_children():
+	for garden_ind in garden_parent.get_child_count():
+		var garden_control: = garden_parent.get_child(garden_ind)
 		for i in garden_control.lesson_button_controls.size():
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(i, lessons[lesson_ind][0].grapheme)
-			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(lesson_ind))
+			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(lesson_ind, garden_ind))
 			lesson_ind += 1
 
 
@@ -106,15 +270,42 @@ func set_up_path() -> void:
 	locked_line.points = curve.get_baked_points()
 
 
-func _on_garden_lesson_button_pressed(lesson_ind: int) -> void:
+func _on_garden_lesson_button_pressed(lesson_ind: int, garden_ind: int) -> void:
+	current_lesson_number = lesson_ind
+	current_garden = garden_ind
+	in_minigame_selection = true
+	_setup_minigame_selection()
+	
+	locked_line.visible = false
+	unlocked_line.visible = false
+	garden_parent.get_child(current_garden).buttons.visible = false
+	minigame_selection.visible = true
+
+
+func _on_lesson_button_pressed() -> void:
 	await OpeningCurtain.close()
 	
-	var minigame_selection: MinigameSelection = minigame_selection_scene.instantiate()
-	minigame_selection.lesson_number = lesson_ind
+	var look_and_learn: LookAndLearn = look_and_learn_scene.instantiate()
+	look_and_learn.lesson_nb = current_lesson_number
 	
-	get_tree().root.add_child(minigame_selection)
-	get_tree().current_scene = minigame_selection
+	get_tree().root.add_child(look_and_learn)
+	get_tree().current_scene = look_and_learn
 	queue_free()
+
+
+func _on_exercise_button_1_pressed() -> void:
+	_fill_minigame_choice(exercise_button_1.text, exercise_button_1.completed, 0)
+	minigame_choice_container.visible = true
+
+
+func _on_exercise_button_2_pressed() -> void:
+	_fill_minigame_choice(exercise_button_2.text, exercise_button_2.completed, 1)
+	minigame_choice_container.visible = true
+
+
+func _on_exercise_button_3_pressed() -> void:
+	_fill_minigame_choice(exercise_button_3.text, exercise_button_3.completed, 2)
+	minigame_choice_container.visible = true
 
 
 func _on_progression_unlocks_changed() -> void:
@@ -180,6 +371,8 @@ func _on_progression_unlocks_changed() -> void:
 
 
 func _on_scroll_container_gui_input(event: InputEvent) -> void:
+	if in_minigame_selection:
+		return
 	if event.is_action_pressed("left_click"):
 		is_scrolling = true
 		scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
@@ -204,12 +397,22 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 		if is_garden_changed:
 			var garden_ind: int = target_scroll / garden_size
 			garden_parent.get_child(garden_ind).pop_animation()
-		
-		
+	
 	if is_scrolling and event is InputEventMouseMotion:
 		scroll_container.scroll_horizontal -= event.relative.x
 
 
-
 func _on_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
+	if in_minigame_selection:
+		in_minigame_selection = false
+		minigame_selection.visible = false
+		minigame_choice_container.visible = false
+		locked_line.visible = true
+		unlocked_line.visible = true
+		garden_parent.get_child(current_garden).buttons.visible = true
+	else:
+		get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
+
+
+func _on_minigame_choice_back_button_pressed() -> void:
+	minigame_choice_container.visible = false

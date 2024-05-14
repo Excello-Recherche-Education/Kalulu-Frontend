@@ -5,6 +5,7 @@ class_name Garden
 const flower_path_model: = "res://assets/gardens/flowers/Plant_%02d_%02d_%s.png"
 const background_path_model: = "res://assets/gardens/gardens/garden_%02d_open.png"
 
+@onready var buttons: Control = $Buttons
 @onready var flower_controls: Array[TextureRect] = [
 	%Flower1,
 	%Flower2,

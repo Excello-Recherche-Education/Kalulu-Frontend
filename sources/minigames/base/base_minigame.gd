@@ -30,10 +30,6 @@ class_name Minigame
 # This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
 @onready var game_root: = $GameRoot
 
-# Minigame selection garden sub menu
-const MinigameSelection: = preload("res://sources/lesson_screen/minigame_selection.gd")
-const minigame_selection_scene: = preload("res://sources/lesson_screen/minigame_selection.tscn")
-
 # Sounds
 const win_sound_fx: = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const lose_sound_fx: = preload("res://assets/sfx/sfx_game_over_lose.mp3")
@@ -211,12 +207,7 @@ func _go_back_to_the_garden() -> void:
 	
 	_save_logs()
 	
-	var minigame_selection: MinigameSelection = minigame_selection_scene.instantiate()
-	minigame_selection.lesson_number = lesson_nb
-	
-	get_tree().root.add_child(minigame_selection)
-	get_tree().current_scene = minigame_selection
-	queue_free()
+	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
 
 
 func _play_stimulus() -> void:
