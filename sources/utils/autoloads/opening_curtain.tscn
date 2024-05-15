@@ -164,6 +164,7 @@ _data = {
 }
 
 [node name="OpeningCurtain" type="CanvasLayer"]
+layer = 100
 script = ExtResource("1_xih0r")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
