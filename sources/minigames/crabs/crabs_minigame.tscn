@@ -8,7 +8,7 @@
 
 [node name="CrabsMinigame" instance=ExtResource("1_lbq56")]
 script = ExtResource("2_gierf")
-minigame_name = "Crabs"
+minigame_name = "crabs"
 lesson_nb = 3
 difficulty = 2
 max_number_of_lives = 5

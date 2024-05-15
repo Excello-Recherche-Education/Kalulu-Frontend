@@ -61,6 +61,7 @@ shader_parameter/y_offset = 0.0
 script = ExtResource("2_0xg3r")
 max_number_of_GPs = 6
 distractors_queue_size = 6
+minigame_name = "frog"
 lesson_nb = 10
 max_number_of_lives = 5
 max_progression = 5

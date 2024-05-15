@@ -13,6 +13,7 @@
 [node name="Parakeets" instance=ExtResource("1_oeg4r")]
 script = ExtResource("2_x6xn5")
 fly_duration = 3.0
+minigame_name = "parakeets"
 lesson_nb = 4
 difficulty = 4
 max_number_of_lives = 5

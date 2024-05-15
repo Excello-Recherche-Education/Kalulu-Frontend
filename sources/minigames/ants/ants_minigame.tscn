@@ -9,6 +9,7 @@
 
 [node name="AntsMinigame" instance=ExtResource("1_jqkff")]
 script = ExtResource("2_05d1y")
+minigame_name = "ants"
 lesson_nb = 100
 difficulty = 3
 max_number_of_lives = 5

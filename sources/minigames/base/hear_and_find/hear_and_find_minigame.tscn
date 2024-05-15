@@ -5,11 +5,11 @@
 
 [node name="HearAndFindMinigame" instance=ExtResource("1_fbfdj")]
 script = ExtResource("2_v8ldm")
+between_stimuli_time = 2.0
+stimulus_repeat_time = 15.0
 lesson_nb = 9
 max_number_of_lives = 3
 max_progression = 10
-between_stimuli_time = 2.0
-stimulus_repeat_time = 15.0
 
 [node name="StimulusTimer" type="Timer" parent="." index="4"]
 

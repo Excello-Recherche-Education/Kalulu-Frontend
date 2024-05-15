@@ -54,6 +54,11 @@ func _ready() -> void:
 			"help": "",
 			"end": "",
 		},
+		"caterpillar": {
+			"intro": "",
+			"help": "",
+			"end": "",
+		},
 		"fish": {
 			"intro": "",
 			"intro_test_game_first_word": "",

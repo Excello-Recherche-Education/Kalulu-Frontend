@@ -10,6 +10,7 @@
 [node name="CaterpillarMinigame" instance=ExtResource("1_ntn14")]
 script = ExtResource("2_ycf8p")
 time_between_words = 3.0
+minigame_name = "catterpillar"
 lesson_nb = 10
 max_number_of_lives = 5
 max_progression = 5
