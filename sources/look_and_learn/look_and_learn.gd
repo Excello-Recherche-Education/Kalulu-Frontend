@@ -11,6 +11,7 @@ extends Control
 @onready var tracing_manager: = %TracingManager
 @onready var grapheme_particles: = $GraphemeParticles
 
+const Gardens: = preload("res://sources/gardens/gardens.gd")
 const resource_folder: = "res://language_resources/"
 const language_folder: = "french/"
 const image_folder: = "look_and_learn/images/"
@@ -29,6 +30,7 @@ var current_image_and_sound: = 0
 var images: = []
 var sounds: = []
 
+static var transition_data: Dictionary
 var gardens_data: Dictionary
 
 
@@ -36,6 +38,8 @@ var current_tracing: = 0
 
 
 func _ready() -> void:
+	gardens_data = transition_data
+	transition_data = {}
 	setup()
 	OpeningCurtain.open()
 
@@ -134,17 +138,10 @@ func _on_tracing_manager_finished() -> void:
 func _back_to_gardens() -> void:
 	await OpeningCurtain.close()
 	
-	_back_to_gardens_data(get_tree(), gardens_data)
+	Gardens.transition_data = gardens_data
 	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
 
 
 func _on_garden_button_pressed() -> void:
 	_back_to_gardens()
 
-
-static func _back_to_gardens_data(tree: SceneTree, data: Dictionary) -> void:
-	await tree.create_timer(0).timeout
-	var current_scene: = tree.current_scene
-	current_scene.starting_garden = data.current_garden
-	current_scene._on_garden_lesson_button_pressed(null, data.current_lesson_number, data.current_garden, data.current_button_global_position)
-	
