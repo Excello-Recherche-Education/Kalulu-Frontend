@@ -19,6 +19,10 @@ const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_lea
 @export var syllable_minigames: Array[PackedScene]
 @export var syllable_minigames_icons: Array[Texture]
 
+@export_subgroup("Pairing")
+@export var pairing_minigames: Array[PackedScene]
+@export var pairing_minigames_icons: Array[Texture]
+
 @export_subgroup("Words")
 @export var words_minigames: Array[PackedScene]
 @export var words_minigames_icons: Array[Texture]
@@ -127,6 +131,8 @@ func _setup_minigame_selection() -> void:
 		exercise_button_1.text = exercise1
 		if exercise1 == "Syllable":
 			exercise_button_1.images = syllable_minigames_icons
+		elif exercise1 == "Pairing":
+			exercise_button_1.images = pairing_minigames_icons
 		elif exercise1 == "Words":
 			exercise_button_1.images = words_minigames_icons
 		elif exercise1 == "Sentences":
@@ -138,6 +144,8 @@ func _setup_minigame_selection() -> void:
 		exercise_button_2.text = exercise2
 		if exercise2 == "Syllable":
 			exercise_button_2.images = syllable_minigames_icons
+		elif exercise2 == "Pairing":
+			exercise_button_2.images = pairing_minigames_icons
 		elif exercise2 == "Words":
 			exercise_button_2.images = words_minigames_icons
 		elif exercise2 == "Sentences":
@@ -149,6 +157,8 @@ func _setup_minigame_selection() -> void:
 		exercise_button_3.text = exercise3
 		if exercise3 == "Syllable":
 			exercise_button_3.images = syllable_minigames_icons
+		elif exercise3 == "Pairing":
+			exercise_button_3.images = pairing_minigames_icons
 		elif exercise3 == "Words":
 			exercise_button_3.images = words_minigames_icons
 		elif exercise3 == "Sentences":
@@ -193,6 +203,9 @@ func _fill_minigame_choice(exercise_type: String, is_completed: bool, minigame_n
 	if exercise_type == "Syllable":
 		exercise_scenes = syllable_minigames
 		exercise_icons = syllable_minigames_icons
+	if exercise_type == "Pairing":
+		exercise_scenes = pairing_minigames
+		exercise_icons = pairing_minigames_icons
 	elif exercise_type == "Words":
 		exercise_scenes = words_minigames
 		exercise_icons = words_minigames_icons

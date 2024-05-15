@@ -13,11 +13,11 @@ func _ready() -> void:
 		Database.db.query("CREATE TABLE ExerciseTypes (ID INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, Type TEXT NOT NULL)")
 		Database.db.insert_row("ExerciseTypes",
 		{
-			Type = "Grapheme",
+			Type = "Syllable",
 		})
 		Database.db.insert_row("ExerciseTypes",
 		{
-			Type = "Syllable",
+			Type = "Pairing",
 		})
 		Database.db.insert_row("ExerciseTypes",
 		{
@@ -26,6 +26,10 @@ func _ready() -> void:
 		Database.db.insert_row("ExerciseTypes",
 		{
 			Type = "Sentences",
+		})
+		Database.db.insert_row("ExerciseTypes",
+		{
+			Type = "Boss",
 		})
 	
 	query = "SELECT name FROM sqlite_master WHERE type='table' AND name='LessonsExercises'"
