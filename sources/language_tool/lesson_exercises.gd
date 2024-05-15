@@ -3,6 +3,14 @@ extends Control
 const LessonExerciceContainer: = preload("res://sources/language_tool/lesson_exercises_container.gd")
 const lesson_exercice_container_scene: = preload("res://sources/language_tool/lesson_exercises_container.tscn")
 
+const exercise_types: Array[String] = [
+	"Syllable",
+	"Pairing",
+	"Words",
+	"Sentences",
+	"Boss"
+]
+
 @onready var lessons_container: VBoxContainer = %LessonsContainer
 
 
@@ -11,26 +19,13 @@ func _ready() -> void:
 	Database.db.query(query)
 	if Database.db.query_result.is_empty():
 		Database.db.query("CREATE TABLE ExerciseTypes (ID INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, Type TEXT NOT NULL)")
-		Database.db.insert_row("ExerciseTypes",
-		{
-			Type = "Syllable",
-		})
-		Database.db.insert_row("ExerciseTypes",
-		{
-			Type = "Pairing",
-		})
-		Database.db.insert_row("ExerciseTypes",
-		{
-			Type = "Words",
-		})
-		Database.db.insert_row("ExerciseTypes",
-		{
-			Type = "Sentences",
-		})
-		Database.db.insert_row("ExerciseTypes",
-		{
-			Type = "Boss",
-		})
+	for exercise_type in exercise_types:
+		Database.db.query("SELECT * FROM ExerciseTypes WHERE Type = '%s'" % exercise_type)
+		if Database.db.query_result.is_empty():
+			Database.db.insert_row("ExerciseTypes",
+			{
+				Type = exercise_type,
+			})
 	
 	query = "SELECT name FROM sqlite_master WHERE type='table' AND name='LessonsExercises'"
 	Database.db.query(query)
