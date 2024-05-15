@@ -16,7 +16,6 @@ spacing_glyph = 20
 
 [node name="MonkeysMinigame" instance=ExtResource("1_6nhsm")]
 script = ExtResource("2_12lw5")
-time_between_words = 3.0
 throw_to_king_duration = 1.2
 throw_to_monkey_duration = 0.8
 throw_to_plank_duration = 0.8

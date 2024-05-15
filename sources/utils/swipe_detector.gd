@@ -1,4 +1,4 @@
-extends Control
+extends Button
 class_name SwipeDetector
 
 signal swipe(start_position: Vector2, end_position: Vector2)

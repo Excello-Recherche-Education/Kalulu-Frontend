@@ -32,7 +32,6 @@ var difficulty_settings: Array[DifficultySettings] = [
 ]
 
 
-@export var time_between_words: float = 3.
 @export var throw_to_king_duration: = 1.2
 @export var throw_to_monkey_duration: = 0.4
 @export var throw_to_plank_duration: = 0.8
