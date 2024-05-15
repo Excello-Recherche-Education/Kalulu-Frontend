@@ -205,6 +205,8 @@ offset_bottom = 179.0
 script = ExtResource("1_5hgg8")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -3.0
+bus = &"Effects"
 
 [node name="BackFX" type="Control" parent="."]
 layout_mode = 1
@@ -264,7 +266,7 @@ unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_g5q5i")
 animation = &"idle2"
 autoplay = "idle1"
-frame_progress = 0.383698
+frame_progress = 0.998245
 centered = false
 offset = Vector2(-5, 0)
 
@@ -327,6 +329,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_fwwak")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tnp5x")
 disabled = true
 
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="animation_finished" from="Body/SpriteControl/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 

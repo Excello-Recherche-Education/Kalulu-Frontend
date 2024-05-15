@@ -11,7 +11,23 @@ signal crab_hit(stimulus: Dictionary)
 @onready var highlight_fx: HighlightFX = %HighlightFX
 @onready var right_fx: RightFX = %RightFX
 @onready var wrong_fx: WrongFX = %WrongFX
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
+var sounds: = [
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_2.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_3.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_4.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_5.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_6.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_7.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_8.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_9.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_10.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_11.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_12.mp3"),
+	preload("res://assets/minigames/crabs/audio/sfx/crab_random_13.mp3"),
+]
 
 var stimulus: Dictionary:
 	set = _set_stimulus
@@ -20,6 +36,7 @@ var stimulus: Dictionary:
 func _ready() -> void:
 	set_button_active(false)
 	animated_sprite.play("idle1")
+	_on_audio_stream_player_finished()
 
 
 func set_button_active(active: bool) -> void:
@@ -69,3 +86,8 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 				animated_sprite.play("idle2")
 		"hit":
 			animated_sprite.play("hurt")
+
+
+func _on_audio_stream_player_finished() -> void:
+	audio_stream_player.stream = sounds[randi_range(0, sounds.size() - 1)]
+	audio_stream_player.play()
