@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_3hx0j"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_3sw4w"]
 [ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="6_bn4pr"]
-[ext_resource type="PackedScene" uid="uid://c6klih3h3ws6f" path="res://sources/utils/auto_size_label.tscn" id="7_kyqqg"]
+[ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="7_kyqqg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_87f4k"]
 atlas = ExtResource("2_yu4q0")
@@ -186,15 +186,15 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tnp5x"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1h5my"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tdur1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g8ffa"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fwwak"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tdur1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1h5my"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tnp5x"]
 
 [node name="Crab" type="Control"]
 custom_minimum_size = Vector2(205, 179)
@@ -203,6 +203,8 @@ anchors_preset = 0
 offset_right = 205.0
 offset_bottom = 179.0
 script = ExtResource("1_5hgg8")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="BackFX" type="Control" parent="."]
 layout_mode = 1
@@ -260,9 +262,9 @@ sprites = [NodePath("AnimatedSprite2D")]
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body/SpriteControl"]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_g5q5i")
-animation = &"idle1"
+animation = &"idle2"
 autoplay = "idle1"
-frame_progress = 0.277209
+frame_progress = 0.383698
 centered = false
 offset = Vector2(-5, 0)
 
@@ -318,11 +320,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_tnp5x")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1h5my")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_tdur1")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_g8ffa")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_fwwak")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_tdur1")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1h5my")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_tnp5x")
 disabled = true
 
 [connection signal="animation_finished" from="Body/SpriteControl/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

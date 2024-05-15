@@ -79,9 +79,11 @@ boss_minigames_icons = Array[Texture]([ExtResource("16_5rwfp")])
 
 [node name="RightAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_37f6y")
+bus = &"Effects"
 
 [node name="LeftAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("18_bdar8")
+bus = &"Effects"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1280, 900)
