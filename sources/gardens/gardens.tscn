@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b1rkn0uwoyd7l"]
+[gd_scene load_steps=32 format=3 uid="uid://b1rkn0uwoyd7l"]
 
 [ext_resource type="Script" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
 [ext_resource type="Resource" uid="uid://8v0g8bpx5mh0" path="res://resources/gardens/gardens_layout.tres" id="2_1i16w"]
@@ -24,6 +24,8 @@
 [ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="12_ohgqx"]
 [ext_resource type="PackedScene" uid="uid://df5derhil64ca" path="res://sources/minigames/fish/fish_minigame.tscn" id="15_6dtg2"]
 [ext_resource type="Texture2D" uid="uid://bc3e0qths2cvt" path="res://assets/minigames/fish/fish_icon_full.png" id="16_5rwfp"]
+[ext_resource type="AudioStream" uid="uid://4bv1hr6r68op" path="res://assets/gardens/ui_transition_right.mp3" id="17_37f6y"]
+[ext_resource type="AudioStream" uid="uid://bwgrj3quwtbvm" path="res://assets/gardens/ui_transition_left.mp3" id="18_bdar8"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ey6av"]
 blend_mode = 1
@@ -74,6 +76,12 @@ sentences_minigames = Array[PackedScene]([ExtResource("8_g4mhc")])
 sentences_minigames_icons = Array[Texture]([ExtResource("12_ohgqx")])
 boss_minigames = Array[PackedScene]([ExtResource("15_6dtg2")])
 boss_minigames_icons = Array[Texture]([ExtResource("16_5rwfp")])
+
+[node name="RightAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_37f6y")
+
+[node name="LeftAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_bdar8")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1280, 900)

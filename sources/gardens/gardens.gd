@@ -45,6 +45,8 @@ const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_lea
 @onready var minigame_button_container: HBoxContainer = %MinigameButtonContainer
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var back_button: TextureButton = %BackButton
+@onready var right_audio_stream_player: AudioStreamPlayer = $RightAudioStreamPlayer
+@onready var left_audio_stream_player: AudioStreamPlayer = $LeftAudioStreamPlayer
 
 var lessons: = {}
 var points: = []
@@ -422,9 +424,11 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 		if shift_value < - 400:
 			target_scroll -= garden_size
 			is_garden_changed = true
+			left_audio_stream_player.play()
 		elif shift_value > 400:
 			target_scroll += garden_size
 			is_garden_changed = true
+			right_audio_stream_player.play()
 		tween = create_tween()
 		tween.set_ease(Tween.EASE_OUT)
 		tween.set_trans(Tween.TRANS_SPRING)
