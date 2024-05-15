@@ -108,6 +108,8 @@ func _find_stimuli_and_distractions() -> void:
 					stimulus_distractors.append(gp)
 		if GPs:
 			for syllable: Dictionary in all_syllables:
+				if syllable.GPs.size() < 2:
+					continue
 				if syllable.GPs[0] not in GPs and syllable.GPs[1] not in GPs:
 					stimulus_distractors.append(syllable)
 			
