@@ -233,7 +233,7 @@ func set_up_lessons() -> void:
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(i, lessons[lesson_ind][0].grapheme)
-			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.lesson_button_controls[i].global_position, lesson_ind, garden_ind))
+			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.lesson_button_controls[i], lesson_ind, garden_ind))
 			lesson_ind += 1
 
 
@@ -275,7 +275,9 @@ func set_up_path() -> void:
 	locked_line.points = curve.get_baked_points()
 
 
-func _on_garden_lesson_button_pressed(button_global_position: Vector2, lesson_ind: int, garden_ind: int, tween_duration: = 0.5) -> void:
+func _on_garden_lesson_button_pressed(button: TextureButton, lesson_ind: int, garden_ind: int, button_global_position: = Vector2.ZERO, tween_duration: = 0.5) -> void:
+	if button:
+		button_global_position = button.global_position
 	current_button_global_position = button_global_position
 	current_lesson_number = lesson_ind
 	current_garden = garden_ind

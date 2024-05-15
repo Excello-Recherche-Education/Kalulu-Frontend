@@ -146,5 +146,5 @@ static func _back_to_gardens_data(tree: SceneTree, data: Dictionary) -> void:
 	await tree.create_timer(0).timeout
 	var current_scene: = tree.current_scene
 	current_scene.starting_garden = data.current_garden
-	current_scene._on_garden_lesson_button_pressed(data.current_button_global_position, data.current_lesson_number, data.current_garden)
+	current_scene._on_garden_lesson_button_pressed(null, data.current_lesson_number, data.current_garden, data.current_button_global_position)
 	
