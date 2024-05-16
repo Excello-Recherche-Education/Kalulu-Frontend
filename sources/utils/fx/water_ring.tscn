@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://blioxuf8hvad4"]
 
-[ext_resource type="Script" path="res://sources/minigames/frog/water_ring_fx.gd" id="1_1kibe"]
-[ext_resource type="Texture2D" uid="uid://ba3pksf5lbjml" path="res://assets/vfx/water_fx.png" id="2_o655d"]
+[ext_resource type="Script" path="res://sources/utils/fx/water_ring.gd" id="1_tgn6m"]
+[ext_resource type="Texture2D" uid="uid://ba3pksf5lbjml" path="res://assets/vfx/water_fx.png" id="2_rqr5s"]
 
 [sub_resource type="Gradient" id="Gradient_cfyxj"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -29,13 +29,15 @@ color_ramp = SubResource("GradientTexture1D_6qqd3")
 [node name="WaterRingFX" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_1kibe")
+script = ExtResource("1_tgn6m")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 1
 process_material = SubResource("ParticleProcessMaterial_7w1vm")
-texture = ExtResource("2_o655d")
+texture = ExtResource("2_rqr5s")
 lifetime = 3.0
 one_shot = true
 explosiveness = 0.95
+
+[connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]

@@ -1,19 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://tkfgc7fdyw1a"]
+[gd_scene load_steps=8 format=3 uid="uid://tkfgc7fdyw1a"]
 
 [ext_resource type="PackedScene" uid="uid://cisurm74fqg2i" path="res://sources/minigames/base/words/words_minigame.tscn" id="1_geqym"]
 [ext_resource type="Script" path="res://sources/minigames/turtles/turtles_minigame.gd" id="2_f5de7"]
 [ext_resource type="Texture2D" uid="uid://bt4k3wgpxv8uy" path="res://assets/minigames/turtles/graphic/gauge_icon_turtle_empty.png" id="3_3a2rs"]
 [ext_resource type="Texture2D" uid="uid://rnqme2j272qf" path="res://assets/minigames/turtles/graphic/gauge_icon_turtle_full.png" id="4_l6oqe"]
 [ext_resource type="PackedScene" uid="uid://chuny571miwxm" path="res://sources/minigames/turtles/island.tscn" id="5_bgryf"]
-[ext_resource type="Material" uid="uid://cpfvnjrabobgn" path="res://sources/minigames/turtles/turtles_water_material.tres" id="5_k74dt"]
-[ext_resource type="Texture2D" uid="uid://caiayxwsgup2e" path="res://assets/minigames/turtles/graphic/turtle_background.png" id="6_l6je2"]
-[ext_resource type="Script" path="res://sources/minigames/turtles/water.gd" id="7_qasbb"]
+[ext_resource type="PackedScene" uid="uid://b8vmq4o8f7v5p" path="res://sources/minigames/turtles/water.tscn" id="5_g012u"]
 
 [sub_resource type="Curve2D" id="Curve2D_m26pb"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -256, -256, 0, 0, 0, 0, 2816, -256, 0, 0, 0, 0, 2816, 2048, 0, 0, 0, 0, -256, 2048, 0, 0, 0, 0, -256, -256)
+"points": PackedVector2Array(0, 0, 0, 0, 0, -256, -200, 0, 200, 0, 2560, -256, 0, -200, 0, 200, 2816, 0, 0, -200, 0, 200, 2816, 1800, 200, 0, -200, 0, 2560, 2048, 200, 0, -200, 0, 0, 2048, 0, 200, 0, -200, -256, 1800, 0, 200, 0, -200, -256, 0, -200, 0, 0, 0, 0, -256)
 }
-point_count = 5
+point_count = 9
 
 [node name="TurtlesMinigame" instance=ExtResource("1_geqym")]
 script = ExtResource("2_f5de7")
@@ -26,16 +24,8 @@ max_progression = 5
 empty_progression_icon = ExtResource("3_3a2rs")
 full_progression_icon = ExtResource("4_l6oqe")
 
-[node name="Water" type="TextureRect" parent="GameRoot" index="0"]
-material = ExtResource("5_k74dt")
+[node name="Water" parent="GameRoot" index="0" instance=ExtResource("5_g012u")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("6_l6je2")
-script = ExtResource("7_qasbb")
 
 [node name="Island" parent="GameRoot" index="1" instance=ExtResource("5_bgryf")]
 position = Vector2(1280, 830)
@@ -53,9 +43,7 @@ grow_vertical = 2
 curve = SubResource("Curve2D_m26pb")
 
 [node name="SpawnLocation" type="PathFollow2D" parent="GameRoot/SpawnPath" index="0"]
-position = Vector2(1565.55, 2048)
-rotation = 3.14159
-progress = 6626.45
+position = Vector2(0, -256)
 
 [node name="SpawnTimer" type="Timer" parent="GameRoot" index="4"]
 one_shot = true

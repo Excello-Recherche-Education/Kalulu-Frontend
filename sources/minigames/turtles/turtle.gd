@@ -40,7 +40,7 @@ func _set_direction(new_direction: Vector2) -> void:
 
 	# Changes the direction
 	direction = new_direction
-
+	
 	# Play turn animations	
 	if angle_to > 0:
 		sprite.play("swim_right")
@@ -95,7 +95,8 @@ func _on_swipe_detector_swipe(start_position: Vector2, end_position: Vector2):
 
 
 func _on_animated_sprite_2d_animation_changed():
-	animation_changed.emit(global_position)
+	if is_visible_on_screen:
+		animation_changed.emit(global_position)
 
 
 func _on_animated_sprite_2d_animation_finished():

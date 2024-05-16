@@ -61,11 +61,6 @@ func _setup_minigame() -> void:
 	spawn_timer.wait_time = settings.spawn_rate
 
 
-func _start() -> void:
-	super._start()
-	_on_spawn_timer_timeout()
-
-
 func _play_turtle_phoneme(gp: Dictionary) -> void:
 	if gp and gp.has("Phoneme"):
 		await audio_player.play_phoneme(gp.Phoneme)
@@ -110,28 +105,8 @@ func _on_spawn_timer_timeout() -> void:
 	
 	turtles.add_child(turtle)
 	
-	# Makes the turtle move toward the island
-	if turtle.position.x == - 256:
-		# Top left & bottom left corners
-		if turtle.position.y < 0 or turtle.position.y > get_viewport_rect().size.y:
-			turtle.direction = turtle.position.direction_to(island.position)
-		# Move to the right
-		else:
-			turtle.direction = Vector2(1, 0)
-	elif turtle.position.x == 2816:
-		# Top right & bottom right corners
-		if turtle.position.y < 0 or turtle.position.y > get_viewport_rect().size.y:
-			turtle.direction = turtle.position.direction_to(island.position)
-		# Move to the left
-		else:
-			turtle.direction = Vector2(-1, 0)
-	# Move to the bottom
-	elif turtle.position.y == -256:
-		turtle.direction = Vector2(0, 1)
-	# Move to the top
-	elif turtle.position.y == 2048:
-		turtle.direction = Vector2(0, -1)
-	
+	# Set the direction of the turtle
+	turtle.direction = Vector2.DOWN.rotated(spawn_location.rotation).normalized()
 	
 	# Define if the turtle is a stimulus or a distraction
 	var is_stimulus: = randf() < settings.stimuli_ratio
@@ -139,7 +114,6 @@ func _on_spawn_timer_timeout() -> void:
 		turtle.gp = _get_GP()
 	else:
 		turtle.gp = _get_distractor()
-	
 	
 	# Increment the count
 	turtle_count += 1
