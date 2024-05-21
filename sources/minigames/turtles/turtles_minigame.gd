@@ -44,6 +44,15 @@ var turtle_count: int = 0:
 		if turtle_count >= max_turtle_count and value < max_turtle_count:
 			can_spawn_turtle.emit()
 		turtle_count = value
+var is_highlighting: bool = false:
+	set(value):
+		is_highlighting = value
+		for turtle: Turtle in turtles.get_children():
+			if is_highlighting and self._is_GP_right(turtle.gp):
+				turtle.highlight(true)
+			else:
+				turtle.highlight(false)
+
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
@@ -61,9 +70,13 @@ func _setup_minigame() -> void:
 	spawn_timer.wait_time = settings.spawn_rate
 
 
+func _highlight() -> void:
+	is_highlighting = true
+
+
 func _play_turtle_phoneme(gp: Dictionary) -> void:
 	if gp and gp.has("Phoneme"):
-		await audio_player.play_phoneme(gp.Phoneme)
+		await audio_player.play_phoneme(gp.Phoneme as String)
 
 
 func _clear_turtles() -> void:
@@ -112,6 +125,8 @@ func _on_spawn_timer_timeout() -> void:
 	var is_stimulus: = randf() < settings.stimuli_ratio
 	if is_stimulus:
 		turtle.gp = _get_GP()
+		if is_highlighting:
+			turtle.highlight(true)
 	else:
 		turtle.gp = _get_distractor()
 	
@@ -136,7 +151,8 @@ func _on_island_area_entered(area: Area2D) -> void:
 		# Stop the spawning
 		spawn_timer.stop()
 	
-		#_stop_highlight()
+		# Stop the highlight
+		is_highlighting = false
 		
 		# Play the right animation
 		turtle.right()
@@ -148,7 +164,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 		island.progress = current_word_progression + 1
 		
 		# Play the GP
-		await audio_player.play_phoneme(_get_GP().Phoneme)
+		await audio_player.play_phoneme(_get_GP().Phoneme as String)
 		
 		# Update the word progression
 		current_word_progression += 1
@@ -160,7 +176,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 		turtle.disappear()
 		
 		# Play the GP
-		await audio_player.play_phoneme(turtle.gp.Phoneme)
+		await audio_player.play_phoneme(turtle.gp.Phoneme as String)
 		
 		# Update the lives
 		current_lives -= 1
@@ -182,7 +198,7 @@ func _on_current_progression_changed() -> void:
 	
 	# Replay the stimulus
 	await get_tree().create_timer(time_between_words/2).timeout
-	audio_player.play_word(_get_previous_stimulus().Word)
+	audio_player.play_word(_get_previous_stimulus().Word as String)
 	await get_tree().create_timer(time_between_words/2).timeout
 	
 	# Starts a new round

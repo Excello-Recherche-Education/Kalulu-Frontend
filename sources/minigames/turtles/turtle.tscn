@@ -193,8 +193,10 @@ height = 224.0
 script = ExtResource("1_vx1yr")
 
 [node name="HighlightFX" parent="." instance=ExtResource("2_rllc5")]
+scale = Vector2(1.25, 1.25)
 
 [node name="RightFX" parent="." instance=ExtResource("2_dmkbj")]
+scale = Vector2(1.25, 1.25)
 
 [node name="Body" type="Node2D" parent="."]
 
@@ -240,6 +242,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="WrongFX" parent="." instance=ExtResource("40_vguhy")]
+scale = Vector2(1.25, 1.25)
 
 [node name="SwipeDetector" parent="." instance=ExtResource("49_0qwwy")]
 offset_left = -152.0

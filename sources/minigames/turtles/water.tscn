@@ -14,7 +14,9 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_dxrmw")
 script = ExtResource("3_n3ww4")
+ring_color = Color(0.65098, 0.878431, 0.847059, 1)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(1232, 712)
 stream = ExtResource("4_fv4k0")
 bus = &"Effects"
