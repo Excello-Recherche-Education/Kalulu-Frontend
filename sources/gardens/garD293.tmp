@@ -24,7 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://bc3e0qths2cvt" path="res://assets/minigames/fish/fish_icon_full.png" id="16_5rwfp"]
 [ext_resource type="AudioStream" uid="uid://4bv1hr6r68op" path="res://assets/gardens/ui_transition_right.mp3" id="17_37f6y"]
 [ext_resource type="AudioStream" uid="uid://bwgrj3quwtbvm" path="res://assets/gardens/ui_transition_left.mp3" id="18_bdar8"]
-[ext_resource type="Texture2D" uid="uid://bb00fhnenbml5" path="res://assets/lesson_screen/big_button.png" id="20_elp7t"]
+[ext_resource type="Texture2D" uid="uid://s2plf17ct78u" path="res://assets/lesson_screen/button_progress_up.png" id="20_m7inw"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ey6av"]
 blend_mode = 1
@@ -158,27 +158,22 @@ width = 50.0
 
 [node name="MinigameBackground" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("20_elp7t")
-expand_mode = 1
+texture = ExtResource("20_m7inw")
 stretch_mode = 5
 
 [node name="MinigameSelection" type="Control" parent="CanvasLayer"]
 unique_name_in_owner = true
-visible = false
-modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(1280, 900)
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 layout_mode = 1
@@ -202,9 +197,6 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 disabled = true
 
-[node name="Label" parent="CanvasLayer/MinigameSelection/LessonButton" index="1"]
-theme_override_font_sizes/font_size = 92
-
 [node name="MinigameContainer1" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -213,7 +205,7 @@ offset_top = 284.0
 offset_right = 1149.0
 offset_bottom = 800.0
 size_flags_horizontal = 3
-alignment = 1
+alignment = 2
 reverse_fill = true
 
 [node name="MinigameContainer2" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
@@ -224,7 +216,6 @@ offset_top = 284.0
 offset_right = 1927.0
 offset_bottom = 800.0
 size_flags_horizontal = 3
-alignment = 1
 reverse_fill = true
 
 [node name="MinigameContainer3" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
@@ -251,5 +242,3 @@ texture_disabled = ExtResource("6_gs6gi")
 [connection signal="gui_input" from="ScrollContainer" to="." method="_on_scroll_container_gui_input"]
 [connection signal="pressed" from="CanvasLayer/MinigameSelection/LessonButton" to="." method="_on_lesson_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
-
-[editable path="CanvasLayer/MinigameSelection/LessonButton"]
