@@ -26,9 +26,9 @@ class DifficultySettings:
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(1),
 	DifficultySettings.new(2),
+	DifficultySettings.new(2),
 	DifficultySettings.new(3),
-	DifficultySettings.new(4),
-	DifficultySettings.new(5)
+	DifficultySettings.new(3)
 ]
 
 

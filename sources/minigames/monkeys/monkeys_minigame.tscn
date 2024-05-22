@@ -55,47 +55,33 @@ offset_right = 2366.0
 offset_bottom = 1686.0
 texture = ExtResource("5_2qxen")
 
-[node name="Position2" type="Control" parent="GameRoot/PalmTreeMonkeys" index="0"]
+[node name="Position1" type="Control" parent="GameRoot/PalmTreeMonkeys" index="0"]
 anchors_preset = 0
 offset_left = 362.0
 offset_top = 706.0
 offset_right = 402.0
 offset_bottom = 746.0
 
-[node name="Position3" type="Control" parent="GameRoot/PalmTreeMonkeys" index="1"]
+[node name="Position2" type="Control" parent="GameRoot/PalmTreeMonkeys" index="1"]
 anchors_preset = 0
 offset_left = 362.0
 offset_top = 1084.0
 offset_right = 402.0
 offset_bottom = 1124.0
 
-[node name="Position4" type="Control" parent="GameRoot/PalmTreeMonkeys" index="2"]
+[node name="Position3" type="Control" parent="GameRoot/PalmTreeMonkeys" index="2"]
 anchors_preset = 0
 offset_left = 362.0
 offset_top = 1474.0
 offset_right = 402.0
 offset_bottom = 1514.0
 
-[node name="Position" type="Control" parent="GameRoot/PalmTreeMonkeys" index="3"]
+[node name="Position4" type="Control" parent="GameRoot/PalmTreeMonkeys" index="3"]
 anchors_preset = 0
 offset_left = 362.0
-offset_top = 220.0
+offset_top = 328.0
 offset_right = 402.0
-offset_bottom = 260.0
-
-[node name="Position5" type="Control" parent="GameRoot/PalmTreeMonkeys" index="4"]
-anchors_preset = 0
-offset_left = 131.0
-offset_top = 395.0
-offset_right = 171.0
-offset_bottom = 435.0
-
-[node name="Position6" type="Control" parent="GameRoot/PalmTreeMonkeys" index="5"]
-anchors_preset = 0
-offset_left = 600.0
-offset_top = 395.0
-offset_right = 640.0
-offset_bottom = 435.0
+offset_bottom = 368.0
 
 [node name="PlamTreeKing" type="TextureRect" parent="GameRoot" index="2"]
 layout_mode = 0
