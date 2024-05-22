@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://djykrpdu58f3v"]
+[gd_scene load_steps=46 format=3 uid="uid://djykrpdu58f3v"]
 
 [ext_resource type="Texture2D" uid="uid://bi8db32muvyqp" path="res://assets/minigames/turtles/graphic/turtle_disappears_0000.png" id="1_phg5d"]
 [ext_resource type="Script" path="res://sources/minigames/turtles/turtle.gd" id="1_vx1yr"]
@@ -38,6 +38,7 @@
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="40_vguhy"]
 [ext_resource type="Texture2D" uid="uid://bg6603ct43g00" path="res://assets/minigames/turtles/graphic/turtle_victory_0002.png" id="41_hkvwr"]
 [ext_resource type="Texture2D" uid="uid://25h5xdesr8mk" path="res://assets/minigames/turtles/graphic/turtle_victory_0003.png" id="42_1is74"]
+[ext_resource type="AudioStream" uid="uid://cmsn7q4fxnghr" path="res://assets/sfx/splash.mp3" id="42_p3fqk"]
 [ext_resource type="Texture2D" uid="uid://vgqt4v6pgerb" path="res://assets/minigames/turtles/graphic/turtle_victory_0004.png" id="43_lvi8j"]
 [ext_resource type="Texture2D" uid="uid://64w00rvu3xfe" path="res://assets/minigames/turtles/graphic/turtle_victory_0005.png" id="44_w2vrc"]
 [ext_resource type="PackedScene" uid="uid://cjg6pgc7yfp1p" path="res://sources/utils/swipe_detector.tscn" id="49_0qwwy"]
@@ -198,6 +199,10 @@ scale = Vector2(1.25, 1.25)
 [node name="RightFX" parent="." instance=ExtResource("2_dmkbj")]
 scale = Vector2(1.25, 1.25)
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("42_p3fqk")
+bus = &"Effects"
+
 [node name="Body" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
@@ -256,6 +261,7 @@ one_shot = true
 
 [connection signal="animation_changed" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="animation_looped" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="screen_entered" from="Body/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="Body/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="area_entered" from="Body/BodyArea" to="." method="_on_body_area_area_entered"]

@@ -1,5 +1,4 @@
 extends Node2D
-class_name Turtle
 
 signal pressed(gp: Dictionary)
 signal animation_changed(position: Vector2)
@@ -13,6 +12,7 @@ signal animation_changed(position: Vector2)
 @onready var right_fx: RightFX = $RightFX
 @onready var wrong_fx: WrongFX = $WrongFX
 @onready var delete_timer: Timer = $DeleteTimer
+@onready var audio_stream_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var gp: Dictionary: 
 	set(value):
@@ -23,15 +23,19 @@ var velocity: float = 0.
 var direction: Vector2 = Vector2(0,-1):
 	set = _set_direction
 var is_moving: bool = true
+var is_changing_direction: bool = false
 var is_visible_on_screen: bool = false
 
 
-func _process(delta):
+func _process(delta: float) -> void:
 	if is_moving:
 		position += velocity * delta * direction
 
 
 func _set_direction(new_direction: Vector2) -> void:
+	
+	is_changing_direction = true
+	
 	# Get the angle difference between the old and new direction
 	var angle_to : float = rad_to_deg(direction.angle_to(new_direction))
 
@@ -50,6 +54,9 @@ func _set_direction(new_direction: Vector2) -> void:
 	# Tween the rotation of the body
 	var tween: = create_tween()
 	tween.tween_property(body, "rotation_degrees", angle, sprite.sprite_frames.get_frame_count(sprite.animation) /sprite.sprite_frames.get_animation_speed(sprite.animation))
+	await tween.finished
+	
+	is_changing_direction = false
 
 #region Actions
 
@@ -86,55 +93,58 @@ func disappear() -> void:
 
 #region Connections
 
-func _on_swipe_detector_swipe(start_position: Vector2, end_position: Vector2):
-	if not is_moving:
+func _on_swipe_detector_swipe(start_position: Vector2, end_position: Vector2) -> void:
+	if not is_moving or is_changing_direction:
 		return
 	
 	# Change the direction toward the swipe
 	direction = start_position.direction_to(end_position)
-
-
-func _on_animated_sprite_2d_animation_changed():
-	if is_visible_on_screen:
-		animation_changed.emit(global_position)
-
-
-func _on_animated_sprite_2d_animation_finished():
-	if sprite.animation in ["swim_left", "swim_right"]:
-		sprite.play("swim")
-	elif sprite.animation == "disappear":
-		if right_fx.is_playing:
-			await right_fx.finished
-		if wrong_fx.is_playing:
-			await wrong_fx.is_playing
-		
-		queue_free()
-
-
-func _on_visible_on_screen_notifier_2d_screen_entered():
-	is_visible_on_screen = true
-
-
-func _on_visible_on_screen_notifier_2d_screen_exited():
-	is_visible_on_screen = false
-	delete_timer.start()
-
-
-func _on_delete_timer_timeout():
-	if not is_visible_on_screen:
-		queue_free()
-
-
-func _on_body_area_area_entered(area):
-	disappear()
+	
+	if not audio_stream_player.playing:
+		audio_stream_player.play()
 
 
 func _on_swipe_detector_pressed() -> void:
 	pressed.emit(gp)
 
+
+func _on_animated_sprite_2d_animation_changed() -> void:
+	if is_visible_on_screen:
+		animation_changed.emit(global_position)
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if sprite.animation in ["swim_left", "swim_right"]:
+		sprite.play("swim")
+	elif sprite.animation == "disappear":
+		var coroutine: = Coroutine.new()
+		audio_stream_player.play()
+		if audio_stream_player.playing:
+			coroutine.add_future(audio_stream_player.finished)
+		if right_fx.is_playing:
+			coroutine.add_future(right_fx.finished)
+		if wrong_fx.is_playing:
+			coroutine.add_future(wrong_fx.finished)
+		
+		await coroutine.join_all()
+		queue_free()
+
+
+func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
+	is_visible_on_screen = true
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	is_visible_on_screen = false
+	delete_timer.start()
+
+
+func _on_delete_timer_timeout() -> void:
+	if not is_visible_on_screen:
+		queue_free()
+
+
+func _on_body_area_area_entered(_area: Area2D) -> void:
+	disappear()
+
 #endregion
-
-
-
-
-

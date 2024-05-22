@@ -9,9 +9,9 @@
 
 [sub_resource type="Curve2D" id="Curve2D_m26pb"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, -256, -200, 0, 200, 0, 2560, -256, 0, -200, 0, 200, 2816, 0, 0, -200, 0, 200, 2816, 1800, 200, 0, -200, 0, 2560, 2048, 200, 0, -200, 0, 0, 2048, 0, 200, 0, -200, -256, 1800, 0, 200, 0, -200, -256, 0, -200, 0, 0, 0, 0, -256)
+"points": PackedVector2Array(0, 0, 0, 0, 384, -256, -200, 0, 200, 0, 2560, -256, 0, -200, 0, 200, 2816, 0, 0, -200, 0, 200, 2816, 1800, 200, 0, -200, 0, 2560, 2056, 200, 0, -200, 0, 384, 2056)
 }
-point_count = 9
+point_count = 6
 
 [node name="TurtlesMinigame" instance=ExtResource("1_geqym")]
 script = ExtResource("2_f5de7")
@@ -43,7 +43,7 @@ grow_vertical = 2
 curve = SubResource("Curve2D_m26pb")
 
 [node name="SpawnLocation" type="PathFollow2D" parent="GameRoot/SpawnPath" index="0"]
-position = Vector2(0, -256)
+position = Vector2(384, -256)
 
 [node name="SpawnTimer" type="Timer" parent="GameRoot" index="4"]
 one_shot = true

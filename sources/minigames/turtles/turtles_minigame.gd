@@ -1,13 +1,15 @@
 extends WordsMinigame
-class_name TurtlesMinigame
 
 signal can_spawn_turtle()
 
-const turtle_scene: PackedScene = preload("res://sources/minigames/turtles/turtle.tscn")
+# Namespace
+const Water: = preload("res://sources/minigames/turtles/water.gd")
+const Island: = preload("res://sources/minigames/turtles/island.gd")
+const Turtle: = preload("res://sources/minigames/turtles/turtle.gd")
 
+const turtle_scene: PackedScene = preload("res://sources/minigames/turtles/turtle.tscn")
 # Defines the maximum number of turtles visible on screen
 const max_turtle_count: int = 5
-
 # Defines the minimum distance between turtles when spawning them
 const min_distance: int = 500
 
