@@ -78,7 +78,7 @@ func _setup_minigame() -> void:
 				_on_coconut_thrown(data.monkey)
 	)
 	
-	_reset_plank_label()
+	_update_label(0)
 
 
 func _highlight() -> void:
@@ -87,8 +87,14 @@ func _highlight() -> void:
 			monkey.highlight()
 
 
-func _reset_plank_label() -> void:
-	word_label.text = "_".repeat(_get_current_stimulus().Word.length())
+func _update_label(progress: int) -> void:
+	var gps_count: = self._get_current_stimulus().GPsCount as int
+	word_label.text = ""
+	for i in gps_count:
+		if progress > i or progress == gps_count:
+			word_label.text += self._get_current_stimulus().GPs[i].Grapheme
+		else:
+			word_label.text += "_"
 
 
 func _play_monkey_stimulus(monkey: Monkey) -> void:
@@ -166,12 +172,11 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		await tween.finished
 		coconut.explode()
 		
-		word_label.text = ""
-		for i in current_word_progression +1:
-			word_label.text += stimuli[current_progression].GPs[i].Grapheme
-		word_label.text += "_".repeat(stimuli[current_progression].Word.length() - word_label.text.length())
-	
+		# Update the label
+		_update_label(current_word_progression + 1)
+		
 		current_word_progression += 1
+		
 	else:
 		await king.play("start_wrong")
 	
@@ -227,6 +232,7 @@ func _on_current_progression_changed() -> void:
 	# Starts a new round
 	super()
 	
-	_reset_plank_label()
+	# Reset the label
+	_update_label(0)
 
 #endregion
