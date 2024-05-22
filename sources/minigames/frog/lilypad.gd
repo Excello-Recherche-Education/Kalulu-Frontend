@@ -59,6 +59,7 @@ func _set_disabled(value: bool) -> void:
 	disabled = value
 	
 	button.disabled = disabled
+	label.visible = !disabled
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
