@@ -1,8 +1,11 @@
 @tool
 extends WordsMinigame
 
+# Namespace
 const KingMonkey: = preload("res://sources/minigames/monkeys/king_monkey.gd")
-const monkey_scene: = preload("res://sources/minigames/monkeys/monkey.tscn")
+const Monkey: = preload("res://sources/minigames/monkeys/monkey.gd")
+const Coconut: = preload("res://sources/minigames/monkeys/coconut.gd")
+
 const audio_streams: = [
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_right.mp3"),
@@ -57,9 +60,9 @@ func _setup_minigame() -> void:
 	
 	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
-	var possible_positions: = possible_positions_parent.get_children()
+	var possible_positions: = possible_positions_parent.get_children() as Array[Control]
 	for i in settings.distractors_count + 1:
-		var monkey: Monkey = monkey_scene.instantiate()
+		var monkey: Monkey = Monkey.instantiate()
 		monkeys_node.add_child(monkey)
 		monkeys.append(monkey)
 		
@@ -69,11 +72,11 @@ func _setup_minigame() -> void:
 		monkey.dragged_into_self.connect(_on_monkey_pressed.bind(monkey))
 	
 	monkeys_node.set_drag_forwarding(
-		func(at_position: Vector2):
+		func(_at_position: Vector2) -> Variant:
 			return null,
-		func(_at_position: Vector2, _data): 
+		func(_at_position: Vector2, _data) -> bool: 
 			return true,
-		func(at_position: Vector2, data):
+		func(at_position: Vector2, data) -> void:
 			if (at_position - data.start_position).x < 0:
 				_on_coconut_thrown(data.monkey)
 	)
@@ -119,7 +122,7 @@ func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
 	audio_player.stream = audio_streams[Audio.SendToKing]
 	audio_player.play()
 	
-	var coconut: = monkey.coconut.duplicate()
+	var coconut: Coconut = monkey.coconut.duplicate()
 	game_root.add_child(coconut)
 	coconut.text = monkey.coconut.text
 	coconut.global_transform = monkey.coconut.global_transform

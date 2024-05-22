@@ -1,5 +1,8 @@
 extends Node2D
 
+# Namespace
+const Coconut: = preload("res://sources/minigames/monkeys/coconut.gd")
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var coconut: Coconut = $Marker2D/Coconut
 @onready var catch_position: Marker2D = $CatchPosition
