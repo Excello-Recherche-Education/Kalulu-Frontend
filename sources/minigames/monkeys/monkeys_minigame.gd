@@ -6,6 +6,8 @@ const KingMonkey: = preload("res://sources/minigames/monkeys/king_monkey.gd")
 const Monkey: = preload("res://sources/minigames/monkeys/monkey.gd")
 const Coconut: = preload("res://sources/minigames/monkeys/coconut.gd")
 
+const monkey_scene: = preload("res://sources/minigames/monkeys/monkey.tscn")
+
 const audio_streams: = [
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_right.mp3"),
@@ -60,13 +62,13 @@ func _setup_minigame() -> void:
 	
 	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
-	var possible_positions: = possible_positions_parent.get_children() as Array[Control]
 	for i in settings.distractors_count + 1:
-		var monkey: Monkey = Monkey.instantiate()
+		var monkey: Monkey = monkey_scene.instantiate()
 		monkeys_node.add_child(monkey)
 		monkeys.append(monkey)
 		
-		monkey.global_position = possible_positions[i].global_position
+		var pos: = possible_positions_parent.get_child(i) as Control
+		monkey.global_position = pos.global_position
 		
 		monkey.pressed.connect(_on_monkey_pressed.bind(monkey))
 		monkey.dragged_into_self.connect(_on_monkey_pressed.bind(monkey))
@@ -74,11 +76,11 @@ func _setup_minigame() -> void:
 	monkeys_node.set_drag_forwarding(
 		func(_at_position: Vector2) -> Variant:
 			return null,
-		func(_at_position: Vector2, _data) -> bool: 
+		func(_at_position: Vector2, _data: Variant) -> bool: 
 			return true,
-		func(at_position: Vector2, data) -> void:
+		func(at_position: Vector2, data: Variant) -> void:
 			if (at_position - data.start_position).x < 0:
-				_on_coconut_thrown(data.monkey)
+				_on_coconut_thrown(data.monkey as Monkey)
 	)
 	
 	_update_label(0)
@@ -105,14 +107,14 @@ func _play_monkey_stimulus(monkey: Monkey) -> void:
 	
 	coroutine.add_future(monkey.talk)
 	
-	audio_player.play_phoneme(monkey.stimulus.Phoneme)
+	audio_player.play_phoneme(monkey.stimulus.Phoneme as String)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	
 	await coroutine.join_all()
 
 
-func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
+func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Coconut:
 	
 	monkey.stop_highlight()
 	
@@ -149,7 +151,7 @@ func _on_monkey_pressed(monkey: Monkey) -> void:
 
 func _on_coconut_thrown(monkey: Monkey) -> void:
 	# Log the answer
-	_log_new_response(monkey.stimulus, stimuli[current_progression])
+	_log_new_response(monkey.stimulus, self._get_GP())
 	
 	is_locked = true
 	var coconut: = await _get_coconut_from_monkey_to_king(monkey)
@@ -226,7 +228,7 @@ func _on_current_progression_changed() -> void:
 	var coroutine: = Coroutine.new()
 	for monkey in monkeys:
 		coroutine.add_future(monkey.talk)
-	audio_player.play_word(_get_previous_stimulus().Word)
+	audio_player.play_word(_get_previous_stimulus().Word as String)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	await coroutine.join_all()

@@ -7,8 +7,6 @@ signal dragged_into_self()
 # Namespace
 const Coconut: = preload("res://sources/minigames/monkeys/coconut.gd")
 
-const instance_scene: = "res://sources/minigames/monkeys/monkey.tscn"
-
 @onready var stars: AnimatedSprite2D = $Stars
 @onready var coconut: Coconut = $Marker2D/Coconut
 @onready var coconut_pivot: Marker2D = $Marker2D
@@ -34,10 +32,6 @@ var stimulus: Dictionary :
 		coconut.text = value.Grapheme
 		drag_preview_label.text = value.Grapheme
 		coconut_pivot.hide()
-
-
-static func instantiate():
-	return load(instance_scene).instantiate()
 
 
 func _ready() -> void:
