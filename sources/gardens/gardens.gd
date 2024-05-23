@@ -146,9 +146,9 @@ func _setup_minigame_selection() -> void:
 		else:
 			lesson_button.completed = lesson_unlocks["look_and_learn"] == UserProgression.Status.Completed
 		
-		_fill_minigame_choice(minigame_container_1, exercise1, lesson_unlocks["games"][0], current_lesson_number)
-		_fill_minigame_choice(minigame_container_2, exercise2, lesson_unlocks["games"][1], current_lesson_number)
-		_fill_minigame_choice(minigame_container_3, exercise3, lesson_unlocks["games"][2], current_lesson_number)
+		_fill_minigame_choice(minigame_container_1, exercise1, lesson_unlocks["games"][0], 0)
+		_fill_minigame_choice(minigame_container_2, exercise2, lesson_unlocks["games"][1], 1)
+		_fill_minigame_choice(minigame_container_3, exercise3, lesson_unlocks["games"][2], 2)
 
 
 func _fill_minigame_choice(container: HFlowContainer, exercise_type: String, status: UserProgression.Status, minigame_number: int) -> void:

@@ -85,16 +85,16 @@ func load_additional_word_list() -> String:
 func get_exercice_for_lesson(lesson_nb: int) -> Array[String]:
 	var query: = "Select Exercise1, Exercise2, Exercise3 FROM LessonsExercises
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
-	WHERE LessonNB == %o" % lesson_nb
+	WHERE LessonNB == " + str(lesson_nb)
 	Database.db.query(query)
 	
 	var answer: Array[String]
 	for res in Database.db.query_result:
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == %o" % res.Exercise1)
+		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise1))
 		answer.append(Database.db.query_result[0].Type)
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == %o" % res.Exercise2)
+		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise2))
 		answer.append(Database.db.query_result[0].Type)
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == %o" % res.Exercise3)
+		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise3))
 		answer.append(Database.db.query_result[0].Type)
 	
 	return answer
