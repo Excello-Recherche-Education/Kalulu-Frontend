@@ -1,5 +1,4 @@
 extends AudioStreamPlayer
-class_name CaterpillarAudioStreamPlayer
 
 const eat_sfx: Array[AudioStream] = [
 	preload("res://assets/minigames/caterpillar/audios/caterpillar_eat_random_01.mp3"),

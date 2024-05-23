@@ -1,10 +1,9 @@
 @tool
 extends Node2D
-class_name CaterpillarBody
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var label: Label = $Label
-@onready var right_FX:= $RightFX
+@onready var right_FX: RightFX = $RightFX
 
 var gp: Dictionary:
 	set(value):
@@ -15,15 +14,15 @@ var gp: Dictionary:
 			label.text = ""
 
 
-func _ready():
+func _ready() -> void:
 	walk()
 
 
-func idle():
+func idle() -> void:
 	animated_sprite.play("idle")
 
 
-func walk():
+func walk() -> void:
 	animated_sprite.play("walk")
 
 

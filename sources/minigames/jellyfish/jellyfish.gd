@@ -1,6 +1,5 @@
 @tool
 extends Control
-class_name Jellyfish
 
 signal pressed(stimulus: Dictionary)
 

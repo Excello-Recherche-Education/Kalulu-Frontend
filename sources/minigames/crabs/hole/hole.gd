@@ -1,12 +1,16 @@
 extends Node2D
-class_name Hole
 
 signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned()
 signal stop()
-signal crab_out(hole : Hole)
+signal crab_out(hole)
+
+# Namespace
+const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
+const CrabAudioStreamPlayer: = preload("res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd")
 
 const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
+
 const crab_spawn_y: float = 200.
 const crab_middle_y: float = -25.
 const crab_out_y: float = -220.
