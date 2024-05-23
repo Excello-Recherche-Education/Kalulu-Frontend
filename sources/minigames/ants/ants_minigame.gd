@@ -1,16 +1,16 @@
 @tool
 extends Minigame
 
-@onready var sentence: = %Sentence
-@onready var ants_spawn: = %AntsSpawn
-@onready var ants_start: = %AntsStart
-@onready var ants_end: = %AntsEnd
-@onready var ants: = %Ants
-@onready var words: = %Words
-
 const blank_class: = preload("res://sources/minigames/ants/blank.tscn")
 const ant_class: = preload("res://sources/minigames/ants/ant.tscn")
 const word_class: = preload("res://sources/minigames/ants/word.tscn")
+
+@onready var sentence: HFlowContainer = %Sentence
+@onready var ants_spawn: Node2D = %AntsSpawn
+@onready var ants_start: Node2D = %AntsStart
+@onready var ants_end: Node2D = %AntsEnd
+@onready var ants: Node2D = %Ants
+@onready var words: Node2D = %Words
 
 var current_sentence: Dictionary
 var answersed: = []
