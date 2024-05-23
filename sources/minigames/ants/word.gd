@@ -10,7 +10,7 @@ signal no_answer()
 @onready var right_fx: = $RightFX
 @onready var wrong_fx: = $WrongFX
 
-var stimulus: Dictionary:
+var stimulus: String:
 	set = _set_stimulus
 var follow_mouse: = false
 var current_anchor: CanvasItem
@@ -36,10 +36,10 @@ func _process(_delta: float) -> void:
 			global_position = current_anchor.global_position
 
 
-func _set_stimulus(value: Dictionary) -> void:
+func _set_stimulus(value: String) -> void:
 	stimulus = value
 	
-	label.text = stimulus.Word
+	label.text = stimulus
 
 
 func _on_button_down() -> void:

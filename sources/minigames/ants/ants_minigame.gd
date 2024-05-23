@@ -56,7 +56,18 @@ func _next_sentence() -> void:
 	await get_tree().process_frame
 	
 	current_sentence = stimuli.pop_front()
-	var current_words: = Database.get_words_in_sentence(current_sentence.ID)
+	var current_words: PackedStringArray = current_sentence.Sentence.split(" ")
+	
+	var inds_to_remove: = []
+	for i in range(1, current_words.size()):
+		var word: = current_words[i]
+		if word in ["?", "!", ":"]:
+			current_words[i - 1] += " " + word
+			inds_to_remove.append(i)
+	
+	inds_to_remove.reverse()
+	for ind in inds_to_remove:
+		current_words.remove_at(ind)
 	
 	var number_of_blanks: int = maxi(2, mini(difficulty, current_words.size()))
 	var blanks: = range(current_words.size())
@@ -93,7 +104,7 @@ func _next_sentence() -> void:
 			var label: = Label.new()
 			sentence.add_child(label)
 			
-			label.text = current_word.Word + " "
+			label.text = current_word + " "
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			label.set("theme_override_font_sizes/font_size", 72)
@@ -126,8 +137,8 @@ func _on_current_progression_changed() -> void:
 		_win()
 
 
-func _on_word_answer(stimulus: Dictionary, expected_stimulus: Dictionary, word: TextureButton) -> void:
-	_log_new_response(stimulus, expected_stimulus)
+func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureButton) -> void:
+	_log_new_response({"Word": stimulus}, {"Word": expected_stimulus})
 	
 	answers[word.get_index()] = stimulus == expected_stimulus
 	answersed[word.get_index()] = true

@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=3 uid="uid://df5oba70wj13y"]
+
+[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_jqkff"]
+[ext_resource type="Script" path="res://sources/minigames/ants/ants_minigame.gd" id="2_05d1y"]
+[ext_resource type="Texture2D" uid="uid://bfeos6fwrmrhc" path="res://assets/minigames/ants/graphics/gauge_icon_ant_empty.png" id="5_jm3ut"]
+[ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="6_qfybu"]
+[ext_resource type="Texture2D" uid="uid://b2mj2s3o22i8p" path="res://assets/minigames/ants/graphics/background.png" id="7_ihrng"]
+[ext_resource type="Texture2D" uid="uid://bwciokg3prohr" path="res://assets/minigames/ants/graphics/leaf.png" id="8_b7hhi"]
+
+[node name="AntsMinigame" instance=ExtResource("1_jqkff")]
+script = ExtResource("2_05d1y")
+minigame_name = "ants"
+lesson_nb = 100
+difficulty = 3
+max_number_of_lives = 5
+max_progression = 3
+
+[node name="MinigameUI" parent="." index="1"]
+empty_progression_icon = ExtResource("5_jm3ut")
+full_progression_icon = ExtResource("6_qfybu")
+
+[node name="Scenery" type="Control" parent="GameRoot" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="TextureRect" parent="GameRoot/Scenery" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_ihrng")
+
+[node name="TextureRect" type="TextureRect" parent="GameRoot/Scenery" index="1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -102.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_b7hhi")
+
+[node name="Sentence" type="HFlowContainer" parent="GameRoot" index="1"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -854.0
+offset_top = -646.0
+offset_right = 1007.0
+offset_bottom = 389.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="AntsSpawn" type="Node2D" parent="GameRoot" index="2"]
+unique_name_in_owner = true
+position = Vector2(-120, 1642)
+
+[node name="AntsStart" type="Node2D" parent="GameRoot" index="3"]
+unique_name_in_owner = true
+position = Vector2(785, 1642)
+
+[node name="AntsEnd" type="Node2D" parent="GameRoot" index="4"]
+unique_name_in_owner = true
+position = Vector2(2312, 1642)
+
+[node name="Ants" type="Node2D" parent="GameRoot" index="5"]
+unique_name_in_owner = true
+
+[node name="Words" type="Node2D" parent="GameRoot" index="6"]
+unique_name_in_owner = true

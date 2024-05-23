@@ -6,7 +6,7 @@ const images: = [
 	"res://assets/minigames/ants/graphics/hole_04.png",
 ]
 
-var stimulus: Dictionary
+var stimulus: String
 
 @onready var area: = $Area2D
 
