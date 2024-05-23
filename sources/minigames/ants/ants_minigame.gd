@@ -33,7 +33,7 @@ func _find_stimuli_and_distractions() -> void:
 
 
 func _start() -> void:
-	_get_new_sentence()
+	_on_current_progression_changed() 
 
 
 func _get_new_sentence() -> void:
