@@ -1,13 +1,13 @@
 [gd_scene load_steps=37 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
+[ext_resource type="AudioStream" uid="uid://dvm21l5saxw3a" path="res://assets/minigames/crabs/audio/sfx/crab_random_2.mp3" id="2_m82yn"]
 [ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
 [ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="3_e1twq"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_is4em"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_3hx0j"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_3sw4w"]
-[ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="6_bn4pr"]
-[ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="7_kyqqg"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="9_wf8vl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_87f4k"]
 atlas = ExtResource("2_yu4q0")
@@ -200,12 +200,14 @@ animations = [{
 custom_minimum_size = Vector2(205, 179)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 205.0
-offset_bottom = 179.0
+offset_right = 368.0
+offset_bottom = 320.0
 script = ExtResource("1_5hgg8")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_m82yn")
 volume_db = -3.0
+stream_paused = true
 bus = &"Effects"
 
 [node name="BackFX" type="Control" parent="."]
@@ -226,7 +228,6 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -240,7 +241,6 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
 
 [node name="Body" type="Control" parent="."]
 layout_mode = 1
@@ -249,7 +249,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(103, 104)
+pivot_offset = Vector2(184, 160)
 
 [node name="SpriteControl" type="Control" parent="Body" node_paths=PackedStringArray("sprites")]
 layout_mode = 1
@@ -263,35 +263,29 @@ sprites = [NodePath("AnimatedSprite2D")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body/SpriteControl"]
 unique_name_in_owner = true
+scale = Vector2(1.79512, 1.78771)
 sprite_frames = SubResource("SpriteFrames_g5q5i")
 animation = &"idle2"
 autoplay = "idle1"
-frame_progress = 0.998245
+frame = 4
+frame_progress = 0.845782
 centered = false
 offset = Vector2(-5, 0)
 
-[node name="PercentMarginContainer" type="Container" parent="Body"]
+[node name="Label" type="Label" parent="Body"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.23913
+anchor_top = 0.340625
+anchor_right = 0.76087
+anchor_bottom = 0.8
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("6_bn4pr")
-margin_left_ratio = 0.2
-margin_top_ratio = 0.4
-margin_right_ratio = 0.2
-margin_bottom_ratio = 0.3
-
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Body/PercentMarginContainer"]
-layout_mode = 2
-
-[node name="AutoSizeLabel" parent="Body/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("7_kyqqg")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Label" parent="Body/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
-text = ""
+text = "ent"
+label_settings = ExtResource("9_wf8vl")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="FrontFX" type="Control" parent="."]
 layout_mode = 1
@@ -311,7 +305,6 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -332,5 +325,3 @@ disabled = true
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="animation_finished" from="Body/SpriteControl/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
-
-[editable path="Body/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel"]

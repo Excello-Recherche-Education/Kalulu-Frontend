@@ -7,10 +7,10 @@ signal stop()
 signal crab_out(hole : Hole)
 
 const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
-const crab_spawn_y: float = 100.
-const crab_middle_y: float = 20.
-const crab_out_y: float = -130.
-const crab_up_y: float = -180.
+const crab_spawn_y: float = 200.
+const crab_middle_y: float = -25.
+const crab_out_y: float = -220.
+const crab_up_y: float = -330.
 
 @onready var hole_back: Sprite2D = $HoleBack
 @onready var hole_front: Sprite2D = $HoleFront

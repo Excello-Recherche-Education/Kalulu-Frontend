@@ -6,9 +6,9 @@ signal berry_eaten(berry: Berry)
 
 const body_part_scene: PackedScene = preload("res://sources/minigames/caterpillar/caterpillar_body.tscn")
 
-const body_part_width: int = 64
+const body_part_width: int = 128
 const body_part_move_time: float = 0.25
-const body_part_wait_time: float = 0.025
+const body_part_wait_time: float = 0.04
 
 @onready var head: CaterpillarHead = $Head
 @onready var body_parts: Node2D = $BodyParts

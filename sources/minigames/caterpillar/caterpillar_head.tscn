@@ -128,16 +128,16 @@ animations = [{
 script = ExtResource("1_775bq")
 
 [node name="SpitFX" parent="." instance=ExtResource("28_vojnm")]
-offset_left = 136.0
-offset_top = -72.0
-offset_right = 136.0
-offset_bottom = -72.0
+offset_left = 320.0
+offset_top = -128.0
+offset_right = 320.0
+offset_bottom = -128.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(112, -96)
+position = Vector2(296, -176)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_x8rro")
 animation = &"idle1"
-frame_progress = 0.393448
 
 [node name="CaterpillarAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("26_f75m3")

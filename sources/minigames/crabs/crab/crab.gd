@@ -6,7 +6,7 @@ signal crab_hit(stimulus: Dictionary)
 
 @onready var body: Control = $Body
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
-@onready var label: Label = %AutoSizeLabel.get_node("Label")
+@onready var label: Label = $Body/Label
 @onready var button: Button = $Button
 @onready var highlight_fx: HighlightFX = %HighlightFX
 @onready var right_fx: RightFX = %RightFX

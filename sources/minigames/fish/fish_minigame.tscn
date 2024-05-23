@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://df5derhil64ca"]
+[gd_scene load_steps=70 format=3 uid="uid://df5derhil64ca"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_itrpi"]
 [ext_resource type="Script" path="res://sources/minigames/fish/fish_minigame.gd" id="2_68jip"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://4ci6gmg0c15o" path="res://assets/minigames/minigame_ui/graphic/white_gauge.png" id="12_w5m1b"]
 [ext_resource type="Texture2D" uid="uid://disgg14rdmp81" path="res://assets/minigames/monkeys/graphic/textplank.png" id="13_3p0ue"]
 [ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="14_b3ilp"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="17_47luc"]
 
 [sub_resource type="Environment" id="Environment_5bcb7"]
 background_mode = 3
@@ -714,6 +715,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "a"
+label_settings = ExtResource("17_47luc")
 horizontal_alignment = 1
 
 [connection signal="beacon_fish_dropped" from="." to="." method="_on_beacon_fish_dropped"]

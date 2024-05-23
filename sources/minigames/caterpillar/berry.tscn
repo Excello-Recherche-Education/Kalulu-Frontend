@@ -1,12 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://b07jfpiwtajh"]
+[gd_scene load_steps=8 format=3 uid="uid://b07jfpiwtajh"]
 
 [ext_resource type="Texture2D" uid="uid://cohwkrkiyo5rg" path="res://assets/minigames/caterpillar/graphics/berry.png" id="1_3ncmx"]
 [ext_resource type="Script" path="res://sources/minigames/caterpillar/berry.gd" id="1_36web"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_4ywgh"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="4_gmtk0"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="4_j1h4b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aq0kv"]
-size = Vector2(34, 128)
+size = Vector2(34, 264)
 
 [sub_resource type="Curve2D" id="Curve2D_w7ms2"]
 _data = {
@@ -15,63 +16,56 @@ _data = {
 point_count = 4
 
 [node name="Berry" type="Area2D"]
-scale = Vector2(2, 2)
 script = ExtResource("1_36web")
 
 [node name="HighlightFX" parent="." instance=ExtResource("2_4ywgh")]
-offset_left = 32.0
-offset_top = -76.0
-offset_right = 32.0
-offset_bottom = -76.0
-scale = Vector2(0.33, 0.33)
+offset_left = 33.0
+offset_top = -136.0
+offset_right = 33.0
+offset_bottom = -136.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(16, -64)
+position = Vector2(0, -132)
 shape = SubResource("RectangleShape2D_aq0kv")
 
 [node name="Path2D" type="Path2D" parent="."]
 position = Vector2(32, -78.2222)
-scale = Vector2(0.4, 0.555556)
 curve = SubResource("Curve2D_w7ms2")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-rotation = -1.92631
 rotates = false
 loop = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Path2D/PathFollow2D"]
-position = Vector2(-104.15, -124.006)
-rotation = 1.92631
-scale = Vector2(2.5, 1.8)
+position = Vector2(1, -65.7778)
+scale = Vector2(2, 2)
 texture = ExtResource("1_3ncmx")
-offset = Vector2(32, -80)
 
-[node name="Label" type="Label" parent="Path2D/PathFollow2D/Sprite2D"]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Path2D/PathFollow2D/Sprite2D"]
+position = Vector2(90, 0)
+
+[node name="Label" type="Label" parent="Path2D/PathFollow2D"]
 unique_name_in_owner = true
-offset_left = -8.0
-offset_top = -116.0
-offset_right = 68.0
-offset_bottom = -40.0
-theme_override_font_sizes/font_size = 32
-text = "A"
+offset_left = -68.0
+offset_top = -134.0
+offset_right = 70.0
+offset_bottom = 6.0
+text = "ent"
+label_settings = ExtResource("4_j1h4b")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Path2D/PathFollow2D/Sprite2D"]
-position = Vector2(104, -64)
-
 [node name="WrongFX" parent="." instance=ExtResource("4_gmtk0")]
-offset_left = 32.0
-offset_top = -76.0
-offset_right = 32.0
-offset_bottom = -76.0
-scale = Vector2(0.5, 0.5)
+offset_left = 33.0
+offset_top = -136.0
+offset_right = 33.0
+offset_bottom = -136.0
 
 [node name="Button" type="Button" parent="."]
-offset_left = -16.0
-offset_top = -128.0
-offset_right = 80.0
-offset_bottom = -32.0
+offset_left = -46.0
+offset_top = -216.0
+offset_right = 107.0
+offset_bottom = -62.0
 theme_type_variation = &"InvisibleButton"
 
 [connection signal="screen_exited" from="Path2D/PathFollow2D/Sprite2D/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

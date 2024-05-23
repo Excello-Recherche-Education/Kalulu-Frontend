@@ -16,6 +16,8 @@
 
 [node name="FrogMinigame" instance=ExtResource("1_ng5er")]
 script = ExtResource("2_0xg3r")
+max_number_of_GPs = null
+distractors_queue_size = null
 minigame_name = "frog"
 lesson_nb = 10
 difficulty = null
@@ -23,8 +25,6 @@ current_lesson_stimuli_ratio = null
 minigame_number = null
 max_number_of_lives = 5
 max_progression = 5
-max_number_of_GPs = null
-distractors_queue_size = null
 
 [node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("2_e38i1")

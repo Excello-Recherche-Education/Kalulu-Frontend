@@ -8,28 +8,31 @@
 [ext_resource type="PackedScene" uid="uid://cm7e5ir8ykhpv" path="res://sources/minigames/caterpillar/caterpillar_head.tscn" id="17_ty72k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6qw72"]
-size = Vector2(34, 128)
+size = Vector2(34, 256)
 
 [node name="Caterpillar" type="Node2D"]
-scale = Vector2(2, 2)
 script = ExtResource("1_addut")
 
 [node name="BodyParts" type="Node2D" parent="."]
+position = Vector2(64, 0)
 
 [node name="CaterpillarBody" parent="BodyParts" instance=ExtResource("2_vrjdf")]
 
 [node name="Tail" type="Node2D" parent="."]
 
 [node name="Tail1" type="Sprite2D" parent="Tail"]
-position = Vector2(0, -99)
+position = Vector2(40, -168)
+scale = Vector2(2, 2)
 texture = ExtResource("14_dchxm")
 
 [node name="Tail2" type="Sprite2D" parent="Tail"]
-position = Vector2(-13, -112)
+position = Vector2(8, -192)
+scale = Vector2(2, 2)
 texture = ExtResource("15_i1gfi")
 
 [node name="Tail3" type="Sprite2D" parent="Tail"]
-position = Vector2(-24, -117)
+position = Vector2(-16, -192)
+scale = Vector2(2, 2)
 texture = ExtResource("16_w74x8")
 
 [node name="Head" parent="." instance=ExtResource("17_ty72k")]
@@ -37,7 +40,7 @@ texture = ExtResource("16_w74x8")
 [node name="EatArea2D" type="Area2D" parent="Head"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Head/EatArea2D"]
-position = Vector2(176, -64)
+position = Vector2(416, -128)
 shape = SubResource("RectangleShape2D_6qw72")
 
 [connection signal="area_entered" from="Head/EatArea2D" to="." method="_on_eat_area_2d_area_entered"]

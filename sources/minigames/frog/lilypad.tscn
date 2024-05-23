@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bkswcqcmf7a0r"]
+[gd_scene load_steps=13 format=3 uid="uid://bkswcqcmf7a0r"]
 
 [ext_resource type="Material" uid="uid://3n8kdc1u25om" path="res://sources/minigames/frog/lilypad_material.tres" id="1_pbo2v"]
 [ext_resource type="Script" path="res://sources/minigames/frog/lilypad.gd" id="2_pdqed"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="5_1llgv"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="6_wslmk"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="7_241b6"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="8_4pqhl"]
 
 [sub_resource type="Animation" id="Animation_852sr"]
 length = 0.001
@@ -114,8 +115,8 @@ offset_right = -39.0
 offset_bottom = -57.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 128
 text = "A"
+label_settings = ExtResource("8_4pqhl")
 horizontal_alignment = 1
 vertical_alignment = 1
 

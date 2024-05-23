@@ -180,6 +180,8 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 
 
 func _on_stimulus_found() -> void:
+	print("CLEAR")
+	
 	spawn_timer.stop()
 	# Clear all the jellyfishes
 	for jellyfish: Jellyfish in spawning_space.get_children():

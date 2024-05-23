@@ -189,6 +189,7 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 	
 	# Emit signal if needed
 	if _is_stimulus_right(stimulus):
+		_on_stimulus_found()
 		stimulus_found.emit()
 	
 	return true
