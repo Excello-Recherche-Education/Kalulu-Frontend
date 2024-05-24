@@ -908,17 +908,18 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -306.0
-offset_right = 64.0
-offset_bottom = -178.0
+offset_left = -128.0
+offset_top = -370.0
+offset_right = 128.0
+offset_bottom = -114.0
 grow_horizontal = 2
 grow_vertical = 0
-pivot_offset = Vector2(64, 64)
+pivot_offset = Vector2(128, 128)
 texture_normal = ExtResource("9_lf6b5")
 texture_pressed = ExtResource("10_mwuuf")
 texture_hover = ExtResource("11_trjsl")
 texture_disabled = ExtResource("12_1yr4y")
+stretch_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="GraphemeButton"]
 layout_mode = 1
@@ -937,6 +938,9 @@ theme_override_constants/margin_bottom = 5
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 100
+text = "f"
 horizontal_alignment = 1
 vertical_alignment = 1
 

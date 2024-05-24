@@ -30,11 +30,13 @@ grow_vertical = 2
 [node name="TabContainer" type="TabContainer" parent="CenterContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
+current_tab = 0
 use_hidden_tabs_for_min_size = true
 
 [node name="Language" type="VBoxContainer" parent="CenterContainer/TabContainer"]
 layout_mode = 2
 theme_override_constants/separation = 50
+metadata/_tab_index = 0
 
 [node name="GPListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
 layout_mode = 2
@@ -65,6 +67,7 @@ text = "Lesson List"
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 50
+metadata/_tab_index = 1
 
 [node name="TracingBuilderButton" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData"]
 layout_mode = 2
@@ -87,6 +90,7 @@ text = "GP Video Loader
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 50
+metadata/_tab_index = 2
 
 [node name="GameSoundsButton" type="Button" parent="CenterContainer/TabContainer/GameData"]
 layout_mode = 2
@@ -155,7 +159,6 @@ theme_override_font_sizes/font_size = 60
 alignment = 1
 item_count = 1
 popup/item_0/text = "New"
-popup/item_0/id = 0
 
 [node name="AddWordListButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -205,7 +208,7 @@ initial_position = 2
 size = Vector2i(1500, 1000)
 always_on_top = true
 popup_window = true
-ok_button_text = "Ouvrir"
+ok_button_text = "Open"
 file_mode = 0
 access = 2
 

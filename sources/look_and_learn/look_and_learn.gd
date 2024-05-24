@@ -50,7 +50,7 @@ func setup() -> void:
 	
 	grapheme_label.text = ""
 	for gp in gp_list:
-		grapheme_label.text += "%s-%s" % [gp.Grapheme, gp.Phoneme]
+		grapheme_label.text += "%s" % gp.Grapheme
 	
 	current_video = 0
 	current_image_and_sound = 0
