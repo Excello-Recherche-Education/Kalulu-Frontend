@@ -157,7 +157,8 @@ func _reset() -> void:
 
 
 func _win() -> void:
-	UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
+	if UserDataManager.student_progression:
+		UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
 	audio_player.stream = win_sound_fx
 	audio_player.play()

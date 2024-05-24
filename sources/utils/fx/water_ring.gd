@@ -9,3 +9,4 @@ class_name WaterRingFX
 func play() -> void:
 	particles.amount = randi_range(min, max)
 	particles.restart()
+	await particles.finished

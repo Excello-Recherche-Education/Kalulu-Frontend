@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://tkfgc7fdyw1a"]
+
+[ext_resource type="PackedScene" uid="uid://cisurm74fqg2i" path="res://sources/minigames/base/words/words_minigame.tscn" id="1_geqym"]
+[ext_resource type="Script" path="res://sources/minigames/turtles/turtles_minigame.gd" id="2_f5de7"]
+[ext_resource type="Texture2D" uid="uid://bt4k3wgpxv8uy" path="res://assets/minigames/turtles/graphic/gauge_icon_turtle_empty.png" id="3_3a2rs"]
+[ext_resource type="Texture2D" uid="uid://rnqme2j272qf" path="res://assets/minigames/turtles/graphic/gauge_icon_turtle_full.png" id="4_l6oqe"]
+[ext_resource type="PackedScene" uid="uid://chuny571miwxm" path="res://sources/minigames/turtles/island.tscn" id="5_bgryf"]
+[ext_resource type="PackedScene" uid="uid://b8vmq4o8f7v5p" path="res://sources/minigames/turtles/water.tscn" id="5_g012u"]
+
+[sub_resource type="Curve2D" id="Curve2D_m26pb"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 384, -256, -200, 0, 200, 0, 2560, -256, 0, -200, 0, 200, 2816, 0, 0, -200, 0, 200, 2816, 1800, 200, 0, -200, 0, 2560, 2056, 200, 0, -200, 0, 384, 2056)
+}
+point_count = 6
+
+[node name="TurtlesMinigame" instance=ExtResource("1_geqym")]
+script = ExtResource("2_f5de7")
+lesson_nb = 10
+difficulty = 0
+max_number_of_lives = 5
+max_progression = 5
+
+[node name="MinigameUI" parent="." index="1"]
+empty_progression_icon = ExtResource("3_3a2rs")
+full_progression_icon = ExtResource("4_l6oqe")
+
+[node name="Water" parent="GameRoot" index="0" instance=ExtResource("5_g012u")]
+layout_mode = 1
+
+[node name="Island" parent="GameRoot" index="1" instance=ExtResource("5_bgryf")]
+position = Vector2(1280, 830)
+
+[node name="Turtles" type="Control" parent="GameRoot" index="2"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SpawnPath" type="Path2D" parent="GameRoot" index="3"]
+curve = SubResource("Curve2D_m26pb")
+
+[node name="SpawnLocation" type="PathFollow2D" parent="GameRoot/SpawnPath" index="0"]
+position = Vector2(384, -256)
+
+[node name="SpawnTimer" type="Timer" parent="GameRoot" index="4"]
+one_shot = true
+
+[connection signal="area_entered" from="GameRoot/Island" to="." method="_on_island_area_entered"]
+[connection signal="timeout" from="GameRoot/SpawnTimer" to="." method="_on_spawn_timer_timeout"]

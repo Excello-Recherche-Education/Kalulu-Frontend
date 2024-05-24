@@ -526,15 +526,15 @@ _data = {
 "talk": SubResource("Animation_vwrnb")
 }
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cbnv3"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d4bmj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3dnl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o7lt8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ma8s2"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3dnl"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d4bmj"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cbnv3"]
 
 [sub_resource type="GDScript" id="GDScript_fxkfh"]
 script/source = "extends Button
@@ -588,11 +588,11 @@ offset_left = -182.0
 offset_top = -220.0
 offset_right = 81.0
 offset_bottom = 1.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_cbnv3")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_d4bmj")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_i3dnl")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_o7lt8")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ma8s2")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_i3dnl")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_d4bmj")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cbnv3")
 script = SubResource("GDScript_fxkfh")
 
 [node name="DragPreview" type="TextureRect" parent="Button"]

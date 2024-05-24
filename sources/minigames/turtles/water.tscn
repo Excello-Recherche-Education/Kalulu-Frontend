@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8vmq4o8f7v5p"]
+
+[ext_resource type="Material" uid="uid://cpfvnjrabobgn" path="res://sources/minigames/turtles/turtles_water_material.tres" id="1_hot6u"]
+[ext_resource type="Texture2D" uid="uid://caiayxwsgup2e" path="res://assets/minigames/turtles/graphic/turtle_background.png" id="2_dxrmw"]
+[ext_resource type="Script" path="res://sources/minigames/turtles/water.gd" id="3_n3ww4"]
+
+[node name="Water" type="TextureRect"]
+material = ExtResource("1_hot6u")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_dxrmw")
+script = ExtResource("3_n3ww4")
+ring_color = Color(0.65098, 0.878431, 0.847059, 1)

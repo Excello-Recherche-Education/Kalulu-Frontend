@@ -1,0 +1,270 @@
+[gd_scene load_steps=46 format=3 uid="uid://djykrpdu58f3v"]
+
+[ext_resource type="Texture2D" uid="uid://bi8db32muvyqp" path="res://assets/minigames/turtles/graphic/turtle_disappears_0000.png" id="1_phg5d"]
+[ext_resource type="Script" path="res://sources/minigames/turtles/turtle.gd" id="1_vx1yr"]
+[ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_dmkbj"]
+[ext_resource type="Texture2D" uid="uid://b04s06613lgyo" path="res://assets/minigames/turtles/graphic/turtle_disappears_0001.png" id="2_qodey"]
+[ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_rllc5"]
+[ext_resource type="Texture2D" uid="uid://dncvc4dkurogg" path="res://assets/minigames/turtles/graphic/turtle_disappears_0002.png" id="3_pinqg"]
+[ext_resource type="Texture2D" uid="uid://dvwkb0orntj6j" path="res://assets/minigames/turtles/graphic/turtle_disappears_0003.png" id="4_bk8j5"]
+[ext_resource type="Texture2D" uid="uid://18okbnsktp37" path="res://assets/minigames/turtles/graphic/turtle_disappears_0004.png" id="5_1gjjo"]
+[ext_resource type="Texture2D" uid="uid://nw2j0ycp152v" path="res://assets/minigames/turtles/graphic/turtle_disappears_0005.png" id="6_p62ix"]
+[ext_resource type="Texture2D" uid="uid://b7j5s6f4v7vvs" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0000.png" id="7_j4sb3"]
+[ext_resource type="Texture2D" uid="uid://cbujnks858vx6" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0001.png" id="8_svqjj"]
+[ext_resource type="Texture2D" uid="uid://bsc3y7q64tcrc" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0002.png" id="9_462ho"]
+[ext_resource type="Texture2D" uid="uid://c8epswbsg00h6" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0003.png" id="10_wuwnk"]
+[ext_resource type="Texture2D" uid="uid://cv02hdm4yq533" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0004.png" id="11_6ujr8"]
+[ext_resource type="Texture2D" uid="uid://chdxsh8h3wjv7" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0005.png" id="12_blo4o"]
+[ext_resource type="Texture2D" uid="uid://dsnjvyk7yvkxb" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0006.png" id="13_dkec0"]
+[ext_resource type="Texture2D" uid="uid://b60cruqr5qmb7" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0007.png" id="14_qtyrk"]
+[ext_resource type="Texture2D" uid="uid://cesqkl04s6y16" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0000.png" id="23_726ul"]
+[ext_resource type="Texture2D" uid="uid://ch5lbd4ikks4y" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0001.png" id="24_vp3io"]
+[ext_resource type="Texture2D" uid="uid://diruxicvubrvc" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0002.png" id="25_fsba2"]
+[ext_resource type="Texture2D" uid="uid://bmbxkoaxymce" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0003.png" id="26_t67l6"]
+[ext_resource type="Texture2D" uid="uid://bru55t06kq52h" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0004.png" id="27_icd8k"]
+[ext_resource type="Texture2D" uid="uid://buh5bovia2ddn" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0005.png" id="28_aqx01"]
+[ext_resource type="Texture2D" uid="uid://bnj8hhyr4i80y" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0006.png" id="29_etcdo"]
+[ext_resource type="Texture2D" uid="uid://dcw2p2xq35mrx" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0007.png" id="30_gl7yj"]
+[ext_resource type="Texture2D" uid="uid://uownk5w4n4s7" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0000.png" id="31_p00ya"]
+[ext_resource type="Texture2D" uid="uid://mx0klfi4e6dg" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0001.png" id="32_xkdnr"]
+[ext_resource type="Texture2D" uid="uid://mjiejohtu03" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0002.png" id="33_p2hny"]
+[ext_resource type="Texture2D" uid="uid://cf8v0gvlc2tci" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0003.png" id="34_hyqym"]
+[ext_resource type="Texture2D" uid="uid://disauvnpo18kh" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0004.png" id="35_w2gqq"]
+[ext_resource type="Texture2D" uid="uid://b6liuwjatyp38" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0005.png" id="36_up3k2"]
+[ext_resource type="Texture2D" uid="uid://dgtm8qvsyq8lv" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0006.png" id="37_mi7w2"]
+[ext_resource type="Texture2D" uid="uid://30w5sssd8c1e" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0007.png" id="38_dmtwb"]
+[ext_resource type="Texture2D" uid="uid://c5kar2p8ae8yu" path="res://assets/minigames/turtles/graphic/turtle_victory_0000.png" id="39_a8d4f"]
+[ext_resource type="Texture2D" uid="uid://pcty3etq3036" path="res://assets/minigames/turtles/graphic/turtle_victory_0001.png" id="40_rg80s"]
+[ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="40_vguhy"]
+[ext_resource type="Texture2D" uid="uid://bg6603ct43g00" path="res://assets/minigames/turtles/graphic/turtle_victory_0002.png" id="41_hkvwr"]
+[ext_resource type="Texture2D" uid="uid://25h5xdesr8mk" path="res://assets/minigames/turtles/graphic/turtle_victory_0003.png" id="42_1is74"]
+[ext_resource type="AudioStream" uid="uid://cmsn7q4fxnghr" path="res://assets/sfx/splash.mp3" id="42_p3fqk"]
+[ext_resource type="Texture2D" uid="uid://vgqt4v6pgerb" path="res://assets/minigames/turtles/graphic/turtle_victory_0004.png" id="43_lvi8j"]
+[ext_resource type="Texture2D" uid="uid://64w00rvu3xfe" path="res://assets/minigames/turtles/graphic/turtle_victory_0005.png" id="44_w2vrc"]
+[ext_resource type="PackedScene" uid="uid://cjg6pgc7yfp1p" path="res://sources/utils/swipe_detector.tscn" id="49_0qwwy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1emmd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_phg5d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_qodey")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_pinqg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bk8j5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_1gjjo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_p62ix")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"disappear",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_j4sb3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_svqjj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_462ho")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_wuwnk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_6ujr8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_blo4o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_dkec0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_qtyrk")
+}],
+"loop": true,
+"name": &"swim",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_726ul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_vp3io")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_fsba2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_t67l6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_icd8k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_aqx01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_etcdo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_gl7yj")
+}],
+"loop": false,
+"name": &"swim_left",
+"speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_p00ya")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_xkdnr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_p2hny")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_hyqym")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_w2gqq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_up3k2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_mi7w2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_dmtwb")
+}],
+"loop": false,
+"name": &"swim_right",
+"speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("39_a8d4f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_rg80s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_hkvwr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_1is74")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_lvi8j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_w2vrc")
+}],
+"loop": false,
+"name": &"victory",
+"speed": 12.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uo0u3"]
+radius = 24.0
+height = 80.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xsnve"]
+radius = 88.0
+height = 224.0
+
+[node name="Turtle" type="Node2D"]
+script = ExtResource("1_vx1yr")
+
+[node name="HighlightFX" parent="." instance=ExtResource("2_rllc5")]
+scale = Vector2(1.25, 1.25)
+
+[node name="RightFX" parent="." instance=ExtResource("2_dmkbj")]
+scale = Vector2(1.25, 1.25)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("42_p3fqk")
+bus = &"Effects"
+
+[node name="Body" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
+unique_name_in_owner = true
+position = Vector2(0, -16)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_1emmd")
+animation = &"swim"
+autoplay = "swim"
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Body"]
+position = Vector2(0, 16)
+
+[node name="HeadArea" type="Area2D" parent="Body"]
+position = Vector2(0, -16)
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/HeadArea"]
+position = Vector2(0, -152)
+shape = SubResource("CapsuleShape2D_uo0u3")
+debug_color = Color(0.129412, 0.458824, 0, 0.505882)
+
+[node name="BodyArea" type="Area2D" parent="Body"]
+position = Vector2(0, -16)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/BodyArea"]
+position = Vector2(0, 32)
+shape = SubResource("CapsuleShape2D_xsnve")
+debug_color = Color(0.870588, 0.117647, 0, 0.388235)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -64.0
+offset_top = -88.0
+offset_right = 64.0
+offset_bottom = 72.0
+theme_override_font_sizes/font_size = 92
+text = "ent"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WrongFX" parent="." instance=ExtResource("40_vguhy")]
+scale = Vector2(1.25, 1.25)
+
+[node name="SwipeDetector" parent="." instance=ExtResource("49_0qwwy")]
+offset_left = -152.0
+offset_top = -216.0
+offset_right = 152.0
+offset_bottom = 192.0
+
+[node name="DeleteTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="animation_changed" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
+[connection signal="animation_finished" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="animation_looped" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
+[connection signal="screen_entered" from="Body/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="Body/VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="area_entered" from="Body/BodyArea" to="." method="_on_body_area_area_entered"]
+[connection signal="pressed" from="SwipeDetector" to="." method="_on_swipe_detector_pressed"]
+[connection signal="swipe" from="SwipeDetector" to="." method="_on_swipe_detector_swipe"]
+[connection signal="timeout" from="DeleteTimer" to="." method="_on_delete_timer_timeout"]

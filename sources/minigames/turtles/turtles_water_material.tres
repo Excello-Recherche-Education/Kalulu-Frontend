@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cpfvnjrabobgn"]
+
+[ext_resource type="Shader" path="res://sources/minigames/turtles/water.gdshader" id="1_3btqb"]
+
+[resource]
+shader = ExtResource("1_3btqb")
+shader_parameter/HDR_correction = true
+shader_parameter/WATER_COL = Color(0.3479, 0.71, 0.667755, 1)
+shader_parameter/WATER2_COL = Color(0.3283, 0.67, 0.618745, 1)
+shader_parameter/FOAM_COL = Color(0.6512, 0.88, 0.84568, 1)
+shader_parameter/distortion_speed = 0.75
+shader_parameter/tile = Vector2(0.4, 0.4)
+shader_parameter/offset = Vector2(0, 0)

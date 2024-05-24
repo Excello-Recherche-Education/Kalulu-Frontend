@@ -5,6 +5,8 @@ class_name WordsMinigame
 @export var max_number_of_GPs: int = 6
 # Define the size of the distractor queue for each GP
 @export var distractors_queue_size: int = 6
+# Define the time of visibility of a found word between rounds
+@export var time_between_words: float = 3.
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0

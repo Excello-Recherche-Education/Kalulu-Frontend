@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://chuny571miwxm"]
+
+[ext_resource type="Script" path="res://sources/minigames/turtles/island.gd" id="1_bl1e4"]
+[ext_resource type="Texture2D" uid="uid://c3i6riv7blkux" path="res://assets/minigames/turtles/graphic/turtle_Island.png" id="1_shxj4"]
+
+[node name="Island" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_bl1e4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_shxj4")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -192.0
+offset_right = 191.0
+offset_bottom = 226.0
+theme_override_font_sizes/font_size = 94
+text = "_______"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, 8)
+scale = Vector2(2, 2)
+polygon = PackedVector2Array(136, -124, 160, -104, 180, -80, 196, -36, 196, 12, 184, 56, 156, 88, 104, 112, 72, 124, 24, 128, -56, 128, -104, 124, -140, 116, -180, 92, -196, 68, -200, 24, -180, -12, -156, -28, -120, -36, -76, -52, -48, -72, -4, -116, 44, -140, 92, -140)
