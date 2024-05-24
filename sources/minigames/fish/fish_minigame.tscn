@@ -484,6 +484,7 @@ script = ExtResource("2_68jip")
 game_duration = 240
 minimum_correct_ratio = 0.8
 winning_color = Color(2.988, 2.328, 0.6, 1)
+max_words_count = 15
 minigame_name = "fish"
 lesson_nb = 50
 
@@ -629,7 +630,7 @@ sprites = [NodePath("FishAnimatedSprite")]
 
 [node name="FishAnimatedSprite" type="AnimatedSprite2D" parent="GameRoot/AspectRatioContainer/Fish" index="0"]
 unique_name_in_owner = true
-scale = Vector2(1e-05, 1e-05)
+scale = Vector2(2.20411, 2.2041)
 sprite_frames = SubResource("SpriteFrames_ukbiw")
 animation = &"idle"
 autoplay = "idle"

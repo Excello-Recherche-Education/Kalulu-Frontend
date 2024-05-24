@@ -22,6 +22,7 @@ const fish_texture_rect_scene: = preload("res://sources/minigames/fish/fish_text
 @export var game_duration: = 4 * 60
 @export var minimum_correct_ratio: = 0.8
 @export var winning_color: = Color.WHITE
+@export var max_words_count: = 15
 
 var tween: Tween
 var words_to_present: Array[String] = []
@@ -52,11 +53,14 @@ func _ready() -> void:
 
 func _find_stimuli_and_distractions() -> void:
 	var data_array: = Database.get_pseudowords_for_lesson(lesson_nb)
+	data_array.shuffle()
 	words_to_present.clear()
 	words_to_present_next.clear()
 	for data: Dictionary in data_array:
 		stimuli.append(data.Word)
 		distractions.append(data.Pseudoword)
+		if stimuli.size() >= max_words_count:
+			break
 	for word: String in stimuli:
 		words_to_present.append(word)
 	for word: String in distractions:
