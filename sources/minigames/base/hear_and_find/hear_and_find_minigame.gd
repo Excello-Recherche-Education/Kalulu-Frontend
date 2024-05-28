@@ -70,10 +70,6 @@ func _find_stimuli_and_distractions() -> void:
 			while stimuli.size() < minimal_stimuli:
 				stimuli.append(current_lesson_stimuli.pick_random())
 		
-		
-		print("--------------- CURRENT LESSON STIMULI :")
-		print(stimuli)
-		
 		# Gets other stimuli from previous errors or lessons
 		# TODO Handle previous errors
 		var spaces_left : int = max_progression - stimuli.size()
@@ -89,9 +85,6 @@ func _find_stimuli_and_distractions() -> void:
 	
 	# Shuffle the stimuli
 	stimuli.shuffle()
-	
-	print("--------------- ALL STIMULI :")
-	print(stimuli)
 	
 	# For each stimuli get the distractors
 	for stimulus: Dictionary in stimuli:
@@ -132,7 +125,6 @@ func _find_stimuli_and_distractions() -> void:
 			stimulus_distractors.append({})
 	
 		distractions.append(stimulus_distractors)
-	
 
 
 # Get the current stimulus which needs to be found to increase progression

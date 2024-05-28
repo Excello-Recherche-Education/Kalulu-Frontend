@@ -156,6 +156,17 @@ func _is_GP_right(gp: Dictionary) -> bool:
 	return gp == _get_GP()
 
 
+func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> void:
+	super._log_new_response(response, current_stimulus)
+	
+	# Update the scores of the GPs
+	if _is_GP_right(response):
+		UserDataManager.student_remediation.add_score(response.ID)
+	else:
+		UserDataManager.student_remediation.lower_score(response.ID)
+		UserDataManager.student_remediation.lower_score(current_stimulus.ID)
+	
+
 # ------------- UI Callbacks ------------- #
 
 

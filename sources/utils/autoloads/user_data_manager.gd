@@ -13,11 +13,13 @@ var student: String = "" :
 		if student :
 			_load_student_settings()
 			_load_student_progression()
+			_load_student_remediation()
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
 var student_settings: UserSettings
 var student_progression: UserProgression
+var student_remediation: UserRemediation
 
 
 func _ready() -> void:
@@ -25,7 +27,7 @@ func _ready() -> void:
 		_load_teacher_settings()
 
 
-# Registering and logging in #
+#region Registering and logging in
 
 func register(register_settings : TeacherSettings) -> bool:
 	if not register_settings:
@@ -98,8 +100,9 @@ func login_student(code : String) -> bool:
 	
 	return false
 
+#endregion
 
-# Device settings #
+#region Device settings
 
 func set_language(language : String) -> void:
 	print("Setting language")
@@ -126,8 +129,9 @@ func _load_device_settings() -> void:
 func _save_device_settings() -> void:
 	ResourceSaver.save(_device_settings, get_device_settings_path())
 
+#endregion
 
-# Teacher settings #
+#region Teacher settings
 
 func get_teacher_folder() -> String:
 	return "user://".path_join(_device_settings.teacher)
@@ -226,7 +230,9 @@ func delete_student(device_id : int, code : String) -> bool:
 	return true
 
 
-# Student settings #
+#endregion
+
+#region Student settings
 
 func get_student_folder() -> String:
 	return _device_settings.get_folder_path().path_join(student)
@@ -248,7 +254,9 @@ func _save_student_settings() -> void:
 	ResourceSaver.save(student_settings, get_student_settings_path())
 
 
-# Student progression #
+#endregion
+
+#region Student progression
 
 func get_student_progression_path() -> String:
 	var file_path: = get_student_folder().path_join("progression.tres")
@@ -271,8 +279,30 @@ func _save_student_progression() -> void:
 func _on_user_progression_unlocks_changed() -> void:
 	_save_student_progression()
 
+#endregion
 
-# Sound settings #
+#region Student remediation
+
+func get_student_remediation_path() -> String:
+	return get_student_folder().path_join("remediation.tres")
+
+func _load_student_remediation() -> void:
+	if FileAccess.file_exists(get_student_remediation_path()):
+		student_remediation = load(get_student_remediation_path())
+	
+	if not student_remediation:
+		student_remediation = UserRemediation.new()
+		DirAccess.make_dir_recursive_absolute(get_student_folder())
+		_save_student_remediation()
+	
+	student_remediation.score_changed.connect(_save_student_remediation)
+
+func _save_student_remediation() -> void:
+	ResourceSaver.save(student_remediation, get_student_remediation_path())
+
+#endregion
+
+#region Sound settings
 
 func set_master_volume(value: float) -> void:
 	if student_settings:
@@ -338,3 +368,5 @@ func normalize_slider(volume: float) -> float:
 func denormalize_volume(value: float) -> float:
 	var volume: = pow(float(value) / 100.0, 0.2) * 86 - 80
 	return volume
+
+#endregion
