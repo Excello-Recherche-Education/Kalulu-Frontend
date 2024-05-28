@@ -207,7 +207,6 @@ script = ExtResource("1_5hgg8")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_g5dd8")
 volume_db = -3.0
-stream_paused = true
 bus = &"Effects"
 
 [node name="BackFX" type="Control" parent="."]

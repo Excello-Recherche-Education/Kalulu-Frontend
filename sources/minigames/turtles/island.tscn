@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://chuny571miwxm"]
+[gd_scene load_steps=4 format=3 uid="uid://chuny571miwxm"]
 
 [ext_resource type="Script" path="res://sources/minigames/turtles/island.gd" id="1_bl1e4"]
 [ext_resource type="Texture2D" uid="uid://c3i6riv7blkux" path="res://assets/minigames/turtles/graphic/turtle_Island.png" id="1_shxj4"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="3_wk2li"]
 
 [node name="Island" type="Area2D"]
 collision_layer = 0
@@ -17,6 +18,7 @@ offset_right = 191.0
 offset_bottom = 226.0
 theme_override_font_sizes/font_size = 94
 text = "_______"
+label_settings = ExtResource("3_wk2li")
 horizontal_alignment = 1
 vertical_alignment = 1
 

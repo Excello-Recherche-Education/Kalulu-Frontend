@@ -15,7 +15,7 @@ var progress: int = 0:
 
 
 func set_enabled(is_enabled: bool) -> void:
-	collision.disabled = !is_enabled
+	collision.set_deferred("disabled", !is_enabled)
 
 
 func _update_label() -> void:

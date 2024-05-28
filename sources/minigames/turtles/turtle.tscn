@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://djykrpdu58f3v"]
+[gd_scene load_steps=47 format=3 uid="uid://djykrpdu58f3v"]
 
 [ext_resource type="Texture2D" uid="uid://bi8db32muvyqp" path="res://assets/minigames/turtles/graphic/turtle_disappears_0000.png" id="1_phg5d"]
 [ext_resource type="Script" path="res://sources/minigames/turtles/turtle.gd" id="1_vx1yr"]
@@ -36,6 +36,7 @@
 [ext_resource type="Texture2D" uid="uid://c5kar2p8ae8yu" path="res://assets/minigames/turtles/graphic/turtle_victory_0000.png" id="39_a8d4f"]
 [ext_resource type="Texture2D" uid="uid://pcty3etq3036" path="res://assets/minigames/turtles/graphic/turtle_victory_0001.png" id="40_rg80s"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="40_vguhy"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="41_enfmr"]
 [ext_resource type="Texture2D" uid="uid://bg6603ct43g00" path="res://assets/minigames/turtles/graphic/turtle_victory_0002.png" id="41_hkvwr"]
 [ext_resource type="Texture2D" uid="uid://25h5xdesr8mk" path="res://assets/minigames/turtles/graphic/turtle_victory_0003.png" id="42_1is74"]
 [ext_resource type="AudioStream" uid="uid://cmsn7q4fxnghr" path="res://assets/sfx/splash.mp3" id="42_p3fqk"]
@@ -239,10 +240,11 @@ debug_color = Color(0.870588, 0.117647, 0, 0.388235)
 [node name="Label" type="Label" parent="."]
 offset_left = -64.0
 offset_top = -88.0
-offset_right = 64.0
+offset_right = 72.0
 offset_bottom = 72.0
 theme_override_font_sizes/font_size = 92
 text = "ent"
+label_settings = ExtResource("41_enfmr")
 horizontal_alignment = 1
 vertical_alignment = 1
 
