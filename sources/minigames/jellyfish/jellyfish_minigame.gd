@@ -1,4 +1,4 @@
-extends HearAndFindMinigame
+extends SyllablesMinigame
 
 # Namespace
 const Jellyfish: = preload("res://sources/minigames/jellyfish/jellyfish.gd")

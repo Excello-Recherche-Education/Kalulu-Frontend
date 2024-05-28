@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dtcgj6ee8jt2t"]
 
-[ext_resource type="PackedScene" uid="uid://clbi7qphyh0so" path="res://sources/minigames/base/hear_and_find/hear_and_find_minigame.tscn" id="1_hauef"]
+[ext_resource type="PackedScene" uid="uid://clbi7qphyh0so" path="res://sources/minigames/base/hear_and_find/syllables_minigame.tscn" id="1_hauef"]
 [ext_resource type="Script" path="res://sources/minigames/jellyfish/jellyfish_minigame.gd" id="2_gnjlp"]
 [ext_resource type="Texture2D" uid="uid://c0shai0eqdrbf" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_empty.png" id="4_1m7js"]
 [ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="5_4gwjw"]

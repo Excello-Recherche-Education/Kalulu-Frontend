@@ -1,5 +1,5 @@
 @tool
-extends HearAndFindMinigame
+extends SyllablesMinigame
 
 # Namespace
 const Hole: = preload("res://sources/minigames/crabs/hole/hole.gd")

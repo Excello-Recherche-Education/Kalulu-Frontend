@@ -1,5 +1,5 @@
 extends Minigame
-class_name HearAndFindMinigame
+class_name SyllablesMinigame
 
 signal stimulus_heard(is_heard : bool)
 signal stimulus_found()
@@ -120,7 +120,7 @@ func _find_stimuli_and_distractions() -> void:
 				if difficulty > 3 and syllable.GPs[0] == stimulus.GPs[1] and syllable.GPs[1] == stimulus.GPs[0]:
 					stimulus_distractors.append(syllable)
 		
-		# Adds fake distractors (allow to have empty jellyfishes) if there are less than 4 distractors
+		# Adds fake distractors (allow to have empty texts) if there are less than 4 distractors
 		while stimulus_distractors.size() < 4:
 			stimulus_distractors.append({})
 	
@@ -179,10 +179,44 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 	# Log the answer
 	_log_new_response(stimulus, _get_current_stimulus())
 	
-	# Emit signal if needed
+	# Checks the answer and update scores TODO HANDLES HIGHLIGHT
 	if _is_stimulus_right(stimulus):
 		_on_stimulus_found()
+		# Checks if the stimulus is a simple GP or syllable and update the score
+		if stimulus.has("GPs"):
+			for gp in stimulus.GPs:
+				scores[gp.ID] += 1
+		else:
+			scores[stimulus.ID] += 1
+		
 		stimulus_found.emit()
+	else:
+		
+		var stimulus_gps : Array[Dictionary]
+		var right_answer_gps : Array[Dictionary]
+		
+		if stimulus.has("GPs"):
+			stimulus_gps = stimulus.GPs
+		else:
+			stimulus_gps = [stimulus]
+		
+		var right_answer: = _get_current_stimulus()
+		if right_answer.has("GPs"):
+			right_answer_gps = right_answer.GPs
+		else:
+			right_answer_gps = [right_answer]
+		
+		# Handles the right answer GPs
+		for i in right_answer_gps.size():
+			if i <= stimulus_gps.size() and stimulus_gps[i] == right_answer_gps[i]:
+				continue
+			scores[right_answer_gps[i].ID] -= 1
+		
+		# Handles the pressed stimulus Gps
+		for i in stimulus_gps.size():
+			if i <= right_answer_gps.size() and stimulus_gps[i] == right_answer_gps[i]:
+				continue
+			scores[stimulus_gps[i].ID] -= 1
 	
 	return true
 
