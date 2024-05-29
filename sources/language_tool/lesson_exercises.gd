@@ -43,12 +43,12 @@ func _ready() -> void:
 			FOREIGN KEY('LessonID') REFERENCES 'Lessons'('ID') ON UPDATE CASCADE ON DELETE CASCADE
 		)")
 	
-	
+	var sentences_by_lesson: = Database.get_sentences_by_lessons()
 	Database.db.query("Select * FROM Lessons")
-	
 	for e in Database.db.query_result:
 		var container: LessonExerciceContainer = lesson_exercice_container_scene.instantiate()
 		lessons_container.add_child(container)
+		container.sentences_by_lesson = sentences_by_lesson
 		container.lesson_number = e.LessonNb
 		container._on_save_button_pressed()
 

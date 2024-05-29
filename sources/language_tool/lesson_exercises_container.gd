@@ -12,6 +12,8 @@ extends PanelContainer
 @onready var number_of_words: Label = %NumberOfWords
 @onready var number_of_sentences: Label = %NumberOfSentences
 
+var sentences_by_lesson: Dictionary
+
 
 func _ready() -> void:
 	Database.db.query("Select * FROM ExerciseTypes")
@@ -52,7 +54,7 @@ func _set_lesson_number(value: int) -> void:
 	var gps_in_lesson: = Database.get_GP_for_lesson(lesson_number, true)
 	var syllables_in_lesson: = Database.get_syllables_for_lesson(lesson_number)
 	var words_in_lesson: = Database.get_words_for_lesson(lesson_number)
-	var sentences_in_lesson: = Database.get_sentences_for_lesson(lesson_number)
+	var sentences_in_lesson: = Database.get_sentences_for_lesson(lesson_number, false, sentences_by_lesson)
 	
 	number_of_g_ps.text = str(gps_in_lesson.size())
 	number_of_syllables.text = str(syllables_in_lesson.size())

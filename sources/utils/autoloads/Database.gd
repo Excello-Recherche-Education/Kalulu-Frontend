@@ -35,7 +35,7 @@ var db_path: = base_path + language + "/language.db":
 			db.foreign_keys = true
 			db.open_db()
 			
-			_init_db()
+			#_init_db()
 			
 var words_path: = base_path + language + "/words/"
 var additional_word_list: Dictionary
@@ -214,7 +214,7 @@ FROM Words
 	return db.query_result
 
 
-func get_sentences_for_lesson(p_lesson_nb: int, only_new: = false) -> Array:
+func get_sentences_by_lessons() -> Dictionary:
 	var sentences_by_lesson: = {}
 	var sentences: = get_sentences()
 	for sentence in sentences:
@@ -222,6 +222,13 @@ func get_sentences_for_lesson(p_lesson_nb: int, only_new: = false) -> Array:
 		var a = sentences_by_lesson.get(lesson_nb, [])
 		a.append(sentence)
 		sentences_by_lesson[lesson_nb] = a
+	return sentences_by_lesson
+
+
+func get_sentences_for_lesson(p_lesson_nb: int, only_new: = false, sentences_by_lesson: = {}) -> Array:
+	if sentences_by_lesson.is_empty():
+		sentences_by_lesson = get_sentences_by_lessons()
+	
 	if only_new:
 		return sentences_by_lesson.get(p_lesson_nb, [])
 	
@@ -229,6 +236,9 @@ func get_sentences_for_lesson(p_lesson_nb: int, only_new: = false) -> Array:
 	for i in p_lesson_nb:
 		ret.append_array(sentences_by_lesson.get(i, []))
 	return ret
+
+
+
 
 
 func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
