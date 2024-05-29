@@ -163,7 +163,7 @@ func _win() -> void:
 	if UserDataManager.student_progression:
 		UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
-	if UserDataManager.student_remediation:
+	if UserDataManager.student_remediation and scores:
 		UserDataManager.student_remediation.update_scores(scores)
 	
 	audio_player.stream = win_sound_fx
@@ -179,7 +179,7 @@ func _win() -> void:
 
 
 func _lose() -> void:
-	if UserDataManager.student_remediation:
+	if UserDataManager.student_remediation and scores:
 		UserDataManager.student_remediation.update_scores(scores)
 	
 	audio_player.stream = lose_sound_fx
@@ -221,6 +221,14 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 	
 	logs["answers"].append(response_log)
 
+
+# Updates the score of a GP defined by his ID
+func _update_score(ID: int, score: int) -> void:
+	var new_score: = 0
+	if scores.has(ID):
+		new_score += scores[ID]
+	new_score += score
+	scores[ID] = new_score
 
 # ------------ UI Callbacks ------------
 

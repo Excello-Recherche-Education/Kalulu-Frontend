@@ -8,6 +8,24 @@
 script = ExtResource("2_1tsvn")
 element_scene = ExtResource("2_r4j7q")
 
+[node name="TabContainer" parent="NewGPLayer/VBoxContainer/Title" index="1"]
+current_tab = 0
+
+[node name="NormalContainer" parent="NewGPLayer/VBoxContainer/Title/TabContainer" index="1"]
+metadata/_tab_index = 0
+
+[node name="EditContainer" parent="NewGPLayer/VBoxContainer/Title/TabContainer" index="2"]
+metadata/_tab_index = 1
+
+[node name="TabContainer" parent="NewGPLayer/VBoxContainer/NewGP" index="1"]
+current_tab = 0
+
+[node name="NormalContainer" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer" index="1"]
+metadata/_tab_index = 0
+
+[node name="EditContainer" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer" index="2"]
+metadata/_tab_index = 1
+
 [editable path="NewGPLayer/VBoxContainer/Title"]
 [editable path="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer/EditButton"]
 [editable path="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer/DeleteButton"]

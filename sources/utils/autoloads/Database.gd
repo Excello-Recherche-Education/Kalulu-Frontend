@@ -139,6 +139,11 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	return result
 
 
+func get_GPs_from_syllable(syllable_ID: int) -> Array:
+	db.query_with_bindings("SELECT GPs.* FROM Syllables INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID AND Syllables.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInSyllables.GPID ORDER BY Position", [syllable_ID])
+	return db.query_result
+
+
 func get_GP_from_word(word: String) -> Array:
 	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.Word=? INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID ORDER BY Position", [word])
 	return db.query_result
@@ -148,39 +153,53 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPS.ID = GPsInWords.GPID", [grapheme])
 	return db.query_result
 
+# TODO For testing - Remove !
+class Syllable:
+	var ID: int
+	var Grapheme: String
+	var LessonNb: int
+	
+	func _init(p_ID : int, p_Grapheme: String, p_LessonNb: int) -> void:
+		ID = p_ID
+		Grapheme = p_Grapheme
+		LessonNb = p_LessonNb
+		
+	static func from_dict(d: Dictionary) -> Syllable:
+		return Syllable.new(d.ID, d.Syllable, d.LessonNb)
+	
+	func _to_string():
+		return "{ID: %s, Grapheme: \"%s\", LessonNb: %s}" % [ID, Grapheme, LessonNb]
 
-func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array:
-	var query: = "SELECT Syllable as Grapheme, GROUP_CONCAT(p, '-') AS Phoneme, GROUP_CONCAT(g, '.') AS GPs, nb as LessonNb
-FROM (
-	SELECT Syllables.ID as sID, Syllables.Syllable, GPs.Grapheme AS g, GPs.Phoneme AS p, VerifiedCount.LessonNb AS nb
-	FROM Syllables 
-	INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID
-	INNER JOIN Gps ON GPs.ID = GPsInSyllables.GPID
-	INNER JOIN (SELECT SyllableID, count() as Count FROM GPsInSyllables 
+func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictionary]:
+	var query: = "SELECT Syllables.ID, Syllables.Syllable as Grapheme, VerifiedCount.LessonNb FROM Syllables
+	 INNER JOIN 
+	(SELECT SyllableID, count() as Count FROM GPsInSyllables 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
 		GROUP BY SyllableID 
-) TotalCount ON TotalCount.SyllableID = Syllables.ID 
-	INNER JOIN (SELECT SyllableID, count() as Count, max(LessonNb) AS LessonNb FROM GPsInSyllables 
+		) TotalCount ON TotalCount.SyllableID = Syllables.ID 
+	INNER JOIN 
+	(SELECT SyllableID, count() as Count, max(LessonNb) AS LessonNb FROM GPsInSyllables 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
 		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
 		GROUP BY SyllableID 
-) VerifiedCount ON VerifiedCount.SyllableID = Syllables.ID AND VerifiedCount.Count = TotalCount.Count
-   ORDER BY GPsInSyllables.Position
-   )"
+		) VerifiedCount ON VerifiedCount.SyllableID = Syllables.ID AND VerifiedCount.Count = TotalCount.Count"
 	if only_new:
-		query += " INNER JOIN GPsInSyllables ON GPsInSyllables.SyllableID = sID
-INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
-INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?
-GROUP BY sID"
+		query += " INNER JOIN GPsInSyllables ON GPsInSyllables.SyllableID = Syllables.ID 
+			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
+			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
 		db.query_with_bindings(query, [lesson_nb, lesson_nb])
 	else:
-		query += " GROUP BY sID"
 		db.query_with_bindings(query, [lesson_nb])
 	
-	var result: = db.query_result
-	for syllable: Dictionary in result:
-		syllable.GPs = syllable.GPs.split(".")
-	return result
+	var res : = db.query_result
+	for syllable: Dictionary in res:
+		syllable.GPs = get_GPs_from_syllable(syllable.ID)
+		var phonemes: Array[String] = []
+		for GP: Dictionary in syllable.GPs:
+			phonemes.append(GP.Phoneme)
+		syllable.Phoneme = "-".join(phonemes)
+	
+	return res
 
 # TODO Gets the GP IDs for the future remediation engine
 func get_words_for_lesson(lesson_nb: int, only_new: = false, max_length: = 99) -> Array:

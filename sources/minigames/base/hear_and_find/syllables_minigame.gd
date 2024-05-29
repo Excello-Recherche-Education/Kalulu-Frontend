@@ -32,6 +32,8 @@ func _find_stimuli_and_distractions() -> void:
 	var all_GPs: = Database.get_GP_for_lesson(lesson_nb, false, false, true, true)
 	var all_syllables: = Database.get_syllables_for_lesson(lesson_nb, false)
 	
+	print(all_syllables)
+	
 	# Find the GPs for current lesson
 	for gp: Dictionary in all_GPs:
 		if gp.LessonNb == lesson_nb:
@@ -185,9 +187,9 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		# Checks if the stimulus is a simple GP or syllable and update the score
 		if stimulus.has("GPs"):
 			for gp in stimulus.GPs:
-				scores[gp.ID] += 1
+				_update_score(gp.ID, 1)
 		else:
-			scores[stimulus.ID] += 1
+			_update_score(stimulus.ID, 1)
 		
 		stimulus_found.emit()
 	else:
@@ -210,13 +212,15 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		for i in right_answer_gps.size():
 			if i <= stimulus_gps.size() and stimulus_gps[i] == right_answer_gps[i]:
 				continue
-			scores[right_answer_gps[i].ID] -= 1
+			_update_score(right_answer_gps[i].ID, -1)
 		
 		# Handles the pressed stimulus Gps
 		for i in stimulus_gps.size():
 			if i <= right_answer_gps.size() and stimulus_gps[i] == right_answer_gps[i]:
 				continue
-			scores[stimulus_gps[i].ID] -= 1
+			_update_score(stimulus_gps[i].ID, -1)
+	
+	print(scores)
 	
 	return true
 
