@@ -104,7 +104,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	
 	var parameters := []
 	var symbol: = "<=" if not only_new else "=="
-	var query: = "SELECT Grapheme, Phoneme, "
+	var query: = "SELECT g.ID, Grapheme, Phoneme, "
 	
 	if with_other_phonemes:
 		query += "(SELECT group_concat(Phoneme) FROM GPs g2 
@@ -140,7 +140,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 
 
 func get_GPs_from_syllable(syllable_ID: int) -> Array:
-	db.query_with_bindings("SELECT GPs.* FROM Syllables INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID AND Syllables.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInSyllables.GPID ORDER BY Position", [syllable_ID])
+	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type FROM Syllables INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID AND Syllables.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInSyllables.GPID ORDER BY Position", [syllable_ID])
 	return db.query_result
 
 

@@ -28,7 +28,6 @@ var difficulty_settings: Array[DifficultySettings] = [
 @onready var spawn_timer: Timer = $GameRoot/SpawnTimer
 
 var blocking_jellyfish: Array[Jellyfish] = []
-var is_highlighting: bool = false
 
 func _start() -> void:
 	super()
@@ -51,14 +50,12 @@ func _process(delta: float) -> void:
 
 
 func _highlight() -> void:
-	is_highlighting = true
 	for jellyfish: Jellyfish in spawning_space.get_children():
 		if jellyfish.stimulus and _is_stimulus_right(jellyfish.stimulus):
 			jellyfish.highlight()
 
 
 func _stop_highlight() -> void:
-	is_highlighting = false
 	for jellyfish: Jellyfish in spawning_space.get_children():
 		jellyfish.stop_highlight()
 

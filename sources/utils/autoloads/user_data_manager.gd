@@ -19,7 +19,7 @@ var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
 var student_settings: UserSettings
 var student_progression: UserProgression
-var student_remediation: UserRemediation
+var _student_remediation: UserRemediation
 
 
 func _ready() -> void:
@@ -283,22 +283,34 @@ func _on_user_progression_unlocks_changed() -> void:
 
 #region Student remediation
 
-func get_student_remediation_path() -> String:
+func _get_student_remediation_path() -> String:
 	return get_student_folder().path_join("remediation.tres")
 
 func _load_student_remediation() -> void:
-	if FileAccess.file_exists(get_student_remediation_path()):
-		student_remediation = load(get_student_remediation_path())
+	if FileAccess.file_exists(_get_student_remediation_path()):
+		_student_remediation = load(_get_student_remediation_path())
 	
-	if not student_remediation:
-		student_remediation = UserRemediation.new()
+	if not _student_remediation:
+		_student_remediation = UserRemediation.new()
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_remediation()
 	
-	student_remediation.score_changed.connect(_save_student_remediation)
+	_student_remediation.score_changed.connect(_save_student_remediation)
 
 func _save_student_remediation() -> void:
-	ResourceSaver.save(student_remediation, get_student_remediation_path())
+	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
+
+func get_GP_remediation_score(GPID: int) -> int:
+	if not _student_remediation:
+		push_warning("No student remediation data for " + str(student))
+		return 0
+	return _student_remediation.get_score(GPID)
+
+func update_remediation_scores(scores: Dictionary) -> void:
+	if not _student_remediation:
+		push_warning("No student remediation data for " + str(student))
+	if scores:
+		_student_remediation.update_scores(scores)
 
 #endregion
 

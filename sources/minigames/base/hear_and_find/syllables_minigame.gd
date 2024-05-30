@@ -32,8 +32,6 @@ func _find_stimuli_and_distractions() -> void:
 	var all_GPs: = Database.get_GP_for_lesson(lesson_nb, false, false, true, true)
 	var all_syllables: = Database.get_syllables_for_lesson(lesson_nb, false)
 	
-	print(all_syllables)
-	
 	# Find the GPs for current lesson
 	for gp: Dictionary in all_GPs:
 		if gp.LessonNb == lesson_nb:
@@ -51,6 +49,10 @@ func _find_stimuli_and_distractions() -> void:
 	# Shuffle everything
 	current_lesson_stimuli.shuffle()
 	previous_lesson_stimuli.shuffle()
+	
+	# Sort for remediation
+	current_lesson_stimuli.sort_custom(_sort_scoring)
+	previous_lesson_stimuli.sort_custom(_sort_scoring)
 	
 	# If there is no previous stimuli, only adds from current lesson
 	if previous_lesson_stimuli.is_empty():
@@ -73,10 +75,9 @@ func _find_stimuli_and_distractions() -> void:
 				stimuli.append(current_lesson_stimuli.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
-		# TODO Handle previous errors
 		var spaces_left : int = max_progression - stimuli.size()
 		if previous_lesson_stimuli.size() >= spaces_left:
-			for i in max_progression - stimuli.size():
+			for i in spaces_left:
 				stimuli.append(previous_lesson_stimuli[i])
 		else:
 			stimuli.append_array(previous_lesson_stimuli)
@@ -181,15 +182,18 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 	# Log the answer
 	_log_new_response(stimulus, _get_current_stimulus())
 	
-	# Checks the answer and update scores TODO HANDLES HIGHLIGHT
+	# Checks the answer and update scores
 	if _is_stimulus_right(stimulus):
-		_on_stimulus_found()
-		# Checks if the stimulus is a simple GP or syllable and update the score
-		if stimulus.has("GPs"):
-			for gp in stimulus.GPs:
-				_update_score(gp.ID, 1)
+		if not is_highlighting:
+			# Checks if the stimulus is a simple GP or syllable and update the score
+			if stimulus.has("GPs"):
+				for gp in stimulus.GPs:
+					_update_score(gp.ID, 1)
+			else:
+				_update_score(stimulus.ID, 1)
 		else:
-			_update_score(stimulus.ID, 1)
+			# Handles highlight
+			is_highlighting = false
 		
 		stimulus_found.emit()
 	else:
@@ -233,8 +237,7 @@ func _on_stimulus_found() -> void:
 	pass
 
 
-# ------------ UI Callbacks ------------
-
+#region UI Callbacks
 
 func _on_current_progression_changed() -> void:
 	if current_progression > 0:
@@ -245,3 +248,5 @@ func _on_current_progression_changed() -> void:
 
 func _play_stimulus() -> void:
 	await _play_current_stimulus_phoneme()
+
+#endregion

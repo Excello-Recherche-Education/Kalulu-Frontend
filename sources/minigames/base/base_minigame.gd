@@ -75,8 +75,15 @@ var current_lives: = 0 :
 var current_progression: = 0 : set = set_current_progression
 var current_number_of_hints: = 0
 var consecutive_errors: = 0
+var is_highlighting: bool = false:
+	set(value):
+		is_highlighting = value
+		if is_highlighting:
+			_highlight()
+		else:
+			_stop_highlight()
 
-#Speeches
+# Speeches
 var intro_kalulu_speech: AudioStreamMP3
 var help_kalulu_speech: AudioStreamMP3
 var win_kalulu_speech: AudioStreamMP3
@@ -86,8 +93,7 @@ var lose_kalulu_speech: AudioStreamMP3
 var gardens_data: Dictionary
 static var transition_data: Dictionary
 
-# ------------ Initialisation ------------
-
+#region Initialisation
 
 func _ready() -> void:
 	gardens_data = transition_data
@@ -148,9 +154,9 @@ func _curtains_and_kalulu() -> void:
 func _start() -> void:
 	return
 
+#endregion
 
-# ------------ End ------------
-
+#region Ending
 
 func _reset() -> void:
 	await OpeningCurtain.close()
@@ -163,8 +169,8 @@ func _win() -> void:
 	if UserDataManager.student_progression:
 		UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
-	if UserDataManager.student_remediation and scores:
-		UserDataManager.student_remediation.update_scores(scores)
+	if scores:
+		UserDataManager.update_remediation_scores(scores)
 	
 	audio_player.stream = win_sound_fx
 	audio_player.play()
@@ -179,8 +185,8 @@ func _win() -> void:
 
 
 func _lose() -> void:
-	if UserDataManager.student_remediation and scores:
-		UserDataManager.student_remediation.update_scores(scores)
+	if scores:
+		UserDataManager.update_remediation_scores(scores)
 	
 	audio_player.stream = lose_sound_fx
 	audio_player.play()
@@ -192,8 +198,9 @@ func _lose() -> void:
 	_reset()
 
 
-# ------------ Logs ------------
+#endregion
 
+#region Logs
 
 func _save_logs() -> void:
 	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), minigame_name, lesson_nb, Time.get_time_string_from_system())
@@ -221,6 +228,27 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 	
 	logs["answers"].append(response_log)
 
+#endregion
+
+#region Remediation
+
+# Calculates the stimulus remediation score
+func _get_stimulus_score(stimulus: Dictionary) -> int:
+	var score: int = 0
+	# Syllables and words
+	if stimulus.has("GPs"):
+		for gp: Dictionary in stimulus.GPs:
+			score += UserDataManager.get_GP_remediation_score(gp.ID)
+	# GPs
+	elif stimulus.has("ID"):
+		score += UserDataManager.get_GP_remediation_score(stimulus.ID)
+	return score
+
+
+# Sorting function to sort arrays of stimuli based on their remediation score
+func _sort_scoring(stimulus1: Dictionary, stimulus2: Dictionary) -> bool:
+	return _get_stimulus_score(stimulus2) > _get_stimulus_score(stimulus1)
+
 
 # Updates the score of a GP defined by his ID
 func _update_score(ID: int, score: int) -> void:
@@ -230,8 +258,9 @@ func _update_score(ID: int, score: int) -> void:
 	new_score += score
 	scores[ID] = new_score
 
-# ------------ UI Callbacks ------------
+#endregion
 
+#region UI Callbacks
 
 func _go_back_to_the_garden() -> void:
 	get_tree().paused = false
@@ -262,22 +291,27 @@ func _highlight() -> void:
 	pass
 
 
+func _stop_highlight() -> void:
+	pass
+
+
 func _first_error_hint() -> void:
 	minigame_ui.play_kalulu_speech(help_kalulu_speech)
 
 
 func _two_errors_hint() -> void:
-	_highlight()
+	is_highlighting = true
 
+#endregion
 
-# ------------ Setter getters ------------
-
+#region Setters
 
 func set_current_progression(p_current_progression: int) -> void:
 	var previous_progression: = current_progression
 	current_progression = p_current_progression
 	
 	consecutive_errors = 0
+	is_highlighting = false
 	
 	if minigame_ui:
 		minigame_ui.set_progression(p_current_progression)
@@ -287,9 +321,9 @@ func set_current_progression(p_current_progression: int) -> void:
 		@warning_ignore("redundant_await")
 		await _on_current_progression_changed()
 
+#endregion
 
-# ------------ Connections ------------
-
+#region Connections
 
 func _on_minigame_ui_garden_button_pressed() -> void:
 	_go_back_to_the_garden()
@@ -344,3 +378,5 @@ func _on_minigame_ui_effects_volume_changed(volume) -> void:
 
 func _on_current_progression_changed() -> void:
 	pass
+
+#endregion

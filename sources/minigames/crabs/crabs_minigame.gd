@@ -26,7 +26,6 @@ var difficulty_settings: Array[DifficultySettings] = [
 @onready var crab_zone: Control = $GameRoot/CrabZone
 
 var holes: Array[Hole] = []
-var is_highlighting : bool = false
 
 # ------------ Initialisation ------------
 
@@ -71,7 +70,6 @@ func _get_difficulty_settings() -> DifficultySettings:
 
 
 func _highlight() -> void:
-	is_highlighting = true
 	for hole in holes:
 		if hole.crab and hole.crab_visible and _is_stimulus_right(hole.crab.stimulus):
 			hole.highlight()
@@ -89,7 +87,6 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 	if is_right:
 		hole.right()
 		current_progression += 1
-		is_highlighting = false
 	else:
 		hole.wrong()
 		current_lives -= 1
