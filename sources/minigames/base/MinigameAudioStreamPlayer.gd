@@ -17,11 +17,8 @@ func play_phoneme(phoneme: String) -> void:
 		await finished
 
 
-func play_word(word: String) -> void:
-	if not word:
-		return
-	
-	stream = Database.get_audio_stream_for_word(word)
+func play_word(ID: int) -> void:
+	stream = Database.get_audio_stream_for_word(ID)
 	play()
 	if playing:
 		await finished

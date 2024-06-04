@@ -50,7 +50,7 @@ func _find_stimuli_and_distractions() -> void:
 	current_lesson_stimuli.shuffle()
 	previous_lesson_stimuli.shuffle()
 	
-	# Sort for remediation
+	# Sort for remediation TODO Voir si il faut aussi trier les stimuli de la lesson actuelle
 	current_lesson_stimuli.sort_custom(_sort_scoring)
 	previous_lesson_stimuli.sort_custom(_sort_scoring)
 	

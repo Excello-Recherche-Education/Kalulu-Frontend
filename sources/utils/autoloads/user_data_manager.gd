@@ -302,7 +302,7 @@ func _save_student_remediation() -> void:
 
 func get_GP_remediation_score(GPID: int) -> int:
 	if not _student_remediation:
-		push_warning("No student remediation data for " + str(student))
+		#push_warning("No student remediation data for " + str(student))
 		return 0
 	return _student_remediation.get_score(GPID)
 

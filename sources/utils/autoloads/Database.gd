@@ -144,8 +144,8 @@ func get_GPs_from_syllable(syllable_ID: int) -> Array:
 	return db.query_result
 
 
-func get_GP_from_word(word: String) -> Array:
-	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.Word=? INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID ORDER BY Position", [word])
+func get_GP_from_word(ID: int) -> Array:
+	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.ID=? INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID ORDER BY Position", [ID])
 	return db.query_result
 
 
@@ -153,22 +153,6 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPS.ID = GPsInWords.GPID", [grapheme])
 	return db.query_result
 
-# TODO For testing - Remove !
-class Syllable:
-	var ID: int
-	var Grapheme: String
-	var LessonNb: int
-	
-	func _init(p_ID : int, p_Grapheme: String, p_LessonNb: int) -> void:
-		ID = p_ID
-		Grapheme = p_Grapheme
-		LessonNb = p_LessonNb
-		
-	static func from_dict(d: Dictionary) -> Syllable:
-		return Syllable.new(d.ID, d.Syllable, d.LessonNb)
-	
-	func _to_string():
-		return "{ID: %s, Grapheme: \"%s\", LessonNb: %s}" % [ID, Grapheme, LessonNb]
 
 func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictionary]:
 	var query: = "SELECT Syllables.ID, Syllables.Syllable as Grapheme, VerifiedCount.LessonNb FROM Syllables
@@ -202,7 +186,7 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictio
 	return res
 
 # TODO Gets the GP IDs for the future remediation engine
-func get_words_for_lesson(lesson_nb: int, only_new: = false, max_length: = 99) -> Array:
+func get_words_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 99) -> Array:
 	var parameters: Array = []
 	var query: = "SELECT Words.ID, Words.Word, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb
 FROM Words
@@ -225,12 +209,17 @@ FROM Words
 			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
 		parameters.append(lesson_nb)
 	
-	query += " WHERE TotalCount.Count <= ? 
+	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ?
 	ORDER BY LessonNb, GPsCount ASC"
 	parameters.append(max_length)
+	parameters.append(min_length)
 	
 	db.query_with_bindings(query, parameters)
-	return db.query_result
+	var res : = db.query_result
+	for word: Dictionary in res:
+		word.GPs = get_GP_from_word(word.ID)
+	
+	return res
 
 
 func get_sentences_by_lessons() -> Dictionary:
@@ -355,8 +344,8 @@ func get_audio_stream_for_path(path: String) -> AudioStream:
 	return load(full_path)
 
 
-func get_audio_stream_for_word(word: String) -> AudioStream:
-	var GPs: = get_GP_from_word(word)
+func get_audio_stream_for_word(ID: int) -> AudioStream:
+	var GPs: = get_GP_from_word(ID)
 	var file_name: = _phoneme_to_string(GPs[0].Phoneme)
 	for i in range(1, GPs.size()):
 		var GP = GPs[i]

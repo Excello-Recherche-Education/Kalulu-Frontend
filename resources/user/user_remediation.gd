@@ -40,8 +40,3 @@ func update_scores(minigame_scores: Dictionary) -> void:
 			gps_scores[ID] = max(min_score, new_score)
 	
 	score_changed.emit()
-
-
-# Checks if a GP (defined by his unique ID) needs remediation
-func need_remediation(ID: int) -> bool:
-	return gps_scores.has(ID) and gps_scores[ID] <= remediation_score

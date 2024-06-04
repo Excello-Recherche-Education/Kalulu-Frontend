@@ -228,7 +228,7 @@ func _on_current_progression_changed() -> void:
 	var coroutine: = Coroutine.new()
 	for monkey in monkeys:
 		coroutine.add_future(monkey.talk)
-	audio_player.play_word(_get_previous_stimulus().Word as String)
+	audio_player.play_word(_get_previous_stimulus().ID as int)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	await coroutine.join_all()

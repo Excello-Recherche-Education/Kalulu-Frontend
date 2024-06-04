@@ -200,7 +200,7 @@ func _on_current_progression_changed() -> void:
 	
 	# Replay the stimulus
 	await get_tree().create_timer(time_between_words/2).timeout
-	audio_player.play_word(_get_previous_stimulus().Word as String)
+	audio_player.play_word(_get_previous_stimulus().ID as int)
 	await get_tree().create_timer(time_between_words/2).timeout
 	
 	# Starts a new round

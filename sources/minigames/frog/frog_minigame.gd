@@ -146,7 +146,7 @@ func _on_current_progression_changed() -> void:
 		track.right()
 	
 	# Replay the stimulus
-	await audio_player.play_word(_get_previous_stimulus().Word)
+	await audio_player.play_word(_get_previous_stimulus().ID as int)
 	
 	# Makes the frog jumps out of screen
 	frog.jump_to(frog_despawn_point.global_position)

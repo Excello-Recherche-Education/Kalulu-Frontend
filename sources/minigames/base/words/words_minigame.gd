@@ -16,7 +16,9 @@ var current_gp_distractors_queue: Array[Dictionary] = []
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
+	# TODO Mettre un minimum à 2 GPs ?
 	var words_list: = Database.get_words_for_lesson(lesson_nb, false, max_number_of_GPs)
+	
 	if words_list.is_empty():
 		return
 	var current_lesson_words: = []
@@ -31,6 +33,10 @@ func _find_stimuli_and_distractions() -> void:
 	# Shuffle everything
 	current_lesson_words.shuffle()
 	previous_lesson_words.shuffle()
+	
+	# Sort for remediation
+	current_lesson_words.sort_custom(_sort_scoring)
+	previous_lesson_words.sort_custom(_sort_scoring)
 	
 	# If there is no previous stimuli, only adds from current lesson
 	if previous_lesson_words.is_empty():
@@ -52,10 +58,9 @@ func _find_stimuli_and_distractions() -> void:
 					stimuli.append(current_lesson_words.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
-		# TODO Handle remediation engine
 		var spaces_left : int = max_progression - stimuli.size()
 		if previous_lesson_words.size() >= spaces_left:
-			for i in max_progression - stimuli.size():
+			for i in spaces_left:
 				stimuli.append(previous_lesson_words[i])
 		else:
 			stimuli.append_array(previous_lesson_words)
@@ -69,13 +74,11 @@ func _find_stimuli_and_distractions() -> void:
 	
 	# Find the GPs and distractors for each word
 	for stimulus: Dictionary in stimuli:
-		stimulus["GPs"] = Database.get_GP_from_word(stimulus.Word)
+		# stimulus["GPs"] = Database.get_GP_from_word(stimulus.ID)
 		var grapheme_distractions: = []
 		for GP in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID, lesson_nb))
 		distractions.append(grapheme_distractions)
-		
-		print(stimulus)
 
 
 # Launch the minigame
@@ -160,7 +163,7 @@ func _is_GP_right(gp: Dictionary) -> bool:
 
 
 func _play_stimulus() -> void:
-	await audio_player.play_word(_get_current_stimulus().Word)
+	await audio_player.play_word(_get_current_stimulus().ID as int)
 
 
 # -------------- CONNECTIONS -------------- #

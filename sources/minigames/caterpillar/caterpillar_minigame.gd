@@ -155,7 +155,7 @@ func _on_current_progression_changed() -> void:
 	
 	# Show the word for some time and play the stimulus again
 	await get_tree().create_timer(time_between_words/2).timeout
-	await audio_player.play_word(_get_previous_stimulus().Word as String)
+	await audio_player.play_word(_get_previous_stimulus().ID as int)
 	await get_tree().create_timer(time_between_words/2).timeout
 	
 	# Reset the caterpillar
