@@ -19,6 +19,9 @@ var is_stimulus_heard: bool = false:
 
 
 func _start() -> void:
+	if stimuli.is_empty():
+		_win()
+		return
 	stimulus_timer.wait_time = stimulus_repeat_time
 	await _play_current_stimulus_phoneme()
 
@@ -37,6 +40,9 @@ func _find_stimuli_and_distractions() -> void:
 			current_lesson_stimuli.append(syllable)
 		else:
 			previous_lesson_stimuli.append(syllable)
+	
+	if not current_lesson_stimuli and not previous_lesson_stimuli:
+		return
 	
 	# Shuffle everything
 	current_lesson_stimuli.shuffle()
@@ -187,15 +193,16 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		
 		# Handles the right answer GPs
 		for i in right_answer.GPs.size():
-			if i <= stimulus.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
+			if not stimulus.has("GPs") or (i <= stimulus.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]):
 				continue
 			_update_score(right_answer.GPs[i].ID, -1)
 		
 		# Handles the pressed stimulus Gps
-		for i in stimulus.GPs.size():
-			if i <= right_answer.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
-				continue
-			_update_score(stimulus.GPs[i].ID, -1)
+		if stimulus.has("GPs"):
+			for i in stimulus.GPs.size():
+				if i <= right_answer.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
+					continue
+				_update_score(stimulus.GPs[i].ID, -1)
 	return true
 
 

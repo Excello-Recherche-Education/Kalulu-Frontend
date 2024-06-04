@@ -24,7 +24,6 @@ func get_score(ID: int) -> int:
 
 # Updates the global scores from a minigame scores
 func update_scores(minigame_scores: Dictionary) -> void:
-	print(minigame_scores)
 	if not minigame_scores:
 		return
 	
