@@ -102,6 +102,15 @@ func _update_label(progress: int) -> void:
 			word_label.text += "_"
 
 
+func _stop_highlight() -> void:
+	for monkey: Monkey in monkeys:
+		monkey.stop_highlight()
+
+
+func _reset_plank_label() -> void:
+	word_label.text = "_".repeat(_get_current_stimulus().Word.length())
+
+
 func _play_monkey_stimulus(monkey: Monkey) -> void:
 	var coroutine: = Coroutine.new()
 	
@@ -114,8 +123,7 @@ func _play_monkey_stimulus(monkey: Monkey) -> void:
 	await coroutine.join_all()
 
 
-func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Coconut:
-	
+func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
 	monkey.stop_highlight()
 	
 	await monkey.play("start_throw")

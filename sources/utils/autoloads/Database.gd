@@ -185,10 +185,10 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictio
 	
 	return res
 
-# TODO Gets the GP IDs for the future remediation engine
+
 func get_words_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 99) -> Array:
 	var parameters: Array = []
-	var query: = "SELECT Words.ID, Words.Word, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb
+	var query: = "SELECT Words.ID, Words.Word, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb, VerifiedCount.gpsid as GPs_IDs
 FROM Words
 	 INNER JOIN 
 	(SELECT WordID, count() as Count FROM GPsInWords 
@@ -196,7 +196,7 @@ FROM Words
 		GROUP BY WordID 
 		) TotalCount ON TotalCount.WordID = Words.ID 
 	INNER JOIN 
-	(SELECT WordID, count() as Count, max(LessonNb) as MaxLessonNb FROM GPsInWords 
+	(SELECT WordID, count() as Count, max(LessonNb) as MaxLessonNb, group_concat(GPsInWords.GPID) as gpsid FROM GPsInWords 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
 		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
 		GROUP BY WordID 
@@ -215,9 +215,14 @@ FROM Words
 	parameters.append(min_length)
 	
 	db.query_with_bindings(query, parameters)
-	var res : = db.query_result
+	var res: = db.query_result
+	
+	# Parse the GPs IDs
 	for word: Dictionary in res:
-		word.GPs = get_GP_from_word(word.ID)
+		word.GPs = []
+		for GPID in word.GPs_IDs.split(","):
+			word.GPs.append({ID = int(GPID)})
+		word.erase("GPs_IDs")
 	
 	return res
 

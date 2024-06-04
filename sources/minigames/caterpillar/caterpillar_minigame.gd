@@ -136,7 +136,6 @@ func _on_berry_eaten(berry: Berry) -> void:
 	
 	if _is_GP_right(berry.gp):
 		_clear_berries()
-		_stop_highlight()
 		await caterpillar.eat_berry(berry)
 		await audio_player.play_phoneme(_get_GP().Phoneme as String)
 		current_word_progression += 1

@@ -29,15 +29,7 @@ func _find_stimuli_and_distractions() -> void:
 	var current_lesson_stimuli: Array[Dictionary] = []
 	var previous_lesson_stimuli: Array[Dictionary] = []
 	
-	var all_GPs: = Database.get_GP_for_lesson(lesson_nb, false, false, true, true)
 	var all_syllables: = Database.get_syllables_for_lesson(lesson_nb, false)
-	
-	# Find the GPs for current lesson
-	for gp: Dictionary in all_GPs:
-		if gp.LessonNb == lesson_nb:
-			current_lesson_stimuli.append(gp)
-		else:
-			previous_lesson_stimuli.append(gp)
 	
 	# Find the syllables for current lesson
 	for syllable: Dictionary in all_syllables:
@@ -50,7 +42,7 @@ func _find_stimuli_and_distractions() -> void:
 	current_lesson_stimuli.shuffle()
 	previous_lesson_stimuli.shuffle()
 	
-	# Sort for remediation TODO Voir si il faut aussi trier les stimuli de la lesson actuelle
+	# Sort for remediation
 	current_lesson_stimuli.sort_custom(_sort_scoring)
 	previous_lesson_stimuli.sort_custom(_sort_scoring)
 	
@@ -93,26 +85,24 @@ func _find_stimuli_and_distractions() -> void:
 	for stimulus: Dictionary in stimuli:
 		var stimulus_distractors := []
 		
-		var GPs : Array
-		if stimulus.has("GPs") and stimulus.GPs and stimulus.GPs.size() == 2:
-			GPs = stimulus.GPs
-		
 		# Difficulty 1 
 		# Any previously learned item w/ all letters different
-		for gp: Dictionary in all_GPs:
-				if gp.Grapheme != stimulus.Grapheme and gp.Phoneme != stimulus.Phoneme and (not gp.OtherPhonemes or not gp.OtherPhonemes.has(stimulus.Phoneme)):
-					stimulus_distractors.append(gp)
-		if GPs:
-			for syllable: Dictionary in all_syllables:
-				if syllable.GPs.size() < 2:
-					continue
-				if syllable.GPs[0] not in GPs and syllable.GPs[1] not in GPs:
-					stimulus_distractors.append(syllable)
+		for syllable: Dictionary in all_syllables:
+			var gp_found_in_stimuli: = false
+			for gp in syllable.GPs:
+				if gp in stimulus.GPs:
+					gp_found_in_stimuli = true
+					break
 			
+			if not gp_found_in_stimuli:
+				stimulus_distractors.append(syllable)
 		
 		# Higher difficulties only changes syllables distractors
-		if difficulty > 1 and GPs:
+		if difficulty > 1 and stimulus.GPs.size() == 2:
 			for syllable: Dictionary in all_syllables:
+				if syllable.GPs.size() != 2:
+					continue
+				
 				# Difficulty 2-3
 				# If the item has 2 GP ('cha'), distractors should have only a single letter change ('la' or 'che')
 				if (syllable.GPs[0] == stimulus.GPs[0] and syllable.GPs[1] != stimulus.GPs[1]) or (syllable.GPs[0] != stimulus.GPs[0] and syllable.GPs[1] == stimulus.GPs[1]):
@@ -185,47 +175,27 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 	# Checks the answer and update scores
 	if _is_stimulus_right(stimulus):
 		if not is_highlighting:
-			# Checks if the stimulus is a simple GP or syllable and update the score
-			if stimulus.has("GPs"):
-				for gp in stimulus.GPs:
-					_update_score(gp.ID, 1)
-			else:
-				_update_score(stimulus.ID, 1)
+			for gp in stimulus.GPs:
+				_update_score(gp.ID, 1)
 		else:
 			# Handles highlight
 			is_highlighting = false
 		
 		stimulus_found.emit()
 	else:
-		
-		var stimulus_gps : Array[Dictionary]
-		var right_answer_gps : Array[Dictionary]
-		
-		if stimulus.has("GPs"):
-			stimulus_gps = stimulus.GPs
-		else:
-			stimulus_gps = [stimulus]
-		
 		var right_answer: = _get_current_stimulus()
-		if right_answer.has("GPs"):
-			right_answer_gps = right_answer.GPs
-		else:
-			right_answer_gps = [right_answer]
 		
 		# Handles the right answer GPs
-		for i in right_answer_gps.size():
-			if i <= stimulus_gps.size() and stimulus_gps[i] == right_answer_gps[i]:
+		for i in right_answer.GPs.size():
+			if i <= stimulus.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
 				continue
-			_update_score(right_answer_gps[i].ID, -1)
+			_update_score(right_answer.GPs[i].ID, -1)
 		
 		# Handles the pressed stimulus Gps
-		for i in stimulus_gps.size():
-			if i <= right_answer_gps.size() and stimulus_gps[i] == right_answer_gps[i]:
+		for i in stimulus.GPs.size():
+			if i <= right_answer.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
 				continue
-			_update_score(stimulus_gps[i].ID, -1)
-	
-	print(scores)
-	
+			_update_score(stimulus.GPs[i].ID, -1)
 	return true
 
 

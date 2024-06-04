@@ -235,13 +235,9 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 # Calculates the stimulus remediation score
 func _get_stimulus_score(stimulus: Dictionary) -> int:
 	var score: int = 0
-	# Syllables and words
 	if stimulus.has("GPs"):
 		for gp: Dictionary in stimulus.GPs:
 			score += UserDataManager.get_GP_remediation_score(gp.ID)
-	# GPs
-	elif stimulus.has("ID"):
-		score += UserDataManager.get_GP_remediation_score(stimulus.ID)
 	return score
 
 

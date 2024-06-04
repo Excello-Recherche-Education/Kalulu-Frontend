@@ -16,8 +16,9 @@
 
 [node name="FrogMinigame" instance=ExtResource("1_ng5er")]
 script = ExtResource("2_0xg3r")
-max_number_of_GPs = null
-distractors_queue_size = null
+max_number_of_GPs = 6
+distractors_queue_size = 6
+time_between_words = 3.0
 minigame_name = "frog"
 lesson_nb = 10
 difficulty = null

@@ -46,14 +46,6 @@ var turtle_count: int = 0:
 		if turtle_count >= max_turtle_count and value < max_turtle_count:
 			can_spawn_turtle.emit()
 		turtle_count = value
-var is_highlighting: bool = false:
-	set(value):
-		is_highlighting = value
-		for turtle: Turtle in turtles.get_children():
-			if is_highlighting and self._is_GP_right(turtle.gp):
-				turtle.highlight(true)
-			else:
-				turtle.highlight(false)
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
@@ -73,7 +65,14 @@ func _setup_minigame() -> void:
 
 
 func _highlight() -> void:
-	is_highlighting = true
+	for turtle: Turtle in turtles.get_children():
+			if self._is_GP_right(turtle.gp):
+				turtle.highlight(true)
+
+
+func _stop_highlight() -> void:
+	for turtle: Turtle in turtles.get_children():
+		turtle.highlight(false)
 
 
 func _play_turtle_phoneme(gp: Dictionary) -> void:
@@ -153,9 +152,6 @@ func _on_island_area_entered(area: Area2D) -> void:
 		# Stop the spawning
 		spawn_timer.stop()
 	
-		# Stop the highlight
-		is_highlighting = false
-		
 		# Play the right animation
 		turtle.right()
 		

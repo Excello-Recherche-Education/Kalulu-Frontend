@@ -16,7 +16,6 @@ var current_gp_distractors_queue: Array[Dictionary] = []
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
-	# TODO Mettre un minimum à 2 GPs ?
 	var words_list: = Database.get_words_for_lesson(lesson_nb, false, max_number_of_GPs)
 	
 	if words_list.is_empty():
@@ -52,7 +51,7 @@ func _find_stimuli_and_distractions() -> void:
 				stimuli.append_array(current_lesson_words)
 			
 			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
-			var minimal_stimuli : int = floori(current_lesson_stimuli_number/2)
+			var minimal_stimuli : int = floori(current_lesson_stimuli_number/2.0)
 			if stimuli.size() < minimal_stimuli:
 				while stimuli.size() < minimal_stimuli:
 					stimuli.append(current_lesson_words.pick_random())
@@ -66,15 +65,16 @@ func _find_stimuli_and_distractions() -> void:
 			stimuli.append_array(previous_lesson_words)
 		
 		# If there are not enough stimuli, fill the rest with current lesson
-		while stimuli.size() < max_progression:
-			stimuli.append(current_lesson_words.pick_random())
+		if current_lesson_words:
+			while stimuli.size() < max_progression:
+				stimuli.append(current_lesson_words.pick_random())
 	
 	# Shuffle the stimuli
 	stimuli.shuffle()
 	
 	# Find the GPs and distractors for each word
 	for stimulus: Dictionary in stimuli:
-		# stimulus["GPs"] = Database.get_GP_from_word(stimulus.ID)
+		stimulus.GPs = Database.get_GP_from_word(stimulus.ID as int)
 		var grapheme_distractions: = []
 		for GP in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID, lesson_nb))
@@ -97,7 +97,8 @@ func _setup_minigame() -> void:
 # Setups the word progression for current progression
 func _setup_word_progression() -> void:
 	var stimulus: = _get_current_stimulus()
-	max_word_progression = stimulus.GPs.size()
+	var GPs: = stimulus.GPs as Array
+	max_word_progression = GPs.size()
 	current_word_progression = 0
 	
 	_play_stimulus()
@@ -105,6 +106,7 @@ func _setup_word_progression() -> void:
 
 func _set_current_word_progression(p_current_word_progression: int) -> void:
 	current_word_progression = p_current_word_progression
+	is_highlighting = false
 	
 	if current_word_progression == max_word_progression:
 		current_progression += 1
@@ -114,7 +116,9 @@ func _set_current_word_progression(p_current_word_progression: int) -> void:
 
 
 func _reset_distractors_queue() -> void:
-	current_gp_distractors_queue = distractions[current_progression][current_word_progression].duplicate()
+	var current_distractors: = distractions[current_progression][current_word_progression] as Array
+	
+	current_gp_distractors_queue = current_distractors.duplicate()
 	current_gp_distractors_queue.shuffle()
 	while current_gp_distractors_queue.size() > distractors_queue_size:
 		current_gp_distractors_queue.pop_front()
