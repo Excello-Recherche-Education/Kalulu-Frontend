@@ -144,6 +144,9 @@ func _on_island_area_entered(area: Area2D) -> void:
 	if not turtle:
 		return
 	
+	# Log the answer
+	_log_new_response_and_score(turtle.gp)
+	
 	# Disable the island collisions
 	island.set_enabled(false)
 	

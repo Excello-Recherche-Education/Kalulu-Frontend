@@ -163,6 +163,20 @@ func _is_GP_right(gp: Dictionary) -> bool:
 	return gp == _get_GP()
 
 
+# Log the response and score
+func _log_new_response_and_score(gp: Dictionary) -> void:
+	# Logs the answer
+	_log_new_response(gp, self._get_GP())
+	
+	# Handles GP scoring
+	if self._is_GP_right(gp):
+		if not is_highlighting:
+			_update_score(gp.ID, 1)
+	else:
+		_update_score(gp.ID, -1)
+		_update_score(self._get_GP().ID, -1)
+
+
 # ------------- UI Callbacks ------------- #
 
 

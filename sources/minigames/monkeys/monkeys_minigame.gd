@@ -159,7 +159,7 @@ func _on_monkey_pressed(monkey: Monkey) -> void:
 
 func _on_coconut_thrown(monkey: Monkey) -> void:
 	# Log the answer
-	_log_new_response(monkey.stimulus, self._get_GP())
+	_log_new_response_and_score(monkey.stimulus)
 	
 	is_locked = true
 	var coconut: = await _get_coconut_from_monkey_to_king(monkey)

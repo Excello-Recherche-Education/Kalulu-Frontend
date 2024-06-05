@@ -273,7 +273,7 @@ func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
 
 
 func get_distractors_for_grapheme(id: int, lesson_nb: int) -> Array:
-	db.query_with_bindings("SELECT DISTINCT distractor.* From GPs stimuli 
+	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme, distractor.ID, distractor.Phoneme From GPs stimuli 
 	INNER JOIN GPs distractor 
 	INNER JOIN Lessons 
 	INNER JOIN GPsInLessons

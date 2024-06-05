@@ -100,7 +100,7 @@ func _start_tracks() -> void:
 
 func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 	# Log the answer
-	_log_new_response(lilypad.stimulus, track.gp)
+	_log_new_response_and_score(lilypad.stimulus)
 	
 	# Makes the frog jumps on the lilypad
 	frog.jump_to(lilypad.global_position)
