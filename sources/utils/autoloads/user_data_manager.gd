@@ -14,12 +14,14 @@ var student: String = "" :
 			_load_student_settings()
 			_load_student_progression()
 			_load_student_remediation()
+			_load_student_difficulty()
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
 var student_settings: UserSettings
 var student_progression: UserProgression
 var _student_remediation: UserRemediation
+var _student_difficulty: UserDifficulty
 
 
 func _ready() -> void:
@@ -309,8 +311,42 @@ func get_GP_remediation_score(GPID: int) -> int:
 func update_remediation_scores(scores: Dictionary) -> void:
 	if not _student_remediation:
 		push_warning("No student remediation data for " + str(student))
+		return
 	if scores:
 		_student_remediation.update_scores(scores)
+
+#endregion
+
+#region Student Difficulty
+
+func _get_student_difficulty_path() -> String:
+	return get_student_folder().path_join("difficulty.tres")
+
+func _load_student_difficulty() -> void:
+	if FileAccess.file_exists(_get_student_difficulty_path()):
+		_student_difficulty = load(_get_student_difficulty_path())
+	
+	if not _student_difficulty:
+		_student_difficulty = UserDifficulty.new()
+		DirAccess.make_dir_recursive_absolute(get_student_folder())
+		_save_student_difficulty()
+	
+	_student_difficulty.difficulty_changed.connect(_save_student_difficulty)
+
+func _save_student_difficulty() -> void:
+	ResourceSaver.save(_student_difficulty, _get_student_difficulty_path())
+
+func get_difficulty_for_minigame(minigame_name: String) -> int:
+	if not _student_difficulty:
+		push_warning("No student difficulty data for " + str(student))
+		return 0
+	return _student_difficulty.get_difficulty(minigame_name)
+
+func update_difficulty_for_minigame(minigame_name: String, minigame_won: bool) -> void:
+	if not _student_difficulty:
+		push_warning("No student difficulty data for " + str(student))
+		return
+	_student_difficulty.add_game(minigame_name, minigame_won)
 
 #endregion
 

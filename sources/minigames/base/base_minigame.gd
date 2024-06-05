@@ -101,6 +101,9 @@ func _ready() -> void:
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
 	transition_data = {}
 	
+	# Difficulty
+	difficulty = UserDataManager.get_difficulty_for_minigame(minigame_name)
+	
 	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "intro"))
 	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "help"))
 	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "win"))
@@ -169,8 +172,12 @@ func _win() -> void:
 	if UserDataManager.student_progression:
 		UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
+	# Remediation
 	if scores:
 		UserDataManager.update_remediation_scores(scores)
+	
+	# Difficulty
+	UserDataManager.update_difficulty_for_minigame(minigame_name, true)
 	
 	audio_player.stream = win_sound_fx
 	audio_player.play()
@@ -185,8 +192,12 @@ func _win() -> void:
 
 
 func _lose() -> void:
+	# Remediation
 	if scores:
 		UserDataManager.update_remediation_scores(scores)
+	
+	# Difficulty
+	UserDataManager.update_difficulty_for_minigame(minigame_name, false)
 	
 	audio_player.stream = lose_sound_fx
 	audio_player.play()
@@ -196,7 +207,6 @@ func _lose() -> void:
 	await minigame_ui.kalulu_speech_ended
 	
 	_reset()
-
 
 #endregion
 

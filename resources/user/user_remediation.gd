@@ -12,7 +12,8 @@ const remediation_score: int = -2
 # Defines the score for each GP for the syllables and words minigames
 # Key is the ID of the GP
 # Value is the score of the GP
-var gps_scores: Dictionary = { 2: -2}
+@export
+var gps_scores: Dictionary = {}
 
 
 # Gets the score of a GP if it is below or equals to the remediation score
