@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://dpp3bpy1v80jk"]
+
+[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_s6yuv"]
+[ext_resource type="Script" path="res://sources/minigames/penguin/penguin_minigame.gd" id="2_ncha4"]
+[ext_resource type="Texture2D" uid="uid://cvnv0beq0dcr4" path="res://assets/minigames/penguin/graphic/background.png" id="3_8crb3"]
+[ext_resource type="Texture2D" uid="uid://7apuslkxluxp" path="res://assets/minigames/penguin/graphic/snowballs_pile.png" id="4_e3y2j"]
+[ext_resource type="PackedScene" uid="uid://b78362g1yif2n" path="res://sources/minigames/penguin/penguin.tscn" id="4_txvyj"]
+
+[node name="PenguinMinigame" instance=ExtResource("1_s6yuv")]
+script = ExtResource("2_ncha4")
+minigame_name = "penguin"
+
+[node name="Background" type="TextureRect" parent="GameRoot" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_8crb3")
+
+[node name="SnowPile" type="Sprite2D" parent="GameRoot/Background" index="0"]
+position = Vector2(905, 1605)
+scale = Vector2(2, 2)
+texture = ExtResource("4_e3y2j")
+
+[node name="Penguin" parent="GameRoot" index="1" instance=ExtResource("4_txvyj")]
+position = Vector2(702, 1694)
