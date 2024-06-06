@@ -48,10 +48,6 @@ func _ready() -> void:
 func setup() -> void:
 	gp_list = Database.get_GP_for_lesson(lesson_nb, true, true)
 	
-	grapheme_label.text = ""
-	for gp in gp_list:
-		grapheme_label.text += "%s" % gp.Grapheme
-	
 	current_video = 0
 	current_image_and_sound = 0
 	current_tracing = 0
@@ -59,16 +55,26 @@ func setup() -> void:
 	images = []
 	sounds = []
 	videos = []
+	
+	var gp_display: = []
 	for gp in gp_list:
 		var gp_image: = Database.get_gp_look_and_learn_image(gp)
 		var gp_sound: = Database.get_gp_look_and_learn_sound(gp)
-		if gp_image and gp_sound:
+		var gp_video: = Database.get_gp_look_and_learn_video(gp)
+		
+		if gp_image and gp_sound and gp_video:
 			images.append(gp_image)
 			sounds.append(gp_sound)
-		
-		var gp_video: = Database.get_gp_look_and_learn_video(gp)
-		if gp_video:
 			videos.append(gp_video)
+			
+			gp_display.append(gp)
+	
+	if gp_display.is_empty():
+		gp_display.append(gp_list[0])
+	
+	grapheme_label.text = ""
+	for gp in gp_display:
+		grapheme_label.text += "%s" % gp.Grapheme
 
 
 func play_videos() -> void:
@@ -102,16 +108,27 @@ func play_tracing() -> void:
 
 
 func _on_grapheme_button_pressed() -> void:
-	match current_button_pressed:
-		0:
-			animation_player.play("to_videos")
-			current_button_pressed += 1
-		1:
-			animation_player.play("to_images_and_sounds")
-			current_button_pressed += 1
-		2:
-			animation_player.play("to_tracing")
-			current_button_pressed += 1
+	var loop: = true
+	while loop:
+		match current_button_pressed:
+			0:
+				if images.is_empty() or sounds.is_empty():
+					current_button_pressed += 1
+				else:
+					animation_player.play("to_videos")
+					current_button_pressed += 1
+					loop = false
+			1:
+				if videos.is_empty():
+					current_button_pressed += 1
+				else:
+					animation_player.play("to_images_and_sounds")
+					current_button_pressed += 1
+					loop = false
+			2:
+				animation_player.play("to_tracing")
+				current_button_pressed += 1
+				loop = false
 
 
 func _on_video_stream_player_finished() -> void:
@@ -145,4 +162,3 @@ func _back_to_gardens() -> void:
 
 func _on_garden_button_pressed() -> void:
 	_back_to_gardens()
-
