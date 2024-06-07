@@ -174,10 +174,11 @@ func _fill_minigame_choice(container: HFlowContainer, exercise_type: String, sta
 		exercise_icons = boss_minigames_icons
 	
 	for i in range(exercise_scenes.size()):
-		var button: LessonTextureButton = lesson_texture_button_scene.instantiate()
+		var button: = TextureButton.new()
 		container.add_child(button)
-		button.completed = status == UserProgression.Status.Completed
-		button.texture = exercise_icons[i]
+		button.texture_normal = exercise_icons[i]
+		button.custom_minimum_size = 200.0 * Vector2.ONE
+		button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 		
 		if status == UserProgression.Status.Locked:
 			button.disabled = true
