@@ -3,9 +3,6 @@ extends Control
 const garden_scene: = preload("res://resources/gardens/garden.tscn")
 const garden_size: = 2400
 
-const LessonTextureButton: = preload("res://sources/lesson_screen/lesson_texture_button.gd")
-const lesson_texture_button_scene: = preload("res://sources/lesson_screen/lesson_texture_button.tscn")
-
 const LookAndLearn: = preload("res://sources/look_and_learn/look_and_learn.gd")
 const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_learn.tscn")
 

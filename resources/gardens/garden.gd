@@ -25,6 +25,12 @@ const background_path_model: = "res://assets/gardens/gardens/garden_%02d_open.pn
 	%Button3,
 	%Button4,
 ]
+@onready var lesson_button_centers: Array[TextureRect] = [
+	%Center1,
+	%Center2,
+	%Center3,
+	%Center4,
+]
 @onready var lesson_labels: Array[Label] = [
 	%LessonLabel1,
 	%LessonLabel2,
@@ -99,6 +105,9 @@ func set_background(p_color: int) -> void:
 		return
 	background.texture = load(background_path_model % [p_color+1])
 	color = garden_colors[p_color]
+	
+	for button_center: TextureRect in lesson_button_centers:
+		button_center.modulate = color
 
 
 func _ready() -> void:
