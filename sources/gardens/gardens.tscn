@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b1rkn0uwoyd7l"]
+[gd_scene load_steps=33 format=3 uid="uid://b1rkn0uwoyd7l"]
 
 [ext_resource type="Script" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
 [ext_resource type="Resource" uid="uid://8v0g8bpx5mh0" path="res://resources/gardens/gardens_layout.tres" id="2_1i16w"]
@@ -25,6 +25,9 @@
 [ext_resource type="AudioStream" uid="uid://4bv1hr6r68op" path="res://assets/gardens/ui_transition_right.mp3" id="17_37f6y"]
 [ext_resource type="AudioStream" uid="uid://bwgrj3quwtbvm" path="res://assets/gardens/ui_transition_left.mp3" id="18_bdar8"]
 [ext_resource type="Texture2D" uid="uid://bb00fhnenbml5" path="res://assets/lesson_screen/big_button.png" id="20_elp7t"]
+[ext_resource type="Texture2D" uid="uid://dkomjpclxvmqf" path="res://assets/lesson_screen/top_left.png" id="23_p1d10"]
+[ext_resource type="Texture2D" uid="uid://rux5delnabp5" path="res://assets/lesson_screen/top_right.png" id="24_30f83"]
+[ext_resource type="Texture2D" uid="uid://cqhbpt3lk6f15" path="res://assets/lesson_screen/bottom.png" id="25_tyvq6"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ey6av"]
 blend_mode = 1
@@ -179,6 +182,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(1280, 900)
+
+[node name="MinigameBackground1" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 0.501961)
+layout_mode = 0
+offset_right = 2560.0
+offset_bottom = 1800.0
+texture = ExtResource("23_p1d10")
+
+[node name="MinigameBackground2" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 0.501961)
+layout_mode = 0
+offset_right = 2560.0
+offset_bottom = 1800.0
+texture = ExtResource("24_30f83")
+
+[node name="MinigameBackground3" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 0.501961)
+layout_mode = 0
+offset_right = 2560.0
+offset_bottom = 1800.0
+texture = ExtResource("25_tyvq6")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 layout_mode = 1

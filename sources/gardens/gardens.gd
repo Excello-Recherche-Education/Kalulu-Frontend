@@ -48,6 +48,9 @@ const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_lea
 @onready var minigame_container_1: HFlowContainer = %MinigameContainer1
 @onready var minigame_container_2: HFlowContainer = %MinigameContainer2
 @onready var minigame_container_3: HFlowContainer = %MinigameContainer3
+@onready var minigame_background_1: TextureRect = %MinigameBackground1
+@onready var minigame_background_2: TextureRect = %MinigameBackground2
+@onready var minigame_background_3: TextureRect = %MinigameBackground3
 @onready var minigame_background: TextureRect = %MinigameBackground
 
 var lessons: = {}
@@ -146,14 +149,19 @@ func _setup_minigame_selection() -> void:
 		else:
 			lesson_button.completed = lesson_unlocks["look_and_learn"] == UserProgression.Status.Completed
 		
-		_fill_minigame_choice(minigame_container_1, exercise1, lesson_unlocks["games"][0], 0)
-		_fill_minigame_choice(minigame_container_2, exercise2, lesson_unlocks["games"][1], 1)
-		_fill_minigame_choice(minigame_container_3, exercise3, lesson_unlocks["games"][2], 2)
+		_fill_minigame_choice(minigame_container_1, minigame_background_1, exercise1, lesson_unlocks["games"][0], 0)
+		_fill_minigame_choice(minigame_container_2, minigame_background_2, exercise2, lesson_unlocks["games"][1], 1)
+		_fill_minigame_choice(minigame_container_3, minigame_background_3, exercise3, lesson_unlocks["games"][2], 2)
 
 
-func _fill_minigame_choice(container: HFlowContainer, exercise_type: String, status: UserProgression.Status, minigame_number: int) -> void:
+func _fill_minigame_choice(container: HFlowContainer, background: TextureRect, exercise_type: String, status: UserProgression.Status, minigame_number: int) -> void:
 	for button in container.get_children():
 		button.queue_free()
+	
+	if status == UserProgression.Status.Completed:
+		background.modulate = Color(1.0, 1.0, 1.0, 0.01)
+	else:
+		background.modulate = Color(0.0, 0.0, 0.0, 0.75)
 	
 	var exercise_scenes: Array[PackedScene]
 	var exercise_icons: Array[Texture]
