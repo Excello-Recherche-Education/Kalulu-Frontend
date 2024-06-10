@@ -52,6 +52,7 @@ const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_lea
 @onready var minigame_background_2: TextureRect = %MinigameBackground2
 @onready var minigame_background_3: TextureRect = %MinigameBackground3
 @onready var minigame_background: TextureRect = %MinigameBackground
+@onready var minigame_background_center: TextureRect = %MinigameBackgroundCenter
 
 var lessons: = {}
 var points: = []
@@ -263,6 +264,7 @@ func _on_garden_lesson_button_pressed(button: TextureButton, lesson_ind: int, ga
 	minigame_background.size = 300.0 * Vector2.ONE
 	minigame_background.global_position = current_button_global_position
 	minigame_background.visible = true
+	minigame_background_center.modulate = garden_parent.get_child(garden_ind).color
 	
 	var tween: = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_background, "scale", (1800.0 / 300.0) * Vector2.ONE, tween_duration)

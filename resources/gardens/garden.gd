@@ -5,6 +5,11 @@ class_name Garden
 const flower_path_model: = "res://assets/gardens/flowers/Plant_%02d_%02d_%s.png"
 const background_path_model: = "res://assets/gardens/gardens/garden_%02d_open.png"
 
+@export var garden_layout: GardenLayout:
+	set = set_garden_layout
+
+@export var garden_colors: Array[Color]
+
 @onready var buttons: Control = $Buttons
 @onready var flower_controls: Array[TextureRect] = [
 	%Flower1,
@@ -27,10 +32,6 @@ const background_path_model: = "res://assets/gardens/gardens/garden_%02d_open.pn
 	%LessonLabel4,
 ]
 
-
-@export var garden_layout: GardenLayout:
-	set = set_garden_layout
-
 enum FlowerSizes{
 	NotStarted,
 	Small,
@@ -40,6 +41,7 @@ enum FlowerSizes{
 
 var flowers: Array[GardenLayout.Flower]
 var flowers_sizes: Array[FlowerSizes]
+var color: Color
 
 
 func get_button_size() -> Vector2:
@@ -96,6 +98,7 @@ func set_background(p_color: int) -> void:
 	if not background:
 		return
 	background.texture = load(background_path_model % [p_color+1])
+	color = garden_colors[p_color]
 
 
 func _ready() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://b1rkn0uwoyd7l"]
+[gd_scene load_steps=34 format=3 uid="uid://b1rkn0uwoyd7l"]
 
 [ext_resource type="Script" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
 [ext_resource type="Resource" uid="uid://8v0g8bpx5mh0" path="res://resources/gardens/gardens_layout.tres" id="2_1i16w"]
@@ -25,6 +25,7 @@
 [ext_resource type="AudioStream" uid="uid://4bv1hr6r68op" path="res://assets/gardens/ui_transition_right.mp3" id="17_37f6y"]
 [ext_resource type="AudioStream" uid="uid://bwgrj3quwtbvm" path="res://assets/gardens/ui_transition_left.mp3" id="18_bdar8"]
 [ext_resource type="Texture2D" uid="uid://bb00fhnenbml5" path="res://assets/lesson_screen/big_button.png" id="20_elp7t"]
+[ext_resource type="Texture2D" uid="uid://dlnklpyefn0m2" path="res://assets/lesson_screen/big_button_center.png" id="21_r0a4h"]
 [ext_resource type="Texture2D" uid="uid://dkomjpclxvmqf" path="res://assets/lesson_screen/top_left.png" id="23_p1d10"]
 [ext_resource type="Texture2D" uid="uid://rux5delnabp5" path="res://assets/lesson_screen/top_right.png" id="24_30f83"]
 [ext_resource type="Texture2D" uid="uid://cqhbpt3lk6f15" path="res://assets/lesson_screen/bottom.png" id="25_tyvq6"]
@@ -171,6 +172,18 @@ texture = ExtResource("20_elp7t")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="MinigameBackgroundCenter" type="TextureRect" parent="CanvasLayer/MinigameBackground"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_r0a4h")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="MinigameSelection" type="Control" parent="CanvasLayer"]
 unique_name_in_owner = true
 visible = false
@@ -207,7 +220,7 @@ offset_right = 2560.0
 offset_bottom = 1800.0
 texture = ExtResource("25_tyvq6")
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
+[node name="Branches" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
