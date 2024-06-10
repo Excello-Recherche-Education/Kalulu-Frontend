@@ -1,7 +1,6 @@
-[gd_scene load_steps=34 format=3 uid="uid://b1rkn0uwoyd7l"]
+[gd_scene load_steps=33 format=3 uid="uid://b1rkn0uwoyd7l"]
 
 [ext_resource type="Script" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
-[ext_resource type="Resource" uid="uid://8v0g8bpx5mh0" path="res://resources/gardens/gardens_layout.tres" id="2_1i16w"]
 [ext_resource type="PackedScene" uid="uid://bxh1torc05k7p" path="res://sources/minigames/crabs/crabs_minigame.tscn" id="3_vqohy"]
 [ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="3_xbvhu"]
 [ext_resource type="PackedScene" uid="uid://dtcgj6ee8jt2t" path="res://sources/minigames/jellyfish/jellyfish_minigame.tscn" id="4_cvoj1"]
@@ -63,7 +62,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qlsw4")
-gardens_layout = ExtResource("2_1i16w")
 syllable_minigames = Array[PackedScene]([ExtResource("3_vqohy"), ExtResource("4_cvoj1")])
 syllable_minigames_icons = Array[Texture]([ExtResource("5_h8c5w"), ExtResource("6_p30hm")])
 pairing_minigames = Array[PackedScene]([ExtResource("5_ix8qe")])

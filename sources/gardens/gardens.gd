@@ -6,6 +6,9 @@ const garden_size: = 2400
 const LookAndLearn: = preload("res://sources/look_and_learn/look_and_learn.gd")
 const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_learn.tscn")
 
+const MinigameButton: = preload("res://sources/lesson_screen/minigame_button.gd")
+const minigame_button_scene: = preload("res://sources/lesson_screen/minigame_button.tscn")
+
 @export var gardens_layout: GardensLayout:
 	set = set_gardens_layout
 
@@ -180,11 +183,9 @@ func _fill_minigame_choice(container: HFlowContainer, background: TextureRect, e
 		exercise_icons = boss_minigames_icons
 	
 	for i in range(exercise_scenes.size()):
-		var button: = TextureButton.new()
+		var button: = minigame_button_scene.instantiate()
 		container.add_child(button)
-		button.texture_normal = exercise_icons[i]
-		button.custom_minimum_size = 200.0 * Vector2.ONE
-		button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+		button.texture = exercise_icons[i]
 		
 		if status == UserProgression.Status.Locked:
 			button.disabled = true
