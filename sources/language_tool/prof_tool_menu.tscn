@@ -138,6 +138,15 @@ theme_override_font_sizes/font_size = 100
 text = "Export
 "
 
+[node name="OpenFolderButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1922.0
+offset_top = 1545.0
+offset_right = 2475.0
+offset_bottom = 1636.0
+theme_override_font_sizes/font_size = 42
+text = "Open language resource Folder"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 85.0
@@ -244,6 +253,7 @@ theme_override_font_sizes/font_size = 60
 [connection signal="pressed" from="CenterContainer/TabContainer/GameData/ExercisesButton" to="." method="_on_exercises_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/GameData/SpeechesButton" to="." method="_on_speeches_button_pressed"]
 [connection signal="pressed" from="ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="OpenFolderButton" to="." method="_on_open_folder_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ImportLanguageButton" to="." method="_on_import_language_button_pressed"]
 [connection signal="item_selected" from="VBoxContainer/LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]
 [connection signal="pressed" from="VBoxContainer/AddWordListButton" to="." method="_on_add_word_list_button_pressed"]

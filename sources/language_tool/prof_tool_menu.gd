@@ -324,3 +324,5 @@ func _create_sentence_csv() -> void:
 		gp_list_file.store_csv_line([e.Sentence, lesson])
 
 
+func _on_open_folder_button_pressed() -> void:
+	OS.shell_show_in_file_manager(ProjectSettings.globalize_path(base_path))
