@@ -187,6 +187,7 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 			# Handles highlight
 			is_highlighting = false
 		
+		_on_stimulus_found()
 		stimulus_found.emit()
 	else:
 		var right_answer: = _get_current_stimulus()
