@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b78362g1yif2n"]
+[gd_scene load_steps=17 format=3 uid="uid://b78362g1yif2n"]
 
 [ext_resource type="Script" path="res://sources/minigames/penguin/penguin.gd" id="1_gyeou"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="2_0yii1"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://uc0g4jdjk61p" path="res://assets/minigames/penguin/graphic/snowball.png" id="3_whe7m"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="4_3dtuy"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="6_344tf"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="6_coelw"]
+[ext_resource type="AudioStream" uid="uid://bha6my06g7p4b" path="res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3" id="8_dqq5e"]
 
 [sub_resource type="Animation" id="Animation_xysi2"]
 length = 0.001
@@ -407,12 +409,17 @@ libraries = {
 }
 autoplay = "idle"
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_dqq5e")
+bus = &"Effects"
+
 [node name="Label" type="Label" parent="."]
 offset_left = -106.0
 offset_top = -255.0
 offset_right = 108.0
 offset_bottom = -28.0
 theme_override_font_sizes/font_size = 90
+label_settings = ExtResource("6_coelw")
 horizontal_alignment = 1
 vertical_alignment = 1
 

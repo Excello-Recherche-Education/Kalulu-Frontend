@@ -1,16 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://dpp3bpy1v80jk"]
+[gd_scene load_steps=8 format=3 uid="uid://dpp3bpy1v80jk"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_s6yuv"]
 [ext_resource type="Script" path="res://sources/minigames/penguin/penguin_minigame.gd" id="2_ncha4"]
 [ext_resource type="Texture2D" uid="uid://cvnv0beq0dcr4" path="res://assets/minigames/penguin/graphic/background.png" id="3_8crb3"]
+[ext_resource type="Texture2D" uid="uid://kwcp3ondyggo" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_empty.png" id="3_gdpi3"]
 [ext_resource type="Texture2D" uid="uid://7apuslkxluxp" path="res://assets/minigames/penguin/graphic/snowballs_pile.png" id="4_e3y2j"]
 [ext_resource type="PackedScene" uid="uid://b78362g1yif2n" path="res://sources/minigames/penguin/penguin.tscn" id="4_txvyj"]
+[ext_resource type="Texture2D" uid="uid://dq23np4euf6da" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_full.png" id="4_yua7j"]
 
 [node name="PenguinMinigame" instance=ExtResource("1_s6yuv")]
 script = ExtResource("2_ncha4")
 minigame_name = "penguin"
 max_number_of_lives = 5
 max_progression = 5
+
+[node name="MinigameUI" parent="." index="1"]
+empty_progression_icon = ExtResource("3_gdpi3")
+full_progression_icon = ExtResource("4_yua7j")
 
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 layout_mode = 1

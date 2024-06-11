@@ -46,7 +46,7 @@ FROM Words
 		stimuli.pop_front()
 	
 	for stimulus: Dictionary in stimuli:
-		stimulus["GPs"] = Database.get_GP_from_word(stimulus.Word)
+		stimulus["GPs"] = Database.get_GP_from_word(stimulus.ID as int)
 	
 	print(stimuli)
 
@@ -86,6 +86,17 @@ func _setup_word_progression() -> void:
 	current_word_progression = 0
 
 
+func _highlight() -> void:
+	for penguin: Penguin in penguins:
+		if self._is_silent(penguin.gp) and not penguin.is_pressed:
+			penguin.highlight()
+
+
+func _stop_highlight() -> void:
+	for penguin: Penguin in penguins:
+		penguin.highlight(false)
+
+
 # Get the current stimulus which needs to be found to increase progression
 func _get_current_stimulus() -> Dictionary:
 	if stimuli.size() == 0:
@@ -93,28 +104,23 @@ func _get_current_stimulus() -> Dictionary:
 	return stimuli[current_progression % stimuli.size()]
 
 
-func _set_current_word_progression(p_current_word_progression: int) -> void:
-	current_word_progression = p_current_word_progression
-	
-	if current_word_progression == max_word_progression:
-		current_progression += 1
-	else:
-		@warning_ignore("redundant_await")
-		await _on_current_word_progression_changed()
-
-
 func _is_silent(gp: Dictionary) -> bool:
 	return gp.Phoneme == silent_phoneme
 
 
+func _set_current_word_progression(p_current_word_progression: int) -> void:
+	current_word_progression = p_current_word_progression
+	if current_word_progression == max_word_progression:
+		current_progression += 1
+
+#region Connections
+
 func _on_snowball_thrown(pos: Vector2, penguin: Penguin) -> void:
-	print(penguin.gp)
-	
 	# Disables all penguins
 	for p: Penguin in penguins:
 		p.set_button_enabled(false)
 	
-	# Throw the snowball TODO
+	# Throw the snowball
 	await main_penguin.throw(pos)
 	
 	# Checks if the GP pressed is silent
@@ -129,18 +135,14 @@ func _on_snowball_thrown(pos: Vector2, penguin: Penguin) -> void:
 		
 		current_lives -= 1
 	
-	# Re-enables all penguins except the one pressed TODO
+	# Re-enables all penguins
 	for p: Penguin in penguins:
 		p.set_button_enabled(true)
 
 
-func _on_current_word_progression_changed() -> void:
-	print("CURRENT WORD PROGRESSION CHANGED")
-	pass
-
-
 func _on_current_progression_changed() -> void:
-	print("PROGRESSION CHANGED")
 	if current_progression >= max_progression:
 		return
 	_setup_word_progression()
+
+#endregion

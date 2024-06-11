@@ -9,12 +9,14 @@ const snowball_scene: PackedScene = preload("res://sources/minigames/penguin/sno
 
 @onready var snowball_position: Marker2D = $Sprite2D/Snowball
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var audiostream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var label: Label = $Label
 @onready var button: Button = $Button
-@onready var highlight_FX: HighlightFX = $HighlightFX
-@onready var right_FX: RightFX = $RightFX
-@onready var wrong_FX: WrongFX = $WrongFX
+@onready var highlight_fx: HighlightFX = $HighlightFX
+@onready var right_fx: RightFX = $RightFX
+@onready var wrong_fx: WrongFX = $WrongFX
 
+var is_pressed: bool = false
 var throw_position: Vector2
 
 var gp: Dictionary:
@@ -38,11 +40,12 @@ func _create_snowball() -> void:
 	var snowball: Snowball = snowball_scene.instantiate()
 	snowball.position = snowball_position.global_position
 	snowball.target_position = throw_position - snowball_position.global_position
+	audiostream_player.play()
 	get_parent().add_child(snowball)
 
 #region Animations
 
-func idle():
+func idle() -> void:
 	if randf() < 0.8:
 		animation_player.play("idle")
 	else:
@@ -51,10 +54,12 @@ func idle():
 
 func happy() -> void:
 	animation_player.play("happy")
+	await animation_player.animation_finished
 
 
 func sad() -> void:
 	animation_player.play("sad")
+	await animation_player.animation_finished
 
 
 func throw(pos: Vector2) -> void:
@@ -68,17 +73,20 @@ func throw(pos: Vector2) -> void:
 #region Particles
 
 func right() -> void:
-	right_FX.play()
-	await right_FX.finished
+	right_fx.play()
+	await right_fx.finished
 
 
 func wrong() -> void:
-	wrong_FX.play()
-	await wrong_FX.finished
+	wrong_fx.play()
+	await wrong_fx.finished
 
 
-func highlight() -> void:
-	pass
+func highlight(value: bool = true) -> void:
+	if value:
+		highlight_fx.play()
+	else:
+		highlight_fx.stop()
 
 #endregion
 
@@ -90,6 +98,9 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 
 func _on_button_pressed() -> void:
+	if is_pressed:
+		return
 	pressed.emit(get_global_mouse_position())
+	is_pressed = true
 
 #endregion
