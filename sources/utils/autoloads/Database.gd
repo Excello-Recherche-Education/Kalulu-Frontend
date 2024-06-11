@@ -33,7 +33,8 @@ var db_path: = base_path + language + "/language.db":
 			db.close_db()
 			db.path = db_path
 			db.foreign_keys = true
-			db.open_db()
+			if FileAccess.file_exists(db.path):
+				db.open_db()
 			
 			#_init_db()
 			
@@ -51,8 +52,12 @@ func _init_db() -> void:
 	# load_additional_word_list()
 	# db_path = db_path
 	#_import_words_csv()
-	#_import_look_and_learn_data()
-	_import_syllables()
+	#_import_gps()
+	#_import_words()
+	_import_look_and_learn_data()
+	#_import_syllables()
+	#_import_lessons()
+	#_import_kalulu_3_word_sounds()
 
 
 func get_additional_word_list_path() -> String:
@@ -460,7 +465,12 @@ func _import_gps() -> void:
 		var p = e.PHONEME
 		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
 		if db.query_result.is_empty():
-			db.insert_row("GPs", {Grapheme=g, Phoneme=p})
+			var type = 0
+			if e.CV == "V":
+				type = 1
+			elif e.CV == "C":
+				type = 2
+			db.insert_row("GPs", {Grapheme=g, Phoneme=p, Type=type})
 		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
 		print(db.query_result)
 
@@ -566,7 +576,7 @@ func _import_words() -> void:
 
 
 func _import_lessons() -> void:
-	var file = FileAccess.open("res://new_gp_list.json", FileAccess.READ)
+	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
 	var dict = JSON.parse_string(file.get_line())
 	for e in dict.values():
 		var g = e.GRAPHEME
@@ -587,6 +597,16 @@ func _import_lessons() -> void:
 			GPID = GP_id,
 			LessonID = lesson_id,
 		})
+
+
+func _import_kalulu_3_word_sounds() -> void:
+	var file = FileAccess.open("res://data3/words_list.json", FileAccess.READ)
+	var dict = JSON.parse_string(file.get_line())
+	for e in dict.values():
+		var file_path = "res://data3/language/" + e.FILENAME + ".mp3"
+		DirAccess.copy_absolute(file_path, get_word_sound_path({
+			Word = e.GRAPHEME
+		}))
 
 
 func _remove_unusable_words() -> void:
