@@ -1,6 +1,10 @@
 @tool
 extends HearAndFindMinigame
 
+# Namespace
+const Hole: = preload("res://sources/minigames/crabs/hole/hole.gd")
+const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
+
 const hole_scene: = preload("res://sources/minigames/crabs/hole/hole.tscn")
 
 class DifficultySettings:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dryu60mtiqv3"]
+[gd_scene load_steps=17 format=3 uid="uid://dryu60mtiqv3"]
 
 [ext_resource type="Texture2D" uid="uid://b10j7xa7pso3w" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_idle_1_0000.png" id="1_2884l"]
 [ext_resource type="Script" path="res://sources/minigames/caterpillar/caterpillar_body.gd" id="1_vvkkg"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dglxepw3sraye" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_walk_0005.png" id="11_tnnjk"]
 [ext_resource type="Texture2D" uid="uid://hwk6152g66qr" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_walk_0007.png" id="12_wkhrj"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="14_cyw4o"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="15_7eh5m"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_236fx"]
 animations = [{
@@ -68,23 +69,24 @@ animations = [{
 script = ExtResource("1_vvkkg")
 
 [node name="RightFX" parent="." instance=ExtResource("14_cyw4o")]
-offset_left = 32.0
-offset_top = -72.0
-offset_right = 32.0
-offset_bottom = -72.0
-scale = Vector2(0.5, 0.5)
+offset_left = 64.0
+offset_top = -128.0
+offset_right = 64.0
+offset_bottom = -128.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 16)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_236fx")
 animation = &"walk"
-frame_progress = 0.649697
+frame_progress = 0.801874
 offset = Vector2(32, -64)
 
 [node name="Label" type="Label" parent="."]
 offset_left = -8.0
-offset_top = -116.0
-offset_right = 68.0
-offset_bottom = -40.0
-theme_override_font_sizes/font_size = 32
+offset_top = -216.0
+offset_right = 136.0
+offset_bottom = -72.0
+label_settings = ExtResource("15_7eh5m")
 horizontal_alignment = 1
 vertical_alignment = 1

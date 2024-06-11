@@ -21,5 +21,5 @@ func play() -> void:
 	await finished
 
 
-func _on_shards_particles_finished():
+func _on_shards_particles_finished() -> void:
 	finished.emit()

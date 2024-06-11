@@ -1,16 +1,15 @@
 extends Node2D
-class_name Hole
 
 signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned()
 signal stop()
-signal crab_out(hole : Hole)
+signal crab_out(hole)
+
+# Namespace
+const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
+const CrabAudioStreamPlayer: = preload("res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd")
 
 const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
-const crab_spawn_y: float = 100.
-const crab_middle_y: float = 20.
-const crab_out_y: float = -130.
-const crab_up_y: float = -180.
 
 @onready var hole_back: Sprite2D = $HoleBack
 @onready var hole_front: Sprite2D = $HoleFront
@@ -42,7 +41,7 @@ func _process(_delta : float) -> void:
 		return
 	
 	# Handles the sounds and VFX when the crab is not out yet
-	if crab.position.y >= crab_middle_y:
+	if crab.position.y > -crab.size.y:
 		if crab_visible:
 			crab_visible = false
 		
@@ -68,12 +67,12 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab = crab_scene.instantiate()
 	mask.add_child(crab)
 	crab_x = -crab.size.x / 2
-	crab.position = Vector2(crab_x, crab_spawn_y)
+	crab.position = Vector2(crab_x, crab.size.y)
 	crab.stimulus = stimulus
 	
 	# Show the crab but not the stimulus
 	var tween: = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, crab_middle_y), randf_range(0.25, 2.0))
+	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y/7), randf_range(0.25, 2.0))
 	if await is_button_pressed_with_limit(tween.finished):
 		return
 	
@@ -85,7 +84,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	# The crab gets completely out
 	crab_out.emit()
 	tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, crab_out_y), 0.5)
+	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y), 0.5)
 	if await is_button_pressed_with_limit(tween.finished):
 		return
 	
@@ -95,7 +94,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	
 	# The crab disappears in the hole
 	tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, crab_spawn_y), 0.5)
+	tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y), 0.5)
 	if await is_button_pressed_with_limit(tween.finished):
 		return
 	
@@ -124,7 +123,7 @@ func is_button_pressed_with_limit(future : Signal) -> bool:
 		
 		# Make the crab disappear in the hole
 		var tween: = create_tween()
-		tween.tween_property(crab, "position", Vector2(crab_x, crab_spawn_y), 0.5)
+		tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y), 0.5)
 		await tween.finished
 		
 		crab.queue_free()
@@ -161,13 +160,13 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	
 	# Move the crab up and rotate
 	var tween: = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, crab_up_y), 0.5)
+	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y * 1.5), 0.5)
 	tween.parallel().tween_property(crab.body, "rotation_degrees", 540.0, 0.5)
 	await tween.finished
 
 	# Make the crab disappear in the hole
 	tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, crab_spawn_y), 0.5)
+	tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y), 0.5)
 	await tween.finished
 	
 	crab.queue_free()

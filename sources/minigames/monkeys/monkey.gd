@@ -1,9 +1,11 @@
 @tool
 extends Node2D
-class_name Monkey
 
 signal pressed()
 signal dragged_into_self()
+
+# Namespace
+const Coconut: = preload("res://sources/minigames/monkeys/coconut.gd")
 
 @onready var stars: AnimatedSprite2D = $Stars
 @onready var coconut: Coconut = $Marker2D/Coconut

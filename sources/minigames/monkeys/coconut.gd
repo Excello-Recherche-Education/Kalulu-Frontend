@@ -1,5 +1,4 @@
 extends Node2D
-class_name Coconut
 
 @onready var highlight_fx: HighlightFX = $HighlightFX
 @onready var sprite: Sprite2D = $Sprite2D

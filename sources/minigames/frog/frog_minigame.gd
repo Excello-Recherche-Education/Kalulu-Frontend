@@ -1,6 +1,9 @@
 extends WordsMinigame
 class_name FrogMinigame
 
+# Namespace
+const LilypadTrack: = preload("res://sources/minigames/frog/lilypad_track.gd")
+const Lilypad: = preload("res://sources/minigames/frog/lilypad.gd")
 
 const lilypad_track_scene: = preload("res://sources/minigames/frog/lilypad_track.tscn")
 
@@ -74,7 +77,6 @@ func _create_tracks() -> void:
 		var track: LilypadTrack = lilypad_track_scene.instantiate()
 		lilypad_tracks_container.add_child(track)
 		
-		track.top_to_bottom = i % 2
 		track.difficulty_settings = difficulty_settings[difficulty]
 		track.gp = current_word.GPs[i]
 		track.distractors = current_distractors[i]

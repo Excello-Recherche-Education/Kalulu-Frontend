@@ -1,14 +1,18 @@
 @tool
 extends Node2D
-class_name Caterpillar
+
+# Namespace
+const CaterpillarHead: = preload("res://sources/minigames/caterpillar/caterpillar_head.gd")
+const CaterpillarBody: = preload("res://sources/minigames/caterpillar/caterpillar_body.gd")
+const Berry: = preload("res://sources/minigames/caterpillar/berry.gd")
 
 signal berry_eaten(berry: Berry)
 
 const body_part_scene: PackedScene = preload("res://sources/minigames/caterpillar/caterpillar_body.tscn")
 
-const body_part_width: int = 64
+const body_part_width: int = 128
 const body_part_move_time: float = 0.25
-const body_part_wait_time: float = 0.025
+const body_part_wait_time: float = 0.04
 
 @onready var head: CaterpillarHead = $Head
 @onready var body_parts: Node2D = $BodyParts
@@ -56,7 +60,7 @@ func eat_berry(berry: Berry) -> void:
 	
 	# Check if there is only one empty body part
 	if body_parts.get_child_count() == 1:
-		var current_body_part = body_parts.get_child(0) as CaterpillarBody
+		var current_body_part: = body_parts.get_child(0) as CaterpillarBody
 		if not current_body_part.gp:
 			body_part = current_body_part
 	
@@ -128,5 +132,6 @@ func reset() -> void:
 
 func _on_eat_area_2d_area_entered(area: Area2D) -> void:
 	if area is Berry and !is_moving:
-		area.is_eaten = true
-		berry_eaten.emit(area)
+		var berry: = area as Berry
+		berry.is_eaten = true
+		berry_eaten.emit(berry)

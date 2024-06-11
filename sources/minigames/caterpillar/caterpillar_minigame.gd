@@ -1,6 +1,10 @@
 @tool
 extends WordsMinigame
-class_name CaterpillarMinigame
+
+# Namespace
+const Caterpillar: = preload("res://sources/minigames/caterpillar/caterpillar.gd")
+const Branch: = preload("res://sources/minigames/caterpillar/branch.gd")
+const Berry: = preload("res://sources/minigames/caterpillar/berry.gd")
 
 const branch_scene: = preload("res://sources/minigames/caterpillar/branch.tscn")
 
@@ -96,7 +100,7 @@ func _clear_berries() -> void:
 
 func _play_berry_phoneme(gp: Dictionary) -> void:
 	if gp and gp.has("Phoneme"):
-		await audio_player.play_phoneme(gp.Phoneme)
+		await audio_player.play_phoneme(gp.Phoneme as String)
 
 #region Connections
 
@@ -134,11 +138,11 @@ func _on_berry_eaten(berry: Berry) -> void:
 		_clear_berries()
 		_stop_highlight()
 		await caterpillar.eat_berry(berry)
-		await audio_player.play_phoneme(_get_GP().Phoneme)
+		await audio_player.play_phoneme(_get_GP().Phoneme as String)
 		current_word_progression += 1
 	else:
 		await caterpillar.spit_berry(berry)
-		await audio_player.play_phoneme(berry.gp.Phoneme)
+		await audio_player.play_phoneme(berry.gp.Phoneme as String)
 		current_lives -= 1
 	
 	# Unpause timer
@@ -151,7 +155,7 @@ func _on_current_progression_changed() -> void:
 	
 	# Show the word for some time and play the stimulus again
 	await get_tree().create_timer(time_between_words/2).timeout
-	await audio_player.play_word(_get_previous_stimulus().Word)
+	await audio_player.play_word(_get_previous_stimulus().Word as String)
 	await get_tree().create_timer(time_between_words/2).timeout
 	
 	# Reset the caterpillar

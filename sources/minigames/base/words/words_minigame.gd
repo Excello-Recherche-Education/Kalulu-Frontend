@@ -72,7 +72,7 @@ func _find_stimuli_and_distractions() -> void:
 		stimulus["GPs"] = Database.get_GP_from_word(stimulus.Word)
 		var grapheme_distractions: = []
 		for GP in stimulus.GPs:
-			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.Grapheme, lesson_nb))
+			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID, lesson_nb))
 		distractions.append(grapheme_distractions)
 		
 		print(stimulus)

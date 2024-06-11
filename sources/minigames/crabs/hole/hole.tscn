@@ -9,10 +9,10 @@
 [ext_resource type="Script" path="res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd" id="6_2rg3s"]
 
 [node name="Hole" type="Node2D"]
-scale = Vector2(1.8, 1.8)
 script = ExtResource("1_05s8c")
 
 [node name="HoleBack" type="Sprite2D" parent="."]
+scale = Vector2(1.8, 1.8)
 texture = ExtResource("2_osih7")
 
 [node name="Mask" type="Sprite2D" parent="."]
@@ -22,14 +22,17 @@ texture = ExtResource("3_ietrg")
 
 [node name="IconToHideTheMask" type="Sprite2D" parent="Mask"]
 position = Vector2(-1, 263)
+scale = Vector2(1.8, 1.8)
 texture = ExtResource("4_5yovx")
 
 [node name="SandVFX" parent="." instance=ExtResource("5_vress")]
 offset_top = 57.7778
 offset_bottom = 57.7778
+scale = Vector2(1.8, 1.8)
 
 [node name="HoleFront" type="Sprite2D" parent="."]
 position = Vector2(0, 2)
+scale = Vector2(1.8, 1.8)
 texture = ExtResource("5_ahgwg")
 
 [node name="Timer" type="Timer" parent="."]

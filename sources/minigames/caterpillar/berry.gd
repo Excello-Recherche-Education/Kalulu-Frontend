@@ -1,13 +1,12 @@
 extends Area2D
-class_name Berry
 
 signal pressed(gp: Dictionary)
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var label: Label = %Label
 @onready var path_follow: PathFollow2D = $Path2D/PathFollow2D
-@onready var highlight_fx: = $HighlightFX
-@onready var wrong_fx: = $WrongFX
+@onready var highlight_fx: HighlightFX = $HighlightFX
+@onready var wrong_fx: WrongFX = $WrongFX
 
 var gp: Dictionary: 
 	set(value):
@@ -43,10 +42,10 @@ func fall() -> void:
 	tween.tween_property(path_follow, "progress_ratio", 1, 2)
 
 
-func _on_visible_on_screen_notifier_2d_screen_exited():
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	queue_free()
 
 
-func _on_button_pressed():
+func _on_button_pressed() -> void:
 	if not is_eaten and gp:
 		pressed.emit(gp)

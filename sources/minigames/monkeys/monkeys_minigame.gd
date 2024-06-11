@@ -1,8 +1,13 @@
 @tool
 extends WordsMinigame
 
+# Namespace
 const KingMonkey: = preload("res://sources/minigames/monkeys/king_monkey.gd")
+const Monkey: = preload("res://sources/minigames/monkeys/monkey.gd")
+const Coconut: = preload("res://sources/minigames/monkeys/coconut.gd")
+
 const monkey_scene: = preload("res://sources/minigames/monkeys/monkey.tscn")
+
 const audio_streams: = [
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_right.mp3"),
@@ -26,9 +31,9 @@ class DifficultySettings:
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(1),
 	DifficultySettings.new(2),
+	DifficultySettings.new(2),
 	DifficultySettings.new(3),
-	DifficultySettings.new(4),
-	DifficultySettings.new(5)
+	DifficultySettings.new(3)
 ]
 
 
@@ -57,28 +62,28 @@ func _setup_minigame() -> void:
 	
 	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
-	var possible_positions: = possible_positions_parent.get_children()
 	for i in settings.distractors_count + 1:
 		var monkey: Monkey = monkey_scene.instantiate()
 		monkeys_node.add_child(monkey)
 		monkeys.append(monkey)
 		
-		monkey.global_position = possible_positions[i].global_position
+		var pos: = possible_positions_parent.get_child(i) as Control
+		monkey.global_position = pos.global_position
 		
 		monkey.pressed.connect(_on_monkey_pressed.bind(monkey))
 		monkey.dragged_into_self.connect(_on_monkey_pressed.bind(monkey))
 	
 	monkeys_node.set_drag_forwarding(
-		func(at_position: Vector2):
+		func(_at_position: Vector2) -> Variant:
 			return null,
-		func(_at_position: Vector2, _data): 
+		func(_at_position: Vector2, _data: Variant) -> bool: 
 			return true,
-		func(at_position: Vector2, data):
+		func(at_position: Vector2, data: Variant) -> void:
 			if (at_position - data.start_position).x < 0:
-				_on_coconut_thrown(data.monkey)
+				_on_coconut_thrown(data.monkey as Monkey)
 	)
 	
-	_reset_plank_label()
+	_update_label(0)
 
 
 func _highlight() -> void:
@@ -87,8 +92,14 @@ func _highlight() -> void:
 			monkey.highlight()
 
 
-func _reset_plank_label() -> void:
-	word_label.text = "_".repeat(_get_current_stimulus().Word.length())
+func _update_label(progress: int) -> void:
+	var gps_count: = self._get_current_stimulus().GPsCount as int
+	word_label.text = ""
+	for i in gps_count:
+		if progress > i or progress == gps_count:
+			word_label.text += self._get_current_stimulus().GPs[i].Grapheme
+		else:
+			word_label.text += "_"
 
 
 func _play_monkey_stimulus(monkey: Monkey) -> void:
@@ -96,14 +107,14 @@ func _play_monkey_stimulus(monkey: Monkey) -> void:
 	
 	coroutine.add_future(monkey.talk)
 	
-	audio_player.play_phoneme(monkey.stimulus.Phoneme)
+	audio_player.play_phoneme(monkey.stimulus.Phoneme as String)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	
 	await coroutine.join_all()
 
 
-func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
+func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Coconut:
 	
 	monkey.stop_highlight()
 	
@@ -113,7 +124,7 @@ func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
 	audio_player.stream = audio_streams[Audio.SendToKing]
 	audio_player.play()
 	
-	var coconut: = monkey.coconut.duplicate()
+	var coconut: Coconut = monkey.coconut.duplicate()
 	game_root.add_child(coconut)
 	coconut.text = monkey.coconut.text
 	coconut.global_transform = monkey.coconut.global_transform
@@ -140,7 +151,7 @@ func _on_monkey_pressed(monkey: Monkey) -> void:
 
 func _on_coconut_thrown(monkey: Monkey) -> void:
 	# Log the answer
-	_log_new_response(monkey.stimulus, stimuli[current_progression])
+	_log_new_response(monkey.stimulus, self._get_GP())
 	
 	is_locked = true
 	var coconut: = await _get_coconut_from_monkey_to_king(monkey)
@@ -166,12 +177,11 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		await tween.finished
 		coconut.explode()
 		
-		word_label.text = ""
-		for i in current_word_progression +1:
-			word_label.text += stimuli[current_progression].GPs[i].Grapheme
-		word_label.text += "_".repeat(stimuli[current_progression].Word.length() - word_label.text.length())
-	
+		# Update the label
+		_update_label(current_word_progression + 1)
+		
 		current_word_progression += 1
+		
 	else:
 		await king.play("start_wrong")
 	
@@ -218,7 +228,7 @@ func _on_current_progression_changed() -> void:
 	var coroutine: = Coroutine.new()
 	for monkey in monkeys:
 		coroutine.add_future(monkey.talk)
-	audio_player.play_word(_get_previous_stimulus().Word)
+	audio_player.play_word(_get_previous_stimulus().Word as String)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	await coroutine.join_all()
@@ -227,6 +237,7 @@ func _on_current_progression_changed() -> void:
 	# Starts a new round
 	super()
 	
-	_reset_plank_label()
+	# Reset the label
+	_update_label(0)
 
 #endregion

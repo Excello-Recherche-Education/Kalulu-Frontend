@@ -1,5 +1,4 @@
 extends AudioStreamPlayer2D
-class_name CrabAudioStreamPlayer
 
 const crab_sound_list: = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),

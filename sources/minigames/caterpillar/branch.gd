@@ -1,9 +1,12 @@
 @tool
 extends Node2D
-class_name Branch
 
 signal branch_pressed()
 signal berry_pressed(gp: Dictionary)
+
+# Namespace
+const Leaf: = preload("res://sources/minigames/caterpillar/leaf.gd")
+const Berry: = preload("res://sources/minigames/caterpillar/berry.gd")
 
 const leaf_scene: PackedScene = preload("res://sources/minigames/caterpillar/leaf.tscn")
 const berry_scene: PackedScene = preload("res://sources/minigames/caterpillar/berry.tscn")
@@ -24,7 +27,7 @@ func _set_highlighting(value: bool) -> void:
 			berry.highlight()
 
 
-func _ready():
+func _ready() -> void:
 	# Adds some leaves from start
 	var pos: = -leaves.position.x + velocity * randf_range(0,2)
 	while pos < 0:
@@ -38,7 +41,7 @@ func _ready():
 		leaf_timer.start()
 
 
-func _process(delta):
+func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	
@@ -67,11 +70,11 @@ func clear_berries() -> void:
 
 # ---------- CONNECTIONS ---------- # 
 
-func _on_button_pressed():
+func _on_button_pressed() -> void:
 	branch_pressed.emit()
 
 
-func _on_leaf_timer_timeout():
+func _on_leaf_timer_timeout() -> void:
 	var leaf: Leaf = leaf_scene.instantiate()
 	leaves.add_child(leaf)
 	
@@ -79,5 +82,5 @@ func _on_leaf_timer_timeout():
 	leaf_timer.start()
 
 
-func _on_berry_pressed(gp: Dictionary):
+func _on_berry_pressed(gp: Dictionary) -> void:
 	berry_pressed.emit(gp)

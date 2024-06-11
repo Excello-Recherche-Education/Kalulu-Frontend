@@ -259,16 +259,20 @@ func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
 	return db.query_result
 
 
-func get_distractors_for_grapheme(grapheme: String, lesson_nb: int) -> Array:
-	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme, distractor.Phoneme From GPs stimuli 
+func get_distractors_for_grapheme(id: int, lesson_nb: int) -> Array:
+	db.query_with_bindings("SELECT DISTINCT distractor.* From GPs stimuli 
 	INNER JOIN GPs distractor 
 	INNER JOIN Lessons 
 	INNER JOIN GPsInLessons
-	ON stimuli.Grapheme=? AND distractor.type = stimuli.type 
+	ON stimuli.ID=? AND distractor.type = stimuli.type 
 	AND distractor.Grapheme != stimuli.Grapheme 
 	AND distractor.Phoneme != stimuli.Phoneme
+	AND CASE WHEN length(distractor.Grapheme) < length(stimuli.Grapheme) 
+		THEN stimuli.Grapheme NOT LIKE  distractor.Grapheme || '%'
+		ELSE true
+	END
 	AND GPsInLessons.GPID = distractor.ID
-	AND Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?", [grapheme, lesson_nb])
+	AND Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?", [id, lesson_nb])
 	return db.query_result
 
 

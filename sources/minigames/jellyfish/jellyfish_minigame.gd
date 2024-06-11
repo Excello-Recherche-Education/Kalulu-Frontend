@@ -1,5 +1,8 @@
 extends HearAndFindMinigame
 
+# Namespace
+const Jellyfish: = preload("res://sources/minigames/jellyfish/jellyfish.gd")
+
 const jellyfish_scene: = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
 
 class DifficultySettings:
