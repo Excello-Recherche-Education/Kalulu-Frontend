@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://cwvhrdw4hwvje"]
+
+[ext_resource type="Script" path="res://sources/minigames/penguin/snowball.gd" id="1_1ihh4"]
+[ext_resource type="Texture2D" uid="uid://uc0g4jdjk61p" path="res://assets/minigames/penguin/graphic/snowball.png" id="1_wakpr"]
+[ext_resource type="Gradient" uid="uid://coc7rxa1sptom" path="res://sources/minigames/monkeys/fade_out_gradient.tres" id="3_fny4l"]
+
+[sub_resource type="Curve2D" id="Curve2D_hpr8y"]
+_data = {
+"points": PackedVector2Array(0, 0, 125, -125, 0, 0, 0, 0, 0, 0, 0, -250)
+}
+point_count = 2
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mpadx"]
+gradient = ExtResource("3_fny4l")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_krqel"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+gravity = Vector3(0, 98, 0)
+scale_min = 0.25
+scale_max = 0.75
+color_ramp = SubResource("GradientTexture1D_mpadx")
+
+[node name="Snowball" type="Path2D"]
+curve = SubResource("Curve2D_hpr8y")
+script = ExtResource("1_1ihh4")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+rotation = -0.785398
+loop = false
+
+[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_wakpr")
+
+[node name="Particles" type="GPUParticles2D" parent="PathFollow2D"]
+emitting = false
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_krqel")
+texture = ExtResource("1_wakpr")
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+randomness = 0.33

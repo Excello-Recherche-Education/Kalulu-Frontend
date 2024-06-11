@@ -75,7 +75,7 @@ func _setup_word_progression() -> void:
 		var penguin: Penguin = penguin_scene.instantiate()
 		penguins_positions.get_node("Pos" + str(i)).add_child(penguin)
 		penguin.gp = GP
-		penguin.pressed.connect(_on_snowball_thrown)
+		penguin.pressed.connect(_on_snowball_thrown.bind(penguin))
 		
 		penguins.append(penguin)
 		
@@ -107,25 +107,25 @@ func _is_silent(gp: Dictionary) -> bool:
 	return gp.Phoneme == silent_phoneme
 
 
-func _on_snowball_thrown(gp: Dictionary) -> void:
-	print(gp)
+func _on_snowball_thrown(pos: Vector2, penguin: Penguin) -> void:
+	print(penguin.gp)
 	
 	# Disables all penguins
-	for penguin: Penguin in penguins:
-		penguin.set_button_enabled(false)
+	for p: Penguin in penguins:
+		p.set_button_enabled(false)
 	
 	# Throw the snowball TODO
-	await main_penguin.throw()
+	await main_penguin.throw(pos)
 	
 	# Checks if the GP pressed is silent
-	if _is_silent(gp):
+	if _is_silent(penguin.gp):
 		current_word_progression += 1
 	else:
 		current_lives -= 1
 	
 	# Re-enables all penguins except the one pressed TODO
-	for penguin: Penguin in penguins:
-		penguin.set_button_enabled(true)
+	for p: Penguin in penguins:
+		p.set_button_enabled(true)
 
 
 func _on_current_word_progression_changed() -> void:
