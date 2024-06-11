@@ -11,6 +11,9 @@ const snowball_scene: PackedScene = preload("res://sources/minigames/penguin/sno
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var label: Label = $Label
 @onready var button: Button = $Button
+@onready var highlight_FX: HighlightFX = $HighlightFX
+@onready var right_FX: RightFX = $RightFX
+@onready var wrong_FX: WrongFX = $WrongFX
 
 var throw_position: Vector2
 
@@ -31,11 +34,27 @@ func set_button_enabled(is_enabled: bool) -> void:
 	button.disabled = !is_enabled
 
 
+func _create_snowball() -> void:
+	var snowball: Snowball = snowball_scene.instantiate()
+	snowball.position = snowball_position.global_position
+	snowball.target_position = throw_position - snowball_position.global_position
+	get_parent().add_child(snowball)
+
+#region Animations
+
 func idle():
 	if randf() < 0.8:
 		animation_player.play("idle")
 	else:
 		animation_player.play("idle2")
+
+
+func happy() -> void:
+	animation_player.play("happy")
+
+
+func sad() -> void:
+	animation_player.play("sad")
 
 
 func throw(pos: Vector2) -> void:
@@ -44,16 +63,26 @@ func throw(pos: Vector2) -> void:
 	await animation_player.animation_finished
 	idle()
 
+#endregion
 
-func _create_snowball() -> void:
-	var snowball: Snowball = snowball_scene.instantiate()
-	snowball.position = snowball_position.global_position
-	snowball.target_position = throw_position - snowball_position.global_position
-	
-	get_parent().add_child(snowball)
-	
-	print("SNOWBALL INC !")
+#region Particles
 
+func right() -> void:
+	right_FX.play()
+	await right_FX.finished
+
+
+func wrong() -> void:
+	wrong_FX.play()
+	await wrong_FX.finished
+
+
+func highlight() -> void:
+	pass
+
+#endregion
+
+#region Connections
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "idle" or anim_name == "idle2":
@@ -62,3 +91,5 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 func _on_button_pressed() -> void:
 	pressed.emit(get_global_mouse_position())
+
+#endregion

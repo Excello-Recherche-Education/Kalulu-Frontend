@@ -119,8 +119,14 @@ func _on_snowball_thrown(pos: Vector2, penguin: Penguin) -> void:
 	
 	# Checks if the GP pressed is silent
 	if _is_silent(penguin.gp):
+		penguin.happy()
+		await penguin.right()
+		
 		current_word_progression += 1
 	else:
+		penguin.sad()
+		await penguin.wrong()
+		
 		current_lives -= 1
 	
 	# Re-enables all penguins except the one pressed TODO
