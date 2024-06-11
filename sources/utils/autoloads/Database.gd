@@ -54,10 +54,11 @@ func _init_db() -> void:
 	#_import_words_csv()
 	#_import_gps()
 	#_import_words()
-	_import_look_and_learn_data()
+	#_import_look_and_learn_data()
 	#_import_syllables()
 	#_import_lessons()
 	#_import_kalulu_3_word_sounds()
+	_import_kalulu_3_gp_sounds()
 
 
 func get_additional_word_list_path() -> String:
@@ -422,6 +423,10 @@ func get_gp_look_and_learn_video_path(gp: Dictionary) -> String:
 	return base_path + language + look_and_learn_videos + gp["Grapheme"] + "-" + gp["Phoneme"] + video_extension
 
 
+func get_gp_sound_path(gp: Dictionary) -> String:
+	return base_path + language + language_sounds + gp.Grapheme + '-' + gp.Phoneme + sound_extension
+
+
 func get_syllable_sound_path(syllable: Dictionary) -> String:
 	return base_path + language + language_sounds + syllable.Syllable + sound_extension
 
@@ -606,6 +611,19 @@ func _import_kalulu_3_word_sounds() -> void:
 		var file_path = "res://data3/language/" + e.FILENAME + ".mp3"
 		DirAccess.copy_absolute(file_path, get_word_sound_path({
 			Word = e.GRAPHEME
+		}))
+
+
+func _import_kalulu_3_gp_sounds() -> void:
+	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
+	var dict = JSON.parse_string(file.get_line())
+	for e in dict.values():
+		var file_path = "res://data3/language/" + e.FILENAME + ".mp3"
+		if e.GRAPHEME == "mu":
+			print("j")
+		DirAccess.copy_absolute(file_path, get_gp_sound_path({
+			Grapheme = e.GRAPHEME,
+			Phoneme = e.PHONEME,
 		}))
 
 

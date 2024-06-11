@@ -631,7 +631,7 @@ sprites = [NodePath("FishAnimatedSprite")]
 
 [node name="FishAnimatedSprite" type="AnimatedSprite2D" parent="GameRoot/AspectRatioContainer/Fish" index="0"]
 unique_name_in_owner = true
-scale = Vector2(2.20411, 2.2041)
+scale = Vector2(1e-05, 1e-05)
 sprite_frames = SubResource("SpriteFrames_ukbiw")
 animation = &"idle"
 autoplay = "idle"

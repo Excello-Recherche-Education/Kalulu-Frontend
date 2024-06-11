@@ -116,7 +116,7 @@ func _play_monkey_stimulus(monkey: Monkey) -> void:
 	
 	coroutine.add_future(monkey.talk)
 	
-	audio_player.play_phoneme(monkey.stimulus.Phoneme as String)
+	audio_player.play_gp(monkey.stimulus)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	

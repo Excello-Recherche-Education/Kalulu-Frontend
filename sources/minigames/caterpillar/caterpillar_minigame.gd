@@ -100,7 +100,7 @@ func _clear_berries() -> void:
 
 func _play_berry_phoneme(gp: Dictionary) -> void:
 	if gp and gp.has("Phoneme"):
-		await audio_player.play_phoneme(gp.Phoneme as String)
+		await audio_player.play_gp(gp)
 
 #region Connections
 
@@ -137,11 +137,11 @@ func _on_berry_eaten(berry: Berry) -> void:
 	if _is_GP_right(berry.gp):
 		_clear_berries()
 		await caterpillar.eat_berry(berry)
-		await audio_player.play_phoneme(_get_GP().Phoneme as String)
+		await audio_player.play_gp(_get_GP())
 		current_word_progression += 1
 	else:
 		await caterpillar.spit_berry(berry)
-		await audio_player.play_phoneme(berry.gp.Phoneme as String)
+		await audio_player.play_gp(berry.gp)
 		current_lives -= 1
 	
 	# Unpause timer

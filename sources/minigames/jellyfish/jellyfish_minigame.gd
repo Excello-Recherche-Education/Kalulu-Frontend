@@ -163,7 +163,7 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 		
 		# Play the pressed jellyfish phoneme
 		if jellyfish.stimulus and jellyfish.stimulus.Phoneme:
-			await audio_player.play_phoneme(jellyfish.stimulus.Phoneme)
+			await audio_player.play_gp(jellyfish.stimulus)
 		
 		# Remove the jellyfish
 		await jellyfish.delete()

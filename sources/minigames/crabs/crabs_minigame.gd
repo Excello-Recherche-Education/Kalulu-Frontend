@@ -96,7 +96,7 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 		
 		# Play the pressed crab phoneme
 		if stimulus and stimulus.Phoneme:
-			await audio_player.play_phoneme(stimulus.Phoneme as String)
+			await audio_player.play_gp(stimulus)
 	
 	return true
 

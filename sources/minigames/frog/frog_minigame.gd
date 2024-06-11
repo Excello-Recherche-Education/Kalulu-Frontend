@@ -113,7 +113,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		lilypad.disappear()
 		frog.drown()
 		await frog.drowned
-		await audio_player.play_phoneme(lilypad.stimulus.Phoneme)
+		await audio_player.play_gp(lilypad.stimulus)
 		
 		current_lives -= 1
 		current_word_progression = 0
@@ -124,7 +124,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		track.stop()
 		track.is_highlighting = false
 		track.is_cleared = true
-		await audio_player.play_phoneme(lilypad.stimulus.Phoneme)
+		await audio_player.play_gp(lilypad.stimulus)
 		current_word_progression += 1
 
 

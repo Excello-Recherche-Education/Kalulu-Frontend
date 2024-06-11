@@ -150,7 +150,10 @@ func _play_current_stimulus_phoneme() -> void:
 		return
 	
 	is_stimulus_heard = true
-	await audio_player.play_phoneme(current_stimulus.Phoneme)
+	if current_stimulus.has("GPs"):
+		await audio_player.play_word(current_stimulus.Grapheme)
+	else:
+		await audio_player.play_gp(current_stimulus)
 	stimulus_timer.start()
 
 

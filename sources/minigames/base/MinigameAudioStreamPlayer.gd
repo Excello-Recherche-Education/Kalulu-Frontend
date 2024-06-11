@@ -1,13 +1,14 @@
 extends AudioStreamPlayer
 class_name MinigameAudioStreamPlayer
 
-func play_phoneme(phoneme: String) -> void:
-	if not phoneme:
+func play_gp(gp: Dictionary) -> void:
+	if gp.is_empty():
 		return
 	
-	var phoneme_audiostream = Database.get_audio_stream_for_phoneme(phoneme) as AudioStream
+	var phoneme_audiostream = Database.load_external_sound(Database.get_gp_sound_path(gp)) as AudioStream
+	#var phoneme_audiostream = Database.get_gp_look_and_learn_sound(phoneme)
 	if not phoneme_audiostream:
-		push_warning("AudioStream not found for phoneme " + phoneme)
+		push_warning("AudioStream not found for gp %s " % gp)
 		return
 	
 	stream = phoneme_audiostream
@@ -17,8 +18,11 @@ func play_phoneme(phoneme: String) -> void:
 		await finished
 
 
-func play_word(ID: int) -> void:
-	stream = Database.get_audio_stream_for_word(ID)
+func play_word(word: String) -> void:
+	if not word:
+		return
+	
+	stream = Database.load_external_sound(Database.get_word_sound_path({Word = word}))
 	play()
 	if playing:
 		await finished

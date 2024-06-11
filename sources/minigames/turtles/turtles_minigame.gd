@@ -77,7 +77,7 @@ func _stop_highlight() -> void:
 
 func _play_turtle_phoneme(gp: Dictionary) -> void:
 	if gp and gp.has("Phoneme"):
-		await audio_player.play_phoneme(gp.Phoneme as String)
+		await audio_player.play_gp(gp)
 
 
 func _clear_turtles() -> void:
@@ -165,7 +165,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 		island.progress = current_word_progression + 1
 		
 		# Play the GP
-		await audio_player.play_phoneme(_get_GP().Phoneme as String)
+		await audio_player.play_gp(_get_GP())
 		
 		# Update the word progression
 		current_word_progression += 1
@@ -177,7 +177,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 		turtle.disappear()
 		
 		# Play the GP
-		await audio_player.play_phoneme(turtle.gp.Phoneme as String)
+		await audio_player.play_gp(turtle.gp)
 		
 		# Update the lives
 		current_lives -= 1
