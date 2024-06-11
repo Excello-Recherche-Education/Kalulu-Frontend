@@ -90,7 +90,9 @@ func _on_list_title_save_pressed() -> void:
 			if element.word_id == word.ID:
 				found = true
 				if element.pseudoword != word.Pseudoword:
-					Database.db.update_rows("Pseudowords", "Pseudoword", element.pseudoword)
+					Database.db.update_rows("Pseudowords", "ID = %s" % word.ID, {
+						Pseudoword = element.pseudoword
+						})
 				break
 		if not found:
 			Database.db.insert_row("Pseudowords", {
