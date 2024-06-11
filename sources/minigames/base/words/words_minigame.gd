@@ -181,7 +181,7 @@ func _log_new_response_and_score(gp: Dictionary) -> void:
 
 
 func _play_stimulus() -> void:
-	await audio_player.play_word(_get_current_stimulus().ID as int)
+	await audio_player.play_word(_get_current_stimulus().Word)
 
 
 # -------------- CONNECTIONS -------------- #
