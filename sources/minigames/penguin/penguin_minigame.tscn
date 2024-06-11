@@ -9,6 +9,8 @@
 [node name="PenguinMinigame" instance=ExtResource("1_s6yuv")]
 script = ExtResource("2_ncha4")
 minigame_name = "penguin"
+max_number_of_lives = 5
+max_progression = 5
 
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 layout_mode = 1
@@ -26,3 +28,27 @@ texture = ExtResource("4_e3y2j")
 
 [node name="Penguin" parent="GameRoot" index="1" instance=ExtResource("4_txvyj")]
 position = Vector2(702, 1694)
+
+[node name="PenguinsPositions" type="Control" parent="GameRoot" index="2"]
+anchors_preset = 0
+offset_left = 320.0
+offset_right = 360.0
+offset_bottom = 40.0
+
+[node name="Pos6" type="Marker2D" parent="GameRoot/PenguinsPositions" index="0"]
+position = Vector2(1600, 788)
+
+[node name="Pos5" type="Marker2D" parent="GameRoot/PenguinsPositions" index="1"]
+position = Vector2(1400, 788)
+
+[node name="Pos4" type="Marker2D" parent="GameRoot/PenguinsPositions" index="2"]
+position = Vector2(1200, 788)
+
+[node name="Pos3" type="Marker2D" parent="GameRoot/PenguinsPositions" index="3"]
+position = Vector2(1000, 788)
+
+[node name="Pos2" type="Marker2D" parent="GameRoot/PenguinsPositions" index="4"]
+position = Vector2(800, 788)
+
+[node name="Pos1" type="Marker2D" parent="GameRoot/PenguinsPositions" index="5"]
+position = Vector2(600, 788)
