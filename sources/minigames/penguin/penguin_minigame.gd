@@ -12,43 +12,67 @@ const silent_phoneme: = "#"
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
-
 var penguins: Array[Penguin] = []
 
 
 # Find words with silent GPs
 func _find_stimuli_and_distractions() -> void:
-	# TODO FOR TESTING
-	Database.db.query("SELECT Words.ID, Words.Word, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb, VerifiedCount.gpsid as GPs_IDs
-FROM Words
-	 INNER JOIN 
-	(SELECT WordID, count() as Count FROM GPsInWords 
-		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-		GROUP BY WordID 
-		) TotalCount ON TotalCount.WordID = Words.ID 
-	INNER JOIN 
-	(SELECT WordID, count() as Count, max(LessonNb) as MaxLessonNb, group_concat(GPsInWords.GPID) as gpsid, group_concat(GPs.Phoneme) as gpphoneme FROM GPsInWords 
-		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= 20
-		INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
-		GROUP BY WordID 
-		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count
-	INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID 
-	INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = 20
-	WHERE TotalCount.Count <= 6 and TotalCount.Count >= 2 AND VerifiedCount.gpphoneme LIKE '%#%'
-	ORDER BY LessonNb, GPsCount ASC")
+	var words_list: Array[Dictionary] = Database.get_words_with_silent_gp_for_lesson(lesson_nb)
 	
-	stimuli = Database.db.query_result
+	if words_list.is_empty():
+		return
+	var current_lesson_words: = []
+	var previous_lesson_words: = []
+	
+	for word: Dictionary in words_list:
+		if word.LessonNb == lesson_nb:
+			current_lesson_words.append(word)
+		else:
+			previous_lesson_words.append(word)
+	
+	# Shuffle everything
+	current_lesson_words.shuffle()
+	previous_lesson_words.shuffle()
+	
+	# If there is no previous stimuli, only adds from current lesson
+	if previous_lesson_words.is_empty():
+		while stimuli.size() < max_progression:
+			stimuli.append(current_lesson_words.pick_random())
+	else:
+		if not current_lesson_words.is_empty():
+			# If there are more stimuli in current lesson than needed
+			if current_lesson_words.size() >= current_lesson_stimuli_number:
+				for i in current_lesson_stimuli_number:
+					stimuli.append(current_lesson_words[i])
+			else:
+				stimuli.append_array(current_lesson_words)
+			
+			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
+			var minimal_stimuli : int = floori(current_lesson_stimuli_number/2.0)
+			if stimuli.size() < minimal_stimuli:
+				while stimuli.size() < minimal_stimuli:
+					stimuli.append(current_lesson_words.pick_random())
+		
+		# Gets other stimuli from previous errors or lessons
+		var spaces_left : int = max_progression - stimuli.size()
+		if previous_lesson_words.size() >= spaces_left:
+			for i in spaces_left:
+				stimuli.append(previous_lesson_words[i])
+		else:
+			stimuli.append_array(previous_lesson_words)
+		
+		# If there are not enough stimuli, fill the rest with current lesson
+		if current_lesson_words:
+			while stimuli.size() < max_progression:
+				stimuli.append(current_lesson_words.pick_random())
+	
+	# Shuffle the stimuli
 	stimuli.shuffle()
 	
-	while stimuli.size() > max_progression:
-		stimuli.pop_front()
-	
+	# Find the GPs and distractors for each word
 	for stimulus: Dictionary in stimuli:
-		stimulus["GPs"] = Database.get_GP_from_word(stimulus.ID as int)
-	
-	print(stimuli)
+		stimulus.GPs = Database.get_GP_from_word(stimulus.ID as int)
+
 
 # Launch the minigame
 func _start() -> void:
@@ -62,7 +86,7 @@ func _start() -> void:
 func _setup_word_progression() -> void:
 	max_word_progression = 0
 	
-	# Make penguins go away TODO
+	# Make penguins go away TODO Animations
 	for penguin: Penguin in penguins:
 		penguin.queue_free()
 	penguins.clear()
@@ -71,7 +95,7 @@ func _setup_word_progression() -> void:
 	
 	var i: = 1
 	for GP: Dictionary in stimulus.GPs:
-		# Instantiate a new penguin
+		# Instantiate a new penguin TODO Animations
 		var penguin: Penguin = penguin_scene.instantiate()
 		penguins_positions.get_node("Pos" + str(i)).add_child(penguin)
 		penguin.gp = GP
@@ -125,11 +149,13 @@ func _on_snowball_thrown(pos: Vector2, penguin: Penguin) -> void:
 	
 	# Checks if the GP pressed is silent
 	if _is_silent(penguin.gp):
+		main_penguin.happy()
 		penguin.happy()
 		await penguin.right()
 		
 		current_word_progression += 1
 	else:
+		main_penguin.sad()
 		penguin.sad()
 		await penguin.wrong()
 		
@@ -138,6 +164,8 @@ func _on_snowball_thrown(pos: Vector2, penguin: Penguin) -> void:
 	# Re-enables all penguins
 	for p: Penguin in penguins:
 		p.set_button_enabled(true)
+	
+	main_penguin.idle()
 
 
 func _on_current_progression_changed() -> void:

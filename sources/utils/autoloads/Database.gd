@@ -233,6 +233,40 @@ FROM Words
 	return res
 
 
+func get_words_with_silent_gp_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 6) -> Array[Dictionary]:
+	var parameters: Array = []
+	var query: = "SELECT Words.ID, Words.Word, MaxLessonNb as LessonNb
+FROM Words
+	 INNER JOIN 
+	(SELECT WordID, count() as Count FROM GPsInWords 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+		GROUP BY WordID 
+		) TotalCount ON TotalCount.WordID = Words.ID 
+	INNER JOIN 
+	(SELECT WordID, count() as Count, max(LessonNb) as MaxLessonNb, group_concat(GPs.Phoneme) as gpphoneme FROM GPsInWords 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
+		GROUP BY WordID 
+		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
+	parameters.append(lesson_nb)
+	
+	if only_new:
+		query += " INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID 
+			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
+		parameters.append(lesson_nb)
+	
+	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ?
+	AND VerifiedCount.gpphoneme LIKE '%#%' 
+	ORDER BY LessonNb, VerifiedCount.Count ASC"
+	parameters.append(max_length)
+	parameters.append(min_length)
+	
+	db.query_with_bindings(query, parameters)
+	return db.query_result
+
+
 func get_sentences_by_lessons() -> Dictionary:
 	var sentences_by_lesson: = {}
 	var sentences: = get_sentences()
