@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://hnhiv6odqvnk"]
+
+[ext_resource type="FontFile" uid="uid://c7hsjkvr1pbud" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_1xclp"]
+[ext_resource type="Script" path="res://sources/minigames/penguin/penguin_label.gd" id="2_eu3c0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yg4cf"]
+font = ExtResource("1_1xclp")
+font_size = 200
+outline_size = 50
+outline_color = Color(0, 0, 0, 1)
+
+[node name="PenguinLabel" type="Label"]
+mouse_filter = 0
+text = "test"
+label_settings = SubResource("LabelSettings_yg4cf")
+script = ExtResource("2_eu3c0")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

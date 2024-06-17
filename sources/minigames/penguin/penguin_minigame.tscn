@@ -36,38 +36,27 @@ texture = ExtResource("4_e3y2j")
 [node name="Penguin" parent="GameRoot" index="1" instance=ExtResource("4_txvyj")]
 position = Vector2(702, 1694)
 
-[node name="PenguinsPositions" type="Control" parent="GameRoot" index="2"]
-anchors_preset = 0
-offset_left = 320.0
-offset_right = 360.0
-offset_bottom = 40.0
+[node name="Control" type="Control" parent="GameRoot" index="2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 325.0
+offset_right = -264.0
+offset_bottom = -680.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Pos6" type="Marker2D" parent="GameRoot/PenguinsPositions" index="0"]
-position = Vector2(1600, 788)
-
-[node name="Pos5" type="Marker2D" parent="GameRoot/PenguinsPositions" index="1"]
-position = Vector2(1400, 788)
-
-[node name="Pos4" type="Marker2D" parent="GameRoot/PenguinsPositions" index="2"]
-position = Vector2(1200, 788)
-
-[node name="Pos3" type="Marker2D" parent="GameRoot/PenguinsPositions" index="3"]
-position = Vector2(1000, 788)
-
-[node name="Pos2" type="Marker2D" parent="GameRoot/PenguinsPositions" index="4"]
-position = Vector2(800, 788)
-
-[node name="Pos1" type="Marker2D" parent="GameRoot/PenguinsPositions" index="5"]
-position = Vector2(600, 788)
-
-[node name="Label" type="Label" parent="GameRoot" index="3"]
-layout_mode = 0
-offset_left = 757.0
-offset_top = 217.0
-offset_right = 2113.0
-offset_bottom = 780.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 90
-text = "TEST"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="LabelsContainer" type="HBoxContainer" parent="GameRoot/Control" index="0"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -314.0
+offset_top = -305.0
+offset_right = 314.0
+offset_bottom = 305.0
+grow_horizontal = 2
+grow_vertical = 2

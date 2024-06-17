@@ -155,6 +155,16 @@ func get_GP_from_word(ID: int) -> Array:
 	return db.query_result
 
 
+func get_GPs_from_sentence(sentenceID: int) -> Array:
+	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type, GPsInWords.WordID, GPsInWords.Position AS GPPosition, WordsInSentences.Position AS WordPosition FROM GPs
+INNER JOIN GPsInWords ON GPsInWords.GPID = GPs.ID
+INNER JOIN WordsInSentences ON WordsInSentences.WordID = GPsInWords.WordID
+INNER JOIN Sentences ON Sentences.ID = WordsInSentences.SentenceID
+WHERE Sentences.ID = ?
+ORDER BY WordPosition ASC, GPPosition ASC", [sentenceID])
+	return db.query_result
+
+
 func get_words_containing_grapheme(grapheme: String) -> Array:
 	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPS.ID = GPsInWords.GPID", [grapheme])
 	return db.query_result
@@ -291,7 +301,35 @@ func get_sentences_for_lesson(p_lesson_nb: int, only_new: = false, sentences_by_
 	return ret
 
 
-
+func get_sentences_for_lesson_with_silent_GPs(lesson_nb: int, min_length: int = 2, max_length:int = 5) -> Array[Dictionary]:
+	var query: = "SELECT Sentences.*, VerifiedCount.MaxLessonNb AS LessonNb FROM Sentences
+INNER JOIN 
+	(SELECT SentenceID, count() as WordsCount FROM WordsInSentences 
+	GROUP BY SentenceID 
+	) WordCount ON WordCount.SentenceID = Sentences.ID
+INNER JOIN 
+	(SELECT SentenceID, count() as Count FROM GPsInWords 
+		INNER JOIN WordsInSentences ON GPsInWords.WordID = WordsInSentences.WordID
+		INNER JOIN Sentences ON WordsInSentences.SentenceID = Sentences.ID
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+	GROUP BY SentenceID 
+	) TotalCount ON TotalCount.SentenceID = Sentences.ID 
+INNER JOIN 
+	(SELECT SentenceID, count() as Count, max(LessonNb) as MaxLessonNb, group_concat(GPs.Phoneme) as SentencePhoneme FROM GPsInWords 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+		INNER JOIN WordsInSentences ON GPsInWords.WordID = WordsInSentences.WordID
+		INNER JOIN Sentences ON WordsInSentences.SentenceID = Sentences.ID
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
+	GROUP BY SentenceID 
+	) VerifiedCount ON VerifiedCount.SentenceID = Sentences.ID AND VerifiedCount.Count = TotalCount.Count
+WHERE Sentences.Exception = 0
+	AND WordsCount >=? 
+	AND WordsCount <=? 
+	AND VerifiedCount.SentencePhoneme LIKE '%#%'"
+	
+	db.query_with_bindings(query, [lesson_nb, min_length, max_length])
+	return db.query_result
 
 
 func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
