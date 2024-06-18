@@ -108,6 +108,8 @@ func _setup_word_progression() -> void:
 
 func _set_current_word_progression(p_current_word_progression: int) -> void:
 	current_word_progression = p_current_word_progression
+	
+	consecutive_errors = 0
 	is_highlighting = false
 	
 	if current_word_progression == max_word_progression:

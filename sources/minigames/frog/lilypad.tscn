@@ -27,7 +27,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("TextureButton/Label:modulate")
+tracks/1/path = NodePath("Label:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -55,7 +55,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("TextureButton/Label:modulate")
+tracks/1/path = NodePath("Label:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -77,16 +77,10 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("2_pdqed")
 
-[node name="WaterRingFX" parent="." instance=ExtResource("3_cojnu")]
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3tohd")
 }
-
-[node name="HighlightFX" parent="." instance=ExtResource("5_1llgv")]
-
-[node name="RightFX" parent="." instance=ExtResource("6_wslmk")]
 
 [node name="TextureButton" type="TextureButton" parent="."]
 material = ExtResource("1_pbo2v")
@@ -105,22 +99,69 @@ texture_normal = ExtResource("3_1ueu4")
 texture_disabled = ExtResource("4_0e8ya")
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="TextureButton"]
+[node name="WaterRingFX" parent="TextureButton" instance=ExtResource("3_cojnu")]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HighlightFX" parent="TextureButton" instance=ExtResource("5_1llgv")]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RightFX" parent="TextureButton" instance=ExtResource("6_wslmk")]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WrongFX" parent="TextureButton" instance=ExtResource("7_241b6")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -39.0
-offset_bottom = -57.0
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 111.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "A"
+text = "ent"
 label_settings = ExtResource("8_4pqhl")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="WrongFX" parent="." instance=ExtResource("7_241b6")]
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 

@@ -39,7 +39,6 @@ var difficulty_settings: Array[DifficultySettings] = [
 
 
 func _setup_word_progression() -> void:
-	await _free_tracks()
 	super()
 	_create_tracks()
 	_start_tracks()
@@ -56,6 +55,12 @@ func _reset_frog() -> void:
 	frog.global_position = frog_spawn_point.global_position
 	frog.jump_to(start.global_position)
 	await frog.jumped
+	
+	# Returns to the last completed track by jumping on each pad
+	for track: LilypadTrack in lilypad_tracks_container.get_children():
+		if track.is_cleared:
+			frog.jump_to(track.lilypads[0].global_position)
+			await frog.jumped
 
 #region Tracks management
 
@@ -87,12 +92,15 @@ func _create_tracks() -> void:
 
 func _start_tracks() -> void:
 	var is_first_track_enabled: bool = false
+	var i: = 0
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
-		await track.reset()
-		if not is_first_track_enabled:
-			track.is_enabled = true
-			is_first_track_enabled = true
-		track.start()
+		if i >= current_word_progression:
+			await track.reset()
+			if not is_first_track_enabled:
+				track.is_enabled = true
+				is_first_track_enabled = true
+			track.start()
+		i +=1
 
 #endregion
 
@@ -101,6 +109,9 @@ func _start_tracks() -> void:
 func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 	# Log the answer
 	_log_new_response_and_score(lilypad.stimulus)
+	
+	# Disable the tracks
+	track.stop()
 	
 	# Makes the frog jumps on the lilypad
 	frog.jump_to(lilypad.global_position)
@@ -116,14 +127,13 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		await audio_player.play_gp(lilypad.stimulus)
 		
 		current_lives -= 1
-		current_word_progression = 0
 		
 		_start_tracks()
 		await _reset_frog()
 	else:
-		track.stop()
 		track.is_highlighting = false
 		track.is_cleared = true
+		track.is_enabled = false
 		await audio_player.play_gp(lilypad.stimulus)
 		current_word_progression += 1
 
@@ -151,6 +161,9 @@ func _on_current_progression_changed() -> void:
 	# Makes the frog jumps out of screen
 	frog.jump_to(frog_despawn_point.global_position)
 	await frog.jumped
+	
+	# Free the tracks
+	await _free_tracks()
 	
 	# Resets the frog position
 	await _reset_frog()
