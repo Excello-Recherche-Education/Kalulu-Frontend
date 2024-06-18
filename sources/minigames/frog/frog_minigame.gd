@@ -34,6 +34,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 @onready var frog_spawn_point: = %FrogSpawnPoint
 @onready var frog_despawn_point: = %FrogDespawnPoint
 
+@onready var river: TextureRect = $GameRoot/Background/River
 @onready var lilypad_tracks_container: = %LilypadTracksContainer
 @onready var frog: = %Frog
 
@@ -116,7 +117,8 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 	# Makes the frog jumps on the lilypad
 	frog.jump_to(lilypad.global_position)
 	await frog.jumped
-	lilypad.water_ring()
+	
+	river.spawn_water_ring(lilypad.global_position)
 	
 	if lilypad.is_distractor:
 		await lilypad.wrong()
