@@ -8,14 +8,13 @@ const label_scene: PackedScene = preload("res://sources/minigames/penguin/pengui
 
 const silent_phoneme: = "#"
 
-@onready var main_penguin: Penguin = $GameRoot/Penguin
+@onready var penguin: Penguin = $GameRoot/Penguin
 @onready var labels_container: HBoxContainer = $GameRoot/Control/LabelsContainer
-@onready var penguins_positions: Control = $GameRoot/PenguinsPositions
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
 
-var labels: Array[Label] = []
+var labels: Array[PenguinLabel] = []
 
 # Find words with silent GPs
 func _find_stimuli_and_distractions() -> void:
@@ -90,19 +89,23 @@ func _start() -> void:
 func _setup_word_progression() -> void:
 	max_word_progression = 0
 	
-	# Make penguins go away TODO Animations
-	for label: PenguinLabel in labels:
-		label.queue_free()
+	for node: Node in labels_container.get_children():
+		node.queue_free()
 	labels.clear()
 	
 	var stimulus: = _get_current_stimulus()
 	
+	var last_wordID: int
+	var word_container: HBoxContainer
 	for GP: Dictionary in stimulus.GPs:
-		# Instantiate a new penguin TODO Animations
+		if GP.WordID != last_wordID:
+			last_wordID = GP.WordID
+			word_container = HBoxContainer.new()
+			labels_container.add_child(word_container)
+		
 		var label: PenguinLabel = label_scene.instantiate()
 		label.gp = GP
-		
-		labels_container.add_child(label)
+		word_container.add_child(label)
 		
 		label.pressed.connect(_on_snowball_thrown.bind(label))
 		
@@ -114,16 +117,14 @@ func _setup_word_progression() -> void:
 
 
 func _highlight() -> void:
-	pass
-	#for penguin: Penguin in penguins:
-	#	if self._is_silent(penguin.gp) and not penguin.is_pressed:
-	#		penguin.highlight()
+	for label: PenguinLabel in labels:
+		if self._is_silent(label.gp) and not label.is_pressed:
+			label.highlight()
 
 
 func _stop_highlight() -> void:
-	pass
-	#for penguin: Penguin in penguins:
-	#	penguin.highlight(false)
+	for label: PenguinLabel in labels:
+		label.highlight(false)
 
 
 # Get the current stimulus which needs to be found to increase progression
@@ -145,32 +146,30 @@ func _set_current_word_progression(p_current_word_progression: int) -> void:
 #region Connections
 
 func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
-	# Disables all penguins TODO
-	#for p: Penguin in penguins:
-	#	p.set_button_enabled(false)
+	# Disables all labels
+	for l: PenguinLabel in labels:
+		l.set_button_enabled(false)
 	
 	# Throw the snowball
-	await main_penguin.throw(pos)
+	await penguin.throw(pos)
 	
 	# Checks if the GP pressed is silent
 	if _is_silent(label.gp):
-		main_penguin.happy()
-		#penguin.happy()
-		#await penguin.right()
+		penguin.happy()
+		await label.right()
 		
 		current_word_progression += 1
 	else:
-		main_penguin.sad()
-		#penguin.sad()
-		#await penguin.wrong()
+		penguin.sad()
+		await label.wrong()
 		
 		current_lives -= 1
 	
-	# Re-enables all penguins TODO
-	#for p: Penguin in penguins:
-	#	p.set_button_enabled(true)
+	# Re-enables all labels
+	for l: PenguinLabel in labels:
+		l.set_button_enabled(true)
 	
-	main_penguin.idle()
+	penguin.idle()
 
 
 func _on_current_progression_changed() -> void:
