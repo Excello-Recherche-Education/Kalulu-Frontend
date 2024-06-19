@@ -30,6 +30,8 @@ func _find_stimuli_and_distractions() -> void:
 		var current_words: = Database.get_words_in_sentence(stimulus.ID)
 		if current_words.size() >= 2:
 			stimuli.append(stimulus)
+	# TODO Revoir la récupération des phrases
+	print(stimuli)
 
 
 func _start() -> void:
@@ -178,8 +180,8 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 				words.get_child(i).current_anchor = ants.get_child(i)
 				ants.get_child(i).set_monitorable(false)
 		
-		for word_i in words.get_children():
-			word_i.disabled = false
+			for word_i in words.get_children():
+				word_i.disabled = false
 
 func _on_word_no_answer(word: TextureButton) -> void:
 	answersed[word.get_index()] = false
