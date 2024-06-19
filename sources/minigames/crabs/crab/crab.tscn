@@ -1,7 +1,7 @@
 [gd_scene load_steps=37 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
-[ext_resource type="AudioStream" uid="uid://bm8mtyr34o1ac" path="res://assets/minigames/crabs/audio/sfx/crab_random_11.mp3" id="2_cdi6k"]
+[ext_resource type="AudioStream" uid="uid://ckylhqy1pwifv" path="res://assets/minigames/crabs/audio/sfx/crab_random_5.mp3" id="2_xwmhe"]
 [ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
 [ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="3_e1twq"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_is4em"]
@@ -205,7 +205,11 @@ offset_bottom = 320.0
 script = ExtResource("1_5hgg8")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+<<<<<<< HEAD
 stream = ExtResource("2_cdi6k")
+=======
+stream = ExtResource("2_xwmhe")
+>>>>>>> 04d47596 (Fixes crabs labels. Fixes a bug that made the game crash when there were no current lesson stimuli for words and syllables minigames.)
 volume_db = -3.0
 stream_paused = true
 bus = &"Effects"
@@ -267,7 +271,11 @@ scale = Vector2(1.79512, 1.78771)
 sprite_frames = SubResource("SpriteFrames_g5q5i")
 animation = &"idle1"
 autoplay = "idle1"
+<<<<<<< HEAD
 frame_progress = 0.0391599
+=======
+frame_progress = 0.791477
+>>>>>>> 04d47596 (Fixes crabs labels. Fixes a bug that made the game crash when there were no current lesson stimuli for words and syllables minigames.)
 centered = false
 offset = Vector2(-5, 0)
 
@@ -275,7 +283,7 @@ offset = Vector2(-5, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.23913
-anchor_top = 0.4
+anchor_top = 0.265625
 anchor_right = 0.76087
 anchor_bottom = 0.859375
 grow_horizontal = 2

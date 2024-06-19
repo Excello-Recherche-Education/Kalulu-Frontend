@@ -47,6 +47,16 @@ func is_button_pressed() -> bool:
 	return true
 
 
+func show_label() -> void:
+	var tween: = create_tween()
+	tween.tween_property(label, "modulate:a", 1, .5)
+
+
+func hide_label() -> void:
+	var tween: = create_tween()
+	tween.tween_property(label, "modulate:a", 0, .5)
+
+
 func highlight() -> void:
 	highlight_fx.play()
 
