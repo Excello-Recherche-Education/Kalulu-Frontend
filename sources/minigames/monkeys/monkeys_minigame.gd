@@ -205,7 +205,9 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		await monkey.hit(coconut)
 		current_lives -= 1
 		coconut.queue_free()
-	is_locked = false
+		
+		is_locked = false
+	#is_locked = false
 
 
 func _on_current_word_progression_changed() -> void:
@@ -243,9 +245,11 @@ func _on_current_progression_changed() -> void:
 	await get_tree().create_timer(time_between_words/2).timeout
 	
 	# Starts a new round
-	super()
+	await super()
 	
 	# Reset the label
 	_update_label(0)
+	
+	is_locked = false
 
 #endregion
