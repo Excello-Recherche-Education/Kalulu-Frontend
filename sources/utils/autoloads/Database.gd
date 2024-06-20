@@ -279,7 +279,10 @@ FROM Words
 
 func get_sentences_by_lessons() -> Dictionary:
 	var sentences_by_lesson: = {}
-	var sentences: = get_sentences()
+	
+	db.query("SELECT * FROM Sentences")
+	var sentences: = db.query_result
+	
 	for sentence in sentences:
 		var lesson_nb: = get_min_lesson_for_sentence_id(sentence.ID)
 		var a = sentences_by_lesson.get(lesson_nb, [])
@@ -288,7 +291,7 @@ func get_sentences_by_lessons() -> Dictionary:
 	return sentences_by_lesson
 
 
-func get_sentences_for_lesson_old(p_lesson_nb: int, only_new: = false, sentences_by_lesson: = {}) -> Array:
+func get_sentences(p_lesson_nb: int, only_new: = false, sentences_by_lesson: = {}) -> Array:
 	if sentences_by_lesson.is_empty():
 		sentences_by_lesson = get_sentences_by_lessons()
 	
@@ -398,11 +401,6 @@ func get_min_lesson_for_sentence_id(sentence_id: int) -> int:
 	if not db.query_result[0].i:
 		return -1
 	return db.query_result[0].i
-
-
-func get_sentences() -> Array[Dictionary]:
-	db.query("SELECT * FROM Sentences")
-	return db.query_result
 
 
 func get_words_in_sentence(sentence_id: int) -> Array[Dictionary]:
