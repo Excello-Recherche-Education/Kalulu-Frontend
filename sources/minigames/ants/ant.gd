@@ -5,7 +5,7 @@ extends Area2D
 
 
 func idle() -> void:
-	animation_player.play("walk_1")
+	animation_player.play("idle_1")
 
 
 func walk() -> void:

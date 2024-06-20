@@ -102,7 +102,8 @@ func _ready() -> void:
 	transition_data = {}
 	
 	# Difficulty
-	difficulty = UserDataManager.get_difficulty_for_minigame(minigame_name)
+	if UserDataManager._student_difficulty:
+		difficulty = UserDataManager.get_difficulty_for_minigame(minigame_name)
 	
 	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "intro"))
 	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "help"))
