@@ -35,6 +35,7 @@ func _ready() -> void:
 		element.set_word_list(word_list)
 		element.word_id = word.WordID
 		element.pseudoword = word.Pseudoword
+		element.pseudoword_id = word.ID
 	
 	_reorder_by("lesson_nb")
 
@@ -78,7 +79,7 @@ func _on_list_title_save_pressed() -> void:
 	for word in db_word_list:
 		var found: = false
 		for element in elements_container.get_children():
-			if element.word_id == word.ID:
+			if element.pseudoword_id == word.ID:
 				found = true
 				break
 		if not found:
@@ -86,14 +87,17 @@ func _on_list_title_save_pressed() -> void:
 	
 	for element in elements_container.get_children():
 		var found: = false
-		for word in db_word_list:
-			if element.word_id == word.ID:
+		if element.pseudoword_id >= 0:
+			var query_with_id: = query + " WHERE Pseudowords.ID = ?"
+			Database.db.query_with_bindings(query_with_id, [element.pseudoword_id])
+			if not Database.db.query_result.is_empty():
+				var word: Dictionary = Database.db.query_result[0]
 				found = true
-				if element.pseudoword != word.Pseudoword:
+				if element.pseudoword != word.Pseudoword or element.word_id != word.WordID:
 					Database.db.update_rows("Pseudowords", "ID = %s" % word.ID, {
-						Pseudoword = element.pseudoword
+						Pseudoword = element.pseudoword,
+						WordID = element.word_id,
 						})
-				break
 		if not found:
 			Database.db.insert_row("Pseudowords", {
 				WordID = element.word_id,

@@ -7,6 +7,7 @@ extends MarginContainer
 	set = set_pseudoword
 @export var lesson_nb: = -1:
 	set = set_lesson_nb
+@export var pseudoword_id: = -1
 
 @onready var option_button: = %OptionButton
 @onready var line_edit: = %LineEdit

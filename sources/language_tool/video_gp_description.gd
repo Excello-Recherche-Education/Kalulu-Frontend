@@ -49,7 +49,11 @@ func _on_video_upload_button_pressed() -> void:
 
 
 func _on_button_pressed() -> void:
-	delete.emit()
+	video_player.stream = null
+	video_player.visible = false
+	var current_file: = Database.get_gp_look_and_learn_video_path(gp)
+	if FileAccess.file_exists(current_file):
+		DirAccess.remove_absolute(current_file)
 
 
 func _on_video_stream_player_gui_input(event: InputEvent) -> void:

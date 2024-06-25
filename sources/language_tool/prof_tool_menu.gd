@@ -234,6 +234,7 @@ func _language_data_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
 		var folder_unzipper: = FolderUnzipper.new()
 		folder_unzipper.extract(file_path, base_path, false)
+	get_tree().reload_current_scene()
 
 
 func _create_GP_csv() -> void:
