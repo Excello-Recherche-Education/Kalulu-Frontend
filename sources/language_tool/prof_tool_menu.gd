@@ -109,7 +109,7 @@ func _on_export_filename_selected(filename: String) -> void:
 		summary_file.store_line(syllables.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Sentences ---")
-		for e in Database.get_sentences_for_lesson(i, true, sentences_by_lesson):
+		for e in Database.get_sentences(i, true, sentences_by_lesson):
 			summary_file.store_line(e.Sentence)
 		summary_file.store_line("\n\n")
 	summary_file.close()

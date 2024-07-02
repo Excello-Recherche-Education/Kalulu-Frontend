@@ -10,7 +10,7 @@
 [node name="AntsMinigame" instance=ExtResource("1_jqkff")]
 script = ExtResource("2_05d1y")
 minigame_name = "ants"
-lesson_nb = 100
+lesson_nb = 50
 max_number_of_lives = 5
 max_progression = 3
 
@@ -77,8 +77,12 @@ position = Vector2(785, 1642)
 unique_name_in_owner = true
 position = Vector2(2312, 1642)
 
-[node name="Ants" type="Node2D" parent="GameRoot" index="5"]
+[node name="AntsDespawn" type="Node2D" parent="GameRoot" index="5"]
+unique_name_in_owner = true
+position = Vector2(2768, 1640)
+
+[node name="Ants" type="Node2D" parent="GameRoot" index="6"]
 unique_name_in_owner = true
 
-[node name="Words" type="Node2D" parent="GameRoot" index="6"]
+[node name="Words" type="Node2D" parent="GameRoot" index="7"]
 unique_name_in_owner = true
