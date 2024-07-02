@@ -6,10 +6,9 @@ signal disappeared()
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var button: TextureButton = $TextureButton
 @onready var label: Label = %Label
-@onready var water_ring_fx: WaterRingFX = $WaterRingFX
-@onready var highlight_fx: HighlightFX = $HighlightFX
-@onready var right_fx: RightFX = $RightFX
-@onready var wrong_fx: WrongFX = $WrongFX
+@onready var highlight_fx: HighlightFX = %HighlightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var wrong_fx: WrongFX = %WrongFX
 
 var stimulus: Dictionary:
 	set = _set_stimulus
@@ -27,10 +26,6 @@ func highlight() -> void:
 		highlight_fx.play()
 
 
-func water_ring() -> void:
-	water_ring_fx.play()
-
-
 func right() -> void:
 	right_fx.play()
 	await right_fx.finished
@@ -44,10 +39,6 @@ func wrong() -> void:
 func stop_highlight() -> void:
 	if not is_distractor:
 		highlight_fx.stop()
-
-
-func get_real_size() -> Vector2:
-	return button.size
 
 
 func _set_stimulus(value: Dictionary) -> void:

@@ -12,14 +12,14 @@ const lilypad_crossing_time: = 5.0
 @onready var audio_player: = $AudioStreamPlayer2D
 @onready var spawn_timer: = $SpawnTimer
 
-var top_to_bottom: = false
-var ready_to_spawn: = false
-var is_cleared: = false
-var is_enabled: = false:
-	set = _set_enabled
-var is_highlighting: = false:
-	set = _set_highlighting
+var top_to_bottom: bool = false
 var is_stopped: bool = false
+var is_cleared: bool = false
+var is_enabled: bool = false:
+	set = _set_enabled
+var is_highlighting: bool = false:
+	set = _set_highlighting
+
 
 var difficulty_settings: FrogMinigame.DifficultySettings
 var gp: Dictionary = {}:
@@ -52,8 +52,6 @@ func _get_velocity() -> float:
 
 
 func reset() -> void:
-	is_cleared = false
-	ready_to_spawn = false
 	is_enabled = false
 	is_stopped = true
 	
@@ -64,12 +62,10 @@ func reset() -> void:
 
 
 func start() -> void:
-	ready_to_spawn = true
 	is_stopped = false
 
 
 func stop() -> void:
-	ready_to_spawn = false
 	is_stopped = true
 
 
@@ -101,10 +97,10 @@ func _spawn_lilypad() -> void:
 	else:
 		lilypad.global_position = global_position + Vector2(size.x / 2.0, size.y)
 	
-	lilypad_size = lilypad.get_real_size()
+	lilypad_size = lilypad.button.size
 	if size.x < lilypad_size.x:
 		var s: float = size.x / lilypad_size.x
-		lilypad.scale = Vector2(s, s)
+		lilypad.button.scale = Vector2(s, s)
 		lilypad_size *= s
 	
 	var is_stimulus: = randf() < difficulty_settings.stimuli_ratio
@@ -133,8 +129,9 @@ func _despawn_lilypad(lilypad: Lilypad) -> void:
 
 func _set_enabled(value: bool) -> void:
 	is_enabled = value
-	for lilypad in lilypads:
-		lilypad.disabled = not is_enabled
+	if not is_cleared:
+		for lilypad in lilypads:
+			lilypad.disabled = not is_enabled
 
 
 func _set_highlighting(value: bool) -> void:
@@ -150,7 +147,7 @@ func _set_highlighting(value: bool) -> void:
 #region Connections
 
 func _on_lilypad_pressed(lilypad: Lilypad) -> void:
-	if is_cleared:
+	if is_cleared or is_stopped:
 		return
 	audio_player.play()
 	stop()
@@ -174,7 +171,7 @@ func _on_center_tween_finished(lilypad: Lilypad, center_tween: Tween) -> void:
 
 
 func _on_spawn_timer_timeout() -> void:
-	if ready_to_spawn:
+	if not is_stopped:
 		_spawn_lilypad()
 	
 	# Makes sure the lilypads don't overlap

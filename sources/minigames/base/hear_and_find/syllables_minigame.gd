@@ -29,10 +29,12 @@ func _start() -> void:
 # Find the stimuli and distractions of the minigame.
 # For this type of minigame, only vowels and syllables are allowed
 func _find_stimuli_and_distractions() -> void:
+	var all_syllables: = Database.get_syllables_for_lesson(lesson_nb, false)
+	if not all_syllables:
+		return
+	
 	var current_lesson_stimuli: Array[Dictionary] = []
 	var previous_lesson_stimuli: Array[Dictionary] = []
-	
-	var all_syllables: = Database.get_syllables_for_lesson(lesson_nb, false)
 	
 	# Find the syllables for current lesson
 	for syllable: Dictionary in all_syllables:
@@ -41,8 +43,6 @@ func _find_stimuli_and_distractions() -> void:
 		else:
 			previous_lesson_stimuli.append(syllable)
 	
-	if not current_lesson_stimuli and not previous_lesson_stimuli:
-		return
 	
 	# Shuffle everything
 	current_lesson_stimuli.shuffle()
@@ -57,20 +57,20 @@ func _find_stimuli_and_distractions() -> void:
 		while stimuli.size() < max_progression:
 			stimuli.append(current_lesson_stimuli.pick_random())
 	else:
-		
-		# If there are more stimuli in current lesson than needed
-		if current_lesson_stimuli.size() >= current_lesson_stimuli_number:
-			for i in current_lesson_stimuli_number:
-				stimuli.append(current_lesson_stimuli[i])
-		else:
-			stimuli.append_array(current_lesson_stimuli)
-		
-		# We if there are not enough stimuli from current lesson, we want at least half the target number of stimuli
-		@warning_ignore("integer_division")
-		var minimal_stimuli : int = current_lesson_stimuli_number/2
-		if stimuli.size() < minimal_stimuli:
-			while stimuli.size() < minimal_stimuli:
-				stimuli.append(current_lesson_stimuli.pick_random())
+		if current_lesson_stimuli:
+			# If there are more stimuli in current lesson than needed
+			if current_lesson_stimuli.size() >= current_lesson_stimuli_number:
+				for i in current_lesson_stimuli_number:
+					stimuli.append(current_lesson_stimuli[i])
+			else:
+				stimuli.append_array(current_lesson_stimuli)
+			
+			# We if there are not enough stimuli from current lesson, we want at least half the target number of stimuli
+			@warning_ignore("integer_division")
+			var minimal_stimuli : int = current_lesson_stimuli_number/2
+			if stimuli.size() < minimal_stimuli:
+				while stimuli.size() < minimal_stimuli:
+					stimuli.append(current_lesson_stimuli.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
 		var spaces_left : int = max_progression - stimuli.size()
@@ -80,9 +80,12 @@ func _find_stimuli_and_distractions() -> void:
 		else:
 			stimuli.append_array(previous_lesson_stimuli)
 		
-		# If there are not enough stimuli, fill the rest with current lesson
+		# If there are not enough stimuli, fill the rest with current lesson or previous lesson
 		while stimuli.size() < max_progression:
-			stimuli.append(current_lesson_stimuli.pick_random())
+			if current_lesson_stimuli:
+				stimuli.append(current_lesson_stimuli.pick_random())
+			else:
+				stimuli.append(previous_lesson_stimuli.pick_random())
 	
 	# Shuffle the stimuli
 	stimuli.shuffle()

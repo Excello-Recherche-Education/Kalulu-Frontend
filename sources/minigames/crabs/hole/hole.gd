@@ -66,6 +66,9 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	# Instantiate a new crab
 	crab = crab_scene.instantiate()
 	mask.add_child(crab)
+	
+	crab.hide_label()
+	
 	crab_x = -crab.size.x / 2
 	crab.position = Vector2(crab_x, crab.size.y)
 	crab.stimulus = stimulus
@@ -82,6 +85,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 		return
 	
 	# The crab gets completely out
+	crab.show_label()
 	crab_out.emit()
 	tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y), 0.5)

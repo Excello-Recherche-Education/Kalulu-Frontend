@@ -16,10 +16,10 @@ var current_gp_distractors_queue: Array[Dictionary] = []
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
-	var words_list: = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_GPs)
-	
+	var words_list: = Database.get_words_for_lesson(lesson_nb, false, max_number_of_GPs)
 	if words_list.is_empty():
 		return
+	
 	var current_lesson_words: = []
 	var previous_lesson_words: = []
 	
@@ -64,10 +64,13 @@ func _find_stimuli_and_distractions() -> void:
 		else:
 			stimuli.append_array(previous_lesson_words)
 		
-		# If there are not enough stimuli, fill the rest with current lesson
+		# If there are not enough stimuli, fill the rest with current lesson or previous lesson
 		if current_lesson_words:
 			while stimuli.size() < max_progression:
-				stimuli.append(current_lesson_words.pick_random())
+				if current_lesson_words:
+					stimuli.append(current_lesson_words.pick_random())
+				else:
+					stimuli.append(previous_lesson_words.pick_random())
 	
 	# Shuffle the stimuli
 	stimuli.shuffle()
@@ -108,6 +111,8 @@ func _setup_word_progression() -> void:
 
 func _set_current_word_progression(p_current_word_progression: int) -> void:
 	current_word_progression = p_current_word_progression
+	
+	consecutive_errors = 0
 	is_highlighting = false
 	
 	if current_word_progression == max_word_progression:
