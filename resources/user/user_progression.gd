@@ -10,7 +10,6 @@ enum Status{
 }
 
 @export var version: = 1.0
-@export var difficulty: = 1
 @export var unlocks: = {}
 
 

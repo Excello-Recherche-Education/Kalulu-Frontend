@@ -26,6 +26,7 @@ var language: String = "fr":
 		language = value
 		db_path = base_path + language + "/language.db"
 		words_path = base_path + language + "/words/"
+
 var db_path: = base_path + language + "/language.db":
 	set(value):
 		db_path = value
@@ -35,9 +36,7 @@ var db_path: = base_path + language + "/language.db":
 			db.foreign_keys = true
 			if FileAccess.file_exists(db.path):
 				db.open_db()
-			
-			#_init_db()
-			
+
 var words_path: = base_path + language + "/words/"
 var additional_word_list: Dictionary
 
@@ -48,17 +47,11 @@ func _exit_tree() -> void:
 	db.close_db()
 
 
-func _init_db() -> void:
-	# load_additional_word_list()
-	# db_path = db_path
-	#_import_words_csv()
-	#_import_gps()
-	#_import_words()
-	#_import_look_and_learn_data()
-	#_import_syllables()
-	#_import_lessons()
-	#_import_kalulu_3_word_sounds()
-	_import_kalulu_3_gp_sounds()
+# Called at the launch of the app to check if the language resource folder exists and import it from the zip in the game files if needed
+func _init() -> void:
+	if not FileAccess.file_exists(db_path):
+		var unzipper:= FolderUnzipper.new()
+		unzipper.extract("res://fr_FR.zip", base_path, false)
 
 
 func get_additional_word_list_path() -> String:
@@ -497,10 +490,12 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 		if ResourceLoader.exists(path):
 			return load(path)
 		else:
-			var sound: = AudioStreamOggVorbis.load_from_file(path)
+			var file = FileAccess.open(path, FileAccess.READ)
+			var sound = AudioStreamMP3.new()
+			sound.data = file.get_buffer(file.get_length())
 			return sound
 	
-	return AudioStreamOggVorbis.new()
+	return AudioStream.new()
 
 
 func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:
