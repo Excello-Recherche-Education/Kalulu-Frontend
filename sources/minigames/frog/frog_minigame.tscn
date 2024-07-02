@@ -21,9 +21,6 @@ distractors_queue_size = 6
 time_between_words = 3.0
 minigame_name = "frog"
 lesson_nb = 10
-difficulty = null
-current_lesson_stimuli_ratio = null
-minigame_number = null
 max_number_of_lives = 5
 max_progression = 5
 

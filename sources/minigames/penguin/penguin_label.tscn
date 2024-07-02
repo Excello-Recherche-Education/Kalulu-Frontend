@@ -1,0 +1,88 @@
+[gd_scene load_steps=5 format=3 uid="uid://hnhiv6odqvnk"]
+
+[ext_resource type="Script" path="res://sources/minigames/penguin/penguin_label.gd" id="2_eu3c0"]
+[ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_vlrm2"]
+[ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_elaak"]
+[ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_opr0c"]
+
+[node name="PenguinLabel" type="Label"]
+mouse_filter = 0
+theme_override_colors/font_color = Color(0.635294, 0.639216, 0.643137, 0)
+theme_override_colors/font_shadow_color = Color(0.780392, 0.913725, 0.984314, 1)
+theme_override_colors/font_outline_color = Color(0.555189, 0.846948, 0.96363, 1)
+theme_override_constants/shadow_offset_x = 10
+theme_override_constants/shadow_offset_y = -10
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 250
+text = "test"
+script = ExtResource("2_eu3c0")
+
+[node name="BackFX" type="Control" parent="."]
+show_behind_parent = true
+custom_minimum_size = Vector2(0, 265)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HighlightFX" parent="BackFX" instance=ExtResource("2_vlrm2")]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="RightFX" parent="BackFX" instance=ExtResource("4_elaak")]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="FrontFX" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 265)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="WrongFX" parent="FrontFX" instance=ExtResource("5_opr0c")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"InvisibleButton"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
