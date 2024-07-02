@@ -335,6 +335,37 @@ WHERE Sentences.Exception = 0
 	return db.query_result
 
 
+func get_sentences_for_lesson_with_silent_GPs(lesson_nb: int, min_length: int = 2, max_length:int = 5) -> Array[Dictionary]:
+	var query: = "SELECT Sentences.*, VerifiedCount.MaxLessonNb AS LessonNb FROM Sentences
+INNER JOIN 
+	(SELECT SentenceID, count() as WordsCount FROM WordsInSentences 
+	GROUP BY SentenceID 
+	) WordCount ON WordCount.SentenceID = Sentences.ID
+INNER JOIN 
+	(SELECT SentenceID, count() as Count FROM GPsInWords 
+		INNER JOIN WordsInSentences ON GPsInWords.WordID = WordsInSentences.WordID
+		INNER JOIN Sentences ON WordsInSentences.SentenceID = Sentences.ID
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+	GROUP BY SentenceID 
+	) TotalCount ON TotalCount.SentenceID = Sentences.ID 
+INNER JOIN 
+	(SELECT SentenceID, count() as Count, max(LessonNb) as MaxLessonNb, group_concat(GPs.Phoneme) as SentencePhoneme FROM GPsInWords 
+		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
+		INNER JOIN WordsInSentences ON GPsInWords.WordID = WordsInSentences.WordID
+		INNER JOIN Sentences ON WordsInSentences.SentenceID = Sentences.ID
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
+	GROUP BY SentenceID 
+	) VerifiedCount ON VerifiedCount.SentenceID = Sentences.ID AND VerifiedCount.Count = TotalCount.Count
+WHERE Sentences.Exception = 0
+	AND WordsCount >=? 
+	AND WordsCount <=? 
+	AND VerifiedCount.SentencePhoneme LIKE '%#%'"
+
+	db.query_with_bindings(query, [lesson_nb, min_length, max_length])
+	return db.query_result
+
+
 func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
 	var query: = "SELECT * FROM Pseudowords
 	 INNER JOIN Words ON Words.ID = Pseudowords.WordID 
