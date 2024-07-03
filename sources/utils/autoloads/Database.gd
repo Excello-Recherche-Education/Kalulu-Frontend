@@ -21,13 +21,13 @@ const video_extension: = ".ogv"
 const image_extension: = ".png"
 const sound_extension: = ".mp3"
 
-var language: String = "fr":
+var language: String = "fr_FR":
 	set(value):
 		language = value
 		db_path = base_path + language + "/language.db"
 		words_path = base_path + language + "/words/"
 
-var db_path: = base_path + language + "/language.db":
+var db_path: String = base_path + language + "/language.db":
 	set(value):
 		db_path = value
 		if db:
@@ -37,7 +37,7 @@ var db_path: = base_path + language + "/language.db":
 			if FileAccess.file_exists(db.path):
 				is_open = db.open_db()
 
-var words_path: = base_path + language + "/words/"
+var words_path: String = base_path + language + "/words/"
 var additional_word_list: Dictionary
 
 @onready var db: = SQLite.new()
@@ -52,7 +52,7 @@ func _exit_tree() -> void:
 func _ready() -> void:
 	if not FileAccess.file_exists(db_path):
 		var unzipper:= FolderUnzipper.new()
-		unzipper.extract("res://fr.zip", base_path, false)
+		unzipper.extract("res://fr_FR.zip", base_path, false)
 
 
 func get_additional_word_list_path() -> String:
