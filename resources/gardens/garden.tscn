@@ -73,6 +73,7 @@ texture_focused = ExtResource("4_i8h63")
 
 [node name="Center1" type="TextureRect" parent="Buttons/Button1"]
 unique_name_in_owner = true
+modulate = Color(0.588235, 0.439216, 0.878431, 1)
 show_behind_parent = true
 layout_mode = 0
 offset_right = 40.0
@@ -113,7 +114,9 @@ texture_focused = ExtResource("4_i8h63")
 
 [node name="Center2" type="TextureRect" parent="Buttons/Button2"]
 unique_name_in_owner = true
+modulate = Color(0.588235, 0.439216, 0.878431, 1)
 show_behind_parent = true
+layout_mode = 0
 offset_right = 300.0
 offset_bottom = 300.0
 texture = ExtResource("8_gpu52")
@@ -152,7 +155,9 @@ texture_focused = ExtResource("4_i8h63")
 
 [node name="Center3" type="TextureRect" parent="Buttons/Button3"]
 unique_name_in_owner = true
+modulate = Color(0.588235, 0.439216, 0.878431, 1)
 show_behind_parent = true
+layout_mode = 0
 offset_right = 300.0
 offset_bottom = 300.0
 texture = ExtResource("8_gpu52")
@@ -191,7 +196,9 @@ texture_focused = ExtResource("4_i8h63")
 
 [node name="Center4" type="TextureRect" parent="Buttons/Button4"]
 unique_name_in_owner = true
+modulate = Color(0.588235, 0.439216, 0.878431, 1)
 show_behind_parent = true
+layout_mode = 0
 offset_right = 300.0
 offset_bottom = 300.0
 texture = ExtResource("8_gpu52")

@@ -35,12 +35,13 @@ var db_path: = base_path + language + "/language.db":
 			db.path = db_path
 			db.foreign_keys = true
 			if FileAccess.file_exists(db.path):
-				db.open_db()
+				is_open = db.open_db()
 
 var words_path: = base_path + language + "/words/"
 var additional_word_list: Dictionary
 
 @onready var db: = SQLite.new()
+var is_open: = false
 
 
 func _exit_tree() -> void:
@@ -51,7 +52,7 @@ func _exit_tree() -> void:
 func _init() -> void:
 	if not FileAccess.file_exists(db_path):
 		var unzipper:= FolderUnzipper.new()
-		unzipper.extract("res://fr_FR.zip", base_path, false)
+		unzipper.extract("res://fr.zip", base_path, false)
 
 
 func get_additional_word_list_path() -> String:

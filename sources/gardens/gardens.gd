@@ -410,9 +410,6 @@ func _on_back_button_pressed() -> void:
 		other_tween.tween_property(minigame_background, "global_position", current_button_global_position, 0.25)
 		await tween.finished
 		
-		for other_button: TextureButton in garden_parent.get_child(current_garden).lesson_button_controls:
-			other_button.disabled = false
-		
 		if current_button:
 			current_button.visible = true
 		
@@ -420,6 +417,9 @@ func _on_back_button_pressed() -> void:
 		minigame_selection.visible = false
 		minigame_background.visible = false
 		back_button.disabled = false
+		
+		# Handles lesson buttons
+		_on_progression_unlocks_changed()
 	else:
 		await OpeningCurtain.close()
 		get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
