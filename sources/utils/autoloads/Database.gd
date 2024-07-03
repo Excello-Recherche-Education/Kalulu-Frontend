@@ -49,7 +49,7 @@ func _exit_tree() -> void:
 
 
 # Called at the launch of the app to check if the language resource folder exists and import it from the zip in the game files if needed
-func _init() -> void:
+func _ready() -> void:
 	if not FileAccess.file_exists(db_path):
 		var unzipper:= FolderUnzipper.new()
 		unzipper.extract("res://fr.zip", base_path, false)

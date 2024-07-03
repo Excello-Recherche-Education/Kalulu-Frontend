@@ -18,6 +18,8 @@ func init_OS_language() -> void:
 	
 	if not language:
 		language = "fr"
+	
+	print("------- DEFAULT LANGUAGE SET TO " + str(language))
 
 
 func get_folder_path() -> String:
