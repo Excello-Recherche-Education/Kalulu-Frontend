@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwjft0rlj2tu2"]
+
+[ext_resource type="Script" path="res://sources/menus/language_selection/local_package_downloader.gd" id="1_imoqv"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_e1epb"]
+[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="3_6o1hq"]
+
+[node name="LocalPackageDownloader" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_imoqv")
+
+[node name="Background" parent="." instance=ExtResource("2_e1epb")]
+layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_top = 600
+theme_override_constants/margin_right = 400
+theme_override_constants/margin_bottom = 600
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelKalulu"
+
+[node name="QuestionContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/QuestionContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 90
+text = "Téléchargement des données..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(800, 100)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_6o1hq")
+theme_override_font_sizes/font_size = 60
+max_value = 1.0
+step = 1.0
+value = 1.0
+
+[node name="DataLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+clip_text = true

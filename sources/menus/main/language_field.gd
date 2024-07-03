@@ -1,6 +1,6 @@
 extends OptionButton
 
-var items : Array
+var items : Array[String]
 
 func _ready():
 	# Check the language_resources directory to fetch supported languages
@@ -27,5 +27,5 @@ func get_selected_language() -> String:
 	return items[id]
 
 
-func _on_item_selected(index):
+func _on_item_selected(index: int):
 	UserDataManager.set_language(items[index])

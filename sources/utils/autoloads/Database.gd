@@ -31,11 +31,8 @@ var db_path: String = base_path + language + "/language.db":
 	set(value):
 		db_path = value
 		if db:
-			db.close_db()
 			db.path = db_path
 			db.foreign_keys = true
-			if FileAccess.file_exists(db.path):
-				is_open = db.open_db()
 
 var words_path: String = base_path + language + "/words/"
 var additional_word_list: Dictionary
@@ -48,11 +45,11 @@ func _exit_tree() -> void:
 	db.close_db()
 
 
-# Called at the launch of the app to check if the language resource folder exists and import it from the zip in the game files if needed
-func _ready() -> void:
-	if not FileAccess.file_exists(db_path):
-		var unzipper:= FolderUnzipper.new()
-		unzipper.extract("res://fr_FR.zip", base_path, false)
+func connect_to_db() -> void:
+	if is_open:
+		db.close_db()
+	if FileAccess.file_exists(db.path):
+		is_open = db.open_db()
 
 
 func get_additional_word_list_path() -> String:

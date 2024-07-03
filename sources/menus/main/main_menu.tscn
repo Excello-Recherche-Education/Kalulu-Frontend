@@ -195,6 +195,7 @@ grow_vertical = 2
 theme_override_constants/separation = 25
 
 [node name="LanguageContainer" type="VBoxContainer" parent="UserSelection/Form"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
