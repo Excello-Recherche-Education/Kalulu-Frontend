@@ -23,5 +23,7 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: = tru
 			file.store_buffer(read_file(sub_path))
 		copied_file += 1
 		file_copied.emit(copied_file, file_name)
+	
 	close()
+	
 	finished.emit()

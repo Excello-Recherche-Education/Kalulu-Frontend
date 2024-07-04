@@ -16,7 +16,8 @@ func _ready() -> void:
 	if not DirAccess.dir_exists_absolute(language_resources_path.path_join(UserDataManager.get_device_settings().language)):
 		mutex = Mutex.new()
 		thread = Thread.new()
-		thread.start(_copy_data.bind(self))
+		if OS.request_permissions():
+			thread.start(_copy_data.bind(self))
 	else:
 		_go_to_main_menu()
 
@@ -27,6 +28,11 @@ func _exit_tree() -> void:
 
 
 func _copy_data(this: Control) -> void:
+	
+	DirAccess.make_dir_recursive_absolute(language_resources_path)
+	var source_dir = DirAccess.open("res://");
+	source_dir.copy("res://fr_FR.zip", language_resources_path.path_join("fr_FR.zip"))
+	
 	var unzipper: = FolderUnzipper.new()
 	
 	unzipper.file_count.connect(
@@ -44,7 +50,10 @@ func _copy_data(this: Control) -> void:
 			mutex.unlock()
 	)
 	
-	unzipper.extract("res://fr_FR.zip", language_resources_path, false)
+	unzipper.extract(language_resources_path.path_join("fr_FR.zip"), language_resources_path, false)
+	
+	DirAccess.remove_absolute(language_resources_path.path_join("fr_FR.zip"))
+	
 	this.call_thread_safe("_go_to_main_menu")
 
 

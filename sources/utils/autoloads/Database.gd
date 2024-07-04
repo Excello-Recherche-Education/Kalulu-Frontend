@@ -33,6 +33,8 @@ var db_path: String = base_path + language + "/language.db":
 		if db:
 			db.path = db_path
 			db.foreign_keys = true
+			# TODO For testing on iOS
+			#db.read_only = true
 
 var words_path: String = base_path + language + "/words/"
 var additional_word_list: Dictionary
