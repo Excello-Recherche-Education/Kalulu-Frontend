@@ -4,9 +4,7 @@ const teacher_password : String = "42"
 const back_scene_path: = "res://sources/menus/main/main_menu.tscn"
 const next_scene_path: = "res://sources/menus/brain/brain.tscn"
 const teacher_scene_path: = "res://sources/menus/settings/teacher_settings.tscn"
-const help_speech_path : String = "main_menu/audio/login_screen_help_code.mp3"
-const wrong_password_speech_path : String = "main_menu/audio/login_screen_feedback_wrong_password.mp3"
-const right_password_speech_path : String = "main_menu/audio/login_screen_feedback_right_password.mp3"
+const package_loader_scene_path: = "res://sources/menus/language_selection/local_package_downloader.tscn"
 
 @onready var kalulu: Control = $Kalulu
 @onready var music_player : AudioStreamPlayer = $MusicStreamPlayer
@@ -19,6 +17,10 @@ var wrong_password_speech: AudioStream
 var right_password_speech: AudioStream
 
 func _ready():
+	# Check if the database is connected, if not go to loader
+	if not Database.is_open:
+		get_tree().change_scene_to_file(package_loader_scene_path)
+	
 	help_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "help_code"))
 	wrong_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_wrong_password"))
 	right_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_right_password"))

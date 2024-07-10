@@ -3,3 +3,5 @@
 .DS_Store
 
 addons/godot-sqlite/bin
+
+language_resources/

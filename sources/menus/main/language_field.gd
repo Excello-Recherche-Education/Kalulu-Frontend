@@ -3,9 +3,8 @@ extends OptionButton
 var items : Array[String]
 
 func _ready():
-	# Check the language_resources directory to fetch supported languages
-	var dir = DirAccess.open("res://language_resources")
-	var idx : int = 0
+	# Adds the supported locales to the field
+	var idx: int = 0
 	for language_locale in DeviceSettings.supported_locales:
 		if not language_locale:
 			continue

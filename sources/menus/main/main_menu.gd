@@ -2,7 +2,6 @@ extends Control
 
 const adult_check_scene_path := "res://sources/menus/adult_check/adult_check.tscn"
 const next_scene_path := "res://sources/menus/login/login.tscn"
-const register_scene_path := "res://sources/menus/register/register.tscn"
 
 @onready var version_label : Label = $Informations/BuildVersionValue
 @onready var teacher_label : Label = $Informations/TeacherValue
@@ -52,13 +51,7 @@ func _on_sign_in_parent_pressed():
 
 func _on_register_pressed():
 	await OpeningCurtain.close()
-	
-	var adult_check_scene : AdultCheck = load(adult_check_scene_path).instantiate()
-	adult_check_scene.last_scene = get_tree().current_scene.scene_file_path
-	adult_check_scene.next_scene = register_scene_path
-	
-	get_tree().get_root().get_child(get_tree().get_root().get_child_count() -1).queue_free()
-	get_tree().get_root().add_child(adult_check_scene)
+	get_tree().change_scene_to_file(adult_check_scene_path)
 
 
 func _on_login_in():
