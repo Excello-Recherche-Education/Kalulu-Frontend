@@ -19,6 +19,7 @@ var right_password_speech: AudioStream
 func _ready():
 	# Check if the database is connected, if not go to loader
 	if not Database.is_open:
+		await get_tree().process_frame
 		get_tree().change_scene_to_file(package_loader_scene_path)
 	
 	help_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "help_code"))

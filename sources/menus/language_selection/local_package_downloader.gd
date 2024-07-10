@@ -81,8 +81,6 @@ func _copy_data(this: LocalPackageDownloader) -> void:
 	DirAccess.rename_absolute(user_language_resources_path.path_join(language), current_language_path)
 	
 	# Cleanup unnecessary files
-	if FileAccess.file_exists(user_language_resources_path.path_join("__MACOSX")):
-		DirAccess.remove_absolute(user_language_resources_path.path_join("__MACOSX"))
 	DirAccess.remove_absolute(language_zip_path)
 	
 	# Go to main menu

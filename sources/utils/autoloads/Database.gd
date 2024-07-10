@@ -21,7 +21,7 @@ const video_extension: = ".ogv"
 const image_extension: = ".png"
 const sound_extension: = ".mp3"
 
-var language: String = "fr_FR":
+var language: String:
 	set(value):
 		language = value
 		db_path = base_path + language + "/language.db"
@@ -33,8 +33,7 @@ var db_path: String = base_path + language + "/language.db":
 		if db:
 			db.path = db_path
 			db.foreign_keys = true
-			# TODO For testing on iOS
-			#db.read_only = true
+			connect_to_db()
 
 var words_path: String = base_path + language + "/words/"
 var additional_word_list: Dictionary
