@@ -15,7 +15,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_02ocl")
-infos = null
 
 [node name="LeftMargin" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(450, 2.08165e-12)
@@ -40,7 +39,7 @@ alignment = 2
 [node name="BackButton" type="Button" parent="LeftMargin/LeftContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Back"
+text = "BACK"
 icon = ExtResource("2_41tvo")
 
 [node name="RightMargin" type="MarginContainer" parent="."]
@@ -69,7 +68,7 @@ alignment = 2
 [node name="ValidateButton" type="Button" parent="RightMargin/RightContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Next"
+text = "NEXT"
 icon = ExtResource("3_17uns")
 icon_alignment = 2
 

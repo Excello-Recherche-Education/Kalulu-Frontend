@@ -11,6 +11,7 @@ const supported_locales: Array[String] = [
 		language = value
 		Database.language = value
 		TranslationServer.set_locale(value)
+		print(TranslationServer.get_locale())
 @export var teacher : String
 @export var device_id : int
 

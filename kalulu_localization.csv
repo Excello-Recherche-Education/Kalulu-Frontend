@@ -1,0 +1,31 @@
+keys;fr;es
+LOGGED_AS;Connecté en tant que;Conectado como :
+BUILD_VERSION;Numéro de version;Número de versión :
+DEVICE_ID;Numéro d'appareil;
+LANGUAGE;Langue;
+SIGN_IN_TEACHER;Connexion enseignant;
+SIGN_IN_PARENT;Connexion parent;
+CREATE_ACCOUNT;Création de compte;
+LOGIN;Identifiants;
+EMAIL;Adresse mail;
+PASSWORD;Mot de passe;
+LOG_IN;Se connecter;
+INVALID_EMAIL_OR_PASSWORD;Adresse mail ou mot de passe invalide;
+DEVICE_NUMBER;Appareil n° {number};
+SETTINGS;Paramètres;
+ADULT_CHECK_PROMPT;"Veuillez confirmer que vous êtes un adulte !
+Appuyez sur les touches {1}, {2} et {3}";
+STAR;Étoile;
+BAR;Barre;
+CIRCLE;Cercle;
+PLUS;Plus;
+SQUARE;Carré;
+TRIANGLE;Triangle;
+DOWNLOADING_DATA;Téléchargement des données...;
+BACK;Précédent;
+NEXT;Suivant;
+CANCEL;Annuler;
+ACCOUNT_TYPE_PROMPT;Veuillez sélectionner le type de compte que vous souhaitez créer;
+ACCOUNT_TYPE;Type de compte;
+TEACHER;Enseignant;
+PARENT;Parent;

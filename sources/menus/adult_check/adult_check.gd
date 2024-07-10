@@ -3,22 +3,20 @@ extends Control
 const main_menu_scene_path: = "res://sources/menus/main/main_menu.tscn"
 const register_scene_path := "res://sources/menus/register/register.tscn"
 const symbols_names = {
-	"1" : "star",
-	"2" : "bar",
-	"3" : "circle",
-	"4" : "plus",
-	"5" : "square",
-	"6" : "triangle",
+	"1" : "STAR",
+	"2" : "BAR",
+	"3" : "CIRCLE",
+	"4" : "PLUS",
+	"5" : "SQUARE",
+	"6" : "TRIANGLE",
 }
 
 @onready var code_keyboard : CodeKeyboard = %CodeKeyboard
 @onready var password_label : Label = %PasswordLabel
 
-var base_password_label_text : String
 var password : String = ""
 
 func _ready() -> void:
-	base_password_label_text = password_label.text
 	_reset_password()
 	
 	OpeningCurtain.open()
@@ -27,7 +25,13 @@ func _ready() -> void:
 func _reset_password() -> void:
 	password = TeacherSettings.available_codes.pick_random()
 	var password_array: = password.split("")
-	password_label.text = base_password_label_text % [symbols_names[password_array[0]], symbols_names[password[1]], symbols_names[password[2]]]
+	password_label.text = tr("ADULT_CHECK_PROMPT").format(
+		{
+			"1" : tr(symbols_names[password_array[0]]),
+			"2" : tr(symbols_names[password_array[1]]),
+			"3" : tr(symbols_names[password_array[2]])
+		}
+	)
 
 
 func _on_back_button_pressed() -> void:

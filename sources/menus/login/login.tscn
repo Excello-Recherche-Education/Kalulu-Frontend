@@ -41,7 +41,6 @@ offset_right = 158.5
 offset_bottom = 176.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 70
-text = "DEVICE n°"
 
 [node name="CodeKeyboard" parent="." instance=ExtResource("5_xwrca")]
 layout_mode = 1
@@ -96,7 +95,7 @@ theme_override_constants/margin_bottom = 50
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 70
-text = "Teacher"
+text = "SETTINGS"
 
 [node name="TeacherTimer" type="Timer" parent="InterfaceRight/TeacherButton"]
 wait_time = 5.0

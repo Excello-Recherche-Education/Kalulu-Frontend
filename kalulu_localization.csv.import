@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://ccpq4mu4yjj71"
+
+[deps]
+
+files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation"]
+
+source_file="res://kalulu_localization.csv"
+dest_files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation"]
+
+[params]
+
+compress=true
+delimiter=1

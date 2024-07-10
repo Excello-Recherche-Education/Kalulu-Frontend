@@ -200,7 +200,7 @@ theme_override_constants/separation = 0
 [node name="LanguageLabel" type="Label" parent="UserSelection/Form/LanguageContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Language"
+text = "LANGUAGE"
 
 [node name="LanguageField" type="OptionButton" parent="UserSelection/Form/LanguageContainer"]
 unique_name_in_owner = true
@@ -212,21 +212,19 @@ script = ExtResource("13_rs3hd")
 [node name="SignInTeacher" type="Button" parent="UserSelection/Form"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Sign-in teacher account
-"
+text = "SIGN_IN_TEACHER"
 metadata/_edit_use_anchors_ = true
 
 [node name="SignInParent" type="Button" parent="UserSelection/Form"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Sign-in parent account
-"
+text = "SIGN_IN_PARENT"
 metadata/_edit_use_anchors_ = true
 
 [node name="Register" type="Button" parent="UserSelection/Form"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Create an account"
+text = "CREATE_ACCOUNT"
 metadata/_edit_use_anchors_ = true
 
 [node name="LoginForm" type="Control" parent="."]
@@ -249,7 +247,7 @@ offset_top = 168.0
 offset_bottom = 286.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 90
-text = "Teacher login"
+text = "SIGN_IN_TEACHER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -263,7 +261,7 @@ offset_top = 168.0
 offset_bottom = 286.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 90
-text = "Parent login"
+text = "SIGN_IN_PARENT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -302,7 +300,7 @@ theme_override_constants/separation = 0
 [node name="DeviceIDLabel" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Device number"
+text = "DEVICE_ID"
 
 [node name="DeviceIDField" type="SpinBox" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
 unique_name_in_owner = true
@@ -330,14 +328,14 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme = ExtResource("15_pcmnw")
 theme_override_font_sizes/font_size = 70
-text = "Login"
+text = "LOGIN"
 
 [node name="EmailField" type="LineEdit" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"1"
 theme_override_font_sizes/font_size = 70
-placeholder_text = "Email"
+placeholder_text = "EMAIL"
 
 [node name="EmailValidator" type="Node" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer/EmailField"]
 script = ExtResource("18_iunlb")
@@ -355,7 +353,7 @@ theme_override_constants/separation = 0
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-placeholder_text = "Password"
+placeholder_text = "PASSWORD"
 secret = true
 
 [node name="PasswordValidator" type="Node" parent="LoginForm/LoginFormValidator/FormContainer/PasswordContainer/PasswordField"]
@@ -370,13 +368,13 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 70
-text = "Log in"
+text = "LOG_IN"
 
 [node name="LoginError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-text = "Invalid username or password"
+text = "INVALID_EMAIL_OR_PASSWORD"
 
 [node name="InterfaceLeft" type="MarginContainer" parent="."]
 unique_name_in_owner = true
@@ -417,7 +415,7 @@ offset_left = 10.0
 offset_right = 261.0
 offset_bottom = 56.0
 theme_override_font_sizes/font_size = 30
-text = "Build Version :"
+text = "BUILD_VERSION"
 vertical_alignment = 1
 
 [node name="BuildVersionValue" type="Label" parent="Informations"]
@@ -436,7 +434,7 @@ offset_top = 56.0
 offset_right = 261.0
 offset_bottom = 112.0
 theme_override_font_sizes/font_size = 30
-text = "Logged as :"
+text = "LOGGED_AS"
 vertical_alignment = 1
 
 [node name="TeacherValue" type="Label" parent="Informations"]
@@ -456,7 +454,7 @@ offset_top = 112.0
 offset_right = 261.0
 offset_bottom = 168.0
 theme_override_font_sizes/font_size = 30
-text = "Device Id :"
+text = "DEVICE_ID"
 vertical_alignment = 1
 
 [node name="DeviceIDValue" type="Label" parent="Informations"]

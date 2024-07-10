@@ -73,6 +73,7 @@ right_click={
 [internationalization]
 
 locale/translation_remaps={}
+locale/translations=PackedStringArray("res://kalulu_localization.es.translation", "res://kalulu_localization.fr.translation")
 
 [rendering]
 

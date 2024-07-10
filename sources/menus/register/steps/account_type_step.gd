@@ -1,5 +1,12 @@
 extends Step
 
+@onready var type: = %TypeSelect
+
+func _ready() -> void:
+	type.add_item(tr("TEACHER"))
+	type.add_item(tr("PARENT"))
+
+
 func _on_next() -> bool:
 	var register_data = data as TeacherSettings
 	if register_data:

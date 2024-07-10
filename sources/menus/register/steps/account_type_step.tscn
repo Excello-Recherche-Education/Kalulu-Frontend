@@ -22,36 +22,32 @@ rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.g
 [node name="AccountTypeStep" instance=ExtResource("1_g51ml")]
 script = ExtResource("2_k6524")
 step_name = "type"
-question = "Choose the type of account"
+question = "ACCOUNT_TYPE_PROMPT"
 
 [node name="BackButton" parent="LeftMargin/LeftContainer" index="0"]
-text = "Cancel"
-
-[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
-text = "Choose the type of account"
+text = "CANCEL"
 
 [node name="TypeContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
 [node name="TypeSelectLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer" index="0"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 70
-text = "Type :"
+text = "ACCOUNT_TYPE"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="TypeSelect" type="ItemList" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer/VBoxContainer" index="0"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 allow_search = false
 auto_height = true
-item_count = 2
-item_0/text = "Teacher"
-item_1/text = "Parent"
 
 [node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="1"]
 script = ExtResource("2_hidu6")
