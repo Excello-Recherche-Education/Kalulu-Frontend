@@ -81,7 +81,7 @@ func _on_step_completed(step : Step):
 			for device in register_data.devices_count:
 				var students_step_scene = students_step.instantiate()
 				if students_step_scene is StudentsCountStep:
-					students_step_scene.question = students_step_scene.question % (device + 1)
+					students_step_scene.question = tr(students_step_scene.question).format({"number" : (device + 1)})
 					students_step_scene.device_id = device + 1
 					current_steps.append(students_step_scene)
 				else:
@@ -95,7 +95,7 @@ func _on_step_completed(step : Step):
 			var student_count := 1
 			for student in register_data.students[1]:
 				var student_step_scene := player_step.instantiate()
-				student_step_scene.question = student_step_scene.question % student_count
+				student_step_scene.question = tr(student_step_scene.question).format({"number" : student_count})
 				student_step_scene.data = student
 				current_steps.append(student_step_scene)
 				student_count += 1

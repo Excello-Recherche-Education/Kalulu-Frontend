@@ -22,7 +22,7 @@ func _refresh_devices_tabs() -> void:
 	
 	for device in UserDataManager.teacher_settings.students.keys():
 		var device_tab := device_tab_scene.instantiate()
-		device_tab.name = "Device " + str(device)
+		device_tab.name = tr("DEVICE_NUMBER").format({"number" : device})
 		device_tab.device_id = device
 		device_tab.students = UserDataManager.teacher_settings.students[device]
 		devices_tab_container.add_child(device_tab)

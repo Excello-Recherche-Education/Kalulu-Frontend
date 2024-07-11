@@ -6,8 +6,8 @@
 
 [node name="DevicesCountStep" instance=ExtResource("1_w3urq")]
 step_name = "devices"
-question = "Choose the number of devices"
-infos = "You will be able to modify the devices later in the settings"
+question = "DEVICE_COUNT_PROMPT"
+infos = "DEVICE_COUNT_INFOS"
 
 [node name="DevicesCountContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
 layout_mode = 2
@@ -17,7 +17,7 @@ custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 70
-text = "Devices :"
+text = "DEVICES"
 
 [node name="DevicesCountField" type="SpinBox" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/DevicesCountContainer" index="1"]
 layout_mode = 2

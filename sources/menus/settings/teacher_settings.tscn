@@ -45,7 +45,7 @@ stretch_mode = 4
 [node name="LogoutButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Logout"
+text = "LOGOUT"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(2112, 1800)
@@ -77,12 +77,12 @@ alignment = 2
 [node name="AddDeviceButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Add device"
+text = "SETTINGS_ADD_DEVICE"
 
 [node name="AddStudentButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Add student"
+text = "SETTINGS_ADD_STUDENT"
 
 [node name="DeleteDeviceButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
 visible = false
@@ -93,7 +93,7 @@ text = "Delete device"
 [node name="LessonUnlocksButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Unlock lessons"
+text = "SETTINGS_LESSONS"
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]

@@ -14,7 +14,7 @@ func _ready():
 	if student_data.name:
 		name_label.text = student_data.name
 	else:
-		name_label.text = "Student %d" % student_count
+		name_label.text = tr("STUDENT_NUM").format({"number" : student_count})
 	
 	if student_data.code:
 		password_visualizer.password = student_data.code

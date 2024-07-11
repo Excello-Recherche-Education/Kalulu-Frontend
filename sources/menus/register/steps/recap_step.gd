@@ -16,17 +16,17 @@ func on_enter():
 	if not teacher_settings:
 		return
 	
-	email.text = "Email address : %s" % teacher_settings.email
-	account_type.text = "Account type : %s" % TeacherSettings.AccountType.keys()[teacher_settings.account_type]
+	email.text = tr("SUMMARY_EMAIL").format({"mail" : teacher_settings.email})
+	account_type.text = tr("SUMMARY_TYPE").format({"type" : tr(TeacherSettings.AccountType.keys()[teacher_settings.account_type].to_upper())})
 	
 	if teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
-		education_method.text = "Education method : %s" % TeacherSettings.EducationMethod.keys()[teacher_settings.education_method]
+		education_method.text = tr("SUMMARY_METHOD").format({"method" : tr(TeacherSettings.EducationMethod.keys()[teacher_settings.education_method].to_upper())}) 
 		education_method.show()
 		
-		devices_count.text = "Number of devices : %d" % teacher_settings.students.size()
+		devices_count.text = tr("SUMMARY_NUMBER_OF_DEVICES").format({"number" : teacher_settings.students.size()})
 		devices_count.show()
 		
-		students_count.text = "Number of students : %d" % teacher_settings.get_students_count()
+		students_count.text = tr("SUMMARY_NUMBER_OF_STUDENTS").format({"number" : teacher_settings.get_students_count()})
 		students_count.show()
 	else:
 		education_method.hide()
@@ -40,9 +40,9 @@ func on_enter():
 		var device_recap : DeviceRecap = device_recap_scene.instantiate()
 		
 		if teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
-			device_recap.title = "Device %d" % device
+			device_recap.title = tr("DEVICE_NUMBER").format({"number" : device})
 		else:
-			device_recap.title = "Players"
+			device_recap.title = tr("PLAYERS")
 		device_recap.students = teacher_settings.students[device]
 		
 		recap_container.add_child(device_recap)

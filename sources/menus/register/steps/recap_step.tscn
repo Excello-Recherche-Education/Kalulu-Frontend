@@ -5,10 +5,9 @@
 
 [node name="RecapStep" instance=ExtResource("1_crpog")]
 script = ExtResource("2_0vlqx")
-infos = ""
 
 [node name="ValidateButton" parent="RightMargin/RightContainer" index="0"]
-text = "Validate"
+text = "VALIDATE"
 
 [node name="PanelContainer" parent="." index="2"]
 offset_left = -1024.0
@@ -25,7 +24,7 @@ theme_override_constants/separation = 50
 [node name="Title" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
-text = "Registration summary"
+text = "REGISTRATION_SUMMARY"
 horizontal_alignment = 1
 vertical_alignment = 1
 
