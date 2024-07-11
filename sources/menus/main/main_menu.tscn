@@ -410,6 +410,7 @@ offset_right = 624.0
 grow_vertical = 0
 
 [node name="BuildVersionTitle" type="Label" parent="Informations"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 offset_left = 10.0
 offset_right = 261.0
@@ -420,14 +421,15 @@ vertical_alignment = 1
 
 [node name="BuildVersionValue" type="Label" parent="Informations"]
 layout_mode = 1
-offset_left = 250.0
-offset_right = 400.0
+offset_left = 410.0
+offset_right = 560.0
 offset_bottom = 56.0
 theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
 
 [node name="TeacherTitle" type="Label" parent="Informations"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 0
 offset_left = 10.0
 offset_top = 56.0
@@ -439,15 +441,16 @@ vertical_alignment = 1
 
 [node name="TeacherValue" type="Label" parent="Informations"]
 layout_mode = 1
-offset_left = 250.0
+offset_left = 410.0
 offset_top = 56.0
-offset_right = 500.0
+offset_right = 660.0
 offset_bottom = 112.0
 theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
 
 [node name="DeviceIDTitle" type="Label" parent="Informations"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
 offset_left = 10.0
 offset_top = 112.0
@@ -459,9 +462,9 @@ vertical_alignment = 1
 
 [node name="DeviceIDValue" type="Label" parent="Informations"]
 layout_mode = 1
-offset_left = 250.0
+offset_left = 410.0
 offset_top = 112.0
-offset_right = 400.0
+offset_right = 560.0
 offset_bottom = 168.0
 theme_override_font_sizes/font_size = 30
 text = "?"
