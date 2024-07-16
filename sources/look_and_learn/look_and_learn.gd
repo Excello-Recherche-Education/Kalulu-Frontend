@@ -38,6 +38,8 @@ var current_tracing: = 0
 
 
 func _ready() -> void:
+	MusicManager.stop()
+	
 	gardens_data = transition_data
 	transition_data = {}
 	lesson_nb = gardens_data.get("current_lesson_number", lesson_nb)

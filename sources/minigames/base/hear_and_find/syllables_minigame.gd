@@ -97,14 +97,15 @@ func _find_stimuli_and_distractions() -> void:
 		# Difficulty 1 
 		# Any previously learned item w/ all letters different
 		for syllable: Dictionary in all_syllables:
-			var gp_found_in_stimuli: = false
-			for gp in syllable.GPs:
-				if gp in stimulus.GPs:
-					gp_found_in_stimuli = true
-					break
+			if syllable.Phoneme != stimulus.Phoneme:
+				var gp_found_in_stimuli: = false
+				for gp in syllable.GPs:
+					if gp in stimulus.GPs:
+						gp_found_in_stimuli = true
+						break
 			
-			if not gp_found_in_stimuli:
-				stimulus_distractors.append(syllable)
+				if not gp_found_in_stimuli:
+					stimulus_distractors.append(syllable)
 		
 		# Higher difficulties only changes syllables distractors
 		if difficulty > 1 and stimulus.GPs.size() == 2:

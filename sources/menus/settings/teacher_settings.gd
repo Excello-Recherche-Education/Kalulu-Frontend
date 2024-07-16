@@ -5,10 +5,23 @@ const login_menu_path := "res://sources/menus/login/login.tscn"
 
 const device_tab_scene : PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
 
+# Volume menu
+@onready var volume_menu: Control = %VolumeMenu
+@onready var master_volume_slider: HSlider = %MasterVolumeSlider
+@onready var music_volume_slider: HSlider = %MusicVolumeSlider
+@onready var voice_volume_slider: HSlider = %VoiceVolumeSlider
+@onready var effects_volume_slider: HSlider = %EffectsVolumeSlider
+
 @onready var devices_tab_container : TabContainer = %DevicesTabContainer
 
 func _ready():
 	await _refresh_devices_tabs()
+	
+	set_master_volume_slider(UserDataManager.get_master_volume())
+	set_music_volume_slider(UserDataManager.get_music_volume())
+	set_voice_volume_slider(UserDataManager.get_voice_volume())
+	set_effects_volume_slider(UserDataManager.get_effects_volume())
+	
 	OpeningCurtain.open()
 
 
@@ -59,3 +72,39 @@ func _on_add_device_button_pressed():
 
 func _on_lesson_unlocks_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/menus/settings/lesson_unlocks.tscn")
+
+# ------------ Volume Menu ------------
+
+func _on_volume_button_pressed() -> void:
+	volume_menu.visible = not volume_menu.visible
+
+
+func set_master_volume_slider(volume: float) -> void:
+	master_volume_slider.value = volume
+
+
+func set_music_volume_slider(volume: float) -> void:
+	music_volume_slider.value = volume
+
+
+func set_voice_volume_slider(volume: float) -> void:
+	voice_volume_slider.value = volume
+
+
+func set_effects_volume_slider(volume: float) -> void:
+	effects_volume_slider.value = volume
+
+func _on_master_volume_slider_value_changed(volume: float) -> void:
+	UserDataManager.set_master_volume(volume)
+
+
+func _on_music_volume_slider_value_changed(volume: float) -> void:
+	UserDataManager.set_music_volume(volume)
+
+
+func _on_voice_volume_slider_value_changed(volume: float) -> void:
+	UserDataManager.set_voice_volume(volume)
+
+
+func _on_effects_volume_slider_value_changed(volume: float) -> void:
+	UserDataManager.set_effects_volume(volume)

@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://ci7ueo06f24k3"]
+[gd_scene load_steps=9 format=3 uid="uid://ci7ueo06f24k3"]
 
 [ext_resource type="Script" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_v06h8"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="3_hvu1i"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_045cm"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_e3piv"]
+[ext_resource type="Texture2D" uid="uid://dkvf2b6b1keqf" path="res://assets/minigames/minigame_ui/graphic/volume_up.png" id="6_urri0"]
+[ext_resource type="Texture2D" uid="uid://blgoagm5j5jh2" path="res://assets/minigames/minigame_ui/graphic/volume_down.png" id="7_71of5"]
+[ext_resource type="Texture2D" uid="uid://cuxo6l6hmin1y" path="res://assets/minigames/minigame_ui/graphic/volume_disabled.png" id="8_tfdgw"]
 
 [node name="TeacherSettings" type="Control"]
 layout_mode = 3
@@ -36,11 +39,163 @@ layout_mode = 2
 [node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 4.0
 texture_normal = ExtResource("3_hvu1i")
 texture_pressed = ExtResource("4_045cm")
 texture_disabled = ExtResource("5_e3piv")
 stretch_mode = 4
+
+[node name="VolumeContainer" type="MarginContainer" parent="InterfaceLeft/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 100
+
+[node name="VolumeButton" type="TextureButton" parent="InterfaceLeft/Container/VolumeContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture_normal = ExtResource("6_urri0")
+texture_pressed = ExtResource("7_71of5")
+texture_disabled = ExtResource("8_tfdgw")
+stretch_mode = 4
+
+[node name="VolumeMenu" type="Control" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 300.0
+offset_right = 781.0
+offset_bottom = 456.0
+
+[node name="Panel" type="Panel" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu"]
+layout_mode = 2
+offset_right = 481.0
+offset_bottom = 456.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu"]
+layout_mode = 2
+offset_right = 481.0
+offset_bottom = 456.0
+
+[node name="MasterVolumeMarginContainer" type="MarginContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Master"
+
+[node name="MarginContainer" type="MarginContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+
+[node name="MasterVolumeSlider" type="HSlider" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="MusicVolumeMarginContainer" type="MarginContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MusicVolumeMarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Music"
+
+[node name="MarginContainer" type="MarginContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+
+[node name="MusicVolumeSlider" type="HSlider" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="VoiceVolumeMarginContainer" type="MarginContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Voice"
+
+[node name="MarginContainer" type="MarginContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+
+[node name="VoiceVolumeSlider" type="HSlider" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="EffectsVolumeMarginContainer" type="MarginContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/EffectsVolumeMarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Effects
+"
+
+[node name="MarginContainer" type="MarginContainer" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+
+[node name="EffectsVolumeSlider" type="HSlider" parent="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
 
 [node name="LogoutButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2
@@ -96,6 +251,11 @@ theme_override_font_sizes/font_size = 70
 text = "SETTINGS_LESSONS"
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="InterfaceLeft/Container/VolumeContainer/VolumeButton" to="." method="_on_volume_button_pressed"]
+[connection signal="value_changed" from="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
+[connection signal="value_changed" from="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
+[connection signal="value_changed" from="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VoiceVolumeSlider" to="." method="_on_voice_volume_slider_value_changed"]
+[connection signal="value_changed" from="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/EffectsVolumeSlider" to="." method="_on_effects_volume_slider_value_changed"]
 [connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]

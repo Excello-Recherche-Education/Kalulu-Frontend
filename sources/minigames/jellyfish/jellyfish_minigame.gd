@@ -184,3 +184,5 @@ func _on_stimulus_found() -> void:
 	# Clear all the jellyfishes
 	for jellyfish: Jellyfish in spawning_space.get_children():
 		jellyfish.delete()
+	
+	blocking_jellyfish.clear()

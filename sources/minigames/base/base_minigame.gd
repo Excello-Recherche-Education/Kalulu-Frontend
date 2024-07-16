@@ -99,7 +99,7 @@ func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
-	transition_data = {}
+	#transition_data = {}
 	
 	# Difficulty
 	if UserDataManager._student_difficulty:
@@ -107,7 +107,7 @@ func _ready() -> void:
 	
 	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "intro"))
 	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "help"))
-	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "win"))
+	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "end"))
 	lose_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path("minigame", "lose"))
 	
 	if not Engine.is_editor_hint():
