@@ -160,9 +160,9 @@ func _fill_minigame_choice(container: HFlowContainer, background: TextureRect, e
 		button.queue_free()
 	
 	if status == UserProgression.Status.Completed:
-		background.modulate = Color(1.0, 1.0, 1.0, 0.01)
+		background.modulate = garden_parent.get_child(current_garden).color
 	else:
-		background.modulate = Color(0.0, 0.0, 0.0, 0.75)
+		background.modulate = Color(0.0, 0.0, 0.0, 0.0)
 	
 	var exercise_scenes: Array[PackedScene]
 	var exercise_icons: Array[Texture]
@@ -248,6 +248,7 @@ func _on_garden_lesson_button_pressed(button: TextureButton, lesson_ind: int, ga
 		button_global_position = button.global_position
 		current_button = button
 		current_button.visible = false
+	
 	current_button_global_position = button_global_position
 	current_lesson_number = lesson_ind
 	current_garden = garden_ind
@@ -256,13 +257,14 @@ func _on_garden_lesson_button_pressed(button: TextureButton, lesson_ind: int, ga
 	
 	minigame_selection.visible = true
 	back_button.disabled = true
-	for other_button: TextureButton in garden_parent.get_child(current_garden).lesson_button_controls:
-		other_button.disabled = true
+	
+	#for other_button: TextureButton in garden_parent.get_child(current_garden).lesson_button_controls:
+	#	other_button.disabled = true
 	
 	minigame_background.size = 300.0 * Vector2.ONE
 	minigame_background.global_position = current_button_global_position
 	minigame_background.visible = true
-	minigame_background_center.modulate = garden_parent.get_child(garden_ind).color
+	#minigame_background_center.modulate = garden_parent.get_child(garden_ind).color
 	
 	var tween: = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_background, "scale", (1800.0 / 300.0) * Vector2.ONE, tween_duration)

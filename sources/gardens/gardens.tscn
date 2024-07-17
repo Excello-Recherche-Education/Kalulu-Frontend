@@ -172,6 +172,7 @@ stretch_mode = 5
 
 [node name="MinigameBackgroundCenter" type="TextureRect" parent="CanvasLayer/MinigameBackground"]
 unique_name_in_owner = true
+modulate = Color(0.109804, 0.14902, 0.384314, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -196,7 +197,7 @@ pivot_offset = Vector2(1280, 900)
 
 [node name="MinigameBackground1" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
-modulate = Color(0, 0, 0, 0.501961)
+modulate = Color(0, 0, 0, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1800.0
@@ -204,7 +205,7 @@ texture = ExtResource("23_p1d10")
 
 [node name="MinigameBackground2" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
-modulate = Color(0, 0, 0, 0.501961)
+modulate = Color(0, 0, 0, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1800.0
@@ -212,7 +213,7 @@ texture = ExtResource("24_30f83")
 
 [node name="MinigameBackground3" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
-modulate = Color(0, 0, 0, 0.501961)
+modulate = Color(0, 0, 0, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1800.0
@@ -246,32 +247,30 @@ theme_override_font_sizes/font_size = 92
 [node name="MinigameContainer1" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 633.0
-offset_top = 284.0
-offset_right = 1149.0
-offset_bottom = 800.0
+offset_left = 640.0
+offset_top = 576.0
+offset_right = 1152.0
+offset_bottom = 832.0
 size_flags_horizontal = 3
 alignment = 1
-reverse_fill = true
 
 [node name="MinigameContainer2" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 1411.0
-offset_top = 284.0
-offset_right = 1927.0
-offset_bottom = 800.0
+offset_left = 1408.0
+offset_top = 576.0
+offset_right = 1920.0
+offset_bottom = 832.0
 size_flags_horizontal = 3
 alignment = 1
-reverse_fill = true
 
 [node name="MinigameContainer3" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 762.0
-offset_top = 1229.0
-offset_right = 1798.0
-offset_bottom = 1745.0
+offset_left = 1024.0
+offset_top = 1216.0
+offset_right = 1536.0
+offset_bottom = 1472.0
 size_flags_horizontal = 3
 alignment = 1
 
