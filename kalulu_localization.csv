@@ -1,71 +1,71 @@
 keys;fr;es
 LOGGED_AS;Connecté en tant que;Conectado como :
 BUILD_VERSION;Numéro de version;Número de versión :
-DEVICE_ID;Numéro d'appareil;
-LANGUAGE;Langue;
-SIGN_IN_TEACHER;Connexion enseignant;
-SIGN_IN_PARENT;Connexion parent;
-CREATE_ACCOUNT;Création de compte;
-LOGIN;Identifiants;
-EMAIL;Adresse mail;
-PASSWORD;Mot de passe;
-LOG_IN;Se connecter;
-INVALID_EMAIL_OR_PASSWORD;Adresse mail ou mot de passe invalide;
-DEVICE_NUMBER;Appareil n° {number};
-SETTINGS;Paramètres;
+DEVICE_ID;Numéro d'appareil;Identificación del dispositivo:
+LANGUAGE;Langue;Idioma
+SIGN_IN_TEACHER;Connexion enseignant;Conexión del docente:
+SIGN_IN_PARENT;Connexion parent;Conexión del padre:
+CREATE_ACCOUNT;Création de compte;Creación de cuenta:
+LOGIN;Identifiants;Usuario
+EMAIL;Adresse mail;Correo electrónico 
+PASSWORD;Mot de passe;Contraseña
+LOG_IN;Se connecter;Ingresar
+INVALID_EMAIL_OR_PASSWORD;Adresse mail ou mot de passe invalide;Correo electrónico o contraseña inválida 
+DEVICE_NUMBER;Appareil n° {number};Número del dispositivo 
+SETTINGS;Paramètres;Configuración 
 ADULT_CHECK_PROMPT;"Veuillez confirmer que vous êtes un adulte !
-Appuyez sur les touches {1}, {2} et {3}";
-STAR;Étoile;
-BAR;Barre;
-CIRCLE;Cercle;
-PLUS;Plus;
-SQUARE;Carré;
-TRIANGLE;Triangle;
-DOWNLOADING_DATA;Téléchargement des données...;
-BACK;Précédent;
-NEXT;Suivant;
-CANCEL;Annuler;
-ACCOUNT_TYPE_PROMPT;Veuillez sélectionner le type de compte que vous souhaitez créer;
-ACCOUNT_TYPE;Type de compte;
-TEACHER;Enseignant;
-PARENT;Parent;
-EDUCATION_METHOD_PROMPT;Veuillez sélectionner la méthode d'éducation utilisée;
-EDUCATION_METHOD_INFOS;"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier";
-EDUCATION_METHOD;Méthode;
-METHOD_APP_ONLY;Application;
-METHOD_COMPLETE;Complète;
-DEVICE_COUNT_PROMPT;Veuillez sélectionner le nombre d'appareils;
-DEVICE_COUNT_INFOS;Vous pourrez modifier les appareils ultérieurement dans les paramètres;
-DEVICES;Appareils;
-TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};
-TEACHER_STUDENT_COUNT_INFOS;Vous pourrez modifier les élèves pour chaque appareil ultérieurement dans les paramètres;
-STUDENTS;Élèves;
-PARENT_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre de joueurs;
-PARENT_STUDENT_COUNT_INFOS;Vous pourres modifier les joueurs ultérieurement dans les paramètres;
-PLAYERS;Joueurs;
-PLAYER_PROMPT;Veuillez saisir les informations du joueur n° {number};
-PLAYER_LEVEL;Niveau;
-BEGINNER;Débutant;
-REVIEWER;Critique;
-ADULT;Adulte;
-PLAYER_NAME;Prénom;
-PLAYER_AGE;Age;
-CREDENTIALS_PROMPT;Veuillez saisir vos identifiants de connexion;
-CONFIRM_PASSWORD;Confirmer le mot de passe;
+Appuyez sur les touches {1}, {2} et {3}";Confirme que es un adulto! Seleccione {1}, {2} y {3}
+STAR;Étoile;Estrella
+BAR;Barre;Barra
+CIRCLE;Cercle;Círculo 
+PLUS;Plus;Más
+SQUARE;Carré;Cuadrado
+TRIANGLE;Triangle;Triángulo 
+DOWNLOADING_DATA;Téléchargement des données...;Descargando los datos ...
+BACK;Précédent;Atrás 
+NEXT;Suivant;Siguiente
+CANCEL;Annuler;Cancelar
+ACCOUNT_TYPE_PROMPT;Veuillez sélectionner le type de compte que vous souhaitez créer;Seleccionar el tipo de cuenta que desea crear
+ACCOUNT_TYPE;Type de compte;Tipo de cuenta 
+TEACHER;Enseignant;Docente
+PARENT;Parent;Padre
+EDUCATION_METHOD_PROMPT;Veuillez sélectionner la méthode d'éducation utilisée;Seleccionar el método de enseñanza utilizado
+EDUCATION_METHOD_INFOS;"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier";"Elegir ""Completo"" si utilizó igualmente los cuadernos y los juegos en papel"
+EDUCATION_METHOD;Méthode;Método 
+METHOD_APP_ONLY;Application;Aplicación 
+METHOD_COMPLETE;Complète;Completo
+DEVICE_COUNT_PROMPT;Veuillez sélectionner le nombre d'appareils;Seleccionar la cantidad de dispositivos
+DEVICE_COUNT_INFOS;Vous pourrez modifier les appareils ultérieurement dans les paramètres;Puede cambiar los dispositivos más tarde en la configuración.
+DEVICES;Appareils;Dispositivos
+TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};Seleccione la cantidad de estudiantes en el dispositivo n°
+TEACHER_STUDENT_COUNT_INFOS;Vous pourrez modifier les élèves pour chaque appareil ultérieurement dans les paramètres;Puede cambiar los estudiantes en cada dispositivo más tarde en la configuración.
+STUDENTS;Élèves;Estudiantes
+PARENT_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre de joueurs;Por favor, seleccione la cantidad de jugadores
+PARENT_STUDENT_COUNT_INFOS;Vous pourres modifier les joueurs ultérieurement dans les paramètres;Puede modificar los jugadores más tarde en la configuración.
+PLAYERS;Joueurs;Jugadores
+PLAYER_PROMPT;Veuillez saisir les informations du joueur n° {number};Ingrese la información del jugador número: {number}
+PLAYER_LEVEL;Niveau;Nivel
+BEGINNER;Débutant;Principiante
+REVIEWER;Critique;Supervisor
+ADULT;Adulte;Adulto
+PLAYER_NAME;Prénom;Nombre
+PLAYER_AGE;Age;Edad
+CREDENTIALS_PROMPT;Veuillez saisir vos identifiants de connexion;Ingrese los datos de inicio de sesión 
+CONFIRM_PASSWORD;Confirmer le mot de passe;Confirmar la contraseña
 GENERAL_CONDITIONS_TEXT;;
-ACCEPT_GENERAL_CONDITIONS;Accepter les conditions générales;
-ACCEPT_GENERAL_CONDITIONS_ERROR;Veuillez accepter les conditions générales avant de continuer;
-REGISTRATION_SUMMARY;Récapitulatif de l’inscription;
-VALIDATE;Confirmer;
-SUMMARY_EMAIL;Adresse email : {mail};
-SUMMARY_TYPE;Type de compte : {type};
-SUMMARY_METHOD;Méthode d'éducation : {method};
-APPONLY;Application uniquement;
-COMPLETE;Complète (livrets et jeux papiers);
-SUMMARY_NUMBER_OF_DEVICES;Nombre d'appareils : {number};
-SUMMARY_NUMBER_OF_STUDENTS;Nombre d'élèves : {number};
-STUDENT_NUM;Élève n° {number};
-LOGOUT;Déconnexion;
-SETTINGS_ADD_DEVICE;Ajout d'un appareil;
-SETTINGS_ADD_STUDENT;Ajout d'un élève;
-SETTINGS_LESSONS;Leçons;
+ACCEPT_GENERAL_CONDITIONS;Accepter les conditions générales;Aceptar las condiciones generales
+ACCEPT_GENERAL_CONDITIONS_ERROR;Veuillez accepter les conditions générales avant de continuer;Aceptar las condiciones generales antes de avanzar
+REGISTRATION_SUMMARY;Récapitulatif de l’inscription;Resumen del registro
+VALIDATE;Confirmer;Confirmar
+SUMMARY_EMAIL;Adresse email : {mail};Correo electrónico: {mail}
+SUMMARY_TYPE;Type de compte : {type};Tipo de cuenta: {type}
+SUMMARY_METHOD;Méthode d'éducation : {method};Metodo de enseñanza: {method}
+APPONLY;Application uniquement;Solo aplicación 
+COMPLETE;Complète (livrets et jeux papiers);Completo (cuaderno y juegos en papel)
+SUMMARY_NUMBER_OF_DEVICES;Nombre d'appareils : {number};Cantidad de dispositivos: {number}
+SUMMARY_NUMBER_OF_STUDENTS;Nombre d'élèves : {number};Cantidad de estudiantes: {number}
+STUDENT_NUM;Élève n° {number};Estudiante n°: {number}
+LOGOUT;Déconnexion;Cerrar sesión 
+SETTINGS_ADD_DEVICE;Ajout d'un appareil;Agregar un dispositivo
+SETTINGS_ADD_STUDENT;Ajout d'un élève;Agregar un estudiante 
+SETTINGS_LESSONS;Leçons;Lecciones

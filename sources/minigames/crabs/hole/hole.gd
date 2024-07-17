@@ -13,7 +13,7 @@ const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
 @onready var hole_back: Sprite2D = $HoleBack
 @onready var hole_front: Sprite2D = $HoleFront
-@onready var mask: Sprite2D = $Mask
+@onready var mask: Control = %Mask
 @onready var sand_vfx: SandVFX = $SandVFX
 @onready var timer: Timer = $Timer
 @onready var crab_audio_stream_player: CrabAudioStreamPlayer = $CrabAudioStreamPlayer2D
@@ -70,7 +70,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab.hide_label()
 	
 	crab_x = -crab.size.x / 2
-	crab.position = Vector2(crab_x, crab.size.y)
+	crab.position = Vector2(crab_x, crab.size.y / 2)
 	crab.stimulus = stimulus
 	
 	# Show the crab but not the stimulus
@@ -98,7 +98,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	
 	# The crab disappears in the hole
 	tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y), 0.5)
+	tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y / 2), 0.5)
 	if await is_button_pressed_with_limit(tween.finished):
 		return
 	
@@ -127,7 +127,7 @@ func is_button_pressed_with_limit(future : Signal) -> bool:
 		
 		# Make the crab disappear in the hole
 		var tween: = create_tween()
-		tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y), 0.5)
+		tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y / 2), 0.5)
 		await tween.finished
 		
 		crab.queue_free()
@@ -159,18 +159,22 @@ func _set_crab_button_active(is_active : bool) -> void:
 
 func _on_crab_hit(stimulus: Dictionary) -> void:
 	
+	crab.reparent(self)
+	
 	# Emit the stimulus
 	stimulus_hit.emit(stimulus)
 	
 	# Move the crab up and rotate
 	var tween: = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y * 1.5), 0.5)
-	tween.parallel().tween_property(crab.body, "rotation_degrees", 540.0, 0.5)
+	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y * 1.5), 1)
+	tween.parallel().tween_property(crab.body, "rotation_degrees", 900.0, 1)
 	await tween.finished
 
+	crab.reparent(mask)
+	
 	# Make the crab disappear in the hole
 	tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y), 0.5)
+	tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y / 2), 0.5)
 	await tween.finished
 	
 	crab.queue_free()
