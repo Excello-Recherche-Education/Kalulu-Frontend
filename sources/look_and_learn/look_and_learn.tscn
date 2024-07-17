@@ -1,11 +1,14 @@
-[gd_scene load_steps=28 format=3 uid="uid://mnvxfhi70bx5"]
+[gd_scene load_steps=31 format=3 uid="uid://mnvxfhi70bx5"]
 
 [ext_resource type="Script" path="res://sources/look_and_learn/look_and_learn.gd" id="1_12st1"]
-[ext_resource type="Texture2D" uid="uid://7wto45e2d3vd" path="res://assets/look_and_learn/background_lookandlearn.png" id="2_n1cy2"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_2efp5"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="3_7ejv4"]
+[ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="4_1m6x7"]
 [ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_down.png" id="4_adi05"]
+[ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_bxvlx"]
 [ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="5_j5vhb"]
 [ext_resource type="Texture2D" uid="uid://c1i3kqeg7ifoo" path="res://assets/look_and_learn/video_foreground.png" id="6_8san1"]
+[ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_ohnh6"]
 [ext_resource type="Texture2D" uid="uid://c72ebvussuekg" path="res://assets/look_and_learn/video_mask.png" id="7_8pmth"]
 [ext_resource type="Texture2D" uid="uid://dnh4dct8pgcj5" path="res://assets/minigames/minigame_ui/graphic/bush.png" id="8_xb5ul"]
 [ext_resource type="Texture2D" uid="uid://668dh0pix6ld" path="res://assets/look_and_learn/button.png" id="9_lf6b5"]
@@ -553,7 +556,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1, 0.888), Vector2(1, 1.2)]
+"values": [Vector2(1, 0.888), Vector2(1, 1.14)]
 }
 tracks/4/type = "method"
 tracks/4/imported = false
@@ -582,7 +585,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(0, 0, 0, 1), Color(0.580392, 0.541176, 0.768627, 1)]
+"values": [Color(0, 0, 0, 1), Color(0.796078, 0.639216, 1, 1)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -783,6 +786,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_12st1")
+current_button_pressed = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -792,15 +796,29 @@ libraries = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = &"Voice"
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="NightSky" parent="." instance=ExtResource("2_2efp5")]
+layout_mode = 1
+
+[node name="Palm" parent="NightSky" instance=ExtResource("4_1m6x7")]
+position = Vector2(1382, 1710)
+scale = Vector2(3, 3)
+
+[node name="LargeFlower" parent="NightSky" instance=ExtResource("5_bxvlx")]
+position = Vector2(188, 1800)
+scale = Vector2(1.5, 1.5)
+
+[node name="Bush" parent="NightSky" instance=ExtResource("6_ohnh6")]
+position = Vector2(1678, 1942)
+scale = Vector2(2.5, 2.5)
+
+[node name="ColorRect" type="ColorRect" parent="NightSky"]
+modulate = Color(0.478431, 0.419608, 0.666667, 0.611765)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("2_n1cy2")
 
 [node name="LeftContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -939,7 +957,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 175
 text = "f"
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -9,11 +9,8 @@ const letter_segment_class: = preload("res://sources/look_and_learn/letter_segme
 @onready var lower_labels: = %LowerLabels
 @onready var upper_labels: = %UpperLabels
 
-const resource_folder: = "res://language_resources/"
-const language_folder: = "french/"
 const tracing_data_folder: = "tracing_data/"
 const extension: = ".csv"
-
 
 func _process(_delta: float) -> void:
 	place_segments(lower_labels.get_children())
@@ -41,11 +38,6 @@ func reset() -> void:
 
 func setup(grapheme: String) -> void:
 	await reset()
-	
-	if not _is_grapheme_valid(grapheme):
-		finished.emit()
-		return
-	
 	for letter in grapheme:
 		var tracings: = _get_letter_tracings(letter)
 		
@@ -73,16 +65,6 @@ func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lowe
 		var segment: LetterSegment = letter_segment_class.instantiate()
 		label.add_child(segment)
 		segment.setup(points)
-
-
-func _is_grapheme_valid(grapheme: String) -> bool:
-	var is_ok: = true
-	for letter in grapheme:
-		Database.db.query("Select LowerTracingPath, UpperTracingPath FROM LettersTracingData WHERE Letter = '" + letter + "'")
-		if Database.db.query_result.is_empty():
-			is_ok = false
-	
-	return is_ok
 
 
 func _get_letter_tracings(letter: String) -> Dictionary:
