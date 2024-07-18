@@ -15,7 +15,6 @@
 [ext_resource type="Texture2D" uid="uid://cffuqacgb1jra" path="res://assets/lesson_screen/branches.png" id="7_axgdc"]
 [ext_resource type="PackedScene" uid="uid://dl5wx8l0awoi0" path="res://sources/minigames/frog/frog_minigame.tscn" id="7_o1s4m"]
 [ext_resource type="PackedScene" uid="uid://df5oba70wj13y" path="res://sources/minigames/ants/ants_minigame.tscn" id="8_g4mhc"]
-[ext_resource type="PackedScene" uid="uid://bw820nbyowrqy" path="res://sources/lesson_screen/lesson_label_button.tscn" id="8_pehag"]
 [ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="9_68su4"]
 [ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="10_5wvwc"]
 [ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="12_ohgqx"]
@@ -27,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://dlnklpyefn0m2" path="res://assets/lesson_screen/big_button_center.png" id="21_r0a4h"]
 [ext_resource type="Texture2D" uid="uid://dkomjpclxvmqf" path="res://assets/lesson_screen/top_left.png" id="23_p1d10"]
 [ext_resource type="Texture2D" uid="uid://rux5delnabp5" path="res://assets/lesson_screen/top_right.png" id="24_30f83"]
+[ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="25_0ruwb"]
 [ext_resource type="Texture2D" uid="uid://cqhbpt3lk6f15" path="res://assets/lesson_screen/bottom.png" id="25_tyvq6"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ey6av"]
@@ -61,6 +61,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_qlsw4")
 syllable_minigames = Array[PackedScene]([ExtResource("3_vqohy"), ExtResource("4_cvoj1")])
 syllable_minigames_icons = Array[Texture]([ExtResource("5_h8c5w"), ExtResource("6_p30hm")])
@@ -166,6 +167,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
 texture = ExtResource("20_elp7t")
 expand_mode = 1
 stretch_mode = 5
@@ -179,14 +183,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("21_r0a4h")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="MinigameSelection" type="Control" parent="CanvasLayer"]
 unique_name_in_owner = true
-visible = false
 modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(1800, 1800)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -194,6 +199,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(1280, 900)
+mouse_filter = 2
 
 [node name="MinigameBackground1" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
@@ -201,6 +207,7 @@ modulate = Color(0, 0, 0, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1800.0
+mouse_filter = 2
 texture = ExtResource("23_p1d10")
 
 [node name="MinigameBackground2" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
@@ -209,6 +216,7 @@ modulate = Color(0, 0, 0, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1800.0
+mouse_filter = 2
 texture = ExtResource("24_30f83")
 
 [node name="MinigameBackground3" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
@@ -217,6 +225,7 @@ modulate = Color(0, 0, 0, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1800.0
+mouse_filter = 2
 texture = ExtResource("25_tyvq6")
 
 [node name="Branches" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
@@ -229,20 +238,20 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("7_axgdc")
 
-[node name="LessonButton" parent="CanvasLayer/MinigameSelection" instance=ExtResource("8_pehag")]
+[node name="LessonButton" parent="CanvasLayer/MinigameSelection" instance=ExtResource("25_0ruwb")]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 1088.0
-offset_top = 708.0
-offset_right = 1344.0
-offset_bottom = 964.0
-scale = Vector2(1.5, 1.5)
-size_flags_horizontal = 1
-size_flags_vertical = 1
-disabled = true
-
-[node name="Label" parent="CanvasLayer/MinigameSelection/LessonButton" index="1"]
-theme_override_font_sizes/font_size = 92
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -192.0
+offset_right = 192.0
+offset_bottom = 192.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MinigameContainer1" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
@@ -285,8 +294,23 @@ texture_normal = ExtResource("4_neut5")
 texture_pressed = ExtResource("5_2yuxn")
 texture_disabled = ExtResource("6_gs6gi")
 
+[node name="Area2D" type="Area2D" parent="CanvasLayer"]
+z_index = 20
+z_as_relative = false
+monitoring = false
+monitorable = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CanvasLayer/Area2D"]
+position = Vector2(250, 1546)
+polygon = PackedVector2Array(1030, -1546, -250, -1546, -250, 254, 1030, 254, 774, 225, 630, 163, 449, 44, 264, -167, 163, -383, 125, -619, 158, -890, 251, -1101, 390, -1282, 563, -1416, 710, -1490, 838, -1522)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="CanvasLayer/Area2D"]
+position = Vector2(2312, 1544)
+rotation = -3.14159
+scale = Vector2(1, -1)
+polygon = PackedVector2Array(1030, -1546, -250, -1546, -250, 254, 1030, 254, 774, 225, 630, 163, 449, 44, 264, -167, 163, -383, 125, -619, 158, -890, 251, -1101, 390, -1282, 563, -1416, 710, -1490, 838, -1522)
+
 [connection signal="gui_input" from="ScrollContainer" to="." method="_on_scroll_container_gui_input"]
 [connection signal="pressed" from="CanvasLayer/MinigameSelection/LessonButton" to="." method="_on_lesson_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
-
-[editable path="CanvasLayer/MinigameSelection/LessonButton"]
+[connection signal="input_event" from="CanvasLayer/Area2D" to="." method="_on_area_2d_input_event"]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GardensLayout" load_steps=19 format=3]
+[gd_resource type="Resource" script_class="GardensLayout" load_steps=19 format=3 uid="uid://8v0g8bpx5mh0"]
 
 [ext_resource type="Script" path="res://resources/gardens/garden_layout.gd" id="1_gyv0f"]
 [ext_resource type="Script" path="res://resources/gardens/gardens_layout.gd" id="2_w74ow"]
@@ -8,28 +8,28 @@ script = ExtResource("1_gyv0f")
 color = 0
 flowers_export = Array[Dictionary]([{
 "color": 0,
-"position": Vector2i(1576, 1020),
+"position": Vector2i(1464, 1092),
 "type": 4
 }, {
 "color": 0,
-"position": Vector2i(660, 1364),
+"position": Vector2i(512, 884),
 "type": 0
 }, {
 "color": 0,
-"position": Vector2i(380, 452),
+"position": Vector2i(250, 288),
 "type": 3
 }, {
 "color": 0,
-"position": Vector2i(1248, 408),
+"position": Vector2i(1072, 196),
 "type": 1
 }, {
 "color": 0,
-"position": Vector2i(1760, 344),
+"position": Vector2i(1736, 196),
 "type": 2
 }])
 lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(87, -281),
-"position": Vector2i(44, 864)
+"position": Vector2i(121, 841)
 }, {
 "path_out_position": Vector2i(399, 447),
 "position": Vector2i(641, 309)
@@ -47,23 +47,23 @@ script = ExtResource("1_gyv0f")
 color = 1
 flowers_export = Array[Dictionary]([{
 "color": 1,
-"position": Vector2i(1444, 184),
+"position": Vector2i(1494, 20),
 "type": 0
 }, {
 "color": 1,
-"position": Vector2i(1264, 812),
+"position": Vector2i(1198, 256),
 "type": 1
 }, {
 "color": 1,
-"position": Vector2i(1564, 1484),
+"position": Vector2i(1525, 1260),
 "type": 2
 }, {
 "color": 1,
-"position": Vector2i(140, 1164),
+"position": Vector2i(223, 1064),
 "type": 3
 }, {
 "color": 1,
-"position": Vector2i(264, 548),
+"position": Vector2i(668, 736),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -86,11 +86,11 @@ script = ExtResource("1_gyv0f")
 color = 2
 flowers_export = Array[Dictionary]([{
 "color": 13,
-"position": Vector2i(492, 344),
+"position": Vector2i(400, 250),
 "type": 0
 }, {
 "color": 13,
-"position": Vector2i(1588, 152),
+"position": Vector2i(1281, 20),
 "type": 1
 }, {
 "color": 13,
@@ -98,7 +98,7 @@ flowers_export = Array[Dictionary]([{
 "type": 2
 }, {
 "color": 13,
-"position": Vector2i(632, 976),
+"position": Vector2i(557, 936),
 "type": 4
 }, {
 "color": 13,
@@ -125,15 +125,15 @@ script = ExtResource("1_gyv0f")
 color = 3
 flowers_export = Array[Dictionary]([{
 "color": 3,
-"position": Vector2i(380, 912),
+"position": Vector2i(320, 700),
 "type": 0
 }, {
 "color": 3,
-"position": Vector2i(1116, 352),
+"position": Vector2i(868, 316),
 "type": 1
 }, {
 "color": 3,
-"position": Vector2i(788, 1476),
+"position": Vector2i(741, 912),
 "type": 2
 }, {
 "color": 3,
@@ -164,23 +164,23 @@ script = ExtResource("1_gyv0f")
 color = 4
 flowers_export = Array[Dictionary]([{
 "color": 8,
-"position": Vector2i(308, 1328),
+"position": Vector2i(333, 1100),
 "type": 0
 }, {
 "color": 8,
-"position": Vector2i(1416, 388),
+"position": Vector2i(1249, 28),
 "type": 1
 }, {
 "color": 8,
-"position": Vector2i(1656, 1288),
+"position": Vector2i(1705, 532),
 "type": 2
 }, {
 "color": 8,
-"position": Vector2i(1104, 1028),
+"position": Vector2i(985, 708),
 "type": 3
 }, {
 "color": 8,
-"position": Vector2i(368, 320),
+"position": Vector2i(321, 184),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -203,23 +203,23 @@ script = ExtResource("1_gyv0f")
 color = 5
 flowers_export = Array[Dictionary]([{
 "color": 5,
-"position": Vector2i(440, 172),
+"position": Vector2i(540, 388),
 "type": 0
 }, {
 "color": 5,
-"position": Vector2i(1080, 868),
+"position": Vector2i(1104, 1028),
 "type": 1
 }, {
 "color": 5,
-"position": Vector2i(1612, 1540),
+"position": Vector2i(210, 752),
 "type": 2
 }, {
 "color": 5,
-"position": Vector2i(1452, 168),
+"position": Vector2i(540, -24),
 "type": 3
 }, {
 "color": 5,
-"position": Vector2i(1012, 1352),
+"position": Vector2i(1704, 864),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -242,23 +242,23 @@ script = ExtResource("1_gyv0f")
 color = 6
 flowers_export = Array[Dictionary]([{
 "color": 6,
-"position": Vector2i(1500, 1500),
+"position": Vector2i(1375, 980),
 "type": 0
 }, {
 "color": 6,
-"position": Vector2i(284, 304),
+"position": Vector2i(231, 728),
 "type": 1
 }, {
 "color": 6,
-"position": Vector2i(1288, 116),
+"position": Vector2i(1035, 140),
 "type": 2
 }, {
 "color": 6,
-"position": Vector2i(1792, 324),
+"position": Vector2i(1699, 152),
 "type": 3
 }, {
 "color": 6,
-"position": Vector2i(440, 972),
+"position": Vector2i(627, 644),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -281,7 +281,7 @@ script = ExtResource("1_gyv0f")
 color = 7
 flowers_export = Array[Dictionary]([{
 "color": 1,
-"position": Vector2i(1868, 288),
+"position": Vector2i(1366, -28),
 "type": 0
 }, {
 "color": 1,
@@ -289,15 +289,15 @@ flowers_export = Array[Dictionary]([{
 "type": 1
 }, {
 "color": 1,
-"position": Vector2i(380, 892),
+"position": Vector2i(94, 896),
 "type": 2
 }, {
 "color": 1,
-"position": Vector2i(1092, 480),
+"position": Vector2i(1074, 164),
 "type": 3
 }, {
 "color": 1,
-"position": Vector2i(1320, 1008),
+"position": Vector2i(1538, 1036),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -320,7 +320,7 @@ script = ExtResource("1_gyv0f")
 color = 8
 flowers_export = Array[Dictionary]([{
 "color": 14,
-"position": Vector2i(932, 1168),
+"position": Vector2i(1231, 1012),
 "type": 0
 }, {
 "color": 14,
@@ -332,7 +332,7 @@ flowers_export = Array[Dictionary]([{
 "type": 2
 }, {
 "color": 14,
-"position": Vector2i(1572, 192),
+"position": Vector2i(1111, 44),
 "type": 3
 }, {
 "color": 14,
@@ -359,15 +359,15 @@ script = ExtResource("1_gyv0f")
 color = 9
 flowers_export = Array[Dictionary]([{
 "color": 9,
-"position": Vector2i(704, 252),
+"position": Vector2i(629, 80),
 "type": 0
 }, {
 "color": 9,
-"position": Vector2i(1684, 1364),
+"position": Vector2i(1200, 108),
 "type": 1
 }, {
 "color": 9,
-"position": Vector2i(604, 1500),
+"position": Vector2i(541, 896),
 "type": 2
 }, {
 "color": 9,
@@ -375,7 +375,7 @@ flowers_export = Array[Dictionary]([{
 "type": 3
 }, {
 "color": 9,
-"position": Vector2i(1840, 848),
+"position": Vector2i(1588, 452),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -398,15 +398,15 @@ script = ExtResource("1_gyv0f")
 color = 10
 flowers_export = Array[Dictionary]([{
 "color": 10,
-"position": Vector2i(1160, 968),
+"position": Vector2i(950, 1144),
 "type": 0
 }, {
 "color": 10,
-"position": Vector2i(2028, 544),
+"position": Vector2i(1826, 440),
 "type": 1
 }, {
 "color": 10,
-"position": Vector2i(888, 1508),
+"position": Vector2i(926, 480),
 "type": 2
 }, {
 "color": 10,
@@ -437,11 +437,11 @@ script = ExtResource("1_gyv0f")
 color = 11
 flowers_export = Array[Dictionary]([{
 "color": 18,
-"position": Vector2i(912, 276),
+"position": Vector2i(1039, 392),
 "type": 0
 }, {
 "color": 18,
-"position": Vector2i(1132, 1428),
+"position": Vector2i(879, 1168),
 "type": 1
 }, {
 "color": 18,
@@ -449,11 +449,11 @@ flowers_export = Array[Dictionary]([{
 "type": 2
 }, {
 "color": 18,
-"position": Vector2i(1928, 536),
+"position": Vector2i(1919, 236),
 "type": 3
 }, {
 "color": 18,
-"position": Vector2i(136, 1496),
+"position": Vector2i(195, 1104),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -476,23 +476,23 @@ script = ExtResource("1_gyv0f")
 color = 12
 flowers_export = Array[Dictionary]([{
 "color": 12,
-"position": Vector2i(944, 80),
+"position": Vector2i(914, 500),
 "type": 0
 }, {
 "color": 12,
-"position": Vector2i(1444, 1088),
+"position": Vector2i(1638, 736),
 "type": 1
 }, {
 "color": 12,
-"position": Vector2i(2004, 500),
+"position": Vector2i(1958, 248),
 "type": 2
 }, {
 "color": 12,
-"position": Vector2i(672, 1168),
+"position": Vector2i(634, 800),
 "type": 3
 }, {
 "color": 12,
-"position": Vector2i(272, 836),
+"position": Vector2i(354, 732),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -515,23 +515,23 @@ script = ExtResource("1_gyv0f")
 color = 13
 flowers_export = Array[Dictionary]([{
 "color": 2,
-"position": Vector2i(868, 564),
+"position": Vector2i(817, 388),
 "type": 0
 }, {
 "color": 2,
-"position": Vector2i(664, 1200),
+"position": Vector2i(558, 808),
 "type": 1
 }, {
 "color": 2,
-"position": Vector2i(1728, 972),
+"position": Vector2i(1410, 752),
 "type": 2
 }, {
 "color": 2,
-"position": Vector2i(1456, 508),
+"position": Vector2i(1442, 256),
 "type": 3
 }, {
 "color": 2,
-"position": Vector2i(1316, 1372),
+"position": Vector2i(1852, 368),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -554,15 +554,15 @@ script = ExtResource("1_gyv0f")
 color = 14
 flowers_export = Array[Dictionary]([{
 "color": 5,
-"position": Vector2i(1176, 416),
+"position": Vector2i(859, 728),
 "type": 0
 }, {
 "color": 5,
-"position": Vector2i(256, 508),
+"position": Vector2i(239, 208),
 "type": 1
 }, {
 "color": 5,
-"position": Vector2i(1420, 1496),
+"position": Vector2i(943, 136),
 "type": 2
 }, {
 "color": 5,
@@ -593,7 +593,7 @@ script = ExtResource("1_gyv0f")
 color = 15
 flowers_export = Array[Dictionary]([{
 "color": 17,
-"position": Vector2i(1048, 1260),
+"position": Vector2i(1252, 1108),
 "type": 0
 }, {
 "color": 17,
@@ -601,15 +601,15 @@ flowers_export = Array[Dictionary]([{
 "type": 1
 }, {
 "color": 17,
-"position": Vector2i(2064, 1088),
+"position": Vector2i(2060, 940),
 "type": 2
 }, {
 "color": 17,
-"position": Vector2i(972, 140),
+"position": Vector2i(992, -68),
 "type": 3
 }, {
 "color": 17,
-"position": Vector2i(1200, 432),
+"position": Vector2i(944, 640),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{

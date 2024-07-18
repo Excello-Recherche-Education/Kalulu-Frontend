@@ -1,21 +1,50 @@
 extends TextureButton
 
+@export_color_no_alpha var base_color: Color:
+	set = _set_base_color
+@export_color_no_alpha var completed_color: Color:
+	set = _set_completed_color
+@export var text: String:
+	set = _set_text
 @export var completed: = false:
 	set = _set_completed
 
-const completed_up: = preload("res://assets/lesson_screen/button_completed_up.png")
-const completed_down: = preload("res://assets/lesson_screen/button_completed_down.png")
+@onready var center: TextureRect = %Center
+@onready var label: Label = %Label
+@onready var placeholder: TextureRect = %Placeholder
 
-const progress_up: = preload("res://assets/lesson_screen/button_progress_up.png")
-const progress_down: = preload("res://assets/lesson_screen/button_progress_down.png")
+func _ready():
+	_set_base_color(base_color)
+	_set_completed_color(completed_color)
+	_set_text(text)
+
+
+func show_placeholder(is_shown: bool) -> void:
+	placeholder.visible = is_shown
+	label.visible = !is_shown
+
+
+func _set_base_color(color: Color) -> void:
+	base_color = color
+	if center and not completed:
+		center.modulate = color
+
+
+func _set_completed_color(color: Color) -> void:
+	completed_color = color
+	if center and completed:
+		center.modulate = color
+
+
+func _set_text(value: String) -> void:
+	text = value
+	if label:
+		label.text = text
 
 
 func _set_completed(value: bool) -> void:
 	completed = value
-	
 	if completed:
-		texture_normal = completed_up
-		texture_pressed = completed_down
+		center.modulate = completed_color
 	else:
-		texture_normal = progress_up
-		texture_pressed = progress_down
+		center.modulate = base_color
