@@ -188,6 +188,10 @@ func _reset() -> void:
 
 
 func _win() -> void:
+	
+	# Lock the UI
+	minigame_ui.lock()
+	
 	if UserDataManager.student_progression:
 		UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
@@ -211,6 +215,9 @@ func _win() -> void:
 
 
 func _lose() -> void:
+	# Lock the UI
+	minigame_ui.lock()
+	
 	# Remediation
 	if scores:
 		UserDataManager.update_remediation_scores(scores)
