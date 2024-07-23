@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://b1rkn0uwoyd7l"]
+[gd_scene load_steps=44 format=3 uid="uid://b1rkn0uwoyd7l"]
 
 [ext_resource type="Script" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
 [ext_resource type="PackedScene" uid="uid://bxh1torc05k7p" path="res://sources/minigames/crabs/crabs_minigame.tscn" id="3_vqohy"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="5_2yuxn"]
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="5_h8c5w"]
 [ext_resource type="PackedScene" uid="uid://8cbihh6410yp" path="res://sources/minigames/parakeets/parakeets_minigame.tscn" id="5_ix8qe"]
+[ext_resource type="PackedScene" uid="uid://c2160x4hwd3y2" path="res://sources/minigames/caterpillar/caterpillar_minigame.tscn" id="6_flf16"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_gs6gi"]
 [ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="6_hekq6"]
 [ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="6_p30hm"]
@@ -15,19 +16,26 @@
 [ext_resource type="Texture2D" uid="uid://cffuqacgb1jra" path="res://assets/lesson_screen/branches.png" id="7_axgdc"]
 [ext_resource type="PackedScene" uid="uid://dl5wx8l0awoi0" path="res://sources/minigames/frog/frog_minigame.tscn" id="7_o1s4m"]
 [ext_resource type="PackedScene" uid="uid://df5oba70wj13y" path="res://sources/minigames/ants/ants_minigame.tscn" id="8_g4mhc"]
+[ext_resource type="PackedScene" uid="uid://tkfgc7fdyw1a" path="res://sources/minigames/turtles/turtles_minigame.tscn" id="8_ylxff"]
 [ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="9_68su4"]
 [ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="10_5wvwc"]
+[ext_resource type="PackedScene" uid="uid://dpp3bpy1v80jk" path="res://sources/minigames/penguin/penguin_minigame.tscn" id="10_l1gcl"]
 [ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="12_ohgqx"]
 [ext_resource type="PackedScene" uid="uid://df5derhil64ca" path="res://sources/minigames/fish/fish_minigame.tscn" id="15_6dtg2"]
 [ext_resource type="Texture2D" uid="uid://bc3e0qths2cvt" path="res://assets/minigames/fish/fish_icon_full.png" id="16_5rwfp"]
+[ext_resource type="Texture2D" uid="uid://bmdhpgxmur1vo" path="res://assets/minigames/caterpillar/graphics/gauge_icon_caterpillar_full.png" id="16_prl1o"]
 [ext_resource type="AudioStream" uid="uid://4bv1hr6r68op" path="res://assets/gardens/ui_transition_right.mp3" id="17_37f6y"]
+[ext_resource type="Texture2D" uid="uid://rnqme2j272qf" path="res://assets/minigames/turtles/graphic/gauge_icon_turtle_full.png" id="18_12pcf"]
 [ext_resource type="AudioStream" uid="uid://bwgrj3quwtbvm" path="res://assets/gardens/ui_transition_left.mp3" id="18_bdar8"]
 [ext_resource type="Texture2D" uid="uid://bb00fhnenbml5" path="res://assets/lesson_screen/big_button.png" id="20_elp7t"]
+[ext_resource type="Texture2D" uid="uid://dq23np4euf6da" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_full.png" id="20_ouafq"]
 [ext_resource type="Texture2D" uid="uid://dlnklpyefn0m2" path="res://assets/lesson_screen/big_button_center.png" id="21_r0a4h"]
 [ext_resource type="Texture2D" uid="uid://dkomjpclxvmqf" path="res://assets/lesson_screen/top_left.png" id="23_p1d10"]
 [ext_resource type="Texture2D" uid="uid://rux5delnabp5" path="res://assets/lesson_screen/top_right.png" id="24_30f83"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="25_0ruwb"]
 [ext_resource type="Texture2D" uid="uid://cqhbpt3lk6f15" path="res://assets/lesson_screen/bottom.png" id="25_tyvq6"]
+[ext_resource type="Script" path="res://sources/gardens/minigame_layout.gd" id="28_kvgph"]
+[ext_resource type="Shader" path="res://resources/shaders/outline_shader.gdshader" id="29_pew8x"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ey6av"]
 blend_mode = 1
@@ -54,6 +62,33 @@ alpha_curve = SubResource("CurveTexture_upllx")
 hue_variation_min = -1.0
 hue_variation_max = 1.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mpipb"]
+shader = ExtResource("29_pew8x")
+shader_parameter/rainbow = false
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_scale = 1.2
+shader_parameter/frequency = 0.5
+shader_parameter/light_offset = 0.5
+shader_parameter/alpha = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t7vua"]
+shader = ExtResource("29_pew8x")
+shader_parameter/rainbow = false
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_scale = 1.2
+shader_parameter/frequency = 0.5
+shader_parameter/light_offset = 0.5
+shader_parameter/alpha = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_js0rl"]
+shader = ExtResource("29_pew8x")
+shader_parameter/rainbow = false
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_scale = 1.2
+shader_parameter/frequency = 0.5
+shader_parameter/light_offset = 0.5
+shader_parameter/alpha = 1.0
+
 [node name="Gardens" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -63,16 +98,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_qlsw4")
-syllable_minigames = Array[PackedScene]([ExtResource("3_vqohy"), ExtResource("4_cvoj1")])
-syllable_minigames_icons = Array[Texture]([ExtResource("5_h8c5w"), ExtResource("6_p30hm")])
-pairing_minigames = Array[PackedScene]([ExtResource("5_ix8qe")])
-pairing_minigames_icons = Array[Texture]([ExtResource("6_hekq6")])
-words_minigames = Array[PackedScene]([ExtResource("6_r5cos"), ExtResource("7_o1s4m")])
-words_minigames_icons = Array[Texture]([ExtResource("9_68su4"), ExtResource("10_5wvwc")])
-sentences_minigames = Array[PackedScene]([ExtResource("8_g4mhc")])
-sentences_minigames_icons = Array[Texture]([ExtResource("12_ohgqx")])
-boss_minigames = Array[PackedScene]([ExtResource("15_6dtg2")])
-boss_minigames_icons = Array[Texture]([ExtResource("16_5rwfp")])
+minigames_scenes = Array[PackedScene]([ExtResource("4_cvoj1"), ExtResource("3_vqohy"), ExtResource("5_ix8qe"), ExtResource("6_r5cos"), ExtResource("6_flf16"), ExtResource("7_o1s4m"), ExtResource("8_ylxff"), ExtResource("8_g4mhc"), ExtResource("10_l1gcl"), ExtResource("15_6dtg2")])
+minigames_icons = Array[Texture]([ExtResource("6_p30hm"), ExtResource("5_h8c5w"), ExtResource("6_hekq6"), ExtResource("9_68su4"), ExtResource("16_prl1o"), ExtResource("10_5wvwc"), ExtResource("18_12pcf"), ExtResource("12_ohgqx"), ExtResource("20_ouafq"), ExtResource("16_5rwfp")])
 
 [node name="RightAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_37f6y")
@@ -190,6 +217,7 @@ stretch_mode = 5
 
 [node name="MinigameSelection" type="Control" parent="CanvasLayer"]
 unique_name_in_owner = true
+visible = false
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(1800, 1800)
 layout_mode = 3
@@ -203,30 +231,82 @@ mouse_filter = 2
 
 [node name="MinigameBackground1" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
-modulate = Color(0, 0, 0, 0)
 layout_mode = 0
-offset_right = 2560.0
-offset_bottom = 1800.0
+offset_right = 40.0
+offset_bottom = 40.0
 mouse_filter = 2
 texture = ExtResource("23_p1d10")
+script = ExtResource("28_kvgph")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground1"]
+material = SubResource("ShaderMaterial_mpipb")
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+offset_left = 704.0
+offset_top = 576.0
+offset_right = 960.0
+offset_bottom = 832.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("10_5wvwc")
+
+[node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground1"]
+visible = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CanvasLayer/MinigameSelection/MinigameBackground1/Area2D"]
+polygon = PackedVector2Array(1279, 61.6, 1284, 63.6, 1284, 901.8, 1280.8, 905, 1278.5, 905, 556, 1324.3, 554, 1323.2, 554, 1321.5, 513, 1244.5, 513, 1241.3, 489, 1185.4, 489, 1184.3, 467, 1114.3, 467, 1109, 459, 1080.3, 459, 1079, 458.1, 1066, 455, 1061.6, 455, 1060, 446, 1005.2, 446, 1004, 440, 930.1, 440, 865, 441.1, 865, 445.1, 801, 446.3, 801, 460.3, 713, 461.5, 713, 481.5, 638, 482.6, 638, 500.6, 586, 501.7, 586, 513, 562.5, 513, 561.5, 510.8, 557, 513.7, 557, 540.7, 501, 541.9, 501, 570.8, 450, 572.2, 450, 576, 446.2, 574.6, 444.5, 575.7, 442, 577, 442, 587, 429.3, 587, 425.5, 588.8, 422, 590, 422, 639, 357, 640.1, 357, 691.1, 301, 693.1, 301, 745.2, 252, 747.3, 252, 809.3, 204, 811.4, 204, 865.4, 169, 867.5, 169, 957.5, 124, 960.6, 124, 996, 111.6, 996, 111, 1001.3, 107, 1002.9, 107, 1022, 102.5, 1025.2, 99, 1026.8, 99, 1075.7, 85, 1077.2, 85, 1080, 85.5, 1110.7, 77, 1113.2, 77, 1115.6, 77.6, 1118.2, 75, 1119.7, 75, 1182.8, 65, 1184.8, 65, 1185.8, 66, 1204.8, 63, 1207.6, 63, 1209.2, 64.1, 1212.4, 62, 1214.5, 62, 1216.6, 63.1, 1252, 61.1, 1252, 60, 1279, 60)
 
 [node name="MinigameBackground2" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
-modulate = Color(0, 0, 0, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1800.0
 mouse_filter = 2
 texture = ExtResource("24_30f83")
+script = ExtResource("28_kvgph")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground2"]
+material = SubResource("ShaderMaterial_t7vua")
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+offset_left = 1600.0
+offset_top = 576.0
+offset_right = 1856.0
+offset_bottom = 832.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("10_5wvwc")
+
+[node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground2"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CanvasLayer/MinigameSelection/MinigameBackground2/Area2D"]
+polygon = PackedVector2Array(1378, 65.1, 1378, 66.3, 1457, 78.3, 1457, 79.5, 1537, 99.4, 1537, 100.6, 1608, 125.6, 1608, 126.7, 1663, 151.7, 1663, 153, 1671.5, 159, 1673.3, 159, 1682, 161.5, 1682, 162.9, 1750, 202.9, 1750, 204, 1801, 240, 1801, 241.1, 1839, 272.1, 1839, 273.1, 1879, 310.1, 1879, 312.4, 1880.1, 314, 1885, 315.6, 1885, 318.2, 1936, 374.2, 1936, 376.3, 1983, 438.3, 1983, 439.5, 2026, 511.4, 2026, 515.5, 2044, 547.5, 2044, 548.6, 2045.7, 557, 2046.3, 557, 2061, 587.5, 2061, 590.6, 2082, 646.6, 2082, 651, 2082.7, 655, 2087, 661.4, 2087, 663, 2107, 744.8, 2107, 748, 2119, 835.9, 2119, 837, 2121, 923, 2120, 923, 2120, 955, 2118.8, 955, 2111.8, 1029, 2110.7, 1029, 2104.7, 1068, 2103.7, 1068, 2098.7, 1096, 2097.5, 1096, 2088, 1127.3, 2088, 1128.7, 2089.8, 1134, 2087.4, 1134, 2052.4, 1235, 2051.3, 1235, 2017.3, 1306, 2016.3, 1306, 2010.2, 1317, 2008.5, 1317, 2003, 1320.3, 2001, 1319.2, 2001, 1318.1, 1276, 902.2, 1276, 63.9, 1279, 61.9, 1279, 59.9)
 
 [node name="MinigameBackground3" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 unique_name_in_owner = true
-modulate = Color(0, 0, 0, 0)
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1800.0
 mouse_filter = 2
 texture = ExtResource("25_tyvq6")
+script = ExtResource("28_kvgph")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground3"]
+material = SubResource("ShaderMaterial_js0rl")
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+offset_left = 1152.0
+offset_top = 1248.0
+offset_right = 1408.0
+offset_bottom = 1504.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("10_5wvwc")
+
+[node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground3"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CanvasLayer/MinigameSelection/MinigameBackground3/Area2D"]
+polygon = PackedVector2Array(1902, 1250.8, 1902, 1251.9, 2010.3, 1316.1, 2009.5, 1319, 2008.1, 1319, 1986.2, 1358, 1985, 1358, 1974, 1371.7, 1974, 1372.4, 1970.4, 1382, 1969, 1382, 1916, 1451, 1914.9, 1451, 1865.9, 1504, 1863.8, 1504, 1827.8, 1539, 1825.7, 1539, 1791.7, 1568, 1789.6, 1568, 1720.6, 1617, 1717.7, 1617, 1702.7, 1628, 1700.5, 1628, 1633.5, 1664, 1632.6, 1664, 1556.4, 1695, 1555.1, 1695, 1509, 1707.5, 1509, 1708.3, 1498.4, 1713, 1497.4, 1713, 1407.2, 1732, 1406.2, 1732, 1330.1, 1740, 1328, 1740, 1254, 1741, 1254, 1739.9, 1184, 1735.9, 1184, 1734.8, 1112, 1724.7, 1112, 1723.5, 1094.7, 1718, 1085, 1719.3, 1085, 1717.4, 1072.6, 1713, 1065, 1714.4, 1065, 1712.4, 1030.7, 1701, 1030.1, 1701, 1024, 1702.6, 1024, 1700.5, 1009, 1696.5, 1009, 1695, 1006.3, 1693, 994, 1691.8, 994, 1690.4, 969, 1681.4, 969, 1680.1, 964.3, 1677, 962.8, 1677, 961.5, 1678.4, 959, 1677.3, 959, 1676.4, 924, 1662.4, 924, 1661.3, 875, 1637.2, 875, 1636.1, 826, 1608.2, 826, 1607.1, 781, 1577.1, 781, 1576, 738, 1543, 738, 1541.9, 695, 1503.9, 695, 1502.8, 661, 1468.8, 661, 1466.7, 615, 1414.8, 615, 1412.7, 582, 1368.7, 582, 1365.6, 553.7, 1321.1, 554.8, 1319, 556, 1319, 560, 1314, 562.5, 1314, 619.4, 1279, 621.5, 1279, 1276, 897.9, 1276, 894.6)
 
 [node name="Branches" type="TextureRect" parent="CanvasLayer/MinigameSelection"]
 layout_mode = 1
@@ -252,36 +332,6 @@ offset_right = 192.0
 offset_bottom = 192.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="MinigameContainer1" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
-unique_name_in_owner = true
-layout_mode = 2
-offset_left = 640.0
-offset_top = 576.0
-offset_right = 1152.0
-offset_bottom = 832.0
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="MinigameContainer2" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
-unique_name_in_owner = true
-layout_mode = 2
-offset_left = 1408.0
-offset_top = 576.0
-offset_right = 1920.0
-offset_bottom = 832.0
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="MinigameContainer3" type="HFlowContainer" parent="CanvasLayer/MinigameSelection"]
-unique_name_in_owner = true
-layout_mode = 2
-offset_left = 1024.0
-offset_top = 1216.0
-offset_right = 1536.0
-offset_bottom = 1472.0
-size_flags_horizontal = 3
-alignment = 1
 
 [node name="BackButton" type="TextureButton" parent="CanvasLayer"]
 unique_name_in_owner = true

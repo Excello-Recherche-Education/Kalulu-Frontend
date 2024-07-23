@@ -4,7 +4,21 @@ class_name Minigame
 
 const Gardens: = preload("res://sources/gardens/gardens.gd")
 
-@export var minigame_name: = "Minigame"
+enum Type {
+	jellyfish,
+	crabs,
+	parakeets,
+	monkey,
+	caterpillar,
+	frog,
+	turtles,
+	ants,
+	penguin,
+	fish
+}
+
+
+@export var minigame_name: Type
 
 @export var lesson_nb: = 1
 @export_range(0, 4) var difficulty: = 0
@@ -103,11 +117,11 @@ func _ready() -> void:
 	
 	# Difficulty
 	if UserDataManager._student_difficulty:
-		difficulty = UserDataManager.get_difficulty_for_minigame(minigame_name)
+		difficulty = UserDataManager.get_difficulty_for_minigame(Type.keys()[minigame_name])
 	
-	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "intro"))
-	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "help"))
-	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "end"))
+	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "intro"))
+	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "help"))
+	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "end"))
 	lose_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path("minigame", "lose"))
 	
 	if not Engine.is_editor_hint():
@@ -178,7 +192,7 @@ func _win() -> void:
 		UserDataManager.update_remediation_scores(scores)
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(minigame_name, true)
+	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name], true)
 	
 	audio_player.stream = win_sound_fx
 	audio_player.play()
@@ -198,7 +212,7 @@ func _lose() -> void:
 		UserDataManager.update_remediation_scores(scores)
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(minigame_name, false)
+	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name], false)
 	
 	audio_player.stream = lose_sound_fx
 	audio_player.play()
@@ -214,7 +228,7 @@ func _lose() -> void:
 #region Logs
 
 func _save_logs() -> void:
-	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), minigame_name, lesson_nb, Time.get_time_string_from_system())
+	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name], lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
@@ -229,7 +243,7 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"reponse": response,
 		"awaited_response": current_stimulus,
 		"is_right": response == current_stimulus,
-		"minigame": minigame_name,
+		"minigame": Type.keys()[minigame_name],
 		"number_of_hints": current_number_of_hints,
 		"current_progression": current_progression,
 		"max_progression": max_progression,

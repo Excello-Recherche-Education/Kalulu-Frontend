@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dv1ombj8eolb1" path="res://assets/minigames/parakeets/graphic/background.png" id="3_xjvte"]
 [ext_resource type="Texture2D" uid="uid://clvh07xfgjmri" path="res://assets/minigames/parakeets/graphic/tree_trunk.png" id="4_unuga"]
 [ext_resource type="Texture2D" uid="uid://d3n327me83on7" path="res://assets/minigames/parakeets/graphic/tree_branch.png" id="5_46kss"]
-[ext_resource type="Shader" path="res://resources/move_shader.gdshader" id="5_q7573"]
+[ext_resource type="Shader" path="res://resources/shaders/move_shader.gdshader" id="5_q7573"]
 [ext_resource type="Texture2D" uid="uid://dpx72xoqt8lkq" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_empty.png" id="5_yt7mv"]
 [ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="6_46vnr"]
 [ext_resource type="Texture2D" uid="uid://sjxhvbq8ijbw" path="res://assets/minigames/parakeets/graphic/nest_back.png" id="6_g64mq"]
@@ -18,7 +18,7 @@ shader_parameter/direction = Vector2(0.015, 0)
 [node name="Parakeets" instance=ExtResource("1_oeg4r")]
 script = ExtResource("2_x6xn5")
 fly_duration = 3.0
-minigame_name = "parakeets"
+minigame_name = 2
 lesson_nb = 4
 difficulty = 4
 max_number_of_lives = 5

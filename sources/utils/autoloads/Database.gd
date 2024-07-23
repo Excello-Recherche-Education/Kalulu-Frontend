@@ -80,22 +80,29 @@ func load_additional_word_list() -> String:
 	return ""
 
 
-func get_exercice_for_lesson(lesson_nb: int) -> Array[String]:
+func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
 	var query: = "Select Exercise1, Exercise2, Exercise3 FROM LessonsExercises
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
 	WHERE LessonNB == " + str(lesson_nb)
-	Database.db.query(query)
+	db.query(query)
 	
-	var answer: Array[String]
-	for res in Database.db.query_result:
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise1))
-		answer.append(Database.db.query_result[0].Type)
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise2))
-		answer.append(Database.db.query_result[0].Type)
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise3))
-		answer.append(Database.db.query_result[0].Type)
+	#var answer: Array[String]
+	#for res in Database.db.query_result:
+	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise1))
+	#	answer.append(Database.db.query_result[0].Type)
+	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise2))
+	#	answer.append(Database.db.query_result[0].Type)
+	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise3))
+	#	answer.append(Database.db.query_result[0].Type)
+	#return answer
 	
-	return answer
+	var result: Array[int]
+	for e in db.query_result:
+		result.append(e.Exercise1)
+		result.append(e.Exercise2)
+		result.append(e.Exercise3)
+	
+	return result
 
 
 func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false) -> Array:
