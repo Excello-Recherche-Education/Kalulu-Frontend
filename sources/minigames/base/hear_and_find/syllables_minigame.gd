@@ -208,7 +208,7 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		# Handles the pressed stimulus Gps
 		if stimulus.has("GPs"):
 			for i in stimulus.GPs.size():
-				if i <= right_answer.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
+				if i < right_answer.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
 					continue
 				_update_score(stimulus.GPs[i].ID, -1)
 	return true

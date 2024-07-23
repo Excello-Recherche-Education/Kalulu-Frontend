@@ -25,7 +25,7 @@ enum Type {
 @export_range(0, 1) var current_lesson_stimuli_ratio : float = 0.7
 @export var minigame_number: = 1
 
-@export_group("Difficulty")
+@export_category("Difficulty")
 @export var max_number_of_lives: = 0 :
 	set(value):
 		max_number_of_lives = value
@@ -37,6 +37,10 @@ enum Type {
 		max_progression = value
 		if minigame_ui:
 			minigame_ui.set_max_progression(value)
+
+@export_category("Hints")
+@export var errors_before_help_speech: int = 2
+@export var errors_before_highlight: int = 3
 
 @onready var minigame_ui: = $MinigameUI
 @onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
@@ -75,10 +79,10 @@ var current_lives: = 0 :
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
 		
-		if previous_lives == max_number_of_lives and current_lives < previous_lives:
-			_first_error_hint()
-		elif consecutive_errors == 2:
-			_two_errors_hint()
+		if current_lives == max_number_of_lives - errors_before_help_speech:
+			_play_kalulu_help_speech()
+		elif consecutive_errors == errors_before_highlight:
+			is_highlighting = true
 		
 		if minigame_ui:
 			minigame_ui.set_number_of_lives(value)
@@ -316,12 +320,9 @@ func _stop_highlight() -> void:
 	pass
 
 
-func _first_error_hint() -> void:
+func _play_kalulu_help_speech() -> void:
 	minigame_ui.play_kalulu_speech(help_kalulu_speech)
 
-
-func _two_errors_hint() -> void:
-	is_highlighting = true
 
 #endregion
 
