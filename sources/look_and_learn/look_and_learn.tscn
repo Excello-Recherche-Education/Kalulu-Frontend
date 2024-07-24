@@ -915,6 +915,7 @@ offset_right = 1556.0
 offset_bottom = 1061.0
 mouse_filter = 2
 expand = true
+buffering_msec = 100
 bus = &"Voice"
 
 [node name="GraphemeButton" type="TextureButton" parent="."]

@@ -12,14 +12,6 @@ extends Control
 @onready var grapheme_particles: = $GraphemeParticles
 
 const Gardens: = preload("res://sources/gardens/gardens.gd")
-const resource_folder: = "res://language_resources/"
-const language_folder: = "french/"
-const image_folder: = "look_and_learn/images/"
-const sound_folder: = "look_and_learn/sounds/"
-const video_folder: = "look_and_learn/video/"
-const video_extension: = ".ogv"
-const image_extension: = ".png"
-const sound_extension: = ".mp3"
 
 var gp_list: Array[Dictionary]
 

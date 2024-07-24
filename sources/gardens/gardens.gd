@@ -10,11 +10,14 @@ const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_lea
 
 const garden_size: = 2400
 
-
+@export_category("Layout")
 @export var gardens_layout: GardensLayout:
 	set = set_gardens_layout
-
 @export var starting_garden: = -1
+
+@export_category("Colors")
+@export var unlocked_color: = Color("1c2662")
+@export var locked_color: = Color("1d2229")
 
 @export_group("Minigames")
 @export var minigames_scenes: Array[PackedScene]
@@ -120,7 +123,7 @@ func get_gardens_db_data() -> void:
 		lessons[e.LessonNb].append({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
 
 
-func _setup_minigame_selection() -> void:
+func _setup_minigame_selection() -> bool:
 	
 	var garden: Garden = garden_parent.get_child(current_garden)
 	
@@ -128,6 +131,8 @@ func _setup_minigame_selection() -> void:
 		button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	var exercises: = Database.get_exercice_for_lesson(current_lesson_number)
+	if not exercises or exercises.size() < 3:
+		return false
 	
 	if lesson_button and UserDataManager.student_progression:
 		var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[current_lesson_number]
@@ -142,19 +147,28 @@ func _setup_minigame_selection() -> void:
 		_fill_minigame_choice(minigame_layout_1, exercises[0], lesson_unlocks["games"][0], 0)
 		_fill_minigame_choice(minigame_layout_2, exercises[1], lesson_unlocks["games"][1], 1)
 		_fill_minigame_choice(minigame_layout_3, exercises[2], lesson_unlocks["games"][2], 2)
+		
+		if lesson_unlocks["games"][0] == UserProgression.Status.Locked and lesson_unlocks["games"][1] == UserProgression.Status.Locked and lesson_unlocks["games"][2] == UserProgression.Status.Locked:
+			minigame_background_center.modulate = locked_color
+		elif lesson_unlocks["games"][0] == UserProgression.Status.Completed and lesson_unlocks["games"][1] == UserProgression.Status.Completed and lesson_unlocks["games"][2] == UserProgression.Status.Completed:
+			minigame_background_center.modulate = garden.color
+		else:
+			minigame_background.modulate = unlocked_color
+		
+	return true
 
 
 func _fill_minigame_choice(layout: MinigameLayout, exercise_type: int, status: UserProgression.Status, minigame_number: int) -> void:
 	
 	if status == UserProgression.Status.Completed:
 		layout.self_modulate = garden_parent.get_child(current_garden).color
+	elif status == UserProgression.Status.Locked:
+		layout.self_modulate = locked_color
 	else:
 		layout.self_modulate = Color(0.0, 0.0, 0.0, 0.0)
 	
 	layout.icon.texture = minigames_icons[exercise_type-1]
-	
-	if status == UserProgression.Status.Locked:
-		layout.is_disabled = true
+	layout.is_disabled = status == UserProgression.Status.Locked
 	
 	layout.pressed.connect(_on_minigame_button_pressed.bind(minigames_scenes[exercise_type-1], minigame_number))
 
@@ -213,15 +227,18 @@ func _on_garden_lesson_button_pressed(button: LessonButton, lesson_ind: int, gar
 	if in_minigame_selection:
 		return
 	
+	current_lesson_number = lesson_ind
+	current_garden = garden_ind
+	if not _setup_minigame_selection():
+		return
+	
 	if button:
 		button_global_position = button.global_position
 		current_button = button
 		current_button.show_placeholder(true)
 	
 	current_button_global_position = button_global_position
-	current_lesson_number = lesson_ind
-	current_garden = garden_ind
-	_setup_minigame_selection()
+	
 	
 	minigame_selection.visible = true
 	back_button.visible = false
