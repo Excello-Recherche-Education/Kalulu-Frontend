@@ -11,16 +11,16 @@ step_name = "students"
 question = "TEACHER_STUDENT_COUNT_PROMPT"
 infos = "TEACHER_STUDENT_COUNT_INFOS"
 
-[node name="StudentsCountContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
+[node name="StudentsCountContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
 layout_mode = 2
 
-[node name="StudentsCountFieldLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/StudentsCountContainer" index="0"]
+[node name="StudentsCountFieldLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/StudentsCountContainer" index="0"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 50
 text = "STUDENTS"
 
-[node name="StudentsCountField" type="SpinBox" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/StudentsCountContainer" index="1"]
+[node name="StudentsCountField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/StudentsCountContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

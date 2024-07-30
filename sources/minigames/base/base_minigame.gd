@@ -192,6 +192,9 @@ func _win() -> void:
 	# Lock the UI
 	minigame_ui.lock()
 	
+	if gardens_data:
+		gardens_data.minigame_completed = true
+	
 	if UserDataManager.student_progression:
 		UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
@@ -217,6 +220,9 @@ func _win() -> void:
 func _lose() -> void:
 	# Lock the UI
 	minigame_ui.lock()
+	
+	if gardens_data:
+		gardens_data.minigame_completed = false
 	
 	# Remediation
 	if scores:

@@ -23,21 +23,22 @@ rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.g
 question = "EDUCATION_METHOD_PROMPT"
 infos = "EDUCATION_METHOD_INFOS"
 
-[node name="MethodContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
+[node name="MethodContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
 layout_mode = 2
 
-[node name="MethodSelectLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer" index="0"]
+[node name="MethodSelectLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer" index="0"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 50
 text = "EDUCATION_METHOD"
+autowrap_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MethodSelect" type="ItemList" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/VBoxContainer" index="0"]
+[node name="MethodSelect" type="ItemList" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 auto_height = true
@@ -46,16 +47,20 @@ item_0/text = "METHOD_APP_ONLY"
 item_1/text = "METHOD_COMPLETE"
 script = ExtResource("2_qrbn1")
 
-[node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="1"]
+[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="1"]
 script = ExtResource("2_03dua")
 validator = SubResource("Resource_ar6ux")
 
-[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="2"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="2"]
+layout_mode = 2
 anchors_preset = 0
+offset_top = 236.0
+offset_right = 411.0
+offset_bottom = 236.0
 script = ExtResource("4_1k1yt")
 property_name = "education_method"
 
-[node name="MethodSelectError" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/MethodContainer/VBoxContainer" index="1"]
+[node name="MethodSelectError" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer" index="1"]
 visible = false
 layout_mode = 2
 text = "Test"

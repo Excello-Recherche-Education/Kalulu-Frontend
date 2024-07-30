@@ -1,4 +1,5 @@
 extends Control
+signal minigame_layout_opened()
 
 # Namespace
 const LookAndLearn: = preload("res://sources/look_and_learn/look_and_learn.gd")
@@ -55,15 +56,12 @@ static var transition_data: Dictionary
 
 
 func _ready() -> void:
-	OpeningCurtain.open()
 	if not gardens_layout:
 		gardens_layout = load("res://resources/gardens/gardens_layout.tres")
 	else:
 		set_gardens_layout(gardens_layout)
 	get_gardens_db_data()
 	set_up_lessons()
-	
-	_back_to_correct_spot()
 	
 	await get_tree().process_frame
 	
@@ -94,6 +92,9 @@ func _ready() -> void:
 						break
 					lesson_ind += 1
 	
+	await OpeningCurtain.open()
+	
+	_back_to_correct_spot()
 	scroll_container.scroll_horizontal = garden_size * starting_garden
 
 
@@ -102,7 +103,17 @@ func _back_to_correct_spot() -> void:
 		return
 	starting_garden = transition_data.current_garden
 	await get_tree().process_frame
-	_on_garden_lesson_button_pressed(null, transition_data.current_lesson_number, transition_data.current_garden, transition_data.current_button_global_position)
+	
+	# Re-open the minigames layout
+	# If the minigame is completed: play an animation
+	await _open_minigames_layout(null, transition_data.current_lesson_number, transition_data.current_garden, transition_data.current_button_global_position)
+	
+	# If the lesson is completed:
+	# - close the layout TODO
+	# - fill in the path towards the next lesson TODO
+	# - enable the next lesson button TODO
+	
+	
 	transition_data = {}
 
 
@@ -123,54 +134,121 @@ func get_gardens_db_data() -> void:
 		lessons[e.LessonNb].append({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
 
 
-func _setup_minigame_selection() -> bool:
+func _open_minigames_layout(button: LessonButton, lesson_ind: int, garden_ind: int, button_global_position: = Vector2.ZERO) -> void:
+	if in_minigame_selection or not UserDataManager.student_progression:
+		return
 	
+	# Gets the correct exercises for the lesson
+	var exercises: = Database.get_exercice_for_lesson(lesson_ind)
+	if not exercises or exercises.size() < 3:
+		return
+	
+	# Sets the variables for the current garden and lesson
+	current_lesson_number = lesson_ind
+	current_garden = garden_ind
+	if button:
+		button_global_position = button.global_position
+		current_button = button
+		current_button.show_placeholder(true)
+	current_button_global_position = button_global_position
+	
+	# Gets the current garden node
 	var garden: Garden = garden_parent.get_child(current_garden)
 	
-	for button in garden.lesson_button_controls:
-		button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Gets the current lesson unlocks
+	var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[current_lesson_number]
 	
-	var exercises: = Database.get_exercice_for_lesson(current_lesson_number)
-	if not exercises or exercises.size() < 3:
-		return false
+	# Desactivate the mouse filters on the buttons behind the layout
+	for b: LessonButton in garden.lesson_button_controls:
+		b.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
-	if lesson_button and UserDataManager.student_progression:
-		var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[current_lesson_number]
-		
-		lesson_button.text = lessons[current_lesson_number][0].grapheme
-		lesson_button.completed_color = garden.color
-		if lesson_unlocks["look_and_learn"] == UserProgression.Status.Locked:
-			lesson_button.disabled = true
-		else:
-			lesson_button.completed = lesson_unlocks["look_and_learn"] == UserProgression.Status.Completed
-		
-		_fill_minigame_choice(minigame_layout_1, exercises[0], lesson_unlocks["games"][0], 0)
-		_fill_minigame_choice(minigame_layout_2, exercises[1], lesson_unlocks["games"][1], 1)
-		_fill_minigame_choice(minigame_layout_3, exercises[2], lesson_unlocks["games"][2], 2)
-		
-		if lesson_unlocks["games"][0] == UserProgression.Status.Locked and lesson_unlocks["games"][1] == UserProgression.Status.Locked and lesson_unlocks["games"][2] == UserProgression.Status.Locked:
-			minigame_background_center.modulate = locked_color
-		elif lesson_unlocks["games"][0] == UserProgression.Status.Completed and lesson_unlocks["games"][1] == UserProgression.Status.Completed and lesson_unlocks["games"][2] == UserProgression.Status.Completed:
-			minigame_background_center.modulate = garden.color
-		else:
-			minigame_background.modulate = unlocked_color
-		
-	return true
+	# Background
+	if lesson_unlocks["games"][0] == UserProgression.Status.Locked and lesson_unlocks["games"][1] == UserProgression.Status.Locked and lesson_unlocks["games"][2] == UserProgression.Status.Locked:
+		minigame_background_center.modulate = locked_color
+	elif lesson_unlocks["games"][0] == UserProgression.Status.Completed and lesson_unlocks["games"][1] == UserProgression.Status.Completed and lesson_unlocks["games"][2] == UserProgression.Status.Completed:
+		minigame_background_center.modulate = garden.color
+	else:
+		minigame_background_center.modulate = unlocked_color
+	
+	# Lesson button
+	lesson_button.text = lessons[current_lesson_number][0].grapheme
+	lesson_button.completed_color = garden.color
+	lesson_button.disabled = lesson_unlocks["look_and_learn"] == UserProgression.Status.Locked
+	lesson_button.completed = lesson_unlocks["look_and_learn"] == UserProgression.Status.Completed
+	
+	# Minigames
+	_fill_minigame_choice(minigame_layout_1, exercises[0], lesson_unlocks["games"][0], 0)
+	_fill_minigame_choice(minigame_layout_2, exercises[1], lesson_unlocks["games"][1], 1)
+	_fill_minigame_choice(minigame_layout_3, exercises[2], lesson_unlocks["games"][2], 2)
+	
+	# Animations
+	minigame_selection.visible = true
+	back_button.visible = false
+	
+	minigame_background.size = 300.0 * Vector2.ONE
+	minigame_background.global_position = current_button_global_position
+	minigame_background.visible = true
+	
+	var tween: = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(minigame_background, "scale", (1800.0 / 300.0) * Vector2.ONE, 0.25)
+	tween.tween_property(minigame_background, "global_position", Vector2(380.0, 0), 0.25)
+	tween.chain().tween_property(minigame_selection, "modulate:a", 1.0, 0.25)
+	await tween.finished
+	
+	in_minigame_selection = true
+	minigame_layout_opened.emit()
 
 
 func _fill_minigame_choice(layout: MinigameLayout, exercise_type: int, status: UserProgression.Status, minigame_number: int) -> void:
 	
+	layout.icon.texture = minigames_icons[exercise_type-1]
+	layout.is_disabled = status == UserProgression.Status.Locked
+	
 	if status == UserProgression.Status.Completed:
 		layout.self_modulate = garden_parent.get_child(current_garden).color
+		
+		#if transition_data and transition_data.minigame_completed and transition_data.minigame_number == minigame_number:
+		#	layout.self_modulate.a = 0
+		#	await minigame_layout_opened
+		#	# TODO REVOIR L'ANIMATION
+		#	var tween: = create_tween().tween_property(layout, "self_modulate:a", 1, 0.5)
 	elif status == UserProgression.Status.Locked:
 		layout.self_modulate = locked_color
 	else:
 		layout.self_modulate = Color(0.0, 0.0, 0.0, 0.0)
-	
-	layout.icon.texture = minigames_icons[exercise_type-1]
-	layout.is_disabled = status == UserProgression.Status.Locked
-	
+
 	layout.pressed.connect(_on_minigame_button_pressed.bind(minigames_scenes[exercise_type-1], minigame_number))
+
+
+func _close_minigames_layout() -> void:
+	if not in_minigame_selection:
+		return
+			
+	var tween: = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(minigame_selection, "modulate:a", 0.0, 0.25)
+	var other_tween: = tween.chain()
+	other_tween.tween_property(minigame_background, "scale", Vector2.ONE, 0.25)
+	other_tween.tween_property(minigame_background, "global_position", current_button_global_position, 0.25)
+	await tween.finished
+	
+	if current_button:
+		current_button.show_placeholder(false)
+	
+	minigame_selection.visible = false
+	minigame_background.visible = false
+	back_button.visible = true
+	
+	# Handles lesson buttons
+	_on_progression_unlocks_changed()
+	
+	for button in garden_parent.get_child(current_garden).lesson_button_controls:
+		button.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	minigame_layout_1.pressed.disconnect(_on_minigame_button_pressed)
+	minigame_layout_2.pressed.disconnect(_on_minigame_button_pressed)
+	minigame_layout_3.pressed.disconnect(_on_minigame_button_pressed)
+	
+	in_minigame_selection = false
 
 
 func set_up_lessons() -> void:
@@ -223,38 +301,9 @@ func set_up_path() -> void:
 	locked_line.points = curve.get_baked_points()
 
 
-func _on_garden_lesson_button_pressed(button: LessonButton, lesson_ind: int, garden_ind: int, button_global_position: = Vector2.ZERO, tween_duration: = 0.25) -> void:
-	if in_minigame_selection:
-		return
-	
-	current_lesson_number = lesson_ind
-	current_garden = garden_ind
-	if not _setup_minigame_selection():
-		return
-	
-	if button:
-		button_global_position = button.global_position
-		current_button = button
-		current_button.show_placeholder(true)
-	
-	current_button_global_position = button_global_position
-	
-	
-	minigame_selection.visible = true
-	back_button.visible = false
-	
-	minigame_background.size = 300.0 * Vector2.ONE
-	minigame_background.global_position = current_button_global_position
-	minigame_background.visible = true
-	
-	var tween: = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	tween.tween_property(minigame_background, "scale", (1800.0 / 300.0) * Vector2.ONE, tween_duration)
-	tween.tween_property(minigame_background, "global_position", Vector2(380.0, 0), tween_duration)
-	tween.chain().tween_property(minigame_selection, "modulate:a", 1.0, tween_duration)
-	await tween.finished
-	
-	back_button.disabled = false
-	in_minigame_selection = true
+func _on_garden_lesson_button_pressed(button: LessonButton, lesson_ind: int, garden_ind: int, button_global_position: = Vector2.ZERO) -> void:
+	# Play a sound TODO
+	_open_minigames_layout(button, lesson_ind, garden_ind, button_global_position)
 
 
 func _on_lesson_button_pressed() -> void:
@@ -276,6 +325,7 @@ func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: i
 		current_lesson_number = current_lesson_number,
 		current_garden = current_garden,
 		minigame_number = minigame_number,
+		minigame_completed = false
 	}
 	get_tree().change_scene_to_packed(minigame_scene)
 
@@ -340,7 +390,6 @@ func _on_progression_unlocks_changed() -> void:
 		
 		garden_control.update_flowers()
 	
-	lesson_ind = 1
 	var curve: = Curve2D.new()
 	for i in range(UserDataManager.student_progression.get_max_unlocked_lesson() + 1):
 		curve.add_point(points[i][0], points[i][1], points[i][2])
@@ -387,31 +436,5 @@ func _on_back_button_pressed() -> void:
 
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
-	if event.is_action_pressed("left_click"):
-		if in_minigame_selection:
-			
-			var tween: = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-			tween.tween_property(minigame_selection, "modulate:a", 0.0, 0.25)
-			var other_tween: = tween.chain()
-			other_tween.tween_property(minigame_background, "scale", Vector2.ONE, 0.25)
-			other_tween.tween_property(minigame_background, "global_position", current_button_global_position, 0.25)
-			await tween.finished
-			
-			if current_button:
-				current_button.show_placeholder(false)
-			
-			minigame_selection.visible = false
-			minigame_background.visible = false
-			back_button.visible = true
-			
-			# Handles lesson buttons
-			_on_progression_unlocks_changed()
-			
-			for button in garden_parent.get_child(current_garden).lesson_button_controls:
-				button.mouse_filter = Control.MOUSE_FILTER_STOP
-			
-			minigame_layout_1.pressed.disconnect(_on_minigame_button_pressed)
-			minigame_layout_2.pressed.disconnect(_on_minigame_button_pressed)
-			minigame_layout_3.pressed.disconnect(_on_minigame_button_pressed)
-			
-			in_minigame_selection = false
+	if event.is_action_pressed("left_click") and in_minigame_selection:
+		_close_minigames_layout()

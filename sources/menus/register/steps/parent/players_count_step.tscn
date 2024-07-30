@@ -7,6 +7,3 @@ device_id = 1
 step_name = "players"
 question = "PARENT_STUDENT_COUNT_PROMPT"
 infos = "PARENT_STUDENT_COUNT_INFOS"
-
-[node name="StudentsCountFieldLabel" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/StudentsCountContainer" index="0"]
-text = "PLAYERS"

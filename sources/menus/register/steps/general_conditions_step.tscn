@@ -60,7 +60,7 @@ visible = false
 [node name="InfoLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" index="3"]
 visible = false
 
-[node name="Background" parent="." index="3"]
+[node name="FormValidator" parent="." index="3"]
 visible = false
 
 [connection signal="pressed" from="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer/Accept" to="." method="_on_accept_pressed"]

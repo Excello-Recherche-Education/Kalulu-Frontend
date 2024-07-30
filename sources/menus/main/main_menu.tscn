@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://6v3nachs7j71"]
+[gd_scene load_steps=32 format=3 uid="uid://6v3nachs7j71"]
 
 [ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_afd4d"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://sources/menus/main/kalulu.gd" id="8_cxg8l"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="10_icqmp"]
 [ext_resource type="Script" path="res://sources/menus/main/login.gd" id="12_6bu7q"]
+[ext_resource type="PackedScene" uid="uid://cr4q0ywceoasx" path="res://sources/utils/keyboard_spacer.tscn" id="13_6pvxs"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="13_j3nb7"]
 [ext_resource type="Script" path="res://sources/menus/main/language_field.gd" id="13_rs3hd"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="14_3lr3g"]
@@ -227,45 +228,17 @@ theme_override_font_sizes/font_size = 70
 text = "CREATE_ACCOUNT"
 metadata/_edit_use_anchors_ = true
 
-[node name="LoginForm" type="Control" parent="."]
+[node name="KeyboardSpacer" parent="." instance=ExtResource("13_6pvxs")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+
+[node name="LoginForm" type="Control" parent="KeyboardSpacer"]
+unique_name_in_owner = true
+layout_mode = 2
 script = ExtResource("12_6bu7q")
 
-[node name="TeacherLabel" type="Label" parent="LoginForm"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 168.0
-offset_bottom = 286.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 90
-text = "SIGN_IN_TEACHER"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ParentLabel" type="Label" parent="LoginForm"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 168.0
-offset_bottom = 286.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 90
-text = "SIGN_IN_PARENT"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="LoginFormValidator" type="Control" parent="LoginForm"]
+[node name="LoginFormValidator" type="Control" parent="KeyboardSpacer/LoginForm"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -275,7 +248,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("15_e88oj")
 
-[node name="FormContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator"]
+[node name="FormContainer" type="VBoxContainer" parent="KeyboardSpacer/LoginForm/LoginFormValidator"]
 custom_minimum_size = Vector2(1000, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -292,17 +265,34 @@ grow_vertical = 2
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="DeviceIDContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
+[node name="TeacherLabel" type="Label" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 90
+text = "SIGN_IN_TEACHER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ParentLabel" type="Label" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 90
+text = "SIGN_IN_PARENT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeviceIDContainer" type="VBoxContainer" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="DeviceIDLabel" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
+[node name="DeviceIDLabel" type="Label" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "DEVICE_ID"
 
-[node name="DeviceIDField" type="SpinBox" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
+[node name="DeviceIDField" type="SpinBox" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("16_bq28s")
@@ -312,65 +302,67 @@ value = 1.0
 rounded = true
 metadata/_edit_use_anchors_ = true
 
-[node name="DeviceIDValidator" type="Node" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer/DeviceIDField"]
+[node name="DeviceIDValidator" type="Node" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer/DeviceIDField"]
 script = ExtResource("18_iunlb")
 validator = SubResource("Resource_owox8")
 
-[node name="DeviceIDFieldError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
+[node name="DeviceIDFieldError" type="Label" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/DeviceIDContainer"]
 visible = false
 layout_mode = 2
 
-[node name="EmailContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
+[node name="EmailContainer" type="VBoxContainer" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="EmailLabel" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
+[node name="EmailLabel" type="Label" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
 layout_mode = 2
 theme = ExtResource("15_pcmnw")
 theme_override_font_sizes/font_size = 70
 text = "LOGIN"
 
-[node name="EmailField" type="LineEdit" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
+[node name="EmailField" type="LineEdit" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"1"
 theme_override_font_sizes/font_size = 70
 placeholder_text = "EMAIL"
+virtual_keyboard_type = 5
 
-[node name="EmailValidator" type="Node" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer/EmailField"]
+[node name="EmailValidator" type="Node" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/EmailContainer/EmailField"]
 script = ExtResource("18_iunlb")
 validator = SubResource("Resource_hxkvx")
 
-[node name="EmailFieldError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
+[node name="EmailFieldError" type="Label" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/EmailContainer"]
 visible = false
 layout_mode = 2
 
-[node name="PasswordContainer" type="VBoxContainer" parent="LoginForm/LoginFormValidator/FormContainer"]
+[node name="PasswordContainer" type="VBoxContainer" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="PasswordField" type="LineEdit" parent="LoginForm/LoginFormValidator/FormContainer/PasswordContainer"]
+[node name="PasswordField" type="LineEdit" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/PasswordContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 placeholder_text = "PASSWORD"
+virtual_keyboard_type = 6
 secret = true
 
-[node name="PasswordValidator" type="Node" parent="LoginForm/LoginFormValidator/FormContainer/PasswordContainer/PasswordField"]
+[node name="PasswordValidator" type="Node" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/PasswordContainer/PasswordField"]
 script = ExtResource("18_iunlb")
 validator = SubResource("Resource_k2y4u")
 
-[node name="PasswordFieldError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer/PasswordContainer"]
+[node name="PasswordFieldError" type="Label" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/PasswordContainer"]
 visible = false
 layout_mode = 2
 
-[node name="ValidateButton" type="Button" parent="LoginForm/LoginFormValidator/FormContainer"]
+[node name="ValidateButton" type="Button" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 70
 text = "LOG_IN"
 
-[node name="LoginError" type="Label" parent="LoginForm/LoginFormValidator/FormContainer"]
+[node name="LoginError" type="Label" parent="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -475,7 +467,7 @@ vertical_alignment = 1
 [connection signal="pressed" from="UserSelection/Form/SignInTeacher" to="." method="_on_sign_in_teacher_pressed"]
 [connection signal="pressed" from="UserSelection/Form/SignInParent" to="." method="_on_sign_in_parent_pressed"]
 [connection signal="pressed" from="UserSelection/Form/Register" to="." method="_on_register_pressed"]
-[connection signal="logged_in" from="LoginForm" to="." method="_on_login_in"]
-[connection signal="control_validated" from="LoginForm/LoginFormValidator" to="LoginForm" method="_on_login_form_validator_control_validated"]
-[connection signal="pressed" from="LoginForm/LoginFormValidator/FormContainer/ValidateButton" to="LoginForm" method="_on_validate_button_pressed"]
+[connection signal="logged_in" from="KeyboardSpacer/LoginForm" to="." method="_on_login_in"]
+[connection signal="control_validated" from="KeyboardSpacer/LoginForm/LoginFormValidator" to="KeyboardSpacer/LoginForm" method="_on_login_form_validator_control_validated"]
+[connection signal="pressed" from="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/ValidateButton" to="KeyboardSpacer/LoginForm" method="_on_validate_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]

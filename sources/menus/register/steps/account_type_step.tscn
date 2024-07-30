@@ -27,38 +27,44 @@ question = "ACCOUNT_TYPE_PROMPT"
 [node name="BackButton" parent="LeftMargin/LeftContainer" index="0"]
 text = "CANCEL"
 
-[node name="TypeContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
+[node name="TypeContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="TypeSelectLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer" index="0"]
+[node name="TypeSelectLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer" index="0"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 50
 text = "ACCOUNT_TYPE"
+autowrap_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TypeSelect" type="ItemList" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer/VBoxContainer" index="0"]
+[node name="TypeSelect" type="ItemList" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 allow_search = false
 auto_height = true
 
-[node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="1"]
+[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="1"]
 script = ExtResource("2_hidu6")
 validator = SubResource("Resource_n0ht0")
 
-[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="2"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="2"]
+layout_mode = 2
 anchors_preset = 0
+offset_left = -548.0
+offset_top = -20.0
+offset_right = 576.0
+offset_bottom = -20.0
 script = ExtResource("5_w7o0m")
 property_name = "account_type"
 
-[node name="TypeSelectError" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/TypeContainer/VBoxContainer" index="1"]
+[node name="TypeSelectError" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer" index="1"]
 visible = false
 layout_mode = 2
 text = "Test"

@@ -11,6 +11,7 @@ const next_scene_path := "res://sources/menus/login/login.tscn"
 @onready var user_selection : Control = $UserSelection
 @onready var login_form : Control = %LoginForm
 @onready var interface_left : MarginContainer = %InterfaceLeft
+@onready var keyboard_spacer: KeyboardSpacer = %KeyboardSpacer
 
 
 func _ready():
@@ -31,7 +32,7 @@ func _on_main_button_pressed():
 
 
 func _on_back_button_pressed():
-	login_form.hide()
+	keyboard_spacer.hide()
 	user_selection.hide()
 	kalulu.show()
 	interface_left.hide()
@@ -40,12 +41,14 @@ func _on_back_button_pressed():
 func _on_sign_in_teacher_pressed():
 	user_selection.hide()
 	kalulu.hide()
+	keyboard_spacer.show()
 	login_form.show_form(true)
 
 
 func _on_sign_in_parent_pressed():
 	user_selection.hide()
 	kalulu.hide()
+	keyboard_spacer.show()
 	login_form.show_form(false)
 
 
