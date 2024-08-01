@@ -63,7 +63,7 @@ flowers_export = Array[Dictionary]([{
 "type": 3
 }, {
 "color": 1,
-"position": Vector2i(264, 548),
+"position": Vector2i(392, 628),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{

@@ -12,6 +12,7 @@ extends TextureButton
 @onready var center: TextureRect = %Center
 @onready var label: Label = %Label
 @onready var placeholder: TextureRect = %Placeholder
+@onready var right_fx: RightFX = %RightFX
 
 func _ready():
 	_set_base_color(base_color)
@@ -23,6 +24,10 @@ func show_placeholder(is_shown: bool) -> void:
 	placeholder.visible = is_shown
 	label.visible = !is_shown
 
+
+func right() ->  void:
+	right_fx.play()
+	await right_fx.finished
 
 func _set_base_color(color: Color) -> void:
 	base_color = color

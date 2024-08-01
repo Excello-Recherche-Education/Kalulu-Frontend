@@ -143,6 +143,9 @@ func _on_tracing_manager_finished() -> void:
 		animation_player.play("end_tracing")
 		await animation_player.animation_finished
 		
+		
+		gardens_data.look_and_learn_completed = true
+		
 		_back_to_gardens()
 
 
