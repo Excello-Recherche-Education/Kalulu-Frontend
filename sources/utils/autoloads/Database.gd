@@ -21,44 +21,36 @@ const video_extension: = ".ogv"
 const image_extension: = ".png"
 const sound_extension: = ".mp3"
 
-var language: String = "fr":
+var language: String:
 	set(value):
 		language = value
 		db_path = base_path + language + "/language.db"
 		words_path = base_path + language + "/words/"
-var db_path: = base_path + language + "/language.db":
+
+var db_path: String = base_path + language + "/language.db":
 	set(value):
 		db_path = value
 		if db:
-			db.close_db()
 			db.path = db_path
 			db.foreign_keys = true
-			if FileAccess.file_exists(db.path):
-				db.open_db()
-			
-			#_init_db()
-			
-var words_path: = base_path + language + "/words/"
+			connect_to_db()
+
+var words_path: String = base_path + language + "/words/"
 var additional_word_list: Dictionary
 
 @onready var db: = SQLite.new()
+var is_open: = false
 
 
 func _exit_tree() -> void:
 	db.close_db()
 
 
-func _init_db() -> void:
-	# load_additional_word_list()
-	# db_path = db_path
-	#_import_words_csv()
-	#_import_gps()
-	#_import_words()
-	#_import_look_and_learn_data()
-	#_import_syllables()
-	#_import_lessons()
-	#_import_kalulu_3_word_sounds()
-	_import_kalulu_3_gp_sounds()
+func connect_to_db() -> void:
+	if is_open:
+		db.close_db()
+	if FileAccess.file_exists(db.path):
+		is_open = db.open_db()
 
 
 func get_additional_word_list_path() -> String:
@@ -88,22 +80,29 @@ func load_additional_word_list() -> String:
 	return ""
 
 
-func get_exercice_for_lesson(lesson_nb: int) -> Array[String]:
+func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
 	var query: = "Select Exercise1, Exercise2, Exercise3 FROM LessonsExercises
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
 	WHERE LessonNB == " + str(lesson_nb)
-	Database.db.query(query)
+	db.query(query)
 	
-	var answer: Array[String]
-	for res in Database.db.query_result:
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise1))
-		answer.append(Database.db.query_result[0].Type)
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise2))
-		answer.append(Database.db.query_result[0].Type)
-		Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise3))
-		answer.append(Database.db.query_result[0].Type)
+	#var answer: Array[String]
+	#for res in Database.db.query_result:
+	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise1))
+	#	answer.append(Database.db.query_result[0].Type)
+	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise2))
+	#	answer.append(Database.db.query_result[0].Type)
+	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise3))
+	#	answer.append(Database.db.query_result[0].Type)
+	#return answer
 	
-	return answer
+	var result: Array[int]
+	for e in db.query_result:
+		result.append(e.Exercise1)
+		result.append(e.Exercise2)
+		result.append(e.Exercise3)
+	
+	return result
 
 
 func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false) -> Array:
@@ -497,10 +496,12 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 		if ResourceLoader.exists(path):
 			return load(path)
 		else:
-			var sound: = AudioStreamOggVorbis.load_from_file(path)
+			var file = FileAccess.open(path, FileAccess.READ)
+			var sound = AudioStreamMP3.new()
+			sound.data = file.get_buffer(file.get_length())
 			return sound
 	
-	return AudioStreamOggVorbis.new()
+	return AudioStream.new()
 
 
 func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:

@@ -7,6 +7,8 @@ const gardens_scene: = preload("res://sources/gardens/gardens.tscn")
 @export var unlocked_colors: Array[Color]
 @export var gardens_layout: GardensLayout
 
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+
 @onready var garden_buttons: Array[TextureButton] = [
 	%GardenButton1,
 	%GardenButton2,
@@ -76,7 +78,7 @@ func _ready() -> void:
 			if can_emit and not emitting:
 				emitting = false
 				for game in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
-					if game == UserProgression.Status.Locked:
+					if game == UserProgression.Status.Unlocked or game == UserProgression.Status.Locked:
 						emitting = true
 						break
 			lesson_ind += 1
@@ -85,6 +87,7 @@ func _ready() -> void:
 
 
 func _on_garden_button_pressed(button_number: int) -> void:
+	audio_stream_player.play()
 	await OpeningCurtain.close()
 	
 	var gardens: = gardens_scene.instantiate()

@@ -8,7 +8,6 @@
 
 [node name="JellyfishMinigame" instance=ExtResource("1_hauef")]
 script = ExtResource("2_gnjlp")
-minigame_name = "jellyfish"
 max_number_of_lives = 5
 max_progression = 8
 

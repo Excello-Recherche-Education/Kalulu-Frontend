@@ -1,12 +1,11 @@
 extends OptionButton
 
-var items : Array
+var items : Array[String]
 
 func _ready():
-	# Check the language_resources directory to fetch supported languages
-	var dir = DirAccess.open("res://language_resources")
-	var idx : int = 0
-	for language_locale in dir.get_directories():
+	# Adds the supported locales to the field
+	var idx: int = 0
+	for language_locale in DeviceSettings.supported_locales:
 		if not language_locale:
 			continue
 		
@@ -27,5 +26,5 @@ func get_selected_language() -> String:
 	return items[id]
 
 
-func _on_item_selected(index):
+func _on_item_selected(index: int):
 	UserDataManager.set_language(items[index])

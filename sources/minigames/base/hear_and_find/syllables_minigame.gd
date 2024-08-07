@@ -97,14 +97,15 @@ func _find_stimuli_and_distractions() -> void:
 		# Difficulty 1 
 		# Any previously learned item w/ all letters different
 		for syllable: Dictionary in all_syllables:
-			var gp_found_in_stimuli: = false
-			for gp in syllable.GPs:
-				if gp in stimulus.GPs:
-					gp_found_in_stimuli = true
-					break
+			if syllable.Phoneme != stimulus.Phoneme:
+				var gp_found_in_stimuli: = false
+				for gp in syllable.GPs:
+					if gp in stimulus.GPs:
+						gp_found_in_stimuli = true
+						break
 			
-			if not gp_found_in_stimuli:
-				stimulus_distractors.append(syllable)
+				if not gp_found_in_stimuli:
+					stimulus_distractors.append(syllable)
 		
 		# Higher difficulties only changes syllables distractors
 		if difficulty > 1 and stimulus.GPs.size() == 2:
@@ -200,6 +201,7 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		
 		# Handles the right answer GPs
 		for i in right_answer.GPs.size():
+			# TODO BUG WHEN STIMULUS IS SMALLER THAN TARGET
 			if not stimulus.has("GPs") or (i <= stimulus.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]):
 				continue
 			_update_score(right_answer.GPs[i].ID, -1)
@@ -207,7 +209,7 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		# Handles the pressed stimulus Gps
 		if stimulus.has("GPs"):
 			for i in stimulus.GPs.size():
-				if i <= right_answer.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
+				if i < right_answer.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
 					continue
 				_update_score(stimulus.GPs[i].ID, -1)
 	return true

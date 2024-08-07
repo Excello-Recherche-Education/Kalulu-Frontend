@@ -4,14 +4,28 @@ class_name Minigame
 
 const Gardens: = preload("res://sources/gardens/gardens.gd")
 
-@export var minigame_name: = "Minigame"
+enum Type {
+	jellyfish,
+	crabs,
+	parakeets,
+	monkey,
+	caterpillar,
+	frog,
+	turtles,
+	ants,
+	penguin,
+	fish
+}
+
+
+@export var minigame_name: Type
 
 @export var lesson_nb: = 1
 @export_range(0, 4) var difficulty: = 0
 @export_range(0, 1) var current_lesson_stimuli_ratio : float = 0.7
 @export var minigame_number: = 1
 
-@export_group("Difficulty")
+@export_category("Difficulty")
 @export var max_number_of_lives: = 0 :
 	set(value):
 		max_number_of_lives = value
@@ -23,6 +37,10 @@ const Gardens: = preload("res://sources/gardens/gardens.gd")
 		max_progression = value
 		if minigame_ui:
 			minigame_ui.set_max_progression(value)
+
+@export_category("Hints")
+@export var errors_before_help_speech: int = 2
+@export var errors_before_highlight: int = 3
 
 @onready var minigame_ui: = $MinigameUI
 @onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
@@ -61,10 +79,10 @@ var current_lives: = 0 :
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
 		
-		if previous_lives == max_number_of_lives and current_lives < previous_lives:
-			_first_error_hint()
-		elif consecutive_errors == 2:
-			_two_errors_hint()
+		if current_lives == max_number_of_lives - errors_before_help_speech:
+			_play_kalulu_help_speech()
+		elif consecutive_errors == errors_before_highlight:
+			is_highlighting = true
 		
 		if minigame_ui:
 			minigame_ui.set_number_of_lives(value)
@@ -99,15 +117,15 @@ func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
-	transition_data = {}
+	#transition_data = {}
 	
 	# Difficulty
 	if UserDataManager._student_difficulty:
-		difficulty = UserDataManager.get_difficulty_for_minigame(minigame_name)
+		difficulty = UserDataManager.get_difficulty_for_minigame(Type.keys()[minigame_name])
 	
-	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "intro"))
-	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "help"))
-	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "win"))
+	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "intro"))
+	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "help"))
+	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "end"))
 	lose_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path("minigame", "lose"))
 	
 	if not Engine.is_editor_hint():
@@ -170,6 +188,13 @@ func _reset() -> void:
 
 
 func _win() -> void:
+	
+	# Lock the UI
+	minigame_ui.lock()
+	
+	if gardens_data:
+		gardens_data.minigame_completed = true
+	
 	if UserDataManager.student_progression:
 		UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
@@ -178,7 +203,7 @@ func _win() -> void:
 		UserDataManager.update_remediation_scores(scores)
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(minigame_name, true)
+	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name], true)
 	
 	audio_player.stream = win_sound_fx
 	audio_player.play()
@@ -193,12 +218,18 @@ func _win() -> void:
 
 
 func _lose() -> void:
+	# Lock the UI
+	minigame_ui.lock()
+	
+	if gardens_data:
+		gardens_data.minigame_completed = false
+	
 	# Remediation
 	if scores:
 		UserDataManager.update_remediation_scores(scores)
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(minigame_name, false)
+	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name], false)
 	
 	audio_player.stream = lose_sound_fx
 	audio_player.play()
@@ -214,7 +245,7 @@ func _lose() -> void:
 #region Logs
 
 func _save_logs() -> void:
-	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), minigame_name, lesson_nb, Time.get_time_string_from_system())
+	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name], lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
@@ -229,7 +260,7 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"reponse": response,
 		"awaited_response": current_stimulus,
 		"is_right": response == current_stimulus,
-		"minigame": minigame_name,
+		"minigame": Type.keys()[minigame_name],
 		"number_of_hints": current_number_of_hints,
 		"current_progression": current_progression,
 		"max_progression": max_progression,
@@ -302,12 +333,9 @@ func _stop_highlight() -> void:
 	pass
 
 
-func _first_error_hint() -> void:
+func _play_kalulu_help_speech() -> void:
 	minigame_ui.play_kalulu_speech(help_kalulu_speech)
 
-
-func _two_errors_hint() -> void:
-	is_highlighting = true
 
 #endregion
 

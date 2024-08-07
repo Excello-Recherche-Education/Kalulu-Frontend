@@ -10,7 +10,6 @@ enum Status{
 }
 
 @export var version: = 1.0
-@export var difficulty: = 1
 @export var unlocks: = {}
 
 
@@ -41,6 +40,9 @@ func get_max_unlocked_lesson() -> int:
 	
 	return max_unlocked_level
 
+
+func is_lesson_completed(lesson_number: int) -> bool:
+	return unlocks[lesson_number]["look_and_learn"] == Status.Completed and unlocks[lesson_number]["games"][0] == Status.Completed and unlocks[lesson_number]["games"][1] == Status.Completed and unlocks[lesson_number]["games"][2] == Status.Completed
 
 func look_and_learn_completed(lesson_number: int) -> void:
 	unlocks[lesson_number]["look_and_learn"] = Status.Completed

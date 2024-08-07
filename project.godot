@@ -13,9 +13,9 @@ config_version=5
 config/name="Kalulu"
 config/version="0.0"
 run/main_scene="res://sources/menus/splash_screen/splash_screen.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
-config/icon="res://icon.svg"
+config/icon="res://assets/kalulu_icon.png"
 custom/unlock_everything=false
 custom/unlock_everything.debug=false
 
@@ -43,6 +43,7 @@ gdscript/warnings/unsafe_call_argument=1
 
 window/size/viewport_width=2560
 window/size/viewport_height=1800
+window/size/always_on_top=true
 window/size/window_width_override=1280
 window/size/window_height_override=900
 window/stretch/mode="canvas_items"
@@ -73,6 +74,7 @@ right_click={
 [internationalization]
 
 locale/translation_remaps={}
+locale/translations=PackedStringArray("res://kalulu_localization.es.translation", "res://kalulu_localization.fr.translation")
 
 [rendering]
 

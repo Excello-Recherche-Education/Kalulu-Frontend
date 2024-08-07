@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://dc4eaxcunpmke"]
+[gd_scene load_steps=18 format=3 uid="uid://dc4eaxcunpmke"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_ggdon"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/control_validator.gd" id="2_6d1eh"]
+[ext_resource type="Script" path="res://sources/ui/TrItemList.gd" id="2_rmdcs"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_pj58p"]
 [ext_resource type="Script" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_fcdvy"]
 [ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="5_kb1ut"]
@@ -44,107 +45,106 @@ skip_validation = false
 rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.gd")]([SubResource("Resource_fybs1"), SubResource("Resource_y65lh"), SubResource("Resource_g77h5")])
 
 [node name="PlayerStep" instance=ExtResource("1_ggdon")]
-question = "Enter the informations of player %d"
+question = "PLAYER_PROMPT"
 
-[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="0"]
-text = "Enter the informations of player %d"
-
-[node name="LevelContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
+[node name="LevelContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
 layout_mode = 2
 
-[node name="LevelSelectLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/LevelContainer" index="0"]
+[node name="LevelSelectLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LevelContainer" index="0"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 70
-text = "Level :"
+theme_override_font_sizes/font_size = 50
+text = "PLAYER_LEVEL"
+autowrap_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/LevelContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LevelContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LevelSelect" type="ItemList" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/LevelContainer/VBoxContainer" index="0"]
+[node name="LevelSelect" type="ItemList" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LevelContainer/VBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 70
 auto_height = true
 item_count = 3
-item_0/text = "Beginner"
-item_1/text = "Reviewer"
-item_2/text = "Adult"
+item_0/text = "BEGINNER"
+item_1/text = "REVIEWER"
+item_2/text = "ADULT"
+script = ExtResource("2_rmdcs")
 
-[node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/LevelContainer/VBoxContainer/LevelSelect" index="1"]
-script = ExtResource("2_6d1eh")
-validator = SubResource("Resource_pdktm")
-
-[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/LevelContainer/VBoxContainer/LevelSelect" index="2"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LevelContainer/VBoxContainer/LevelSelect" index="1"]
+layout_mode = 2
 anchors_preset = 0
 script = ExtResource("5_kb1ut")
 property_name = "level"
 
-[node name="LevelSelectError" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/LevelContainer/VBoxContainer" index="1"]
+[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LevelContainer/VBoxContainer/LevelSelect" index="2"]
+script = ExtResource("2_6d1eh")
+validator = SubResource("Resource_pdktm")
+
+[node name="LevelSelectError" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LevelContainer/VBoxContainer" index="1"]
 visible = false
 layout_mode = 2
 text = "Test"
 label_settings = ExtResource("6_nuhb7")
 vertical_alignment = 1
 
-[node name="NameContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="1"]
+[node name="NameContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="1"]
 layout_mode = 2
 
-[node name="NameFieldLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/NameContainer" index="0"]
+[node name="NameFieldLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/NameContainer" index="0"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 70
-text = "Name :"
+theme_override_font_sizes/font_size = 50
+text = "PLAYER_NAME"
+autowrap_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/NameContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/NameContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="NameField" type="LineEdit" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/NameContainer/VBoxContainer" index="0"]
+[node name="NameField" type="LineEdit" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/NameContainer/VBoxContainer" index="0"]
 layout_mode = 2
-size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 70
 placeholder_text = "Kalulu"
 
-[node name="ControlValidator" type="Node" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/NameContainer/VBoxContainer/NameField" index="0"]
-script = ExtResource("2_6d1eh")
-validator = SubResource("Resource_40trb")
-
-[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/NameContainer/VBoxContainer/NameField" index="1"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/NameContainer/VBoxContainer/NameField" index="0"]
+layout_mode = 1
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 script = ExtResource("5_kb1ut")
 property_name = "name"
 
-[node name="NameFieldError" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/NameContainer/VBoxContainer" index="1"]
+[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/NameContainer/VBoxContainer/NameField" index="1"]
+script = ExtResource("2_6d1eh")
+validator = SubResource("Resource_40trb")
+
+[node name="NameFieldError" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/NameContainer/VBoxContainer" index="1"]
 visible = false
 layout_mode = 2
 text = "Test"
 label_settings = ExtResource("6_nuhb7")
 
-[node name="AgeContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="2"]
+[node name="AgeContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="2"]
 layout_mode = 2
 
-[node name="AgeLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/AgeContainer" index="0"]
+[node name="AgeLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/AgeContainer" index="0"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 70
-text = "Age :"
+theme_override_font_sizes/font_size = 50
+text = "PLAYER_AGE"
+autowrap_mode = 3
 
-[node name="AgeField" type="SpinBox" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/AgeContainer" index="1"]
+[node name="AgeField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/AgeContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("9_x0cdr")
 min_value = 1.0
 value = 1.0
 
-[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/AgeContainer/AgeField" index="2"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/AgeContainer/AgeField" index="2"]
+layout_mode = 2
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 script = ExtResource("5_kb1ut")
 property_name = "age"

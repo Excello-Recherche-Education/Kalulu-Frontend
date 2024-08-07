@@ -1,13 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://btg3qd8eld1mm"]
+[gd_scene load_steps=8 format=3 uid="uid://btg3qd8eld1mm"]
 
 [ext_resource type="Script" path="res://resources/gardens/garden.gd" id="1_5owem"]
 [ext_resource type="Script" path="res://resources/gardens/garden_layout.gd" id="2_8g7o4"]
 [ext_resource type="Texture2D" uid="uid://b5kildofgmthb" path="res://assets/gardens/gardens/garden_01_open.png" id="3_p7iv3"]
-[ext_resource type="Texture2D" uid="uid://3iuuq06ovbos" path="res://assets/theme/button_normal_empty.svg" id="4_i8h63"]
-[ext_resource type="Texture2D" uid="uid://j7sffldhbunj" path="res://assets/theme/button_pressed_empty.svg" id="5_5hg7e"]
-[ext_resource type="Texture2D" uid="uid://be30a3cmy0w46" path="res://assets/theme/button_focused_empty.svg" id="6_voggw"]
-[ext_resource type="Texture2D" uid="uid://c0rumwiaimvxy" path="res://assets/theme/button_disabled.svg" id="7_wct1x"]
-[ext_resource type="Texture2D" uid="uid://dwk8xgv3xsmm0" path="res://assets/theme/button_center.svg" id="8_gpu52"]
+[ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="5_76gol"]
 [ext_resource type="Texture2D" uid="uid://dg4wcuidmagd8" path="res://assets/gardens/flowers/Plant_03_01_NotStarted.png" id="8_tdxbf"]
 
 [sub_resource type="Resource" id="Resource_pwltf"]
@@ -58,159 +55,37 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Button1" type="TextureButton" parent="Buttons"]
+[node name="Button1" parent="Buttons" instance=ExtResource("4_epm30")]
 unique_name_in_owner = true
-z_index = 1
 layout_mode = 0
 offset_right = 300.0
 offset_bottom = 300.0
 pivot_offset = Vector2(150, 150)
-texture_normal = ExtResource("4_i8h63")
-texture_pressed = ExtResource("5_5hg7e")
-texture_hover = ExtResource("6_voggw")
-texture_disabled = ExtResource("7_wct1x")
-texture_focused = ExtResource("4_i8h63")
+completed_color = Color(0.588235, 0.439216, 0.878431, 1)
 
-[node name="Center1" type="TextureRect" parent="Buttons/Button1"]
-unique_name_in_owner = true
-show_behind_parent = true
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("8_gpu52")
-
-[node name="LessonLabel1" type="Label" parent="Buttons/Button1"]
-unique_name_in_owner = true
-z_index = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 110
-text = "Ga"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Button2" type="TextureButton" parent="Buttons"]
+[node name="Button2" parent="Buttons" instance=ExtResource("4_epm30")]
 unique_name_in_owner = true
 visible = false
-z_index = 1
 layout_mode = 0
-offset_left = -75.0
-offset_top = -75.0
-offset_right = 225.0
-offset_bottom = 225.0
-pivot_offset = Vector2(150, 150)
-texture_normal = ExtResource("4_i8h63")
-texture_pressed = ExtResource("5_5hg7e")
-texture_hover = ExtResource("6_voggw")
-texture_disabled = ExtResource("7_wct1x")
-texture_focused = ExtResource("4_i8h63")
-
-[node name="Center2" type="TextureRect" parent="Buttons/Button2"]
-unique_name_in_owner = true
-show_behind_parent = true
 offset_right = 300.0
 offset_bottom = 300.0
-texture = ExtResource("8_gpu52")
+completed_color = Color(0.588235, 0.439216, 0.878431, 1)
 
-[node name="LessonLabel2" type="Label" parent="Buttons/Button2"]
-unique_name_in_owner = true
-z_index = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 110
-text = "Ga"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Button3" type="TextureButton" parent="Buttons"]
+[node name="Button3" parent="Buttons" instance=ExtResource("4_epm30")]
 unique_name_in_owner = true
 visible = false
-z_index = 1
 layout_mode = 0
-offset_left = -75.0
-offset_top = -75.0
-offset_right = 225.0
-offset_bottom = 225.0
-pivot_offset = Vector2(150, 150)
-texture_normal = ExtResource("4_i8h63")
-texture_pressed = ExtResource("5_5hg7e")
-texture_hover = ExtResource("6_voggw")
-texture_disabled = ExtResource("7_wct1x")
-texture_focused = ExtResource("4_i8h63")
-
-[node name="Center3" type="TextureRect" parent="Buttons/Button3"]
-unique_name_in_owner = true
-show_behind_parent = true
 offset_right = 300.0
 offset_bottom = 300.0
-texture = ExtResource("8_gpu52")
+completed_color = Color(0.588235, 0.439216, 0.878431, 1)
 
-[node name="LessonLabel3" type="Label" parent="Buttons/Button3"]
-unique_name_in_owner = true
-z_index = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 110
-text = "Ga"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Button4" type="TextureButton" parent="Buttons"]
+[node name="Button4" parent="Buttons" instance=ExtResource("4_epm30")]
 unique_name_in_owner = true
 visible = false
-z_index = 1
 layout_mode = 0
-offset_left = -75.0
-offset_top = -75.0
-offset_right = 225.0
-offset_bottom = 225.0
-pivot_offset = Vector2(150, 150)
-texture_normal = ExtResource("4_i8h63")
-texture_pressed = ExtResource("5_5hg7e")
-texture_hover = ExtResource("6_voggw")
-texture_disabled = ExtResource("7_wct1x")
-texture_focused = ExtResource("4_i8h63")
-
-[node name="Center4" type="TextureRect" parent="Buttons/Button4"]
-unique_name_in_owner = true
-show_behind_parent = true
 offset_right = 300.0
 offset_bottom = 300.0
-texture = ExtResource("8_gpu52")
-
-[node name="LessonLabel4" type="Label" parent="Buttons/Button4"]
-unique_name_in_owner = true
-z_index = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 110
-text = "Ga"
-horizontal_alignment = 1
-vertical_alignment = 1
+completed_color = Color(0.588235, 0.439216, 0.878431, 1)
 
 [node name="Flowers" type="Control" parent="."]
 layout_mode = 1
@@ -223,38 +98,43 @@ mouse_filter = 2
 
 [node name="Flower1" type="TextureRect" parent="Flowers"]
 unique_name_in_owner = true
-z_index = 2
+z_index = 1
+material = ExtResource("5_76gol")
 layout_mode = 0
-offset_left = 500.0
-offset_right = 647.0
-offset_bottom = 90.0
-pivot_offset = Vector2(73.5, 45)
+offset_left = 426.5
+offset_top = -90.0
+offset_right = 573.5
+pivot_offset = Vector2(73.5, 90)
 texture = ExtResource("8_tdxbf")
 
 [node name="Flower2" type="TextureRect" parent="Flowers"]
 unique_name_in_owner = true
-z_index = 2
+z_index = 1
+material = ExtResource("5_76gol")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Flower3" type="TextureRect" parent="Flowers"]
 unique_name_in_owner = true
-z_index = 2
+z_index = 1
+material = ExtResource("5_76gol")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Flower4" type="TextureRect" parent="Flowers"]
 unique_name_in_owner = true
-z_index = 2
+z_index = 1
+material = ExtResource("5_76gol")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Flower5" type="TextureRect" parent="Flowers"]
 unique_name_in_owner = true
-z_index = 2
+z_index = 1
+material = ExtResource("5_76gol")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

@@ -46,8 +46,6 @@ custom_minimum_size = Vector2(1500, 500)
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 70
-text = "Please confirm you are an adult !
-Press the %s, %s and %s"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

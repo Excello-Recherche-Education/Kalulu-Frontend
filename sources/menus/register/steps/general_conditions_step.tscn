@@ -15,39 +15,17 @@ offset_bottom = 1344.0
 [node name="QuestionContainer" parent="PanelContainer" index="0"]
 theme_override_constants/margin_top = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" index="0"]
-layout_mode = 2
-
 [node name="ConditionsLabel" type="RichTextLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" index="0"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 32
 theme_override_font_sizes/bold_font_size = 32
 theme_override_font_sizes/italics_font_size = 32
 theme_override_font_sizes/bold_italics_font_size = 32
 theme_override_font_sizes/mono_font_size = 32
-text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu facilisis est. Pellentesque pulvinar urna sit amet mollis luctus. Vestibulum posuere viverra accumsan. Quisque viverra luctus facilisis. Aenean varius venenatis egestas. Donec finibus semper quam in auctor. Integer in faucibus magna. Nunc aliquet leo eu leo efficitur, non vehicula nibh vestibulum. Vivamus magna ex, laoreet nec nunc non, accumsan interdum odio. Nulla facilisi. Nam quis vehicula velit, ut euismod nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-
-Proin a dolor posuere dolor vulputate cursus vitae at metus. Donec gravida, mi id pellentesque eleifend, lectus dolor vehicula tellus, eu malesuada nisl metus eu nunc. Donec eleifend purus sed ex vestibulum, vitae mollis eros malesuada. Integer efficitur dolor sed mi tincidunt, ac venenatis nulla vehicula. Morbi vel aliquet purus. Cras facilisis nisl ante, eu commodo sem posuere ut. Duis nec diam gravida lectus sagittis malesuada vel quis libero. Suspendisse nulla dolor, tempor sed lectus in, vehicula laoreet neque. Vestibulum iaculis massa et ex dignissim vehicula. Aliquam fringilla scelerisque ante, eu ornare massa hendrerit quis. Curabitur eu ultrices lectus, non laoreet velit. In sit amet iaculis arcu. Nullam commodo vel neque eu fringilla.
-
-Maecenas id ligula egestas arcu porttitor posuere sit amet sit amet dui. Suspendisse id erat accumsan, faucibus enim et, vulputate erat. Donec augue risus, tempus sit amet eleifend nec, gravida eget ligula. Morbi a lectus a nunc vulputate commodo eget vitae nunc. Curabitur tincidunt tellus sit amet purus aliquam vehicula. Vestibulum facilisis dolor orci, sed varius ex sollicitudin ac. Sed ornare accumsan eros, id placerat lectus consequat quis. Ut ultricies congue mattis. Pellentesque tellus nisl, placerat sollicitudin mauris vitae, aliquet sollicitudin urna. Etiam nec facilisis sem.
-
-Nam vel lectus at mauris ultrices fermentum ut quis ligula. Proin ac purus eu turpis cursus commodo. Proin auctor nisi eget eros feugiat scelerisque. Donec dictum arcu vel ex ultricies, et gravida eros dignissim. Fusce sit amet tempor arcu. Sed sagittis pellentesque velit, ac tincidunt purus pharetra at. Ut ac purus ac sem tempor scelerisque eget pretium dolor. Ut id mi elit.
-
-Proin semper eu erat nec feugiat. Vivamus eros enim, semper quis venenatis et, porta id neque. Etiam interdum nibh eget diam aliquam, dignissim suscipit enim malesuada. Pellentesque lacus ipsum, ultrices et lobortis in, semper quis mauris. Maecenas ut faucibus odio. Aenean neque felis, consequat ac auctor at, cursus vitae libero. Vestibulum porttitor convallis sapien nec imperdiet. Nulla tortor magna, aliquet in viverra quis, efficitur quis nisl. Nullam varius gravida felis. Donec sed ultricies lectus.
-
-Morbi sed orci ex. Fusce sagittis sapien ut nisi commodo tristique. Cras vitae egestas sem. Cras fermentum elementum massa vitae ultricies. Suspendisse hendrerit, massa non semper laoreet, leo leo posuere lectus, a porta ipsum nulla dictum arcu. Nam eleifend mi neque, sed dignissim dui sodales quis. Suspendisse vel pharetra diam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer ac mi orci. Sed gravida lacus a nibh bibendum rutrum. Vestibulum facilisis molestie purus, eget fringilla mi ultricies eget. Aenean tristique at libero a placerat. Phasellus eu odio pellentesque, posuere nisi id, cursus metus.
-
-In hac habitasse platea dictumst. Vivamus fermentum tortor non hendrerit facilisis. Mauris finibus cursus ante a vestibulum. Sed consectetur neque sed velit scelerisque, sit amet sodales justo auctor. Maecenas elit enim, luctus ut rutrum eget, aliquam facilisis ipsum. Duis eu odio egestas, ultrices augue in, vulputate odio. Donec fringilla sem non eros consequat, eu efficitur massa cursus. Vivamus tincidunt libero sed dolor pretium pellentesque. Mauris ac nisl vitae mauris gravida tempus quis a turpis. Maecenas molestie porta ornare. Etiam eu orci ante. Nam molestie libero non tincidunt sodales.
-
-Nulla facilisi. Praesent aliquam magna ut porta suscipit. Cras et ullamcorper est, ut elementum ipsum. Cras sit amet venenatis orci. Aliquam est ligula, tincidunt accumsan leo id, volutpat iaculis arcu. Fusce ultrices augue et urna egestas facilisis. Vivamus a malesuada turpis.
-
-Donec libero mauris, euismod sit amet cursus eu, varius eget sapien. Duis nisi nisl, sagittis sit amet augue vitae, elementum gravida dolor. Nam in accumsan magna. Pellentesque et sem nec ante molestie mollis eu in quam. Mauris ac rhoncus sapien. Mauris sapien nibh, maximus at eros eu, blandit interdum justo. Curabitur et purus non ipsum ultricies interdum. Nunc rutrum turpis ut odio lacinia, vitae mollis nulla imperdiet. Vestibulum vehicula diam tellus, at tincidunt diam tincidunt quis. Praesent sed tellus non dolor accumsan fermentum. Aliquam erat volutpat. Aliquam massa tortor, consectetur sed dapibus at, mollis vel diam.
-
-Praesent sollicitudin mattis justo, vel feugiat felis faucibus eu. Phasellus ut risus eu risus vestibulum elementum et sit amet ligula. Vestibulum eleifend nisl a ipsum fringilla tincidunt. Nullam non purus pulvinar, facilisis magna malesuada, tincidunt odio. Aliquam pulvinar ante nec feugiat vulputate. Pellentesque interdum nunc at massa mollis, at aliquam dolor ornare. Cras tincidunt felis ut molestie placerat. Aliquam fringilla rutrum velit, id congue felis commodo vehicula. Donec id mi facilisis, congue lectus ut, sodales lorem."
+text = "GENERAL_CONDITIONS_TEXT"
 autowrap_mode = 2
 shortcut_keys_enabled = false
 
@@ -66,20 +44,23 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "Accept"
+text = "ACCEPT_GENERAL_CONDITIONS"
 flat = true
 
 [node name="AcceptError" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-text = "Please click accept to move forward"
+text = "ACCEPT_GENERAL_CONDITIONS_ERROR"
 label_settings = ExtResource("3_qdoff")
 
-[node name="QuestionLabel" parent="PanelContainer/QuestionContainer" index="1"]
+[node name="QuestionLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" index="2"]
 visible = false
 
-[node name="Background" parent="." index="3"]
+[node name="InfoLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" index="3"]
+visible = false
+
+[node name="FormValidator" parent="." index="3"]
 visible = false
 
 [connection signal="pressed" from="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer/Accept" to="." method="_on_accept_pressed"]

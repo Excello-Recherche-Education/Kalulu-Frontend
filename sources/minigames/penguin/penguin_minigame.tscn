@@ -10,7 +10,7 @@
 
 [node name="PenguinMinigame" instance=ExtResource("1_s6yuv")]
 script = ExtResource("2_ncha4")
-minigame_name = "penguin"
+minigame_name = 8
 lesson_nb = 15
 max_number_of_lives = 5
 max_progression = 5

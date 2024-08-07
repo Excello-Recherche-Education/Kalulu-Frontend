@@ -2,6 +2,10 @@
 extends Control
 class_name Garden
 
+# Namespace
+const GardenFlower: = preload("res://resources/gardens/garden_flower.gd")
+const LessonButton: = preload("res://sources/lesson_screen/lesson_button.gd")
+
 const flower_path_model: = "res://assets/gardens/flowers/Plant_%02d_%02d_%s.png"
 const background_path_model: = "res://assets/gardens/gardens/garden_%02d_open.png"
 
@@ -19,23 +23,11 @@ const background_path_model: = "res://assets/gardens/gardens/garden_%02d_open.pn
 	%Flower5,
 ]
 @onready var background: = %Background
-@onready var lesson_button_controls: Array[TextureButton] = [
+@onready var lesson_button_controls: Array[LessonButton] = [
 	%Button1,
 	%Button2,
 	%Button3,
 	%Button4,
-]
-@onready var lesson_button_centers: Array[TextureRect] = [
-	%Center1,
-	%Center2,
-	%Center3,
-	%Center4,
-]
-@onready var lesson_labels: Array[Label] = [
-	%LessonLabel1,
-	%LessonLabel2,
-	%LessonLabel3,
-	%LessonLabel4,
 ]
 
 enum FlowerSizes{
@@ -72,19 +64,17 @@ func set_flowers(p_flowers: Array[GardenLayout.Flower]) -> void:
 
 
 func update_flowers() -> void:
-	for flower_control in flower_controls:
-		flower_control.texture = null
 	for i in flowers.size():
 		if i >= flower_controls.size():
 			break
 		var flower: = flowers[i]
-		var flower_control: = flower_controls[i]
+		var flower_scene: = flower_controls[i]
 		var flower_size: String = FlowerSizes.keys()[flowers_sizes[i]]
 		
-		flower_control.texture = load(flower_path_model % [flower.color+1, flower.type+1, flower_size])
-		flower_control.position = flower.position
-		flower_control.size = flower_control.get_combined_minimum_size() * 3
-		flower_control.pivot_offset = flower_control.size / 2
+		flower_scene.texture = load(flower_path_model % [flower.color+1, flower.type+1, flower_size])
+		flower_scene.size = flower_scene.get_combined_minimum_size() * 3
+		flower_scene.pivot_offset = Vector2(flower_scene.size.x / 2, flower_scene.size.y)
+		flower_scene.position = Vector2(flower.position.x - flower_scene.size.x / 2, flower.position.y - flower_scene.size.y)
 
 
 func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> void:
@@ -106,8 +96,8 @@ func set_background(p_color: int) -> void:
 	background.texture = load(background_path_model % [p_color+1])
 	color = garden_colors[p_color]
 	
-	for button_center: TextureRect in lesson_button_centers:
-		button_center.modulate = color
+	for button in lesson_button_controls:
+		button.completed_color = color
 
 
 func _ready() -> void:
@@ -115,8 +105,8 @@ func _ready() -> void:
 
 
 func set_lesson_label(ind: int, text: String) -> void:
-	assert(ind < lesson_labels.size())
-	lesson_labels[ind].text = text
+	assert(ind < lesson_button_controls.size())
+	lesson_button_controls[ind].text = text
 
 
 func pop_animation() -> void:

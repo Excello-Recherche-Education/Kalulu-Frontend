@@ -94,7 +94,7 @@ func _present_next_word() -> void:
 	label.show()
 	label.text = words_to_present[0]
 	if tutorial_count == 0:
-		var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "intro_test_game_first_word"))
+		var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "intro_test_game_first_word"))
 		minigame_ui.play_kalulu_speech(speech)
 		await minigame_ui.kalulu_speech_ended
 
@@ -132,12 +132,12 @@ func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 			false_right_fx.play()
 		words_to_present.pop_front()
 		if tutorial_count == 0:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "win_test_game_first_word"))
+			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "win_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "win_test_game_second_word"))
+			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "win_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
@@ -148,12 +148,12 @@ func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 			false_wrong_fx.play()
 		words_to_present_next.append(words_to_present.pop_front())
 		if tutorial_count == 0:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "lose_test_game_first_word"))
+			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "lose_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(minigame_name, "lose_test_game_second_word"))
+			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "lose_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1

@@ -214,6 +214,7 @@ texture_disabled = ExtResource("7_cg081")
 stretch_mode = 5
 
 [node name="VolumeContainer" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 

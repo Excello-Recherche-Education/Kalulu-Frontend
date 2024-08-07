@@ -6,20 +6,21 @@
 
 [node name="DevicesCountStep" instance=ExtResource("1_w3urq")]
 step_name = "devices"
-question = "Choose the number of devices"
-infos = "You will be able to modify the devices later in the settings"
+question = "DEVICE_COUNT_PROMPT"
+infos = "DEVICE_COUNT_INFOS"
 
-[node name="DevicesCountContainer" type="HBoxContainer" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer" index="0"]
+[node name="DevicesCountContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
 layout_mode = 2
 
-[node name="DevicesCountLabel" type="Label" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/DevicesCountContainer" index="0"]
+[node name="DevicesCountLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/DevicesCountContainer" index="0"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 70
-text = "Devices :"
+theme_override_font_sizes/font_size = 50
+text = "DEVICES"
+autowrap_mode = 3
 
-[node name="DevicesCountField" type="SpinBox" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/DevicesCountContainer" index="1"]
+[node name="DevicesCountField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/DevicesCountContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_ux74f")
@@ -27,7 +28,12 @@ min_value = 1.0
 max_value = 90.0
 value = 1.0
 
-[node name="ControlBinder" type="Control" parent="Background/FormMargin/FormValidator/FormBinder/FormContainer/DevicesCountContainer/DevicesCountField" index="2"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/DevicesCountContainer/DevicesCountField" index="2"]
+layout_mode = 2
 anchors_preset = 0
+offset_left = -354.0
+offset_top = -20.0
+offset_right = 770.0
+offset_bottom = -20.0
 script = ExtResource("2_asuou")
 property_name = "devices_count"

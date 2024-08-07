@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://sjgk8i8m2lhn"]
+
+[ext_resource type="Script" path="res://resources/gardens/garden_flower.gd" id="1_mimdi"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="3_xad8g"]
+
+[node name="Flower" type="Node2D"]
+script = ExtResource("1_mimdi")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+material = ExtResource("3_xad8g")
+
+[node name="Area2D" type="Area2D" parent="."]
+top_level = true
+z_index = 20
+z_as_relative = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+position = Vector2(250, 1546)
+polygon = PackedVector2Array(1030, -1546, -250, -1546, -250, 254, 1030, 254, 774, 225, 630, 163, 449, 44, 264, -167, 163, -383, 125, -619, 158, -890, 251, -1101, 390, -1282, 563, -1416, 710, -1490, 838, -1522)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Area2D"]
+position = Vector2(2312, 1544)
+rotation = -3.14159
+scale = Vector2(1, -1)
+polygon = PackedVector2Array(1030, -1546, -250, -1546, -250, 254, 1030, 254, 774, 225, 630, 163, 449, 44, 264, -167, 163, -383, 125, -619, 158, -890, 251, -1101, 390, -1282, 563, -1416, 710, -1490, 838, -1522)
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

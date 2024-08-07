@@ -15,6 +15,7 @@ extends PanelContainer
 
 
 func _ready() -> void:
+	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
 	file_dialog.filters = []
 	file_dialog.add_filter("*" + Database.sound_extension, "Sounds")
 	
