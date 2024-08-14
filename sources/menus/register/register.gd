@@ -104,9 +104,15 @@ func _on_step_completed(step : Step):
 			progress_bar.max_value = current_steps.size()
 	
 	if progress_bar.value == current_steps.size()-1:
-		if UserDataManager.register(register_data):
-			get_tree().change_scene_to_file(next_scene_path)
+		# Send register via API
+		var res = await ServerManager.register(register_data.to_dict())
+		if res.code == 200:
+			register_data.last_modified = res.body.last_modified
+			register_data.token = res.body.token
+			if UserDataManager.register(register_data):
+				get_tree().change_scene_to_file(next_scene_path)
 		else:
+			# TODO Add a popup that explains the error
 			print("Impossible to register")
 	else:
 		_go_to_step(progress_bar.value+1)
