@@ -201,7 +201,6 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		
 		# Handles the right answer GPs
 		for i in right_answer.GPs.size():
-			# TODO BUG WHEN STIMULUS IS SMALLER THAN TARGET
 			if not stimulus.has("GPs") or (i <= stimulus.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]):
 				continue
 			_update_score(right_answer.GPs[i].ID, -1)

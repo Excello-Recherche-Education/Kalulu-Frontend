@@ -37,7 +37,7 @@ METHOD_COMPLETE;Complète;Completo
 DEVICE_COUNT_PROMPT;Veuillez sélectionner le nombre d'appareils;Seleccionar la cantidad de dispositivos
 DEVICE_COUNT_INFOS;Vous pourrez modifier les appareils ultérieurement dans les paramètres;Puede cambiar los dispositivos más tarde en la configuración.
 DEVICES;Appareils;Dispositivos
-TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};Seleccione la cantidad de estudiantes en el dispositivo n°
+TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};Seleccione la cantidad de estudiantes en el dispositivo n° {number}
 TEACHER_STUDENT_COUNT_INFOS;Vous pourrez modifier les élèves pour chaque appareil ultérieurement dans les paramètres;Puede cambiar los estudiantes en cada dispositivo más tarde en la configuración.
 STUDENTS;Élèves;Estudiantes
 PARENT_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre de joueurs;Por favor, seleccione la cantidad de jugadores
@@ -69,3 +69,5 @@ LOGOUT;Déconnexion;Cerrar sesión
 SETTINGS_ADD_DEVICE;Ajout d'un appareil;Agregar un dispositivo
 SETTINGS_ADD_STUDENT;Ajout d'un élève;Agregar un estudiante 
 SETTINGS_LESSONS;Leçons;Lecciones
+CLOSE;Fermer;Cerrar
+REGISTER_FAILED;Une erreur est survenue;Se ha producido un error

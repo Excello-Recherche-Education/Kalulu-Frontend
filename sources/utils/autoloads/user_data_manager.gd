@@ -35,9 +35,6 @@ func register(register_settings : TeacherSettings) -> bool:
 	if not register_settings:
 		return false
 	
-	# TODO Register on the distant server (Nakama ?)
-	# The server will check if an account with the provided mail already exists
-	
 	# Handles device settings
 	var device_settings := get_device_settings()
 	device_settings.teacher = register_settings.email
@@ -236,7 +233,7 @@ func delete_student(device_id : int, code : String) -> bool:
 			student_data = s
 			break
 	
-	# Deletes the saves TODO
+	# Deletes the saves ??
 	
 	# Removes the student
 	teacher_settings.students[device_id].erase(student_data)
