@@ -11,15 +11,22 @@ var code: int
 var json: Dictionary
 
 func check_email(email: String) -> Dictionary:
+	loading_rect.visible = true
 	await _get_request("checkemail", {"mail" : email})
 	return _response()
 
 func register(data: Dictionary) -> Dictionary:
+	loading_rect.visible = true
 	await _post_json_request("register", data)
 	return _response()
 
 func login(type: TeacherSettings.AccountType, device:int, mail: String, password: String) -> Dictionary:
+	loading_rect.visible = true
 	await _get_request("login", {"type":type, "device":device, "mail": mail, "password": password})
+	return _response()
+
+func get_language_pack_url(locale: String) -> Dictionary:
+	await _get_request("language", {"locale": locale})
 	return _response()
 
 
@@ -33,7 +40,6 @@ func _response() -> Dictionary:
 
 
 func _get_request(URI: String, params: Dictionary) -> void:
-	loading_rect.visible = true
 	code = 0
 	json = {}
 	
@@ -55,7 +61,6 @@ func _get_request(URI: String, params: Dictionary) -> void:
 
 
 func _post_json_request(URI: String, data: Dictionary) -> void:
-	loading_rect.visible = true
 	code = 0
 	json = {}
 	

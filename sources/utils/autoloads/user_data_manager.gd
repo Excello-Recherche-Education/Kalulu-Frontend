@@ -291,7 +291,6 @@ func _save_student_progression() -> void:
 	ResourceSaver.save(student_progression, get_student_progression_path())
 
 func _on_user_progression_unlocks_changed() -> void:
-	print(student_progression.unlocks)
 	_save_student_progression()
 
 #endregion

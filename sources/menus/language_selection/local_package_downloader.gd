@@ -2,12 +2,16 @@ extends Control
 class_name LocalPackageDownloader
 
 const next_scene_path: = "res://sources/menus/main/main_menu.tscn"
-const res_language_resources_path: = "res://language_resources"
 const user_language_resources_path: =  "user://language_resources"
 
+@onready var http_request: HTTPRequest = $HTTPRequest
+@onready var download_label: Label = %DownloadLabel
+@onready var copy_label: Label = %CopyLabel
+@onready var download_bar: ProgressBar = %DownloadProgressBar
 @onready var progress_bar: ProgressBar = %ProgressBar
 @onready var data_label: Label = %DataLabel
 
+var device_language: String
 var current_language_path: String
 var mutex: Mutex
 var thread: Thread
@@ -15,15 +19,38 @@ var thread: Thread
 func _ready() -> void:
 	await get_tree().process_frame
 	
-	current_language_path = user_language_resources_path.path_join(UserDataManager.get_device_settings().language)
+	device_language = UserDataManager.get_device_settings().language
+	current_language_path = user_language_resources_path.path_join(device_language)
 	
+	# If the language pack is not already downloaded 
 	if not DirAccess.dir_exists_absolute(current_language_path):
-		mutex = Mutex.new()
-		thread = Thread.new()
-		if OS.request_permissions():
-			thread.start(_copy_data.bind(self))
+		# Gets the URL of the pack on the server
+		var res = await ServerManager.get_language_pack_url(device_language)
+		if res.code == 200:
+			if not DirAccess.dir_exists_absolute(user_language_resources_path):
+				DirAccess.make_dir_recursive_absolute(user_language_resources_path)
+				
+			# Download the pack
+			http_request.set_download_file(user_language_resources_path.path_join(device_language + ".zip"))
+			http_request.request(res.body.url)
+		else:
+			# TODO Handle error plz
+			print("Error")
 	else:
+		download_bar.value = 1
+		progress_bar.value = 1
 		_go_to_main_menu()
+
+
+func _process(delta):
+	if http_request.get_body_size() > 0:
+		
+		var max = int(http_request.get_body_size()/1024)
+		var current = int(http_request.get_downloaded_bytes()/1024)
+		
+		download_bar.max_value = max
+		download_bar.value = current
+		data_label.text = str(current) + "KB/" + str(max) + "KB dowloaded"
 
 
 func _exit_tree() -> void:
@@ -32,31 +59,12 @@ func _exit_tree() -> void:
 
 
 func _copy_data(this: LocalPackageDownloader) -> void:
-	# Find the right language zip
-	var language: = UserDataManager.get_device_settings().language
-	var language_zip: String
-	var language_zip_path: String
-	
 	# Check if a zip exists for the complete locale
-	if FileAccess.file_exists(res_language_resources_path.path_join(language + ".zip")):
-		language_zip = language + ".zip"
-	# Check if a zip exists for the language
-	elif FileAccess.file_exists(res_language_resources_path.path_join(language.split("_")[0] + ".zip")):
-		language = language.split("_")[0]
-		language_zip = language + ".zip"
+	if not FileAccess.file_exists(user_language_resources_path.path_join(device_language + ".zip")):
+		return
 	
-	if language_zip:
-		language_zip_path = res_language_resources_path.path_join(language_zip)
-	
-	
-	# Copy the language archive from res:// to user://
-	# On Android, decompressing a zip in res is extremely slow
-	if not DirAccess.dir_exists_absolute(user_language_resources_path):
-		DirAccess.make_dir_recursive_absolute(user_language_resources_path)
-	var source_dir: = DirAccess.open(res_language_resources_path);
-	source_dir.copy(language_zip_path, user_language_resources_path.path_join(language_zip))
-	
-	language_zip_path = user_language_resources_path.path_join(language_zip)
+	var language_zip: String = device_language + ".zip"
+	var language_zip_path: String = user_language_resources_path.path_join(language_zip)
 	
 	# Create and connect the unzipper to the UI
 	var unzipper: = FolderUnzipper.new()
@@ -75,10 +83,10 @@ func _copy_data(this: LocalPackageDownloader) -> void:
 	)
 	
 	# Extract the archive
-	unzipper.extract(language_zip_path, user_language_resources_path, false)
+	var subfolder: String = unzipper.extract(language_zip_path, user_language_resources_path, false)
 	
 	# Move the data to the locale folder of the user
-	DirAccess.rename_absolute(user_language_resources_path.path_join(language), current_language_path)
+	DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
 	
 	# Cleanup unnecessary files
 	DirAccess.remove_absolute(language_zip_path)
@@ -91,3 +99,16 @@ func _go_to_main_menu() -> void:
 	if not Database.is_open:
 		Database.connect_to_db()
 	get_tree().change_scene_to_file(next_scene_path)
+
+
+func _on_http_request_request_completed(result, response_code, headers, body):
+	if response_code == 200:
+		mutex = Mutex.new()
+		thread = Thread.new()
+		download_label.hide()
+		copy_label.show()
+		if OS.request_permissions():
+			thread.start(_copy_data.bind(self))
+	else:
+		# TODO Handle error plz
+		print("Error")
