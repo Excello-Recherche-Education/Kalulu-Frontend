@@ -4,7 +4,7 @@ signal request_completed(code: int, body: Dictionary)
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var loading_rect: TextureRect = $TextureRect
 
-const URL: String = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/dev/"
+const URL: String = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
 
 # Response from the last request
 var code: int
