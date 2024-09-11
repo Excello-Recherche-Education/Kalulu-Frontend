@@ -32,6 +32,14 @@ func get_language_pack_url(locale: String) -> Dictionary:
 
 #region Sender functions
 
+func _create_request_headers() -> PackedStringArray:
+	var headers: PackedStringArray = []
+	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
+	if teacher_settings and teacher_settings.token:
+		headers.append("Authorization: Bearer " + teacher_settings.token)
+	return headers
+
+
 func _response() -> Dictionary:
 	return {
 			"code" : code,
@@ -53,7 +61,8 @@ func _get_request(URI: String, params: Dictionary) -> void:
 			req += "&"
 		req += str(key) + "=" + str(params[key])
 	
-	if http_request.request(req) == 0:
+	
+	if http_request.request(req, _create_request_headers()) == 0:
 		await request_completed
 	else:
 		code = 500
@@ -65,7 +74,8 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 	json = {}
 	
 	var req: = URL + URI
-	var headers: = ["Content-Type: application/json"]
+	var headers: = _create_request_headers()
+	headers.append("Content-Type: application/json")
 	
 	var json = JSON.stringify(data)
 	if http_request.request(req, headers, HTTPClient.METHOD_POST, json) == 0:
