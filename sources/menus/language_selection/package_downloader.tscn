@@ -1,51 +1,102 @@
-[gd_scene load_steps=3 format=3 uid="uid://df0mhig2yt5ba"]
+[gd_scene load_steps=5 format=3 uid="uid://bwjft0rlj2tu2"]
 
-[ext_resource type="Script" path="res://sources/menus/language_selection/package_downloader.gd" id="1_twhpo"]
+[ext_resource type="Script" path="res://sources/menus/language_selection/package_downloader.gd" id="1_awls2"]
 [ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="2_e8r30"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_ntm5g"]
+[ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="4_03o13"]
 
-[node name="PackageDownloader" type="Control"]
+[node name="LocalPackageDownloader" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_twhpo")
+script = ExtResource("1_awls2")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="Background" parent="." instance=ExtResource("2_ntm5g")]
+layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_top = 600
+theme_override_constants/margin_right = 400
+theme_override_constants/margin_bottom = 600
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelKalulu"
+
+[node name="QuestionContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/QuestionContainer"]
+layout_mode = 2
+
+[node name="DownloadLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 90
+text = "DOWNLOADING_DATA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CopyLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 90
+text = "EXTRACTING_DATA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DownloadProgressBar" type="ProgressBar" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(800, 100)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -50.0
-offset_right = 400.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_fonts/font = ExtResource("2_e8r30")
 theme_override_font_sizes/font_size = 60
+max_value = 1.0
+step = 1.0
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -487.0
-offset_top = -200.0
-offset_right = 487.0
-offset_bottom = -118.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="DownloadInfo" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+clip_text = true
+
+[node name="ExtractProgressBar" type="ProgressBar" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(800, 100)
+layout_mode = 2
 theme_override_fonts/font = ExtResource("2_e8r30")
 theme_override_font_sizes/font_size = 60
-text = "Downloading language specific data..."
+max_value = 1.0
+step = 1.0
 
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
+[node name="ExtractInfo" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+clip_text = true
+
+[node name="ErrorLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "ERROR_DOWNLOADING"
+label_settings = ExtResource("4_03o13")
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
