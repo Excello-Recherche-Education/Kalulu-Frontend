@@ -8,8 +8,10 @@ const user_language_resources_path: =  "user://language_resources"
 @onready var download_label: Label = %DownloadLabel
 @onready var copy_label: Label = %CopyLabel
 @onready var download_bar: ProgressBar = %DownloadProgressBar
-@onready var progress_bar: ProgressBar = %ProgressBar
-@onready var data_label: Label = %DataLabel
+@onready var download_info: Label = %DownloadInfo
+@onready var extract_bar: ProgressBar = %ExtractProgressBar
+@onready var extract_info: Label = %ExtractInfo
+@onready var error_label: Label = %ErrorLabel
 
 var device_language: String
 var current_language_path: String
@@ -34,11 +36,10 @@ func _ready() -> void:
 			http_request.set_download_file(user_language_resources_path.path_join(device_language + ".zip"))
 			http_request.request(res.body.url)
 		else:
-			# TODO Handle error plz
-			print("Error")
+			error_label.show()
 	else:
 		download_bar.value = 1
-		progress_bar.value = 1
+		extract_bar.value = 1
 		_go_to_main_menu()
 
 
@@ -50,7 +51,7 @@ func _process(delta):
 		
 		download_bar.max_value = max
 		download_bar.value = current
-		data_label.text = str(current) + "KB/" + str(max) + "KB dowloaded"
+		download_info.text = str(current) + "KB/" + str(max) + "KB"
 
 
 func _exit_tree() -> void:
@@ -71,14 +72,14 @@ func _copy_data(this: LocalPackageDownloader) -> void:
 	unzipper.file_count.connect(
 		func(count: int) -> void:
 			mutex.lock()
-			this.progress_bar.set_deferred("max_value", count)
+			this.extract_bar.set_deferred("max_value", count)
 			mutex.unlock()
 	)
 	unzipper.file_copied.connect(
 		func(count: int, filename: String) -> void:
 			mutex.lock()
-			this.data_label.set_deferred("text", filename)
-			this.progress_bar.set_deferred("value", count)
+			this.extract_info.set_deferred("text", filename)
+			this.extract_bar.set_deferred("value", count)
 			mutex.unlock()
 	)
 	
@@ -110,5 +111,4 @@ func _on_http_request_request_completed(result, response_code, headers, body):
 		if OS.request_permissions():
 			thread.start(_copy_data.bind(self))
 	else:
-		# TODO Handle error plz
-		print("Error")
+		error_label.show()

@@ -71,3 +71,5 @@ SETTINGS_ADD_STUDENT;Ajout d'un élève;Agregar un estudiante
 SETTINGS_LESSONS;Leçons;Lecciones
 CLOSE;Fermer;Cerrar
 REGISTER_FAILED;Une erreur est survenue;Se ha producido un error
+ERROR_DOWNLOADING;Impossible de télécharger les données de jeu;No se pueden descargar los datos del juego
+EXTRACTING_DATA;Extraction des données;Extracción de datos
