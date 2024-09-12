@@ -5,7 +5,7 @@ signal file_count(count: int)
 signal file_copied(count: int, name: String)
 signal finished()
 
-func extract(zip_path: String, extract_path: String, extract_in_subfolder: = true) -> void:
+func extract(zip_path: String, extract_path: String, extract_in_subfolder: = true) -> String:
 	open(zip_path)
 	var extract_folder: = extract_path.path_join(zip_path.get_file().get_basename()) if extract_in_subfolder else extract_path
 	
@@ -13,7 +13,10 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: = tru
 	file_count.emit(all_files.size())
 	
 	var copied_file: = 0
+	var first_folder: String
 	for sub_path in all_files:
+		if not first_folder:
+			first_folder = sub_path.split("/")[0]
 		var file_name: = extract_folder.path_join(sub_path)
 		var folder_name: = file_name.get_base_dir()
 		if not DirAccess.dir_exists_absolute(folder_name):
@@ -27,3 +30,4 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: = tru
 	close()
 	
 	finished.emit()
+	return first_folder

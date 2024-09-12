@@ -1,13 +1,30 @@
-[gd_scene load_steps=9 format=3 uid="uid://b7cfjs2iipagq"]
+[gd_scene load_steps=11 format=3 uid="uid://b7cfjs2iipagq"]
 
 [ext_resource type="Script" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
-[ext_resource type="PackedScene" uid="uid://cp27bjh6v5bkj" path="res://sources/utils/autoloads/opening_curtain.tscn" id="2_kfcp0"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_tirf6"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_25mko"]
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_23tyx"]
 [ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_i6t6f"]
 [ext_resource type="PackedScene" uid="uid://dp4182l80ntvn" path="res://sources/menus/main/plants/flower.tscn" id="7_iqya7"]
 [ext_resource type="Script" path="res://sources/menus/register/ProgressBar.gd" id="8_h8kqu"]
+
+[sub_resource type="Gradient" id="Gradient_dx825"]
+colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_l78ph"]
+gradient = SubResource("Gradient_dx825")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dv622"]
+bg_color = Color(0.266667, 0.180392, 0.537255, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 33
+corner_radius_top_right = 33
+corner_radius_bottom_right = 33
+corner_radius_bottom_left = 33
 
 [node name="RegisterScreen" type="Control"]
 layout_mode = 3
@@ -17,9 +34,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jsnxc")
-
-[node name="OpeningCurtain" parent="." instance=ExtResource("2_kfcp0")]
-unique_name_in_owner = true
 
 [node name="NightSky" parent="." instance=ExtResource("2_tirf6")]
 layout_mode = 1
@@ -67,3 +81,71 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
+
+[node name="Popup" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+top_level = true
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = SubResource("GradientTexture1D_l78ph")
+
+[node name="Container" type="PanelContainer" parent="Popup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -850.0
+offset_top = -350.0
+offset_right = 850.0
+offset_bottom = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelKalulu"
+theme_override_styles/panel = SubResource("StyleBoxFlat_dv622")
+
+[node name="MarginContainer" type="MarginContainer" parent="Popup/Container"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Popup/Container/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Title" type="Label" parent="Popup/Container/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1500, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 70
+text = "REGISTER_FAILED"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="PopupInfo" type="Label" parent="Popup/Container/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+auto_translate = false
+theme_override_font_sizes/font_size = 50
+text = "TEST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Popup/Container/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 50
+text = "CLOSE"
+
+[connection signal="pressed" from="Popup/Container/MarginContainer/VBoxContainer/Button" to="." method="_on_popup_button_pressed"]

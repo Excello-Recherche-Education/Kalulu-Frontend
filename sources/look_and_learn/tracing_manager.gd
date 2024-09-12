@@ -41,8 +41,11 @@ func setup(grapheme: String) -> void:
 	for letter in grapheme:
 		var tracings: = _get_letter_tracings(letter)
 		
-		setup_tracing(letter, tracings["lower"], lower_labels, true)
-		setup_tracing(letter, tracings["upper"], upper_labels, false)
+		if tracings.lower:
+			setup_tracing(letter, tracings["lower"], lower_labels, true)
+		
+		if tracings.upper:
+			setup_tracing(letter, tracings["upper"], upper_labels, false)
 
 
 func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lower: bool) -> void:
@@ -116,11 +119,12 @@ func start() -> void:
 	await demo_labels(lower_labels)
 	await start_labels(lower_labels)
 	
-	lower_labels.visible = false
-	upper_labels.visible = true
-	
-	await demo_labels(upper_labels)
-	await start_labels(upper_labels)
+	if upper_labels.get_child_count(false) > 0:
+		lower_labels.visible = false
+		upper_labels.visible = true
+		
+		await demo_labels(upper_labels)
+		await start_labels(upper_labels)
 	
 	emit_signal("finished")
 

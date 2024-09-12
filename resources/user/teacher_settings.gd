@@ -15,11 +15,32 @@ enum EducationMethod {
 
 @export var account_type : AccountType
 @export var education_method : EducationMethod
-@export var devices_count : int
+var devices_count : int
 @export var students : Dictionary # int : Array[StudentData]
 @export var email : String
-@export var password : String # Temporary
+var password : String
+@export var token: String
+@export var last_modified: String
 
+func update_from_dict(dict: Dictionary) -> void:
+	account_type = dict.account_type
+	education_method = dict.education_method
+	email = dict.email
+	token = dict.token
+	last_modified = dict.last_modified
+	
+	students.clear()
+	for device: String in dict.students.keys():
+		var device_students: Array[StudentData] = []
+		for s: Dictionary in dict.students[device]: 
+			var student = StudentData.new()
+			student.code = str(s.code)
+			student.name = s.name
+			student.age = s.age
+			student.level = s.level
+			device_students.append(student)
+		
+		students[int(device)] = device_students
 
 func get_new_code() -> String :
 	var used_codes = []
@@ -48,5 +69,18 @@ func get_students_count() -> int :
 	
 	return count
 
-func _to_string():
-	return "{Account Type: %s, Education Method: %s, Devices count: %d, Students: %s, Email: %s, Password: %s}" % [AccountType.keys()[account_type], EducationMethod.keys()[education_method], devices_count, str(students), email, password]
+func to_dict() -> Dictionary:
+	var dict = {
+		"account_type": account_type,
+		"email": email,
+		"password": password,
+		"education_method": education_method,
+	}
+	
+	dict["students"] = {}
+	for device in students.keys():
+		dict["students"][device] = []
+		for s: StudentData in students[device]: 
+			dict["students"][device].append(s.to_dict())
+	
+	return dict

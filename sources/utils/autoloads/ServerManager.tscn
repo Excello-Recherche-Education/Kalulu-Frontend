@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://yk1u0ohwwgb3"]
+
+[ext_resource type="Script" path="res://sources/utils/autoloads/server_manager.gd" id="1_n6vsh"]
+
+[sub_resource type="Gradient" id="Gradient_22q4u"]
+colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_68deq"]
+gradient = SubResource("Gradient_22q4u")
+
+[node name="ServerManager" type="CanvasLayer"]
+script = ExtResource("1_n6vsh")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+timeout = 30.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = SubResource("GradientTexture1D_68deq")
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

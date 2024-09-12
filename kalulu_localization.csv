@@ -37,7 +37,7 @@ METHOD_COMPLETE;Complète;Completo
 DEVICE_COUNT_PROMPT;Veuillez sélectionner le nombre d'appareils;Seleccionar la cantidad de dispositivos
 DEVICE_COUNT_INFOS;Vous pourrez modifier les appareils ultérieurement dans les paramètres;Puede cambiar los dispositivos más tarde en la configuración.
 DEVICES;Appareils;Dispositivos
-TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};Seleccione la cantidad de estudiantes en el dispositivo n°
+TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};Seleccione la cantidad de estudiantes en el dispositivo n° {number}
 TEACHER_STUDENT_COUNT_INFOS;Vous pourrez modifier les élèves pour chaque appareil ultérieurement dans les paramètres;Puede cambiar los estudiantes en cada dispositivo más tarde en la configuración.
 STUDENTS;Élèves;Estudiantes
 PARENT_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre de joueurs;Por favor, seleccione la cantidad de jugadores
@@ -52,7 +52,173 @@ PLAYER_NAME;Prénom;Nombre
 PLAYER_AGE;Age;Edad
 CREDENTIALS_PROMPT;Veuillez saisir vos identifiants de connexion;Ingrese los datos de inicio de sesión 
 CONFIRM_PASSWORD;Confirmer le mot de passe;Confirmar la contraseña
-GENERAL_CONDITIONS_TEXT;;
+GENERAL_CONDITIONS_TEXT;"PRÉAMBULE
+
+Les présentes Conditions Générales d’Utilisation sont disponibles à tout moment : excellolab.org/cgu
+
+Elles déterminent les règles d’accès à nos plateformes sur le site Excello et ses sous-domaines, où se trouvent des contenus numériques pédagogiques, ci-après dénommée la plateforme.
+
+En utilisant cette plateforme, vous reconnaissez, en votre qualité d’utilisateur – enseignant et/ou responsable légal de l’élève mineur – en connaître les termes, les accepter sans réserve et vous y conformer.
+
+Le responsable du traitement se réserve le droit, à leur seule discrétion et sans information préalable, de modifier, supprimer ou ajouter des mentions aux présentes “Conditions Générales d’Utilisation”, et ce à tout moment afin notamment de prendre en compte toute évolution légale, jurisprudentielle, éditoriale et/ou technique. La version qui prévaut est celle qui est accessible en ligne.
+
+Il vous est donc conseillé de vous référer régulièrement à la dernière version desdites Conditions Générales d’Utilisation.
+
+ARTICLE 1 – USAGE UTILISATEUR, INFORMATIONS PRATIQUES
+L’association Excello a pour objet la recherche, le développement et la diffusion des connaissances dans le domaine de l’éducation, particulièrement en matière d’amélioration de l’apprentissage de la lecture et des mathématiques. Excello élabore et fournit des ressources pédagogiques associées, notamment par le recours aux nouvelles technologies.
+
+1/ Accès aux applications éducative crées par Excello
+
+Les activités sont disponibles en permanence (24/7) :
+
+Sur les applications mobile d’Excello, disponibles sur les stores Android et Apple pour être jouéee sur une tablette/smartphone Android 5.1+ et iOS 11+. L’usage d’une tablette est recommandé pour une utilisation optimale du service.
+Sur l’application web en utilisant Google Chrome ou Mozilla Firefox sur Windows, Ubuntu et Android et en utilisant Safari sur MacOs et iOs.
+L’utilisation de l’application peut se faire par un enseignant qui crée un compte pour sa classe, ou par un tuteur légal qui crée un compte pour son enfant.
+
+Une fois l’application installée, l’usage d’internet n’est pas obligatoire. Certaines fonctionnalités seront en revanche désactivées : transcription de la voix en texte et reconnaissance manuscrite.
+
+Dans le cas où l’application est utilisée hors ligne (sans internet), les traces d’apprentissage (résultats des exercices) sont sauvegardées sur l’appareil et ne seront envoyées sur la plateforme qu’une fois le retour d’une connexion à l’internet.
+
+2/ Accès aux plateformes créées par Excello
+
+Pour une première utilisation de nos plateformes, il faudra :
+
+Créer un compte adulte (gardien d’enfant/enseignant).
+
+Retrouver toutes les informations collectés dans notre politique de confidentialité.
+
+3/ Assistance technique
+
+En cas d’incident technique sur l’application ou la plateforme, privilégiez l’envoi d’un message au : contact@excellolab.org
+
+Nos équipes mettront tout en œuvre pour vous répondre et résoudre les incidents dans les plus brefs délais.
+
+4/ Matériel utilisé
+
+L’appareil utilisé devra répondre aux caractéristiques suivantes pour assurer une bonne utilisation des applications Excello :
+
+Minimum :
+Système : PC Android IOS (Chrome, Firefox, Safari >= 13)
+Processeur : 4 coeurs 1.4 GHz
+Mémoire : 2 GB RAM
+
+Recommandé, pour un rendu optimal :
+Système : PC Android IOS (Chrome, Firefox, Safari >= 14)
+Processeur : 4 coeurs 2 GHz
+Mémoire : 2 GB RAM
+
+ARTICLE 2 – LICENCE D’UTILISATION
+
+L’accès à la présente Plateforme vous confère un droit d’usage de celle-ci à titre non exclusif, privé et/ou collectif.
+
+Votre usage de la Plateforme emporte acceptation sans réserve des présentes Conditions Générales d’Utilisation.
+
+L’ensemble des contenus édités sur la Plateforme, incluant à titre non limitatif : les textes, les photographies, les illustrations, les graphismes, les infographies, les cartes, les vidéogrammes, les musiques, les icônes, les logiciels, ci-après dénommés « les Contenus », sont sous une license CC BY-SA 4.0 .
+
+En application de l’article L. 122-4 du Code de la Propriété Intellectuelle, toute représentation ou reproduction intégrale ou partielle faite sans le consentement de l’auteur ou de ses ayants droit ou ayants cause est illicite. Il en est de même pour la traduction, l’adaptation ou la transformation, l’arrangement ou la reproduction par un art ou un procédé quelconque.
+
+Nous vous rappelons également que la violation des droits d’auteur constitue un délit de contrefaçon puni en France de trois ans d’emprisonnement et de 300. 000 euros d’amende.
+
+De même, le Code de la propriété intellectuelle punit de trois ans d’emprisonnement et de 300.000 euros d’amende toute fixation, reproduction, communication ou mise à la disposition du public, à titre onéreux ou gratuit, ou toute télédiffusion d’une prestation, d’un phonogramme, d’un vidéogramme ou d’un programme, sans l’autorisation, lorsqu’elle est exigée, du titulaire des droits.
+
+ARTICLE 3 – LIMITATION DE RESPONSABILITÉ
+
+Vous êtes seul responsable des dommages et préjudices, directs ou indirects, matériels ou immatériels dès lors qu’ils auraient pour cause, fondement ou origine un usage de la Plateforme  par vous-même ou par toute personne autorisée par vous à utiliser cette Plateforme. Par usage, il convient d’entendre tout usage de la Plateforme quel qu’il soit, frauduleux ou non frauduleux.
+
+Les mineurs sont admis à accéder à la Plateforme, à la condition expresse qu’ils aient préalablement obtenus de leurs parents (ou de la personne exerçant l’autorité parentale) l’autorisation de le faire et de fournir les informations et adresses électroniques par lesquelles toute communication peut leur être transmise. Le fait pour eux de s’inscrire implique qu’ils ont obtenu cette autorisation préalable, laquelle est expressément requise sur la Plateforme au moment de l’inscription.
+ 
+Les éditeurs de la Plateforme s’engagent à faire leurs meilleurs efforts pour sécuriser l’accès, la consultation et l’utilisation de la Plateforme.
+ 
+ARTICLE 4 – APPLICATION DE LA LOI FRANÇAISE
+
+Les règles applicables à l’usage de la Plateforme et à tous les contenus et informations qu’elle comporte sont régies par la loi française. En cas de litige, les tribunaux français seront seuls compétents.
+
+ARTICLE 5 – Conditions de modifications de la politique de confidentialité
+
+L’éditeur du site se réserve le droit de la modifier afin de garantir sa conformité avec le droit et les usages en vigueur.";"PREÁMBULO
+
+Las presentes Condiciones Generales de Uso están disponibles en todo momento: excellolab.org/cgu
+
+En ellas se establecen las normas de acceso a nuestras plataformas de la web Excello y sus subdominios, que contienen contenidos educativos digitales, en adelante la plataforma.
+
+Al utilizar esta plataforma, usted reconoce que, como usuario -profesor y/o tutor legal de un menor-, conoce las condiciones, las acepta sin reservas y las cumple.
+
+El responsable del tratamiento se reserva el derecho, a su entera discreción y sin previo aviso, de modificar, suprimir o completar las presentes «Condiciones Generales de Uso» en cualquier momento, en particular para tener en cuenta cualquier evolución jurídica, jurisprudencial, editorial y/o técnica. La versión que prevalece es la que está accesible en línea.
+
+Por lo tanto, le aconsejamos que consulte regularmente la última versión de las presentes Condiciones Generales de Uso.
+
+ARTÍCULO 1 - USO DEL USUARIO, INFORMACIÓN PRÁCTICA
+La asociación Excello tiene por objeto la investigación, el desarrollo y la difusión de conocimientos en el ámbito de la educación, especialmente en lo que se refiere a la mejora del aprendizaje de la lectura y las matemáticas. Excello desarrolla y proporciona recursos educativos asociados, en particular mediante el uso de las nuevas tecnologías.
+
+1/ Acceso a las aplicaciones educativas creadas por Excello
+
+Las actividades están disponibles 24 horas al día, 7 días a la semana:
+
+En las aplicaciones móviles de Excello, disponibles en las tiendas Android y Apple para jugar en una tableta/smartphone Android 5.1+ e iOS 11+. Se recomienda el uso de una tableta para un uso óptimo del servicio.
+En la aplicación web utilizando Google Chrome o Mozilla Firefox en Windows, Ubuntu y Android y utilizando Safari en MacOs e iOs.
+La aplicación puede ser utilizada por un profesor que crea una cuenta para su clase, o por un tutor legal que crea una cuenta para su hijo.
+
+Una vez instalada la aplicación, el uso de Internet no es obligatorio. Sin embargo, algunas funciones estarán desactivadas: la transcripción de voz a texto y el reconocimiento de escritura.
+
+Si la aplicación se utiliza offline (sin internet), las trazas de aprendizaje (resultados de los ejercicios) se guardan en el dispositivo y sólo se enviarán a la plataforma cuando se restablezca la conexión a internet.
+
+2/ Acceso a las plataformas creadas por Excello
+
+Para utilizar nuestras plataformas por primera vez, deberá :
+
+Crear una cuenta de adulto (cuidador de niños/profesor).
+
+Encontrar toda la información recopilada en nuestra política de privacidad.
+
+3/ Asistencia técnica
+
+En caso de incidencia técnica en la aplicación o plataforma, envíe un mensaje a: contact@excellolab.org
+
+Nuestros equipos harán todo lo posible para responder y resolver cualquier incidencia lo antes posible.
+
+4/ Equipo utilizado
+
+El dispositivo utilizado debe cumplir las siguientes especificaciones para garantizar el correcto uso de las aplicaciones Excello:
+
+Mínimo :
+Sistema: PC Android IOS (Chrome, Firefox, Safari >= 13)
+Procesador: 4 núcleos 1,4 GHz
+Memoria: 2 GB RAM
+
+Recomendado, para una óptima renderización :
+Sistema: PC Android IOS (Chrome, Firefox, Safari >= 14)
+Procesador: 4 núcleos 2 GHz
+Memoria: 2 GB RAM
+
+ARTÍCULO 2 - LICENCIA DE USO
+
+El acceso a esta Plataforma le otorga un derecho de uso no exclusivo, privado y/o colectivo.
+
+El uso de la Plataforma implica la aceptación sin reservas de las presentes Condiciones Generales de Uso.
+
+Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografías, ilustraciones, gráficos, infografías, mapas, videogramas, música, iconos y software, en lo sucesivo denominado «el Contenido», está sujeto a una licencia CC BY-SA 4.0.
+
+De conformidad con el artículo L. 122-4 del Código francés de la Propiedad Intelectual, toda representación o reproducción total o parcial sin el consentimiento del autor o de sus derechohabientes o causahabientes es ilícita. Lo mismo se aplica a la traducción, adaptación o transformación, arreglo o reproducción por cualquier arte o procedimiento.
+
+Le recordamos también que la violación de los derechos de autor es un delito castigado en Francia con tres años de prisión y 300.000 euros de multa.
+
+Del mismo modo, el Código francés de la Propiedad Intelectual castiga con tres años de prisión y 300.000 euros de multa toda fijación, reproducción, comunicación o puesta a disposición del público, a título oneroso o gratuito, o toda emisión televisiva de una interpretación o ejecución, de un fonograma, de un videograma o de un programa, sin la autorización, en su caso, del titular de los derechos.
+
+ARTÍCULO 3 - LIMITACIÓN DE RESPONSABILIDAD
+
+Usted será el único responsable de cualquier daño o pérdida, directo o indirecto, material o inmaterial, si se debe, se basa o se origina en el uso de la Plataforma por su parte o por parte de cualquier persona autorizada por usted a utilizar la Plataforma. Por uso se entiende cualquier utilización de la Plataforma, sea fraudulenta o no.
+
+Los menores de edad pueden acceder a la Plataforma con la condición expresa de que hayan obtenido la autorización previa de sus padres (o de la persona que ejerza la patria potestad) para hacerlo y de que faciliten la información y las direcciones de correo electrónico por las que se les pueda transmitir cualquier comunicación. El hecho de que se inscriban implica que han obtenido esta autorización previa, que se exige expresamente en la Plataforma en el momento de la inscripción.
+ 
+Los editores de la Plataforma se comprometen a hacer todo lo posible para garantizar la seguridad del acceso, la consulta y la utilización de la Plataforma.
+ 
+ARTÍCULO 4 - APLICACIÓN DEL DERECHO FRANCÉS
+
+Las normas aplicables a la utilización de la Plataforma y a todos los contenidos e informaciones que contiene se rigen por el derecho francés. En caso de litigio, los tribunales franceses serán los únicos competentes.
+
+ARTÍCULO 5 - Condiciones de modificación de la política de confidencialidad
+
+El editor del sitio se reserva el derecho a modificarla para garantizar su conformidad con la legislación y los usos vigentes."
 ACCEPT_GENERAL_CONDITIONS;Accepter les conditions générales;Aceptar las condiciones generales
 ACCEPT_GENERAL_CONDITIONS_ERROR;Veuillez accepter les conditions générales avant de continuer;Aceptar las condiciones generales antes de avanzar
 REGISTRATION_SUMMARY;Récapitulatif de l’inscription;Resumen del registro
@@ -69,3 +235,7 @@ LOGOUT;Déconnexion;Cerrar sesión
 SETTINGS_ADD_DEVICE;Ajout d'un appareil;Agregar un dispositivo
 SETTINGS_ADD_STUDENT;Ajout d'un élève;Agregar un estudiante 
 SETTINGS_LESSONS;Leçons;Lecciones
+CLOSE;Fermer;Cerrar
+REGISTER_FAILED;Une erreur est survenue;Se ha producido un error
+ERROR_DOWNLOADING;Impossible de télécharger les données de jeu;No se pueden descargar los datos del juego
+EXTRACTING_DATA;Extraction des données;Extracción de datos

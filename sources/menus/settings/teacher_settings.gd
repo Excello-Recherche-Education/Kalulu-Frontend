@@ -57,8 +57,8 @@ func _on_add_student_button_pressed():
 	if not current_tab:
 		return
 	
-	# TODO If parent -> show a creation popup
-	# TODO If teacher -> create a default student
+	# If parent -> show a creation popup
+	# If teacher -> create a default student
 	
 	if UserDataManager.add_default_student(current_tab.device_id):
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]

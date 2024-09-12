@@ -35,9 +35,6 @@ func register(register_settings : TeacherSettings) -> bool:
 	if not register_settings:
 		return false
 	
-	# TODO Register on the distant server (Nakama ?)
-	# The server will check if an account with the provided mail already exists
-	
 	# Handles device settings
 	var device_settings := get_device_settings()
 	device_settings.teacher = register_settings.email
@@ -51,27 +48,40 @@ func register(register_settings : TeacherSettings) -> bool:
 	
 	return true
 
-func login(type : TeacherSettings.AccountType, teacher : String, password : String, device_id : int) -> bool:
-	if not _device_settings or not teacher or not password or device_id == 0:
+# Allow the user to log-in from the server
+func login(infos: Dictionary) -> bool:
+	if not _device_settings or not infos:
 		return false
 	
-	var path := _get_teacher_settings_path(teacher)
-	
-	if not FileAccess.file_exists(path):
+	if not infos.has("device_ID") or not infos.device_ID:
 		return false
 	
-	var temp_teacher_settings = load(path) as TeacherSettings
-	
-	if not temp_teacher_settings or temp_teacher_settings.password != password or temp_teacher_settings.account_type != type or device_id not in temp_teacher_settings.students.keys():
+	if not infos.has("email") or not infos.email:
 		return false
 	
-	# Handles teacher settings
-	teacher_settings = temp_teacher_settings
+	if not infos.has("account_type") or infos.account_type < 0 or infos.account_type > 1:
+		return false
+	
+	if not infos.has("token") or not infos.token:
+		return false
 	
 	# Handles device settings
-	_device_settings.teacher = teacher
-	_device_settings.device_id = device_id
+	_device_settings.teacher = infos.email
+	_device_settings.device_id = infos.device_ID
 	_save_device_settings()
+	
+	var path := get_teacher_settings_path()
+	
+	# Create the folder locally if it doesn't exists
+	if not FileAccess.file_exists(path):
+		DirAccess.make_dir_recursive_absolute(get_teacher_folder())
+		teacher_settings = TeacherSettings.new()
+	else:
+		teacher_settings = load(path) as TeacherSettings
+		# TODO Check if the last_modified is more recent
+	
+	teacher_settings.update_from_dict(infos)
+	_save_teacher_settings()
 	
 	return true
 
@@ -223,7 +233,7 @@ func delete_student(device_id : int, code : String) -> bool:
 			student_data = s
 			break
 	
-	# Deletes the saves TODO
+	# Deletes the saves ??
 	
 	# Removes the student
 	teacher_settings.students[device_id].erase(student_data)
@@ -281,7 +291,6 @@ func _save_student_progression() -> void:
 	ResourceSaver.save(student_progression, get_student_progression_path())
 
 func _on_user_progression_unlocks_changed() -> void:
-	print(student_progression.unlocks)
 	_save_student_progression()
 
 #endregion

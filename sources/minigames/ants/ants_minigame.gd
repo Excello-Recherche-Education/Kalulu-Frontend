@@ -125,7 +125,7 @@ func _next_sentence() -> void:
 			current_words[i - 1] += " " + word
 			inds_to_remove.append(i)
 		
-		if word in ["'", "-"]:
+		if word in ["'", "-", "¿", "¡"]:
 			current_words[i - 1] += word
 			inds_to_remove.append(i)
 	

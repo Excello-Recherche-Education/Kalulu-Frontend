@@ -25,6 +25,8 @@ var current_steps : Array[Step]
 @onready var register_data := TeacherSettings.new()
 @onready var progress_bar := %ProgressBar
 @onready var steps := %Steps
+@onready var popup := %Popup
+@onready var popup_info_label : Label = %PopupInfo
 
 func _ready():
 	current_steps = [account_type_step.instantiate()]
@@ -104,10 +106,19 @@ func _on_step_completed(step : Step):
 			progress_bar.max_value = current_steps.size()
 	
 	if progress_bar.value == current_steps.size()-1:
-		if UserDataManager.register(register_data):
-			get_tree().change_scene_to_file(next_scene_path)
+		# Send register via API
+		var res = await ServerManager.register(register_data.to_dict())
+		if res.code == 200:
+			register_data.last_modified = res.body.last_modified
+			register_data.token = res.body.token
+			if UserDataManager.register(register_data):
+				get_tree().change_scene_to_file(next_scene_path)
 		else:
-			print("Impossible to register")
+			if res.has("body") and res.body.has("message"):
+				popup_info_label.text = res.body.message
+			else:
+				popup_info_label.text = ''
+			popup.show()
 	else:
 		_go_to_step(progress_bar.value+1)
 
@@ -119,3 +130,6 @@ func _remove_future_steps():
 	
 	# Resize the array to remove unwanted steps
 	current_steps.resize(progress_bar.value + 1)
+
+func _on_popup_button_pressed():
+	popup.hide()

@@ -56,8 +56,13 @@ func _on_validate_button_pressed() -> void:
 	if not validator.validate():
 		return
 	
-	# Login
-	if UserDataManager.login(account_type, email_field.text, password_field.text, int(device_id_field.value)):
-		logged_in.emit()
+	# Request server for login
+	var res = await ServerManager.login(account_type, int(device_id_field.value), email_field.text, password_field.text)
+	if res.code == 200:
+		# Login
+		if UserDataManager.login(res.body):
+			logged_in.emit()
+		else:
+			login_message.visible = true
 	else:
 		login_message.visible = true
