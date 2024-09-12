@@ -5,11 +5,6 @@ extends Step
 @onready var accept_error : Label = %AcceptError
 
 
-func _ready():
-	# TODO Load the text here
-	pass
-
-
 func _on_back() -> bool:
 	accept.button_pressed = false
 	return true
