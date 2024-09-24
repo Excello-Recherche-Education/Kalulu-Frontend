@@ -18,8 +18,8 @@
 [ext_resource type="Script" path="res://addons/godot-form-validator/form_validator.gd" id="15_e88oj"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="15_pcmnw"]
 [ext_resource type="Theme" uid="uid://cd7ftmo5x4c2r" path="res://resources/themes/kalulu_theme_big.tres" id="16_bq28s"]
+[ext_resource type="Script" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="18_5m8xx"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/control_validator.gd" id="18_iunlb"]
-[ext_resource type="Script" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="18_srrhf"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/rules/required_rule.gd" id="19_o524c"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/validators/range_validator.gd" id="20_6xsd1"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/rules/email_rule.gd" id="20_jk8lq"]
@@ -35,7 +35,7 @@ script = ExtResource("20_6xsd1")
 validation_order = 1
 validation_method = 1
 skip_validation = false
-rules = Array[ExtResource("18_srrhf")]([SubResource("Resource_mh75v")])
+rules = Array[ExtResource("18_5m8xx")]([SubResource("Resource_mh75v")])
 
 [sub_resource type="Resource" id="Resource_j516d"]
 script = ExtResource("19_o524c")
@@ -50,7 +50,7 @@ script = ExtResource("21_1bl4i")
 validation_order = 1
 validation_method = 1
 skip_validation = false
-rules = Array[ExtResource("18_srrhf")]([SubResource("Resource_j516d"), SubResource("Resource_ayewh")])
+rules = Array[ExtResource("18_5m8xx")]([SubResource("Resource_j516d"), SubResource("Resource_ayewh")])
 
 [sub_resource type="Resource" id="Resource_b08p8"]
 script = ExtResource("19_o524c")
@@ -61,7 +61,7 @@ script = ExtResource("21_1bl4i")
 validation_order = 1
 validation_method = 1
 skip_validation = false
-rules = Array[ExtResource("18_srrhf")]([SubResource("Resource_b08p8")])
+rules = Array[ExtResource("18_5m8xx")]([SubResource("Resource_b08p8")])
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
