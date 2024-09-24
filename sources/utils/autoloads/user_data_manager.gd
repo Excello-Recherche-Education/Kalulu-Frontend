@@ -285,6 +285,8 @@ func _load_student_progression() -> void:
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_progression()
 	
+	if student_progression.init_unlocks():
+			_save_student_progression()
 	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
 
 func _save_student_progression() -> void:

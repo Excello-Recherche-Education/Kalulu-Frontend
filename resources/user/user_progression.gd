@@ -14,20 +14,40 @@ enum Status{
 
 
 func _init() -> void:
-	var number_of_lessons: = Database.get_lessons_count()
+	init_unlocks()
+
+# Make sure the unlocks are correct
+func init_unlocks() -> bool:
+	var has_changes: bool = false
 	
+	if not unlocks:
+		unlocks = {}
+	
+	# Verifiy the lessons
+	var number_of_lessons: = Database.get_lessons_count()
 	if unlocks.size() != number_of_lessons:
 		for i in number_of_lessons:
-			unlocks[i + 1] = {
-				"look_and_learn": Status.Locked,
-				"games": [
-					Status.Locked,
-					Status.Locked,
-					Status.Locked,
-				]
-			}
+			if not unlocks.has(i+1):
+				unlocks[i + 1] = {
+					"look_and_learn": Status.Locked,
+					"games": [
+						Status.Locked,
+						Status.Locked,
+						Status.Locked,
+					]
+				}
 		
+		while unlocks.size() > number_of_lessons:
+			unlocks.erase(unlocks.size())
+		
+		has_changes = true
+	
+	# Make sure that the first garden is always accessible
+	if unlocks[1]["look_and_learn"] == Status.Locked:
 		unlocks[1]["look_and_learn"] = Status.Unlocked
+		has_changes = true
+	
+	return has_changes
 
 
 func get_max_unlocked_lesson() -> int:
@@ -43,6 +63,7 @@ func get_max_unlocked_lesson() -> int:
 
 func is_lesson_completed(lesson_number: int) -> bool:
 	return unlocks[lesson_number]["look_and_learn"] == Status.Completed and unlocks[lesson_number]["games"][0] == Status.Completed and unlocks[lesson_number]["games"][1] == Status.Completed and unlocks[lesson_number]["games"][2] == Status.Completed
+
 
 func look_and_learn_completed(lesson_number: int) -> void:
 	unlocks[lesson_number]["look_and_learn"] = Status.Completed
