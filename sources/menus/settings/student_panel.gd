@@ -1,6 +1,8 @@
 extends Control
 class_name StudentPanel
 
+signal pressed
+
 @onready var name_label : Label = %NameLabel
 @onready var password_visualizer : PasswordVisualizer = %PasswordVisualizer
 
@@ -21,5 +23,4 @@ func _ready():
 
 
 func _on_details_button_pressed():
-	# UserDataManager.delete_student(1, student_data.code)
-	print(student_data)
+	pressed.emit()

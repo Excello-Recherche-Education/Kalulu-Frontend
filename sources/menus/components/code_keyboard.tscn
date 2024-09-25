@@ -46,7 +46,6 @@ grow_vertical = 2
 theme_override_constants/separation = 46
 script = ExtResource("2_sr5ud")
 key_size = 420
-password = "123"
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel1" type="PanelContainer" parent="PasswordVisualizer"]

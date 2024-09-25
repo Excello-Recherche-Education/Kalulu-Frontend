@@ -16,7 +16,7 @@ var current_gp_distractors_queue: Array[Dictionary] = []
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
-	var words_list: = Database.get_words_for_lesson(lesson_nb, false, max_number_of_GPs)
+	var words_list: = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_GPs)
 	if words_list.is_empty():
 		return
 	

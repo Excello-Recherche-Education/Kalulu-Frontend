@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://qsvbq6ruc44v"]
+[gd_scene load_steps=4 format=3 uid="uid://qsvbq6ruc44v"]
 
-[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_dkefm"]
 [ext_resource type="Script" path="res://sources/menus/settings/lesson_unlocks.gd" id="1_rlqp5"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_wiajt"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_v7dp3"]
@@ -14,9 +13,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rlqp5")
 
-[node name="Background" parent="." instance=ExtResource("1_dkefm")]
-layout_mode = 1
-
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -28,6 +24,9 @@ theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 250
 theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 250
+
+[node name="TextureRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -76,32 +75,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Exercise 3"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 25
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Device :"
-
-[node name="DeviceOptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer2"]
-layout_mode = 2
-text = "Student :"
-
-[node name="StudentOptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-
 [node name="BackButton" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_wiajt")]
 layout_mode = 2
 
@@ -127,8 +100,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/DeviceOptionButton" to="." method="_on_device_option_button_item_selected"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer2/StudentOptionButton" to="." method="_on_student_option_button_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
 
 [editable path="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/BackButton"]
