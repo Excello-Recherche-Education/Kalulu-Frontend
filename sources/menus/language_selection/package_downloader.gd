@@ -108,7 +108,7 @@ func _on_http_request_request_completed(result, response_code, headers, body):
 		thread = Thread.new()
 		download_label.hide()
 		copy_label.show()
-		if OS.request_permissions():
-			thread.start(_copy_data.bind(self))
+		
+		thread.start(_copy_data.bind(self))
 	else:
 		error_label.show()

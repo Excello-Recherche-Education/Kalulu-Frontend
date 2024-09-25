@@ -149,7 +149,7 @@ func _back_to_correct_spot() -> void:
 		var max_lesson: = UserDataManager.student_progression.get_max_unlocked_lesson()
 		
 		# Close the layout
-		await get_tree().create_timer(1.5).timeout
+		await get_tree().create_timer(3).timeout
 		await _close_minigames_layout()
 		
 		lesson_ind = 1
@@ -231,6 +231,8 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int, garden_ind: i
 	if in_minigame_selection or not UserDataManager.student_progression:
 		return
 	
+	in_minigame_selection = true
+	
 	# Gets the correct exercises for the lesson
 	var exercises: = Database.get_exercice_for_lesson(lesson_ind)
 	if not exercises or exercises.size() < 3:
@@ -292,7 +294,6 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int, garden_ind: i
 	tween.chain().tween_property(minigame_selection, "modulate:a", 1.0, 0.25)
 	await tween.finished
 	
-	in_minigame_selection = true
 	minigame_layout_opened.emit()
 
 
@@ -335,6 +336,8 @@ func _close_minigames_layout() -> void:
 	if not in_minigame_selection:
 		return
 	
+	in_minigame_selection = false
+	
 	feedback_audio_stream_player2.pitch_scale = 0.75
 	feedback_audio_stream_player2.play()
 	
@@ -362,8 +365,6 @@ func _close_minigames_layout() -> void:
 	minigame_layout_1.pressed.disconnect(_on_minigame_button_pressed)
 	minigame_layout_2.pressed.disconnect(_on_minigame_button_pressed)
 	minigame_layout_3.pressed.disconnect(_on_minigame_button_pressed)
-	
-	in_minigame_selection = false
 
 
 func set_up_lessons() -> void:
