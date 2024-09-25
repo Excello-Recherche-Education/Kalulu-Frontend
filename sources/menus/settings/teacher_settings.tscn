@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ci7ueo06f24k3"]
+[gd_scene load_steps=10 format=3 uid="uid://ci7ueo06f24k3"]
 
 [ext_resource type="Script" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_v06h8"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dkvf2b6b1keqf" path="res://assets/minigames/minigame_ui/graphic/volume_up.png" id="6_urri0"]
 [ext_resource type="Texture2D" uid="uid://blgoagm5j5jh2" path="res://assets/minigames/minigame_ui/graphic/volume_down.png" id="7_71of5"]
 [ext_resource type="Texture2D" uid="uid://cuxo6l6hmin1y" path="res://assets/minigames/minigame_ui/graphic/volume_disabled.png" id="8_tfdgw"]
+[ext_resource type="PackedScene" uid="uid://qsvbq6ruc44v" path="res://sources/menus/settings/lesson_unlocks.tscn" id="9_mljfd"]
 
 [node name="TeacherSettings" type="Control"]
 layout_mode = 3
@@ -45,6 +46,7 @@ texture_disabled = ExtResource("5_e3piv")
 stretch_mode = 4
 
 [node name="VolumeContainer" type="MarginContainer" parent="InterfaceLeft/Container"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
@@ -54,7 +56,6 @@ theme_override_constants/margin_right = 100
 
 [node name="VolumeButton" type="TextureButton" parent="InterfaceLeft/Container/VolumeContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 texture_normal = ExtResource("6_urri0")
 texture_pressed = ExtResource("7_71of5")
@@ -247,10 +248,9 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Delete device"
 
-[node name="LessonUnlocksButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 70
-text = "SETTINGS_LESSONS"
+[node name="LessonUnlocks" parent="." instance=ExtResource("9_mljfd")]
+visible = false
+layout_mode = 1
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/VolumeContainer/VolumeButton" to="." method="_on_volume_button_pressed"]
@@ -259,6 +259,6 @@ text = "SETTINGS_LESSONS"
 [connection signal="value_changed" from="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VoiceVolumeSlider" to="." method="_on_voice_volume_slider_value_changed"]
 [connection signal="value_changed" from="InterfaceLeft/Container/VolumeContainer/VolumeButton/VolumeMenu/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer/EffectsVolumeSlider" to="." method="_on_effects_volume_slider_value_changed"]
 [connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]
+[connection signal="tab_changed" from="VBoxContainer/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/LessonUnlocksButton" to="." method="_on_lesson_unlocks_button_pressed"]
