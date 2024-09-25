@@ -1,11 +1,15 @@
-[gd_scene load_steps=17 format=3 uid="uid://djduptonofbh4"]
+[gd_scene load_steps=20 format=3 uid="uid://djduptonofbh4"]
 
 [ext_resource type="Script" path="res://sources/menus/components/code_keyboard.gd" id="1_4kb0k"]
 [ext_resource type="Texture2D" uid="uid://d3rhl050u0ahl" path="res://assets/menus/login/password_background.png" id="1_qy2tt"]
 [ext_resource type="Texture2D" uid="uid://de8087qre3hqd" path="res://assets/menus/login/button_symbol01_up.png" id="2_lewtn"]
+[ext_resource type="Script" path="res://sources/menus/components/password_visualizer.gd" id="2_sr5ud"]
 [ext_resource type="Texture2D" uid="uid://ce2dk2so7yo85" path="res://assets/menus/login/button_symbol01_down.png" id="3_6vmwg"]
+[ext_resource type="Texture2D" uid="uid://b6vmq2e1krf6c" path="res://assets/menus/login/symbol01.png" id="3_640rk"]
+[ext_resource type="Texture2D" uid="uid://c1orskmogfiy1" path="res://assets/menus/login/symbol02.png" id="4_260o2"]
 [ext_resource type="Texture2D" uid="uid://cq6ctjti7nroe" path="res://assets/menus/login/button_symbol02_up.png" id="4_xtie5"]
 [ext_resource type="Texture2D" uid="uid://cghxguj0vdhx7" path="res://assets/menus/login/button_symbol02_down.png" id="5_ckp8y"]
+[ext_resource type="Texture2D" uid="uid://dgjpftdenxiws" path="res://assets/menus/login/symbol03.png" id="5_x6uw2"]
 [ext_resource type="Texture2D" uid="uid://bxrtewrqlop6h" path="res://assets/menus/login/button_symbol03_up.png" id="6_5kh6d"]
 [ext_resource type="Texture2D" uid="uid://da7g76llxx8t5" path="res://assets/menus/login/button_symbol03_down.png" id="7_njqxu"]
 [ext_resource type="Texture2D" uid="uid://bh7toiwhvln0v" path="res://assets/menus/login/button_symbol04_up.png" id="8_70a0u"]
@@ -15,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://eg5jrfombxb8" path="res://assets/menus/login/button_symbol06_up.png" id="12_3eke6"]
 [ext_resource type="Texture2D" uid="uid://dce53jiyk6gy6" path="res://assets/menus/login/button_symbol06_down.png" id="13_mhbsr"]
 [ext_resource type="AudioStream" uid="uid://dlsgs8uralt8n" path="res://assets/menus/login/ui_play_button.mp3" id="15_tcy0b"]
-[ext_resource type="PackedScene" uid="uid://c5ey1jk06asiq" path="res://sources/menus/components/password_visualizer.tscn" id="17_gt2pl"]
 
 [node name="CodeKeyboard" type="Control"]
 layout_mode = 3
@@ -26,7 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4kb0k")
 
-[node name="PasswordVisualizer" parent="." instance=ExtResource("17_gt2pl")]
+[node name="PasswordVisualizer" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -40,8 +43,52 @@ offset_right = 706.0
 offset_bottom = -132.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 46
+script = ExtResource("2_sr5ud")
 key_size = 420
+password = "123"
 metadata/_edit_use_anchors_ = true
+
+[node name="Panel1" type="PanelContainer" parent="PasswordVisualizer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PanelKaluluBig"
+metadata/_edit_use_anchors_ = true
+
+[node name="Icon1" type="TextureRect" parent="PasswordVisualizer/Panel1"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("3_640rk")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Panel2" type="PanelContainer" parent="PasswordVisualizer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PanelKaluluBig"
+metadata/_edit_use_anchors_ = true
+
+[node name="Icon2" type="TextureRect" parent="PasswordVisualizer/Panel2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+texture = ExtResource("4_260o2")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Panel3" type="PanelContainer" parent="PasswordVisualizer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PanelKaluluBig"
+metadata/_edit_use_anchors_ = true
+
+[node name="Icon3" type="TextureRect" parent="PasswordVisualizer/Panel3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+texture = ExtResource("5_x6uw2")
+expand_mode = 2
+stretch_mode = 4
 
 [node name="Keyboard" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(1624, 812)
