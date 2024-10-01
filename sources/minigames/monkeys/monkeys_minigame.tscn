@@ -28,7 +28,7 @@ max_number_of_GPs = 6
 distractors_queue_size = 6
 time_between_words = 3.0
 minigame_name = 3
-lesson_nb = 12
+lesson_nb = 8
 max_number_of_lives = 5
 max_progression = 5
 
@@ -120,11 +120,11 @@ theme_override_constants/margin_top = -10
 
 [node name="Label" type="RichTextLabel" parent="GameRoot/TextPlank/MarginContainer" index="0"]
 layout_mode = 2
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.568627)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 7
-theme_override_constants/shadow_offset_y = 7
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.568627)
 theme_override_constants/outline_size = 7
+theme_override_constants/shadow_offset_y = 7
+theme_override_constants/shadow_offset_x = 7
 theme_override_fonts/normal_font = SubResource("FontVariation_br573")
 theme_override_font_sizes/normal_font_size = 180
 text = "fort"

@@ -6,7 +6,7 @@ signal demo_finished
 @export var points_per_curve: = 25
 @export var hand_min_travel_time: = 0.5
 @export var hand_max_travel_time: = 2.0
-@export var distance: = 50.0
+@export var distance: = 100.0
 
 @export var color_gradient: Gradient
 

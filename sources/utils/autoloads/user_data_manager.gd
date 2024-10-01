@@ -286,7 +286,7 @@ func _load_student_progression() -> void:
 		_save_student_progression()
 	
 	if student_progression.init_unlocks():
-			_save_student_progression()
+		_save_student_progression()
 	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
 
 func _save_student_progression() -> void:
@@ -294,6 +294,29 @@ func _save_student_progression() -> void:
 
 func _on_user_progression_unlocks_changed() -> void:
 	_save_student_progression()
+
+
+func get_student_progression_for_code(device: int, student: String) -> UserProgression:
+	if not teacher_settings or not teacher_settings.students.has(device):
+		return
+	
+	var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(student)
+	var progression_path: String = student_path.path_join("progression.tres")
+	
+	var progression: UserProgression
+	
+	if FileAccess.file_exists(progression_path):
+		progression = load(progression_path)
+	else:
+		progression = UserProgression.new()
+		DirAccess.make_dir_recursive_absolute(student_path)
+		ResourceSaver.save(student_progression, progression_path)
+	
+	return progression
+
+func save_student_progression_for_code(device: int, student: String, progression: UserProgression) -> void:
+	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(student).path_join("progression.tres")
+	ResourceSaver.save(progression, progression_path)
 
 #endregion
 

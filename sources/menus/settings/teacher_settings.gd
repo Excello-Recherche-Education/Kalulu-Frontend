@@ -13,6 +13,8 @@ const device_tab_scene : PackedScene = preload("res://sources/menus/settings/dev
 @onready var effects_volume_slider: HSlider = %EffectsVolumeSlider
 
 @onready var devices_tab_container : TabContainer = %DevicesTabContainer
+@onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
+
 
 func _ready():
 	await _refresh_devices_tabs()
@@ -39,6 +41,8 @@ func _refresh_devices_tabs() -> void:
 		device_tab.device_id = device
 		device_tab.students = UserDataManager.teacher_settings.students[device]
 		devices_tab_container.add_child(device_tab)
+		
+		device_tab.student_pressed.connect(_on_student_pressed)
 
 
 func _on_back_button_pressed():
@@ -50,6 +54,15 @@ func _on_logout_button_pressed():
 	await OpeningCurtain.close()
 	UserDataManager.logout()
 	get_tree().change_scene_to_file(main_menu_path)
+
+
+func _on_devices_tab_container_tab_changed(tab: int) -> void:
+	lesson_unlocks.device = tab + 1
+
+
+func _on_student_pressed(code: String):
+	lesson_unlocks.student = code
+	lesson_unlocks.show()
 
 
 func _on_add_student_button_pressed():
@@ -68,10 +81,6 @@ func _on_add_student_button_pressed():
 func _on_add_device_button_pressed():
 	if UserDataManager.add_device():
 		_refresh_devices_tabs()
-
-
-func _on_lesson_unlocks_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://sources/menus/settings/lesson_unlocks.tscn")
 
 # ------------ Volume Menu ------------
 

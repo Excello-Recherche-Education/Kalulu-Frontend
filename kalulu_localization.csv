@@ -239,3 +239,11 @@ CLOSE;Fermer;Cerrar
 REGISTER_FAILED;Une erreur est survenue;Se ha producido un error
 ERROR_DOWNLOADING;Impossible de télécharger les données de jeu;No se pueden descargar los datos del juego
 EXTRACTING_DATA;Extraction des données;Extracción de datos
+LESSON;Leçon;Lección
+LOOKANDLEARN;Regarder et apprendre;Mira y aprende
+EXERCISE1;Exercice 1;Ejercicio 1
+EXERCISE2;Exercice 2;Ejercicio 2
+EXERCISE3;Exercice 3;Ejercicio 3
+Locked;Verrouillé;Bloqueado
+Unlocked;Déverrouillé;Desbloqueado
+Completed;Terminé;Completado
