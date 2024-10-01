@@ -93,24 +93,31 @@ func _on_exercises_button_pressed() -> void:
 
 
 func _on_export_filename_selected(filename: String) -> void:
+	var version_file: = FileAccess.open(base_path.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
+	version_file.store_line(Time.get_datetime_string_from_system(true, false))
+	version_file.close()
+	
 	var summary_file: = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
 	var sentences_by_lesson: = Database.get_sentences_by_lessons()
 	for i in Database.get_lessons_count():
-		summary_file.store_line("Lesson %s --------------------" % i)
+		
+		var lesson: int = i +1
+		
+		summary_file.store_line("Lesson %s --------------------" % lesson)
 		summary_file.store_line("\t \t Words ---")
 		var words: = ""
-		for e in Database.get_words_for_lesson(i, true):
+		for e in Database.get_words_for_lesson(lesson, true):
 			words += e.Word + ", "
 		summary_file.store_line(words.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Syllables ---")
 		var syllables: = ""
-		for e in Database.get_syllables_for_lesson(i, true):
+		for e in Database.get_syllables_for_lesson(lesson, true):
 			syllables += e.Grapheme + ", "
 		summary_file.store_line(syllables.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Sentences ---")
-		for e in Database.get_sentences(i, true, sentences_by_lesson):
+		for e in Database.get_sentences(lesson, true, sentences_by_lesson):
 			summary_file.store_line(e.Sentence)
 		summary_file.store_line("\n\n")
 	summary_file.close()
