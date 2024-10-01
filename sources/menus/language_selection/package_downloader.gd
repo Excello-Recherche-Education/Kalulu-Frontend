@@ -18,25 +18,38 @@ var current_language_path: String
 var mutex: Mutex
 var thread: Thread
 
+var server_version: Dictionary
+
 func _ready() -> void:
 	await get_tree().process_frame
 	
 	device_language = UserDataManager.get_device_settings().language
 	current_language_path = user_language_resources_path.path_join(device_language)
 	
-	# If the language pack is not already downloaded 
-	if not DirAccess.dir_exists_absolute(current_language_path):
-		# Gets the URL of the pack on the server
-		var res = await ServerManager.get_language_pack_url(device_language)
-		if res.code == 200:
-			if not DirAccess.dir_exists_absolute(user_language_resources_path):
-				DirAccess.make_dir_recursive_absolute(user_language_resources_path)
-				
-			# Download the pack
-			http_request.set_download_file(user_language_resources_path.path_join(device_language + ".zip"))
-			http_request.request(res.body.url)
-		else:
-			error_label.show()
+	# Get the current language version
+	var current_version: Dictionary = UserDataManager.get_device_settings().language_versions.get(device_language, {})
+	
+	# Gets the info of the language pack on the server
+	var res = await ServerManager.get_language_pack_url(device_language)
+	if res.code == 200:
+		server_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified, false)
+	else:
+		error_label.show()
+		return
+	
+	# If the language pack is not already downloaded or an update is needed
+	if not DirAccess.dir_exists_absolute(current_language_path) or current_version != server_version:
+		# Create the language_resources folder
+		if not DirAccess.dir_exists_absolute(user_language_resources_path):
+			DirAccess.make_dir_recursive_absolute(user_language_resources_path)
+			
+		# Delete the files from old language pack TODO CA MARCHE PAS
+		if DirAccess.dir_exists_absolute(current_language_path):
+			DirAccess.remove_absolute(current_language_path)
+		
+		# Download the pack
+		http_request.set_download_file(user_language_resources_path.path_join(device_language + ".zip"))
+		http_request.request(res.body.url)
 	else:
 		download_bar.value = 1
 		extract_bar.value = 1
@@ -45,10 +58,8 @@ func _ready() -> void:
 
 func _process(delta):
 	if http_request.get_body_size() > 0:
-		
 		var max = int(http_request.get_body_size()/1024)
 		var current = int(http_request.get_downloaded_bytes()/1024)
-		
 		download_bar.max_value = max
 		download_bar.value = current
 		download_info.text = str(current) + "KB/" + str(max) + "KB"
@@ -99,6 +110,7 @@ func _copy_data(this: PackageDownloader) -> void:
 func _go_to_main_menu() -> void:
 	if not Database.is_open:
 		Database.connect_to_db()
+	UserDataManager.set_language_version(device_language, server_version)
 	get_tree().change_scene_to_file(next_scene_path)
 
 

@@ -117,9 +117,13 @@ func login_student(code : String) -> bool:
 #region Device settings
 
 func set_language(language : String) -> void:
-	print("Setting language")
 	if _device_settings:
 		_device_settings.language = language
+		_save_device_settings()
+
+func set_language_version(language: String, version: Dictionary) -> void:
+	if _device_settings:
+		_device_settings.language_versions[language] = version
 		_save_device_settings()
 
 func get_device_settings_path() -> String:
