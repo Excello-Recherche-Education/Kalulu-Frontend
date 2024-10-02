@@ -1,10 +1,11 @@
 extends Control
 class_name PackageDownloader
 
-const next_scene_path: = "res://sources/menus/main/main_menu.tscn"
+const next_scene_path := "res://sources/menus/login/login.tscn"
 const user_language_resources_path: =  "user://language_resources"
 
 @onready var http_request: HTTPRequest = $HTTPRequest
+@onready var checking_label: Label = %CheckingLabel
 @onready var download_label: Label = %DownloadLabel
 @onready var copy_label: Label = %CopyLabel
 @onready var download_bar: ProgressBar = %DownloadProgressBar
@@ -34,18 +35,30 @@ func _ready() -> void:
 	if res.code == 200:
 		server_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified, false)
 	else:
+		# Offline mode, if a pack is already downloaded, go to next scene
+		if DirAccess.dir_exists_absolute(current_language_path):
+			_go_to_main_menu()
+			return
 		error_label.show()
 		return
 	
 	# If the language pack is not already downloaded or an update is needed
 	if not DirAccess.dir_exists_absolute(current_language_path) or current_version != server_version:
+		
+		checking_label.hide()
+		download_label.show()
+		download_bar.show()
+		download_info.show()
+		extract_bar.show()
+		extract_info.show()
+		
 		# Create the language_resources folder
 		if not DirAccess.dir_exists_absolute(user_language_resources_path):
 			DirAccess.make_dir_recursive_absolute(user_language_resources_path)
 			
-		# Delete the files from old language pack TODO CA MARCHE PAS
+		# Delete the files from old language pack
 		if DirAccess.dir_exists_absolute(current_language_path):
-			DirAccess.remove_absolute(current_language_path)
+			_delete_dir(current_language_path)
 		
 		# Download the pack
 		http_request.set_download_file(user_language_resources_path.path_join(device_language + ".zip"))
@@ -112,6 +125,15 @@ func _go_to_main_menu() -> void:
 		Database.connect_to_db()
 	UserDataManager.set_language_version(device_language, server_version)
 	get_tree().change_scene_to_file(next_scene_path)
+
+
+func _delete_dir(path: String) -> void:
+	var dir = DirAccess.open(path)
+	for file in dir.get_files():
+		dir.remove(file)
+	for subfolder in dir.get_directories():
+		_delete_dir(path.path_join(subfolder))
+		dir.remove(subfolder)
 
 
 func _on_http_request_request_completed(result, response_code, headers, body):
