@@ -14,6 +14,7 @@ const supported_locales: Array[String] = [
 		print(TranslationServer.get_locale())
 @export var teacher : String
 @export var device_id : int
+@export var language_versions: Dictionary # locale : datetime
 
 
 func init_OS_language() -> void:

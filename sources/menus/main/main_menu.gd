@@ -1,7 +1,7 @@
 extends Control
 
 const adult_check_scene_path := "res://sources/menus/adult_check/adult_check.tscn"
-const next_scene_path := "res://sources/menus/login/login.tscn"
+const package_loader_scene_path: = "res://sources/menus/language_selection/package_downloader.tscn"
 
 @onready var version_label : Label = $Informations/BuildVersionValue
 @onready var teacher_label : Label = $Informations/TeacherValue
@@ -58,4 +58,4 @@ func _on_register_pressed():
 
 
 func _on_login_in():
-	get_tree().change_scene_to_file(next_scene_path)
+	get_tree().change_scene_to_file(package_loader_scene_path)
