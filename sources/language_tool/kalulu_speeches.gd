@@ -29,10 +29,25 @@ func _ready() -> void:
 			"help": "",
 			"end": "",
 		},
+		"caterpillar": {
+			"intro": "",
+			"help": "",
+			"end": "",
+		},
 		"crabs": {
 			"intro": "",
 			"help": "",
 			"end": "",
+		},
+		"fish": {
+			"intro": "",
+			"intro_test_game_first_word": "",
+			"lose_test_game_first_word": "",
+			"win_test_game_first_word": "",
+			"lose_test_game_second_word": "",
+			"win_test_game_second_word": "",
+			"end": "",
+			"lose": "",
 		},
 		"frog": {
 			"intro": "",
@@ -54,20 +69,10 @@ func _ready() -> void:
 			"help": "",
 			"end": "",
 		},
-		"caterpillar": {
+		"penguin":{
 			"intro": "",
 			"help": "",
 			"end": "",
-		},
-		"fish": {
-			"intro": "",
-			"intro_test_game_first_word": "",
-			"lose_test_game_first_word": "",
-			"win_test_game_first_word": "",
-			"lose_test_game_second_word": "",
-			"win_test_game_second_word": "",
-			"end": "",
-			"lose": "",
 		}
 	}
 	
