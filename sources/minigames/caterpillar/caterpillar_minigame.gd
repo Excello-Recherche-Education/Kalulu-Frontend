@@ -88,6 +88,15 @@ func _stop_highlight() -> void:
 	for branch: Branch in branches:
 		branch.is_highlighting = false
 
+func _run() -> void:
+	caterpillar.walk()
+	for branch: Branch in branches:
+		branch.is_running = true
+
+func _stop() -> void:
+	caterpillar.idle()
+	for branch: Branch in branches:
+		branch.is_running = false
 
 func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
@@ -134,14 +143,20 @@ func _on_berry_eaten(berry: Berry) -> void:
 	# Pause the timer
 	berry_timer.paused = true
 	
+	var gp: Dictionary = berry.gp
+	
 	if _is_GP_right(berry.gp):
 		_clear_berries()
+		_stop()
 		await caterpillar.eat_berry(berry)
 		await audio_player.play_gp(_get_GP())
+		_run()
 		current_word_progression += 1
 	else:
+		_stop()
 		await caterpillar.spit_berry(berry)
-		await audio_player.play_gp(berry.gp)
+		await audio_player.play_gp(gp)
+		_run()
 		current_lives -= 1
 	
 	# Unpause timer

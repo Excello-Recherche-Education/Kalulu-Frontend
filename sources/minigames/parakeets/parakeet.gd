@@ -31,6 +31,8 @@ signal pressed()
 
 @onready var animated_sprite: = $AnimatedSprite2D
 @onready var label: = $Label
+@onready var right_FX: RightFX = $RightFX
+@onready var wrong_FX: WrongFX = $WrongFX
 
 var stimulus: Dictionary :
 	set(value):
@@ -95,3 +97,13 @@ func idle() -> void:
 func sad() -> void:
 	animated_sprite.play("sad")
 	await get_tree().create_timer(sad_duration).timeout
+
+
+func right() -> void:
+	right_FX.play()
+	await right_FX.finished
+
+
+func wrong() -> void:
+	wrong_FX.play()
+	await wrong_FX.finished

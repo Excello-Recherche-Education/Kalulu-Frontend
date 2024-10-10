@@ -29,8 +29,12 @@ var stunned: = false:
 var stimulus: Dictionary :
 	set(value):
 		stimulus = value
-		coconut.text = value.Grapheme
-		drag_preview_label.text = value.Grapheme
+		if value:
+			coconut.text = value.Grapheme
+			drag_preview_label.text = value.Grapheme
+		else:
+			coconut.text = ""
+			drag_preview_label.text = ""
 		coconut_pivot.hide()
 
 

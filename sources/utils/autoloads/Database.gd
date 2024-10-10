@@ -124,8 +124,9 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb " + symbol + " ?"
 	parameters.append(lesson_nb)
 	
+	query += " WHERE Exception = 0"
 	if only_vowels:
-		query += " WHERE Type = 1"
+		query += " AND Type = 1"
 	
 	if distinct:
 		query += " GROUP BY Grapheme"
@@ -224,7 +225,7 @@ FROM Words
 			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
 		parameters.append(lesson_nb)
 	
-	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ?
+	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ? and Words.Exception = false
 	ORDER BY LessonNb, GPsCount ASC"
 	parameters.append(max_length)
 	parameters.append(min_length)

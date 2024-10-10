@@ -123,20 +123,16 @@ func _on_parakeet_pressed(parakeet: Parakeet) -> void:
 				selected.append(parakeet)
 				await _turn(parakeet, false)
 				state = State.Selected2
-				_on_selected_two()
-		
+				if selected[0].stimulus.Grapheme == selected[1].stimulus.Grapheme:
+					_correct()
+				else:
+					_wrong()
+				
 		State.Idle:
 			state = State.Locked
 			selected.append(parakeet)
 			await _turn(parakeet, false)
 			state = State.Selected1
-
-
-func _on_selected_two() -> void:
-	if selected[0].stimulus.Grapheme == selected[1].stimulus.Grapheme:
-		_correct()
-	else:
-		_wrong()
 
 
 func _correct() -> void:
@@ -192,6 +188,7 @@ func _present_parakeets() -> void:
 
 func _make_selected_happy() -> void:
 	for parakeet in selected:
+		parakeet.right()
 		parakeet.happy()
 	audio_player.stream = audio_streams[Audio.Happy]
 	audio_player.play()
@@ -201,6 +198,7 @@ func _make_selected_happy() -> void:
 func _make_selected_sad() -> void:
 	var coroutine: = Coroutine.new()
 	for parakeet in selected:
+		parakeet.wrong()
 		coroutine.add_future(parakeet.sad)
 	await coroutine.join_all()
 

@@ -17,6 +17,7 @@ var current_gp_distractors_queue: Array[Dictionary] = []
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
 	var words_list: = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_GPs)
+	print(words_list)
 	if words_list.is_empty():
 		return
 	
@@ -165,7 +166,11 @@ func _get_GP() -> Dictionary:
 func _get_distractor() -> Dictionary:
 	if current_gp_distractors_queue.is_empty():
 		_reset_distractors_queue()
-	return current_gp_distractors_queue.pop_front()
+		
+	if current_gp_distractors_queue:
+		return current_gp_distractors_queue.pop_front()
+	
+	return {}
 
 
 # Check if the provided GP is the expected answer
@@ -183,7 +188,8 @@ func _log_new_response_and_score(gp: Dictionary) -> void:
 		if not is_highlighting:
 			_update_score(gp.ID, 1)
 	else:
-		_update_score(gp.ID, -1)
+		if gp:
+			_update_score(gp.ID, -1)
 		_update_score(self._get_GP().ID, -1)
 
 

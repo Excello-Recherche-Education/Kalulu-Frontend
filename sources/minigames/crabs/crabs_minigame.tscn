@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://5bx8ugh178j1" path="res://assets/minigames/crabs/graphic/background.png" id="7_s0cgt"]
 
 [node name="CrabsMinigame" instance=ExtResource("1_lbq56")]
+process_mode = 1
 script = ExtResource("2_gierf")
 minigame_name = 1
 lesson_nb = 67

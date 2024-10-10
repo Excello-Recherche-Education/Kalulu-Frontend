@@ -1,7 +1,7 @@
 [gd_scene load_steps=37 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
-[ext_resource type="AudioStream" uid="uid://cms5kg6cif013" path="res://assets/minigames/crabs/audio/sfx/crab_random_3.mp3" id="2_emw2h"]
+[ext_resource type="AudioStream" uid="uid://y8hwaul7nmhj" path="res://assets/minigames/crabs/audio/sfx/crab_random_10.mp3" id="2_l6obh"]
 [ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
 [ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="3_e1twq"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_is4em"]
@@ -205,8 +205,9 @@ offset_bottom = 320.0
 script = ExtResource("1_5hgg8")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_emw2h")
+stream = ExtResource("2_l6obh")
 volume_db = -3.0
+stream_paused = true
 bus = &"Effects"
 
 [node name="BackFX" type="Control" parent="."]
@@ -264,9 +265,8 @@ sprites = [NodePath("AnimatedSprite2D")]
 unique_name_in_owner = true
 scale = Vector2(1.79512, 1.78771)
 sprite_frames = SubResource("SpriteFrames_g5q5i")
-animation = &"idle2"
+animation = &"idle1"
 autoplay = "idle1"
-frame_progress = 0.968603
 centered = false
 offset = Vector2(-5, 0)
 

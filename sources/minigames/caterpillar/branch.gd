@@ -19,6 +19,7 @@ var velocity: float = 0.0
 var is_highlighting: = false:
 	set = _set_highlighting
 
+var is_running: float = true
 
 func _set_highlighting(value: bool) -> void:
 	is_highlighting = value
@@ -42,7 +43,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
+	if Engine.is_editor_hint() or not is_running:
 		return
 	
 	for leaf: Leaf in leaves.get_children():

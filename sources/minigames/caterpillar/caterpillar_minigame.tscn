@@ -10,10 +10,14 @@
 [node name="CaterpillarMinigame" instance=ExtResource("1_ntn14")]
 script = ExtResource("2_ycf8p")
 minigame_name = 4
-lesson_nb = 12
+lesson_nb = 6
 difficulty = 0
 max_number_of_lives = 5
 max_progression = 5
+
+[node name="AudioStreamPlayer" parent="." index="0"]
+process_mode = 0
+bus = &"Effects"
 
 [node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("6_xkfwj")

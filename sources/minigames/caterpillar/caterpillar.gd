@@ -21,11 +21,21 @@ const body_part_wait_time: float = 0.04
 var is_moving: bool = false
 var is_eating: bool = false
 
+func idle() -> void:
+	for body_part: CaterpillarBody in body_parts.get_children():
+		body_part.idle()
+
+
+func walk() -> void:
+	for body_part: CaterpillarBody in body_parts.get_children():
+		body_part.walk()
+
 
 func move(y : float) -> void:
 	if is_moving or is_eating:
 		return
 	
+	idle()
 	is_moving = true
 	var coroutine: = Coroutine.new()
 	
@@ -44,6 +54,7 @@ func move(y : float) -> void:
 	
 	await coroutine.join_all()
 	is_moving = false
+	walk()
 
 
 func _tween_body_part(part: Node2D, y: float) -> Tween:
@@ -97,16 +108,22 @@ func spit_berry(berry: Berry) -> void:
 	
 	var pos_x : float = berry.global_position.x
 	
+	# Eat the berry
 	var tween: = create_tween()
-	tween.tween_property(berry, "global_position:x", head.global_position.x + body_part_width * 3, 0.1)
+	tween.tween_property(berry, "global_position:x",head.global_position.x + body_part_width * 2, .2)
 	await head.eat()
 	
+	# Spit the berry
+	head.spit()
 	tween = create_tween()
-	tween.tween_property(berry, "global_position:x", pos_x, 0.1)
-	berry.wrong()
-	await head.spit()
+	tween.tween_property(berry, "global_position:x", pos_x, 0.2)
+	await tween.finished
+	await berry.wrong()
+	
+	# Make the berry disappear
 	tween = create_tween()
 	tween.tween_property(berry, "modulate:a", 0, 1)
+	await tween.finished	
 	
 	is_eating = false
 

@@ -13,6 +13,8 @@ var gp: Dictionary:
 		gp = value
 		if gp.has("Grapheme"):
 			label.text = gp.Grapheme
+		else:
+			label.text = ""
 
 var is_distractor: bool = false
 

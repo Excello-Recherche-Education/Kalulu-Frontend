@@ -76,6 +76,13 @@ var current_lives: = 0 :
 	set(value):
 		var previous_lives: = current_lives
 		current_lives = value
+		
+		if minigame_ui:
+			minigame_ui.set_number_of_lives(value)
+		if value == 0 and previous_lives != 0:
+			_lose()
+			return
+		
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
 		
@@ -83,11 +90,6 @@ var current_lives: = 0 :
 			_play_kalulu_help_speech()
 		elif consecutive_errors == errors_before_highlight:
 			is_highlighting = true
-		
-		if minigame_ui:
-			minigame_ui.set_number_of_lives(value)
-		if value == 0 and previous_lives != 0:
-			_lose()
 
 # Progression
 var current_progression: = 0 : set = set_current_progression
@@ -314,10 +316,10 @@ func _play_stimulus() -> void:
 	return
 
 
-func _pause_game() -> void:
-	var pause: = not get_tree().paused
+func _pause_game() -> bool:
+	var pause: bool = not get_tree().paused
 	get_tree().paused = pause
-	minigame_ui.show_center_menu(pause)
+	return pause
 
 
 func _play_kalulu() -> void:
@@ -335,6 +337,7 @@ func _stop_highlight() -> void:
 
 func _play_kalulu_help_speech() -> void:
 	minigame_ui.play_kalulu_speech(help_kalulu_speech)
+	await minigame_ui.kalulu_speech_ended
 
 
 #endregion
@@ -365,7 +368,7 @@ func _on_minigame_ui_garden_button_pressed() -> void:
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:
-	get_tree().paused = true
+	_pause_game()
 	minigame_ui.lock()
 	
 	await minigame_ui.repeat_stimulus_animation(true)
@@ -376,11 +379,12 @@ func _on_minigame_ui_stimulus_button_pressed() -> void:
 	await minigame_ui.repeat_stimulus_animation(false)
 	
 	minigame_ui.unlock()
-	get_tree().paused = false
+	_pause_game()
 
 
 func _on_minigame_ui_pause_button_pressed() -> void:
-	_pause_game()
+	var pause: = _pause_game()
+	minigame_ui.show_center_menu(pause)
 
 
 func _on_minigame_ui_kalulu_button_pressed() -> void:

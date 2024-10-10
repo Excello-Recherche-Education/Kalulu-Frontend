@@ -43,7 +43,10 @@ func stop_highlight() -> void:
 
 func _set_stimulus(value: Dictionary) -> void:
 	stimulus = value
-	label.text = stimulus["Grapheme"]
+	if stimulus:
+		label.text = stimulus["Grapheme"]
+	else:
+		label.text = ""
 
 
 func _set_disabled(value: bool) -> void:

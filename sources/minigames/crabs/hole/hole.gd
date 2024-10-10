@@ -1,7 +1,7 @@
 extends Node2D
 
 signal stimulus_hit(stimulus: Dictionary)
-signal crab_despawned()
+signal crab_despawned(is_stimulus: bool)
 signal stop()
 signal crab_out(hole)
 
@@ -28,6 +28,7 @@ var crab_visible: bool = false:
 	set(value):
 		crab_visible = value
 		_set_crab_button_active(stimulus_heard and crab_visible)
+var is_stimulus: bool = false
 
 
 func _process(_delta : float) -> void:
@@ -62,7 +63,10 @@ func _process(_delta : float) -> void:
 			crab_audio_stream_player.stop_playing()
 
 
-func spawn_crab(stimulus: Dictionary) -> void:
+func spawn_crab(gp: Dictionary, is_stimulus: bool) -> void:
+	
+	self.is_stimulus = is_stimulus
+	
 	# Instantiate a new crab
 	crab = crab_scene.instantiate()
 	mask.add_child(crab)
@@ -71,7 +75,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	
 	crab_x = -crab.size.x / 2
 	crab.position = Vector2(crab_x, crab.size.y / 2)
-	crab.stimulus = stimulus
+	crab.stimulus = gp
 	
 	# Show the crab but not the stimulus
 	var tween: = create_tween()
@@ -107,7 +111,7 @@ func spawn_crab(stimulus: Dictionary) -> void:
 	crab = null
 	
 	# Emit the despawned signal
-	crab_despawned.emit()
+	crab_despawned.emit(is_stimulus)
 
 
 func is_button_pressed_with_limit(future : Signal) -> bool:

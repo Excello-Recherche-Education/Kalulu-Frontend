@@ -80,7 +80,11 @@ func pick_distractor() -> Dictionary:
 		distractors_queue.shuffle()
 		while distractors_queue.size() > distractors_queue_size:
 			distractors_queue.pop_front()
-	return distractors_queue.pop_front()
+	
+	if distractors_queue:
+		return distractors_queue.pop_front()
+	
+	return {}
 
 
 #region Lilypads

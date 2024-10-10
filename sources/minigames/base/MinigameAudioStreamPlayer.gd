@@ -2,7 +2,7 @@ extends AudioStreamPlayer
 class_name MinigameAudioStreamPlayer
 
 func play_gp(gp: Dictionary) -> void:
-	if gp.is_empty():
+	if not gp or gp.is_empty():
 		return
 	
 	var phoneme_audiostream = Database.load_external_sound(Database.get_gp_sound_path(gp)) as AudioStream

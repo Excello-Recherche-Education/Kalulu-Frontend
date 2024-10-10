@@ -26,6 +26,8 @@ var difficulty_settings: Array[DifficultySettings] = [
 @onready var crab_zone: Control = $GameRoot/CrabZone
 
 var holes: Array[Hole] = []
+var stimulus_spawned: bool = false
+
 
 # ------------ Initialisation ------------
 
@@ -87,16 +89,20 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 	if is_right:
 		hole.right()
 		current_progression += 1
+		stimulus_spawned = false
 	else:
 		hole.wrong()
 		current_lives -= 1
 		
 		# Spawn another crab
-		_on_hole_crab_despawned()
+		_on_hole_crab_despawned(false)
 		
 		# Play the pressed crab phoneme
 		if stimulus and stimulus.Phoneme:
 			await audio_player.play_gp(stimulus)
+		
+		await get_tree().create_timer(1).timeout
+		_play_current_stimulus_phoneme()
 	
 	return true
 
@@ -113,7 +119,7 @@ func _on_current_progression_changed() -> void:
 # Spawn a set amount of crabs in random holes
 func _spawn_crabs() -> void:
 	for i in range(int(3.0 * holes.size() / 4.0)):
-		_on_hole_crab_despawned()
+		_on_hole_crab_despawned(false)
 		await get_tree().create_timer(0.1).timeout
 
 
@@ -122,7 +128,10 @@ func _on_hole_crab_out(hole : Hole) -> void:
 		hole.highlight()
 
 
-func _on_hole_crab_despawned() -> void:
+func _on_hole_crab_despawned(is_stimulus: bool) -> void:
+	if is_stimulus:
+		stimulus_spawned = false
+	
 	if await _await_for_future_or_stimulus_found(get_tree().create_timer(randf_range(0.1, 2.0)).timeout):
 		return
 	_on_hole_timer_timeout()
@@ -137,12 +146,14 @@ func _on_hole_timer_timeout() -> void:
 		for i: int in holes_range:
 			if not holes[i].crab:
 				# Define if the crab is a stimulus or a distraction
-				var is_stimulus: = randf() < _get_difficulty_settings().stimuli_ratio
+				# Only one crab with the correct stimulus can be showned at a time
+				var is_stimulus: = not stimulus_spawned and randf() < _get_difficulty_settings().stimuli_ratio
 				if is_stimulus:
-					holes[i].spawn_crab(_get_current_stimulus())
+					stimulus_spawned = true
+					holes[i].spawn_crab(_get_current_stimulus(), true)
 				else:
 					var current_distractors : Array = distractions[current_progression % distractions.size()]
-					holes[i].spawn_crab(current_distractors.pick_random())
+					holes[i].spawn_crab(current_distractors.pick_random(), false)
 				hole_found = true
 				break
 		
