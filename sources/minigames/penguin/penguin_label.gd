@@ -7,11 +7,15 @@ signal pressed(pos: Vector2)
 @onready var button: Button = $Button
 
 var gp: Dictionary
+var capitalized: bool = false
 var is_pressed: bool = false
 
 func _ready() -> void:
 	if gp:
-		text = gp.Grapheme
+		if capitalized:
+			text = gp.Grapheme.capitalize()
+		else:
+			text = gp.Grapheme
 
 
 func set_button_enabled(is_enabled: bool) -> void:

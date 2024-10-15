@@ -10,6 +10,3 @@ distractors_queue_size = 6
 time_between_words = 3.0
 lesson_nb = 4
 difficulty = 1
-
-[node name="AudioStreamPlayer" parent="." index="0"]
-process_mode = 3

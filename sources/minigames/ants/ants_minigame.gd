@@ -93,7 +93,6 @@ func _get_new_sentence() -> void:
 		await audio_player.finished
 	
 	await _next_sentence()
-	await _play_current_sentence()
 	await _start_ants()
 
 
@@ -103,14 +102,14 @@ func _next_sentence() -> void:
 	nodes.append_array(words.get_children())
 	for node in nodes:
 		node.queue_free()
-		
-	for i in ants.get_child_count():
-		var ant: Ant = ants.get_child(i)
+	
+	for ant: Ant in ants.get_children():
 		ant.walk()
 		var tween: = create_tween()
 		tween.tween_property(ant, "global_position", ants_despawn.global_position, 1.0)
 		await tween.finished
 		ant.queue_free()
+		await ant.tree_exited
 	
 	await get_tree().process_frame
 	
@@ -172,13 +171,6 @@ func _next_sentence() -> void:
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			label.label_settings = label_settings
-
-
-func _play_current_sentence() -> void:
-	#audio_player.stream = Database.get_audio_stream_for_sentence(current_sentence)
-	#audio_player.play()
-	if audio_player.playing:
-		await audio_player.finished
 
 
 func _start_ants() -> void:

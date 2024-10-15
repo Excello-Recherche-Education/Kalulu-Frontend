@@ -8,8 +8,9 @@ const label_scene: PackedScene = preload("res://sources/minigames/penguin/pengui
 
 const silent_phoneme: = "#"
 
+
 @onready var penguin: Penguin = $GameRoot/Penguin
-@onready var labels_container: HBoxContainer = $GameRoot/Control/LabelsContainer
+@onready var labels_container: HFlowContainer = $GameRoot/Control/LabelsContainer
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
@@ -70,11 +71,11 @@ func _find_stimuli_and_distractions() -> void:
 	# Shuffle the stimuli
 	stimuli.shuffle()
 	
-	print(stimuli)
-	
 	# Find the GPs and distractors for each word
 	for sentence: Dictionary in stimuli:
 		sentence.GPs = Database.get_GPs_from_sentence(sentence.ID as int)
+		
+	print(stimuli)
 
 
 # Launch the minigame
@@ -95,8 +96,10 @@ func _setup_word_progression() -> void:
 	
 	var stimulus: = _get_current_stimulus()
 	
+	var first_GP: bool = true
 	var last_wordID: int
 	var word_container: HBoxContainer
+	
 	for GP: Dictionary in stimulus.GPs:
 		if GP.WordID != last_wordID:
 			last_wordID = GP.WordID
@@ -104,6 +107,9 @@ func _setup_word_progression() -> void:
 			labels_container.add_child(word_container)
 		
 		var label: PenguinLabel = label_scene.instantiate()
+		if first_GP:
+			label.capitalized = true
+			first_GP = false
 		label.gp = GP
 		word_container.add_child(label)
 		
@@ -111,8 +117,9 @@ func _setup_word_progression() -> void:
 		
 		labels.append(label)
 		
-		if GP.Phoneme == silent_phoneme:
+		if GP.Type == 0:
 			max_word_progression += 1
+	
 	current_word_progression = 0
 
 
@@ -135,7 +142,7 @@ func _get_current_stimulus() -> Dictionary:
 
 
 func _is_silent(gp: Dictionary) -> bool:
-	return gp.Phoneme == silent_phoneme
+	return gp.Type == 0
 
 
 func _set_current_word_progression(p_current_word_progression: int) -> void:
