@@ -200,8 +200,9 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		var right_answer: = _get_current_stimulus()
 		
 		# Handles the right answer GPs
+		# RA os - stimulus à
 		for i in right_answer.GPs.size():
-			if not stimulus.has("GPs") or (i <= stimulus.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]):
+			if not stimulus.has("GPs") or (i < stimulus.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]):
 				continue
 			_update_score(right_answer.GPs[i].ID, -1)
 		

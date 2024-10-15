@@ -75,9 +75,11 @@ func get_new_code() -> String :
 	if used_codes.size() == available_codes.size():
 		return ""
 	
-	var code : String = available_codes.pick_random()
-	while code in used_codes:
-		code = available_codes.pick_random()
+	var codes = available_codes.duplicate()
+	for c in used_codes:
+		codes.erase(c)
+	
+	var code : String = codes.pick_random()
 	return code
 
 
