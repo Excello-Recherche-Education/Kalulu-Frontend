@@ -26,6 +26,7 @@ max_number_of_lives = 5
 [node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("5_yt7mv")
 full_progression_icon = ExtResource("6_46vnr")
+stimulus_button_visible = false
 
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 texture_repeat = 3

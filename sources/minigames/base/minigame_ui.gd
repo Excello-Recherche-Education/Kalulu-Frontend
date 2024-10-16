@@ -4,46 +4,41 @@ class_name MinigameUI
 
 signal garden_button_pressed
 signal stimulus_button_pressed
-signal pause_button_pressed
 
 signal restart_button_pressed
-signal back_to_menu_pressed
-
-signal master_volume_changed(volume: float)
-signal music_volume_changed(volume: float)
-signal voice_volume_changed(volume: float)
-signal effects_volume_changed(volume: float)
 
 signal kalulu_button_pressed
 signal kalulu_speech_ended
+
+signal pause_ended
 
 const empty_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/life_empty.png")
 const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/life.png")
 
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture
+@export var stimulus_button_visible: bool = true:
+	set(visible):
+		stimulus_button_visible = visible
+		if stimulus_button:
+			_handle_stimulus_button()
 
 # Using unique names to avoid changing the path if the interface architecture changes
 # Left panel
 @onready var garden_button: TextureButton = %GardenButton
-@onready var stimulus_button: TextureButton = %StimulusButton
-@onready var stimulus_texture: TextureRect = %StimulusTexture
-@onready var pause_button: TextureButton = %PauseButton
-@onready var kalulu_button: TextureButton = %KaluluButton
 
-#Right panel
-@onready var volume_button: TextureButton = %VolumeButton
+@onready var stimulus_margin: MarginContainer = %StimulusMargin
+@onready var stimulus_button: TextureButton = %StimulusButton
+
+@onready var stimulus_texture: TextureRect = %StimulusTexture
+
+@onready var pause_margin: MarginContainer = %PauseMargin
+@onready var pause_button: TextureButton = %PauseButton
+
+@onready var kalulu_button: TextureButton = %KaluluButton
 
 # Center menu
 @onready var center_menu: MarginContainer = %CenterMenu
-@onready var restart_button: TextureButton = %RestartButton
-
-# Volume menu
-@onready var volume_menu: Control = %VolumeMenu
-@onready var master_volume_slider: HSlider = %MasterVolumeSlider
-@onready var music_volume_slider: HSlider = %MusicVolumeSlider
-@onready var voice_volume_slider: HSlider = %VoiceVolumeSlider
-@onready var effects_volume_slider: HSlider = %EffectsVolumeSlider
 
 # Kalulu
 @onready var kalulu: Control = %Kalulu
@@ -56,13 +51,21 @@ const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/lif
 
 @onready var animation_player: = $AnimationPlayer
 
+var is_paused: bool = false
 
 func _ready() -> void:
 	model_progression_rect.texture = empty_progression_icon
+	_handle_stimulus_button()
 
 
-# ------------ Lock/Unlock ------------
+func _handle_stimulus_button() -> void:
+	stimulus_margin.visible = stimulus_button_visible
+	if stimulus_button_visible:
+		pause_margin.size_flags_stretch_ratio = 1
+	else:
+		pause_margin.size_flags_stretch_ratio = 2
 
+#region Locking
 
 func lock() -> void:
 	garden_button.disabled = true
@@ -77,11 +80,13 @@ func unlock() -> void:
 	pause_button.disabled = false
 	kalulu_button.disabled = false
 
+#endregion
 
-# ------------ Lives ------------
-
+#region Lives
 
 func set_maximum_number_of_lives(new_max_number_of_lives: int) -> void:
+	if is_paused:
+		await pause_ended
 	var lives_rects: = lives_container.get_children()
 	# Never remove the first
 	for i in range(1, lives_rects.size()):
@@ -95,6 +100,8 @@ func set_maximum_number_of_lives(new_max_number_of_lives: int) -> void:
 
 
 func set_number_of_lives(new_number_of_lives: int) -> void:
+	if is_paused:
+		await pause_ended
 	var max_lives: = lives_container.get_child_count()
 	if new_number_of_lives > max_lives:
 		set_maximum_number_of_lives(new_number_of_lives)
@@ -105,11 +112,13 @@ func set_number_of_lives(new_number_of_lives: int) -> void:
 		else:
 			lives_rects[i].texture = full_lives_icon
 
+#endregion
 
-# ------------ Progression ------------
-
+#region Progression
 
 func set_max_progression(new_max_progression: int) -> void:
+	if is_paused:
+		await pause_ended
 	var progression_rects: = progression_container.get_children()
 	# Never remove the first
 	for i in range(1, progression_rects.size()):
@@ -124,6 +133,8 @@ func set_max_progression(new_max_progression: int) -> void:
 
 
 func set_progression(new_progression: int) -> void:
+	if is_paused:
+		await pause_ended
 	var max_progression: = progression_container.get_child_count()
 	if new_progression > max_progression:
 		set_max_progression(new_progression)
@@ -134,9 +145,9 @@ func set_progression(new_progression: int) -> void:
 		else:
 			progression_rects[i].texture = empty_progression_icon
 
+#endregion
 
-# ------------ Left Panel ------------
-
+#region Left Panel
 
 func _on_garden_button_pressed() -> void:
 	garden_button_pressed.emit()
@@ -147,70 +158,47 @@ func _on_stimulus_button_pressed() -> void:
 
 
 func _on_pause_button_pressed() -> void:
-	pause_button_pressed.emit()
+	is_paused = true
+	show_center_menu(true)
+	get_tree().paused = true
+	
+	#pause_button_pressed.emit()
 
 
 func _on_kalulu_button_pressed() -> void:
 	kalulu_button_pressed.emit()
 
+#endregion
 
-# ------------ Center Menu ------------
-
+#region Pause Menu
 
 func show_center_menu(show_menu: bool) -> void:
 	center_menu.visible = show_menu
 	garden_button.disabled = show_menu
 	stimulus_button.disabled = show_menu
 	kalulu_button.disabled = show_menu
+	pause_button.visible = !show_menu
 
 
 func _on_restart_button_pressed() -> void:
 	restart_button_pressed.emit()
 
 
-# ------------ Volume Menu ------------
+func _on_continue_button_pressed() -> void:
+	is_paused = false
+	show_center_menu(false)
+	get_tree().paused = false
+	
+	pause_ended.emit()
 
 
-func set_master_volume_slider(volume: float) -> void:
-	master_volume_slider.value = volume
+#endregion
 
-
-func set_music_volume_slider(volume: float) -> void:
-	music_volume_slider.value = volume
-
-
-func set_voice_volume_slider(volume: float) -> void:
-	voice_volume_slider.value = volume
-
-
-func set_effects_volume_slider(volume: float) -> void:
-	effects_volume_slider.value = volume
-
-
-func _on_volume_button_pressed() -> void:
-	volume_menu.visible = not volume_menu.visible
-
-
-func _on_master_volume_slider_value_changed(volume: float) -> void:
-	master_volume_changed.emit(volume)
-
-
-func _on_music_volume_slider_value_changed(volume: float) -> void:
-	music_volume_changed.emit(volume)
-
-
-func _on_voice_volume_slider_value_changed(volume: float) -> void:
-	voice_volume_changed.emit(volume)
-
-
-func _on_effects_volume_slider_value_changed(volume: float) -> void:
-	effects_volume_changed.emit(volume)
-
-
-# ------------ Kalulu ------------
-
+#region Kalulu
 
 func play_kalulu_speech(speech: AudioStream) -> void:
+	if is_paused:
+		await pause_ended
 	kalulu_button.hide()
 	get_tree().paused = true
 	kalulu.play_kalulu_speech(speech)
@@ -218,13 +206,11 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 
 func _on_kalulu_speech_ended() -> void:
 	kalulu_button.show()
-	kalulu_speech_ended.emit()
 	get_tree().paused = false
+	pause_ended.emit()
+	kalulu_speech_ended.emit()
 
-
-func _on_back_to_menu_button_pressed() -> void:
-	back_to_menu_pressed.emit()
-
+#endregion
 
 func repeat_stimulus_animation(appear: bool) -> void:
 	if appear:

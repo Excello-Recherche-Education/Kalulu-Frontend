@@ -33,13 +33,7 @@ grow_vertical = 2
 
 [node name="Fireworks" parent="." instance=ExtResource("4_yekwo")]
 
-[connection signal="back_to_menu_pressed" from="MinigameUI" to="." method="_on_minigame_ui_back_to_menu_pressed"]
-[connection signal="effects_volume_changed" from="MinigameUI" to="." method="_on_minigame_ui_effects_volume_changed"]
 [connection signal="garden_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_garden_button_pressed"]
 [connection signal="kalulu_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_kalulu_button_pressed"]
-[connection signal="master_volume_changed" from="MinigameUI" to="." method="_on_minigame_ui_master_volume_changed"]
-[connection signal="music_volume_changed" from="MinigameUI" to="." method="_on_minigame_ui_music_volume_changed"]
-[connection signal="pause_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_pause_button_pressed"]
 [connection signal="restart_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_restart_button_pressed"]
 [connection signal="stimulus_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_stimulus_button_pressed"]
-[connection signal="voice_volume_changed" from="MinigameUI" to="." method="_on_minigame_ui_voice_volume_changed"]

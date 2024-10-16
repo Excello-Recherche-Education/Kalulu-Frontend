@@ -131,11 +131,6 @@ func _ready() -> void:
 	lose_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path("minigame", "lose"))
 	
 	if not Engine.is_editor_hint():
-		minigame_ui.set_master_volume_slider(UserDataManager.get_master_volume())
-		minigame_ui.set_music_volume_slider(UserDataManager.get_music_volume())
-		minigame_ui.set_voice_volume_slider(UserDataManager.get_voice_volume())
-		minigame_ui.set_effects_volume_slider(UserDataManager.get_effects_volume())
-		
 		# Stop the current music
 		MusicManager.stop()
 	
@@ -183,9 +178,8 @@ func _start() -> void:
 #region Ending
 
 func _reset() -> void:
-	await OpeningCurtain.close()
-	
 	get_tree().paused = false
+	await OpeningCurtain.close()
 	get_tree().reload_current_scene()
 
 
@@ -322,11 +316,6 @@ func _pause_game() -> bool:
 	return pause
 
 
-func _play_kalulu() -> void:
-	minigame_ui.play_kalulu_speech(help_kalulu_speech)
-	await minigame_ui.kalulu_speech_ended
-
-
 func _highlight() -> void:
 	pass
 
@@ -382,37 +371,12 @@ func _on_minigame_ui_stimulus_button_pressed() -> void:
 	_pause_game()
 
 
-func _on_minigame_ui_pause_button_pressed() -> void:
-	var pause: = _pause_game()
-	minigame_ui.show_center_menu(pause)
-
-
 func _on_minigame_ui_kalulu_button_pressed() -> void:
-	_play_kalulu()
+	minigame_ui.play_kalulu_speech(help_kalulu_speech)
 
 
 func _on_minigame_ui_restart_button_pressed() -> void:
 	_reset()
-
-
-func _on_minigame_ui_back_to_menu_pressed() -> void:
-	_go_back_to_the_garden()
-
-
-func _on_minigame_ui_master_volume_changed(volume) -> void:
-	UserDataManager.set_master_volume(volume)
-
-
-func _on_minigame_ui_music_volume_changed(volume) -> void:
-	UserDataManager.set_music_volume(volume)
-
-
-func _on_minigame_ui_voice_volume_changed(volume) -> void:
-	UserDataManager.set_voice_volume(volume)
-
-
-func _on_minigame_ui_effects_volume_changed(volume) -> void:
-	UserDataManager.set_effects_volume(volume)
 
 
 func _on_current_progression_changed() -> void:

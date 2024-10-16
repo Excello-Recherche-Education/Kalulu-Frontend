@@ -18,6 +18,7 @@ max_progression = 5
 [node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("3_gdpi3")
 full_progression_icon = ExtResource("4_yua7j")
+stimulus_button_visible = false
 
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 layout_mode = 1

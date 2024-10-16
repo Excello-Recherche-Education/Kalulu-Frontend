@@ -492,6 +492,9 @@ lesson_nb = 50
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
 environment = SubResource("Environment_5bcb7")
 
+[node name="MinigameUI" parent="." index="2"]
+stimulus_button_visible = false
+
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 layout_mode = 1
 anchors_preset = 15

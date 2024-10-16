@@ -142,6 +142,7 @@ func _correct() -> void:
 		selected[1] = buffer
 
 	await _make_selected_happy()
+	current_progression += 1
 	
 	await _fly_to(nest_positions)
 	
@@ -149,14 +150,13 @@ func _correct() -> void:
 	
 	await _fly_to(fly_away_positions)
 	
-	current_progression += 1
+	
 	state = State.Idle
 	selected.clear()
 
 
 func _wrong() -> void:
 	await _make_selected_sad()
-	
 	current_lives -= 1
 	
 	for parakeet in selected:

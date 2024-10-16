@@ -10,3 +10,6 @@ distractors_queue_size = 6
 time_between_words = 3.0
 lesson_nb = 4
 difficulty = 1
+
+[node name="MinigameUI" parent="." index="1"]
+stimulus_button_visible = true
