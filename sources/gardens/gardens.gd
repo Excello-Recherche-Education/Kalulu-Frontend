@@ -79,9 +79,6 @@ func _ready() -> void:
 		# Defines if a new lesson has been unlocked by the player, setups to play the right animation
 		new_lesson_unlocked = transition_data and transition_data.current_lesson_number == UserDataManager.student_progression.get_max_unlocked_lesson() and transition_data.minigame_number == 2 and transition_data.minigame_completed
 	
-	if new_lesson_unlocked:
-		_lock()
-		
 	# Loads the progression of the player
 	_set_progression()
 	
@@ -111,26 +108,11 @@ func _ready() -> void:
 							break
 	else:
 		starting_garden = transition_data.current_garden
-		_back_to_correct_spot()
-	
-	scroll_container.scroll_horizontal = garden_size * starting_garden
-	scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
-	
-	await OpeningCurtain.open()
-	
-	MusicManager.play(MusicManager.Track.Garden)
-
-
-func _back_to_correct_spot() -> void:
-	if not transition_data:
-		return
-	
-	await get_tree().process_frame
-	
-	# Finds the button
-	var lesson_ind: int = 1
-	var lesson_button: LessonButton
-	for garden_control in garden_parent.get_children():
+		
+		# Finds the button
+		var lesson_ind: int = 1
+		var lesson_button: LessonButton
+		for garden_control in garden_parent.get_children():
 			for i in garden_control.lesson_button_controls.size():
 				if lesson_button:
 					break
@@ -139,75 +121,87 @@ func _back_to_correct_spot() -> void:
 					break
 				lesson_ind += 1
 				pass
+		
+		# Re-open the minigames layout
+		# If the minigame is completed: play an animation
+		await _open_minigames_layout(lesson_button, transition_data.current_lesson_number, transition_data.current_garden, transition_data.current_button_global_position)
 	
-	# Re-open the minigames layout
-	# If the minigame is completed: play an animation
-	await _open_minigames_layout(lesson_button, transition_data.current_lesson_number, transition_data.current_garden, transition_data.current_button_global_position)
+	scroll_container.scroll_horizontal = garden_size * starting_garden
+	scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
 	
-	# If the lesson is completed:
+	await OpeningCurtain.open()
+	
+	MusicManager.play(MusicManager.Track.Garden)
+	
 	if new_lesson_unlocked:
-		var max_lesson: = UserDataManager.student_progression.get_max_unlocked_lesson()
+		_unlock_new_lesson()
 		
-		# Close the layout
-		await get_tree().create_timer(3).timeout
-		await _close_minigames_layout()
-		
-		lesson_ind = 1
-		var last_lesson_button: LessonButton
-		var new_lesson_button: LessonButton
-		var is_last_lesson_of_garden: bool = false
-		for garden_control in garden_parent.get_children():
-			for i in garden_control.lesson_button_controls.size():
-				if lesson_ind == max_lesson + 1:
-					new_lesson_button = garden_control.lesson_button_controls[i]
-				if lesson_ind == max_lesson :
-					last_lesson_button = garden_control.lesson_button_controls[i]
-					if i == garden_control.lesson_button_controls.size() -1:
-						is_last_lesson_of_garden = true
-				if last_lesson_button and new_lesson_button:
-					break
-				lesson_ind += 1
-			if last_lesson_button and new_lesson_button:
-				break
-		
-		# Play an animation on the completed lesson
-		if last_lesson_button:
-			await last_lesson_button.right()
-		
-		# Fill in the path towards the next lesson
-		var curve: = Curve2D.new()
-		for i in range(max_lesson-1, max_lesson + 1):
-			curve.add_point(points[i][0], points[i][1], points[i][2])
-		
-		var baked_points: = curve.get_baked_points()
-		
-		# Check if we need to scroll to the next garden
-		if is_last_lesson_of_garden:
-			scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
-			var target_scroll: int = scroll_beginning_garden * garden_size + garden_size
-			var tween = create_tween()
-			tween.set_ease(Tween.EASE_IN_OUT)
-			tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
-			scroll_beginning_garden = target_scroll / garden_size
-			garden_parent.get_child(scroll_beginning_garden).pop_animation()
-		
-		line_audio_stream_player.pitch_scale = 0.95
-		for point: Vector2 in baked_points:
-			if not line_audio_stream_player.playing:
-				line_audio_stream_player.pitch_scale += 0.05
-				line_audio_stream_player.play()
-			unlocked_line.add_point(point)
-			line_particles.position = point
-			await get_tree().create_timer(0.01).timeout
-		
-		# Enable the next lesson button
-		if new_lesson_button:
-			new_lesson_button.disabled = false
-		
-		_unlock()
-	
 	new_lesson_unlocked = false
 	transition_data = {}
+
+
+func _unlock_new_lesson() -> void:
+	_lock()
+	
+	var max_lesson: = UserDataManager.student_progression.get_max_unlocked_lesson()
+		
+	# Close the layout
+	await get_tree().create_timer(1).timeout
+	await _close_minigames_layout()
+	
+	var lesson_ind = 1
+	var last_lesson_button: LessonButton
+	var new_lesson_button: LessonButton
+	var is_last_lesson_of_garden: bool = false
+	for garden_control in garden_parent.get_children():
+		for i in garden_control.lesson_button_controls.size():
+			if lesson_ind == max_lesson + 1:
+				new_lesson_button = garden_control.lesson_button_controls[i]
+			if lesson_ind == max_lesson :
+				last_lesson_button = garden_control.lesson_button_controls[i]
+				if i == garden_control.lesson_button_controls.size() -1:
+					is_last_lesson_of_garden = true
+			if last_lesson_button and new_lesson_button:
+				break
+			lesson_ind += 1
+		if last_lesson_button and new_lesson_button:
+			break
+	
+	# Play an animation on the completed lesson
+	if last_lesson_button:
+		await last_lesson_button.right()
+	
+	# Fill in the path towards the next lesson
+	var curve: = Curve2D.new()
+	for i in range(max_lesson-1, max_lesson + 1):
+		curve.add_point(points[i][0], points[i][1], points[i][2])
+	
+	var baked_points: = curve.get_baked_points()
+	
+	# Check if we need to scroll to the next garden
+	if is_last_lesson_of_garden:
+		scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
+		var target_scroll: int = scroll_beginning_garden * garden_size + garden_size
+		var tween = create_tween()
+		tween.set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
+		scroll_beginning_garden = target_scroll / garden_size
+		garden_parent.get_child(scroll_beginning_garden).pop_animation()
+	
+	line_audio_stream_player.pitch_scale = 0.95
+	for point: Vector2 in baked_points:
+		if not line_audio_stream_player.playing:
+			line_audio_stream_player.pitch_scale += 0.05
+			line_audio_stream_player.play()
+		unlocked_line.add_point(point)
+		line_particles.position = point
+		await get_tree().create_timer(0.01).timeout
+	
+	# Enable the next lesson button
+	if new_lesson_button:
+		new_lesson_button.disabled = false
+	
+	_unlock()
 
 
 func _process(_delta: float) -> void:
