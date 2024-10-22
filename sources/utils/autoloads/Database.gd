@@ -390,6 +390,7 @@ func get_distractors_for_grapheme(id: int, lesson_nb: int) -> Array:
 	INNER JOIN Lessons 
 	INNER JOIN GPsInLessons
 	ON stimuli.ID=? AND distractor.type = stimuli.type 
+	AND distractor.exception = false
 	AND distractor.Grapheme != stimuli.Grapheme 
 	AND distractor.Phoneme != stimuli.Phoneme
 	AND CASE WHEN length(distractor.Grapheme) < length(stimuli.Grapheme) 
