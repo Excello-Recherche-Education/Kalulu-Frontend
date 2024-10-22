@@ -2,7 +2,7 @@ extends OptionButton
 
 var items : Array[String]
 
-func _ready():
+func _ready() -> void:
 	# Adds the supported locales to the field
 	var idx: int = 0
 	for language_locale in DeviceSettings.supported_locales:
@@ -22,9 +22,9 @@ func _ready():
 
 
 func get_selected_language() -> String:
-	var id = get_selected_id()
+	var id: = get_selected_id()
 	return items[id]
 
 
-func _on_item_selected(index: int):
+func _on_item_selected(index: int) -> void:
 	UserDataManager.set_language(items[index])

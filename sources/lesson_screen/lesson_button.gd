@@ -14,7 +14,7 @@ extends TextureButton
 @onready var placeholder: TextureRect = %Placeholder
 @onready var right_fx: RightFX = %RightFX
 
-func _ready():
+func _ready() -> void:
 	_set_base_color(base_color)
 	_set_completed_color(completed_color)
 	_set_text(text)

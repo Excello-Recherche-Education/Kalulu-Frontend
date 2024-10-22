@@ -6,8 +6,8 @@ const letter_segment_class: = preload("res://sources/look_and_learn/letter_segme
 
 @export var label_settings: LabelSettings
 
-@onready var lower_labels: = %LowerLabels
-@onready var upper_labels: = %UpperLabels
+@onready var lower_labels: HBoxContainer = %LowerLabels
+@onready var upper_labels: HBoxContainer = %UpperLabels
 
 const tracing_data_folder: = "tracing_data/"
 const extension: = ".csv"
@@ -18,8 +18,8 @@ func _process(_delta: float) -> void:
 
 
 func place_segments(labels: Array) -> void:
-	for label in labels:
-		for segment in label.get_children():
+	for label: Label in labels:
+		for segment: LetterSegment in label.get_children():
 			segment.global_position = label.global_position + label.size / 2.0  + Vector2(0.0, 72.0)
 
 
@@ -42,10 +42,10 @@ func setup(grapheme: String) -> void:
 		var tracings: = _get_letter_tracings(letter)
 		
 		if tracings.lower:
-			setup_tracing(letter, tracings["lower"], lower_labels, true)
+			setup_tracing(letter, tracings["lower"] as Array, lower_labels, true)
 		
 		if tracings.upper:
-			setup_tracing(letter, tracings["upper"], upper_labels, false)
+			setup_tracing(letter, tracings["upper"] as Array, upper_labels, false)
 
 
 func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lower: bool) -> void:
@@ -126,12 +126,12 @@ func start() -> void:
 		await demo_labels(upper_labels)
 		await start_labels(upper_labels)
 	
-	emit_signal("finished")
+	finished.emit()
 
 
 func start_labels(labels_parent: Control) -> void:
 	for letter in labels_parent.get_children():
-		for segment in letter.get_children():
+		for segment: LetterSegment in letter.get_children():
 			segment.start()
 			await segment.finished
 			letter.move_child(segment, 0)
@@ -139,6 +139,6 @@ func start_labels(labels_parent: Control) -> void:
 
 func demo_labels(labels_parent: Control) -> void:
 	for letter in labels_parent.get_children():
-		for segment in letter.get_children():
+		for segment: LetterSegment in letter.get_children():
 			segment.demo()
 			await segment.finished

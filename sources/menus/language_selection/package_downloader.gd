@@ -31,9 +31,9 @@ func _ready() -> void:
 	var current_version: Dictionary = UserDataManager.get_device_settings().language_versions.get(device_language, {})
 	
 	# Gets the info of the language pack on the server
-	var res = await ServerManager.get_language_pack_url(device_language)
+	var res: = await ServerManager.get_language_pack_url(device_language)
 	if res.code == 200:
-		server_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified, false)
+		server_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
 	else:
 		# Offline mode, if a pack is already downloaded, go to next scene
 		if DirAccess.dir_exists_absolute(current_language_path):
@@ -62,18 +62,20 @@ func _ready() -> void:
 		
 		# Download the pack
 		http_request.set_download_file(user_language_resources_path.path_join(device_language + ".zip"))
-		http_request.request(res.body.url)
+		http_request.request(res.body.url as String)
 	else:
 		download_bar.value = 1
 		extract_bar.value = 1
 		_go_to_main_menu()
 
 
-func _process(delta):
+func _process(_delta: float) -> void:
 	if http_request.get_body_size() > 0:
-		var max = int(http_request.get_body_size()/1024)
-		var current = int(http_request.get_downloaded_bytes()/1024)
-		download_bar.max_value = max
+		@warning_ignore("integer_division")
+		var maximum: = int(http_request.get_body_size()/1024)
+		@warning_ignore("integer_division")
+		var current: = int(http_request.get_downloaded_bytes()/1024)
+		download_bar.max_value = maximum
 		download_bar.value = current
 		download_info.text = str(current) + "KB/" + str(max) + "KB"
 
@@ -128,7 +130,7 @@ func _go_to_main_menu() -> void:
 
 
 func _delete_dir(path: String) -> void:
-	var dir = DirAccess.open(path)
+	var dir: = DirAccess.open(path)
 	for file in dir.get_files():
 		dir.remove(file)
 	for subfolder in dir.get_directories():
@@ -136,7 +138,7 @@ func _delete_dir(path: String) -> void:
 		dir.remove(subfolder)
 
 
-func _on_http_request_request_completed(result, response_code, headers, body):
+func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
 	if response_code == 200:
 		mutex = Mutex.new()
 		thread = Thread.new()

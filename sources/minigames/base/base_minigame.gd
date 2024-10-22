@@ -3,6 +3,7 @@ extends Control
 class_name Minigame
 
 const Gardens: = preload("res://sources/gardens/gardens.gd")
+const Fireworks: = preload("res://sources/utils/fx/fireworks.gd")
 
 enum Type {
 	jellyfish,
@@ -42,9 +43,9 @@ enum Type {
 @export var errors_before_help_speech: int = 2
 @export var errors_before_highlight: int = 3
 
-@onready var minigame_ui: = $MinigameUI
+@onready var minigame_ui: MinigameUI = $MinigameUI
 @onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
-@onready var fireworks: = $Fireworks
+@onready var fireworks: Fireworks = $Fireworks
 
 # Game root shall contain all the game tree.
 # This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
@@ -123,11 +124,11 @@ func _ready() -> void:
 	
 	# Difficulty
 	if UserDataManager._student_difficulty:
-		difficulty = UserDataManager.get_difficulty_for_minigame(Type.keys()[minigame_name])
+		difficulty = UserDataManager.get_difficulty_for_minigame(Type.keys()[minigame_name] as String)
 	
-	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "intro"))
-	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "help"))
-	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "end"))
+	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro"))
+	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "help"))
+	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "end"))
 	lose_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path("minigame", "lose"))
 	
 	if not Engine.is_editor_hint():
@@ -199,7 +200,7 @@ func _win() -> void:
 		UserDataManager.update_remediation_scores(scores)
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name], true)
+	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, true)
 	
 	audio_player.stream = win_sound_fx
 	audio_player.play()
@@ -225,7 +226,7 @@ func _lose() -> void:
 		UserDataManager.update_remediation_scores(scores)
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name], false)
+	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
 	
 	audio_player.stream = lose_sound_fx
 	audio_player.play()
@@ -241,7 +242,7 @@ func _lose() -> void:
 #region Logs
 
 func _save_logs() -> void:
-	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name], lesson_nb, Time.get_time_string_from_system())
+	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
@@ -264,7 +265,8 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"max_number_of_lives": max_number_of_lives,
 	}
 	
-	logs["answers"].append(response_log)
+	var answers: Array = logs["answers"]
+	answers.append(response_log)
 
 #endregion
 
@@ -275,7 +277,7 @@ func _get_stimulus_score(stimulus: Dictionary) -> int:
 	var score: int = 0
 	if stimulus.has("GPs"):
 		for gp: Dictionary in stimulus.GPs:
-			score += UserDataManager.get_GP_remediation_score(gp.ID)
+			score += UserDataManager.get_GP_remediation_score(gp.ID as int)
 	return score
 
 

@@ -12,6 +12,7 @@ signal kalulu_speech_ended
 
 signal pause_ended
 
+const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 const empty_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/life_empty.png")
 const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/life.png")
 
@@ -41,15 +42,15 @@ const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/lif
 @onready var center_menu: MarginContainer = %CenterMenu
 
 # Kalulu
-@onready var kalulu: Control = %Kalulu
+@onready var kalulu: Kalulu = %Kalulu
 
-@onready var progression_container: = %ProgressionContainer
-@onready var progression_gauge: = %ProgressionGauge
-@onready var model_progression_rect: = %ProgressionIconsRect
-@onready var lives_container: = %LivesContainer
-@onready var model_lives_rect: = %LivesIconsRect
+@onready var progression_container: VBoxContainer = %ProgressionContainer
+@onready var progression_gauge: NinePatchRect = %ProgressionGauge
+@onready var model_progression_rect: TextureRect = %ProgressionIconsRect
+@onready var lives_container: HBoxContainer = %LivesContainer
+@onready var model_lives_rect: TextureRect = %LivesIconsRect
 
-@onready var animation_player: = $AnimationPlayer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var is_paused: bool = false
 
@@ -93,7 +94,7 @@ func set_maximum_number_of_lives(new_max_number_of_lives: int) -> void:
 		if i >= new_max_number_of_lives:
 			lives_rects[i].queue_free()
 	for i in range(lives_rects.size(), new_max_number_of_lives):
-		var new_lives_rect: = model_lives_rect.duplicate()
+		var new_lives_rect: TextureRect = model_lives_rect.duplicate()
 		new_lives_rect.texture = full_lives_icon
 		lives_container.add_child(new_lives_rect)
 	model_lives_rect.visible = new_max_number_of_lives >= 1
@@ -107,10 +108,11 @@ func set_number_of_lives(new_number_of_lives: int) -> void:
 		set_maximum_number_of_lives(new_number_of_lives)
 	var lives_rects: = lives_container.get_children()
 	for i in max_lives:
+		var life_rect: TextureRect = lives_rects[i]
 		if i < max_lives - new_number_of_lives:
-			lives_rects[i].texture = empty_lives_icon
+			life_rect.texture = empty_lives_icon
 		else:
-			lives_rects[i].texture = full_lives_icon
+			life_rect.texture = full_lives_icon
 
 #endregion
 
@@ -125,7 +127,7 @@ func set_max_progression(new_max_progression: int) -> void:
 		if i >= new_max_progression:
 			progression_rects[i].queue_free()
 	for i in range(progression_rects.size(), new_max_progression):
-		var new_progression_rect: = model_progression_rect.duplicate()
+		var new_progression_rect: TextureRect = model_progression_rect.duplicate()
 		new_progression_rect.show()
 		new_progression_rect.texture = empty_progression_icon
 		progression_container.add_child(new_progression_rect)
@@ -140,10 +142,11 @@ func set_progression(new_progression: int) -> void:
 		set_max_progression(new_progression)
 	var progression_rects: = progression_container.get_children()
 	for i in max_progression:
+		var progression_rect: TextureRect = progression_rects[i]
 		if i < new_progression:
-			progression_rects[i].texture = full_progression_icon
+			progression_rect.texture = full_progression_icon
 		else:
-			progression_rects[i].texture = empty_progression_icon
+			progression_rect.texture = empty_progression_icon
 
 #endregion
 

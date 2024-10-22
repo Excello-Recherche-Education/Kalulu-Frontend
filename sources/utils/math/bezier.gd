@@ -6,11 +6,11 @@ static func bezier_square_error(current_points: Array, ref_points: Array) -> flo
 	var samples: = bezier_sampling(current_points, 25)
 	var curve: = Curve2D.new()
 	
-	for point in samples:
+	for point: Vector2 in samples:
 		curve.add_point(point)
 	
 	var error: = 0.0
-	for point in ref_points:
+	for point: Vector2 in ref_points:
 		var curve_point: = curve.get_closest_point(point)
 		error += pow(curve_point.distance_to(point), 2.0)
 	

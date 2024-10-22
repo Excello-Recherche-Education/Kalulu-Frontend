@@ -22,7 +22,7 @@ const background_path_model: = "res://assets/gardens/gardens/garden_%02d_open.pn
 	%Flower4,
 	%Flower5,
 ]
-@onready var background: = %Background
+@onready var background: TextureRect = %Background
 @onready var lesson_button_controls: Array[LessonButton] = [
 	%Button1,
 	%Button2,

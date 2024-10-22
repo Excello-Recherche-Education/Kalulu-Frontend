@@ -6,8 +6,8 @@ const show_sound := preload("res://assets/kalulu/audio/ui_button_on.mp3")
 const hide_sound := preload("res://assets/kalulu/audio/ui_button_off.mp3")
 
 
-@onready var kalulu_sprite: = $KaluluSprite
-@onready var audio_player: = $AudioStreamPlayer
+@onready var kalulu_sprite: AnimatedSprite2D = $KaluluSprite
+@onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
 
 
 func _ready() -> void:

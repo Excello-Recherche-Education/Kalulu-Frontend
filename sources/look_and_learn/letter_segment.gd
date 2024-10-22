@@ -3,10 +3,13 @@ class_name LetterSegment
 
 signal finished()
 
-@onready var tracing_path: = $TracingPath
-@onready var tracing_effects: = $TracingEffects
-@onready var complete_particles: = $CompleteParticles
-@onready var complete_sound: = $CompleteAudioStreamPlayer
+const TracingPath: = preload("res://sources/look_and_learn/tracing_path.gd")
+const TracingEffects: = preload("res://sources/look_and_learn/tracing_effects.gd")
+
+@onready var tracing_path: TracingPath = $TracingPath
+@onready var tracing_effects: TracingEffects = $TracingEffects
+@onready var complete_particles: GPUParticles2D = $CompleteParticles
+@onready var complete_sound: AudioStreamPlayer = $CompleteAudioStreamPlayer
 
 
 func _ready() -> void:

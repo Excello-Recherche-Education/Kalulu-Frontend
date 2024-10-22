@@ -10,11 +10,11 @@ signal demo_finished
 
 @export var color_gradient: Gradient
 
-@onready var line: = $Line2D
-@onready var guide: = $GuidePathFollow
-@onready var hand: = $HandPathFollow2D
-@onready var guide_sprite: = $GuidePathFollow/Guide
-@onready var hand_sprite: = $HandPathFollow2D/Hand
+@onready var line: Line2D = $Line2D
+@onready var guide: PathFollow2D = $GuidePathFollow
+@onready var hand: PathFollow2D = $HandPathFollow2D
+@onready var guide_sprite: Sprite2D = $GuidePathFollow/Guide
+@onready var hand_sprite: Sprite2D = $HandPathFollow2D/Hand
 
 var curve_points: PackedVector2Array
 @onready var remaining_curve: = Curve2D.new()
@@ -30,7 +30,7 @@ func _ready() -> void:
 	hand_sprite.visible = false
 
 
-func _exit_tree():
+func _exit_tree() -> void:
 	pass
 	#if is_instance_valid(remaining_curve):
 		#remaining_curve.free()
@@ -66,7 +66,7 @@ func _tracing_process() -> void:
 	while touch_positions.size() > 0:
 		var touch_position: Vector2 = touch_positions.pop_front()
 		var touch_vector: Vector2 = touch_position - guide.global_position
-		var current_offset = 0.0
+		var current_offset: = 0.0
 		if touch_vector.length() < distance:
 			var target_offset: float = remaining_curve.get_closest_offset(touch_position - global_position)
 			if target_offset > current_offset and target_offset - current_offset <= distance:
@@ -76,11 +76,11 @@ func _tracing_process() -> void:
 				should_play_effects = true
 				var remove_up_to: = 0
 				for i in curve_points.size():
-					var offset = curve.get_closest_offset(curve_points[i])
+					var offset: = curve.get_closest_offset(curve_points[i])
 					if offset > guide.progress:
 						remove_up_to = i
 						break
-				for i in int(min(remove_up_to, curve_points.size() - 2)):
+				for i: int in min(remove_up_to, curve_points.size() - 2):
 					curve_points.remove_at(0)
 					remaining_curve.remove_point(0)
 
@@ -106,7 +106,7 @@ func setup(points: Array) -> void:
 	line.width = 50.0
 	
 	var smooth_points: = _smooth_points(points)
-	for point in smooth_points:
+	for point: Vector2 in smooth_points:
 		curve.add_point(point)
 	
 	guide.progress = 0.0
@@ -120,12 +120,12 @@ func setup(points: Array) -> void:
 
 
 func _smooth_points(points: Array) -> Array:
-	return Bezier.bezier_sampling(points, max(points_per_curve, points.size()))
+	return Bezier.bezier_sampling(points, max(points_per_curve, points.size()) as int)
 
 
 func set_points(points: Array) -> void:
 	curve.clear_points()
-	for point in points:
+	for point: Vector2 in points:
 		curve.add_point(point)
 
 

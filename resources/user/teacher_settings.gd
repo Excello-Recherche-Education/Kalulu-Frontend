@@ -54,10 +54,11 @@ func update_from_dict(dict: Dictionary) -> void:
 	last_modified = dict.last_modified
 	
 	students.clear()
-	for device: String in dict.students.keys():
+	var d_students: Dictionary = dict.students
+	for device: String in d_students.keys():
 		var device_students: Array[StudentData] = []
 		for s: Dictionary in dict.students[device]: 
-			var student = StudentData.new()
+			var student: = StudentData.new()
 			student.code = str(s.code)
 			student.name = s.name
 			student.age = s.age
@@ -67,16 +68,16 @@ func update_from_dict(dict: Dictionary) -> void:
 		students[int(device)] = device_students
 
 func get_new_code() -> String :
-	var used_codes = []
-	for student_array in students.values():
-		for student in student_array:
+	var used_codes: = []
+	for student_array: Array[StudentData] in students.values():
+		for student: StudentData in student_array:
 			used_codes.append(student.code)
 	
 	if used_codes.size() == available_codes.size():
 		return ""
 	
-	var codes = available_codes.duplicate()
-	for c in used_codes:
+	var codes: = available_codes.duplicate()
+	for c: String in used_codes:
 		codes.erase(c)
 	
 	var code : String = codes.pick_random()
@@ -87,16 +88,16 @@ func get_students_count() -> int :
 	if not students:
 		return 0
 	
-	var count = 0
-	for device in students.keys():
-		var students_array = students[device] as Array
+	var count: = 0
+	for device: int in students.keys():
+		var students_array: = students[device] as Array
 		if students_array:
-			count += students[device].size()
+			count += students_array.size()
 	
 	return count
 
 func to_dict() -> Dictionary:
-	var dict = {
+	var dict: = {
 		"account_type": account_type,
 		"email": email,
 		"password": password,
@@ -104,9 +105,10 @@ func to_dict() -> Dictionary:
 	}
 	
 	dict["students"] = {}
-	for device in students.keys():
+	for device: int in students.keys():
 		dict["students"][device] = []
+		var device_students: Array = dict["students"][device]
 		for s: StudentData in students[device]: 
-			dict["students"][device].append(s.to_dict())
+			device_students.append(s.to_dict())
 	
 	return dict

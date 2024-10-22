@@ -3,16 +3,16 @@ extends Path2D
 @export var spread_angle := PI/8.0
 @export var segments := 5
 
-@onready var path_follow: = $PathFollow2D
+@onready var path_follow: PathFollow2D = $PathFollow2D
 
-@onready var traveling_timer: = $TravelingTimer
-@onready var explosion_timer: = $ExplosionTimer
+@onready var traveling_timer: Timer = $TravelingTimer
+@onready var explosion_timer: Timer = $ExplosionTimer
 
-@onready var rocket: = $PathFollow2D/Rocket
-@onready var explosion_particles: = $PathFollow2D/ExplosionParticles
+@onready var rocket: Sprite2D = $PathFollow2D/Rocket
+@onready var explosion_particles: GPUParticles2D = $PathFollow2D/ExplosionParticles
 
-@onready var firework_audio_player: = $FireworkAudioPlayer
-@onready var blast_audio_player: = $BlastAudioPlayer
+@onready var firework_audio_player: AudioStreamPlayer2D = $FireworkAudioPlayer
+@onready var blast_audio_player: AudioStreamPlayer2D = $BlastAudioPlayer
 
 const firework_sounds: = [
 	preload("res://assets/sfx/fireworks_1.mp3"),
@@ -85,7 +85,7 @@ func _on_TravelingTimer_timeout() -> void:
 	rocket.visible = false
 	explosion_timer.start()
 	blast_audio_player.play()
-	for particles in explosion_particles.get_children():
+	for particles: GPUParticles2D in explosion_particles.get_children():
 		particles.emitting = true
 
 

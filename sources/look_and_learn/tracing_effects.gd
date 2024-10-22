@@ -1,8 +1,8 @@
 extends Node2D
 
-@onready var particles_effect: = $TracingParticles
-@onready var sound_effect: = $TracingAudioStreamPlayer
-@onready var timer: = $Timer
+@onready var particles_effect: GPUParticles2D = $TracingParticles
+@onready var sound_effect: AudioStreamPlayer = $TracingAudioStreamPlayer
+@onready var timer: Timer = $Timer
 
 
 func _ready() -> void:
