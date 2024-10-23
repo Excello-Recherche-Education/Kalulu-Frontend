@@ -3,6 +3,7 @@ extends Node2D
 signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned(is_stimulus: bool)
 signal stop()
+@warning_ignore("untyped_declaration")
 signal crab_out(hole)
 
 # Namespace
@@ -63,9 +64,9 @@ func _process(_delta : float) -> void:
 			crab_audio_stream_player.stop_playing()
 
 
-func spawn_crab(gp: Dictionary, is_stimulus: bool) -> void:
+func spawn_crab(gp: Dictionary, p_is_stimulus: bool) -> void:
 	
-	self.is_stimulus = is_stimulus
+	self.is_stimulus = p_is_stimulus
 	
 	# Instantiate a new crab
 	crab = crab_scene.instantiate()
@@ -111,7 +112,7 @@ func spawn_crab(gp: Dictionary, is_stimulus: bool) -> void:
 	crab = null
 	
 	# Emit the despawned signal
-	crab_despawned.emit(is_stimulus)
+	crab_despawned.emit(p_is_stimulus)
 
 
 func is_button_pressed_with_limit(future : Signal) -> bool:

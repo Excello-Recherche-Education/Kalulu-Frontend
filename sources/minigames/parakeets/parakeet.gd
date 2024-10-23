@@ -29,15 +29,16 @@ signal pressed()
 		if label:
 			label.text = label.text.to_upper() if uppercase else label.text.to_lower()
 
-@onready var animated_sprite: = $AnimatedSprite2D
-@onready var label: = $Label
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var label: Label = $Label
 @onready var right_FX: RightFX = $RightFX
 @onready var wrong_FX: WrongFX = $WrongFX
 
 var stimulus: Dictionary :
 	set(value):
 		stimulus = value
-		label.text = value.Grapheme.to_upper() if uppercase else value.Grapheme
+		var grapheme: String = value.Grapheme as String
+		label.text = grapheme.to_upper() if uppercase else grapheme
 
 
 func _ready() -> void:
@@ -49,7 +50,8 @@ func _on_button_pressed() -> void:
 	pressed.emit()
 
 
-static func instantiate():
+static func instantiate() -> Variant:
+	@warning_ignore("unsafe_method_access")
 	return load(instance_scene).instantiate()
 
 

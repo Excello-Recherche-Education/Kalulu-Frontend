@@ -83,8 +83,8 @@ func _find_stimuli_and_distractions() -> void:
 	for stimulus: Dictionary in stimuli:
 		stimulus.GPs = Database.get_GP_from_word(stimulus.ID as int)
 		var grapheme_distractions: = []
-		for GP in stimulus.GPs:
-			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID, lesson_nb))
+		for GP: Dictionary in stimulus.GPs:
+			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID as int, lesson_nb))
 		distractions.append(grapheme_distractions)
 	
 	print(stimuli)
@@ -186,18 +186,18 @@ func _log_new_response_and_score(gp: Dictionary) -> void:
 	# Handles GP scoring
 	if self._is_GP_right(gp):
 		if not is_highlighting:
-			_update_score(gp.ID, 1)
+			_update_score(gp.ID as int, 1)
 	else:
 		if gp:
-			_update_score(gp.ID, -1)
-		_update_score(self._get_GP().ID, -1)
+			_update_score(gp.ID as int, -1)
+		_update_score(self._get_GP().ID as int, -1)
 
 
 # ------------- UI Callbacks ------------- #
 
 
 func _play_stimulus() -> void:
-	await audio_player.play_word(_get_current_stimulus().Word)
+	await audio_player.play_word(_get_current_stimulus().Word as String)
 
 
 # -------------- CONNECTIONS -------------- #

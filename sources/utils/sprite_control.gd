@@ -10,10 +10,12 @@ func set_sprites(p_sprites: Array[CanvasItem]) -> void:
 	for p_sprite in p_sprites:
 		if p_sprite:
 			if p_sprite is Sprite2D:
-				if not p_sprite.texture:
+				var p_sprite_2D: Sprite2D = p_sprite
+				if not p_sprite_2D.texture:
 					return
 			elif p_sprite is AnimatedSprite2D:
-				if not p_sprite.sprite_frames:
+				var p_animated_sprite_2D: AnimatedSprite2D = p_sprite
+				if not p_animated_sprite_2D.sprite_frames:
 					return
 			else:
 				return
@@ -28,14 +30,16 @@ func _on_resized() -> void:
 func _resize_sprites() -> void:
 	for sprite in sprites:
 		if sprite is Sprite2D:
-			if sprite.texture:
-				sprite.centered = false
-				sprite.scale = size / sprite.texture.get_size()
+			var sprite_2D: Sprite2D = sprite
+			if sprite_2D.texture:
+				sprite_2D.centered = false
+				sprite_2D.scale = size / sprite_2D.texture.get_size()
 		elif sprite is AnimatedSprite2D:
-			if sprite.sprite_frames:
-				var texture: Texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
-				sprite.centered = false
-				sprite.scale = size / texture.get_size()
+			var animated_sprite_2D: AnimatedSprite2D = sprite
+			if animated_sprite_2D.sprite_frames:
+				var texture: Texture2D = animated_sprite_2D.sprite_frames.get_frame_texture(animated_sprite_2D.animation, animated_sprite_2D.frame)
+				animated_sprite_2D.centered = false
+				animated_sprite_2D.scale = size / texture.get_size()
 
 
 func _ready() -> void:

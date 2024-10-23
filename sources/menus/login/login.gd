@@ -6,9 +6,11 @@ const next_scene_path: = "res://sources/menus/brain/brain.tscn"
 const teacher_scene_path: = "res://sources/menus/settings/teacher_settings.tscn"
 const package_loader_scene_path: = "res://sources/menus/language_selection/package_downloader.tscn"
 
-@onready var kalulu: Control = $Kalulu
+const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
+
+@onready var kalulu: Kalulu = $Kalulu
 @onready var music_player : AudioStreamPlayer = $MusicStreamPlayer
-@onready var device_number_label := $DeviceNumber
+@onready var device_number_label: Label = $DeviceNumber
 @onready var keyboard : CodeKeyboard = $CodeKeyboard
 @onready var teacher_timer : Timer = $InterfaceRight/TeacherButton/TeacherTimer
 
@@ -16,7 +18,7 @@ var help_speech: AudioStream
 var wrong_password_speech: AudioStream
 var right_password_speech: AudioStream
 
-func _ready():
+func _ready() -> void:
 	# Check if the database is connected, if not go to loader
 	if not Database.is_open:
 		await get_tree().process_frame
@@ -36,7 +38,7 @@ func _ready():
 	music_player.play()
 
 
-func _on_code_keyboard_password_entered(password):
+func _on_code_keyboard_password_entered(password: String) -> void:
 	if UserDataManager.login_student(password):
 		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()
@@ -46,23 +48,23 @@ func _on_code_keyboard_password_entered(password):
 		keyboard.reset_password()
 
 
-func _on_back_button_pressed():
+func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_file(back_scene_path)
 
 
-func _on_kalulu_button_pressed():
+func _on_kalulu_button_pressed() -> void:
 	kalulu.play_kalulu_speech(help_speech)
 
 
-func _on_teacher_button_button_down():
+func _on_teacher_button_button_down() -> void:
 	if keyboard.get_password_as_string() == teacher_password:
 		teacher_timer.start()
 
 
-func _on_teacher_button_button_up():
+func _on_teacher_button_button_up() -> void:
 	teacher_timer.stop()
 
 
-func _on_teacher_timer_timeout():
+func _on_teacher_timer_timeout() -> void:
 	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(teacher_scene_path)

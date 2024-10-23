@@ -22,7 +22,7 @@ func _notification(what: int) -> void:
 		)
 		for c in get_children():
 			if c is Control:
-				fit_child_in_rect(c, children_rect)
+				fit_child_in_rect(c as Control, children_rect)
 
 
 func _get_minimum_size() -> Vector2:

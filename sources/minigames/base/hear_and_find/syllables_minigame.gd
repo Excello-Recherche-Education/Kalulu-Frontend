@@ -99,7 +99,7 @@ func _find_stimuli_and_distractions() -> void:
 		for syllable: Dictionary in all_syllables:
 			if syllable.Phoneme != stimulus.Phoneme:
 				var gp_found_in_stimuli: = false
-				for gp in syllable.GPs:
+				for gp: Dictionary in syllable.GPs:
 					if gp in stimulus.GPs:
 						gp_found_in_stimuli = true
 						break
@@ -108,9 +108,11 @@ func _find_stimuli_and_distractions() -> void:
 					stimulus_distractors.append(syllable)
 		
 		# Higher difficulties only changes syllables distractors
-		if difficulty > 1 and stimulus.GPs.size() == 2:
+		var stimulus_GPs: Array[Dictionary] = stimulus.GPs
+		if difficulty > 1 and stimulus_GPs.size() == 2:
 			for syllable: Dictionary in all_syllables:
-				if syllable.GPs.size() != 2:
+				var syllable_GPs: Array[Dictionary] = syllable.GPs
+				if syllable_GPs.size() != 2:
 					continue
 				
 				# Difficulty 2-3
@@ -155,7 +157,7 @@ func _play_current_stimulus_phoneme() -> void:
 	
 	is_stimulus_heard = true
 	if current_stimulus.has("GPs"):
-		await audio_player.play_word(current_stimulus.Grapheme)
+		await audio_player.play_word(current_stimulus.Grapheme as String)
 	else:
 		await audio_player.play_gp(current_stimulus)
 	stimulus_timer.start()
@@ -188,8 +190,8 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 	# Checks the answer and update scores
 	if _is_stimulus_right(stimulus):
 		if not is_highlighting:
-			for gp in stimulus.GPs:
-				_update_score(gp.ID, 1)
+			for gp: Dictionary in stimulus.GPs:
+				_update_score(gp.ID as int, 1)
 		else:
 			# Handles highlight
 			is_highlighting = false
@@ -197,21 +199,25 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		_on_stimulus_found()
 		stimulus_found.emit()
 	else:
-		var right_answer: = _get_current_stimulus()
+		var right_answer_GPs: Array[Dictionary] = _get_current_stimulus().GPs
+		
+		var stimulus_GPs: Array[Dictionary]
+		if stimulus.has("GPs"):
+			stimulus_GPs = stimulus.GPs
 		
 		# Handles the right answer GPs
 		# RA os - stimulus à
-		for i in right_answer.GPs.size():
-			if not stimulus.has("GPs") or (i < stimulus.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]):
+		for i in right_answer_GPs.size():
+			if not stimulus_GPs or (i < stimulus_GPs.size() and stimulus_GPs[i] == right_answer_GPs[i]):
 				continue
-			_update_score(right_answer.GPs[i].ID, -1)
+			_update_score(right_answer_GPs[i].ID as int, -1)
 		
 		# Handles the pressed stimulus Gps
-		if stimulus.has("GPs"):
-			for i in stimulus.GPs.size():
-				if i < right_answer.GPs.size() and stimulus.GPs[i] == right_answer.GPs[i]:
+		if stimulus_GPs:
+			for i in stimulus_GPs.size():
+				if i < right_answer_GPs.size() and stimulus_GPs[i] == right_answer_GPs[i]:
 					continue
-				_update_score(stimulus.GPs[i].ID, -1)
+				_update_score(stimulus_GPs[i].ID as int, -1)
 	return true
 
 
