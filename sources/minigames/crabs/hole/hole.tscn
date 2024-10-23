@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bggrf54kye5vl"]
+[gd_scene load_steps=7 format=3 uid="uid://bggrf54kye5vl"]
 
 [ext_resource type="Script" path="res://sources/minigames/crabs/hole/hole.gd" id="1_05s8c"]
 [ext_resource type="Texture2D" uid="uid://tfigqbebxmal" path="res://assets/minigames/crabs/graphic/hole_back.png" id="2_osih7"]
@@ -7,12 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://dt8ynpufhqs5w" path="res://sources/utils/fx/sand.tscn" id="5_vress"]
 [ext_resource type="Script" path="res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd" id="6_2rg3s"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8wu08"]
-blend_mode = 1
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ertip"]
-blend_mode = 3
-
 [node name="Hole" type="Node2D"]
 script = ExtResource("1_05s8c")
 
@@ -20,19 +14,9 @@ script = ExtResource("1_05s8c")
 scale = Vector2(1.8, 1.8)
 texture = ExtResource("2_osih7")
 
-[node name="MaskGroup" type="CanvasGroup" parent="."]
-
-[node name="Mask" type="Control" parent="MaskGroup"]
+[node name="Mask" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-material = SubResource("CanvasItemMaterial_8wu08")
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="MaskSprite" type="Sprite2D" parent="MaskGroup"]
-material = SubResource("CanvasItemMaterial_ertip")
-position = Vector2(0, -40)
+clip_children = 1
 texture = ExtResource("3_ietrg")
 
 [node name="SandVFX" parent="." instance=ExtResource("5_vress")]

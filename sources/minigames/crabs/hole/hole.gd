@@ -13,7 +13,7 @@ const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
 @onready var hole_back: Sprite2D = $HoleBack
 @onready var hole_front: Sprite2D = $HoleFront
-@onready var mask: Control = %Mask
+@onready var mask: Sprite2D = %Mask
 @onready var sand_vfx: SandVFX = $SandVFX
 @onready var timer: Timer = $Timer
 @onready var crab_audio_stream_player: CrabAudioStreamPlayer = $CrabAudioStreamPlayer2D

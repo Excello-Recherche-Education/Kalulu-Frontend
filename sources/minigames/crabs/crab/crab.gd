@@ -35,7 +35,8 @@ var stimulus: Dictionary:
 func _ready() -> void:
 	set_button_active(false)
 	animated_sprite.play("idle1")
-	_on_audio_stream_player_finished()
+	if not Engine.is_editor_hint():
+		_on_audio_stream_player_finished()
 
 
 func set_button_active(active: bool) -> void:
