@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cp27bjh6v5bkj"]
 
 [ext_resource type="Script" path="res://sources/utils/autoloads/opening_curtain.gd" id="1_xih0r"]
-[ext_resource type="Texture2D" uid="uid://4u85b8th4uuv" path="res://assets/minigames/minigame_ui/graphic/curtain/bush.png" id="1_yhjvv"]
+[ext_resource type="Texture2D" uid="uid://cop8iscyxohrb" path="res://assets/bush_curtain.png" id="2_5yuun"]
 
 [sub_resource type="Animation" id="Animation_eyrra"]
 length = 0.001
@@ -174,24 +174,24 @@ libraries = {
 
 [node name="LeftCurtain" type="TextureRect" parent="."]
 visible = false
-offset_left = -612.0
-offset_top = -765.0
-offset_right = 413.0
-offset_bottom = -100.0
+offset_left = -2176.0
+offset_top = -2576.0
+offset_right = 1924.0
+offset_bottom = -128.0
 rotation = 4.71239
-scale = Vector2(5, 5)
-pivot_offset = Vector2(512, 665)
-texture = ExtResource("1_yhjvv")
+scale = Vector2(1.25, 1.25)
+pivot_offset = Vector2(2050, 2448)
+texture = ExtResource("2_5yuun")
 
 [node name="RightCurtain" type="TextureRect" parent="."]
 visible = false
-offset_left = 2148.0
-offset_top = -765.0
-offset_right = 3173.0
-offset_bottom = -100.0
+offset_left = 640.0
+offset_top = -2576.0
+offset_right = 4740.0
+offset_bottom = -128.0
 rotation = -4.71239
-scale = Vector2(5, 5)
-pivot_offset = Vector2(512, 665)
-texture = ExtResource("1_yhjvv")
+scale = Vector2(1.25, 1.25)
+pivot_offset = Vector2(2050, 2448)
+texture = ExtResource("2_5yuun")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

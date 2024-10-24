@@ -13,7 +13,7 @@ const button_sound := preload("res://assets/menus/login/ui_play_button.mp3")
 var password : Array[String] = []
 
 func _ready() -> void:
-	for button: Button in buttons.get_children(false):
+	for button: TextureButton in buttons.get_children(false):
 		button.pressed.connect(_on_button_pressed.bind(button))
 
 
@@ -57,7 +57,7 @@ func get_password_as_string() -> String:
 func reset_password() -> void:
 	password = []
 	
-	for button: Button in buttons.get_children(false):
+	for button: TextureButton in buttons.get_children(false):
 		button.set_modulate(Color(1,1,1))
 		button.set_disabled(false)
 	
