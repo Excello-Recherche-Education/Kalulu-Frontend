@@ -46,7 +46,7 @@ const garden_size: = 2400
 @onready var minigame_background_center: TextureRect = %MinigameBackgroundCenter
 @onready var lock: Control = %Lock
 
-
+var curve: Curve2D
 var lessons: = {}
 var points: Array[Array]= []
 var is_scrolling: = false
@@ -79,8 +79,8 @@ func _ready() -> void:
 		# Defines if a new lesson has been unlocked by the player, setups to play the right animation
 		new_lesson_unlocked = transition_data and transition_data.current_lesson_number == UserDataManager.student_progression.get_max_unlocked_lesson() and transition_data.minigame_number == 2 and transition_data.minigame_completed
 	
-	# Loads the progression of the player
-	_set_progression()
+		# Loads the progression of the player
+		_set_progression()
 	
 	# Scrolls to the right garden
 	if not transition_data:
@@ -402,7 +402,7 @@ func set_up_path() -> void:
 	if not garden_parent:
 		return
 	points = []
-	var curve: = Curve2D.new()
+	curve = Curve2D.new()
 	for i in gardens_layout.gardens.size():
 		var garden_layout: GardenLayout = gardens_layout.gardens[i]
 		var garden_control: Garden = garden_parent.get_child(i)
