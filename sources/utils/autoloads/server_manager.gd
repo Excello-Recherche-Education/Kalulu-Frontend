@@ -53,7 +53,7 @@ func _get_request(URI: String, params: Dictionary) -> void:
 	
 	var req: = URL + URI
 	var is_first_param: bool = true
-	for key in params.keys():
+	for key: String in params.keys():
 		if is_first_param:
 			req += "?"
 			is_first_param = false
@@ -77,8 +77,7 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 	var headers: = _create_request_headers()
 	headers.append("Content-Type: application/json")
 	
-	var json = JSON.stringify(data)
-	if http_request.request(req, headers, HTTPClient.METHOD_POST, json) == 0:
+	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == 0:
 		await request_completed
 	else:
 		code = 500
@@ -86,7 +85,7 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 
 #endregion
 
-func _on_http_request_request_completed(result, response_code, headers, body):
+func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	code = response_code
 	if body:
 		json = JSON.parse_string(body.get_string_from_utf8())

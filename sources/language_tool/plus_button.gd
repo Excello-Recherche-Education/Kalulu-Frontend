@@ -2,7 +2,7 @@ extends MarginContainer
 
 signal pressed()
 
-@onready var texture_rect: = $TextureRect
+@onready var texture_rect: TextureRect = $TextureRect
 @onready var base_margin: int = get("theme_override_constants/margin_bottom")
 
 

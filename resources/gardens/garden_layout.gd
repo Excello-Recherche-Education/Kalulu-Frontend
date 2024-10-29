@@ -14,7 +14,7 @@ class Flower:
 		position = p_position
 	
 	static func from_dict(d: Dictionary) -> Flower:
-		return Flower.new(d.color, d.type, d.position)
+		return Flower.new(d.color as int, d.type as int, d.position as Vector2i)
 	
 	func to_dict() -> Dictionary:
 		return {
@@ -33,7 +33,7 @@ class LessonButton:
 		path_out_position = p_path_out_position
 	
 	static func from_dict(d: Dictionary) -> LessonButton:
-		return LessonButton.new(d.position, d.path_out_position)
+		return LessonButton.new(d.position as Vector2i, d.path_out_position as Vector2i)
 	
 	func to_dict() -> Dictionary:
 		return {

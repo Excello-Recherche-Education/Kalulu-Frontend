@@ -3,15 +3,15 @@
 [ext_resource type="Script" path="res://sources/minigames/base/kalulu.gd" id="1_iin3v"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="2_gi4rq"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6gsq"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iqd4x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd4qd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1hd4y"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dvlyl"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd4qd"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iqd4x"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6gsq"]
 
 [node name="Kalulu" type="Control"]
 layout_mode = 3
@@ -45,11 +45,11 @@ offset_right = -158.0
 offset_bottom = -379.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_y6gsq")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_iqd4x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_cd4qd")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_1hd4y")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_dvlyl")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_cd4qd")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_iqd4x")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y6gsq")
 flat = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

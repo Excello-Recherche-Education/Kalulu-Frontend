@@ -29,11 +29,18 @@ const audio_streams: = [
 @onready var branches: = $GameRoot/TreeTrunk/Branches
 @onready var possible_start_positions_parent: = $GameRoot/FlyFrom
 @onready var parakeets_node: = $GameRoot/Parakeets
+@onready var nest_position_1: Control = $GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position1
+@onready var nest_position_2: Control = $GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position2
 @onready var nest_positions: Array[Vector2] = [
-	$GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position1.global_position,
-	$GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position2.global_position
-	]
-@onready var fly_away_positions: Array[Vector2] = [$GameRoot/FlyAway/Position1.global_position, $GameRoot/FlyAway/Position2.global_position]
+	nest_position_1.global_position,
+	nest_position_2.global_position
+]
+@onready var fly_away_position_1: Control = $GameRoot/FlyAway/Position1
+@onready var fly_away_position_2: Control = $GameRoot/FlyAway/Position2
+@onready var fly_away_positions: Array[Vector2] = [
+	fly_away_position_1.global_position, 
+	fly_away_position_2.global_position
+]
 
 var possible_branch_positions: Array[Vector2]
 var parakeets: Array[Parakeet]
@@ -57,7 +64,7 @@ func _setup_minigame() -> void:
 	current_progression = 0
 	
 	var max_difficulty: = 0
-	for d in difficulty_settings.keys():
+	for d: int in difficulty_settings.keys():
 		if d > max_difficulty:
 			max_difficulty = d
 	
@@ -100,7 +107,7 @@ func _find_stimuli_and_distractions() -> void:
 func _start() -> void:
 	var possible_positions: Array[Vector2] = []
 	for branch in branches.get_children():
-		for child in branch.get_children():
+		for child: Control in branch.get_children():
 			if "Position" in child.name:
 				possible_positions.append(child.global_position)
 	possible_positions.shuffle()
@@ -142,6 +149,7 @@ func _correct() -> void:
 		selected[1] = buffer
 
 	await _make_selected_happy()
+	current_progression += 1
 	
 	await _fly_to(nest_positions)
 	
@@ -149,14 +157,13 @@ func _correct() -> void:
 	
 	await _fly_to(fly_away_positions)
 	
-	current_progression += 1
+	
 	state = State.Idle
 	selected.clear()
 
 
 func _wrong() -> void:
 	await _make_selected_sad()
-	
 	current_lives -= 1
 	
 	for parakeet in selected:

@@ -11,13 +11,14 @@
 [node name="PenguinMinigame" instance=ExtResource("1_s6yuv")]
 script = ExtResource("2_ncha4")
 minigame_name = 8
-lesson_nb = 15
+lesson_nb = 14
 max_number_of_lives = 5
 max_progression = 5
 
 [node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("3_gdpi3")
 full_progression_icon = ExtResource("4_yua7j")
+stimulus_button_visible = false
 
 [node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 layout_mode = 1
@@ -47,17 +48,14 @@ offset_bottom = -680.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LabelsContainer" type="HBoxContainer" parent="GameRoot/Control" index="0"]
+[node name="LabelsContainer" type="HFlowContainer" parent="GameRoot/Control" index="0"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = 14
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -314.0
-offset_top = -305.0
-offset_right = 314.0
-offset_bottom = 305.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 60
+theme_override_constants/h_separation = 48
+theme_override_constants/v_separation = 20
+alignment = 1

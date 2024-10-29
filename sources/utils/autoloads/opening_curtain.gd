@@ -22,4 +22,4 @@ func close() -> void:
 
 
 func _on_animation_player_animation_finished(animation_name: StringName) -> void:
-	emit_signal("animation_finished", animation_name)
+	animation_finished.emit(animation_name)

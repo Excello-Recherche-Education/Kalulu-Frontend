@@ -10,7 +10,7 @@ var is_completed: = false
 signal _join()
 var _ended_count: = -1
 
-var return_value
+var return_value: Array
 
 
 func resumable_call(callable: Callable) -> void:
@@ -26,17 +26,18 @@ func resume() -> void:
 	resume_signal.emit()
 
 
-func add_future(param) -> void:
+func add_future(param: Variant) -> void:
 	assert(param is Callable or param is Signal, "Can only wait on Signal or Callable")
 	# init
 	if _ended_count < 0:
 		_ended_count = 0
 		return_value = []
-
+	
 	var index: int = return_value.size()
 	return_value.append(null)
 	if param is Callable:
-		return_value[index] = await param.call()
+		var param_callable: Callable = param as Callable
+		return_value[index] = await param_callable.call()
 	else:
 		await param
 	_ended_count += 1

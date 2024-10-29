@@ -1,5 +1,4 @@
 extends Control
-class_name StudentPanel
 
 signal pressed
 
@@ -9,7 +8,7 @@ signal pressed
 @export var student_count : int
 @export var student_data : StudentData
 
-func _ready():
+func _ready() -> void:
 	if not student_data:
 		return
 	
@@ -22,5 +21,5 @@ func _ready():
 		password_visualizer.password = student_data.code
 
 
-func _on_details_button_pressed():
+func _on_details_button_pressed() -> void:
 	pressed.emit()

@@ -7,9 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://c7oq86cgq7okn" path="res://assets/minigames/jellyfish/graphic/backgroung.png" id="6_sn7hv"]
 
 [node name="JellyfishMinigame" instance=ExtResource("1_hauef")]
-process_mode = 1
 script = ExtResource("2_gnjlp")
-lesson_nb = 5
+lesson_nb = 12
 difficulty = 4
 max_number_of_lives = 5
 max_progression = 8

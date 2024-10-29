@@ -10,13 +10,14 @@
 [node name="AntsMinigame" instance=ExtResource("1_jqkff")]
 script = ExtResource("2_05d1y")
 minigame_name = 7
-lesson_nb = 50
+lesson_nb = 60
 max_number_of_lives = 5
 max_progression = 3
 
 [node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("5_jm3ut")
 full_progression_icon = ExtResource("6_qfybu")
+stimulus_button_visible = false
 
 [node name="Scenery" type="Control" parent="GameRoot" index="0"]
 layout_mode = 1

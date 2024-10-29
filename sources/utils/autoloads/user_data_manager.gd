@@ -103,7 +103,7 @@ func login_student(code : String) -> bool:
 	if not _device_settings or not teacher_settings:
 		return false
 	
-	var students = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
+	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
 	if students:
 		for s in students:
 			if s.code == code:
@@ -183,7 +183,7 @@ func add_device() -> bool:
 	if not teacher_settings.students:
 		return false
 	
-	var device_id = teacher_settings.students.keys().back() + 1
+	var device_id: int = teacher_settings.students.keys().back() + 1
 	
 	# Adds the new device
 	var students_array : Array[StudentData] = []
@@ -212,7 +212,8 @@ func add_student(device_id : int, student_data : StudentData) -> bool:
 		return false
 	
 	# Adds the student on the device
-	teacher_settings.students[device_id].append(student_data)
+	var device_students: Array[StudentData] = teacher_settings.students[device_id]
+	device_students.append(student_data)
 	
 	# Saves the settings
 	_save_teacher_settings()
@@ -232,7 +233,7 @@ func delete_student(device_id : int, code : String) -> bool:
 	
 	# Finds the student
 	var student_data : StudentData
-	for s in teacher_settings.students[device_id]:
+	for s: StudentData in teacher_settings.students[device_id]:
 		if s.code == code:
 			student_data = s
 			break
@@ -240,7 +241,8 @@ func delete_student(device_id : int, code : String) -> bool:
 	# Deletes the saves ??
 	
 	# Removes the student
-	teacher_settings.students[device_id].erase(student_data)
+	var device_students: Array[StudentData] = teacher_settings.students[device_id]
+	device_students.erase(student_data)
 	
 	# Saves the settings
 	_save_teacher_settings()
@@ -300,11 +302,11 @@ func _on_user_progression_unlocks_changed() -> void:
 	_save_student_progression()
 
 
-func get_student_progression_for_code(device: int, student: String) -> UserProgression:
+func get_student_progression_for_code(device: int, code: String) -> UserProgression:
 	if not teacher_settings or not teacher_settings.students.has(device):
 		return
 	
-	var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(student)
+	var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(code)
 	var progression_path: String = student_path.path_join("progression.tres")
 	
 	var progression: UserProgression
@@ -314,12 +316,12 @@ func get_student_progression_for_code(device: int, student: String) -> UserProgr
 	else:
 		progression = UserProgression.new()
 		DirAccess.make_dir_recursive_absolute(student_path)
-		ResourceSaver.save(student_progression, progression_path)
+		#ResourceSaver.save(student_progression, progression_path)
 	
 	return progression
 
-func save_student_progression_for_code(device: int, student: String, progression: UserProgression) -> void:
-	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(student).path_join("progression.tres")
+func save_student_progression_for_code(device: int, code: String, progression: UserProgression) -> void:
+	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(code).path_join("progression.tres")
 	ResourceSaver.save(progression, progression_path)
 
 #endregion

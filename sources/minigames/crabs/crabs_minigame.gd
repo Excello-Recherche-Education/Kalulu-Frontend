@@ -153,7 +153,7 @@ func _on_hole_timer_timeout() -> void:
 					holes[i].spawn_crab(_get_current_stimulus(), true)
 				else:
 					var current_distractors : Array = distractions[current_progression % distractions.size()]
-					holes[i].spawn_crab(current_distractors.pick_random(), false)
+					holes[i].spawn_crab(current_distractors.pick_random() as Dictionary, false)
 				hole_found = true
 				break
 		

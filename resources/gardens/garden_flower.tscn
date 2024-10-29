@@ -24,5 +24,3 @@ position = Vector2(2312, 1544)
 rotation = -3.14159
 scale = Vector2(1, -1)
 polygon = PackedVector2Array(1030, -1546, -250, -1546, -250, 254, 1030, 254, 774, 225, 630, 163, 449, 44, 264, -167, 163, -383, 125, -619, 158, -890, 251, -1101, 390, -1282, 563, -1416, 710, -1490, 838, -1522)
-
-[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

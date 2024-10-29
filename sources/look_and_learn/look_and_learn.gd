@@ -1,17 +1,20 @@
 extends Control
 
+const Gardens: = preload("res://sources/gardens/gardens.gd")
+const TracingManager: = preload("res://sources/look_and_learn/tracing_manager.gd")
+
 @export var lesson_nb: = 1
 @export var current_button_pressed: = 0
 
-@onready var animation_player: = $AnimationPlayer
-@onready var audio_player: = $AudioStreamPlayer
-@onready var video_player: = %VideoStreamPlayer
-@onready var image: = %Image
-@onready var grapheme_label: = %GraphemeLabel
-@onready var tracing_manager: = %TracingManager
-@onready var grapheme_particles: = $GraphemeParticles
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var video_player: VideoStreamPlayer = %VideoStreamPlayer
+@onready var image: TextureRect = %Image
+@onready var grapheme_label: Label = %GraphemeLabel
+@onready var tracing_manager: TracingManager = %TracingManager
+@onready var grapheme_particles: GPUParticles2D = $GraphemeParticles
 
-const Gardens: = preload("res://sources/gardens/gardens.gd")
+
 
 var gp_list: Array[Dictionary]
 
@@ -67,7 +70,7 @@ func setup() -> void:
 		gp_display.append(gp_list[0])
 	
 	grapheme_label.text = ""
-	for gp in gp_display:
+	for gp: Dictionary in gp_display:
 		grapheme_label.text += "%s" % gp.Grapheme
 
 
@@ -93,7 +96,7 @@ func play_images_and_sounds()  -> void:
 
 
 func load_tracing() -> void:
-	await tracing_manager.setup(gp_list[current_tracing]["Grapheme"])
+	await tracing_manager.setup(gp_list[current_tracing]["Grapheme"] as String)
 	current_tracing += 1
 
 
@@ -135,7 +138,7 @@ func _on_audio_stream_player_finished() -> void:
 
 func _on_tracing_manager_finished() -> void:
 	if current_tracing < gp_list.size():
-		await tracing_manager.setup(gp_list[current_tracing]["Grapheme"])
+		await tracing_manager.setup(gp_list[current_tracing]["Grapheme"] as String)
 		tracing_manager.start()
 		current_tracing += 1
 	else:

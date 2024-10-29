@@ -6,9 +6,9 @@ signal pressed()
 
 var is_disabled: bool = false
 
-func _ready():
+func _ready() -> void:
 	area.connect("input_event", _on_click)
 
-func _on_click(viewport, event, shape_idx):
+func _on_click(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("left_click") and not is_disabled:
 		pressed.emit()

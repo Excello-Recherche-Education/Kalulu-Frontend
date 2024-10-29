@@ -2,14 +2,17 @@ extends Node
 
 signal finished()
 
+const Rocket: = preload("res://sources/utils/fx/rocket.gd")
+const rocket_scene: = preload("res://sources/utils/fx/rocket.tscn")
+
 @export var number_of_rockets: = 25
 
-@onready var fire_delay_timer: = $FireDelayTimer
+@onready var fire_delay_timer: Timer = $FireDelayTimer
 @onready var starts: = $Starts.get_children()
 @onready var ends: = $Ends.get_children()
-@onready var rockets: = $Rockets
+@onready var rockets: Node2D = $Rockets
 
-const firework_class: = preload("res://sources/utils/fx/rocket.tscn")
+
 
 var count: = 0
 
@@ -24,12 +27,13 @@ func _on_FireDelayTimer_timeout() -> void:
 		finished.emit()
 		return
 	
-	var start_point: Vector2 = starts[randi() % starts.size()].global_position
-	var end_point: Vector2 = ends[randi() % ends.size()].global_position
 	
-	var rocket: = firework_class.instantiate()
+	var start_node: Node2D = starts[randi() % starts.size()]
+	var end_node: Node2D = ends[randi() % ends.size()]
+	
+	var rocket: Rocket = rocket_scene.instantiate()
 	rockets.add_child(rocket)
-	rocket.start(start_point, end_point + Vector2(randf_range(-25.0, 25.0), randf_range(-25.0, 25.0)))
+	rocket.start(start_node.global_position, end_node.global_position + Vector2(randf_range(-25.0, 25.0), randf_range(-25.0, 25.0)))
 	
 	count += 1
 	fire_delay_timer.start(randf_range(0.1, 0.25))

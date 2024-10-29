@@ -108,7 +108,8 @@ func _stop_highlight() -> void:
 
 
 func _reset_plank_label() -> void:
-	word_label.text = "_".repeat(_get_current_stimulus().Word.length())
+	var word: String = _get_current_stimulus().Word as String
+	word_label.text = "_".repeat(word.length())
 
 
 func _play_monkey_stimulus(monkey: Monkey) -> void:

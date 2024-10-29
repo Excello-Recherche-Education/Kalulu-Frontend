@@ -138,9 +138,10 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	var result: = db.query_result
 	
 	if with_other_phonemes:
-		for GP in result:
+		for GP: Dictionary in result:
 			if GP.OtherPhonemes:
-				GP.OtherPhonemes = GP.OtherPhonemes.split(",")
+				var phonemes: String = GP.OtherPhonemes
+				GP.OtherPhonemes = phonemes.split(",")
 	
 	return result
 
@@ -193,7 +194,7 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictio
 	
 	var res : = db.query_result
 	for syllable: Dictionary in res:
-		syllable.GPs = get_GPs_from_syllable(syllable.ID)
+		syllable.GPs = get_GPs_from_syllable(syllable.ID as int)
 		var phonemes: Array[String] = []
 		for GP: Dictionary in syllable.GPs:
 			phonemes.append(GP.Phoneme)
@@ -235,9 +236,11 @@ FROM Words
 	
 	# Parse the GPs IDs
 	for word: Dictionary in res:
-		word.GPs = []
-		for GPID in word.GPs_IDs.split(","):
-			word.GPs.append({ID = int(GPID)})
+		var word_GPs: = []
+		var word_gps_id: String = word.GPs_IDs
+		for GPID: String in word_gps_id.split(","):
+			word_GPs.append({ID = int(GPID)})
+		word.GPs = word_GPs
 		word.erase("GPs_IDs")
 	
 	return res
@@ -284,8 +287,8 @@ func get_sentences_by_lessons() -> Dictionary:
 	var sentences: = db.query_result
 	
 	for sentence in sentences:
-		var lesson_nb: = get_min_lesson_for_sentence_id(sentence.ID)
-		var a = sentences_by_lesson.get(lesson_nb, [])
+		var lesson_nb: = get_min_lesson_for_sentence_id(sentence.ID as int)
+		var a: Array = sentences_by_lesson.get(lesson_nb, [])
 		a.append(sentence)
 		sentences_by_lesson[lesson_nb] = a
 	return sentences_by_lesson
@@ -300,7 +303,7 @@ func get_sentences(p_lesson_nb: int, only_new: = false, sentences_by_lesson: = {
 	
 	var ret: Array = []
 	for i in p_lesson_nb:
-		ret.append_array(sentences_by_lesson.get(i, []))
+		ret.append_array(sentences_by_lesson.get(i, []) as Array)
 	return ret
 
 
@@ -390,6 +393,7 @@ func get_distractors_for_grapheme(id: int, lesson_nb: int) -> Array:
 	INNER JOIN Lessons 
 	INNER JOIN GPsInLessons
 	ON stimuli.ID=? AND distractor.type = stimuli.type 
+	AND distractor.exception = false
 	AND distractor.Grapheme != stimuli.Grapheme 
 	AND distractor.Phoneme != stimuli.Phoneme
 	AND CASE WHEN length(distractor.Grapheme) < length(stimuli.Grapheme) 
@@ -416,7 +420,7 @@ func get_min_lesson_for_word_id(word_id: int) -> int:
 	ORDER BY Position", [word_id])
 	var m: = -1
 	for result in db.query_result:
-		var i: = Database.get_min_lesson_for_gp_id(result.GPID)
+		var i: = Database.get_min_lesson_for_gp_id(result.GPID as int)
 		if i < 0:
 			m = -1
 			break
@@ -458,10 +462,10 @@ func get_audio_stream_for_path(path: String) -> AudioStream:
 
 func get_audio_stream_for_word(ID: int) -> AudioStream:
 	var GPs: = get_GP_from_word(ID)
-	var file_name: = _phoneme_to_string(GPs[0].Phoneme)
+	var file_name: = _phoneme_to_string(GPs[0].Phoneme as String)
 	for i in range(1, GPs.size()):
-		var GP = GPs[i]
-		file_name += "-" + _phoneme_to_string(GP.Phoneme)
+		var GP: Dictionary = GPs[i]
+		file_name += "-" + _phoneme_to_string(GP.Phoneme as String)
 	file_name += ".mp3"
 	return load(words_path + file_name)
 
@@ -497,8 +501,8 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 		if ResourceLoader.exists(path):
 			return load(path)
 		else:
-			var file = FileAccess.open(path, FileAccess.READ)
-			var sound = AudioStreamMP3.new()
+			var file: = FileAccess.open(path, FileAccess.READ)
+			var sound: = AudioStreamMP3.new()
 			sound.data = file.get_buffer(file.get_length())
 			return sound
 	
@@ -561,192 +565,6 @@ func _phoneme_to_string(phoneme: String) -> String:
 		return phoneme
 	else:
 		return "cap." + phoneme.to_lower()
-
-
-# Import data from previous Kalulu version
-
-func _import_gps() -> void:
-	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	for e in dict.values():
-		var g = e.GRAPHEME
-		var p = e.PHONEME
-		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
-		if db.query_result.is_empty():
-			var type = 0
-			if e.CV == "V":
-				type = 1
-			elif e.CV == "C":
-				type = 2
-			db.insert_row("GPs", {Grapheme=g, Phoneme=p, Type=type})
-		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
-		print(db.query_result)
-
-
-func _import_look_and_learn_data() -> void:
-	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	for e in dict.values():
-		var file_path: = "res://data3/".path_join(look_and_learn_images).path_join(e.IMAGE) + image_extension
-		DirAccess.copy_absolute(file_path, get_gp_look_and_learn_image_path({
-			Grapheme = e.GRAPHEME,
-			Phoneme = e.PHONEME,
-		}))
-		file_path = base_path.path_join(language).path_join(look_and_learn_sounds).path_join(e.AUDIO) + sound_extension
-		DirAccess.copy_absolute(file_path, get_gp_look_and_learn_sound_path({
-			Grapheme = e.GRAPHEME,
-			Phoneme = e.PHONEME,
-		}))
-		file_path = (base_path.path_join(language).path_join(look_and_learn_videos).trim_suffix("/") + "s").path_join(e.FILENAME) + "_wide" + video_extension
-		DirAccess.copy_absolute(file_path, get_gp_look_and_learn_video_path({
-			Grapheme = e.GRAPHEME,
-			Phoneme = e.PHONEME,
-		}))
-
-
-func _update_gps_with_type() -> void:
-	var file = FileAccess.open("res://gp_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	for e in dict.values():
-		var g = e.GRAPHEME
-		var p = e.PHONEME
-		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
-		var id = db.query_result[0].ID
-		var type = 0
-		if e.CV == "V":
-			type = 1
-		elif e.CV == "C":
-			type = 2
-		db.query_with_bindings("UPDATE GPs SET Type=? WHERE id=?", [type, id])
-
-
-func _import_syllables() -> void:
-	var file = FileAccess.open("res://data3/words_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	
-	for e in dict.values():
-		if e.NB_GRAPHEME == 2 and e.NB_LETTER <= 3:
-			
-			# Inserts syllable
-			db.query_with_bindings("SELECT * FROM Syllables WHERE Syllable=?", [e.GRAPHEME])
-			if db.query_result.is_empty():
-				db.insert_row("Syllables", {Syllable=e.GRAPHEME})
-			
-			# Inserts GPs in syllable
-			db.query_with_bindings("SELECT * FROM Syllables WHERE Syllable=?", [e.GRAPHEME])
-			var syllable_id = db.query_result[0]["ID"]
-			
-			# Checks if GPsInSyllables is already inserted
-			db.query_with_bindings("SELECT ID FROM GPsInSyllables WHERE SyllableID=?", [syllable_id])
-			if db.query_result.is_empty():
-				var GP_list_str: String = e.GPMATCH
-				var GP_list: = GP_list_str.split(".")
-				
-				for i in GP_list.size():
-					var GP_str = GP_list[i]
-					var GP = GP_str.split("-")
-					
-					# Checks if GP exists
-					db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [GP[0], GP[1]])
-					if db.query_result.is_empty():
-						push_error("GP not found for " + GP_str)
-						continue
-					
-					var GP_id = db.query_result[0]["ID"]
-					db.insert_row("GPsInSyllables", {
-						SyllableID = syllable_id,
-						GPID = GP_id,
-						Position = i,
-					})
-
-
-func _import_words() -> void:
-	var file = FileAccess.open("res://data3/words_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	for e in dict.values():
-		db.query_with_bindings("SELECT * FROM Words WHERE Word=?", [e.GRAPHEME])
-		if db.query_result.is_empty():
-			db.insert_row("Words", {Word=e.GRAPHEME})
-		db.query_with_bindings("SELECT * FROM Words WHERE Word=?", [e.GRAPHEME])
-		var word_id = db.query_result[0]["ID"]
-		var GP_list_str: String = e.GPMATCH
-		var GP_list: = GP_list_str.split(".")
-		for i in GP_list.size():
-			var GP_str = GP_list[i]
-			var GP = GP_str.split("-")
-			db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [GP[0], GP[1]])
-			var GP_id = db.query_result[0]["ID"]
-			db.insert_row("GPsInWords", {
-				WordID = word_id,
-				GPID = GP_id,
-				Position = i,
-			})
-
-
-func _import_lessons() -> void:
-	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	for e in dict.values():
-		var g = e.GRAPHEME
-		var p = e.PHONEME
-		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=?", [g, p])
-		var GP_id = db.query_result[0]["ID"]
-		var lesson_nb: = int(e.LESSON)
-		db.query_with_bindings("SELECT * FROM Lessons WHERE LessonNb=?", [lesson_nb])
-		var lesson_id: = -1
-		if db.query_result.is_empty():
-			db.insert_row("Lessons", {
-				LessonNb = lesson_nb
-			})
-			lesson_id = db.last_insert_rowid
-		else:
-			lesson_id = db.query_result[0]["ID"]
-		db.insert_row("GPsInLessons", {
-			GPID = GP_id,
-			LessonID = lesson_id,
-		})
-
-
-func _import_kalulu_3_word_sounds() -> void:
-	var file = FileAccess.open("res://data3/words_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	for e in dict.values():
-		var file_path = "res://data3/language/" + e.FILENAME + ".mp3"
-		DirAccess.copy_absolute(file_path, get_word_sound_path({
-			Word = e.GRAPHEME
-		}))
-
-
-func _import_kalulu_3_gp_sounds() -> void:
-	var file = FileAccess.open("res://data3/gp_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	for e in dict.values():
-		var file_path = "res://data3/language/" + e.FILENAME + ".mp3"
-		if e.GRAPHEME == "mu":
-			print("j")
-		DirAccess.copy_absolute(file_path, get_gp_sound_path({
-			Grapheme = e.GRAPHEME,
-			Phoneme = e.PHONEME,
-		}))
-
-
-func _remove_unusable_words() -> void:
-	var file = FileAccess.open("res://words_list.json", FileAccess.READ)
-	var dict = JSON.parse_string(file.get_line())
-	for e in dict.values():
-		if e.USABLE_WORD_GAME == "0":
-			db.query_with_bindings("SELECT * FROM Words WHERE Word=?", [e.GRAPHEME])
-			if not db.query_result.is_empty():
-				var word_id = db.query_result[0]["ID"]
-				db.delete_rows("Words", "ID=%s" % word_id)
-
-
-func _import_words_csv() -> void:
-	var file = FileAccess.open("res://data3/Copy of Manulex-infra-2.csv", FileAccess.READ)
-	file.get_line()
-	while not file.eof_reached():
-		var line: = file.get_csv_line()
-		_import_word_from_csv(line[0], line[2])
 
 
 func _import_word_from_csv(ortho: String, gpmatch: String, is_word: = true) -> Array:

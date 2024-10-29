@@ -24,13 +24,13 @@ const icons_textures = {
 
 @onready var icons : Array[TextureRect]
 
-func _ready():
+func _ready() -> void:
 	_draw_password()
 	for icon in icons:
 		icon.custom_minimum_size.x = key_size
 		icon.custom_minimum_size.y = key_size
 
-func _draw_password():
+func _draw_password() -> void:
 	
 	if not icons:
 		icons = [%Icon1, %Icon2, %Icon3]
@@ -41,7 +41,7 @@ func _draw_password():
 	if not password:
 		return
 	
-	var i = 0
+	var i: = 0
 	for value in password.split(""):
 		if i >= 3:
 			return
