@@ -1,6 +1,7 @@
 @tool
 extends Control
 
+const Gardens: = preload("res://sources/gardens/gardens.gd")
 const gardens_scene: = preload("res://sources/gardens/gardens.tscn")
 
 @export var locked_color: Color
@@ -73,11 +74,11 @@ func _ready() -> void:
 			garden_buttons[i].self_modulate = locked_color
 			can_emit = false
 		
-		var emitting = false
+		var emitting: = false
 		for _j in range(gardens_layout.gardens[i].lesson_buttons.size()):
 			if can_emit and not emitting:
 				emitting = false
-				for game in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
+				for game: UserProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
 					if game == UserProgression.Status.Unlocked or game == UserProgression.Status.Locked:
 						emitting = true
 						break
@@ -90,7 +91,7 @@ func _on_garden_button_pressed(button_number: int) -> void:
 	audio_stream_player.play()
 	await OpeningCurtain.close()
 	
-	var gardens: = gardens_scene.instantiate()
+	var gardens: Gardens = gardens_scene.instantiate()
 	gardens.starting_garden = button_number
 	get_tree().root.add_child(gardens)
 	get_tree().current_scene = gardens

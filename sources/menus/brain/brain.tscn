@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://sources/menus/brain/brain.gd" id="1_1rwi2"]
 [ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="1_poeho"]
 [ext_resource type="Texture2D" uid="uid://dqjvrit8c3m6s" path="res://assets/brain_screen/blue_palm.png" id="2_6qag6"]
-[ext_resource type="Resource" uid="uid://ccn0a731o07jn" path="res://resources/gardens/gardens_layout.tres" id="2_eooqa"]
+[ext_resource type="Resource" uid="uid://c1xe204vu7asa" path="res://resources/gardens/gardens_layout.tres" id="2_eooqa"]
 [ext_resource type="Texture2D" uid="uid://crba20yq2ljox" path="res://assets/brain_screen/head.png" id="2_w21ae"]
 [ext_resource type="Texture2D" uid="uid://bjop68a8t82p3" path="res://assets/brain_screen/bush.png" id="3_bpmau"]
 [ext_resource type="AudioStream" uid="uid://bwjerrgyy6dnj" path="res://assets/sfx/ui_garden_button.mp3" id="3_f5uh7"]

@@ -1,5 +1,6 @@
 extends "res://sources/gardens/gardens.gd"
 
+const max_lesson_number: int = 80
 const garden_textures_nb: int = 20
 const flower_types_nb: int = 5
 const gardens_layout_resource_path: String = "res://resources/gardens/gardens_layout.tres"
@@ -14,7 +15,8 @@ func _ready() -> void:
 	line_particles.hide()
 	back_button.hide()
 	
-	get_gardens_db_data()
+	for i in max_lesson_number:
+		lessons[i] = i
 	
 	# Checks if a configuration exists
 	if not ResourceLoader.exists(gardens_layout_resource_path):
@@ -23,8 +25,6 @@ func _ready() -> void:
 		_init_gardens_layout()
 	
 	gardens_layout = load(gardens_layout_resource_path)
-	
-	set_up_lessons()
 	set_up_click_detection()
 
 
@@ -32,7 +32,7 @@ func _init_gardens_layout() -> void:
 	# Empty the gardens configuration
 	gardens_layout.gardens.clear()
 	
-	for i in lessons.size():
+	for i in max_lesson_number:
 		
 		var garden_layout: GardenLayout
 		

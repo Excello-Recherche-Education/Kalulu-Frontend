@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="GardensLayout" load_steps=19 format=3]
+[gd_resource type="Resource" script_class="GardensLayout" load_steps=23 format=3 uid="uid://c1xe204vu7asa"]
 
-[ext_resource type="Script" path="res://resources/gardens/garden_layout.gd" id="1_gyv0f"]
-[ext_resource type="Script" path="res://resources/gardens/gardens_layout.gd" id="2_w74ow"]
+[ext_resource type="Script" path="res://resources/gardens/garden_layout.gd" id="1_wyhh0"]
+[ext_resource type="Script" path="res://resources/gardens/gardens_layout.gd" id="2_0vfv5"]
 
-[sub_resource type="Resource" id="Resource_sb4fa"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_fr4uw"]
+script = ExtResource("1_wyhh0")
 color = 0
 flowers_export = Array[Dictionary]([{
 "color": 0,
@@ -42,8 +42,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_vavwh"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_613ra"]
+script = ExtResource("1_wyhh0")
 color = 1
 flowers_export = Array[Dictionary]([{
 "color": 1,
@@ -81,8 +81,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_rabgc"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_hx083"]
+script = ExtResource("1_wyhh0")
 color = 2
 flowers_export = Array[Dictionary]([{
 "color": 13,
@@ -120,24 +120,24 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_b5yea"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_kpsso"]
+script = ExtResource("1_wyhh0")
 color = 3
 flowers_export = Array[Dictionary]([{
 "color": 3,
-"position": Vector2i(456, 988),
+"position": Vector2i(504, 1216),
 "type": 0
 }, {
 "color": 3,
-"position": Vector2i(1152, 820),
+"position": Vector2i(800, 436),
 "type": 1
 }, {
 "color": 3,
-"position": Vector2i(788, 1476),
+"position": Vector2i(920, 1248),
 "type": 2
 }, {
 "color": 3,
-"position": Vector2i(1752, 1240),
+"position": Vector2i(1780, 1184),
 "type": 3
 }, {
 "color": 3,
@@ -146,10 +146,10 @@ flowers_export = Array[Dictionary]([{
 }])
 lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(463, 3),
-"position": Vector2i(182, 125)
+"position": Vector2i(358, 336)
 }, {
-"path_out_position": Vector2i(-113, 883),
-"position": Vector2i(702, 265)
+"path_out_position": Vector2i(-94, 576),
+"position": Vector2i(994, 164)
 }, {
 "path_out_position": Vector2i(787, 47),
 "position": Vector2i(1129, 1217)
@@ -159,8 +159,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_fa44t"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_wpces"]
+script = ExtResource("1_wyhh0")
 color = 4
 flowers_export = Array[Dictionary]([{
 "color": 8,
@@ -190,7 +190,7 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(248, -256),
 "position": Vector2i(862, 165)
 }, {
-"path_out_position": Vector2i(210, 459),
+"path_out_position": Vector2i(-798, 619),
 "position": Vector2i(1858, 197)
 }, {
 "path_out_position": Vector2i(218, -52),
@@ -198,8 +198,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_5h4pi"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_k0mq8"]
+script = ExtResource("1_wyhh0")
 color = 5
 flowers_export = Array[Dictionary]([{
 "color": 5,
@@ -237,8 +237,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_0s64a"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_ikqrb"]
+script = ExtResource("1_wyhh0")
 color = 6
 flowers_export = Array[Dictionary]([{
 "color": 6,
@@ -262,7 +262,7 @@ flowers_export = Array[Dictionary]([{
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
-"path_out_position": Vector2i(459, -69),
+"path_out_position": Vector2i(448, -41),
 "position": Vector2i(596, 1249)
 }, {
 "path_out_position": Vector2i(-461, -237),
@@ -276,8 +276,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_s4fet"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_3fweq"]
+script = ExtResource("1_wyhh0")
 color = 7
 flowers_export = Array[Dictionary]([{
 "color": 1,
@@ -315,8 +315,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_r4707"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_cafmm"]
+script = ExtResource("1_wyhh0")
 color = 8
 flowers_export = Array[Dictionary]([{
 "color": 14,
@@ -328,11 +328,11 @@ flowers_export = Array[Dictionary]([{
 "type": 1
 }, {
 "color": 14,
-"position": Vector2i(488, 956),
+"position": Vector2i(468, 1032),
 "type": 2
 }, {
 "color": 14,
-"position": Vector2i(1604, 484),
+"position": Vector2i(1804, 536),
 "type": 3
 }, {
 "color": 14,
@@ -354,8 +354,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_tpy30"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_4s0ts"]
+script = ExtResource("1_wyhh0")
 color = 9
 flowers_export = Array[Dictionary]([{
 "color": 9,
@@ -375,7 +375,7 @@ flowers_export = Array[Dictionary]([{
 "type": 3
 }, {
 "color": 9,
-"position": Vector2i(1816, 996),
+"position": Vector2i(1816, 924),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -393,8 +393,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_pp244"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_kseol"]
+script = ExtResource("1_wyhh0")
 color = 10
 flowers_export = Array[Dictionary]([{
 "color": 10,
@@ -432,8 +432,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_ydxer"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_hrrh3"]
+script = ExtResource("1_wyhh0")
 color = 11
 flowers_export = Array[Dictionary]([{
 "color": 18,
@@ -471,8 +471,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_vifpe"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_qrofo"]
+script = ExtResource("1_wyhh0")
 color = 12
 flowers_export = Array[Dictionary]([{
 "color": 12,
@@ -510,8 +510,8 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_blfde"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_4w17v"]
+script = ExtResource("1_wyhh0")
 color = 13
 flowers_export = Array[Dictionary]([{
 "color": 2,
@@ -531,7 +531,7 @@ flowers_export = Array[Dictionary]([{
 "type": 3
 }, {
 "color": 2,
-"position": Vector2i(1508, 1420),
+"position": Vector2i(1356, 1500),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
@@ -549,12 +549,12 @@ lesson_buttons_export = Array[Dictionary]([{
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_ar07c"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_34a7r"]
+script = ExtResource("1_wyhh0")
 color = 14
 flowers_export = Array[Dictionary]([{
 "color": 5,
-"position": Vector2i(364, 696),
+"position": Vector2i(376, 716),
 "type": 0
 }, {
 "color": 5,
@@ -562,7 +562,7 @@ flowers_export = Array[Dictionary]([{
 "type": 1
 }, {
 "color": 5,
-"position": Vector2i(1332, 1552),
+"position": Vector2i(1404, 1536),
 "type": 2
 }, {
 "color": 5,
@@ -583,17 +583,17 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(79, 475),
 "position": Vector2i(166, 817)
 }, {
-"path_out_position": Vector2i(2608, -837),
+"path_out_position": Vector2i(2078, -724),
 "position": Vector2i(558, 1324)
 }])
 is_first_or_last = 1
 
-[sub_resource type="Resource" id="Resource_hkny7"]
-script = ExtResource("1_gyv0f")
+[sub_resource type="Resource" id="Resource_on6xc"]
+script = ExtResource("1_wyhh0")
 color = 15
 flowers_export = Array[Dictionary]([{
 "color": 17,
-"position": Vector2i(372, 672),
+"position": Vector2i(424, 792),
 "type": 0
 }, {
 "color": 17,
@@ -601,23 +601,188 @@ flowers_export = Array[Dictionary]([{
 "type": 1
 }, {
 "color": 17,
-"position": Vector2i(1928, 1380),
+"position": Vector2i(1800, 1096),
 "type": 2
 }, {
 "color": 17,
-"position": Vector2i(1064, 492),
+"position": Vector2i(1124, 512),
 "type": 3
 }, {
 "color": 17,
-"position": Vector2i(1588, 552),
+"position": Vector2i(1644, 644),
 "type": 4
 }])
 lesson_buttons_export = Array[Dictionary]([{
+"path_out_position": Vector2i(-164, -592),
+"position": Vector2i(1062, 1000)
+}, {
+"path_out_position": Vector2i(802, 20),
+"position": Vector2i(450, 36)
+}, {
+"path_out_position": Vector2i(201, 556),
+"position": Vector2i(1214, 508)
+}, {
+"path_out_position": Vector2i(470, -344),
+"position": Vector2i(1698, 1256)
+}])
+is_first_or_last = 1
+
+[sub_resource type="Resource" id="Resource_jvuuw"]
+script = ExtResource("1_wyhh0")
+color = 16
+flowers_export = Array[Dictionary]([{
+"color": 16,
+"position": Vector2i(364, 960),
+"type": 0
+}, {
+"color": 16,
+"position": Vector2i(1700, 776),
+"type": 1
+}, {
+"color": 16,
+"position": Vector2i(1116, 1552),
+"type": 2
+}, {
+"color": 16,
+"position": Vector2i(856, 1436),
+"type": 1
+}, {
+"color": 16,
+"position": Vector2i(1144, 532),
+"type": 4
+}])
+lesson_buttons_export = Array[Dictionary]([{
+"path_out_position": Vector2i(286, -388),
+"position": Vector2i(290, 1172)
+}, {
+"path_out_position": Vector2i(786, 300),
+"position": Vector2i(510, 300)
+}, {
+"path_out_position": Vector2i(278, -332),
+"position": Vector2i(1722, 1356)
+}, {
+"path_out_position": Vector2i(362, 40),
+"position": Vector2i(1962, 572)
+}])
+is_first_or_last = 1
+
+[sub_resource type="Resource" id="Resource_x50x8"]
+script = ExtResource("1_wyhh0")
+color = 17
+flowers_export = Array[Dictionary]([{
+"color": 17,
+"position": Vector2i(632, 532),
+"type": 0
+}, {
+"color": 17,
+"position": Vector2i(716, 1152),
+"type": 1
+}, {
+"color": 17,
+"position": Vector2i(1444, 1472),
+"type": 1
+}, {
+"color": 17,
+"position": Vector2i(1364, 1024),
+"type": 0
+}, {
+"color": 17,
+"position": Vector2i(1916, 648),
+"type": 3
+}])
+lesson_buttons_export = Array[Dictionary]([{
+"path_out_position": Vector2i(454, -92),
+"position": Vector2i(214, 588)
+}, {
+"path_out_position": Vector2i(246, 72),
+"position": Vector2i(1134, 104)
+}, {
+"path_out_position": Vector2i(430, -24),
+"position": Vector2i(790, 1156)
+}, {
+"path_out_position": Vector2i(970, -508),
+"position": Vector2i(1622, 1304)
+}])
+is_first_or_last = 1
+
+[sub_resource type="Resource" id="Resource_xuyep"]
+script = ExtResource("1_wyhh0")
+color = 18
+flowers_export = Array[Dictionary]([{
+"color": 18,
+"position": Vector2i(252, 844),
+"type": 1
+}, {
+"color": 18,
+"position": Vector2i(1180, 1400),
+"type": 3
+}, {
+"color": 18,
+"position": Vector2i(1008, 876),
+"type": 2
+}, {
+"color": 18,
+"position": Vector2i(1692, 1160),
+"type": 3
+}, {
+"color": 18,
+"position": Vector2i(1692, 504),
+"type": 4
+}])
+lesson_buttons_export = Array[Dictionary]([{
+"path_out_position": Vector2i(114, -284),
+"position": Vector2i(382, 544)
+}, {
+"path_out_position": Vector2i(482, -116),
+"position": Vector2i(1162, 116)
+}, {
+"path_out_position": Vector2i(42, 368),
+"position": Vector2i(1938, 156)
+}, {
+"path_out_position": Vector2i(314, 224),
+"position": Vector2i(534, 1296)
+}])
+is_first_or_last = 1
+
+[sub_resource type="Resource" id="Resource_ectbt"]
+script = ExtResource("1_wyhh0")
+color = 19
+flowers_export = Array[Dictionary]([{
+"color": 19,
+"position": Vector2i(772, 1568),
+"type": 0
+}, {
+"color": 19,
+"position": Vector2i(468, 980),
+"type": 1
+}, {
+"color": 19,
+"position": Vector2i(1184, 428),
+"type": 2
+}, {
+"color": 19,
+"position": Vector2i(2136, 1152),
+"type": 3
+}, {
+"color": 19,
+"position": Vector2i(1192, 952),
+"type": 4
+}])
+lesson_buttons_export = Array[Dictionary]([{
+"path_out_position": Vector2i(486, -84),
+"position": Vector2i(146, 1080)
+}, {
+"path_out_position": Vector2i(-790, -664),
+"position": Vector2i(1206, 1208)
+}, {
+"path_out_position": Vector2i(558, -140),
+"position": Vector2i(622, 128)
+}, {
 "path_out_position": Vector2i(0, 0),
-"position": Vector2i(1369, 753)
+"position": Vector2i(1638, 840)
 }])
 is_first_or_last = 1
 
 [resource]
-script = ExtResource("2_w74ow")
-gardens = Array[ExtResource("1_gyv0f")]([SubResource("Resource_sb4fa"), SubResource("Resource_vavwh"), SubResource("Resource_rabgc"), SubResource("Resource_b5yea"), SubResource("Resource_fa44t"), SubResource("Resource_5h4pi"), SubResource("Resource_0s64a"), SubResource("Resource_s4fet"), SubResource("Resource_r4707"), SubResource("Resource_tpy30"), SubResource("Resource_pp244"), SubResource("Resource_ydxer"), SubResource("Resource_vifpe"), SubResource("Resource_blfde"), SubResource("Resource_ar07c"), SubResource("Resource_hkny7")])
+script = ExtResource("2_0vfv5")
+gardens = Array[ExtResource("1_wyhh0")]([SubResource("Resource_fr4uw"), SubResource("Resource_613ra"), SubResource("Resource_hx083"), SubResource("Resource_kpsso"), SubResource("Resource_wpces"), SubResource("Resource_k0mq8"), SubResource("Resource_ikqrb"), SubResource("Resource_3fweq"), SubResource("Resource_cafmm"), SubResource("Resource_4s0ts"), SubResource("Resource_kseol"), SubResource("Resource_hrrh3"), SubResource("Resource_qrofo"), SubResource("Resource_4w17v"), SubResource("Resource_34a7r"), SubResource("Resource_on6xc"), SubResource("Resource_jvuuw"), SubResource("Resource_x50x8"), SubResource("Resource_xuyep"), SubResource("Resource_ectbt")])

@@ -41,6 +41,8 @@ offset_right = 158.5
 offset_bottom = 176.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 70
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CodeKeyboard" parent="." instance=ExtResource("5_xwrca")]
 layout_mode = 1
@@ -91,13 +93,30 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="TeacherButton" type="Button" parent="InterfaceRight"]
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceRight"]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 2
+
+[node name="TeacherHelpLabel" type="Label" parent="InterfaceRight/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_vertical = 8
+text = "TEACHER_SETTINGS_HELP"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TeacherButton" type="Button" parent="InterfaceRight/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 70
 text = "SETTINGS"
 
-[node name="TeacherTimer" type="Timer" parent="InterfaceRight/TeacherButton"]
+[node name="TeacherTimer" type="Timer" parent="InterfaceRight/VBoxContainer/TeacherButton"]
+unique_name_in_owner = true
 wait_time = 5.0
 
 [node name="Kalulu" parent="." instance=ExtResource("3_5b1v0")]
@@ -110,6 +129,6 @@ stream = ExtResource("24_4xfja")
 [connection signal="password_entered" from="CodeKeyboard" to="." method="_on_code_keyboard_password_entered"]
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/KaluluButton" to="." method="_on_kalulu_button_pressed"]
-[connection signal="button_down" from="InterfaceRight/TeacherButton" to="." method="_on_teacher_button_button_down"]
-[connection signal="button_up" from="InterfaceRight/TeacherButton" to="." method="_on_teacher_button_button_up"]
-[connection signal="timeout" from="InterfaceRight/TeacherButton/TeacherTimer" to="." method="_on_teacher_timer_timeout"]
+[connection signal="button_down" from="InterfaceRight/VBoxContainer/TeacherButton" to="." method="_on_teacher_button_button_down"]
+[connection signal="button_up" from="InterfaceRight/VBoxContainer/TeacherButton" to="." method="_on_teacher_button_button_up"]
+[connection signal="timeout" from="InterfaceRight/VBoxContainer/TeacherButton/TeacherTimer" to="." method="_on_teacher_timer_timeout"]

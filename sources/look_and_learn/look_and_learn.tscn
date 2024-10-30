@@ -947,8 +947,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
@@ -958,9 +958,10 @@ layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 175
-text = "f"
+text = "o"
 horizontal_alignment = 1
 vertical_alignment = 1
+uppercase = true
 
 [node name="GraphemeParticles" type="GPUParticles2D" parent="."]
 position = Vector2(1280, 1558)
