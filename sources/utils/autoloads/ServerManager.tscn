@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://sources/utils/autoloads/server_manager.gd" id="1_n6vsh"]
 
-[sub_resource type="Gradient" id="Gradient_22q4u"]
+[sub_resource type="Gradient" id="Gradient_wm8cn"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_68deq"]
-gradient = SubResource("Gradient_22q4u")
+gradient = SubResource("Gradient_wm8cn")
 
 [node name="ServerManager" type="CanvasLayer"]
 script = ExtResource("1_n6vsh")

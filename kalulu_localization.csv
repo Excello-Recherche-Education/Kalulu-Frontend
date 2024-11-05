@@ -249,3 +249,5 @@ Unlocked;Déverrouillé;Desbloqueado
 Completed;Terminé;Completado
 CHECKING_DATA;Vérification des données...;Comprobando datos...
 TEACHER_SETTINGS_HELP;"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes";Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos
+DELETE_ACCOUNT;Supprimer le compte;Eliminar cuenta
+DELETE_ACCOUNT_POPUP;Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !;¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!

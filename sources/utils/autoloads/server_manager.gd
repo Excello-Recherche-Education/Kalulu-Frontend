@@ -21,9 +21,16 @@ func register(data: Dictionary) -> Dictionary:
 	return _response()
 
 func login(type: TeacherSettings.AccountType, device:int, mail: String, password: String) -> Dictionary:
-	loading_rect.visible = true
+	loading_rect.show()
 	await _get_request("login", {"type":type, "device":device, "mail": mail, "password": password})
 	return _response()
+
+
+func delete_account() -> Dictionary:
+	loading_rect.show()
+	await _delete_request("delete_account")
+	return _response()
+
 
 func get_language_pack_url(locale: String) -> Dictionary:
 	await _get_request("language", {"locale": locale})
@@ -78,6 +85,19 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 	headers.append("Content-Type: application/json")
 	
 	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == 0:
+		await request_completed
+	else:
+		code = 500
+		json = {message = "Internal Server Error"}
+
+
+func _delete_request(URI: String) -> void:
+	code = 0
+	json = {}
+	
+	var req: = URL + URI
+	var headers: = _create_request_headers()
+	if http_request.request(req, headers, HTTPClient.METHOD_DELETE) == 0:
 		await request_completed
 	else:
 		code = 500

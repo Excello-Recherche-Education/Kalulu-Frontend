@@ -4,21 +4,15 @@ extends Node
 
 var student: String = "" :
 	set(student_name):
-		if student_settings:
-			_save_student_settings()
-			
 		student = student_name
-		student_settings = null
 		student_progression = null
 		if student :
-			_load_student_settings()
 			_load_student_progression()
 			_load_student_remediation()
 			_load_student_difficulty()
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
-var student_settings: UserSettings
 var student_progression: UserProgression
 var _student_remediation: UserRemediation
 var _student_difficulty: UserDifficulty
@@ -99,6 +93,12 @@ func logout() -> void:
 	if student:
 		student = ""
 
+
+func delete_teacher_data() -> void:
+	if DirAccess.dir_exists_absolute(get_teacher_folder()):
+		_delete_dir(get_teacher_folder())
+
+
 func login_student(code : String) -> bool:
 	if not _device_settings or not teacher_settings:
 		return false
@@ -115,16 +115,6 @@ func login_student(code : String) -> bool:
 #endregion
 
 #region Device settings
-
-func set_language(language : String) -> void:
-	if _device_settings:
-		_device_settings.language = language
-		_save_device_settings()
-
-func set_language_version(language: String, version: Dictionary) -> void:
-	if _device_settings:
-		_device_settings.language_versions[language] = version
-		_save_device_settings()
 
 func get_device_settings_path() -> String:
 	return "user://device_settings.tres"
@@ -146,6 +136,81 @@ func _load_device_settings() -> void:
 
 func _save_device_settings() -> void:
 	ResourceSaver.save(_device_settings, get_device_settings_path())
+
+func set_language(language : String) -> void:
+	if _device_settings:
+		_device_settings.language = language
+		_save_device_settings()
+
+func set_language_version(language: String, version: Dictionary) -> void:
+	if _device_settings:
+		_device_settings.language_versions[language] = version
+		_save_device_settings()
+
+func set_master_volume(value: float) -> void:
+	if _device_settings:
+		var volume: = denormalize_volume(value)
+		_device_settings.master_volume = volume
+		_save_device_settings()
+
+func set_music_volume(value: float) -> void:
+	if _device_settings:
+		var volume: = denormalize_volume(value)
+		_device_settings.music_volume = volume
+		_save_device_settings()
+
+func set_voice_volume(value: float) -> void:
+	if _device_settings:
+		var volume: = denormalize_volume(value)
+		_device_settings.voice_volume = volume
+		_save_device_settings()
+
+func set_effects_volume(value: float) -> void:
+	if _device_settings:
+		var volume: = denormalize_volume(value)
+		_device_settings.effects_volume = volume
+		_save_device_settings()
+
+func get_master_volume() -> float:
+	var value: = 0.0
+	if _device_settings:
+		var volume: = _device_settings.master_volume
+		value = normalize_slider(volume)
+
+	return value
+
+func get_music_volume() -> float:
+	var value: = 0.0
+	if _device_settings:
+		var volume: = _device_settings.music_volume
+		value = normalize_slider(volume)
+
+	return value
+
+func get_voice_volume() -> float:
+	var value: = 0.0
+	if _device_settings:
+		var volume: = _device_settings.voice_volume
+		value = normalize_slider(volume)
+
+	return value
+
+func get_effects_volume() -> float:
+	var value: = 0.0
+	if _device_settings:
+		var volume: = _device_settings.effects_volume
+		value = normalize_slider(volume)
+
+	return value
+
+# Convert the volume from [-80, 6]db to [0, 100] and back
+func normalize_slider(volume: float) -> float:
+	var value: = pow((volume + 80.0) / 86, 5.0) * 100.0
+	return value
+
+func denormalize_volume(value: float) -> float:
+	var volume: = pow(float(value) / 100.0, 0.2) * 86 - 80
+	return volume
 
 #endregion
 
@@ -256,23 +321,6 @@ func delete_student(device_id : int, code : String) -> bool:
 
 func get_student_folder() -> String:
 	return _device_settings.get_folder_path().path_join(student)
-
-func get_student_settings_path() -> String:
-	return get_student_folder().path_join("settings.tres")
-
-func _load_student_settings() -> void:
-	# Load User settings
-	if FileAccess.file_exists(get_student_settings_path()):
-		student_settings = load(get_student_settings_path())
-	
-	if not student_settings:
-		student_settings = UserSettings.new()
-		DirAccess.make_dir_recursive_absolute(get_student_folder())
-		_save_student_settings()
-
-func _save_student_settings() -> void:
-	ResourceSaver.save(student_settings, get_student_settings_path())
-
 
 #endregion
 
@@ -393,71 +441,10 @@ func update_difficulty_for_minigame(minigame_name: String, minigame_won: bool) -
 
 #endregion
 
-#region Sound settings
-
-func set_master_volume(value: float) -> void:
-	if student_settings:
-		var volume: = denormalize_volume(value)
-		student_settings.master_volume = volume
-		_save_student_settings()
-
-func set_music_volume(value: float) -> void:
-	if student_settings:
-		var volume: = denormalize_volume(value)
-		student_settings.music_volume = volume
-		_save_student_settings()
-
-func set_voice_volume(value: float) -> void:
-	if student_settings:
-		var volume: = denormalize_volume(value)
-		student_settings.voice_volume = volume
-		_save_student_settings()
-
-func set_effects_volume(value: float) -> void:
-	if student_settings:
-		var volume: = denormalize_volume(value)
-		student_settings.effects_volume = volume
-		_save_student_settings()
-
-func get_master_volume() -> float:
-	var value: = 0.0
-	if student_settings:
-		var volume: = student_settings.master_volume
-		value = normalize_slider(volume)
-	
-	return value
-
-func get_music_volume() -> float:
-	var value: = 0.0
-	if student_settings:
-		var volume: = student_settings.music_volume
-		value = normalize_slider(volume)
-	
-	return value
-
-func get_voice_volume() -> float:
-	var value: = 0.0
-	if student_settings:
-		var volume: = student_settings.voice_volume
-		value = normalize_slider(volume)
-	
-	return value
-
-func get_effects_volume() -> float:
-	var value: = 0.0
-	if student_settings:
-		var volume: = student_settings.effects_volume
-		value = normalize_slider(volume)
-	
-	return value
-
-# Convert the volume from [-80, 6]db to [0, 100] and back
-func normalize_slider(volume: float) -> float:
-	var value: = pow((volume + 80.0) / 86, 5.0) * 100.0
-	return value
-
-func denormalize_volume(value: float) -> float:
-	var volume: = pow(float(value) / 100.0, 0.2) * 86 - 80
-	return volume
-
-#endregion
+func _delete_dir(path: String) -> void:
+	var dir: = DirAccess.open(path)
+	for file in dir.get_files():
+		dir.remove(file)
+	for subfolder in dir.get_directories():
+		_delete_dir(path.path_join(subfolder))
+		dir.remove(subfolder)

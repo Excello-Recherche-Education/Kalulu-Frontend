@@ -1,7 +1,8 @@
-[gd_resource type="Theme" load_steps=56 format=3 uid="uid://dqjvrt5nrtwn1"]
+[gd_resource type="Theme" load_steps=58 format=3 uid="uid://dqjvrt5nrtwn1"]
 
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
 [ext_resource type="FontFile" uid="uid://c7hsjkvr1pbud" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_shpmh"]
+[ext_resource type="StyleBox" uid="uid://blkufkitnlfqi" path="res://danger_button_stylebox.tres" id="2_0ex6x"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="2_hbp6q"]
 [ext_resource type="Texture2D" uid="uid://cacy10k45kq6u" path="res://assets/theme/up.svg" id="3_1nwm4"]
 [ext_resource type="Texture2D" uid="uid://b7fqrj816kdjg" path="res://assets/theme/refresh.svg" id="4_ymfot"]
@@ -38,10 +39,10 @@ border_color = Color(0.854902, 0.85098, 0.862745, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qwwu7"]
 bg_color = Color(0.117647, 0.160784, 0.356863, 1)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
 border_color = Color(0.854902, 0.85098, 0.862745, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whtl8"]
@@ -176,6 +177,13 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_idrao"]
+bg_color = Color(0.658824, 0, 0, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cpwf5"]
 
@@ -422,6 +430,11 @@ Combobox/styles/normal = SubResource("StyleBoxFlat_3qgjx")
 Combobox/styles/normal_mirrored = SubResource("StyleBoxFlat_cul2e")
 Combobox/styles/pressed = SubResource("StyleBoxFlat_c05kv")
 Combobox/styles/pressed_mirrored = SubResource("StyleBoxFlat_u3yhj")
+DangerButton/base_type = &"Button"
+DangerButton/fonts/font = ExtResource("1_shpmh")
+DangerButton/styles/hover = ExtResource("2_0ex6x")
+DangerButton/styles/normal = ExtResource("2_0ex6x")
+DangerButton/styles/pressed = SubResource("StyleBoxFlat_idrao")
 FileDialog/icons/back_folder = ExtResource("1_mdn6k")
 FileDialog/icons/forward_folder = ExtResource("2_hbp6q")
 FileDialog/icons/parent_folder = ExtResource("3_1nwm4")

@@ -5,26 +5,14 @@ const login_menu_path := "res://sources/menus/login/login.tscn"
 
 const DeviceTab: = preload("res://sources/menus/settings/device_tab.gd")
 const device_tab_scene : PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
-
-# Volume menu
-@onready var volume_menu: Control = %VolumeMenu
-@onready var master_volume_slider: HSlider = %MasterVolumeSlider
-@onready var music_volume_slider: HSlider = %MusicVolumeSlider
-@onready var voice_volume_slider: HSlider = %VoiceVolumeSlider
-@onready var effects_volume_slider: HSlider = %EffectsVolumeSlider
+const ConfirmPopup: = preload("res://sources/ui/popup.gd")
 
 @onready var devices_tab_container : TabContainer = %DevicesTabContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
-
+@onready var delete_popup: ConfirmPopup = %DeletePopup
 
 func _ready() -> void:
 	_refresh_devices_tabs()
-	
-	set_master_volume_slider(UserDataManager.get_master_volume())
-	set_music_volume_slider(UserDataManager.get_music_volume())
-	set_voice_volume_slider(UserDataManager.get_voice_volume())
-	set_effects_volume_slider(UserDataManager.get_effects_volume())
-	
 	OpeningCurtain.open()
 
 
@@ -49,6 +37,18 @@ func _refresh_devices_tabs() -> void:
 func _on_back_button_pressed() -> void:
 	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(login_menu_path)
+
+
+func _on_delete_button_pressed() -> void:
+	delete_popup.show()
+
+
+func _on_delete_popup_accepted() -> void:
+	var res: Dictionary = await ServerManager.delete_account()
+	if res.code == 200:
+		UserDataManager.delete_teacher_data()
+		UserDataManager.logout()
+		get_tree().change_scene_to_file(main_menu_path)
 
 
 func _on_logout_button_pressed() -> void:
@@ -82,39 +82,3 @@ func _on_add_student_button_pressed() -> void:
 func _on_add_device_button_pressed() -> void:
 	if UserDataManager.add_device():
 		_refresh_devices_tabs()
-
-# ------------ Volume Menu ------------
-
-func _on_volume_button_pressed() -> void:
-	volume_menu.visible = not volume_menu.visible
-
-
-func set_master_volume_slider(volume: float) -> void:
-	master_volume_slider.value = volume
-
-
-func set_music_volume_slider(volume: float) -> void:
-	music_volume_slider.value = volume
-
-
-func set_voice_volume_slider(volume: float) -> void:
-	voice_volume_slider.value = volume
-
-
-func set_effects_volume_slider(volume: float) -> void:
-	effects_volume_slider.value = volume
-
-func _on_master_volume_slider_value_changed(volume: float) -> void:
-	UserDataManager.set_master_volume(volume)
-
-
-func _on_music_volume_slider_value_changed(volume: float) -> void:
-	UserDataManager.set_music_volume(volume)
-
-
-func _on_voice_volume_slider_value_changed(volume: float) -> void:
-	UserDataManager.set_voice_volume(volume)
-
-
-func _on_effects_volume_slider_value_changed(volume: float) -> void:
-	UserDataManager.set_effects_volume(volume)
