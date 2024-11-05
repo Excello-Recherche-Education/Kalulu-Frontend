@@ -46,7 +46,6 @@ texture_disabled = ExtResource("5_e3piv")
 stretch_mode = 4
 
 [node name="VolumeContainer" type="MarginContainer" parent="InterfaceLeft/Container"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
