@@ -1,22 +1,26 @@
 extends CanvasLayer
 signal request_completed(code: int, body: Dictionary)
+signal internet_check_completed(has_acces: bool)
 
+@onready var internet_check: HTTPRequest = $InternetCheck
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var loading_rect: TextureRect = $TextureRect
 
-const URL: String = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
+const INTERNET_CHECK_URL: = "https://google.com"
+const URL: = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
 
 # Response from the last request
 var code: int
 var json: Dictionary
 
+
 func check_email(email: String) -> Dictionary:
-	loading_rect.visible = true
+	loading_rect.show()
 	await _get_request("checkemail", {"mail" : email})
 	return _response()
 
 func register(data: Dictionary) -> Dictionary:
-	loading_rect.visible = true
+	loading_rect.show()
 	await _post_json_request("register", data)
 	return _response()
 
@@ -38,6 +42,13 @@ func get_language_pack_url(locale: String) -> Dictionary:
 
 
 #region Sender functions
+
+func check_internet_access() -> bool:
+	var res: = internet_check.request("https://google.com")
+	if res == 0:
+		return await internet_check_completed
+	return false
+
 
 func _create_request_headers() -> PackedStringArray:
 	var headers: PackedStringArray = []
@@ -110,4 +121,8 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 	if body:
 		json = JSON.parse_string(body.get_string_from_utf8())
 	request_completed.emit(response_code, json)
-	loading_rect.visible = false
+	loading_rect.hide()
+
+
+func _on_internet_check_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+	internet_check_completed.emit(response_code == 200)

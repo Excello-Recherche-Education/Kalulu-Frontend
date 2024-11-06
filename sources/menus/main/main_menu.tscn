@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://6v3nachs7j71"]
+[gd_scene load_steps=36 format=3 uid="uid://6v3nachs7j71"]
 
 [ext_resource type="Script" path="res://sources/menus/main/main_menu.gd" id="1_0r1ij"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_afd4d"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://addons/godot-form-validator/rules/email_rule.gd" id="20_jk8lq"]
 [ext_resource type="Texture2D" uid="uid://bbip3wpyidt1q" path="res://assets/menus/main/play_button_mask.png" id="20_oqrk5"]
 [ext_resource type="Script" path="res://addons/godot-form-validator/validators/line_edit_validator.gd" id="21_1bl4i"]
+[ext_resource type="Script" path="res://sources/ui/popup.gd" id="26_pm647"]
 
 [sub_resource type="Resource" id="Resource_mh75v"]
 script = ExtResource("19_o524c")
@@ -62,6 +63,12 @@ validation_order = 1
 validation_method = 1
 skip_validation = false
 rules = Array[ExtResource("18_5m8xx")]([SubResource("Resource_b08p8")])
+
+[sub_resource type="Gradient" id="Gradient_22q4u"]
+colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ymust"]
+gradient = SubResource("Gradient_22q4u")
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -153,6 +160,7 @@ range_item_cull_mask = 2
 texture = ExtResource("20_oqrk5")
 
 [node name="PlayButton" type="Button" parent="Kalulu"]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -463,6 +471,79 @@ theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
 
+[node name="NoInternetPopup" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("26_pm647")
+content_text = "NO_INTERNET_ACCESS"
+
+[node name="TextureRect" type="TextureRect" parent="NoInternetPopup"]
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = SubResource("GradientTexture1D_ymust")
+
+[node name="PanelContainer" type="PanelContainer" parent="NoInternetPopup/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelKalulu"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NoInternetPopup/TextureRect/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ContentLabel" type="Label" parent="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1500, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 70
+text = "NO_INTERNET_ACCESS"
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "CLOSE"
+
+[node name="Separator" type="Control" parent="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CancelButton" type="Button" parent="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "CANCEL"
+
 [connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
 [connection signal="item_selected" from="UserSelection/Form/LanguageContainer/LanguageField" to="UserSelection/Form/LanguageContainer/LanguageField" method="_on_item_selected"]
 [connection signal="pressed" from="UserSelection/Form/SignInTeacher" to="." method="_on_sign_in_teacher_pressed"]
@@ -472,3 +553,5 @@ vertical_alignment = 1
 [connection signal="control_validated" from="KeyboardSpacer/LoginForm/LoginFormValidator" to="KeyboardSpacer/LoginForm" method="_on_login_form_validator_control_validated"]
 [connection signal="pressed" from="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/ValidateButton" to="KeyboardSpacer/LoginForm" method="_on_validate_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/ConfirmButton" to="NoInternetPopup" method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="NoInternetPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="NoInternetPopup" method="_on_cancel_button_pressed"]

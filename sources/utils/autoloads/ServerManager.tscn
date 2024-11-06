@@ -11,6 +11,8 @@ gradient = SubResource("Gradient_wm8cn")
 [node name="ServerManager" type="CanvasLayer"]
 script = ExtResource("1_n6vsh")
 
+[node name="InternetCheck" type="HTTPRequest" parent="."]
+
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 timeout = 30.0
 
@@ -25,4 +27,5 @@ grow_vertical = 2
 mouse_filter = 0
 texture = SubResource("GradientTexture1D_68deq")
 
+[connection signal="request_completed" from="InternetCheck" to="." method="_on_internet_check_request_completed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

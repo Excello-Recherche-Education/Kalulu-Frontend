@@ -1,6 +1,7 @@
 extends Control
 class_name DeviceRecap
 
+const StudentPanel = preload("res://sources/menus/settings/student_panel.gd")
 const student_panel_scene = preload("res://sources/menus/settings/student_panel.tscn")
 
 @export var title : String
