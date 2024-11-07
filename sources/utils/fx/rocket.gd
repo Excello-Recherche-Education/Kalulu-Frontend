@@ -9,7 +9,7 @@ extends Path2D
 @onready var explosion_timer: Timer = $ExplosionTimer
 
 @onready var rocket: Sprite2D = $PathFollow2D/Rocket
-@onready var explosion_particles: GPUParticles2D = $PathFollow2D/ExplosionParticles
+@onready var explosion_particles: Node2D = $PathFollow2D/ExplosionParticles
 
 @onready var firework_audio_player: AudioStreamPlayer2D = $FireworkAudioPlayer
 @onready var blast_audio_player: AudioStreamPlayer2D = $BlastAudioPlayer

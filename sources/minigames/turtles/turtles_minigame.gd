@@ -26,11 +26,11 @@ class DifficultySettings:
 
 
 var difficulty_settings: Array[DifficultySettings] = [
-	DifficultySettings.new(.75, 250., 4.),
-	DifficultySettings.new(.66, 300., 3.5),
-	DifficultySettings.new(.33, 350., 3.),
-	DifficultySettings.new(.25, 400., 2.5),
-	DifficultySettings.new(.25, 450., 2.)
+	DifficultySettings.new(.75, 200., 4.),
+	DifficultySettings.new(.66, 250., 3.5),
+	DifficultySettings.new(.33, 300., 3.),
+	DifficultySettings.new(.25, 333., 2.5),
+	DifficultySettings.new(.25, 366., 2.)
 ]
 
 
@@ -199,7 +199,7 @@ func _on_current_progression_changed() -> void:
 	
 	# Replay the stimulus
 	await get_tree().create_timer(time_between_words/2).timeout
-	audio_player.play_word(_get_previous_stimulus().Word)
+	audio_player.play_word(_get_previous_stimulus().Word as String)
 	await get_tree().create_timer(time_between_words/2).timeout
 	
 	# Starts a new round

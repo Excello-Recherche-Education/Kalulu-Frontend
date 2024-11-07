@@ -96,7 +96,7 @@ func _process(_delta: float) -> void:
 		var current: = int(http_request.get_downloaded_bytes()/1024)
 		download_bar.max_value = maximum
 		download_bar.value = current
-		download_info.text = str(current) + "KB/" + str(max) + "KB"
+		download_info.text = str(current) + "KB/" + str(maximum) + "KB"
 
 
 func _exit_tree() -> void:

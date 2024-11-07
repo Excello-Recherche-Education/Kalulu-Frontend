@@ -4,7 +4,7 @@
 
 [resource]
 shader = ExtResource("1_3btqb")
-shader_parameter/HDR_correction = true
+shader_parameter/HDR_correction = false
 shader_parameter/WATER_COL = Color(0.3479, 0.71, 0.667755, 1)
 shader_parameter/WATER2_COL = Color(0.3283, 0.67, 0.618745, 1)
 shader_parameter/FOAM_COL = Color(0.6512, 0.88, 0.84568, 1)
