@@ -9,6 +9,8 @@ enum Type {
 	Consonant,
 }
 
+@onready var exception_checkbox: = %ExceptionCheckBox
+@onready var exception_edit_checkbox: = %ExceptionEditCheckBox
 @onready var grapheme_label: = $%Grapheme
 @onready var phoneme_label: = $%Phoneme
 @onready var type_label: = $%Type
@@ -24,6 +26,8 @@ var phoneme: = "":
 	set = set_phoneme
 var type: = Type.Silent:
 	set = set_type
+var exception: = 0:
+	set = set_exception
 var id: int = -1
 var undo_redo: UndoRedo:
 	get:
@@ -55,11 +59,19 @@ func set_type(p_type: Type) -> void:
 	if type_edit:
 		type_edit.selected = type
 
+func set_exception(p_exception: bool) -> void:
+	exception = p_exception
+	if exception_checkbox:
+		exception_checkbox.button_pressed = bool(exception)
+	if exception_edit_checkbox:
+		exception_edit_checkbox.button_pressed = bool(exception)
+
 
 func _ready() -> void:
 	set_grapheme(grapheme)
 	set_phoneme(phoneme)
 	set_type(type)
+	set_exception(exception)
 
 
 func _on_edit_button_pressed() -> void:
@@ -68,9 +80,11 @@ func _on_edit_button_pressed() -> void:
 
 func _on_validate_button_pressed() -> void:
 	undo_redo.create_action("validated")
+	undo_redo.add_do_property(self, "exception", int(exception_edit_checkbox.button_pressed))
 	undo_redo.add_do_property(self, "grapheme", grapheme_edit.text)
 	undo_redo.add_do_property(self, "phoneme", phoneme_edit.text)
 	undo_redo.add_do_property(self, "type", type_edit.selected)
+	undo_redo.add_undo_property(self, "exception", int(exception_checkbox.button_pressed))
 	undo_redo.add_undo_property(self, "grapheme", grapheme)
 	undo_redo.add_undo_property(self, "phoneme", phoneme)
 	undo_redo.add_undo_property(self, "type", type)
@@ -92,11 +106,12 @@ func insert_in_database() -> void:
 		Database.db.query_with_bindings("SELECT * FROM GPs WHERE ID=?", [id])
 		if not Database.db.query_result.is_empty():
 			var e = Database.db.query_result[0]
-			if grapheme != e.Grapheme or phoneme != e.Phoneme or type != e.Type:
-				Database.db.update_rows("GPs", "ID=%s" % id, {Grapheme=grapheme, Phoneme=phoneme, Type=type})
+			if grapheme != e.Grapheme or phoneme != e.Phoneme or type != e.Type or exception != e.Exception:
+				print("UPDATING " + e.Grapheme)
+				Database.db.update_rows("GPs", "ID=%s" % id, {Grapheme=grapheme, Phoneme=phoneme, Type=type, Exception=exception})
 			return
 			
 	Database.db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme=? AND Phoneme=? AND Type=?", [grapheme, phoneme, type])
 	if Database.db.query_result.is_empty():
-		Database.db.insert_row("GPs", {Grapheme=grapheme, Phoneme=phoneme, Type=type})
+		Database.db.insert_row("GPs", {Grapheme=grapheme, Phoneme=phoneme, Type=type, Exception=exception})
 		id = Database.db.last_insert_rowid
