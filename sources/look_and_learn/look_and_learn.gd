@@ -15,9 +15,7 @@ const TracingManager: = preload("res://sources/look_and_learn/tracing_manager.gd
 @onready var grapheme_particles: GPUParticles2D = $GraphemeParticles
 
 
-
 var gp_list: Array[Dictionary]
-
 var current_video: = 0
 var videos: = []
 
@@ -39,7 +37,7 @@ func _ready() -> void:
 	transition_data = {}
 	lesson_nb = gardens_data.get("current_lesson_number", lesson_nb)
 	setup()
-	OpeningCurtain.open()
+	await OpeningCurtain.open()
 
 
 func setup() -> void:
@@ -59,11 +57,18 @@ func setup() -> void:
 		var gp_sound: = Database.get_gp_look_and_learn_sound(gp)
 		var gp_video: = Database.get_gp_look_and_learn_video(gp)
 		
-		if gp_image and gp_sound and gp_video:
+		var used: = false
+		
+		if gp_video:
+			videos.append(gp_video)
+			used = true
+		
+		if gp_image and gp_sound:
 			images.append(gp_image)
 			sounds.append(gp_sound)
-			videos.append(gp_video)
-			
+			used = true
+		
+		if used:
 			gp_display.append(gp)
 	
 	if gp_display.is_empty():
@@ -71,6 +76,8 @@ func setup() -> void:
 	
 	grapheme_label.text = ""
 	for gp: Dictionary in gp_display:
+		if grapheme_label.text:
+			grapheme_label.text += " - "
 		grapheme_label.text += "%s" % gp.Grapheme
 
 
@@ -129,10 +136,12 @@ func _on_grapheme_button_pressed() -> void:
 
 
 func _on_video_stream_player_finished() -> void:
+	await get_tree().create_timer(1).timeout
 	play_videos()
 
 
 func _on_audio_stream_player_finished() -> void:
+	await get_tree().create_timer(1).timeout
 	play_images_and_sounds()
 
 
@@ -144,11 +153,7 @@ func _on_tracing_manager_finished() -> void:
 	else:
 		UserDataManager.student_progression.look_and_learn_completed(lesson_nb)
 		animation_player.play("end_tracing")
-		# await animation_player.animation_finished
-		
-		
 		gardens_data.look_and_learn_completed = true
-		
 		_back_to_gardens()
 
 

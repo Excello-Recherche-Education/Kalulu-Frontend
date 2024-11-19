@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://mnvxfhi70bx5"]
+[gd_scene load_steps=33 format=3 uid="uid://mnvxfhi70bx5"]
 
 [ext_resource type="Script" path="res://sources/look_and_learn/look_and_learn.gd" id="1_12st1"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_2efp5"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_bxvlx"]
 [ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="5_j5vhb"]
 [ext_resource type="Texture2D" uid="uid://c1i3kqeg7ifoo" path="res://assets/look_and_learn/video_foreground.png" id="6_8san1"]
+[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="6_e2avu"]
 [ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_ohnh6"]
 [ext_resource type="Texture2D" uid="uid://c72ebvussuekg" path="res://assets/look_and_learn/video_mask.png" id="7_8pmth"]
 [ext_resource type="Texture2D" uid="uid://dnh4dct8pgcj5" path="res://assets/minigames/minigame_ui/graphic/bush.png" id="8_xb5ul"]
@@ -17,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://bdu7wcc3netlc" path="res://assets/look_and_learn/button_off.png" id="12_1yr4y"]
 [ext_resource type="PackedScene" uid="uid://cboa82q0bjlvc" path="res://sources/look_and_learn/tracing_manager.tscn" id="12_fkd0b"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="13_rp6w3"]
+[ext_resource type="Texture2D" uid="uid://b1227jts6lw67" path="res://assets/theme/play.svg" id="17_dhida"]
 
 [sub_resource type="Animation" id="Animation_6mi26"]
 length = 0.001
@@ -786,6 +788,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_12st1")
+lesson_nb = 24
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -818,6 +821,38 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -88.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 289.0
+grow_horizontal = 2
+theme = ExtResource("6_e2avu")
+theme_type_variation = &"PanelKalulu"
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 5
+
+[node name="GraphemeLabel" type="Label" parent="Panel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 175
+text = "o"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
 [node name="LeftContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -939,29 +974,20 @@ texture_hover = ExtResource("11_trjsl")
 texture_disabled = ExtResource("12_1yr4y")
 stretch_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="GraphemeButton"]
+[node name="TextureRect" type="TextureRect" parent="GraphemeButton"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -75.0
+offset_right = 85.0
+offset_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="GraphemeLabel" type="Label" parent="GraphemeButton/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 175
-text = "o"
-horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
+texture = ExtResource("17_dhida")
 
 [node name="GraphemeParticles" type="GPUParticles2D" parent="."]
 position = Vector2(1280, 1558)
