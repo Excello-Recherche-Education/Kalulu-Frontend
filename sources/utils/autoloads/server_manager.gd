@@ -19,14 +19,21 @@ func check_email(email: String) -> Dictionary:
 	await _get_request("checkemail", {"mail" : email})
 	return _response()
 
+
 func register(data: Dictionary) -> Dictionary:
 	loading_rect.show()
 	await _post_json_request("register", data)
 	return _response()
 
+
 func login(type: TeacherSettings.AccountType, device:int, mail: String, password: String) -> Dictionary:
 	loading_rect.show()
 	await _get_request("login", {"type":type, "device":device, "mail": mail, "password": password})
+	return _response()
+
+
+func get_configuration() -> Dictionary:
+	await _get_request("configuration", {})
 	return _response()
 
 
@@ -41,6 +48,18 @@ func get_language_pack_url(locale: String) -> Dictionary:
 	return _response()
 
 
+func add_student(device: int) -> Dictionary:
+	await _post_request("add_student", {"device": device})
+	return _response()
+
+func update_student(name: String, level: StudentData.Level, age: int) -> Dictionary:
+	await _post_request("update_student", {"name": name, "level": level, "age": age})
+	return _response()
+
+func remove_student(code: int) -> Dictionary:
+	await _delete_request("delete_student", {"code": code})
+	return _response()
+	
 #region Sender functions
 
 func check_internet_access() -> bool:
@@ -49,6 +68,17 @@ func check_internet_access() -> bool:
 		return await internet_check_completed
 	return false
 
+
+func _create_URI_with_parameters(URI: String, params: Dictionary) -> String:
+	var is_first_param: bool = true
+	for key: String in params.keys():
+		if is_first_param:
+			URI += "?"
+			is_first_param = false
+		else:
+			URI += "&"
+		URI += str(key) + "=" + str(params[key])
+	return URI
 
 func _create_request_headers() -> PackedStringArray:
 	var headers: PackedStringArray = []
@@ -69,18 +99,18 @@ func _get_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
 	
-	var req: = URL + URI
-	var is_first_param: bool = true
-	for key: String in params.keys():
-		if is_first_param:
-			req += "?"
-			is_first_param = false
-		else:
-			req += "&"
-		req += str(key) + "=" + str(params[key])
+	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers()) == 0:
+		await request_completed
+	else:
+		code = 500
+		json = {message = "Internal Server Error"}
+
+
+func _post_request(URI: String, params: Dictionary) -> void:
+	code = 0
+	json = {}
 	
-	
-	if http_request.request(req, _create_request_headers()) == 0:
+	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers(), HTTPClient.METHOD_POST, "") == 0:
 		await request_completed
 	else:
 		code = 500
@@ -102,13 +132,11 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 		json = {message = "Internal Server Error"}
 
 
-func _delete_request(URI: String) -> void:
+func _delete_request(URI: String, params: Dictionary = {}) -> void:
 	code = 0
 	json = {}
 	
-	var req: = URL + URI
-	var headers: = _create_request_headers()
-	if http_request.request(req, headers, HTTPClient.METHOD_DELETE) == 0:
+	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers(), HTTPClient.METHOD_DELETE) == 0:
 		await request_completed
 	else:
 		code = 500

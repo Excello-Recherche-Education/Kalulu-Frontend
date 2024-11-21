@@ -45,6 +45,10 @@ func _ready() -> void:
 			_show_error(1)
 		return
 	
+	# Check the configuration TODO
+	# Check if the last_updated date is superior on the server, then update the configuration
+	# Delete inexistant students
+	
 	# Get the current language version
 	var current_version: Dictionary = UserDataManager.get_device_settings().language_versions.get(device_language, {})
 	
