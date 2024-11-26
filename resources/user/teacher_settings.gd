@@ -23,10 +23,15 @@ var password : String
 @export var last_modified: String
 
 func update_from_dict(dict: Dictionary) -> void:
-	account_type = dict.account_type
-	education_method = dict.education_method
-	email = dict.email
-	token = dict.token
+	if dict.has("account_type"):
+		account_type = dict.account_type
+	if dict.has("education_method"):
+		education_method = dict.education_method
+	if dict.has("email"):
+		email = dict.email
+	if dict.has("token"):
+		token = dict.token
+	
 	last_modified = dict.last_modified
 	
 	students.clear()

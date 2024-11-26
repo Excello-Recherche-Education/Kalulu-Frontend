@@ -34,6 +34,13 @@ var server_version: Dictionary
 func _ready() -> void:
 	await get_tree().process_frame
 	
+	# Check the teacher settings, if we are logged in (this scene should not be accessible otherwise)
+	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
+	if not teacher_settings:
+		UserDataManager.logout()
+		_show_error(0)
+		return
+	
 	device_language = UserDataManager.get_device_settings().language
 	current_language_path = user_language_resources_path.path_join(device_language)
 	
@@ -45,9 +52,19 @@ func _ready() -> void:
 			_show_error(1)
 		return
 	
-	# Check the configuration TODO
+	# Check the configuration
+	var server_configuration: = await ServerManager.get_configuration()
+	if server_configuration.code == 401:
+		UserDataManager.logout()
+		_show_error(0)
+		return
+	elif server_configuration.code != 200:
+		error_label.show()
+		return
+	
 	# Check if the last_updated date is superior on the server, then update the configuration
-	# Delete inexistant students
+	if teacher_settings.last_modified != server_configuration.body.last_modified:
+		UserDataManager.update_configuration(server_configuration.body as Dictionary)
 	
 	# Get the current language version
 	var current_version: Dictionary = UserDataManager.get_device_settings().language_versions.get(device_language, {})

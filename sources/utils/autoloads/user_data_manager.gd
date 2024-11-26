@@ -72,7 +72,6 @@ func login(infos: Dictionary) -> bool:
 		teacher_settings = TeacherSettings.new()
 	else:
 		teacher_settings = load(path) as TeacherSettings
-		# TODO Check if the last_modified is more recent
 	
 	teacher_settings.update_from_dict(infos)
 	_save_teacher_settings()
@@ -93,11 +92,9 @@ func logout() -> void:
 	if student:
 		student = ""
 
-
 func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
 		_delete_dir(get_teacher_folder())
-
 
 func login_student(code : String) -> bool:
 	if not _device_settings or not teacher_settings:
@@ -235,6 +232,20 @@ func _load_teacher_settings() -> void:
 
 func _save_teacher_settings() -> void:
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
+
+func update_configuration(configuration: Dictionary) -> bool:
+	if not teacher_settings:
+		return false
+	
+	if not configuration or not configuration.students or not configuration.last_modified:
+		return false
+	
+	teacher_settings.update_from_dict(configuration)
+	_save_teacher_settings()
+	
+	# TODO Delete inexistant students
+	
+	return true
 
 func add_device() -> bool:
 	if not teacher_settings:
