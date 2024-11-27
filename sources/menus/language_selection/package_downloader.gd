@@ -63,8 +63,7 @@ func _ready() -> void:
 		return
 	
 	# Check if the last_updated date is superior on the server, then update the configuration
-	if teacher_settings.last_modified != server_configuration.body.last_modified:
-		UserDataManager.update_configuration(server_configuration.body as Dictionary)
+	UserDataManager.update_configuration(server_configuration.body as Dictionary)
 	
 	# Get the current language version
 	var current_version: Dictionary = UserDataManager.get_device_settings().language_versions.get(device_language, {})

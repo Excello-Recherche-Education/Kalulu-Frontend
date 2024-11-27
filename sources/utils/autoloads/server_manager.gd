@@ -78,7 +78,6 @@ func _create_URI_with_parameters(URI: String, params: Dictionary) -> String:
 		else:
 			URI += "&"
 		URI += str(key) + "=" + str(params[key])
-	print(URI)
 	return URI
 
 func _create_request_headers() -> PackedStringArray:
@@ -86,7 +85,6 @@ func _create_request_headers() -> PackedStringArray:
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
 	if teacher_settings and teacher_settings.token:
 		headers.append("Authorization: Bearer " + teacher_settings.token)
-	print(headers)
 	return headers
 
 
@@ -95,7 +93,6 @@ func _response() -> Dictionary:
 			"code" : code,
 			"body" : json
 		}
-	print(res)
 	return res
 
 

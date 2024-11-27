@@ -233,6 +233,41 @@ func _load_teacher_settings() -> void:
 func _save_teacher_settings() -> void:
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
+func _delete_inexistants_students_saves() -> void:
+	if not teacher_settings:
+		return
+	
+	var path: = get_teacher_folder()
+	var dirc = DirAccess.open(path)
+	if dirc:
+		var directories: = dirc.get_directories()
+		# Go through each device folder of the teacher
+		for device in directories:
+			print(device)
+			
+			# If the device does not exists, delete it
+			if int(device) not in teacher_settings.students.keys():
+				_delete_dir(path.path_join(device))
+				dirc.remove(device)
+				continue
+			
+			# Go through each language folder
+			var device_dir: = DirAccess.open(path.path_join(device))
+			for language in device_dir.get_directories():
+				# Go through each student folder
+				var language_dir: = DirAccess.open(path.path_join(device).path_join(language))
+				for student in language_dir.get_directories():
+					# Check if the folder is associated with an existing student
+					var exists: = false
+					for s: StudentData in teacher_settings.students[int(device)]:
+						if s.code == student:
+							exists = true
+							break
+					# If the code doesn't exists in the configuration, delete the folder
+					if not exists:
+						_delete_dir(path.path_join(device).path_join(language).path_join(student))
+						language_dir.remove(student)
+
 func update_configuration(configuration: Dictionary) -> bool:
 	if not teacher_settings:
 		return false
@@ -240,91 +275,15 @@ func update_configuration(configuration: Dictionary) -> bool:
 	if not configuration or not configuration.students or not configuration.last_modified:
 		return false
 	
-	teacher_settings.update_from_dict(configuration)
-	_save_teacher_settings()
-	
-	# TODO Delete inexistant students
-	
-	return true
-
-func add_device() -> bool:
-	if not teacher_settings:
-		return false
-	
-	# Checks if the logged user is a teacher (only teachers have several devices)
-	if teacher_settings.account_type != TeacherSettings.AccountType.Teacher:
-		return false
-	
-	# Gets the last device number
-	if not teacher_settings.students:
-		return false
-	
-	var device_id: int = teacher_settings.students.keys().back() + 1
-	
-	# Adds the new device
-	var students_array : Array[StudentData] = []
-	teacher_settings.students[device_id] = students_array
-	
-	# Saves the settings
-	_save_teacher_settings()
+	if teacher_settings.last_modified != configuration.last_modified:
+		# Update the teacher resource
+		teacher_settings.update_from_dict(configuration)
+		_save_teacher_settings()
+		
+		# Cleanup the saves
+		_delete_inexistants_students_saves()
 	
 	return true
-
-func add_student(device_id : int, student_data : StudentData) -> bool:
-	if not teacher_settings:
-		return false
-	
-	# Finds the device
-	if not teacher_settings.students or not teacher_settings.students.has(device_id):
-		return false
-	
-	# Checks the student
-	if not student_data:
-		return false
-	
-	# Generates a password
-	student_data.code = teacher_settings.get_new_code()
-	if not student_data.code:
-		return false
-	
-	# Adds the student on the device
-	var device_students: Array[StudentData] = teacher_settings.students[device_id]
-	device_students.append(student_data)
-	
-	# Saves the settings
-	_save_teacher_settings()
-	
-	return true
-
-func add_default_student(device_id : int) -> bool:
-	return add_student(device_id, StudentData.new())
-
-func delete_student(device_id : int, code : String) -> bool:
-	if not teacher_settings:
-		return false
-	
-	# Finds the device
-	if not teacher_settings.students or not teacher_settings.students.has(device_id):
-		return false
-	
-	# Finds the student
-	var student_data : StudentData
-	for s: StudentData in teacher_settings.students[device_id]:
-		if s.code == code:
-			student_data = s
-			break
-	
-	# Deletes the saves ??
-	
-	# Removes the student
-	var device_students: Array[StudentData] = teacher_settings.students[device_id]
-	device_students.erase(student_data)
-	
-	# Saves the settings
-	_save_teacher_settings()
-	
-	return true
-
 
 #endregion
 

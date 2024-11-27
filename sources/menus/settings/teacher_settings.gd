@@ -71,14 +71,16 @@ func _on_add_student_button_pressed() -> void:
 	if not current_tab:
 		return
 	
-	# If parent -> show a creation popup
-	# If teacher -> create a default student
+	# TODO Show the popup
 	
-	if UserDataManager.add_default_student(current_tab.device_id):
+	var res: = await ServerManager.add_student(current_tab.device_id)
+	if res.code == 200:
+		UserDataManager.update_configuration(res.body)
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
 		current_tab.refresh()
 
 
 func _on_add_device_button_pressed() -> void:
-	if UserDataManager.add_device():
-		_refresh_devices_tabs()
+	pass
+	#if UserDataManager.add_device():
+	#	_refresh_devices_tabs()
