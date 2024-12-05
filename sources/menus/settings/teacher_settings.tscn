@@ -107,6 +107,7 @@ theme_override_font_sizes/font_size = 70
 text = "SETTINGS_ADD_DEVICE"
 
 [node name="AddStudentButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "SETTINGS_ADD_STUDENT"

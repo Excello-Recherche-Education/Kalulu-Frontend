@@ -72,7 +72,7 @@ func _on_add_student_button_pressed() -> void:
 		return
 	
 	# TODO Show the popup
-	
+	# TODO Hides/Disable the button when not online
 	var res: = await ServerManager.add_student(current_tab.device_id)
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body)
