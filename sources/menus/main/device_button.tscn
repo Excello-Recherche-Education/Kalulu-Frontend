@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://cv3krbytq75h4"]
+
+[ext_resource type="Texture2D" uid="uid://bovwkvchretal" path="res://assets/gardens/buttons/boss_dot_back.png" id="1_y7l2d"]
+[ext_resource type="Script" path="res://sources/menus/main/device_button.gd" id="2_i7kke"]
+[ext_resource type="Texture2D" uid="uid://bus15py545mkl" path="res://assets/gardens/buttons/boss_dot_front.png" id="3_h1v1c"]
+
+[node name="Device1" type="TextureButton"]
+custom_minimum_size = Vector2(200, 200)
+texture_normal = ExtResource("1_y7l2d")
+stretch_mode = 4
+script = ExtResource("2_i7kke")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_h1v1c")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 92
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
