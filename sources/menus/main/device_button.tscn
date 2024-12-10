@@ -11,6 +11,7 @@ stretch_mode = 4
 script = ExtResource("2_i7kke")
 
 [node name="Background" type="TextureRect" parent="."]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

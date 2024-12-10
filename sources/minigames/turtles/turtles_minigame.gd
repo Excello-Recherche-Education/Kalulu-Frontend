@@ -46,7 +46,7 @@ var turtle_count: int = 0:
 		if turtle_count >= max_turtle_count and value < max_turtle_count:
 			can_spawn_turtle.emit()
 		turtle_count = value
-
+var stimulus_spawned: bool = false
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
@@ -62,6 +62,9 @@ func _setup_minigame() -> void:
 	
 	# Setups the timer
 	spawn_timer.wait_time = settings.spawn_rate
+	
+	for s in stimuli:
+		print(s.Word)
 
 
 func _highlight() -> void:
@@ -115,6 +118,8 @@ func _on_spawn_timer_timeout() -> void:
 	turtle.tree_exited.connect(
 		func() -> void:
 			turtle_count -= 1
+			if stimulus_spawned and _is_GP_right(turtle.gp):
+				stimulus_spawned = false
 	)
 	
 	turtles.add_child(turtle)
@@ -123,11 +128,12 @@ func _on_spawn_timer_timeout() -> void:
 	turtle.direction = Vector2.DOWN.rotated(spawn_location.rotation).normalized()
 	
 	# Define if the turtle is a stimulus or a distraction
-	var is_stimulus: = randf() < settings.stimuli_ratio
+	var is_stimulus: = not stimulus_spawned and randf() < settings.stimuli_ratio
 	if is_stimulus:
 		turtle.gp = _get_GP()
 		if is_highlighting:
 			turtle.highlight(true)
+		stimulus_spawned = true
 	else:
 		turtle.gp = _get_distractor()
 	
@@ -152,6 +158,9 @@ func _on_island_area_entered(area: Area2D) -> void:
 	
 	# Check if the turtle is a distractor or the awaited GP
 	if _is_GP_right(turtle.gp):
+		# Handles the stimulus spawned status
+		stimulus_spawned = false
+		
 		# Stop the spawning
 		spawn_timer.stop()
 	
