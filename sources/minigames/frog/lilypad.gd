@@ -15,9 +15,11 @@ var stimulus: Dictionary:
 var disabled: = false:
 	set = _set_disabled
 var is_distractor: = true
+var top_to_bottom: = false
 
 
 func disappear() -> void:
+	button.disabled = true
 	animation_player.play("disappear")
 
 
@@ -65,5 +67,11 @@ func _on_texture_button_pressed() -> void:
 	pressed.emit()
 
 
-func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	disappear()
+func _on_top_visible_on_screen_notifier_screen_exited() -> void:
+	if top_to_bottom:
+		disappear()
+
+
+func _on_bottom_visible_on_screen_notifier_screen_exited() -> void:
+	if not top_to_bottom:
+		disappear()
