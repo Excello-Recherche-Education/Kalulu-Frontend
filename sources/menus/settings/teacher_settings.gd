@@ -11,6 +11,8 @@ const ConfirmPopup: = preload("res://sources/ui/popup.gd")
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
 
+var last_device_id: = -1
+
 func _ready() -> void:
 	_refresh_devices_tabs()
 	OpeningCurtain.open()
@@ -32,6 +34,8 @@ func _refresh_devices_tabs() -> void:
 		devices_tab_container.add_child(device_tab)
 		
 		device_tab.student_pressed.connect(_on_student_pressed)
+		
+		last_device_id = device
 
 
 func _on_back_button_pressed() -> void:
@@ -70,7 +74,6 @@ func _on_add_student_button_pressed() -> void:
 	var current_tab: = devices_tab_container.get_current_tab_control() as DeviceTab
 	if not current_tab:
 		return
-	
 	# TODO Show the popup
 	# TODO Hides/Disable the button when not online
 	var res: = await ServerManager.add_student(current_tab.device_id)
@@ -81,6 +84,10 @@ func _on_add_student_button_pressed() -> void:
 
 
 func _on_add_device_button_pressed() -> void:
-	pass
-	#if UserDataManager.add_device():
-	#	_refresh_devices_tabs()
+	# TODO Show the popup
+	# TODO Hides/Disable the button when not online
+	var res: = await ServerManager.add_student(last_device_id + 1)
+	if res.code == 200:
+		UserDataManager.update_configuration(res.body)
+		_refresh_devices_tabs()
+		devices_tab_container.current_tab = last_device_id
