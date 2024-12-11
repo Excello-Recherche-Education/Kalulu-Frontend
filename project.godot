@@ -53,6 +53,15 @@ window/stretch/mode="canvas_items"
 
 enabled=PackedStringArray("res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://addons/": "red",
+"res://assets/": "green",
+"res://resources/": "blue",
+"res://sources/": "pink"
+}
+
 [gui]
 
 common/snap_controls_to_pixels=false
