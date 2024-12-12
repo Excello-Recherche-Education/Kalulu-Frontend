@@ -21,10 +21,7 @@ size_flags_vertical = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="ExceptionEditCheckBox" parent="TabContainer/EditContainer" index="1"]
-visible = false
-
 [editable path="TabContainer/NormalContainer/EditButton"]
-[editable path="TabContainer/EditContainer/MinusButton"]
+[editable path="TabContainer/EditContainer/HBoxContainer/ValidateButton"]
+[editable path="TabContainer/EditContainer/HBoxContainer/MinusButton"]
 [editable path="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2"]
-[editable path="TabContainer/EditContainer/ValidateButton"]

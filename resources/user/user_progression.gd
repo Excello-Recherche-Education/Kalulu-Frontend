@@ -83,4 +83,5 @@ func game_completed(lesson_number: int, game_number: int) -> void:
 	
 	if all_completed and unlocks.has(lesson_number + 1):
 		unlocks[lesson_number + 1]["look_and_learn"] = Status.Unlocked
-		unlocks_changed.emit()
+	
+	unlocks_changed.emit()

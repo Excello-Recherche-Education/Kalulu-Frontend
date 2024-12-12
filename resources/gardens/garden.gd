@@ -53,12 +53,12 @@ func set_garden_layout(p_garden_layout: GardenLayout) -> void:
 	set_lesson_buttons(garden_layout.lesson_buttons)
 
 
-func set_flowers(p_flowers: Array[GardenLayout.Flower]) -> void:
+func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSizes = FlowerSizes.NotStarted) -> void:
 	flowers = p_flowers
 	
 	flowers_sizes = []
 	for _i in range(flowers.size()):
-		flowers_sizes.append(FlowerSizes.NotStarted)
+		flowers_sizes.append(default_size)
 	
 	update_flowers()
 

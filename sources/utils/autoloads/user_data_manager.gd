@@ -4,21 +4,15 @@ extends Node
 
 var student: String = "" :
 	set(student_name):
-		if student_settings:
-			_save_student_settings()
-			
 		student = student_name
-		student_settings = null
 		student_progression = null
 		if student :
-			_load_student_settings()
 			_load_student_progression()
 			_load_student_remediation()
 			_load_student_difficulty()
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
-var student_settings: UserSettings
 var student_progression: UserProgression
 var _student_remediation: UserRemediation
 var _student_difficulty: UserDifficulty
@@ -53,9 +47,6 @@ func login(infos: Dictionary) -> bool:
 	if not _device_settings or not infos:
 		return false
 	
-	if not infos.has("device_ID") or not infos.device_ID:
-		return false
-	
 	if not infos.has("email") or not infos.email:
 		return false
 	
@@ -67,7 +58,6 @@ func login(infos: Dictionary) -> bool:
 	
 	# Handles device settings
 	_device_settings.teacher = infos.email
-	_device_settings.device_id = infos.device_ID
 	_save_device_settings()
 	
 	var path := get_teacher_settings_path()
@@ -78,11 +68,24 @@ func login(infos: Dictionary) -> bool:
 		teacher_settings = TeacherSettings.new()
 	else:
 		teacher_settings = load(path) as TeacherSettings
-		# TODO Check if the last_modified is more recent
 	
 	teacher_settings.update_from_dict(infos)
 	_save_teacher_settings()
 	
+	if teacher_settings.students.keys().size() == 1:
+		set_device_id(teacher_settings.students.keys()[0])
+	
+	return true
+
+func set_device_id(device: int) -> bool:
+	if not _device_settings:
+		return false
+	
+	if not device:
+		return false
+	
+	_device_settings.device_id = device
+	_save_device_settings()
 	return true
 
 func logout() -> void:
@@ -98,6 +101,10 @@ func logout() -> void:
 	# Handles student settings
 	if student:
 		student = ""
+
+func delete_teacher_data() -> void:
+	if DirAccess.dir_exists_absolute(get_teacher_folder()):
+		_delete_dir(get_teacher_folder())
 
 func login_student(code : String) -> bool:
 	if not _device_settings or not teacher_settings:
@@ -115,16 +122,6 @@ func login_student(code : String) -> bool:
 #endregion
 
 #region Device settings
-
-func set_language(language : String) -> void:
-	if _device_settings:
-		_device_settings.language = language
-		_save_device_settings()
-
-func set_language_version(language: String, version: Dictionary) -> void:
-	if _device_settings:
-		_device_settings.language_versions[language] = version
-		_save_device_settings()
 
 func get_device_settings_path() -> String:
 	return "user://device_settings.tres"
@@ -146,6 +143,81 @@ func _load_device_settings() -> void:
 
 func _save_device_settings() -> void:
 	ResourceSaver.save(_device_settings, get_device_settings_path())
+
+func set_language(language : String) -> void:
+	if _device_settings:
+		_device_settings.language = language
+		_save_device_settings()
+
+func set_language_version(language: String, version: Dictionary) -> void:
+	if _device_settings:
+		_device_settings.language_versions[language] = version
+		_save_device_settings()
+
+func set_master_volume(value: float) -> void:
+	if _device_settings:
+		var volume: = denormalize_volume(value)
+		_device_settings.master_volume = volume
+		_save_device_settings()
+
+func set_music_volume(value: float) -> void:
+	if _device_settings:
+		var volume: = denormalize_volume(value)
+		_device_settings.music_volume = volume
+		_save_device_settings()
+
+func set_voice_volume(value: float) -> void:
+	if _device_settings:
+		var volume: = denormalize_volume(value)
+		_device_settings.voice_volume = volume
+		_save_device_settings()
+
+func set_effects_volume(value: float) -> void:
+	if _device_settings:
+		var volume: = denormalize_volume(value)
+		_device_settings.effects_volume = volume
+		_save_device_settings()
+
+func get_master_volume() -> float:
+	var value: = 0.0
+	if _device_settings:
+		var volume: = _device_settings.master_volume
+		value = normalize_slider(volume)
+
+	return value
+
+func get_music_volume() -> float:
+	var value: = 0.0
+	if _device_settings:
+		var volume: = _device_settings.music_volume
+		value = normalize_slider(volume)
+
+	return value
+
+func get_voice_volume() -> float:
+	var value: = 0.0
+	if _device_settings:
+		var volume: = _device_settings.voice_volume
+		value = normalize_slider(volume)
+
+	return value
+
+func get_effects_volume() -> float:
+	var value: = 0.0
+	if _device_settings:
+		var volume: = _device_settings.effects_volume
+		value = normalize_slider(volume)
+
+	return value
+
+# Convert the volume from [-80, 6]db to [0, 100] and back
+func normalize_slider(volume: float) -> float:
+	var value: = pow((volume + 80.0) / 86, 5.0) * 100.0
+	return value
+
+func denormalize_volume(value: float) -> float:
+	var volume: = pow(float(value) / 100.0, 0.2) * 86 - 80
+	return volume
 
 #endregion
 
@@ -171,84 +243,62 @@ func _load_teacher_settings() -> void:
 func _save_teacher_settings() -> void:
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
-func add_device() -> bool:
+func _delete_inexistants_students_saves() -> void:
+	if not teacher_settings:
+		return
+	
+	var path: = get_teacher_folder()
+	var dirc = DirAccess.open(path)
+	if dirc:
+		var directories: = dirc.get_directories()
+		# Go through each device folder of the teacher
+		for device in directories:
+			print(device)
+			
+			# If the device does not exists, delete it
+			if int(device) not in teacher_settings.students.keys():
+				_delete_dir(path.path_join(device))
+				dirc.remove(device)
+				continue
+			
+			# Go through each language folder
+			var device_dir: = DirAccess.open(path.path_join(device))
+			for language in device_dir.get_directories():
+				# Go through each student folder
+				var language_dir: = DirAccess.open(path.path_join(device).path_join(language))
+				for student in language_dir.get_directories():
+					# Check if the folder is associated with an existing student
+					var exists: = false
+					for s: StudentData in teacher_settings.students[int(device)]:
+						if s.code == student:
+							exists = true
+							break
+					# If the code doesn't exists in the configuration, delete the folder
+					if not exists:
+						_delete_dir(path.path_join(device).path_join(language).path_join(student))
+						language_dir.remove(student)
+
+func update_configuration(configuration: Dictionary) -> bool:
 	if not teacher_settings:
 		return false
 	
-	# Checks if the logged user is a teacher (only teachers have several devices)
-	if teacher_settings.account_type != TeacherSettings.AccountType.Teacher:
+	if not configuration or not configuration.students or not configuration.last_modified:
 		return false
 	
-	# Gets the last device number
-	if not teacher_settings.students:
-		return false
-	
-	var device_id: int = teacher_settings.students.keys().back() + 1
-	
-	# Adds the new device
-	var students_array : Array[StudentData] = []
-	teacher_settings.students[device_id] = students_array
-	
-	# Saves the settings
-	_save_teacher_settings()
+	if teacher_settings.last_modified != configuration.last_modified:
+		# Update the teacher resource
+		teacher_settings.update_from_dict(configuration)
+		_save_teacher_settings()
+		
+		# Check if the device still exists
+		if not _device_settings.device_id in teacher_settings.students.keys():
+			_device_settings.device_id = 0
+			_save_device_settings()
+		
+		# Cleanup the saves
+		_delete_inexistants_students_saves()
 	
 	return true
-
-func add_student(device_id : int, student_data : StudentData) -> bool:
-	if not teacher_settings:
-		return false
-	
-	# Finds the device
-	if not teacher_settings.students or not teacher_settings.students.has(device_id):
-		return false
-	
-	# Checks the student
-	if not student_data:
-		return false
-	
-	# Generates a password
-	student_data.code = teacher_settings.get_new_code()
-	if not student_data.code:
-		return false
-	
-	# Adds the student on the device
-	var device_students: Array[StudentData] = teacher_settings.students[device_id]
-	device_students.append(student_data)
-	
-	# Saves the settings
-	_save_teacher_settings()
-	
-	return true
-
-func add_default_student(device_id : int) -> bool:
-	return add_student(device_id, StudentData.new())
-
-func delete_student(device_id : int, code : String) -> bool:
-	if not teacher_settings:
-		return false
-	
-	# Finds the device
-	if not teacher_settings.students or not teacher_settings.students.has(device_id):
-		return false
-	
-	# Finds the student
-	var student_data : StudentData
-	for s: StudentData in teacher_settings.students[device_id]:
-		if s.code == code:
-			student_data = s
-			break
-	
-	# Deletes the saves ??
-	
-	# Removes the student
-	var device_students: Array[StudentData] = teacher_settings.students[device_id]
-	device_students.erase(student_data)
-	
-	# Saves the settings
-	_save_teacher_settings()
-	
-	return true
-
 
 #endregion
 
@@ -256,23 +306,6 @@ func delete_student(device_id : int, code : String) -> bool:
 
 func get_student_folder() -> String:
 	return _device_settings.get_folder_path().path_join(student)
-
-func get_student_settings_path() -> String:
-	return get_student_folder().path_join("settings.tres")
-
-func _load_student_settings() -> void:
-	# Load User settings
-	if FileAccess.file_exists(get_student_settings_path()):
-		student_settings = load(get_student_settings_path())
-	
-	if not student_settings:
-		student_settings = UserSettings.new()
-		DirAccess.make_dir_recursive_absolute(get_student_folder())
-		_save_student_settings()
-
-func _save_student_settings() -> void:
-	ResourceSaver.save(student_settings, get_student_settings_path())
-
 
 #endregion
 
@@ -393,71 +426,10 @@ func update_difficulty_for_minigame(minigame_name: String, minigame_won: bool) -
 
 #endregion
 
-#region Sound settings
-
-func set_master_volume(value: float) -> void:
-	if student_settings:
-		var volume: = denormalize_volume(value)
-		student_settings.master_volume = volume
-		_save_student_settings()
-
-func set_music_volume(value: float) -> void:
-	if student_settings:
-		var volume: = denormalize_volume(value)
-		student_settings.music_volume = volume
-		_save_student_settings()
-
-func set_voice_volume(value: float) -> void:
-	if student_settings:
-		var volume: = denormalize_volume(value)
-		student_settings.voice_volume = volume
-		_save_student_settings()
-
-func set_effects_volume(value: float) -> void:
-	if student_settings:
-		var volume: = denormalize_volume(value)
-		student_settings.effects_volume = volume
-		_save_student_settings()
-
-func get_master_volume() -> float:
-	var value: = 0.0
-	if student_settings:
-		var volume: = student_settings.master_volume
-		value = normalize_slider(volume)
-	
-	return value
-
-func get_music_volume() -> float:
-	var value: = 0.0
-	if student_settings:
-		var volume: = student_settings.music_volume
-		value = normalize_slider(volume)
-	
-	return value
-
-func get_voice_volume() -> float:
-	var value: = 0.0
-	if student_settings:
-		var volume: = student_settings.voice_volume
-		value = normalize_slider(volume)
-	
-	return value
-
-func get_effects_volume() -> float:
-	var value: = 0.0
-	if student_settings:
-		var volume: = student_settings.effects_volume
-		value = normalize_slider(volume)
-	
-	return value
-
-# Convert the volume from [-80, 6]db to [0, 100] and back
-func normalize_slider(volume: float) -> float:
-	var value: = pow((volume + 80.0) / 86, 5.0) * 100.0
-	return value
-
-func denormalize_volume(value: float) -> float:
-	var volume: = pow(float(value) / 100.0, 0.2) * 86 - 80
-	return volume
-
-#endregion
+func _delete_dir(path: String) -> void:
+	var dir: = DirAccess.open(path)
+	for file in dir.get_files():
+		dir.remove(file)
+	for subfolder in dir.get_directories():
+		_delete_dir(path.path_join(subfolder))
+		dir.remove(subfolder)

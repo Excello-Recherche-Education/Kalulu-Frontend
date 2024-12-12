@@ -12,7 +12,8 @@ const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 @onready var music_player : AudioStreamPlayer = $MusicStreamPlayer
 @onready var device_number_label: Label = $DeviceNumber
 @onready var keyboard : CodeKeyboard = $CodeKeyboard
-@onready var teacher_timer : Timer = $InterfaceRight/TeacherButton/TeacherTimer
+@onready var teacher_timer : Timer = %TeacherTimer
+@onready var teacher_help_label: Label = %TeacherHelpLabel
 
 var help_speech: AudioStream
 var wrong_password_speech: AudioStream
@@ -62,9 +63,11 @@ func _on_teacher_button_button_down() -> void:
 
 
 func _on_teacher_button_button_up() -> void:
+	teacher_help_label.show()
 	teacher_timer.stop()
 
 
 func _on_teacher_timer_timeout() -> void:
+	teacher_help_label.hide()
 	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(teacher_scene_path)

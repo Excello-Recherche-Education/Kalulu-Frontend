@@ -73,6 +73,11 @@ func _ready() -> void:
 			"intro": "",
 			"help": "",
 			"end": "",
+		},
+		"turtles":{
+			"intro": "",
+			"help": "",
+			"end": "",
 		}
 	}
 	

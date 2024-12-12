@@ -1,36 +1,84 @@
 extends CanvasLayer
 signal request_completed(code: int, body: Dictionary)
+signal internet_check_completed(has_acces: bool)
 
+@onready var internet_check: HTTPRequest = $InternetCheck
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var loading_rect: TextureRect = $TextureRect
 
-const URL: String = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
+const INTERNET_CHECK_URL: = "https://google.com"
+const URL: = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
 
 # Response from the last request
 var code: int
 var json: Dictionary
 
+
 func check_email(email: String) -> Dictionary:
-	loading_rect.visible = true
+	loading_rect.show()
 	await _get_request("checkemail", {"mail" : email})
 	return _response()
 
+
 func register(data: Dictionary) -> Dictionary:
-	loading_rect.visible = true
+	loading_rect.show()
 	await _post_json_request("register", data)
 	return _response()
 
-func login(type: TeacherSettings.AccountType, device:int, mail: String, password: String) -> Dictionary:
-	loading_rect.visible = true
-	await _get_request("login", {"type":type, "device":device, "mail": mail, "password": password})
+
+func login(mail: String, password: String) -> Dictionary:
+	loading_rect.show()
+	await _get_request("login", {"mail": mail, "password": password})
 	return _response()
+
+
+func get_configuration() -> Dictionary:
+	await _get_request("configuration", {})
+	return _response()
+
+
+func delete_account() -> Dictionary:
+	loading_rect.show()
+	await _delete_request("delete_account")
+	return _response()
+
 
 func get_language_pack_url(locale: String) -> Dictionary:
 	await _get_request("language", {"locale": locale})
 	return _response()
 
 
+func add_student(device: int) -> Dictionary:
+	await _post_request("add_student", {"device": device})
+	return _response()
+
+func update_student(p_name: String, level: StudentData.Level, age: int) -> Dictionary:
+	await _post_request("update_student", {"name": p_name, "level": level, "age": age})
+	return _response()
+
+func remove_student(p_code: int) -> Dictionary:
+	await _delete_request("delete_student", {"code": p_code})
+	return _response()
+	
 #region Sender functions
+
+func check_internet_access() -> bool:
+	var res: = internet_check.request("https://google.com")
+	if res == 0:
+		return await internet_check_completed
+	return false
+
+
+func _create_URI_with_parameters(URI: String, params: Dictionary) -> String:
+	var is_first_param: bool = true
+	for key: String in params.keys():
+		if is_first_param:
+			URI += "?"
+			is_first_param = false
+		else:
+			URI += "&"
+		URI += str(key) + "=" + str(params[key])
+	return URI
 
 func _create_request_headers() -> PackedStringArray:
 	var headers: PackedStringArray = []
@@ -41,28 +89,29 @@ func _create_request_headers() -> PackedStringArray:
 
 
 func _response() -> Dictionary:
-	return {
+	var res: = {
 			"code" : code,
 			"body" : json
 		}
+	return res
 
 
 func _get_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
 	
-	var req: = URL + URI
-	var is_first_param: bool = true
-	for key: String in params.keys():
-		if is_first_param:
-			req += "?"
-			is_first_param = false
-		else:
-			req += "&"
-		req += str(key) + "=" + str(params[key])
+	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers()) == 0:
+		await request_completed
+	else:
+		code = 500
+		json = {message = "Internal Server Error"}
+
+
+func _post_request(URI: String, params: Dictionary) -> void:
+	code = 0
+	json = {}
 	
-	
-	if http_request.request(req, _create_request_headers()) == 0:
+	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers(), HTTPClient.METHOD_POST, "") == 0:
 		await request_completed
 	else:
 		code = 500
@@ -83,6 +132,17 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 		code = 500
 		json = {message = "Internal Server Error"}
 
+
+func _delete_request(URI: String, params: Dictionary = {}) -> void:
+	code = 0
+	json = {}
+	
+	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers(), HTTPClient.METHOD_DELETE) == 0:
+		await request_completed
+	else:
+		code = 500
+		json = {message = "Internal Server Error"}
+
 #endregion
 
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -90,4 +150,8 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 	if body:
 		json = JSON.parse_string(body.get_string_from_utf8())
 	request_completed.emit(response_code, json)
-	loading_rect.visible = false
+	loading_rect.hide()
+
+
+func _on_internet_check_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+	internet_check_completed.emit(response_code == 200)

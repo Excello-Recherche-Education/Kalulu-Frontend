@@ -17,6 +17,7 @@ func _ready() -> void:
 		element.grapheme = e.Grapheme
 		element.phoneme = e.Phoneme
 		element.type = e.Type
+		element.exception = e.Exception
 		element.undo_redo = undo_redo
 		element.id = e.ID
 		elements_container.add_child(element)
@@ -39,6 +40,7 @@ func _on_plus_button_pressed() -> void:
 	element.grapheme = ""
 	element.phoneme = ""
 	element.type = 0
+	element.exception = false
 	element.undo_redo = undo_redo
 	element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
 	undo_redo.add_do_method(elements_container.add_child.bind(element))
@@ -57,7 +59,7 @@ func _on_save_button_pressed() -> void:
 	for e in result:
 		var found: = false
 		for element in elements_container.get_children():
-			if element.grapheme == e.Grapheme and element.phoneme == e.Phoneme and element.type == e.Type:
+			if element.grapheme == e.Grapheme and element.phoneme == e.Phoneme and element.type == e.Type and element.exception == e.Exception:
 				found = true
 				break
 		if not found:
@@ -126,15 +128,15 @@ func _on_list_title_save_pressed() -> void:
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	var file: = FileAccess.open(path, FileAccess.READ)
 	var line: = file.get_csv_line()
-	if line.size() < 3 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type":
-		error_label.text = "Column names should be Grapheme, Phoneme, Type"
+	if line.size() < 4 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type" or line[3] != "Exception":
+		error_label.text = "Column names should be Grapheme, Phoneme, Type, Exception"
 		return
 	var types_text: = ["Silent", "Vowel", "Consonant"]
 	var insert_count: = 0
 	var all_data: = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
-		if line.size() < 3:
+		if line.size() < 4:
 			continue
 		var type: = types_text.find(line[2])
 		if type < 0:
@@ -147,6 +149,7 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 				Grapheme = line[0],
 				Phoneme = line[1],
 				Type = type,
+				Exception = line[3]
 			})
 			insert_count += 1
 	get_tree().reload_current_scene()

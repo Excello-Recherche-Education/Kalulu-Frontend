@@ -158,7 +158,7 @@ func _on_language_select_button_item_selected(index: int) -> void:
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	DirAccess.make_dir_recursive_absolute(base_path.path_join(new_text))
-	var file: = FileAccess.open("res://language_resources/model_database.db", FileAccess.READ)
+	var file: = FileAccess.open("res://model_database.db", FileAccess.READ)
 	var dest: = FileAccess.open(base_path.path_join(new_text).path_join("language.db"), FileAccess.WRITE)
 	dest.store_buffer(file.get_buffer(file.get_length()))
 	file.close()
@@ -247,13 +247,13 @@ func _language_data_selected(file_path: String) -> void:
 
 func _create_GP_csv() -> void:
 	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
-	gp_list_file.store_csv_line(["Grapheme", "Phoneme", "Type"])
+	gp_list_file.store_csv_line(["Grapheme", "Phoneme", "Type", "Exception"])
 	var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
 	Database.db.query(query)
 	var result: = Database.db.query_result
 	var types_text: = ["Silent", "Vowel", "Consonant"]
 	for e in result:
-		gp_list_file.store_csv_line([e.Grapheme, e.Phoneme, types_text[e.Type]])
+		gp_list_file.store_csv_line([e.Grapheme, e.Phoneme, types_text[e.Type], e.Exception])
 
 
 func _create_words_csv() -> void:

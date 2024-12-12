@@ -17,8 +17,10 @@ signal animation_changed(position: Vector2)
 var gp: Dictionary: 
 	set(value):
 		gp = value
-		if gp.has("Grapheme"):
+		if gp and gp.has("Grapheme"):
 			label.text = gp.Grapheme
+		else:
+			label.text = ""
 var velocity: float = 0.
 var direction: Vector2 = Vector2(0,-1):
 	set = _set_direction

@@ -5,26 +5,16 @@ const login_menu_path := "res://sources/menus/login/login.tscn"
 
 const DeviceTab: = preload("res://sources/menus/settings/device_tab.gd")
 const device_tab_scene : PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
-
-# Volume menu
-@onready var volume_menu: Control = %VolumeMenu
-@onready var master_volume_slider: HSlider = %MasterVolumeSlider
-@onready var music_volume_slider: HSlider = %MusicVolumeSlider
-@onready var voice_volume_slider: HSlider = %VoiceVolumeSlider
-@onready var effects_volume_slider: HSlider = %EffectsVolumeSlider
+const ConfirmPopup: = preload("res://sources/ui/popup.gd")
 
 @onready var devices_tab_container : TabContainer = %DevicesTabContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
+@onready var delete_popup: ConfirmPopup = %DeletePopup
 
+var last_device_id: = -1
 
 func _ready() -> void:
 	_refresh_devices_tabs()
-	
-	set_master_volume_slider(UserDataManager.get_master_volume())
-	set_music_volume_slider(UserDataManager.get_music_volume())
-	set_voice_volume_slider(UserDataManager.get_voice_volume())
-	set_effects_volume_slider(UserDataManager.get_effects_volume())
-	
 	OpeningCurtain.open()
 
 
@@ -44,11 +34,25 @@ func _refresh_devices_tabs() -> void:
 		devices_tab_container.add_child(device_tab)
 		
 		device_tab.student_pressed.connect(_on_student_pressed)
+		
+		last_device_id = device
 
 
 func _on_back_button_pressed() -> void:
 	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(login_menu_path)
+
+
+func _on_delete_button_pressed() -> void:
+	delete_popup.show()
+
+
+func _on_delete_popup_accepted() -> void:
+	var res: Dictionary = await ServerManager.delete_account()
+	if res.code == 200:
+		UserDataManager.delete_teacher_data()
+		UserDataManager.logout()
+		get_tree().change_scene_to_file(main_menu_path)
 
 
 func _on_logout_button_pressed() -> void:
@@ -70,51 +74,20 @@ func _on_add_student_button_pressed() -> void:
 	var current_tab: = devices_tab_container.get_current_tab_control() as DeviceTab
 	if not current_tab:
 		return
-	
-	# If parent -> show a creation popup
-	# If teacher -> create a default student
-	
-	if UserDataManager.add_default_student(current_tab.device_id):
+	# TODO Show the popup
+	# TODO Hides/Disable the button when not online
+	var res: = await ServerManager.add_student(current_tab.device_id)
+	if res.code == 200:
+		UserDataManager.update_configuration(res.body)
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
 		current_tab.refresh()
 
 
 func _on_add_device_button_pressed() -> void:
-	if UserDataManager.add_device():
+	# TODO Show the popup
+	# TODO Hides/Disable the button when not online
+	var res: = await ServerManager.add_student(last_device_id + 1)
+	if res.code == 200:
+		UserDataManager.update_configuration(res.body)
 		_refresh_devices_tabs()
-
-# ------------ Volume Menu ------------
-
-func _on_volume_button_pressed() -> void:
-	volume_menu.visible = not volume_menu.visible
-
-
-func set_master_volume_slider(volume: float) -> void:
-	master_volume_slider.value = volume
-
-
-func set_music_volume_slider(volume: float) -> void:
-	music_volume_slider.value = volume
-
-
-func set_voice_volume_slider(volume: float) -> void:
-	voice_volume_slider.value = volume
-
-
-func set_effects_volume_slider(volume: float) -> void:
-	effects_volume_slider.value = volume
-
-func _on_master_volume_slider_value_changed(volume: float) -> void:
-	UserDataManager.set_master_volume(volume)
-
-
-func _on_music_volume_slider_value_changed(volume: float) -> void:
-	UserDataManager.set_music_volume(volume)
-
-
-func _on_voice_volume_slider_value_changed(volume: float) -> void:
-	UserDataManager.set_voice_volume(volume)
-
-
-func _on_effects_volume_slider_value_changed(volume: float) -> void:
-	UserDataManager.set_effects_volume(volume)
+		devices_tab_container.current_tab = last_device_id

@@ -506,7 +506,7 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 			sound.data = file.get_buffer(file.get_length())
 			return sound
 	
-	return AudioStream.new()
+	return null
 
 
 func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:

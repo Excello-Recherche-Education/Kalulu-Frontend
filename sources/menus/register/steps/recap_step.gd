@@ -1,5 +1,6 @@
 extends Step
 
+const DeviceRecap: = preload("res://sources/menus/register/steps/device_recap.gd")
 const device_recap_scene : PackedScene = preload("res://sources/menus/register/steps/device_recap.tscn")
 
 @onready var recap_container : VBoxContainer = %RecapContainer

@@ -46,7 +46,7 @@ const garden_size: = 2400
 @onready var minigame_background_center: TextureRect = %MinigameBackgroundCenter
 @onready var lock: Control = %Lock
 
-
+var curve: Curve2D
 var lessons: = {}
 var points: Array[Array]= []
 var is_scrolling: = false
@@ -65,11 +65,11 @@ static var transition_data: Dictionary
 
 
 func _ready() -> void:
+	get_gardens_db_data()
 	if not gardens_layout:
 		gardens_layout = load("res://resources/gardens/gardens_layout.tres")
 	else:
 		set_gardens_layout(gardens_layout)
-	get_gardens_db_data()
 	set_up_lessons()
 	
 	await get_tree().process_frame
@@ -79,8 +79,8 @@ func _ready() -> void:
 		# Defines if a new lesson has been unlocked by the player, setups to play the right animation
 		new_lesson_unlocked = transition_data and transition_data.current_lesson_number == UserDataManager.student_progression.get_max_unlocked_lesson() and transition_data.minigame_number == 2 and transition_data.minigame_completed
 	
-	# Loads the progression of the player
-	_set_progression()
+		# Loads the progression of the player
+		_set_progression()
 	
 	# Scrolls to the right garden
 	if not transition_data:
@@ -171,11 +171,11 @@ func _unlock_new_lesson() -> void:
 		await last_lesson_button.right()
 	
 	# Fill in the path towards the next lesson
-	var curve: = Curve2D.new()
+	var c: = Curve2D.new()
 	for i in range(max_lesson-1, max_lesson + 1):
-		curve.add_point(points[i][0] as Vector2, points[i][1] as Vector2, points[i][2] as Vector2)
+		c.add_point(points[i][0] as Vector2, points[i][1] as Vector2, points[i][2] as Vector2)
 	
-	var baked_points: = curve.get_baked_points()
+	var baked_points: = c.get_baked_points()
 	
 	# Check if we need to scroll to the next garden
 	if is_last_lesson_of_garden:
@@ -369,8 +369,11 @@ func _close_minigames_layout() -> void:
 
 func set_up_lessons() -> void:
 	var lesson_ind: = 1
+	
 	for garden_ind in garden_parent.get_child_count():
+		
 		var garden_control: Garden = garden_parent.get_child(garden_ind)
+		
 		for i in garden_control.lesson_button_controls.size():
 			if not lesson_ind in lessons:
 				break
@@ -390,20 +393,40 @@ func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
 func add_gardens() -> void:
 	if not garden_parent:
 		return
+	
+	# Removes old gardens
 	for child in garden_parent.get_children():
 		child.free()
+	
+	# Adds the gardens needed from the layout configuration
+	var current_lesson_count: int = 0
 	for garden_layout in gardens_layout.gardens:
 		var garden: Garden = garden_scene.instantiate()
 		garden_parent.add_child(garden)
+		
+		for i in garden_layout.lesson_buttons.size():
+			if current_lesson_count >= lessons.size():
+				garden_layout.lesson_buttons.resize(i)
+				break
+			current_lesson_count += 1
+		
 		garden.garden_layout = garden_layout
+		
+		# Don't add empty gardens
+		if current_lesson_count >= lessons.size():
+			break
 
 
 func set_up_path() -> void:
 	if not garden_parent:
 		return
+	
 	points = []
-	var curve: = Curve2D.new()
+	curve = Curve2D.new()
+	
 	for i in gardens_layout.gardens.size():
+		if i >= garden_parent.get_child_count():
+			break
 		var garden_layout: GardenLayout = gardens_layout.gardens[i]
 		var garden_control: Garden = garden_parent.get_child(i)
 		for b in garden_layout.lesson_buttons:
@@ -478,14 +501,14 @@ func _set_progression() -> void:
 		garden_control.update_flowers()
 	
 	# Handles the path
-	var curve: = Curve2D.new()
+	var c: = Curve2D.new()
 	var max_lesson: = UserDataManager.student_progression.get_max_unlocked_lesson()
 	if not new_lesson_unlocked:
 		max_lesson += 1
 	
 	for i in range(max_lesson):
-		curve.add_point(points[i][0] as Vector2, points[i][1] as Vector2, points[i][2] as Vector2)
-	unlocked_line.points = curve.get_baked_points()
+		c.add_point(points[i][0] as Vector2, points[i][1] as Vector2, points[i][2] as Vector2)
+	unlocked_line.points = c.get_baked_points()
 	
 	line_particles.position = unlocked_line.points[unlocked_line.points.size()-1]
 

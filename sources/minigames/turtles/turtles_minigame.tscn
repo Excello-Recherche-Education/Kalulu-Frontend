@@ -15,8 +15,9 @@ point_count = 6
 
 [node name="TurtlesMinigame" instance=ExtResource("1_geqym")]
 script = ExtResource("2_f5de7")
-lesson_nb = 10
-difficulty = 0
+minigame_name = 6
+lesson_nb = 24
+difficulty = 4
 max_number_of_lives = 5
 max_progression = 5
 
