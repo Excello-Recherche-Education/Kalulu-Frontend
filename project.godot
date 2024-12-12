@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Kalulu"
-config/version="2.0.7"
-run/main_scene="res://sources/menus/splash_screen/splash_screen.tscn"
+config/version="2.0.8"
+run/main_scene="res://sources/language_tool/prof_tool_menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 config/icon="res://assets/kalulu_icon.png"
@@ -52,6 +52,15 @@ window/stretch/mode="canvas_items"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/": "red",
+"res://assets/": "green",
+"res://resources/": "blue",
+"res://sources/": "pink"
+}
 
 [gui]
 

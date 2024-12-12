@@ -47,9 +47,6 @@ func login(infos: Dictionary) -> bool:
 	if not _device_settings or not infos:
 		return false
 	
-	if not infos.has("device_ID") or not infos.device_ID:
-		return false
-	
 	if not infos.has("email") or not infos.email:
 		return false
 	
@@ -61,7 +58,6 @@ func login(infos: Dictionary) -> bool:
 	
 	# Handles device settings
 	_device_settings.teacher = infos.email
-	_device_settings.device_id = infos.device_ID
 	_save_device_settings()
 	
 	var path := get_teacher_settings_path()
@@ -76,6 +72,20 @@ func login(infos: Dictionary) -> bool:
 	teacher_settings.update_from_dict(infos)
 	_save_teacher_settings()
 	
+	if teacher_settings.students.keys().size() == 1:
+		set_device_id(teacher_settings.students.keys()[0])
+	
+	return true
+
+func set_device_id(device: int) -> bool:
+	if not _device_settings:
+		return false
+	
+	if not device:
+		return false
+	
+	_device_settings.device_id = device
+	_save_device_settings()
 	return true
 
 func logout() -> void:
@@ -279,6 +289,11 @@ func update_configuration(configuration: Dictionary) -> bool:
 		# Update the teacher resource
 		teacher_settings.update_from_dict(configuration)
 		_save_teacher_settings()
+		
+		# Check if the device still exists
+		if not _device_settings.device_id in teacher_settings.students.keys():
+			_device_settings.device_id = 0
+			_save_device_settings()
 		
 		# Cleanup the saves
 		_delete_inexistants_students_saves()

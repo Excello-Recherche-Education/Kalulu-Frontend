@@ -4,7 +4,8 @@ class_name PackageDownloader
 const ConfirmPopup: = preload("res://sources/ui/popup.gd")
 
 const main_menu_scene_path: = "res://sources/menus/main/main_menu.tscn"
-const next_scene_path := "res://sources/menus/login/login.tscn"
+const device_selection_scene_path: = "res://sources/menus/device_selection/device_selection.tscn"
+const login_scene_path := "res://sources/menus/login/login.tscn"
 const user_language_resources_path: =  "user://language_resources"
 
 const error_messages: Array[String] = [
@@ -183,7 +184,13 @@ func _go_to_next_scene() -> void:
 	if not Database.is_open:
 		Database.connect_to_db()
 	UserDataManager.set_language_version(device_language, server_version)
-	get_tree().change_scene_to_file(next_scene_path)
+	
+	# Check if we have a valid device id
+	if not UserDataManager.get_device_settings().device_id:
+		get_tree().change_scene_to_file(device_selection_scene_path)
+	# Go directly to the login scene
+	else:
+		get_tree().change_scene_to_file(login_scene_path)
 
 
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:

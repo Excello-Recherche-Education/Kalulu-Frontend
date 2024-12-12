@@ -119,6 +119,8 @@ func _spawn_lilypad() -> void:
 	else:
 		lilypad.stop_highlight()
 	
+	lilypad.top_to_bottom = top_to_bottom
+	
 	lilypad.pressed.connect(_on_lilypad_pressed.bind(lilypad))
 	lilypad.disappeared.connect(_on_lilypad_disappeared.bind(lilypad))
 

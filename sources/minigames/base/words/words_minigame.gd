@@ -17,7 +17,6 @@ var current_gp_distractors_queue: Array[Dictionary] = []
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
 	var words_list: = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_GPs)
-	print(words_list)
 	if words_list.is_empty():
 		return
 	
@@ -86,8 +85,6 @@ func _find_stimuli_and_distractions() -> void:
 		for GP: Dictionary in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID as int, lesson_nb))
 		distractions.append(grapheme_distractions)
-	
-	print(stimuli)
 
 
 # Launch the minigame
@@ -157,7 +154,7 @@ func _get_current_distractors() -> Array:
 # Get the current GP to find
 func _get_GP() -> Dictionary:
 	var stimulus: = _get_current_stimulus()
-	if not stimulus or not stimulus.has("GPs"):
+	if not stimulus or not stimulus.has("GPs") or current_word_progression >= stimulus.GPs.size():
 		return {}
 	return stimulus.GPs[current_word_progression]
 

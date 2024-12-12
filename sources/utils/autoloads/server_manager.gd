@@ -26,9 +26,9 @@ func register(data: Dictionary) -> Dictionary:
 	return _response()
 
 
-func login(type: TeacherSettings.AccountType, device:int, mail: String, password: String) -> Dictionary:
+func login(mail: String, password: String) -> Dictionary:
 	loading_rect.show()
-	await _get_request("login", {"type":type, "device":device, "mail": mail, "password": password})
+	await _get_request("login", {"mail": mail, "password": password})
 	return _response()
 
 

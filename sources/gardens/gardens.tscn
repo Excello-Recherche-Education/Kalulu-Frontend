@@ -300,6 +300,8 @@ offset_bottom = 832.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("10_5wvwc")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground1"]
 
@@ -326,6 +328,8 @@ offset_bottom = 832.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("10_5wvwc")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground2"]
 
@@ -352,6 +356,8 @@ offset_bottom = 1504.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("10_5wvwc")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground3"]
 

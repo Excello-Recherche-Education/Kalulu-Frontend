@@ -253,3 +253,5 @@ DELETE_ACCOUNT;Supprimer le compte;Eliminar cuenta
 DELETE_ACCOUNT_POPUP;Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !;¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!
 DISCONECTED_ERROR;Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.;Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.
 NO_INTERNET_ACCESS;Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion et réessayer.;No está conectado a Internet. Compruebe su conexión e inténtelo de nuevo.
+PICK_YOUR_DEVICE;Choisissez votre appareil;Elige tu dispositivo
+SIGN_IN;Connexion;Conexión
