@@ -362,12 +362,12 @@ func _on_minigame_ui_stimulus_button_pressed() -> void:
 	_pause_game()
 	minigame_ui.lock()
 	
-	await minigame_ui.repeat_stimulus_animation(true)
+	#await minigame_ui.repeat_stimulus_animation(true)
 	
 	@warning_ignore("redundant_await")
 	await _play_stimulus()
 	
-	await minigame_ui.repeat_stimulus_animation(false)
+	#await minigame_ui.repeat_stimulus_animation(false)
 	
 	minigame_ui.unlock()
 	_pause_game()

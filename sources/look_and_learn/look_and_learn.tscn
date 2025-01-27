@@ -788,7 +788,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_12st1")
-lesson_nb = 24
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -852,7 +851,6 @@ theme_override_font_sizes/font_size = 175
 text = "o"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
 [node name="LeftContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

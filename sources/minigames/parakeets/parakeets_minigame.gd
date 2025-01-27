@@ -155,7 +155,7 @@ func _correct() -> void:
 	
 	await _make_selected_coo()
 	
-	await _fly_to(fly_away_positions)
+	_fly_to(fly_away_positions)
 	
 	
 	state = State.Idle
@@ -229,8 +229,9 @@ func _fly_to(targets: Array[Vector2]) -> void:
 
 
 func _turn(parakeet: Parakeet, to_back: bool) -> void:
-	audio_player.stream = audio_streams[Audio.Turn]
-	audio_player.play()
+	if not audio_player.playing:
+		audio_player.stream = audio_streams[Audio.Turn]
+		audio_player.play()
 	if to_back:
 		await parakeet.turn_to_back()
 	else:

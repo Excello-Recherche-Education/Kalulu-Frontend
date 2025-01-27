@@ -68,17 +68,20 @@ func setup() -> void:
 			sounds.append(gp_sound)
 			used = true
 		
-		if used:
-			gp_display.append(gp)
+		var tracing_data: = tracing_manager._get_letter_tracings(gp.Grapheme)
+		if tracing_data.upper:
+			gp_display.append(gp.Grapheme.to_upper())
+		if tracing_data.lower:
+			gp_display.append(gp.Grapheme.to_lower())
 	
 	if gp_display.is_empty():
-		gp_display.append(gp_list[0])
+		gp_display.append(gp_list[0].Grapheme)
 	
 	grapheme_label.text = ""
-	for gp: Dictionary in gp_display:
+	for gp: String in gp_display:
 		if grapheme_label.text:
 			grapheme_label.text += " - "
-		grapheme_label.text += "%s" % gp.Grapheme
+		grapheme_label.text += "%s" % gp
 
 
 func play_videos() -> void:

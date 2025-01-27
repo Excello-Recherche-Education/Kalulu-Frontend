@@ -8,7 +8,14 @@
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
 [ext_resource type="SpriteFrames" uid="uid://dquynn3nx52o" path="res://sources/minigames/jellyfish/red_jellyfish_animations.tres" id="5_js27p"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
-[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="8_x6vke"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qqnw2"]
+font_size = 140
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 0.639216)
+shadow_offset = Vector2(3, 3)
 
 [node name="Jellyfish" type="Control"]
 custom_minimum_size = Vector2(400, 400)
@@ -16,7 +23,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.0829, 1.0829)
+scale = Vector2(1.10523, 1.10523)
 script = ExtResource("1_06uwq")
 
 [node name="BackFX" type="Control" parent="."]
@@ -69,7 +76,6 @@ unique_name_in_owner = true
 scale = Vector2(2.15054, 2.15054)
 sprite_frames = ExtResource("5_js27p")
 animation = &"idle"
-frame_progress = 0.433302
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
@@ -95,7 +101,7 @@ layout_mode = 2
 
 [node name="Label" parent="PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
 text = ""
-label_settings = ExtResource("8_x6vke")
+label_settings = SubResource("LabelSettings_qqnw2")
 
 [node name="FrontFX" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 220)

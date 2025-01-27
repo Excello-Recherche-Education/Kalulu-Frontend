@@ -199,13 +199,13 @@ func _on_word_gui_input(event: InputEvent) -> void:
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	var file: = FileAccess.open(path, FileAccess.READ)
 	var line: = file.get_csv_line()
-	if line.size() < 1 or line[0] != "ORTHO":
-		error_label.text = "Column names should be ORTHO"
+	if line.size() < 1 or line[0] != "ORTHO" and line[1] != "GPMATCH":
+		error_label.text = "Column names should be ORTHO, GPMATCH"
 		return
 	var all_data = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
-		if line.size() < 1:
+		if line.size() < 2:
 			continue
 		_e._try_to_complete_from_word(line[0])
 		all_data[line[0]] = true

@@ -19,7 +19,7 @@ shader_parameter/direction = Vector2(0.015, 0)
 script = ExtResource("2_x6xn5")
 fly_duration = 3.0
 minigame_name = 2
-lesson_nb = 10
+lesson_nb = 8
 difficulty = 4
 max_number_of_lives = 5
 

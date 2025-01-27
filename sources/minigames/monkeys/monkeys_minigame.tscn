@@ -20,7 +20,6 @@ base_font = ExtResource("8_fem7m")
 spacing_glyph = 20
 
 [node name="MonkeysMinigame" instance=ExtResource("1_6nhsm")]
-process_mode = 1
 script = ExtResource("2_12lw5")
 throw_to_king_duration = 1.2
 throw_to_monkey_duration = 0.8
@@ -29,7 +28,7 @@ max_number_of_GPs = 6
 distractors_queue_size = 6
 time_between_words = 3.0
 minigame_name = 3
-lesson_nb = 7
+lesson_nb = 6
 difficulty = 4
 max_number_of_lives = 5
 max_progression = 5

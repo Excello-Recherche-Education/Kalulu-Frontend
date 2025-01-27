@@ -294,12 +294,12 @@ func _add_from_additional_word_list(new_text: String) -> int:
 func _try_to_complete_from_word(new_text: String) -> int:
 	var id: = _already_in_database(new_text)
 	if id >= 0:
+		print("Already in DB " + new_text)
 		return id
 	
 	id = _add_from_additional_word_list(new_text)
 	if id >= 0:
 		return id
-	
 	return -1
 
 

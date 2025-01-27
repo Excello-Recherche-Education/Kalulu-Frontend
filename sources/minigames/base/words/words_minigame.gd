@@ -85,6 +85,7 @@ func _find_stimuli_and_distractions() -> void:
 		for GP: Dictionary in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID as int, lesson_nb))
 		distractions.append(grapheme_distractions)
+		
 
 
 # Launch the minigame

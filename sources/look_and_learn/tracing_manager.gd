@@ -13,8 +13,8 @@ const tracing_data_folder: = "tracing_data/"
 const extension: = ".csv"
 
 func _process(_delta: float) -> void:
-	place_segments(lower_labels.get_children())
 	place_segments(upper_labels.get_children())
+	place_segments(lower_labels.get_children())
 
 
 func place_segments(labels: Array) -> void:
@@ -24,12 +24,12 @@ func place_segments(labels: Array) -> void:
 
 
 func reset() -> void:
-	for child in lower_labels.get_children():
-		child.queue_free()
 	for child in upper_labels.get_children():
 		child.queue_free()
+	for child in lower_labels.get_children():
+		child.queue_free()
 	
-	lower_labels.visible = true
+	lower_labels.visible = false
 	upper_labels.visible = false
 	await get_tree().process_frame
 
@@ -41,11 +41,11 @@ func setup(grapheme: String) -> void:
 	for letter in grapheme:
 		var tracings: = _get_letter_tracings(letter)
 		
-		if tracings.lower:
-			setup_tracing(letter, tracings["lower"] as Array, lower_labels, true)
-		
 		if tracings.upper:
 			setup_tracing(letter, tracings["upper"] as Array, upper_labels, false)
+			
+		if tracings.lower:
+			setup_tracing(letter, tracings["lower"] as Array, lower_labels, true)
 
 
 func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lower: bool) -> void:
@@ -116,15 +116,19 @@ func _real_path(path: String) -> String:
 
 
 func start() -> void:
-	await demo_labels(lower_labels)
-	await start_labels(lower_labels)
-	
 	if upper_labels.get_child_count(false) > 0:
 		lower_labels.visible = false
 		upper_labels.visible = true
 		
 		await demo_labels(upper_labels)
 		await start_labels(upper_labels)
+	
+	if lower_labels.get_child_count(false) > 0:
+		lower_labels.visible = true
+		upper_labels.visible = false
+		
+		await demo_labels(lower_labels)
+		await start_labels(lower_labels)
 	
 	finished.emit()
 

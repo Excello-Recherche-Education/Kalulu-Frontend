@@ -15,6 +15,7 @@ var save_file: ProfToolSave
 
 func _ready() -> void:
 	MusicManager.stop()
+	Database.load_additional_word_list()
 	_update_add_word_list_button()
 	if not ResourceLoader.exists(save_file_path):
 		save_file = ProfToolSave.new()
