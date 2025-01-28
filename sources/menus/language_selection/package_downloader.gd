@@ -10,7 +10,8 @@ const user_language_resources_path: =  "user://language_resources"
 
 const error_messages: Array[String] = [
 	"DISCONECTED_ERROR",
-	"NO_INTERNET_ACCESS"
+	"NO_INTERNET_ACCESS",
+	"ERROR_DOWNLOADING"
 ]
 
 
@@ -60,7 +61,8 @@ func _ready() -> void:
 		_show_error(0)
 		return
 	elif server_configuration.code != 200:
-		error_label.show()
+		UserDataManager.logout()
+		_show_error(2)
 		return
 	
 	# Check if the last_updated date is superior on the server, then update the configuration
@@ -79,7 +81,8 @@ func _ready() -> void:
 		_show_error(0)
 		return
 	else:
-		error_label.show()
+		UserDataManager.logout()
+		_show_error(2)
 		return
 	
 	# If the language pack is not already downloaded or an update is needed

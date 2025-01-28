@@ -52,6 +52,7 @@ var points: Array[Array]= []
 var is_scrolling: = false
 var scroll_beginning_garden: = 0
 var scroll_tween: Tween
+var is_locked: = false
 
 var in_minigame_selection: = false
 var current_lesson_number: = -1
@@ -73,6 +74,8 @@ func _ready() -> void:
 	set_up_lessons()
 	
 	await get_tree().process_frame
+	
+	_lock()
 	
 	if UserDataManager.student_progression:
 		
@@ -108,7 +111,12 @@ func _ready() -> void:
 							break
 	else:
 		starting_garden = transition_data.current_garden
-		
+	
+	scroll_container.scroll_horizontal = garden_size * starting_garden
+	@warning_ignore("integer_division")
+	scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
+	
+	if transition_data:
 		# Finds the button
 		var lesson_ind: int = 1
 		var current_lesson_button: LessonButton
@@ -124,28 +132,24 @@ func _ready() -> void:
 		# If the minigame is completed: play an animation
 		await _open_minigames_layout(current_lesson_button, transition_data.current_lesson_number as int, transition_data.current_garden as int, transition_data.current_button_global_position as Vector2)
 	
-	scroll_container.scroll_horizontal = garden_size * starting_garden
-	@warning_ignore("integer_division")
-	scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
-	
 	await OpeningCurtain.open()
-	
 	MusicManager.play(MusicManager.Track.Garden)
 	
 	if new_lesson_unlocked:
 		_unlock_new_lesson()
-		
+	else:
+		_unlock()
+	
 	new_lesson_unlocked = false
 	transition_data = {}
 
 
 func _unlock_new_lesson() -> void:
-	_lock()
 	
 	var max_lesson: = UserDataManager.student_progression.get_max_unlocked_lesson()
 		
 	# Close the layout
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(1.5).timeout
 	await _close_minigames_layout()
 	
 	var lesson_ind: = 1
@@ -513,10 +517,12 @@ func _set_progression() -> void:
 	line_particles.position = unlocked_line.points[unlocked_line.points.size()-1]
 
 func _lock() -> void:
+	is_locked = true
 	lock.visible = true
 
 
 func _unlock() -> void:
+	is_locked = false
 	lock.visible = false
 
 
@@ -527,6 +533,9 @@ func _on_garden_lesson_button_pressed(button: LessonButton, lesson_ind: int, gar
 
 
 func _on_lesson_button_pressed() -> void:
+	if is_locked:
+		return
+		
 	feedback_audio_stream_player.play()
 	await OpeningCurtain.close()
 	
@@ -540,6 +549,9 @@ func _on_lesson_button_pressed() -> void:
 
 
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
+	if is_locked:
+		return
+	
 	feedback_audio_stream_player.play()
 	await OpeningCurtain.close()
 	
