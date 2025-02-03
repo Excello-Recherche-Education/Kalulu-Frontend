@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cpkwyypyikpfc"]
+[gd_scene load_steps=11 format=3 uid="uid://cpkwyypyikpfc"]
 
 [ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="1_1b85n"]
 [ext_resource type="Script" path="res://sources/minigames/jellyfish/jellyfish.gd" id="1_06uwq"]
@@ -8,14 +8,15 @@
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
 [ext_resource type="SpriteFrames" uid="uid://dquynn3nx52o" path="res://sources/minigames/jellyfish/red_jellyfish_animations.tres" id="5_js27p"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
+[ext_resource type="FontFile" uid="uid://c7hsjkvr1pbud" path="res://assets/fonts/ScriptEcoleNormal.otf" id="8_gbwb5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qqnw2"]
-font_size = 140
+font = ExtResource("8_gbwb5")
+font_size = 120
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
-shadow_size = 4
+shadow_size = 15
 shadow_color = Color(0, 0, 0, 0.639216)
-shadow_offset = Vector2(3, 3)
 
 [node name="Jellyfish" type="Control"]
 custom_minimum_size = Vector2(400, 400)
@@ -23,7 +24,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.10523, 1.10523)
+scale = Vector2(1.13291, 1.13291)
 script = ExtResource("1_06uwq")
 
 [node name="BackFX" type="Control" parent="."]
@@ -76,6 +77,7 @@ unique_name_in_owner = true
 scale = Vector2(2.15054, 2.15054)
 sprite_frames = ExtResource("5_js27p")
 animation = &"idle"
+frame_progress = 0.813281
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 

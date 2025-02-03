@@ -6,10 +6,10 @@ uid="uid://ccpq4mu4yjj71"
 
 [deps]
 
-files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation"]
+files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation", "res://kalulu_localization.pt_BR.translation"]
 
 source_file="res://kalulu_localization.csv"
-dest_files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation"]
+dest_files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation", "res://kalulu_localization.pt_BR.translation"]
 
 [params]
 

@@ -3,7 +3,14 @@ class_name DeviceSettings
 
 
 const supported_locales: Array[String] = [
-	"fr_FR", "es_UY", "es_CO"
+	# French France
+	"fr_FR",
+	# Spanish Uruguay
+	"es_UY",
+	# Spanish Colombia
+	"es_CO",
+	# Portuguese Brazil
+	"pt_BR"
 ]
 
 @export var language : String :

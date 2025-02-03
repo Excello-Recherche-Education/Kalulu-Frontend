@@ -146,6 +146,8 @@ func _ready() -> void:
 
 func _unlock_new_lesson() -> void:
 	
+	await get_tree().process_frame
+	
 	var max_lesson: = UserDataManager.student_progression.get_max_unlocked_lesson()
 		
 	# Close the layout

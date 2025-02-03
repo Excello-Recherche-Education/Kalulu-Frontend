@@ -1,57 +1,57 @@
-keys;fr;es
-LOGGED_AS;Connecté en tant que;Conectado como :
-BUILD_VERSION;Numéro de version;Número de versión :
-DEVICE_ID;Numéro d'appareil;Identificación del dispositivo:
-LANGUAGE;Langue;Idioma
-SIGN_IN_TEACHER;Connexion enseignant;Conexión del docente:
-SIGN_IN_PARENT;Connexion parent;Conexión del padre:
-CREATE_ACCOUNT;Création de compte;Creación de cuenta:
-LOGIN;Identifiants;Usuario
-EMAIL;Adresse mail;Correo electrónico 
-PASSWORD;Mot de passe;Contraseña
-LOG_IN;Se connecter;Ingresar
-INVALID_EMAIL_OR_PASSWORD;Adresse mail ou mot de passe invalide;Correo electrónico o contraseña inválida 
-DEVICE_NUMBER;Appareil n° {number};Número del dispositivo 
-SETTINGS;Paramètres;Configuración 
+keys;fr;es;pt_BR
+LOGGED_AS;Connecté en tant que;Conectado como;Conectado como
+BUILD_VERSION;Numéro de version;Número de versión;Número da versão
+DEVICE_ID;Numéro d'appareil;Identificación del dispositivo;Número do dispositivo
+LANGUAGE;Langue;Idioma;Idioma
+SIGN_IN_TEACHER;Connexion enseignant;Conexión del docente;Login do professor
+SIGN_IN_PARENT;Connexion parent;Conexión del padre;Login dos pais
+CREATE_ACCOUNT;Création de compte;Creación de cuenta;Criar uma conta
+LOGIN;Identifiants;Usuario;Identificadores
+EMAIL;Adresse mail;Correo electrónico ;Endereço eletrônico
+PASSWORD;Mot de passe;Contraseña;Senha
+LOG_IN;Se connecter;Ingresar;Conexão
+INVALID_EMAIL_OR_PASSWORD;Adresse mail ou mot de passe invalide;Correo electrónico o contraseña inválida ;Endereço de e-mail ou senha inválidos
+DEVICE_NUMBER;Appareil n° {number};Dispositivo nº {number};Dispositivo nº {number}
+SETTINGS;Paramètres;Configuración ;Parâmetros
 ADULT_CHECK_PROMPT;"Veuillez confirmer que vous êtes un adulte !
-Appuyez sur les touches {1}, {2} et {3}";Confirme que es un adulto! Seleccione {1}, {2} y {3}
-STAR;Étoile;Estrella
-BAR;Barre;Barra
-CIRCLE;Cercle;Círculo 
-PLUS;Plus;Más
-SQUARE;Carré;Cuadrado
-TRIANGLE;Triangle;Triángulo 
-DOWNLOADING_DATA;Téléchargement des données...;Descargando los datos ...
-BACK;Précédent;Atrás 
-NEXT;Suivant;Siguiente
-CANCEL;Annuler;Cancelar
-ACCOUNT_TYPE_PROMPT;Veuillez sélectionner le type de compte que vous souhaitez créer;Seleccionar el tipo de cuenta que desea crear
-ACCOUNT_TYPE;Type de compte;Tipo de cuenta 
-TEACHER;Enseignant;Docente
-PARENT;Parent;Padre
-EDUCATION_METHOD_PROMPT;Veuillez sélectionner la méthode d'éducation utilisée;Seleccionar el método de enseñanza utilizado
-EDUCATION_METHOD_INFOS;"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier";"Elegir ""Completo"" si utilizó igualmente los cuadernos y los juegos en papel"
-EDUCATION_METHOD;Méthode;Método 
-METHOD_APP_ONLY;Application;Aplicación 
-METHOD_COMPLETE;Complète;Completo
-DEVICE_COUNT_PROMPT;Veuillez sélectionner le nombre d'appareils;Seleccionar la cantidad de dispositivos
-DEVICE_COUNT_INFOS;Vous pourrez modifier les appareils ultérieurement dans les paramètres;Puede cambiar los dispositivos más tarde en la configuración.
-DEVICES;Appareils;Dispositivos
-TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};Seleccione la cantidad de estudiantes en el dispositivo n° {number}
-TEACHER_STUDENT_COUNT_INFOS;Vous pourrez modifier les élèves pour chaque appareil ultérieurement dans les paramètres;Puede cambiar los estudiantes en cada dispositivo más tarde en la configuración.
-STUDENTS;Élèves;Estudiantes
-PARENT_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre de joueurs;Por favor, seleccione la cantidad de jugadores
-PARENT_STUDENT_COUNT_INFOS;Vous pourres modifier les joueurs ultérieurement dans les paramètres;Puede modificar los jugadores más tarde en la configuración.
-PLAYERS;Joueurs;Jugadores
-PLAYER_PROMPT;Veuillez saisir les informations du joueur n° {number};Ingrese la información del jugador número: {number}
-PLAYER_LEVEL;Niveau;Nivel
-BEGINNER;Débutant;Principiante
-REVIEWER;Critique;Supervisor
-ADULT;Adulte;Adulto
-PLAYER_NAME;Prénom;Nombre
-PLAYER_AGE;Age;Edad
-CREDENTIALS_PROMPT;Veuillez saisir vos identifiants de connexion;Ingrese los datos de inicio de sesión 
-CONFIRM_PASSWORD;Confirmer le mot de passe;Confirmar la contraseña
+Appuyez sur les touches {1}, {2} et {3}";Confirme que es un adulto! Seleccione {1}, {2} y {3};Por favor, confirme que você é um adulto! Pressione as teclas {1}, {2} e {3}
+STAR;Étoile;Estrella;Estrela
+BAR;Barre;Barra;Barra
+CIRCLE;Cercle;Círculo ;Círculo
+PLUS;Plus;Más;Mais
+SQUARE;Carré;Cuadrado;Quadrado
+TRIANGLE;Triangle;Triángulo ;Triângulo
+DOWNLOADING_DATA;Téléchargement des données...;Descargando los datos ...;Download de dados...
+BACK;Précédent;Atrás ;Anterior
+NEXT;Suivant;Siguiente;Próximo
+CANCEL;Annuler;Cancelar;Cancelar
+ACCOUNT_TYPE_PROMPT;Veuillez sélectionner le type de compte que vous souhaitez créer;Seleccionar el tipo de cuenta que desea crear;Selecione o tipo de conta que deseja criar
+ACCOUNT_TYPE;Type de compte;Tipo de cuenta ;Tipo de conta
+TEACHER;Enseignant;Docente;Professor
+PARENT;Parent;Padre;Pais
+EDUCATION_METHOD_PROMPT;Veuillez sélectionner la méthode d'éducation utilisée;Seleccionar el método de enseñanza utilizado;Selecione o método educacional utilizado
+EDUCATION_METHOD_INFOS;"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier";"Elegir ""Completo"" si utilizó igualmente los cuadernos y los juegos en papel";Escolha “Completo” se você também usar os livretos e os jogos de papel
+EDUCATION_METHOD;Méthode;Método ;Método
+METHOD_APP_ONLY;Application;Aplicación ;Aplicativo
+METHOD_COMPLETE;Complète;Completo;Completo
+DEVICE_COUNT_PROMPT;Veuillez sélectionner le nombre d'appareils;Seleccionar la cantidad de dispositivos;Selecione o número de dispositivos
+DEVICE_COUNT_INFOS;Vous pourrez modifier les appareils ultérieurement dans les paramètres;Puede cambiar los dispositivos más tarde en la configuración;Você pode alterar os dispositivos posteriormente nas configurações
+DEVICES;Appareils;Dispositivos;Dispositivos
+TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};Seleccione la cantidad de estudiantes en el dispositivo n° {number};Selecione o número de alunos no dispositivo nº {number}
+TEACHER_STUDENT_COUNT_INFOS;Vous pourrez modifier les élèves pour chaque appareil ultérieurement dans les paramètres;Puede cambiar los estudiantes en cada dispositivo más tarde en la configuración;Você pode alterar os alunos de cada dispositivo em uma data posterior nas configurações
+STUDENTS;Élèves;Estudiantes;Estudantes
+PARENT_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre de joueurs;Por favor, seleccione la cantidad de jugadores;Selecione o número de jogadores
+PARENT_STUDENT_COUNT_INFOS;Vous pourres modifier les joueurs ultérieurement dans les paramètres;Puede modificar los jugadores más tarde en la configuración.;Você pode alterar os jogadores posteriormente nas configurações
+PLAYERS;Joueurs;Jugadores;Jogadores
+PLAYER_PROMPT;Veuillez saisir les informations du joueur n° {number};Ingrese la información del jugador número: {number};Digite os detalhes do jogador número {number}
+PLAYER_LEVEL;Niveau;Nivel;Nível
+BEGINNER;Débutant;Principiante;Iniciante
+REVIEWER;Critique;Supervisor;Revisão
+ADULT;Adulte;Adulto;Adulto
+PLAYER_NAME;Prénom;Nombre;Primeiro nome
+PLAYER_AGE;Age;Edad;Idade
+CREDENTIALS_PROMPT;Veuillez saisir vos identifiants de connexion;Ingrese los datos de inicio de sesión ;Digite seus detalhes de login
+CONFIRM_PASSWORD;Confirmer le mot de passe;Confirmar la contraseña;Confirmar senha
 GENERAL_CONDITIONS_TEXT;"PRÉAMBULE
 
 Les présentes Conditions Générales d’Utilisation sont disponibles à tout moment : excellolab.org/cgu
@@ -218,40 +218,125 @@ Las normas aplicables a la utilización de la Plataforma y a todos los contenido
 
 ARTÍCULO 5 - Condiciones de modificación de la política de confidencialidad
 
-El editor del sitio se reserva el derecho a modificarla para garantizar su conformidad con la legislación y los usos vigentes."
-ACCEPT_GENERAL_CONDITIONS;Accepter les conditions générales;Aceptar las condiciones generales
-ACCEPT_GENERAL_CONDITIONS_ERROR;Veuillez accepter les conditions générales avant de continuer;Aceptar las condiciones generales antes de avanzar
-REGISTRATION_SUMMARY;Récapitulatif de l’inscription;Resumen del registro
-VALIDATE;Confirmer;Confirmar
-SUMMARY_EMAIL;Adresse email : {mail};Correo electrónico: {mail}
-SUMMARY_TYPE;Type de compte : {type};Tipo de cuenta: {type}
-SUMMARY_METHOD;Méthode d'éducation : {method};Metodo de enseñanza: {method}
-APPONLY;Application uniquement;Solo aplicación 
-COMPLETE;Complète (livrets et jeux papiers);Completo (cuaderno y juegos en papel)
-SUMMARY_NUMBER_OF_DEVICES;Nombre d'appareils : {number};Cantidad de dispositivos: {number}
-SUMMARY_NUMBER_OF_STUDENTS;Nombre d'élèves : {number};Cantidad de estudiantes: {number}
-STUDENT_NUM;Élève n° {number};Estudiante n°: {number}
-LOGOUT;Déconnexion;Cerrar sesión 
-SETTINGS_ADD_DEVICE;Ajout d'un appareil;Agregar un dispositivo
-SETTINGS_ADD_STUDENT;Ajout d'un élève;Agregar un estudiante 
-SETTINGS_LESSONS;Leçons;Lecciones
-CLOSE;Fermer;Cerrar
-REGISTER_FAILED;Une erreur est survenue;Se ha producido un error
-ERROR_DOWNLOADING;Impossible de télécharger les données de jeu;No se pueden descargar los datos del juego
-EXTRACTING_DATA;Extraction des données;Extracción de datos
-LESSON;Leçon;Lección
-LOOKANDLEARN;Regarder et apprendre;Mira y aprende
-EXERCISE1;Exercice 1;Ejercicio 1
-EXERCISE2;Exercice 2;Ejercicio 2
-EXERCISE3;Exercice 3;Ejercicio 3
-Locked;Verrouillé;Bloqueado
-Unlocked;Déverrouillé;Desbloqueado
-Completed;Terminé;Completado
-CHECKING_DATA;Vérification des données...;Comprobando datos...
-TEACHER_SETTINGS_HELP;"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes";Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos
-DELETE_ACCOUNT;Supprimer le compte;Eliminar cuenta
-DELETE_ACCOUNT_POPUP;Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !;¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!
-DISCONECTED_ERROR;Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.;Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.
-NO_INTERNET_ACCESS;Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion et réessayer.;No está conectado a Internet. Compruebe su conexión e inténtelo de nuevo.
-PICK_YOUR_DEVICE;Choisissez votre appareil;Elige tu dispositivo
-SIGN_IN;Connexion;Conexión
+El editor del sitio se reserva el derecho a modificarla para garantizar su conformidad con la legislación y los usos vigentes.";"**PRÉÂMBULO**
+
+As presentes Condições Gerais de Uso estão disponíveis a qualquer momento: excellolab.org/cgu
+
+Elas determinam as regras de acesso às nossas plataformas no site Excello e seus subdomínios, onde se encontram conteúdos digitais pedagógicos, doravante denominados a plataforma.
+
+Ao utilizar esta plataforma, você reconhece, na qualidade de usuário – professor e/ou responsável legal do aluno menor de idade – que conhece os termos, os aceita sem reservas e se compromete a cumpri-los.
+
+O responsável pelo tratamento se reserva o direito, a seu exclusivo critério e sem aviso prévio, de modificar, excluir ou adicionar disposições a estas ""Condições Gerais de Uso"" a qualquer momento, especialmente para levar em conta qualquer evolução legal, jurisprudencial, editorial e/ou técnica. A versão prevalente é aquela acessível online.
+
+Recomenda-se, portanto, que você consulte regularmente a última versão destas Condições Gerais de Uso.
+
+**ARTIGO 1 – USO DO USUÁRIO, INFORMAÇÕES PRÁTICAS**
+
+A associação Excello tem como objetivo a pesquisa, desenvolvimento e disseminação de conhecimentos na área da educação, particularmente na melhoria da aprendizagem da leitura e matemática. A Excello desenvolve e fornece recursos pedagógicos associados, principalmente por meio de novas tecnologias.
+
+1/ **Acesso aos aplicativos educativos criados pela Excello**
+
+As atividades estão disponíveis 24 horas por dia, 7 dias por semana:
+
+- Nos aplicativos móveis da Excello, disponíveis nas lojas Android e Apple, para uso em tablets/smartphones com Android 5.1+ e iOS 11+. O uso de um tablet é recomendado para uma experiência otimizada do serviço.
+- No aplicativo web, utilizando Google Chrome ou Mozilla Firefox no Windows, Ubuntu e Android, e Safari no MacOS e iOS.
+
+O uso do aplicativo pode ser feito por um professor que cria uma conta para sua turma ou por um responsável legal que cria uma conta para seu filho.
+
+Uma vez instalado o aplicativo, o uso da internet não é obrigatório. No entanto, algumas funcionalidades serão desativadas, como transcrição de voz para texto e reconhecimento de escrita manual.
+
+Se o aplicativo for utilizado offline (sem internet), os registros de aprendizagem (resultados dos exercícios) serão salvos no dispositivo e serão enviados para a plataforma assim que a conexão com a internet for restabelecida.
+
+2/ **Acesso às plataformas criadas pela Excello**
+
+Para um primeiro uso das nossas plataformas, é necessário:
+
+- Criar uma conta adulta (responsável legal/professor).
+- Consultar todas as informações coletadas em nossa política de privacidade.
+
+3/ **Assistência técnica**
+
+Em caso de problemas técnicos com o aplicativo ou a plataforma, entre em contato pelo e-mail: [contact@excellolab.org](mailto\:contact@excellolab.org)
+
+Nossa equipe fará o possível para responder e resolver os problemas o mais rápido possível.
+
+4/ **Requisitos de hardware**
+
+O dispositivo utilizado deve atender aos seguintes requisitos para garantir o bom funcionamento dos aplicativos Excello:
+
+**Mínimo:**
+
+- Sistema: PC Android iOS (Chrome, Firefox, Safari >= 13)
+- Processador: 4 núcleos 1.4 GHz
+- Memória: 2 GB RAM
+
+**Recomendado, para melhor desempenho:**
+
+- Sistema: PC Android iOS (Chrome, Firefox, Safari >= 14)
+- Processador: 4 núcleos 2 GHz
+- Memória: 2 GB RAM
+
+**ARTIGO 2 – LICENÇA DE USO**
+
+O acesso a esta Plataforma concede a você um direito de uso não exclusivo, privado e/ou coletivo.
+
+O uso da Plataforma implica a aceitação sem reservas das presentes Condições Gerais de Uso.
+
+Todo o conteúdo publicado na Plataforma, incluindo mas não se limitando a: textos, fotografias, ilustrações, gráficos, infográficos, mapas, videogramas, músicas, ícones e softwares, doravante denominados ""os Conteúdos"", está sob licença CC BY-SA 4.0.
+
+De acordo com o artigo L. 122-4 do Código de Propriedade Intelectual, qualquer representação ou reprodução integral ou parcial feita sem o consentimento do autor ou de seus sucessores é ilícita. O mesmo se aplica à tradução, adaptação ou transformação, arranjo ou reprodução por qualquer meio ou processo.
+
+Lembramos também que a violação dos direitos autorais constitui crime de falsificação, punível na França com três anos de prisão e multa de 300.000 euros.
+
+Da mesma forma, o Código de Propriedade Intelectual pune com três anos de prisão e multa de 300.000 euros qualquer fixação, reprodução, comunicação ou disponibilização pública, gratuita ou paga, de uma performance, fonograma, videograma ou programa sem a devida autorização quando exigida.
+
+**ARTIGO 3 – LIMITAÇÃO DE RESPONSABILIDADE**
+
+Você é o único responsável por quaisquer danos e prejuízos, diretos ou indiretos, materiais ou imateriais, decorrentes do uso da Plataforma por você ou por terceiros autorizados por você.
+
+Menores de idade só podem acessar a Plataforma com autorização prévia dos pais ou responsáveis.
+
+**ARTIGO 4 – APLICAÇÃO DA LEI FRANCESA**
+
+As regras aplicáveis à Plataforma e seus conteúdos são regidas pela lei francesa. Em caso de litígio, os tribunais franceses terão competência exclusiva.
+
+**ARTIGO 5 – MODIFICAÇÕES NA POLÍTICA DE PRIVACIDADE**
+
+O editor do site se reserva o direito de modificar a política de privacidade para garantir sua conformidade com as leis e práticas vigentes."
+ACCEPT_GENERAL_CONDITIONS;Accepter les conditions générales;Aceptar las condiciones generales;Aceitar termos e condições
+ACCEPT_GENERAL_CONDITIONS_ERROR;Veuillez accepter les conditions générales avant de continuer;Aceptar las condiciones generales antes de avanzar;Aceite os termos e condições antes de continuar
+REGISTRATION_SUMMARY;Récapitulatif de l’inscription;Resumen del registro;Resumo do registro
+VALIDATE;Confirmer;Confirmar;Confirmar
+SUMMARY_EMAIL;Adresse email : {mail};Correo electrónico: {mail};Endereço de e-mail : {mail}
+SUMMARY_TYPE;Type de compte : {type};Tipo de cuenta: {type};Tipo de conta : {type}
+SUMMARY_METHOD;Méthode d'éducation : {method};Metodo de enseñanza: {method};Método educacional : {method}
+APPONLY;Application uniquement;Solo aplicación ;Somente aplicativo
+COMPLETE;Complète (livrets et jeux papiers);Completo (cuaderno y juegos en papel);Completo (livretos e jogos de papel)
+SUMMARY_NUMBER_OF_DEVICES;Nombre d'appareils : {number};Cantidad de dispositivos: {number};Número de dispositivos : {number}
+SUMMARY_NUMBER_OF_STUDENTS;Nombre d'élèves : {number};Cantidad de estudiantes: {number};Número de alunos : {number}
+STUDENT_NUM;Élève n° {number};Estudiante n°: {number};Aluno nº {number}
+LOGOUT;Déconnexion;Cerrar sesión ;Desconexão
+SETTINGS_ADD_DEVICE;Ajout d'un appareil;Agregar un dispositivo;Adição de um dispositivo
+SETTINGS_ADD_STUDENT;Ajout d'un élève;Agregar un estudiante ;Adicionar um aluno
+SETTINGS_LESSONS;Leçons;Lecciones;Lições
+CLOSE;Fermer;Cerrar;Fechar
+REGISTER_FAILED;Une erreur est survenue;Se ha producido un error;Ocorreu um erro
+ERROR_DOWNLOADING;Impossible de télécharger les données de jeu;No se pueden descargar los datos del juego;Não é possível fazer o download dos dados do jogo
+EXTRACTING_DATA;Extraction des données;Extracción de datos;Extração de dados
+LESSON;Leçon;Lección;Lição
+LOOKANDLEARN;Regarder et apprendre;Mira y aprende;Assista e aprenda
+EXERCISE1;Exercice 1;Ejercicio 1;Exercício 1
+EXERCISE2;Exercice 2;Ejercicio 2;Exercício 2
+EXERCISE3;Exercice 3;Ejercicio 3;Exercício 3
+Locked;Verrouillé;Bloqueado;Bloqueado
+Unlocked;Déverrouillé;Desbloqueado;Desbloqueado
+Completed;Terminé;Completado;Concluído
+CHECKING_DATA;Vérification des données...;Comprobando datos...;Verificação de dados...
+TEACHER_SETTINGS_HELP;"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes";Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos;Para acessar as configurações, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botão “Parâmetros” por 5 segundos
+DELETE_ACCOUNT;Supprimer le compte;Eliminar cuenta;Excluir conta
+DELETE_ACCOUNT_POPUP;Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !;¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!;Você realmente deseja excluir sua conta? Essa ação é irreversível!
+DISCONECTED_ERROR;Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.;Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.;Você foi desconectado. Digite seus detalhes de login novamente.
+NO_INTERNET_ACCESS;Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion et réessayer.;No está conectado a Internet. Compruebe su conexión e inténtelo de nuevo.;Você não está conectado à Internet. Verifique sua conexão e tente novamente.
+PICK_YOUR_DEVICE;Choisissez votre appareil;Elige tu dispositivo;Escolha seu dispositivo
+SIGN_IN;Connexion;Conexión;Conexão
+RETURN_TO_MAIN_MENU;Retour à l'acceuil;Volver a la página principal;Voltar para a página inicial
