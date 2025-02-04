@@ -5,6 +5,8 @@ class_name DeviceSettings
 const supported_locales: Array[String] = [
 	# French France
 	"fr_FR",
+	# Spanish Argentina
+	"es_AR",
 	# Spanish Uruguay
 	"es_UY",
 	# Spanish Colombia
