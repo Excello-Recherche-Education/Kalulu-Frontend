@@ -191,25 +191,43 @@ offset_bottom = 650.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="NewLanguageContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="NewLanguageContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NewLanguageContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 100
 
-[node name="Label" type="Label" parent="NewLanguageContainer/MarginContainer"]
+[node name="Label" type="Label" parent="NewLanguageContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 100
 text = "Enter new language name"
 horizontal_alignment = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="NewLanguageContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="NewLanguageContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="LineEdit" type="LineEdit" parent="NewLanguageContainer/CenterContainer"]
+[node name="LineEdit" type="LineEdit" parent="NewLanguageContainer/VBoxContainer/CenterContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(800, 2.08165e-12)
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
+
+[node name="ButtonContainer" type="MarginContainer" parent="NewLanguageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="ValidateLanguage" type="Button" parent="NewLanguageContainer/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 100
+text = "Validate"
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
@@ -257,4 +275,4 @@ theme_override_font_sizes/font_size = 60
 [connection signal="pressed" from="VBoxContainer/ImportLanguageButton" to="." method="_on_import_language_button_pressed"]
 [connection signal="item_selected" from="VBoxContainer/LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]
 [connection signal="pressed" from="VBoxContainer/AddWordListButton" to="." method="_on_add_word_list_button_pressed"]
-[connection signal="text_submitted" from="NewLanguageContainer/CenterContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="NewLanguageContainer/VBoxContainer/ButtonContainer/ValidateLanguage" to="." method="_on_validate_language_pressed"]

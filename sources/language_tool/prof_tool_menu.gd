@@ -157,17 +157,19 @@ func _on_language_select_button_item_selected(index: int) -> void:
 	Database.language = save_file.selected_language
 
 
-func _on_line_edit_text_submitted(new_text: String) -> void:
-	DirAccess.make_dir_recursive_absolute(base_path.path_join(new_text))
+func _on_validate_language_pressed() -> void:
+	if not line_edit.text:
+		return
+		
+	DirAccess.make_dir_recursive_absolute(base_path.path_join(line_edit.text))
 	var file: = FileAccess.open("res://model_database.db", FileAccess.READ)
-	var dest: = FileAccess.open(base_path.path_join(new_text).path_join("language.db"), FileAccess.WRITE)
+	var dest: = FileAccess.open(base_path.path_join(line_edit.text).path_join("language.db"), FileAccess.WRITE)
 	dest.store_buffer(file.get_buffer(file.get_length()))
 	file.close()
 	dest.close()
-	save_file.selected_language = new_text
+	save_file.selected_language = line_edit.text
 	ResourceSaver.save(save_file, save_file_path)
 	get_tree().reload_current_scene()
-
 
 
 func _word_list_file_selected(file_path: String) -> void:
