@@ -41,6 +41,6 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 	speech_ended.emit()
 
 func _on_pass_button_pressed() -> void:
-	if OS.has_feature("debug") and audio_player.playing:
+	if audio_player.playing:
 		audio_player.stop()
 		audio_player.finished.emit()

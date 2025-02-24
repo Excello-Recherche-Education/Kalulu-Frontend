@@ -10,12 +10,19 @@ var student: String = "" :
 			_load_student_progression()
 			_load_student_remediation()
 			_load_student_difficulty()
+			_load_student_speeches()
+		else:
+			student_progression = null
+			_student_difficulty = null
+			_student_remediation = null
+			_student_speeches = null
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
 var student_progression: UserProgression
 var _student_remediation: UserRemediation
 var _student_difficulty: UserDifficulty
+var _student_speeches: UserSpeeches
 
 
 func _ready() -> void:
@@ -73,7 +80,7 @@ func login(infos: Dictionary) -> bool:
 	_save_teacher_settings()
 	
 	if teacher_settings.students.keys().size() == 1:
-		set_device_id(teacher_settings.students.keys()[0])
+		set_device_id(teacher_settings.students.keys()[0] as int)
 	
 	return true
 
@@ -118,6 +125,13 @@ func login_student(code : String) -> bool:
 				return true
 	
 	return false
+
+func logout_student() -> bool:
+	if not _device_settings or not teacher_settings:
+		return false
+	
+	student = ""
+	return true
 
 #endregion
 
@@ -248,7 +262,7 @@ func _delete_inexistants_students_saves() -> void:
 		return
 	
 	var path: = get_teacher_folder()
-	var dirc = DirAccess.open(path)
+	var dirc: = DirAccess.open(path)
 	if dirc:
 		var directories: = dirc.get_directories()
 		# Go through each device folder of the teacher
@@ -266,17 +280,17 @@ func _delete_inexistants_students_saves() -> void:
 			for language in device_dir.get_directories():
 				# Go through each student folder
 				var language_dir: = DirAccess.open(path.path_join(device).path_join(language))
-				for student in language_dir.get_directories():
+				for p_student in language_dir.get_directories():
 					# Check if the folder is associated with an existing student
 					var exists: = false
 					for s: StudentData in teacher_settings.students[int(device)]:
-						if s.code == student:
+						if s.code == p_student:
 							exists = true
 							break
 					# If the code doesn't exists in the configuration, delete the folder
 					if not exists:
-						_delete_dir(path.path_join(device).path_join(language).path_join(student))
-						language_dir.remove(student)
+						_delete_dir(path.path_join(device).path_join(language).path_join(p_student))
+						language_dir.remove(p_student)
 
 func update_configuration(configuration: Dictionary) -> bool:
 	if not teacher_settings:
@@ -425,6 +439,39 @@ func update_difficulty_for_minigame(minigame_name: String, minigame_won: bool) -
 	_student_difficulty.add_game(minigame_name, minigame_won)
 
 #endregion
+
+#region Speeches
+
+func _get_student_speeches_path() -> String:
+	return get_student_folder().path_join("speeches.tres")
+
+func _load_student_speeches() -> void:
+	if FileAccess.file_exists(_get_student_speeches_path()):
+		_student_speeches = load(_get_student_speeches_path())
+	
+	if not _student_speeches:
+		_student_speeches = UserSpeeches.new()
+		DirAccess.make_dir_recursive_absolute(get_student_folder())
+		_save_student_speeches()
+	_student_speeches.speeches_changed.connect(_save_student_speeches)
+
+func _save_student_speeches() -> void:
+	ResourceSaver.save(_student_speeches, _get_student_speeches_path())
+
+func mark_speech_as_played(speech: String) -> void:
+	if not _student_speeches:
+		push_warning("No student speeches data for " + str(student))
+		return
+	_student_speeches.add_speech(speech)
+
+func is_speech_played(speech: String) -> bool:
+	if not _student_speeches:
+		push_warning("No student speeches data for " + str(student))
+		return false
+	return _student_speeches.is_speech_played(speech)
+	
+#endregion
+
 
 func _delete_dir(path: String) -> void:
 	var dir: = DirAccess.open(path)

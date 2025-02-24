@@ -14,6 +14,7 @@ const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 @onready var keyboard : CodeKeyboard = $CodeKeyboard
 @onready var teacher_timer : Timer = %TeacherTimer
 @onready var teacher_help_label: Label = %TeacherHelpLabel
+@onready var kalulu_button: = %KaluluButton
 
 var help_speech: AudioStream
 var wrong_password_speech: AudioStream
@@ -35,16 +36,21 @@ func _ready() -> void:
 	
 	await OpeningCurtain.open()
 	
+	kalulu_button.hide()
 	await kalulu.play_kalulu_speech(help_speech)
+	kalulu_button.show()
+	
 	music_player.play()
 
 
 func _on_code_keyboard_password_entered(password: String) -> void:
 	if UserDataManager.login_student(password):
+		kalulu_button.hide()
 		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()
 		get_tree().change_scene_to_file(next_scene_path)
 	else:
+		kalulu_button.hide()
 		await kalulu.play_kalulu_speech(wrong_password_speech)
 		keyboard.reset_password()
 
@@ -54,7 +60,9 @@ func _on_back_button_pressed() -> void:
 
 
 func _on_kalulu_button_pressed() -> void:
-	kalulu.play_kalulu_speech(help_speech)
+	kalulu_button.hide()
+	await kalulu.play_kalulu_speech(help_speech)
+	kalulu_button.show()
 
 
 func _on_teacher_button_button_down() -> void:

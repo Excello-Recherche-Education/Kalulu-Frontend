@@ -21,6 +21,17 @@ func _ready() -> void:
 			"help_code": "",
 			"tuto_code_oneshot": "",
 		},
+		"brain_screen":{
+			"intro_1": "",
+			"intro_2": "",
+			"intro_3": "",
+			"help": ""
+		},
+		"gardens_screen":{
+			"intro": "",
+			"help_few_plants": "",
+			"help_many_plants": "",
+		},
 		"minigame": {
 			"lose": "",
 		},

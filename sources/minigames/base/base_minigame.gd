@@ -162,12 +162,15 @@ func _find_stimuli_and_distractions() -> void:
 	return
 
 
-# Open the curtains and Kalulu explains
+# Opens the curtains and Kalulu explains
 func _curtains_and_kalulu() -> void:
 	await OpeningCurtain.open()
 	
-	minigame_ui.play_kalulu_speech(intro_kalulu_speech)
-	await minigame_ui.kalulu_speech_ended
+	# Checks if intro needs to be played
+	if not UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
+		minigame_ui.play_kalulu_speech(intro_kalulu_speech)
+		await minigame_ui.kalulu_speech_ended
+		UserDataManager.mark_speech_as_played(Type.keys()[minigame_name])
 
 
 # Launch the minigame
@@ -193,7 +196,7 @@ func _win() -> void:
 		gardens_data.minigame_completed = true
 	
 	if UserDataManager.student_progression:
-		UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
+		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
 	# Remediation
 	if scores:

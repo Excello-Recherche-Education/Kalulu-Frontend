@@ -3,11 +3,14 @@ extends Control
 
 const Gardens: = preload("res://sources/gardens/gardens.gd")
 const gardens_scene: = preload("res://sources/gardens/gardens.tscn")
+const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 
 @export var locked_color: Color
 @export var unlocked_colors: Array[Color]
 @export var gardens_layout: GardensLayout
 
+@onready var kalulu: Kalulu = $Kalulu
+@onready var kalulu_button: = %KaluluButton
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 @onready var garden_buttons: Array[TextureButton] = [
@@ -56,10 +59,15 @@ const gardens_scene: = preload("res://sources/gardens/gardens.tscn")
 	%Particles20,
 ]
 
+@onready var tutorial_speeches: Array[AudioStream]= [
+	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_1")),
+	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_2")),
+	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_3"))
+]
+
+@onready var help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "help"))
 
 func _ready() -> void:
-	OpeningCurtain.open()
-	
 	for i in range(garden_buttons.size()):
 		garden_buttons[i].pressed.connect(_on_garden_button_pressed.bind(i))
 	
@@ -85,6 +93,24 @@ func _ready() -> void:
 			lesson_ind += 1
 		
 		particles[i].emitting = emitting
+		
+		
+	await OpeningCurtain.open()
+	
+	if not UserDataManager.is_speech_played("brain"):
+		_play_tutorial()
+
+func _play_tutorial() -> void:
+	var tutorial_count: = 0
+	
+	kalulu_button.hide()
+	while tutorial_count < tutorial_speeches.size():
+		await kalulu.play_kalulu_speech(tutorial_speeches[tutorial_count])
+		tutorial_count += 1
+	
+	UserDataManager.mark_speech_as_played("brain")
+	
+	kalulu_button.show()
 
 
 func _on_garden_button_pressed(button_number: int) -> void:
@@ -99,4 +125,12 @@ func _on_garden_button_pressed(button_number: int) -> void:
 
 
 func _on_back_button_pressed() -> void:
+	await OpeningCurtain.close()
+	UserDataManager.logout_student()
 	get_tree().change_scene_to_file("res://sources/menus/login/login.tscn")
+
+
+func _on_kalulu_button_pressed() -> void:
+	kalulu_button.hide()
+	await kalulu.play_kalulu_speech(help_speech)
+	kalulu_button.show()

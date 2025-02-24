@@ -100,26 +100,44 @@ layout_mode = 2
 theme_override_constants/separation = 25
 alignment = 2
 
-[node name="AddDeviceButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
-visible = false
-layout_mode = 2
-theme_override_font_sizes/font_size = 70
-text = "SETTINGS_ADD_DEVICE"
-
 [node name="AddStudentButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "SETTINGS_ADD_STUDENT"
 
+[node name="AddDeviceButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "SETTINGS_ADD_DEVICE"
+
 [node name="LessonUnlocks" parent="." instance=ExtResource("9_mljfd")]
 visible = false
 layout_mode = 1
+
+[node name="AddStudentPopup" parent="." instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+visible = false
+
+[node name="AddDevicePopup" parent="." instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+visible = false
+
+[node name="DeleteStudentPopup" parent="." instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+visible = false
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/DeleteButton" to="." method="_on_delete_button_pressed"]
 [connection signal="accepted" from="InterfaceLeft/Container/DeleteButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
 [connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]
 [connection signal="tab_changed" from="VBoxContainer/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
-[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
+[connection signal="student_deleted" from="LessonUnlocks" to="." method="_on_lesson_unlocks_student_deleted"]
+[connection signal="accepted" from="AddStudentPopup" to="." method="_on_add_student_popup_accepted"]
+[connection signal="accepted" from="AddDevicePopup" to="." method="_on_add_device_popup_accepted"]
+[connection signal="accepted" from="DeleteStudentPopup" to="." method="_on_delete_student_popup_accepted"]

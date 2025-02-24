@@ -11,10 +11,21 @@ const ConfirmPopup: = preload("res://sources/ui/popup.gd")
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
 
+@onready var add_device_button: Button = %AddDeviceButton
+@onready var add_student_button: Button = %AddStudentButton
+
 var last_device_id: = -1
 
 func _ready() -> void:
 	_refresh_devices_tabs()
+	
+	if await ServerManager.check_internet_access():
+		add_device_button.show()
+		add_student_button.show()
+	else:
+		add_device_button.hide()
+		add_student_button.hide()
+	
 	OpeningCurtain.open()
 
 
@@ -71,12 +82,14 @@ func _on_student_pressed(code: String) -> void:
 
 
 func _on_add_student_button_pressed() -> void:
+	%AddStudentPopup.show()
+
+
+func _on_add_student_popup_accepted() -> void:
 	var current_tab: = devices_tab_container.get_current_tab_control() as DeviceTab
 	if not current_tab:
 		return
-	# TODO Show the popup
-	# TODO Hides/Disable the button when not online
-	var res: = await ServerManager.add_student(current_tab.device_id)
+	var res: = await ServerManager.add_student({"device" :  current_tab.device_id})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body)
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
@@ -84,10 +97,28 @@ func _on_add_student_button_pressed() -> void:
 
 
 func _on_add_device_button_pressed() -> void:
-	# TODO Show the popup
-	# TODO Hides/Disable the button when not online
-	var res: = await ServerManager.add_student(last_device_id + 1)
+	%AddDevicePopup.show()
+
+
+func _on_add_device_popup_accepted() -> void:
+	var res: = await ServerManager.add_student({"device" : last_device_id + 1})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body)
 		_refresh_devices_tabs()
 		devices_tab_container.current_tab = last_device_id
+
+
+func _on_lesson_unlocks_student_deleted(code: int) -> void:
+	%DeleteStudentPopup.show()
+
+
+func _on_delete_student_popup_accepted() -> void:
+	var current_tab: = devices_tab_container.get_current_tab_control() as DeviceTab
+	if not current_tab:
+		return
+	var res: = await ServerManager.remove_student(int(lesson_unlocks.student))
+	if res.code == 200:
+		lesson_unlocks.hide()
+		UserDataManager.update_configuration(res.body)
+		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
+		current_tab.refresh()

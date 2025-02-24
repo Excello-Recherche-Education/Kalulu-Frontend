@@ -31,4 +31,3 @@ func add_game(is_won: bool) -> void:
 			consecutives_losses = 0
 			if difficulty != min_difficulty:
 				difficulty -= 1
-

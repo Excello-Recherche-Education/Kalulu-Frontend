@@ -80,7 +80,7 @@ func setup() -> void:
 	grapheme_label.text = ""
 	for gp: String in gp_display:
 		if grapheme_label.text:
-			grapheme_label.text += " - "
+			grapheme_label.text += " "
 		grapheme_label.text += "%s" % gp
 
 
@@ -154,8 +154,8 @@ func _on_tracing_manager_finished() -> void:
 		tracing_manager.start()
 		current_tracing += 1
 	else:
-		UserDataManager.student_progression.look_and_learn_completed(lesson_nb)
 		animation_player.play("end_tracing")
+		gardens_data.first_clear = UserDataManager.student_progression.look_and_learn_completed(lesson_nb)
 		gardens_data.look_and_learn_completed = true
 		_back_to_gardens()
 

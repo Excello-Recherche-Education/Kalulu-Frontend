@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://b1rkn0uwoyd7l"]
+[gd_scene load_steps=57 format=3 uid="uid://b1rkn0uwoyd7l"]
 
 [ext_resource type="Script" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
 [ext_resource type="PackedScene" uid="uid://bxh1torc05k7p" path="res://sources/minigames/crabs/crabs_minigame.tscn" id="3_vqohy"]
@@ -40,6 +40,11 @@
 [ext_resource type="AudioStream" uid="uid://dlxvbjp63w6wm" path="res://assets/look_and_learn/effect.wav" id="26_5g3l0"]
 [ext_resource type="Script" path="res://sources/gardens/minigame_layout.gd" id="28_kvgph"]
 [ext_resource type="Shader" path="res://resources/shaders/outline_shader.gdshader" id="29_pew8x"]
+[ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="33_5y3ye"]
+[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="41_xcos2"]
+[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="42_l35j3"]
+[ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="43_jfyfk"]
+[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="44_okr34"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ey6av"]
 blend_mode = 1
@@ -245,7 +250,7 @@ scale = Vector2(0.4, 0.4)
 process_material = SubResource("ParticleProcessMaterial_3eofo")
 texture = ExtResource("25_00sy7")
 
-[node name="LineAudioStreamPlayer" type="AudioStreamPlayer" parent="ScrollContainer/UnlockedLine"]
+[node name="LineAudioStreamPlayer" type="AudioStreamPlayer2D" parent="ScrollContainer/UnlockedLine/LineParticles"]
 unique_name_in_owner = true
 stream = ExtResource("26_5g3l0")
 volume_db = -5.0
@@ -303,6 +308,16 @@ texture = ExtResource("10_5wvwc")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="RightFX" parent="CanvasLayer/MinigameSelection/MinigameBackground1/TextureRect" instance=ExtResource("33_5y3ye")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground1"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CanvasLayer/MinigameSelection/MinigameBackground1/Area2D"]
@@ -331,6 +346,16 @@ texture = ExtResource("10_5wvwc")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="RightFX" parent="CanvasLayer/MinigameSelection/MinigameBackground2/TextureRect" instance=ExtResource("33_5y3ye")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground2"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CanvasLayer/MinigameSelection/MinigameBackground2/Area2D"]
@@ -358,6 +383,16 @@ size_flags_vertical = 4
 texture = ExtResource("10_5wvwc")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="RightFX" parent="CanvasLayer/MinigameSelection/MinigameBackground3/TextureRect" instance=ExtResource("33_5y3ye")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer/MinigameSelection/MinigameBackground3"]
 
@@ -416,14 +451,28 @@ stretch_mode = 5
 
 [node name="BackButton" type="TextureButton" parent="CanvasLayer"]
 unique_name_in_owner = true
-offset_left = 80.0
-offset_top = 80.0
-offset_right = 220.0
-offset_bottom = 220.0
-scale = Vector2(1.5, 1.5)
+custom_minimum_size = Vector2(275, 275)
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 300.0
+offset_bottom = 300.0
+size_flags_vertical = 0
 texture_normal = ExtResource("4_neut5")
 texture_pressed = ExtResource("5_2yuxn")
 texture_disabled = ExtResource("6_gs6gi")
+stretch_mode = 4
+
+[node name="KaluluButton" type="TextureButton" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 56.0
+offset_top = 1464.0
+offset_right = 331.0
+offset_bottom = 1739.0
+size_flags_vertical = 10
+texture_normal = ExtResource("41_xcos2")
+texture_pressed = ExtResource("42_l35j3")
+texture_disabled = ExtResource("43_jfyfk")
+stretch_mode = 4
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer"]
 z_index = 20
@@ -452,7 +501,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Kalulu" parent="CanvasLayer" instance=ExtResource("44_okr34")]
+unique_name_in_owner = true
+visible = false
+
 [connection signal="gui_input" from="ScrollContainer" to="." method="_on_scroll_container_gui_input"]
 [connection signal="pressed" from="CanvasLayer/MinigameSelection/LessonButton" to="." method="_on_lesson_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="input_event" from="CanvasLayer/Area2D" to="." method="_on_area_2d_input_event"]

@@ -41,6 +41,8 @@ var flowers: Array[GardenLayout.Flower]
 var flowers_sizes: Array[FlowerSizes]
 var color: Color
 
+var current_progression: = 0.0
+var max_progression: = 0.0
 
 func get_button_size() -> Vector2:
 	return lesson_button_controls[0].get_size()
@@ -125,3 +127,7 @@ func pop_animation() -> void:
 		tween.tween_property(flower_control, "scale", Vector2(1., 1.), 0.9)
 	for lesson_button_control in lesson_button_controls:
 		tween.tween_property(lesson_button_control, "scale", Vector2(1., 1.), 0.9)
+
+
+func get_progress_ratio() -> float:
+	return current_progression / max_progression

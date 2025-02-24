@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dlqtn4yhqno8t"]
+[gd_scene load_steps=45 format=3 uid="uid://dlqtn4yhqno8t"]
 
 [ext_resource type="Script" path="res://sources/menus/brain/brain.gd" id="1_1rwi2"]
 [ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="1_poeho"]
@@ -21,7 +21,10 @@
 [ext_resource type="Texture2D" uid="uid://bhjq8p6a13dni" path="res://assets/brain_screen/button_garden_09.png" id="11_g1567"]
 [ext_resource type="Texture2D" uid="uid://dw88f46ouyqxi" path="res://assets/brain_screen/button_garden_10.png" id="12_gekn5"]
 [ext_resource type="Texture2D" uid="uid://d1kacbsx80i65" path="res://assets/brain_screen/button_garden_11.png" id="13_bwdw7"]
+[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="13_xas2k"]
 [ext_resource type="Texture2D" uid="uid://devi7aqkoady8" path="res://assets/brain_screen/button_garden_12.png" id="14_ho6b5"]
+[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="14_t5yvg"]
+[ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="15_po2yv"]
 [ext_resource type="Texture2D" uid="uid://cahpqdsgapvum" path="res://assets/brain_screen/button_garden_13.png" id="15_woe01"]
 [ext_resource type="Texture2D" uid="uid://biyyyywuqqtg5" path="res://assets/brain_screen/button_garden_14.png" id="16_7bvji"]
 [ext_resource type="Texture2D" uid="uid://csxtaqncbp1n2" path="res://assets/brain_screen/button_garden_15.png" id="17_nfgsr"]
@@ -34,6 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="29_16cxq"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="30_drpbx"]
 [ext_resource type="Texture2D" uid="uid://dx7w01wdyq0b5" path="res://assets/particles/bigstar_x36_15fps.png" id="33_bjun2"]
+[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="35_t3kvk"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iw28k"]
 blend_mode = 1
@@ -175,6 +179,41 @@ offset_right = 2486.0
 offset_bottom = 1815.0
 texture = ExtResource("5_a51h3")
 
+[node name="InterfaceLeft" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(375, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 375.0
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Container" type="VBoxContainer" parent="InterfaceLeft"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
+custom_minimum_size = Vector2(275, 275)
+layout_mode = 2
+size_flags_vertical = 0
+texture_normal = ExtResource("28_6xael")
+texture_pressed = ExtResource("29_16cxq")
+texture_disabled = ExtResource("30_drpbx")
+stretch_mode = 4
+
+[node name="KaluluButton" type="TextureButton" parent="InterfaceLeft/Container"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(275, 275)
+layout_mode = 2
+size_flags_vertical = 10
+texture_normal = ExtResource("13_xas2k")
+texture_pressed = ExtResource("14_t5yvg")
+texture_disabled = ExtResource("15_po2yv")
+stretch_mode = 4
+
 [node name="HeadContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -189,17 +228,6 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("2_w21ae")
 stretch_mode = 5
-
-[node name="BackButton" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 80.0
-offset_top = 80.0
-offset_right = 220.0
-offset_bottom = 220.0
-scale = Vector2(1.5, 1.5)
-texture_normal = ExtResource("28_6xael")
-texture_pressed = ExtResource("29_16cxq")
-texture_disabled = ExtResource("30_drpbx")
 
 [node name="GardenButtons" type="Control" parent="."]
 layout_mode = 1
@@ -670,4 +698,9 @@ emitting = false
 process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
 
-[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[node name="Kalulu" parent="." instance=ExtResource("35_t3kvk")]
+visible = false
+layout_mode = 1
+
+[connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="InterfaceLeft/Container/KaluluButton" to="." method="_on_kalulu_button_pressed"]

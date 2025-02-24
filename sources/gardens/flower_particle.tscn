@@ -1,0 +1,78 @@
+[gd_scene load_steps=16 format=3 uid="uid://bpfcrbd5pxbtm"]
+
+[ext_resource type="Script" path="res://sources/gardens/flower_particle.gd" id="1_8kusj"]
+[ext_resource type="Texture2D" uid="uid://bhlxctbycwwg6" path="res://assets/vfx/Cloud01.png" id="1_osgji"]
+[ext_resource type="Texture2D" uid="uid://dybj3kcr7txvb" path="res://assets/vfx/Cloud02.png" id="2_ijsw8"]
+[ext_resource type="AudioStream" uid="uid://cusw38jbclkxs" path="res://assets/sfx/ui_fertilizer_random_02.mp3" id="3_hopxg"]
+[ext_resource type="Texture2D" uid="uid://dnaq6ormhmw3k" path="res://assets/vfx/cloud03.png" id="3_wp5xb"]
+[ext_resource type="AudioStream" uid="uid://cxt1fou1408wb" path="res://assets/sfx/ui_fertilizer_random_01.mp3" id="4_0jd3r"]
+[ext_resource type="AudioStream" uid="uid://bgpe512komo6r" path="res://assets/sfx/ui_fertilizer_random_03.mp3" id="4_3jfcb"]
+[ext_resource type="AudioStream" uid="uid://bnl2tymireca3" path="res://assets/sfx/ui_fertilizer_random_04.mp3" id="5_oxx05"]
+[ext_resource type="AudioStream" uid="uid://bekyekhp6n5mt" path="res://assets/sfx/ui_fertilizer_random_05.mp3" id="6_7ujvn"]
+[ext_resource type="AudioStream" uid="uid://cp115mm0a4goo" path="res://assets/sfx/ui_fertilizer_random_06.mp3" id="7_f62pv"]
+
+[sub_resource type="Gradient" id="Gradient_igrbn"]
+offsets = PackedFloat32Array(0, 0.683333, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hbug8"]
+gradient = SubResource("Gradient_igrbn")
+
+[sub_resource type="Curve" id="Curve_74q1k"]
+max_value = 2.0
+_data = [Vector2(0, 0.800573), 0.0, 0.0, 0, 0, Vector2(1, 1.19542), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_s0j5o"]
+width = 32
+curve = SubResource("Curve_74q1k")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8m4ej"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 150.0
+initial_velocity_max = 200.0
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.75
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_s0j5o")
+color_ramp = SubResource("GradientTexture1D_hbug8")
+turbulence_noise_strength = 20.0
+
+[node name="FlowerParticle" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(1.2, 1.2)
+script = ExtResource("1_8kusj")
+sounds = Array[AudioStream]([ExtResource("4_0jd3r"), ExtResource("3_hopxg"), ExtResource("4_3jfcb"), ExtResource("5_oxx05"), ExtResource("6_7ujvn"), ExtResource("7_f62pv")])
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_8m4ej")
+texture = ExtResource("1_osgji")
+one_shot = true
+explosiveness = 1.0
+
+[node name="Particles2" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_8m4ej")
+texture = ExtResource("2_ijsw8")
+one_shot = true
+explosiveness = 1.0
+
+[node name="Particles3" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_8m4ej")
+texture = ExtResource("3_wp5xb")
+one_shot = true
+explosiveness = 1.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_0jd3r")
+bus = &"Effects"

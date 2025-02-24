@@ -47,17 +47,20 @@ func get_language_pack_url(locale: String) -> Dictionary:
 	await _get_request("language", {"locale": locale})
 	return _response()
 
-
-func add_student(device: int) -> Dictionary:
-	await _post_request("add_student", {"device": device})
+# p_student must have a device key
+# it can contain a name, level and age key for parents
+func add_student(p_student: Dictionary) -> Dictionary:
+	await _post_request("add_student", p_student)
 	return _response()
+
 
 func update_student(p_name: String, level: StudentData.Level, age: int) -> Dictionary:
 	await _post_request("update_student", {"name": p_name, "level": level, "age": age})
 	return _response()
 
+
 func remove_student(p_code: int) -> Dictionary:
-	await _delete_request("delete_student", {"code": p_code})
+	await _delete_request("remove_student", {"code": p_code})
 	return _response()
 	
 #region Sender functions
@@ -137,7 +140,10 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 	code = 0
 	json = {}
 	
-	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers(), HTTPClient.METHOD_DELETE) == 0:
+	var req: = _create_URI_with_parameters(URL + URI, params)
+	var headers: = _create_request_headers()
+	
+	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == 0:
 		await request_completed
 	else:
 		code = 500
@@ -150,6 +156,7 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 	if body:
 		json = JSON.parse_string(body.get_string_from_utf8())
 	request_completed.emit(response_code, json)
+	
 	loading_rect.hide()
 
 

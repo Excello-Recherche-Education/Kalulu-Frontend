@@ -49,6 +49,10 @@ func _ready() -> void:
 	minigame_ui.progression_gauge.hide()
 	label.hide()
 	progress_gauge_max_margin = progress_gauge.margin_top_ratio
+	
+	# Skips the whole tutorial
+	if UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
+		tutorial_count = 2
 
 
 func _find_stimuli_and_distractions() -> void:

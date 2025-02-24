@@ -65,16 +65,26 @@ func is_lesson_completed(lesson_number: int) -> bool:
 	return unlocks[lesson_number]["look_and_learn"] == Status.Completed and unlocks[lesson_number]["games"][0] == Status.Completed and unlocks[lesson_number]["games"][1] == Status.Completed and unlocks[lesson_number]["games"][2] == Status.Completed
 
 
-func look_and_learn_completed(lesson_number: int) -> void:
+# Return true if the progression is saved or false if the look and learn was already completed
+func look_and_learn_completed(lesson_number: int) -> bool:
+	if unlocks[lesson_number]["look_and_learn"] == Status.Completed:
+		return false
+	
 	unlocks[lesson_number]["look_and_learn"] = Status.Completed
 	
 	for i in range(3):
 		unlocks[lesson_number]["games"][i] = Status.Unlocked
 	
 	unlocks_changed.emit()
+	return true
 
-
-func game_completed(lesson_number: int, game_number: int) -> void:
+# Return true if the progression is saved or false if the game was already completed
+func game_completed(lesson_number: int, game_number: int) -> bool:
+	# If the game is already completed, do nothing
+	if unlocks[lesson_number]["games"][game_number] == Status.Completed:
+		return false
+	
+	
 	unlocks[lesson_number]["games"][game_number] = Status.Completed
 	
 	var all_completed: = true
@@ -85,3 +95,4 @@ func game_completed(lesson_number: int, game_number: int) -> void:
 		unlocks[lesson_number + 1]["look_and_learn"] = Status.Unlocked
 	
 	unlocks_changed.emit()
+	return true

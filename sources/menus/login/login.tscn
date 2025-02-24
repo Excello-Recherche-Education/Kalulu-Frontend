@@ -48,7 +48,7 @@ vertical_alignment = 1
 layout_mode = 1
 
 [node name="InterfaceLeft" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(450, 0)
+custom_minimum_size = Vector2(375, 0)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -62,8 +62,9 @@ theme_override_constants/margin_bottom = 50
 layout_mode = 2
 
 [node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
+custom_minimum_size = Vector2(0, 275)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 0
 size_flags_stretch_ratio = 4.0
 texture_normal = ExtResource("4_3vuah")
 texture_pressed = ExtResource("5_vd33f")
@@ -71,8 +72,10 @@ texture_disabled = ExtResource("6_0dhup")
 stretch_mode = 4
 
 [node name="KaluluButton" type="TextureButton" parent="InterfaceLeft/Container"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 275)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 10
 texture_normal = ExtResource("7_2wdoi")
 texture_pressed = ExtResource("8_nxlxw")
 texture_disabled = ExtResource("9_k74e3")
