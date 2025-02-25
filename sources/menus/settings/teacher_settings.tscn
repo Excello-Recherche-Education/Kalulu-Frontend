@@ -121,14 +121,17 @@ layout_mode = 1
 [node name="AddStudentPopup" parent="." instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
+content_text = "ADD_STUDENT_POPUP"
 
 [node name="AddDevicePopup" parent="." instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
+content_text = "ADD_DEVICE_POPUP"
 
 [node name="DeleteStudentPopup" parent="." instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
+content_text = "DELETE_STUDENT_POPUP"
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/DeleteButton" to="." method="_on_delete_button_pressed"]

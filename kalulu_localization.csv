@@ -340,3 +340,7 @@ NO_INTERNET_ACCESS;Vous n'êtes pas connecté à Internet. Veuillez vérifier vo
 PICK_YOUR_DEVICE;Choisissez votre appareil;Elige tu dispositivo;Escolha seu dispositivo
 SIGN_IN;Connexion;Conexión;Conexão
 RETURN_TO_MAIN_MENU;Retour à l'acceuil;Volver a la página principal;Voltar para a página inicial
+ADD_STUDENT_POPUP;Souhaitez-vous ajouter un nouvel élève ?;¿Desea añadir un nuevo alumno?;Você gostaria de adicionar um novo aluno?
+ADD_DEVICE_POPUP;Souhaitez-vous ajouter un nouvel appareil ? Un élève sera créé automatiquement.;¿Desea añadir un nuevo dispositivo? Se creará un alumno automáticamente.;Gostaria de adicionar um novo dispositivo? Um aluno será criado automaticamente.
+DELETE_STUDENT_POPUP;Souhaitez-vous supprimer cet élève ? Cette action est définitive et entrainera la perte de la progression de cet élève.;¿Desea eliminar a este estudiante? Esta acción es definitiva y supondrá la pérdida del progreso de este alumno.;Deseja excluir esse aluno? Essa ação é definitiva e resultará na perda do progresso desse aluno.
+DELETE_STUDENT;Supprimer l'élève;Borrar estudiante;Excluir aluno
