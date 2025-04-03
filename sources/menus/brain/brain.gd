@@ -10,7 +10,7 @@ const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 @export var gardens_layout: GardensLayout
 
 @onready var kalulu: Kalulu = $Kalulu
-@onready var kalulu_button: = %KaluluButton
+@onready var kalulu_button: TextureButton = %KaluluButton
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 @onready var garden_buttons: Array[TextureButton] = [

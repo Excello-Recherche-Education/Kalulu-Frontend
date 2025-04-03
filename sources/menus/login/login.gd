@@ -14,7 +14,7 @@ const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 @onready var keyboard : CodeKeyboard = $CodeKeyboard
 @onready var teacher_timer : Timer = %TeacherTimer
 @onready var teacher_help_label: Label = %TeacherHelpLabel
-@onready var kalulu_button: = %KaluluButton
+@onready var kalulu_button: CanvasItem = %KaluluButton
 
 var help_speech: AudioStream
 var wrong_password_speech: AudioStream

@@ -57,22 +57,18 @@ func setup() -> void:
 		var gp_sound: = Database.get_gp_look_and_learn_sound(gp)
 		var gp_video: = Database.get_gp_look_and_learn_video(gp)
 		
-		var used: = false
-		
 		if gp_video:
 			videos.append(gp_video)
-			used = true
 		
 		if gp_image and gp_sound:
 			images.append(gp_image)
 			sounds.append(gp_sound)
-			used = true
 		
-		var tracing_data: = tracing_manager._get_letter_tracings(gp.Grapheme)
+		var tracing_data: = tracing_manager._get_letter_tracings(gp.Grapheme as String)
 		if tracing_data.upper:
-			gp_display.append(gp.Grapheme.to_upper())
+			gp_display.append((gp.Grapheme as String).to_upper())
 		if tracing_data.lower:
-			gp_display.append(gp.Grapheme.to_lower())
+			gp_display.append((gp.Grapheme as String).to_lower())
 	
 	if gp_display.is_empty():
 		gp_display.append(gp_list[0].Grapheme)

@@ -163,7 +163,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 	_log_new_response_and_score(monkey.stimulus)
 	
 	is_locked = true
-	var coconut: = await _get_coconut_from_monkey_to_king(monkey)
+	var coconut: Coconut = await _get_coconut_from_monkey_to_king(monkey)
 	
 	# All monkeys talk but the sound is from a specific monkey
 	var coroutine: = Coroutine.new()
@@ -239,13 +239,14 @@ func _on_current_progression_changed() -> void:
 	var coroutine: = Coroutine.new()
 	for monkey in monkeys:
 		coroutine.add_future(monkey.talk)
-	audio_player.play_word(_get_previous_stimulus().Word)
+	audio_player.play_word(_get_previous_stimulus().Word as String)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	await coroutine.join_all()
 	await get_tree().create_timer(time_between_words/2).timeout
 	
 	# Starts a new round
+	@warning_ignore("redundant_await")
 	await super()
 	
 	# Reset the label

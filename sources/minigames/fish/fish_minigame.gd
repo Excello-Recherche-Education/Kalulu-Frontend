@@ -4,19 +4,19 @@ signal beacon_fish_dropped(is_answered_real: bool)
 
 const fish_texture_rect_scene: = preload("res://sources/minigames/fish/fish_texture_rect.tscn")
 
-@onready var fish_start_zone: = %FishStartZone
-@onready var beacon1: = %Beacon1
-@onready var beacon2: = %Beacon2
-@onready var path_follow: = %PathFollow2D
-@onready var label: = %Label
-@onready var false_wrong_fx: = %FalseWrongFX
-@onready var false_right_fx: = %FalseRightFX
-@onready var real_wrong_fx: = %RealWrongFX
-@onready var real_right_fx: = %RealRightFX
-@onready var fish_animated_sprite: = %FishAnimatedSprite
-@onready var progress_gauge: = %ProgressionGaugePercentMarginContainer
-@onready var progress_gauge_goal: = %ProgressionGaugeGoalPercentMarginContainer2
-@onready var progress_gauge_internal: = %ProgressionGaugeInternal
+@onready var fish_start_zone: Control = %FishStartZone
+@onready var beacon1: SpriteControl = %Beacon1
+@onready var beacon2: SpriteControl = %Beacon2
+@onready var path_follow: PathFollow2D = %PathFollow2D
+@onready var label: Label = %Label
+@onready var false_wrong_fx: WrongFX = %FalseWrongFX
+@onready var false_right_fx: RightFX = %FalseRightFX
+@onready var real_wrong_fx: WrongFX = %RealWrongFX
+@onready var real_right_fx: RightFX = %RealRightFX
+@onready var fish_animated_sprite: AnimatedSprite2D = %FishAnimatedSprite
+@onready var progress_gauge: PercentMarginContainer = %ProgressionGaugePercentMarginContainer
+@onready var progress_gauge_goal: PercentMarginContainer = %ProgressionGaugeGoalPercentMarginContainer2
+@onready var progress_gauge_internal: NinePatchRect = %ProgressionGaugeInternal
 
 
 @export var game_duration: = 4 * 60
@@ -42,12 +42,13 @@ func _fish_get_drag_data(_at_position: Vector2) -> Variant:
 func _ready() -> void:
 	super()
 	fish_start_zone.set_drag_forwarding(_fish_get_drag_data, Callable(), Callable())
-	beacon1.set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon1_drop_data)
-	beacon2.set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon2_drop_data)
+	(beacon1 as Control).set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon1_drop_data)
+	(beacon2 as Control).set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon2_drop_data)
 	minigame_ui.lives_container.hide()
 	minigame_ui.progression_container.hide()
 	minigame_ui.progression_gauge.hide()
 	label.hide()
+	@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 	progress_gauge_max_margin = progress_gauge.margin_top_ratio
 	
 	# Skips the whole tutorial
@@ -98,7 +99,7 @@ func _present_next_word() -> void:
 	label.show()
 	label.text = words_to_present[0]
 	if tutorial_count == 0:
-		var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "intro_test_game_first_word"))
+		var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro_test_game_first_word"))
 		minigame_ui.play_kalulu_speech(speech)
 		await minigame_ui.kalulu_speech_ended
 
@@ -136,12 +137,12 @@ func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 			false_right_fx.play()
 		words_to_present.pop_front()
 		if tutorial_count == 0:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "win_test_game_first_word"))
+			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "win_test_game_second_word"))
+			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
@@ -152,12 +153,12 @@ func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 			false_wrong_fx.play()
 		words_to_present_next.append(words_to_present.pop_front())
 		if tutorial_count == 0:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "lose_test_game_first_word"))
+			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name], "lose_test_game_second_word"))
+			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1

@@ -11,7 +11,7 @@ const garden_scene: = preload("res://resources/gardens/garden.tscn")
 const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const flower_fvx: = preload("res://sources/gardens/flower_particle.tscn")
 
-const garden_size: = 2400
+const garden_size: int = 2400
 
 @export_category("Layout")
 @export var gardens_layout: GardensLayout:
@@ -48,7 +48,7 @@ const garden_size: = 2400
 @onready var minigame_background_center: TextureRect = %MinigameBackgroundCenter
 @onready var lock: Control = %Lock
 @onready var kalulu: Kalulu = %Kalulu
-@onready var kalulu_button: = %KaluluButton
+@onready var kalulu_button: CanvasItem = %KaluluButton
 
 @onready var intro_speech: = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "intro"))
 @onready var help_few_plants_speech: = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
@@ -58,7 +58,7 @@ var curve: Curve2D
 var lessons: = {}
 var points: Array[Array]= []
 var is_scrolling: = false
-var scroll_beginning_garden: = 0
+var scroll_beginning_garden: int = 0
 var scroll_tween: Tween
 var is_locked: = false
 
@@ -283,7 +283,7 @@ func _ready() -> void:
 					play_animation = true
 				
 				if play_animation:
-					var fvfx: = flower_fvx.instantiate()
+					var fvfx: FlowerVFX = flower_fvx.instantiate()
 					current_garden.flower_controls[flower_ind].add_child(fvfx)
 					fvfx.anchor_bottom = 0.5
 					fvfx.anchor_top = 0.5
@@ -302,7 +302,7 @@ func _ready() -> void:
 		await get_tree().create_timer(1).timeout
 		
 		# Re-open the minigames layout
-		await _open_minigames_layout(_get_current_lesson_button(transition_data.current_lesson_number), transition_data.current_lesson_number as int, transition_data.current_garden as int)
+		await _open_minigames_layout(_get_current_lesson_button(transition_data.current_lesson_number as int), transition_data.current_lesson_number as int)
 		
 #region New lesson unlocked
 
@@ -350,9 +350,9 @@ func _ready() -> void:
 				tween.set_ease(Tween.EASE_IN_OUT)
 				tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
 				
+				@warning_ignore("integer_division")
 				scroll_beginning_garden = target_scroll / garden_size
 				
-				@warning_ignore("integer_division")
 				current_garden = garden_parent.get_child(scroll_beginning_garden)
 			
 			line_audio_stream_player.pitch_scale = 0.95
@@ -392,7 +392,7 @@ func _process(_delta: float) -> void:
 	parallax_background.scroll_offset.x = - scroll_container.scroll_horizontal
 
 
-func _open_minigames_layout(button: LessonButton, lesson_ind: int, garden_ind: int) -> void:
+func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	if in_minigame_selection or not UserDataManager.student_progression:
 		return
 	
@@ -545,7 +545,7 @@ func _set_up_lessons() -> void:
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(i, lessons[lesson_ind][0].grapheme as String)
-			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.lesson_button_controls[i], lesson_ind, garden_ind))
+			garden_control.lesson_button_controls[i].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.lesson_button_controls[i], lesson_ind))
 			lesson_ind += 1
 
 
@@ -627,8 +627,8 @@ func _get_current_lesson_button(lesson: int) -> LessonButton:
 	return null
 
 
-func _on_garden_lesson_button_pressed(button: LessonButton, lesson_ind: int, garden_ind: int, button_global_position: = Vector2.ZERO) -> void:
-	_open_minigames_layout(button, lesson_ind, garden_ind)
+func _on_garden_lesson_button_pressed(button: LessonButton, lesson_ind: int) -> void:
+	_open_minigames_layout(button, lesson_ind)
 
 
 func _on_lesson_button_pressed() -> void:

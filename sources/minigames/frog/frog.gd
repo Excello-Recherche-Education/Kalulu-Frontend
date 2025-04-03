@@ -1,5 +1,7 @@
 extends Control
 
+class_name Frog
+
 signal drowned()
 signal jumped()
 

@@ -1,6 +1,6 @@
 extends Control
 
-@onready var aspect_ratio_container: = $AspectRatioContainer
+@onready var aspect_ratio_container: AspectRatioContainer = $AspectRatioContainer
 
 
 func _ready() -> void:

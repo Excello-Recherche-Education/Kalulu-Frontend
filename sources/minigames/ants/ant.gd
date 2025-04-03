@@ -1,6 +1,6 @@
 extends Area2D
 
-@onready var animation_player: = $AnimationPlayer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var anchor: = $Anchor
 
 

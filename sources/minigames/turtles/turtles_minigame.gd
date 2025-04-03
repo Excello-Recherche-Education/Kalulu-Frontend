@@ -63,7 +63,7 @@ func _setup_minigame() -> void:
 	# Setups the timer
 	spawn_timer.wait_time = settings.spawn_rate
 	
-	for s in stimuli:
+	for s: Dictionary in stimuli:
 		print(s.Word)
 
 

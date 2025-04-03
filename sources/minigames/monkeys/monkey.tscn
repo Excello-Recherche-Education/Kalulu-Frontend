@@ -539,6 +539,7 @@ _data = {
 [sub_resource type="GDScript" id="GDScript_fxkfh"]
 script/source = "extends Button
 
+@warning_ignore(\"UNUSED_SIGNAL\")
 signal dragging()
 
 @onready var drag_preview_model: = $DragPreview

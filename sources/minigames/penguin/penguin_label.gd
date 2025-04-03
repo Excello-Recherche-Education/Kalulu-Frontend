@@ -13,7 +13,7 @@ var is_pressed: bool = false
 func _ready() -> void:
 	if gp:
 		if capitalized:
-			text = gp.Grapheme.capitalize()
+			text = (gp.Grapheme as String).capitalize()
 		else:
 			text = gp.Grapheme
 

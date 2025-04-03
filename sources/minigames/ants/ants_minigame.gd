@@ -10,7 +10,7 @@ const word_class: = preload("res://sources/minigames/ants/word.tscn")
 
 const label_settings: = preload("res://resources/themes/minigames_label_settings.tres")
 
-@onready var sentence: HFlowContainer = %Sentence
+@onready var sentence_container: HFlowContainer = %Sentence
 @onready var ants_spawn: Node2D = %AntsSpawn
 @onready var ants_start: Node2D = %AntsStart
 @onready var ants_end: Node2D = %AntsEnd
@@ -31,11 +31,11 @@ func _find_stimuli_and_distractions() -> void:
 	var current_lesson_sentences: = []
 	var previous_lesson_sentences: = []
 
-	for sentence: Dictionary in sentences_list:
-		if sentence.LessonNb == lesson_nb:
-			current_lesson_sentences.append(sentence)
+	for sentence_in_list: Dictionary in sentences_list:
+		if sentence_in_list.LessonNb == lesson_nb:
+			current_lesson_sentences.append(sentence_in_list)
 		else:
-			previous_lesson_sentences.append(sentence)
+			previous_lesson_sentences.append(sentence_in_list)
 
 	# Shuffle everything
 	current_lesson_sentences.shuffle()
@@ -98,9 +98,9 @@ func _get_new_sentence() -> void:
 
 func _next_sentence() -> void:
 	var nodes: = []
-	nodes.append_array(sentence.get_children())
+	nodes.append_array(sentence_container.get_children())
 	nodes.append_array(words.get_children())
-	for node in nodes:
+	for node: Node in nodes:
 		node.queue_free()
 	
 	for ant: Ant in ants.get_children():
@@ -115,7 +115,7 @@ func _next_sentence() -> void:
 	
 	current_sentence = stimuli.pop_front()
 	
-	var current_words: PackedStringArray = current_sentence.Sentence.replace("'", " ' ").replace("-", " - ").split(" ")
+	var current_words: PackedStringArray = (current_sentence.Sentence as String).replace("'", " ' ").replace("-", " - ").split(" ")
 	
 	var inds_to_remove: = []
 	for i in range(1, current_words.size()):
@@ -129,7 +129,7 @@ func _next_sentence() -> void:
 			inds_to_remove.append(i)
 	
 	inds_to_remove.reverse()
-	for ind in inds_to_remove:
+	for ind: int in inds_to_remove:
 		current_words.remove_at(ind)
 	
 	var number_of_blanks: int = maxi(2, mini(difficulty, current_words.size()))
@@ -143,19 +143,20 @@ func _next_sentence() -> void:
 	for i in range(current_words.size()):
 		var current_word: = current_words[i]
 		if i in blanks:
-			var blank: = blank_class.instantiate()
+			var blank: Blank = blank_class.instantiate()
 			blank.stimulus = current_word
-			sentence.add_child(blank)
+			sentence_container.add_child(blank)
 			
-			var ant: = ant_class.instantiate()
+			var ant: Node2D = ant_class.instantiate()
 			ants.add_child(ant)
 			ant.global_position = ants_spawn.global_position
 			
-			var word: = word_class.instantiate()
+			var word: Word = word_class.instantiate()
 			words.add_child(word)
 			
 			word.stimulus = current_word
 			word.current_anchor = ant
+			@warning_ignore("UNSAFE_METHOD_ACCESS")
 			word.current_anchor.set_monitorable(false)
 			
 			answered.append(false)
@@ -165,7 +166,7 @@ func _next_sentence() -> void:
 			word.no_answer.connect(_on_word_no_answer.bind(word))
 		else:
 			var label: = Label.new()
-			sentence.add_child(label)
+			sentence_container.add_child(label)
 			
 			label.text = current_word + " "
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -188,7 +189,11 @@ func _start_ants() -> void:
 		ant.idle()
 	
 	for word in words.get_children():
-		word.disabled = false
+		if word is Control:
+			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
+			(word as Control).disabled = false
+		else:
+			push_error("Ants_Minigame: variable \"word\" is not of type Control")
 
 
 func _on_current_progression_changed() -> void:
@@ -205,41 +210,51 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 	answered[word.get_index()] = true
 	
 	var all_answered: = true
-	for a in answered:
+	for a: bool in answered:
 		if not a:
 			all_answered = false
 			break
 	
 	if all_answered:
 		var is_right: = true
-		for a in answers:
+		for a: bool in answers:
 			if not a:
 				is_right = false
 				break
 		
 		for word_i in words.get_children():
+			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
+			@warning_ignore("UNSAFE_METHOD_ACCESS")
 			word_i.current_anchor.set_monitorable(true)
+			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			word_i.disabled = true
 		
 		if is_right:
 			for i in range(words.get_child_count() - 1):
+				@warning_ignore("UNSAFE_METHOD_ACCESS")
 				words.get_child(i).right()
+			@warning_ignore("UNSAFE_METHOD_ACCESS")
 			await words.get_child(words.get_child_count() - 1).right()
 			
 			current_progression += 1
 		else:
 			for i in range(words.get_child_count() - 1):
+				@warning_ignore("UNSAFE_METHOD_ACCESS")
 				words.get_child(i).wrong()
+			@warning_ignore("UNSAFE_METHOD_ACCESS")
 			await words.get_child(words.get_child_count() - 1).wrong()
 			
 			current_lives -= 1
 			
 			for i in range(ants.get_child_count()):
 				answered[i] = false
+				@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 				words.get_child(i).current_anchor = ants.get_child(i)
+				@warning_ignore("UNSAFE_METHOD_ACCESS")
 				ants.get_child(i).set_monitorable(false)
 		
 			for word_i in words.get_children():
+				@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 				word_i.disabled = false
 
 

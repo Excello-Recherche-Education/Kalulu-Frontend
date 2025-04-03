@@ -9,8 +9,8 @@ const lilypad_scene: = preload("res://sources/minigames/frog/lilypad.tscn")
 const lilypad_crossing_time: = 5.0
 
 
-@onready var audio_player: = $AudioStreamPlayer2D
-@onready var spawn_timer: = $SpawnTimer
+@onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var spawn_timer:  Timer = $SpawnTimer
 
 var top_to_bottom: bool = false
 var is_stopped: bool = false
@@ -35,7 +35,7 @@ var lilypads: Array[Lilypad] = []
 var lilypad_size: Vector2
 
 
-func _process(delta):
+func _process(delta: float) -> void:
 	if is_stopped:
 		return
 	for lilypad: Lilypad in lilypads:

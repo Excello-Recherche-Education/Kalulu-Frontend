@@ -1,6 +1,8 @@
 @tool
 extends TextureRect
 
+class_name River
+
 const water_ring_scene: PackedScene = preload("res://sources/utils/fx/water_ring.tscn")
 
 func spawn_water_ring(pos: Vector2) -> void:

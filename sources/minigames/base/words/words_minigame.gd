@@ -155,7 +155,7 @@ func _get_current_distractors() -> Array:
 # Get the current GP to find
 func _get_GP() -> Dictionary:
 	var stimulus: = _get_current_stimulus()
-	if not stimulus or not stimulus.has("GPs") or current_word_progression >= stimulus.GPs.size():
+	if not stimulus or not stimulus.has("GPs") or current_word_progression >= (stimulus.GPs as Array).size():
 		return {}
 	return stimulus.GPs[current_word_progression]
 

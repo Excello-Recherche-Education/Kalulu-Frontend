@@ -1,14 +1,17 @@
+# TODO: Clean the reason why there is so much UNSAFE_PROPERTY_ACCESS in this script.
 extends TextureButton
+
+class_name Word
 
 const Ant: = preload("res://sources/minigames/ants/ant.gd")
 
 signal answer(good: bool)
 signal no_answer()
 
-@onready var area: = $Area2D
-@onready var label: = %Label
-@onready var right_fx: = $RightFX
-@onready var wrong_fx: = $WrongFX
+@onready var area: Area2D = $Area2D
+@onready var label: Label = %Label
+@onready var right_fx: RightFX = $RightFX
+@onready var wrong_fx: WrongFX = $WrongFX
 
 var stimulus: String:
 	set = _set_stimulus
@@ -31,14 +34,15 @@ func _process(_delta: float) -> void:
 		global_position = get_global_mouse_position() - size / 2.0
 	else:
 		if current_anchor is Area2D:
+			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			global_position = current_anchor.anchor.global_position
 		else:
+			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			global_position = current_anchor.global_position
 
 
 func _set_stimulus(value: String) -> void:
 	stimulus = value
-	
 	label.text = stimulus
 
 
@@ -50,21 +54,27 @@ func _on_button_up() -> void:
 	follow_mouse = false
 	
 	var destination: = current_anchor
-	var min_distance: float = (current_anchor.global_position - global_position).length()
+	@warning_ignore("UNSAFE_PROPERTY_ACCESS")
+	var min_distance: float = ((current_anchor.global_position - global_position) as Vector2).length()
 	for other_area in area.get_overlapping_areas():
 		var other: CanvasItem = other_area
 		if not other_area is Ant:
 			other = other_area.owner
-		var dist: float = (other.global_position - global_position).length()
+		@warning_ignore("UNSAFE_PROPERTY_ACCESS")
+		var dist: float = ((other.global_position - global_position ) as Vector2).length()
 		if dist < min_distance:
 			destination = other
 			min_distance = dist
 	
+	@warning_ignore("UNSAFE_METHOD_ACCESS")
 	current_anchor.set_monitorable(true)
 	current_anchor = destination
 	if destination is Ant:
+		@warning_ignore("UNSAFE_METHOD_ACCESS")
 		destination.set_monitorable(false)
 		no_answer.emit()
 	else:
+		@warning_ignore("UNSAFE_METHOD_ACCESS")
 		destination.set_monitorable(false)
+		@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 		answer.emit(stimulus, destination.stimulus)

@@ -39,7 +39,7 @@ var stimulus: Dictionary :
 
 
 func _ready() -> void:
-	button.set_drag_forwarding(_get_drag_data, _can_drop_data, _drop_data)
+	(button as Control).set_drag_forwarding(_get_drag_data, _can_drop_data, _drop_data)
 
 
 func _on_button_pressed() -> void:

@@ -170,7 +170,7 @@ func _curtains_and_kalulu() -> void:
 	if not UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
 		minigame_ui.play_kalulu_speech(intro_kalulu_speech)
 		await minigame_ui.kalulu_speech_ended
-		UserDataManager.mark_speech_as_played(Type.keys()[minigame_name])
+		UserDataManager.mark_speech_as_played(Type.keys()[minigame_name] as String)
 
 
 # Launch the minigame

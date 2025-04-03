@@ -28,15 +28,15 @@ var difficulty_settings: Array[DifficultySettings] = [
 ]
 
 
-@onready var start: = %Start
-@onready var end: = %End
+@onready var start: Control = %Start
+@onready var end: Control = %End
 
-@onready var frog_spawn_point: = %FrogSpawnPoint
-@onready var frog_despawn_point: = %FrogDespawnPoint
+@onready var frog_spawn_point: Control = %FrogSpawnPoint
+@onready var frog_despawn_point: Control = %FrogDespawnPoint
 
-@onready var river: TextureRect = $GameRoot/Background/River
-@onready var lilypad_tracks_container: = %LilypadTracksContainer
-@onready var frog: = %Frog
+@onready var river: River = $GameRoot/Background/River
+@onready var lilypad_tracks_container: HBoxContainer = %LilypadTracksContainer
+@onready var frog: Frog = %Frog
 
 
 func _setup_word_progression() -> void:
@@ -79,7 +79,7 @@ func _create_tracks() -> void:
 	var current_word: = _get_current_stimulus()
 	var current_distractors: = _get_current_distractors()
 	
-	for i in range(current_word.GPs.size()):
+	for i in range((current_word.GPs as Array).size()):
 		var track: LilypadTrack = lilypad_track_scene.instantiate()
 		lilypad_tracks_container.add_child(track)
 		
@@ -158,7 +158,7 @@ func _on_current_progression_changed() -> void:
 		track.right()
 	
 	# Replay the stimulus
-	await audio_player.play_word(_get_previous_stimulus().Word)
+	await audio_player.play_word(_get_previous_stimulus().Word as String)
 	
 	# Makes the frog jumps out of screen
 	frog.jump_to(frog_despawn_point.global_position)
