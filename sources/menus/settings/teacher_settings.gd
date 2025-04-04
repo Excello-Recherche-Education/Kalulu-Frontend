@@ -82,7 +82,7 @@ func _on_student_pressed(code: String) -> void:
 
 
 func _on_add_student_button_pressed() -> void:
-	%AddStudentPopup.show()
+	(%AddStudentPopup as CanvasLayer).show()
 
 
 func _on_add_student_popup_accepted() -> void:
@@ -91,13 +91,13 @@ func _on_add_student_popup_accepted() -> void:
 		return
 	var res: = await ServerManager.add_student({"device" :  current_tab.device_id})
 	if res.code == 200:
-		UserDataManager.update_configuration(res.body)
+		UserDataManager.update_configuration(res.body as Dictionary)
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
 		current_tab.refresh()
 
 
 func _on_add_device_button_pressed() -> void:
-	%AddDevicePopup.show()
+	(%AddDevicePopup as CanvasLayer).show()
 
 
 func _on_add_device_popup_accepted() -> void:
@@ -108,8 +108,8 @@ func _on_add_device_popup_accepted() -> void:
 		devices_tab_container.current_tab = last_device_id
 
 
-func _on_lesson_unlocks_student_deleted(code: int) -> void:
-	%DeleteStudentPopup.show()
+func _on_lesson_unlocks_student_deleted(_code: int) -> void:
+	(%DeleteStudentPopup as CanvasLayer).show()
 
 
 func _on_delete_student_popup_accepted() -> void:
@@ -119,6 +119,6 @@ func _on_delete_student_popup_accepted() -> void:
 	var res: = await ServerManager.remove_student(int(lesson_unlocks.student))
 	if res.code == 200:
 		lesson_unlocks.hide()
-		UserDataManager.update_configuration(res.body)
+		UserDataManager.update_configuration(res.body as Dictionary)
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
 		current_tab.refresh()

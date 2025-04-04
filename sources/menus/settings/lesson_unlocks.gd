@@ -1,7 +1,7 @@
 extends Control
 class_name LessonUnlocks
 
-signal student_deleted(code)
+signal student_deleted(code: int)
 
 const StudentUnlock: = preload("res://sources/menus/settings/lesson_unlock.gd")
 const student_unlock_scene: = preload("res://sources/menus/settings/lesson_unlock.tscn")
@@ -37,7 +37,7 @@ func _on_student_changed(value: String)-> void:
 	student = value
 	progression = UserDataManager.get_student_progression_for_code(device, student)
 	_create_lessons()
-	%PasswordVisualizer.password = value
+	(%PasswordVisualizer as PasswordVisualizer).password = value
 
 
 func _on_back_button_pressed() -> void:
