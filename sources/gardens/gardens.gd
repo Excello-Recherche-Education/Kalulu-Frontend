@@ -19,8 +19,8 @@ const garden_size: int = 2400
 @export var starting_garden: = -1
 
 @export_category("Colors")
-@export var unlocked_color: = Color("1c2662")
-@export var locked_color: = Color("1d2229")
+@export var unlocked_color: = Color("1c2662") #blue
+@export var locked_color: = Color("1d2229") #black
 
 @export_group("Minigames")
 @export var minigames_scenes: Array[PackedScene]
