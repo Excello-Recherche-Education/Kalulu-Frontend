@@ -54,7 +54,6 @@ const garden_size: int = 2400
 @onready var help_few_plants_speech: = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
 @onready var help_many_plants_speech: = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_many_plants"))
 
-var curve: Curve2D
 var lessons: = {}
 var points: Array[Array]= []
 var is_scrolling: = false
@@ -589,7 +588,7 @@ func set_up_path() -> void:
 		return
 	
 	points = []
-	curve = Curve2D.new()
+	var curve: Curve2D = Curve2D.new()
 	
 	for i in gardens_layout.gardens.size():
 		if i >= garden_parent.get_child_count():
