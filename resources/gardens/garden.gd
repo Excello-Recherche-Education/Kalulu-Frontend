@@ -44,6 +44,8 @@ var color: Color
 var current_progression: = 0.0
 var max_progression: = 0.0
 
+var garden_index: int = -1
+
 func get_button_size() -> Vector2:
 	return lesson_button_controls[0].get_size()
 

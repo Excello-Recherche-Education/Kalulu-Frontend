@@ -233,7 +233,11 @@ func _ready() -> void:
 							starting_garden = garden_ind
 							break
 	else:
-		starting_garden = transition_data.current_garden
+		if transition_data.has("current_garden_index"):
+			starting_garden = transition_data.current_garden_index
+		else:
+			push_error("Gardens initialisation: transition_data exists but does not contains the needed current_garden_index")
+			starting_garden = 0
 	
 	scroll_container.scroll_horizontal = garden_size * starting_garden
 	@warning_ignore("integer_division")
@@ -566,9 +570,12 @@ func add_gardens() -> void:
 	
 	# Adds the gardens needed from the layout configuration
 	var current_lesson_count: int = 0
+	var garden_index: int = 0
 	for garden_layout in gardens_layout.gardens:
 		var garden: Garden = garden_scene.instantiate()
 		garden_parent.add_child(garden)
+		garden.garden_index = garden_index
+		garden_index += 1
 		
 		for i in garden_layout.lesson_buttons.size():
 			if current_lesson_count >= lessons.size():
@@ -640,7 +647,7 @@ func _on_lesson_button_pressed() -> void:
 	LookAndLearn.transition_data = {
 		current_button_global_position = current_button_global_position,
 		current_lesson_number = current_lesson_number,
-		current_garden = current_garden,
+		current_garden_index = current_garden.garden_index,
 		look_and_learn_completed = false
 	}
 	get_tree().change_scene_to_packed(look_and_learn_scene)
@@ -656,7 +663,7 @@ func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: i
 	Minigame.transition_data = {
 		current_button_global_position = current_button_global_position,
 		current_lesson_number = current_lesson_number,
-		current_garden = current_garden,
+		current_garden_index = current_garden.garden_index,
 		minigame_number = minigame_number,
 		minigame_completed = false
 	}
