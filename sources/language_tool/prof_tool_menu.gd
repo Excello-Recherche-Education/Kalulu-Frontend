@@ -11,6 +11,7 @@ var save_file: ProfToolSave
 @onready var file_dialog_export: = $FileDialogExport
 @onready var add_word_list_button: = $VBoxContainer/AddWordListButton
 @onready var error_label: = %ErrorLabel
+@onready var tab_container: TabContainer = $CenterContainer/TabContainer
 
 
 func _ready() -> void:
@@ -23,6 +24,8 @@ func _ready() -> void:
 		ResourceSaver.save(save_file, save_file_path)
 	save_file = load(save_file_path)
 	_display_available_languages()
+	tab_container.current_tab = Globals.main_menu_selected_tab
+	tab_container.tab_changed.connect(_on_tab_container_tab_changed)
 
 
 func _display_available_languages() -> void:
@@ -338,3 +341,7 @@ func _create_sentence_csv() -> void:
 
 func _on_open_folder_button_pressed() -> void:
 	OS.shell_show_in_file_manager(ProjectSettings.globalize_path(base_path))
+
+
+func _on_tab_container_tab_changed(tab: int) -> void:
+	Globals.main_menu_selected_tab = tab
