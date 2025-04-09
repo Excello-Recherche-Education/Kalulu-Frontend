@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://bpfcrbd5pxbtm"]
 
-[ext_resource type="Script" path="res://sources/gardens/flower_particle.gd" id="1_8kusj"]
+[ext_resource type="Script" uid="uid://bqp3akngv876c" path="res://sources/gardens/flower_particle.gd" id="1_8kusj"]
 [ext_resource type="Texture2D" uid="uid://bhlxctbycwwg6" path="res://assets/vfx/Cloud01.png" id="1_osgji"]
 [ext_resource type="Texture2D" uid="uid://dybj3kcr7txvb" path="res://assets/vfx/Cloud02.png" id="2_ijsw8"]
 [ext_resource type="AudioStream" uid="uid://cusw38jbclkxs" path="res://assets/sfx/ui_fertilizer_random_02.mp3" id="3_hopxg"]
@@ -19,7 +19,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 gradient = SubResource("Gradient_igrbn")
 
 [sub_resource type="Curve" id="Curve_74q1k"]
-max_value = 2.0
+_limits = [0.0, 2.0, 0.0, 1.0]
 _data = [Vector2(0, 0.800573), 0.0, 0.0, 0, 0, Vector2(1, 1.19542), 0.0, 0.0, 0, 0]
 point_count = 2
 

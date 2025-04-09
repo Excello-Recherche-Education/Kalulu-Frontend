@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://w564hds6sey0"]
 
-[ext_resource type="Script" path="res://sources/language_tool/lesson_exercises_container.gd" id="1_ov6jd"]
+[ext_resource type="Script" uid="uid://b1p0ed4afojd0" path="res://sources/language_tool/lesson_exercises_container.gd" id="1_ov6jd"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_10y14"]
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="3_ssxih"]
 [ext_resource type="Texture2D" uid="uid://cs7v0nap5hadi" path="res://assets/menus/save_ok.png" id="4_0353f"]

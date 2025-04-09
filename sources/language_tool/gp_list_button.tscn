@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dg26jwinhpn1j"]
 
-[ext_resource type="Script" path="res://sources/language_tool/gp_list_button.gd" id="1_14uic"]
+[ext_resource type="Script" uid="uid://bdkqwrskevf76" path="res://sources/language_tool/gp_list_button.gd" id="1_14uic"]
 
 [node name="GPListButton" type="OptionButton"]
 anchors_preset = 15

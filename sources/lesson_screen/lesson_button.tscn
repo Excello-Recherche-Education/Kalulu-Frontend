@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://j7sffldhbunj" path="res://assets/theme/button_pressed_empty.svg" id="2_2g676"]
 [ext_resource type="Texture2D" uid="uid://be30a3cmy0w46" path="res://assets/theme/button_focused_empty.svg" id="3_fksie"]
 [ext_resource type="Texture2D" uid="uid://c0rumwiaimvxy" path="res://assets/theme/button_disabled.svg" id="4_4vg60"]
-[ext_resource type="Script" path="res://sources/lesson_screen/lesson_button.gd" id="4_mbltp"]
+[ext_resource type="Script" uid="uid://d1gj4en3e7b8b" path="res://sources/lesson_screen/lesson_button.gd" id="4_mbltp"]
 [ext_resource type="Texture2D" uid="uid://dwk8xgv3xsmm0" path="res://assets/theme/button_center.svg" id="6_o0qkw"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="7_rtwam"]
 

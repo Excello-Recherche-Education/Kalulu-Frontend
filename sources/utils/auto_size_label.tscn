@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bgio7muqck2bu"]
 
-[ext_resource type="Script" path="res://sources/utils/auto_size_label.gd" id="1_j2tjj"]
+[ext_resource type="Script" uid="uid://dogtl3y1gxiiu" path="res://sources/utils/auto_size_label.gd" id="1_j2tjj"]
 
 [node name="AutoSizeLabel" type="Container"]
 anchors_preset = 15

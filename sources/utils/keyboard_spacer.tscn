@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cr4q0ywceoasx"]
 
-[ext_resource type="Script" path="res://sources/utils/keyboard_spacer.gd" id="1_7gpib"]
+[ext_resource type="Script" uid="uid://daia2hibxl5iw" path="res://sources/utils/keyboard_spacer.gd" id="1_7gpib"]
 
 [node name="KeyboardSpacer" type="MarginContainer"]
 anchors_preset = 15

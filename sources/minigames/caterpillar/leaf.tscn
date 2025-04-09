@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://7vxsh7sire16"]
 
-[ext_resource type="Script" path="res://sources/minigames/caterpillar/leaf.gd" id="1_edw5c"]
+[ext_resource type="Script" uid="uid://c2q0hpdohrix2" path="res://sources/minigames/caterpillar/leaf.gd" id="1_edw5c"]
 [ext_resource type="Texture2D" uid="uid://ck02q7sdfl522" path="res://assets/minigames/caterpillar/graphics/leaf.png" id="1_mb6lu"]
 
 [node name="Leaf" type="Node2D"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://bloyucpsbvpx8"]
 
-[ext_resource type="Script" path="res://sources/minigames/frog/frog.gd" id="1_68f6f"]
+[ext_resource type="Script" uid="uid://b3cplysxudipp" path="res://sources/minigames/frog/frog.gd" id="1_68f6f"]
 [ext_resource type="Texture2D" uid="uid://begtyjietpcyo" path="res://assets/minigames/frog/graphics/frog.png" id="1_c6opx"]
 [ext_resource type="Material" uid="uid://cj241oskmxqgv" path="res://sources/minigames/frog/frog_material.tres" id="2_i6km5"]
 
@@ -232,13 +232,13 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_at27w"]
 _data = {
-"RESET": SubResource("Animation_42msv"),
-"drown": SubResource("Animation_5od11"),
-"idle_front_1": SubResource("Animation_mtfxt"),
-"idle_front_2": SubResource("Animation_yri2x"),
-"idle_side_1": SubResource("Animation_0dpgo"),
-"idle_side_2": SubResource("Animation_pmell"),
-"jump": SubResource("Animation_ir23o")
+&"RESET": SubResource("Animation_42msv"),
+&"drown": SubResource("Animation_5od11"),
+&"idle_front_1": SubResource("Animation_mtfxt"),
+&"idle_front_2": SubResource("Animation_yri2x"),
+&"idle_side_1": SubResource("Animation_0dpgo"),
+&"idle_side_2": SubResource("Animation_pmell"),
+&"jump": SubResource("Animation_ir23o")
 }
 
 [node name="Frog" type="Control"]

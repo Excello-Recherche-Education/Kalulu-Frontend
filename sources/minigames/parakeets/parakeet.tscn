@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://cmoeum0oc0p2"]
 
-[ext_resource type="Script" path="res://sources/minigames/parakeets/parakeet.gd" id="1_p0nqk"]
+[ext_resource type="Script" uid="uid://cir1ejxole7pu" path="res://sources/minigames/parakeets/parakeet.gd" id="1_p0nqk"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_afmcm"]
 [ext_resource type="SpriteFrames" uid="uid://wybpq21deku7" path="res://sources/minigames/parakeets/red_parakeet_animations.tres" id="2_k0dcm"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="4_a2lqo"]

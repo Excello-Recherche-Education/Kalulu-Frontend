@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b07jfpiwtajh"]
 
 [ext_resource type="Texture2D" uid="uid://cohwkrkiyo5rg" path="res://assets/minigames/caterpillar/graphics/berry.png" id="1_3ncmx"]
-[ext_resource type="Script" path="res://sources/minigames/caterpillar/berry.gd" id="1_36web"]
+[ext_resource type="Script" uid="uid://bf2qm2ncit8uq" path="res://sources/minigames/caterpillar/berry.gd" id="1_36web"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_4ywgh"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="4_gmtk0"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="4_j1h4b"]

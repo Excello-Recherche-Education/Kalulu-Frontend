@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d2f7q1tbsmwdx"]
 
-[ext_resource type="Script" path="res://sources/minigames/caterpillar/branch.gd" id="1_bohwm"]
+[ext_resource type="Script" uid="uid://drwx8ngge5hn3" path="res://sources/minigames/caterpillar/branch.gd" id="1_bohwm"]
 [ext_resource type="Texture2D" uid="uid://cddv3a264muei" path="res://assets/minigames/caterpillar/graphics/branch_mid.png" id="3_8458b"]
 
 [node name="Branch" type="Node2D"]

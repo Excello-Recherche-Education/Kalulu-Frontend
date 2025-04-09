@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://ci7ueo06f24k3"]
 
-[ext_resource type="Script" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
+[ext_resource type="Script" uid="uid://cil0o87dsb7q4" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_v06h8"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="3_hvu1i"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_045cm"]

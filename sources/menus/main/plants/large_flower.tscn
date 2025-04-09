@@ -109,8 +109,8 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_47w0h"]
 _data = {
-"RESET": SubResource("Animation_8h6yt"),
-"Spread": SubResource("Animation_wj5s5")
+&"RESET": SubResource("Animation_8h6yt"),
+&"Spread": SubResource("Animation_wj5s5")
 }
 
 [node name="LargeFlower" type="Node2D"]

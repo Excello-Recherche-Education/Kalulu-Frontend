@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://byg15cat0mmep"]
 
-[ext_resource type="Script" path="res://sources/menus/device_selection/device_selection.gd" id="1_6twkt"]
+[ext_resource type="Script" uid="uid://cn7idg6fvby4u" path="res://sources/menus/device_selection/device_selection.gd" id="1_6twkt"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_83384"]
 
 [node name="DeviceSelection" type="Control"]

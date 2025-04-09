@@ -1,9 +1,9 @@
 [gd_scene load_steps=37 format=3 uid="uid://bwe3fp0vkpufb"]
 
-[ext_resource type="Script" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
+[ext_resource type="Script" uid="uid://dsv0728uv1y5l" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
 [ext_resource type="AudioStream" uid="uid://1ibmtydnewa8" path="res://assets/minigames/crabs/audio/sfx/crab_random_6.mp3" id="2_gc7a0"]
 [ext_resource type="Texture2D" uid="uid://c36217nu30yh3" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="2_yu4q0"]
-[ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="3_e1twq"]
+[ext_resource type="Script" uid="uid://bk5oyj8r6aw2h" path="res://sources/utils/sprite_control.gd" id="3_e1twq"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_is4em"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_3hx0j"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_3sw4w"]

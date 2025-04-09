@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://b78362g1yif2n"]
 
-[ext_resource type="Script" path="res://sources/minigames/penguin/penguin.gd" id="1_gyeou"]
+[ext_resource type="Script" uid="uid://c25qilgxaqp1h" path="res://sources/minigames/penguin/penguin.gd" id="1_gyeou"]
 [ext_resource type="Texture2D" uid="uid://4mr2idafmxcp" path="res://assets/minigames/penguin/graphic/penguin.png" id="2_18gp7"]
 [ext_resource type="Texture2D" uid="uid://uc0g4jdjk61p" path="res://assets/minigames/penguin/graphic/snowball.png" id="3_whe7m"]
 [ext_resource type="AudioStream" uid="uid://bha6my06g7p4b" path="res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3" id="8_dqq5e"]
@@ -367,13 +367,13 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ykcap"]
 _data = {
-"RESET": SubResource("Animation_xysi2"),
-"happy": SubResource("Animation_sqmdw"),
-"idle": SubResource("Animation_gk3e3"),
-"idle2": SubResource("Animation_wdf0g"),
-"sad": SubResource("Animation_yqm8m"),
-"slide": SubResource("Animation_rggbs"),
-"throw": SubResource("Animation_d68qa")
+&"RESET": SubResource("Animation_xysi2"),
+&"happy": SubResource("Animation_sqmdw"),
+&"idle": SubResource("Animation_gk3e3"),
+&"idle2": SubResource("Animation_wdf0g"),
+&"sad": SubResource("Animation_yqm8m"),
+&"slide": SubResource("Animation_rggbs"),
+&"throw": SubResource("Animation_d68qa")
 }
 
 [node name="Penguin" type="Node2D"]

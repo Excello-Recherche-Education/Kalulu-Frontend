@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ds3sacjbuqac"]
 
 [ext_resource type="PackedScene" uid="uid://c5ey1jk06asiq" path="res://sources/menus/components/password_visualizer.tscn" id="1_7chbh"]
-[ext_resource type="Script" path="res://sources/menus/settings/student_panel.gd" id="1_teefe"]
+[ext_resource type="Script" uid="uid://hkvgcfi12huf" path="res://sources/menus/settings/student_panel.gd" id="1_teefe"]
 
 [node name="StudentPanel" type="Control"]
 custom_minimum_size = Vector2(822, 500)

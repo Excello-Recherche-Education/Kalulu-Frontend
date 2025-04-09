@@ -1,12 +1,12 @@
 [gd_scene load_steps=11 format=3 uid="uid://b7cfjs2iipagq"]
 
-[ext_resource type="Script" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
+[ext_resource type="Script" uid="uid://d3dv4jeiwga02" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_tirf6"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_25mko"]
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_23tyx"]
 [ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_i6t6f"]
 [ext_resource type="PackedScene" uid="uid://dp4182l80ntvn" path="res://sources/menus/main/plants/flower.tscn" id="7_iqya7"]
-[ext_resource type="Script" path="res://sources/menus/register/ProgressBar.gd" id="8_h8kqu"]
+[ext_resource type="Script" uid="uid://yb5np74ubv0d" path="res://sources/menus/register/ProgressBar.gd" id="8_h8kqu"]
 
 [sub_resource type="Gradient" id="Gradient_dx825"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)

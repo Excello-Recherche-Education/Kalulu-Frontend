@@ -1,11 +1,3 @@
-[gd_resource type="Resource" script_class="UserSettings" load_steps=2 format=3 uid="uid://b2e3dobr8i0xn"]
-
-[ext_resource type="Script" path="res://resources/user/user_settings.gd" id="1_iss82"]
+[gd_resource type="Resource" format=3 uid="uid://b2e3dobr8i0xn"]
 
 [resource]
-script = ExtResource("1_iss82")
-version = 1.0
-master_volume = 0.0
-music_volume = 0.0
-voice_volume = 0.0
-effects_volume = 0.0

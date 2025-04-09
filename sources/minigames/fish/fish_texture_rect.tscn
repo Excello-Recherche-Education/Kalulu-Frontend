@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ck3nw3pk611qk"]
 
-[ext_resource type="Script" path="res://sources/minigames/fish/fish_texture_rect.gd" id="1_wln62"]
+[ext_resource type="Script" uid="uid://t4ngme2jgem6" path="res://sources/minigames/fish/fish_texture_rect.gd" id="1_wln62"]
 [ext_resource type="Texture2D" uid="uid://cscx0pq6raxdo" path="res://assets/minigames/fish/fish.png" id="1_xh3of"]
 
 [node name="FishTextureRect" type="Control"]

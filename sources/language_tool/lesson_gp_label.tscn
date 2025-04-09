@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c2af8v3wmg3b1"]
 
-[ext_resource type="Script" path="res://sources/language_tool/lesson_gp_label.gd" id="1_dfjts"]
+[ext_resource type="Script" uid="uid://dg2yoclglxhj2" path="res://sources/language_tool/lesson_gp_label.gd" id="1_dfjts"]
 
 [node name="LessonGPLabel" type="Label"]
 mouse_filter = 0

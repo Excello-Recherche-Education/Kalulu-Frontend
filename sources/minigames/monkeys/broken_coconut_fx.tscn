@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://cnt2q4hqn1wsq"]
 
 [ext_resource type="Texture2D" uid="uid://bryeqjo7o8qlv" path="res://assets/minigames/monkeys/graphic/broken_coconut_01.png" id="1_ivxel"]
-[ext_resource type="Script" path="res://sources/minigames/monkeys/broken_coconut_fx.gd" id="1_vwvtm"]
+[ext_resource type="Script" uid="uid://qd61mijbp5uu" path="res://sources/minigames/monkeys/broken_coconut_fx.gd" id="1_vwvtm"]
 [ext_resource type="Gradient" uid="uid://coc7rxa1sptom" path="res://sources/minigames/monkeys/fade_out_gradient.tres" id="2_d6ibk"]
 [ext_resource type="Texture2D" uid="uid://cx8qphwv0boe5" path="res://assets/minigames/monkeys/graphic/broken_coconut_02.png" id="2_kd03l"]
 [ext_resource type="Texture2D" uid="uid://p5yp028d4s4b" path="res://assets/minigames/monkeys/graphic/broken_coconut_03.png" id="2_logsj"]
@@ -53,8 +53,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 gradient = SubResource("Gradient_k4jun")
 
 [sub_resource type="Curve" id="Curve_u1y4t"]
-min_value = 0.5
-max_value = 2.0
+_limits = [0.5, 2.0, 0.0, 1.0]
 _data = [Vector2(0, 0.5), 0.0, 1.38153, 0, 0, Vector2(0.983547, 2), 1.5246, 0.0, 0, 0]
 point_count = 2
 

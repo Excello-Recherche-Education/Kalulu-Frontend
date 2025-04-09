@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cp832jmwru06w"]
 
-[ext_resource type="Script" path="res://sources/language_tool/prof_tool_menu.gd" id="1_ibtf2"]
+[ext_resource type="Script" uid="uid://c47yey6m0t3ir" path="res://sources/language_tool/prof_tool_menu.gd" id="1_ibtf2"]
 
 [node name="ProfToolMenu" type="Control"]
 layout_mode = 3

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://byqqa5hk1hmv5"]
 
-[ext_resource type="Script" path="res://sources/minigames/frog/lilypad_track.gd" id="1_0nn04"]
+[ext_resource type="Script" uid="uid://yq7molif7ijh" path="res://sources/minigames/frog/lilypad_track.gd" id="1_0nn04"]
 [ext_resource type="AudioStream" uid="uid://b2idirdf5bdrl" path="res://assets/minigames/frog/audio/frog_taplily.mp3" id="2_8qte0"]
 
 [node name="LilypadTrack" type="Control"]

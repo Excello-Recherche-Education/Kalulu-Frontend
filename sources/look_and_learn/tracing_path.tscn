@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://baqbd52qcuxh1"]
 
-[ext_resource type="Script" path="res://sources/look_and_learn/tracing_path.gd" id="1_4lqdu"]
+[ext_resource type="Script" uid="uid://m40vp7pb30bn" path="res://sources/look_and_learn/tracing_path.gd" id="1_4lqdu"]
 [ext_resource type="Texture2D" uid="uid://bfgwv7jidb5bs" path="res://assets/look_and_learn/guide.svg" id="2_2guls"]
 [ext_resource type="Texture2D" uid="uid://doql1x228r1bv" path="res://assets/look_and_learn/arrow.svg" id="3_imidm"]
 [ext_resource type="Texture2D" uid="uid://gbygdv35ltjx" path="res://assets/look_and_learn/children_hand_180x180.png" id="4_ey17m"]
@@ -44,8 +44,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ei5ps"]
 _data = {
-"RESET": SubResource("2"),
-"animate": SubResource("3")
+&"RESET": SubResource("2"),
+&"animate": SubResource("3")
 }
 
 [node name="TracingPath" type="Path2D"]

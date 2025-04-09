@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dbl3r8426473v"]
 
 [ext_resource type="Texture2D" uid="uid://ouhnm00r8rt6" path="res://assets/menus/plus_button.png" id="1_bx7x7"]
-[ext_resource type="Script" path="res://sources/language_tool/plus_button.gd" id="2_wbgmd"]
+[ext_resource type="Script" uid="uid://c36ocmxuvku4y" path="res://sources/language_tool/plus_button.gd" id="2_wbgmd"]
 
 [node name="Button" type="MarginContainer"]
 offset_left = 1.0

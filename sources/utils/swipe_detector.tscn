@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cjg6pgc7yfp1p"]
 
-[ext_resource type="Script" path="res://sources/utils/swipe_detector.gd" id="1_e7vdp"]
+[ext_resource type="Script" uid="uid://up3q8thilf4d" path="res://sources/utils/swipe_detector.gd" id="1_e7vdp"]
 
 [node name="SwipeDetector" type="Button"]
 anchors_preset = 15

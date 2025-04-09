@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://cn2rw06pltyiu"]
 
-[ext_resource type="Script" path="res://sources/utils/fx/right.gd" id="1_83pnv"]
+[ext_resource type="Script" uid="uid://djqbam0o37ayq" path="res://sources/utils/fx/right.gd" id="1_83pnv"]
 [ext_resource type="AudioStream" uid="uid://s0cxaexjq5l2" path="res://assets/sfx/sfx_right.mp3" id="2_ebh1q"]
 [ext_resource type="Texture2D" uid="uid://3idggaf5hbbm" path="res://assets/vfx/fx_02.png" id="3_2nlkh"]
 [ext_resource type="Texture2D" uid="uid://c161hyri7yhme" path="res://assets/vfx/fx_01.png" id="4_coc6y"]
@@ -194,8 +194,8 @@ tracks/7/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_k8dqy"]
 _data = {
-"RESET": SubResource("Animation_sc4ca"),
-"right": SubResource("Animation_xu0xr")
+&"RESET": SubResource("Animation_sc4ca"),
+&"right": SubResource("Animation_xu0xr")
 }
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_v3jt2"]
@@ -209,7 +209,7 @@ gradient = SubResource("Gradient_u3fxj")
 width = 32
 
 [sub_resource type="Curve" id="Curve_4x1t7"]
-max_value = 0.8
+_limits = [0.0, 0.8, 0.0, 1.0]
 _data = [Vector2(0, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.08937, 0.0, 0, 0]
 point_count = 2
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://df5oba70wj13y"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_jqkff"]
-[ext_resource type="Script" path="res://sources/minigames/ants/ants_minigame.gd" id="2_05d1y"]
+[ext_resource type="Script" uid="uid://j3iib02qbv7r" path="res://sources/minigames/ants/ants_minigame.gd" id="2_05d1y"]
 [ext_resource type="Texture2D" uid="uid://bfeos6fwrmrhc" path="res://assets/minigames/ants/graphics/gauge_icon_ant_empty.png" id="5_jm3ut"]
 [ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="6_qfybu"]
 [ext_resource type="Texture2D" uid="uid://b2mj2s3o22i8p" path="res://assets/minigames/ants/graphics/background.png" id="7_ihrng"]

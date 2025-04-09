@@ -1,6 +1,6 @@
 [gd_scene load_steps=32 format=3 uid="uid://weree6bnlt6f"]
 
-[ext_resource type="Script" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
+[ext_resource type="Script" uid="uid://mlymm66lpbi6" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_p2m3v"]
 [ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_down.png" id="3_po8ds"]
 [ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="4_7xmkh"]
@@ -122,8 +122,8 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_umrx4"]
 _data = {
-"RESET": SubResource("Animation_qwriy"),
-"repeat_stimulus": SubResource("Animation_fr0k4")
+&"RESET": SubResource("Animation_qwriy"),
+&"repeat_stimulus": SubResource("Animation_fr0k4")
 }
 
 [node name="MinigameUI" type="CanvasLayer"]

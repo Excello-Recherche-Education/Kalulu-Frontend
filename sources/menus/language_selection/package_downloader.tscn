@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://bwjft0rlj2tu2"]
 
-[ext_resource type="Script" path="res://sources/menus/language_selection/package_downloader.gd" id="1_awls2"]
+[ext_resource type="Script" uid="uid://dnccsu4wgp1pk" path="res://sources/menus/language_selection/package_downloader.gd" id="1_awls2"]
 [ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="2_e8r30"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_ntm5g"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="4_03o13"]
-[ext_resource type="Script" path="res://sources/ui/popup.gd" id="5_dyine"]
+[ext_resource type="Script" uid="uid://58twmknv6bl5" path="res://sources/ui/popup.gd" id="5_dyine"]
 
 [sub_resource type="Gradient" id="Gradient_22q4u"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)

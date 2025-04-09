@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c71c7g4m8a1aj"]
 
-[ext_resource type="Script" path="res://sources/language_tool/segment_point_button.gd" id="1_d6v6o"]
+[ext_resource type="Script" uid="uid://bd8l1dgofjho" path="res://sources/language_tool/segment_point_button.gd" id="1_d6v6o"]
 [ext_resource type="Texture2D" uid="uid://bgdfoujfibsow" path="res://assets/menus/point_button.png" id="2_6rhkf"]
 
 [node name="SegmentPointButton" type="Control"]

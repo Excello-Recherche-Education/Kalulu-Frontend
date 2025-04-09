@@ -1,7 +1,7 @@
 [gd_scene load_steps=47 format=3 uid="uid://djykrpdu58f3v"]
 
 [ext_resource type="Texture2D" uid="uid://bi8db32muvyqp" path="res://assets/minigames/turtles/graphic/turtle_disappears_0000.png" id="1_phg5d"]
-[ext_resource type="Script" path="res://sources/minigames/turtles/turtle.gd" id="1_vx1yr"]
+[ext_resource type="Script" uid="uid://doq6myv45i4w6" path="res://sources/minigames/turtles/turtle.gd" id="1_vx1yr"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_dmkbj"]
 [ext_resource type="Texture2D" uid="uid://b04s06613lgyo" path="res://assets/minigames/turtles/graphic/turtle_disappears_0001.png" id="2_qodey"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_rllc5"]

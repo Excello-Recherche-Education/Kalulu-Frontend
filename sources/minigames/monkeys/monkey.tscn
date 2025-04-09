@@ -1,6 +1,6 @@
 [gd_scene load_steps=41 format=3 uid="uid://bp0b4xkr7nwed"]
 
-[ext_resource type="Script" path="res://sources/minigames/monkeys/monkey.gd" id="1_cvvgu"]
+[ext_resource type="Script" uid="uid://b37oioeh1rnly" path="res://sources/minigames/monkeys/monkey.gd" id="1_cvvgu"]
 [ext_resource type="Texture2D" uid="uid://cgf8gkpp0hpuf" path="res://assets/minigames/monkeys/graphic/stunned_00.png" id="2_6848f"]
 [ext_resource type="Texture2D" uid="uid://d0jobqj4fvrwy" path="res://assets/minigames/monkeys/graphic/monkey_spritesheet.png" id="2_awb1x"]
 [ext_resource type="Texture2D" uid="uid://bvd3a7sqts1r4" path="res://assets/minigames/monkeys/graphic/stunned_01.png" id="3_8nt41"]
@@ -515,15 +515,15 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rnatx"]
 _data = {
-"RESET": SubResource("Animation_64f28"),
-"finish_throw": SubResource("Animation_cp6hn"),
-"grab": SubResource("Animation_3amr0"),
-"hit": SubResource("Animation_fm776"),
-"idle": SubResource("Animation_y7l2o"),
-"idle_blink": SubResource("Animation_c3yrh"),
-"start_throw": SubResource("Animation_0o2xa"),
-"stunned": SubResource("Animation_ol2dg"),
-"talk": SubResource("Animation_vwrnb")
+&"RESET": SubResource("Animation_64f28"),
+&"finish_throw": SubResource("Animation_cp6hn"),
+&"grab": SubResource("Animation_3amr0"),
+&"hit": SubResource("Animation_fm776"),
+&"idle": SubResource("Animation_y7l2o"),
+&"idle_blink": SubResource("Animation_c3yrh"),
+&"start_throw": SubResource("Animation_0o2xa"),
+&"stunned": SubResource("Animation_ol2dg"),
+&"talk": SubResource("Animation_vwrnb")
 }
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d4bmj"]

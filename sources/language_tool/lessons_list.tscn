@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://b75ondy7h3ssl"]
 
-[ext_resource type="Script" path="res://sources/language_tool/lessons_list.gd" id="1_0e3ki"]
+[ext_resource type="Script" uid="uid://dn6yxhve21bsh" path="res://sources/language_tool/lessons_list.gd" id="1_0e3ki"]
 [ext_resource type="PackedScene" uid="uid://di1ul6ixytmcj" path="res://sources/language_tool/lesson_container.tscn" id="2_lhjp5"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="3_jascd"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="4_g2qry"]
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="4_jdhgf"]
-[ext_resource type="Script" path="res://sources/language_tool/ScrollContainer.gd" id="6_ej5w8"]
+[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/ScrollContainer.gd" id="6_ej5w8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73um4"]
 bg_color = Color(0.254902, 0.329412, 0.572549, 1)

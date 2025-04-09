@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://0arkj3ss1fbj"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_crpog"]
-[ext_resource type="Script" path="res://sources/menus/register/steps/recap_step.gd" id="2_0vlqx"]
+[ext_resource type="Script" uid="uid://0vcwta1jnwr6" path="res://sources/menus/register/steps/recap_step.gd" id="2_0vlqx"]
 
 [node name="RecapStep" instance=ExtResource("1_crpog")]
 script = ExtResource("2_0vlqx")

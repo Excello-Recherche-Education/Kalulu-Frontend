@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://dyn71e3ttv2le"]
 
-[ext_resource type="Script" path="res://sources/minigames/caterpillar/spit_fx.gd" id="1_pyr48"]
+[ext_resource type="Script" uid="uid://dpom306speb2y" path="res://sources/minigames/caterpillar/spit_fx.gd" id="1_pyr48"]
 [ext_resource type="Texture2D" uid="uid://bk1nmu2pkdenx" path="res://assets/vfx/tear.png" id="2_0nykj"]
 
 [sub_resource type="Gradient" id="Gradient_57gkf"]
@@ -12,7 +12,7 @@ gradient = SubResource("Gradient_57gkf")
 width = 32
 
 [sub_resource type="Curve" id="Curve_6hopf"]
-max_value = 0.8
+_limits = [0.0, 0.8, 0.0, 1.0]
 _data = [Vector2(0, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.08937, 0.0, 0, 0]
 point_count = 2
 

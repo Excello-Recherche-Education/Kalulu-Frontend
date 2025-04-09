@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://yk1u0ohwwgb3"]
 
-[ext_resource type="Script" path="res://sources/utils/autoloads/server_manager.gd" id="1_n6vsh"]
+[ext_resource type="Script" uid="uid://bcrcty7bhrpps" path="res://sources/utils/autoloads/server_manager.gd" id="1_n6vsh"]
 
 [sub_resource type="Gradient" id="Gradient_wm8cn"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)

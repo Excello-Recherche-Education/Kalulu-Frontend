@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://blos4rn53qkwg"]
 
-[ext_resource type="Script" path="res://sources/minigames/base/kalulu.gd" id="1_iin3v"]
+[ext_resource type="Script" uid="uid://ih4xg7hi7ts3" path="res://sources/minigames/base/kalulu.gd" id="1_iin3v"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="2_gi4rq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iqd4x"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b75gufapo12p7"]
 
 [ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/components/code_keyboard.tscn" id="1_2c1xf"]
-[ext_resource type="Script" path="res://sources/menus/adult_check/adult_check.gd" id="1_wqrmw"]
+[ext_resource type="Script" uid="uid://c8s16jlnw5x7y" path="res://sources/menus/adult_check/adult_check.gd" id="1_wqrmw"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="2_tyffq"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_whxas"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_pni2u"]

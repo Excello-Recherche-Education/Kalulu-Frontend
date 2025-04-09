@@ -1,9 +1,9 @@
 [gd_scene load_steps=17 format=3 uid="uid://djduptonofbh4"]
 
-[ext_resource type="Script" path="res://sources/menus/components/code_keyboard.gd" id="1_4kb0k"]
+[ext_resource type="Script" uid="uid://b4g67ksws3sc3" path="res://sources/menus/components/code_keyboard.gd" id="1_4kb0k"]
 [ext_resource type="Texture2D" uid="uid://d3rhl050u0ahl" path="res://assets/menus/login/password_background.png" id="1_qy2tt"]
 [ext_resource type="Texture2D" uid="uid://de8087qre3hqd" path="res://assets/menus/login/button_symbol01_up.png" id="2_lewtn"]
-[ext_resource type="Script" path="res://sources/menus/components/password_visualizer.gd" id="2_sr5ud"]
+[ext_resource type="Script" uid="uid://dmni1siik6ffc" path="res://sources/menus/components/password_visualizer.gd" id="2_sr5ud"]
 [ext_resource type="Texture2D" uid="uid://ce2dk2so7yo85" path="res://assets/menus/login/button_symbol01_down.png" id="3_6vmwg"]
 [ext_resource type="Texture2D" uid="uid://cq6ctjti7nroe" path="res://assets/menus/login/button_symbol02_up.png" id="4_xtie5"]
 [ext_resource type="Texture2D" uid="uid://cghxguj0vdhx7" path="res://assets/menus/login/button_symbol02_down.png" id="5_ckp8y"]

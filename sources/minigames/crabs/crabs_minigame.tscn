@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bxh1torc05k7p"]
 
 [ext_resource type="PackedScene" uid="uid://clbi7qphyh0so" path="res://sources/minigames/base/hear_and_find/syllables_minigame.tscn" id="1_lbq56"]
-[ext_resource type="Script" path="res://sources/minigames/crabs/crabs_minigame.gd" id="2_gierf"]
+[ext_resource type="Script" uid="uid://dg4o0yh1fn33t" path="res://sources/minigames/crabs/crabs_minigame.gd" id="2_gierf"]
 [ext_resource type="Texture2D" uid="uid://bt7u67errbjls" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_empty.png" id="5_7vlrm"]
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="6_1r44u"]
 [ext_resource type="Texture2D" uid="uid://5bx8ugh178j1" path="res://assets/minigames/crabs/graphic/background.png" id="7_s0cgt"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqgqvjcjj07i3"]
 
-[ext_resource type="Script" path="res://sources/language_tool/gp_select_popup.gd" id="1_1wl8e"]
+[ext_resource type="Script" uid="uid://by0vt068i7cw" path="res://sources/language_tool/gp_select_popup.gd" id="1_1wl8e"]
 
 [node name="GPSelectPopup" type="MarginContainer"]
 offset_right = 593.0

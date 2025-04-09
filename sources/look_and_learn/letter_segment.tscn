@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://cw72s41o5vn4e"]
 
-[ext_resource type="Script" path="res://sources/look_and_learn/letter_segment.gd" id="1"]
+[ext_resource type="Script" uid="uid://b16i4x4kwpgs6" path="res://sources/look_and_learn/letter_segment.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://baqbd52qcuxh1" path="res://sources/look_and_learn/tracing_path.tscn" id="2_hdjbu"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="4"]
 [ext_resource type="AudioStream" uid="uid://bqlrlnas4fkfa" path="res://assets/look_and_learn/win.wav" id="5"]

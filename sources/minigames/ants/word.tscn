@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://p4004yi344kw"]
 
 [ext_resource type="Texture2D" uid="uid://bg2gyu46wsh8c" path="res://assets/minigames/ants/graphics/hole_01.png" id="1_jbe57"]
-[ext_resource type="Script" path="res://sources/minigames/ants/word.gd" id="2_ed8h7"]
+[ext_resource type="Script" uid="uid://c3b4mtcxn0ptp" path="res://sources/minigames/ants/word.gd" id="2_ed8h7"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="3_hml8s"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="3_q5w35"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="4_tbe68"]

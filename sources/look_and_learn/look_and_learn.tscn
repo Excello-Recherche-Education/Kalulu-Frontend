@@ -1,6 +1,6 @@
 [gd_scene load_steps=33 format=3 uid="uid://mnvxfhi70bx5"]
 
-[ext_resource type="Script" path="res://sources/look_and_learn/look_and_learn.gd" id="1_12st1"]
+[ext_resource type="Script" uid="uid://ylee262nfnsi" path="res://sources/look_and_learn/look_and_learn.gd" id="1_12st1"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_2efp5"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="3_7ejv4"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="4_1m6x7"]
@@ -740,13 +740,13 @@ tracks/7/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s3pa5"]
 _data = {
-"RESET": SubResource("Animation_6mi26"),
-"end_images_and_sounds": SubResource("Animation_n4iry"),
-"end_tracing": SubResource("Animation_6yile"),
-"end_videos": SubResource("Animation_b81ql"),
-"to_images_and_sounds": SubResource("Animation_hfhei"),
-"to_tracing": SubResource("Animation_7e5fj"),
-"to_videos": SubResource("Animation_qg4n5")
+&"RESET": SubResource("Animation_6mi26"),
+&"end_images_and_sounds": SubResource("Animation_n4iry"),
+&"end_tracing": SubResource("Animation_6yile"),
+&"end_videos": SubResource("Animation_b81ql"),
+&"to_images_and_sounds": SubResource("Animation_hfhei"),
+&"to_tracing": SubResource("Animation_7e5fj"),
+&"to_videos": SubResource("Animation_qg4n5")
 }
 
 [sub_resource type="Gradient" id="Gradient_5unmp"]
@@ -772,6 +772,7 @@ emission_ring_axis = Vector3(0, 0, 1)
 emission_ring_height = 1.0
 emission_ring_radius = 75.0
 emission_ring_inner_radius = 50.0
+emission_ring_cone_angle = 90.0
 angle_max = 360.0
 direction = Vector3(0, -1, 0)
 radial_velocity_min = 500.0

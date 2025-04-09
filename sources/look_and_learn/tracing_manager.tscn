@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cboa82q0bjlvc"]
 
-[ext_resource type="Script" path="res://sources/look_and_learn/tracing_manager.gd" id="1"]
+[ext_resource type="Script" uid="uid://bkjitwhuf67dg" path="res://sources/look_and_learn/tracing_manager.gd" id="1"]
 [ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="2_rhj0u"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6xos"]

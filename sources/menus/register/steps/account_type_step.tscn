@@ -1,11 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://c73wkbttv0ou0"]
+[gd_scene load_steps=11 format=3 uid="uid://c73wkbttv0ou0"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_g51ml"]
-[ext_resource type="Script" path="res://addons/godot-form-validator/control_validator.gd" id="2_hidu6"]
-[ext_resource type="Script" path="res://sources/menus/register/steps/account_type_step.gd" id="2_k6524"]
-[ext_resource type="Script" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_54aao"]
-[ext_resource type="Script" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_bdvqa"]
-[ext_resource type="Script" path="res://sources/utils/binder/control_binder.gd" id="5_w7o0m"]
+[ext_resource type="Script" uid="uid://dg4qit8mffvjh" path="res://addons/godot-form-validator/control_validator.gd" id="2_hidu6"]
+[ext_resource type="Script" uid="uid://b3lqs6b6vj57r" path="res://sources/menus/register/steps/account_type_step.gd" id="2_k6524"]
+[ext_resource type="Script" uid="uid://dw5aercmfe4" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_54aao"]
+[ext_resource type="Script" uid="uid://83q48kwp3p6p" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_bdvqa"]
+[ext_resource type="Script" uid="uid://dg17cfvs2w257" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="4_n022u"]
+[ext_resource type="Script" uid="uid://7uwoocpe7ieu" path="res://sources/utils/binder/control_binder.gd" id="5_w7o0m"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="7_kjn8t"]
 
 [sub_resource type="Resource" id="Resource_kw8sn"]
@@ -17,7 +18,7 @@ script = ExtResource("4_bdvqa")
 validation_order = 1
 validation_method = 1
 skip_validation = false
-rules = Array[Resource("res://addons/godot-form-validator/rules/validator_rule.gd")]([SubResource("Resource_kw8sn")])
+rules = Array[ExtResource("4_n022u")]([SubResource("Resource_kw8sn")])
 
 [node name="AccountTypeStep" instance=ExtResource("1_g51ml")]
 script = ExtResource("2_k6524")

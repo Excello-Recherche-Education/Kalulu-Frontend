@@ -1,10 +1,10 @@
 [gd_scene load_steps=70 format=3 uid="uid://df5derhil64ca"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_itrpi"]
-[ext_resource type="Script" path="res://sources/minigames/fish/fish_minigame.gd" id="2_68jip"]
+[ext_resource type="Script" uid="uid://dgodk76761a1n" path="res://sources/minigames/fish/fish_minigame.gd" id="2_68jip"]
 [ext_resource type="Texture2D" uid="uid://ccfocxdqxujvc" path="res://assets/minigames/fish/background.png" id="3_3ty3i"]
 [ext_resource type="Texture2D" uid="uid://bf7od6f56f516" path="res://assets/minigames/fish/sun.png" id="4_2m0ff"]
-[ext_resource type="Script" path="res://sources/utils/sprite_control.gd" id="4_8mkk3"]
+[ext_resource type="Script" uid="uid://bk5oyj8r6aw2h" path="res://sources/utils/sprite_control.gd" id="4_8mkk3"]
 [ext_resource type="Texture2D" uid="uid://batqk810wx2ty" path="res://assets/minigames/fish/clouds.png" id="4_ccu1v"]
 [ext_resource type="Texture2D" uid="uid://byl2f1xlwvc57" path="res://assets/minigames/fish/beacon_spritesheet.png" id="4_ohn01"]
 [ext_resource type="Texture2D" uid="uid://dey247uccopxi" path="res://assets/minigames/fish/sea.png" id="5_dc51h"]
@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="11_ueo10"]
 [ext_resource type="Texture2D" uid="uid://4ci6gmg0c15o" path="res://assets/minigames/minigame_ui/graphic/white_gauge.png" id="12_w5m1b"]
 [ext_resource type="Texture2D" uid="uid://disgg14rdmp81" path="res://assets/minigames/monkeys/graphic/textplank.png" id="13_3p0ue"]
-[ext_resource type="Script" path="res://sources/utils/percent_margin_container.gd" id="14_b3ilp"]
+[ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="14_b3ilp"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="17_47luc"]
 
 [sub_resource type="Environment" id="Environment_5bcb7"]
@@ -234,8 +234,8 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tmg6i"]
 _data = {
-"RESET": SubResource("Animation_n6305"),
-"idle": SubResource("Animation_t78yv")
+&"RESET": SubResource("Animation_n6305"),
+&"idle": SubResource("Animation_t78yv")
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_td78x"]

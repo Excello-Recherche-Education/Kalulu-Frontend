@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dsvgeiocp4y36"]
 
-[ext_resource type="Script" path="res://sources/menus/register/steps/device_recap.gd" id="1_q1dk1"]
+[ext_resource type="Script" uid="uid://de17h265v2cpo" path="res://sources/menus/register/steps/device_recap.gd" id="1_q1dk1"]
 
 [node name="DeviceRecap" type="MarginContainer"]
 anchors_preset = 15

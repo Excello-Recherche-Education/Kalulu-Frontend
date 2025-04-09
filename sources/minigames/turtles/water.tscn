@@ -2,7 +2,7 @@
 
 [ext_resource type="Material" uid="uid://cpfvnjrabobgn" path="res://sources/minigames/turtles/turtles_water_material.tres" id="1_hot6u"]
 [ext_resource type="Texture2D" uid="uid://caiayxwsgup2e" path="res://assets/minigames/turtles/graphic/turtle_background.png" id="2_dxrmw"]
-[ext_resource type="Script" path="res://sources/minigames/turtles/water.gd" id="3_n3ww4"]
+[ext_resource type="Script" uid="uid://d0uds5yrt4yex" path="res://sources/minigames/turtles/water.gd" id="3_n3ww4"]
 
 [node name="Water" type="TextureRect"]
 material = ExtResource("1_hot6u")

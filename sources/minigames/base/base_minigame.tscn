@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://8awe4usnucyv"]
 
-[ext_resource type="Script" path="res://sources/minigames/base/base_minigame.gd" id="1_jdfsm"]
+[ext_resource type="Script" uid="uid://c0rirj74j3u08" path="res://sources/minigames/base/base_minigame.gd" id="1_jdfsm"]
 [ext_resource type="PackedScene" uid="uid://weree6bnlt6f" path="res://sources/minigames/base/minigame_ui.tscn" id="2_a3tib"]
-[ext_resource type="Script" path="res://sources/minigames/base/MinigameAudioStreamPlayer.gd" id="2_dkgx4"]
+[ext_resource type="Script" uid="uid://djkmst1rxksk7" path="res://sources/minigames/base/MinigameAudioStreamPlayer.gd" id="2_dkgx4"]
 [ext_resource type="PackedScene" uid="uid://d1gkvqxe1n8o8" path="res://sources/utils/fx/fireworks.tscn" id="4_yekwo"]
 
 [node name="BaseMinigame" type="Control"]

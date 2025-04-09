@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://qsvbq6ruc44v"]
 
-[ext_resource type="Script" path="res://sources/menus/settings/lesson_unlocks.gd" id="1_rlqp5"]
+[ext_resource type="Script" uid="uid://idm8o2vp60up" path="res://sources/menus/settings/lesson_unlocks.gd" id="1_rlqp5"]
 [ext_resource type="PackedScene" uid="uid://c5ey1jk06asiq" path="res://sources/menus/components/password_visualizer.tscn" id="2_jm5xx"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_wiajt"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_v7dp3"]

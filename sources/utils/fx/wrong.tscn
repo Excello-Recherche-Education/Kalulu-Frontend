@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dlmbxcgiv8tpr"]
 
 [ext_resource type="AudioStream" uid="uid://2imrfcmquc7d" path="res://assets/sfx/sfx_wrong.mp3" id="1_qd4na"]
-[ext_resource type="Script" path="res://sources/utils/fx/wrong.gd" id="1_sgjc5"]
+[ext_resource type="Script" uid="uid://b5dy0viriac74" path="res://sources/utils/fx/wrong.gd" id="1_sgjc5"]
 [ext_resource type="Texture2D" uid="uid://c161hyri7yhme" path="res://assets/vfx/fx_01.png" id="3_r5miu"]
 [ext_resource type="Texture2D" uid="uid://bqw5oyt88v05u" path="res://assets/vfx/cross.png" id="4_7ijh5"]
 
@@ -169,8 +169,8 @@ tracks/6/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c86ui"]
 _data = {
-"RESET": SubResource("Animation_tj5mf"),
-"wrong": SubResource("Animation_dn23k")
+&"RESET": SubResource("Animation_tj5mf"),
+&"wrong": SubResource("Animation_dn23k")
 }
 
 [node name="WrongFX" type="Control"]

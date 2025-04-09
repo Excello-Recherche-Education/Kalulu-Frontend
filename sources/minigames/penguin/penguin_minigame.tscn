@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dpp3bpy1v80jk"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_s6yuv"]
-[ext_resource type="Script" path="res://sources/minigames/penguin/penguin_minigame.gd" id="2_ncha4"]
+[ext_resource type="Script" uid="uid://250f3suy83hr" path="res://sources/minigames/penguin/penguin_minigame.gd" id="2_ncha4"]
 [ext_resource type="Texture2D" uid="uid://cvnv0beq0dcr4" path="res://assets/minigames/penguin/graphic/background.png" id="3_8crb3"]
 [ext_resource type="Texture2D" uid="uid://kwcp3ondyggo" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_empty.png" id="3_gdpi3"]
 [ext_resource type="Texture2D" uid="uid://7apuslkxluxp" path="res://assets/minigames/penguin/graphic/snowballs_pile.png" id="4_e3y2j"]

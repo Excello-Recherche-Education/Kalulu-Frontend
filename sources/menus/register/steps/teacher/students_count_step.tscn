@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cyhoa68y1yyyg"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_par6r"]
-[ext_resource type="Script" path="res://sources/menus/register/steps/teacher/students_count_step.gd" id="2_susi5"]
+[ext_resource type="Script" uid="uid://cfcfx3tbskkn2" path="res://sources/menus/register/steps/teacher/students_count_step.gd" id="2_susi5"]
 [ext_resource type="Theme" uid="uid://cd7ftmo5x4c2r" path="res://resources/themes/kalulu_theme_big.tres" id="3_pacdw"]
 
 [node name="StudentsCountStep" instance=ExtResource("1_par6r")]

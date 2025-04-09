@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://blioxuf8hvad4"]
 
-[ext_resource type="Script" path="res://sources/utils/fx/water_ring.gd" id="1_tgn6m"]
+[ext_resource type="Script" uid="uid://cnjiltb3725a" path="res://sources/utils/fx/water_ring.gd" id="1_tgn6m"]
 [ext_resource type="Texture2D" uid="uid://ba3pksf5lbjml" path="res://assets/vfx/water_fx.png" id="2_rqr5s"]
 
 [sub_resource type="Gradient" id="Gradient_cfyxj"]
@@ -10,7 +10,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 gradient = SubResource("Gradient_cfyxj")
 
 [sub_resource type="Curve" id="Curve_1dvj3"]
-max_value = 2.0
+_limits = [0.0, 2.0, 0.0, 1.0]
 _data = [Vector2(0, 0.851735), 0.0, 0.0, 0, 0, Vector2(0.32626, 1.55475), 1.41985, 1.41985, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
 point_count = 3
 

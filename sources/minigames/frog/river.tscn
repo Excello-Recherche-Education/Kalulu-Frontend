@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://sumrd1i3g6f7"]
 
-[ext_resource type="Shader" path="res://resources/shaders/move_shader.gdshader" id="1_k1xuy"]
+[ext_resource type="Shader" uid="uid://da5cg0cin6tgm" path="res://resources/shaders/move_shader.gdshader" id="1_k1xuy"]
 [ext_resource type="Texture2D" uid="uid://g1pr0xqbmwcb" path="res://assets/minigames/frog/graphics/background_river.png" id="2_k1yyh"]
-[ext_resource type="Script" path="res://sources/minigames/frog/river.gd" id="3_k1wdt"]
+[ext_resource type="Script" uid="uid://ck2n14haj45im" path="res://sources/minigames/frog/river.gd" id="3_k1wdt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_doj3f"]
 shader = ExtResource("1_k1xuy")

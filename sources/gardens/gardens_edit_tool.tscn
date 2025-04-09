@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://wbwrlja5v5gc"]
 
 [ext_resource type="PackedScene" uid="uid://b1rkn0uwoyd7l" path="res://sources/gardens/gardens.tscn" id="1_4b1e3"]
-[ext_resource type="Script" path="res://sources/gardens/gardens_edit_tool.gd" id="2_gxq1k"]
+[ext_resource type="Script" uid="uid://cn1kfbsfhxqog" path="res://sources/gardens/gardens_edit_tool.gd" id="2_gxq1k"]
 
 [node name="GardensEditTool" instance=ExtResource("1_4b1e3")]
 script = ExtResource("2_gxq1k")

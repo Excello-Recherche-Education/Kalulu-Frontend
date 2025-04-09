@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dht5umof6hqqy"]
 
-[ext_resource type="Script" path="res://sources/menus/settings/lesson_unlock.gd" id="1_rlnlh"]
+[ext_resource type="Script" uid="uid://crrnxt5bwa8wi" path="res://sources/menus/settings/lesson_unlock.gd" id="1_rlnlh"]
 
 [node name="LessonUnlock" type="MarginContainer"]
 theme_override_constants/margin_left = 25

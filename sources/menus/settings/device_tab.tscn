@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c4jpo4l5w2vhv"]
 
-[ext_resource type="Script" path="res://sources/menus/settings/device_tab.gd" id="1_40sjo"]
+[ext_resource type="Script" uid="uid://dr585w0sy1t81" path="res://sources/menus/settings/device_tab.gd" id="1_40sjo"]
 
 [node name="DeviceTab" type="TabBar"]
 anchors_preset = 15

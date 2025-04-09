@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://c20bhtvqds4p6"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_6nhsm"]
-[ext_resource type="Script" path="res://sources/minigames/monkeys/monkeys_minigame.gd" id="2_12lw5"]
-[ext_resource type="Shader" path="res://resources/shaders/move_shader.gdshader" id="3_cw8rd"]
+[ext_resource type="Script" uid="uid://dvmvvbfb666cg" path="res://sources/minigames/monkeys/monkeys_minigame.gd" id="2_12lw5"]
+[ext_resource type="Shader" uid="uid://da5cg0cin6tgm" path="res://resources/shaders/move_shader.gdshader" id="3_cw8rd"]
 [ext_resource type="Texture2D" uid="uid://demg0gbj4lwic" path="res://assets/minigames/monkeys/graphic/background.png" id="3_xpybj"]
 [ext_resource type="Texture2D" uid="uid://b6k16tfsm2p4u" path="res://assets/minigames/monkeys/graphic/ground.png" id="4_m2hoh"]
 [ext_resource type="Texture2D" uid="uid://eor7gaddgj5d" path="res://assets/minigames/monkeys/graphic/palmtree_01.png" id="5_2qxen"]

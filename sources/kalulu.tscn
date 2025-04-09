@@ -148,7 +148,7 @@
 [ext_resource type="Texture2D" uid="uid://d0g031tu1g1yu" path="res://assets/kalulu/kalulu_tc_talk3_0009.png" id="146_oxso3"]
 [ext_resource type="Texture2D" uid="uid://6fkmda3vo0cl" path="res://assets/kalulu/kalulu_tc_talk3_0010.png" id="147_r8vaw"]
 [ext_resource type="Texture2D" uid="uid://6mgel4kxmg28" path="res://assets/kalulu/kalulu_tc_talk3_0011.png" id="148_w88w6"]
-[ext_resource type="Script" path="res://sources/kalulu.gd" id="149_lwhfy"]
+[ext_resource type="Script" uid="uid://25yl6wqnud6u" path="res://sources/kalulu.gd" id="149_lwhfy"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_bhck1"]
 animations = [{

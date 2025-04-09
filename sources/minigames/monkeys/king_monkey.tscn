@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://b8r26vroslasj"]
 
-[ext_resource type="Script" path="res://sources/minigames/monkeys/king_monkey.gd" id="1_6p7n7"]
+[ext_resource type="Script" uid="uid://dq7mfmu114cvl" path="res://sources/minigames/monkeys/king_monkey.gd" id="1_6p7n7"]
 [ext_resource type="Texture2D" uid="uid://boxmlmbplr12i" path="res://assets/minigames/monkeys/graphic/king_spritesheet.png" id="1_l8txe"]
 [ext_resource type="PackedScene" uid="uid://2mwfjg3c68p1" path="res://sources/minigames/monkeys/coconut.tscn" id="3_dsell"]
 
@@ -375,15 +375,15 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_m40ug"]
 _data = {
-"RESET": SubResource("Animation_yp7w5"),
-"catch": SubResource("Animation_5ospq"),
-"finish_right": SubResource("Animation_eb4ap"),
-"finish_wrong": SubResource("Animation_qtise"),
-"idle": SubResource("Animation_ko53b"),
-"idle_blink": SubResource("Animation_bat0b"),
-"read": SubResource("Animation_5r5mg"),
-"start_right": SubResource("Animation_t25c3"),
-"start_wrong": SubResource("Animation_moet5")
+&"RESET": SubResource("Animation_yp7w5"),
+&"catch": SubResource("Animation_5ospq"),
+&"finish_right": SubResource("Animation_eb4ap"),
+&"finish_wrong": SubResource("Animation_qtise"),
+&"idle": SubResource("Animation_ko53b"),
+&"idle_blink": SubResource("Animation_bat0b"),
+&"read": SubResource("Animation_5r5mg"),
+&"start_right": SubResource("Animation_t25c3"),
+&"start_wrong": SubResource("Animation_moet5")
 }
 
 [node name="KingMonkey" type="Node2D"]

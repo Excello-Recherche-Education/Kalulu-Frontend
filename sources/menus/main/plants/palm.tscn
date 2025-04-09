@@ -36,8 +36,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j6jql"]
 _data = {
-"RESET": SubResource("Animation_ub1ab"),
-"sway": SubResource("Animation_hug64")
+&"RESET": SubResource("Animation_ub1ab"),
+&"sway": SubResource("Animation_hug64")
 }
 
 [node name="Palm" type="Node2D"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://btg3qd8eld1mm"]
 
-[ext_resource type="Script" path="res://resources/gardens/garden.gd" id="1_5owem"]
-[ext_resource type="Script" path="res://resources/gardens/garden_layout.gd" id="2_8g7o4"]
+[ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
+[ext_resource type="Script" uid="uid://bb3nsq54104g" path="res://resources/gardens/garden_layout.gd" id="2_8g7o4"]
 [ext_resource type="Texture2D" uid="uid://b5kildofgmthb" path="res://assets/gardens/gardens/garden_01_open.png" id="3_p7iv3"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="5_76gol"]

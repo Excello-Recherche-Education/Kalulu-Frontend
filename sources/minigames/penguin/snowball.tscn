@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cwvhrdw4hwvje"]
 
-[ext_resource type="Script" path="res://sources/minigames/penguin/snowball.gd" id="1_1ihh4"]
+[ext_resource type="Script" uid="uid://dprlk8jqvbbek" path="res://sources/minigames/penguin/snowball.gd" id="1_1ihh4"]
 [ext_resource type="Texture2D" uid="uid://uc0g4jdjk61p" path="res://assets/minigames/penguin/graphic/snowball.png" id="1_wakpr"]
 [ext_resource type="Gradient" uid="uid://coc7rxa1sptom" path="res://sources/minigames/monkeys/fade_out_gradient.tres" id="3_fny4l"]
 

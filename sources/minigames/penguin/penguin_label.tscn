@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://hnhiv6odqvnk"]
 
-[ext_resource type="Script" path="res://sources/minigames/penguin/penguin_label.gd" id="2_eu3c0"]
+[ext_resource type="Script" uid="uid://dgd47ntlm731" path="res://sources/minigames/penguin/penguin_label.gd" id="2_eu3c0"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_vlrm2"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_elaak"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_opr0c"]

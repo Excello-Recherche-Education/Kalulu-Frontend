@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dt8ynpufhqs5w"]
 
-[ext_resource type="Script" path="res://sources/utils/fx/sand.gd" id="1_rveeh"]
+[ext_resource type="Script" uid="uid://b3rdx2f6g5m1l" path="res://sources/utils/fx/sand.gd" id="1_rveeh"]
 [ext_resource type="Texture2D" uid="uid://bdf3ydwjg3ry4" path="res://assets/vfx/Sand_07.png" id="3_v27vk"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l5ec5"]

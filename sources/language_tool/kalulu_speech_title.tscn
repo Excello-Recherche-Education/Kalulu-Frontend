@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bbvgtp81etltf"]
 
-[ext_resource type="Script" path="res://sources/language_tool/kalulu_speech_title.gd" id="1_6lip0"]
+[ext_resource type="Script" uid="uid://buutin0kywi2f" path="res://sources/language_tool/kalulu_speech_title.gd" id="1_6lip0"]
 
 [node name="KaluluSpeechTitle" type="PanelContainer"]
 anchors_preset = 15

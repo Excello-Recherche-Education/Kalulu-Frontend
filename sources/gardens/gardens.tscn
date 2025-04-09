@@ -1,6 +1,6 @@
 [gd_scene load_steps=57 format=3 uid="uid://b1rkn0uwoyd7l"]
 
-[ext_resource type="Script" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
+[ext_resource type="Script" uid="uid://djolw68efn6r5" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
 [ext_resource type="PackedScene" uid="uid://bxh1torc05k7p" path="res://sources/minigames/crabs/crabs_minigame.tscn" id="3_vqohy"]
 [ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="3_xbvhu"]
 [ext_resource type="PackedScene" uid="uid://dtcgj6ee8jt2t" path="res://sources/minigames/jellyfish/jellyfish_minigame.tscn" id="4_cvoj1"]
@@ -38,8 +38,8 @@
 [ext_resource type="AudioStream" uid="uid://vyj4leik80w2" path="res://assets/sfx/swoosh.mp3" id="25_npbuv"]
 [ext_resource type="Texture2D" uid="uid://cqhbpt3lk6f15" path="res://assets/lesson_screen/bottom.png" id="25_tyvq6"]
 [ext_resource type="AudioStream" uid="uid://dlxvbjp63w6wm" path="res://assets/look_and_learn/effect.wav" id="26_5g3l0"]
-[ext_resource type="Script" path="res://sources/gardens/minigame_layout.gd" id="28_kvgph"]
-[ext_resource type="Shader" path="res://resources/shaders/outline_shader.gdshader" id="29_pew8x"]
+[ext_resource type="Script" uid="uid://ddew42fnpmsx1" path="res://sources/gardens/minigame_layout.gd" id="28_kvgph"]
+[ext_resource type="Shader" uid="uid://bnp4dxce44hcm" path="res://resources/shaders/outline_shader.gdshader" id="29_pew8x"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="33_5y3ye"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="41_xcos2"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="42_l35j3"]

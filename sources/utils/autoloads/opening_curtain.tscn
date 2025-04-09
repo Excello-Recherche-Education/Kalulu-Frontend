@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cp27bjh6v5bkj"]
 
-[ext_resource type="Script" path="res://sources/utils/autoloads/opening_curtain.gd" id="1_xih0r"]
+[ext_resource type="Script" uid="uid://c7w4sjmeijxkf" path="res://sources/utils/autoloads/opening_curtain.gd" id="1_xih0r"]
 [ext_resource type="Texture2D" uid="uid://cop8iscyxohrb" path="res://assets/bush_curtain.png" id="2_5yuun"]
 
 [sub_resource type="Animation" id="Animation_eyrra"]
@@ -158,9 +158,9 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_o5y2b"]
 _data = {
-"RESET": SubResource("Animation_eyrra"),
-"close": SubResource("Animation_qqx6p"),
-"open": SubResource("Animation_24r35")
+&"RESET": SubResource("Animation_eyrra"),
+&"close": SubResource("Animation_qqx6p"),
+&"open": SubResource("Animation_24r35")
 }
 
 [node name="OpeningCurtain" type="CanvasLayer"]

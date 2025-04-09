@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://bcadj5r77ovtn"]
 
 [ext_resource type="Texture2D" uid="uid://bk1nmu2pkdenx" path="res://assets/vfx/tear.png" id="1"]
-[ext_resource type="Script" path="res://sources/utils/fx/rocket.gd" id="3"]
+[ext_resource type="Script" uid="uid://dolkd3p3u4fc1" path="res://sources/utils/fx/rocket.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://bdi46ixijlqv6" path="res://assets/vfx/rocket.png" id="4"]
 [ext_resource type="AudioStream" uid="uid://bbqebmbl4yopa" path="res://assets/sfx/fireworks_1.mp3" id="4_cme6g"]
 [ext_resource type="Texture2D" uid="uid://dtwpg8ymy3d6q" path="res://assets/vfx/dustparticule.png" id="5"]
@@ -87,6 +87,7 @@ emission_ring_axis = Vector3(0, 0, 1)
 emission_ring_height = 1.0
 emission_ring_radius = 75.0
 emission_ring_inner_radius = 25.0
+emission_ring_cone_angle = 90.0
 direction = Vector3(0, 0, 0)
 gravity = Vector3(0, 0, 0)
 scale_min = 0.2

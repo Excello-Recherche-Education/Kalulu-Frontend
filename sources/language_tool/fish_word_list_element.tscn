@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://f7s5uqqaoavv"]
 
-[ext_resource type="Script" path="res://sources/language_tool/fish_word_list_element.gd" id="1_ni50l"]
+[ext_resource type="Script" uid="uid://k8j3qop7d83b" path="res://sources/language_tool/fish_word_list_element.gd" id="1_ni50l"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_ywxuc"]
 [ext_resource type="Texture2D" uid="uid://b8tctfnsj3prx" path="res://assets/menus/minus_button.png" id="3_qu268"]
 

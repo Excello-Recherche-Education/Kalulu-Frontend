@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://bxd3i06rqpxf0"]
 
-[ext_resource type="Script" path="res://sources/menus/register/steps/base_step.gd" id="1_02ocl"]
+[ext_resource type="Script" uid="uid://ddg138yuagx4i" path="res://sources/menus/register/steps/base_step.gd" id="1_02ocl"]
 [ext_resource type="Texture2D" uid="uid://d1tsqdom1rra1" path="res://assets/theme/arrow_back.svg" id="2_41tvo"]
-[ext_resource type="Script" path="res://addons/godot-form-validator/form_validator.gd" id="2_nw61e"]
+[ext_resource type="Script" uid="uid://ddmyah1o42hwp" path="res://addons/godot-form-validator/form_validator.gd" id="2_nw61e"]
 [ext_resource type="Texture2D" uid="uid://doql1x228r1bv" path="res://assets/look_and_learn/arrow.svg" id="3_17uns"]
-[ext_resource type="Script" path="res://sources/utils/binder/form_binder.gd" id="3_mk32l"]
+[ext_resource type="Script" uid="uid://b11owjubqe3iw" path="res://sources/utils/binder/form_binder.gd" id="3_mk32l"]
 [ext_resource type="Texture2D" uid="uid://d3rhl050u0ahl" path="res://assets/menus/login/password_background.png" id="4_h32tf"]
 [ext_resource type="PackedScene" uid="uid://cr4q0ywceoasx" path="res://sources/utils/keyboard_spacer.tscn" id="6_i4s2p"]
 

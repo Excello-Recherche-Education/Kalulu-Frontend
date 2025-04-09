@@ -37,8 +37,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kw7nd"]
 _data = {
-"RESET": SubResource("Animation_fub3r"),
-"bob": SubResource("Animation_e4e8l")
+&"RESET": SubResource("Animation_fub3r"),
+&"bob": SubResource("Animation_e4e8l")
 }
 
 [node name="Flower" type="Node2D"]

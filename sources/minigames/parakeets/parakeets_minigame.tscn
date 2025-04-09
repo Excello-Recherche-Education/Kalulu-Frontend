@@ -1,11 +1,11 @@
 [gd_scene load_steps=12 format=3 uid="uid://8cbihh6410yp"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_oeg4r"]
-[ext_resource type="Script" path="res://sources/minigames/parakeets/parakeets_minigame.gd" id="2_x6xn5"]
+[ext_resource type="Script" uid="uid://dlq28cmi0bpm8" path="res://sources/minigames/parakeets/parakeets_minigame.gd" id="2_x6xn5"]
 [ext_resource type="Texture2D" uid="uid://dv1ombj8eolb1" path="res://assets/minigames/parakeets/graphic/background.png" id="3_xjvte"]
 [ext_resource type="Texture2D" uid="uid://clvh07xfgjmri" path="res://assets/minigames/parakeets/graphic/tree_trunk.png" id="4_unuga"]
 [ext_resource type="Texture2D" uid="uid://d3n327me83on7" path="res://assets/minigames/parakeets/graphic/tree_branch.png" id="5_46kss"]
-[ext_resource type="Shader" path="res://resources/shaders/move_shader.gdshader" id="5_q7573"]
+[ext_resource type="Shader" uid="uid://da5cg0cin6tgm" path="res://resources/shaders/move_shader.gdshader" id="5_q7573"]
 [ext_resource type="Texture2D" uid="uid://dpx72xoqt8lkq" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_empty.png" id="5_yt7mv"]
 [ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="6_46vnr"]
 [ext_resource type="Texture2D" uid="uid://sjxhvbq8ijbw" path="res://assets/minigames/parakeets/graphic/nest_back.png" id="6_g64mq"]

@@ -1,9 +1,8 @@
 [gd_resource type="Resource" script_class="UserProgression" load_steps=2 format=3 uid="uid://d2eidlyvq5bua"]
 
-[ext_resource type="Script" path="res://resources/user/user_progression.gd" id="1_6qylt"]
+[ext_resource type="Script" uid="uid://bs5l0l33e7iqf" path="res://resources/user/user_progression.gd" id="1_6qylt"]
 
 [resource]
 script = ExtResource("1_6qylt")
 version = 1.0
-difficulty = 1
 unlocks = {}

@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cqx0qux4msnm7"]
 
-[ext_resource type="Script" path="res://sources/minigames/caterpillar/caterpillar.gd" id="1_addut"]
+[ext_resource type="Script" uid="uid://ui362fnglx0k" path="res://sources/minigames/caterpillar/caterpillar.gd" id="1_addut"]
 [ext_resource type="PackedScene" uid="uid://dryu60mtiqv3" path="res://sources/minigames/caterpillar/caterpillar_body.tscn" id="2_vrjdf"]
 [ext_resource type="Texture2D" uid="uid://bb3pue3wwsyc0" path="res://assets/minigames/caterpillar/graphics/caterpillar_tail_1.png" id="14_dchxm"]
 [ext_resource type="Texture2D" uid="uid://c7noke1ky61q8" path="res://assets/minigames/caterpillar/graphics/caterpillar_tail_2.png" id="15_i1gfi"]

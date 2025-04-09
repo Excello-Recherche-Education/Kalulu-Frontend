@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://v0lyity2xtdk"]
 
-[ext_resource type="Script" path="res://sources/look_and_learn/tracing_effects.gd" id="1_fwn5n"]
+[ext_resource type="Script" uid="uid://dn5igrr7y0o3s" path="res://sources/look_and_learn/tracing_effects.gd" id="1_fwn5n"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="2_3m3v8"]
 [ext_resource type="AudioStream" uid="uid://dlxvbjp63w6wm" path="res://assets/look_and_learn/effect.wav" id="3_m2u4r"]
 

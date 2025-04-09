@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://cge0uyn30tcpv"]
 
 [ext_resource type="Texture2D" uid="uid://3idggaf5hbbm" path="res://assets/vfx/fx_02.png" id="1_s57yc"]
-[ext_resource type="Script" path="res://sources/utils/fx/highlight.gd" id="1_uj18s"]
+[ext_resource type="Script" uid="uid://bu51jb5rfc5r2" path="res://sources/utils/fx/highlight.gd" id="1_uj18s"]
 [ext_resource type="Texture2D" uid="uid://c161hyri7yhme" path="res://assets/vfx/fx_01.png" id="2_3sm6p"]
 
 [sub_resource type="Animation" id="Animation_mfajw"]
@@ -216,9 +216,9 @@ tracks/5/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g6flg"]
 _data = {
-"RESET": SubResource("Animation_mfajw"),
-"highlight": SubResource("Animation_ud7pl"),
-"stop": SubResource("Animation_7q7mv")
+&"RESET": SubResource("Animation_mfajw"),
+&"highlight": SubResource("Animation_ud7pl"),
+&"stop": SubResource("Animation_7q7mv")
 }
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3qhub"]

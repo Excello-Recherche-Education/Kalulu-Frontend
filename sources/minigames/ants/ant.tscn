@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://c6st16roxwloh"]
 
 [ext_resource type="Texture2D" uid="uid://cfd278lhnobop" path="res://assets/minigames/ants/graphics/ant.png" id="1_53cyo"]
-[ext_resource type="Script" path="res://sources/minigames/ants/ant.gd" id="2_7hdpa"]
+[ext_resource type="Script" uid="uid://cgglsnkgjyxid" path="res://sources/minigames/ants/ant.gd" id="2_7hdpa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_100ls"]
 size = Vector2(215, 155)
@@ -87,11 +87,11 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4dc5i"]
 _data = {
-"RESET": SubResource("Animation_2xh8m"),
-"idle_1": SubResource("Animation_icfp5"),
-"idle_2": SubResource("Animation_jkxdv"),
-"walk_1": SubResource("Animation_uwv17"),
-"walk_2": SubResource("Animation_gml77")
+&"RESET": SubResource("Animation_2xh8m"),
+&"idle_1": SubResource("Animation_icfp5"),
+&"idle_2": SubResource("Animation_jkxdv"),
+&"walk_1": SubResource("Animation_uwv17"),
+&"walk_2": SubResource("Animation_gml77")
 }
 
 [node name="Ant" type="Area2D"]

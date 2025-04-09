@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://dl5wx8l0awoi0"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_ng5er"]
-[ext_resource type="Script" path="res://sources/minigames/frog/frog_minigame.gd" id="2_0xg3r"]
+[ext_resource type="Script" uid="uid://b7q0v031ffg1v" path="res://sources/minigames/frog/frog_minigame.gd" id="2_0xg3r"]
 [ext_resource type="Texture2D" uid="uid://jvpu77isfi5b" path="res://assets/minigames/frog/graphics/gauge_icon_frog_empty.png" id="2_e38i1"]
 [ext_resource type="Texture2D" uid="uid://cusulkkvcyxak" path="res://assets/minigames/frog/graphics/sand_left.png" id="3_eaixk"]
 [ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="3_vjlmb"]

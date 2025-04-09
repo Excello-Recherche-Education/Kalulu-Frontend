@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://2mwfjg3c68p1"]
 
 [ext_resource type="Texture2D" uid="uid://bh28uja7gs8u4" path="res://assets/minigames/monkeys/graphic/coconut.png" id="1_fvymg"]
-[ext_resource type="Script" path="res://sources/minigames/monkeys/coconut.gd" id="1_yojn5"]
+[ext_resource type="Script" uid="uid://q6go00k3f50e" path="res://sources/minigames/monkeys/coconut.gd" id="1_yojn5"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_8nuxj"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="4_h34ty"]
 [ext_resource type="PackedScene" uid="uid://cnt2q4hqn1wsq" path="res://sources/minigames/monkeys/broken_coconut_fx.tscn" id="5_ddd0v"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cy14lm72cd7cy"]
 
 [ext_resource type="PackedScene" uid="uid://dx33ijlgd8m3w" path="res://sources/language_tool/word_list_element.tscn" id="1_iocqg"]
-[ext_resource type="Script" path="res://sources/language_tool/sentence_list_element.gd" id="2_f3m6w"]
+[ext_resource type="Script" uid="uid://qenwemup08em" path="res://sources/language_tool/sentence_list_element.gd" id="2_f3m6w"]
 
 [node name="SentenceListElement" instance=ExtResource("1_iocqg")]
 script = ExtResource("2_f3m6w")

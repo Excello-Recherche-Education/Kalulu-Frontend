@@ -1,6 +1,6 @@
 [gd_scene load_steps=45 format=3 uid="uid://dlqtn4yhqno8t"]
 
-[ext_resource type="Script" path="res://sources/menus/brain/brain.gd" id="1_1rwi2"]
+[ext_resource type="Script" uid="uid://haysn8cxlhek" path="res://sources/menus/brain/brain.gd" id="1_1rwi2"]
 [ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="1_poeho"]
 [ext_resource type="Texture2D" uid="uid://dqjvrit8c3m6s" path="res://assets/brain_screen/blue_palm.png" id="2_6qag6"]
 [ext_resource type="Resource" uid="uid://c1xe204vu7asa" path="res://resources/gardens/gardens_layout.tres" id="2_eooqa"]
