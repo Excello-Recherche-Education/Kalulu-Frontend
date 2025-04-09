@@ -43,6 +43,12 @@ func _ready() -> void:
 func setup() -> void:
 	gp_list = Database.get_GP_for_lesson(lesson_nb, true, true)
 	
+	if gp_list.size() <= 0:
+		push_error("Look and learn setup() did not found any GP for lesson " + str(lesson_nb))
+		await OpeningCurtain.open()
+		_on_tracing_manager_finished()
+		return
+	
 	current_video = 0
 	current_image_and_sound = 0
 	current_tracing = 0
