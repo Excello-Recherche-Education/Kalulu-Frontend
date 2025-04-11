@@ -168,6 +168,7 @@ theme_override_font_sizes/font_size = 60
 alignment = 1
 item_count = 1
 popup/item_0/text = "New"
+popup/item_0/id = 0
 
 [node name="AddWordListButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -243,7 +244,6 @@ access = 2
 initial_position = 2
 size = Vector2i(1500, 1000)
 popup_window = true
-ok_button_text = "Enregistrer"
 access = 2
 
 [node name="ErrorLabel" type="Label" parent="."]
