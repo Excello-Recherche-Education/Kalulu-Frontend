@@ -134,6 +134,159 @@ func _on_export_filename_selected(filename: String) -> void:
 	var folder_zipper: = FolderZipper.new()
 	folder_zipper.compress(base_path.path_join(Database.language), filename)
 
+#region Integrity check
+var integrity_checking: bool = false
+@onready var check_box_log: CheckBox = $CheckIntegrityButton/CheckBoxLog
+var integrity_log_path: String = "user://database-integrity-log.txt"
+var total_integrity_warnings: int = 0
+
+func _check_db_integrity():
+	if integrity_checking:
+		return
+	integrity_checking = true
+	error_label.text = "Database integrity check started."
+	total_integrity_warnings = 0
+	await get_tree().process_frame
+	if check_box_log.button_pressed:
+		if FileAccess.file_exists(integrity_log_path):
+			DirAccess.remove_absolute(integrity_log_path)
+	
+	var sentences_list = Database.get_sentences_by_lessons()
+	var lesson_id: int
+	var known_words_list: Dictionary = {}
+	var known_GPs_list: Array[Dictionary] = []
+	var GPKnown: bool = false
+	for i in Database.get_lessons_count():
+		lesson_id = i +1
+		error_label.text = "Database integrity checks lesson " + str(lesson_id)
+		await get_tree().process_frame
+		print("Lesson_id = " + str(lesson_id))
+		
+		var new_GPs_for_lesson: Array = Database.get_GP_for_lesson(lesson_id, true, true, false, false, true)
+		for new_GP: Dictionary in new_GPs_for_lesson:
+			if !new_GP.has("ID"):
+				if !log_message("GP with no ID in lesson " + str(lesson_id)):
+					return
+			if !new_GP.has("Grapheme"):
+				if !log_message("GP (ID " + str(new_GP.ID) + ") with no Grapheme in lesson " + str(lesson_id)):
+					return
+			if !new_GP.has("Phoneme"):
+				if !log_message("GP (ID " + str(new_GP.ID) + ") with no Phoneme in lesson " + str(lesson_id)):
+					return
+			var exists = known_GPs_list.any(func(d): return d == new_GP)
+			if exists:
+				if !log_message("GP ID " + str(new_GP.ID) + " already exists in lesson " + str(lesson_id)):
+					return
+			else:
+				known_GPs_list.push_back(new_GP)
+		
+		var new_words_for_lesson: Array = Database.get_words_for_lesson(lesson_id, true, 1, 99, true)
+		for new_word: Dictionary in new_words_for_lesson:
+			if !new_word.has("ID"):
+				if !log_message("Word with no ID in lesson ID " + str(lesson_id)):
+					return
+			if !new_word.has("GPs"):
+				if !log_message("Word with no GPs (key) at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
+					return
+			if !new_word.has("Word"):
+				if !log_message("Word with no Word (key) at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
+					return
+			for GP: Dictionary in new_word.GPs:
+				if !GP.has("ID"):
+					if !log_message("GP with no ID (key) at lesson ID " + str(lesson_id) + " in word " + new_word.Word + " (ID " + str(new_word.ID) + ")"):
+						return
+				GPKnown = false
+				for knownGP: Dictionary in known_GPs_list:
+					if knownGP.ID == GP.ID:
+						GPKnown = true
+						break
+				if !GPKnown:
+					print(known_GPs_list)
+					if !log_message("Word " + new_word.Word + " with unknown GP (ID " + str(GP.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
+						return
+			if known_words_list.has(new_word.Word):
+				if !log_message('Word  "' + new_word.Word + '" is introduced in lesson ID ' + str(lesson_id) + " but it already was introduced in lesson ID " + str(known_words_list[new_word.Word])):
+					return
+			known_words_list[new_word.Word] = lesson_id
+		
+		if sentences_list.has(lesson_id):
+			for sentence: Dictionary in sentences_list[lesson_id]:
+				if !sentence.has("ID"):
+					if !log_message("Sentence with no ID in lesson ID " + str(lesson_id)):
+						return
+				if !sentence.has("Sentence"):
+					if !log_message("Sentence with no Sentence (key) at lesson ID " + str(lesson_id) + " and sentence ID " + str(sentence.ID)):
+						return
+				var word_count = (sentence.Sentence).replace("'", " ").split(" ").size()
+				var word_list = Database.get_words_in_sentence(sentence.ID)
+				if word_list.size() != word_count:
+					if !log_message('Sentence "' + sentence.Sentence + '" has incoherent words count: ' + str(word_list.size())):
+						return
+				for word: Dictionary in word_list:
+					if !word.has("ID"):
+						if !log_message("Word with no ID in lesson ID " + str(lesson_id) + " and sentence ID " + str(sentence.ID)):
+							return
+					if !word.has("Word"):
+						if !log_message("Word with no Word (key) at lesson ID " + str(lesson_id) + ", sentence ID " + str(sentence.ID) + " and word ID " + str(word.ID)):
+							return
+					if !known_words_list.has(word.Word):
+						if !log_message('Word "' + word.Word + '" is used in lesson ID ' + str(lesson_id) + ", sentence ID " + str(sentence.ID) + ", but it has not been introduced yet."):
+							return
+		else:
+			continue
+	
+	#if sentences_list.is_empty():
+		#error_label.text = "No sentence found"
+	#
+	#for sentence: Dictionary in sentences_list:
+		#print(sentence)
+		
+		#summary_file.store_line("Lesson %s --------------------" % lesson)
+		#summary_file.store_line("\t \t Words ---")
+		#var words: = ""
+		#for e in Database.get_words_for_lesson(lesson, true):
+			#words += e.Word + ", "
+		#summary_file.store_line(words.trim_suffix(", "))
+		#summary_file.store_line("\n")
+		#summary_file.store_line("\t \t Syllables ---")
+		#var syllables: = ""
+		#for e in Database.get_syllables_for_lesson(lesson, true):
+			#syllables += e.Grapheme + ", "
+		#summary_file.store_line(syllables.trim_suffix(", "))
+		#summary_file.store_line("\n")
+		#summary_file.store_line("\t \t Sentences ---")
+		#for e in Database.get_sentences(lesson, true, sentences_by_lesson):
+			#summary_file.store_line(e.Sentence)
+		#summary_file.store_line("\n\n")
+	#summary_file.close()
+	error_label.text = "Database integrity check finished. " + str(total_integrity_warnings) + " warnings found."
+	integrity_checking = false
+	if check_box_log.button_pressed:
+		var file_path = ProjectSettings.globalize_path(integrity_log_path)
+		print("Log saved at " + file_path)
+		OS.shell_open(file_path)
+#endregion
+
+func log_message(message: String) -> bool:
+	total_integrity_warnings += 1
+	if check_box_log.button_pressed:
+		var file: FileAccess
+		if FileAccess.file_exists(integrity_log_path):
+			file = FileAccess.open(integrity_log_path, FileAccess.READ_WRITE)
+			file.seek_end() # Se placer à la fin pour ajouter
+		else:
+			file = FileAccess.open(integrity_log_path, FileAccess.WRITE_READ)
+		if file:
+			file.seek_end()
+			file.store_line(message)
+			file.close()
+		else:
+			print("file not found")
+		return true
+	else:
+		error_label.text = message
+		integrity_checking = false
+		return false
 
 func _get_available_languages() -> Array[String]:
 	var available_languages: Array[String] = []

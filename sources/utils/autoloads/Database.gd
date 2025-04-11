@@ -105,11 +105,11 @@ func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
 	return result
 
 
-func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false) -> Array:
+func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false, include_exceptions: bool = false) -> Array:
 	
 	var parameters := []
 	var symbol: = "<=" if not only_new else "=="
-	var query: = "SELECT g.ID, Grapheme, Phoneme, "
+	var query: = "SELECT g.ID, g.Grapheme, g.Phoneme, "
 	
 	if with_other_phonemes:
 		query += "(SELECT group_concat(Phoneme) FROM GPs g2 
@@ -124,9 +124,14 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb " + symbol + " ?"
 	parameters.append(lesson_nb)
 	
-	query += " WHERE Exception = 0"
+	var conditions := []
+	if not include_exceptions:
+		conditions.append("Exception = 0")
 	if only_vowels:
-		query += " AND Type = 1"
+		conditions.append("Type = 1")
+	
+	if conditions.size() > 0:
+		query += " WHERE " + " AND ".join(conditions)
 	
 	if distinct:
 		query += " GROUP BY Grapheme"
@@ -203,9 +208,9 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictio
 	return res
 
 
-func get_words_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 99) -> Array:
+func get_words_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 99, include_exception: bool = false) -> Array:
 	var parameters: Array = []
-	var query: = "SELECT Words.ID, Words.Word, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb, VerifiedCount.gpsid as GPs_IDs
+	var query: = "SELECT DISTINCT Words.ID, Words.Word, Words.Exception, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb, VerifiedCount.gpsid as GPs_IDs
 FROM Words
 	 INNER JOIN 
 	(SELECT WordID, count() as Count FROM GPsInWords 
@@ -226,8 +231,12 @@ FROM Words
 			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
 		parameters.append(lesson_nb)
 	
-	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ? and Words.Exception = false
-	ORDER BY LessonNb, GPsCount ASC"
+	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ?"
+
+	if not include_exception:
+		query += " and Words.Exception = false"
+
+	query += " ORDER BY LessonNb, GPsCount ASC"
 	parameters.append(max_length)
 	parameters.append(min_length)
 	
@@ -420,7 +429,7 @@ func get_min_lesson_for_word_id(word_id: int) -> int:
 	ORDER BY Position", [word_id])
 	var m: = -1
 	for result in db.query_result:
-		var i: = Database.get_min_lesson_for_gp_id(result.GPID as int)
+		var i: int = Database.get_min_lesson_for_gp_id(result.GPID as int)
 		if i < 0:
 			m = -1
 			break

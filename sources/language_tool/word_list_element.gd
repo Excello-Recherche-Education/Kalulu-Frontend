@@ -208,7 +208,7 @@ func insert_in_database() -> void:
 				table,
 				table]
 		Database.db.query_with_bindings(query, [id])
-		print(query)
+		#print(query)
 		if not Database.db.query_result.is_empty():
 			var e = Database.db.query_result[0]
 			if word != e[table_graph_column] or exception != e.Exception:

@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cp832jmwru06w"]
+[gd_scene load_steps=3 format=3 uid="uid://cp832jmwru06w"]
 
 [ext_resource type="Script" uid="uid://c47yey6m0t3ir" path="res://sources/language_tool/prof_tool_menu.gd" id="1_ibtf2"]
+
+[sub_resource type="FontVariation" id="FontVariation_vmcjv"]
 
 [node name="ProfToolMenu" type="Control"]
 layout_mode = 3
@@ -138,6 +140,32 @@ theme_override_font_sizes/font_size = 100
 text = "Export
 "
 
+[node name="CheckIntegrityButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1035.33
+offset_top = 1502.0
+offset_right = 1767.33
+offset_bottom = 1647.0
+theme_override_font_sizes/font_size = 100
+text = "Check Integrity
+"
+
+[node name="CheckBoxLog" type="CheckBox" parent="CheckIntegrityButton"]
+layout_mode = 0
+offset_left = -93.0
+offset_top = 39.0
+offset_right = -23.0
+offset_bottom = 109.0
+
+[node name="Label" type="Label" parent="CheckIntegrityButton/CheckBoxLog"]
+layout_mode = 0
+offset_left = -35.33
+offset_top = 66.0
+offset_right = 100.67
+offset_bottom = 121.0
+text = "Log all"
+horizontal_alignment = 1
+
 [node name="OpenFolderButton" type="Button" parent="."]
 layout_mode = 0
 offset_left = 1922.0
@@ -256,6 +284,7 @@ anchor_bottom = 1.0
 offset_top = -79.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_fonts/font = SubResource("FontVariation_vmcjv")
 theme_override_font_sizes/font_size = 60
 
 [connection signal="pressed" from="CenterContainer/TabContainer/Language/GPListButton" to="." method="_on_gp_list_button_pressed"]
@@ -271,6 +300,7 @@ theme_override_font_sizes/font_size = 60
 [connection signal="pressed" from="CenterContainer/TabContainer/GameData/ExercisesButton" to="." method="_on_exercises_button_pressed"]
 [connection signal="pressed" from="CenterContainer/TabContainer/GameData/SpeechesButton" to="." method="_on_speeches_button_pressed"]
 [connection signal="pressed" from="ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="CheckIntegrityButton" to="." method="_check_db_integrity"]
 [connection signal="pressed" from="OpenFolderButton" to="." method="_on_open_folder_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ImportLanguageButton" to="." method="_on_import_language_button_pressed"]
 [connection signal="item_selected" from="VBoxContainer/LanguageSelectButton" to="." method="_on_language_select_button_item_selected"]
