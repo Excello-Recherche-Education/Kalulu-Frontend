@@ -134,7 +134,7 @@ func _on_export_filename_selected(filename: String) -> void:
 	var folder_zipper: = FolderZipper.new()
 	folder_zipper.compress(base_path.path_join(Database.language), filename)
 
-#region Integrity check
+#region Database integrity check
 var integrity_checking: bool = false
 @onready var check_box_log: CheckBox = $CheckIntegrityButton/CheckBoxLog
 var integrity_log_path: String = "user://database-integrity-log.txt"
@@ -152,6 +152,9 @@ func _check_db_integrity():
 			DirAccess.remove_absolute(integrity_log_path)
 	
 	var sentences_list = Database.get_sentences_by_lessons()
+	if sentences_list.is_empty():
+		if !log_message("No sentence found in database"):
+					return
 	var lesson_id: int
 	var known_words_list: Dictionary = {}
 	var known_GPs_list: Array[Dictionary] = []
@@ -233,32 +236,8 @@ func _check_db_integrity():
 						if !log_message('Word "' + word.Word + '" is used in lesson ID ' + str(lesson_id) + ", sentence ID " + str(sentence.ID) + ", but it has not been introduced yet."):
 							return
 		else:
-			continue
+			continue #No sentence in this lesson
 	
-	#if sentences_list.is_empty():
-		#error_label.text = "No sentence found"
-	#
-	#for sentence: Dictionary in sentences_list:
-		#print(sentence)
-		
-		#summary_file.store_line("Lesson %s --------------------" % lesson)
-		#summary_file.store_line("\t \t Words ---")
-		#var words: = ""
-		#for e in Database.get_words_for_lesson(lesson, true):
-			#words += e.Word + ", "
-		#summary_file.store_line(words.trim_suffix(", "))
-		#summary_file.store_line("\n")
-		#summary_file.store_line("\t \t Syllables ---")
-		#var syllables: = ""
-		#for e in Database.get_syllables_for_lesson(lesson, true):
-			#syllables += e.Grapheme + ", "
-		#summary_file.store_line(syllables.trim_suffix(", "))
-		#summary_file.store_line("\n")
-		#summary_file.store_line("\t \t Sentences ---")
-		#for e in Database.get_sentences(lesson, true, sentences_by_lesson):
-			#summary_file.store_line(e.Sentence)
-		#summary_file.store_line("\n\n")
-	#summary_file.close()
 	error_label.text = "Database integrity check finished. " + str(total_integrity_warnings) + " warnings found."
 	integrity_checking = false
 	if check_box_log.button_pressed:
