@@ -197,13 +197,13 @@ motion_scale = Vector2(0.1, 0.1)
 material = SubResource("CanvasItemMaterial_ey6av")
 position = Vector2(1280, 900)
 amount = 256
-process_material = SubResource("ParticleProcessMaterial_m12rm")
 texture = ExtResource("3_xbvhu")
 lifetime = 5.0
 preprocess = 5.0
 randomness = 0.5
 visibility_rect = Rect2(-12800, -900, 25600, 1800)
 local_coords = true
+process_material = SubResource("ParticleProcessMaterial_m12rm")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
@@ -247,8 +247,8 @@ z_index = 1
 material = SubResource("CanvasItemMaterial_13bcn")
 position = Vector2(59.5, 51)
 scale = Vector2(0.4, 0.4)
-process_material = SubResource("ParticleProcessMaterial_3eofo")
 texture = ExtResource("25_00sy7")
+process_material = SubResource("ParticleProcessMaterial_3eofo")
 
 [node name="LineAudioStreamPlayer" type="AudioStreamPlayer2D" parent="ScrollContainer/UnlockedLine/LineParticles"]
 unique_name_in_owner = true
@@ -431,8 +431,8 @@ material = SubResource("CanvasItemMaterial_5003s")
 position = Vector2(192, 192)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4gqpn")
 texture = ExtResource("25_00sy7")
+process_material = SubResource("ParticleProcessMaterial_4gqpn")
 
 [node name="MinigameBackground" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
