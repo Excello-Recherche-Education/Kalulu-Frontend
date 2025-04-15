@@ -220,7 +220,7 @@ func _check_db_integrity():
 				if !sentence.has("Sentence"):
 					if !log_message("Sentence with no Sentence (key) at lesson ID " + str(lesson_id) + " and sentence ID " + str(sentence.ID)):
 						return
-				var word_count = (sentence.Sentence).replace("'", " ").split(" ").size()
+				var word_count = ((sentence.Sentence) as String).replace("!", " ").replace("?", " ").replace(".", " ").replace(",", " ").replace(";", " ").replace(":", " ").replace("'", " ").replace("  ", " ").trim_suffix(" ").split(" ", false).size()
 				var word_list = Database.get_words_in_sentence(sentence.ID)
 				if word_list.size() != word_count:
 					if !log_message('Sentence "' + sentence.Sentence + '" has incoherent words count: ' + str(word_list.size())):
