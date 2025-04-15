@@ -477,3 +477,209 @@ func _on_open_folder_button_pressed() -> void:
 
 func _on_tab_container_tab_changed(tab: int) -> void:
 	Globals.main_menu_selected_tab = tab
+
+
+#region Book Generation
+func create_book():
+	var lang_path = base_path.path_join(Database.language)
+	var file_names = {
+		"word": "words_list.csv",
+		"syllable": "syllables_list.csv",
+		"sentence": "sentences_list.csv",
+	}
+
+	var columns := {}  # Dictionary<String, PackedStringArray>
+	var all_headers: Array = []
+	var headers_seen := {}
+
+	for category in file_names.keys():
+		var file_path = lang_path.path_join(file_names[category])
+		var file = FileAccess.open(file_path, FileAccess.READ)
+		if file == null:
+			push_error("Erreur d'ouverture : " + file_path)
+			continue
+
+		if file.eof_reached():
+			file.close()
+			continue
+
+		var headers_line = read_csv_record(file)
+		var raw_headers = parse_csv_line(headers_line)
+		var header_map = {}  # Original -> Normalized
+		
+		# On mesure combien de lignes ont déjà été ajoutées
+		var current_row_count := 0
+		if columns.has("Categorie"):
+			current_row_count = columns["Categorie"].size()
+
+		for header in raw_headers:
+			var normalized = normalize_header(header)
+			header_map[header] = normalized
+
+			if normalized != "Writing" and normalized != "Reading" and normalized != "Categorie" and not headers_seen.has(normalized):
+				headers_seen[normalized] = true
+				all_headers.append(normalized)
+				var filler := PackedStringArray()
+				filler.resize(current_row_count)
+				for i in range(current_row_count):
+					filler[i] = ""  # Valeur vide pour rattraper
+				columns[normalized] = filler
+
+		# Init colonne "Categorie" si pas encore
+		if not columns.has("Categorie"):
+			var filler := PackedStringArray()
+			filler.resize(current_row_count)
+			for i in range(current_row_count):
+				filler[i] = ""
+			columns["Categorie"] = filler
+
+		while not file.eof_reached():
+			var line = read_csv_record(file)
+			if line.strip_edges() == "":
+				continue
+
+			var values = parse_csv_line(line)
+			if values.size() != raw_headers.size():
+				print("⚠️ Ligne malformée ignorée : ", values)
+				continue
+
+			var row_dict := {}
+			for i in range(values.size()):
+				var original = raw_headers[i]
+				var normalized = header_map.get(original, original)
+				row_dict[normalized] = values[i]
+
+			# Ligne principale
+			add_row(columns, row_dict, category, all_headers)
+
+			if row_dict.get("Writing", "0") == "1":
+				add_row(columns, row_dict, "writing", all_headers)
+
+			if row_dict.get("Reading", "0") == "1":
+				add_row(columns, row_dict, "reading", all_headers)
+
+		file.close()
+
+	# Forcer "Lesson" en tête
+	var ordered_headers = all_headers.duplicate()
+	if "Lesson" in ordered_headers:
+		ordered_headers.erase("Lesson")
+		ordered_headers = ["Lesson"] + ordered_headers
+
+	# Ajouter Categorie à la fin
+	ordered_headers.append("Categorie")
+
+	# Écriture du fichier final
+	var output_path = lang_path.path_join("booklet.csv")
+	var output_file = FileAccess.open(output_path, FileAccess.WRITE)
+	if output_file == null:
+		push_error("Impossible d'écrire : " + output_path)
+		return
+
+	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
+	
+	var row_count = columns["Categorie"].size()  # Toutes les colonnes sont synchronisées
+	for i in range(row_count):
+		var row: PackedStringArray = []
+		for header in ordered_headers:
+			row.append(columns[header][i])
+		output_file.store_line(escape_csv_line(row))
+
+	output_file.close()
+	print("📘 Export des données du livret terminé vers : ", output_path)
+	error_label.text = "📘 Export des données du livret terminé vers : " + output_path
+
+# Fonction qui ajoute une ligne au dictionnaire
+func add_row(dict, row_data: Dictionary, categorie: String, all_headers: Array):
+	# Nombre de lignes déjà enregistrées (doit être égal pour chaque colonne)
+	var current_size := 0
+	if dict.has("Categorie"):
+		current_size= dict["Categorie"].size()
+
+	# S'assurer que toutes les colonnes existantes reçoivent une valeur
+	for header in all_headers:
+		if not dict.has(header):
+			var filler := PackedStringArray()
+			filler.resize(current_size) # rattrape les lignes précédentes
+			for i in range(current_size):
+				filler[i] = ""
+			dict[header] = filler
+		dict[header].append(row_data.get(header, ""))
+
+	# Colonne spéciale : Categorie
+	if not dict.has("Categorie"):
+		var filler := PackedStringArray()
+		filler.resize(current_size)
+		for i in range(current_size):
+			filler[i] = ""
+		dict["Categorie"] = filler
+
+	dict["Categorie"].append(categorie)
+
+
+# Parse une ligne CSV même si elle contient des virgules et guillemets
+func parse_csv_line(line: String) -> PackedStringArray:
+	var result: PackedStringArray = []
+	var current = ""
+	var in_quotes = false
+	var i = 0
+
+	while i < line.length():
+		var char = line[i]
+		if char == "\"":
+			if in_quotes and i + 1 < line.length() and line[i + 1] == "\"":
+				current += "\""  # escaped quote
+				i += 1
+			else:
+				in_quotes = !in_quotes
+		elif char == "," and not in_quotes:
+			result.append(current)
+			current = ""
+		else:
+			current += char
+		i += 1
+
+	result.append(current)
+	return result
+
+# Transforme une ligne pour l'écriture CSV, avec échappement
+func escape_csv_line(fields: PackedStringArray) -> String:
+	var output = ""
+	for i in range(fields.size()):
+		var field = fields[i]
+		if field.find("\"") != -1 or field.find(",") != -1 or field.find("\n") != -1:
+			field = "\"" + field.replace("\"", "\"\"") + "\""
+		output += field
+		if i < fields.size() - 1:
+			output += ","
+	return output
+
+# Normalise les noms de colonnes (ex: writing page -> Writing page)
+func normalize_header(name: String) -> String:
+	return name.strip_edges()[0].to_upper() + name.strip_edges().substr(1, -1).to_lower()
+
+# Lit une "ligne logique" complète d’un CSV (même si elle est sur plusieurs lignes à cause des guillemets)
+func read_csv_record(file: FileAccess) -> String:
+	var record := ""
+	var open_quotes := false
+
+	while not file.eof_reached():
+		var line = file.get_line()
+		if record != "":
+			record += "\n"
+		record += line
+
+		var quote_count = 0
+		for c in line:
+			if c == "\"":
+				quote_count += 1
+
+		open_quotes = (quote_count % 2 != 0)
+
+		if not open_quotes:
+			break
+
+	return record
+
+
+#endregion
