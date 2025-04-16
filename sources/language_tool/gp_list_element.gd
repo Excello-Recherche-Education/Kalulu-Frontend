@@ -10,7 +10,7 @@ enum Type {
 }
 
 @onready var exception_checkbox: = %ExceptionCheckBox
-@onready var exception_edit_checkbox: = %ExceptionEditCheckBox
+@onready var exception_edit_checkbox: CheckBox = %ExceptionEditCheckBox
 @onready var grapheme_label: = $%Grapheme
 @onready var phoneme_label: = $%Phoneme
 @onready var type_label: = $%Type
@@ -18,6 +18,7 @@ enum Type {
 @onready var phoneme_edit: = $%PhonemeEdit
 @onready var type_edit: = $%TypeEdit
 @onready var tab_container: = $%TabContainer
+
 
 
 var grapheme: = "":

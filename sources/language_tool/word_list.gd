@@ -44,6 +44,8 @@ func _ready() -> void:
 		element.word = e[_e.table_graph_column]
 		element.id = e[_e.table_graph_column + "Id"]
 		element.exception = e.Exception
+		element.reading = e.Reading
+		element.writing = e.Writing
 		element.set_gp_ids_from_string(e[_e.sub_table_id + "s"])
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
@@ -61,14 +63,14 @@ func _ready() -> void:
 
 
 func _get_query() -> String:
-	return "SELECT %s.ID as %sId, %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %ss, %s.Exception 
+	return "SELECT %s.ID as %sId, %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %ss, %s.Exception, %s.Reading, %s.Writing 
 			FROM %s 
 			INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
 			INNER JOIN %s ON %s.ID = %s.%s
 			GROUP BY %s.ID" % [_e.table, _e.table_graph_column,
 				_e.table_graph_column, _e.sub_table_graph_column, _e.sub_table_graph_column,
 				_e.sub_table_phon_column, _e.sub_table_phon_column,
-				_e.sub_table, _e.sub_table_id, _e.table,
+				_e.sub_table, _e.sub_table_id, _e.table, _e.table, _e.table,
 				_e.table,
 				_e.relational_table, _e.relational_table, _e.relational_table, _e.table, _e.relational_table, _e.table_graph_column,
 				_e.sub_table, _e.sub_table, _e.relational_table, _e.sub_table_id,

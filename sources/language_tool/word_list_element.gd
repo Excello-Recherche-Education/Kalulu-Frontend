@@ -23,6 +23,10 @@ const plus_button_scene: = preload("res://sources/language_tool/plus_button.tscn
 @onready var lesson_label: = %Lesson
 @onready var exception_checkbox: = %ExceptionCheckBox
 @onready var exception_edit_checkbox: = %ExceptionEditCheckBox
+@onready var reading_checkbox: CheckBox = %ReadingCheckBox
+@onready var writing_checkbox: CheckBox = %WritingCheckBox
+@onready var reading_edit_checkbox: CheckBox = %ReadingEditCheckBox
+@onready var writing_edit_checkbox: CheckBox = %WritingEditCheckBox
 @onready var graphemes_edit_container: = %GraphemesEditContainer
 @onready var add_gp_button: = %AddGPButton
 @onready var remove_gp_button: = %RemoveGPButton2
@@ -42,6 +46,10 @@ var gp_ids: Array[int] = []:
 var unvalidated_gp_ids: Array[int] = []
 var exception: = 0:
 	set = set_exception
+var reading: = 0:
+	set = set_reading
+var writing: = 0:
+	set = set_writing
 var sub_elements_list: Dictionary
 
 
@@ -51,6 +59,20 @@ func set_exception(p_exception: bool) -> void:
 		exception_checkbox.button_pressed = bool(exception)
 	if exception_edit_checkbox:
 		exception_edit_checkbox.button_pressed = bool(exception)
+
+func set_reading(p_reading: bool) -> void:
+	reading = p_reading
+	if reading_checkbox:
+		reading_checkbox.button_pressed = bool(reading)
+	if reading_edit_checkbox:
+		reading_edit_checkbox.button_pressed = bool(reading)
+
+func set_writing(p_writing: bool) -> void:
+	writing = p_writing
+	if writing_checkbox:
+		writing_checkbox.button_pressed = bool(writing)
+	if writing_edit_checkbox:
+		writing_edit_checkbox.button_pressed = bool(writing)
 
 
 func set_word(p_word: String) -> void:
@@ -131,6 +153,8 @@ func _ready() -> void:
 	set_gp_ids(gp_ids)
 	set_lesson(lesson)
 	set_exception(exception)
+	set_reading(reading)
+	set_writing(writing)
 	%WordEditLabel.text = table_graph_column + ": "
 	%GPsEditLabel.text = sub_table + ": "
 
@@ -153,9 +177,14 @@ func _on_validate_button_pressed() -> void:
 	undo_redo.add_do_property(self, "gp_ids", unvalidated_gp_ids.duplicate())
 	undo_redo.add_do_property(self, "word", word_edit.text)
 	undo_redo.add_do_property(self, "exception", int(exception_edit_checkbox.button_pressed))
+	undo_redo.add_do_property(self, "reading", int(reading_edit_checkbox.button_pressed))
+	undo_redo.add_do_property(self, "writing", int(writing_edit_checkbox.button_pressed))
 	undo_redo.add_undo_property(self, "gp_ids", gp_ids.duplicate())
 	undo_redo.add_undo_property(self, "word", word)
 	undo_redo.add_undo_property(self, "exception", int(exception_checkbox.button_pressed))
+	undo_redo.add_undo_property(self, "reading", int(reading_checkbox.button_pressed))
+	undo_redo.add_undo_property(self, "writing", int(writing_checkbox.button_pressed))
+	
 	undo_redo.commit_action()
 	tab_container.current_tab = 0
 	update_lesson()
@@ -194,14 +223,14 @@ func insert_in_database() -> void:
 			id = Database.db.query_result[0].ID
 	
 	if id >= 0:
-		var query: = "SELECT %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs, group_concat(%s.ID, ' ') as %sIDs, %s.Exception
+		var query: = "SELECT %s, group_concat(%s, ' ') as %ss, group_concat(%s, ' ') as %ss, group_concat(%s.ID, ' ') as %sIDs, group_concat(%s.ID, ' ') as %sIDs, %s.Exception, %s.Reading, %s.Writing
 			FROM %s 
 			INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
 			INNER JOIN %s ON %s.ID = %s.%s
 			WHERE %s.ID = ? 
 			GROUP BY %s.ID" % [table_graph_column, sub_table_graph_column, sub_table_graph_column,
 				sub_table_phon_column, sub_table_phon_column,
-				relational_table, relational_table, sub_table, sub_table, table,
+				relational_table, relational_table, sub_table, sub_table, table, table, table,
 				table,
 				relational_table, relational_table, relational_table, table, relational_table, table_graph_column,
 				sub_table, sub_table, relational_table, sub_table_id,
@@ -211,8 +240,8 @@ func insert_in_database() -> void:
 		#print(query)
 		if not Database.db.query_result.is_empty():
 			var e = Database.db.query_result[0]
-			if word != e[table_graph_column] or exception != e.Exception:
-				Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word, "Exception": exception})
+			if word != e[table_graph_column] or exception != e.Exception or reading != e.Reading or writing != e.Writing:
+				Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word, "Exception": exception, "Reading": reading, "Writing": writing})
 			if " ".join(gp_ids) != e[sub_table + "IDs"]:
 				var gps_in_words_ids: Array = Array(e[relational_table + "IDs"].split(" "))
 				while gps_in_words_ids.size() > gp_ids.size():
@@ -236,8 +265,8 @@ func insert_in_database() -> void:
 			if not Database.db.query_result.is_empty():
 				var e = Database.db.query_result[0]
 				id = e.ID
-				if word != e[table_graph_column] or exception != e.Exception:
-					Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word, "Exception": exception})
+				if word != e[table_graph_column] or exception != e.Exception or reading != e.Reading or writing != e.writing:
+					Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word, "Exception": exception, "Reading": reading, "Writing": writing})
 				for i in range(gp_ids.size()):
 					Database.db.insert_row(relational_table, {
 						table_graph_column + "ID": id,
