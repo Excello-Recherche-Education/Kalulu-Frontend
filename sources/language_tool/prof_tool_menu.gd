@@ -423,8 +423,8 @@ func _create_words_csv() -> void:
 
 func _create_syllable_csv() -> void:
 	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("syllables_list.csv"), FileAccess.WRITE)
-	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON"])
-	var query: = "SELECT Syllables.ID as SyllableId, Syllable, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Syllables.Exception 
+	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON", "READING", "WRITING"])
+	var query: = "SELECT Syllables.ID as SyllableId, Syllable, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Syllables.Exception, Reading, Writing 
 			FROM Syllables 
 			INNER JOIN ( SELECT * FROM GPsInSyllables ORDER BY GPsInSyllables.Position ) GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID 
 			INNER JOIN GPs ON GPs.ID = GPsInSyllables.GPID
@@ -446,7 +446,7 @@ func _create_syllable_csv() -> void:
 				lesson = -1
 				break
 			lesson = max(lesson, gp_id_lesson)
-		gp_list_file.store_csv_line([e.Syllable, gpmatch, lesson])
+		gp_list_file.store_csv_line([e.Syllable, gpmatch, lesson, e.Reading, e.Writing])
 
 
 func _create_sentence_csv() -> void:
