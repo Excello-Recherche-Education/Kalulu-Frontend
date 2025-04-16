@@ -52,7 +52,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg")
+enabled=PackedStringArray("res://addons/EnvironmentSwitcher/plugin.cfg", "res://addons/export_tool_manager/plugin.cfg", "res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg")
 
 [file_customization]
 
