@@ -204,7 +204,6 @@ func _check_db_integrity():
 						GPKnown = true
 						break
 				if !GPKnown:
-					print(known_GPs_list)
 					if !log_message("Word " + new_word.Word + " with unknown GP (ID " + str(GP.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
 						return
 			if known_words_list.has(new_word.Word):
@@ -260,7 +259,7 @@ func log_message(message: String) -> bool:
 			file.store_line(message)
 			file.close()
 		else:
-			print("file not found")
+			push_warning("Log file not found")
 		return true
 	else:
 		error_label.text = message
@@ -396,8 +395,8 @@ func _create_GP_csv() -> void:
 
 func _create_words_csv() -> void:
 	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
-	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON"])
-	var query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception 
+	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON", "READING", "WRITING"])
+	var query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception, Reading, Writing 
 			FROM Words 
 			INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
 			INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
@@ -419,7 +418,7 @@ func _create_words_csv() -> void:
 				lesson = -1
 				break
 			lesson = max(lesson, gp_id_lesson)
-		gp_list_file.store_csv_line([e.Word, gpmatch, lesson])
+		gp_list_file.store_csv_line([e.Word, gpmatch, lesson, e.Reading, e.Writing])
 
 
 func _create_syllable_csv() -> void:
@@ -540,7 +539,7 @@ func create_book():
 
 			var values = parse_csv_line(line)
 			if values.size() != raw_headers.size():
-				print("⚠️ Ligne malformée ignorée : ", values)
+				push_warning("⚠️ Ligne malformée ignorée : ", values)
 				continue
 
 			var row_dict := {}
@@ -586,8 +585,9 @@ func create_book():
 		output_file.store_line(escape_csv_line(row))
 
 	output_file.close()
-	print("📘 Export des données du livret terminé vers : ", output_path)
+	
 	error_label.text = "📘 Export des données du livret terminé vers : " + output_path
+	print(error_label.text)
 
 # Fonction qui ajoute une ligne au dictionnaire
 func add_row(dict, row_data: Dictionary, categorie: String, all_headers: Array):
