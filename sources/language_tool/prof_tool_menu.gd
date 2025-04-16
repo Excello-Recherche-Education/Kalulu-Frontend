@@ -165,7 +165,7 @@ func _check_db_integrity():
 		await get_tree().process_frame
 		print("Lesson_id = " + str(lesson_id))
 		
-		var new_GPs_for_lesson: Array = Database.get_GP_for_lesson(lesson_id, true, true, false, false, true)
+		var new_GPs_for_lesson: Array = Database.get_GP_for_lesson(lesson_id, false, true, false, false, true)
 		for new_GP: Dictionary in new_GPs_for_lesson:
 			if !new_GP.has("ID"):
 				if !log_message("GP with no ID in lesson " + str(lesson_id)):
