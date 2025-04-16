@@ -1,16 +1,16 @@
 extends Control
 
-const base_path: = "user://language_resources/"
-const save_file_path: = "user://prof_tool_save.tres"
+const base_path: String = "user://language_resources/"
+const save_file_path: String = "user://prof_tool_save.tres"
 var save_file: ProfToolSave
 
-@onready var language_select_button: = %LanguageSelectButton
-@onready var new_language_container: = %NewLanguageContainer
-@onready var line_edit: = %LineEdit
-@onready var file_dialog: = $FileDialog
-@onready var file_dialog_export: = $FileDialogExport
-@onready var add_word_list_button: = $VBoxContainer/AddWordListButton
-@onready var error_label: = %ErrorLabel
+@onready var language_select_button: OptionButton = %LanguageSelectButton
+@onready var new_language_container: PanelContainer = %NewLanguageContainer
+@onready var line_edit: LineEdit = %LineEdit
+@onready var file_dialog: FileDialog = $FileDialog
+@onready var file_dialog_export: FileDialog = $FileDialogExport
+@onready var add_word_list_button: Button = $VBoxContainer/AddWordListButton
+@onready var error_label: Label = %ErrorLabel
 @onready var tab_container: TabContainer = $CenterContainer/TabContainer
 
 
@@ -80,7 +80,7 @@ func _on_data_loader_button_2_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/gp_video_descriptions.tscn")
 
 
-func _on_game_sounds_button_pressed():
+func _on_game_sounds_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/in_game_sounds.tscn")
 
 
@@ -110,19 +110,19 @@ func _on_export_filename_selected(filename: String) -> void:
 		summary_file.store_line("Lesson %s --------------------" % lesson)
 		summary_file.store_line("\t \t Words ---")
 		var words: = ""
-		for e in Database.get_words_for_lesson(lesson, true):
+		for e: Dictionary in Database.get_words_for_lesson(lesson, true):
 			words += e.Word + ", "
 		summary_file.store_line(words.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Syllables ---")
 		var syllables: = ""
-		for e in Database.get_syllables_for_lesson(lesson, true):
+		for e: Dictionary in Database.get_syllables_for_lesson(lesson, true):
 			syllables += e.Grapheme + ", "
 		summary_file.store_line(syllables.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Sentences ---")
-		for e in Database.get_sentences(lesson, true, sentences_by_lesson):
-			summary_file.store_line(e.Sentence)
+		for e: Dictionary in Database.get_sentences(lesson, true, sentences_by_lesson):
+			summary_file.store_line(e.Sentence as String)
 		summary_file.store_line("\n\n")
 	summary_file.close()
 	
@@ -140,7 +140,7 @@ var integrity_checking: bool = false
 var integrity_log_path: String = "user://database-integrity-log.txt"
 var total_integrity_warnings: int = 0
 
-func _check_db_integrity():
+func _check_db_integrity() -> void:
 	if integrity_checking:
 		return
 	integrity_checking = true
@@ -151,7 +151,7 @@ func _check_db_integrity():
 		if FileAccess.file_exists(integrity_log_path):
 			DirAccess.remove_absolute(integrity_log_path)
 	
-	var sentences_list = Database.get_sentences_by_lessons()
+	var sentences_list: Dictionary = Database.get_sentences_by_lessons()
 	if sentences_list.is_empty():
 		if !log_message("No sentence found in database"):
 					return
@@ -176,7 +176,7 @@ func _check_db_integrity():
 			if !new_GP.has("Phoneme"):
 				if !log_message("GP (ID " + str(new_GP.ID) + ") with no Phoneme in lesson " + str(lesson_id)):
 					return
-			var exists = known_GPs_list.any(func(d): return d == new_GP)
+			var exists: bool = known_GPs_list.any(func(d: Dictionary) -> bool: return d == new_GP)
 			if exists:
 				if !log_message("GP ID " + str(new_GP.ID) + " already exists in lesson " + str(lesson_id)):
 					return
@@ -196,7 +196,7 @@ func _check_db_integrity():
 					return
 			for GP: Dictionary in new_word.GPs:
 				if !GP.has("ID"):
-					if !log_message("GP with no ID (key) at lesson ID " + str(lesson_id) + " in word " + new_word.Word + " (ID " + str(new_word.ID) + ")"):
+					if !log_message("GP with no ID (key) at lesson ID " + str(lesson_id) + " in word " + (new_word.Word as String) + " (ID " + str(new_word.ID) + ")"):
 						return
 				GPKnown = false
 				for knownGP: Dictionary in known_GPs_list:
@@ -204,10 +204,10 @@ func _check_db_integrity():
 						GPKnown = true
 						break
 				if !GPKnown:
-					if !log_message("Word " + new_word.Word + " with unknown GP (ID " + str(GP.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
+					if !log_message("Word " + (new_word.Word as String) + " with unknown GP (ID " + str(GP.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
 						return
 			if known_words_list.has(new_word.Word):
-				if !log_message('Word  "' + new_word.Word + '" is introduced in lesson ID ' + str(lesson_id) + " but it already was introduced in lesson ID " + str(known_words_list[new_word.Word])):
+				if !log_message('Word  "' + (new_word.Word as String) + '" is introduced in lesson ID ' + str(lesson_id) + " but it already was introduced in lesson ID " + str(known_words_list[new_word.Word])):
 					return
 			known_words_list[new_word.Word] = lesson_id
 		
@@ -219,10 +219,10 @@ func _check_db_integrity():
 				if !sentence.has("Sentence"):
 					if !log_message("Sentence with no Sentence (key) at lesson ID " + str(lesson_id) + " and sentence ID " + str(sentence.ID)):
 						return
-				var word_count = ((sentence.Sentence) as String).replace("!", " ").replace("?", " ").replace(".", " ").replace(",", " ").replace(";", " ").replace(":", " ").replace("'", " ").replace("  ", " ").trim_suffix(" ").split(" ", false).size()
-				var word_list = Database.get_words_in_sentence(sentence.ID)
+				var word_count: int = ((sentence.Sentence) as String).replace("!", " ").replace("?", " ").replace(".", " ").replace(",", " ").replace(";", " ").replace(":", " ").replace("'", " ").replace("  ", " ").trim_suffix(" ").split(" ", false).size()
+				var word_list: Array[Dictionary] = Database.get_words_in_sentence(sentence.ID as int)
 				if word_list.size() != word_count:
-					if !log_message('Sentence "' + sentence.Sentence + '" has incoherent words count: ' + str(word_list.size())):
+					if !log_message('Sentence "' + (sentence.Sentence as String) + '" has incoherent words count: ' + str(word_list.size())):
 						return
 				for word: Dictionary in word_list:
 					if !word.has("ID"):
@@ -232,7 +232,7 @@ func _check_db_integrity():
 						if !log_message("Word with no Word (key) at lesson ID " + str(lesson_id) + ", sentence ID " + str(sentence.ID) + " and word ID " + str(word.ID)):
 							return
 					if !known_words_list.has(word.Word):
-						if !log_message('Word "' + word.Word + '" is used in lesson ID ' + str(lesson_id) + ", sentence ID " + str(sentence.ID) + ", but it has not been introduced yet."):
+						if !log_message('Word "' + (word.Word as String) + '" is used in lesson ID ' + str(lesson_id) + ", sentence ID " + str(sentence.ID) + ", but it has not been introduced yet."):
 							return
 		else:
 			continue #No sentence in this lesson
@@ -240,7 +240,7 @@ func _check_db_integrity():
 	error_label.text = "Database integrity check finished. " + str(total_integrity_warnings) + " warnings found."
 	integrity_checking = false
 	if check_box_log.button_pressed:
-		var file_path = ProjectSettings.globalize_path(integrity_log_path)
+		var file_path: String = ProjectSettings.globalize_path(integrity_log_path)
 		print("Log saved at " + file_path)
 		OS.shell_open(file_path)
 #endregion
@@ -268,10 +268,10 @@ func log_message(message: String) -> bool:
 
 func _get_available_languages() -> Array[String]:
 	var available_languages: Array[String] = []
-	var dir = DirAccess.open(base_path)
+	var dir: DirAccess = DirAccess.open(base_path)
 	if dir:
 		dir.list_dir_begin()
-		var file_name = dir.get_next()
+		var file_name: String = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir():
 				if FileAccess.file_exists(base_path.path_join(file_name).path_join("language.db")):
@@ -319,29 +319,29 @@ func _word_list_file_selected(file_path: String) -> void:
 				GROUP BY Words.ID"
 		Database.db.query(query)
 		var result: = Database.db.query_result
-		var word_list_element = load("res://sources/language_tool/word_list_element.tscn").instantiate()
+		var word_list_element: WordListElement = (load("res://sources/language_tool/word_list_element.tscn") as PackedScene).instantiate()
 		for e in result:
-			var is_same: = true
-			var master_gpmatch = Database.additional_word_list[e.Word].GPMATCH
+			var same: bool = true
+			var master_gpmatch: String = Database.additional_word_list[e.Word].GPMATCH
 			var master_gplist: PackedStringArray = master_gpmatch.trim_prefix("(").trim_suffix(")").split(".")
-			var graphemes: PackedStringArray = e.Graphemes.split(" ")
-			var phonemes: PackedStringArray = e.Phonemes.split(" ")
+			var graphemes: PackedStringArray = (e.Graphemes as String).split(" ")
+			var phonemes: PackedStringArray = (e.Phonemes as String).split(" ")
 			if master_gplist.size() != graphemes.size():
-				is_same = false
+				same = false
 			else:
 				for i in master_gplist.size():
-					is_same = is_same and (graphemes[i] + "-" + phonemes[i] == master_gplist[i])
-			if not is_same:
+					same = same and (graphemes[i] + "-" + phonemes[i] == master_gplist[i])
+			if not same:
 				Database.db.delete_rows("Words", "ID=%s" % e.WordId)
-				word_list_element._add_from_additional_word_list(e.Word)
+				word_list_element._add_from_additional_word_list(e.Word as String)
 
 
 func _on_add_word_list_button_pressed() -> void:
 	file_dialog.filters = []
 	file_dialog.add_filter("*.csv", "csv")
 	
-	for connection in file_dialog.file_selected.get_connections():
-		connection["signal"].disconnect(connection["callable"])
+	for connection: Dictionary in file_dialog.file_selected.get_connections():
+		(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
 	
 	file_dialog.file_selected.connect(_word_list_file_selected)
 	
@@ -355,8 +355,8 @@ func _on_import_language_button_pressed() -> void:
 	file_dialog.filters = []
 	file_dialog.add_filter("*.zip", "zip")
 	
-	for connection in file_dialog.file_selected.get_connections():
-		connection["signal"].disconnect(connection["callable"])
+	for connection: Dictionary in file_dialog.file_selected.get_connections():
+		(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
 	
 	file_dialog.file_selected.connect(_language_data_selected)
 	
@@ -367,8 +367,8 @@ func _on_export_button_pressed() -> void:
 	file_dialog_export.filters = []
 	file_dialog_export.add_filter("*.zip", "zip")
 	
-	for connection in file_dialog_export.file_selected.get_connections():
-		connection["signal"].disconnect(connection["callable"])
+	for connection: Dictionary in file_dialog_export.file_selected.get_connections():
+		(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
 	
 	file_dialog_export.file_selected.connect(_on_export_filename_selected)
 	
@@ -405,8 +405,8 @@ func _create_words_csv() -> void:
 	var result: = Database.db.query_result
 	for e in result:
 		var gpmatch: = "("
-		var graphemes: PackedStringArray = e.Graphemes.split(" ")
-		var phonemes: PackedStringArray = e.Phonemes.split(" ")
+		var graphemes: PackedStringArray = (e.Graphemes as String).split(" ")
+		var phonemes: PackedStringArray = (e.Phonemes as String).split(" ")
 		for i in graphemes.size() - 1:
 			gpmatch += graphemes[i] + "-" + phonemes[i] + "."
 		var i: = graphemes.size() - 1
@@ -433,8 +433,8 @@ func _create_syllable_csv() -> void:
 	var result: = Database.db.query_result
 	for e in result:
 		var gpmatch: = "("
-		var graphemes: PackedStringArray = e.Graphemes.split(" ")
-		var phonemes: PackedStringArray = e.Phonemes.split(" ")
+		var graphemes: PackedStringArray = (e.Graphemes as String).split(" ")
+		var phonemes: PackedStringArray = (e.Phonemes as String).split(" ")
 		for i in graphemes.size() - 1:
 			gpmatch += graphemes[i] + "-" + phonemes[i] + "."
 		var i: = graphemes.size() - 1
@@ -480,14 +480,14 @@ func _on_tab_container_tab_changed(tab: int) -> void:
 
 #region Book Generation
 func create_book():
-	var lang_path = base_path.path_join(Database.language)
-	var file_names = {
+	var lang_path: String = base_path.path_join(Database.language)
+	var file_names: Dictionary = {
 		"word": "words_list.csv",
 		"syllable": "syllables_list.csv",
 		"sentence": "sentences_list.csv",
 	}
 
-	var columns := {}  # Dictionary<String, PackedStringArray>
+	var columns: Dictionary[String, PackedStringArray]
 	var all_headers: Array = []
 	var headers_seen := {}
 
@@ -502,17 +502,17 @@ func create_book():
 			file.close()
 			continue
 
-		var headers_line = read_csv_record(file)
-		var raw_headers = parse_csv_line(headers_line)
+		var headers_line: String = read_csv_record(file)
+		var raw_headers: PackedStringArray = parse_csv_line(headers_line)
 		var header_map = {}  # Original -> Normalized
 		
 		# On mesure combien de lignes ont déjà été ajoutées
-		var current_row_count := 0
+		var current_row_count: int = 0
 		if columns.has("Categorie"):
 			current_row_count = columns["Categorie"].size()
 
 		for header in raw_headers:
-			var normalized = normalize_header(header)
+			var normalized: String = normalize_header(header)
 			header_map[header] = normalized
 
 			if normalized != "Writing" and normalized != "Reading" and normalized != "Categorie" and not headers_seen.has(normalized):
@@ -569,19 +569,19 @@ func create_book():
 	ordered_headers.append("Categorie")
 
 	# Écriture du fichier final
-	var output_path = lang_path.path_join("booklet.csv")
-	var output_file = FileAccess.open(output_path, FileAccess.WRITE)
+	var output_path: String = lang_path.path_join("booklet.csv")
+	var output_file: FileAccess = FileAccess.open(output_path, FileAccess.WRITE)
 	if output_file == null:
 		push_error("Impossible d'écrire : " + output_path)
 		return
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
 	
-	var row_count = columns["Categorie"].size()  # Toutes les colonnes sont synchronisées
-	for i in range(row_count):
+	var row_count = (columns["Categorie"] as PackedStringArray).size()  # Toutes les colonnes sont synchronisées
+	for index in range(row_count):
 		var row: PackedStringArray = []
-		for header in ordered_headers:
-			row.append(columns[header][i])
+		for header: String in ordered_headers:
+			row.append(columns[header][index] as String)
 		output_file.store_line(escape_csv_line(row))
 
 	output_file.close()
@@ -590,14 +590,14 @@ func create_book():
 	print(error_label.text)
 
 # Fonction qui ajoute une ligne au dictionnaire
-func add_row(dict, row_data: Dictionary, categorie: String, all_headers: Array):
+func add_row(dict: Dictionary, row_data: Dictionary, categorie: String, all_headers: Array) -> void:
 	# Nombre de lignes déjà enregistrées (doit être égal pour chaque colonne)
 	var current_size := 0
 	if dict.has("Categorie"):
 		current_size= dict["Categorie"].size()
 
 	# S'assurer que toutes les colonnes existantes reçoivent une valeur
-	for header in all_headers:
+	for header: String in all_headers:
 		if not dict.has(header):
 			var filler := PackedStringArray()
 			filler.resize(current_size) # rattrape les lignes précédentes
@@ -620,33 +620,33 @@ func add_row(dict, row_data: Dictionary, categorie: String, all_headers: Array):
 # Parse une ligne CSV même si elle contient des virgules et guillemets
 func parse_csv_line(line: String) -> PackedStringArray:
 	var result: PackedStringArray = []
-	var current = ""
-	var in_quotes = false
-	var i = 0
+	var current: String = ""
+	var in_quotes: bool = false
+	var index: int = 0
 
-	while i < line.length():
-		var char = line[i]
-		if char == "\"":
-			if in_quotes and i + 1 < line.length() and line[i + 1] == "\"":
+	while index < line.length():
+		var character: String = line[index]
+		if character == "\"":
+			if in_quotes and index + 1 < line.length() and line[index + 1] == "\"":
 				current += "\""  # escaped quote
-				i += 1
+				index += 1
 			else:
 				in_quotes = !in_quotes
-		elif char == "," and not in_quotes:
+		elif character == "," and not in_quotes:
 			result.append(current)
 			current = ""
 		else:
-			current += char
-		i += 1
+			current += character
+		index += 1
 
 	result.append(current)
 	return result
 
 # Transforme une ligne pour l'écriture CSV, avec échappement
 func escape_csv_line(fields: PackedStringArray) -> String:
-	var output = ""
+	var output: String = ""
 	for i in range(fields.size()):
-		var field = fields[i]
+		var field: String = fields[i]
 		if field.find("\"") != -1 or field.find(",") != -1 or field.find("\n") != -1:
 			field = "\"" + field.replace("\"", "\"\"") + "\""
 		output += field
@@ -655,22 +655,22 @@ func escape_csv_line(fields: PackedStringArray) -> String:
 	return output
 
 # Normalise les noms de colonnes (ex: writing page -> Writing page)
-func normalize_header(name: String) -> String:
-	return name.strip_edges()[0].to_upper() + name.strip_edges().substr(1, -1).to_lower()
+func normalize_header(header_name: String) -> String:
+	return header_name.strip_edges()[0].to_upper() + header_name.strip_edges().substr(1, -1).to_lower()
 
 # Lit une "ligne logique" complète d’un CSV (même si elle est sur plusieurs lignes à cause des guillemets)
 func read_csv_record(file: FileAccess) -> String:
-	var record := ""
-	var open_quotes := false
+	var record: String = ""
+	var open_quotes: bool = false
 
 	while not file.eof_reached():
-		var line = file.get_line()
+		var line: String = file.get_line()
 		if record != "":
 			record += "\n"
 		record += line
 
-		var quote_count = 0
-		for c in line:
+		var quote_count: int = 0
+		for c: String in line:
 			if c == "\"":
 				quote_count += 1
 

@@ -1,4 +1,5 @@
 extends MarginContainer
+class_name WordListElement
 
 signal delete_pressed()
 signal new_GP_asked(i: int)
