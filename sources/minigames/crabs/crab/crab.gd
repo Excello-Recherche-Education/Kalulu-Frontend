@@ -12,7 +12,7 @@ signal crab_hit(stimulus: Dictionary)
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
-var sounds: = [
+var sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_2.mp3"),
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_3.mp3"),

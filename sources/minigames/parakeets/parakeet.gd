@@ -17,8 +17,8 @@ const animations: = [
 
 signal pressed()
 
-@export var sad_duration: = 2.0
-@export var color: = Colors.Red:
+@export var sad_duration: float = 2.0
+@export var color: Colors = Colors.Red:
 	set(value):
 		color = value
 		if animated_sprite:

@@ -92,7 +92,7 @@ func _find_stimuli_and_distractions() -> void:
 	
 	# For each stimuli get the distractors
 	for stimulus: Dictionary in stimuli:
-		var stimulus_distractors := []
+		var stimulus_distractors: Array[Dictionary] = []
 		
 		# Difficulty 1 
 		# Any previously learned item w/ all letters different
@@ -145,7 +145,7 @@ func _is_stimulus_found() -> bool:
 
 
 func _is_stimulus_right(stimulus : Dictionary) -> bool:
-	var current_stimulus := _get_current_stimulus()
+	var current_stimulus: Dictionary = _get_current_stimulus()
 	return stimulus == current_stimulus
 
 

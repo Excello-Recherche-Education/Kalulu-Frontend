@@ -2,8 +2,8 @@ extends Control
 
 signal speech_ended
 
-const show_sound := preload("res://assets/kalulu/audio/ui_button_on.mp3")
-const hide_sound := preload("res://assets/kalulu/audio/ui_button_off.mp3")
+const show_sound: AudioStreamMP3 = preload("res://assets/kalulu/audio/ui_button_on.mp3")
+const hide_sound: AudioStreamMP3 = preload("res://assets/kalulu/audio/ui_button_off.mp3")
 
 
 @onready var kalulu_sprite: AnimatedSprite2D = $KaluluSprite

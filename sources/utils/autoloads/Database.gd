@@ -1,7 +1,7 @@
 @tool
 extends Node
 
-const _symbols_to_string = {
+const _symbols_to_string: Dictionary = {
 	"#" : "sharp",
 	"@" : "at",
 	"*" : "star",
@@ -9,17 +9,17 @@ const _symbols_to_string = {
 	"%" : "pcent",
 	"§" : "para"
 }
-const base_path: =  "user://language_resources/"
-const look_and_learn_images: = "/look_and_learn/images/"
-const look_and_learn_sounds: = "/look_and_learn/sounds/"
-const look_and_learn_videos: = "/look_and_learn/video/"
-const language_sounds: = "/language_sounds/"
-const kalulu_folder: = "/kalulu/"
-const tracing_data_folder: = "tracing_data/"
-const additional_word_list_path: = "word_list.csv"
-const video_extension: = ".ogv"
-const image_extension: = ".png"
-const sound_extension: = ".mp3"
+const base_path: String =  "user://language_resources/"
+const look_and_learn_images: String = "/look_and_learn/images/"
+const look_and_learn_sounds: String = "/look_and_learn/sounds/"
+const look_and_learn_videos: String = "/look_and_learn/video/"
+const language_sounds: String = "/language_sounds/"
+const kalulu_folder: String = "/kalulu/"
+const tracing_data_folder: String = "tracing_data/"
+const additional_word_list_path: String = "word_list.csv"
+const video_extension: String = ".ogv"
+const image_extension: String = ".png"
+const sound_extension: String = ".mp3"
 
 var language: String:
 	set(value):
@@ -38,8 +38,8 @@ var db_path: String = base_path + language + "/language.db":
 var words_path: String = base_path + language + "/words/"
 var additional_word_list: Dictionary
 
-@onready var db: = SQLite.new()
-var is_open: = false
+@onready var db: SQLite = SQLite.new()
+var is_open: bool = false
 
 
 func _exit_tree() -> void:
@@ -59,7 +59,7 @@ func get_additional_word_list_path() -> String:
 
 func load_additional_word_list() -> String:
 	additional_word_list.clear()
-	var word_list_path: = get_additional_word_list_path()
+	var word_list_path: String = get_additional_word_list_path()
 	if FileAccess.file_exists(word_list_path):
 		var file: = FileAccess.open(word_list_path, FileAccess.READ)
 		var title_line: PackedStringArray = file.get_csv_line()
@@ -69,7 +69,7 @@ func load_additional_word_list() -> String:
 			return msg
 		var ortho_index: int = title_line.find("ORTHO")
 		while not file.eof_reached():
-			var line: = file.get_csv_line()
+			var line: PackedStringArray = file.get_csv_line()
 			if line.size() != title_line.size():
 				return "Formatting error on: %s" % line
 			var data: Dictionary = {}
@@ -81,7 +81,7 @@ func load_additional_word_list() -> String:
 
 
 func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
-	var query: = "Select Exercise1, Exercise2, Exercise3 FROM LessonsExercises
+	var query: String = "Select Exercise1, Exercise2, Exercise3 FROM LessonsExercises
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
 	WHERE LessonNB == " + str(lesson_nb)
 	db.query(query)
@@ -97,19 +97,19 @@ func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
 	#return answer
 	
 	var result: Array[int]
-	for e in db.query_result:
-		result.append(e.Exercise1)
-		result.append(e.Exercise2)
-		result.append(e.Exercise3)
+	for element in db.query_result:
+		result.append(element.Exercise1)
+		result.append(element.Exercise2)
+		result.append(element.Exercise3)
 	
 	return result
 
 
 func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false, include_exceptions: bool = false) -> Array:
 	
-	var parameters := []
-	var symbol: = "<=" if not only_new else "=="
-	var query: = "SELECT g.ID, g.Grapheme, g.Phoneme, "
+	var parameters: Array = []
+	var symbol: String = "<=" if not only_new else "=="
+	var query: String = "SELECT g.ID, g.Grapheme, g.Phoneme, "
 	
 	if with_other_phonemes:
 		query += "(SELECT group_concat(Phoneme) FROM GPs g2 
@@ -124,7 +124,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb " + symbol + " ?"
 	parameters.append(lesson_nb)
 	
-	var conditions := []
+	var conditions: Array = []
 	if not include_exceptions:
 		conditions.append("Exception = 0")
 	if only_vowels:
@@ -140,7 +140,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	
 	db.query_with_bindings(query, parameters)
 	
-	var result: = db.query_result
+	var result: Array[Dictionary] = db.query_result
 	
 	if with_other_phonemes:
 		for GP: Dictionary in result:
@@ -177,7 +177,7 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 
 
 func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictionary]:
-	var query: = "SELECT Syllables.ID, Syllables.Syllable as Grapheme, VerifiedCount.LessonNb FROM Syllables
+	var query: String = "SELECT Syllables.ID, Syllables.Syllable as Grapheme, VerifiedCount.LessonNb FROM Syllables
 	 INNER JOIN 
 	(SELECT SyllableID, count() as Count FROM GPsInSyllables 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
@@ -197,7 +197,7 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictio
 	else:
 		db.query_with_bindings(query, [lesson_nb])
 	
-	var res : = db.query_result
+	var res: Array[Dictionary] = db.query_result
 	for syllable: Dictionary in res:
 		syllable.GPs = get_GPs_from_syllable(syllable.ID as int)
 		var phonemes: Array[String] = []
@@ -210,7 +210,7 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictio
 
 func get_words_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 99, include_exception: bool = false) -> Array:
 	var parameters: Array = []
-	var query: = "SELECT DISTINCT Words.ID, Words.Word, Words.Exception, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb, VerifiedCount.gpsid as GPs_IDs
+	var query: String = "SELECT DISTINCT Words.ID, Words.Word, Words.Exception, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb, VerifiedCount.gpsid as GPs_IDs
 FROM Words
 	 INNER JOIN 
 	(SELECT WordID, count() as Count FROM GPsInWords 
@@ -241,11 +241,11 @@ FROM Words
 	parameters.append(min_length)
 	
 	db.query_with_bindings(query, parameters)
-	var res: = db.query_result
+	var res: Array[Dictionary] = db.query_result
 	
 	# Parse the GPs IDs
 	for word: Dictionary in res:
-		var word_GPs: = []
+		var word_GPs: Array = []
 		var word_gps_id: String = word.GPs_IDs
 		for GPID: String in word_gps_id.split(","):
 			word_GPs.append({ID = int(GPID)})
@@ -257,7 +257,7 @@ FROM Words
 
 func get_words_with_silent_gp_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 6) -> Array[Dictionary]:
 	var parameters: Array = []
-	var query: = "SELECT Words.ID, Words.Word, MaxLessonNb as LessonNb
+	var query: String = "SELECT Words.ID, Words.Word, MaxLessonNb as LessonNb
 FROM Words
 	 INNER JOIN 
 	(SELECT WordID, count() as Count FROM GPsInWords 
@@ -290,13 +290,13 @@ FROM Words
 
 
 func get_sentences_by_lessons() -> Dictionary:
-	var sentences_by_lesson: = {}
+	var sentences_by_lesson: Dictionary = {}
 	
 	db.query("SELECT * FROM Sentences")
-	var sentences: = db.query_result
+	var sentences: Array[Dictionary] = db.query_result
 	
 	for sentence in sentences:
-		var lesson_nb: = get_min_lesson_for_sentence_id(sentence.ID as int)
+		var lesson_nb: int = get_min_lesson_for_sentence_id(sentence.ID as int)
 		var a: Array = sentences_by_lesson.get(lesson_nb, [])
 		a.append(sentence)
 		sentences_by_lesson[lesson_nb] = a
@@ -317,7 +317,7 @@ func get_sentences(p_lesson_nb: int, only_new: bool = false, sentences_by_lesson
 
 
 func get_sentences_for_lesson(lesson_nb: int, min_length: int = 2, max_length:int = 5) -> Array[Dictionary]:
-	var query: = "SELECT Sentences.*, VerifiedCount.MaxLessonNb AS LessonNb FROM Sentences
+	var query: String = "SELECT Sentences.*, VerifiedCount.MaxLessonNb AS LessonNb FROM Sentences
 INNER JOIN 
 	(SELECT SentenceID, count() as WordsCount FROM WordsInSentences 
 	GROUP BY SentenceID 
@@ -348,7 +348,7 @@ WHERE Sentences.Exception = 0
 
 
 func get_sentences_for_lesson_with_silent_GPs(lesson_nb: int, min_length: int = 2, max_length:int = 5) -> Array[Dictionary]:
-	var query: = "SELECT Sentences.*, VerifiedCount.MaxLessonNb AS LessonNb FROM Sentences
+	var query: String = "SELECT Sentences.*, VerifiedCount.MaxLessonNb AS LessonNb FROM Sentences
 INNER JOIN 
 	(SELECT SentenceID, count() as WordsCount FROM WordsInSentences 
 	GROUP BY SentenceID 
@@ -379,7 +379,7 @@ WHERE Sentences.Exception = 0
 
 
 func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
-	var query: = "SELECT * FROM Pseudowords
+	var query: String = "SELECT * FROM Pseudowords
 	 INNER JOIN Words ON Words.ID = Pseudowords.WordID 
 	 INNER JOIN 
 	(SELECT WordID, count() as Count FROM GPsInWords 
@@ -427,14 +427,14 @@ func get_min_lesson_for_word_id(word_id: int) -> int:
 	INNER JOIN GPsInWords ON GPsInWords.WordID=Words.ID
 	WHERE Words.ID=? 
 	ORDER BY Position", [word_id])
-	var m: = -1
+	var min: int = -1
 	for result in db.query_result:
-		var i: int = Database.get_min_lesson_for_gp_id(result.GPID as int)
-		if i < 0:
-			m = -1
+		var index: int = Database.get_min_lesson_for_gp_id(result.GPID as int)
+		if index < 0:
+			min = -1
 			break
-		m = max(m, i)
-	return m
+		min = max(min, index)
+	return min
 
 
 func get_min_lesson_for_sentence_id(sentence_id: int) -> int:
@@ -463,7 +463,7 @@ func get_lessons_count() -> int:
 
 
 func get_audio_stream_for_path(path: String) -> AudioStream:
-	var full_path : String = base_path.path_join(language).path_join(path)
+	var full_path: String = base_path.path_join(language).path_join(path)
 	if not FileAccess.file_exists(full_path):
 		return null
 	return load(full_path)

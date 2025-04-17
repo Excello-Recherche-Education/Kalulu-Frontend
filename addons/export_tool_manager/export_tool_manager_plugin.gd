@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-const EXPORTER_PATH := "res://addons/export_tool_manager/export_tool_exporter.gd"
+const EXPORTER_PATH: String = "res://addons/export_tool_manager/export_tool_exporter.gd"
 
 var tool_selector: OptionButton
 var exporter_plugin: EditorExportPlugin
@@ -15,7 +15,7 @@ func _enter_tree():
 
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, tool_selector)
 
-	var settings := get_editor_interface().get_editor_settings()
+	var settings: EditorSettings = get_editor_interface().get_editor_settings()
 	var current := settings.get_setting("export_tool_manager/current_tool")
 	var current_tool := "game"
 
