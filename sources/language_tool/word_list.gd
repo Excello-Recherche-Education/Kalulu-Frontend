@@ -14,7 +14,7 @@ extends Control
 var undo_redo: = UndoRedo.new()
 var in_new_gp_mode: = false:
 	set = set_in_new_gp_mode
-var _e
+var _element: WordListElement
 var sub_elements_list: Dictionary = {}
 var new_gp_asked_element
 var new_gp_asked_ind: int
@@ -33,10 +33,10 @@ func create_sub_elements_list() -> void:
 func _ready() -> void:
 	create_sub_elements_list()
 	
-	_e = element_scene.instantiate()
+	_element = element_scene.instantiate()
 	
-	ensure_column_exists(_e.table, "Reading", "1")
-	ensure_column_exists(_e.table, "Writing", "0")
+	ensure_column_exists(_element.table, "Reading", "1")
+	ensure_column_exists(_element.table, "Writing", "0")
 	
 	Database.db.query(_get_query())
 	
@@ -44,12 +44,12 @@ func _ready() -> void:
 	for e in results:
 		var element: = element_scene.instantiate()
 		element.sub_elements_list = sub_elements_list
-		element.word = e[_e.table_graph_column]
-		element.id = e[_e.table_graph_column + "Id"]
+		element.word = e[_element.table_graph_column]
+		element.id = e[_element.table_graph_column + "Id"]
 		element.exception = e.Exception
 		element.reading = e.Reading
 		element.writing = e.Writing
-		element.set_gp_ids_from_string(e[_e.sub_table_id + "s"])
+		element.set_gp_ids_from_string(e[_element.sub_table_id + "s"])
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
@@ -57,11 +57,11 @@ func _ready() -> void:
 		element.GPs_updated.connect(_on_GPs_updated)
 		element.update_lesson()
 	
-	title.set_title(_e.table_graph_column + " List")
+	title.set_title(_element.table_graph_column + " List")
 	lesson_title.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	word_title.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	word_title.text = _e.table_graph_column
-	graphemes_title.text = _e.sub_table
+	word_title.text = _element.table_graph_column
+	graphemes_title.text = _element.sub_table
 	_reorder_by("lesson")
 
 
@@ -70,14 +70,14 @@ func _get_query() -> String:
 			FROM %s 
 			INNER JOIN ( SELECT * FROM %s ORDER BY %s.Position ) %s ON %s.ID = %s.%sID 
 			INNER JOIN %s ON %s.ID = %s.%s
-			GROUP BY %s.ID" % [_e.table, _e.table_graph_column,
-				_e.table_graph_column, _e.sub_table_graph_column, _e.sub_table_graph_column,
-				_e.sub_table_phon_column, _e.sub_table_phon_column,
-				_e.sub_table, _e.sub_table_id, _e.table, _e.table, _e.table,
-				_e.table,
-				_e.relational_table, _e.relational_table, _e.relational_table, _e.table, _e.relational_table, _e.table_graph_column,
-				_e.sub_table, _e.sub_table, _e.relational_table, _e.sub_table_id,
-				_e.table]
+			GROUP BY %s.ID" % [_element.table, _element.table_graph_column,
+				_element.table_graph_column, _element.sub_table_graph_column, _element.sub_table_graph_column,
+				_element.sub_table_phon_column, _element.sub_table_phon_column,
+				_element.sub_table, _element.sub_table_id, _element.table, _element.table, _element.table,
+				_element.table,
+				_element.relational_table, _element.relational_table, _element.relational_table, _element.table, _element.relational_table, _element.table_graph_column,
+				_element.sub_table, _element.sub_table, _element.relational_table, _element.sub_table_id,
+				_element.table]
 
 
 func ensure_column_exists(table_name: String, column_name: String, default_value: String) -> void:
@@ -163,11 +163,11 @@ func _on_save_button_pressed() -> void:
 	for e in result:
 		var found: = false
 		for element in elements_container.get_children():
-			if " ".join(element.gp_ids) == e[_e.sub_table_id + "s"] and element.word == e[_e.table_graph_column]:
+			if " ".join(element.gp_ids) == e[_element.sub_table_id + "s"] and element.word == e[_element.table_graph_column]:
 				found = true
 				break
 		if not found:
-			Database.db.delete_rows(_e.table, "ID=%s" % e[_e.table_graph_column + "Id"])
+			Database.db.delete_rows(_element.table, "ID=%s" % e[_element.table_graph_column + "Id"])
 	undo_redo.clear_history()
 
 
@@ -213,7 +213,7 @@ func _on_lesson_gui_input(event: InputEvent) -> void:
 
 func _on_word_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
-		_reorder_by(_e.table_graph_column.to_lower())
+		_reorder_by(_element.table_graph_column.to_lower())
 
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
@@ -227,7 +227,7 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 		line = file.get_csv_line()
 		if line.size() < 2:
 			continue
-		_e._try_to_complete_from_word(line[0])
+		_element._try_to_complete_from_word(line[0])
 		all_data[line[0]] = true
 	get_tree().reload_current_scene()
 	

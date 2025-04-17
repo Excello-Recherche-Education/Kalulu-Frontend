@@ -45,8 +45,8 @@ func connect_not_found() -> void:
 	for element in elements_container.get_children():
 		if not element.not_found.is_connected(_on_not_found):
 			element.not_found.connect(_on_not_found)
-	if not _e.not_found.is_connected(_on_not_found_csv):
-		_e.not_found.connect(_on_not_found_csv)
+	if not _element.not_found.is_connected(_on_not_found_csv):
+		_element.not_found.connect(_on_not_found_csv)
 
 
 func _on_plus_button_pressed() -> void:
@@ -77,11 +77,11 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 			continue
 			
 		all_data[line[0]] = true
-		var id: int = _e._already_in_database(line[0])
+		var id: int = _element._already_in_database(line[0])
 		if id >= 0:
 			continue
 		
-		id = _e._add_from_additional_word_list(line[0])
+		id = _element._add_from_additional_word_list(line[0])
 		if id >= 0:
 			inserted_one = true
 		else:
