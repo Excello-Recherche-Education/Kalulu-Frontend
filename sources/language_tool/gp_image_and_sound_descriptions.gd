@@ -1,17 +1,17 @@
 extends Control
 
-@onready var description_container: = %DescriptionsContainer
+@onready var description_container: VBoxContainer = %DescriptionsContainer
 
-var description_line_class: = preload("res://sources/language_tool/image_and_sound_gp_description.tscn")
+const description_line_scene: PackedScene  = preload("res://sources/language_tool/image_and_sound_gp_description.tscn")
 
 
 func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.look_and_learn_images)
 	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.look_and_learn_sounds)
 	
-	Database.db.query("Select * FROM GPs")
+	Database.db.query("SELECT * FROM GPs WHERE GPs.Exception=0")
 	for res in Database.db.query_result:
-		var description_line: = description_line_class.instantiate()
+		var description_line: GPImageAndSoundDescription = description_line_scene.instantiate()
 		description_container.add_child(description_line)
 		description_line.set_gp(res)
 

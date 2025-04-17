@@ -9,21 +9,21 @@ signal GPs_updated()
 const gp_list_button_scene: = preload("res://sources/language_tool/gp_list_button.tscn")
 const plus_button_scene: = preload("res://sources/language_tool/plus_button.tscn")
 
-@export var table: = "Words"
-@export var table_graph_column: = "Word"
-@export var sub_table: = "GPs"
-@export var sub_table_graph_column: = "Grapheme"
-@export var sub_table_phon_column: = "Phoneme"
-@export var relational_table: = "GPsInWords"
-@export var sub_table_id: = "GPID"
+@export var table: String = "Words"
+@export var table_graph_column: String = "Word"
+@export var sub_table: String = "GPs"
+@export var sub_table_graph_column: String = "Grapheme"
+@export var sub_table_phon_column: String = "Phoneme"
+@export var relational_table: String = "GPsInWords"
+@export var sub_table_id: String = "GPID"
 
-@onready var word_label: = %Word
-@onready var graphemes_label: = %Graphemes
-@onready var word_edit: = %WordEdit
-@onready var tab_container: = $TabContainer
-@onready var lesson_label: = %Lesson
-@onready var exception_checkbox: = %ExceptionCheckBox
-@onready var exception_edit_checkbox: = %ExceptionEditCheckBox
+@onready var word_label: Label = %Word
+@onready var graphemes_label: Label = %Graphemes
+@onready var word_edit: LineEdit = %WordEdit
+@onready var tab_container: TabContainer = $TabContainer
+@onready var lesson_label: Label = %Lesson
+@onready var exception_checkbox: CheckBox = %ExceptionCheckBox
+@onready var exception_edit_checkbox: CheckBox = %ExceptionEditCheckBox
 @onready var reading_checkbox: CheckBox = %ReadingCheckBox
 @onready var writing_checkbox: CheckBox = %WritingCheckBox
 @onready var reading_edit_checkbox: CheckBox = %ReadingEditCheckBox

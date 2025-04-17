@@ -1,4 +1,5 @@
 extends HBoxContainer
+class_name VideoGPDescription
 
 signal delete
 

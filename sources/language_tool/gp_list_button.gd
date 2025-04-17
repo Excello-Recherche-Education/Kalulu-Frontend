@@ -5,8 +5,8 @@ signal new_selected()
 
 
 func set_gp_list(gp_list: Dictionary) -> void:
-	for gp_id in gp_list.keys():
-		add_item(gp_list[gp_id].grapheme + "-" + gp_list[gp_id].phoneme, gp_id)
+	for gp_id: int in gp_list.keys():
+		add_item(gp_list[gp_id].grapheme as String + "-" + gp_list[gp_id].phoneme as String, gp_id)
 
 
 func _on_item_selected(index: int) -> void:

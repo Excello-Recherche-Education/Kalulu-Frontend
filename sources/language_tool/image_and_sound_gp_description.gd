@@ -1,4 +1,5 @@
 extends HBoxContainer
+class_name GPImageAndSoundDescription
 
 signal delete
 
