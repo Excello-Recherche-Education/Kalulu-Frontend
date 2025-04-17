@@ -41,11 +41,11 @@ func _setup_minigame() -> void:
 	# Spawns the good amount of holes and places them
 	var top_left: Vector2 = crab_zone.position
 	var bottom_right: Vector2 = top_left + crab_zone.size
-	for i: int in range(settings.rows.size()):
-		var fi: = float(i + 1.0) / float(settings.rows.size() + 1.0)
+	for index: int in range(settings.rows.size()):
+		var fi: = float(index + 1.0) / float(settings.rows.size() + 1.0)
 		var y: float = (1.0 - fi) * top_left.y + fi * bottom_right.y
-		for j: int in range(settings.rows[i]):
-			var fj: = float(j + 1.0) / float(settings.rows[i] as int + 1.0)
+		for j: int in range(settings.rows[index]):
+			var fj: = float(j + 1.0) / float(settings.rows[index] as int + 1.0)
 			var x: float = fj * top_left.x + (1.0 - fj) * bottom_right.x
 			
 			var hole: Hole = hole_scene.instantiate()
@@ -118,7 +118,7 @@ func _on_current_progression_changed() -> void:
 
 # Spawn a set amount of crabs in random holes
 func _spawn_crabs() -> void:
-	for i in range(int(3.0 * holes.size() / 4.0)):
+	for index: int in range(int(3.0 * holes.size() / 4.0)):
 		_on_hole_crab_despawned(false)
 		await get_tree().create_timer(0.1).timeout
 
@@ -143,17 +143,17 @@ func _on_hole_timer_timeout() -> void:
 	
 	var hole_found: = false
 	while not hole_found:
-		for i: int in holes_range:
-			if not holes[i].crab:
+		for index: int in holes_range:
+			if not holes[index].crab:
 				# Define if the crab is a stimulus or a distraction
 				# Only one crab with the correct stimulus can be showned at a time
 				var is_stimulus: = not stimulus_spawned and randf() < _get_difficulty_settings().stimuli_ratio
 				if is_stimulus:
 					stimulus_spawned = true
-					holes[i].spawn_crab(_get_current_stimulus(), true)
+					holes[index].spawn_crab(_get_current_stimulus(), true)
 				else:
 					var current_distractors : Array = distractions[current_progression % distractions.size()]
-					holes[i].spawn_crab(current_distractors.pick_random() as Dictionary, false)
+					holes[index].spawn_crab(current_distractors.pick_random() as Dictionary, false)
 				hole_found = true
 				break
 		

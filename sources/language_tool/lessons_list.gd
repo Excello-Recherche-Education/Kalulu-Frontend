@@ -76,23 +76,23 @@ func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
 		index += 1
 	lessons_container.move_child(dropped_lesson, index)
 	var children: = lessons_container.get_children()
-	for i in children.size():
-		var child: = children[i]
-		child.number = i + 1
+	for ind in children.size():
+		var child: = children[ind]
+		child.number = ind + 1
 		lessons[child.number] = child
 
 
 func _on_save_button_pressed() -> void:
 	Database.db.query("DELETE FROM GPsInLessons")
 	var children: = lessons_container.get_children()
-	for i in children.size():
-		var child: = children[i]
-		Database.db.query_with_bindings("SELECT * FROM Lessons WHERE LessonNb = ?", [i + 1])
+	for index in children.size():
+		var child: = children[index]
+		Database.db.query_with_bindings("SELECT * FROM Lessons WHERE LessonNb = ?", [index + 1])
 		var lesson_id: = -1
 		if Database.db.query_result.is_empty():
 			Database.db.insert_row("Lessons",
 			{
-				LessonNb = i + 1
+				LessonNb = index + 1
 			})
 			lesson_id = Database.db.last_insert_rowid
 		else:

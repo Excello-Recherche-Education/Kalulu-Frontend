@@ -19,32 +19,30 @@ static func bezier_square_error(current_points: Array, ref_points: Array) -> flo
 
 static func bezier_sampling(points: Array, number_of_samples: int) -> Array:
 	var sample_points: = []
-	for i in range(number_of_samples + 1):
-		var sample: = bezier(float(i) / float(number_of_samples), points)
+	for index: int in range(number_of_samples + 1):
+		var sample: = bezier(float(index) / float(number_of_samples), points)
 		sample_points.append(sample)
 	
 	return sample_points
 
 
 static func bezier(t: float, points: Array) -> Vector2:
-	var n: = points.size() - 1
-	
-	var r: = Vector2.ZERO
-	for i in range(n + 1):
-		var bern: = bernstein(t, n, i)
-		r += bern * points[i]
+	var n: int = points.size() - 1
+	var r: Vector2 = Vector2.ZERO
+	for index: int in range(n + 1):
+		var bern: = bernstein(t, n, index)
+		r += bern * points[index]
 	
 	return r
 
 
 static func bernstein(t: float, m: int, i: int) -> float:
 	var b_i_m: = float(binomial(i, m))
-	var t_i: = pow(t, i)
-	var t_m_i: = pow(1.0 - t, m - i)
+	var t_i: float = pow(t, i)
+	var t_m_i: float = pow(1.0 - t, m - i)
+	var result: float = b_i_m * t_i * t_m_i
 	
-	var r: = b_i_m * t_i * t_m_i
-	
-	return r
+	return result
 
 
 static func binomial(k: int, n: int) -> int:	
@@ -61,8 +59,8 @@ static func factorial(k: int) -> int:
 	if k == 0:
 		return 1
 	
-	var r: = 1
-	for i in range(1, k + 1):
-		r *= i
+	var result: int = 1
+	for index: int in range(1, k + 1):
+		result *= index
 	
-	return r
+	return result

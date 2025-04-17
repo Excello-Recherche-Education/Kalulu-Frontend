@@ -41,8 +41,8 @@ func _process(delta: float) -> void:
 	
 	if is_playing or is_in_demo:
 		var points: PackedVector2Array = []
-		for i in range(0, int(guide.progress), 10):
-			var i_f: = float(i)
+		for index: int in range(0, int(guide.progress), 10):
+			var i_f: = float(index)
 			var point: = curve.sample_baked(i_f)
 			points.append(point)
 		line.points = points
@@ -75,12 +75,12 @@ func _tracing_process() -> void:
 				
 				should_play_effects = true
 				var remove_up_to: = 0
-				for i in curve_points.size():
-					var offset: = curve.get_closest_offset(curve_points[i])
+				for index: int in curve_points.size():
+					var offset: = curve.get_closest_offset(curve_points[index])
 					if offset > guide.progress:
-						remove_up_to = i
+						remove_up_to = index
 						break
-				for i: int in min(remove_up_to, curve_points.size() - 2):
+				for _index: int in min(remove_up_to, curve_points.size() - 2):
 					curve_points.remove_at(0)
 					remaining_curve.remove_point(0)
 

@@ -106,10 +106,10 @@ func _spawn() -> void:
 	
 	# Insert the new jellyfish on the right spot in the blocking array
 	var found_ind: = -1
-	for i in blocking_jellyfish.size():
-		var blocking: = blocking_jellyfish[i]
+	for index: int in blocking_jellyfish.size():
+		var blocking: = blocking_jellyfish[index]
 		if blocking.position.x > new_jellyfish.position.x:
-			found_ind = i
+			found_ind = index
 			break
 	if found_ind < 0:
 		found_ind = blocking_jellyfish.size()

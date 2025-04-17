@@ -1,17 +1,17 @@
 extends HBoxContainer
-class_name GPImageAndSoundDescription
+class_name ImageAndSoundGPDescription
 
 signal delete
 
-@onready var gp_menu_button: = %GPMenuButton
-@onready var image_preview: = %ImagePreview
-@onready var sound_preview: = %SoundPreview
-@onready var image_upload_button: = %ImageUploadButton
-@onready var sound_upload_button: = %SoundUploadButton
-@onready var file_dialog: = $FileDialog
-@onready var sound_player: = $AudioStreamPlayer
-@onready var image_clear_button: = %ImageClearButton
-@onready var sound_clear_button: = %SoundClearButton
+@onready var gp_menu_button: MenuButton = %GPMenuButton
+@onready var image_preview: TextureRect = %ImagePreview
+@onready var sound_preview: Button = %SoundPreview
+@onready var image_upload_button: MarginContainer = %ImageUploadButton
+@onready var sound_upload_button: MarginContainer = %SoundUploadButton
+@onready var file_dialog: FileDialog = $FileDialog
+@onready var sound_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var image_clear_button: MarginContainer = %ImageClearButton
+@onready var sound_clear_button: MarginContainer = %SoundClearButton
 
 var gp: Dictionary
 var get_image_path: Callable = Database.get_gp_look_and_learn_image_path

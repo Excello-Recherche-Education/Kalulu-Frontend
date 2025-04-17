@@ -18,9 +18,9 @@ var sentences_by_lesson: Dictionary
 func _ready() -> void:
 	Database.db.query("Select * FROM ExerciseTypes")
 	
-	for e in Database.db.query_result:
+	for element: Dictionary in Database.db.query_result:
 		for exercise_button: OptionButton in exercise_buttons:
-			exercise_button.add_item(e.Type, e.ID)
+			exercise_button.add_item(element.Type, element.ID)
 
 
 func _set_lesson_number(value: int) -> void:
@@ -37,19 +37,19 @@ func _set_lesson_number(value: int) -> void:
 		INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
 		WHERE LessonNb = " + str(lesson_number))
 	
-	for e in Database.db.query_result:
+	for element: Dictionary in Database.db.query_result:
 		var gp: = Label.new()
-		gp.text = e.Grapheme + "-" + e.Phoneme
+		gp.text = element.Grapheme + "-" + element.Phoneme
 		lesson_gps.add_child(gp)
 	
 	Database.db.query("Select Exercise1, Exercise2, Exercise3, LessonNb FROM LessonsExercises
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
 	WHERE LessonNb = " + str(lesson_number))
 	
-	for e in Database.db.query_result:
-		exercise_buttons[0].select(exercise_buttons[0].get_item_index(e.Exercise1))
-		exercise_buttons[1].select(exercise_buttons[0].get_item_index(e.Exercise2))
-		exercise_buttons[2].select(exercise_buttons[0].get_item_index(e.Exercise3))
+	for element: Dictionary in Database.db.query_result:
+		exercise_buttons[0].select(exercise_buttons[0].get_item_index(element.Exercise1))
+		exercise_buttons[1].select(exercise_buttons[0].get_item_index(element.Exercise2))
+		exercise_buttons[2].select(exercise_buttons[0].get_item_index(element.Exercise3))
 	
 	var gps_in_lesson: = Database.get_GP_for_lesson(lesson_number, true)
 	var syllables_in_lesson: = Database.get_syllables_for_lesson(lesson_number)

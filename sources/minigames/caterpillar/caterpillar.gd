@@ -43,9 +43,9 @@ func move(y : float) -> void:
 	coroutine.add_future(_tween_body_part(head, y).finished)
 	
 	# Move body
-	for i: int in body_parts.get_child_count(false):
+	for index: int in body_parts.get_child_count(false):
 		await get_tree().create_timer(body_part_wait_time).timeout
-		var body_part: CaterpillarBody = body_parts.get_child(-i-1)
+		var body_part: CaterpillarBody = body_parts.get_child(-index-1)
 		coroutine.add_future(_tween_body_part(body_part, y).finished)
 	
 	# Move tail
@@ -133,8 +133,8 @@ func reset() -> void:
 	var tween: = create_tween()
 	tween.tween_property(head, "position:x", 0, 0.2)
 	
-	for i: int in range(1, body_parts.get_child_count()):
-		tween.parallel().tween_property(body_parts.get_child(i), "position:x", 0, 0.2)
+	for index: int in range(1, body_parts.get_child_count()):
+		tween.parallel().tween_property(body_parts.get_child(index), "position:x", 0, 0.2)
 	
 	# Clear text on the first body part
 	var body_part: CaterpillarBody = body_parts.get_child(0)
@@ -143,8 +143,8 @@ func reset() -> void:
 	await tween.finished
 	
 	# Remove the old parts
-	for i: int in range(1, body_parts.get_child_count()):
-		body_parts.get_child(i).queue_free()
+	for index: int in range(1, body_parts.get_child_count()):
+		body_parts.get_child(index).queue_free()
 
 
 func _on_eat_area_2d_area_entered(area: Area2D) -> void:

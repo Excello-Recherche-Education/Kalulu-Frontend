@@ -90,10 +90,10 @@ func set_maximum_number_of_lives(new_max_number_of_lives: int) -> void:
 		await pause_ended
 	var lives_rects: = lives_container.get_children()
 	# Never remove the first
-	for i in range(1, lives_rects.size()):
-		if i >= new_max_number_of_lives:
-			lives_rects[i].queue_free()
-	for i in range(lives_rects.size(), new_max_number_of_lives):
+	for index: int in range(1, lives_rects.size()):
+		if index >= new_max_number_of_lives:
+			lives_rects[index].queue_free()
+	for index: int in range(lives_rects.size(), new_max_number_of_lives):
 		var new_lives_rect: TextureRect = model_lives_rect.duplicate()
 		new_lives_rect.texture = full_lives_icon
 		lives_container.add_child(new_lives_rect)
@@ -107,9 +107,9 @@ func set_number_of_lives(new_number_of_lives: int) -> void:
 	if new_number_of_lives > max_lives:
 		set_maximum_number_of_lives(new_number_of_lives)
 	var lives_rects: = lives_container.get_children()
-	for i in max_lives:
-		var life_rect: TextureRect = lives_rects[i]
-		if i < max_lives - new_number_of_lives:
+	for index: int in max_lives:
+		var life_rect: TextureRect = lives_rects[index]
+		if index < max_lives - new_number_of_lives:
 			life_rect.texture = empty_lives_icon
 		else:
 			life_rect.texture = full_lives_icon
@@ -123,10 +123,10 @@ func set_max_progression(new_max_progression: int) -> void:
 		await pause_ended
 	var progression_rects: = progression_container.get_children()
 	# Never remove the first
-	for i in range(1, progression_rects.size()):
-		if i >= new_max_progression:
-			progression_rects[i].queue_free()
-	for i in range(progression_rects.size(), new_max_progression):
+	for index: int in range(1, progression_rects.size()):
+		if index >= new_max_progression:
+			progression_rects[index].queue_free()
+	for index: int in range(progression_rects.size(), new_max_progression):
 		var new_progression_rect: TextureRect = model_progression_rect.duplicate()
 		new_progression_rect.show()
 		new_progression_rect.texture = empty_progression_icon
@@ -141,9 +141,9 @@ func set_progression(new_progression: int) -> void:
 	if new_progression > max_progression:
 		set_max_progression(new_progression)
 	var progression_rects: = progression_container.get_children()
-	for i in max_progression:
-		var progression_rect: TextureRect = progression_rects[i]
-		if i < new_progression:
+	for index: int in max_progression:
+		var progression_rect: TextureRect = progression_rects[index]
+		if index < new_progression:
 			progression_rect.texture = full_progression_icon
 		else:
 			progression_rect.texture = empty_progression_icon

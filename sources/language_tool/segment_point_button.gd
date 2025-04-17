@@ -5,7 +5,7 @@ signal point_down()
 signal point_up()
 signal minus_pressed()
 
-@onready var index_label: = %IndexLabel
+@onready var index_label: Label = %IndexLabel
 
 
 func _ready() -> void:

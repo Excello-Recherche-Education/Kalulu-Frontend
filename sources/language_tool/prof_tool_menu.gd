@@ -29,11 +29,11 @@ func _ready() -> void:
 
 
 func _display_available_languages() -> void:
-	for item in range(1, language_select_button.item_count):
+	for item: int in range(1, language_select_button.item_count):
 		language_select_button.remove_item(item)
-	var available_languages: = _get_available_languages()
-	var ind: = 1
-	for available_language in available_languages:
+	var available_languages: Array[String] = _get_available_languages()
+	var ind: int = 1
+	for available_language: String in available_languages:
 		language_select_button.add_item(available_language)
 		if available_language == save_file.selected_language:
 			Database.language = save_file.selected_language
@@ -103,9 +103,9 @@ func _on_export_filename_selected(filename: String) -> void:
 	
 	var summary_file: = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
 	var sentences_by_lesson: = Database.get_sentences_by_lessons()
-	for i in Database.get_lessons_count():
+	for index: int in Database.get_lessons_count():
 		
-		var lesson: int = i +1
+		var lesson: int = index +1
 		
 		summary_file.store_line("Lesson %s --------------------" % lesson)
 		summary_file.store_line("\t \t Words ---")
@@ -159,8 +159,8 @@ func _check_db_integrity() -> void:
 	var known_words_list: Dictionary = {}
 	var known_GPs_list: Array[Dictionary] = []
 	var GPKnown: bool = false
-	for i in Database.get_lessons_count():
-		lesson_id = i +1
+	for index: int in Database.get_lessons_count():
+		lesson_id = index +1
 		error_label.text = "Database integrity checks lesson " + str(lesson_id)
 		await get_tree().process_frame
 		print("Lesson_id = " + str(lesson_id))
@@ -329,8 +329,8 @@ func _word_list_file_selected(file_path: String) -> void:
 			if master_gplist.size() != graphemes.size():
 				same = false
 			else:
-				for i in master_gplist.size():
-					same = same and (graphemes[i] + "-" + phonemes[i] == master_gplist[i])
+				for index: int in master_gplist.size():
+					same = same and (graphemes[index] + "-" + phonemes[index] == master_gplist[index])
 			if not same:
 				Database.db.delete_rows("Words", "ID=%s" % e.WordId)
 				word_list_element._add_from_additional_word_list(e.Word as String)
@@ -407,10 +407,10 @@ func _create_words_csv() -> void:
 		var gpmatch: = "("
 		var graphemes: PackedStringArray = (e.Graphemes as String).split(" ")
 		var phonemes: PackedStringArray = (e.Phonemes as String).split(" ")
-		for i in graphemes.size() - 1:
-			gpmatch += graphemes[i] + "-" + phonemes[i] + "."
-		var i: = graphemes.size() - 1
-		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
+		for index: int in graphemes.size() - 1:
+			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
+		var index: int = graphemes.size() - 1
+		gpmatch += graphemes[index] + "-" + phonemes[index] + ")"
 		var lesson: = -1
 		for gp_id in e.GPIDs.split(' '):
 			var gp_id_lesson: = Database.get_min_lesson_for_gp_id(int(gp_id))
@@ -435,8 +435,8 @@ func _create_syllable_csv() -> void:
 		var gpmatch: = "("
 		var graphemes: PackedStringArray = (e.Graphemes as String).split(" ")
 		var phonemes: PackedStringArray = (e.Phonemes as String).split(" ")
-		for i in graphemes.size() - 1:
-			gpmatch += graphemes[i] + "-" + phonemes[i] + "."
+		for index: int in graphemes.size() - 1:
+			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
 		var i: = graphemes.size() - 1
 		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
 		var lesson: = -1
@@ -520,16 +520,16 @@ func create_book():
 				all_headers.append(normalized)
 				var filler := PackedStringArray()
 				filler.resize(current_row_count)
-				for i in range(current_row_count):
-					filler[i] = ""  # Valeur vide pour rattraper
+				for index: int in range(current_row_count):
+					filler[index] = ""  # Valeur vide pour rattraper
 				columns[normalized] = filler
 
 		# Init colonne "Categorie" si pas encore
 		if not columns.has("Categorie"):
 			var filler := PackedStringArray()
 			filler.resize(current_row_count)
-			for i in range(current_row_count):
-				filler[i] = ""
+			for index: int in range(current_row_count):
+				filler[index] = ""
 			columns["Categorie"] = filler
 
 		while not file.eof_reached():
@@ -543,10 +543,10 @@ func create_book():
 				continue
 
 			var row_dict := {}
-			for i in range(values.size()):
-				var original = raw_headers[i]
+			for index: int in range(values.size()):
+				var original = raw_headers[index]
 				var normalized = header_map.get(original, original)
-				row_dict[normalized] = values[i]
+				row_dict[normalized] = values[index]
 
 			# Ligne principale
 			add_row(columns, row_dict, category, all_headers)
@@ -601,8 +601,8 @@ func add_row(dict: Dictionary, row_data: Dictionary, categorie: String, all_head
 		if not dict.has(header):
 			var filler := PackedStringArray()
 			filler.resize(current_size) # rattrape les lignes précédentes
-			for i in range(current_size):
-				filler[i] = ""
+			for index: int in range(current_size):
+				filler[index] = ""
 			dict[header] = filler
 		dict[header].append(row_data.get(header, ""))
 
@@ -610,8 +610,8 @@ func add_row(dict: Dictionary, row_data: Dictionary, categorie: String, all_head
 	if not dict.has("Categorie"):
 		var filler := PackedStringArray()
 		filler.resize(current_size)
-		for i in range(current_size):
-			filler[i] = ""
+		for index: int in range(current_size):
+			filler[index] = ""
 		dict["Categorie"] = filler
 
 	dict["Categorie"].append(categorie)
@@ -645,12 +645,12 @@ func parse_csv_line(line: String) -> PackedStringArray:
 # Transforme une ligne pour l'écriture CSV, avec échappement
 func escape_csv_line(fields: PackedStringArray) -> String:
 	var output: String = ""
-	for i in range(fields.size()):
-		var field: String = fields[i]
+	for index: int in range(fields.size()):
+		var field: String = fields[index]
 		if field.find("\"") != -1 or field.find(",") != -1 or field.find("\n") != -1:
 			field = "\"" + field.replace("\"", "\"\"") + "\""
 		output += field
-		if i < fields.size() - 1:
+		if index < fields.size() - 1:
 			output += ","
 	return output
 

@@ -15,8 +15,8 @@ func _ready() -> void:
 	line_particles.hide()
 	back_button.hide()
 	
-	for i in max_lesson_number:
-		lessons[i] = i
+	for index: int in max_lesson_number:
+		lessons[index] = index
 	
 	# Checks if a configuration exists
 	if not ResourceLoader.exists(gardens_layout_resource_path):
@@ -32,17 +32,17 @@ func _init_gardens_layout() -> void:
 	# Empty the gardens configuration
 	gardens_layout.gardens.clear()
 	
-	for i in max_lesson_number:
+	for index: int in max_lesson_number:
 		
 		var garden_layout: GardenLayout
 		
 		# Create a new garden
-		if i % 4 == 0:
+		if index % 4 == 0:
 			garden_layout = GardenLayout.new()
 			gardens_layout.gardens.append(garden_layout)
 			
 			@warning_ignore("integer_division")
-			garden_layout.color = (i / 4) % garden_textures_nb
+			garden_layout.color = (index / 4) % garden_textures_nb
 			
 			# Add the flowers to the garden
 			for flower_i in 5:
@@ -137,10 +137,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func get_previous_point_on_curve(point: Vector2) -> int:
 	var offset: = curve.get_closest_offset(point)
-	for i in curve.point_count:
-		var point_offset: = curve.get_closest_offset(curve.get_point_position(i))
+	for index: int in curve.point_count:
+		var point_offset: = curve.get_closest_offset(curve.get_point_position(index))
 		if point_offset > offset:
-			return i - 1
+			return index - 1
 	return curve.point_count
 
 
@@ -235,14 +235,14 @@ func _on_reset_garden_button_pressed() -> void:
 	var garden: Garden = garden_parent.get_child(garden_ind)
 	
 	var flowers: = gardens_layout.gardens[garden_ind].flowers
-	for i in flowers.size():
-		flowers[i] = GardenLayout.Flower.new()
+	for index: int in flowers.size():
+		flowers[index] = GardenLayout.Flower.new()
 	gardens_layout.gardens[garden_ind].flowers = flowers
 	garden.set_flowers(flowers, Garden.FlowerSizes.Large)
 	
 	var lesson_buttons: = gardens_layout.gardens[garden_ind].lesson_buttons
-	for i in lesson_buttons.size():
-		lesson_buttons[i] = GardenLayout.LessonButton.new()
+	for index: int in lesson_buttons.size():
+		lesson_buttons[index] = GardenLayout.LessonButton.new()
 	gardens_layout.gardens[garden_ind].lesson_buttons = lesson_buttons
 	garden.set_lesson_buttons(lesson_buttons)
 	

@@ -20,8 +20,8 @@ func set_enabled(is_enabled: bool) -> void:
 
 func _update_label() -> void:
 	label.text = ""
-	for i: int in stimulus.GPsCount:
-		if progress > i or progress == stimulus.GPsCount:
-			label.text += stimulus.GPs[i].Grapheme
+	for index: int in stimulus.GPsCount:
+		if progress > index or progress == stimulus.GPsCount:
+			label.text += stimulus.GPs[index].Grapheme
 		else:
 			label.text += "_"

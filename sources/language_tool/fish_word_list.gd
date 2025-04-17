@@ -41,12 +41,12 @@ func _ready() -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	var c: = elements_container.get_children()
-	c.sort_custom(sorting_function.bind(property_name))
-	for e in elements_container.get_children():
-		elements_container.remove_child(e)
-	for e in c:
-		elements_container.add_child(e)
+	var children: Array[Node] = elements_container.get_children()
+	children.sort_custom(sorting_function.bind(property_name))
+	for element in elements_container.get_children():
+		elements_container.remove_child(element)
+	for element in children:
+		elements_container.add_child(element)
 
 
 func sorting_function(a, b, property_name) -> bool:

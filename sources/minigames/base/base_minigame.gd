@@ -21,19 +21,19 @@ enum Type {
 
 @export var minigame_name: Type
 
-@export var lesson_nb: = 1
-@export_range(0, 4) var difficulty: = 0
-@export_range(0, 1) var current_lesson_stimuli_ratio : float = 0.7
-@export var minigame_number: = 1
+@export var lesson_nb: int = 1
+@export_range(0, 4) var difficulty: int = 0
+@export_range(0, 1) var current_lesson_stimuli_ratio: float = 0.7
+@export var minigame_number: int = 1
 
 @export_category("Difficulty")
-@export var max_number_of_lives: = 0 :
+@export var max_number_of_lives: int = 0 :
 	set(value):
 		max_number_of_lives = value
 		if minigame_ui:
 			minigame_ui.set_maximum_number_of_lives(value)
 
-@export var max_progression: = 0 :
+@export var max_progression: int = 0 :
 	set(value):
 		max_progression = value
 		if minigame_ui:
@@ -49,14 +49,14 @@ enum Type {
 
 # Game root shall contain all the game tree.
 # This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
-@onready var game_root: = $GameRoot
+@onready var game_root: Control = $GameRoot
 
 # Expected number of stimuli from current lesson
 @onready var current_lesson_stimuli_number: int = floori(max_progression * current_lesson_stimuli_ratio)
 
 # Sounds
-const win_sound_fx: = preload("res://assets/sfx/sfx_game_over_win.mp3")
-const lose_sound_fx: = preload("res://assets/sfx/sfx_game_over_lose.mp3")
+const win_sound_fx: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
+const lose_sound_fx: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
 
 # Lesson
 var minigame_difficulty: int
@@ -73,7 +73,7 @@ var stimuli: = []
 var distractions: = []
 
 # Lives
-var current_lives: = 0 :
+var current_lives: int = 0 :
 	set(value):
 		var previous_lives: = current_lives
 		current_lives = value

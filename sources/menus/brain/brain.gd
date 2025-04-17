@@ -68,22 +68,22 @@ const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 @onready var help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "help"))
 
 func _ready() -> void:
-	for i in range(garden_buttons.size()):
-		garden_buttons[i].pressed.connect(_on_garden_button_pressed.bind(i))
+	for index: int in range(garden_buttons.size()):
+		garden_buttons[index].pressed.connect(_on_garden_button_pressed.bind(index))
 	
-	var lesson_ind: = 1
-	for i in range(gardens_layout.gardens.size()):
+	var lesson_ind: int = 1
+	for index: int in range(gardens_layout.gardens.size()):
 		var can_emit: = true
 		if UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != UserProgression.Status.Locked:
-			garden_buttons[i].disabled = false
-			garden_buttons[i].self_modulate = unlocked_colors[i]
+			garden_buttons[index].disabled = false
+			garden_buttons[index].self_modulate = unlocked_colors[index]
 		else:
-			garden_buttons[i].disabled = true
-			garden_buttons[i].self_modulate = locked_color
+			garden_buttons[index].disabled = true
+			garden_buttons[index].self_modulate = locked_color
 			can_emit = false
 		
 		var emitting: = false
-		for _j in range(gardens_layout.gardens[i].lesson_buttons.size()):
+		for _index2 in range(gardens_layout.gardens[index].lesson_buttons.size()):
 			if can_emit and not emitting:
 				emitting = false
 				for game: UserProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
@@ -92,7 +92,7 @@ func _ready() -> void:
 						break
 			lesson_ind += 1
 		
-		particles[i].emitting = emitting
+		particles[index].emitting = emitting
 		
 		
 	await OpeningCurtain.open()

@@ -125,8 +125,8 @@ func _on_step_completed(step : Step):
 
 func _remove_future_steps():
 	# Free memory
-	for i in range(progress_bar.value + 1, current_steps.size(), 1):
-		current_steps[i].queue_free()
+	for index: int in range(progress_bar.value + 1, current_steps.size(), 1):
+		current_steps[index].queue_free()
 	
 	# Resize the array to remove unwanted steps
 	current_steps.resize(progress_bar.value + 1)

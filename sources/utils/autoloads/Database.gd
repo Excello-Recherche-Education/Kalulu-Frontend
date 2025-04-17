@@ -62,19 +62,19 @@ func load_additional_word_list() -> String:
 	var word_list_path: = get_additional_word_list_path()
 	if FileAccess.file_exists(word_list_path):
 		var file: = FileAccess.open(word_list_path, FileAccess.READ)
-		var title_line: = file.get_csv_line()
+		var title_line: PackedStringArray = file.get_csv_line()
 		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
 			var msg: = "word list should have columns ORTHO, PHON and GPMATCH"
 			push_error(msg)
 			return msg
-		var ortho_index: = title_line.find("ORTHO")
+		var ortho_index: int = title_line.find("ORTHO")
 		while not file.eof_reached():
 			var line: = file.get_csv_line()
 			if line.size() != title_line.size():
 				return "Formatting error on: %s" % line
-			var data: = {}
-			for i in line.size():
-				data[title_line[i]] = line[i]
+			var data: Dictionary = {}
+			for index: int in line.size():
+				data[title_line[index]] = line[index]
 			additional_word_list[line[ortho_index]] = data
 		file.close()
 	return ""
@@ -303,7 +303,7 @@ func get_sentences_by_lessons() -> Dictionary:
 	return sentences_by_lesson
 
 
-func get_sentences(p_lesson_nb: int, only_new: = false, sentences_by_lesson: = {}) -> Array:
+func get_sentences(p_lesson_nb: int, only_new: bool = false, sentences_by_lesson: = {}) -> Array:
 	if sentences_by_lesson.is_empty():
 		sentences_by_lesson = get_sentences_by_lessons()
 	
@@ -311,8 +311,8 @@ func get_sentences(p_lesson_nb: int, only_new: = false, sentences_by_lesson: = {
 		return sentences_by_lesson.get(p_lesson_nb, [])
 	
 	var ret: Array = []
-	for i in p_lesson_nb:
-		ret.append_array(sentences_by_lesson.get(i, []) as Array)
+	for index: int in p_lesson_nb:
+		ret.append_array(sentences_by_lesson.get(index, []) as Array)
 	return ret
 
 
@@ -472,8 +472,8 @@ func get_audio_stream_for_path(path: String) -> AudioStream:
 func get_audio_stream_for_word(ID: int) -> AudioStream:
 	var GPs: = get_GP_from_word(ID)
 	var file_name: = _phoneme_to_string(GPs[0].Phoneme as String)
-	for i in range(1, GPs.size()):
-		var GP: Dictionary = GPs[i]
+	for index: int in range(1, GPs.size()):
+		var GP: Dictionary = GPs[index]
 		file_name += "-" + _phoneme_to_string(GP.Phoneme as String)
 	file_name += ".mp3"
 	return load(words_path + file_name)
@@ -482,8 +482,8 @@ func get_audio_stream_for_word(ID: int) -> AudioStream:
 func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
 	var phoneme_array := phoneme.split("-")
 	var path: = words_path + _phoneme_to_string(phoneme_array[0])
-	for i in range(1, phoneme_array.size()):
-		path += "-" + _phoneme_to_string(phoneme_array[i])
+	for index: int in range(1, phoneme_array.size()):
+		path += "-" + _phoneme_to_string(phoneme_array[index])
 	path += ".mp3"
 	
 	if FileAccess.file_exists(path) and ResourceLoader.exists(path):
@@ -605,24 +605,24 @@ func _import_word_from_csv(ortho: String, gpmatch: String, is_word: = true) -> A
 				Word = ortho,
 			})
 			word_id = db.last_insert_rowid
-			for i in gp_ids.size():
-				var gp_id: int = gp_ids[i]
+			for index: int in gp_ids.size():
+				var gp_id: int = gp_ids[index]
 				db.insert_row("GPsInWords", {
 					WordID = word_id,
 					GPID = gp_id,
-					Position = i
+					Position = index
 				})
 		else:
 			db.insert_row("Syllables", {
 				Syllable = ortho,
 			})
 			word_id = db.last_insert_rowid
-			for i in gp_ids.size():
-				var gp_id: int = gp_ids[i]
+			for index: int in gp_ids.size():
+				var gp_id: int = gp_ids[index]
 				db.insert_row("GPsInSyllables", {
 					SyllableID = word_id,
 					GPID = gp_id,
-					Position = i
+					Position = index
 				})
 	else:
 		word_id = db.query_result[0].ID

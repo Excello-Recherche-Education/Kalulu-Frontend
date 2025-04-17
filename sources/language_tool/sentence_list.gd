@@ -63,14 +63,14 @@ func _on_not_found_csv(text: String) -> void:
 
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
-	var file: = FileAccess.open(path, FileAccess.READ)
-	var line: = file.get_csv_line()
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var line: PackedStringArray = file.get_csv_line()
 	if line.size() < 1 or line[0] != "Sentence":
 		error_label.text = "Column name should be Sentence"
 		return
-	var inserted_one: = false
-	var not_found_one: = false
-	var all_data: = {}
+	var inserted_one: bool = false
+	var not_found_one: bool = false
+	var all_data: Dictionary = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
 		if line.size() < 1 or line[0] == "":
@@ -89,12 +89,12 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 	
 	# delete elements that are not in file
 	if match_to_file:
-		var query: = "Select * FROM Sentences"
+		var query: String = "Select * FROM Sentences"
 		Database.db.query(query)
-		var result: = Database.db.query_result
-		for e in result:
-			if not e.Sentence in all_data:
-				Database.db.delete_rows("Sentences", "ID=%s" % e.ID)
+		var result: Array[Dictionary] = Database.db.query_result
+		for element in result:
+			if not element.Sentence in all_data:
+				Database.db.delete_rows("Sentences", "ID=%s" % element.ID)
 				inserted_one = true
 		
 	if inserted_one:

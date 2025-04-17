@@ -44,8 +44,8 @@ func _find_stimuli_and_distractions() -> void:
 	# If there is no previous stimuli, only adds from current lesson
 	if not previous_lesson_sentences:
 		if current_lesson_sentences.size() >= max_progression:
-			for i in max_progression:
-				stimuli.append(current_lesson_sentences[i])
+			for index: int in max_progression:
+				stimuli.append(current_lesson_sentences[index])
 		else:
 			while stimuli.size() < max_progression:
 				stimuli.append(current_lesson_sentences.pick_random())
@@ -53,22 +53,22 @@ func _find_stimuli_and_distractions() -> void:
 		if current_lesson_sentences:
 			# If there are more stimuli in current lesson than needed
 			if current_lesson_sentences.size() >= current_lesson_stimuli_number:
-				for i in current_lesson_stimuli_number:
-					stimuli.append(current_lesson_sentences[i])
+				for index: int in current_lesson_stimuli_number:
+					stimuli.append(current_lesson_sentences[index])
 			else:
 				stimuli.append_array(current_lesson_sentences)
 
 			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
-			var minimal_stimuli : int = floori(current_lesson_stimuli_number/2.0)
+			var minimal_stimuli: int = floori(current_lesson_stimuli_number/2.0)
 			if stimuli.size() < minimal_stimuli:
 				while stimuli.size() < minimal_stimuli:
 					stimuli.append(current_lesson_sentences.pick_random())
 
 		# Gets other stimuli from previous errors or lessons
-		var spaces_left : int = max_progression - stimuli.size()
+		var spaces_left: int = max_progression - stimuli.size()
 		if previous_lesson_sentences.size() >= spaces_left:
-			for i in spaces_left:
-				stimuli.append(previous_lesson_sentences[i])
+			for index: int in spaces_left:
+				stimuli.append(previous_lesson_sentences[index])
 		else:
 			stimuli.append_array(previous_lesson_sentences)
 
@@ -118,19 +118,19 @@ func _next_sentence() -> void:
 	var current_words: PackedStringArray = (current_sentence.Sentence as String).replace("'", " ' ").replace("-", " - ").split(" ")
 	
 	var inds_to_remove: = []
-	for i in range(1, current_words.size()):
-		var word: = current_words[i]
+	for index in range(1, current_words.size()):
+		var word: = current_words[index]
 		if word in ["?", "!", ":"]:
-			current_words[i - 1] += " " + word
-			inds_to_remove.append(i)
+			current_words[index - 1] += " " + word
+			inds_to_remove.append(index)
 		
 		if word in ["'", "-", "¿", "¡"]:
-			current_words[i - 1] += word
-			inds_to_remove.append(i)
+			current_words[index - 1] += word
+			inds_to_remove.append(index)
 	
 	inds_to_remove.reverse()
-	for ind: int in inds_to_remove:
-		current_words.remove_at(ind)
+	for index: int in inds_to_remove:
+		current_words.remove_at(index)
 	
 	var number_of_blanks: int = maxi(2, mini(difficulty, current_words.size()))
 	var blanks: = range(current_words.size())
@@ -140,9 +140,9 @@ func _next_sentence() -> void:
 	
 	answers = []
 	answered = []
-	for i in range(current_words.size()):
-		var current_word: = current_words[i]
-		if i in blanks:
+	for index: int in range(current_words.size()):
+		var current_word: = current_words[index]
+		if index in blanks:
 			var blank: Blank = blank_class.instantiate()
 			blank.stimulus = current_word
 			sentence_container.add_child(blank)
@@ -176,13 +176,13 @@ func _next_sentence() -> void:
 
 func _start_ants() -> void:
 	var number_of_ants: = ants.get_child_count()
-	for i in range(number_of_ants):
-		var ant: Ant = ants.get_child(i)
+	for index: int in range(number_of_ants):
+		var ant: Ant = ants.get_child(index)
 		
 		ant.walk()
 		
 		var tween: = create_tween()
-		var k: = float(i) / float(number_of_ants - 1)
+		var k: = float(index) / float(number_of_ants - 1)
 		tween.tween_property(ant, "global_position", k * ants_start.global_position + (1.0 - k) * ants_end.global_position, 1.0)
 		await tween.finished
 		
@@ -230,28 +230,28 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 			word_i.disabled = true
 		
 		if is_right:
-			for i in range(words.get_child_count() - 1):
+			for index: int in range(words.get_child_count() - 1):
 				@warning_ignore("UNSAFE_METHOD_ACCESS")
-				words.get_child(i).right()
+				words.get_child(index).right()
 			@warning_ignore("UNSAFE_METHOD_ACCESS")
 			await words.get_child(words.get_child_count() - 1).right()
 			
 			current_progression += 1
 		else:
-			for i in range(words.get_child_count() - 1):
+			for index: int in range(words.get_child_count() - 1):
 				@warning_ignore("UNSAFE_METHOD_ACCESS")
-				words.get_child(i).wrong()
+				words.get_child(index).wrong()
 			@warning_ignore("UNSAFE_METHOD_ACCESS")
 			await words.get_child(words.get_child_count() - 1).wrong()
 			
 			current_lives -= 1
 			
-			for i in range(ants.get_child_count()):
-				answered[i] = false
+			for index: int in range(ants.get_child_count()):
+				answered[index] = false
 				@warning_ignore("UNSAFE_PROPERTY_ACCESS")
-				words.get_child(i).current_anchor = ants.get_child(i)
+				words.get_child(index).current_anchor = ants.get_child(index)
 				@warning_ignore("UNSAFE_METHOD_ACCESS")
-				ants.get_child(i).set_monitorable(false)
+				ants.get_child(index).set_monitorable(false)
 		
 			for word_i in words.get_children():
 				@warning_ignore("UNSAFE_PROPERTY_ACCESS")

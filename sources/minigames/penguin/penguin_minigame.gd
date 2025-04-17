@@ -44,8 +44,8 @@ func _find_stimuli_and_distractions() -> void:
 		if not current_lesson_sentences.is_empty():
 			# If there are more stimuli in current lesson than needed
 			if current_lesson_sentences.size() >= current_lesson_stimuli_number:
-				for i in current_lesson_stimuli_number:
-					stimuli.append(current_lesson_sentences[i])
+				for index: int in current_lesson_stimuli_number:
+					stimuli.append(current_lesson_sentences[index])
 			else:
 				stimuli.append_array(current_lesson_sentences)
 			
@@ -58,8 +58,8 @@ func _find_stimuli_and_distractions() -> void:
 		# Gets other stimuli from previous errors or lessons
 		var spaces_left : int = max_progression - stimuli.size()
 		if previous_lesson_sentences.size() >= spaces_left:
-			for i in spaces_left:
-				stimuli.append(previous_lesson_sentences[i])
+			for index: int in spaces_left:
+				stimuli.append(previous_lesson_sentences[index])
 		else:
 			stimuli.append_array(previous_lesson_sentences)
 		

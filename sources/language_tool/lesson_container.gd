@@ -35,13 +35,13 @@ func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
 	new_gp_label.gp_dropped.connect(_on_gp_dropped.bind(new_gp_label))
 	gp_container.add_child(new_gp_label)
 	var children: = gp_container.get_children()
-	for i in children.size():
-		var child = children[i]
+	for index: int in children.size():
+		var child = children[index]
 		if child == gp_label:
 			if before:
-				gp_container.move_child(new_gp_label, i)
+				gp_container.move_child(new_gp_label, index)
 			else:
-				gp_container.move_child(new_gp_label, i + 1)
+				gp_container.move_child(new_gp_label, index + 1)
 
 
 func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:

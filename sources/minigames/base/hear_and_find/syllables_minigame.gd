@@ -60,8 +60,8 @@ func _find_stimuli_and_distractions() -> void:
 		if current_lesson_stimuli:
 			# If there are more stimuli in current lesson than needed
 			if current_lesson_stimuli.size() >= current_lesson_stimuli_number:
-				for i in current_lesson_stimuli_number:
-					stimuli.append(current_lesson_stimuli[i])
+				for index: int in current_lesson_stimuli_number:
+					stimuli.append(current_lesson_stimuli[index])
 			else:
 				stimuli.append_array(current_lesson_stimuli)
 			
@@ -75,8 +75,8 @@ func _find_stimuli_and_distractions() -> void:
 		# Gets other stimuli from previous errors or lessons
 		var spaces_left : int = max_progression - stimuli.size()
 		if previous_lesson_stimuli.size() >= spaces_left:
-			for i in spaces_left:
-				stimuli.append(previous_lesson_stimuli[i])
+			for index: int in spaces_left:
+				stimuli.append(previous_lesson_stimuli[index])
 		else:
 			stimuli.append_array(previous_lesson_stimuli)
 		
@@ -207,17 +207,17 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		
 		# Handles the right answer GPs
 		# RA os - stimulus à
-		for i in right_answer_GPs.size():
-			if not stimulus_GPs or (i < stimulus_GPs.size() and stimulus_GPs[i] == right_answer_GPs[i]):
+		for index: int in right_answer_GPs.size():
+			if not stimulus_GPs or (index < stimulus_GPs.size() and stimulus_GPs[index] == right_answer_GPs[index]):
 				continue
-			_update_score(right_answer_GPs[i].ID as int, -1)
+			_update_score(right_answer_GPs[index].ID as int, -1)
 		
 		# Handles the pressed stimulus Gps
 		if stimulus_GPs:
-			for i in stimulus_GPs.size():
-				if i < right_answer_GPs.size() and stimulus_GPs[i] == right_answer_GPs[i]:
+			for index: int in stimulus_GPs.size():
+				if index < right_answer_GPs.size() and stimulus_GPs[index] == right_answer_GPs[index]:
 					continue
-				_update_score(stimulus_GPs[i].ID as int, -1)
+				_update_score(stimulus_GPs[index].ID as int, -1)
 	return true
 
 

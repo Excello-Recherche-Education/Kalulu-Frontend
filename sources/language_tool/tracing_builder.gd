@@ -61,7 +61,7 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 	var file: = FileAccess.open(real_path(path), FileAccess.READ)
 	while not file.eof_reached():
 		var line: = file.get_csv_line()
-		var points: = []
+		var points: Array[Vector2] = []
 		for element in line:
 			if element == "":
 				break

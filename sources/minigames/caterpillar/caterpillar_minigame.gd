@@ -49,22 +49,22 @@ func _setup_minigame() -> void:
 	
 	# Spawn the right amount of branches
 	var branch_size: float = branches_zone.size.y / (settings.branches + 1)
-	for i: int in settings.branches:
+	for index: int in settings.branches:
 		var branch: Branch = branch_scene.instantiate()
 		branch.velocity = settings.velocity
 		branches_zone.add_child(branch)
-		branch.set_position(Vector2(0, branch_size * (i+1)))
+		branch.set_position(Vector2(0, branch_size * (index+1)))
 		
 		if not Engine.is_editor_hint():
 			branch.branch_pressed.connect(_on_branch_pressed.bind(branch))
 			branch.berry_pressed.connect(_play_berry_phoneme)
 			
 		branches.append(branch)
-		branches_spawn_indexes.append(i)
+		branches_spawn_indexes.append(index)
 	
 		# Move the caterpillar to the right branch
 		@warning_ignore("integer_division")
-		if i == int(settings.branches/2):
+		if index == int(settings.branches/2):
 			_on_branch_pressed(branch)
 	
 	# Setups the timer

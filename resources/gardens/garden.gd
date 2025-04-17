@@ -68,12 +68,12 @@ func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSize
 
 
 func update_flowers() -> void:
-	for i in flowers.size():
-		if i >= flower_controls.size():
+	for index: int in flowers.size():
+		if index >= flower_controls.size():
 			break
-		var flower: = flowers[i]
-		var flower_scene: = flower_controls[i]
-		var flower_size: String = FlowerSizes.keys()[flowers_sizes[i]]
+		var flower: = flowers[index]
+		var flower_scene: = flower_controls[index]
+		var flower_size: String = FlowerSizes.keys()[flowers_sizes[index]]
 		
 		flower_scene.texture = load(flower_path_model % [flower.color+1, flower.type+1, flower_size])
 		flower_scene.size = flower_scene.get_combined_minimum_size() * 3
@@ -84,11 +84,11 @@ func update_flowers() -> void:
 func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> void:
 	for lesson_button_control in lesson_button_controls:
 		lesson_button_control.visible = false
-	for i in p_lesson_buttons.size():
-		if i >= lesson_button_controls.size():
+	for index: int in p_lesson_buttons.size():
+		if index >= lesson_button_controls.size():
 			break
-		var lesson_button: = p_lesson_buttons[i]
-		var lesson_button_control: = lesson_button_controls[i]
+		var lesson_button: = p_lesson_buttons[index]
+		var lesson_button_control: = lesson_button_controls[index]
 		lesson_button_control.position = Vector2(lesson_button.position)
 		lesson_button_control.visible = true
 		lesson_button_control.pivot_offset = lesson_button_control.size / 2

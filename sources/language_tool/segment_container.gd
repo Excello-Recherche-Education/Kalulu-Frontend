@@ -3,13 +3,13 @@ class_name SegmentContainer
 
 signal changed()
 
-@export var points_per_lines: = 25
-@export var points_per_gradient: = 7
+@export var points_per_lines: int = 25
+@export var points_per_gradient: int = 7
 
-@onready var grapheme_label: = %GraphemeLabel
-@onready var buttons_parent: = %ButtonsParent
-@onready var segments_container: = %SegmentsContainer
-@onready var lines: = %Lines
+@onready var grapheme_label: Label = %GraphemeLabel
+@onready var buttons_parent: Control = %ButtonsParent
+@onready var segments_container: VBoxContainer = %SegmentsContainer
+@onready var lines: Node2D = %Lines
 
 const segment_build_class: = preload("res://sources/language_tool/segment_build.tscn")
 const point_button_class: = preload("res://sources/language_tool/segment_point_button.tscn")
@@ -18,7 +18,7 @@ var gradient: Gradient
 
 var current_segment: SegmentBuild
 var current_button: SegmentPointButton
-var buttons: = []
+var buttons: Array[SegmentPointButton]
 
 
 func reset() -> void:
@@ -33,7 +33,7 @@ func reset() -> void:
 	await get_tree().process_frame
 
 
-func load_segment(points: Array) -> void:
+func load_segment(points: Array[Vector2]) -> void:
 	_on_add_segment_button_pressed()
 	current_segment.points = points
 	draw_segment(current_segment)
@@ -74,21 +74,21 @@ func match_segment_with_buttons() -> void:
 	if is_instance_valid(current_segment):
 		points = current_segment.points
 	
-	for i in range(points.size()):
-		while i >= buttons.size():
-			var button: = point_button_class.instantiate()
+	for index: int in range(points.size()):
+		while index >= buttons.size():
+			var button: SegmentPointButton = point_button_class.instantiate()
 			buttons_parent.add_child(button)
 			buttons.append(button)
 			button.point_down.connect(_on_button_point_down.bind(button))
 			button.point_up.connect(_on_button_point_up.bind(button))
 			button.minus_pressed.connect(_on_button_minus_pressed.bind(button))
 		
-		buttons[i].global_position = points[i] + lines.global_position
-		buttons[i].set_index(i + 1)
+		buttons[index].global_position = points[index] + lines.global_position
+		buttons[index].set_index(index + 1)
 	
-	for i in range(buttons.size() - 1, points.size() - 1, -1):
-		buttons[i].queue_free()
-		buttons.remove_at(i)
+	for index: int in range(buttons.size() - 1, points.size() - 1, -1):
+		buttons[index].queue_free()
+		buttons.remove_at(index)
 
 
 func _on_button_point_down(button: SegmentPointButton) -> void:

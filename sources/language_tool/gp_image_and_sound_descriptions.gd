@@ -1,4 +1,5 @@
 extends Control
+class_name GPImageAndSoundDescriptions
 
 @onready var description_container: VBoxContainer = %DescriptionsContainer
 
@@ -11,7 +12,7 @@ func _ready() -> void:
 	
 	Database.db.query("SELECT * FROM GPs WHERE GPs.Exception=0")
 	for res in Database.db.query_result:
-		var description_line: GPImageAndSoundDescription = description_line_scene.instantiate()
+		var description_line: ImageAndSoundGPDescription = description_line_scene.instantiate()
 		description_container.add_child(description_line)
 		description_line.set_gp(res)
 

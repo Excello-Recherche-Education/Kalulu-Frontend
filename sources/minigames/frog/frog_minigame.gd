@@ -76,16 +76,16 @@ func _free_tracks() -> void:
 
 
 func _create_tracks() -> void:
-	var current_word: = _get_current_stimulus()
-	var current_distractors: = _get_current_distractors()
+	var current_word: Dictionary = _get_current_stimulus()
+	var current_distractors: Array = _get_current_distractors()
 	
-	for i in range((current_word.GPs as Array).size()):
+	for index: int in range((current_word.GPs as Array).size()):
 		var track: LilypadTrack = lilypad_track_scene.instantiate()
 		lilypad_tracks_container.add_child(track)
 		
 		track.difficulty_settings = difficulty_settings[difficulty]
-		track.gp = current_word.GPs[i]
-		track.distractors = current_distractors[i]
+		track.gp = current_word.GPs[index]
+		track.distractors = current_distractors[index]
 		track.distractors_queue_size = distractors_queue_size
 		
 		track.lilypad_in_center.connect(_on_track_lilypad_in_center.bind(track))
@@ -93,15 +93,15 @@ func _create_tracks() -> void:
 
 func _start_tracks() -> void:
 	var is_first_track_enabled: bool = false
-	var i: = 0
+	var index: int = 0
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
-		if i >= current_word_progression:
+		if index >= current_word_progression:
 			await track.reset()
 			if not is_first_track_enabled:
 				track.is_enabled = true
 				is_first_track_enabled = true
 			track.start()
-		i +=1
+		index += 1
 
 #endregion
 
