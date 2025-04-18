@@ -120,7 +120,7 @@ func login_student(code : String) -> bool:
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
 	if students:
 		for s in students:
-			if s.code == code:
+			if int(s.code) == int(code):
 				student = code
 				return true
 	
