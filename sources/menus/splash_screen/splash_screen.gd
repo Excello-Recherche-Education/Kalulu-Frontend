@@ -1,6 +1,6 @@
 extends Control
 
-const main_menu_scene_path: = "res://sources/menus/main/main_menu.tscn"
+const main_menu_scene_path: String = "res://sources/menus/main/main_menu.tscn"
 
 
 func _go_to_main_menu() -> void:
