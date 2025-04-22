@@ -101,7 +101,7 @@ func set_graphemes_edit(p_gp_ids: Array[int]) -> void:
 
 
 func add_gp_list_button(gp_id: int, ind_gp_id: int) -> void:
-	var gp_list_button: = gp_list_button_scene.instantiate()
+	var gp_list_button: GPListButton = gp_list_button_scene.instantiate()
 	gp_list_button.set_gp_list(sub_elements_list)
 	graphemes_edit_container.add_child(gp_list_button)
 	graphemes_edit_container.move_child(gp_list_button, 2 * ind_gp_id)

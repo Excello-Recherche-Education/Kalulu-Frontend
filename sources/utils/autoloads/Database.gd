@@ -427,14 +427,14 @@ func get_min_lesson_for_word_id(word_id: int) -> int:
 	INNER JOIN GPsInWords ON GPsInWords.WordID=Words.ID
 	WHERE Words.ID=? 
 	ORDER BY Position", [word_id])
-	var min: int = -1
+	var minimum: int = -1
 	for result in db.query_result:
 		var index: int = Database.get_min_lesson_for_gp_id(result.GPID as int)
 		if index < 0:
-			min = -1
+			minimum = -1
 			break
-		min = max(min, index)
-	return min
+		minimum = max(minimum, index)
+	return minimum
 
 
 func get_min_lesson_for_sentence_id(sentence_id: int) -> int:

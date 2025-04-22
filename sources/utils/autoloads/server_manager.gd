@@ -9,15 +9,15 @@ signal internet_check_completed(has_acces: bool)
 const INTERNET_CHECK_URL: = "https://google.com"
 var environment_url: String = ""
 
-func _ready():
-	var config = ConfigFile.new()
+func _ready() -> void:
+	var config: ConfigFile = ConfigFile.new()
 	if config.load("user://environment.cfg") == OK:
-		var env = int(config.get_value("environment", "current", "0"))
+		var env: int = int(config.get_value("environment", "current", "0"))
 		set_environment(env)
 	else:
 		set_environment(1)  # fallback PROD
 
-func set_environment(env: int):
+func set_environment(env: int) -> void:
 	match env:
 		0: environment_url = "https://nldfw1jmxc.execute-api.eu-west-3.amazonaws.com/dev/"
 		1: environment_url = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"

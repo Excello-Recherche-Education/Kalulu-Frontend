@@ -1,4 +1,5 @@
 extends OptionButton
+class_name GPListButton
 
 signal gp_selected(id: int)
 signal new_selected()
