@@ -30,8 +30,6 @@ enum Type {
 @export var max_number_of_lives: int = 0 :
 	set(value):
 		max_number_of_lives = value
-		if minigame_ui:
-			minigame_ui.set_maximum_number_of_lives(value)
 
 @export var max_progression: int = 0 :
 	set(value):
@@ -78,16 +76,10 @@ var current_lives: int = 0 :
 		var previous_lives: = current_lives
 		current_lives = value
 		
-		if minigame_ui:
-			minigame_ui.set_number_of_lives(value)
-		if value == 0 and previous_lives != 0:
-			_lose()
-			return
-		
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
 		
-		if current_lives == max_number_of_lives - errors_before_help_speech:
+		if current_lives <= max_number_of_lives - errors_before_help_speech:
 			_play_kalulu_help_speech()
 		elif consecutive_errors == errors_before_highlight:
 			is_highlighting = true
