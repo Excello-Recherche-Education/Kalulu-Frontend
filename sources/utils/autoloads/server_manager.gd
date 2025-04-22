@@ -12,7 +12,7 @@ var environment_url: String = ""
 func _ready() -> void:
 	var config: ConfigFile = ConfigFile.new()
 	if config.load("user://environment.cfg") == OK:
-		var env: int = int(config.get_value("environment", "current", "0"))
+		var env: int = int(config.get_value("environment", "current", 0) as int)
 		set_environment(env)
 	else:
 		set_environment(1)  # fallback PROD
