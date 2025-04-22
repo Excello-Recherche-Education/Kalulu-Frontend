@@ -386,7 +386,7 @@ func _ready() -> void:
 		await kalulu.play_kalulu_speech(intro_speech)
 		kalulu_button.show()
 		UserDataManager.mark_speech_as_played("gardens")
-
+	
 
 
 func _process(_delta: float) -> void:

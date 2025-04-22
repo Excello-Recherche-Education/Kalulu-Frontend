@@ -90,6 +90,7 @@ func _find_stimuli_and_distractions() -> void:
 
 # Launch the minigame
 func _start() -> void:
+	super()
 	if stimuli.is_empty():
 		_win()
 		return

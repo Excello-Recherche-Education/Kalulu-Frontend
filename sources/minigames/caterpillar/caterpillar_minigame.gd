@@ -75,7 +75,7 @@ func _setup_minigame() -> void:
 
 
 func _start() -> void:
-	super._start()
+	super()
 	berry_timer.start()
 
 

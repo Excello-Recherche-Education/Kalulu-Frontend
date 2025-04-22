@@ -105,6 +105,7 @@ func _find_stimuli_and_distractions() -> void:
 
 
 func _start() -> void:
+	super()
 	var possible_positions: Array[Vector2] = []
 	for branch in branches.get_children():
 		for child: Control in branch.get_children():

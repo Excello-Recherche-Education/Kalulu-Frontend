@@ -45,6 +45,10 @@ func _setup_word_progression() -> void:
 	_start_tracks()
 
 
+func _start() -> void:
+	super()
+
+
 func _highlight() -> void:
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		if track.is_enabled:

@@ -171,12 +171,40 @@ func _curtains_and_kalulu() -> void:
 		minigame_ui.play_kalulu_speech(intro_kalulu_speech)
 		await minigame_ui.kalulu_speech_ended
 		UserDataManager.mark_speech_as_played(Type.keys()[minigame_name] as String)
+#endregion
+
+#region Timer
+var _start_time := 0.0
+var _elapsed_paused := 0.0
+var _pause_start := 0.0
+var _is_paused := false
 
 
 # Launch the minigame
 func _start() -> void:
+	_start_time = Time.get_ticks_msec() / 1000.0
+	_elapsed_paused = 0.0
+	_is_paused = false
 	return
 
+
+func _notification(what):
+	if _start_time == 0.0:
+		return
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_OUT:
+			if not _is_paused:
+				_pause_start = Time.get_ticks_msec() / 1000.0
+				_is_paused = true
+				print("⏸️ Pause detected at %.2f" % _pause_start)
+
+		NOTIFICATION_APPLICATION_FOCUS_IN:
+			if _is_paused:
+				var resumed = Time.get_ticks_msec() / 1000.0
+				var pause_duration = resumed - _pause_start
+				_elapsed_paused += pause_duration
+				_is_paused = false
+				print("▶️ Resume, pause duration %.2f sec, total pause : %.2f sec" % [pause_duration, _elapsed_paused])
 #endregion
 
 #region Ending
@@ -213,6 +241,12 @@ func _win() -> void:
 	
 	minigame_ui.play_kalulu_speech(win_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
+	
+	var end_time: float = Time.get_ticks_msec() / 1000.0
+	var totalTime: float = end_time - _start_time - _elapsed_paused
+	# print("total time = " + str(int(round(totalTime))))
+	# await ServerManager._post_request("submit-student-metrics", {"student_id": 3, "level": 4, "time_spent": 4210})
+	# await ServerManager._post_request("submit-student-metrics", {"lesson": lesson_nb, "level": minigame_number, "time_spent": int(round(totalTime))})
 	
 	_go_back_to_the_garden()
 

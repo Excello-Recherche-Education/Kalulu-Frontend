@@ -19,6 +19,7 @@ var is_stimulus_heard: bool = false:
 
 
 func _start() -> void:
+	super()
 	if stimuli.is_empty():
 		_win()
 		return
