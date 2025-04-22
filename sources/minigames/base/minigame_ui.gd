@@ -47,6 +47,7 @@ const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/lif
 @onready var progression_container: VBoxContainer = %ProgressionContainer
 @onready var progression_gauge: NinePatchRect = %ProgressionGauge
 @onready var model_progression_rect: TextureRect = %ProgressionIconsRect
+@onready var lives_container: HBoxContainer = %LivesContainer
 @onready var model_lives_rect: TextureRect = %LivesIconsRect
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer

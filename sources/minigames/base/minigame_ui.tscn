@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://weree6bnlt6f"]
+[gd_scene load_steps=32 format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" uid="uid://mlymm66lpbi6" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_p2m3v"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://d4ffd4us2hrbs" path="res://assets/minigames/minigame_ui/graphic/button_replay_disabled.png" id="19_mm65c"]
 [ext_resource type="Texture2D" uid="uid://babk0f7ayvar1" path="res://assets/minigames/minigame_ui/graphic/title.png" id="19_sgl1i"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="19_wn4nd"]
+[ext_resource type="Texture2D" uid="uid://db64tlixplfru" path="res://assets/minigames/minigame_ui/graphic/life_empty.png" id="20_jyeyb"]
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://assets/minigames/minigame_ui/graphic/gauge.png" id="22_6jd5r"]
 [ext_resource type="Texture2D" uid="uid://ciumftic33ohp" path="res://assets/minigames/minigame_ui/graphic/button_play_up.png" id="22_lame7"]
 [ext_resource type="Texture2D" uid="uid://cg71a1qmeyls0" path="res://assets/minigames/minigame_ui/graphic/button_play_down.png" id="23_rb4gp"]
@@ -157,10 +158,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1179.0
-offset_top = -460.0
-offset_right = -929.0
-offset_bottom = -74.0
+offset_left = -466.0
+offset_top = -575.0
+offset_right = -216.0
+offset_bottom = -189.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -377,6 +378,35 @@ texture = ExtResource("26_0bgo4")
 expand_mode = 4
 stretch_mode = 5
 
+[node name="LivesMargin" type="MarginContainer" parent="MainControl/Interface"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_bottom = 114.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+mouse_filter = 2
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 40
+
+[node name="LivesContainer" type="HBoxContainer" parent="MainControl/Interface/LivesMargin"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(2.08165e-12, 130)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LivesIconsRect" type="TextureRect" parent="MainControl/Interface/LivesMargin/LivesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("20_jyeyb")
+expand_mode = 2
+stretch_mode = 5
+
 [node name="Kalulu" parent="MainControl" instance=ExtResource("19_wn4nd")]
 unique_name_in_owner = true
 visible = false
@@ -384,7 +414,7 @@ layout_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_umrx4")
+"": SubResource("AnimationLibrary_umrx4")
 }
 
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_pressed"]
