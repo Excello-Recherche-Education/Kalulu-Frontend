@@ -7,7 +7,22 @@ signal internet_check_completed(has_acces: bool)
 @onready var loading_rect: TextureRect = $TextureRect
 
 const INTERNET_CHECK_URL: = "https://google.com"
-const URL: = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
+var environment_url: String = ""
+
+func _ready():
+	var config = ConfigFile.new()
+	if config.load("user://environment.cfg") == OK:
+		var env = int(config.get_value("environment", "current", "0"))
+		set_environment(env)
+	else:
+		set_environment(1)  # fallback PROD
+
+func set_environment(env: int):
+	match env:
+		0: environment_url = "https://nldfw1jmxc.execute-api.eu-west-3.amazonaws.com/dev/"
+		1: environment_url = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
+		_: environment_url = ""
+
 
 # Response from the last request
 var code: int
@@ -102,8 +117,7 @@ func _response() -> Dictionary:
 func _get_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
-	
-	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers()) == 0:
+	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), _create_request_headers()) == 0:
 		await request_completed
 	else:
 		code = 500
@@ -113,8 +127,7 @@ func _get_request(URI: String, params: Dictionary) -> void:
 func _post_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
-	
-	if http_request.request(_create_URI_with_parameters(URL + URI, params), _create_request_headers(), HTTPClient.METHOD_POST, "") == 0:
+	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), _create_request_headers(), HTTPClient.METHOD_POST, "") == 0:
 		await request_completed
 	else:
 		code = 500
@@ -124,8 +137,7 @@ func _post_request(URI: String, params: Dictionary) -> void:
 func _post_json_request(URI: String, data: Dictionary) -> void:
 	code = 0
 	json = {}
-	
-	var req: = URL + URI
+	var req: = environment_url + URI
 	var headers: = _create_request_headers()
 	headers.append("Content-Type: application/json")
 	
@@ -139,8 +151,7 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 func _delete_request(URI: String, params: Dictionary = {}) -> void:
 	code = 0
 	json = {}
-	
-	var req: = _create_URI_with_parameters(URL + URI, params)
+	var req: = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: = _create_request_headers()
 	
 	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == 0:
