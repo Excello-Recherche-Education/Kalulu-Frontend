@@ -3,10 +3,10 @@ class_name PackageDownloader
 
 const ConfirmPopup: = preload("res://sources/ui/popup.gd")
 
-const main_menu_scene_path: = "res://sources/menus/main/main_menu.tscn"
-const device_selection_scene_path: = "res://sources/menus/device_selection/device_selection.tscn"
-const login_scene_path := "res://sources/menus/login/login.tscn"
-const user_language_resources_path: =  "user://language_resources"
+const main_menu_scene_path: String = "res://sources/menus/main/main_menu.tscn"
+const device_selection_scene_path: String = "res://sources/menus/device_selection/device_selection.tscn"
+const login_scene_path: String = "res://sources/menus/login/login.tscn"
+const user_language_resources_path: String = "user://language_resources"
 
 const error_messages: Array[String] = [
 	"DISCONECTED_ERROR",
@@ -112,7 +112,7 @@ func _ready() -> void:
 		_go_to_next_scene()
 
 
-# Cjeck that folder is not empty and contains a file language.db
+# Check that folder is not empty and contains a file language.db
 func is_language_directory_valid(path: String) -> bool:
 	var dir: DirAccess = DirAccess.open(path)
 	if not dir:
@@ -121,7 +121,7 @@ func is_language_directory_valid(path: String) -> bool:
 	if dir.list_dir_begin() != OK:
 		return false
 
-	var file_name = dir.get_next()
+	var file_name: String = dir.get_next()
 	dir.list_dir_end()
 
 	return file_name != "" && dir.file_exists(current_language_path + "language.db")
@@ -130,9 +130,9 @@ func is_language_directory_valid(path: String) -> bool:
 func _process(_delta: float) -> void:
 	if http_request.get_body_size() > 0:
 		@warning_ignore("integer_division")
-		var maximum: = int(http_request.get_body_size()/1024)
+		var maximum: int = int(http_request.get_body_size()/1024)
 		@warning_ignore("integer_division")
-		var current: = int(http_request.get_downloaded_bytes()/1024)
+		var current: int = int(http_request.get_downloaded_bytes()/1024)
 		download_bar.max_value = maximum
 		download_bar.value = current
 		download_info.text = str(current) + "KB/" + str(maximum) + "KB"
@@ -152,7 +152,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	var language_zip_path: String = user_language_resources_path.path_join(language_zip)
 	
 	# Create and connect the unzipper to the UI
-	var unzipper: = FolderUnzipper.new()
+	var unzipper: FolderUnzipper = FolderUnzipper.new()
 	unzipper.file_count.connect(
 		func(count: int) -> void:
 			mutex.lock()
@@ -174,7 +174,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	var subfolder: String = unzipper.extract(language_zip_path, user_language_resources_path, false)
 	
 	# Move the data to the locale folder of the user
-	var error = DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
+	var error: Error = DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
 	if error != null:
 		printerr("Error " + str(error) + " while renaming language folder : ", user_language_resources_path)
 	
@@ -186,7 +186,7 @@ func _copy_data(this: PackageDownloader) -> void:
 
 
 func delete_directory_recursive(path: String) -> void:
-	var dir = DirAccess.open(path)
+	var dir: DirAccess = DirAccess.open(path)
 	if dir == null:
 		printerr("Le dossier n'existe pas : ", path)
 		return
@@ -195,13 +195,13 @@ func delete_directory_recursive(path: String) -> void:
 		printerr("Erreur lors de la lecture du dossier : ", path)
 		return
 
-	var file_name = dir.get_next()
+	var file_name: String = dir.get_next()
 	while file_name != "":
-		var full_path = path.path_join(file_name)
+		var full_path: String = path.path_join(file_name)
 		if dir.current_is_dir():
 			delete_directory_recursive(full_path)
 		else:
-			var err = dir.remove(full_path)
+			var err: Error = dir.remove(full_path)
 			if err != OK:
 				printerr("Erreur " + str(err) + " pendant la suppression du fichier : ", full_path)
 		file_name = dir.get_next()
@@ -209,7 +209,7 @@ func delete_directory_recursive(path: String) -> void:
 	dir.list_dir_end()
 
 	# Supprime le dossier lui-même
-	var err = DirAccess.remove_absolute(path)
+	var err: Error = DirAccess.remove_absolute(path)
 	if err != OK:
 		printerr("Erreur " + str(err) + " pendant la suppression du dossier : ", path)
 	else:
@@ -218,7 +218,7 @@ func delete_directory_recursive(path: String) -> void:
 
 
 func _delete_dir(path: String) -> void:
-	var dir: = DirAccess.open(path)
+	var dir: DirAccess = DirAccess.open(path)
 	for file in dir.get_files():
 		dir.remove(file)
 	for subfolder in dir.get_directories():
