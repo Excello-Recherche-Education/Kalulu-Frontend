@@ -44,7 +44,6 @@ func _ready() -> void:
 	fish_start_zone.set_drag_forwarding(_fish_get_drag_data, Callable(), Callable())
 	(beacon1 as Control).set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon1_drop_data)
 	(beacon2 as Control).set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon2_drop_data)
-	minigame_ui.lives_container.hide()
 	minigame_ui.progression_container.hide()
 	minigame_ui.progression_gauge.hide()
 	label.hide()

@@ -47,8 +47,6 @@ const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/lif
 @onready var progression_container: VBoxContainer = %ProgressionContainer
 @onready var progression_gauge: NinePatchRect = %ProgressionGauge
 @onready var model_progression_rect: TextureRect = %ProgressionIconsRect
-@onready var lives_container: HBoxContainer = %LivesContainer
-@onready var model_lives_rect: TextureRect = %LivesIconsRect
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -80,39 +78,6 @@ func unlock() -> void:
 	stimulus_button.disabled = false
 	pause_button.disabled = false
 	kalulu_button.disabled = false
-
-#endregion
-
-#region Lives
-
-func set_maximum_number_of_lives(new_max_number_of_lives: int) -> void:
-	if is_paused:
-		await pause_ended
-	var lives_rects: = lives_container.get_children()
-	# Never remove the first
-	for index: int in range(1, lives_rects.size()):
-		if index >= new_max_number_of_lives:
-			lives_rects[index].queue_free()
-	for index: int in range(lives_rects.size(), new_max_number_of_lives):
-		var new_lives_rect: TextureRect = model_lives_rect.duplicate()
-		new_lives_rect.texture = full_lives_icon
-		lives_container.add_child(new_lives_rect)
-	model_lives_rect.visible = new_max_number_of_lives >= 1
-
-
-func set_number_of_lives(new_number_of_lives: int) -> void:
-	if is_paused:
-		await pause_ended
-	var max_lives: = lives_container.get_child_count()
-	if new_number_of_lives > max_lives:
-		set_maximum_number_of_lives(new_number_of_lives)
-	var lives_rects: = lives_container.get_children()
-	for index: int in max_lives:
-		var life_rect: TextureRect = lives_rects[index]
-		if index < max_lives - new_number_of_lives:
-			life_rect.texture = empty_lives_icon
-		else:
-			life_rect.texture = full_lives_icon
 
 #endregion
 
