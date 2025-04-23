@@ -48,7 +48,7 @@ func _ready() -> void:
 	
 	if not await ServerManager.check_internet_access():
 		# Offline mode, if a pack is already downloaded, go to next scene
-		if DirAccess.dir_exists_absolute(current_language_path):
+		if DirAccess.dir_exists_absolute(current_language_path) && is_language_directory_valid(current_language_path):
 			_go_to_next_scene()
 		else:
 			_show_error(1)
@@ -112,6 +112,21 @@ func _ready() -> void:
 		_go_to_next_scene()
 
 
+# Cjeck that folder is not empty and contains a file language.db
+func is_language_directory_valid(path: String) -> bool:
+	var dir: DirAccess = DirAccess.open(path)
+	if not dir:
+		return false
+
+	if dir.list_dir_begin() != OK:
+		return false
+
+	var file_name = dir.get_next()
+	dir.list_dir_end()
+
+	return file_name != "" && dir.file_exists(current_language_path + "language.db")
+
+
 func _process(_delta: float) -> void:
 	if http_request.get_body_size() > 0:
 		@warning_ignore("integer_division")
@@ -152,17 +167,54 @@ func _copy_data(this: PackageDownloader) -> void:
 			mutex.unlock()
 	)
 	
+	# Cleanup previous files
+	delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
+	
 	# Extract the archive
 	var subfolder: String = unzipper.extract(language_zip_path, user_language_resources_path, false)
 	
 	# Move the data to the locale folder of the user
-	DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
+	var error = DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
+	if error != null:
+		printerr("Error " + str(error) + " while renaming language folder : ", user_language_resources_path)
 	
 	# Cleanup unnecessary files
 	DirAccess.remove_absolute(language_zip_path)
 	
 	# Go to main menu
 	this.call_thread_safe("_go_to_next_scene")
+
+
+func delete_directory_recursive(path: String) -> void:
+	var dir = DirAccess.open(path)
+	if dir == null:
+		printerr("Le dossier n'existe pas : ", path)
+		return
+
+	if dir.list_dir_begin() != OK:
+		printerr("Erreur lors de la lecture du dossier : ", path)
+		return
+
+	var file_name = dir.get_next()
+	while file_name != "":
+		var full_path = path.path_join(file_name)
+		if dir.current_is_dir():
+			delete_directory_recursive(full_path)
+		else:
+			var err = dir.remove(full_path)
+			if err != OK:
+				printerr("Erreur " + str(err) + " pendant la suppression du fichier : ", full_path)
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+
+	# Supprime le dossier lui-même
+	var err = DirAccess.remove_absolute(path)
+	if err != OK:
+		printerr("Erreur " + str(err) + " pendant la suppression du dossier : ", path)
+	else:
+		print("✅ Dossier supprimé : ", path)
+
 
 
 func _delete_dir(path: String) -> void:
