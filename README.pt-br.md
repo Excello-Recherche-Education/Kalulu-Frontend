@@ -1,6 +1,6 @@
 # 📖 Kalulu — Aprenda a Ler de Forma Inteligente
 
-## 🌍 Available Languages
+## 🌍 Idiomas Disponíveis
 
 - 🇬🇧 [English](README.md)
 - 🇫🇷 [Français](README.fr.md)
@@ -17,6 +17,7 @@
   - [2. Instalar o Godot Engine](#2-instalar-o-godot-engine)
 - [🧩 Addons inclusos](#-addons-inclusos)
 - [🤝 Quer ajudar?](#-quer-ajudar-)
+- [❓ Preguntas Frecuentes](#faq)
 
 ---
 
@@ -80,7 +81,7 @@ cd Kalulu
 Sua contribuição é muito bem-vinda!
 
 1. **Configure o projeto**  
-   Veja a [seção de Instalação](#installation) para saber como fazer fork e clonar o repositório.
+   Veja a [seção de Como começar](#como-começar) para saber como fazer fork e clonar o repositório.
 
 2. **Crie um novo branch**
 ```bash
@@ -100,6 +101,19 @@ git push origin feature/nome-da-sua-funcionalidade
 5. **Abra um Pull Request**  
    Vá até seu fork no GitHub e clique em **Compare & pull request** para enviar suas alterações para revisão.
 
+Certifique-se de que seu código siga nossas convenções de codificação e inclua os testes ou atualizações de documentação relevantes quando apropriado.
+
 ---
 
-Certifique-se de que seu código siga nossas convenções de codificação e inclua os testes ou atualizações de documentação relevantes quando apropriado.
+## ❓ FAQ
+
+### 📱 ¿Está Kalulu disponible en móviles?
+
+¡Sí! Kalulu está disponible para:
+
+- [![Android](https://img.shields.io/badge/PlayStore-Kalulu-green?logo=google-play)](https://play.google.com/store/apps/details?id=org.godotengine.kalulu)
+- [![iOS](https://img.shields.io/badge/AppStore-Kalulu-blue?logo=apple)](https://apps.apple.com/fr/app/kalulu-education/id1639075967)
+
+### 💻 ¿Existe una versión para ordenadores?
+
+Una versión experimental para Windows, Mac y Linux está en desarrollo. ¡Mantente atento!

@@ -19,6 +19,7 @@
   - [Install the Godot Engine](#install-the-godot-engine)
 - [🧩 Addons](#addons)
 - [🤝 Contributing](#contributing)
+- [❓ FAQ](#faq)
 
 ## 🧠 Why Kalulu?
 
@@ -123,6 +124,19 @@ We welcome contributions from everyone! Whether it's fixing bugs, improving docu
 5. **Open a Pull Request**  
    Navigate to your forked repository on GitHub and click **Compare & pull request** to submit your changes for review.
 
+Please make sure your code follows our coding conventions and includes relevant tests or documentation updates when appropriate.
+
 ---
 
-Please make sure your code follows our coding conventions and includes relevant tests or documentation updates when appropriate.
+## ❓ FAQ
+
+### 📱 Is Kalulu available on mobile?
+
+Yes! Kalulu is available on:
+
+- [![Android](https://img.shields.io/badge/PlayStore-Kalulu-green?logo=google-play)](https://play.google.com/store/apps/details?id=org.godotengine.kalulu)
+- [![iOS](https://img.shields.io/badge/AppStore-Kalulu-blue?logo=apple)](https://apps.apple.com/fr/app/kalulu-education/id1639075967)
+
+### 💻 Is there a desktop version?
+
+An experimental version for Windows, Mac, and Linux is currently in development. Stay tuned!

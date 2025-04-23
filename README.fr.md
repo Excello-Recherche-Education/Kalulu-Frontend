@@ -16,7 +16,8 @@
   - [1. Cloner le dépôt](#1-cloner-le-dépôt)
   - [2. Installer Godot Engine](#2-installer-godot-engine)
 - [🧩 Addons intégrés](#-addons-intégrés)
-- [🙌 Envie d'aider ?](#-envie-daider-)
+- [🤝 Envie d'aider ?](#-envie-daider-)
+- [❓ FAQ](#faq)
 
 ---
 
@@ -80,7 +81,7 @@ cd Kalulu
 Toute aide est la bienvenue !
 
 1. **Configurer le projet**  
-   Consultez la [section Installation](#installation) pour apprendre à forker et cloner le dépôt.
+   Consultez la [section Commencer](#commencer) pour apprendre à forker et cloner le dépôt.
 
 2. **Créer une nouvelle branche**
 ```bash
@@ -100,6 +101,19 @@ git push origin feature/nom-de-votre-fonctionnalite
 5. **Ouvrir une Pull Request**  
    Allez sur votre dépôt forké sur GitHub et cliquez sur **Compare & pull request** pour soumettre vos changements.
 
+Veuillez vous assurer que votre code respecte nos conventions de codage et inclut les tests ou mises à jour de documentation pertinents lorsque cela est nécessaire.
+
 ---
 
-Veuillez vous assurer que votre code respecte nos conventions de codage et inclut les tests ou mises à jour de documentation pertinents lorsque cela est nécessaire.
+## ❓ FAQ
+
+### 📱 Kalulu est-il disponible sur mobile ?
+
+Oui ! Kalulu est disponible pour :
+
+- [![Android](https://img.shields.io/badge/PlayStore-Kalulu-green?logo=google-play)](https://play.google.com/store/apps/details?id=org.godotengine.kalulu)
+- [![iOS](https://img.shields.io/badge/AppStore-Kalulu-blue?logo=apple)](https://apps.apple.com/fr/app/kalulu-education/id1639075967)
+
+### 💻 Existe-t-il une version pour ordinateur ?
+
+Une version pour Windows, Mac et Linux est en cours de développement expérimental. Restez à l’écoute !

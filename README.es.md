@@ -1,6 +1,6 @@
 # 📖 Kalulu — Aprende a leer de forma inteligente
 
-## 🌍 Available Languages
+## 🌍 Idiomas disponibles
 
 - 🇬🇧 [English](README.md)
 - 🇫🇷 [Français](README.fr.md)
@@ -16,7 +16,8 @@
   - [1. Clonar el repositorio](#1-clonar-el-repositorio)
   - [2. Instalar Godot Engine](#2-instalar-godot-engine)
 - [🧩 Addons integrados](#-addons-integrados)
-- [🙌 ¿Quieres ayudar?](#-quieres-ayudar-)
+- [🤝 ¿Quieres ayudar?](#-quieres-ayudar-)
+- [❓ FAQ](#faq)
 
 ---
 
@@ -80,7 +81,7 @@ cd Kalulu
 ¡Tu colaboración es bienvenida!
 
 1. **Configura el proyecto**  
-   Consulta la [sección de Instalación](#installation) para aprender a bifurcar y clonar el repositorio.
+   Consulta la [sección de Primeros pasos](#primeros-pasos) para aprender a bifurcar y clonar el repositorio.
 
 2. **Crea una nueva rama**
 ```bash
@@ -100,6 +101,19 @@ git push origin feature/nombre-de-tu-funcion
 5. **Abre una Pull Request**  
    Ve a tu repositorio bifurcado en GitHub y haz clic en **Compare & pull request** para enviar tus cambios.
 
+Asegúrate de que tu código siga nuestras convenciones de codificación e incluya las pruebas o actualizaciones de documentación necesarias cuando corresponda.
+
 ---
 
-Asegúrate de que tu código siga nuestras convenciones de codificación e incluya las pruebas o actualizaciones de documentación necesarias cuando corresponda.
+## ❓ FAQ
+
+### 📱 O Kalulu está disponível para dispositivos móveis?
+
+Sim! Kalulu está disponível para:
+
+- [![Android](https://img.shields.io/badge/PlayStore-Kalulu-green?logo=google-play)](https://play.google.com/store/apps/details?id=org.godotengine.kalulu)
+- [![iOS](https://img.shields.io/badge/AppStore-Kalulu-blue?logo=apple)](https://apps.apple.com/fr/app/kalulu-education/id1639075967)
+
+### 💻 Existe uma versão para computador?
+
+Uma versão experimental para Windows, Mac e Linux está em desenvolvimento. Fique ligado!
