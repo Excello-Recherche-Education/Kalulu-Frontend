@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_5uhvd"]
 [ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="3_vllju"]
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
-[ext_resource type="SpriteFrames" uid="uid://dkemftb4jdxvs" path="res://sources/minigames/jellyfish/green_jellyfish_animations.tres" id="5_ksgn6"]
+[ext_resource type="SpriteFrames" uid="uid://dquynn3nx52o" path="res://sources/minigames/jellyfish/red_jellyfish_animations.tres" id="5_ksgn6"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
 [ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="8_p6hdi"]
 
@@ -24,9 +24,8 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.47533, 1.47533)
+scale = Vector2(1.01639, 1.01639)
 script = ExtResource("1_06uwq")
-color = 1
 
 [node name="BackFX" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 220)
@@ -75,10 +74,10 @@ sprites = [NodePath("AnimatedSprite2D")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
-scale = Vector2(1.84332, 1.84332)
+scale = Vector2(2.15054, 2.15054)
 sprite_frames = ExtResource("5_ksgn6")
 animation = &"idle"
-frame_progress = 0.251078
+frame_progress = 0.400353
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 

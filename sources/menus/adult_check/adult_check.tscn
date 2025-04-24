@@ -67,6 +67,15 @@ offset_right = 376.0
 offset_bottom = 56.0
 key_size = 200
 
+[node name="Icon1" parent="CodeKeyboard/PasswordVisualizer/Panel1" index="0"]
+custom_minimum_size = Vector2(200, 200)
+
+[node name="Icon2" parent="CodeKeyboard/PasswordVisualizer/Panel2" index="0"]
+custom_minimum_size = Vector2(200, 200)
+
+[node name="Icon3" parent="CodeKeyboard/PasswordVisualizer/Panel3" index="0"]
+custom_minimum_size = Vector2(200, 200)
+
 [node name="InterfaceLeft" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 1

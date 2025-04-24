@@ -180,7 +180,7 @@ func _start() -> void:
 	return
 
 
-func _notification(what):
+func _notification(what: int) -> void:
 	if _start_time == 0.0:
 		return
 	match what:
@@ -191,8 +191,8 @@ func _notification(what):
 
 		NOTIFICATION_APPLICATION_FOCUS_IN:
 			if _is_paused:
-				var resumed = Time.get_ticks_msec() / 1000.0
-				var pause_duration = resumed - _pause_start
+				var resumed: float = Time.get_ticks_msec() / 1000.0
+				var pause_duration: float = resumed - _pause_start
 				_elapsed_paused += pause_duration
 				_is_paused = false
 #endregion
@@ -231,12 +231,6 @@ func _win() -> void:
 	
 	minigame_ui.play_kalulu_speech(win_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
-	
-	var end_time: float = Time.get_ticks_msec() / 1000.0
-	var totalTime: float = end_time - _start_time - _elapsed_paused
-	# print("total time = " + str(int(round(totalTime))))
-	# await ServerManager._post_request("submit-student-metrics", {"student_id": 3, "level": 4, "time_spent": 4210})
-	# await ServerManager._post_request("submit-student-metrics", {"lesson": lesson_nb, "level": minigame_number, "time_spent": int(round(totalTime))})
 	
 	_go_back_to_the_garden()
 

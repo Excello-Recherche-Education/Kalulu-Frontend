@@ -4,7 +4,9 @@ const main_menu_scene_path: String = "res://sources/menus/main/main_menu.tscn"
 
 
 func _go_to_main_menu() -> void:
-	get_tree().change_scene_to_file(main_menu_scene_path)
+	var err: Error = get_tree().change_scene_to_file(main_menu_scene_path)
+	if err != 0:
+		printerr("Error while going to main menu: " + str(err))
 
 
 func _on_timer_timeout() -> void:

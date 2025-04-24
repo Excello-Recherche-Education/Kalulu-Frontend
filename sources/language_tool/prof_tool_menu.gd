@@ -412,7 +412,7 @@ func _create_words_csv() -> void:
 		var index: int = graphemes.size() - 1
 		gpmatch += graphemes[index] + "-" + phonemes[index] + ")"
 		var lesson: = -1
-		for gp_id in e.GPIDs.split(' '):
+		for gp_id: String in e.GPIDs.split(' '):
 			var gp_id_lesson: = Database.get_min_lesson_for_gp_id(int(gp_id))
 			if gp_id_lesson < 0:
 				lesson = -1
@@ -489,11 +489,11 @@ func create_book():
 
 	var columns: Dictionary[String, PackedStringArray]
 	var all_headers: Array = []
-	var headers_seen := {}
+	var headers_seen: Dictionary = {}
 
 	for category in file_names.keys():
-		var file_path = lang_path.path_join(file_names[category])
-		var file = FileAccess.open(file_path, FileAccess.READ)
+		var file_path: String = lang_path.path_join(file_names[category])
+		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
 		if file == null:
 			push_error("Erreur d'ouverture : " + file_path)
 			continue

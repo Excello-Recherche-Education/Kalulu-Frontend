@@ -28,9 +28,9 @@ const plus_button_scene: = preload("res://sources/language_tool/plus_button.tscn
 @onready var writing_checkbox: CheckBox = %WritingCheckBox
 @onready var reading_edit_checkbox: CheckBox = %ReadingEditCheckBox
 @onready var writing_edit_checkbox: CheckBox = %WritingEditCheckBox
-@onready var graphemes_edit_container: = %GraphemesEditContainer
-@onready var add_gp_button: = %AddGPButton
-@onready var remove_gp_button: = %RemoveGPButton2
+@onready var graphemes_edit_container: HBoxContainer = %GraphemesEditContainer
+@onready var add_gp_button: MarginContainer = %AddGPButton
+@onready var remove_gp_button: MarginContainer = %RemoveGPButton2
 
 var word: = "":
 	set = set_word
@@ -108,7 +108,7 @@ func add_gp_list_button(gp_id: int, ind_gp_id: int) -> void:
 	gp_list_button.select_id(gp_id)
 	gp_list_button.gp_selected.connect(_on_gp_list_button_selected.bind(gp_list_button))
 	gp_list_button.new_selected.connect(_on_gp_list_button_new_selected.bind(gp_list_button))
-	var plus_button: = plus_button_scene.instantiate()
+	var plus_button: PlusButton = plus_button_scene.instantiate()
 	plus_button.size = Vector2(50, 50)
 	graphemes_edit_container.add_child(plus_button)
 	graphemes_edit_container.move_child(plus_button, 2 * ind_gp_id + 1)
@@ -116,12 +116,14 @@ func add_gp_list_button(gp_id: int, ind_gp_id: int) -> void:
 
 
 func _on_gp_list_button_selected(gp_id: int, element: Node) -> void:
+	@warning_ignore("integer_division")
 	var ind_gp_id: = element.get_index() / 2
 	unvalidated_gp_ids[ind_gp_id] = gp_id
 	word_edit.text = get_graphemes(unvalidated_gp_ids)
 
 
 func _on_gp_list_button_new_selected(element: Node) -> void:
+	@warning_ignore("integer_division")
 	var ind_gp_id: = element.get_index() / 2
 	new_GP_asked.emit(ind_gp_id)
 
@@ -156,8 +158,8 @@ func _ready() -> void:
 	set_exception(exception)
 	set_reading(reading)
 	set_writing(writing)
-	%WordEditLabel.text = table_graph_column + ": "
-	%GPsEditLabel.text = sub_table + ": "
+	(%WordEditLabel as Label).text = table_graph_column + ": "
+	(%GPsEditLabel as Label).text = sub_table + ": "
 
 
 func _on_edit_button_pressed() -> void:
@@ -312,7 +314,7 @@ func _already_in_database(text: String) -> int:
 func _add_from_additional_word_list(new_text: String) -> int:
 	if new_text in Database.additional_word_list:
 		var is_word: = table == "Words"
-		var res: = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH, is_word)
+		var res: Array = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH as String, is_word)
 		GPs_updated.emit()
 		id = res[0]
 		gp_ids = res[1]
@@ -322,14 +324,14 @@ func _add_from_additional_word_list(new_text: String) -> int:
 
 
 func _try_to_complete_from_word(new_text: String) -> int:
-	var id: = _already_in_database(new_text)
-	if id >= 0:
+	var index: int = _already_in_database(new_text)
+	if index >= 0:
 		print("Already in DB " + new_text)
-		return id
+		return index
 	
-	id = _add_from_additional_word_list(new_text)
-	if id >= 0:
-		return id
+	index = _add_from_additional_word_list(new_text)
+	if index >= 0:
+		return index
 	return -1
 
 

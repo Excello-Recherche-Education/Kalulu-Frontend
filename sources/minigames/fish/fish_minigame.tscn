@@ -597,7 +597,7 @@ expand_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="GameRoot/Beacon2" index="2"]
 libraries = {
-"": SubResource("AnimationLibrary_tmg6i")
+&"": SubResource("AnimationLibrary_tmg6i")
 }
 autoplay = "idle"
 speed_scale = 0.5

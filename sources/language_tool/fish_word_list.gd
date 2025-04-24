@@ -29,8 +29,8 @@ func _ready() -> void:
 	
 	Database.db.query(query)
 	
-	for word in Database.db.query_result.duplicate():
-		var element: = element_scene.instantiate()
+	for word: Dictionary in Database.db.query_result.duplicate():
+		var element: FishWordListElement = element_scene.instantiate()
 		elements_container.add_child(element)
 		element.set_word_list(word_list)
 		element.word_id = word.WordID
@@ -43,18 +43,18 @@ func _ready() -> void:
 func _reorder_by(property_name: String) -> void:
 	var children: Array[Node] = elements_container.get_children()
 	children.sort_custom(sorting_function.bind(property_name))
-	for element in elements_container.get_children():
+	for element: FishWordListElement in elements_container.get_children():
 		elements_container.remove_child(element)
-	for element in children:
+	for element: FishWordListElement in children:
 		elements_container.add_child(element)
 
 
-func sorting_function(a, b, property_name) -> bool:
+func sorting_function(a: Node, b: Node, property_name: String) -> bool:
 	return a.get(property_name) < b.get(property_name)
 
 
 func _on_list_title_add_pressed() -> void:
-	var element: = element_scene.instantiate()
+	var element: FishWordListElement = element_scene.instantiate()
 	elements_container.add_child(element)
 	element.set_word_list(word_list)
 
@@ -64,7 +64,7 @@ func _on_list_title_back_pressed() -> void:
 
 
 func _on_list_title_new_search(new_text: String) -> void:
-	for element in elements_container.get_children():
+	for element: FishWordListElement in elements_container.get_children():
 		element.visible = element.word.begins_with(new_text)
 
 
@@ -76,16 +76,16 @@ func _on_list_title_save_pressed() -> void:
 	var db_word_list: = Database.db.query_result.duplicate()
 	
 	# delete elements that are in the DB but not in the list
-	for word in db_word_list:
+	for word: Dictionary in db_word_list:
 		var found: = false
-		for element in elements_container.get_children():
+		for element: FishWordListElement in elements_container.get_children():
 			if element.pseudoword_id == word.ID:
 				found = true
 				break
 		if not found:
 			Database.db.delete_rows("Pseudowords", "ID=%s" % word.ID)
 	
-	for element in elements_container.get_children():
+	for element: FishWordListElement in elements_container.get_children():
 		var found: = false
 		if element.pseudoword_id >= 0:
 			var query_with_id: = query + " WHERE Pseudowords.ID = ?"

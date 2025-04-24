@@ -2,7 +2,7 @@ extends Control
 
 const main_menu_scene_path: = "res://sources/menus/main/main_menu.tscn"
 const register_scene_path := "res://sources/menus/register/register.tscn"
-const symbols_names = {
+const symbols_names: Dictionary[String, String] = {
 	"1" : "STAR",
 	"2" : "BAR",
 	"3" : "CIRCLE",

@@ -1,7 +1,7 @@
 @tool
 extends Node
 
-const _symbols_to_string: Dictionary = {
+const _symbols_to_string: Dictionary[String, String] = {
 	"#" : "sharp",
 	"@" : "at",
 	"*" : "star",

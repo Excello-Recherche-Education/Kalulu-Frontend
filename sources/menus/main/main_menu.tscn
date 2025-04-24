@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cgwun1jhj53bi" path="res://assets/menus/main/play_button.png" id="7_lr7j4"]
 [ext_resource type="Script" uid="uid://ci68l5p7n77ym" path="res://sources/menus/main/kalulu.gd" id="8_cxg8l"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="10_icqmp"]
-[ext_resource type="Script" uid="uid://hxlda8qtegc1" path="res://sources/menus/main/login.gd" id="12_6bu7q"]
+[ext_resource type="Script" uid="uid://c8yjncc0n0sbu" path="res://sources/menus/main/login.gd" id="12_6bu7q"]
 [ext_resource type="PackedScene" uid="uid://cr4q0ywceoasx" path="res://sources/utils/keyboard_spacer.tscn" id="13_6pvxs"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="13_j3nb7"]
 [ext_resource type="Script" uid="uid://dugl3xh4di2a5" path="res://sources/menus/main/language_field.gd" id="13_rs3hd"]

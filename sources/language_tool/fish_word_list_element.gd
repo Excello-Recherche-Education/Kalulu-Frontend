@@ -1,4 +1,5 @@
 extends MarginContainer
+class_name FishWordListElement
 
 
 @export var word_id: = 1:
@@ -9,9 +10,9 @@ extends MarginContainer
 	set = set_lesson_nb
 @export var pseudoword_id: = -1
 
-@onready var option_button: = %OptionButton
-@onready var line_edit: = %LineEdit
-@onready var lesson_label: = %LessonLabel
+@onready var option_button: OptionButton = %OptionButton
+@onready var line_edit: LineEdit = %LineEdit
+@onready var lesson_label: Label = %LessonLabel
 
 var is_in_line_edit_changed: = false
 var word: = ""
@@ -38,8 +39,8 @@ func set_lesson_nb(p_lesson_nb: int) -> void:
 
 
 func set_word_list(word_list: Array) -> void:
-	for word in word_list:
-		option_button.add_item(word.Word, word.ID)
+	for word: Dictionary in word_list:
+		option_button.add_item(word.Word as String, word.ID as int)
 
 
 func _on_option_button_item_selected(index: int) -> void:

@@ -9,15 +9,15 @@ enum Type {
 	Consonant,
 }
 
-@onready var exception_checkbox: = %ExceptionCheckBox
+@onready var exception_checkbox: CheckBox = %ExceptionCheckBox
 @onready var exception_edit_checkbox: CheckBox = %ExceptionEditCheckBox
-@onready var grapheme_label: = $%Grapheme
-@onready var phoneme_label: = $%Phoneme
-@onready var type_label: = $%Type
-@onready var grapheme_edit: = $%GraphemeEdit
-@onready var phoneme_edit: = $%PhonemeEdit
-@onready var type_edit: = $%TypeEdit
-@onready var tab_container: = $%TabContainer
+@onready var grapheme_label: Label = $%Grapheme
+@onready var phoneme_label: Label = $%Phoneme
+@onready var type_label: Label = $%Type
+@onready var grapheme_edit: LineEdit = $%GraphemeEdit
+@onready var phoneme_edit: LineEdit = $%PhonemeEdit
+@onready var type_edit: OptionButton = $%TypeEdit
+@onready var tab_container: TabContainer = $%TabContainer
 
 
 
