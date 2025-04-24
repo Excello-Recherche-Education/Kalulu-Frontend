@@ -18,7 +18,7 @@ func _ready() -> void:
 		name_label.text = tr("STUDENT_NUM").format({"number" : student_count})
 	
 	if student_data.code:
-		password_visualizer.password = student_data.code
+		password_visualizer.password = str(student_data.code)
 
 
 func _on_details_button_pressed() -> void:

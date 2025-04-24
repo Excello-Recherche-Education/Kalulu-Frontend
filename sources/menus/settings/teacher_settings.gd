@@ -76,7 +76,7 @@ func _on_devices_tab_container_tab_changed(tab: int) -> void:
 	lesson_unlocks.device = tab + 1
 
 
-func _on_student_pressed(code: String) -> void:
+func _on_student_pressed(code: int) -> void:
 	lesson_unlocks.student = code
 	lesson_unlocks.show()
 

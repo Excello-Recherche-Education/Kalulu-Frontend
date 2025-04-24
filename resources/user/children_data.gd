@@ -8,7 +8,7 @@ enum Level {
 	Adult
 }
 
-@export var code: String
+@export var code: int
 @export var name: String
 @export var level: Level
 @export var age: int

@@ -9,8 +9,8 @@ const student_unlock_scene: = preload("res://sources/menus/settings/lesson_unloc
 @onready var lesson_container: VBoxContainer = %LessonContainer
 
 @export var device: int
-@export var student: String:
-	set= _on_student_changed
+@export var student: int:
+	set = _on_student_changed
 
 var progression: UserProgression
 
@@ -33,11 +33,11 @@ ORDER BY LessonNb")
 		student_unlock.unlocks_changed.connect(_create_lessons)
 
 
-func _on_student_changed(value: String)-> void:
+func _on_student_changed(value: int)-> void:
 	student = value
 	progression = UserDataManager.get_student_progression_for_code(device, student)
 	_create_lessons()
-	(%PasswordVisualizer as PasswordVisualizer).password = value
+	(%PasswordVisualizer as PasswordVisualizer).password = str(value)
 
 
 func _on_back_button_pressed() -> void:
