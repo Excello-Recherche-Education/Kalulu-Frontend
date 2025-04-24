@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_afmcm"]
 [ext_resource type="SpriteFrames" uid="uid://wybpq21deku7" path="res://sources/minigames/parakeets/red_parakeet_animations.tres" id="2_k0dcm"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="4_a2lqo"]
-[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="5_k8sc4"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="4_xdkkw"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_7mdw2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45x46"]
@@ -29,7 +29,7 @@ scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_k0dcm")
 animation = &"idle_front"
 autoplay = "idle_front"
-frame_progress = 0.720513
+frame_progress = 0.660885
 offset = Vector2(2.08165e-12, -82)
 
 [node name="Label" type="Label" parent="."]
@@ -37,7 +37,7 @@ offset_left = -88.0
 offset_top = -166.0
 offset_right = 88.0
 offset_bottom = -44.0
-theme_override_fonts/font = ExtResource("5_k8sc4")
+theme_override_fonts/font = ExtResource("4_xdkkw")
 theme_override_font_sizes/font_size = 90
 label_settings = ExtResource("4_a2lqo")
 horizontal_alignment = 1

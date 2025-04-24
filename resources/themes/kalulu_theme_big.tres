@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=14 format=3 uid="uid://cd7ftmo5x4c2r"]
 
-[ext_resource type="FontFile" uid="uid://c7hsjkvr1pbud" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_8tqtb"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/Kalulu-Mulish-Bold.otf" id="1_7lw0t"]
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="2_xlrdq"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="3_0cauu"]
 [ext_resource type="Texture2D" uid="uid://cacy10k45kq6u" path="res://assets/theme/up.svg" id="4_7lqy2"]
@@ -63,48 +63,57 @@ corner_radius_bottom_right = 32
 corner_radius_bottom_left = 32
 
 [resource]
+AcceptDialog/fonts/title_font = ExtResource("1_7lw0t")
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_nikxc")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(0.85098, 0.858824, 0.866667, 1)
 Button/colors/font_outline_color = Color(0, 0, 0, 1)
 Button/constants/icon_max_width = 70
 Button/font_sizes/font_size = 70
-Button/fonts/font = ExtResource("1_8tqtb")
+Button/fonts/font = ExtResource("1_7lw0t")
 Button/styles/disabled = SubResource("StyleBoxFlat_osxio")
 Button/styles/hover = SubResource("StyleBoxFlat_xiby0")
 Button/styles/normal = SubResource("StyleBoxFlat_xitiu")
 Button/styles/pressed = SubResource("StyleBoxFlat_qwwu7")
+FileDialog/fonts/title_font = ExtResource("1_7lw0t")
 FileDialog/icons/back_folder = ExtResource("2_xlrdq")
 FileDialog/icons/forward_folder = ExtResource("3_0cauu")
 FileDialog/icons/parent_folder = ExtResource("4_7lqy2")
 FileDialog/icons/reload = ExtResource("5_pvc8j")
 FileDialog/icons/toggle_hidden = ExtResource("6_gldq8")
 Label/font_sizes/font_size = 70
-Label/fonts/font = ExtResource("1_8tqtb")
+Label/fonts/font = ExtResource("1_7lw0t")
 LineEdit/colors/font_color = Color(1, 1, 1, 1)
 LineEdit/colors/font_outline_color = Color(0, 0, 0, 1)
 LineEdit/colors/font_placeholder_color = Color(1, 1, 1, 0.6)
 LineEdit/constants/caret_width = 4
 LineEdit/constants/outline_size = 1
 LineEdit/font_sizes/font_size = 70
-LineEdit/fonts/font = ExtResource("1_8tqtb")
+LineEdit/fonts/font = ExtResource("1_7lw0t")
 MenuBar/font_sizes/font_size = 32
+MenuBar/fonts/font = ExtResource("1_7lw0t")
 MenuButton/font_sizes/font_size = 70
+MenuButton/fonts/font = ExtResource("1_7lw0t")
 OptionButton/colors/font_color = Color(1, 1, 1, 1)
 OptionButton/colors/font_outline_color = Color(0, 0, 0, 1)
 OptionButton/constants/arrow_margin = 20
 OptionButton/constants/modulate_arrow = 1
 OptionButton/constants/outline_size = 1
 OptionButton/font_sizes/font_size = 70
-OptionButton/fonts/font = ExtResource("1_8tqtb")
+OptionButton/fonts/font = ExtResource("1_7lw0t")
 Panel/styles/panel = SubResource("StyleBoxFlat_sfncn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_3gh3j")
 PopupMenu/colors/font_color = Color(1, 1, 1, 1)
 PopupMenu/colors/font_outline_color = Color(0, 0, 0, 1)
 PopupMenu/constants/outline_size = 1
 PopupMenu/font_sizes/font_size = 70
-PopupMenu/fonts/font = ExtResource("1_8tqtb")
-PopupMenu/fonts/font_separator = ExtResource("1_8tqtb")
+PopupMenu/fonts/font = ExtResource("1_7lw0t")
+PopupMenu/fonts/font_separator = ExtResource("1_7lw0t")
+PopupMenu/fonts/title_font = ExtResource("1_7lw0t")
 TextEdit/font_sizes/font_size = 70
+TextEdit/fonts/font = ExtResource("1_7lw0t")
 TooltipLabel/font_sizes/font_size = 80
+TooltipLabel/fonts/font = ExtResource("1_7lw0t")
 Tree/font_sizes/font_size = 70
+Tree/fonts/font = ExtResource("1_7lw0t")
+Tree/fonts/title_button_font = ExtResource("1_7lw0t")

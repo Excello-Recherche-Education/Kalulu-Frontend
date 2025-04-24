@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://2mwfjg3c68p1" path="res://sources/minigames/monkeys/coconut.tscn" id="3_tws3c"]
 [ext_resource type="Texture2D" uid="uid://bh28uja7gs8u4" path="res://assets/minigames/monkeys/graphic/coconut.png" id="4_8r7im"]
 [ext_resource type="Texture2D" uid="uid://dk26el7ws6d2j" path="res://assets/minigames/monkeys/graphic/stunned_02.png" id="4_yysvf"]
-[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="5_4f7ge"]
 [ext_resource type="Texture2D" uid="uid://droijuh1ny7q4" path="res://assets/minigames/monkeys/graphic/stunned_03.png" id="5_nogsj"]
 [ext_resource type="Texture2D" uid="uid://cemh8hixdbh6w" path="res://assets/minigames/monkeys/graphic/stunned_04.png" id="6_07xob"]
 [ext_resource type="Texture2D" uid="uid://b8vkcmm1amyl5" path="res://assets/minigames/monkeys/graphic/stunned_05.png" id="7_cqirh"]
@@ -23,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bahcmlqnc3lb5" path="res://assets/minigames/monkeys/graphic/stunned_15.png" id="17_io6kh"]
 [ext_resource type="Texture2D" uid="uid://cx2wrsp34gocj" path="res://assets/minigames/monkeys/graphic/stunned_16.png" id="18_hl1xy"]
 [ext_resource type="Texture2D" uid="uid://c4ey737pdl0h8" path="res://assets/minigames/monkeys/graphic/stunned_17.png" id="19_1bn1b"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="23_l0op8"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_eq3s8"]
 animations = [{
@@ -580,7 +580,7 @@ gizmo_extents = 20.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_rnatx")
+&"": SubResource("AnimationLibrary_rnatx")
 }
 autoplay = "idle"
 
@@ -610,7 +610,7 @@ offset_left = 7.0
 offset_top = 7.0
 offset_right = 117.0
 offset_bottom = 103.0
-theme_override_fonts/font = ExtResource("5_4f7ge")
+theme_override_fonts/font = ExtResource("23_l0op8")
 theme_override_font_sizes/font_size = 70
 text = "ent"
 horizontal_alignment = 1

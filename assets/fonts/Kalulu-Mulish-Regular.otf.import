@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://c7hsjkvr1pbud"
-path="res://.godot/imported/ScriptEcoleNormal.otf-73f4f67ba6dff951298abe885d449536.fontdata"
+uid="uid://bw8cb4e0a7ayj"
+path="res://.godot/imported/Kalulu-Mulish-Regular.otf-7936f7f1167f72ff410561e62f358106.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/ScriptEcoleNormal.otf"
-dest_files=["res://.godot/imported/ScriptEcoleNormal.otf-73f4f67ba6dff951298abe885d449536.fontdata"]
+source_file="res://assets/fonts/Kalulu-Mulish-Regular.otf"
+dest_files=["res://.godot/imported/Kalulu-Mulish-Regular.otf-7936f7f1167f72ff410561e62f358106.fontdata"]
 
 [params]
 
@@ -22,7 +22,7 @@ msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
 hinting=1
-subpixel_positioning=1
+subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null

@@ -8,15 +8,15 @@
 [ext_resource type="Texture2D" uid="uid://eor7gaddgj5d" path="res://assets/minigames/monkeys/graphic/palmtree_01.png" id="5_2qxen"]
 [ext_resource type="Texture2D" uid="uid://fex5yvybinsx" path="res://assets/minigames/monkeys/graphic/palmtree_02.png" id="6_f5ri1"]
 [ext_resource type="PackedScene" uid="uid://b8r26vroslasj" path="res://sources/minigames/monkeys/king_monkey.tscn" id="7_43p1x"]
-[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="8_fem7m"]
 [ext_resource type="Texture2D" uid="uid://disgg14rdmp81" path="res://assets/minigames/monkeys/graphic/textplank.png" id="8_w0ndh"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="10_awer8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qdi5m"]
 shader = ExtResource("3_cw8rd")
 shader_parameter/direction = Vector2(0.015, 0)
 
 [sub_resource type="FontVariation" id="FontVariation_br573"]
-base_font = ExtResource("8_fem7m")
+base_font = ExtResource("10_awer8")
 spacing_glyph = 20
 
 [node name="MonkeysMinigame" instance=ExtResource("1_6nhsm")]

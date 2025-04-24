@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://b2l4jfylc1v41"
-path="res://.godot/imported/DidactGothic-Regular.ttf-264ba9959ac39d6c71a652d1ce1af1e4.fontdata"
+uid="uid://bj2rpti6g24kk"
+path="res://.godot/imported/Kalulu-Mulish-Bold.otf-4c97e8cbcda558eaef504e6eb55f3f6d.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/DidactGothic-Regular.ttf"
-dest_files=["res://.godot/imported/DidactGothic-Regular.ttf-264ba9959ac39d6c71a652d1ce1af1e4.fontdata"]
+source_file="res://assets/fonts/Kalulu-Mulish-Bold.otf"
+dest_files=["res://.godot/imported/Kalulu-Mulish-Bold.otf-4c97e8cbcda558eaef504e6eb55f3f6d.fontdata"]
 
 [params]
 
@@ -22,7 +22,7 @@ msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
 hinting=1
-subpixel_positioning=1
+subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null

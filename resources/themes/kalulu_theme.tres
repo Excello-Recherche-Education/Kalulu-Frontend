@@ -1,7 +1,7 @@
-[gd_resource type="Theme" load_steps=73 format=3 uid="uid://dqjvrt5nrtwn1"]
+[gd_resource type="Theme" load_steps=77 format=3 uid="uid://dqjvrt5nrtwn1"]
 
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="1_10vt2"]
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
-[ext_resource type="FontFile" uid="uid://c7hsjkvr1pbud" path="res://assets/fonts/ScriptEcoleNormal.otf" id="1_shpmh"]
 [ext_resource type="StyleBox" uid="uid://blkufkitnlfqi" path="res://danger_button_stylebox.tres" id="2_0ex6x"]
 [ext_resource type="Texture2D" uid="uid://7q3lm3o8ihxn" path="res://assets/menus/check-box.512x512.png" id="2_8yw3g"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="2_hbp6q"]
@@ -229,6 +229,54 @@ border_width_bottom = 7
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c4e5a"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_10vt2"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycjac"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m04j5"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nnu7v"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sfncn"]
 bg_color = Color(0.254902, 0.329412, 0.572549, 1)
 border_width_bottom = 2
@@ -431,6 +479,7 @@ corner_detail = 1
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_602tu"]
 
 [resource]
+AcceptDialog/fonts/title_font = ExtResource("1_10vt2")
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_nikxc")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(0.85098, 0.858824, 0.866667, 1)
@@ -438,7 +487,7 @@ Button/colors/font_outline_color = Color(0, 0, 0, 1)
 Button/constants/align_to_largest_stylebox = 1
 Button/constants/icon_max_width = 70
 Button/font_sizes/font_size = 32
-Button/fonts/font = ExtResource("1_shpmh")
+Button/fonts/font = ExtResource("1_10vt2")
 Button/styles/disabled = SubResource("StyleBoxFlat_osxio")
 Button/styles/hover = SubResource("StyleBoxFlat_xiby0")
 Button/styles/normal = SubResource("StyleBoxFlat_xitiu")
@@ -446,7 +495,7 @@ Button/styles/pressed = SubResource("StyleBoxFlat_qwwu7")
 CheckBox/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 CheckBox/constants/h_separation = 20
 CheckBox/font_sizes/font_size = 32
-CheckBox/fonts/font = ExtResource("1_shpmh")
+CheckBox/fonts/font = ExtResource("1_10vt2")
 CheckBox/icons/checked = ExtResource("2_8yw3g")
 CheckBox/icons/checked_disabled = ExtResource("3_pt4x8")
 CheckBox/icons/unchecked = ExtResource("4_w8eq8")
@@ -463,7 +512,7 @@ CheckBox/styles/normal_mirrored = SubResource("StyleBoxEmpty_g65l4")
 CheckBox/styles/pressed = SubResource("StyleBoxEmpty_bjxno")
 CheckBox/styles/pressed_mirrored = SubResource("StyleBoxEmpty_k683q")
 Combobox/base_type = &"OptionButton"
-Combobox/fonts/font = ExtResource("1_shpmh")
+Combobox/fonts/font = ExtResource("1_10vt2")
 Combobox/styles/disabled = SubResource("StyleBoxFlat_whtl8")
 Combobox/styles/disabled_mirrored = SubResource("StyleBoxFlat_vnibo")
 Combobox/styles/focus = SubResource("StyleBoxFlat_xhjae")
@@ -474,10 +523,11 @@ Combobox/styles/normal_mirrored = SubResource("StyleBoxFlat_cul2e")
 Combobox/styles/pressed = SubResource("StyleBoxFlat_c05kv")
 Combobox/styles/pressed_mirrored = SubResource("StyleBoxFlat_u3yhj")
 DangerButton/base_type = &"Button"
-DangerButton/fonts/font = ExtResource("1_shpmh")
+DangerButton/fonts/font = ExtResource("1_10vt2")
 DangerButton/styles/hover = ExtResource("2_0ex6x")
 DangerButton/styles/normal = ExtResource("2_0ex6x")
 DangerButton/styles/pressed = SubResource("StyleBoxFlat_idrao")
+FileDialog/fonts/title_font = ExtResource("1_10vt2")
 FileDialog/icons/back_folder = ExtResource("1_mdn6k")
 FileDialog/icons/forward_folder = ExtResource("2_hbp6q")
 FileDialog/icons/parent_folder = ExtResource("3_1nwm4")
@@ -497,6 +547,7 @@ InvisibleButton/colors/icon_hover_color = Color(0, 0, 0, 0)
 InvisibleButton/colors/icon_hover_pressed_color = Color(0, 0, 0, 0)
 InvisibleButton/colors/icon_normal_color = Color(0, 0, 0, 0)
 InvisibleButton/colors/icon_pressed_color = Color(0, 0, 0, 0)
+InvisibleButton/fonts/font = ExtResource("1_10vt2")
 InvisibleButton/styles/disabled = SubResource("StyleBoxEmpty_cpwf5")
 InvisibleButton/styles/focus = SubResource("StyleBoxEmpty_g4sj8")
 InvisibleButton/styles/hover = SubResource("StyleBoxEmpty_kwe2i")
@@ -504,22 +555,35 @@ InvisibleButton/styles/normal = SubResource("StyleBoxEmpty_ygb25")
 InvisibleButton/styles/pressed = SubResource("StyleBoxEmpty_ks3at")
 ItemList/colors/guide_color = Color(1, 1, 1, 0)
 ItemList/constants/v_separation = 10
-ItemList/fonts/font = ExtResource("1_shpmh")
+ItemList/fonts/font = ExtResource("1_10vt2")
 ItemList/styles/cursor = SubResource("StyleBoxEmpty_61sv1")
 ItemList/styles/cursor_unfocused = SubResource("StyleBoxEmpty_8tujn")
 ItemList/styles/focus = SubResource("StyleBoxEmpty_3fet0")
 ItemList/styles/hovered = SubResource("StyleBoxEmpty_c4e5a")
 Label/font_sizes/font_size = 42
-Label/fonts/font = ExtResource("1_shpmh")
+Label/fonts/font = ExtResource("1_10vt2")
 LineEdit/constants/caret_width = 4
 LineEdit/font_sizes/font_size = 32
-LineEdit/fonts/font = ExtResource("1_shpmh")
+LineEdit/fonts/font = ExtResource("1_10vt2")
+MenuBar/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+MenuBar/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+MenuBar/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+MenuBar/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+MenuBar/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+MenuBar/colors/font_outline_color = Color(0, 0, 0, 1)
+MenuBar/colors/font_pressed_color = Color(1, 1, 1, 1)
+MenuBar/constants/h_separation = 4
+MenuBar/constants/outline_size = 0
 MenuBar/font_sizes/font_size = 32
-MenuBar/fonts/font = ExtResource("1_shpmh")
+MenuBar/fonts/font = ExtResource("1_10vt2")
+MenuBar/styles/disabled = SubResource("StyleBoxFlat_10vt2")
+MenuBar/styles/hover = SubResource("StyleBoxFlat_ycjac")
+MenuBar/styles/normal = SubResource("StyleBoxFlat_m04j5")
+MenuBar/styles/pressed = SubResource("StyleBoxFlat_nnu7v")
 MenuButton/font_sizes/font_size = 32
-MenuButton/fonts/font = ExtResource("1_shpmh")
+MenuButton/fonts/font = ExtResource("1_10vt2")
 OptionButton/font_sizes/font_size = 32
-OptionButton/fonts/font = ExtResource("1_shpmh")
+OptionButton/fonts/font = ExtResource("1_10vt2")
 Panel/styles/panel = SubResource("StyleBoxFlat_sfncn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_3gh3j")
 PanelKalulu/base_type = &"PanelContainer"
@@ -527,9 +591,10 @@ PanelKalulu/styles/panel = SubResource("StyleBoxFlat_dr2ay")
 PanelKaluluBig/base_type = &"PanelContainer"
 PanelKaluluBig/styles/panel = SubResource("StyleBoxFlat_dr3ay")
 PopupMenu/font_sizes/font_size = 100
-PopupMenu/fonts/font = ExtResource("1_shpmh")
-PopupMenu/fonts/font_separator = ExtResource("1_shpmh")
-ProgressBar/fonts/font = ExtResource("1_shpmh")
+PopupMenu/fonts/font = ExtResource("1_10vt2")
+PopupMenu/fonts/font_separator = ExtResource("1_10vt2")
+PopupMenu/fonts/title_font = null
+ProgressBar/fonts/font = ExtResource("1_10vt2")
 ProgressBar/styles/background = SubResource("StyleBoxEmpty_nolh0")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_unu58")
 TabBar/colors/drop_mark_color = Color(1, 1, 1, 1)
@@ -542,7 +607,7 @@ TabBar/constants/h_separation = 4
 TabBar/constants/icon_max_width = 0
 TabBar/constants/outline_size = 0
 TabBar/font_sizes/font_size = 70
-TabBar/fonts/font = ExtResource("1_shpmh")
+TabBar/fonts/font = ExtResource("1_10vt2")
 TabBar/icons/close = SubResource("ImageTexture_ur8jk")
 TabBar/icons/decrement = SubResource("ImageTexture_tmbq7")
 TabBar/icons/decrement_highlight = SubResource("ImageTexture_5g8yh")
@@ -561,7 +626,7 @@ TabContainer/colors/font_outline_color = Color(0, 0, 0, 1)
 TabContainer/constants/outline_size = 1
 TabContainer/constants/side_margin = 0
 TabContainer/font_sizes/font_size = 70
-TabContainer/fonts/font = ExtResource("1_shpmh")
+TabContainer/fonts/font = ExtResource("1_10vt2")
 TabContainer/styles/panel = SubResource("StyleBoxEmpty_602tu")
 TabContainer/styles/tab_disabled = null
 TabContainer/styles/tab_focus = null
@@ -569,9 +634,9 @@ TabContainer/styles/tab_hovered = null
 TabContainer/styles/tab_selected = null
 TabContainer/styles/tab_unselected = null
 TextEdit/font_sizes/font_size = 32
-TextEdit/fonts/font = ExtResource("1_shpmh")
+TextEdit/fonts/font = ExtResource("1_10vt2")
 TooltipLabel/font_sizes/font_size = 80
-TooltipLabel/fonts/font = ExtResource("1_shpmh")
+TooltipLabel/fonts/font = ExtResource("1_10vt2")
 Tree/font_sizes/font_size = 32
-Tree/fonts/font = ExtResource("1_shpmh")
-Tree/fonts/title_button_font = ExtResource("1_shpmh")
+Tree/fonts/font = ExtResource("1_10vt2")
+Tree/fonts/title_button_font = ExtResource("1_10vt2")

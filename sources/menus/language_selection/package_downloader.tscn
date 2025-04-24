@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://bwjft0rlj2tu2"]
 
 [ext_resource type="Script" uid="uid://dnccsu4wgp1pk" path="res://sources/menus/language_selection/package_downloader.gd" id="1_awls2"]
-[ext_resource type="FontFile" uid="uid://b2l4jfylc1v41" path="res://assets/fonts/DidactGothic-Regular.ttf" id="2_e8r30"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_ntm5g"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="3_1msln"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="4_03o13"]
 [ext_resource type="Script" uid="uid://58twmknv6bl5" path="res://sources/ui/popup.gd" id="5_dyine"]
 
@@ -86,7 +86,7 @@ unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(800, 100)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_e8r30")
+theme_override_fonts/font = ExtResource("3_1msln")
 theme_override_font_sizes/font_size = 60
 max_value = 1.0
 step = 1.0
@@ -102,7 +102,7 @@ unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(800, 100)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_e8r30")
+theme_override_fonts/font = ExtResource("3_1msln")
 theme_override_font_sizes/font_size = 60
 max_value = 1.0
 step = 1.0

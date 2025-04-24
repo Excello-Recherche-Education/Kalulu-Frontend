@@ -67,7 +67,7 @@ folder_colors={
 
 common/snap_controls_to_pixels=false
 theme/custom="res://resources/themes/kalulu_theme.tres"
-theme/custom_font="res://assets/fonts/DidactGothic-Regular.ttf"
+theme/custom_font="uid://bw8cb4e0a7ayj"
 
 [input]
 
