@@ -284,7 +284,7 @@ func _delete_inexistants_students_saves() -> void:
 					# Check if the folder is associated with an existing student
 					var exists: = false
 					for s: StudentData in teacher_settings.students[int(device)]:
-						if s.code == p_student:
+						if str(s.code) == p_student:
 							exists = true
 							break
 					# If the code doesn't exists in the configuration, delete the folder
@@ -349,11 +349,11 @@ func _on_user_progression_unlocks_changed() -> void:
 	_save_student_progression()
 
 
-func get_student_progression_for_code(device: int, code: String) -> UserProgression:
+func get_student_progression_for_code(device: int, code: int) -> UserProgression:
 	if not teacher_settings or not teacher_settings.students.has(device):
 		return
 	
-	var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(code)
+	var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code))
 	var progression_path: String = student_path.path_join("progression.tres")
 	
 	var progression: UserProgression
@@ -367,8 +367,8 @@ func get_student_progression_for_code(device: int, code: String) -> UserProgress
 	
 	return progression
 
-func save_student_progression_for_code(device: int, code: String, progression: UserProgression) -> void:
-	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(code).path_join("progression.tres")
+func save_student_progression_for_code(device: int, code: int, progression: UserProgression) -> void:
+	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
 	ResourceSaver.save(progression, progression_path)
 
 #endregion

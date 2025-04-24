@@ -66,7 +66,7 @@ func _find_stimuli_and_distractions() -> void:
 			else:
 				stimuli.append_array(current_lesson_stimuli)
 			
-			# We if there are not enough stimuli from current lesson, we want at least half the target number of stimuli
+			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
 			@warning_ignore("integer_division")
 			var minimal_stimuli : int = current_lesson_stimuli_number/2
 			if stimuli.size() < minimal_stimuli:
@@ -95,7 +95,7 @@ func _find_stimuli_and_distractions() -> void:
 	for stimulus: Dictionary in stimuli:
 		var stimulus_distractors: Array[Dictionary] = []
 		
-		# Difficulty 1 
+		# Difficulty 1
 		# Any previously learned item w/ all letters different
 		for syllable: Dictionary in all_syllables:
 			if syllable.Phoneme != stimulus.Phoneme:

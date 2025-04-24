@@ -123,13 +123,13 @@ color = Color(0.00392157, 0, 0.105882, 1)
 material = SubResource("CanvasItemMaterial_iw28k")
 position = Vector2(1280, 900)
 amount = 64
-process_material = SubResource("ParticleProcessMaterial_x00r2")
 texture = ExtResource("1_poeho")
 lifetime = 5.0
 preprocess = 5.0
 randomness = 0.5
 visibility_rect = Rect2(-12800, -900, 25600, 1800)
 local_coords = true
+process_material = SubResource("ParticleProcessMaterial_x00r2")
 
 [node name="TextureRect" type="TextureRect" parent="ControlBackground"]
 layout_mode = 0
@@ -258,8 +258,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(59, 56)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton2" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -281,8 +281,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(50, 51.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton3" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -304,8 +304,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(59.5, 51)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton4" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -327,8 +327,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(56.5, 59.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton5" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -350,8 +350,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(56, 58)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton6" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -373,8 +373,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(59.5, 55.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton7" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -396,8 +396,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(56, 49)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton8" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -419,8 +419,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(54.5, 48.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton9" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -442,8 +442,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(71, 66)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton10" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -465,8 +465,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(54, 64.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton11" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -488,8 +488,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(68, 45.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton12" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -511,8 +511,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(57.5, 47.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton13" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -534,8 +534,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(51, 64.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton14" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -557,8 +557,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(47, 49)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton15" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -580,8 +580,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(53.5, 52.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton16" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -603,8 +603,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(82.5, 50)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton17" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -626,8 +626,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(52, 54)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton18" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -649,8 +649,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(60.5, 47.5)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton19" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -672,8 +672,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(46.5, 53)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="GardenButton20" type="TextureButton" parent="GardenButtons"]
 unique_name_in_owner = true
@@ -695,8 +695,8 @@ material = SubResource("CanvasItemMaterial_4xkmy")
 position = Vector2(59.5, 47)
 scale = Vector2(0.4, 0.4)
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_4003t")
 texture = ExtResource("33_bjun2")
+process_material = SubResource("ParticleProcessMaterial_4003t")
 
 [node name="Kalulu" parent="." instance=ExtResource("35_t3kvk")]
 visible = false

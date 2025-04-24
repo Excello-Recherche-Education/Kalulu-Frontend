@@ -188,7 +188,6 @@ func _notification(what):
 			if not _is_paused:
 				_pause_start = Time.get_ticks_msec() / 1000.0
 				_is_paused = true
-				print("⏸️ Pause detected at %.2f" % _pause_start)
 
 		NOTIFICATION_APPLICATION_FOCUS_IN:
 			if _is_paused:
@@ -196,7 +195,6 @@ func _notification(what):
 				var pause_duration = resumed - _pause_start
 				_elapsed_paused += pause_duration
 				_is_paused = false
-				print("▶️ Resume, pause duration %.2f sec, total pause : %.2f sec" % [pause_duration, _elapsed_paused])
 #endregion
 
 #region Ending

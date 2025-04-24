@@ -38,12 +38,12 @@ func update_from_dict(dict: Dictionary) -> void:
 	var d_students: Dictionary = dict.students
 	for device: String in d_students.keys():
 		var device_students: Array[StudentData] = []
-		for s: Dictionary in dict.students[device]: 
+		for student_dico: Dictionary in dict.students[device]: 
 			var student: = StudentData.new()
-			student.code = str(s.code)
-			student.name = s.name
-			student.age = s.age
-			student.level = s.level
+			student.code = student_dico.code
+			student.name = student_dico.name
+			student.age = student_dico.age
+			student.level = student_dico.level
 			device_students.append(student)
 		
 		students[int(device)] = device_students
