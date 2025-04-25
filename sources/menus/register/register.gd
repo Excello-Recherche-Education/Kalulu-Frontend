@@ -28,14 +28,14 @@ var current_steps : Array[Step]
 @onready var popup := %Popup
 @onready var popup_info_label : Label = %PopupInfo
 
-func _ready():
+func _ready() -> void:
 	current_steps = [account_type_step.instantiate()]
 	_go_to_step(progress_bar.value)
 	
 	OpeningCurtain.open()
 
 
-func _go_to_step(step_index: int):
+func _go_to_step(step_index: int) -> void:
 	# Clear the steps
 	for step in steps.get_children(false):
 		if step is Step:
@@ -58,14 +58,14 @@ func _go_to_step(step_index: int):
 	progress_bar.set_value_with_tween(step_index)
 
 
-func _on_step_back(_step : Step):
+func _on_step_back(_step : Step) -> void:
 	if progress_bar.value == 0:
 		get_tree().change_scene_to_file(main_menu_path)
 	else:
 		_go_to_step(progress_bar.value-1)
 
 
-func _on_step_completed(step : Step):
+func _on_step_completed(step : Step) -> void:
 	match step.step_name:
 		"type":
 			# Adds teacher or parent steps
@@ -123,7 +123,7 @@ func _on_step_completed(step : Step):
 		_go_to_step(progress_bar.value+1)
 
 
-func _remove_future_steps():
+func _remove_future_steps() -> void:
 	# Free memory
 	for index: int in range(progress_bar.value + 1, current_steps.size(), 1):
 		current_steps[index].queue_free()
@@ -131,5 +131,5 @@ func _remove_future_steps():
 	# Resize the array to remove unwanted steps
 	current_steps.resize(progress_bar.value + 1)
 
-func _on_popup_button_pressed():
+func _on_popup_button_pressed() -> void:
 	popup.hide()

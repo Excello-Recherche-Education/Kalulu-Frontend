@@ -4,9 +4,9 @@ class_name GardenLayout
 
 
 class Flower:
-	var color: = 0
-	var type: = 0
-	var position: = Vector2i.ZERO
+	var color: int = 0
+	var type: int = 0
+	var position: Vector2 = Vector2i.ZERO
 	
 	func _init(p_color: int = 0, p_type: int = 0, p_position: Vector2i = Vector2i.ZERO) -> void:
 		color = p_color

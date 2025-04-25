@@ -8,7 +8,7 @@ const CONFIG_PATH := "user://environment.cfg"
 var env_selector: OptionButton
 var current_environment: EnvType = EnvType.DEV
 
-func _enter_tree():
+func _enter_tree() -> void:
 	# Create OptionButton
 	env_selector = OptionButton.new()
 	env_selector.name = "Env Selector"
@@ -25,7 +25,7 @@ func _enter_tree():
 	# Reflect the current environment in UI
 	env_selector.select(current_environment)
 
-func _exit_tree():
+func _exit_tree() -> void:
 	# Clean up the UI and save state
 	remove_control_from_container(EditorPlugin.CONTAINER_TOOLBAR, env_selector)
 	env_selector.queue_free()
@@ -41,12 +41,12 @@ func _environment_to_string(env: EnvType) -> String:
 		EnvType.PROD: return "PROD"
 		_: return "Unknown"
 
-func save_environment():
+func save_environment() -> void:
 	var config = ConfigFile.new()
 	config.set_value("environment", "current", str(current_environment))
 	config.save(CONFIG_PATH)
 
-func load_environment():
+func load_environment() -> void:
 	var config = ConfigFile.new()
 	if config.load(CONFIG_PATH) == OK:
 		var env = config.get_value("environment", "current", str(EnvType.DEV))

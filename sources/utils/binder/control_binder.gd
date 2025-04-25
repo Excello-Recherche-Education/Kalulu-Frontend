@@ -6,11 +6,11 @@ class_name ControlBinder
 
 var control : Control
 
-func _ready():
+func _ready() -> void:
 	control = get_parent()
 
 
-func get_value():
+func get_value() -> void:
 	if not control:
 		return null
 	
@@ -29,7 +29,7 @@ func get_value():
 	return null
 
 
-func set_value(value):
+func set_value(value) -> void:
 	if not control:
 		return
 		

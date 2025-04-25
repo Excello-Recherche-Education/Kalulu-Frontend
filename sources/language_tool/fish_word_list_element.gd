@@ -39,8 +39,8 @@ func set_lesson_nb(p_lesson_nb: int) -> void:
 
 
 func set_word_list(word_list: Array) -> void:
-	for word: Dictionary in word_list:
-		option_button.add_item(word.Word as String, word.ID as int)
+	for word_dic: Dictionary in word_list:
+		option_button.add_item(word_dic.Word as String, word_dic.ID as int)
 
 
 func _on_option_button_item_selected(index: int) -> void:

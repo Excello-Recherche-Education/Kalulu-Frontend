@@ -6,7 +6,7 @@ class_name FormBinder
 
 var _control_binder_map: Dictionary = {}
 
-func _ready():
+func _ready() -> void:
 	_find_binders(self)
 
 

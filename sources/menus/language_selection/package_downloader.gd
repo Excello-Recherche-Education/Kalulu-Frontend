@@ -215,7 +215,6 @@ func delete_directory_recursive(path: String) -> void:
 		Logger.info("PackageDownloader: ✅ Folder deleted : %s" % path)
 
 
-
 func _delete_dir(path: String) -> void:
 	var dir: DirAccess = DirAccess.open(path)
 	for file in dir.get_files():

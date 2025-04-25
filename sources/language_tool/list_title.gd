@@ -1,4 +1,5 @@
 extends MarginContainer
+class_name ListTitle
 
 signal add_pressed()
 signal save_pressed()

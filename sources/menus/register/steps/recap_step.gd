@@ -10,7 +10,7 @@ const device_recap_scene : PackedScene = preload("res://sources/menus/register/s
 @onready var devices_count : Label = %DevicesCount
 @onready var students_count : Label = %StudentsCount
 
-func on_enter():
+func on_enter() -> void:
 	super.on_enter()
 	
 	var teacher_settings = data as TeacherSettings

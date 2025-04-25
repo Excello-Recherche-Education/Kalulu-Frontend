@@ -61,7 +61,7 @@ func load_additional_word_list() -> String:
 	additional_word_list.clear()
 	var word_list_path: String = get_additional_word_list_path()
 	if FileAccess.file_exists(word_list_path):
-		var file: = FileAccess.open(word_list_path, FileAccess.READ)
+		var file: FileAccess = FileAccess.open(word_list_path, FileAccess.READ)
 		var title_line: PackedStringArray = file.get_csv_line()
 		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
 			var msg: = "word list should have columns ORTHO, PHON and GPMATCH"

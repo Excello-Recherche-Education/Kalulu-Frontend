@@ -17,10 +17,10 @@ func _on_next() -> bool:
 	return true
 
 
-func _on_validate_button_pressed():
+func _on_validate_button_pressed() -> void:
 	if _on_next():
 		next.emit(self)
 
 
-func _on_accept_pressed():
+func _on_accept_pressed() -> void:
 	accept_error.hide()

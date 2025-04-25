@@ -2,7 +2,7 @@ extends Step
 
 @onready var api_email_field_error: Label = %APIEmailFieldError
 
-func _on_validate_button_pressed():
+func _on_validate_button_pressed() -> void:
 	api_email_field_error.visible = false
 	
 	# Validate the fields

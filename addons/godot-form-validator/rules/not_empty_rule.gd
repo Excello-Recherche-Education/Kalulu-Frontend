@@ -8,7 +8,7 @@ func _init() -> void:
 
 
 func apply(control: Control, value) -> RuleResult:
-	var result = RuleResult.new()
+	var result: RuleResult = RuleResult.new()
 	if value is String:
 		result.passed = ValidatorFunctions.not_empty(value)
 	if not result.passed:

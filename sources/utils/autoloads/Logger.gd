@@ -26,8 +26,8 @@ func _ready() -> void:
 		current_level = LogLevel.INFO  # Exported: release mode
 	_log_internal(LogLevel.INFO, "--- Logging started at " + Time.get_datetime_string_from_system() + " ---")
 
-func delete_old_logs(days_threshold := 100) -> void:
-	var dir := DirAccess.open(logPath)
+func delete_old_logs(days_threshold: float = 100) -> void:
+	var dir: DirAccess = DirAccess.open(logPath)
 	if dir == null:
 		push_warning("Logger: Could not open Logs directory for cleanup.")
 		return
@@ -39,7 +39,7 @@ func delete_old_logs(days_threshold := 100) -> void:
 		if file_name.begins_with("Kalulu_Log_") and file_name.ends_with(".txt"):
 			var parts: PackedStringArray = file_name.get_basename().replace("Kalulu_Log_", "").split("-")
 			if parts.size() >= 6:
-				var date_dict := {
+				var date_dict: Dictionary = {
 					"year": parts[0].to_int(),
 					"month": parts[1].to_int(),
 					"day": parts[2].to_int(),
@@ -47,7 +47,7 @@ func delete_old_logs(days_threshold := 100) -> void:
 					"minute": parts[4].to_int(),
 					"second": parts[5].to_int()
 				}
-				var file_time := Time.get_unix_time_from_datetime_dict(date_dict)
+				var file_time: int = Time.get_unix_time_from_datetime_dict(date_dict)
 				var age_days: float = float(now - file_time) / (60.0 * 60.0 * 24.0)
 				if age_days > days_threshold:
 					var full_path: String = logPath + file_name
@@ -61,7 +61,7 @@ func delete_old_logs(days_threshold := 100) -> void:
 
 func _init_log_file() -> void:
 	# Ensure Logs directory exists
-	var logs_dir := DirAccess.open(logPath)
+	var logs_dir: DirAccess = DirAccess.open(logPath)
 	if logs_dir == null:
 		DirAccess.make_dir_recursive_absolute(logPath)
 
@@ -81,7 +81,7 @@ func _log_internal(level: LogLevel, message: String) -> void:
 	if level < current_level:
 		return
 
-	var prefix := "[LOG]"
+	var prefix: String = "[LOG]"
 	match level:
 		LogLevel.TRACE: prefix = "[TRACE]"
 		LogLevel.DEBUG: prefix = "[DEBUG]"

@@ -2,7 +2,7 @@ extends GPImageAndSoundDescriptions
 
 	 
 
-func _ready():
+func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.language_sounds)
 	
 	Database.db.query("SELECT * FROM GPs WHERE GPs.Exception=0")

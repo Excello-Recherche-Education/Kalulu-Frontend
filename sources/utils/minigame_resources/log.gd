@@ -12,7 +12,7 @@ func add_log(lesson_nb: int, new_log: Dictionary, time: String) -> void:
 	if not lesson_logs.has(time):
 		logs[lesson_nb][time] = new_log
 	else:
-		var i: = 2
-		while lesson_logs.has(time + "_" + str(i)):
-			i += 1
-		logs[lesson_nb][time + "_" + str(i)] = new_log
+		var index: int = 2
+		while lesson_logs.has(time + "_" + str(index)):
+			index += 1
+		logs[lesson_nb][time + "_" + str(index)] = new_log

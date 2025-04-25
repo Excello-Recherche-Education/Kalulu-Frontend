@@ -403,22 +403,22 @@ func _create_words_csv() -> void:
 			GROUP BY Words.ID"
 	Database.db.query(query)
 	var result: = Database.db.query_result
-	for e in result:
+	for element: Dictionary in result:
 		var gpmatch: = "("
-		var graphemes: PackedStringArray = (e.Graphemes as String).split(" ")
-		var phonemes: PackedStringArray = (e.Phonemes as String).split(" ")
+		var graphemes: PackedStringArray = (element.Graphemes as String).split(" ")
+		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
 		for index: int in graphemes.size() - 1:
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
 		var index: int = graphemes.size() - 1
 		gpmatch += graphemes[index] + "-" + phonemes[index] + ")"
 		var lesson: = -1
-		for gp_id: String in e.GPIDs.split(' '):
+		for gp_id: String in element.GPIDs.split(' '):
 			var gp_id_lesson: = Database.get_min_lesson_for_gp_id(int(gp_id))
 			if gp_id_lesson < 0:
 				lesson = -1
 				break
 			lesson = max(lesson, gp_id_lesson)
-		gp_list_file.store_csv_line([e.Word, gpmatch, lesson, e.Reading, e.Writing])
+		gp_list_file.store_csv_line([element.Word, gpmatch, lesson, element.Reading, element.Writing])
 
 
 func _create_syllable_csv() -> void:
@@ -440,7 +440,7 @@ func _create_syllable_csv() -> void:
 		var i: = graphemes.size() - 1
 		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
 		var lesson: = -1
-		for gp_id in e.GPIDs.split(' '):
+		for gp_id: String in e.GPIDs.split(' '):
 			var gp_id_lesson: = Database.get_min_lesson_for_gp_id(int(gp_id))
 			if gp_id_lesson < 0:
 				lesson = -1
@@ -458,16 +458,16 @@ func _create_sentence_csv() -> void:
 			INNER JOIN Words ON Words.ID = WordsInSentences.WordID
 			GROUP BY Sentences.ID"
 	Database.db.query(query)
-	var result: = Database.db.query_result
-	for e in result:
+	var result: Array[Dictionary] = Database.db.query_result
+	for element: Dictionary in result:
 		var lesson: = -1
-		for word_id in e.WordIDs.split(' '):
+		for word_id: String in element.WordIDs.split(' '):
 			var i: = Database.get_min_lesson_for_word_id(int(word_id))
 			if i < 0:
 				lesson = -1
 				break
 			lesson = max(lesson, i)
-		gp_list_file.store_csv_line([e.Sentence, lesson])
+		gp_list_file.store_csv_line([element.Sentence, lesson])
 
 
 func _on_open_folder_button_pressed() -> void:
@@ -479,19 +479,19 @@ func _on_tab_container_tab_changed(tab: int) -> void:
 
 
 #region Book Generation
-func create_book():
+func create_book() -> void:
 	var lang_path: String = base_path.path_join(Database.language)
-	var file_names: Dictionary = {
+	var file_names: Dictionary[String, String] = {
 		"word": "words_list.csv",
 		"syllable": "syllables_list.csv",
 		"sentence": "sentences_list.csv",
 	}
 
 	var columns: Dictionary[String, PackedStringArray]
-	var all_headers: Array = []
-	var headers_seen: Dictionary = {}
+	var all_headers: Array[String]
+	var headers_seen: Dictionary[String, bool]
 
-	for category in file_names.keys():
+	for category: String in file_names.keys():
 		var file_path: String = lang_path.path_join(file_names[category])
 		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
 		if file == null:
@@ -504,14 +504,14 @@ func create_book():
 
 		var headers_line: String = read_csv_record(file)
 		var raw_headers: PackedStringArray = parse_csv_line(headers_line)
-		var header_map = {}  # Original -> Normalized
+		var header_map: Dictionary[String, String] # Original -> Normalized
 		
 		# On mesure combien de lignes ont déjà été ajoutées
 		var current_row_count: int = 0
 		if columns.has("Categorie"):
 			current_row_count = columns["Categorie"].size()
 
-		for header in raw_headers:
+		for header: String in raw_headers:
 			var normalized: String = normalize_header(header)
 			header_map[header] = normalized
 
@@ -533,19 +533,19 @@ func create_book():
 			columns["Categorie"] = filler
 
 		while not file.eof_reached():
-			var line = read_csv_record(file)
+			var line: String = read_csv_record(file)
 			if line.strip_edges() == "":
 				continue
 
-			var values = parse_csv_line(line)
+			var values: PackedStringArray = parse_csv_line(line)
 			if values.size() != raw_headers.size():
 				Logger.warn("ProfToolMenu: Ligne malformée ignorée : %s" % values)
 				continue
 
-			var row_dict := {}
+			var row_dict: Dictionary[String, String]
 			for index: int in range(values.size()):
-				var original = raw_headers[index]
-				var normalized = header_map.get(original, original)
+				var original: String = raw_headers[index]
+				var normalized: String = header_map.get(original, original)
 				row_dict[normalized] = values[index]
 
 			# Ligne principale
@@ -560,7 +560,7 @@ func create_book():
 		file.close()
 
 	# Forcer "Lesson" en tête
-	var ordered_headers = all_headers.duplicate()
+	var ordered_headers: Array[String] = all_headers.duplicate()
 	if "Lesson" in ordered_headers:
 		ordered_headers.erase("Lesson")
 		ordered_headers = ["Lesson"] + ordered_headers
@@ -577,7 +577,7 @@ func create_book():
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
 	
-	var row_count = (columns["Categorie"] as PackedStringArray).size()  # Toutes les colonnes sont synchronisées
+	var row_count: int = (columns["Categorie"] as PackedStringArray).size()  # Toutes les colonnes sont synchronisées
 	for index in range(row_count):
 		var row: PackedStringArray = []
 		for header: String in ordered_headers:
@@ -590,7 +590,7 @@ func create_book():
 	Logger.debug("ProfToolMenu: " + error_label.text)
 
 # Fonction qui ajoute une ligne au dictionnaire
-func add_row(dict: Dictionary, row_data: Dictionary, categorie: String, all_headers: Array) -> void:
+func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[String, String], categorie: String, all_headers: Array) -> void:
 	# Nombre de lignes déjà enregistrées (doit être égal pour chaque colonne)
 	var current_size := 0
 	if dict.has("Categorie"):
@@ -604,7 +604,7 @@ func add_row(dict: Dictionary, row_data: Dictionary, categorie: String, all_head
 			for index: int in range(current_size):
 				filler[index] = ""
 			dict[header] = filler
-		dict[header].append(row_data.get(header, ""))
+		dict[header].append(row_data.get(header, "") as String)
 
 	# Colonne spéciale : Categorie
 	if not dict.has("Categorie"):

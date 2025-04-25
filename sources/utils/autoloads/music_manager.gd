@@ -2,7 +2,7 @@ extends Node
 
 @onready var music_player : AudioStreamPlayer = $MusicPlayer
 
-const tracks: = [
+const tracks: Array = [
 	preload("res://assets/music/title.mp3"),
 	preload("res://assets/music/garden.mp3")
 ]

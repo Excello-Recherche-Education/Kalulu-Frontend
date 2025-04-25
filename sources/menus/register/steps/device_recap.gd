@@ -10,7 +10,7 @@ const student_panel_scene = preload("res://sources/menus/settings/student_panel.
 @onready var title_label : Label = %Title
 @onready var students_container : GridContainer = %StudentsContainer
 
-func _ready():
+func _ready() -> void:
 	
 	if title:
 		title_label.text = title

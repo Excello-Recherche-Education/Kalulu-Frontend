@@ -1,4 +1,5 @@
 extends MarginContainer
+class_name GPListElement
 
 signal delete_pressed()
 signal validated()

@@ -2,21 +2,21 @@ extends Control
 
 @export var element_scene: PackedScene = preload("res://sources/language_tool/word_list_element.tscn")
 
-@onready var elements_container: = %ElementsContainer
-@onready var new_gp_layer: = $NewGPLayer
-@onready var new_gp: = %NewGP
-@onready var title: = %ListTitle
-@onready var lesson_title: = %Lesson
-@onready var word_title: = %Word
-@onready var graphemes_title: = %Graphemes
-@onready var error_label: = %ErrorLabel
+@onready var elements_container: VBoxContainer = %ElementsContainer
+@onready var new_gp_layer: CanvasLayer = $NewGPLayer
+@onready var new_gp := %NewGP
+@onready var title: ListTitle = %ListTitle
+@onready var lesson_title: Label = %Lesson
+@onready var word_title: Label = %Word
+@onready var graphemes_title: Label = %Graphemes
+@onready var error_label: Label = %ErrorLabel
 
 var undo_redo: = UndoRedo.new()
 var in_new_gp_mode: = false:
 	set = set_in_new_gp_mode
 var _element: WordListElement
 var sub_elements_list: Dictionary = {}
-var new_gp_asked_element
+var new_gp_asked_element: WordListElement
 var new_gp_asked_ind: int
 
 
@@ -49,7 +49,7 @@ func _ready() -> void:
 		element.exception = elem.Exception
 		element.reading = elem.Reading
 		element.writing = elem.Writing
-		element.set_gp_ids_from_string(elem[_element.sub_table_id + "s"])
+		element.set_gp_ids_from_string(elem[_element.sub_table_id + "s"] as String)
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
@@ -82,15 +82,15 @@ func _get_query() -> String:
 
 func ensure_column_exists(table_name: String, column_name: String, default_value: String) -> void:
 	Database.db.query("PRAGMA table_info(%s);" % table_name)
-	var column_exists = false
+	var column_exists: bool = false
 	for row in Database.db.query_result:
 		if row.has("name") and row["name"] == column_name:
 			column_exists = true
 			break
 	
 	if not column_exists:
-		var alter_sql = "ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT %s;" % [table_name, column_name, default_value]
-		var result = Database.db.query(alter_sql)
+		var alter_sql: String = "ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT %s;" % [table_name, column_name, default_value]
+		var result: bool = Database.db.query(alter_sql)
 		if not result:
 			Logger.error("WordList: Failed to add column '%s' to table '%s'" % [column_name, table_name])
 
@@ -126,7 +126,7 @@ func _on_plus_button_pressed() -> void:
 	element.edit_mode()
 
 
-func _on_element_new_GP_asked(ind: int, element) -> void:
+func _on_element_new_GP_asked(ind: int, element: WordListElement) -> void:
 	in_new_gp_mode = true
 	new_gp_asked_element = element
 	new_gp_asked_ind = ind

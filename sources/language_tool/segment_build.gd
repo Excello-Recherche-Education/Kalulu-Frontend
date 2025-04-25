@@ -15,7 +15,7 @@ func add_point(point: Vector2) -> void:
 
 
 func add_point_at(point: Vector2, ind: int) -> void:
-	var pts: = []
+	var pts: Array[Vector2]
 	for index: int in range(ind):
 		pts.append(points[index])
 	pts.append(point)

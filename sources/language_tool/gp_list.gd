@@ -2,8 +2,8 @@ extends Control
 
 var element_scene: = preload("res://sources/language_tool/gp_list_element.tscn")
 
-@onready var elements_container: = %ElementsContainer
-@onready var error_label: = %ErrorLabel
+@onready var elements_container: VBoxContainer = %ElementsContainer
+@onready var error_label: Label = %ErrorLabel
 
 var undo_redo: = UndoRedo.new()
 
@@ -13,7 +13,7 @@ func _ready() -> void:
 	Database.db.query(query)
 	var result: = Database.db.query_result
 	for e in result:
-		var element: = element_scene.instantiate()
+		var element: GPListElement = element_scene.instantiate()
 		element.grapheme = e.Grapheme
 		element.phoneme = e.Phoneme
 		element.type = e.Type
@@ -23,7 +23,7 @@ func _ready() -> void:
 		elements_container.add_child(element)
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
 	
-	for pseudo_button in [%Grapheme, %Phoneme, %Type]:
+	for pseudo_button: Label in [%Grapheme, %Phoneme, %Type]:
 		pseudo_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 
@@ -36,10 +36,10 @@ func _input(event: InputEvent) -> void:
 
 func _on_plus_button_pressed() -> void:
 	undo_redo.create_action("add")
-	var element: = element_scene.instantiate()
+	var element: GPListElement = element_scene.instantiate()
 	element.grapheme = ""
 	element.phoneme = ""
-	element.type = 0
+	element.type = GPListElement.Type.Silent
 	element.exception = false
 	element.undo_redo = undo_redo
 	element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
@@ -51,14 +51,14 @@ func _on_plus_button_pressed() -> void:
 
 
 func _on_save_button_pressed() -> void:
-	for element in elements_container.get_children():
+	for element: GPListElement in elements_container.get_children():
 		element.insert_in_database()
 	var query: = "Select * FROM GPs"
 	Database.db.query(query)
 	var result: = Database.db.query_result
 	for e in result:
 		var found: = false
-		for element in elements_container.get_children():
+		for element: GPListElement in elements_container.get_children():
 			if element.grapheme == e.Grapheme and element.phoneme == e.Phoneme and element.type == e.Type and element.exception == e.Exception:
 				found = true
 				break
@@ -117,8 +117,8 @@ func _on_list_title_back_pressed() -> void:
 
 
 func _on_list_title_new_search(new_text: String) -> void:
-	for e in elements_container.get_children():
-		e.visible = e.grapheme.begins_with(new_text)
+	for element: GPListElement in elements_container.get_children():
+		element.visible = element.grapheme.begins_with(new_text)
 
 
 func _on_list_title_save_pressed() -> void:
@@ -132,7 +132,6 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 		error_label.text = "Column names should be Grapheme, Phoneme, Type, Exception"
 		return
 	var types_text: = ["Silent", "Vowel", "Consonant"]
-	var insert_count: = 0
 	var all_data: = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
@@ -151,7 +150,6 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 				Type = type,
 				Exception = line[3]
 			})
-			insert_count += 1
 	get_tree().reload_current_scene()
 	
 	if match_to_file:

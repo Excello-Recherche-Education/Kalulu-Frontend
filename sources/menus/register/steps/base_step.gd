@@ -33,8 +33,8 @@ func _on_next() -> bool:
 	return true
 
 # Display error messages
-func _on_form_validator_control_validated(control, passed, messages):
-	var label = find_child(control.name + "Error", true, false) as Label
+func _on_form_validator_control_validated(control, passed, messages) -> void:
+	var label: Label = find_child(control.name as String + "Error", true, false) as Label
 	if not label:
 		return
 	
@@ -45,12 +45,12 @@ func _on_form_validator_control_validated(control, passed, messages):
 		label.show()
 
 
-func _on_back_button_pressed():
+func _on_back_button_pressed() -> void:
 	if _on_back():
 		back.emit(self)
 
 
-func _on_validate_button_pressed():
+func _on_validate_button_pressed() -> void:
 	# Validate the fields
 	if not form_validator.validate():
 		Logger.warn("BaseStep: Validation failed (" + str(self) + ")")

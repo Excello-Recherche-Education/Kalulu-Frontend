@@ -125,7 +125,7 @@ func _on_sound_preview_pressed() -> void:
 		sound_player.play()
 
 
-func _on_image_clear_button_pressed():
+func _on_image_clear_button_pressed() -> void:
 	var current_file: String = get_image_path.call(gp)
 	if FileAccess.file_exists(current_file):
 		DirAccess.remove_absolute(current_file)
@@ -133,7 +133,7 @@ func _on_image_clear_button_pressed():
 	set_image_preview("")
 
 
-func _on_sound_clear_button_pressed():
+func _on_sound_clear_button_pressed() -> void:
 	var current_file: String = get_sound_path.call(gp)
 	if FileAccess.file_exists(current_file):
 		DirAccess.remove_absolute(current_file)
