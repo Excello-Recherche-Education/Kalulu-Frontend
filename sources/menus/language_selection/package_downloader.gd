@@ -1,8 +1,6 @@
 extends Control
 class_name PackageDownloader
 
-const ConfirmPopup: = preload("res://sources/ui/popup.gd")
-
 const main_menu_scene_path: String = "res://sources/menus/main/main_menu.tscn"
 const device_selection_scene_path: String = "res://sources/menus/device_selection/device_selection.tscn"
 const login_scene_path: String = "res://sources/menus/login/login.tscn"

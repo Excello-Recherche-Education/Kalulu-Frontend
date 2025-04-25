@@ -2,7 +2,6 @@ extends Control
 
 const Kalulu: = preload("res://sources/menus/main/kalulu.gd")
 const LoginForm: = preload("res://sources/menus/main/login.gd")
-const ConfirmPopup: = preload("res://sources/ui/popup.gd")
 
 const adult_check_scene_path := "res://sources/menus/adult_check/adult_check.tscn"
 const package_loader_scene_path: = "res://sources/menus/language_selection/package_downloader.tscn"

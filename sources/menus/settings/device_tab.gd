@@ -1,4 +1,5 @@
 extends TabBar
+class_name DeviceTab
 
 signal student_pressed(code: int)
 

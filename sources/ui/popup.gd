@@ -1,5 +1,6 @@
 @tool
 extends CanvasLayer
+class_name ConfirmPopup
 
 signal accepted
 signal refused
