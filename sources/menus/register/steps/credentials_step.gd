@@ -7,12 +7,12 @@ func _on_validate_button_pressed():
 	
 	# Validate the fields
 	if not form_validator.validate():
-		push_warning("Validation failed (" + str(self) + ")")
+		Logger.warn("CredentialsStep: Validation failed (" + str(self) + ")")
 		return
 	
 	# Writes data in object
 	if not form_binder.write():
-		push_warning("Impossible to write data in object (" + str(self) + ")")
+		Logger.warn("CredentialsStep: Impossible to write data in object (" + str(self) + ")")
 		return
 	
 	var res = await ServerManager.check_email(data.email)

@@ -92,7 +92,7 @@ func ensure_column_exists(table_name: String, column_name: String, default_value
 		var alter_sql = "ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT %s;" % [table_name, column_name, default_value]
 		var result = Database.db.query(alter_sql)
 		if not result:
-			push_error("Failed to add column '%s' to table '%s'" % [column_name, table_name])
+			Logger.error("WordList: Failed to add column '%s' to table '%s'" % [column_name, table_name])
 
 
 func _input(event: InputEvent) -> void:

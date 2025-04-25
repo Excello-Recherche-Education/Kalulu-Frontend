@@ -236,7 +236,7 @@ func _ready() -> void:
 		if transition_data.has("current_garden_index"):
 			starting_garden = transition_data.current_garden_index
 		else:
-			push_error("Gardens initialisation: transition_data exists but does not contains the needed current_garden_index")
+			Logger.error("Gardens: initialisation: transition_data exists but does not contains the needed current_garden_index")
 			starting_garden = 0
 	
 	scroll_container.scroll_horizontal = garden_size * starting_garden

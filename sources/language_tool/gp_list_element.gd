@@ -108,7 +108,7 @@ func insert_in_database() -> void:
 		if not Database.db.query_result.is_empty():
 			var e = Database.db.query_result[0]
 			if grapheme != e.Grapheme or phoneme != e.Phoneme or type != e.Type or exception != e.Exception:
-				print("UPDATING " + e.Grapheme)
+				Logger.trace("GPListElement: UPDATING %s" % e.Grapheme)
 				Database.db.update_rows("GPs", "ID=%s" % id, {Grapheme=grapheme, Phoneme=phoneme, Type=type, Exception=exception})
 			return
 			

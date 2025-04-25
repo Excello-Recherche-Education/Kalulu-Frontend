@@ -174,7 +174,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	# Move the data to the locale folder of the user
 	var error: Error = DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
 	if error != null:
-		printerr("Error " + str(error) + " while renaming folder from %s to %s" % [user_language_resources_path.path_join(subfolder), current_language_path])
+		Logger.error("PackageDownloader: Error " + str(error) + " while renaming folder from %s to %s" % [user_language_resources_path.path_join(subfolder), current_language_path])
 	
 	# Cleanup unnecessary files
 	DirAccess.remove_absolute(language_zip_path)
@@ -186,11 +186,11 @@ func _copy_data(this: PackageDownloader) -> void:
 func delete_directory_recursive(path: String) -> void:
 	var dir: DirAccess = DirAccess.open(path)
 	if dir == null:
-		printerr("Le dossier n'existe pas : ", path)
+		Logger.error("PackageDownloader: Folder does not exists : %s" % path)
 		return
 
 	if dir.list_dir_begin() != OK:
-		printerr("Erreur lors de la lecture du dossier : ", path)
+		Logger.error("PackageDownloader: Error while reading folder : %s" % path)
 		return
 
 	var err: Error
@@ -202,7 +202,7 @@ func delete_directory_recursive(path: String) -> void:
 		else:
 			err = dir.remove(full_path)
 			if err != OK:
-				printerr("Erreur " + str(err) + " pendant la suppression du fichier : ", full_path)
+				Logger.error("PackageDownloader: Error " + str(err) + " while deleting file : %s" % full_path)
 		file_name = dir.get_next()
 
 	dir.list_dir_end()
@@ -210,9 +210,9 @@ func delete_directory_recursive(path: String) -> void:
 	# Supprime le dossier lui-même
 	err = DirAccess.remove_absolute(path)
 	if err != OK:
-		printerr("Erreur " + str(err) + " pendant la suppression du dossier : ", path)
+		Logger.error("PackageDownloader: Error " + str(err) + " while deleting folder : %s" % path)
 	else:
-		print("✅ Dossier supprimé : ", path)
+		Logger.info("PackageDownloader: ✅ Folder deleted : %s" % path)
 
 
 

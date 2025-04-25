@@ -34,7 +34,7 @@ func read(resource : Resource) -> void:
 			var property_value = data.get(binder.property_name)
 			binder.set_value(property_value)
 		else:
-			push_warning("Property " + binder.property_name + " not found in " + data.get_class())
+			Logger.warn("FormBinder: Property " + binder.property_name + " not found in " + data.get_class())
 
 
 func write() -> bool:
@@ -46,6 +46,6 @@ func write() -> bool:
 		if binder.property_name in data:
 			data.set(binder.property_name, binder.get_value())
 		else:
-			push_warning("Property " + binder.property_name + " not found in " + data.get_class())
+			Logger.warn("FormBinder: Property " + binder.property_name + " not found in " + data.get_class())
 	
 	return true

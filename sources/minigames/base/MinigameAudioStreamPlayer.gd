@@ -8,7 +8,7 @@ func play_gp(gp: Dictionary) -> void:
 	var phoneme_audiostream: = Database.load_external_sound(Database.get_gp_sound_path(gp)) as AudioStream
 	#var phoneme_audiostream = Database.get_gp_look_and_learn_sound(phoneme)
 	if not phoneme_audiostream:
-		push_warning("AudioStream not found for gp %s " % gp)
+		Logger.warn("MinigameAudioStreamPlayer: AudioStream not found for gp %s " % gp)
 		return
 	
 	stream = phoneme_audiostream

@@ -65,7 +65,7 @@ func load_additional_word_list() -> String:
 		var title_line: PackedStringArray = file.get_csv_line()
 		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
 			var msg: = "word list should have columns ORTHO, PHON and GPMATCH"
-			push_error(msg)
+			Logger.error("Database: " + msg)
 			return msg
 		var ortho_index: int = title_line.find("ORTHO")
 		while not file.eof_reached():

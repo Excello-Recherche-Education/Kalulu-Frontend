@@ -194,7 +194,7 @@ func _start_ants() -> void:
 			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			(word as Control).disabled = false
 		else:
-			push_error("Ants_Minigame: variable \"word\" is not of type Control")
+			Logger.error("Ants_Minigame: variable \"word\" is not of type Control")
 
 
 func _on_current_progression_changed() -> void:

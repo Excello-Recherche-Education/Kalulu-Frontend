@@ -267,8 +267,6 @@ func _delete_inexistants_students_saves() -> void:
 		var directories: = dirc.get_directories()
 		# Go through each device folder of the teacher
 		for device in directories:
-			print(device)
-			
 			# If the device does not exists, delete it
 			if int(device) not in teacher_settings.students.keys():
 				_delete_dir(path.path_join(device))
@@ -400,7 +398,7 @@ func get_GP_remediation_score(GPID: int) -> int:
 
 func update_remediation_scores(scores: Dictionary) -> void:
 	if not _student_remediation:
-		push_warning("No student remediation data for " + str(student))
+		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
 	if scores:
 		_student_remediation.update_scores(scores)
@@ -428,13 +426,13 @@ func _save_student_difficulty() -> void:
 
 func get_difficulty_for_minigame(minigame_name: String) -> int:
 	if not _student_difficulty:
-		push_warning("No student difficulty data for " + str(student))
+		Logger.warn("UserDataManager: No student difficulty data for " + str(student))
 		return 0
 	return _student_difficulty.get_difficulty(minigame_name)
 
 func update_difficulty_for_minigame(minigame_name: String, minigame_won: bool) -> void:
 	if not _student_difficulty:
-		push_warning("No student difficulty data for " + str(student))
+		Logger.warn("UserDataManager: No student difficulty data for " + str(student))
 		return
 	_student_difficulty.add_game(minigame_name, minigame_won)
 
@@ -460,13 +458,13 @@ func _save_student_speeches() -> void:
 
 func mark_speech_as_played(speech: String) -> void:
 	if not _student_speeches:
-		push_warning("No student speeches data for " + str(student))
+		Logger.warn("UserDataManager: No student speeches data for " + str(student))
 		return
 	_student_speeches.add_speech(speech)
 
 func is_speech_played(speech: String) -> bool:
 	if not _student_speeches:
-		push_warning("No student speeches data for " + str(student))
+		Logger.warn("UserDataManager: No student speeches data for " + str(student))
 		return false
 	return _student_speeches.is_speech_played(speech)
 	

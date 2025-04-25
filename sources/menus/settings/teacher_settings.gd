@@ -36,7 +36,7 @@ func _refresh_devices_tabs() -> void:
 		child.queue_free()
 	
 	if not UserDataManager.teacher_settings:
-		push_error("Teacher settings not found")
+		Logger.error("TeacherSettings: Teacher settings not found")
 		return
 	
 	for device: int in UserDataManager.teacher_settings.students.keys():
@@ -92,7 +92,7 @@ func _on_add_student_button_pressed() -> void:
 func _on_add_student_popup_accepted() -> void:
 	var current_tab: = devices_tab_container.get_current_tab_control() as DeviceTab
 	if not current_tab:
-		push_error("Error: DeviceTab not found in Teacher Settings")
+		Logger.error("TeacherSettings: DeviceTab not found")
 		return
 	var res: = await ServerManager.add_student({"device" :  current_tab.device_id})
 	if res.code == 200:
@@ -100,7 +100,7 @@ func _on_add_student_popup_accepted() -> void:
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
 		current_tab.refresh()
 	else:
-		push_error("Request to add student failed in Teacher Settings. Error code " + str(res.code))
+		Logger.error("TeacherSettings: Request to add student failed. Error code " + str(res.code))
 
 
 func _on_add_device_button_pressed() -> void:

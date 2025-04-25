@@ -44,7 +44,7 @@ func setup() -> void:
 	gp_list = Database.get_GP_for_lesson(lesson_nb, true, true)
 	
 	if gp_list.size() <= 0:
-		push_error("Look and learn setup() did not found any GP for lesson " + str(lesson_nb))
+		Logger.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))
 		await OpeningCurtain.open()
 		_on_tracing_manager_finished()
 		return
