@@ -30,7 +30,11 @@ Cada lição segue uma sequência estruturada com base em dados da literatura in
 - 🎯 **Objetivo**: Tornar a leitura acessível, divertida e eficaz  
 - 🌟 **Base científica**: Criado com base em pesquisas em educação e neurociência  
 - 👶 **Público-alvo**: Crianças, mas útil para qualquer pessoa começando a ler
-
+- 🔎 **Pesquisas publicadas**: Vários artigos foram publicados sobre o design do Kalulu e os resultados de leitura, leia aqui:  
+  https://www.tandfonline.com/doi/pdf/10.1080/00220973.2023.2173129  
+  https://hal.science/hal-03015914/document  
+  https://hal.science/hal-03702075/document  
+  
 ---
 
 ## ✨ Funcionalidades

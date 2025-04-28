@@ -30,7 +30,11 @@ Cada lección sigue una progresión lógica basada en datos lingüísticos extra
 - 🎯 **Objetivo**: Hacer que aprender a leer sea divertido y efectivo  
 - 🌟 **Basado en ciencia**: Desarrollado con investigaciones en neurociencia y educación  
 - 👶 **Público objetivo**: Niños, pero útil para cualquier principiante en la lectura
-
+- 🔎 **Investigaciones publicadas**: Se han publicado varios artículos sobre el diseño de Kalulu y los resultados de lectura, léelos aquí:  
+  https://www.tandfonline.com/doi/pdf/10.1080/00220973.2023.2173129  
+  https://hal.science/hal-03015914/document  
+  https://hal.science/hal-03702075/document  
+  
 ---
 
 ## ✨ Funcionalidades

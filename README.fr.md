@@ -30,6 +30,10 @@ Chaque leçon suit une séquence structurée basée sur des données linguistiqu
 - 🎯 **Objectif** : Rendre l'apprentissage de la lecture amusant et efficace  
 - 🌟 **Basé sur la science** : Développé grâce aux recherches en éducation et en neurosciences  
 - 👶 **Public cible** : Enfants, mais utile à tous ceux qui veulent apprendre à lire
+- 🔎 **Recherches publiées** : Plusieurs articles ont été publiés sur la conception de Kalulu et les résultats en lecture, à lire ici :  
+  https://www.tandfonline.com/doi/pdf/10.1080/00220973.2023.2173129  
+  https://hal.science/hal-03015914/document  
+  https://hal.science/hal-03702075/document  
 
 ---
 

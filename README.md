@@ -30,6 +30,10 @@ Each lesson follows a structured sequence based on linguistic data drawn from ch
 - 🎯 **Goal**: Make learning to read fun and effective  
 - 🌟 **Science-Based**: Developed using research in education and neuroscience  
 - 👶 **Target Audience**: Primarily children, but useful for anyone wanting to learn to read
+- 🔎 **Published Research**: Several articles have been published on Kalulu's design and reading results, read here:  
+  https://www.tandfonline.com/doi/pdf/10.1080/00220973.2023.2173129  
+  https://hal.science/hal-03015914/document  
+  https://hal.science/hal-03702075/document  
 
 ---
 
