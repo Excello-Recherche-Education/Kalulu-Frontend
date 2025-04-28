@@ -792,7 +792,7 @@ script = ExtResource("1_12st1")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_s3pa5")
+&"": SubResource("AnimationLibrary_s3pa5")
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -992,9 +992,9 @@ texture = ExtResource("17_dhida")
 position = Vector2(1280, 1558)
 emitting = false
 amount = 16
-process_material = SubResource("ParticleProcessMaterial_vgnm5")
 texture = ExtResource("13_rp6w3")
 lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_vgnm5")
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="LeftContainer/MarginContainer/GardenButton" to="." method="_on_garden_button_pressed"]

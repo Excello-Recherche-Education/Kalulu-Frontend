@@ -39,7 +39,7 @@ func reset() -> void:
 func setup(grapheme: String) -> void:
 	await reset()
 	for letter in grapheme:
-		var tracings: = _get_letter_tracings(letter)
+		var tracings: Dictionary = _get_letter_tracings(letter)
 		
 		if tracings.upper:
 			setup_tracing(letter, tracings["upper"] as Array, upper_labels, false)
@@ -84,13 +84,13 @@ func _load_tracing(path: String) -> Array:
 	var segments: = []
 	var file: = FileAccess.open(_real_path(path), FileAccess.READ)
 	while not file.eof_reached():
-		var points: = []
-		var line: = file.get_csv_line()
-		for element in line:
+		var points: Array[Vector2]
+		var line: PackedStringArray = file.get_csv_line()
+		for element: String in line:
 			if element == "":
 				break
 			
-			var s: = element.split(" ")
+			var s: PackedStringArray = element.split(" ")
 			points.append(Vector2(float(s[0]), float(s[1])))
 		
 		if not points.is_empty():

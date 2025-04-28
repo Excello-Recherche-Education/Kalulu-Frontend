@@ -3,8 +3,8 @@ extends Control
 const Gardens: = preload("res://sources/gardens/gardens.gd")
 const TracingManager: = preload("res://sources/look_and_learn/tracing_manager.gd")
 
-@export var lesson_nb: = 1
-@export var current_button_pressed: = 0
+@export var lesson_nb: int = 1
+@export var current_button_pressed: int = 0
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
@@ -16,18 +16,18 @@ const TracingManager: = preload("res://sources/look_and_learn/tracing_manager.gd
 
 
 var gp_list: Array[Dictionary]
-var current_video: = 0
-var videos: = []
+var current_video: int = 0
+var videos: Array[VideoStream]
 
-var current_image_and_sound: = 0
-var images: = []
-var sounds: = []
+var current_image_and_sound: int = 0
+var images: Array[Texture]
+var sounds: Array[AudioStream]
 
 static var transition_data: Dictionary
 var gardens_data: Dictionary
 
 
-var current_tracing: = 0
+var current_tracing: int = 0
 
 
 func _ready() -> void:
@@ -36,6 +36,7 @@ func _ready() -> void:
 	gardens_data = transition_data
 	transition_data = {}
 	lesson_nb = gardens_data.get("current_lesson_number", lesson_nb)
+	Logger.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
 	setup()
 	await OpeningCurtain.open()
 
@@ -57,11 +58,11 @@ func setup() -> void:
 	sounds = []
 	videos = []
 	
-	var gp_display: = []
-	for gp in gp_list:
-		var gp_image: = Database.get_gp_look_and_learn_image(gp)
-		var gp_sound: = Database.get_gp_look_and_learn_sound(gp)
-		var gp_video: = Database.get_gp_look_and_learn_video(gp)
+	var gp_display: PackedStringArray
+	for gp: Dictionary in gp_list:
+		var gp_image: Texture = Database.get_gp_look_and_learn_image(gp)
+		var gp_sound: AudioStream = Database.get_gp_look_and_learn_sound(gp)
+		var gp_video: VideoStream = Database.get_gp_look_and_learn_video(gp)
 		
 		if gp_video:
 			videos.append(gp_video)
@@ -70,14 +71,18 @@ func setup() -> void:
 			images.append(gp_image)
 			sounds.append(gp_sound)
 		
-		var tracing_data: = tracing_manager._get_letter_tracings(gp.Grapheme as String)
+		@warning_ignore("unsafe_cast")
+		var tracing_data: Dictionary = tracing_manager._get_letter_tracings(gp.Grapheme as String)
 		if tracing_data.upper:
+			@warning_ignore("unsafe_cast")
 			gp_display.append((gp.Grapheme as String).to_upper())
 		if tracing_data.lower:
+			@warning_ignore("unsafe_cast")
 			gp_display.append((gp.Grapheme as String).to_lower())
 	
 	if gp_display.is_empty():
-		gp_display.append(gp_list[0].Grapheme)
+		@warning_ignore("unsafe_cast")
+		gp_display.append(gp_list[0].Grapheme as String)
 	
 	grapheme_label.text = ""
 	for gp: String in gp_display:
@@ -108,6 +113,7 @@ func play_images_and_sounds()  -> void:
 
 
 func load_tracing() -> void:
+	@warning_ignore("unsafe_cast")
 	await tracing_manager.setup(gp_list[current_tracing]["Grapheme"] as String)
 	current_tracing += 1
 
@@ -117,26 +123,26 @@ func play_tracing() -> void:
 
 
 func _on_grapheme_button_pressed() -> void:
-	var loop: = true
+	var loop: bool = true
 	while loop:
 		match current_button_pressed:
 			0:
-				if images.is_empty() or sounds.is_empty():
-					current_button_pressed += 1
-				else:
-					animation_player.play("to_videos")
-					current_button_pressed += 1
-					loop = false
-			1:
-				if videos.is_empty():
-					current_button_pressed += 1
-				else:
-					animation_player.play("to_images_and_sounds")
-					current_button_pressed += 1
-					loop = false
-			2:
-				animation_player.play("to_tracing")
 				current_button_pressed += 1
+				if videos.is_empty():
+					Logger.warn("LookAndLearn: Skipping video because empty in lesson %d" % lesson_nb)
+					continue
+				animation_player.play("to_videos")
+				loop = false
+			1:
+				current_button_pressed += 1
+				if images.is_empty() or sounds.is_empty():
+					Logger.warn("LookAndLearn: Skipping image&sound because empty in lesson %d" % lesson_nb)
+					continue
+				animation_player.play("to_images_and_sounds")
+				loop = false
+			2:
+				current_button_pressed += 1
+				animation_player.play("to_tracing")
 				loop = false
 
 
@@ -152,6 +158,7 @@ func _on_audio_stream_player_finished() -> void:
 
 func _on_tracing_manager_finished() -> void:
 	if current_tracing < gp_list.size():
+		@warning_ignore("unsafe_cast")
 		await tracing_manager.setup(gp_list[current_tracing]["Grapheme"] as String)
 		tracing_manager.start()
 		current_tracing += 1
