@@ -10,7 +10,7 @@ func _ready() -> void:
 	control = get_parent()
 
 
-func get_value() -> void:
+func get_value() -> Variant:
 	if not control:
 		return null
 	

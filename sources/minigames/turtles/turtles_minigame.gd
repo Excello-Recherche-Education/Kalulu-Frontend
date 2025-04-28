@@ -15,7 +15,7 @@ const min_distance: int = 500
 
 
 class DifficultySettings:
-	var stimuli_ratio: = 0.75
+	var stimuli_ratio: float = 0.75
 	var velocity: float = 250.
 	var spawn_rate: float = 4.
 	
@@ -128,7 +128,7 @@ func _on_spawn_timer_timeout() -> void:
 	turtle.direction = Vector2.DOWN.rotated(spawn_location.rotation).normalized()
 	
 	# Define if the turtle is a stimulus or a distraction
-	var is_stimulus: = not stimulus_spawned and randf() < settings.stimuli_ratio
+	var is_stimulus: bool = not stimulus_spawned and randf() < settings.stimuli_ratio
 	if is_stimulus:
 		turtle.gp = _get_GP()
 		if is_highlighting:
@@ -146,7 +146,7 @@ func _on_spawn_timer_timeout() -> void:
 
 func _on_island_area_entered(area: Area2D) -> void:
 	# Get the turtle that landed on the island
-	var turtle: = area.owner as Turtle
+	var turtle: Turtle = area.owner as Turtle
 	if not turtle:
 		return
 	

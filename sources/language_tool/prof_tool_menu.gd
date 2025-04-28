@@ -97,25 +97,25 @@ func _on_exercises_button_pressed() -> void:
 
 
 func _on_export_filename_selected(filename: String) -> void:
-	var version_file: = FileAccess.open(base_path.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
+	var version_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
 	version_file.store_line(Time.get_datetime_string_from_system(true, false))
 	version_file.close()
 	
-	var summary_file: = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
-	var sentences_by_lesson: = Database.get_sentences_by_lessons()
+	var summary_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
+	var sentences_by_lesson: Dictionary = Database.get_sentences_by_lessons()
 	for index: int in Database.get_lessons_count():
 		
 		var lesson: int = index +1
 		
 		summary_file.store_line("Lesson %s --------------------" % lesson)
 		summary_file.store_line("\t \t Words ---")
-		var words: = ""
+		var words: String = ""
 		for e: Dictionary in Database.get_words_for_lesson(lesson, true):
 			words += e.Word + ", "
 		summary_file.store_line(words.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Syllables ---")
-		var syllables: = ""
+		var syllables: String = ""
 		for e: Dictionary in Database.get_syllables_for_lesson(lesson, true):
 			syllables += e.Grapheme + ", "
 		summary_file.store_line(syllables.trim_suffix(", "))
@@ -131,7 +131,7 @@ func _on_export_filename_selected(filename: String) -> void:
 	_create_syllable_csv()
 	_create_sentence_csv()
 	
-	var folder_zipper: = FolderZipper.new()
+	var folder_zipper: FolderZipper = FolderZipper.new()
 	folder_zipper.compress(base_path.path_join(Database.language), filename)
 
 #region Database integrity check
@@ -296,8 +296,8 @@ func _on_validate_language_pressed() -> void:
 		return
 		
 	DirAccess.make_dir_recursive_absolute(base_path.path_join(line_edit.text))
-	var file: = FileAccess.open("res://model_database.db", FileAccess.READ)
-	var dest: = FileAccess.open(base_path.path_join(line_edit.text).path_join("language.db"), FileAccess.WRITE)
+	var file: FileAccess = FileAccess.open("res://model_database.db", FileAccess.READ)
+	var dest: FileAccess = FileAccess.open(base_path.path_join(line_edit.text).path_join("language.db"), FileAccess.WRITE)
 	dest.store_buffer(file.get_buffer(file.get_length()))
 	file.close()
 	dest.close()
@@ -309,31 +309,31 @@ func _on_validate_language_pressed() -> void:
 func _word_list_file_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
 		DirAccess.copy_absolute(file_path, Database.get_additional_word_list_path())
-		var msg: = Database.load_additional_word_list()
+		var msg: String = Database.load_additional_word_list()
 		error_label.text = msg
 		# Check that the words we have in database have the correct gpmatch, if not update them
-		var query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception 
+		var query: String = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception 
 				FROM Words 
 				INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
 				INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
 				GROUP BY Words.ID"
 		Database.db.query(query)
-		var result: = Database.db.query_result
+		var results: Array[Dictionary] = Database.db.query_result
 		var word_list_element: WordListElement = (load("res://sources/language_tool/word_list_element.tscn") as PackedScene).instantiate()
-		for e in result:
+		for result: Dictionary in results:
 			var same: bool = true
-			var master_gpmatch: String = Database.additional_word_list[e.Word].GPMATCH
+			var master_gpmatch: String = Database.additional_word_list[result.Word].GPMATCH
 			var master_gplist: PackedStringArray = master_gpmatch.trim_prefix("(").trim_suffix(")").split(".")
-			var graphemes: PackedStringArray = (e.Graphemes as String).split(" ")
-			var phonemes: PackedStringArray = (e.Phonemes as String).split(" ")
+			var graphemes: PackedStringArray = (result.Graphemes as String).split(" ")
+			var phonemes: PackedStringArray = (result.Phonemes as String).split(" ")
 			if master_gplist.size() != graphemes.size():
 				same = false
 			else:
 				for index: int in master_gplist.size():
 					same = same and (graphemes[index] + "-" + phonemes[index] == master_gplist[index])
 			if not same:
-				Database.db.delete_rows("Words", "ID=%s" % e.WordId)
-				word_list_element._add_from_additional_word_list(e.Word as String)
+				Database.db.delete_rows("Words", "ID=%s" % result.WordId)
+				word_list_element._add_from_additional_word_list(result.Word as String)
 
 
 func _on_add_word_list_button_pressed() -> void:
@@ -377,43 +377,44 @@ func _on_export_button_pressed() -> void:
 
 func _language_data_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
-		var folder_unzipper: = FolderUnzipper.new()
+		var folder_unzipper: FolderUnzipper = FolderUnzipper.new()
 		folder_unzipper.extract(file_path, base_path, false)
 	get_tree().reload_current_scene()
 
 
 func _create_GP_csv() -> void:
-	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["Grapheme", "Phoneme", "Type", "Exception"])
-	var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
+	var query: String = "Select * FROM GPs ORDER BY GPs.Grapheme"
 	Database.db.query(query)
-	var result: = Database.db.query_result
-	var types_text: = ["Silent", "Vowel", "Consonant"]
-	for e in result:
-		gp_list_file.store_csv_line([e.Grapheme, e.Phoneme, types_text[e.Type], e.Exception])
+	var result: Array[Dictionary] = Database.db.query_result
+	var types_text: Array[String] = ["Silent", "Vowel", "Consonant"]
+	for element: Dictionary in result:
+		gp_list_file.store_csv_line([element.Grapheme, element.Phoneme, types_text[element.Type], element.Exception])
 
 
 func _create_words_csv() -> void:
-	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON", "READING", "WRITING"])
-	var query: = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception, Reading, Writing 
+	var query: String = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception, Reading, Writing 
 			FROM Words 
 			INNER JOIN ( SELECT * FROM GPsInWords ORDER BY GPsInWords.Position ) GPsInWords ON Words.ID = GPsInWords.WordID 
 			INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
 			GROUP BY Words.ID"
 	Database.db.query(query)
-	var result: = Database.db.query_result
+	var result: Array[Dictionary] = Database.db.query_result
 	for element: Dictionary in result:
-		var gpmatch: = "("
+		var gpmatch: String = "("
 		var graphemes: PackedStringArray = (element.Graphemes as String).split(" ")
 		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
 		for index: int in graphemes.size() - 1:
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
 		var index: int = graphemes.size() - 1
 		gpmatch += graphemes[index] + "-" + phonemes[index] + ")"
-		var lesson: = -1
+		var lesson: int = -1
+		@warning_ignore("unsafe_method_access")
 		for gp_id: String in element.GPIDs.split(' '):
-			var gp_id_lesson: = Database.get_min_lesson_for_gp_id(int(gp_id))
+			var gp_id_lesson: int = Database.get_min_lesson_for_gp_id(int(gp_id))
 			if gp_id_lesson < 0:
 				lesson = -1
 				break
@@ -422,37 +423,38 @@ func _create_words_csv() -> void:
 
 
 func _create_syllable_csv() -> void:
-	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("syllables_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("syllables_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON", "READING", "WRITING"])
-	var query: = "SELECT Syllables.ID as SyllableId, Syllable, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Syllables.Exception, Reading, Writing 
+	var query: String = "SELECT Syllables.ID as SyllableId, Syllable, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Syllables.Exception, Reading, Writing 
 			FROM Syllables 
 			INNER JOIN ( SELECT * FROM GPsInSyllables ORDER BY GPsInSyllables.Position ) GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID 
 			INNER JOIN GPs ON GPs.ID = GPsInSyllables.GPID
 			GROUP BY Syllables.ID"
 	Database.db.query(query)
-	var result: = Database.db.query_result
-	for e in result:
-		var gpmatch: = "("
-		var graphemes: PackedStringArray = (e.Graphemes as String).split(" ")
-		var phonemes: PackedStringArray = (e.Phonemes as String).split(" ")
+	var result: Array[Dictionary] = Database.db.query_result
+	for element: Dictionary in result:
+		var gpmatch: String = "("
+		var graphemes: PackedStringArray = (element.Graphemes as String).split(" ")
+		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
 		for index: int in graphemes.size() - 1:
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
-		var i: = graphemes.size() - 1
+		var i: int = graphemes.size() - 1
 		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
-		var lesson: = -1
-		for gp_id: String in e.GPIDs.split(' '):
-			var gp_id_lesson: = Database.get_min_lesson_for_gp_id(int(gp_id))
+		var lesson: int = -1
+		@warning_ignore("unsafe_method_access")
+		for gp_id: String in element.GPIDs.split(' '):
+			var gp_id_lesson: int = Database.get_min_lesson_for_gp_id(int(gp_id))
 			if gp_id_lesson < 0:
 				lesson = -1
 				break
 			lesson = max(lesson, gp_id_lesson)
-		gp_list_file.store_csv_line([e.Syllable, gpmatch, lesson, e.Reading, e.Writing])
+		gp_list_file.store_csv_line([element.Syllable, gpmatch, lesson, element.Reading, element.Writing])
 
 
 func _create_sentence_csv() -> void:
-	var gp_list_file: = FileAccess.open(base_path.path_join(Database.language).path_join("sentences_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("sentences_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["Sentence", "Lesson"])
-	var query: = "SELECT Sentences.ID as SentenceId, Sentence, group_concat(Word, ' ') as Words, group_concat(Word, ' ') as Words, group_concat(Words.ID, ' ') as WordIDs, Sentences.Exception 
+	var query: String = "SELECT Sentences.ID as SentenceId, Sentence, group_concat(Word, ' ') as Words, group_concat(Word, ' ') as Words, group_concat(Words.ID, ' ') as WordIDs, Sentences.Exception 
 			FROM Sentences 
 			INNER JOIN ( SELECT * FROM WordsInSentences ORDER BY WordsInSentences.Position ) WordsInSentences ON Sentences.ID = WordsInSentences.SentenceID 
 			INNER JOIN Words ON Words.ID = WordsInSentences.WordID
@@ -460,9 +462,10 @@ func _create_sentence_csv() -> void:
 	Database.db.query(query)
 	var result: Array[Dictionary] = Database.db.query_result
 	for element: Dictionary in result:
-		var lesson: = -1
+		var lesson: int = -1
+		@warning_ignore("unsafe_method_access")
 		for word_id: String in element.WordIDs.split(' '):
-			var i: = Database.get_min_lesson_for_word_id(int(word_id))
+			var i: int = Database.get_min_lesson_for_word_id(int(word_id))
 			if i < 0:
 				lesson = -1
 				break
@@ -518,7 +521,7 @@ func create_book() -> void:
 			if normalized != "Writing" and normalized != "Reading" and normalized != "Categorie" and not headers_seen.has(normalized):
 				headers_seen[normalized] = true
 				all_headers.append(normalized)
-				var filler := PackedStringArray()
+				var filler: PackedStringArray
 				filler.resize(current_row_count)
 				for index: int in range(current_row_count):
 					filler[index] = ""  # Valeur vide pour rattraper
@@ -526,7 +529,7 @@ func create_book() -> void:
 
 		# Init colonne "Categorie" si pas encore
 		if not columns.has("Categorie"):
-			var filler := PackedStringArray()
+			var filler: PackedStringArray
 			filler.resize(current_row_count)
 			for index: int in range(current_row_count):
 				filler[index] = ""
@@ -578,7 +581,7 @@ func create_book() -> void:
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
 	
 	var row_count: int = (columns["Categorie"] as PackedStringArray).size()  # Toutes les colonnes sont synchronisées
-	for index in range(row_count):
+	for index: int in range(row_count):
 		var row: PackedStringArray = []
 		for header: String in ordered_headers:
 			row.append(columns[header][index] as String)
@@ -592,14 +595,14 @@ func create_book() -> void:
 # Fonction qui ajoute une ligne au dictionnaire
 func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[String, String], categorie: String, all_headers: Array) -> void:
 	# Nombre de lignes déjà enregistrées (doit être égal pour chaque colonne)
-	var current_size := 0
+	var current_size: int = 0
 	if dict.has("Categorie"):
 		current_size= dict["Categorie"].size()
 
 	# S'assurer que toutes les colonnes existantes reçoivent une valeur
 	for header: String in all_headers:
 		if not dict.has(header):
-			var filler := PackedStringArray()
+			var filler: PackedStringArray
 			filler.resize(current_size) # rattrape les lignes précédentes
 			for index: int in range(current_size):
 				filler[index] = ""
@@ -608,7 +611,7 @@ func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[S
 
 	# Colonne spéciale : Categorie
 	if not dict.has("Categorie"):
-		var filler := PackedStringArray()
+		var filler: PackedStringArray
 		filler.resize(current_size)
 		for index: int in range(current_size):
 			filler[index] = ""

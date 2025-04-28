@@ -71,17 +71,13 @@ func setup() -> void:
 			images.append(gp_image)
 			sounds.append(gp_sound)
 		
-		@warning_ignore("unsafe_cast")
 		var tracing_data: Dictionary = tracing_manager._get_letter_tracings(gp.Grapheme as String)
 		if tracing_data.upper:
-			@warning_ignore("unsafe_cast")
 			gp_display.append((gp.Grapheme as String).to_upper())
 		if tracing_data.lower:
-			@warning_ignore("unsafe_cast")
 			gp_display.append((gp.Grapheme as String).to_lower())
 	
 	if gp_display.is_empty():
-		@warning_ignore("unsafe_cast")
 		gp_display.append(gp_list[0].Grapheme as String)
 	
 	grapheme_label.text = ""
@@ -113,7 +109,6 @@ func play_images_and_sounds()  -> void:
 
 
 func load_tracing() -> void:
-	@warning_ignore("unsafe_cast")
 	await tracing_manager.setup(gp_list[current_tracing]["Grapheme"] as String)
 	current_tracing += 1
 
@@ -158,7 +153,6 @@ func _on_audio_stream_player_finished() -> void:
 
 func _on_tracing_manager_finished() -> void:
 	if current_tracing < gp_list.size():
-		@warning_ignore("unsafe_cast")
 		await tracing_manager.setup(gp_list[current_tracing]["Grapheme"] as String)
 		tracing_manager.start()
 		current_tracing += 1

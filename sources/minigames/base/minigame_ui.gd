@@ -13,8 +13,6 @@ signal kalulu_speech_ended
 signal pause_ended
 
 const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
-const empty_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/life_empty.png")
-const full_lives_icon: = preload("res://assets/minigames/minigame_ui/graphic/life.png")
 
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture
@@ -86,7 +84,7 @@ func unlock() -> void:
 func set_max_progression(new_max_progression: int) -> void:
 	if is_paused:
 		await pause_ended
-	var progression_rects: = progression_container.get_children()
+	var progression_rects: Array[Node] = progression_container.get_children()
 	# Never remove the first
 	for index: int in range(1, progression_rects.size()):
 		if index >= new_max_progression:
@@ -102,10 +100,10 @@ func set_max_progression(new_max_progression: int) -> void:
 func set_progression(new_progression: int) -> void:
 	if is_paused:
 		await pause_ended
-	var max_progression: = progression_container.get_child_count()
+	var max_progression: int = progression_container.get_child_count()
 	if new_progression > max_progression:
 		set_max_progression(new_progression)
-	var progression_rects: = progression_container.get_children()
+	var progression_rects: Array[Node] = progression_container.get_children()
 	for index: int in max_progression:
 		var progression_rect: TextureRect = progression_rects[index]
 		if index < new_progression:

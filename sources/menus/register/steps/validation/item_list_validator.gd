@@ -3,7 +3,7 @@ extends Validator
 class_name ItemListValidator
 
 
-func get_value(control: Control) -> void:
+func get_value(control: Control) -> Variant:
 	var item_list = control as ItemList
 	if not item_list:
 		return null

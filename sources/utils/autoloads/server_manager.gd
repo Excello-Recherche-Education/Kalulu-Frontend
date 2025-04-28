@@ -6,7 +6,7 @@ signal internet_check_completed(has_acces: bool)
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var loading_rect: TextureRect = $TextureRect
 
-const INTERNET_CHECK_URL: = "https://google.com"
+const INTERNET_CHECK_URL: String = "https://google.com"
 var environment_url: String = ""
 
 func _ready() -> void:
@@ -82,8 +82,8 @@ func remove_student(p_code: int) -> Dictionary:
 
 func check_internet_access() -> bool:
 	Logger.trace("ServerManager Sending simple request to Google to check if internet is available")
-	var res: = internet_check.request("https://google.com")
-	if res == 0:
+	var res: Error = internet_check.request("https://google.com")
+	if res == OK:
 		return await internet_check_completed
 	return false
 
@@ -108,7 +108,7 @@ func _create_request_headers() -> PackedStringArray:
 
 
 func _response() -> Dictionary:
-	var res: = {
+	var res: Dictionary = {
 			"code" : code,
 			"body" : json
 		}
@@ -142,8 +142,8 @@ func _post_request(URI: String, params: Dictionary) -> void:
 func _post_json_request(URI: String, data: Dictionary) -> void:
 	code = 0
 	json = {}
-	var req: = environment_url + URI
-	var headers: = _create_request_headers()
+	var req: String = environment_url + URI
+	var headers: PackedStringArray = _create_request_headers()
 	headers.append("Content-Type: application/json")
 	Logger.trace("ServerManager Sending JSON request. URI = %s. Data = %s " % [URI, data])
 	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == 0:
@@ -157,8 +157,8 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 func _delete_request(URI: String, params: Dictionary = {}) -> void:
 	code = 0
 	json = {}
-	var req: = _create_URI_with_parameters(environment_url + URI, params)
-	var headers: = _create_request_headers()
+	var req: String = _create_URI_with_parameters(environment_url + URI, params)
+	var headers: PackedStringArray = _create_request_headers()
 	Logger.trace("ServerManager Sending DELETE request. URI = %s. Parameters = %s " % [URI, params])
 	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == 0:
 		await request_completed

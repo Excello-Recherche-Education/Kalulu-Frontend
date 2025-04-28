@@ -2,15 +2,15 @@ extends Control
 
 signal finished()
 
-const letter_segment_class: = preload("res://sources/look_and_learn/letter_segment.tscn")
+const letter_segment_class: PackedScene = preload("res://sources/look_and_learn/letter_segment.tscn")
 
 @export var label_settings: LabelSettings
 
 @onready var lower_labels: HBoxContainer = %LowerLabels
 @onready var upper_labels: HBoxContainer = %UpperLabels
 
-const tracing_data_folder: = "tracing_data/"
-const extension: = ".csv"
+const tracing_data_folder: String = "tracing_data/"
+const extension: String = ".csv"
 
 func _process(_delta: float) -> void:
 	place_segments(upper_labels.get_children())
@@ -24,9 +24,9 @@ func place_segments(labels: Array) -> void:
 
 
 func reset() -> void:
-	for child in upper_labels.get_children():
+	for child: Node in upper_labels.get_children():
 		child.queue_free()
-	for child in lower_labels.get_children():
+	for child: Node in lower_labels.get_children():
 		child.queue_free()
 	
 	lower_labels.visible = false
@@ -38,7 +38,7 @@ func reset() -> void:
 
 func setup(grapheme: String) -> void:
 	await reset()
-	for letter in grapheme:
+	for letter: String in grapheme:
 		var tracings: Dictionary = _get_letter_tracings(letter)
 		
 		if tracings.upper:
@@ -49,7 +49,7 @@ func setup(grapheme: String) -> void:
 
 
 func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lower: bool) -> void:
-	var label: = Label.new()
+	var label: Label = Label.new()
 	label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	label.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -71,8 +71,8 @@ func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lowe
 
 
 func _get_letter_tracings(letter: String) -> Dictionary:
-	var lower_tracing: = _load_tracing(_lower_path(letter))
-	var upper_tracing: = _load_tracing(_upper_path(letter))
+	var lower_tracing: Array = _load_tracing(_lower_path(letter))
+	var upper_tracing: Array = _load_tracing(_upper_path(letter))
 	
 	return {"lower": lower_tracing, "upper": upper_tracing}
 
@@ -81,8 +81,8 @@ func _load_tracing(path: String) -> Array:
 	if not FileAccess.file_exists(_real_path(path)):
 		return []
 	
-	var segments: = []
-	var file: = FileAccess.open(_real_path(path), FileAccess.READ)
+	var segments: Array = []
+	var file: FileAccess = FileAccess.open(_real_path(path), FileAccess.READ)
 	while not file.eof_reached():
 		var points: Array[Vector2]
 		var line: PackedStringArray = file.get_csv_line()
@@ -134,7 +134,7 @@ func start() -> void:
 
 
 func start_labels(labels_parent: Control) -> void:
-	for letter in labels_parent.get_children():
+	for letter: Node in labels_parent.get_children():
 		for segment: LetterSegment in letter.get_children():
 			segment.start()
 			await segment.finished
@@ -142,7 +142,7 @@ func start_labels(labels_parent: Control) -> void:
 
 
 func demo_labels(labels_parent: Control) -> void:
-	for letter in labels_parent.get_children():
+	for letter: Node in labels_parent.get_children():
 		for segment: LetterSegment in letter.get_children():
 			segment.demo()
 			await segment.finished

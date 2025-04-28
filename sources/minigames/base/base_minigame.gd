@@ -61,19 +61,19 @@ var minigame_difficulty: int
 var lesson_difficulty: int
 
 # Logs
-var logs: = {}
+var logs: Dictionary = {}
 
 # Scores for the remediation engine
-var scores: = {} 
+var scores: Dictionary = {} 
 
 # Stimuli
-var stimuli: = []
-var distractions: = []
+var stimuli: Array = []
+var distractions: Array = []
 
 # Lives
 var current_lives: int = 0 :
 	set(value):
-		var previous_lives: = current_lives
+		var previous_lives: int = current_lives
 		current_lives = value
 		
 		if current_lives < previous_lives:
@@ -85,9 +85,9 @@ var current_lives: int = 0 :
 			is_highlighting = true
 
 # Progression
-var current_progression: = 0 : set = set_current_progression
-var current_number_of_hints: = 0
-var consecutive_errors: = 0
+var current_progression: int = 0 : set = set_current_progression
+var current_number_of_hints: int = 0
+var consecutive_errors: int = 0
 var is_highlighting: bool = false:
 	set(value):
 		is_highlighting = value
@@ -166,10 +166,10 @@ func _curtains_and_kalulu() -> void:
 #endregion
 
 #region Timer
-var _start_time := 0.0
-var _elapsed_paused := 0.0
-var _pause_start := 0.0
-var _is_paused := false
+var _start_time: float = 0.0
+var _elapsed_paused: float = 0.0
+var _pause_start: float = 0.0
+var _is_paused: bool = false
 
 
 # Launch the minigame
@@ -274,7 +274,7 @@ func _reset_logs() -> void:
 
 
 func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> void:
-	var response_log: = {
+	var response_log: Dictionary = {
 		"reponse": response,
 		"awaited_response": current_stimulus,
 		"is_right": response == current_stimulus,
@@ -309,7 +309,7 @@ func _sort_scoring(stimulus1: Dictionary, stimulus2: Dictionary) -> bool:
 
 # Updates the score of a GP defined by his ID
 func _update_score(ID: int, score: int) -> void:
-	var new_score: = 0
+	var new_score: int = 0
 	if scores.has(ID):
 		new_score += scores[ID]
 	new_score += score
@@ -357,7 +357,7 @@ func _play_kalulu_help_speech() -> void:
 #region Setters
 
 func set_current_progression(p_current_progression: int) -> void:
-	var previous_progression: = current_progression
+	var previous_progression: int = current_progression
 	current_progression = p_current_progression
 	
 	consecutive_errors = 0

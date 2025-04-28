@@ -189,7 +189,7 @@ func _start_ants() -> void:
 		
 		ant.idle()
 	
-	for word in words.get_children():
+	for word: Node in words.get_children():
 		if word is Control:
 			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			(word as Control).disabled = false
@@ -223,7 +223,7 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 				is_right = false
 				break
 		
-		for word_i in words.get_children():
+		for word_i: Node in words.get_children():
 			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			@warning_ignore("UNSAFE_METHOD_ACCESS")
 			word_i.current_anchor.set_monitorable(true)

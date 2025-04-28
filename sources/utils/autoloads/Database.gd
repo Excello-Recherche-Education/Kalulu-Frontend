@@ -64,7 +64,7 @@ func load_additional_word_list() -> String:
 		var file: FileAccess = FileAccess.open(word_list_path, FileAccess.READ)
 		var title_line: PackedStringArray = file.get_csv_line()
 		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
-			var msg: = "word list should have columns ORTHO, PHON and GPMATCH"
+			var msg: String = "word list should have columns ORTHO, PHON and GPMATCH"
 			Logger.error("Database: " + msg)
 			return msg
 		var ortho_index: int = title_line.find("ORTHO")
@@ -97,7 +97,7 @@ func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
 	#return answer
 	
 	var result: Array[int]
-	for element in db.query_result:
+	for element: Dictionary in db.query_result:
 		result.append(element.Exercise1)
 		result.append(element.Exercise2)
 		result.append(element.Exercise3)
@@ -176,7 +176,7 @@ func get_words_containing_grapheme(grapheme: String) -> Array:
 	return db.query_result
 
 
-func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictionary]:
+func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[Dictionary]:
 	var query: String = "SELECT Syllables.ID, Syllables.Syllable as Grapheme, VerifiedCount.LessonNb FROM Syllables
 	 INNER JOIN 
 	(SELECT SyllableID, count() as Count FROM GPsInSyllables 
@@ -208,7 +208,7 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: = false) -> Array[Dictio
 	return res
 
 
-func get_words_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 99, include_exception: bool = false) -> Array:
+func get_words_for_lesson(lesson_nb: int, only_new: bool = false, min_length: int = 2, max_length: int = 99, include_exception: bool = false) -> Array:
 	var parameters: Array = []
 	var query: String = "SELECT DISTINCT Words.ID, Words.Word, Words.Exception, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb, VerifiedCount.gpsid as GPs_IDs
 FROM Words
@@ -255,7 +255,7 @@ FROM Words
 	return res
 
 
-func get_words_with_silent_gp_for_lesson(lesson_nb: int, only_new: = false, min_length: = 2, max_length: = 6) -> Array[Dictionary]:
+func get_words_with_silent_gp_for_lesson(lesson_nb: int, only_new: bool = false, min_length: int = 2, max_length: int = 6) -> Array[Dictionary]:
 	var parameters: Array = []
 	var query: String = "SELECT Words.ID, Words.Word, MaxLessonNb as LessonNb
 FROM Words
@@ -295,7 +295,7 @@ func get_sentences_by_lessons() -> Dictionary:
 	db.query("SELECT * FROM Sentences")
 	var sentences: Array[Dictionary] = db.query_result
 	
-	for sentence in sentences:
+	for sentence: Dictionary in sentences:
 		var lesson_nb: int = get_min_lesson_for_sentence_id(sentence.ID as int)
 		var a: Array = sentences_by_lesson.get(lesson_nb, [])
 		a.append(sentence)
@@ -303,7 +303,7 @@ func get_sentences_by_lessons() -> Dictionary:
 	return sentences_by_lesson
 
 
-func get_sentences(p_lesson_nb: int, only_new: bool = false, sentences_by_lesson: = {}) -> Array:
+func get_sentences(p_lesson_nb: int, only_new: bool = false, sentences_by_lesson: Dictionary = {}) -> Array:
 	if sentences_by_lesson.is_empty():
 		sentences_by_lesson = get_sentences_by_lessons()
 	
@@ -428,7 +428,7 @@ func get_min_lesson_for_word_id(word_id: int) -> int:
 	WHERE Words.ID=? 
 	ORDER BY Position", [word_id])
 	var minimum: int = -1
-	for result in db.query_result:
+	for result: Dictionary in db.query_result:
 		var index: int = Database.get_min_lesson_for_gp_id(result.GPID as int)
 		if index < 0:
 			minimum = -1
@@ -470,8 +470,8 @@ func get_audio_stream_for_path(path: String) -> AudioStream:
 
 
 func get_audio_stream_for_word(ID: int) -> AudioStream:
-	var GPs: = get_GP_from_word(ID)
-	var file_name: = _phoneme_to_string(GPs[0].Phoneme as String)
+	var GPs: Array = get_GP_from_word(ID)
+	var file_name: String = _phoneme_to_string(GPs[0].Phoneme as String)
 	for index: int in range(1, GPs.size()):
 		var GP: Dictionary = GPs[index]
 		file_name += "-" + _phoneme_to_string(GP.Phoneme as String)
@@ -480,8 +480,8 @@ func get_audio_stream_for_word(ID: int) -> AudioStream:
 
 
 func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
-	var phoneme_array := phoneme.split("-")
-	var path: = words_path + _phoneme_to_string(phoneme_array[0])
+	var phoneme_array: PackedStringArray = phoneme.split("-")
+	var path: String = words_path + _phoneme_to_string(phoneme_array[0])
 	for index: int in range(1, phoneme_array.size()):
 		path += "-" + _phoneme_to_string(phoneme_array[index])
 	path += ".mp3"
@@ -492,26 +492,26 @@ func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
 
 
 func get_gp_look_and_learn_image(gp: Dictionary) -> Texture:
-	var path: = get_gp_look_and_learn_image_path(gp)
+	var path: String = get_gp_look_and_learn_image_path(gp)
 	if FileAccess.file_exists(path):
 		if ResourceLoader.exists(path):
 			return load(path)
 		else:
-			var image: = Image.load_from_file(path)
-			var texture: = ImageTexture.create_from_image(image)
+			var image: Image = Image.load_from_file(path)
+			var texture: ImageTexture = ImageTexture.create_from_image(image)
 			return texture
 	
 	return null
 
 
 func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
-	var path: = get_gp_look_and_learn_sound_path(gp)
+	var path: String = get_gp_look_and_learn_sound_path(gp)
 	if FileAccess.file_exists(path):
 		if ResourceLoader.exists(path):
 			return load(path)
 		else:
-			var file: = FileAccess.open(path, FileAccess.READ)
-			var sound: = AudioStreamMP3.new()
+			var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+			var sound: AudioStreamMP3 = AudioStreamMP3.new()
 			sound.data = file.get_buffer(file.get_length())
 			return sound
 	
@@ -519,9 +519,9 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 
 
 func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:
-	var path: = get_gp_look_and_learn_video_path(gp)
+	var path: String = get_gp_look_and_learn_video_path(gp)
 	if FileAccess.file_exists(path):
-		var video: = load(path)
+		var video: VideoStream = load(path)
 		return video
 	
 	return null
@@ -559,8 +559,8 @@ func load_external_sound(path: String) -> AudioStreamMP3:
 	if not FileAccess.file_exists(path):
 		return null
 	
-	var file: = FileAccess.open(path, FileAccess.READ)
-	var audio_stream: = AudioStreamMP3.new()
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var audio_stream: AudioStreamMP3 = AudioStreamMP3.new()
 	audio_stream.data = file.get_buffer(file.get_length())
 	file.close()
 	
@@ -576,15 +576,15 @@ func _phoneme_to_string(phoneme: String) -> String:
 		return "cap." + phoneme.to_lower()
 
 
-func _import_word_from_csv(ortho: String, gpmatch: String, is_word: = true) -> Array:
-	var gp_list: = gpmatch.trim_prefix("(").trim_suffix(")").split(".")
+func _import_word_from_csv(ortho: String, gpmatch: String, is_word: bool = true) -> Array:
+	var gp_list: PackedStringArray = gpmatch.trim_prefix("(").trim_suffix(")").split(".")
 	var gp_ids: Array[int] = []
-	for gp in gp_list:
-		var split: = gp.split("-")
-		var grapheme: = split[0]
-		var phoneme: = split[1]
+	for gp: String in gp_list:
+		var split: PackedStringArray = gp.split("-")
+		var grapheme: String = split[0]
+		var phoneme: String = split[1]
 		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme = ? AND Phoneme = ?", [grapheme, phoneme])
-		var gp_id: = -1
+		var gp_id: int = -1
 		if db.query_result.is_empty():
 			db.insert_row("GPs", {
 				Grapheme = grapheme,
@@ -598,7 +598,7 @@ func _import_word_from_csv(ortho: String, gpmatch: String, is_word: = true) -> A
 		db.query_with_bindings("SELECT * FROM Words WHERE Word = ?", [ortho])
 	else:
 		db.query_with_bindings("SELECT * FROM Syllables WHERE Syllable = ?", [ortho])
-	var word_id: = -1
+	var word_id: int = -1
 	if db.query_result.is_empty():
 		if is_word:
 			db.insert_row("Words", {
