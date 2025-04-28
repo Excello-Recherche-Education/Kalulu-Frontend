@@ -26,34 +26,34 @@ const supported_locales: Array[String] = [
 @export var device_id : int
 @export var language_versions: Dictionary # locale : datetime
 
-@export var master_volume: = 0.0 :
+@export var master_volume: float = 0.0 :
 	set(volume):
 		master_volume = volume
-		var ind: = AudioServer.get_bus_index("Master")
+		var ind: int = AudioServer.get_bus_index("Master")
 		AudioServer.set_bus_volume_db(ind, volume)
 
-@export var music_volume: = 0.0 :
+@export var music_volume: float = 0.0 :
 	set(volume):
 		music_volume = volume
-		var ind: = AudioServer.get_bus_index("Music")
+		var ind: int = AudioServer.get_bus_index("Music")
 		AudioServer.set_bus_volume_db(ind, volume)
 
-@export var voice_volume: = 0.0 :
+@export var voice_volume: float = 0.0 :
 	set(volume):
 		voice_volume = volume
-		var ind: = AudioServer.get_bus_index("Voice")
+		var ind: int = AudioServer.get_bus_index("Voice")
 		AudioServer.set_bus_volume_db(ind, volume)
 
-@export var effects_volume: = 0.0 :
+@export var effects_volume: float = 0.0 :
 	set(volume):
 		effects_volume = volume
-		var ind: = AudioServer.get_bus_index("Effects")
+		var ind: int = AudioServer.get_bus_index("Effects")
 		AudioServer.set_bus_volume_db(ind, volume)
 
 
 func init_OS_language() -> void:
 	# Gets the OS language and checks if it is supported
-	var osLanguage: = OS.get_locale();
+	var osLanguage: String = OS.get_locale();
 	if osLanguage and osLanguage in supported_locales:
 		language = osLanguage
 	

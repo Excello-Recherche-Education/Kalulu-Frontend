@@ -3,8 +3,8 @@ extends Control
 const Kalulu: = preload("res://sources/menus/main/kalulu.gd")
 const LoginForm: = preload("res://sources/menus/main/login.gd")
 
-const adult_check_scene_path := "res://sources/menus/adult_check/adult_check.tscn"
-const package_loader_scene_path: = "res://sources/menus/language_selection/package_downloader.tscn"
+const adult_check_scene_path: String = "res://sources/menus/adult_check/adult_check.tscn"
+const package_loader_scene_path: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
 @onready var version_label : Label = $Informations/BuildVersionValue
 @onready var teacher_label : Label = $Informations/TeacherValue

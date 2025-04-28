@@ -4,7 +4,7 @@ class_name UserSpeeches
 signal speeches_changed
 
 # Contains the list of speeches already played
-@export var speeches_played: = []
+@export var speeches_played: Array[String]
 
 func add_speech(speech: String) -> void:
 	if not speeches_played.has(speech):

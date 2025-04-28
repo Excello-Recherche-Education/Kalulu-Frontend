@@ -9,7 +9,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if OS.has_feature("mobile"):
-		var margin: = DisplayServer.virtual_keyboard_get_height()
+		var margin: int = DisplayServer.virtual_keyboard_get_height()
 		if OS.get_name() == "Android":
 			@warning_ignore("narrowing_conversion")
 			margin *= screen_scale

@@ -1,7 +1,7 @@
 extends Area2D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var anchor: = $Anchor
+@onready var anchor: Node2D = $Anchor
 
 
 func idle() -> void:
@@ -14,7 +14,7 @@ func walk() -> void:
 
 func _on_animation_player_animation_finished(animation_name: StringName) -> void:
 	if animation_name == "idle_1":
-		var r: = randf()
+		var r: float = randf()
 		if r <= 0.5:
 			animation_player.play("idle_2")
 		else:
@@ -24,7 +24,7 @@ func _on_animation_player_animation_finished(animation_name: StringName) -> void
 		animation_player.play("idle_1")
 	
 	if animation_name == "walk_1":
-		var r: = randf()
+		var r: float = randf()
 		if r <= 0.5:
 			animation_player.play("walk_2")
 		else:

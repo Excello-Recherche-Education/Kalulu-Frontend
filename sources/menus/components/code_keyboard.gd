@@ -4,7 +4,7 @@ class_name CodeKeyboard
 signal button_pressed(key : String, password : Array[String])
 signal password_entered(password : String)
 
-const button_sound := preload("res://assets/menus/login/ui_play_button.mp3")
+const button_sound: AudioStreamMP3 = preload("res://assets/menus/login/ui_play_button.mp3")
 
 @onready var password_visualizer : PasswordVisualizer = %PasswordVisualizer
 @onready var buttons: GridContainer = %Buttons
@@ -40,8 +40,8 @@ func _on_button_pressed(button : TextureButton) -> void:
 	
 	# Emit the password entered signal
 	if password.size() == 3:
-		var code: = ""
-		for char_ in password:
+		var code: String = ""
+		for char_: String in password:
 			code += char_
 		password_entered.emit(code)
 

@@ -4,7 +4,7 @@ class_name ControlBinder
 
 @export var property_name : String
 
-var control : Control
+var control: Control
 
 func _ready() -> void:
 	control = get_parent()
@@ -15,11 +15,13 @@ func get_value() -> Variant:
 		return null
 	
 	if control is Range:
-		return control.value
-	elif control is LineEdit or control is TextEdit:
-		return control.text
+		return (control as Range).value
+	elif control is LineEdit:
+		return (control as LineEdit).text
+	elif control is TextEdit:
+		return (control as TextEdit).text
 	elif control is ItemList:
-		var selected_indexes = control.get_selected_items()
+		var selected_indexes: PackedInt32Array = control.get_selected_items()
 		if not selected_indexes or selected_indexes.size() == 0:
 			return null
 		if control.select_mode == ItemList.SELECT_SINGLE:
@@ -29,7 +31,7 @@ func get_value() -> Variant:
 	return null
 
 
-func set_value(value) -> void:
+func set_value(value: Variant) -> void:
 	if not control:
 		return
 		

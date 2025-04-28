@@ -29,7 +29,7 @@ func update_scores(minigame_scores: Dictionary) -> void:
 		return
 	
 	for ID: int in minigame_scores.keys():
-		var new_score: = 0
+		var new_score: int = 0
 		if gps_scores.has(ID):
 			new_score += gps_scores[ID]
 		new_score += minigame_scores[ID]

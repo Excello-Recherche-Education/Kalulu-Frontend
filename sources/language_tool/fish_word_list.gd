@@ -1,14 +1,14 @@
 extends Control
 
-const element_scene: = preload("res://sources/language_tool/fish_word_list_element.tscn")
+const element_scene: PackedScene = preload("res://sources/language_tool/fish_word_list_element.tscn")
 
-@onready var elements_container: = %ElementsContainer
+@onready var elements_container: VBoxContainer = %ElementsContainer
 
 var word_list: Array
 
 
 func _ready() -> void:
-	var query: = "SELECT name FROM sqlite_master WHERE type='table' AND name='Pseudowords'"
+	var query: String = "SELECT name FROM sqlite_master WHERE type='table' AND name='Pseudowords'"
 	Database.db.query(query)
 	if Database.db.query_result.is_empty():
 		Database.db.query("CREATE TABLE 'Pseudowords' (
@@ -69,15 +69,15 @@ func _on_list_title_new_search(new_text: String) -> void:
 
 
 func _on_list_title_save_pressed() -> void:
-	var query: = "SELECT Pseudowords.ID, Pseudowords.Pseudoword, Pseudowords.WordID, Words.Word FROM Pseudowords
+	var query: String = "SELECT Pseudowords.ID, Pseudowords.Pseudoword, Pseudowords.WordID, Words.Word FROM Pseudowords
 	INNER JOIN Words ON Words.ID = Pseudowords.WordID"
 	
 	Database.db.query(query)
-	var db_word_list: = Database.db.query_result.duplicate()
+	var db_word_list: Array[Dictionary] = Database.db.query_result.duplicate()
 	
 	# delete elements that are in the DB but not in the list
 	for word: Dictionary in db_word_list:
-		var found: = false
+		var found: bool = false
 		for element: FishWordListElement in elements_container.get_children():
 			if element.pseudoword_id == word.ID:
 				found = true
@@ -86,9 +86,9 @@ func _on_list_title_save_pressed() -> void:
 			Database.db.delete_rows("Pseudowords", "ID=%s" % word.ID)
 	
 	for element: FishWordListElement in elements_container.get_children():
-		var found: = false
+		var found: bool = false
 		if element.pseudoword_id >= 0:
-			var query_with_id: = query + " WHERE Pseudowords.ID = ?"
+			var query_with_id: String = query + " WHERE Pseudowords.ID = ?"
 			Database.db.query_with_bindings(query_with_id, [element.pseudoword_id])
 			if not Database.db.query_result.is_empty():
 				var word: Dictionary = Database.db.query_result[0]

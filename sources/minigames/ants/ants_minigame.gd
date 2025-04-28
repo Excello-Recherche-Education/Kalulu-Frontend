@@ -4,11 +4,11 @@ extends Minigame
 # Namespace
 const Ant: = preload("res://sources/minigames/ants/ant.gd")
 
-const blank_class: = preload("res://sources/minigames/ants/blank.tscn")
-const ant_class: = preload("res://sources/minigames/ants/ant.tscn")
-const word_class: = preload("res://sources/minigames/ants/word.tscn")
+const blank_class: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
+const ant_class: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
+const word_class: PackedScene = preload("res://sources/minigames/ants/word.tscn")
 
-const label_settings: = preload("res://resources/themes/minigames_label_settings.tres")
+const label_settings: LabelSettings = preload("res://resources/themes/minigames_label_settings.tres")
 
 @onready var sentence_container: HFlowContainer = %Sentence
 @onready var ants_spawn: Node2D = %AntsSpawn
@@ -19,8 +19,8 @@ const label_settings: = preload("res://resources/themes/minigames_label_settings
 @onready var words: Node2D = %Words
 
 var current_sentence: Dictionary
-var answered: = []
-var answers: = []
+var answered: Array[bool]
+var answers: Array[bool]
 
 
 func _find_stimuli_and_distractions() -> void:
@@ -28,8 +28,8 @@ func _find_stimuli_and_distractions() -> void:
 	if sentences_list.is_empty():
 		return
 		
-	var current_lesson_sentences: = []
-	var previous_lesson_sentences: = []
+	var current_lesson_sentences: Array[Dictionary]
+	var previous_lesson_sentences: Array[Dictionary]
 
 	for sentence_in_list: Dictionary in sentences_list:
 		if sentence_in_list.LessonNb == lesson_nb:
@@ -98,7 +98,7 @@ func _get_new_sentence() -> void:
 
 
 func _next_sentence() -> void:
-	var nodes: = []
+	var nodes: Array[Node]
 	nodes.append_array(sentence_container.get_children())
 	nodes.append_array(words.get_children())
 	for node: Node in nodes:
@@ -106,7 +106,7 @@ func _next_sentence() -> void:
 	
 	for ant: Ant in ants.get_children():
 		ant.walk()
-		var tween: = create_tween()
+		var tween: Tween = create_tween()
 		tween.tween_property(ant, "global_position", ants_despawn.global_position, 1.0)
 		await tween.finished
 		ant.queue_free()
@@ -118,9 +118,9 @@ func _next_sentence() -> void:
 	
 	var current_words: PackedStringArray = (current_sentence.Sentence as String).replace("'", " ' ").replace("-", " - ").split(" ")
 	
-	var inds_to_remove: = []
-	for index in range(1, current_words.size()):
-		var word: = current_words[index]
+	var inds_to_remove: Array[int]
+	for index: int in range(1, current_words.size()):
+		var word: String = current_words[index]
 		if word in ["?", "!", ":"]:
 			current_words[index - 1] += " " + word
 			inds_to_remove.append(index)
@@ -134,7 +134,7 @@ func _next_sentence() -> void:
 		current_words.remove_at(index)
 	
 	var number_of_blanks: int = maxi(2, mini(difficulty, current_words.size()))
-	var blanks: = range(current_words.size())
+	var blanks: Array = range(current_words.size())
 	blanks.shuffle()
 	while blanks.size() > number_of_blanks:
 		blanks.pop_back()
@@ -142,7 +142,7 @@ func _next_sentence() -> void:
 	answers = []
 	answered = []
 	for index: int in range(current_words.size()):
-		var current_word: = current_words[index]
+		var current_word: String = current_words[index]
 		if index in blanks:
 			var blank: Blank = blank_class.instantiate()
 			blank.stimulus = current_word
@@ -166,7 +166,7 @@ func _next_sentence() -> void:
 			word.answer.connect(_on_word_answer.bind(word))
 			word.no_answer.connect(_on_word_no_answer.bind(word))
 		else:
-			var label: = Label.new()
+			var label: Label = Label.new()
 			sentence_container.add_child(label)
 			
 			label.text = current_word + " "
@@ -176,14 +176,14 @@ func _next_sentence() -> void:
 
 
 func _start_ants() -> void:
-	var number_of_ants: = ants.get_child_count()
+	var number_of_ants: int = ants.get_child_count()
 	for index: int in range(number_of_ants):
 		var ant: Ant = ants.get_child(index)
 		
 		ant.walk()
 		
-		var tween: = create_tween()
-		var k: = float(index) / float(number_of_ants - 1)
+		var tween: Tween = create_tween()
+		var k: float = float(index) / float(number_of_ants - 1)
 		tween.tween_property(ant, "global_position", k * ants_start.global_position + (1.0 - k) * ants_end.global_position, 1.0)
 		await tween.finished
 		
@@ -210,14 +210,14 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 	answers[word.get_index()] = stimulus == expected_stimulus
 	answered[word.get_index()] = true
 	
-	var all_answered: = true
+	var all_answered: bool = true
 	for a: bool in answered:
 		if not a:
 			all_answered = false
 			break
 	
 	if all_answered:
-		var is_right: = true
+		var is_right: bool = true
 		for a: bool in answers:
 			if not a:
 				is_right = false
@@ -254,7 +254,7 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 				@warning_ignore("UNSAFE_METHOD_ACCESS")
 				ants.get_child(index).set_monitorable(false)
 		
-			for word_i in words.get_children():
+			for word_i: Node in words.get_children():
 				@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 				word_i.disabled = false
 

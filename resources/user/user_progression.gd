@@ -9,8 +9,8 @@ enum Status{
 	Completed,
 }
 
-@export var version: = 1.0
-@export var unlocks: = {}
+@export var version: float = 1.0
+@export var unlocks: Dictionary = {}
 
 
 func _init() -> void:
@@ -24,7 +24,7 @@ func init_unlocks() -> bool:
 		unlocks = {}
 	
 	# Verifiy the lessons
-	var number_of_lessons: = Database.get_lessons_count()
+	var number_of_lessons: int = Database.get_lessons_count()
 	if unlocks.size() != number_of_lessons:
 		for index: int in number_of_lessons:
 			if not unlocks.has(index+1):
@@ -87,7 +87,7 @@ func game_completed(lesson_number: int, game_number: int) -> bool:
 	
 	unlocks[lesson_number]["games"][game_number] = Status.Completed
 	
-	var all_completed: = true
+	var all_completed: bool = true
 	for index: int in range(3):
 		all_completed = all_completed and unlocks[lesson_number]["games"][index] == Status.Completed
 	

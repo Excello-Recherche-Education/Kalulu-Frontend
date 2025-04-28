@@ -5,7 +5,7 @@ var items : Array[String]
 func _ready() -> void:
 	# Adds the supported locales to the field
 	var idx: int = 0
-	for language_locale in DeviceSettings.supported_locales:
+	for language_locale: String in DeviceSettings.supported_locales:
 		if not language_locale:
 			continue
 		
@@ -22,7 +22,7 @@ func _ready() -> void:
 
 
 func get_selected_language() -> String:
-	var id: = get_selected_id()
+	var id: int = get_selected_id()
 	return items[id]
 
 

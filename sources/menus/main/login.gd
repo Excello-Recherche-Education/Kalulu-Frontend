@@ -23,7 +23,7 @@ func _hide_login_error(_value: Variant) -> void:
 
 
 func _on_login_form_validator_control_validated(control: Control, passed: Variant, messages: PackedStringArray) -> void:
-	var label: = find_child(control.name + "Error", true, false) as Label
+	var label: Label = find_child(control.name + "Error", true, false) as Label
 	if not label:
 		return
 	if passed:
@@ -39,7 +39,7 @@ func _on_validate_button_pressed() -> void:
 		return
 	
 	# Request server for login
-	var res: = await ServerManager.login(email_field.text, password_field.text)
+	var res: Dictionary = await ServerManager.login(email_field.text, password_field.text)
 	if res.code == 200:
 		# Login
 		if UserDataManager.login(res.body as Dictionary):

@@ -1,7 +1,7 @@
 extends Control
 
-const main_menu_scene_path: = "res://sources/menus/main/main_menu.tscn"
-const register_scene_path := "res://sources/menus/register/register.tscn"
+const main_menu_scene_path: String = "res://sources/menus/main/main_menu.tscn"
+const register_scene_path: String = "res://sources/menus/register/register.tscn"
 const symbols_names: Dictionary[String, String] = {
 	"1" : "STAR",
 	"2" : "BAR",
@@ -14,7 +14,7 @@ const symbols_names: Dictionary[String, String] = {
 @onready var code_keyboard : CodeKeyboard = %CodeKeyboard
 @onready var password_label : Label = %PasswordLabel
 
-var password : String = ""
+var password: String = ""
 
 func _ready() -> void:
 	_reset_password()
@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func _reset_password() -> void:
 	password = TeacherSettings.available_codes.pick_random()
-	var password_array: = password.split("")
+	var password_array: PackedStringArray = password.split("")
 	password_label.text = tr("ADULT_CHECK_PROMPT").format(
 		{
 			"1" : tr(symbols_names[password_array[0]]),

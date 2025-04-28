@@ -1,10 +1,10 @@
 extends Resource
 class_name UserMinigameHistory
 
-const min_difficulty: = 0
-const max_difficulty: = 4
-const consecutive_wins_to_promote: = 2
-const consecutive_losses_to_demote: = 2
+const min_difficulty: int = 0
+const max_difficulty: int = 4
+const consecutive_wins_to_promote: int = 2
+const consecutive_losses_to_demote: int = 2
 
 @export
 var difficulty: int = 0
@@ -13,7 +13,7 @@ var consecutives_losses: int = 0
 @export
 var consecutives_wins: int = 0
 @export
-var history : Array[bool] = []
+var history: Array[bool]
 
 func add_game(is_won: bool) -> void:
 	history.append(is_won)

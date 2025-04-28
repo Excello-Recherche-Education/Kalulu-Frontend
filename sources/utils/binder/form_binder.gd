@@ -20,7 +20,7 @@ func _find_binders(node: Node) -> void:
 		_find_binders(child)
 
 
-func read(resource : Resource) -> void:
+func read(resource: Resource) -> void:
 	if resource:
 		data = resource
 	
