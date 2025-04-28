@@ -22,6 +22,7 @@ func set_environment(env: int) -> void:
 		0: environment_url = "https://nldfw1jmxc.execute-api.eu-west-3.amazonaws.com/dev/"
 		1: environment_url = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
 		_: environment_url = ""
+	Logger.debug("Environment URL set to " + environment_url)
 
 
 # Response from the last request
@@ -81,7 +82,7 @@ func remove_student(p_code: int) -> Dictionary:
 #region Sender functions
 
 func check_internet_access() -> bool:
-	Logger.trace("ServerManager Sending simple request to Google to check if internet is available")
+	Logger.debug("ServerManager Sending simple request to Google to check if internet is available")
 	var res: Error = internet_check.request("https://google.com")
 	if res == OK:
 		return await internet_check_completed
@@ -104,6 +105,7 @@ func _create_request_headers() -> PackedStringArray:
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
 	if teacher_settings and teacher_settings.token:
 		headers.append("Authorization: Bearer " + teacher_settings.token)
+		Logger.trace("ServerManager Create Header : " + str(headers))
 	return headers
 
 
@@ -118,7 +120,7 @@ func _response() -> Dictionary:
 func _get_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
-	Logger.trace("ServerManager Sending GET request. URI = %s. Parameters = %s " % [URI, params])
+	Logger.debug("ServerManager Sending GET request. URI = %s. Parameters = %s " % [URI, params])
 	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), _create_request_headers()) == 0:
 		await request_completed
 	else:
@@ -130,7 +132,7 @@ func _get_request(URI: String, params: Dictionary) -> void:
 func _post_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
-	Logger.trace("ServerManager Sending POST request. URI = %s. Parameters = %s " % [URI, params])
+	Logger.debug("ServerManager Sending POST request. URI = %s. Parameters = %s " % [URI, params])
 	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), _create_request_headers(), HTTPClient.METHOD_POST, "") == 0:
 		await request_completed
 	else:
@@ -145,7 +147,7 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 	var req: String = environment_url + URI
 	var headers: PackedStringArray = _create_request_headers()
 	headers.append("Content-Type: application/json")
-	Logger.trace("ServerManager Sending JSON request. URI = %s. Data = %s " % [URI, data])
+	Logger.debug("ServerManager Sending JSON request. URI = %s. Data = %s " % [URI, data])
 	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == 0:
 		await request_completed
 	else:
@@ -159,7 +161,7 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 	json = {}
 	var req: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
-	Logger.trace("ServerManager Sending DELETE request. URI = %s. Parameters = %s " % [URI, params])
+	Logger.debug("ServerManager Sending DELETE request. URI = %s. Parameters = %s " % [URI, params])
 	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == 0:
 		await request_completed
 	else:
@@ -172,7 +174,7 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	code = response_code
 	if body:
-		Logger.trace("ServerManager Request Completed. Response code = %d. Body received = %s " % [response_code, body.get_string_from_utf8()])
+		Logger.debug("ServerManager Request Completed. Response code = %d. Body received = %s " % [response_code, body.get_string_from_utf8()])
 		json = JSON.parse_string(body.get_string_from_utf8())
 	request_completed.emit(response_code, json)
 	
@@ -180,5 +182,5 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 
 
 func _on_internet_check_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
-	Logger.trace("ServerManager Internet check completed. Response code = %d. (200 = OK)" % response_code)
+	Logger.debug("ServerManager Internet check completed. Response code = %d. (200 = OK)" % response_code)
 	internet_check_completed.emit(response_code == 200)

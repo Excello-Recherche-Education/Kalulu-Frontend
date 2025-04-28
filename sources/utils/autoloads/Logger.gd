@@ -25,6 +25,7 @@ func _ready() -> void:
 	else:
 		current_level = LogLevel.INFO  # Exported: release mode
 	_log_internal(LogLevel.INFO, "--- Logging started at " + Time.get_datetime_string_from_system() + " ---")
+	_log_internal(LogLevel.INFO, "--- Logging set at level " + str(current_level) + " ---")
 
 func delete_old_logs(days_threshold: float = 100) -> void:
 	var dir: DirAccess = DirAccess.open(logPath)
