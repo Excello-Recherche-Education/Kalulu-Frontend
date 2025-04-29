@@ -210,6 +210,8 @@ func _win() -> void:
 	# Lock the UI
 	minigame_ui.lock()
 	
+	_submit_student_metrics()
+	
 	if gardens_data:
 		gardens_data.minigame_completed = true
 	
@@ -239,6 +241,8 @@ func _lose() -> void:
 	# Lock the UI
 	minigame_ui.lock()
 	
+	_submit_student_metrics()
+	
 	if gardens_data:
 		gardens_data.minigame_completed = false
 	
@@ -257,6 +261,10 @@ func _lose() -> void:
 	await minigame_ui.kalulu_speech_ended
 	
 	_reset()
+
+func _submit_student_metrics() -> void:
+	var elapsed_time := Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused
+	ServerManager.submit_student_metrics(lesson_nb, elapsed_time)
 
 #endregion
 

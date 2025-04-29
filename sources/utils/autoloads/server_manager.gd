@@ -25,6 +25,10 @@ func set_environment(env: int) -> void:
 	Logger.debug("Environment URL set to " + environment_url)
 
 
+func submit_student_metrics(level: int, elapsed_time: int) -> void:
+	await _post_request("submit-student-metrics", {"student_id": 3, "level": level, "time_spent": elapsed_time})
+
+
 # Response from the last request
 var code: int
 var json: Dictionary
