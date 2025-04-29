@@ -2,20 +2,20 @@ extends MarginContainer
 class_name FishWordListElement
 
 
-@export var word_id: = 1:
+@export var word_id: int = 1:
 	set = set_word_id
-@export var pseudoword: = "":
+@export var pseudoword: String = "":
 	set = set_pseudoword
-@export var lesson_nb: = -1:
+@export var lesson_nb: int = -1:
 	set = set_lesson_nb
-@export var pseudoword_id: = -1
+@export var pseudoword_id: int = -1
 
 @onready var option_button: OptionButton = %OptionButton
 @onready var line_edit: LineEdit = %LineEdit
 @onready var lesson_label: Label = %LessonLabel
 
-var is_in_line_edit_changed: = false
-var word: = ""
+var is_in_line_edit_changed: bool = false
+var word: String = ""
 
 
 func set_word_id(p_word_id: int) -> void:
