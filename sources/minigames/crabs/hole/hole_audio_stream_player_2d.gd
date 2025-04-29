@@ -16,7 +16,7 @@ const crab_sound_list: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
 ]
 
-var _should_play: = false
+var _should_play: bool = false
 
 
 func start_playing() -> void:

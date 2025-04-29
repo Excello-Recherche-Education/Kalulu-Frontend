@@ -3,18 +3,17 @@ extends Node
 signal finished()
 
 const Rocket: = preload("res://sources/utils/fx/rocket.gd")
-const rocket_scene: = preload("res://sources/utils/fx/rocket.tscn")
+const rocket_scene: PackedScene = preload("res://sources/utils/fx/rocket.tscn")
 
-@export var number_of_rockets: = 25
+@export var number_of_rockets: int = 25
 
 @onready var fire_delay_timer: Timer = $FireDelayTimer
-@onready var starts: = $Starts.get_children()
-@onready var ends: = $Ends.get_children()
+@onready var starts: Array[Node] = $Starts.get_children()
+@onready var ends: Array[Node] = $Ends.get_children()
 @onready var rockets: Node2D = $Rockets
 
 
-
-var count: = 0
+var count: int = 0
 
 
 func start() -> void:

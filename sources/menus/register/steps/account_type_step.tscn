@@ -51,11 +51,11 @@ theme_override_font_sizes/font_size = 70
 allow_search = false
 auto_height = true
 
-[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="1"]
+[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="2"]
 script = ExtResource("2_hidu6")
 validator = SubResource("Resource_n0ht0")
 
-[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="2"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="3"]
 layout_mode = 2
 anchors_preset = 0
 offset_left = -548.0

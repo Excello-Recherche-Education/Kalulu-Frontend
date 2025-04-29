@@ -49,12 +49,12 @@ func is_button_pressed() -> bool:
 
 
 func show_label() -> void:
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(label, "modulate:a", 1, .5)
 
 
 func hide_label() -> void:
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(label, "modulate:a", 0, .5)
 
 

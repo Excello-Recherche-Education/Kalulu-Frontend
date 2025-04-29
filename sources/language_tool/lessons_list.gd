@@ -1,12 +1,12 @@
 extends Control
 
-@onready var lessons_container: = $%LessonsContainer
-@onready var unused_gp_container: = $%UnusedGPContainer
+@onready var lessons_container: MarginContainer = $%LessonsContainer
+@onready var unused_gp_container: GridContainer = $%UnusedGPContainer
 
-var lesson_container_scene: = preload("res://sources/language_tool/lesson_container.tscn")
-var gp_label_scene: = preload("res://sources/language_tool/lesson_gp_label.tscn")
+var lesson_container_scene: PackedScene = preload("res://sources/language_tool/lesson_container.tscn")
+var gp_label_scene: PackedScene = preload("res://sources/language_tool/lesson_gp_label.tscn")
 
-var lessons: = {}
+var lessons: Dictionary = {}
 
 
 func _ready() -> void:
@@ -14,35 +14,35 @@ func _ready() -> void:
 		INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
 		INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
 		ORDER BY LessonNb")
-	for e in Database.db.query_result:
-		if lessons.has(e.LessonNb):
-			lessons[e.LessonNb].add_gp({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
+	for element: Dictionary in Database.db.query_result:
+		if lessons.has(element.LessonNb):
+			(lessons[element.LessonNb] as LessonContainer).add_gp({grapheme = element.Grapheme, phoneme = element.Phoneme, gp_id = element.GPID})
 		else:
-			var lesson_container: = lesson_container_scene.instantiate()
+			var lesson_container: LessonContainer = lesson_container_scene.instantiate()
 			lessons_container.add_child(lesson_container)
-			lesson_container.add_gp({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
-			lesson_container.number = e.LessonNb
+			lesson_container.add_gp({grapheme = element.Grapheme, phoneme = element.Phoneme, gp_id = element.GPID})
+			lesson_container.number = element.LessonNb
 			lesson_container.lesson_dropped.connect(_on_lesson_dropped)
-			lessons[e.LessonNb] = lesson_container
+			lessons[element.LessonNb] = lesson_container
 	
 	Database.db.query("SELECT Grapheme, Phoneme, GPs.ID as GPID FROM GPs
 		WHERE NOT EXISTS(SELECT 1 FROM GPsInLessons WHERE GPs.ID=GPsInLessons.GPID)")
-	for e in Database.db.query_result:
-		var gp_label: = gp_label_scene.instantiate()
+	for element: Dictionary in Database.db.query_result:
+		var gp_label: LessonGPLabel = gp_label_scene.instantiate()
 		unused_gp_container.add_child(gp_label)
-		gp_label.grapheme = e.Grapheme
-		gp_label.phoneme = e.Phoneme
-		gp_label.gp_id = e.GPID
+		gp_label.grapheme = element.Grapheme
+		gp_label.phoneme = element.Phoneme
+		gp_label.gp_id = element.GPID
 		gp_label.gp_dropped.connect(_on_gp_dropped)
 	
 	unused_gp_container.set_drag_forwarding(Callable(), _can_drop_in_gp_container, _drop_data_in_gp_container)
 
 
 func _on_plus_button_pressed() -> void:
-	var lesson_container: = lesson_container_scene.instantiate()
+	var lesson_container: LessonContainer = lesson_container_scene.instantiate()
 	lessons_container.add_child(lesson_container)
 	lesson_container.lesson_dropped.connect(_on_lesson_dropped)
-	var max_nb: = -1
+	var max_nb: int = -1
 	for e in lessons.values():
 		max_nb = max(max_nb, e.number)
 	lesson_container.number = max_nb + 1
@@ -56,7 +56,7 @@ func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:
 func _drop_data_in_gp_container(_at_position: Vector2, data: Variant) -> void:
 	if not data.has("gp_id"):
 		return
-	var new_gp_label: = gp_label_scene.instantiate()
+	var new_gp_label: LessonGPLabel = gp_label_scene.instantiate()
 	new_gp_label.grapheme = data.grapheme
 	new_gp_label.phoneme = data.phoneme
 	new_gp_label.gp_id = data.gp_id
@@ -84,8 +84,8 @@ func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
 
 func _on_save_button_pressed() -> void:
 	Database.db.query("DELETE FROM GPsInLessons")
-	var children: = lessons_container.get_children()
-	for index in children.size():
+	var children: Array[Node] = lessons_container.get_children()
+	for index: int in children.size():
 		var child: = children[index]
 		Database.db.query_with_bindings("SELECT * FROM Lessons WHERE LessonNb = ?", [index + 1])
 		var lesson_id: = -1

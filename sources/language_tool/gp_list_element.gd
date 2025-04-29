@@ -22,13 +22,13 @@ enum Type {
 
 
 
-var grapheme: = "":
+var grapheme: String = "":
 	set = set_grapheme
-var phoneme: = "":
+var phoneme: String = "":
 	set = set_phoneme
-var type: = Type.Silent:
+var type: GPListElement.Type = Type.Silent:
 	set = set_type
-var exception: = 0:
+var exception: bool = false:
 	set = set_exception
 var id: int = -1
 var undo_redo: UndoRedo:
@@ -107,9 +107,9 @@ func insert_in_database() -> void:
 	if id >= 0:
 		Database.db.query_with_bindings("SELECT * FROM GPs WHERE ID=?", [id])
 		if not Database.db.query_result.is_empty():
-			var e = Database.db.query_result[0]
-			if grapheme != e.Grapheme or phoneme != e.Phoneme or type != e.Type or exception != e.Exception:
-				Logger.trace("GPListElement: UPDATING %s" % e.Grapheme)
+			var element: Dictionary = Database.db.query_result[0]
+			if grapheme != element.Grapheme or phoneme != element.Phoneme or type != element.Type or exception != element.Exception:
+				Logger.trace("GPListElement: UPDATING %s" % element.Grapheme)
 				Database.db.update_rows("GPs", "ID=%s" % id, {Grapheme=grapheme, Phoneme=phoneme, Type=type, Exception=exception})
 			return
 			

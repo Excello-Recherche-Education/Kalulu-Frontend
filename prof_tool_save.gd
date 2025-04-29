@@ -1,4 +1,4 @@
 extends Resource
 class_name ProfToolSave
 
-@export var selected_language: = ""
+@export var selected_language: String = ""

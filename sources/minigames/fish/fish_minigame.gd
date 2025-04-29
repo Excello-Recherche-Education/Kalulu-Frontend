@@ -2,7 +2,7 @@ extends Minigame
 
 signal beacon_fish_dropped(is_answered_real: bool)
 
-const fish_texture_rect_scene: = preload("res://sources/minigames/fish/fish_texture_rect.tscn")
+const fish_texture_rect_scene: PackedScene = preload("res://sources/minigames/fish/fish_texture_rect.tscn")
 
 @onready var fish_start_zone: Control = %FishStartZone
 @onready var beacon1: SpriteControl = %Beacon1
@@ -19,17 +19,17 @@ const fish_texture_rect_scene: = preload("res://sources/minigames/fish/fish_text
 @onready var progress_gauge_internal: NinePatchRect = %ProgressionGaugeInternal
 
 
-@export var game_duration: = 4 * 60
-@export var minimum_correct_ratio: = 0.8
-@export var winning_color: = Color.WHITE
-@export var max_words_count: = 15
+@export var game_duration: int = 4 * 60
+@export var minimum_correct_ratio: float = 0.8
+@export var winning_color: Color = Color.WHITE
+@export var max_words_count: int = 15
 
 var tween: Tween
 var words_to_present: Array[String] = []
 var words_to_present_next: Array[String] = []
-var progress_gauge_max_margin: = 0.95
-var total_number_of_words: = 30
-var tutorial_count: = 0
+var progress_gauge_max_margin: float = 0.95
+var total_number_of_words: int = 30
+var tutorial_count: int = 0
 
 
 func _fish_get_drag_data(_at_position: Vector2) -> Variant:
@@ -56,7 +56,7 @@ func _ready() -> void:
 
 
 func _find_stimuli_and_distractions() -> void:
-	var data_array: = Database.get_pseudowords_for_lesson(lesson_nb)
+	var data_array: Array[Dictionary] = Database.get_pseudowords_for_lesson(lesson_nb)
 	data_array.shuffle()
 	words_to_present.clear()
 	words_to_present_next.clear()
@@ -98,7 +98,7 @@ func _present_next_word() -> void:
 	label.show()
 	label.text = words_to_present[0]
 	if tutorial_count == 0:
-		var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro_test_game_first_word"))
+		var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro_test_game_first_word"))
 		minigame_ui.play_kalulu_speech(speech)
 		await minigame_ui.kalulu_speech_ended
 
@@ -127,8 +127,8 @@ func _beacon2_drop_data(_at_position: Vector2, _data: Variant) -> void:
 
 
 func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
-	var is_really_real: = words_to_present[0] in stimuli
-	var is_correct: = is_answered_real == is_really_real
+	var is_really_real: bool = words_to_present[0] in stimuli
+	var is_correct: bool = is_answered_real == is_really_real
 	if is_correct:
 		if is_answered_real:
 			real_right_fx.play()
@@ -136,12 +136,12 @@ func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 			false_right_fx.play()
 		words_to_present.pop_front()
 		if tutorial_count == 0:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_first_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_second_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
@@ -152,12 +152,12 @@ func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 			false_wrong_fx.play()
 		words_to_present_next.append(words_to_present.pop_front())
 		if tutorial_count == 0:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_first_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_second_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1

@@ -73,9 +73,9 @@ func _spawn() -> void:
 	var left_border: = 0.
 	# Blocking jellyfish is supposed to be ordered
 	for blocking in blocking_jellyfish:
-		permitted_range += max(0, blocking.position.x - left_border - jellyfish_width)
+		permitted_range += maxf(0.0, blocking.position.x - left_border - jellyfish_width)
 		left_border = blocking.position.x + blocking.size.x
-	permitted_range += max(0, spawning_space.size.x - left_border)
+	permitted_range += maxf(0.0, spawning_space.size.x - left_border)
 	if permitted_range <= 0:
 		new_jellyfish.queue_free()
 		return
@@ -95,7 +95,7 @@ func _spawn() -> void:
 	left_border = 0
 	# Blocking jellyfish is supposed to be ordered
 	for blocking in blocking_jellyfish:
-		var local_permitted_range: float = max(0, blocking.position.x - left_border - jellyfish_width)
+		var local_permitted_range: float = maxf(0.0, blocking.position.x - left_border - jellyfish_width)
 		if local_permitted_range <= random_spawn:
 			random_spawn -= local_permitted_range
 		else:

@@ -43,11 +43,11 @@ func _on_button_pressed() -> void:
 	
 	file_dialog.ok_button_text = "Add new elements"
 	
-	for connection in file_dialog.file_selected.get_connections():
-		connection["signal"].disconnect(connection["callable"])
+	for connection: Dictionary in file_dialog.file_selected.get_connections():
+		(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
 	
-	for connection in file_dialog.custom_action.get_connections():
-		connection["signal"].disconnect(connection["callable"])
+	for connection: Dictionary in file_dialog.custom_action.get_connections():
+		(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
 	
 	file_dialog.file_selected.connect(_on_filename_selected)
 	file_dialog.custom_action.connect(_on_match_to_file_selected)
@@ -59,7 +59,7 @@ func _on_filename_selected(path: String) -> void:
 	import_path_selected.emit(path, false)
 
 
-func _on_match_to_file_selected(custom_action: String) -> void:
+func _on_match_to_file_selected(_custom_action: String) -> void:
 	import_path_selected.emit(file_dialog.current_path, true)
 	file_dialog.hide()
 

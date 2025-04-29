@@ -1,4 +1,5 @@
 extends MarginContainer
+class_name LessonContainer
 
 var gp_label_scene: = preload("res://sources/language_tool/lesson_gp_label.tscn")
 

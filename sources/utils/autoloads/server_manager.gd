@@ -26,7 +26,7 @@ func set_environment(env: int) -> void:
 
 
 func submit_student_metrics(level: int, elapsed_time: int) -> void:
-	await _post_request("submit-student-metrics", {"student_id": 3, "level": level, "time_spent": elapsed_time})
+	await _post_request("submit_student_metrics", {"student_id": UserDataManager.student, "level": level, "time_spent": elapsed_time})
 
 
 # Response from the last request
@@ -136,8 +136,10 @@ func _get_request(URI: String, params: Dictionary) -> void:
 func _post_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
-	Logger.debug("ServerManager Sending POST request. URI = %s. Parameters = %s " % [URI, params])
-	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), _create_request_headers(), HTTPClient.METHOD_POST, "") == 0:
+	var url: String = _create_URI_with_parameters(environment_url + URI, params)
+	var headers: PackedStringArray = _create_request_headers()
+	Logger.debug("ServerManager Sending POST request. URL = %s.\nHeaders = %s " % [url, str(headers)])
+	if http_request.request(url, headers, HTTPClient.METHOD_POST, "") == 0:
 		await request_completed
 	else:
 		Logger.error("ServerManager Error sending POST request")

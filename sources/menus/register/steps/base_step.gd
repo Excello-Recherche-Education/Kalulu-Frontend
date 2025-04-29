@@ -14,7 +14,7 @@ signal next(step : Step)
 @export var step_name : String
 @export_multiline var question : String
 @export_multiline var infos : String
-@export var data : Resource
+@export var data : TeacherSettings
 
 func on_enter() -> void:
 	form_binder.read(data)
@@ -33,7 +33,7 @@ func _on_next() -> bool:
 	return true
 
 # Display error messages
-func _on_form_validator_control_validated(control, passed, messages) -> void:
+func _on_form_validator_control_validated(control: ItemList, passed: bool, messages: PackedStringArray) -> void:
 	var label: Label = find_child(control.name as String + "Error", true, false) as Label
 	if not label:
 		return

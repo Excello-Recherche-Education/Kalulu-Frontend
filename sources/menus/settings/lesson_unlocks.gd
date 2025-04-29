@@ -4,7 +4,7 @@ class_name LessonUnlocks
 signal student_deleted(code: int)
 
 const StudentUnlock: = preload("res://sources/menus/settings/lesson_unlock.gd")
-const student_unlock_scene: = preload("res://sources/menus/settings/lesson_unlock.tscn")
+const student_unlock_scene: PackedScene = preload("res://sources/menus/settings/lesson_unlock.tscn")
 
 @onready var lesson_container: VBoxContainer = %LessonContainer
 
@@ -15,7 +15,7 @@ const student_unlock_scene: = preload("res://sources/menus/settings/lesson_unloc
 var progression: UserProgression
 
 func _create_lessons() -> void:
-	for lesson_unlock in lesson_container.get_children():
+	for lesson_unlock: Node in lesson_container.get_children():
 		lesson_unlock.queue_free()
 	
 	Database.db.query("SELECT LessonNb, group_concat(Grapheme || '-' ||Phoneme, ' ') GPs FROM Lessons
@@ -23,10 +23,10 @@ INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
 INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
 GROUP BY LessonNb
 ORDER BY LessonNb")
-	for e in Database.db.query_result:
+	for element: Dictionary in Database.db.query_result:
 		var student_unlock: StudentUnlock = student_unlock_scene.instantiate()
-		student_unlock.lesson_GPs = e.GPs
-		student_unlock.lesson_number = e.LessonNb
+		student_unlock.lesson_GPs = element.GPs
+		student_unlock.lesson_number = element.LessonNb
 		student_unlock.unlocks = progression.unlocks
 		lesson_container.add_child(student_unlock)
 		

@@ -29,8 +29,8 @@ func _get_minimum_size() -> Vector2:
 	var min_size: = Vector2(0, 0)
 	for c: Control in get_children():
 		var c_min_size: = c.get_combined_minimum_size()
-		min_size.x = max(c_min_size.x, min_size.x)
-		min_size.y = max(c_min_size.y, min_size.y)
+		min_size.x = maxf(c_min_size.x, min_size.x)
+		min_size.y = maxf(c_min_size.y, min_size.y)
 	return min_size
 
 

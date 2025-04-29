@@ -4,11 +4,11 @@ class_name ItemListValidator
 
 
 func get_value(control: Control) -> Variant:
-	var item_list = control as ItemList
+	var item_list: ItemList = control as ItemList
 	if not item_list:
 		return null
 		
-	var selected_indexes = item_list.get_selected_items()
+	var selected_indexes: PackedInt32Array = item_list.get_selected_items()
 	
 	if not selected_indexes or selected_indexes.size() == 0:
 		return null
@@ -18,5 +18,5 @@ func get_value(control: Control) -> Variant:
 	return selected_indexes
 
 
-func is_type(node) -> bool:
+func is_type(node: Node) -> bool:
 	return node is ItemList

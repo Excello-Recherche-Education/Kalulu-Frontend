@@ -7,7 +7,7 @@ class_name SpriteControl
 
 
 func set_sprites(p_sprites: Array[CanvasItem]) -> void:
-	for p_sprite in p_sprites:
+	for p_sprite: CanvasItem in p_sprites:
 		if p_sprite:
 			if p_sprite is Sprite2D:
 				var p_sprite_2D: Sprite2D = p_sprite
@@ -28,7 +28,7 @@ func _on_resized() -> void:
 
 
 func _resize_sprites() -> void:
-	for sprite in sprites:
+	for sprite: CanvasItem in sprites:
 		if sprite is Sprite2D:
 			var sprite_2D: Sprite2D = sprite
 			if sprite_2D.texture:

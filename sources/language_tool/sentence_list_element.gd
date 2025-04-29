@@ -13,13 +13,13 @@ func _ready() -> void:
 
 
 func update_lesson() -> void:
-	var m: = -1
+	var m: int = -1
 	for gp_id in gp_ids:
-		var i: = Database.get_min_lesson_for_word_id(gp_id)
+		var i: int = Database.get_min_lesson_for_word_id(gp_id)
 		if i < 0:
 			m = -1
 			break
-		m = max(m, i)
+		m = maxi(m, i)
 	lesson = m
 
 

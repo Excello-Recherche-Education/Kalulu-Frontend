@@ -4,7 +4,7 @@ extends Control
 const DeviceButton:= preload("res://sources/menus/main/device_button.gd")
 const device_button_scene: PackedScene = preload("res://sources/menus/main/device_button.tscn")
 
-const login_scene_path := "res://sources/menus/login/login.tscn"
+const login_scene_path: String = "res://sources/menus/login/login.tscn"
 
 @export var colors: Array[Color]
 
@@ -17,7 +17,7 @@ func _refresh() -> void:
 	if not UserDataManager.teacher_settings:
 		return
 	
-	for child in container.get_children():
+	for child: Node in container.get_children():
 		child.queue_free()
 	
 	for device: int in UserDataManager.teacher_settings.students.keys():

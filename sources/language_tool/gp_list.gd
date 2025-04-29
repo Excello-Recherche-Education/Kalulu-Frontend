@@ -1,27 +1,27 @@
 extends Control
 
-var element_scene: = preload("res://sources/language_tool/gp_list_element.tscn")
+var element_scene: PackedScene = preload("res://sources/language_tool/gp_list_element.tscn")
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 @onready var error_label: Label = %ErrorLabel
 
-var undo_redo: = UndoRedo.new()
+var undo_redo: UndoRedo = UndoRedo.new()
 
 
 func _ready() -> void:
-	var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
+	var query: String = "Select * FROM GPs ORDER BY GPs.Grapheme"
 	Database.db.query(query)
-	var result: = Database.db.query_result
-	for e in result:
-		var element: GPListElement = element_scene.instantiate()
-		element.grapheme = e.Grapheme
-		element.phoneme = e.Phoneme
-		element.type = e.Type
-		element.exception = e.Exception
-		element.undo_redo = undo_redo
-		element.id = e.ID
-		elements_container.add_child(element)
-		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
+	var result: Array[Dictionary] = Database.db.query_result
+	for element_dico: Dictionary in result:
+		var new_element: GPListElement = element_scene.instantiate()
+		new_element.grapheme = element_dico.Grapheme
+		new_element.phoneme = element_dico.Phoneme
+		new_element.type = element_dico.Type
+		new_element.exception = element_dico.Exception
+		new_element.undo_redo = undo_redo
+		new_element.id = element_dico.ID
+		elements_container.add_child(new_element)
+		new_element.delete_pressed.connect(_on_element_delete_pressed.bind(new_element))
 	
 	for pseudo_button: Label in [%Grapheme, %Phoneme, %Type]:
 		pseudo_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -53,9 +53,9 @@ func _on_plus_button_pressed() -> void:
 func _on_save_button_pressed() -> void:
 	for element: GPListElement in elements_container.get_children():
 		element.insert_in_database()
-	var query: = "Select * FROM GPs"
+	var query: String = "Select * FROM GPs"
 	Database.db.query(query)
-	var result: = Database.db.query_result
+	var result: Array[Dictionary] = Database.db.query_result
 	for e in result:
 		var found: = false
 		for element: GPListElement in elements_container.get_children():

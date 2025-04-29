@@ -1,13 +1,14 @@
 extends Label
+class_name LessonGPLabel
 
 signal gp_dropped(before: bool, data: Dictionary)
 
-var gp_id: = -1
-var grapheme: = "":
+var gp_id: int = -1
+var grapheme: String = "":
 	set = set_grapheme
-var phoneme: = "":
+var phoneme: String = "":
 	set = set_phoneme
-var is_being_dragged: = false
+var is_being_dragged: bool = false
 
 
 func set_grapheme(p_grapheme: String) -> void:

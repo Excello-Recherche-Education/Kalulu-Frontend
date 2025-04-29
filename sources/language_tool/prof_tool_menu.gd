@@ -418,7 +418,7 @@ func _create_words_csv() -> void:
 			if gp_id_lesson < 0:
 				lesson = -1
 				break
-			lesson = max(lesson, gp_id_lesson)
+			lesson = maxi(lesson, gp_id_lesson)
 		gp_list_file.store_csv_line([element.Word, gpmatch, lesson, element.Reading, element.Writing])
 
 
@@ -447,7 +447,7 @@ func _create_syllable_csv() -> void:
 			if gp_id_lesson < 0:
 				lesson = -1
 				break
-			lesson = max(lesson, gp_id_lesson)
+			lesson = maxi(lesson, gp_id_lesson)
 		gp_list_file.store_csv_line([element.Syllable, gpmatch, lesson, element.Reading, element.Writing])
 
 
@@ -465,11 +465,11 @@ func _create_sentence_csv() -> void:
 		var lesson: int = -1
 		@warning_ignore("unsafe_method_access")
 		for word_id: String in element.WordIDs.split(' '):
-			var i: int = Database.get_min_lesson_for_word_id(int(word_id))
-			if i < 0:
+			var ind: int = Database.get_min_lesson_for_word_id(int(word_id))
+			if ind < 0:
 				lesson = -1
 				break
-			lesson = max(lesson, i)
+			lesson = maxi(lesson, ind)
 		gp_list_file.store_csv_line([element.Sentence, lesson])
 
 

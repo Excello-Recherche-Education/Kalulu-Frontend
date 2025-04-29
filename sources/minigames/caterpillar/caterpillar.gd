@@ -37,7 +37,7 @@ func move(y : float) -> void:
 	
 	idle()
 	is_moving = true
-	var coroutine: = Coroutine.new()
+	var coroutine: Coroutine = Coroutine.new()
 	
 	# Move head
 	coroutine.add_future(_tween_body_part(head, y).finished)
@@ -58,7 +58,7 @@ func move(y : float) -> void:
 
 
 func _tween_body_part(part: Node2D, y: float) -> Tween:
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(part, "global_position:y", y, body_part_move_time)
 	return tween
 
@@ -67,11 +67,11 @@ func eat_berry(berry: Berry) -> void:
 	is_eating = true
 	
 	var body_part: CaterpillarBody
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	
 	# Check if there is only one empty body part
 	if body_parts.get_child_count() == 1:
-		var current_body_part: = body_parts.get_child(0) as CaterpillarBody
+		var current_body_part: CaterpillarBody = body_parts.get_child(0) as CaterpillarBody
 		if not current_body_part.gp:
 			body_part = current_body_part
 	
@@ -109,7 +109,7 @@ func spit_berry(berry: Berry) -> void:
 	var pos_x : float = berry.global_position.x
 	
 	# Eat the berry
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(berry, "global_position:x",head.global_position.x + body_part_width * 2, .2)
 	await head.eat()
 	
@@ -130,7 +130,7 @@ func spit_berry(berry: Berry) -> void:
 
 func reset() -> void:
 	# Move the head and the body parts back
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(head, "position:x", 0, 0.2)
 	
 	for index: int in range(1, body_parts.get_child_count()):
@@ -149,6 +149,6 @@ func reset() -> void:
 
 func _on_eat_area_2d_area_entered(area: Area2D) -> void:
 	if area is Berry and !is_moving:
-		var berry: = area as Berry
+		var berry: Berry = area as Berry
 		berry.is_eaten = true
 		berry_eaten.emit(berry)

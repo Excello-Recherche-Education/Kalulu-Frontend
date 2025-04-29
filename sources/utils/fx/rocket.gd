@@ -1,7 +1,7 @@
 extends Path2D
 
-@export var spread_angle := PI/8.0
-@export var segments := 5
+@export var spread_angle: float = PI/8.0
+@export var segments: int = 5
 
 @onready var path_follow: PathFollow2D = $PathFollow2D
 
@@ -14,7 +14,7 @@ extends Path2D
 @onready var firework_audio_player: AudioStreamPlayer2D = $FireworkAudioPlayer
 @onready var blast_audio_player: AudioStreamPlayer2D = $BlastAudioPlayer
 
-const firework_sounds: = [
+const firework_sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/fireworks_1.mp3"),
 	preload("res://assets/sfx/fireworks_2.mp3"),
 	preload("res://assets/sfx/fireworks_3.mp3"),
@@ -22,7 +22,7 @@ const firework_sounds: = [
 	preload("res://assets/sfx/fireworks_5.mp3"),
 ]
 
-const blast_sounds: = [
+const blast_sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/blast_1.mp3"),
 	preload("res://assets/sfx/blast_2.mp3"),
 	preload("res://assets/sfx/blast_3.mp3"),
@@ -30,7 +30,7 @@ const blast_sounds: = [
 	preload("res://assets/sfx/blast_5.mp3"),
 ]
 
-const colors: = [
+const colors: Array[Color] = [
 	Color(0.427, 0.796, 1),
 	Color(0.976, 0.322, 0.392),
 	Color(1, 0.396, 0.753),
@@ -40,7 +40,7 @@ const colors: = [
 	Color(0.216, 0.757, 0.341),
 ]
 
-var ind_color: = 0
+var ind_color: int = 0
 
 
 func _ready() -> void:
@@ -56,12 +56,12 @@ func start(start_point: Vector2, end_point: Vector2) -> void:
 	
 	create_path(start_point, end_point)
 	
-	var travel_time: = randf_range(0.5, 1.0)
+	var travel_time: float = randf_range(0.5, 1.0)
 	traveling_timer.start(travel_time)
 	
 	path_follow.progress_ratio = 0.0
-	var tween: = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
-	var _a: = tween.tween_property(path_follow, "progress_ratio", 1.0, travel_time)
+	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	var _a: PropertyTweener = tween.tween_property(path_follow, "progress_ratio", 1.0, travel_time)
 	
 	firework_audio_player.play()
 
@@ -73,10 +73,10 @@ func create_path(start_point: Vector2, end_point: Vector2) -> void:
 	var general_direction: = (end_point - start_point).normalized()
 	
 	curve.add_point(start_point, -segment_length * general_direction / 2.0, segment_length * general_direction / 2.0)
-	for _segment in range(segments):
-		var angle := randf_range(-spread_angle / 2, spread_angle / 2)
-		var new := current + (current.direction_to(end_point) * segment_length).rotated(angle)
-		var direction: = (new - current).normalized()
+	for _segment: int in range(segments):
+		var angle: float = randf_range(-spread_angle / 2, spread_angle / 2)
+		var new: Vector2 = current + (current.direction_to(end_point) * segment_length).rotated(angle)
+		var direction: Vector2 = (new - current).normalized()
 		curve.add_point(new, -segment_length * direction / 2.0, segment_length * direction / 2.0)
 		current = new
 

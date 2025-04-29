@@ -16,7 +16,7 @@ const berry_scene: PackedScene = preload("res://sources/minigames/caterpillar/be
 @onready var leaf_timer: Timer = $LeafTimer
 
 var velocity: float = 0.0
-var is_highlighting: = false:
+var is_highlighting: bool = false:
 	set = _set_highlighting
 
 var is_running: float = true
@@ -30,7 +30,7 @@ func _set_highlighting(value: bool) -> void:
 
 func _ready() -> void:
 	# Adds some leaves from start
-	var pos: = -leaves.position.x + velocity * randf_range(0,2)
+	var pos: float = -leaves.position.x + velocity * randf_range(0,2)
 	while pos < 0:
 		var leaf: Leaf = leaf_scene.instantiate()
 		leaves.add_child(leaf)

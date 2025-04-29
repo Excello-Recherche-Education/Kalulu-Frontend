@@ -11,8 +11,8 @@ signal changed()
 @onready var segments_container: VBoxContainer = %SegmentsContainer
 @onready var lines: Node2D = %Lines
 
-const segment_build_class: = preload("res://sources/language_tool/segment_build.tscn")
-const point_button_class: = preload("res://sources/language_tool/segment_point_button.tscn")
+const segment_build_class: PackedScene = preload("res://sources/language_tool/segment_build.tscn")
+const point_button_class: PackedScene = preload("res://sources/language_tool/segment_point_button.tscn")
 
 var gradient: Gradient
 
@@ -22,9 +22,9 @@ var buttons: Array[SegmentPointButton]
 
 
 func reset() -> void:
-	var to_free: = lines.get_children()
+	var to_free: Array[Node] = lines.get_children()
 	to_free.append_array(segments_container.get_children())
-	for node in to_free:
+	for node: Node in to_free:
 		node.queue_free()
 	
 	current_segment = null
@@ -49,7 +49,7 @@ func _process(_delta: float) -> void:
 		current_button = null
 	
 	if is_instance_valid(current_button):
-		var ind: = current_segment.remove_point(current_button.global_position - lines.global_position)
+		var ind: int = current_segment.remove_point(current_button.global_position - lines.global_position)
 		current_button.global_position = get_global_mouse_position()
 		current_segment.add_point_at(current_button.global_position - lines.global_position, ind)
 
@@ -58,14 +58,14 @@ func draw_segment(segment: SegmentBuild) -> void:
 	if not is_instance_valid(segment):
 		return
 	
-	var ind_seg: = segments_container.get_children().find(segment)
+	var ind_seg: int = segments_container.get_children().find(segment)
 	var line: Line2D = lines.get_child(ind_seg)
 	
-	line.points = Bezier.bezier_sampling(segment.points, max(points_per_lines, segment.points.size()))
+	line.points = Bezier.bezier_sampling(segment.points, maxi(points_per_lines, segment.points.size()))
 
 
 func draw_all_segments() -> void:
-	for segment in segments_container.get_children():
+	for segment: SegmentBuild in segments_container.get_children():
 		draw_segment(segment)
 
 
@@ -121,7 +121,7 @@ func _on_place_point_button_pressed() -> void:
 
 
 func _on_add_segment_button_pressed() -> void:
-	var segment_build: = segment_build_class.instantiate()
+	var segment_build: SegmentBuild = segment_build_class.instantiate()
 	segments_container.add_child(segment_build)
 	
 	segment_build.modify.connect(_on_segment_modify.bind(segment_build))
@@ -129,16 +129,16 @@ func _on_add_segment_button_pressed() -> void:
 	
 	current_segment = segment_build
 	
-	var line: = Line2D.new()
+	var line: Line2D = Line2D.new()
 	line.width = 25
 	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	line.end_cap_mode = Line2D.LINE_CAP_ROUND
 	line.joint_mode = Line2D.LINE_JOINT_ROUND
 	lines.add_child(line)
 	
-	var i: = segments_container.get_child_count()
-	var r: = float(i % points_per_gradient) / float(points_per_gradient)
-	var color: = gradient.sample(r)
+	var i: int = segments_container.get_child_count()
+	var r: float = float(i % points_per_gradient) / float(points_per_gradient)
+	var color: Color = gradient.sample(r)
 	segment_build.set_color(color)
 	line.default_color = color
 	
@@ -157,15 +157,15 @@ func _on_segment_modify(segment: SegmentBuild) -> void:
 
 func _on_segment_delete(segment: SegmentBuild) -> void:
 	if segment == current_segment:
-		var possible_segments: = segments_container.get_children()
+		var possible_segments: Array[Node] = segments_container.get_children()
 		if not possible_segments.is_empty():
-			current_segment = possible_segments[0]
+			current_segment = possible_segments[0] as SegmentBuild
 		else:
 			current_segment = null
 		
 		match_segment_with_buttons()
 	
-	var ind_seg: = segments_container.get_children().find(segment)
+	var ind_seg: int = segments_container.get_children().find(segment)
 	lines.get_child(ind_seg).queue_free()
 	
 	changed.emit()

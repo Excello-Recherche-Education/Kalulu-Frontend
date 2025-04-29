@@ -2,7 +2,7 @@
 extends Control
 
 const Gardens: = preload("res://sources/gardens/gardens.gd")
-const gardens_scene: = preload("res://sources/gardens/gardens.tscn")
+const gardens_scene: PackedScene = preload("res://sources/gardens/gardens.tscn")
 const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 
 @export var locked_color: Color
@@ -73,7 +73,7 @@ func _ready() -> void:
 	
 	var lesson_ind: int = 1
 	for index: int in range(gardens_layout.gardens.size()):
-		var can_emit: = true
+		var can_emit: bool = true
 		if UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != UserProgression.Status.Locked:
 			garden_buttons[index].disabled = false
 			garden_buttons[index].self_modulate = unlocked_colors[index]
@@ -82,8 +82,8 @@ func _ready() -> void:
 			garden_buttons[index].self_modulate = locked_color
 			can_emit = false
 		
-		var emitting: = false
-		for _index2 in range(gardens_layout.gardens[index].lesson_buttons.size()):
+		var emitting: bool = false
+		for _index2: int in range(gardens_layout.gardens[index].lesson_buttons.size()):
 			if can_emit and not emitting:
 				emitting = false
 				for game: UserProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
@@ -101,7 +101,7 @@ func _ready() -> void:
 		_play_tutorial()
 
 func _play_tutorial() -> void:
-	var tutorial_count: = 0
+	var tutorial_count: int = 0
 	
 	kalulu_button.hide()
 	while tutorial_count < tutorial_speeches.size():

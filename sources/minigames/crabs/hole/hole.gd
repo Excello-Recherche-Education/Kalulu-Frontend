@@ -1,4 +1,5 @@
 extends Node2D
+class_name Hole
 
 signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned(is_stimulus: bool)
@@ -10,7 +11,7 @@ signal crab_out(hole)
 const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
 const CrabAudioStreamPlayer: = preload("res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd")
 
-const crab_scene: = preload("res://sources/minigames/crabs/crab/crab.tscn")
+const crab_scene: PackedScene = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
 @onready var hole_back: Sprite2D = $HoleBack
 @onready var hole_front: Sprite2D = $HoleFront
@@ -79,7 +80,7 @@ func spawn_crab(gp: Dictionary, p_is_stimulus: bool) -> void:
 	crab.stimulus = gp
 	
 	# Show the crab but not the stimulus
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y/7), randf_range(0.25, 2.0))
 	if await is_button_pressed_with_limit(tween.finished):
 		return
@@ -116,7 +117,7 @@ func spawn_crab(gp: Dictionary, p_is_stimulus: bool) -> void:
 
 
 func is_button_pressed_with_limit(future : Signal) -> bool:
-	var coroutine: = Coroutine.new()
+	var coroutine: Coroutine = Coroutine.new()
 	coroutine.add_future(crab.is_button_pressed)
 	coroutine.add_future(_is_stopped)
 	coroutine.add_future(future)
@@ -131,7 +132,7 @@ func is_button_pressed_with_limit(future : Signal) -> bool:
 	if coroutine.return_value[1]:
 		
 		# Make the crab disappear in the hole
-		var tween: = create_tween()
+		var tween: Tween = create_tween()
 		tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y / 2), 0.5)
 		await tween.finished
 		
@@ -170,7 +171,7 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	stimulus_hit.emit(stimulus)
 	
 	# Move the crab up and rotate
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y * 1.5), 1)
 	tween.parallel().tween_property(crab.body, "rotation_degrees", 900.0, 1)
 	await tween.finished

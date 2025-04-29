@@ -433,7 +433,7 @@ func get_min_lesson_for_word_id(word_id: int) -> int:
 		if index < 0:
 			minimum = -1
 			break
-		minimum = max(minimum, index)
+		minimum = maxi(minimum, index)
 	return minimum
 
 

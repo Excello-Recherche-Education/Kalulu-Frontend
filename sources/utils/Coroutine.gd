@@ -3,12 +3,12 @@ class_name Coroutine
 
 # For resume functionality
 signal resume_signal()
-var _is_started: = false
-var is_completed: = false
+var _is_started: bool = false
+var is_completed: bool = false
 
 # For join functionality
 signal _join()
-var _ended_count: = -1
+var _ended_count: int = -1
 
 var return_value: Array
 

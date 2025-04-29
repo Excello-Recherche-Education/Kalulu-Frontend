@@ -21,10 +21,10 @@ func get_value() -> Variant:
 	elif control is TextEdit:
 		return (control as TextEdit).text
 	elif control is ItemList:
-		var selected_indexes: PackedInt32Array = control.get_selected_items()
+		var selected_indexes: PackedInt32Array = (control as ItemList).get_selected_items()
 		if not selected_indexes or selected_indexes.size() == 0:
 			return null
-		if control.select_mode == ItemList.SELECT_SINGLE:
+		if (control as ItemList).select_mode == ItemList.SELECT_SINGLE:
 			return selected_indexes[0]
 		return selected_indexes
 			
@@ -37,11 +37,11 @@ func set_value(value: Variant) -> void:
 		
 	if control is Range:
 		if value is float:
-			control.value = value
+			(control as Range).value = value
 		elif value is int:
-			control.value = float(value)
+			(control as Range).value = float(value as int)
 	elif control is LineEdit or control is TextEdit:
-		control.text = str(value)
+		(control as LineEdit).text = str(value)
 	elif control is ItemList:
 		if value is int:
-			control.select(value, true)
+			(control as ItemList).select(value as int, true)

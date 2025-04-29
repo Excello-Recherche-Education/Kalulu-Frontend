@@ -53,7 +53,7 @@ func _ready() -> void:
 		return
 	
 	# Check the configuration
-	var server_configuration: = await ServerManager.get_configuration()
+	var server_configuration: Dictionary = await ServerManager.get_configuration()
 	if server_configuration.code == 401:
 		UserDataManager.logout()
 		_show_error(0)
@@ -70,7 +70,7 @@ func _ready() -> void:
 	var current_version: Dictionary = UserDataManager.get_device_settings().language_versions.get(device_language, {})
 	
 	# Gets the info of the language pack on the server
-	var res: = await ServerManager.get_language_pack_url(device_language)
+	var res: Dictionary = await ServerManager.get_language_pack_url(device_language)
 	if res.code == 200:
 		server_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
 	# Authentication failed, disconnect the user
@@ -173,7 +173,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	
 	# Move the data to the locale folder of the user
 	var error: Error = DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
-	if error != null:
+	if error != OK:
 		Logger.error("PackageDownloader: Error " + str(error) + " while renaming folder from %s to %s" % [user_language_resources_path.path_join(subfolder), current_language_path])
 	
 	# Cleanup unnecessary files
@@ -217,9 +217,9 @@ func delete_directory_recursive(path: String) -> void:
 
 func _delete_dir(path: String) -> void:
 	var dir: DirAccess = DirAccess.open(path)
-	for file in dir.get_files():
+	for file: String in dir.get_files():
 		dir.remove(file)
-	for subfolder in dir.get_directories():
+	for subfolder: String in dir.get_directories():
 		_delete_dir(path.path_join(subfolder))
 		dir.remove(subfolder)
 

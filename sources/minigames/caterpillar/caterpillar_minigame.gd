@@ -6,14 +6,14 @@ const Caterpillar: = preload("res://sources/minigames/caterpillar/caterpillar.gd
 const Branch: = preload("res://sources/minigames/caterpillar/branch.gd")
 const Berry: = preload("res://sources/minigames/caterpillar/berry.gd")
 
-const branch_scene: = preload("res://sources/minigames/caterpillar/branch.tscn")
+const branch_scene: PackedScene = preload("res://sources/minigames/caterpillar/branch.tscn")
 
 
 class DifficultySettings:
-	var branches: = 2
-	var stimuli_ratio: = 0.75
-	var velocity: = 400.
-	var spawn_rate: = 3.
+	var branches: int = 2
+	var stimuli_ratio: float = 0.75
+	var velocity: float = 400.
+	var spawn_rate: float = 3.
 	
 	func _init(p_branches: int, p_stimuli_ratio: float, p_velocity: float, p_spawn_rate: float) -> void:
 		branches = p_branches
@@ -126,7 +126,7 @@ func _on_berry_timer_timeout() -> void:
 	
 	# Define if the berry is a stimulus or a distraction
 	var gp: Dictionary
-	var is_stimulus: = randf() < _get_difficulty_settings().stimuli_ratio
+	var is_stimulus: bool = randf() < _get_difficulty_settings().stimuli_ratio
 	if is_stimulus:
 		gp = _get_GP()
 	else:

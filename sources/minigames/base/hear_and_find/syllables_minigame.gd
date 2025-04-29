@@ -30,12 +30,12 @@ func _start() -> void:
 # Find the stimuli and distractions of the minigame.
 # For this type of minigame, only vowels and syllables are allowed
 func _find_stimuli_and_distractions() -> void:
-	var all_syllables: = Database.get_syllables_for_lesson(lesson_nb, false)
+	var all_syllables: Array[Dictionary] = Database.get_syllables_for_lesson(lesson_nb, false)
 	if not all_syllables:
 		return
 	
-	var current_lesson_stimuli: Array[Dictionary] = []
-	var previous_lesson_stimuli: Array[Dictionary] = []
+	var current_lesson_stimuli: Array[Dictionary]
+	var previous_lesson_stimuli: Array[Dictionary]
 	
 	# Find the syllables for current lesson
 	for syllable: Dictionary in all_syllables:
@@ -99,7 +99,7 @@ func _find_stimuli_and_distractions() -> void:
 		# Any previously learned item w/ all letters different
 		for syllable: Dictionary in all_syllables:
 			if syllable.Phoneme != stimulus.Phoneme:
-				var gp_found_in_stimuli: = false
+				var gp_found_in_stimuli: bool = false
 				for gp: Dictionary in syllable.GPs:
 					if gp in stimulus.GPs:
 						gp_found_in_stimuli = true
@@ -152,7 +152,7 @@ func _is_stimulus_right(stimulus : Dictionary) -> bool:
 
 # Play the phoneme of the current stimulus
 func _play_current_stimulus_phoneme() -> void:
-	var current_stimulus: = _get_current_stimulus()
+	var current_stimulus: Dictionary = _get_current_stimulus()
 	if not current_stimulus or not current_stimulus.has("Phoneme"):
 		return
 	
@@ -165,7 +165,7 @@ func _play_current_stimulus_phoneme() -> void:
 
 
 func _await_for_future_or_stimulus_found(future : Signal) -> bool:
-	var coroutine: = Coroutine.new()
+	var coroutine: Coroutine = Coroutine.new()
 	coroutine.add_future(_is_stimulus_found)
 	coroutine.add_future(future)
 	await coroutine.join_either()

@@ -1,10 +1,10 @@
 extends Control
 
 const teacher_password : String = "42"
-const back_scene_path: = "res://sources/menus/main/main_menu.tscn"
-const next_scene_path: = "res://sources/menus/brain/brain.tscn"
-const teacher_scene_path: = "res://sources/menus/settings/teacher_settings.tscn"
-const package_loader_scene_path: = "res://sources/menus/language_selection/package_downloader.tscn"
+const back_scene_path: String = "res://sources/menus/main/main_menu.tscn"
+const next_scene_path: String = "res://sources/menus/brain/brain.tscn"
+const teacher_scene_path: String = "res://sources/menus/settings/teacher_settings.tscn"
+const package_loader_scene_path: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
 const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 

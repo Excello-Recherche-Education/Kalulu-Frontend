@@ -3,10 +3,10 @@ extends Path2D
 signal finished
 signal demo_finished
 
-@export var points_per_curve: = 25
-@export var hand_min_travel_time: = 0.5
-@export var hand_max_travel_time: = 2.0
-@export var distance: = 100.0
+@export var points_per_curve: int = 25
+@export var hand_min_travel_time: float = 0.5
+@export var hand_max_travel_time: float = 2.0
+@export var distance: float = 100.0
 
 @export var color_gradient: Gradient
 
@@ -17,12 +17,12 @@ signal demo_finished
 @onready var hand_sprite: Sprite2D = $HandPathFollow2D/Hand
 
 var curve_points: PackedVector2Array
-@onready var remaining_curve: = Curve2D.new()
+@onready var remaining_curve: Curve2D = Curve2D.new()
 
-var is_playing: = false
-var is_in_demo: = false
-var touch_positions: = []
-var should_play_effects: = false
+var is_playing: bool = false
+var is_in_demo: bool = false
+var touch_positions: Array[Vector2]
+var should_play_effects: bool = false
 
 
 func _ready() -> void:
@@ -42,8 +42,8 @@ func _process(delta: float) -> void:
 	if is_playing or is_in_demo:
 		var points: PackedVector2Array = []
 		for index: int in range(0, int(guide.progress), 10):
-			var i_f: = float(index)
-			var point: = curve.sample_baked(i_f)
+			var i_f: float = float(index)
+			var point: Vector2 = curve.sample_baked(i_f)
 			points.append(point)
 		line.points = points
 		
@@ -66,7 +66,7 @@ func _tracing_process() -> void:
 	while touch_positions.size() > 0:
 		var touch_position: Vector2 = touch_positions.pop_front()
 		var touch_vector: Vector2 = touch_position - guide.global_position
-		var current_offset: = 0.0
+		var current_offset: float = 0.0
 		if touch_vector.length() < distance:
 			var target_offset: float = remaining_curve.get_closest_offset(touch_position - global_position)
 			if target_offset > current_offset and target_offset - current_offset <= distance:
@@ -74,9 +74,9 @@ func _tracing_process() -> void:
 				line.default_color = color_gradient.sample(guide.progress_ratio)
 				
 				should_play_effects = true
-				var remove_up_to: = 0
+				var remove_up_to: int = 0
 				for index: int in curve_points.size():
-					var offset: = curve.get_closest_offset(curve_points[index])
+					var offset: float = curve.get_closest_offset(curve_points[index])
 					if offset > guide.progress:
 						remove_up_to = index
 						break
@@ -87,8 +87,8 @@ func _tracing_process() -> void:
 
 func _hand_process(delta: float) -> void:
 	var current_progression: float = guide.progress_ratio
-	var current_hand_travel_time: = current_progression * hand_min_travel_time + (1.0 - current_progression) * hand_max_travel_time
-	var hand_speed: = (1.0 - current_progression) / current_hand_travel_time
+	var current_hand_travel_time: float = current_progression * hand_min_travel_time + (1.0 - current_progression) * hand_max_travel_time
+	var hand_speed: float = (1.0 - current_progression) / current_hand_travel_time
 	
 	hand.progress_ratio += delta * hand_speed
 	if hand.progress_ratio >= 1.0:
@@ -105,7 +105,7 @@ func setup(points: Array) -> void:
 	curve.resource_local_to_scene = true
 	line.width = 50.0
 	
-	var smooth_points: = _smooth_points(points)
+	var smooth_points: Array[Vector2] = _smooth_points(points)
 	for point: Vector2 in smooth_points:
 		curve.add_point(point)
 	
@@ -115,12 +115,12 @@ func setup(points: Array) -> void:
 	curve_points = curve.get_baked_points()
 	
 	remaining_curve.clear_points()
-	for p in curve_points:
-		remaining_curve.add_point(p)
+	for point: Vector2 in curve_points:
+		remaining_curve.add_point(point)
 
 
 func _smooth_points(points: Array) -> Array:
-	return Bezier.bezier_sampling(points, max(points_per_curve, points.size()) as int)
+	return Bezier.bezier_sampling(points, maxi(points_per_curve, points.size()))
 
 
 func set_points(points: Array) -> void:
@@ -165,7 +165,7 @@ func demo() -> void:
 	hand_sprite.visible = true
 	hand.progress_ratio = 0.0
 	
-	var tween: = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	var tween: Tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(hand, "progress_ratio", 1.0, hand_max_travel_time)
 	tween.tween_callback(demo_end)
 

@@ -37,6 +37,6 @@ func update_scores(minigame_scores: Dictionary) -> void:
 		if new_score >= 0:
 			gps_scores.erase(ID)
 		else:
-			gps_scores[ID] = max(min_score, new_score)
+			gps_scores[ID] = maxi(min_score, new_score)
 	
 	score_changed.emit()

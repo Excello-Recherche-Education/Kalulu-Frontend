@@ -7,20 +7,20 @@ const LessonButton: = preload("res://sources/lesson_screen/lesson_button.gd")
 const MinigameLayout: = preload("res://sources/gardens/minigame_layout.gd")
 const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 
-const garden_scene: = preload("res://resources/gardens/garden.tscn")
-const look_and_learn_scene: = preload("res://sources/look_and_learn/look_and_learn.tscn")
-const flower_fvx: = preload("res://sources/gardens/flower_particle.tscn")
+const garden_scene: PackedScene = preload("res://resources/gardens/garden.tscn")
+const look_and_learn_scene: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
+const flower_fvx: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 
 const garden_size: int = 2400
 
 @export_category("Layout")
 @export var gardens_layout: GardensLayout:
 	set = set_gardens_layout
-@export var starting_garden: = -1
+@export var starting_garden: int = -1
 
 @export_category("Colors")
-@export var unlocked_color: = Color("1c2662") #blue
-@export var locked_color: = Color("1d2229") #black
+@export var unlocked_color: Color = Color("1c2662") #blue
+@export var locked_color: Color = Color("1d2229") #black
 
 @export_group("Minigames")
 @export var minigames_scenes: Array[PackedScene]
@@ -50,21 +50,21 @@ const garden_size: int = 2400
 @onready var kalulu: Kalulu = %Kalulu
 @onready var kalulu_button: CanvasItem = %KaluluButton
 
-@onready var intro_speech: = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "intro"))
-@onready var help_few_plants_speech: = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
-@onready var help_many_plants_speech: = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_many_plants"))
+@onready var intro_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "intro"))
+@onready var help_few_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
+@onready var help_many_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_many_plants"))
 
-var lessons: = {}
-var points: Array[Array]= []
-var is_scrolling: = false
+var lessons: Dictionary
+var points: Array[Array]
+var is_scrolling: bool = false
 var scroll_beginning_garden: int = 0
 var scroll_tween: Tween
-var is_locked: = false
+var is_locked: bool = false
 
-var in_minigame_selection: = false
-var current_lesson_number: = -1
+var in_minigame_selection: bool = false
+var current_lesson_number: int = -1
 var current_garden: Garden
-var current_button_global_position: = Vector2.ZERO
+var current_button_global_position: Vector2 = Vector2.ZERO
 var current_button: LessonButton
 
 static var transition_data: Dictionary
@@ -77,11 +77,11 @@ func _ready() -> void:
 		INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
 		INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
 		ORDER BY LessonNb")
-	for e in Database.db.query_result:
-		if not lessons.has(e.LessonNb):
-			lessons[e.LessonNb] = []
-		var lesson_array: Array = lessons[e.LessonNb]
-		lesson_array.append({grapheme = e.Grapheme, phoneme = e.Phoneme, gp_id = e.GPID})
+	for element: Dictionary in Database.db.query_result:
+		if not lessons.has(element.LessonNb):
+			lessons[element.LessonNb] = []
+		var lesson_array: Array = lessons[element.LessonNb]
+		lesson_array.append({grapheme = element.Grapheme, phoneme = element.Phoneme, gp_id = element.GPID})
 	
 	# Loads the layout
 	if not gardens_layout:
@@ -104,7 +104,7 @@ func _ready() -> void:
 	# Transition variables #
 	
 	# The maximum unlocked lesson by the player
-	var max_unlocked_lesson: = UserDataManager.student_progression.get_max_unlocked_lesson() + 1
+	var max_unlocked_lesson: int = UserDataManager.student_progression.get_max_unlocked_lesson() + 1
 	
 	# Defines if the last played minigame or lookandlearn is of the last available lesson
 	var is_current_lesson: bool = transition_data and transition_data.current_lesson_number == max_unlocked_lesson
@@ -124,7 +124,7 @@ func _ready() -> void:
 #region Progression
 
 	# Loads the progression of the player without the newly unlocked stuff from the transition data
-	var lesson_ind: = 1
+	var lesson_ind: int = 1
 	
 	# Go through each garden
 	for garden_control: Garden in garden_parent.get_children():
@@ -161,7 +161,7 @@ func _ready() -> void:
 				button.completed = UserDataManager.student_progression.is_lesson_completed(lesson_ind)
 			
 			# Handles progression of the minigames
-			for k in range(3):
+			for k: int in range(3):
 				garden_control.max_progression += 2.0
 				match UserDataManager.student_progression.unlocks[lesson_ind]["games"][k]:
 					UserProgression.Status.Unlocked:
@@ -177,7 +177,7 @@ func _ready() -> void:
 		
 		# Handles the flowers
 		var total_flowers: float = garden_control.get_progress_ratio() * garden_control.flower_controls.size() * 3.0
-		var flower_ind: = 0
+		var flower_ind: int = 0
 		
 		while total_flowers > 0 and flower_ind < garden_control.flower_controls.size():
 			if total_flowers >= 3.0:
@@ -193,14 +193,14 @@ func _ready() -> void:
 		garden_control.update_flowers()
 	
 	# Handles the path
-	var c: = Curve2D.new()
-	var max_lesson: = UserDataManager.student_progression.get_max_unlocked_lesson()
+	var curve: Curve2D = Curve2D.new()
+	var max_lesson: int = UserDataManager.student_progression.get_max_unlocked_lesson()
 	if not new_lesson_unlocked:
 		max_lesson += 1
 	
 	for index: int in range(max_lesson):
-		c.add_point(points[index][0] as Vector2, points[index][1] as Vector2, points[index][2] as Vector2)
-	unlocked_line.points = c.get_baked_points()
+		curve.add_point(points[index][0] as Vector2, points[index][1] as Vector2, points[index][2] as Vector2)
+	unlocked_line.points = curve.get_baked_points()
 	
 	line_particles.global_position = unlocked_line.points[unlocked_line.points.size()-1]
 
@@ -212,7 +212,7 @@ func _ready() -> void:
 	if not transition_data:
 		if starting_garden == -1:
 			lesson_ind = 1
-			for garden_ind in garden_parent.get_child_count():
+			for garden_ind: int in garden_parent.get_child_count():
 				var garden_control: Garden = garden_parent.get_child(garden_ind)
 				if starting_garden != -1:
 					break
@@ -267,11 +267,11 @@ func _ready() -> void:
 			# Calculate the progression of the garden
 			current_garden.current_progression += 1
 			
-			var unlocks_ratio: = current_garden.current_progression / current_garden.max_progression
+			var unlocks_ratio: float = current_garden.current_progression / current_garden.max_progression
 			var total_flowers: float = unlocks_ratio * current_garden.flower_controls.size() * 3.0
-			var flower_ind: = 0
+			var flower_ind: int = 0
 			while total_flowers > 0 and flower_ind < current_garden.flower_controls.size():
-				var play_animation: = false
+				var play_animation: bool = false
 				if total_flowers >= 3.0 and current_garden.flowers_sizes[flower_ind] != Garden.FlowerSizes.Large:
 					current_garden.flowers_sizes[flower_ind] = Garden.FlowerSizes.Large
 					total_flowers -= 3.0
@@ -340,7 +340,7 @@ func _ready() -> void:
 				await last_lesson_button.right()
 			
 			# Fill in the path towards the next lesson
-			var animation_curve: = Curve2D.new()
+			var animation_curve: Curve2D = Curve2D.new()
 			for index: int in range(max_lesson-1, max_lesson + 1):
 				animation_curve.add_point(points[index][0] as Vector2, points[index][1] as Vector2, points[index][2] as Vector2)
 			
@@ -349,7 +349,7 @@ func _ready() -> void:
 				@warning_ignore("integer_division")
 				scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
 				var target_scroll: int = scroll_beginning_garden * garden_size + garden_size
-				var tween: = create_tween()
+				var tween: Tween = create_tween()
 				tween.set_ease(Tween.EASE_IN_OUT)
 				tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
 				
@@ -359,7 +359,7 @@ func _ready() -> void:
 				current_garden = garden_parent.get_child(scroll_beginning_garden)
 			
 			line_audio_stream_player.pitch_scale = 0.95
-			var baked_points: = animation_curve.get_baked_points()
+			var baked_points: PackedVector2Array = animation_curve.get_baked_points()
 			for point: Vector2 in baked_points:
 				if not line_audio_stream_player.playing:
 					line_audio_stream_player.pitch_scale += 0.05
@@ -405,7 +405,7 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	in_minigame_selection = true
 	
 	# Gets the correct exercises for the lesson
-	var exercises: = Database.get_exercice_for_lesson(lesson_ind)
+	var exercises: Array[int] = Database.get_exercice_for_lesson(lesson_ind)
 	if not exercises or exercises.size() < 3:
 		return
 	
@@ -454,7 +454,7 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	minigame_background_center.global_position = current_button_global_position
 	minigame_background_center.visible = true
 	
-	var tween: = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	var tween: Tween = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_background_center, "scale", (1800.0 / 300.0) * Vector2.ONE, 0.25)
 	tween.tween_property(minigame_background_center, "global_position", Vector2(380.0, 0), 0.25)
 	tween.tween_property(minigame_background, "scale", (1800.0 / 300.0) * Vector2.ONE, 0.25)
@@ -510,9 +510,9 @@ func _close_minigames_layout() -> void:
 	feedback_audio_stream_player2.pitch_scale = 0.75
 	feedback_audio_stream_player2.play()
 	
-	var tween: = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	var tween: Tween = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_selection, "modulate:a", 0.0, 0.25)
-	var other_tween: = tween.chain()
+	var other_tween: Tween = tween.chain()
 	other_tween.tween_property(minigame_background_center, "scale", Vector2.ONE, 0.25)
 	other_tween.tween_property(minigame_background_center, "global_position", current_button_global_position, 0.25)
 	other_tween.tween_property(minigame_background, "scale", Vector2.ONE, 0.25)
@@ -538,9 +538,9 @@ func _close_minigames_layout() -> void:
 
 
 func _set_up_lessons() -> void:
-	var lesson_ind: = 1
+	var lesson_ind: int = 1
 	
-	for garden_ind in garden_parent.get_child_count():
+	for garden_ind: int in garden_parent.get_child_count():
 		
 		var garden_control: Garden = garden_parent.get_child(garden_ind)
 		
@@ -565,13 +565,13 @@ func add_gardens() -> void:
 		return
 	
 	# Removes old gardens
-	for child in garden_parent.get_children():
+	for child: Node in garden_parent.get_children():
 		child.free()
 	
 	# Adds the gardens needed from the layout configuration
 	var current_lesson_count: int = 0
 	var garden_index: int = 0
-	for garden_layout in gardens_layout.gardens:
+	for garden_layout: GardenLayout in gardens_layout.gardens:
 		var garden: Garden = garden_scene.instantiate()
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
@@ -602,14 +602,14 @@ func set_up_path() -> void:
 			break
 		var garden_layout: GardenLayout = gardens_layout.gardens[index]
 		var garden_control: Garden = garden_parent.get_child(index)
-		for b in garden_layout.lesson_buttons:
-			var point_position: Vector2 = garden_parent.position + garden_control.position + Vector2(b.position)
+		for button in garden_layout.lesson_buttons:
+			var point_position: Vector2 = garden_parent.position + garden_control.position + Vector2(button.position)
 			point_position += garden_control.get_button_size() / 2
-			var point_in_position: = Vector2.ZERO
+			var point_in_position: Vector2 = Vector2.ZERO
 			if curve.point_count > 1:
 				point_in_position = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position
-			curve.add_point(point_position, point_in_position, b.path_out_position)
-			points.append([point_position, point_in_position, b.path_out_position])
+			curve.add_point(point_position, point_in_position, button.path_out_position)
+			points.append([point_position, point_in_position, button.path_out_position])
 	locked_line.points = curve.get_baked_points()
 
 
@@ -684,7 +684,7 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 		is_scrolling = false
 		var shift_value: int = scroll_container.scroll_horizontal - scroll_beginning_garden * garden_size
 		var target_scroll: int = scroll_beginning_garden * garden_size
-		var is_garden_changed: = false
+		var is_garden_changed: bool = false
 		if shift_value < - 400:
 			target_scroll -= garden_size
 			is_garden_changed = true

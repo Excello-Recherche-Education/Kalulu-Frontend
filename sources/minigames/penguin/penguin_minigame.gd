@@ -6,7 +6,7 @@ const PenguinLabel: = preload("res://sources/minigames/penguin/penguin_label.gd"
 
 const label_scene: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
 
-const silent_phoneme: = "#"
+const silent_phoneme: String = "#"
 
 
 @onready var penguin: Penguin = $GameRoot/Penguin
@@ -23,8 +23,8 @@ func _find_stimuli_and_distractions() -> void:
 	
 	if sentences_list.is_empty():
 		return
-	var current_lesson_sentences: = []
-	var previous_lesson_sentences: = []
+	var current_lesson_sentences: Array[Dictionary]
+	var previous_lesson_sentences: Array[Dictionary]
 	
 	for sentence: Dictionary in sentences_list:
 		if sentence.LessonNb == lesson_nb:
@@ -75,7 +75,7 @@ func _find_stimuli_and_distractions() -> void:
 	for sentence: Dictionary in stimuli:
 		sentence.GPs = Database.get_GPs_from_sentence(sentence.ID as int)
 		
-	Logger.debug("PenguinMinigame: %s" % stimuli)
+	Logger.debug("PenguinMinigame: Stimuli: %s" % str(stimuli))
 
 
 # Launch the minigame
@@ -95,7 +95,7 @@ func _setup_word_progression() -> void:
 		node.queue_free()
 	labels.clear()
 	
-	var stimulus: = _get_current_stimulus()
+	var stimulus: Dictionary = _get_current_stimulus()
 	
 	var first_GP: bool = true
 	var last_wordID: int

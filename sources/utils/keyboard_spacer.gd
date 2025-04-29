@@ -13,4 +13,4 @@ func _process(_delta: float) -> void:
 		if OS.get_name() == "Android":
 			@warning_ignore("narrowing_conversion")
 			margin *= screen_scale
-		self["theme_override_constants/margin_bottom"] = max(floori(margin), 0)
+		self["theme_override_constants/margin_bottom"] = maxi(floori(margin), 0)

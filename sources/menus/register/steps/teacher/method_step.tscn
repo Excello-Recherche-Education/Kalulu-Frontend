@@ -48,11 +48,11 @@ item_0/text = "METHOD_APP_ONLY"
 item_1/text = "METHOD_COMPLETE"
 script = ExtResource("2_qrbn1")
 
-[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="1"]
+[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="2"]
 script = ExtResource("2_03dua")
 validator = SubResource("Resource_ar6ux")
 
-[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="2"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="3"]
 layout_mode = 2
 anchors_preset = 0
 offset_top = 236.0

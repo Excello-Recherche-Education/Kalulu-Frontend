@@ -263,7 +263,7 @@ func _lose() -> void:
 	_reset()
 
 func _submit_student_metrics() -> void:
-	var elapsed_time := Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused
+	var elapsed_time: int = int(Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused)
 	ServerManager.submit_student_metrics(lesson_nb, elapsed_time)
 
 #endregion

@@ -16,7 +16,7 @@ const device_tab_scene: PackedScene = preload("res://sources/menus/settings/devi
 @onready var add_student_popup: CanvasLayer = %AddStudentPopup
 @onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
 
-var last_device_id: = -1
+var last_device_id: int = -1
 
 func _ready() -> void:
 	_refresh_devices_tabs()
@@ -32,7 +32,7 @@ func _ready() -> void:
 
 
 func _refresh_devices_tabs() -> void:
-	for child in devices_tab_container.get_children(false):
+	for child: Node in devices_tab_container.get_children(false):
 		child.queue_free()
 	
 	if not UserDataManager.teacher_settings:
@@ -90,11 +90,11 @@ func _on_add_student_button_pressed() -> void:
 
 
 func _on_add_student_popup_accepted() -> void:
-	var current_tab: = devices_tab_container.get_current_tab_control() as DeviceTab
+	var current_tab: DeviceTab = devices_tab_container.get_current_tab_control() as DeviceTab
 	if not current_tab:
 		Logger.error("TeacherSettings: DeviceTab not found")
 		return
-	var res: = await ServerManager.add_student({"device" :  current_tab.device_id})
+	var res: Dictionary = await ServerManager.add_student({"device" :  current_tab.device_id})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
@@ -108,7 +108,7 @@ func _on_add_device_button_pressed() -> void:
 
 
 func _on_add_device_popup_accepted() -> void:
-	var res: = await ServerManager.add_student({"device" : last_device_id + 1})
+	var res: Dictionary = await ServerManager.add_student({"device" : last_device_id + 1})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
 		_refresh_devices_tabs()
@@ -120,10 +120,10 @@ func _on_lesson_unlocks_student_deleted(_code: int) -> void:
 
 
 func _on_delete_student_popup_accepted() -> void:
-	var current_tab: = devices_tab_container.get_current_tab_control() as DeviceTab
+	var current_tab: DeviceTab = devices_tab_container.get_current_tab_control() as DeviceTab
 	if not current_tab:
 		return
-	var res: = await ServerManager.remove_student(int(lesson_unlocks.student))
+	var res: Dictionary = await ServerManager.remove_student(int(lesson_unlocks.student))
 	if res.code == 200:
 		lesson_unlocks.hide()
 		UserDataManager.update_configuration(res.body as Dictionary)

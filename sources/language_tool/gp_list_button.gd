@@ -14,7 +14,7 @@ func _on_item_selected(index: int) -> void:
 	if index == 0:
 		new_selected.emit()
 		return
-	var id: = get_item_id(index)
+	var id: int = get_item_id(index)
 	gp_selected.emit(id)
 
 
