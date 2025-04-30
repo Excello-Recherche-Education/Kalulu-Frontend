@@ -1,7 +1,8 @@
 extends Resource
 class_name TeacherSettings
 
-const available_codes: Array[String] = ["123", "124", "125", "126", "132", "134", "135", "136", "142", "143", "145", "146", "152", "153", "154", "213", "214", "215", "216", "231", "234", "235", "236", "241", "243", "245", "246", "251", "253", "254", "321", "324", "325", "326", "312", "314", "315", "316", "342", "341", "345", "346", "352", "351", "354", "423", "421", "425", "426", "432", "431", "435", "436", "412", "413", "415", "416", "452", "453", "451", "523", "524", "521", "526", "532", "534", "531", "536", "542", "543", "541", "546", "512", "513", "514", "623", "624", "625", "621", "632", "634", "635", "631", "642", "643", "645", "641", "652", "653", "654"]
+const available_codes: Array[int] = [123, 124, 125, 126, 132, 134, 135, 136, 142, 143, 145, 146, 152, 153, 154, 213, 214, 215, 216, 231, 234, 235, 236, 241, 243, 245, 246, 251, 253, 254, 321, 324, 325, 326, 312, 314, 315, 316, 342, 341, 345, 346, 352, 351, 354, 423, 421, 425, 426, 432, 431, 435, 436, 412, 413, 415, 416, 452, 453, 451, 523, 524, 521, 526, 532, 534, 531, 536, 542, 543, 541, 546, 512, 513, 514, 623, 624, 625, 621, 632, 634, 635, 631, 642, 643, 645, 641, 652, 653, 654]
+
 
 enum AccountType {
 	Teacher,
@@ -48,20 +49,20 @@ func update_from_dict(dict: Dictionary) -> void:
 		
 		students[int(device)] = device_students
 
-func get_new_code() -> String :
-	var used_codes: PackedStringArray
+func get_new_code() -> int :
+	var used_codes: Array[int]
 	for student_array: Array[StudentData] in students.values():
 		for student: StudentData in student_array:
-			used_codes.append(str(student.code))
+			used_codes.append(student.code)
 	
 	if used_codes.size() == available_codes.size():
-		return ""
+		return -1
 	
-	var codes: Array[String] = available_codes.duplicate()
-	for c: String in used_codes:
-		codes.erase(c)
+	var codes: Array[int] = available_codes.duplicate()
+	for code: int in used_codes:
+		codes.erase(code)
 	
-	var code: String = codes.pick_random()
+	var code: int = codes.pick_random()
 	return code
 
 

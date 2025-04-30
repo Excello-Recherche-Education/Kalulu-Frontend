@@ -23,7 +23,7 @@ func _ready() -> void:
 
 
 func _reset_password() -> void:
-	password = TeacherSettings.available_codes.pick_random()
+	password = str(TeacherSettings.available_codes.pick_random())
 	var password_array: PackedStringArray = password.split("")
 	password_label.text = tr("ADULT_CHECK_PROMPT").format(
 		{

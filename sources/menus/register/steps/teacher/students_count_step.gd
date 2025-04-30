@@ -19,7 +19,7 @@ func _on_next() -> bool:
 		register_data.students[device_id] = students
 		for _student: int in students_count_field.value:
 			var student_data: StudentData = StudentData.new()
-			student_data.code = int(register_data.get_new_code())
+			student_data.code = register_data.get_new_code()
 			if student_data.code:
 				students.append(student_data)
 			else:
