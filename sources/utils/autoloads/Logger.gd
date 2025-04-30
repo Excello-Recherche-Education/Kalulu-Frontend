@@ -27,7 +27,7 @@ func _ready() -> void:
 	_log_internal(LogLevel.INFO, "--- Logging started at " + Time.get_datetime_string_from_system() + " ---")
 	_log_internal(LogLevel.INFO, "--- Logging set at level " + str(current_level) + " ---")
 
-func delete_old_logs(days_threshold: float = 100) -> void:
+func delete_old_logs(days_threshold: float = 10) -> void:
 	var dir: DirAccess = DirAccess.open(logPath)
 	if dir == null:
 		push_warning("Logger: Could not open Logs directory for cleanup.")
