@@ -5,13 +5,13 @@ class_name FrogMinigame
 const LilypadTrack: = preload("res://sources/minigames/frog/lilypad_track.gd")
 const Lilypad: = preload("res://sources/minigames/frog/lilypad.gd")
 
-const lilypad_track_scene: = preload("res://sources/minigames/frog/lilypad_track.tscn")
+const lilypad_track_scene: PackedScene = preload("res://sources/minigames/frog/lilypad_track.tscn")
 
 
 class DifficultySettings:
-	var stimuli_ratio: = 0.75
-	var padsSpeedDisabled: = 100.0
-	var padsSpeed: = 200.0
+	var stimuli_ratio: float = 0.75
+	var padsSpeedDisabled: float = 100.0
+	var padsSpeed: float = 200.0
 	
 	func _init(p_stimuli_ratio: float, p_padsSpeedDisabled: float, p_padsSpeed: float) -> void:
 		stimuli_ratio = p_stimuli_ratio

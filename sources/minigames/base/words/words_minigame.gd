@@ -11,17 +11,17 @@ class_name WordsMinigame
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
 
-var current_gp_distractors_queue: Array[Dictionary] = []
+var current_gp_distractors_queue: Array[Dictionary]
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
-	var words_list: = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_GPs)
+	var words_list: Array[Dictionary] = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_GPs)
 	if words_list.is_empty():
 		return
 	
-	var current_lesson_words: = []
-	var previous_lesson_words: = []
+	var current_lesson_words: Array[Dictionary]
+	var previous_lesson_words: Array[Dictionary]
 	
 	for word: Dictionary in words_list:
 		if not FileAccess.file_exists(Database.get_word_sound_path(word)):
@@ -81,7 +81,7 @@ func _find_stimuli_and_distractions() -> void:
 	# Find the GPs and distractors for each word
 	for stimulus: Dictionary in stimuli:
 		stimulus.GPs = Database.get_GP_from_word(stimulus.ID as int)
-		var grapheme_distractions: = []
+		var grapheme_distractions: Array
 		for GP: Dictionary in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID as int, lesson_nb))
 		distractions.append(grapheme_distractions)
@@ -104,8 +104,8 @@ func _setup_minigame() -> void:
 
 # Setups the word progression for current progression
 func _setup_word_progression() -> void:
-	var stimulus: = _get_current_stimulus()
-	var GPs: = stimulus.GPs as Array
+	var stimulus: Dictionary = _get_current_stimulus()
+	var GPs: Array = stimulus.GPs as Array
 	max_word_progression = GPs.size()
 	current_word_progression = 0
 	
@@ -126,7 +126,7 @@ func _set_current_word_progression(p_current_word_progression: int) -> void:
 
 
 func _reset_distractors_queue() -> void:
-	var current_distractors: = distractions[current_progression][current_word_progression] as Array
+	var current_distractors: Array = distractions[current_progression][current_word_progression] as Array
 	
 	current_gp_distractors_queue = current_distractors.duplicate()
 	current_gp_distractors_queue.shuffle()
@@ -155,7 +155,7 @@ func _get_current_distractors() -> Array:
 
 # Get the current GP to find
 func _get_GP() -> Dictionary:
-	var stimulus: = _get_current_stimulus()
+	var stimulus: Dictionary = _get_current_stimulus()
 	if not stimulus or not stimulus.has("GPs") or current_word_progression >= (stimulus.GPs as Array).size():
 		return {}
 	return stimulus.GPs[current_word_progression]

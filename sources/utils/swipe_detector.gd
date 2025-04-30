@@ -3,7 +3,7 @@ class_name SwipeDetector
 
 signal swipe(start_position: Vector2, end_position: Vector2)
 
-@onready var drag_preview: = $DragPreview
+@onready var drag_preview: TextureRect = $DragPreview
 
 var current_preview: TextureRect
 var start_position: Vector2

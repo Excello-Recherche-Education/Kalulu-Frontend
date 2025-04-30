@@ -6,7 +6,7 @@ extends TextureButton
 	set = _set_completed_color
 @export var text: String:
 	set = _set_text
-@export var completed: = false:
+@export var completed: bool = false:
 	set = _set_completed
 
 @onready var center: TextureRect = %Center

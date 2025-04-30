@@ -9,7 +9,7 @@ signal jumped()
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var sprite: Sprite2D = $Sprite
 
-const jump_sounds: = [
+const jump_sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_jump_random_01.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_jump_random_02.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_jump_random_03.mp3"),
@@ -17,7 +17,7 @@ const jump_sounds: = [
 	preload("res://assets/minigames/frog/audio/frog_jump_random_05.mp3"),
 ]
 
-const frog_sounds: = [
+const frog_sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_random_01.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_random_02.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_random_03.mp3"),
@@ -29,7 +29,7 @@ const frog_sounds: = [
 func jump_to(destination: Vector2) -> void:
 	animation_player.play("jump")
 	
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(self, "global_position", destination, animation_player.get_animation("jump").length)
 
 
@@ -43,8 +43,8 @@ func _play_jump_sound() -> void:
 
 
 func _play_frog_sound() -> void:
-	var r: = randf()
-	if r <= 0.75:
+	var rand: float = randf()
+	if rand <= 0.75:
 		audio_player.stream = frog_sounds[randi() % frog_sounds.size()]
 		audio_player.play()
 
@@ -58,8 +58,8 @@ func _on_animation_player_animation_finished(animation_name: StringName) -> void
 		jumped.emit()
 	
 	if animation_name == "idle_front_1":
-		var r: = randf()
-		if r <= 0.5:
+		var rand: float = randf()
+		if rand <= 0.5:
 			animation_player.play("idle_front_1")
 		else:
 			animation_player.play("idle_front_2")
@@ -68,8 +68,8 @@ func _on_animation_player_animation_finished(animation_name: StringName) -> void
 		animation_player.play("idle_front_1")
 	
 	if animation_name == "idle_side_1":
-		var r: = randf()
-		if r <= 0.5:
+		var rand: float = randf()
+		if rand <= 0.5:
 			animation_player.play("idle_side_1")
 		else:
 			animation_player.play("idle_side_2")

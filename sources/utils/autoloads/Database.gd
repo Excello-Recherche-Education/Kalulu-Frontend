@@ -151,7 +151,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	return result
 
 
-func get_GPs_from_syllable(syllable_ID: int) -> Array:
+func get_GPs_from_syllable(syllable_ID: int) -> Array[Dictionary]:
 	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type FROM Syllables INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID AND Syllables.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInSyllables.GPID ORDER BY Position", [syllable_ID])
 	return db.query_result
 
@@ -161,7 +161,7 @@ func get_GP_from_word(ID: int) -> Array:
 	return db.query_result
 
 
-func get_GPs_from_sentence(sentenceID: int) -> Array:
+func get_GPs_from_sentence(sentenceID: int) -> Array[Dictionary]:
 	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type, GPsInWords.WordID, GPsInWords.Position AS GPPosition, WordsInSentences.Position AS WordPosition FROM GPs
 INNER JOIN GPsInWords ON GPsInWords.GPID = GPs.ID
 INNER JOIN WordsInSentences ON WordsInSentences.WordID = GPsInWords.WordID
@@ -171,7 +171,7 @@ ORDER BY WordPosition ASC, GPPosition ASC", [sentenceID])
 	return db.query_result
 
 
-func get_words_containing_grapheme(grapheme: String) -> Array:
+func get_words_containing_grapheme(grapheme: String) -> Array[Dictionary]:
 	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPS.ID = GPsInWords.GPID", [grapheme])
 	return db.query_result
 
@@ -208,7 +208,7 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[D
 	return res
 
 
-func get_words_for_lesson(lesson_nb: int, only_new: bool = false, min_length: int = 2, max_length: int = 99, include_exception: bool = false) -> Array:
+func get_words_for_lesson(lesson_nb: int, only_new: bool = false, min_length: int = 2, max_length: int = 99, include_exception: bool = false) -> Array[Dictionary]:
 	var parameters: Array = []
 	var query: String = "SELECT DISTINCT Words.ID, Words.Word, Words.Exception, VerifiedCount.Count as GPsCount, MaxLessonNb as LessonNb, VerifiedCount.gpsid as GPs_IDs
 FROM Words
@@ -378,7 +378,7 @@ WHERE Sentences.Exception = 0
 	return db.query_result
 
 
-func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
+func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array[Dictionary]:
 	var query: String = "SELECT * FROM Pseudowords
 	 INNER JOIN Words ON Words.ID = Pseudowords.WordID 
 	 INNER JOIN 
@@ -396,7 +396,7 @@ func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array:
 	return db.query_result
 
 
-func get_distractors_for_grapheme(id: int, lesson_nb: int) -> Array:
+func get_distractors_for_grapheme(id: int, lesson_nb: int) -> Array[Dictionary]:
 	db.query_with_bindings("SELECT DISTINCT distractor.Grapheme, distractor.ID, distractor.Phoneme From GPs stimuli 
 	INNER JOIN GPs distractor 
 	INNER JOIN Lessons 
@@ -575,10 +575,10 @@ func _phoneme_to_string(phoneme: String) -> String:
 	else:
 		return "cap." + phoneme.to_lower()
 
-
-func _import_word_from_csv(ortho: String, gpmatch: String, is_word: bool = true) -> Array:
+# Returns an array containing an int followed by an array of int
+func _import_word_from_csv(ortho: String, gpmatch: String, is_word: bool = true) -> Array[Variant]:
 	var gp_list: PackedStringArray = gpmatch.trim_prefix("(").trim_suffix(")").split(".")
-	var gp_ids: Array[int] = []
+	var gp_ids: Array[int]
 	for gp: String in gp_list:
 		var split: PackedStringArray = gp.split("-")
 		var grapheme: String = split[0]

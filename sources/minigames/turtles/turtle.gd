@@ -54,7 +54,7 @@ func _set_direction(new_direction: Vector2) -> void:
 		sprite.play("swim_left")
 
 	# Tween the rotation of the body
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(body, "rotation_degrees", angle, sprite.sprite_frames.get_frame_count(sprite.animation) /sprite.sprite_frames.get_animation_speed(sprite.animation))
 	await tween.finished
 	
@@ -88,7 +88,7 @@ func disappear() -> void:
 	body_area_collision_shape.set_deferred("disabled", true)
 	await get_tree().create_timer(randf_range(0., 0.2)).timeout
 	sprite.play("disappear")
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(label, "modulate:a", 0, sprite.sprite_frames.get_frame_count(sprite.animation) /sprite.sprite_frames.get_animation_speed(sprite.animation))
 
 #endregion
@@ -119,7 +119,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation in ["swim_left", "swim_right"]:
 		sprite.play("swim")
 	elif sprite.animation == "disappear":
-		var coroutine: = Coroutine.new()
+		var coroutine: Coroutine = Coroutine.new()
 		audio_stream_player.play()
 		if audio_stream_player.playing:
 			coroutine.add_future(audio_stream_player.finished)

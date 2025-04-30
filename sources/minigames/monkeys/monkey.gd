@@ -4,8 +4,6 @@ extends Node2D
 signal pressed()
 signal dragged_into_self()
 
-# Namespace
-const Coconut: = preload("res://sources/minigames/monkeys/coconut.gd")
 
 @onready var stars: AnimatedSprite2D = $Stars
 @onready var coconut: Coconut = $Marker2D/Coconut
@@ -16,10 +14,10 @@ const Coconut: = preload("res://sources/minigames/monkeys/coconut.gd")
 @onready var button: Button = $Button
 @onready var hit_position: Marker2D = $HitPosition
 
-var locked: = true:
+var locked: bool = true:
 	set(value):
 		locked = value or stunned
-var stunned: = false:
+var stunned: bool = false:
 	set(value):
 		stunned = value
 		stars.visible = stunned

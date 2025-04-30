@@ -2,12 +2,12 @@ extends "res://sources/language_tool/word_list.gd"
 
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
-	var file: = FileAccess.open(path, FileAccess.READ)
-	var line: = file.get_csv_line()
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var line: PackedStringArray = file.get_csv_line()
 	if line.size() < 2 or line[0] != "ORTHO" or line[1] != "GPMATCH":
 		error_label.text = "Column names should be ORTHO, GPMATCH"
 		return
-	var all_data = {}
+	var all_data: Dictionary = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
 		if line.size() < 2:
@@ -21,9 +21,9 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 	
 	# delete elements that are not in file
 	if match_to_file:
-		var query: = "Select * FROM Syllables"
+		var query: String = "Select * FROM Syllables"
 		Database.db.query(query)
-		var result: = Database.db.query_result
-		for e in result:
-			if not e.Syllable in all_data:
-				Database.db.delete_rows("Syllables", "ID=%s" % e.ID)
+		var result: Array[Dictionary] = Database.db.query_result
+		for element: Dictionary in result:
+			if not element.Syllable in all_data:
+				Database.db.delete_rows("Syllables", "ID=%s" % element.ID)

@@ -1,7 +1,8 @@
 @tool
 extends Node2D
+class_name Parakeet
 
-const instance_scene: = "res://sources/minigames/parakeets/parakeet.tscn"
+const instance_scene: String = "res://sources/minigames/parakeets/parakeet.tscn"
 
 enum Colors {
 	Red,
@@ -9,7 +10,7 @@ enum Colors {
 	Yellow,
 }
 
-const animations: = [
+const animations: Array[SpriteFrames] = [
 	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/green_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/yellow_parakeet_spritesheet.tres")
@@ -23,7 +24,7 @@ signal pressed()
 		color = value
 		if animated_sprite:
 			animated_sprite.sprite_frames = animations[color]
-@export var uppercase: = true:
+@export var uppercase: bool = true:
 	set(value):
 		uppercase = value
 		if label:
@@ -50,9 +51,8 @@ func _on_button_pressed() -> void:
 	pressed.emit()
 
 
-static func instantiate() -> Variant:
-	@warning_ignore("unsafe_method_access")
-	return load(instance_scene).instantiate()
+static func instantiate() -> Parakeet:
+	return (load(instance_scene) as PackedScene).instantiate()
 
 
 func turn_to_back() -> void:
@@ -80,7 +80,7 @@ func _on_animated_sprite_2d_animation_looped() -> void:
 func fly_to(target: Vector2, duration: float) -> void:
 	animated_sprite.play("fly")
 	label.position.y = -195
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(self, "global_position", target, duration)

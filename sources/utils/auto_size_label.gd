@@ -2,7 +2,7 @@
 extends Container
 
 
-@export_multiline var ref_size_text: = ""
+@export_multiline var ref_size_text: String = ""
 var ref_size: Vector2
 @onready var label: Label = $Label
 

@@ -12,10 +12,10 @@ signal disappeared()
 
 var stimulus: Dictionary:
 	set = _set_stimulus
-var disabled: = false:
+var disabled: bool = false:
 	set = _set_disabled
-var is_distractor: = true
-var top_to_bottom: = false
+var is_distractor: bool = true
+var top_to_bottom: bool = false
 
 
 func disappear() -> void:

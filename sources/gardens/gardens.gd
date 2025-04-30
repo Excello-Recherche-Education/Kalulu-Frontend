@@ -529,7 +529,7 @@ func _close_minigames_layout() -> void:
 	kalulu_button.visible = true
 	line_particles.visible = true
 	
-	for button in current_garden.lesson_button_controls:
+	for button: LessonButton in current_garden.lesson_button_controls:
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
 	
 	minigame_layout_1.pressed.disconnect(_on_minigame_button_pressed)
@@ -602,7 +602,7 @@ func set_up_path() -> void:
 			break
 		var garden_layout: GardenLayout = gardens_layout.gardens[index]
 		var garden_control: Garden = garden_parent.get_child(index)
-		for button in garden_layout.lesson_buttons:
+		for button: GardenLayout.LessonButton in garden_layout.lesson_buttons:
 			var point_position: Vector2 = garden_parent.position + garden_control.position + Vector2(button.position)
 			point_position += garden_control.get_button_size() / 2
 			var point_in_position: Vector2 = Vector2.ZERO

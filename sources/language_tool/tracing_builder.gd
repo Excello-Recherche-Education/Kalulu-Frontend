@@ -2,16 +2,16 @@ extends Control
 
 @export var gradient: Gradient
 
-@onready var lower_container: = %Lower
-@onready var upper_container: = %Upper
-@onready var letter_picker: = %LetterPicker
-@onready var save_ok: = %SaveOk
-@onready var copy_from: = %CopyFrom
+@onready var lower_container: SegmentContainer = %Lower
+@onready var upper_container: SegmentContainer = %Upper
+@onready var letter_picker: OptionButton = %LetterPicker
+@onready var save_ok: TextureRect = %SaveOk
+@onready var copy_from: MenuButton = %CopyFrom
 
-const extension: = ".csv"
+const extension: String = ".csv"
 
-var letters: Array[String] = []
-var current_letter: = -1
+var letters: Array[String]
+var current_letter: int = -1
 
 
 func _ready() -> void:
@@ -27,11 +27,11 @@ func _ready() -> void:
 func _find_all_letters() -> void:
 	letters = []
 	
-	var query: = "Select * FROM GPs"
+	var query: String = "Select * FROM GPs"
 	Database.db.query(query)
-	var result: = Database.db.query_result
-	for element in result:
-		for letter in element.Grapheme:
+	var result: Array[Dictionary] = Database.db.query_result
+	for element: Dictionary in result:
+		for letter: String in element.Grapheme:
 			if not letter in letters:
 				letters.append(letter)
 				letter_picker.add_item(letter)
@@ -58,26 +58,26 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 	if not FileAccess.file_exists(real_path(path)):
 		return
 	
-	var file: = FileAccess.open(real_path(path), FileAccess.READ)
+	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.READ)
 	while not file.eof_reached():
-		var line: = file.get_csv_line()
-		var points: Array[Vector2] = []
-		for element in line:
+		var line: PackedStringArray = file.get_csv_line()
+		var points: Array[Vector2]
+		for element: String in line:
 			if element == "":
 				break
 			
-			var s: = element.split(" ")
+			var s: PackedStringArray = element.split(" ")
 			points.append(Vector2(float(s[0]), float(s[1])))
 		if not points.is_empty():
 			segment_container.load_segment(points)
 
 
-func _save_segments(segments: Array, path: String) -> void:
+func _save_segments(segments: Array[SegmentBuild], path: String) -> void:
 	DirAccess.make_dir_recursive_absolute(Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder))
-	var file: = FileAccess.open(real_path(path), FileAccess.WRITE)
-	for segment in segments:
-		var values: PackedStringArray = []
-		for point in segment.points:
+	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.WRITE)
+	for segment: SegmentBuild in segments:
+		var values: PackedStringArray
+		for point: Vector2 in segment.points:
 			values.append(str(point.x) + " " + str(point.y))
 		file.store_csv_line(values)
 	file.close()
@@ -96,8 +96,8 @@ func real_path(path: String) -> String:
 
 
 func _on_save_button_pressed() -> void:
-	_save_segments(lower_container.segments_container.get_children(), lower_path(letters[current_letter]))
-	_save_segments(upper_container.segments_container.get_children(), upper_path(letters[current_letter]))
+	_save_segments(lower_container.segments_container.get_children() as Array[SegmentBuild], lower_path(letters[current_letter]))
+	_save_segments(upper_container.segments_container.get_children() as Array[SegmentBuild], upper_path(letters[current_letter]))
 	
 	save_ok.visible = true
 

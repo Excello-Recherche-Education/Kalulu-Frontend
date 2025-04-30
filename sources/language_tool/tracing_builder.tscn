@@ -132,6 +132,7 @@ texture = ExtResource("4_83j0b")
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+current_tab = 0
 
 [node name="Lower" parent="VBoxContainer/TabContainer" instance=ExtResource("4_frjng")]
 unique_name_in_owner = true

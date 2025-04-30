@@ -1,5 +1,6 @@
 @tool
 extends Control
+class_name Jellyfish
 
 signal pressed(stimulus: Dictionary)
 
@@ -8,19 +9,19 @@ enum Colors {
 	Green,
 }
 
-const animations: = [
+const animations: Array[SpriteFrames] = [
 	preload("res://sources/minigames/jellyfish/red_jellyfish_animations.tres"),
 	preload("res://sources/minigames/jellyfish/green_jellyfish_animations.tres"),
 ]
 
-const scales: = [
+const scales: Array[Vector2] = [
 	Vector2(1.,1.),
 	Vector2(1.25, 1.25)
 ]
 
 const scale_factor : float = 0.2
 
-@export var color: = Colors.Red:
+@export var color: int = Colors.Red:
 	set(value):
 		color = value
 		if animated_sprite:
@@ -50,8 +51,8 @@ var stimulus: Dictionary :
 func _ready() -> void:
 	stimulus = stimulus
 	
-	var f: = randf()
-	color = Colors.Red if f < 0.7 else Colors.Green
+	var rand: float = randf()
+	color = Colors.Red if rand < 0.7 else Colors.Green
 	animated_sprite.play("idle")
 	animated_sprite.frame = randi_range(0, animated_sprite.sprite_frames.get_frame_count("idle") - 1)
 
@@ -96,7 +97,7 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 func delete() -> void:
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0, 2)
 	await tween.finished
 	queue_free()

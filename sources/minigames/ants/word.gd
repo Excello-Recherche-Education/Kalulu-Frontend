@@ -15,7 +15,7 @@ signal no_answer()
 
 var stimulus: String:
 	set = _set_stimulus
-var follow_mouse: = false
+var follow_mouse: bool = false
 var current_anchor: CanvasItem
 
 
@@ -53,10 +53,10 @@ func _on_button_down() -> void:
 func _on_button_up() -> void:
 	follow_mouse = false
 	
-	var destination: = current_anchor
+	var destination: CanvasItem = current_anchor
 	@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 	var min_distance: float = ((current_anchor.global_position - global_position) as Vector2).length()
-	for other_area in area.get_overlapping_areas():
+	for other_area: Area2D in area.get_overlapping_areas():
 		var other: CanvasItem = other_area
 		if not other_area is Ant:
 			other = other_area.owner

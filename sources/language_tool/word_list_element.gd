@@ -314,7 +314,8 @@ func _already_in_database(text: String) -> int:
 func _add_from_additional_word_list(new_text: String) -> int:
 	if new_text in Database.additional_word_list:
 		var is_word: bool = table == "Words"
-		var res: Array = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH as String, is_word)
+		# res contains an int, followed by an array of int
+		var res: Array[Variant] = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH as String, is_word)
 		GPs_updated.emit()
 		id = res[0]
 		gp_ids = res[1]

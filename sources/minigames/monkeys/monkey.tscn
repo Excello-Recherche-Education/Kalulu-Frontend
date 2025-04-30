@@ -542,7 +542,7 @@ script/source = "extends Button
 @warning_ignore(\"UNUSED_SIGNAL\")
 signal dragging()
 
-@onready var drag_preview_model: = $DragPreview
+@onready var drag_preview_model: TextureRect = $DragPreview
 
 
 		

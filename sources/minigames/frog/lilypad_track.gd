@@ -3,10 +3,10 @@ extends Control
 signal lilypad_in_center(lilypad: Lilypad)
 
 # Namespace
-const Lilypad: = preload("res://sources/minigames/frog/lilypad.gd")
+const Lilypad = preload("res://sources/minigames/frog/lilypad.gd")
 
-const lilypad_scene: = preload("res://sources/minigames/frog/lilypad.tscn")
-const lilypad_crossing_time: = 5.0
+const lilypad_scene: PackedScene = preload("res://sources/minigames/frog/lilypad.tscn")
+const lilypad_crossing_time: float = 5.0
 
 
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
@@ -107,7 +107,7 @@ func _spawn_lilypad() -> void:
 		lilypad.button.scale = Vector2(s, s)
 		lilypad_size *= s
 	
-	var is_stimulus: = randf() < difficulty_settings.stimuli_ratio
+	var is_stimulus: bool = randf() < difficulty_settings.stimuli_ratio
 	lilypad.is_distractor = !is_stimulus
 	if is_stimulus:
 		lilypad.stimulus = gp
@@ -136,13 +136,13 @@ func _despawn_lilypad(lilypad: Lilypad) -> void:
 func _set_enabled(value: bool) -> void:
 	is_enabled = value
 	if not is_cleared:
-		for lilypad in lilypads:
+		for lilypad: Lilypad in lilypads:
 			lilypad.disabled = not is_enabled
 
 
 func _set_highlighting(value: bool) -> void:
 	is_highlighting = is_enabled and value
-	for lilypad in lilypads:
+	for lilypad: Lilypad in lilypads:
 		if is_highlighting:
 			lilypad.highlight()
 		else:
@@ -158,11 +158,11 @@ func _on_lilypad_pressed(lilypad: Lilypad) -> void:
 	audio_player.play()
 	stop()
 	
-	for other_lilypad in lilypads:
+	for other_lilypad: Lilypad in lilypads:
 		if other_lilypad != lilypad:
 			other_lilypad.disappear()
 	
-	var center_tween: = create_tween()
+	var center_tween: Tween = create_tween()
 	center_tween.finished.connect(_on_center_tween_finished.bind(lilypad, center_tween))
 	center_tween.tween_property(lilypad, "global_position", global_position + size / 2.0, 0.5)
 

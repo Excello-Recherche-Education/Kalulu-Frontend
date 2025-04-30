@@ -67,10 +67,10 @@ func start(start_point: Vector2, end_point: Vector2) -> void:
 
 
 func create_path(start_point: Vector2, end_point: Vector2) -> void:
-	var current := start_point
-	var segment_length := start_point.distance_to(end_point) / segments
+	var current: Vector2 = start_point
+	var segment_length: float = start_point.distance_to(end_point) / segments
 	
-	var general_direction: = (end_point - start_point).normalized()
+	var general_direction: Vector2 = (end_point - start_point).normalized()
 	
 	curve.add_point(start_point, -segment_length * general_direction / 2.0, segment_length * general_direction / 2.0)
 	for _segment: int in range(segments):

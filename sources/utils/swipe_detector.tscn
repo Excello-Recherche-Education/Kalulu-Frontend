@@ -17,6 +17,5 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[connection signal="pressed" from="." to="." method="_on_pressed"]
 [connection signal="tree_exited" from="DragPreview" to="." method="_on_drag_preview_tree_exited"]
 [connection signal="tree_exiting" from="DragPreview" to="." method="_on_drag_preview_tree_exiting"]

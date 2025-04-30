@@ -1,14 +1,11 @@
 extends SyllablesMinigame
 
-# Namespace
-const Jellyfish: = preload("res://sources/minigames/jellyfish/jellyfish.gd")
-
-const jellyfish_scene: = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
+const jellyfish_scene: PackedScene = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
 
 class DifficultySettings:
-	var spawn_time: = 4.0
-	var stimuli_ratio: = 0.75
-	var velocity: = 150
+	var spawn_time: float = 4.0
+	var stimuli_ratio: float = 0.75
+	var velocity: int = 150
 	
 	func _init(p_spawn_time: float, p_stimuli_ratio: float, p_velocity: int) -> void:
 		spawn_time = p_spawn_time
@@ -66,13 +63,13 @@ func _spawn() -> void:
 	spawning_space.add_child(new_jellyfish)
 	
 	# Find the right size for the jellyfish
-	var jellyfish_width: = new_jellyfish.size.x * new_jellyfish.scale.x
+	var jellyfish_width: float = new_jellyfish.size.x * new_jellyfish.scale.x
 	
 	# Check if there is enough space to spawn the jellyfish and find a spot
-	var permitted_range: = 0.
-	var left_border: = 0.
+	var permitted_range: float = 0.
+	var left_border: float = 0.
 	# Blocking jellyfish is supposed to be ordered
-	for blocking in blocking_jellyfish:
+	for blocking: Jellyfish in blocking_jellyfish:
 		permitted_range += maxf(0.0, blocking.position.x - left_border - jellyfish_width)
 		left_border = blocking.position.x + blocking.size.x
 	permitted_range += maxf(0.0, spawning_space.size.x - left_border)
@@ -81,7 +78,7 @@ func _spawn() -> void:
 		return
 	
 	# Define if the jellyfish is a stimulus or a distraction
-	var is_stimulus: = randf() < _get_difficulty_settings().stimuli_ratio
+	var is_stimulus: bool = randf() < _get_difficulty_settings().stimuli_ratio
 	if is_stimulus:
 		new_jellyfish.stimulus = _get_current_stimulus()
 		if is_highlighting:
@@ -91,10 +88,10 @@ func _spawn() -> void:
 		new_jellyfish.stimulus = current_distractors.pick_random()
 	
 	# Randomize the spawn and adds the jellyfish into the scene
-	var random_spawn: = randf_range(0, permitted_range - 1)
+	var random_spawn: float = randf_range(0, permitted_range - 1)
 	left_border = 0
 	# Blocking jellyfish is supposed to be ordered
-	for blocking in blocking_jellyfish:
+	for blocking: Jellyfish in blocking_jellyfish:
 		var local_permitted_range: float = maxf(0.0, blocking.position.x - left_border - jellyfish_width)
 		if local_permitted_range <= random_spawn:
 			random_spawn -= local_permitted_range
@@ -105,9 +102,9 @@ func _spawn() -> void:
 	new_jellyfish.position.y = spawning_space.size.y
 	
 	# Insert the new jellyfish on the right spot in the blocking array
-	var found_ind: = -1
+	var found_ind: int = -1
 	for index: int in blocking_jellyfish.size():
-		var blocking: = blocking_jellyfish[index]
+		var blocking: Jellyfish = blocking_jellyfish[index]
 		if blocking.position.x > new_jellyfish.position.x:
 			found_ind = index
 			break
@@ -142,7 +139,7 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 	if not super(stimulus, node):
 		return false
 	
-	var jellyfish: = node as Jellyfish
+	var jellyfish: Jellyfish = node as Jellyfish
 	if not jellyfish:
 		return false
 	
@@ -150,7 +147,7 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 	jellyfish.pressed.disconnect(_on_stimulus_pressed)
 	
 	# Check if the stimulus is right
-	var is_right: = _is_stimulus_right(jellyfish.stimulus)
+	var is_right: bool = _is_stimulus_right(jellyfish.stimulus)
 	if is_right:
 		jellyfish.happy()
 		jellyfish.right()

@@ -9,7 +9,7 @@ var target_position: Vector2
 func _ready() -> void:
 	curve.set_point_position(1, target_position)
 	
-	var tween: = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(path_follow, "progress_ratio", 1, .5)
 	await tween.finished
 	
