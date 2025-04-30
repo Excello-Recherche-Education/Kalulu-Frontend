@@ -26,7 +26,7 @@ func set_environment(env: int) -> void:
 
 
 func submit_student_metrics(level: int, elapsed_time: int) -> void:
-	await _post_request("submit_student_metrics", {"student_id": UserDataManager.student, "level": level, "time_spent": elapsed_time})
+	await _post_json_request("submit_student_metrics", {"student_id": UserDataManager.student, "level": level, "time_spent": elapsed_time})
 
 
 # Response from the last request
@@ -153,7 +153,7 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 	var req: String = environment_url + URI
 	var headers: PackedStringArray = _create_request_headers()
 	headers.append("Content-Type: application/json")
-	Logger.debug("ServerManager Sending JSON request. URI = %s. Data = %s " % [URI, data])
+	Logger.debug("ServerManager Sending JSON request.\nRequest = %s.\nData = %s " % [req, data])
 	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == 0:
 		await request_completed
 	else:
