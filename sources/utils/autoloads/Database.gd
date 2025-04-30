@@ -544,7 +544,7 @@ func get_gp_sound_path(gp: Dictionary) -> String:
 
 
 func get_syllable_sound_path(syllable: Dictionary) -> String:
-	return base_path + language + language_sounds + syllable.Syllable + sound_extension
+	return base_path + language + language_sounds + syllable.Grapheme + sound_extension
 
 
 func get_word_sound_path(word: Dictionary) -> String:

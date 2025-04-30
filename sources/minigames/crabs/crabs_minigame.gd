@@ -96,9 +96,9 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 		# Spawn another crab
 		_on_hole_crab_despawned(false)
 		
-		# Play the pressed crab phoneme
-		if stimulus and stimulus.Phoneme:
-			await audio_player.play_gp(stimulus)
+		# Play the pressed crab syllable
+		if stimulus:
+			await audio_player.play_syllable(stimulus)
 		
 		await get_tree().create_timer(1).timeout
 		_play_current_stimulus_phoneme()
@@ -137,7 +137,7 @@ func _on_hole_crab_despawned(is_stimulus: bool) -> void:
 
 
 func _on_hole_timer_timeout() -> void:
-	var holes_range: Array[int] = range(holes.size())
+	var holes_range: Array = range(holes.size())
 	holes_range.shuffle()
 	
 	var hole_found: bool = false
