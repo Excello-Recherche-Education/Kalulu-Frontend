@@ -14,14 +14,15 @@ func _ready() -> void:
 	hide()
 
 
-func play_kalulu_speech(speech: AudioStream) -> void:
-	show()
-	
-	audio_player.stream = show_sound
-	audio_player.play()
-	
-	kalulu_sprite.play("Show")
-	await kalulu_sprite.animation_finished
+func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_animation: bool = true) -> void:
+	if show_animation:
+		show()
+		
+		audio_player.stream = show_sound
+		audio_player.play()
+		
+		kalulu_sprite.play("Show")
+		await kalulu_sprite.animation_finished
 	
 	if speech:
 		kalulu_sprite.play("Talk1")
@@ -31,13 +32,14 @@ func play_kalulu_speech(speech: AudioStream) -> void:
 	else:
 		Logger.warn("Kalulu: Speech not found")
 	
-	audio_player.stream = hide_sound
-	audio_player.play()
-	
-	kalulu_sprite.play("Hide")
-	await kalulu_sprite.animation_finished
-	hide()
-	
+	if hide_animation:
+		audio_player.stream = hide_sound
+		audio_player.play()
+		
+		kalulu_sprite.play("Hide")
+		await kalulu_sprite.animation_finished
+		hide()
+		
 	speech_ended.emit()
 
 func _on_pass_button_pressed() -> void:
