@@ -1,3 +1,4 @@
+@tool
 extends WordsMinigame
 class_name FrogMinigame
 

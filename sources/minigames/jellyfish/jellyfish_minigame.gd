@@ -1,3 +1,4 @@
+@tool
 extends SyllablesMinigame
 
 const jellyfish_scene: PackedScene = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
