@@ -16,5 +16,4 @@ func _set_texture(p_texture: Texture) -> void:
 	texture = p_texture
 	sprite.texture = p_texture
 	
-	@warning_ignore("integer_division")
-	sprite.position.y = -sprite.texture.get_height() / 2
+	sprite.position.y = -sprite.texture.get_height() / 2.0

@@ -1,3 +1,4 @@
+@tool
 extends Minigame
 
 signal beacon_fish_dropped(is_answered_real: bool)

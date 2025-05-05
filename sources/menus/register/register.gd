@@ -112,7 +112,7 @@ func _on_step_completed(step : Step) -> void:
 			if UserDataManager.register(register_data):
 				get_tree().change_scene_to_file(next_scene_path)
 		else:
-			if res.has("body") and res.body.has("message"):
+			if res.has("body") and (res.body as Dictionary).has("message"):
 				popup_info_label.text = res.body.message
 			else:
 				popup_info_label.text = ''

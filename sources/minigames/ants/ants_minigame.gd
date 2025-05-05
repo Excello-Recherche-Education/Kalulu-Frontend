@@ -189,12 +189,8 @@ func _start_ants() -> void:
 		
 		ant.idle()
 	
-	for word: Node in words.get_children():
-		if word is Control:
-			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
-			(word as Control).disabled = false
-		else:
-			Logger.error("Ants_Minigame: variable \"word\" is not of type Control")
+	for word: Word in words.get_children():
+		word.disabled = false
 
 
 func _on_current_progression_changed() -> void:
@@ -232,10 +228,8 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 		
 		if is_right:
 			for index: int in range(words.get_child_count() - 1):
-				@warning_ignore("UNSAFE_METHOD_ACCESS")
-				words.get_child(index).right()
-			@warning_ignore("UNSAFE_METHOD_ACCESS")
-			await words.get_child(words.get_child_count() - 1).right()
+				(words.get_child(index) as Word).right()
+			await (words.get_child(words.get_child_count() - 1) as Word).right()
 			
 			current_progression += 1
 		else:
@@ -254,8 +248,7 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 				@warning_ignore("UNSAFE_METHOD_ACCESS")
 				ants.get_child(index).set_monitorable(false)
 		
-			for word_i: Node in words.get_children():
-				@warning_ignore("UNSAFE_PROPERTY_ACCESS")
+			for word_i: Word in words.get_children():
 				word_i.disabled = false
 
 

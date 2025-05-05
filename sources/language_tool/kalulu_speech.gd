@@ -59,7 +59,7 @@ func _on_file_dialog_file_selected(file_path: String) -> void:
 		if FileAccess.file_exists(current_file):
 			DirAccess.remove_absolute(current_file)
 		
-		var current_dir: = current_file.get_base_dir()
+		var current_dir: String = current_file.get_base_dir()
 		if not DirAccess.dir_exists_absolute(current_dir):
 			DirAccess.make_dir_recursive_absolute(current_dir)
 		

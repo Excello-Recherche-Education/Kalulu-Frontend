@@ -3,14 +3,14 @@ extends Control
 const KaluluTitle: = preload("res://sources/language_tool/kalulu_speech_title.gd")
 const KaluluSpeech: = preload("res://sources/language_tool/kalulu_speech.gd")
 
-const title_scene: = preload("res://sources/language_tool/kalulu_speech_title.tscn")
-const speech_scene: = preload("res://sources/language_tool/kalulu_speech.tscn")
+const title_scene: PackedScene = preload("res://sources/language_tool/kalulu_speech_title.tscn")
+const speech_scene: PackedScene = preload("res://sources/language_tool/kalulu_speech.tscn")
 
 @onready var speech_container: VBoxContainer = %SpeechContainer
 
 
 func _ready() -> void:
-	var speeches: = {
+	var speeches: Dictionary[String, Dictionary] = {
 		"title_screen": {
 			"feedback_welcome": "",
 			"tuto_welcome_oneshot": "",
@@ -92,12 +92,12 @@ func _ready() -> void:
 		}
 	}
 	
-	for speech_title in speeches.keys():
+	for speech_title: String in speeches.keys():
 		var title: KaluluTitle = title_scene.instantiate()
 		title.title = speech_title
 		speech_container.add_child(title)
 		
-		for speech_name in speeches[speech_title].keys():
+		for speech_name: String in speeches[speech_title].keys():
 			var speech: KaluluSpeech = speech_scene.instantiate()
 			speech.speech_category = speech_title
 			speech.speech_name = speech_name

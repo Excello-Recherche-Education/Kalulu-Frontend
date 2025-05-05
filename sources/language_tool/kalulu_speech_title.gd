@@ -1,7 +1,7 @@
 extends PanelContainer
 
 
-@export var title: = "":
+@export var title: String = "":
 	set = _set_title
 
 @onready var title_label: Label = %TitleLabel

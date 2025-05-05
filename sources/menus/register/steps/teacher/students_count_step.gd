@@ -1,3 +1,4 @@
+@tool
 extends Step
 class_name StudentsCountStep
 
