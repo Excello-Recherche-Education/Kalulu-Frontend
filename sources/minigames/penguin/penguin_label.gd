@@ -6,7 +6,7 @@ signal pressed(pos: Vector2)
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var button: Button = $Button
 
-var gp: Dictionary
+var gp: Dictionary = {}
 var capitalized: bool = false
 var is_pressed: bool = false
 

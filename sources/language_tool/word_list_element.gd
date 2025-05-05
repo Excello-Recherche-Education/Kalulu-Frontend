@@ -51,7 +51,7 @@ var reading: int = 0:
 	set = set_reading
 var writing: int = 0:
 	set = set_writing
-var sub_elements_list: Dictionary
+var sub_elements_list: Dictionary = {}
 
 
 func set_exception(p_exception: bool) -> void:

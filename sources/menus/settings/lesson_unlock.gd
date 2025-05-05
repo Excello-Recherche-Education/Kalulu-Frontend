@@ -7,7 +7,7 @@ signal unlocks_changed
 @export var lesson_GPs: String:
 	set = _set_lesson_GPs
 
-@export var unlocks: Dictionary
+@export var unlocks: Dictionary = {}
 
 @onready var lesson_label: Label = %LessonLabel
 @onready var gps_label: Label = %GPsLabel

@@ -4,7 +4,7 @@ const element_scene: PackedScene = preload("res://sources/language_tool/fish_wor
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 
-var word_list: Array
+var word_list: Array = []
 
 
 func _ready() -> void:

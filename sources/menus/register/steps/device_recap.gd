@@ -5,7 +5,7 @@ const StudentPanel = preload("res://sources/menus/settings/student_panel.gd")
 const student_panel_scene: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
 
 @export var title: String
-@export var students: Array[StudentData]
+@export var students: Array[StudentData] = []
 
 @onready var title_label: Label = %Title
 @onready var students_container: GridContainer = %StudentsContainer

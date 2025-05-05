@@ -35,7 +35,7 @@ signal pressed()
 @onready var right_FX: RightFX = $RightFX
 @onready var wrong_FX: WrongFX = $WrongFX
 
-var stimulus: Dictionary :
+var stimulus: Dictionary = {}:
 	set(value):
 		stimulus = value
 		var grapheme: String = value.Grapheme as String

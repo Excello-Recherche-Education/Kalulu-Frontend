@@ -125,7 +125,7 @@ func _on_berry_timer_timeout() -> void:
 	var branch: Branch = branches[index]
 	
 	# Define if the berry is a stimulus or a distraction
-	var gp: Dictionary
+	var gp: Dictionary = {}
 	var is_stimulus: bool = randf() < _get_difficulty_settings().stimuli_ratio
 	if is_stimulus:
 		gp = _get_GP()

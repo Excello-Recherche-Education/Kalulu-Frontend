@@ -10,7 +10,7 @@ extends Control
 
 const extension: String = ".csv"
 
-var letters: Array[String]
+var letters: Array[String] = []
 var current_letter: int = -1
 
 
@@ -61,7 +61,7 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.READ)
 	while not file.eof_reached():
 		var line: PackedStringArray = file.get_csv_line()
-		var points: Array[Vector2]
+		var points: Array[Vector2] = []
 		for element: String in line:
 			if element == "":
 				break

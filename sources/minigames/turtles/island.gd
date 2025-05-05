@@ -3,7 +3,7 @@ extends Area2D
 @onready var label : Label = $Label
 @onready var collision: CollisionPolygon2D = $CollisionPolygon2D
 
-var stimulus: Dictionary:
+var stimulus: Dictionary = {}:
 	set(value):
 		stimulus = value
 		progress = 0

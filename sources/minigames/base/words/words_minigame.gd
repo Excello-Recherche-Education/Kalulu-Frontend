@@ -12,7 +12,7 @@ class_name WordsMinigame
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
 
-var current_gp_distractors_queue: Array[Dictionary]
+var current_gp_distractors_queue: Array[Dictionary] = []
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
@@ -21,8 +21,8 @@ func _find_stimuli_and_distractions() -> void:
 	if words_list.is_empty():
 		return
 	
-	var current_lesson_words: Array[Dictionary]
-	var previous_lesson_words: Array[Dictionary]
+	var current_lesson_words: Array[Dictionary] = []
+	var previous_lesson_words: Array[Dictionary] = []
 	
 	for word: Dictionary in words_list:
 		if not FileAccess.file_exists(Database.get_word_sound_path(word)):
@@ -82,7 +82,7 @@ func _find_stimuli_and_distractions() -> void:
 	# Find the GPs and distractors for each word
 	for stimulus: Dictionary in stimuli:
 		stimulus.GPs = Database.get_GP_from_word(stimulus.ID as int)
-		var grapheme_distractions: Array
+		var grapheme_distractions: Array = []
 		for GP: Dictionary in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID as int, lesson_nb))
 		distractions.append(grapheme_distractions)

@@ -18,7 +18,7 @@ var gradient: Gradient
 
 var current_segment: SegmentBuild
 var current_button: SegmentPointButton
-var buttons: Array[SegmentPointButton]
+var buttons: Array[SegmentPointButton] = []
 
 
 func reset() -> void:

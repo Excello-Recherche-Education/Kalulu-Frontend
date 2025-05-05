@@ -13,7 +13,7 @@ signal delete
 @onready var image_clear_button: MarginContainer = %ImageClearButton
 @onready var sound_clear_button: MarginContainer = %SoundClearButton
 
-var gp: Dictionary
+var gp: Dictionary = {}
 var get_image_path: Callable = Database.get_gp_look_and_learn_image_path
 var get_sound_path: Callable = Database.get_gp_look_and_learn_sound_path
 

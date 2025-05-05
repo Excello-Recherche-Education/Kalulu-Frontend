@@ -1,6 +1,6 @@
 extends OptionButton
 
-var items : Array[String]
+var items : Array[String] = []
 
 func _ready() -> void:
 	# Adds the supported locales to the field

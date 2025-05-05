@@ -3,7 +3,6 @@ signal minigame_layout_opened()
 
 # Namespace
 const LookAndLearn: = preload("res://sources/look_and_learn/look_and_learn.gd")
-const LessonButton: = preload("res://sources/lesson_screen/lesson_button.gd")
 const MinigameLayout: = preload("res://sources/gardens/minigame_layout.gd")
 const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 
@@ -23,8 +22,8 @@ const garden_size: int = 2400
 @export var locked_color: Color = Color("1d2229") #black
 
 @export_group("Minigames")
-@export var minigames_scenes: Array[PackedScene]
-@export var minigames_icons: Array[Texture]
+@export var minigames_scenes: Array[PackedScene] = []
+@export var minigames_icons: Array[Texture] = []
 
 @onready var garden_parent: HBoxContainer = %GardenParent
 @onready var locked_line: Line2D = $ScrollContainer/LockedLine
@@ -54,8 +53,8 @@ const garden_size: int = 2400
 @onready var help_few_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
 @onready var help_many_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_many_plants"))
 
-var lessons: Dictionary
-var points: Array[Array]
+var lessons: Dictionary = {}
+var points: Array[Array] = []
 var is_scrolling: bool = false
 var scroll_beginning_garden: int = 0
 var scroll_tween: Tween
@@ -67,7 +66,7 @@ var current_garden: Garden
 var current_button_global_position: Vector2 = Vector2.ZERO
 var current_button: LessonButton
 
-static var transition_data: Dictionary
+static var transition_data: Dictionary = {}
 
 
 func _ready() -> void:
@@ -602,7 +601,7 @@ func set_up_path() -> void:
 			break
 		var garden_layout: GardenLayout = gardens_layout.gardens[index]
 		var garden_control: Garden = garden_parent.get_child(index)
-		for button: GardenLayout.LessonButton in garden_layout.lesson_buttons:
+		for button: GardenLayout.GardenLayoutLessonButton in garden_layout.lesson_buttons:
 			var point_position: Vector2 = garden_parent.position + garden_control.position + Vector2(button.position)
 			point_position += garden_control.get_button_size() / 2
 			var point_in_position: Vector2 = Vector2.ZERO

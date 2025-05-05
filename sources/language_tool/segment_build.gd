@@ -7,7 +7,7 @@ signal delete()
 @onready var number_of_points_labels: Label = %NumberOfPointsLabel
 @onready var color_rect: ColorRect = %ColorRect
 
-var points: Array[Vector2]
+var points: Array[Vector2] = []
 
 
 func add_point(point: Vector2) -> void:
@@ -15,7 +15,7 @@ func add_point(point: Vector2) -> void:
 
 
 func add_point_at(point: Vector2, ind: int) -> void:
-	var pts: Array[Vector2]
+	var pts: Array[Vector2] = []
 	for index: int in range(ind):
 		pts.append(points[index])
 	pts.append(point)

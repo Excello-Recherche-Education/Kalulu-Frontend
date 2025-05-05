@@ -10,7 +10,7 @@ signal disappeared()
 @onready var right_fx: RightFX = %RightFX
 @onready var wrong_fx: WrongFX = %WrongFX
 
-var stimulus: Dictionary:
+var stimulus: Dictionary = {}:
 	set = _set_stimulus
 var disabled: bool = false:
 	set = _set_disabled

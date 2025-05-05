@@ -21,7 +21,7 @@ var curve_points: PackedVector2Array
 
 var is_playing: bool = false
 var is_in_demo: bool = false
-var touch_positions: Array[Vector2]
+var touch_positions: Array[Vector2] = []
 var should_play_effects: bool = false
 
 

@@ -18,9 +18,9 @@ const label_settings: LabelSettings = preload("res://resources/themes/minigames_
 @onready var ants: Node2D = %Ants
 @onready var words: Node2D = %Words
 
-var current_sentence: Dictionary
-var answered: Array[bool]
-var answers: Array[bool]
+var current_sentence: Dictionary = {}
+var answered: Array[bool] = []
+var answers: Array[bool] = []
 
 
 func _find_stimuli_and_distractions() -> void:
@@ -28,8 +28,8 @@ func _find_stimuli_and_distractions() -> void:
 	if sentences_list.is_empty():
 		return
 		
-	var current_lesson_sentences: Array[Dictionary]
-	var previous_lesson_sentences: Array[Dictionary]
+	var current_lesson_sentences: Array[Dictionary] = []
+	var previous_lesson_sentences: Array[Dictionary] = []
 
 	for sentence_in_list: Dictionary in sentences_list:
 		if sentence_in_list.LessonNb == lesson_nb:
@@ -98,7 +98,7 @@ func _get_new_sentence() -> void:
 
 
 func _next_sentence() -> void:
-	var nodes: Array[Node]
+	var nodes: Array[Node] = []
 	nodes.append_array(sentence_container.get_children())
 	nodes.append_array(words.get_children())
 	for node: Node in nodes:
@@ -118,7 +118,7 @@ func _next_sentence() -> void:
 	
 	var current_words: PackedStringArray = (current_sentence.Sentence as String).replace("'", " ' ").replace("-", " - ").split(" ")
 	
-	var inds_to_remove: Array[int]
+	var inds_to_remove: Array[int] = []
 	for index: int in range(1, current_words.size()):
 		var word: String = current_words[index]
 		if word in ["?", "!", ":"]:

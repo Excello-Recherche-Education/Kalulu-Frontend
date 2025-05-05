@@ -10,7 +10,7 @@ var is_completed: bool = false
 signal _join()
 var _ended_count: int = -1
 
-var return_value: Array
+var return_value: Array = []
 
 
 func resumable_call(callable: Callable) -> void:

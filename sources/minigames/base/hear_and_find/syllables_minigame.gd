@@ -35,8 +35,8 @@ func _find_stimuli_and_distractions() -> void:
 	if not all_syllables:
 		return
 	
-	var current_lesson_stimuli: Array[Dictionary]
-	var previous_lesson_stimuli: Array[Dictionary]
+	var current_lesson_stimuli: Array[Dictionary] = []
+	var previous_lesson_stimuli: Array[Dictionary] = []
 	
 	# Find the syllables for current lesson
 	for syllable: Dictionary in all_syllables:
@@ -203,7 +203,7 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 	else:
 		var right_answer_GPs: Array[Dictionary] = _get_current_stimulus().GPs
 		
-		var stimulus_GPs: Array[Dictionary]
+		var stimulus_GPs: Array[Dictionary] = []
 		if stimulus.has("GPs"):
 			stimulus_GPs = stimulus.GPs
 		

@@ -26,8 +26,8 @@ const fish_texture_rect_scene: PackedScene = preload("res://sources/minigames/fi
 @export var max_words_count: int = 15
 
 var tween: Tween
-var words_to_present: Array[String]
-var words_to_present_next: Array[String]
+var words_to_present: Array[String] = []
+var words_to_present_next: Array[String] = []
 var progress_gauge_max_margin: float = 0.95
 var total_number_of_words: int = 30
 var tutorial_count: int = 0

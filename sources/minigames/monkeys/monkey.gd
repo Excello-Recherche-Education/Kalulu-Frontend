@@ -24,7 +24,7 @@ var stunned: bool = false:
 		locked = true
 
 
-var stimulus: Dictionary :
+var stimulus: Dictionary = {}:
 	set(value):
 		stimulus = value
 		if value:

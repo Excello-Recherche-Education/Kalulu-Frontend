@@ -8,7 +8,7 @@ signal delete
 @onready var video_upload_button: = %VideoUploadButton
 @onready var file_dialog: = $FileDialog
 
-var gp: Dictionary
+var gp: Dictionary = {}
 
 
 func _video_file_selected(file_path: String) -> void:

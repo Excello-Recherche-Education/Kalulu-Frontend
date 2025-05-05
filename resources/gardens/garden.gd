@@ -4,7 +4,6 @@ class_name Garden
 
 # Namespace
 const GardenFlower: = preload("res://resources/gardens/garden_flower.gd")
-const LessonButton: = preload("res://sources/lesson_screen/lesson_button.gd")
 
 const flower_path_model: String = "res://assets/gardens/flowers/Plant_%02d_%02d_%s.png"
 const background_path_model: String = "res://assets/gardens/gardens/garden_%02d_open.png"
@@ -12,7 +11,7 @@ const background_path_model: String = "res://assets/gardens/gardens/garden_%02d_
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
 
-@export var garden_colors: Array[Color]
+@export var garden_colors: Array[Color] = []
 
 @onready var buttons: Control = $Buttons
 @onready var flower_controls: Array[TextureRect] = [
@@ -37,8 +36,8 @@ enum FlowerSizes{
 	Large
 }
 
-var flowers: Array[GardenLayout.Flower]
-var flowers_sizes: Array[FlowerSizes]
+var flowers: Array[GardenLayout.Flower] = []
+var flowers_sizes: Array[FlowerSizes] = []
 var color: Color
 
 var current_progression: float = 0.0
@@ -81,13 +80,13 @@ func update_flowers() -> void:
 		flower_scene.position = Vector2(flower.position.x - flower_scene.size.x / 2, flower.position.y - flower_scene.size.y)
 
 
-func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.LessonButton]) -> void:
+func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton]) -> void:
 	for lesson_button_control: LessonButton in lesson_button_controls:
 		lesson_button_control.visible = false
 	for index: int in p_lesson_buttons.size():
 		if index >= lesson_button_controls.size():
 			break
-		var lesson_button: GardenLayout.LessonButton = p_lesson_buttons[index]
+		var lesson_button: GardenLayout.GardenLayoutLessonButton = p_lesson_buttons[index]
 		var lesson_button_control: LessonButton = lesson_button_controls[index]
 		lesson_button_control.position = Vector2(lesson_button.position)
 		lesson_button_control.visible = true

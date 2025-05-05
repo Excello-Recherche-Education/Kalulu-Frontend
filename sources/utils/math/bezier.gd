@@ -18,7 +18,7 @@ static func bezier_square_error(current_points: Array, ref_points: Array) -> flo
 
 
 static func bezier_sampling(points: Array, number_of_samples: int) -> Array[Vector2]:
-	var sample_points: Array[Vector2]
+	var sample_points: Array[Vector2] = []
 	for index: int in range(number_of_samples + 1):
 		var sample: Vector2 = bezier(float(index) / float(number_of_samples), points)
 		sample_points.append(sample)

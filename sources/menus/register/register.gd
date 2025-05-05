@@ -19,7 +19,7 @@ const next_scene_path: String = "res://sources/menus/settings/teacher_settings.t
 @onready var students_step: PackedScene = preload("res://sources/menus/register/steps/teacher/students_count_step.tscn")
 @onready var player_step: PackedScene = preload("res://sources/menus/register/steps/parent/player_step.tscn")
 
-var current_steps: Array[Step]
+var current_steps: Array[Step] = []
 
 @onready var register_data: TeacherSettings = TeacherSettings.new()
 @onready var progress_bar: RegisterProgressBar = %ProgressBar

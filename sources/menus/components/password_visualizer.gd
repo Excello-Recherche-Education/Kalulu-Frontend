@@ -22,7 +22,7 @@ const icons_textures: Dictionary = {
 		password = value
 		_draw_password()
 
-@onready var icons: Array[TextureRect]
+@onready var icons: Array[TextureRect] = []
 
 func _ready() -> void:
 	_draw_password()

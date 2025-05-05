@@ -490,9 +490,9 @@ func create_book() -> void:
 		"sentence": "sentences_list.csv",
 	}
 
-	var columns: Dictionary[String, PackedStringArray]
-	var all_headers: Array[String]
-	var headers_seen: Dictionary[String, bool]
+	var columns: Dictionary[String, PackedStringArray] = {}
+	var all_headers: Array[String] = []
+	var headers_seen: Dictionary[String, bool] = {}
 
 	for category: String in file_names.keys():
 		var file_path: String = lang_path.path_join(file_names[category])
@@ -507,7 +507,7 @@ func create_book() -> void:
 
 		var headers_line: String = read_csv_record(file)
 		var raw_headers: PackedStringArray = parse_csv_line(headers_line)
-		var header_map: Dictionary[String, String] # Original -> Normalized
+		var header_map: Dictionary[String, String] = {} # Original -> Normalized
 		
 		# On mesure combien de lignes ont déjà été ajoutées
 		var current_row_count: int = 0
@@ -545,7 +545,7 @@ func create_book() -> void:
 				Logger.warn("ProfToolMenu: Ligne malformée ignorée : %s" % values)
 				continue
 
-			var row_dict: Dictionary[String, String]
+			var row_dict: Dictionary[String, String] = {}
 			for index: int in range(values.size()):
 				var original: String = raw_headers[index]
 				var normalized: String = header_map.get(original, original)

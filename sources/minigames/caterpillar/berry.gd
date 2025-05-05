@@ -8,7 +8,7 @@ signal pressed(gp: Dictionary)
 @onready var highlight_fx: HighlightFX = $HighlightFX
 @onready var wrong_fx: WrongFX = $WrongFX
 
-var gp: Dictionary: 
+var gp: Dictionary = {}: 
 	set(value):
 		gp = value
 		if gp.has("Grapheme"):

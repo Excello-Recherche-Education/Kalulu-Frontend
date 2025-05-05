@@ -31,7 +31,7 @@ func submit_student_metrics(level: int, elapsed_time: int) -> void:
 
 # Response from the last request
 var code: int
-var json: Dictionary
+var json: Dictionary = {}
 
 
 func check_email(email: String) -> Dictionary:

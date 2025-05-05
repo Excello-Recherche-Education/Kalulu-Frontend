@@ -6,7 +6,7 @@ const device_button_scene: PackedScene = preload("res://sources/menus/main/devic
 
 const login_scene_path: String = "res://sources/menus/login/login.tscn"
 
-@export var colors: Array[Color]
+@export var colors: Array[Color] = []
 
 @onready var container: GridContainer = %GridContainer
 

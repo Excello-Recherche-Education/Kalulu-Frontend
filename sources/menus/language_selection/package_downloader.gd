@@ -29,7 +29,7 @@ var current_language_path: String
 var mutex: Mutex
 var thread: Thread
 
-var server_version: Dictionary
+var server_version: Dictionary = {}
 
 func _ready() -> void:
 	await get_tree().process_frame

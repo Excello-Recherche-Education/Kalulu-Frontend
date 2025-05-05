@@ -103,8 +103,8 @@ var win_kalulu_speech: AudioStreamMP3
 var lose_kalulu_speech: AudioStreamMP3
 
 # data to go back to the right place in gardens
-var gardens_data: Dictionary
-static var transition_data: Dictionary
+var gardens_data: Dictionary = {}
+static var transition_data: Dictionary = {}
 
 #region Initialisation
 

@@ -24,8 +24,8 @@ func _find_stimuli_and_distractions() -> void:
 	
 	if sentences_list.is_empty():
 		return
-	var current_lesson_sentences: Array[Dictionary]
-	var previous_lesson_sentences: Array[Dictionary]
+	var current_lesson_sentences: Array[Dictionary] = []
+	var previous_lesson_sentences: Array[Dictionary] = []
 	
 	for sentence: Dictionary in sentences_list:
 		if sentence.LessonNb == lesson_nb:

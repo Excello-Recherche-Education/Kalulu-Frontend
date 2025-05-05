@@ -6,7 +6,7 @@ const gardens_scene: PackedScene = preload("res://sources/gardens/gardens.tscn")
 const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 
 @export var locked_color: Color
-@export var unlocked_colors: Array[Color]
+@export var unlocked_colors: Array[Color] = []
 @export var gardens_layout: GardensLayout
 
 @onready var kalulu: Kalulu = $Kalulu

@@ -24,7 +24,7 @@ class Flower:
 		}
 
 
-class LessonButton:
+class GardenLayoutLessonButton:
 	var position: Vector2i = Vector2i.ZERO
 	var path_out_position: Vector2i = Vector2i.ZERO
 	
@@ -32,8 +32,8 @@ class LessonButton:
 		position = p_position
 		path_out_position = p_path_out_position
 	
-	static func from_dict(d: Dictionary) -> LessonButton:
-		return LessonButton.new(d.position as Vector2i, d.path_out_position as Vector2i)
+	static func from_dict(d: Dictionary) -> GardenLayoutLessonButton:
+		return GardenLayoutLessonButton.new(d.position as Vector2i, d.path_out_position as Vector2i)
 	
 	func to_dict() -> Dictionary:
 		return {
@@ -54,7 +54,7 @@ var flowers: Array[Flower] = []:
 	set = set_flowers
 @export var flowers_export: Array[Dictionary] = []:
 	set = set_flowers_export
-var lesson_buttons: Array[LessonButton] = []:
+var lesson_buttons: Array[GardenLayoutLessonButton] = []:
 	set = set_lesson_buttons
 @export var lesson_buttons_export: Array[Dictionary] = []:
 	set = set_lesson_buttons_export
@@ -79,11 +79,11 @@ func set_lesson_buttons_export(p_lesson_buttons_export: Array[Dictionary]) -> vo
 	lesson_buttons_export = p_lesson_buttons_export
 	lesson_buttons.clear()
 	for lesson_button_dict: Dictionary in lesson_buttons_export:
-		lesson_buttons.append(LessonButton.from_dict(lesson_button_dict))
+		lesson_buttons.append(GardenLayoutLessonButton.from_dict(lesson_button_dict))
 
 
-func set_lesson_buttons(p_lesson_buttons: Array[LessonButton]) -> void:
+func set_lesson_buttons(p_lesson_buttons: Array[GardenLayoutLessonButton]) -> void:
 	lesson_buttons = p_lesson_buttons
 	lesson_buttons_export.clear()
-	for lesson_button: LessonButton in lesson_buttons:
+	for lesson_button: GardenLayoutLessonButton in lesson_buttons:
 		lesson_buttons_export.append(lesson_button.to_dict())

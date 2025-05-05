@@ -12,7 +12,7 @@ extends PanelContainer
 @onready var number_of_words: Label = %NumberOfWords
 @onready var number_of_sentences: Label = %NumberOfSentences
 
-var sentences_by_lesson: Dictionary
+var sentences_by_lesson: Dictionary = {}
 
 
 func _ready() -> void:

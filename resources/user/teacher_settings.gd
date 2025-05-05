@@ -17,7 +17,7 @@ enum EducationMethod {
 @export var account_type: AccountType
 @export var education_method: EducationMethod
 var devices_count: int
-@export var students: Dictionary # int : Array[StudentData]
+@export var students: Dictionary[int, Array] = {} # int : Array[StudentData]
 @export var email: String
 var password: String
 @export var token: String
@@ -50,7 +50,7 @@ func update_from_dict(dict: Dictionary) -> void:
 		students[int(device)] = device_students
 
 func get_new_code() -> int :
-	var used_codes: Array[int]
+	var used_codes: Array[int] = []
 	for student_array: Array[StudentData] in students.values():
 		for student: StudentData in student_array:
 			used_codes.append(student.code)

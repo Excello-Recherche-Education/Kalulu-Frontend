@@ -4,7 +4,7 @@ class_name FormBinder
 
 @export var data : Resource
 
-var _control_binder_map: Dictionary[Control, ControlBinder]
+var _control_binder_map: Dictionary[Control, ControlBinder] = {}
 
 func _ready() -> void:
 	_find_binders(self)

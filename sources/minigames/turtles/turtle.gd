@@ -14,7 +14,7 @@ signal animation_changed(position: Vector2)
 @onready var delete_timer: Timer = $DeleteTimer
 @onready var audio_stream_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
-var gp: Dictionary: 
+var gp: Dictionary = {}:
 	set(value):
 		gp = value
 		if gp and gp.has("Grapheme"):

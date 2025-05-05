@@ -53,7 +53,7 @@ func _init_gardens_layout() -> void:
 			garden_layout = gardens_layout.gardens[-1]
 		
 		# Add a new lesson button to the garden
-		garden_layout.lesson_buttons.append(GardenLayout.LessonButton.new(Vector2i(0, 0), Vector2i(0, 0)))
+		garden_layout.lesson_buttons.append(GardenLayout.GardenLayoutLessonButton.new(Vector2i(0, 0), Vector2i(0, 0)))
 		garden_layout.lesson_buttons = garden_layout.lesson_buttons
 	
 	# Save the configuration
@@ -242,7 +242,7 @@ func _on_reset_garden_button_pressed() -> void:
 	
 	var lesson_buttons: = gardens_layout.gardens[garden_ind].lesson_buttons
 	for index: int in lesson_buttons.size():
-		lesson_buttons[index] = GardenLayout.LessonButton.new()
+		lesson_buttons[index] = GardenLayout.GardenLayoutLessonButton.new()
 	gardens_layout.gardens[garden_ind].lesson_buttons = lesson_buttons
 	garden.set_lesson_buttons(lesson_buttons)
 	

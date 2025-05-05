@@ -5,7 +5,7 @@ extends Node2D
 @onready var label: Label = $Label
 @onready var right_FX: RightFX = $RightFX
 
-var gp: Dictionary:
+var gp: Dictionary = {}:
 	set(value):
 		gp = value
 		if gp.has("Grapheme"):

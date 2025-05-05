@@ -1,4 +1,5 @@
 extends TextureButton
+class_name LessonButton
 
 @export_color_no_alpha var base_color: Color:
 	set = _set_base_color

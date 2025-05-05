@@ -40,9 +40,9 @@ const audio_streams: Array[AudioStreamMP3] = [
 	fly_away_position_2.global_position
 ]
 
-var possible_branch_positions: Array[Vector2]
-var parakeets: Array[Parakeet]
-var selected: Array[Parakeet]
+var possible_branch_positions: Array[Vector2] = []
+var parakeets: Array[Parakeet] = []
+var selected: Array[Parakeet] = []
 var state: State = State.Locked
 
 const difficulty_settings: Dictionary[int, Dictionary] = {

@@ -15,16 +15,16 @@ const TracingManager: = preload("res://sources/look_and_learn/tracing_manager.gd
 @onready var grapheme_particles: GPUParticles2D = $GraphemeParticles
 
 
-var gp_list: Array[Dictionary]
+var gp_list: Array[Dictionary] = []
 var current_video: int = 0
-var videos: Array[VideoStream]
+var videos: Array[VideoStream] = []
 
 var current_image_and_sound: int = 0
-var images: Array[Texture]
-var sounds: Array[AudioStream]
+var images: Array[Texture] = []
+var sounds: Array[AudioStream] = []
 
-static var transition_data: Dictionary
-var gardens_data: Dictionary
+static var transition_data: Dictionary = {}
+var gardens_data: Dictionary = {}
 
 
 var current_tracing: int = 0

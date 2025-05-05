@@ -84,7 +84,7 @@ func _load_tracing(path: String) -> Array:
 	var segments: Array = []
 	var file: FileAccess = FileAccess.open(_real_path(path), FileAccess.READ)
 	while not file.eof_reached():
-		var points: Array[Vector2]
+		var points: Array[Vector2] = []
 		var line: PackedStringArray = file.get_csv_line()
 		for element: String in line:
 			if element == "":

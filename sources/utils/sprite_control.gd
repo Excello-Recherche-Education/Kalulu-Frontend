@@ -2,7 +2,7 @@
 extends Control
 class_name SpriteControl
 
-@export var sprites: Array[CanvasItem]:
+@export var sprites: Array[CanvasItem] = []:
 	set = set_sprites
 
 

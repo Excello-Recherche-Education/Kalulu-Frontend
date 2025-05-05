@@ -36,7 +36,7 @@ var db_path: String = base_path + language + "/language.db":
 			connect_to_db()
 
 var words_path: String = base_path + language + "/words/"
-var additional_word_list: Dictionary
+var additional_word_list: Dictionary = {}
 
 @onready var db: SQLite = SQLite.new()
 var is_open: bool = false
@@ -86,7 +86,7 @@ func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
 	WHERE LessonNB == " + str(lesson_nb)
 	db.query(query)
 	
-	#var answer: Array[String]
+	#var answer: Array[String] = []
 	#for res in Database.db.query_result:
 	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise1))
 	#	answer.append(Database.db.query_result[0].Type)
@@ -96,7 +96,7 @@ func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
 	#	answer.append(Database.db.query_result[0].Type)
 	#return answer
 	
-	var result: Array[int]
+	var result: Array[int] = []
 	for element: Dictionary in db.query_result:
 		result.append(element.Exercise1)
 		result.append(element.Exercise2)
@@ -578,7 +578,7 @@ func _phoneme_to_string(phoneme: String) -> String:
 # Returns an array containing an int followed by an array of int
 func _import_word_from_csv(ortho: String, gpmatch: String, is_word: bool = true) -> Array[Variant]:
 	var gp_list: PackedStringArray = gpmatch.trim_prefix("(").trim_suffix(")").split(".")
-	var gp_ids: Array[int]
+	var gp_ids: Array[int] = []
 	for gp: String in gp_list:
 		var split: PackedStringArray = gp.split("-")
 		var grapheme: String = split[0]

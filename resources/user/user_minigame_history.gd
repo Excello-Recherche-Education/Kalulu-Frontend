@@ -13,7 +13,7 @@ var consecutives_losses: int = 0
 @export
 var consecutives_wins: int = 0
 @export
-var history: Array[bool]
+var history: Array[bool] = []
 
 func add_game(is_won: bool) -> void:
 	history.append(is_won)
