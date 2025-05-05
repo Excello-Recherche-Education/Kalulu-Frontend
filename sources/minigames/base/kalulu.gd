@@ -15,6 +15,9 @@ func _ready() -> void:
 
 
 func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_animation: bool = true) -> void:
+	var ind: int = AudioServer.get_bus_index("Music")
+	var musicVolume: float = AudioServer.get_bus_volume_db(ind)
+	AudioServer.set_bus_volume_db(ind, -80.0)
 	if show_animation:
 		show()
 		
@@ -39,7 +42,8 @@ func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_a
 		kalulu_sprite.play("Hide")
 		await kalulu_sprite.animation_finished
 		hide()
-		
+	
+	AudioServer.set_bus_volume_db(ind, musicVolume)
 	speech_ended.emit()
 
 func _on_pass_button_pressed() -> void:
