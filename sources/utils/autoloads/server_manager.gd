@@ -25,8 +25,12 @@ func set_environment(env: int) -> void:
 	Logger.debug("Environment URL set to " + environment_url)
 
 
-func submit_student_metrics(level: int, elapsed_time: int) -> void:
+func submit_student_level_time(level: int, elapsed_time: int) -> void:
 	await _post_json_request("submit_student_metrics", {"student_id": UserDataManager.student, "level": level, "time_spent": elapsed_time})
+
+
+func first_login_student() -> void:
+	await _post_json_request("submit_student_session", {"student_id": UserDataManager.student})
 
 
 # Response from the last request

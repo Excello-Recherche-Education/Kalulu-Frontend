@@ -210,7 +210,7 @@ func _win() -> void:
 	# Lock the UI
 	minigame_ui.lock()
 	
-	_submit_student_metrics()
+	_submit_student_level_time()
 	
 	if gardens_data:
 		gardens_data.minigame_completed = true
@@ -241,7 +241,7 @@ func _lose() -> void:
 	# Lock the UI
 	minigame_ui.lock()
 	
-	_submit_student_metrics()
+	_submit_student_level_time()
 	
 	if gardens_data:
 		gardens_data.minigame_completed = false
@@ -262,9 +262,9 @@ func _lose() -> void:
 	
 	_reset()
 
-func _submit_student_metrics() -> void:
+func _submit_student_level_time() -> void:
 	var elapsed_time: int = int(Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused)
-	ServerManager.submit_student_metrics(lesson_nb, elapsed_time)
+	ServerManager.submit_student_level_time(lesson_nb, elapsed_time)
 
 #endregion
 

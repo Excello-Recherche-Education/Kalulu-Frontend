@@ -122,6 +122,7 @@ func login_student(code : String) -> bool:
 		for stud: StudentData in students:
 			if int(stud.code) == int(code):
 				student = code
+				ServerManager.first_login_student()
 				return true
 	
 	return false
