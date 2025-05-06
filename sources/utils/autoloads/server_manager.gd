@@ -17,12 +17,13 @@ func _ready() -> void:
 	else:
 		set_environment(1)  # fallback PROD
 
+
 func set_environment(env: int) -> void:
 	match env:
-		0: environment_url = "https://nldfw1jmxc.execute-api.eu-west-3.amazonaws.com/dev/"
+		0: environment_url = "https://iu695b0nk5.execute-api.eu-west-3.amazonaws.com/dev/"
 		1: environment_url = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
 		_: environment_url = ""
-	Logger.debug("Environment URL set to " + environment_url)
+	Logger.info("Environment URL set to " + environment_url)
 
 
 func submit_student_level_time(level: int, elapsed_time: int) -> void:
@@ -71,6 +72,7 @@ func get_language_pack_url(locale: String) -> Dictionary:
 	await _get_request("language", {"locale": locale})
 	return _response()
 
+
 # p_student must have a device key
 # it can contain a name, level and age key for parents
 func add_student(p_student: Dictionary) -> Dictionary:
@@ -107,6 +109,7 @@ func _create_URI_with_parameters(URI: String, params: Dictionary) -> String:
 			URI += "&"
 		URI += str(key) + "=" + str(params[key])
 	return URI
+
 
 func _create_request_headers() -> PackedStringArray:
 	var headers: PackedStringArray = []
