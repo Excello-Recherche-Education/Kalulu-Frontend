@@ -186,8 +186,8 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 	if body:
 		Logger.debug("ServerManager Request Completed. Response code = %d. Body received = %s " % [response_code, body.get_string_from_utf8()])
 		json = JSON.parse_string(body.get_string_from_utf8())
-	request_completed.emit(response_code, json)
 	
+	request_completed.emit(response_code, json)
 	loading_rect.hide()
 
 
