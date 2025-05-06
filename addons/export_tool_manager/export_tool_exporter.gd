@@ -1,6 +1,9 @@
 @tool
 extends EditorExportPlugin
 
+func _get_name() -> String:
+	return "KaluluExportToolExporter"  # ou le nom que tu veux
+
 var tool_configs: Dictionary = {
 	"game": {
 		"main_scene": "res://sources/menus/splash_screen/splash_screen.tscn",
