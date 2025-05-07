@@ -131,7 +131,10 @@ func _response() -> Dictionary:
 func _get_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
-	Logger.debug("ServerManager Sending GET request. URI = %s. Parameters = %s " % [URI, params])
+	if params.has("password"):
+		Logger.debug("ServerManager Sending GET request. URI = %s.\nParameters contains password." % URI)
+	else:
+		Logger.debug("ServerManager Sending GET request. URI = %s.\nParameters = %s " % [URI, params])
 	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), _create_request_headers()) == 0:
 		await request_completed
 	else:
@@ -145,7 +148,10 @@ func _post_request(URI: String, params: Dictionary) -> void:
 	json = {}
 	var url: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
-	Logger.debug("ServerManager Sending POST request. URL = %s.\nHeaders = %s " % [url, str(headers)])
+	if params.has("password"):
+		Logger.debug("ServerManager Sending POST request. URI = %s.\nHeaders = %s " % [URI, str(headers)])
+	else:
+		Logger.debug("ServerManager Sending POST request. URL = %s.\nHeaders = %s " % [url, str(headers)])
 	if http_request.request(url, headers, HTTPClient.METHOD_POST, "") == 0:
 		await request_completed
 	else:
@@ -160,7 +166,11 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 	var req: String = environment_url + URI
 	var headers: PackedStringArray = _create_request_headers()
 	headers.append("Content-Type: application/json")
-	Logger.debug("ServerManager Sending JSON request.\nRequest = %s.\nData = %s " % [req, data])
+	Logger.debug("ServerManager Sending JSON request. Request = %s" % req)
+	if data.has("password"):
+		Logger.debug("ServerManager sending JSON request. Data contains a password")
+	else:
+		Logger.debug("ServerManager Sending JSON request. Data = %s" % data)
 	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == 0:
 		await request_completed
 	else:
