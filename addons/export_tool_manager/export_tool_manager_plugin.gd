@@ -69,9 +69,10 @@ func export_all_game_presets():
 		"Android Kalulu APK": "../Export/autobuilds/Android/kalulu_app.apk",
 		"Windows Kalulu": "../Export/autobuilds/Windows/Kalulu.exe",
 		"Linux Kalulu": "../Export/autobuilds/Linux/Kalulu.x86_64",
+		
 		# Apple in last because it's always the most complicated
-		"iOS Kalulu": "../Export/autobuilds/iOS/KaluluApp.ipa",
-		"macOS Kalulu": "../Export/autobuilds/macOS/Kalulu.dmg"
+		#"iOS Kalulu": "../Export/autobuilds/iOS/KaluluApp.ipa",
+		#"macOS Kalulu": "../Export/autobuilds/macOS/Kalulu.dmg"
 	}
 
 	for preset_name in presets.keys():
