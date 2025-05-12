@@ -53,7 +53,7 @@ func register(data: Dictionary) -> Dictionary:
 
 func login(mail: String, password: String) -> Dictionary:
 	loading_rect.show()
-	await _get_request("login", {"mail": mail, "password": password})
+	await _post_json_request("login", {"mail": mail, "password": password})
 	return _response()
 
 
@@ -111,12 +111,14 @@ func _create_URI_with_parameters(URI: String, params: Dictionary) -> String:
 	return URI
 
 
-func _create_request_headers() -> PackedStringArray:
+func _create_request_headers(contentTypeJSON: bool = false) -> PackedStringArray:
 	var headers: PackedStringArray = []
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
 	if teacher_settings and teacher_settings.token:
 		headers.append("Authorization: Bearer " + teacher_settings.token)
-		Logger.trace("ServerManager Create Header : " + str(headers))
+	if contentTypeJSON:
+		headers.append("Content-Type: application/json")
+	Logger.trace("ServerManager Create Header : " + str(headers))
 	return headers
 
 
@@ -131,11 +133,12 @@ func _response() -> Dictionary:
 func _get_request(URI: String, params: Dictionary) -> void:
 	code = 0
 	json = {}
+	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
-		Logger.debug("ServerManager Sending GET request. URI = %s.\nParameters contains password." % URI)
+		Logger.debug("ServerManager Sending GET request.\n    URI = %s.\n    Parameters not logged because it contains a password." % URI)
 	else:
-		Logger.debug("ServerManager Sending GET request. URI = %s.\nParameters = %s " % [URI, params])
-	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), _create_request_headers()) == 0:
+		Logger.debug("ServerManager Sending GET request.\n    URI = %s.\n    Parameters = %s " % [URI, params])
+	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), headers) == OK:
 		await request_completed
 	else:
 		Logger.error("ServerManager Error sending GET request")
@@ -149,10 +152,10 @@ func _post_request(URI: String, params: Dictionary) -> void:
 	var url: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
-		Logger.debug("ServerManager Sending POST request. URI = %s.\nHeaders = %s " % [URI, str(headers)])
+		Logger.debug("ServerManager Sending POST request.\n    URI = %s.\n    Parameters not logged because it contains a password." % URI)
 	else:
-		Logger.debug("ServerManager Sending POST request. URL = %s.\nHeaders = %s " % [url, str(headers)])
-	if http_request.request(url, headers, HTTPClient.METHOD_POST, "") == 0:
+		Logger.debug("ServerManager Sending POST request.\n    URI = %s.\n    Parameters = %s " % [URI, params])
+	if http_request.request(url, headers, HTTPClient.METHOD_POST, "") == OK:
 		await request_completed
 	else:
 		Logger.error("ServerManager Error sending POST request")
@@ -164,17 +167,15 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 	code = 0
 	json = {}
 	var req: String = environment_url + URI
-	var headers: PackedStringArray = _create_request_headers()
-	headers.append("Content-Type: application/json")
-	Logger.debug("ServerManager Sending JSON request. Request = %s" % req)
+	var headers: PackedStringArray = _create_request_headers(true)
 	if data.has("password"):
-		Logger.debug("ServerManager sending JSON request. Data contains a password")
+		Logger.debug("ServerManager sending POST JSON request.\n    URI = %s.\n    Data not logged because it contains a password." % URI)
 	else:
-		Logger.debug("ServerManager Sending JSON request. Data = %s" % data)
-	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == 0:
+		Logger.debug("ServerManager Sending POST JSON request.\n    URI = %s.\n    Data = %s" % [URI, data])
+	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == OK:
 		await request_completed
 	else:
-		Logger.error("ServerManager Error sending JSON request")
+		Logger.error("ServerManager Error sending POST JSON request")
 		code = 500
 		json = {message = "Internal Server Error"}
 
@@ -185,7 +186,7 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 	var req: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
 	Logger.debug("ServerManager Sending DELETE request. URI = %s. Parameters = %s " % [URI, params])
-	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == 0:
+	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == OK:
 		await request_completed
 	else:
 		Logger.error("ServerManager Error sending DELETE request")
