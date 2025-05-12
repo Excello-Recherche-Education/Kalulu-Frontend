@@ -1,3 +1,4 @@
+@tool
 extends Step
 
 @onready var conditions_label : RichTextLabel = %ConditionsLabel

@@ -12,6 +12,7 @@ enum LogLevel {
 var current_level: LogLevel = LogLevel.INFO
 var log_file_path: String
 var log_file: FileAccess
+var initialized: bool = false
 
 const logPath: String = "user://Logs/"
 
@@ -24,6 +25,7 @@ func _ready() -> void:
 		current_level = LogLevel.DEBUG # Exported: debug mode
 	else:
 		current_level = LogLevel.INFO  # Exported: release mode
+	initialized = true
 	_log_internal(LogLevel.INFO, "--- Logging started at " + Time.get_datetime_string_from_system() + " ---")
 	_log_internal(LogLevel.INFO, "--- Logging set at level " + str(current_level) + " ---")
 
@@ -79,7 +81,7 @@ func _init_log_file() -> void:
 
 # Internal log function (renamed to avoid conflict)
 func _log_internal(level: LogLevel, message: String) -> void:
-	if level < current_level:
+	if initialized && level < current_level: # If not initialized, no logs are filtered
 		return
 
 	var prefix: String = "[LOG]"

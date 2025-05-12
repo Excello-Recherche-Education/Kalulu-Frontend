@@ -93,7 +93,7 @@ func _on_step_completed(step : Step) -> void:
 			# Adds students steps for parents
 			_remove_future_steps()
 			var student_count: int = 1
-			for student in register_data.students[1]:
+			for student: StudentData in register_data.students[1]:
 				var student_step_scene: Step = player_step.instantiate()
 				student_step_scene.question = tr(student_step_scene.question).format({"number" : student_count})
 				student_step_scene.data = student

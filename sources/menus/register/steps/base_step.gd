@@ -14,7 +14,7 @@ signal next(step : Step)
 @export var step_name : String
 @export_multiline var question : String
 @export_multiline var infos : String
-@export var data : TeacherSettings
+@export var data: Resource
 
 func on_enter() -> void:
 	form_binder.read(data)

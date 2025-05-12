@@ -1,3 +1,4 @@
+@tool
 extends Step
 
 @onready var api_email_field_error: Label = %APIEmailFieldError
