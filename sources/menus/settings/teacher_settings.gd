@@ -2,6 +2,7 @@ extends Control
 
 const main_menu_path: String = "res://sources/menus/main/main_menu.tscn"
 const login_menu_path: String = "res://sources/menus/login/login.tscn"
+const device_selection_scene_path: String = "res://sources/menus/device_selection/device_selection.tscn"
 
 const device_tab_scene: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
 
@@ -55,7 +56,10 @@ func _refresh_devices_tabs() -> void:
 
 func _on_back_button_pressed() -> void:
 	await OpeningCurtain.close()
-	get_tree().change_scene_to_file(login_menu_path)
+	if not UserDataManager.get_device_settings().device_id:
+		get_tree().change_scene_to_file(device_selection_scene_path)
+	else:
+		get_tree().change_scene_to_file(login_menu_path)
 
 
 func _on_delete_button_pressed() -> void:
@@ -112,7 +116,9 @@ func _on_add_device_popup_accepted() -> void:
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
 		_refresh_devices_tabs()
-		devices_tab_container.current_tab = last_device_id
+		await get_tree().create_timer(1).timeout
+		var count: int = devices_tab_container.get_tab_count()
+		devices_tab_container.current_tab = count -1
 
 
 func _on_lesson_unlocks_student_deleted(_code: int) -> void:
@@ -127,5 +133,9 @@ func _on_delete_student_popup_accepted() -> void:
 	if res.code == 200:
 		lesson_unlocks.hide()
 		UserDataManager.update_configuration(res.body as Dictionary)
-		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
-		current_tab.refresh()
+		await get_tree().create_timer(1).timeout
+		if UserDataManager.teacher_settings.students.has(current_tab.device_id):
+			current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
+			current_tab.refresh()
+		else:
+			_refresh_devices_tabs()

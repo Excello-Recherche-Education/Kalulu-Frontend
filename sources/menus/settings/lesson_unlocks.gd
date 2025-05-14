@@ -27,6 +27,9 @@ ORDER BY LessonNb")
 		var student_unlock: StudentUnlock = student_unlock_scene.instantiate()
 		student_unlock.lesson_GPs = element.GPs
 		student_unlock.lesson_number = element.LessonNb
+		if not progression:
+			Logger.debug("LessonUnlocks: User selected a student with no progression data")
+			return
 		student_unlock.unlocks = progression.unlocks
 		lesson_container.add_child(student_unlock)
 		

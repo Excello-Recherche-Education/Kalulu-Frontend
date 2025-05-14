@@ -26,6 +26,7 @@ func _refresh() -> void:
 		button.background_color = colors[device-1 % colors.size()]
 		container.add_child(button)
 		button.pressed.connect(_device_button_pressed.bind(device))
+	OpeningCurtain.open()
 
 func _device_button_pressed(device: int) -> void:
 	Logger.trace("DeviceSelection: User selected device %d" % device)
