@@ -223,7 +223,10 @@ func _win() -> void:
 		UserDataManager.update_remediation_scores(scores)
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, true)
+	if current_lives <= 0:
+		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
+	else:
+		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, true)
 	
 	audio_player.stream = win_sound_fx
 	audio_player.play()
