@@ -151,6 +151,7 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
+	Logger.error("Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
 	return
 
 
@@ -314,8 +315,9 @@ func _get_stimulus_score(stimulus: Dictionary) -> int:
 
 
 # Sorting function to sort arrays of stimuli based on their remediation score
+# If the score is lower (had more errors in the past), then the element is moved in first place
 func _sort_scoring(stimulus1: Dictionary, stimulus2: Dictionary) -> bool:
-	return _get_stimulus_score(stimulus2) > _get_stimulus_score(stimulus1)
+	return _get_stimulus_score(stimulus1) < _get_stimulus_score(stimulus2)
 
 
 # Updates the score of a GP defined by his ID
