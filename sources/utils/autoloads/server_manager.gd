@@ -92,8 +92,8 @@ func remove_student(p_code: int) -> Dictionary:
 #region Sender functions
 
 func check_internet_access() -> bool:
-	Logger.debug("ServerManager Sending simple request to Google to check if internet is available")
-	var res: Error = internet_check.request("https://google.com")
+	Logger.debug("ServerManager Sending simple request to " + INTERNET_CHECK_URL + " to check if internet is available")
+	var res: Error = internet_check.request(INTERNET_CHECK_URL)
 	if res == OK:
 		return await internet_check_completed
 	return false
@@ -185,7 +185,7 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 	json = {}
 	var req: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
-	Logger.debug("ServerManager Sending DELETE request. URI = %s. Parameters = %s " % [URI, params])
+	Logger.debug("ServerManager Sending DELETE request.\n    URI = %s.\n    Parameters = %s " % [URI, params])
 	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == OK:
 		await request_completed
 	else:
@@ -198,13 +198,16 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	code = response_code
 	if body:
-		Logger.debug("ServerManager Request Completed. Response code = %d. Body received = %s " % [response_code, body.get_string_from_utf8()])
-		json = JSON.parse_string(body.get_string_from_utf8())
+		Logger.debug("ServerManager Request Completed.\n    Response code = %d.\n    Body received = %s " % [response_code, body.get_string_from_utf8()])
+		var strBody: String = body.get_string_from_utf8()
+		var result: Variant = JSON.parse_string(strBody)
+		if result != null:
+			json = result
 	
 	request_completed.emit(response_code, json)
 	loading_rect.hide()
 
 
 func _on_internet_check_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
-	Logger.debug("ServerManager Internet check completed. Response code = %d. (200 = OK)" % response_code)
+	Logger.debug("ServerManager Internet check completed.\n    Response code = %d. (200 = OK)" % response_code)
 	internet_check_completed.emit(response_code == 200)
