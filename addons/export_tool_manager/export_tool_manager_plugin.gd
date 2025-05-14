@@ -64,20 +64,23 @@ func _on_export_all_game_pressed():
 
 func export_all_game_presets():
 	var godot_path: String = OS.get_executable_path()
+	var exportFolder = "../Export/autobuilds/"
 	var presets: Dictionary[String, String]= {
-		"Android Kalulu AAB": "../Export/autobuilds/Android/kalulu_app.aab",
-		"Android Kalulu APK": "../Export/autobuilds/Android/kalulu_app.apk",
-		"Windows Kalulu": "../Export/autobuilds/Windows/Kalulu.exe",
-		"Linux Kalulu": "../Export/autobuilds/Linux/Kalulu.x86_64",
+		"Android Kalulu AAB": "/Android/kalulu_app.aab",
+		"Android Kalulu APK": "/Android/kalulu_app.apk",
+		"Windows Kalulu": "/Windows/Kalulu.exe",
+		"Linux Kalulu": "/Linux/Kalulu.x86_64",
 		
 		# Apple in last because it's always the most complicated
-		#"iOS Kalulu": "../Export/autobuilds/iOS/KaluluApp.ipa",
-		#"macOS Kalulu": "../Export/autobuilds/macOS/Kalulu.dmg"
+		#"iOS Kalulu": "/iOS/KaluluApp.ipa",
+		#"macOS Kalulu": "/macOS/Kalulu.dmg"
 	}
 
 	for preset_name in presets.keys():
 		await get_tree().create_timer(1).timeout
-		var output_path: String = presets[preset_name]
+		var version = ProjectSettings.get_setting("application/config/version")
+		var output_path: String = exportFolder + version + presets[preset_name]
+		print("Start exporting " + preset_name)
 		DirAccess.make_dir_recursive_absolute(output_path.get_base_dir())
 
 		var args: PackedStringArray = ["--headless", "--export-release", preset_name, output_path]
