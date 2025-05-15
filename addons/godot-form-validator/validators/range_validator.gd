@@ -3,7 +3,7 @@ extends Validator
 class_name RangeValidator
 
 
-func get_value(control: Control):
+func get_value(control: Control) -> Variant:
 	var range_control = control as Range
 	if not range_control:
 		return null

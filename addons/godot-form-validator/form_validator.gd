@@ -38,7 +38,7 @@ func validate() -> bool:
 	_control_messages_map.clear()
 	var list = _get_validator_info_list()
 	var valid = true
-	for info in list:
+	for info: ValidatorInfo in list:
 		if info.validator.skip_validation:
 			continue
 		var passed = info.validator.validate(info.control)
