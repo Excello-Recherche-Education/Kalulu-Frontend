@@ -33,7 +33,7 @@ func _on_next() -> bool:
 	return true
 
 # Display error messages
-func _on_form_validator_control_validated(control: ItemList, passed: bool, messages: PackedStringArray) -> void:
+func _on_form_validator_control_validated(control: Control, passed: bool, messages: PackedStringArray) -> void:
 	var label: Label = find_child(control.name as String + "Error", true, false) as Label
 	if not label:
 		return

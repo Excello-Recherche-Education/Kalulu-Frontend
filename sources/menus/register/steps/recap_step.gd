@@ -25,15 +25,14 @@ func on_enter() -> void:
 		education_method.text = tr("SUMMARY_METHOD").format({"method" : tr((TeacherSettings.EducationMethod.keys()[teacher_settings.education_method] as String).to_upper())})
 		education_method.show()
 		
-		devices_count.text = tr("SUMMARY_NUMBER_OF_DEVICES").format({"number" : teacher_settings.students.size()})
-		devices_count.show()
-		
 		students_count.text = tr("SUMMARY_NUMBER_OF_STUDENTS").format({"number" : teacher_settings.get_students_count()})
 		students_count.show()
 	else:
 		education_method.hide()
-		devices_count.hide()
 		students_count.hide()
+	
+	devices_count.text = tr("SUMMARY_NUMBER_OF_DEVICES").format({"number" : teacher_settings.students.size()})
+	devices_count.show()
 	
 	for child: Node in recap_container.get_children(false):
 		child.queue_free()

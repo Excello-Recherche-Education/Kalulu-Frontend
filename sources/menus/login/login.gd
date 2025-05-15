@@ -30,9 +30,8 @@ func _ready() -> void:
 	wrong_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_wrong_password"))
 	right_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_right_password"))
 	
-	if UserDataManager.teacher_settings and UserDataManager.teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
-		device_number_label.show()
-		device_number_label.text = tr("DEVICE_NUMBER").format({"number" : UserDataManager.get_device_settings().device_id})
+	device_number_label.show()
+	device_number_label.text = tr("DEVICE_NUMBER").format({"number" : UserDataManager.get_device_settings().device_id})
 	
 	await OpeningCurtain.open()
 	

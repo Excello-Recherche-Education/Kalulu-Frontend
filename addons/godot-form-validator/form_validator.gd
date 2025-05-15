@@ -2,7 +2,7 @@
 extends Control
 class_name FormValidator
 
-signal control_validated(control, passed, messages)
+signal control_validated(control: Control, passed: bool, messages: Array)
 
 class ValidatorInfo extends RefCounted:
 	var control: Control
@@ -14,7 +14,7 @@ class ValidatorInfo extends RefCounted:
 		validation_method = value
 		_update_validation_methods()
 
-var _control_validator_map: Dictionary = {}
+var _control_validator_map: Dictionary[Control, Validator] = {}
 var _control_messages_map: Dictionary = {}
 
 
@@ -41,20 +41,29 @@ func validate() -> bool:
 	for info: ValidatorInfo in list:
 		if info.validator.skip_validation:
 			continue
-		var passed = info.validator.validate(info.control)
+		var control := info.control as Control
+		if control == null:
+			Logger.error("FormValidator: ValidatorInfo.control is not a Control: %s" % [info.control])
+			continue
+		var passed = info.validator.validate(control)
 		var messages = info.validator.get_messages()
 		if not passed:
-			_control_messages_map[info.control] = messages
-		control_validated.emit(info.control, passed, messages)
+			_control_messages_map[control] = messages
+		control_validated.emit(control, passed, messages)
 		valid = valid and passed
 		if not valid and validation_method == Validation.Method.IMMEDIATE:
 			return valid
 	return valid
 
 
+
 func _get_validator_info_list() -> Array[ValidatorInfo]:
 	var list: Array[ValidatorInfo] = []
-	for control in _control_validator_map.keys():
+	for controlKey in _control_validator_map.keys():
+		var control := controlKey as Control
+		if control == null:
+			Logger.error("FormValidator: _control_validator_map key is not a Control")
+			continue
 		var validator = _control_validator_map[control]
 		if not validator:
 			continue
