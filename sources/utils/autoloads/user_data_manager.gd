@@ -51,16 +51,28 @@ func register(register_settings: TeacherSettings) -> bool:
 
 # Allow the user to log-in from the server
 func login(infos: Dictionary) -> bool:
-	if not _device_settings or not infos:
+	if not _device_settings:
+		Logger.error("UserDataManager: User cannot login because they have no _device_settings.")
+		return false
+		
+	if not infos:
+		Logger.error("UserDataManager: User cannot login because they have no _device_settings.")
 		return false
 	
 	if not infos.has("email") or not infos.email:
+		Logger.error("UserDataManager: User cannot login because they have no infos.")
 		return false
 	
-	if not infos.has("account_type") or infos.account_type < 0 or infos.account_type > 1:
+	if not infos.has("account_type"):
+		Logger.error("UserDataManager: User cannot login because they have no account_type.")
+		return false
+	
+	if infos.account_type < 0 or infos.account_type > 1:
+		Logger.error("UserDataManager: User cannot login because they have invalid account_type: " + str(infos.account_type))
 		return false
 	
 	if not infos.has("token") or not infos.token:
+		Logger.error("UserDataManager: User cannot login because they have no token.")
 		return false
 	
 	# Handles device settings
@@ -157,6 +169,7 @@ func _load_device_settings() -> void:
 		_save_device_settings()
 
 func _save_device_settings() -> void:
+	Logger.trace("UserDataManager: Saving device settings in " + get_device_settings_path())
 	ResourceSaver.save(_device_settings, get_device_settings_path())
 
 func set_language(language : String) -> void:
