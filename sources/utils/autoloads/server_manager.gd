@@ -34,11 +34,6 @@ func first_login_student() -> void:
 	await _post_json_request("submit_student_session", {"student_id": UserDataManager.student})
 
 
-# Response from the last request
-var code: int
-var json: Dictionary = {}
-
-
 func check_email(email: String) -> Dictionary:
 	loading_rect.show()
 	await _get_request("checkemail", {"mail" : email})
@@ -88,6 +83,17 @@ func update_student(p_name: String, level: StudentData.Level, age: int) -> Dicti
 func remove_student(p_code: int) -> Dictionary:
 	await _delete_request("remove_student", {"code": p_code})
 	return _response()
+
+
+func get_student_data_timestamp(student_code: int) -> Dictionary:
+	await _get_request("get_student_data_timestamp", {"student_id": student_code})
+	return _response()
+
+
+func set_student_data(student_code: int, data: Dictionary) -> Dictionary:
+	data.merge({"student_id": student_code})
+	await _post_request("set_student_data", data)
+	return _response()
 	
 #region Sender functions
 
@@ -121,6 +127,10 @@ func _create_request_headers(contentTypeJSON: bool = false) -> PackedStringArray
 	Logger.trace("ServerManager Create Header : " + str(headers))
 	return headers
 
+
+# Response from the last request
+var code: int
+var json: Dictionary = {}
 
 func _response() -> Dictionary:
 	var res: Dictionary = {
