@@ -1,4 +1,5 @@
 extends Control
+class_name SettingsTeacherSettings
 
 const main_menu_path: String = "res://sources/menus/main/main_menu.tscn"
 const login_menu_path: String = "res://sources/menus/login/login.tscn"
@@ -30,6 +31,7 @@ func _ready() -> void:
 		add_student_button.hide()
 	
 	OpeningCurtain.open()
+	lesson_unlocks.teacher_settings = self
 
 
 func _refresh_devices_tabs() -> void:
@@ -37,7 +39,7 @@ func _refresh_devices_tabs() -> void:
 		child.queue_free()
 	
 	if not UserDataManager.teacher_settings:
-		Logger.error("TeacherSettings: Teacher settings not found")
+		Logger.error("SettingsTeacherSettings: Teacher settings not found")
 		return
 	
 	for device: int in UserDataManager.teacher_settings.students.keys():
@@ -96,7 +98,7 @@ func _on_add_student_button_pressed() -> void:
 func _on_add_student_popup_accepted() -> void:
 	var current_tab: DeviceTab = devices_tab_container.get_current_tab_control() as DeviceTab
 	if not current_tab:
-		Logger.error("TeacherSettings: DeviceTab not found")
+		Logger.error("SettingsTeacherSettings: DeviceTab not found")
 		return
 	var res: Dictionary = await ServerManager.add_student({"device" :  current_tab.device_id})
 	if res.code == 200:
@@ -104,7 +106,7 @@ func _on_add_student_popup_accepted() -> void:
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
 		current_tab.refresh()
 	else:
-		Logger.error("TeacherSettings: Request to add student failed. Error code " + str(res.code))
+		Logger.error("SettingsTeacherSettings: Request to add student failed. Error code " + str(res.code))
 
 
 func _on_add_device_button_pressed() -> void:
@@ -139,3 +141,12 @@ func _on_delete_student_popup_accepted() -> void:
 			current_tab.refresh()
 		else:
 			_refresh_devices_tabs()
+
+
+func update_student_name(student_code: int, student_name: String) -> void:
+	for device: DeviceTab in devices_tab_container.get_children(false):
+		for student_panel: StudentPanel in device.students_container.get_children(false):
+			if student_panel.student_data.code == student_code:
+				student_panel.name_label.text = student_name
+				return
+	Logger.warn("SettingsTeacherSettings: update_student_name: student not found with code " + str(student_code))

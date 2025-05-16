@@ -3,7 +3,6 @@ class_name DeviceTab
 
 signal student_pressed(code: int)
 
-const StudentPanel: = preload("res://sources/menus/settings/student_panel.gd")
 const student_panel_scene : PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
 
 @onready var students_container : GridContainer = %StudentsContainer

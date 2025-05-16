@@ -1,4 +1,6 @@
 extends CanvasLayer
+class_name ServerManagerClass
+
 signal request_completed(code: int, body: Dictionary)
 signal internet_check_completed(has_acces: bool)
 
@@ -75,8 +77,8 @@ func add_student(p_student: Dictionary) -> Dictionary:
 	return _response()
 
 
-func update_student(p_name: String, level: StudentData.Level, age: int) -> Dictionary:
-	await _post_request("update_student", {"name": p_name, "level": level, "age": age})
+func update_student(student: StudentData) -> Dictionary:
+	await _post_request("update_student", {"code": student.code, "name": student.name, "level": student.level, "age": student.age})
 	return _response()
 
 

@@ -6,8 +6,6 @@ const device_button_scene: PackedScene = preload("res://sources/menus/main/devic
 
 const login_scene_path: String = "res://sources/menus/login/login.tscn"
 
-@export var colors: Array[Color] = []
-
 @onready var container: GridContainer = %GridContainer
 
 func _ready() -> void:
@@ -23,7 +21,7 @@ func _refresh() -> void:
 	for device: int in UserDataManager.teacher_settings.students.keys():
 		var button: DeviceButton = device_button_scene.instantiate()
 		button.number = device
-		button.background_color = colors[device-1 % colors.size()]
+		button.background_color = Globals.device_colors[device-1 % Globals.device_colors.size()]
 		container.add_child(button)
 		button.pressed.connect(_device_button_pressed.bind(device))
 	OpeningCurtain.open()

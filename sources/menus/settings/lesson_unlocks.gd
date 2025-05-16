@@ -3,16 +3,28 @@ class_name LessonUnlocks
 
 signal student_deleted(code: int)
 
+# Namespace
+const DeviceButton:= preload("res://sources/menus/main/device_button.gd")
+const device_button_scene: PackedScene = preload("res://sources/menus/main/device_button.tscn")
 const StudentUnlock: = preload("res://sources/menus/settings/lesson_unlock.gd")
 const student_unlock_scene: PackedScene = preload("res://sources/menus/settings/lesson_unlock.tscn")
 
 @onready var lesson_container: VBoxContainer = %LessonContainer
+@onready var name_line_edit: LineEdit = %NameLineEdit
+@onready var device_selection_container: PanelContainer = %DeviceSelectionContainer
+
+var teacher_settings: SettingsTeacherSettings = null
 
 @export var device: int
 @export var student: int:
 	set = _on_student_changed
 
 var progression: UserProgression
+
+func _ready() -> void:
+	name_line_edit.connect("text_submitted", _on_name_changed)
+	device_selection_container.visible = false
+
 
 func _create_lessons() -> void:
 	for lesson_unlock: Node in lesson_container.get_children():
@@ -41,6 +53,11 @@ func _on_student_changed(value: int)-> void:
 	progression = UserDataManager.get_student_progression_for_code(device, student)
 	_create_lessons()
 	(%PasswordVisualizer as PasswordVisualizer).password = str(value)
+	var allStudent: Array = UserDataManager.teacher_settings.students[device]
+	for student_data : StudentData in allStudent:
+		if student_data.code == value:
+			name_line_edit.text = student_data.name
+			break
 
 
 func _on_back_button_pressed() -> void:
@@ -50,3 +67,41 @@ func _on_back_button_pressed() -> void:
 
 func _on_delete_button_pressed() -> void:
 	student_deleted.emit(int(student))
+
+
+func _on_device_change_button_pressed() -> void:
+	_device_selection_refresh()
+	device_selection_container.visible = true
+
+
+func _on_name_changed(new_name: String) -> void:
+	UserDataManager.teacher_settings.update_student_name(student, new_name)
+	teacher_settings.update_student_name(student, new_name)
+
+
+
+
+
+
+@onready var container: GridContainer = %GridContainer
+
+func _device_selection_refresh() -> void:
+	if not UserDataManager.teacher_settings:
+		return
+	
+	for child: Node in container.get_children():
+		child.queue_free()
+	
+	for device_id: int in UserDataManager.teacher_settings.students.keys():
+		var button: DeviceButton = device_button_scene.instantiate()
+		button.number = device_id
+		button.background_color = Globals.device_colors[device_id-1 % Globals.device_colors.size()]
+		container.add_child(button)
+		button.pressed.connect(_device_button_pressed.bind(device_id))
+
+func _device_button_pressed(device_id: int) -> void:
+	device = device_id
+	print("DEVICE SELECTED : " + str(device))
+	#Logger.trace("DeviceSelection: User selected device %d" % device_id)
+	#if UserDataManager.set_device_id(device_id):
+		#get_tree().change_scene_to_file(login_scene_path)

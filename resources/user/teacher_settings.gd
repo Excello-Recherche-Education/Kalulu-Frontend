@@ -49,6 +49,33 @@ func update_from_dict(dict: Dictionary) -> void:
 		
 		students[int(device)] = device_students
 
+
+func update_student_name(student_code: int, student_name: String) -> void:
+	for device_students: Array[StudentData] in students.values():
+		for student_data: StudentData in device_students:
+			if student_data.code == student_code:
+				student_data.name = student_name
+				Logger.trace("TeacherSettings: Updated student code " + str(student_code) + ": new name is " + student_name)
+				(ServerManager as ServerManagerClass).update_student(student_data)
+				return
+	Logger.warn("TeacherSettings: update_student_name: student not found with code " + str(student_code))
+
+
+func update_student_device(student_code: int, new_student_device: int) -> void:
+	for current_student_device: int in students.keys():
+		var studentsData: Array[StudentData] = students[current_student_device]
+		for student_data: StudentData in studentsData:
+			if student_data.code == student_code:
+				studentsData.erase(student_data)
+				if not students.has(new_student_device):
+					Logger.warn("TeacherSettings: update_student_device: student new device does not exists, it should not be possible. Update will still work anyway.")
+					students[new_student_device] = []
+				students[new_student_device].append(student_data)
+				(ServerManager as ServerManagerClass).update_student(student_data)
+				return
+	Logger.warn("TeacherSettings: update_student_device: student not found with code " + str(student_code))
+
+
 func get_new_code() -> int :
 	var used_codes: Array[int] = []
 	for student_array: Array[StudentData] in students.values():

@@ -134,7 +134,7 @@ func login_student(code : String) -> bool:
 		for stud: StudentData in students:
 			if int(stud.code) == int(code):
 				student = code
-				ServerManager.first_login_student()
+				(ServerManager as ServerManagerClass).first_login_student()
 				return true
 	
 	return false
@@ -382,6 +382,7 @@ func get_student_progression_for_code(device: int, code: int) -> UserProgression
 func save_student_progression_for_code(device: int, code: int, progression: UserProgression) -> void:
 	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
 	ResourceSaver.save(progression, progression_path)
+
 
 #endregion
 
