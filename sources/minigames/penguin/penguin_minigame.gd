@@ -165,11 +165,13 @@ func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 	# Checks if the GP pressed is silent
 	if _is_silent(label.gp):
 		penguin.happy()
+		_update_score(label.gp.ID as int, 1)
 		await label.right()
 		
 		current_word_progression += 1
 	else:
 		penguin.sad()
+		_update_score(label.gp.ID as int, -1)
 		await label.wrong()
 		
 		current_lives -= 1

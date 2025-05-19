@@ -410,14 +410,14 @@ func get_GP_remediation_score(GPID: int) -> int:
 	if not _student_remediation:
 		#push_warning("No student remediation data for " + str(student))
 		return 0
-	return _student_remediation.get_score(GPID)
+	return _student_remediation.get_gp_score(GPID)
 
 func update_remediation_scores(scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
 	if scores:
-		_student_remediation.update_scores(scores)
+		_student_remediation.update_gp_scores(scores)
 
 #endregion
 

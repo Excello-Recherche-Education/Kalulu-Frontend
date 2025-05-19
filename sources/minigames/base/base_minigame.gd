@@ -64,7 +64,7 @@ var lesson_difficulty: int
 var logs: Dictionary = {}
 
 # Scores for the remediation engine
-var scores: Dictionary = {} 
+var gp_scores: Dictionary = {} 
 
 # Stimuli
 var stimuli: Array = []
@@ -220,8 +220,8 @@ func _win() -> void:
 		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
 	# Remediation
-	if scores:
-		UserDataManager.update_remediation_scores(scores)
+	if gp_scores:
+		UserDataManager.update_remediation_scores(gp_scores)
 	
 	# Difficulty
 	if current_lives <= 0:
@@ -251,8 +251,8 @@ func _lose() -> void:
 		gardens_data.minigame_completed = false
 	
 	# Remediation
-	if scores:
-		UserDataManager.update_remediation_scores(scores)
+	if gp_scores:
+		UserDataManager.update_remediation_scores(gp_scores)
 	
 	# Difficulty
 	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
@@ -322,11 +322,11 @@ func _sort_scoring(stimulus1: Dictionary, stimulus2: Dictionary) -> bool:
 
 # Updates the score of a GP defined by his ID
 func _update_score(ID: int, score: int) -> void:
-	var new_score: int = 0
-	if scores.has(ID):
-		new_score += scores[ID]
-	new_score += score
-	scores[ID] = new_score
+	var new_gp_score: int = 0
+	if gp_scores.has(ID):
+		new_gp_score += gp_scores[ID]
+	new_gp_score += score
+	gp_scores[ID] = new_gp_score
 
 #endregion
 
@@ -390,6 +390,8 @@ func set_current_progression(p_current_progression: int) -> void:
 
 func _on_minigame_ui_garden_button_pressed() -> void:
 	_go_back_to_the_garden()
+	if gp_scores:
+		UserDataManager.update_remediation_scores(gp_scores)
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:
