@@ -513,5 +513,7 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 			Logger.error("UserDataManager: Error while renaming folder: %s" % error_string(err))
 	else:
 		Logger.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parentDirPath])
+		return
+	_save_teacher_settings()
 
 #endregion
