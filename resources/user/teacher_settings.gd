@@ -71,7 +71,7 @@ func update_student_device(student_code: int, new_student_device: int) -> void:
 					Logger.warn("TeacherSettings: update_student_device: student new device does not exists, it should not be possible. Update will still work anyway.")
 					students[new_student_device] = []
 				students[new_student_device].append(student_data)
-				(ServerManager as ServerManagerClass).update_student(student_data)
+				UserDataManager.move_user_device_folder(str(current_student_device), str(new_student_device), student_code)
 				return
 	Logger.warn("TeacherSettings: update_student_device: student not found with code " + str(student_code))
 

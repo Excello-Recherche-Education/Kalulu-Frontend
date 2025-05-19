@@ -21,7 +21,7 @@ const device_tab_scene: PackedScene = preload("res://sources/menus/settings/devi
 var last_device_id: int = -1
 
 func _ready() -> void:
-	_refresh_devices_tabs()
+	refresh_devices_tabs()
 	
 	if await ServerManager.check_internet_access():
 		add_device_button.show()
@@ -34,7 +34,7 @@ func _ready() -> void:
 	lesson_unlocks.teacher_settings = self
 
 
-func _refresh_devices_tabs() -> void:
+func refresh_devices_tabs() -> void:
 	for child: Node in devices_tab_container.get_children(false):
 		child.queue_free()
 	
@@ -117,7 +117,7 @@ func _on_add_device_popup_accepted() -> void:
 	var res: Dictionary = await ServerManager.add_student({"device" : last_device_id + 1})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
-		_refresh_devices_tabs()
+		refresh_devices_tabs()
 		await get_tree().create_timer(1).timeout
 		var count: int = devices_tab_container.get_tab_count()
 		devices_tab_container.current_tab = count -1
@@ -140,7 +140,7 @@ func _on_delete_student_popup_accepted() -> void:
 			current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
 			current_tab.refresh()
 		else:
-			_refresh_devices_tabs()
+			refresh_devices_tabs()
 
 
 func update_student_name(student_code: int, student_name: String) -> void:

@@ -1,4 +1,3 @@
-# TODO: Clean the reason why there is so much UNSAFE_PROPERTY_ACCESS in this script.
 extends TextureButton
 
 class_name Word

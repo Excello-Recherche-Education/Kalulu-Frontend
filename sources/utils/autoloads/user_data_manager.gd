@@ -381,8 +381,9 @@ func get_student_progression_for_code(device: int, code: int) -> UserProgression
 
 func save_student_progression_for_code(device: int, code: int, progression: UserProgression) -> void:
 	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
-	ResourceSaver.save(progression, progression_path)
-
+	var error: Error = ResourceSaver.save(progression, progression_path)
+	if error != OK:
+		Logger.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
 
 #endregion
 
@@ -485,6 +486,7 @@ func is_speech_played(speech: String) -> bool:
 	
 #endregion
 
+#region utils
 
 func _delete_dir(path: String) -> void:
 	var dir: DirAccess = DirAccess.open(path)
@@ -493,3 +495,23 @@ func _delete_dir(path: String) -> void:
 	for subfolder: String in dir.get_directories():
 		_delete_dir(path.path_join(subfolder))
 		dir.remove(subfolder)
+
+func move_user_device_folder(old_device: String, new_device: String, student_code: int) -> void:
+	var parentDirPath: String = "user://".path_join(_device_settings.teacher)
+	var parentDir: DirAccess = DirAccess.open(parentDirPath)
+	var oldChildDir: String = old_device.path_join(_device_settings.language).path_join(str(student_code))
+	var newChildDir: String = new_device.path_join(_device_settings.language).path_join(str(student_code))
+	var newParentDir: String = newChildDir.get_base_dir()  # = "2/fr_FR"
+	if not parentDir.dir_exists(newParentDir):
+		var err: Error = parentDir.make_dir_recursive(newParentDir)
+		if err != OK:
+			push_error("UserDataManager: Cannot create parent folder: %s" % error_string(err))
+			return
+	if parentDir.dir_exists(str(oldChildDir)):
+		var err: Error = parentDir.rename(oldChildDir, newChildDir)
+		if err != OK:
+			Logger.error("UserDataManager: Error while renaming folder: %s" % error_string(err))
+	else:
+		Logger.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parentDirPath])
+
+#endregion

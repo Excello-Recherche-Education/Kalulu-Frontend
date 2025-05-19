@@ -12,10 +12,12 @@ const student_unlock_scene: PackedScene = preload("res://sources/menus/settings/
 @onready var lesson_container: VBoxContainer = %LessonContainer
 @onready var name_line_edit: LineEdit = %NameLineEdit
 @onready var device_selection_container: PanelContainer = %DeviceSelectionContainer
+@onready var container: GridContainer = %GridContainer
 
 var teacher_settings: SettingsTeacherSettings = null
 
-@export var device: int
+@export var device: int:
+	set = _on_device_changed
 @export var student: int:
 	set = _on_student_changed
 
@@ -46,6 +48,10 @@ ORDER BY LessonNb")
 		lesson_container.add_child(student_unlock)
 		
 		student_unlock.unlocks_changed.connect(_create_lessons)
+
+
+func _on_device_changed(value: int)-> void:
+	device = value
 
 
 func _on_student_changed(value: int)-> void:
@@ -79,12 +85,6 @@ func _on_name_changed(new_name: String) -> void:
 	teacher_settings.update_student_name(student, new_name)
 
 
-
-
-
-
-@onready var container: GridContainer = %GridContainer
-
 func _device_selection_refresh() -> void:
 	if not UserDataManager.teacher_settings:
 		return
@@ -99,9 +99,11 @@ func _device_selection_refresh() -> void:
 		container.add_child(button)
 		button.pressed.connect(_device_button_pressed.bind(device_id))
 
+
 func _device_button_pressed(device_id: int) -> void:
-	device = device_id
-	print("DEVICE SELECTED : " + str(device))
-	#Logger.trace("DeviceSelection: User selected device %d" % device_id)
-	#if UserDataManager.set_device_id(device_id):
-		#get_tree().change_scene_to_file(login_scene_path)
+	var resSet: Dictionary = await ServerManager.set_student_data(student, {"device_id": device_id})
+	if resSet.code == 200:
+		device_selection_container.visible = false
+		UserDataManager.teacher_settings.update_student_device(student, device_id)
+		await teacher_settings.refresh_devices_tabs()
+		device = device_id
