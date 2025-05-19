@@ -221,5 +221,5 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 
 
 func _on_internet_check_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
-	Logger.debug("ServerManager Internet check completed.\n    Response code = %d. (200 = OK)" % response_code)
+	Logger.debug("ServerManager Internet check completed.\n    Response code = %s. (200 = OK)" % str(response_code))
 	internet_check_completed.emit(response_code == 200)
