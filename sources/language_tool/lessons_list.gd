@@ -1,6 +1,6 @@
 extends Control
 
-@onready var lessons_container: MarginContainer = $%LessonsContainer
+@onready var lessons_container: VBoxContainer = $%LessonsContainer
 @onready var unused_gp_container: GridContainer = $%UnusedGPContainer
 
 var lesson_container_scene: PackedScene = preload("res://sources/language_tool/lesson_container.tscn")
