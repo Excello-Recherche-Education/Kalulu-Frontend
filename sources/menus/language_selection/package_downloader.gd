@@ -9,7 +9,8 @@ const user_language_resources_path: String = "user://language_resources"
 const error_messages: Array[String] = [
 	"DISCONECTED_ERROR",
 	"NO_INTERNET_ACCESS",
-	"ERROR_DOWNLOADING"
+	"ERROR_DOWNLOADING",
+	"INVALID_LANGUAGE_DIRECTORY",
 ]
 
 
@@ -46,8 +47,11 @@ func _ready() -> void:
 	
 	if not await ServerManager.check_internet_access():
 		# Offline mode, if a pack is already downloaded, go to next scene
-		if DirAccess.dir_exists_absolute(current_language_path) && is_language_directory_valid(current_language_path):
-			_go_to_next_scene()
+		if DirAccess.dir_exists_absolute(current_language_path):
+			if is_language_directory_valid(current_language_path):
+				_go_to_next_scene()
+			else:
+				_show_error(3)
 		else:
 			_show_error(1)
 		return

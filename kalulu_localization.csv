@@ -336,6 +336,7 @@ TEACHER_SETTINGS_HELP;"Pour accéder aux paramètres, veuillez appuyer sur le pl
 DELETE_ACCOUNT;Supprimer le compte;Eliminar cuenta;Excluir conta
 DELETE_ACCOUNT_POPUP;Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !;¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!;Você realmente deseja excluir sua conta? Essa ação é irreversível!
 DISCONECTED_ERROR;Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.;Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.;Você foi desconectado. Digite seus detalhes de login novamente.
+INVALID_LANGUAGE_DIRECTORY;Dossier de langue invalide;Carpeta de idioma no v�lida;Pasta de idioma inv�lida
 NO_INTERNET_ACCESS;Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion et réessayer.;No está conectado a Internet. Compruebe su conexión e inténtelo de nuevo.;Você não está conectado à Internet. Verifique sua conexão e tente novamente.
 PICK_YOUR_DEVICE;Choisissez votre appareil;Elige tu dispositivo;Escolha seu dispositivo
 SIGN_IN;Connexion;Conexión;Conexão
@@ -344,3 +345,4 @@ ADD_STUDENT_POPUP;Souhaitez-vous ajouter un nouvel élève ?;¿Desea añadir un 
 ADD_DEVICE_POPUP;Souhaitez-vous ajouter un nouvel appareil ? Un élève sera créé automatiquement.;¿Desea añadir un nuevo dispositivo? Se creará un alumno automáticamente.;Gostaria de adicionar um novo dispositivo? Um aluno será criado automaticamente.
 DELETE_STUDENT_POPUP;Souhaitez-vous supprimer cet élève ? Cette action est définitive et entrainera la perte de la progression de cet élève.;¿Desea eliminar a este estudiante? Esta acción es definitiva y supondrá la pérdida del progreso de este alumno.;Deseja excluir esse aluno? Essa ação é definitiva e resultará na perda do progresso desse aluno.
 DELETE_STUDENT;Supprimer l'élève;Borrar estudiante;Excluir aluno
+CHANGE_DEVICE;Changer d'appareil;Cambiar de dispositivo;Trocar de dispositivo
