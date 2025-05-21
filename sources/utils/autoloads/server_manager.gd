@@ -1,7 +1,7 @@
 extends CanvasLayer
 class_name ServerManagerClass
 
-signal request_completed(code: int, body: Dictionary)
+signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_acces: bool)
 
 @onready var internet_check: HTTPRequest = $InternetCheck
@@ -131,11 +131,13 @@ func _create_request_headers(contentTypeJSON: bool = false) -> PackedStringArray
 
 
 # Response from the last request
+var success: bool
 var code: int
 var json: Dictionary = {}
 
 func _response() -> Dictionary:
 	var res: Dictionary = {
+			"success" : success,
 			"code" : code,
 			"body" : json
 		}
@@ -143,8 +145,7 @@ func _response() -> Dictionary:
 
 
 func _get_request(URI: String, params: Dictionary) -> void:
-	code = 0
-	json = {}
+	resetResult()
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
 		Logger.debug("ServerManager Sending GET request.\n    URI = %s\n    Parameters not logged because it contains a password." % URI)
@@ -159,8 +160,7 @@ func _get_request(URI: String, params: Dictionary) -> void:
 
 
 func _post_request(URI: String, params: Dictionary) -> void:
-	code = 0
-	json = {}
+	resetResult()
 	var url: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
@@ -176,8 +176,7 @@ func _post_request(URI: String, params: Dictionary) -> void:
 
 
 func _post_json_request(URI: String, data: Dictionary) -> void:
-	code = 0
-	json = {}
+	resetResult()
 	var req: String = environment_url + URI
 	var headers: PackedStringArray = _create_request_headers(true)
 	if data.has("password"):
@@ -193,8 +192,7 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 
 
 func _delete_request(URI: String, params: Dictionary = {}) -> void:
-	code = 0
-	json = {}
+	resetResult()
 	var req: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
 	Logger.debug("ServerManager Sending DELETE request.\n    URI = %s\n    Parameters = %s" % [URI, params])
@@ -207,19 +205,32 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 
 #endregion
 
-func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	code = response_code
-	if body:
-		Logger.debug("ServerManager Request Completed.\n    Response code = %d\n    Body received = %s" % [response_code, body.get_string_from_utf8()])
-		var strBody: String = body.get_string_from_utf8()
-		var result: Variant = JSON.parse_string(strBody)
-		if result != null:
-			json = result
-	
-	request_completed.emit(response_code, json)
+func _on_http_request_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	if result_code != OK:
+		Logger.debug("Cannot complete http request. Error code %d = %s" % [result_code, error_string(result_code)])
+	else:
+		code = response_code
+		if body:
+			Logger.debug("ServerManager Request Completed.\n    Response code = %d\n    Body received = %s" % [response_code, body.get_string_from_utf8()])
+			var strBody: String = body.get_string_from_utf8()
+			var result: Variant = JSON.parse_string(strBody)
+			if result != null:
+				json = result
+	success = result_code == OK and response_code == 200
+	request_completed.emit(success, response_code, json)
 	loading_rect.hide()
 
 
-func _on_internet_check_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
-	Logger.debug("ServerManager Internet check completed.\n    Response code = %s. (200 = OK)" % str(response_code))
-	internet_check_completed.emit(response_code == 200)
+func _on_internet_check_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+	if result_code != OK:
+		Logger.debug("Cannot check internet request. Error code %d = %s" % [result_code, error_string(result_code)])
+	else:
+		Logger.debug("ServerManager Internet check completed.\n    Response code = %s. (200 = OK)" % str(response_code))
+	success = result_code == OK and response_code == 200
+	internet_check_completed.emit(success)
+
+
+func resetResult() -> void:
+	success = false
+	code = 0
+	json = {}
