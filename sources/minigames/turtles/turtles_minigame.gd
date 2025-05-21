@@ -5,7 +5,6 @@ signal can_spawn_turtle()
 
 # Namespace
 const Water: = preload("res://sources/minigames/turtles/water.gd")
-const Island: = preload("res://sources/minigames/turtles/island.gd")
 const Turtle: = preload("res://sources/minigames/turtles/turtle.gd")
 
 const turtle_scene: PackedScene = preload("res://sources/minigames/turtles/turtle.tscn")

@@ -49,7 +49,10 @@ func move(y : float) -> void:
 		coroutine.add_future(_tween_body_part(body_part, y).finished)
 	
 	# Move tail
-	await get_tree().create_timer(body_part_wait_time).timeout
+	var sceneTree: SceneTree = get_tree()
+	if sceneTree != null: # Is not in editor mode
+		await get_tree().create_timer(body_part_wait_time).timeout
+	
 	coroutine.add_future(_tween_body_part(tail, y).finished)
 	
 	await coroutine.join_all()
