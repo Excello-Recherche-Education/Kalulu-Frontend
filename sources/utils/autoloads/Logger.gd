@@ -111,8 +111,11 @@ func _log_to_file(message: String) -> void:
 		log_file.flush()
 
 # Sugar functions
+# trace can be used everywhere, in ordre to have a full log of all that is hapenning
 func trace(msg: String) -> void: _log_internal(LogLevel.TRACE, msg)
+# debug should only be used in a dev environment to track a specific bug.
 func debug(msg: String) -> void: _log_internal(LogLevel.DEBUG, msg)
+# info can carry important informations that should always be logged but that are not problematic
 func info(msg: String) -> void: _log_internal(LogLevel.INFO, msg)
 func warn(msg: String) -> void: _log_internal(LogLevel.WARNING, msg)
 func error(msg: String) -> void: _log_internal(LogLevel.ERROR, msg)

@@ -119,7 +119,7 @@ func set_student_data(student_code: int, data: Dictionary) -> Dictionary:
 #region Sender functions
 
 func check_internet_access() -> bool:
-	Logger.debug("ServerManager Sending simple request to " + INTERNET_CHECK_URL + " to check if internet is available")
+	Logger.trace("ServerManager Sending simple request to " + INTERNET_CHECK_URL + " to check if internet is available")
 	var res: Error = internet_check.request(INTERNET_CHECK_URL)
 	if res == OK:
 		return await internet_check_completed
@@ -167,9 +167,9 @@ func _get_request(URI: String, params: Dictionary) -> void:
 	resetResult()
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
-		Logger.debug("ServerManager Sending GET request.\n    URI = %s\n    Parameters not logged because it contains a password." % URI)
+		Logger.trace("ServerManager Sending GET request.\n    URI = %s\n    Parameters not logged because it contains a password." % URI)
 	else:
-		Logger.debug("ServerManager Sending GET request.\n    URI = %s\n    Parameters = %s" % [URI, params])
+		Logger.trace("ServerManager Sending GET request.\n    URI = %s\n    Parameters = %s" % [URI, params])
 	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), headers) == OK:
 		await request_completed
 	else:
@@ -183,9 +183,9 @@ func _post_request(URI: String, params: Dictionary) -> void:
 	var url: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
-		Logger.debug("ServerManager Sending POST request.\n    URI = %s\n    Parameters not logged because it contains a password." % URI)
+		Logger.trace("ServerManager Sending POST request.\n    URI = %s\n    Parameters not logged because it contains a password." % URI)
 	else:
-		Logger.debug("ServerManager Sending POST request.\n    URI = %s\n    Parameters = %s" % [URI, params])
+		Logger.trace("ServerManager Sending POST request.\n    URI = %s\n    Parameters = %s" % [URI, params])
 	if http_request.request(url, headers, HTTPClient.METHOD_POST, "") == OK:
 		await request_completed
 	else:
@@ -199,9 +199,9 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 	var req: String = environment_url + URI
 	var headers: PackedStringArray = _create_request_headers(true)
 	if data.has("password"):
-		Logger.debug("ServerManager sending POST JSON request.\n    URI = %s\n    Data not logged because it contains a password." % URI)
+		Logger.trace("ServerManager sending POST JSON request.\n    URI = %s\n    Data not logged because it contains a password." % URI)
 	else:
-		Logger.debug("ServerManager Sending POST JSON request.\n    URI = %s\n    Data = %s" % [URI, data])
+		Logger.trace("ServerManager Sending POST JSON request.\n    URI = %s\n    Data = %s" % [URI, data])
 	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == OK:
 		await request_completed
 	else:
@@ -214,7 +214,7 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 	resetResult()
 	var req: String = _create_URI_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
-	Logger.debug("ServerManager Sending DELETE request.\n    URI = %s\n    Parameters = %s" % [URI, params])
+	Logger.trace("ServerManager Sending DELETE request.\n    URI = %s\n    Parameters = %s" % [URI, params])
 	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == OK:
 		await request_completed
 	else:
@@ -226,15 +226,17 @@ func _delete_request(URI: String, params: Dictionary = {}) -> void:
 
 func _on_http_request_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result_code != OK:
-		Logger.debug("Cannot complete http request. Error code %d = %s" % [result_code, error_string(result_code)])
+		Logger.trace("Cannot complete http request. Error code %d = %s" % [result_code, error_string(result_code)])
 	else:
 		code = response_code
 		if body:
-			Logger.debug("ServerManager Request Completed.\n    Response code = %d\n    Body received = %s" % [response_code, body.get_string_from_utf8()])
+			Logger.trace("ServerManager Request Completed.\n    Response code = %d\n    Body received = %s" % [response_code, body.get_string_from_utf8()])
 			var strBody: String = body.get_string_from_utf8()
 			var result: Variant = JSON.parse_string(strBody)
 			if result != null:
 				json = result
+			else:
+				Logger.trace("ServerManager: result null after parsing String to JSON")
 	success = result_code == OK and response_code == 200
 	request_completed.emit(success, response_code, json)
 	loading_rect.hide()
@@ -242,9 +244,9 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 
 func _on_internet_check_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
 	if result_code != OK:
-		Logger.debug("Cannot check internet request. Error code %d = %s" % [result_code, error_string(result_code)])
+		Logger.trace("Cannot check internet request. Error code %d = %s" % [result_code, error_string(result_code)])
 	else:
-		Logger.debug("ServerManager Internet check completed.\n    Response code = %s. (200 = OK)" % str(response_code))
+		Logger.trace("ServerManager Internet check completed.\n    Response code = %s. (200 = OK)" % str(response_code))
 	success = result_code == OK and response_code == 200
 	internet_check_completed.emit(success)
 

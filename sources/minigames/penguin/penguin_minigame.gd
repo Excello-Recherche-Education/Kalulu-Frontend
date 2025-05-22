@@ -76,7 +76,7 @@ func _find_stimuli_and_distractions() -> void:
 	for sentence: Dictionary in stimuli:
 		sentence.GPs = Database.get_GPs_from_sentence(sentence.ID as int)
 		
-	Logger.debug("PenguinMinigame: Stimuli: %s" % str(stimuli))
+	Logger.trace("PenguinMinigame: Stimuli: %s" % str(stimuli))
 
 
 # Launch the minigame

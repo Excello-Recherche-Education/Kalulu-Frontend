@@ -100,6 +100,7 @@ func _ready() -> void:
 	if not UserDataManager.is_speech_played("brain"):
 		_play_tutorial()
 
+
 func _play_tutorial() -> void:
 	var tutorial_count: int = 0
 	

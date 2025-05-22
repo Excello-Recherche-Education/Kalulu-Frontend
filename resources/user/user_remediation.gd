@@ -27,7 +27,7 @@ func get_gp_score(ID: int) -> int:
 func update_gp_scores(minigame_scores: Dictionary) -> void:
 	if not minigame_scores:
 		return
-	Logger.debug("UserRemediation: Update GP Scores: " + str(minigame_scores))
+	Logger.trace("UserRemediation: Update GP Scores: " + str(minigame_scores))
 	for ID: int in minigame_scores.keys():
 		var new_gp_score: int = 0
 		if gps_scores.has(ID):

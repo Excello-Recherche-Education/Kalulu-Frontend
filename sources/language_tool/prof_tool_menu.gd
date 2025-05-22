@@ -163,7 +163,7 @@ func _check_db_integrity() -> void:
 		lesson_id = index +1
 		error_label.text = "Database integrity checks lesson " + str(lesson_id)
 		await get_tree().process_frame
-		Logger.debug("ProfToolMenu: Lesson_id = " + str(lesson_id))
+		Logger.trace("ProfToolMenu: Lesson_id = " + str(lesson_id))
 		
 		var new_GPs_for_lesson: Array = Database.get_GP_for_lesson(lesson_id, false, true, false, false, true)
 		for new_GP: Dictionary in new_GPs_for_lesson:
@@ -241,7 +241,7 @@ func _check_db_integrity() -> void:
 	integrity_checking = false
 	if check_box_log.button_pressed:
 		var file_path: String = ProjectSettings.globalize_path(integrity_log_path)
-		Logger.debug("ProfToolMenu: Logs saved at " + file_path)
+		Logger.trace("ProfToolMenu: Logs saved at " + file_path)
 		OS.shell_open(file_path)
 #endregion
 
@@ -590,7 +590,7 @@ func create_book() -> void:
 	output_file.close()
 	
 	error_label.text = "📘 Export des données du livret terminé vers : " + output_path
-	Logger.debug("ProfToolMenu: " + error_label.text)
+	Logger.trace("ProfToolMenu: " + error_label.text)
 
 # Fonction qui ajoute une ligne au dictionnaire
 func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[String, String], categorie: String, all_headers: Array) -> void:
