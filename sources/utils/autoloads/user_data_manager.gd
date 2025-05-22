@@ -45,7 +45,7 @@ func register(register_settings: TeacherSettings) -> bool:
 	# Save the teacher settings on disk
 	DirAccess.make_dir_recursive_absolute(get_teacher_folder())
 	teacher_settings = register_settings
-	_save_teacher_settings()
+	save_teacher_settings()
 	
 	return true
 
@@ -89,7 +89,7 @@ func login(infos: Dictionary) -> bool:
 		teacher_settings = load(path) as TeacherSettings
 	
 	teacher_settings.update_from_dict(infos)
-	_save_teacher_settings()
+	save_teacher_settings()
 	
 	if teacher_settings.students.keys().size() == 1:
 		set_device_id(teacher_settings.students.keys()[0] as int)
@@ -268,7 +268,7 @@ func _load_teacher_settings() -> void:
 		_device_settings.device_id = 0
 		_save_device_settings()
 
-func _save_teacher_settings() -> void:
+func save_teacher_settings() -> void:
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
 func _delete_inexistants_students_saves() -> void:
@@ -314,7 +314,7 @@ func update_configuration(configuration: Dictionary) -> bool:
 	if teacher_settings.last_modified != configuration.last_modified:
 		# Update the teacher resource
 		teacher_settings.update_from_dict(configuration)
-		_save_teacher_settings()
+		save_teacher_settings()
 		
 		# Check if the device still exists
 		if not _device_settings.device_id in teacher_settings.students.keys():
@@ -514,6 +514,60 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 	else:
 		Logger.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parentDirPath])
 		return
-	_save_teacher_settings()
+	save_teacher_settings()
+
+
+func get_latest_modification(path: String) -> Dictionary:
+	var result: Dictionary = {
+		"error": OK,
+		"modification_date": null
+	}
+
+	if FileAccess.file_exists(path):
+		var time: int = FileAccess.get_modified_time(path)
+		if time > 0:
+			result.modification_date = Time.get_datetime_dict_from_unix_time(time)
+		else:
+			result.error = ERR_CANT_OPEN
+		return result
+
+	if not DirAccess.dir_exists_absolute(path):
+		result.error = ERR_DOES_NOT_EXIST
+		return result
+
+	var latest_time: int = 0
+	latest_time = _scan_dir_recursive(path, latest_time)
+
+	if latest_time > 0:
+		result.modification_date = Time.get_datetime_dict_from_unix_time(latest_time)
+	else:
+		result.error = ERR_FILE_NOT_FOUND  # Aucun fichier trouvé
+
+	return result
+
+
+func _scan_dir_recursive(dir_path: String, latest_time: int) -> int:
+	var dir: DirAccess = DirAccess.open(dir_path)
+	if dir == null:
+		return latest_time
+
+	dir.list_dir_begin()
+	while true:
+		var dirName: String = dir.get_next()
+		if dirName == "":
+			break
+		if dirName.begins_with("."):
+			continue
+
+		var full_path: String = dir_path.path_join(dirName)
+		if dir.current_is_dir():
+			latest_time = _scan_dir_recursive(full_path, latest_time)
+		else:
+			var time: int = FileAccess.get_modified_time(full_path)
+			if time > latest_time:
+				latest_time = time
+	dir.list_dir_end()
+
+	return latest_time
 
 #endregion

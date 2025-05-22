@@ -346,3 +346,7 @@ ADD_DEVICE_POPUP;Souhaitez-vous ajouter un nouvel appareil ? Un élève sera cr�
 DELETE_STUDENT_POPUP;Souhaitez-vous supprimer cet élève ? Cette action est définitive et entrainera la perte de la progression de cet élève.;¿Desea eliminar a este estudiante? Esta acción es definitiva y supondrá la pérdida del progreso de este alumno.;Deseja excluir esse aluno? Essa ação é definitiva e resultará na perda do progresso desse aluno.
 DELETE_STUDENT;Supprimer l'élève;Borrar estudiante;Excluir aluno
 CHANGE_DEVICE;Changer d'appareil;Cambiar de dispositivo;Trocar de dispositivo
+SYNCHRONIZE_ACCOUNT;Synchroniser compte;Sincronizar cuenta;Sincronizar conta
+SYNC_CHOICE_POPUP;Conflit de données : serveur plus récent. Choisir une version.;Conflicto de datos: el servidor es m�s reciente. Elige una versi�n.;Conflito de dados: servidor mais recente. Escolha uma vers�o.
+SERVER_PRIORITY;Serveur;Servidor;Servidor
+LOCAL_PRIORITY;Locale;Local;Local

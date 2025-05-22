@@ -439,6 +439,8 @@ vertical_alignment = 1
 visible = false
 script = ExtResource("26_pm647")
 content_text = "NO_INTERNET_ACCESS"
+confirm_text_override = null
+cancel_text_override = null
 
 [node name="TextureRect" type="TextureRect" parent="NoInternetPopup"]
 top_level = true

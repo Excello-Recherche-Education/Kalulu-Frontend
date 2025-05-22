@@ -70,8 +70,27 @@ func get_language_pack_url(locale: String) -> Dictionary:
 	return _response()
 
 
+func get_user_data_timestamp() -> Dictionary:
+	await _get_request("get_user_data_timestamp", {})
+	return _response()
+
+
+func get_user_data() -> Dictionary:
+	await _get_request("get_user_data", {})
+	return _response()
+
+
+func update_user_data(teacher: TeacherSettings, timestamp: String, force: bool = false) -> Dictionary:
+	var data: Dictionary = {"account_type": teacher.account_type, "education_method": teacher.education_method ,"timestamp": timestamp}
+	if force:
+		data.merge({"force_sync": "YES"})
+	await _post_json_request("update_user_data", data)
+	return _response()
+
+
 # p_student must have a device key
 # it can contain a name, level and age key for parents
+# TODO POUR ADD / UPDATE / REMOVE STUDENT : RECUPERER LE TIMESTAMP POUR METTRE A JOUR LE USER
 func add_student(p_student: Dictionary) -> Dictionary:
 	await _post_request("add_student", p_student)
 	return _response()

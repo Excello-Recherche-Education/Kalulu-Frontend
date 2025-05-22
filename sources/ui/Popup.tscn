@@ -10,6 +10,8 @@ gradient = SubResource("Gradient_22q4u")
 
 [node name="Popup" type="CanvasLayer"]
 script = ExtResource("1_o3fd6")
+confirm_text_override = null
+cancel_text_override = null
 
 [node name="TextureRect" type="TextureRect" parent="."]
 top_level = true
