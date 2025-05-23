@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ci7ueo06f24k3"]
+[gd_scene load_steps=11 format=3 uid="uid://ci7ueo06f24k3"]
 
 [ext_resource type="Script" uid="uid://cil0o87dsb7q4" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_v06h8"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/Popup.tscn" id="7_jetb7"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="8_7h0sa"]
 [ext_resource type="PackedScene" uid="uid://qsvbq6ruc44v" path="res://sources/menus/settings/lesson_unlocks.tscn" id="9_mljfd"]
+[ext_resource type="PackedScene" uid="uid://dhowigt8un22u" path="res://sources/ui/LoadingPopup.tscn" id="10_i488h"]
 
 [node name="TeacherSettings" type="Control"]
 layout_mode = 3
@@ -212,6 +213,9 @@ content_text = "SYNC_CHOICE_POPUP"
 confirm_text_override = "SERVER_PRIORITY"
 cancel_text_override = "LOCAL_PRIORITY"
 
+[node name="LoadingPopup" parent="." instance=ExtResource("10_i488h")]
+unique_name_in_owner = true
+
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
 [connection signal="accepted" from="InterfaceLeft/Container/SynchronizeButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
@@ -228,3 +232,5 @@ cancel_text_override = "LOCAL_PRIORITY"
 [connection signal="accepted" from="DeleteStudentPopup" to="." method="_on_delete_student_popup_accepted"]
 [connection signal="accepted" from="SyncChoicePopup" to="." method="_on_sync_choice_server"]
 [connection signal="refused" from="SyncChoicePopup" to="." method="_on_sync_choice_local"]
+[connection signal="cancel" from="LoadingPopup" to="." method="_on_loading_popup_cancel"]
+[connection signal="ok" from="LoadingPopup" to="." method="_on_loading_popup_ok"]

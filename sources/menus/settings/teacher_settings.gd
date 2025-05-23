@@ -11,6 +11,8 @@ const device_tab_scene: PackedScene = preload("res://sources/menus/settings/devi
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
 @onready var sync_choice_popup: ConfirmPopup = %SyncChoicePopup
+@onready var loading_popup: LoadingPopup = %LoadingPopup
+
 
 @onready var account_type_option_button: OptionButton = %AccountTypeOptionButton
 @onready var education_method_option_button: OptionButton = %EducationMethodOptionButton
@@ -96,6 +98,21 @@ func _on_delete_button_pressed() -> void:
 	delete_popup.show()
 
 
+func startSync() -> void:
+	synchronizing = true
+	loading_popup.set_finished(false)
+	loading_popup.set_progress(0.0)
+	loading_popup.show()
+
+
+func stopSync(success: bool = false) -> void:
+	synchronizing = false
+	if success:
+		loading_popup.set_progress(100.0)
+		await get_tree().create_timer(1).timeout
+	loading_popup.set_finished(true)
+
+
 func _on_synchronize_button_pressed() -> void:
 	#synchronizing = false
 	#await ServerManager.update_user_data(UserDataManager.teacher_settings, "2025-05-23T09:39:47", true)
@@ -104,13 +121,13 @@ func _on_synchronize_button_pressed() -> void:
 	if synchronizing:
 		Logger.trace("SettingsTeacherSettings: User synchronization already started, cancel double-call.")
 		return
-	synchronizing = true
+	startSync()
 	var resGetTeacherTimestamp: Dictionary = await ServerManager.get_user_data_timestamp()
 	if resGetTeacherTimestamp.success:
 		Logger.trace("SettingsTeacherSettings: Server timestamp for user data = " + str(resGetTeacherTimestamp.body["last_modified"]))
 	else:
 		Logger.trace("Cannot get server timestamp for user data. Canceling synchronization.")
-		synchronizing = false
+		stopSync()
 		return
 	var unixTimeServer: int = Time.get_unix_time_from_datetime_string(resGetTeacherTimestamp.body["last_modified"] as String)
 	
@@ -122,7 +139,7 @@ func _on_synchronize_button_pressed() -> void:
 			Logger.trace("SettingsTeacherSettings: Local user file timestamp = " + localStringTime)
 		else:
 			Logger.warn("SettingsTeacherSettings: Cannot find modification date for local user data: " + error_string(localResult.error as int))
-			synchronizing = false
+			stopSync()
 			return
 	var localUnixTime: int = Time.get_unix_time_from_datetime_string(localStringTime)
 	
@@ -130,11 +147,12 @@ func _on_synchronize_button_pressed() -> void:
 		Logger.trace("SettingsTeacherSettings: User data timestamp is the same in local and on server. No synchronization necessary")
 	elif localUnixTime > unixTimeServer:
 		_on_sync_choice_local()
+		return
 	else:
 		Logger.trace("SettingsTeacherSettings: Local user data timestamp is obsolete, we need to choose a priority")
 		sync_choice_popup.show()
 		return
-	synchronizing = false
+	stopSync(true)
 
 
 func _on_delete_popup_accepted() -> void:
@@ -225,8 +243,8 @@ func _on_sync_choice_server() -> void:
 	Logger.trace("SettingsTeacherSettings: Synchronization priority defined to server")
 	var resGetUserData: Dictionary = await ServerManager.get_user_data()
 	if resGetUserData.success:
-		# {"email": "cvbn@yopmail.com", "account_type": 0, "education_method": 0, "created_at": "2025-05-15T12:27:34Z", "last_modified": "2025-05-22T14:05:42Z"}
 		if resGetUserData.has("body"):
+			# {"email": "cvbn@yopmail.com", "account_type": 0, "education_method": 0, "created_at": "2025-05-15T12:27:34Z", "last_modified": "2025-05-22T14:05:42Z"}
 			var resultBody: Dictionary = resGetUserData.body
 			if resultBody.has("account_type"):
 				UserDataManager.teacher_settings.account_type = resultBody.account_type
@@ -240,9 +258,13 @@ func _on_sync_choice_server() -> void:
 				Logger.warn("SettingsTeacherSettings: user data received from the server has no education_method")
 		else:
 			Logger.warn("SettingsTeacherSettings: user data received from the server has no body")
+			stopSync()
+			return
 	else:
 		Logger.warn("SettingsTeacherSettings: Failed to get user data from the server")
-	synchronizing = false
+		stopSync()
+		return
+	stopSync(true)
 
 
 func _on_sync_choice_local() -> void:
@@ -250,6 +272,16 @@ func _on_sync_choice_local() -> void:
 	var resSetUserTimestamp: Dictionary = await ServerManager.update_user_data(UserDataManager.teacher_settings, localStringTime, true)
 	if resSetUserTimestamp.success:
 		Logger.trace("SettingsTeacherSettings: user data successfully sent to the server")
+		stopSync(true)
 	else:
 		Logger.warn("SettingsTeacherSettings: Failed to send update of user data to the server")
-	synchronizing = false
+		stopSync()
+
+
+func _on_loading_popup_ok() -> void:
+	loading_popup.hide()
+
+
+func _on_loading_popup_cancel() -> void:
+	#TODO
+	loading_popup.hide()

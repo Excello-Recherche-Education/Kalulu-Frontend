@@ -594,6 +594,7 @@ PopupMenu/font_sizes/font_size = 100
 PopupMenu/fonts/font = ExtResource("1_10vt2")
 PopupMenu/fonts/font_separator = ExtResource("1_10vt2")
 PopupMenu/fonts/title_font = null
+ProgressBar/font_sizes/font_size = 50
 ProgressBar/fonts/font = ExtResource("1_10vt2")
 ProgressBar/styles/background = SubResource("StyleBoxEmpty_nolh0")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_unu58")
