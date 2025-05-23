@@ -39,7 +39,7 @@ func _set_lesson_number(value: int) -> void:
 	
 	for element: Dictionary in Database.db.query_result:
 		var gp: = Label.new()
-		gp.text = element.Grapheme + "-" + element.Phoneme
+		gp.text = Database.get_gp_name(element)
 		lesson_gps.add_child(gp)
 	
 	Database.db.query("Select Exercise1, Exercise2, Exercise3, LessonNb FROM LessonsExercises

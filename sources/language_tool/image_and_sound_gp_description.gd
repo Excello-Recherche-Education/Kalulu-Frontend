@@ -71,9 +71,7 @@ func _sound_file_selected(file_path: String) -> void:
 
 func set_gp(value: Dictionary) -> void:
 	gp = value
-	gp_menu_button.text = gp["Grapheme"]
-	if gp.has("Phoneme"):
-		gp_menu_button.text += "-" + gp["Phoneme"]
+	gp_menu_button.text = Database.get_gp_name(gp)
 	
 	var image_path: String = get_image_path.call(gp)
 	if FileAccess.file_exists(image_path):

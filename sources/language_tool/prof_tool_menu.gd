@@ -241,15 +241,15 @@ func _check_db_integrity() -> void:
 	var all_GPs: Array = Database.get_GP_for_lesson(Database.get_lessons_count() + 1, false, false, false, true, true)
 	for gp: Dictionary in all_GPs:
 		var gp_sound_path: String = Database.get_gp_sound_path(gp)
-		var result = file_exists_case_sensitive(gp_sound_path)
+		var result: Dictionary = file_exists_case_sensitive(gp_sound_path)
 		match result.status:
 			FileCheckResult.OK:
 				pass # Nothing
 			FileCheckResult.ERROR_CASE_MISMATCH:
-				if !log_message("GP " + gp.Grapheme + '-' + gp.Phoneme + " sound file exists, but its name does not match the expected casing"):
+				if !log_message("GP " + Database.get_gp_name(gp) + " sound file exists, but its name does not match the expected casing"):
 					return
 			FileCheckResult.ERROR_NOT_FOUND:
-				if !log_message("GP " + gp.Grapheme + '-' + gp.Phoneme + " sound file does not exists"):
+				if !log_message("GP " + Database.get_gp_name(gp) + " sound file does not exists"):
 					return
 	
 	error_label.text = "Database integrity check finished. " + str(total_integrity_warnings) + " warnings found."
@@ -288,7 +288,7 @@ enum FileCheckResult {
 }
 
 func file_exists_case_sensitive(path: String) -> Dictionary:
-	var result := {
+	var result: Dictionary = {
 		"status": FileCheckResult.OK,
 		"exists": false
 	}
@@ -297,26 +297,26 @@ func file_exists_case_sensitive(path: String) -> Dictionary:
 		result.status = FileCheckResult.ERROR_NOT_FOUND
 		return result
 
-	var dir_path = path.get_base_dir()
-	var file_name = path.get_file()
+	var dir_path: String = path.get_base_dir()
+	var file_name: String = path.get_file()
 
-	var dir = DirAccess.open(dir_path)
+	var dir: DirAccess = DirAccess.open(dir_path)
 	if dir == null:
 		result.status = FileCheckResult.ERROR_NOT_FOUND
 		return result
 
 	dir.list_dir_begin()
 	while true:
-		var name = dir.get_next()
-		if name == "":
+		var test_name: String = dir.get_next()
+		if test_name == "":
 			break
 		if !dir.current_is_dir():
-			if name == file_name:
+			if test_name == file_name:
 				result.exists = true
 				result.status = FileCheckResult.OK
 				dir.list_dir_end()
 				return result
-			elif name.to_lower() == file_name.to_lower():
+			elif test_name.to_lower() == file_name.to_lower():
 				result.status = FileCheckResult.ERROR_CASE_MISMATCH
 	dir.list_dir_end()
 

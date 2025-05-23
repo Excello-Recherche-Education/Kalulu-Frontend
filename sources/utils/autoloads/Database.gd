@@ -527,20 +527,31 @@ func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:
 	return null
 
 
+func get_gp_name(gp: Dictionary) -> String:
+	var result: String = ""
+	if gp.has("Grapheme"):
+		result += gp["Grapheme"]
+	if gp.has("Phoneme"):
+		if result != "":
+			result += "-"
+		result += gp["Phoneme"]
+	return result
+
+
 func get_gp_look_and_learn_image_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_images + gp["Grapheme"] + "-" + gp["Phoneme"] + image_extension
+	return base_path + language + look_and_learn_images + get_gp_name(gp) + image_extension
 
 
 func get_gp_look_and_learn_sound_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_sounds + gp["Grapheme"] + "-" + gp["Phoneme"] + sound_extension
+	return base_path + language + look_and_learn_sounds + get_gp_name(gp) + sound_extension
 
 
 func get_gp_look_and_learn_video_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_videos + gp["Grapheme"] + "-" + gp["Phoneme"] + video_extension
+	return base_path + language + look_and_learn_videos + get_gp_name(gp) + video_extension
 
 
 func get_gp_sound_path(gp: Dictionary) -> String:
-	return base_path + language + language_sounds + gp.Grapheme + '-' + gp.Phoneme + sound_extension
+	return base_path + language + language_sounds + Database.get_gp_name(gp) + sound_extension
 
 
 func get_syllable_sound_path(syllable: Dictionary) -> String:

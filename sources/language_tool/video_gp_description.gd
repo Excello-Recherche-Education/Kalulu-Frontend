@@ -30,7 +30,7 @@ func set_video_preview(video_path: String) -> void:
 
 func set_gp(p_gp: Dictionary) -> void:
 	gp = p_gp
-	gp_menu_button.text = gp["Grapheme"] + "-" + gp["Phoneme"]
+	gp_menu_button.text = Database.get_gp_name(gp)
 	
 	if FileAccess.file_exists(Database.get_gp_look_and_learn_video_path(gp)):
 		set_video_preview(Database.get_gp_look_and_learn_video_path(gp))
