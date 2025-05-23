@@ -237,6 +237,21 @@ func _check_db_integrity() -> void:
 		else:
 			continue #No sentence in this lesson
 	
+	error_label.text = "Database integrity checks all GP sounds file names."
+	var all_GPs: Array = Database.get_GP_for_lesson(Database.get_lessons_count() + 1, false, false, false, true, true)
+	for gp: Dictionary in all_GPs:
+		var gp_sound_path: String = Database.get_gp_sound_path(gp)
+		var result = file_exists_case_sensitive(gp_sound_path)
+		match result.status:
+			FileCheckResult.OK:
+				pass # Nothing
+			FileCheckResult.ERROR_CASE_MISMATCH:
+				if !log_message("GP " + gp.Grapheme + '-' + gp.Phoneme + " sound file exists, but its name does not match the expected casing"):
+					return
+			FileCheckResult.ERROR_NOT_FOUND:
+				if !log_message("GP " + gp.Grapheme + '-' + gp.Phoneme + " sound file does not exists"):
+					return
+	
 	error_label.text = "Database integrity check finished. " + str(total_integrity_warnings) + " warnings found."
 	integrity_checking = false
 	if check_box_log.button_pressed:
@@ -265,6 +280,50 @@ func log_message(message: String) -> bool:
 		error_label.text = message
 		integrity_checking = false
 		return false
+
+enum FileCheckResult {
+	OK,
+	ERROR_NOT_FOUND,
+	ERROR_CASE_MISMATCH
+}
+
+func file_exists_case_sensitive(path: String) -> Dictionary:
+	var result := {
+		"status": FileCheckResult.OK,
+		"exists": false
+	}
+
+	if not FileAccess.file_exists(path):
+		result.status = FileCheckResult.ERROR_NOT_FOUND
+		return result
+
+	var dir_path = path.get_base_dir()
+	var file_name = path.get_file()
+
+	var dir = DirAccess.open(dir_path)
+	if dir == null:
+		result.status = FileCheckResult.ERROR_NOT_FOUND
+		return result
+
+	dir.list_dir_begin()
+	while true:
+		var name = dir.get_next()
+		if name == "":
+			break
+		if !dir.current_is_dir():
+			if name == file_name:
+				result.exists = true
+				result.status = FileCheckResult.OK
+				dir.list_dir_end()
+				return result
+			elif name.to_lower() == file_name.to_lower():
+				result.status = FileCheckResult.ERROR_CASE_MISMATCH
+	dir.list_dir_end()
+
+	if result.status != FileCheckResult.ERROR_CASE_MISMATCH:
+		result.status = FileCheckResult.ERROR_NOT_FOUND
+
+	return result
 
 func _get_available_languages() -> Array[String]:
 	var available_languages: Array[String] = []
