@@ -67,8 +67,6 @@ text = "SYNCHRONIZE_ACCOUNT"
 visible = false
 content_text = "Voulez-vous vraiment supprimer votre compte ?
 Cette action est irréversible !"
-confirm_text_override = ""
-cancel_text_override = ""
 
 [node name="DeleteButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2
@@ -81,8 +79,6 @@ unique_name_in_owner = true
 visible = false
 content_text = "Voulez-vous vraiment supprimer votre compte ?
 Cette action est irréversible !"
-confirm_text_override = ""
-cancel_text_override = ""
 
 [node name="LogoutButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2
@@ -198,22 +194,16 @@ layout_mode = 1
 unique_name_in_owner = true
 visible = false
 content_text = "ADD_STUDENT_POPUP"
-confirm_text_override = ""
-cancel_text_override = ""
 
 [node name="AddDevicePopup" parent="." instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
 content_text = "ADD_DEVICE_POPUP"
-confirm_text_override = ""
-cancel_text_override = ""
 
 [node name="DeleteStudentPopup" parent="." instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
 content_text = "DELETE_STUDENT_POPUP"
-confirm_text_override = ""
-cancel_text_override = ""
 
 [node name="SyncChoicePopup" parent="." instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
