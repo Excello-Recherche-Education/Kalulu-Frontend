@@ -210,13 +210,6 @@ content_text = "DELETE_STUDENT_POPUP"
 unique_name_in_owner = true
 visible = false
 
-[node name="SyncChoicePopup" parent="." instance=ExtResource("7_jetb7")]
-unique_name_in_owner = true
-visible = false
-content_text = "SYNC_CHOICE_POPUP"
-confirm_text_override = "SERVER_PRIORITY"
-cancel_text_override = "LOCAL_PRIORITY"
-
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
 [connection signal="accepted" from="InterfaceLeft/Container/SynchronizeButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
@@ -234,5 +227,3 @@ cancel_text_override = "LOCAL_PRIORITY"
 [connection signal="accepted" from="DeleteStudentPopup" to="." method="_on_delete_student_popup_accepted"]
 [connection signal="cancel" from="LoadingPopup" to="." method="_on_loading_popup_cancel"]
 [connection signal="ok" from="LoadingPopup" to="." method="_on_loading_popup_ok"]
-[connection signal="accepted" from="SyncChoicePopup" to="." method="_on_sync_choice_server"]
-[connection signal="refused" from="SyncChoicePopup" to="." method="_on_sync_choice_local"]

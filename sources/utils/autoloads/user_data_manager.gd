@@ -24,10 +24,14 @@ var _student_remediation: UserRemediation
 var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
 
+var user_database_synchronizer: UserDataBaseSynchronizer
+
 
 func _ready() -> void:
 	if get_device_settings().teacher:
 		_load_teacher_settings()
+	
+	user_database_synchronizer = UserDataBaseSynchronizer.new()
 
 
 #region Registering and logging in
@@ -420,8 +424,11 @@ func get_student_remediation_data(student_code: int) -> UserRemediation:
 	Logger.trace("UserDataManager: Remediation data of student code %d not found" % student_code)
 	return null
 
-func _save_student_remediation() -> void:
-	_student_remediation.last_modified = Time.get_datetime_string_from_system(true)
+func _save_student_remediation(force_user_last_modified: String = "") -> void:
+	if force_user_last_modified == "":
+		teacher_settings.last_modified = Time.get_datetime_string_from_system(true)
+	else:
+		teacher_settings.last_modified = force_user_last_modified
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
 
 func get_GP_remediation_score(GPID: int) -> int:

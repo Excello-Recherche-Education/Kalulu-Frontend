@@ -10,7 +10,6 @@ const device_tab_scene: PackedScene = preload("res://sources/menus/settings/devi
 @onready var devices_tab_container : TabContainer = %DevicesTabContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
-@onready var sync_choice_popup: ConfirmPopup = %SyncChoicePopup
 @onready var loading_popup: LoadingPopup = %LoadingPopup
 
 
@@ -25,7 +24,6 @@ const device_tab_scene: PackedScene = preload("res://sources/menus/settings/devi
 @onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
 
 var last_device_id: int = -1
-var user_database_synchronizer: UserDataBaseSynchronizer
 
 
 func _ready() -> void:
@@ -44,11 +42,9 @@ func _ready() -> void:
 	account_type_option_button.select(UserDataManager.teacher_settings.account_type)
 	education_method_option_button.select(UserDataManager.teacher_settings.education_method)
 	
-	user_database_synchronizer = UserDataBaseSynchronizer.new()
-	user_database_synchronizer.loading_popup = loading_popup
-	user_database_synchronizer.sync_choice_popup = sync_choice_popup
-	user_database_synchronizer.account_type_option_button = account_type_option_button
-	user_database_synchronizer.education_method_option_button = education_method_option_button
+	UserDataManager.user_database_synchronizer.loading_popup = loading_popup
+	UserDataManager.user_database_synchronizer.account_type_option_button = account_type_option_button
+	UserDataManager.user_database_synchronizer.education_method_option_button = education_method_option_button
 
 
 func _on_account_type_option_button_item_selected(index: int) -> void:
@@ -189,15 +185,7 @@ func update_student_name(student_code: int, student_name: String) -> void:
 #region Synchronization
 
 func _on_synchronize_button_pressed() -> void:
-	user_database_synchronizer.on_synchronize_button_pressed()
-
-
-func _on_sync_choice_server() -> void:
-	user_database_synchronizer.on_sync_choice_server()
-
-
-func _on_sync_choice_local() -> void:
-	user_database_synchronizer.on_sync_choice_local()
+	UserDataManager.user_database_synchronizer.on_synchronize_button_pressed()
 
 
 func _on_loading_popup_ok() -> void:

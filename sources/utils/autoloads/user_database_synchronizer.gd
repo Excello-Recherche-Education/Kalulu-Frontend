@@ -9,7 +9,6 @@ var account_type_option_button: OptionButton
 var education_method_option_button: OptionButton
 
 var loading_popup: LoadingPopup
-var sync_choice_popup: ConfirmPopup
 
 
 func startSync() -> void:
@@ -55,20 +54,20 @@ func on_synchronize_button_pressed() -> void:
 			loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_LOCAL_TIMESTAMP")
 			stopSync()
 			return
-	var localUnixTime: int = Time.get_unix_time_from_datetime_string(localStringTime)
+	var unixTimeLocal: int = Time.get_unix_time_from_datetime_string(localStringTime)
 	
-	if localUnixTime == unixTimeServer:
+	if unixTimeLocal == unixTimeServer:
 		Logger.trace("SettingsTeacherSettings: User data timestamp is the same in local and on server. No synchronization necessary")
-	elif localUnixTime > unixTimeServer:
-		on_sync_choice_local()
+		stopSync(true)
+	elif unixTimeLocal > unixTimeServer:
+		on_sync_from_local()
 		return
-	else:
-		Logger.trace("SettingsTeacherSettings: Local user data timestamp is obsolete, we need to choose a priority")
-		sync_choice_popup.show()
+	else: # unixTimeLocal < unixTimeServer
+		on_sync_from_server()
 		return
-	stopSync(true)
 
-func on_sync_choice_server() -> void:
+
+func on_sync_from_server() -> void:
 	Logger.trace("SettingsTeacherSettings: Synchronization priority defined to server")
 	await setLoadingProgression(1.0)
 	var resGetUserData: Dictionary = await ServerManager.get_user_data()
@@ -101,7 +100,7 @@ func on_sync_choice_server() -> void:
 	stopSync(true)
 
 
-func on_sync_choice_local() -> void:
+func on_sync_from_local() -> void:
 	Logger.trace("SettingsTeacherSettings: Synchronization priority defined to local")
 	var numberOfStudents: int = UserDataManager.get_number_of_students()
 	var numberOfUpdatesToDo: int = numberOfStudents + 1 # +1 for user data
