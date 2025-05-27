@@ -351,7 +351,7 @@ SYNC_CHOICE_POPUP,Conflit de données : serveur plus récent. Choisir une versio
 SERVER_PRIORITY,Serveur,Servidor,Servidor
 LOCAL_PRIORITY,Locale,Local,Local
 SYNCHRONIZATION_INITIALISATION,Initialisation de la synchronisation,Inicializando sincronizacin,Inicializando sincronizaço
-SYNCHRONIZATION_SUCCESS,Synchronisation réussie,Sincronización completada,Sincronização concluídada
+SYNCHRONIZATION_SUCCESS,Synchronisation terminée avec succès,Sincronización terminada con éxito,Sincronização concluída com sucesso
 SYNCHRONIZATION_ERROR_NO_SERVER,chec : pas de connexion serveur,Error: sin conexin con el servidor,Erro: sem conexo com o servidor
 SYNCHRONIZATION_ERROR_NO_LOCAL_TIMESTAMP,chec : horodatage local manquant,Error: falta marca de tiempo local,Erro: falta carimbo de data/hora local
 SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER,chec : réponse du serveur vide,Error: respuesta vaca del servidor,Erro: resposta vazia do servidor

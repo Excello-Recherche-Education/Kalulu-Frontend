@@ -29,9 +29,6 @@ func stopSync(success: bool = false) -> void:
 
 
 func on_synchronize_button_pressed() -> void:
-	#synchronizing = false
-	#await ServerManager.update_user_data(UserDataManager.teacher_settings, "2025-05-23T09:39:47", true)
-	#return
 	Logger.trace("SettingsTeacherSettings: Start synchronizing user data.")
 	if synchronizing:
 		Logger.trace("SettingsTeacherSettings: User synchronization already started, cancel double-call.")
@@ -77,7 +74,6 @@ func on_sync_choice_server() -> void:
 	var resGetUserData: Dictionary = await ServerManager.get_user_data()
 	if resGetUserData.success:
 		if resGetUserData.has("body"):
-			# {"email": "cvbn@yopmail.com", "account_type": 0, "education_method": 0, "created_at": "2025-05-15T12:27:34Z", "last_modified": "2025-05-22T14:05:42Z"}
 			var resultBody: Dictionary = resGetUserData.body
 			if resultBody.has("account_type"):
 				UserDataManager.teacher_settings.account_type = resultBody.account_type
@@ -124,12 +120,15 @@ func on_sync_choice_local() -> void:
 		stopSync()
 		return
 	
+	var student_index: int = 0
 	for student_data: StudentData in UserDataManager.teacher_settings.get_all_students_data():
+		student_index = student_index + 1
 		var gp_remediation_scores: UserRemediation = UserDataManager.get_student_remediation_data(student_data.code)
-		# TODO YA UN SOUCI ICI AVEC LA TRADUCTION
 		var sync_student_text: String = tr("SYNCHRONIZING_STUDENT_%S")
-		#loading_popup.set_text("Synchro de l'élève %s" % student_data.name)
-		loading_popup.set_text(sync_student_text % student_data.name)
+		if student_data.name != "":
+			loading_popup.set_text(sync_student_text % student_data.name)
+		else:
+			loading_popup.set_text(sync_student_text % student_index)
 		var resUpdateStudentRemediationScores: Dictionary = await ServerManager.update_student_remediation_data(student_data.code, gp_remediation_scores)
 		currentUpdateProgression += percentOfUpdateForEachStep
 		await setLoadingProgression(currentUpdateProgression)
@@ -137,7 +136,6 @@ func on_sync_choice_local() -> void:
 			continue
 		else:
 			loading_popup.set_text("SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_STUDENT")
-			# TODO : TRADUCTION DES MESSAGES D'ERREUR DE LOADING POPUP !!!!!
 			Logger.warn("SettingsTeacherSettings: Failed to send update of student data to the server: %s" % resUpdateStudentRemediationScores.body)
 			stopSync()
 			return

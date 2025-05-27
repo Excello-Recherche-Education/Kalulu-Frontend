@@ -15,8 +15,6 @@ const remediation_score: int = -2
 @export
 var gps_scores: Dictionary[int, int] = {}
 
-@export var last_modified: String
-
 
 # Gets the score of a GP if it is below or equals to the remediation score
 func get_gp_score(ID: int) -> int:
