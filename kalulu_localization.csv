@@ -1,101 +1,101 @@
-keys;fr;es;pt_BR
-LOGGED_AS;Connecté en tant que;Conectado como;Conectado como
-BUILD_VERSION;Numéro de version;Número de versión;Número da versão
-DEVICE_ID;Numéro d'appareil;Identificación del dispositivo;Número do dispositivo
-LANGUAGE;Langue;Idioma;Idioma
-SIGN_IN_TEACHER;Connexion enseignant;Conexión del docente;Login do professor
-SIGN_IN_PARENT;Connexion parent;Conexión del padre;Login dos pais
-CREATE_ACCOUNT;Création de compte;Creación de cuenta;Criar uma conta
-LOGIN;Identifiants;Usuario;Identificadores
-EMAIL;Adresse mail;Correo electrónico ;Endereço eletrônico
-PASSWORD;Mot de passe;Contraseña;Senha
-LOG_IN;Se connecter;Ingresar;Conexão
-INVALID_EMAIL_OR_PASSWORD;Adresse mail ou mot de passe invalide;Correo electrónico o contraseña inválida ;Endereço de e-mail ou senha inválidos
-DEVICE_NUMBER;Appareil n° {number};Dispositivo nº {number};Dispositivo nº {number}
-SETTINGS;Paramètres;Configuración ;Parâmetros
-ADULT_CHECK_PROMPT;"Veuillez confirmer que vous êtes un adulte !
-Appuyez sur les touches {1}, {2} et {3}";Confirme que es un adulto! Seleccione {1}, {2} y {3};Por favor, confirme que você é um adulto! Pressione as teclas {1}, {2} e {3}
-STAR;Étoile;Estrella;Estrela
-BAR;Barre;Barra;Barra
-CIRCLE;Cercle;Círculo ;Círculo
-PLUS;Plus;Más;Mais
-SQUARE;Carré;Cuadrado;Quadrado
-TRIANGLE;Triangle;Triángulo ;Triângulo
-DOWNLOADING_DATA;Téléchargement des données...;Descargando los datos ...;Download de dados...
-BACK;Précédent;Atrás ;Anterior
-NEXT;Suivant;Siguiente;Próximo
-CANCEL;Annuler;Cancelar;Cancelar
-ACCOUNT_TYPE_PROMPT;Veuillez sélectionner le type de compte que vous souhaitez créer;Seleccionar el tipo de cuenta que desea crear;Selecione o tipo de conta que deseja criar
-ACCOUNT_TYPE;Type de compte;Tipo de cuenta ;Tipo de conta
-TEACHER;Enseignant;Docente;Professor
-PARENT;Parent;Padre;Pais
-EDUCATION_METHOD_PROMPT;Veuillez sélectionner la méthode d'éducation utilisée;Seleccionar el método de enseñanza utilizado;Selecione o método educacional utilizado
-EDUCATION_METHOD_INFOS;"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier";"Elegir ""Completo"" si utilizó igualmente los cuadernos y los juegos en papel";Escolha “Completo” se você também usar os livretos e os jogos de papel
-EDUCATION_METHOD;Méthode;Método ;Método
-METHOD_APP_ONLY;Application;Aplicación ;Aplicativo
-METHOD_COMPLETE;Complète;Completo;Completo
-DEVICE_COUNT_PROMPT;Veuillez sélectionner le nombre d'appareils;Seleccionar la cantidad de dispositivos;Selecione o número de dispositivos
-DEVICE_COUNT_INFOS;Vous pourrez modifier les appareils ultérieurement dans les paramètres;Puede cambiar los dispositivos más tarde en la configuración;Você pode alterar os dispositivos posteriormente nas configurações
-DEVICES;Appareils;Dispositivos;Dispositivos
-TEACHER_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre d'élèves sur l'appareil n° {number};Seleccione la cantidad de estudiantes en el dispositivo n° {number};Selecione o número de alunos no dispositivo nº {number}
-TEACHER_STUDENT_COUNT_INFOS;Vous pourrez modifier les élèves pour chaque appareil ultérieurement dans les paramètres;Puede cambiar los estudiantes en cada dispositivo más tarde en la configuración;Você pode alterar os alunos de cada dispositivo em uma data posterior nas configurações
-STUDENTS;Élèves;Estudiantes;Estudantes
-PARENT_STUDENT_COUNT_PROMPT;Veuillez sélectionner le nombre de joueurs;Por favor, seleccione la cantidad de jugadores;Selecione o número de jogadores
-PARENT_STUDENT_COUNT_INFOS;Vous pourres modifier les joueurs ultérieurement dans les paramètres;Puede modificar los jugadores más tarde en la configuración.;Você pode alterar os jogadores posteriormente nas configurações
-PLAYERS;Joueurs;Jugadores;Jogadores
-PLAYER_PROMPT;Veuillez saisir les informations du joueur n° {number};Ingrese la información del jugador número: {number};Digite os detalhes do jogador número {number}
-PLAYER_LEVEL;Niveau;Nivel;Nível
-BEGINNER;Débutant;Principiante;Iniciante
-REVIEWER;Critique;Supervisor;Revisão
-ADULT;Adulte;Adulto;Adulto
-PLAYER_NAME;Prénom;Nombre;Primeiro nome
-PLAYER_AGE;Age;Edad;Idade
-CREDENTIALS_PROMPT;Veuillez saisir vos identifiants de connexion;Ingrese los datos de inicio de sesión ;Digite seus detalhes de login
-CONFIRM_PASSWORD;Confirmer le mot de passe;Confirmar la contraseña;Confirmar senha
-GENERAL_CONDITIONS_TEXT;"PRÉAMBULE
+keys,fr,es,pt_BR
+LOGGED_AS,Connecté en tant que,Conectado como,Conectado como
+BUILD_VERSION,Numéro de version,Nàmero de versiàn,Nàmero da versào
+DEVICE_ID,Numéro d'appareil,Identificaciàn del dispositivo,Nàmero do dispositivo
+LANGUAGE,Langue,Idioma,Idioma
+SIGN_IN_TEACHER,Connexion enseignant,Conexión del docente,Login do professor
+SIGN_IN_PARENT,Connexion parent,Conexión del padre,Login dos pais
+CREATE_ACCOUNT,Création de compte,Creaciàn de cuenta,Criar uma conta
+LOGIN,Identifiants,Usuario,Identificadores
+EMAIL,Adresse mail,Correo electrànico ,Endereào eletrànico
+PASSWORD,Mot de passe,Contraseàa,Senha
+LOG_IN,Se connecter,Ingresar,Conexão
+INVALID_EMAIL_OR_PASSWORD,Adresse mail ou mot de passe invalide,Correo electrànico o contraseàa invàlida ,Endereào de e-mail ou senha invàlidos
+DEVICE_NUMBER,Appareil {number},Dispositivo {number},Dispositivo {number}
+SETTINGS,Paramètres,Configuraciàn ,Paràmetros
+ADULT_CHECK_PROMPT,"Veuillez confirmer que vous êtes un adulte !
+Appuyez sur les touches {1}, {2} et {3}","Confirme que es un adulto! Seleccione {1}, {2} y {3}","Por favor, confirme que você é um adulto! Pressione as teclas {1}, {2} e {3}"
+STAR,àtoile,Estrella,Estrela
+BAR,Barre,Barra,Barra
+CIRCLE,Cercle,Càrculo ,Càrculo
+PLUS,Plus,Màs,Mais
+SQUARE,Carré,Cuadrado,Quadrado
+TRIANGLE,Triangle,Triàngulo ,Triàngulo
+DOWNLOADING_DATA,Téléchargement des données...,Descargando los datos ...,Download de dados...
+BACK,Précédent,Atràs ,Anterior
+NEXT,Suivant,Siguiente,Pràximo
+CANCEL,Annuler,Cancelar,Cancelar
+ACCOUNT_TYPE_PROMPT,Veuillez sélectionner le type de compte que vous souhaitez créer,Seleccionar el tipo de cuenta que desea crear,Selecione o tipo de conta que deseja criar
+ACCOUNT_TYPE,Type de compte,Tipo de cuenta ,Tipo de conta
+TEACHER,Enseignant,Docente,Professor
+PARENT,Parent,Padre,Pais
+EDUCATION_METHOD_PROMPT,Veuillez sélectionner la méthode d'éducation utilisée,Seleccionar el método de enseàanza utilizado,Selecione o método educacional utilizado
+EDUCATION_METHOD_INFOS,"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier","Elegir ""Completo"" si utilizà igualmente los cuadernos y los juegos en papel",Escolha âCompletoâ se você também usar os livretos e os jogos de papel
+EDUCATION_METHOD,Méthode,Método ,Método
+METHOD_APP_ONLY,Application,Aplicaciàn ,Aplicativo
+METHOD_COMPLETE,Complète,Completo,Completo
+DEVICE_COUNT_PROMPT,Veuillez sélectionner le nombre d'appareils,Seleccionar la cantidad de dispositivos,Selecione o número de dispositivos
+DEVICE_COUNT_INFOS,Vous pourrez modifier les appareils ultérieurement dans les paramètres,Puede cambiar los dispositivos màs tarde en la configuraciàn,Você pode alterar os dispositivos posteriormente nas configuraààes
+DEVICES,Appareils,Dispositivos,Dispositivos
+TEACHER_STUDENT_COUNT_PROMPT,Veuillez sélectionner le nombre d'élèves sur l'appareil {number},Seleccione la cantidad de estudiantes en el dispositivo {number},Selecione o número de alunos no dispositivo {number}
+TEACHER_STUDENT_COUNT_INFOS,Vous pourrez modifier les élèves pour chaque appareil ultérieurement dans les paramètres,Puede cambiar los estudiantes en cada dispositivo màs tarde en la configuraciàn,Você pode alterar os alunos de cada dispositivo em uma data posterior nas configuraààes
+STUDENTS,élèves,Estudiantes,Estudantes
+PARENT_STUDENT_COUNT_PROMPT,Veuillez sélectionner le nombre de joueurs,"Por favor, seleccione la cantidad de jugadores",Selecione o número de jogadores
+PARENT_STUDENT_COUNT_INFOS,Vous pourres modifier les joueurs ultérieurement dans les paramètres,Puede modificar los jugadores màs tarde en la configuraciàn.,Você pode alterar os jogadores posteriormente nas configuraààes
+PLAYERS,Joueurs,Jugadores,Jogadores
+PLAYER_PROMPT,Veuillez saisir les informations du joueur {number},Ingrese la informaciàn del jugador {number},Digite os detalhes do jogador {number}
+PLAYER_LEVEL,Niveau,Nivel,Nàvel
+BEGINNER,Débutant,Principiante,Iniciante
+REVIEWER,Critique,Supervisor,Revisào
+ADULT,Adulte,Adulto,Adulto
+PLAYER_NAME,Prénom,Nombre,Primeiro nome
+PLAYER_AGE,Age,Edad,Idade
+CREDENTIALS_PROMPT,Veuillez saisir vos identifiants de connexion,Ingrese los datos de inicio de sesión ,Digite seus detalhes de login
+CONFIRM_PASSWORD,Confirmer le mot de passe,Confirmar la contraseàa,Confirmar senha
+GENERAL_CONDITIONS_TEXT,"PRÉAMBULE
 
-Les présentes Conditions Générales d’Utilisation sont disponibles à tout moment : excellolab.org/cgu
+Les présentes Conditions Générales dâUtilisation sont disponibles à tout moment : excellolab.org/cgu
 
-Elles déterminent les règles d’accès à nos plateformes sur le site Excello et ses sous-domaines, où se trouvent des contenus numériques pédagogiques, ci-après dénommée la plateforme.
+Elles déterminent les règles dâaccès à nos plateformes sur le site Excello et ses sous-domaines, oà se trouvent des contenus numériques pédagogiques, ci-après dénommée la plateforme.
 
-En utilisant cette plateforme, vous reconnaissez, en votre qualité d’utilisateur – enseignant et/ou responsable légal de l’élève mineur – en connaître les termes, les accepter sans réserve et vous y conformer.
+En utilisant cette plateforme, vous reconnaissez, en votre qualité dâutilisateur â enseignant et/ou responsable légal de lâélève mineur â en connaàtre les termes, les accepter sans réserve et vous y conformer.
 
-Le responsable du traitement se réserve le droit, à leur seule discrétion et sans information préalable, de modifier, supprimer ou ajouter des mentions aux présentes “Conditions Générales d’Utilisation”, et ce à tout moment afin notamment de prendre en compte toute évolution légale, jurisprudentielle, éditoriale et/ou technique. La version qui prévaut est celle qui est accessible en ligne.
+Le responsable du traitement se réserve le droit, à leur seule discrétion et sans information préalable, de modifier, supprimer ou ajouter des mentions aux présentes âConditions Générales dâUtilisationâ, et ce à tout moment afin notamment de prendre en compte toute évolution légale, jurisprudentielle, éditoriale et/ou technique. La version qui prévaut est celle qui est accessible en ligne.
 
-Il vous est donc conseillé de vous référer régulièrement à la dernière version desdites Conditions Générales d’Utilisation.
+Il vous est donc conseillé de vous référer régulièrement à la dernière version desdites Conditions Générales dâUtilisation.
 
-ARTICLE 1 – USAGE UTILISATEUR, INFORMATIONS PRATIQUES
-L’association Excello a pour objet la recherche, le développement et la diffusion des connaissances dans le domaine de l’éducation, particulièrement en matière d’amélioration de l’apprentissage de la lecture et des mathématiques. Excello élabore et fournit des ressources pédagogiques associées, notamment par le recours aux nouvelles technologies.
+ARTICLE 1 â USAGE UTILISATEUR, INFORMATIONS PRATIQUES
+Lâassociation Excello a pour objet la recherche, le développement et la diffusion des connaissances dans le domaine de lâéducation, particulièrement en matière dâamélioration de lâapprentissage de la lecture et des mathématiques. Excello élabore et fournit des ressources pédagogiques associées, notamment par le recours aux nouvelles technologies.
 
 1/ Accès aux applications éducative crées par Excello
 
 Les activités sont disponibles en permanence (24/7) :
 
-Sur les applications mobile d’Excello, disponibles sur les stores Android et Apple pour être jouéee sur une tablette/smartphone Android 5.1+ et iOS 11+. L’usage d’une tablette est recommandé pour une utilisation optimale du service.
-Sur l’application web en utilisant Google Chrome ou Mozilla Firefox sur Windows, Ubuntu et Android et en utilisant Safari sur MacOs et iOs.
-L’utilisation de l’application peut se faire par un enseignant qui crée un compte pour sa classe, ou par un tuteur légal qui crée un compte pour son enfant.
+Sur les applications mobile dâExcello, disponibles sur les stores Android et Apple pour être jouéee sur une tablette/smartphone Android 5.1+ et iOS 11+. Lâusage dâune tablette est recommandé pour une utilisation optimale du service.
+Sur lâapplication web en utilisant Google Chrome ou Mozilla Firefox sur Windows, Ubuntu et Android et en utilisant Safari sur MacOs et iOs.
+Lâutilisation de lâapplication peut se faire par un enseignant qui crée un compte pour sa classe, ou par un tuteur légal qui crée un compte pour son enfant.
 
-Une fois l’application installée, l’usage d’internet n’est pas obligatoire. Certaines fonctionnalités seront en revanche désactivées : transcription de la voix en texte et reconnaissance manuscrite.
+Une fois lâapplication installée, lâusage dâinternet nâest pas obligatoire. Certaines fonctionnalités seront en revanche désactivées : transcription de la voix en texte et reconnaissance manuscrite.
 
-Dans le cas où l’application est utilisée hors ligne (sans internet), les traces d’apprentissage (résultats des exercices) sont sauvegardées sur l’appareil et ne seront envoyées sur la plateforme qu’une fois le retour d’une connexion à l’internet.
+Dans le cas oà lâapplication est utilisée hors ligne (sans internet), les traces dâapprentissage (résultats des exercices) sont sauvegardées sur lâappareil et ne seront envoyées sur la plateforme quâune fois le retour dâune connexion à lâinternet.
 
 2/ Accès aux plateformes créées par Excello
 
 Pour une première utilisation de nos plateformes, il faudra :
 
-Créer un compte adulte (gardien d’enfant/enseignant).
+Créer un compte adulte (gardien dâenfant/enseignant).
 
 Retrouver toutes les informations collectés dans notre politique de confidentialité.
 
 3/ Assistance technique
 
-En cas d’incident technique sur l’application ou la plateforme, privilégiez l’envoi d’un message au : contact@excellolab.org
+En cas dâincident technique sur lâapplication ou la plateforme, privilégiez lâenvoi dâun message au : contact@excellolab.org
 
-Nos équipes mettront tout en œuvre pour vous répondre et résoudre les incidents dans les plus brefs délais.
+Nos équipes mettront tout en uvre pour vous répondre et résoudre les incidents dans les plus brefs délais.
 
 4/ Matériel utilisé
 
-L’appareil utilisé devra répondre aux caractéristiques suivantes pour assurer une bonne utilisation des applications Excello :
+Lâappareil utilisé devra répondre aux caractéristiques suivantes pour assurer une bonne utilisation des applications Excello :
 
 Minimum :
 Système : PC Android IOS (Chrome, Firefox, Safari >= 13)
@@ -107,246 +107,256 @@ Système : PC Android IOS (Chrome, Firefox, Safari >= 14)
 Processeur : 4 coeurs 2 GHz
 Mémoire : 2 GB RAM
 
-ARTICLE 2 – LICENCE D’UTILISATION
+ARTICLE 2 â LICENCE DâUTILISATION
 
-L’accès à la présente Plateforme vous confère un droit d’usage de celle-ci à titre non exclusif, privé et/ou collectif.
+Lâaccès à la présente Plateforme vous confère un droit dâusage de celle-ci à titre non exclusif, privé et/ou collectif.
 
-Votre usage de la Plateforme emporte acceptation sans réserve des présentes Conditions Générales d’Utilisation.
+Votre usage de la Plateforme emporte acceptation sans réserve des présentes Conditions Générales dâUtilisation.
 
-L’ensemble des contenus édités sur la Plateforme, incluant à titre non limitatif : les textes, les photographies, les illustrations, les graphismes, les infographies, les cartes, les vidéogrammes, les musiques, les icônes, les logiciels, ci-après dénommés « les Contenus », sont sous une license CC BY-SA 4.0 .
+Lâensemble des contenus édités sur la Plateforme, incluant à titre non limitatif : les textes, les photographies, les illustrations, les graphismes, les infographies, les cartes, les vidéogrammes, les musiques, les icànes, les logiciels, ci-après dénommés « les Contenus », sont sous une license CC BY-SA 4.0 .
 
-En application de l’article L. 122-4 du Code de la Propriété Intellectuelle, toute représentation ou reproduction intégrale ou partielle faite sans le consentement de l’auteur ou de ses ayants droit ou ayants cause est illicite. Il en est de même pour la traduction, l’adaptation ou la transformation, l’arrangement ou la reproduction par un art ou un procédé quelconque.
+En application de lâarticle L. 122-4 du Code de la Propriété Intellectuelle, toute représentation ou reproduction intégrale ou partielle faite sans le consentement de lâauteur ou de ses ayants droit ou ayants cause est illicite. Il en est de même pour la traduction, lâadaptation ou la transformation, lâarrangement ou la reproduction par un art ou un procédé quelconque.
 
-Nous vous rappelons également que la violation des droits d’auteur constitue un délit de contrefaçon puni en France de trois ans d’emprisonnement et de 300. 000 euros d’amende.
+Nous vous rappelons également que la violation des droits dâauteur constitue un délit de contrefaàon puni en France de trois ans dâemprisonnement et de 300. 000 euros dâamende.
 
-De même, le Code de la propriété intellectuelle punit de trois ans d’emprisonnement et de 300.000 euros d’amende toute fixation, reproduction, communication ou mise à la disposition du public, à titre onéreux ou gratuit, ou toute télédiffusion d’une prestation, d’un phonogramme, d’un vidéogramme ou d’un programme, sans l’autorisation, lorsqu’elle est exigée, du titulaire des droits.
+De même, le Code de la propriété intellectuelle punit de trois ans dâemprisonnement et de 300.000 euros dâamende toute fixation, reproduction, communication ou mise à la disposition du public, à titre onéreux ou gratuit, ou toute télédiffusion dâune prestation, dâun phonogramme, dâun vidéogramme ou dâun programme, sans lâautorisation, lorsquâelle est exigée, du titulaire des droits.
 
-ARTICLE 3 – LIMITATION DE RESPONSABILITÉ
+ARTICLE 3 â LIMITATION DE RESPONSABILITà
 
-Vous êtes seul responsable des dommages et préjudices, directs ou indirects, matériels ou immatériels dès lors qu’ils auraient pour cause, fondement ou origine un usage de la Plateforme  par vous-même ou par toute personne autorisée par vous à utiliser cette Plateforme. Par usage, il convient d’entendre tout usage de la Plateforme quel qu’il soit, frauduleux ou non frauduleux.
+Vous êtes seul responsable des dommages et préjudices, directs ou indirects, matériels ou immatériels dès lors quâils auraient pour cause, fondement ou origine un usage de la Plateforme  par vous-même ou par toute personne autorisée par vous à utiliser cette Plateforme. Par usage, il convient dâentendre tout usage de la Plateforme quel quâil soit, frauduleux ou non frauduleux.
 
-Les mineurs sont admis à accéder à la Plateforme, à la condition expresse qu’ils aient préalablement obtenus de leurs parents (ou de la personne exerçant l’autorité parentale) l’autorisation de le faire et de fournir les informations et adresses électroniques par lesquelles toute communication peut leur être transmise. Le fait pour eux de s’inscrire implique qu’ils ont obtenu cette autorisation préalable, laquelle est expressément requise sur la Plateforme au moment de l’inscription.
+Les mineurs sont admis à accéder à la Plateforme, à la condition expresse quâils aient préalablement obtenus de leurs parents (ou de la personne exeràant lâautorité parentale) lâautorisation de le faire et de fournir les informations et adresses électroniques par lesquelles toute communication peut leur être transmise. Le fait pour eux de sâinscrire implique quâils ont obtenu cette autorisation préalable, laquelle est expressément requise sur la Plateforme au moment de lâinscription.
  
-Les éditeurs de la Plateforme s’engagent à faire leurs meilleurs efforts pour sécuriser l’accès, la consultation et l’utilisation de la Plateforme.
+Les éditeurs de la Plateforme sâengagent à faire leurs meilleurs efforts pour sécuriser lâaccès, la consultation et lâutilisation de la Plateforme.
  
-ARTICLE 4 – APPLICATION DE LA LOI FRANÇAISE
+ARTICLE 4 â APPLICATION DE LA LOI FRANàAISE
 
-Les règles applicables à l’usage de la Plateforme et à tous les contenus et informations qu’elle comporte sont régies par la loi française. En cas de litige, les tribunaux français seront seuls compétents.
+Les règles applicables à lâusage de la Plateforme et à tous les contenus et informations quâelle comporte sont régies par la loi franàaise. En cas de litige, les tribunaux franàais seront seuls compétents.
 
-ARTICLE 5 – Conditions de modifications de la politique de confidentialité
+ARTICLE 5 â Conditions de modifications de la politique de confidentialité
 
-L’éditeur du site se réserve le droit de la modifier afin de garantir sa conformité avec le droit et les usages en vigueur.";"PREÁMBULO
+Lâéditeur du site se réserve le droit de la modifier afin de garantir sa conformité avec le droit et les usages en vigueur.","PREÁMBULO
 
-Las presentes Condiciones Generales de Uso están disponibles en todo momento: excellolab.org/cgu
+Las presentes Condiciones Generales de Uso estàn disponibles en todo momento: excellolab.org/cgu
 
 En ellas se establecen las normas de acceso a nuestras plataformas de la web Excello y sus subdominios, que contienen contenidos educativos digitales, en adelante la plataforma.
 
 Al utilizar esta plataforma, usted reconoce que, como usuario -profesor y/o tutor legal de un menor-, conoce las condiciones, las acepta sin reservas y las cumple.
 
-El responsable del tratamiento se reserva el derecho, a su entera discreción y sin previo aviso, de modificar, suprimir o completar las presentes «Condiciones Generales de Uso» en cualquier momento, en particular para tener en cuenta cualquier evolución jurídica, jurisprudencial, editorial y/o técnica. La versión que prevalece es la que está accesible en línea.
+El responsable del tratamiento se reserva el derecho, a su entera discreciàn y sin previo aviso, de modificar, suprimir o completar las presentes «Condiciones Generales de Uso» en cualquier momento, en particular para tener en cuenta cualquier evoluciàn juràdica, jurisprudencial, editorial y/o técnica. La versiàn que prevalece es la que està accesible en lànea.
 
-Por lo tanto, le aconsejamos que consulte regularmente la última versión de las presentes Condiciones Generales de Uso.
+Por lo tanto, le aconsejamos que consulte regularmente la àltima versiàn de las presentes Condiciones Generales de Uso.
 
-ARTÍCULO 1 - USO DEL USUARIO, INFORMACIÓN PRÁCTICA
-La asociación Excello tiene por objeto la investigación, el desarrollo y la difusión de conocimientos en el ámbito de la educación, especialmente en lo que se refiere a la mejora del aprendizaje de la lectura y las matemáticas. Excello desarrolla y proporciona recursos educativos asociados, en particular mediante el uso de las nuevas tecnologías.
+ARTàCULO 1 - USO DEL USUARIO, INFORMACIàN PRàCTICA
+La asociaciàn Excello tiene por objeto la investigaciàn, el desarrollo y la difusiàn de conocimientos en el àmbito de la educaciàn, especialmente en lo que se refiere a la mejora del aprendizaje de la lectura y las matemàticas. Excello desarrolla y proporciona recursos educativos asociados, en particular mediante el uso de las nuevas tecnologàas.
 
 1/ Acceso a las aplicaciones educativas creadas por Excello
 
-Las actividades están disponibles 24 horas al día, 7 días a la semana:
+Las actividades estàn disponibles 24 horas al dàa, 7 dàas a la semana:
 
-En las aplicaciones móviles de Excello, disponibles en las tiendas Android y Apple para jugar en una tableta/smartphone Android 5.1+ e iOS 11+. Se recomienda el uso de una tableta para un uso óptimo del servicio.
-En la aplicación web utilizando Google Chrome o Mozilla Firefox en Windows, Ubuntu y Android y utilizando Safari en MacOs e iOs.
-La aplicación puede ser utilizada por un profesor que crea una cuenta para su clase, o por un tutor legal que crea una cuenta para su hijo.
+En las aplicaciones màviles de Excello, disponibles en las tiendas Android y Apple para jugar en una tableta/smartphone Android 5.1+ e iOS 11+. Se recomienda el uso de una tableta para un uso àptimo del servicio.
+En la aplicaciàn web utilizando Google Chrome o Mozilla Firefox en Windows, Ubuntu y Android y utilizando Safari en MacOs e iOs.
+La aplicaciàn puede ser utilizada por un profesor que crea una cuenta para su clase, o por un tutor legal que crea una cuenta para su hijo.
 
-Una vez instalada la aplicación, el uso de Internet no es obligatorio. Sin embargo, algunas funciones estarán desactivadas: la transcripción de voz a texto y el reconocimiento de escritura.
+Una vez instalada la aplicaciàn, el uso de Internet no es obligatorio. Sin embargo, algunas funciones estaràn desactivadas: la transcripciàn de voz a texto y el reconocimiento de escritura.
 
-Si la aplicación se utiliza offline (sin internet), las trazas de aprendizaje (resultados de los ejercicios) se guardan en el dispositivo y sólo se enviarán a la plataforma cuando se restablezca la conexión a internet.
+Si la aplicaciàn se utiliza offline (sin internet), las trazas de aprendizaje (resultados de los ejercicios) se guardan en el dispositivo y sàlo se enviaràn a la plataforma cuando se restablezca la conexiàn a internet.
 
 2/ Acceso a las plataformas creadas por Excello
 
-Para utilizar nuestras plataformas por primera vez, deberá :
+Para utilizar nuestras plataformas por primera vez, deberà :
 
-Crear una cuenta de adulto (cuidador de niños/profesor).
+Crear una cuenta de adulto (cuidador de niàos/profesor).
 
-Encontrar toda la información recopilada en nuestra política de privacidad.
+Encontrar toda la informaciàn recopilada en nuestra polàtica de privacidad.
 
 3/ Asistencia técnica
 
-En caso de incidencia técnica en la aplicación o plataforma, envíe un mensaje a: contact@excellolab.org
+En caso de incidencia técnica en la aplicaciàn o plataforma, envàe un mensaje a: contact@excellolab.org
 
-Nuestros equipos harán todo lo posible para responder y resolver cualquier incidencia lo antes posible.
+Nuestros equipos haràn todo lo posible para responder y resolver cualquier incidencia lo antes posible.
 
 4/ Equipo utilizado
 
 El dispositivo utilizado debe cumplir las siguientes especificaciones para garantizar el correcto uso de las aplicaciones Excello:
 
-Mínimo :
+Mànimo :
 Sistema: PC Android IOS (Chrome, Firefox, Safari >= 13)
-Procesador: 4 núcleos 1,4 GHz
+Procesador: 4 nàcleos 1,4 GHz
 Memoria: 2 GB RAM
 
-Recomendado, para una óptima renderización :
+Recomendado, para una àptima renderizaciàn :
 Sistema: PC Android IOS (Chrome, Firefox, Safari >= 14)
-Procesador: 4 núcleos 2 GHz
+Procesador: 4 nàcleos 2 GHz
 Memoria: 2 GB RAM
 
-ARTÍCULO 2 - LICENCIA DE USO
+ARTàCULO 2 - LICENCIA DE USO
 
 El acceso a esta Plataforma le otorga un derecho de uso no exclusivo, privado y/o colectivo.
 
-El uso de la Plataforma implica la aceptación sin reservas de las presentes Condiciones Generales de Uso.
+El uso de la Plataforma implica la aceptaciàn sin reservas de las presentes Condiciones Generales de Uso.
 
-Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografías, ilustraciones, gráficos, infografías, mapas, videogramas, música, iconos y software, en lo sucesivo denominado «el Contenido», está sujeto a una licencia CC BY-SA 4.0.
+Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografàas, ilustraciones, gràficos, infografàas, mapas, videogramas, màsica, iconos y software, en lo sucesivo denominado «el Contenido», està sujeto a una licencia CC BY-SA 4.0.
 
-De conformidad con el artículo L. 122-4 del Código francés de la Propiedad Intelectual, toda representación o reproducción total o parcial sin el consentimiento del autor o de sus derechohabientes o causahabientes es ilícita. Lo mismo se aplica a la traducción, adaptación o transformación, arreglo o reproducción por cualquier arte o procedimiento.
+De conformidad con el artàculo L. 122-4 del Càdigo francés de la Propiedad Intelectual, toda representaciàn o reproducciàn total o parcial sin el consentimiento del autor o de sus derechohabientes o causahabientes es ilàcita. Lo mismo se aplica a la traducciàn, adaptaciàn o transformaciàn, arreglo o reproducciàn por cualquier arte o procedimiento.
 
-Le recordamos también que la violación de los derechos de autor es un delito castigado en Francia con tres años de prisión y 300.000 euros de multa.
+Le recordamos también que la violaciàn de los derechos de autor es un delito castigado en Francia con tres aàos de prisiàn y 300.000 euros de multa.
 
-Del mismo modo, el Código francés de la Propiedad Intelectual castiga con tres años de prisión y 300.000 euros de multa toda fijación, reproducción, comunicación o puesta a disposición del público, a título oneroso o gratuito, o toda emisión televisiva de una interpretación o ejecución, de un fonograma, de un videograma o de un programa, sin la autorización, en su caso, del titular de los derechos.
+Del mismo modo, el Càdigo francés de la Propiedad Intelectual castiga con tres aàos de prisiàn y 300.000 euros de multa toda fijaciàn, reproducciàn, comunicaciàn o puesta a disposiciàn del pàblico, a tàtulo oneroso o gratuito, o toda emisiàn televisiva de una interpretaciàn o ejecuciàn, de un fonograma, de un videograma o de un programa, sin la autorizaciàn, en su caso, del titular de los derechos.
 
-ARTÍCULO 3 - LIMITACIÓN DE RESPONSABILIDAD
+ARTàCULO 3 - LIMITACIàN DE RESPONSABILIDAD
 
-Usted será el único responsable de cualquier daño o pérdida, directo o indirecto, material o inmaterial, si se debe, se basa o se origina en el uso de la Plataforma por su parte o por parte de cualquier persona autorizada por usted a utilizar la Plataforma. Por uso se entiende cualquier utilización de la Plataforma, sea fraudulenta o no.
+Usted serà el ànico responsable de cualquier daào o pérdida, directo o indirecto, material o inmaterial, si se debe, se basa o se origina en el uso de la Plataforma por su parte o por parte de cualquier persona autorizada por usted a utilizar la Plataforma. Por uso se entiende cualquier utilizaciàn de la Plataforma, sea fraudulenta o no.
 
-Los menores de edad pueden acceder a la Plataforma con la condición expresa de que hayan obtenido la autorización previa de sus padres (o de la persona que ejerza la patria potestad) para hacerlo y de que faciliten la información y las direcciones de correo electrónico por las que se les pueda transmitir cualquier comunicación. El hecho de que se inscriban implica que han obtenido esta autorización previa, que se exige expresamente en la Plataforma en el momento de la inscripción.
+Los menores de edad pueden acceder a la Plataforma con la condiciàn expresa de que hayan obtenido la autorizaciàn previa de sus padres (o de la persona que ejerza la patria potestad) para hacerlo y de que faciliten la informaciàn y las direcciones de correo electrànico por las que se les pueda transmitir cualquier comunicaciàn. El hecho de que se inscriban implica que han obtenido esta autorizaciàn previa, que se exige expresamente en la Plataforma en el momento de la inscripciàn.
  
-Los editores de la Plataforma se comprometen a hacer todo lo posible para garantizar la seguridad del acceso, la consulta y la utilización de la Plataforma.
+Los editores de la Plataforma se comprometen a hacer todo lo posible para garantizar la seguridad del acceso, la consulta y la utilizaciàn de la Plataforma.
  
-ARTÍCULO 4 - APLICACIÓN DEL DERECHO FRANCÉS
+ARTàCULO 4 - APLICACIàN DEL DERECHO FRANCàS
 
-Las normas aplicables a la utilización de la Plataforma y a todos los contenidos e informaciones que contiene se rigen por el derecho francés. En caso de litigio, los tribunales franceses serán los únicos competentes.
+Las normas aplicables a la utilizaciàn de la Plataforma y a todos los contenidos e informaciones que contiene se rigen por el derecho francés. En caso de litigio, los tribunales franceses seràn los ànicos competentes.
 
-ARTÍCULO 5 - Condiciones de modificación de la política de confidencialidad
+ARTàCULO 5 - Condiciones de modificaciàn de la polàtica de confidencialidad
 
-El editor del sitio se reserva el derecho a modificarla para garantizar su conformidad con la legislación y los usos vigentes.";"**PRÉÂMBULO**
+El editor del sitio se reserva el derecho a modificarla para garantizar su conformidad con la legislaciàn y los usos vigentes.","**PRÉAMBULO**
 
-As presentes Condições Gerais de Uso estão disponíveis a qualquer momento: excellolab.org/cgu
+As presentes Condições Gerais de Uso estáo disponàveis a qualquer momento: excellolab.org/cgu
 
-Elas determinam as regras de acesso às nossas plataformas no site Excello e seus subdomínios, onde se encontram conteúdos digitais pedagógicos, doravante denominados a plataforma.
+Elas determinam as regras de acesso às nossas plataformas no site Excello e seus subdomànios, onde se encontram conteàdos digitais pedagàgicos, doravante denominados a plataforma.
 
-Ao utilizar esta plataforma, você reconhece, na qualidade de usuário – professor e/ou responsável legal do aluno menor de idade – que conhece os termos, os aceita sem reservas e se compromete a cumpri-los.
+Ao utilizar esta plataforma, você reconhece, na qualidade de usuàrio â professor e/ou responsàvel legal do aluno menor de idade â que conhece os termos, os aceita sem reservas e se compromete a cumpri-los.
 
-O responsável pelo tratamento se reserva o direito, a seu exclusivo critério e sem aviso prévio, de modificar, excluir ou adicionar disposições a estas ""Condições Gerais de Uso"" a qualquer momento, especialmente para levar em conta qualquer evolução legal, jurisprudencial, editorial e/ou técnica. A versão prevalente é aquela acessível online.
+O responsàvel pelo tratamento se reserva o direito, a seu exclusivo critério e sem aviso prévio, de modificar, excluir ou adicionar disposiààes a estas ""Condições Gerais de Uso"" a qualquer momento, especialmente para levar em conta qualquer evoluàào legal, jurisprudencial, editorial e/ou técnica. A versào prevalente é aquela acessàvel online.
 
-Recomenda-se, portanto, que você consulte regularmente a última versão destas Condições Gerais de Uso.
+Recomenda-se, portanto, que você consulte regularmente a àltima versào destas Condições Gerais de Uso.
 
-**ARTIGO 1 – USO DO USUÁRIO, INFORMAÇÕES PRÁTICAS**
+**ARTIGO 1 â USO DO USUàRIO, INFORMAààES PRàTICAS**
 
-A associação Excello tem como objetivo a pesquisa, desenvolvimento e disseminação de conhecimentos na área da educação, particularmente na melhoria da aprendizagem da leitura e matemática. A Excello desenvolve e fornece recursos pedagógicos associados, principalmente por meio de novas tecnologias.
+A associaàào Excello tem como objetivo a pesquisa, desenvolvimento e disseminaàào de conhecimentos na àrea da educaàào, particularmente na melhoria da aprendizagem da leitura e matemàtica. A Excello desenvolve e fornece recursos pedagàgicos associados, principalmente por meio de novas tecnologias.
 
 1/ **Acesso aos aplicativos educativos criados pela Excello**
 
-As atividades estão disponíveis 24 horas por dia, 7 dias por semana:
+As atividades estáo disponàveis 24 horas por dia, 7 dias por semana:
 
-- Nos aplicativos móveis da Excello, disponíveis nas lojas Android e Apple, para uso em tablets/smartphones com Android 5.1+ e iOS 11+. O uso de um tablet é recomendado para uma experiência otimizada do serviço.
+- Nos aplicativos màveis da Excello, disponàveis nas lojas Android e Apple, para uso em tablets/smartphones com Android 5.1+ e iOS 11+. O uso de um tablet é recomendado para uma experiência otimizada do serviào.
 - No aplicativo web, utilizando Google Chrome ou Mozilla Firefox no Windows, Ubuntu e Android, e Safari no MacOS e iOS.
 
-O uso do aplicativo pode ser feito por um professor que cria uma conta para sua turma ou por um responsável legal que cria uma conta para seu filho.
+O uso do aplicativo pode ser feito por um professor que cria uma conta para sua turma ou por um responsàvel legal que cria uma conta para seu filho.
 
-Uma vez instalado o aplicativo, o uso da internet não é obrigatório. No entanto, algumas funcionalidades serão desativadas, como transcrição de voz para texto e reconhecimento de escrita manual.
+Uma vez instalado o aplicativo, o uso da internet nào é obrigatàrio. No entanto, algumas funcionalidades serào desativadas, como transcriàào de voz para texto e reconhecimento de escrita manual.
 
-Se o aplicativo for utilizado offline (sem internet), os registros de aprendizagem (resultados dos exercícios) serão salvos no dispositivo e serão enviados para a plataforma assim que a conexão com a internet for restabelecida.
+Se o aplicativo for utilizado offline (sem internet), os registros de aprendizagem (resultados dos exercàcios) serào salvos no dispositivo e serào enviados para a plataforma assim que a conexào com a internet for restabelecida.
 
 2/ **Acesso às plataformas criadas pela Excello**
 
-Para um primeiro uso das nossas plataformas, é necessário:
+Para um primeiro uso das nossas plataformas, é necessàrio:
 
-- Criar uma conta adulta (responsável legal/professor).
-- Consultar todas as informações coletadas em nossa política de privacidade.
+- Criar uma conta adulta (responsàvel legal/professor).
+- Consultar todas as informaààes coletadas em nossa polàtica de privacidade.
 
 3/ **Assistência técnica**
 
 Em caso de problemas técnicos com o aplicativo ou a plataforma, entre em contato pelo e-mail: [contact@excellolab.org](mailto\:contact@excellolab.org)
 
-Nossa equipe fará o possível para responder e resolver os problemas o mais rápido possível.
+Nossa equipe farà o possàvel para responder e resolver os problemas o mais ràpido possàvel.
 
 4/ **Requisitos de hardware**
 
 O dispositivo utilizado deve atender aos seguintes requisitos para garantir o bom funcionamento dos aplicativos Excello:
 
-**Mínimo:**
+**Mànimo:**
 
 - Sistema: PC Android iOS (Chrome, Firefox, Safari >= 13)
-- Processador: 4 núcleos 1.4 GHz
-- Memória: 2 GB RAM
+- Processador: 4 nàcleos 1.4 GHz
+- Memària: 2 GB RAM
 
 **Recomendado, para melhor desempenho:**
 
 - Sistema: PC Android iOS (Chrome, Firefox, Safari >= 14)
-- Processador: 4 núcleos 2 GHz
-- Memória: 2 GB RAM
+- Processador: 4 nàcleos 2 GHz
+- Memària: 2 GB RAM
 
-**ARTIGO 2 – LICENÇA DE USO**
+**ARTIGO 2 â LICENàA DE USO**
 
-O acesso a esta Plataforma concede a você um direito de uso não exclusivo, privado e/ou coletivo.
+O acesso a esta Plataforma concede a você um direito de uso nào exclusivo, privado e/ou coletivo.
 
-O uso da Plataforma implica a aceitação sem reservas das presentes Condições Gerais de Uso.
+O uso da Plataforma implica a aceitaàào sem reservas das presentes Condições Gerais de Uso.
 
-Todo o conteúdo publicado na Plataforma, incluindo mas não se limitando a: textos, fotografias, ilustrações, gráficos, infográficos, mapas, videogramas, músicas, ícones e softwares, doravante denominados ""os Conteúdos"", está sob licença CC BY-SA 4.0.
+Todo o conteàdo publicado na Plataforma, incluindo mas nào se limitando a: textos, fotografias, ilustraààes, gràficos, infogràficos, mapas, videogramas, màsicas, àcones e softwares, doravante denominados ""os Conteàdos"", está sob licenàa CC BY-SA 4.0.
 
-De acordo com o artigo L. 122-4 do Código de Propriedade Intelectual, qualquer representação ou reprodução integral ou parcial feita sem o consentimento do autor ou de seus sucessores é ilícita. O mesmo se aplica à tradução, adaptação ou transformação, arranjo ou reprodução por qualquer meio ou processo.
+De acordo com o artigo L. 122-4 do Càdigo de Propriedade Intelectual, qualquer representaàào ou reproduàào integral ou parcial feita sem o consentimento do autor ou de seus sucessores é ilàcita. O mesmo se aplica à traduàào, adaptaàào ou transformaàào, arranjo ou reproduàào por qualquer meio ou processo.
 
-Lembramos também que a violação dos direitos autorais constitui crime de falsificação, punível na França com três anos de prisão e multa de 300.000 euros.
+Lembramos também que a violaàào dos direitos autorais constitui crime de falsificaàào, punàvel na Franàa com três anos de prisào e multa de 300.000 euros.
 
-Da mesma forma, o Código de Propriedade Intelectual pune com três anos de prisão e multa de 300.000 euros qualquer fixação, reprodução, comunicação ou disponibilização pública, gratuita ou paga, de uma performance, fonograma, videograma ou programa sem a devida autorização quando exigida.
+Da mesma forma, o Càdigo de Propriedade Intelectual pune com três anos de prisào e multa de 300.000 euros qualquer fixaàào, reproduàào, comunicaàào ou disponibilizaàào pàblica, gratuita ou paga, de uma performance, fonograma, videograma ou programa sem a devida autorizaàào quando exigida.
 
-**ARTIGO 3 – LIMITAÇÃO DE RESPONSABILIDADE**
+**ARTIGO 3 â LIMITAààO DE RESPONSABILIDADE**
 
-Você é o único responsável por quaisquer danos e prejuízos, diretos ou indiretos, materiais ou imateriais, decorrentes do uso da Plataforma por você ou por terceiros autorizados por você.
+Você é o ànico responsàvel por quaisquer danos e prejuàzos, diretos ou indiretos, materiais ou imateriais, decorrentes do uso da Plataforma por você ou por terceiros autorizados por você.
 
-Menores de idade só podem acessar a Plataforma com autorização prévia dos pais ou responsáveis.
+Menores de idade sà podem acessar a Plataforma com autorizaàào prévia dos pais ou responsàveis.
 
-**ARTIGO 4 – APLICAÇÃO DA LEI FRANCESA**
+**ARTIGO 4 â APLICAààO DA LEI FRANCESA**
 
-As regras aplicáveis à Plataforma e seus conteúdos são regidas pela lei francesa. Em caso de litígio, os tribunais franceses terão competência exclusiva.
+As regras aplicàveis à Plataforma e seus conteàdos sào regidas pela lei francesa. Em caso de litàgio, os tribunais franceses terào competência exclusiva.
 
-**ARTIGO 5 – MODIFICAÇÕES NA POLÍTICA DE PRIVACIDADE**
+**ARTIGO 5 â MODIFICAààES NA POLàTICA DE PRIVACIDADE**
 
-O editor do site se reserva o direito de modificar a política de privacidade para garantir sua conformidade com as leis e práticas vigentes."
-ACCEPT_GENERAL_CONDITIONS;Accepter les conditions générales;Aceptar las condiciones generales;Aceitar termos e condições
-ACCEPT_GENERAL_CONDITIONS_ERROR;Veuillez accepter les conditions générales avant de continuer;Aceptar las condiciones generales antes de avanzar;Aceite os termos e condições antes de continuar
-REGISTRATION_SUMMARY;Récapitulatif de l’inscription;Resumen del registro;Resumo do registro
-VALIDATE;Confirmer;Confirmar;Confirmar
-SUMMARY_EMAIL;Adresse email : {mail};Correo electrónico: {mail};Endereço de e-mail : {mail}
-SUMMARY_TYPE;Type de compte : {type};Tipo de cuenta: {type};Tipo de conta : {type}
-SUMMARY_METHOD;Méthode d'éducation : {method};Metodo de enseñanza: {method};Método educacional : {method}
-APPONLY;Application uniquement;Solo aplicación ;Somente aplicativo
-COMPLETE;Complète (livrets et jeux papiers);Completo (cuaderno y juegos en papel);Completo (livretos e jogos de papel)
-SUMMARY_NUMBER_OF_DEVICES;Nombre d'appareils : {number};Cantidad de dispositivos: {number};Número de dispositivos : {number}
-SUMMARY_NUMBER_OF_STUDENTS;Nombre d'élèves : {number};Cantidad de estudiantes: {number};Número de alunos : {number}
-STUDENT_NUM;Élève n° {number};Estudiante n°: {number};Aluno nº {number}
-LOGOUT;Déconnexion;Cerrar sesión ;Desconexão
-SETTINGS_ADD_DEVICE;Ajout d'un appareil;Agregar un dispositivo;Adição de um dispositivo
-SETTINGS_ADD_STUDENT;Ajout d'un élève;Agregar un estudiante ;Adicionar um aluno
-SETTINGS_LESSONS;Leçons;Lecciones;Lições
-CLOSE;Fermer;Cerrar;Fechar
-REGISTER_FAILED;Une erreur est survenue;Se ha producido un error;Ocorreu um erro
-ERROR_DOWNLOADING;Impossible de télécharger les données de jeu;No se pueden descargar los datos del juego;Não é possível fazer o download dos dados do jogo
-EXTRACTING_DATA;Extraction des données;Extracción de datos;Extração de dados
-LESSON;Leçon;Lección;Lição
-LOOKANDLEARN;Regarder et apprendre;Mira y aprende;Assista e aprenda
-EXERCISE1;Exercice 1;Ejercicio 1;Exercício 1
-EXERCISE2;Exercice 2;Ejercicio 2;Exercício 2
-EXERCISE3;Exercice 3;Ejercicio 3;Exercício 3
-Locked;Verrouillé;Bloqueado;Bloqueado
-Unlocked;Déverrouillé;Desbloqueado;Desbloqueado
-Completed;Terminé;Completado;Concluído
-CHECKING_DATA;Vérification des données...;Comprobando datos...;Verificação de dados...
-TEACHER_SETTINGS_HELP;"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes";Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos;Para acessar as configurações, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botão “Parâmetros” por 5 segundos
-DELETE_ACCOUNT;Supprimer le compte;Eliminar cuenta;Excluir conta
-DELETE_ACCOUNT_POPUP;Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !;¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!;Você realmente deseja excluir sua conta? Essa ação é irreversível!
-DISCONECTED_ERROR;Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.;Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.;Você foi desconectado. Digite seus detalhes de login novamente.
-INVALID_LANGUAGE_DIRECTORY;Dossier de langue invalide;Carpeta de idioma no v�lida;Pasta de idioma inv�lida
-NO_INTERNET_ACCESS;Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion et réessayer.;No está conectado a Internet. Compruebe su conexión e inténtelo de nuevo.;Você não está conectado à Internet. Verifique sua conexão e tente novamente.
-PICK_YOUR_DEVICE;Choisissez votre appareil;Elige tu dispositivo;Escolha seu dispositivo
-SIGN_IN;Connexion;Conexión;Conexão
-RETURN_TO_MAIN_MENU;Retour à l'acceuil;Volver a la página principal;Voltar para a página inicial
-ADD_STUDENT_POPUP;Souhaitez-vous ajouter un nouvel élève ?;¿Desea añadir un nuevo alumno?;Você gostaria de adicionar um novo aluno?
-ADD_DEVICE_POPUP;Souhaitez-vous ajouter un nouvel appareil ? Un élève sera créé automatiquement.;¿Desea añadir un nuevo dispositivo? Se creará un alumno automáticamente.;Gostaria de adicionar um novo dispositivo? Um aluno será criado automaticamente.
-DELETE_STUDENT_POPUP;Souhaitez-vous supprimer cet élève ? Cette action est définitive et entrainera la perte de la progression de cet élève.;¿Desea eliminar a este estudiante? Esta acción es definitiva y supondrá la pérdida del progreso de este alumno.;Deseja excluir esse aluno? Essa ação é definitiva e resultará na perda do progresso desse aluno.
-DELETE_STUDENT;Supprimer l'élève;Borrar estudiante;Excluir aluno
-CHANGE_DEVICE;Changer d'appareil;Cambiar de dispositivo;Trocar de dispositivo
-SYNCHRONIZE_ACCOUNT;Synchroniser compte;Sincronizar cuenta;Sincronizar conta
-SYNC_CHOICE_POPUP;Conflit de données : serveur plus récent. Choisir une version.;Conflicto de datos: el servidor es m�s reciente. Elige una versi�n.;Conflito de dados: servidor mais recente. Escolha uma vers�o.
-SERVER_PRIORITY;Serveur;Servidor;Servidor
-LOCAL_PRIORITY;Locale;Local;Local
+O editor do site se reserva o direito de modificar a polàtica de privacidade para garantir sua conformidade com as leis e pràticas vigentes."
+ACCEPT_GENERAL_CONDITIONS,Accepter les conditions générales,Aceptar las condiciones generales,Aceitar termos e condiààes
+ACCEPT_GENERAL_CONDITIONS_ERROR,Veuillez accepter les conditions générales avant de continuer,Aceptar las condiciones generales antes de avanzar,Aceite os termos e condiààes antes de continuar
+REGISTRATION_SUMMARY,Récapitulatif de lâinscription,Resumen del registro,Resumo do registro
+VALIDATE,Confirmer,Confirmar,Confirmar
+SUMMARY_EMAIL,Adresse email : {mail},Correo electrànico: {mail},Endereào de e-mail : {mail}
+SUMMARY_TYPE,Type de compte : {type},Tipo de cuenta: {type},Tipo de conta : {type}
+SUMMARY_METHOD,Méthode d'éducation : {method},Metodo de enseàanza: {method},Método educacional : {method}
+APPONLY,Application uniquement,Solo aplicaciàn ,Somente aplicativo
+COMPLETE,Complète (livrets et jeux papiers),Completo (cuaderno y juegos en papel),Completo (livretos e jogos de papel)
+SUMMARY_NUMBER_OF_DEVICES,Nombre d'appareils : {number},Cantidad de dispositivos: {number},Nàmero de dispositivos : {number}
+SUMMARY_NUMBER_OF_STUDENTS,Nombre d'élèves : {number},Cantidad de estudiantes: {number},Nàmero de alunos : {number}
+STUDENT_NUM,Élève {number},Estudiante {number},Aluno {number}
+LOGOUT,Déconnexion,Cerrar sesión ,Desconexão
+SETTINGS_ADD_DEVICE,Ajout d'un appareil,Agregar un dispositivo,Adiàào de um dispositivo
+SETTINGS_ADD_STUDENT,Ajout d'un élève,Agregar un estudiante ,Adicionar um aluno
+SETTINGS_LESSONS,Leàons,Lecciones,Liààes
+CLOSE,Fermer,Cerrar,Fechar
+REGISTER_FAILED,Une erreur est survenue,Se ha producido un error,Ocorreu um erro
+ERROR_DOWNLOADING,Impossible de télécharger les données de jeu,No se pueden descargar los datos del juego,Nào é possàvel fazer o download dos dados do jogo
+EXTRACTING_DATA,Extraction des données,Extracciàn de datos,Extraàào de dados
+LESSON,Leàon,Lecciàn,Liàào
+LOOKANDLEARN,Regarder et apprendre,Mira y aprende,Assista e aprenda
+EXERCISE1,Exercice 1,Ejercicio 1,Exercàcio 1
+EXERCISE2,Exercice 2,Ejercicio 2,Exercàcio 2
+EXERCISE3,Exercice 3,Ejercicio 3,Exercàcio 3
+Locked,Verrouillé,Bloqueado,Bloqueado
+Unlocked,Déverrouillé,Desbloqueado,Desbloqueado
+Completed,Terminé,Completado,Concluàdo
+CHECKING_DATA,Vérification des données...,Comprobando datos...,Verificaàào de dados...
+TEACHER_SETTINGS_HELP,"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes","Para acceder a los ajustes, pulse el signo màs y la barra vertical y, a continuaciàn, mantenga pulsado el botàn «Configuraciàn» durante 5 segundos","Para acessar as configuraààes, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botào âParàmetrosâ por 5 segundos"
+DELETE_ACCOUNT,Supprimer le compte,Eliminar cuenta,Excluir conta
+DELETE_ACCOUNT_POPUP,Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !,De verdad quieres eliminar tu cuenta? Esta acciàn es irreversible!,Você realmente deseja excluir sua conta? Essa aàào é irreversàvel!
+DISCONECTED_ERROR,Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.,Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.,Você foi desconectado. Digite seus detalhes de login novamente.
+INVALID_LANGUAGE_DIRECTORY,Dossier de langue invalide,Carpeta de idioma no vlida,Pasta de idioma invlida
+NO_INTERNET_ACCESS,Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion et réessayer.,No està conectado a Internet. Compruebe su conexiàn e inténtelo de nuevo.,Você não está conectado à Internet. Verifique sua conexào e tente novamente.
+PICK_YOUR_DEVICE,Choisissez votre appareil,Elige tu dispositivo,Escolha seu dispositivo
+SIGN_IN,Connexion,Conexión,Conexão
+RETURN_TO_MAIN_MENU,Retour à l'acceuil,Volver a la pàgina principal,Voltar para a pàgina inicial
+ADD_STUDENT_POPUP,Souhaitez-vous ajouter un nouvel élève ?,Desea aàadir un nuevo alumno?,Você gostaria de adicionar um novo aluno?
+ADD_DEVICE_POPUP,Souhaitez-vous ajouter un nouvel appareil ? Un élève sera créé automatiquement.,Desea aàadir un nuevo dispositivo? Se crearà un alumno automàticamente.,Gostaria de adicionar um novo dispositivo? Um aluno serà criado automaticamente.
+DELETE_STUDENT_POPUP,Souhaitez-vous supprimer cet élève ? Cette action est définitive et entrainera la perte de la progression de cet élève.,Desea eliminar a este estudiante? Esta acciàn es definitiva y supondrà la pérdida del progreso de este alumno.,Deseja excluir esse aluno? Essa aàào é definitiva e resultarà na perda do progresso desse aluno.
+DELETE_STUDENT,Supprimer l'élève,Borrar estudiante,Excluir aluno
+CHANGE_DEVICE,Changer d'appareil,Cambiar de dispositivo,Trocar de dispositivo
+SYNCHRONIZE_ACCOUNT,Synchroniser compte,Sincronizar cuenta,Sincronizar conta
+SYNC_CHOICE_POPUP,Conflit de données : serveur plus récent. Choisir une version.,Conflicto de datos: el servidor es ms reciente. Elige una versin.,Conflito de dados: servidor mais recente. Escolha uma verso.
+SERVER_PRIORITY,Serveur,Servidor,Servidor
+LOCAL_PRIORITY,Locale,Local,Local
+SYNCHRONIZATION_INITIALISATION,Initialisation de la synchronisation,Inicializando sincronizacin,Inicializando sincronizaço
+SYNCHRONIZATION_SUCCESS,Synchronisation réussie,Sincronización completada,Sincronização concluídada
+SYNCHRONIZATION_ERROR_NO_SERVER,chec : pas de connexion serveur,Error: sin conexin con el servidor,Erro: sem conexo com o servidor
+SYNCHRONIZATION_ERROR_NO_LOCAL_TIMESTAMP,chec : horodatage local manquant,Error: falta marca de tiempo local,Erro: falta carimbo de data/hora local
+SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER,chec : réponse du serveur vide,Error: respuesta vaca del servidor,Erro: resposta vazia do servidor
+SYNCHRONIZATION_ERROR_SERVER,chec : erreur cté serveur,Error: error del servidor,Erro: erro no servidor
+SYNCHRONIZING_USER,Synchronisation de l’utilisateur,Sincronizando usuario,Sincronizando usurio
+SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_USER,chec de l’envoi des données utilisateur,Error al enviar datos del usuario,Erro ao enviar dados do usurio
+SYNCHRONIZING_STUDENT_%S,Synchronisation de l’élève %s,Sincronizando estudiante %s,Sincronizando aluno %s
+SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_STUDENT,chec de l’envoi des données élève,Error al enviar datos del estudiante,Erro ao enviar dados do aluno
