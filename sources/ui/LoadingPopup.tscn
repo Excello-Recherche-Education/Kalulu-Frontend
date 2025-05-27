@@ -58,7 +58,6 @@ layout_mode = 2
 size_flags_vertical = 1
 theme = ExtResource("2_t7x2v")
 theme_type_variation = &"HeaderMedium"
-text = "CONTENT TEXT"
 autowrap_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]

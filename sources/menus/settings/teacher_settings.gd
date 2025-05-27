@@ -25,10 +25,8 @@ const device_tab_scene: PackedScene = preload("res://sources/menus/settings/devi
 @onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
 
 var last_device_id: int = -1
+var user_database_synchronizer: UserDataBaseSynchronizer
 
-var synchronizing: bool = false
-
-var localStringTime: String= ""
 
 func _ready() -> void:
 	refresh_devices_tabs()
@@ -45,6 +43,13 @@ func _ready() -> void:
 	
 	account_type_option_button.select(UserDataManager.teacher_settings.account_type)
 	education_method_option_button.select(UserDataManager.teacher_settings.education_method)
+	
+	user_database_synchronizer = UserDataBaseSynchronizer.new()
+	user_database_synchronizer.loading_popup = loading_popup
+	user_database_synchronizer.sync_choice_popup = sync_choice_popup
+	user_database_synchronizer.account_type_option_button = account_type_option_button
+	user_database_synchronizer.education_method_option_button = education_method_option_button
+
 
 func _on_account_type_option_button_item_selected(index: int) -> void:
 	if TeacherSettings.AccountType.values().has(index):
@@ -96,63 +101,6 @@ func _on_back_button_pressed() -> void:
 
 func _on_delete_button_pressed() -> void:
 	delete_popup.show()
-
-
-func startSync() -> void:
-	synchronizing = true
-	loading_popup.set_finished(false)
-	loading_popup.set_progress(0.0)
-	loading_popup.show()
-
-
-func stopSync(success: bool = false) -> void:
-	synchronizing = false
-	if success:
-		loading_popup.set_progress(100.0)
-		await get_tree().create_timer(1).timeout
-	loading_popup.set_finished(true)
-
-
-func _on_synchronize_button_pressed() -> void:
-	#synchronizing = false
-	#await ServerManager.update_user_data(UserDataManager.teacher_settings, "2025-05-23T09:39:47", true)
-	#return
-	Logger.trace("SettingsTeacherSettings: Start synchronizing user data.")
-	if synchronizing:
-		Logger.trace("SettingsTeacherSettings: User synchronization already started, cancel double-call.")
-		return
-	startSync()
-	var resGetTeacherTimestamp: Dictionary = await ServerManager.get_user_data_timestamp()
-	if resGetTeacherTimestamp.success:
-		Logger.trace("SettingsTeacherSettings: Server timestamp for user data = " + str(resGetTeacherTimestamp.body["last_modified"]))
-	else:
-		Logger.trace("Cannot get server timestamp for user data. Canceling synchronization.")
-		stopSync()
-		return
-	var unixTimeServer: int = Time.get_unix_time_from_datetime_string(resGetTeacherTimestamp.body["last_modified"] as String)
-	
-	localStringTime = UserDataManager.teacher_settings.last_modified
-	if localStringTime == "":
-		var localResult: Dictionary = UserDataManager.get_latest_modification(UserDataManager.get_teacher_folder())
-		if localResult.error == OK:
-			localStringTime = Time.get_datetime_string_from_datetime_dict(localResult.modification_date as Dictionary, false)
-			Logger.trace("SettingsTeacherSettings: Local user file timestamp = " + localStringTime)
-		else:
-			Logger.warn("SettingsTeacherSettings: Cannot find modification date for local user data: " + error_string(localResult.error as int))
-			stopSync()
-			return
-	var localUnixTime: int = Time.get_unix_time_from_datetime_string(localStringTime)
-	
-	if localUnixTime == unixTimeServer:
-		Logger.trace("SettingsTeacherSettings: User data timestamp is the same in local and on server. No synchronization necessary")
-	elif localUnixTime > unixTimeServer:
-		_on_sync_choice_local()
-		return
-	else:
-		Logger.trace("SettingsTeacherSettings: Local user data timestamp is obsolete, we need to choose a priority")
-		sync_choice_popup.show()
-		return
-	stopSync(true)
 
 
 func _on_delete_popup_accepted() -> void:
@@ -238,44 +186,18 @@ func update_student_name(student_code: int, student_name: String) -> void:
 				return
 	Logger.warn("SettingsTeacherSettings: update_student_name: student not found with code " + str(student_code))
 
+#region Synchronization
+
+func _on_synchronize_button_pressed() -> void:
+	user_database_synchronizer.on_synchronize_button_pressed()
+
 
 func _on_sync_choice_server() -> void:
-	Logger.trace("SettingsTeacherSettings: Synchronization priority defined to server")
-	var resGetUserData: Dictionary = await ServerManager.get_user_data()
-	if resGetUserData.success:
-		if resGetUserData.has("body"):
-			# {"email": "cvbn@yopmail.com", "account_type": 0, "education_method": 0, "created_at": "2025-05-15T12:27:34Z", "last_modified": "2025-05-22T14:05:42Z"}
-			var resultBody: Dictionary = resGetUserData.body
-			if resultBody.has("account_type"):
-				UserDataManager.teacher_settings.account_type = resultBody.account_type
-				account_type_option_button.select(UserDataManager.teacher_settings.account_type)
-			else:
-				Logger.warn("SettingsTeacherSettings: user data received from the server has no account_type")
-			if resultBody.has("education_method"):
-				UserDataManager.teacher_settings.education_method = resultBody.education_method
-				education_method_option_button.select(UserDataManager.teacher_settings.education_method)
-			else:
-				Logger.warn("SettingsTeacherSettings: user data received from the server has no education_method")
-		else:
-			Logger.warn("SettingsTeacherSettings: user data received from the server has no body")
-			stopSync()
-			return
-	else:
-		Logger.warn("SettingsTeacherSettings: Failed to get user data from the server")
-		stopSync()
-		return
-	stopSync(true)
+	user_database_synchronizer.on_sync_choice_server()
 
 
 func _on_sync_choice_local() -> void:
-	Logger.trace("SettingsTeacherSettings: Synchronization priority defined to local")
-	var resSetUserTimestamp: Dictionary = await ServerManager.update_user_data(UserDataManager.teacher_settings, localStringTime, true)
-	if resSetUserTimestamp.success:
-		Logger.trace("SettingsTeacherSettings: user data successfully sent to the server")
-		stopSync(true)
-	else:
-		Logger.warn("SettingsTeacherSettings: Failed to send update of user data to the server")
-		stopSync()
+	user_database_synchronizer.on_sync_choice_local()
 
 
 func _on_loading_popup_ok() -> void:
@@ -283,5 +205,6 @@ func _on_loading_popup_ok() -> void:
 
 
 func _on_loading_popup_cancel() -> void:
-	#TODO
-	loading_popup.hide()
+	Logger.warn("SettingsTeacherSettings: User wanted to cancel synchronization but it is impossible to interrupt.")
+
+#endregion

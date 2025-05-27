@@ -25,10 +25,10 @@ buses/default_bus_layout="res://resources/audio_buses/main_audio_bus_layout.tres
 
 [autoload]
 
-Logger="*res://sources/utils/autoloads/Logger.gd"
+Logger="*res://sources/utils/autoloads/logger.gd"
 LessonLogger="*res://sources/utils/autoloads/lesson_logger.gd"
-ServerManager="*res://sources/utils/autoloads/ServerManager.tscn"
-Database="*res://sources/utils/autoloads/Database.gd"
+ServerManager="*res://sources/utils/autoloads/server_manager.tscn"
+Database="*res://sources/utils/autoloads/database.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
 Validation="*res://addons/godot-form-validator/validation.gd"

@@ -87,6 +87,19 @@ func update_user_data(teacher: TeacherSettings, timestamp: String, force: bool =
 	await _post_json_request("update_user_data", data)
 	return _response()
 
+func update_student_remediation_data(student_code: int, student_remediation: UserRemediation) -> Dictionary:
+	if not student_remediation:
+		Logger.trace("ServerManager: Cannot update studient remediation data because data does not exists")
+		success = true
+		code = -1
+		json = {}
+		return _response()
+	var tuple_list: Array = []
+	for key: int in student_remediation.gps_scores.keys():
+		tuple_list.append([key, student_remediation.gps_scores[key]])
+	var data: Dictionary = {"student_id": student_code, "score_remediation": tuple_list}
+	await _post_json_request("submit_gp_remediation", data)
+	return _response()
 
 # p_student must have a device key
 # it can contain a name, level and age key for parents

@@ -326,12 +326,20 @@ func update_configuration(configuration: Dictionary) -> bool:
 	
 	return true
 
+func get_number_of_students() -> int:
+	if not teacher_settings:
+		return 0
+	return teacher_settings.get_number_of_students()
+
 #endregion
 
 #region Student settings
 
-func get_student_folder() -> String:
-	return _device_settings.get_folder_path().path_join(student)
+func get_student_folder(student_code: int = 0) -> String:
+	if student_code == 0:
+		return _device_settings.get_folder_path().path_join(student)
+	else:
+		return _device_settings.get_folder_path().path_join(str(student_code))
 
 #endregion
 
@@ -389,8 +397,8 @@ func save_student_progression_for_code(device: int, code: int, progression: User
 
 #region Student remediation
 
-func _get_student_remediation_path() -> String:
-	return get_student_folder().path_join("remediation.tres")
+func _get_student_remediation_path(student_code: int = 0) -> String:
+	return get_student_folder(student_code).path_join("remediation.tres")
 
 func _load_student_remediation() -> void:
 	if FileAccess.file_exists(_get_student_remediation_path()):
@@ -403,7 +411,17 @@ func _load_student_remediation() -> void:
 	
 	_student_remediation.score_changed.connect(_save_student_remediation)
 
+func get_student_remediation_data(student_code: int) -> UserRemediation:
+	var remediation_data_path: String = _get_student_remediation_path(student_code)
+	if FileAccess.file_exists(remediation_data_path):
+		var student_remediation: UserRemediation
+		student_remediation = load(remediation_data_path)
+		return student_remediation
+	Logger.trace("UserDataManager: Remediation data of student code %d not found" % student_code)
+	return null
+
 func _save_student_remediation() -> void:
+	_student_remediation.last_modified = Time.get_datetime_string_from_system(true)
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
 
 func get_GP_remediation_score(GPID: int) -> int:

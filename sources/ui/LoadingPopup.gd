@@ -16,6 +16,10 @@ signal ok
 @export var cancel_text_override: String = ""
 
 
+func set_text(text: String) -> void:
+	content_label.text = text
+
+
 func set_progress(percent: float) -> void:
 	progress_bar.value = percent
 	if percent >= 100.0:

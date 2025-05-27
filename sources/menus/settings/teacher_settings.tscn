@@ -206,15 +206,16 @@ unique_name_in_owner = true
 visible = false
 content_text = "DELETE_STUDENT_POPUP"
 
+[node name="LoadingPopup" parent="." instance=ExtResource("10_i488h")]
+unique_name_in_owner = true
+visible = false
+
 [node name="SyncChoicePopup" parent="." instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
 content_text = "SYNC_CHOICE_POPUP"
 confirm_text_override = "SERVER_PRIORITY"
 cancel_text_override = "LOCAL_PRIORITY"
-
-[node name="LoadingPopup" parent="." instance=ExtResource("10_i488h")]
-unique_name_in_owner = true
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
@@ -223,6 +224,7 @@ unique_name_in_owner = true
 [connection signal="accepted" from="InterfaceLeft/Container/DeleteButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
 [connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer/AccountTypeOptionButton" to="." method="_on_account_type_option_button_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/EducationMethodOptionButton" to="." method="_on_education_method_option_button_item_selected"]
 [connection signal="tab_changed" from="VBoxContainer/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
@@ -230,7 +232,7 @@ unique_name_in_owner = true
 [connection signal="accepted" from="AddStudentPopup" to="." method="_on_add_student_popup_accepted"]
 [connection signal="accepted" from="AddDevicePopup" to="." method="_on_add_device_popup_accepted"]
 [connection signal="accepted" from="DeleteStudentPopup" to="." method="_on_delete_student_popup_accepted"]
-[connection signal="accepted" from="SyncChoicePopup" to="." method="_on_sync_choice_server"]
-[connection signal="refused" from="SyncChoicePopup" to="." method="_on_sync_choice_local"]
 [connection signal="cancel" from="LoadingPopup" to="." method="_on_loading_popup_cancel"]
 [connection signal="ok" from="LoadingPopup" to="." method="_on_loading_popup_ok"]
+[connection signal="accepted" from="SyncChoicePopup" to="." method="_on_sync_choice_server"]
+[connection signal="refused" from="SyncChoicePopup" to="." method="_on_sync_choice_local"]
