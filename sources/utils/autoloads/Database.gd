@@ -157,7 +157,7 @@ func get_GPs_from_syllable(syllable_ID: int) -> Array[Dictionary]:
 
 
 func get_GP_from_word(ID: int) -> Array:
-	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.ID=? INNER JOIN GPs WHERE GPS.ID = GPsInWords.GPID ORDER BY Position", [ID])
+	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInWords.GPID ORDER BY Position", [ID])
 	return db.query_result
 
 
@@ -172,7 +172,7 @@ ORDER BY WordPosition ASC, GPPosition ASC", [sentenceID])
 
 
 func get_words_containing_grapheme(grapheme: String) -> Array[Dictionary]:
-	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPS.ID = GPsInWords.GPID", [grapheme])
+	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPs.ID = GPsInWords.GPID", [grapheme])
 	return db.query_result
 
 

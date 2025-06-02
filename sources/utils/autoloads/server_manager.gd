@@ -70,8 +70,13 @@ func get_language_pack_url(locale: String) -> Dictionary:
 	return _response()
 
 
-func get_user_data_timestamp() -> Dictionary:
-	await _get_request("get_user_data_timestamp", {})
+func pull_timestamps() -> Dictionary:
+	await _get_request("pull_timestamps", {})
+	return _response()
+
+
+func send_server_synchronization_instructions(data: Dictionary) -> Dictionary:
+	await _post_json_request("pull_sync_status", data)
 	return _response()
 
 
@@ -79,13 +84,6 @@ func get_user_data() -> Dictionary:
 	await _get_request("get_user_data", {})
 	return _response()
 
-
-func update_user_data(teacher: TeacherSettings, timestamp: String, force: bool = false) -> Dictionary:
-	var data: Dictionary = {"account_type": teacher.account_type, "education_method": teacher.education_method ,"timestamp": timestamp}
-	if force:
-		data.merge({"force_sync": "YES"})
-	await _post_json_request("update_user_data", data)
-	return _response()
 
 func update_student_remediation_data(student_code: int, student_remediation: UserRemediation) -> Dictionary:
 	if not student_remediation:
@@ -106,11 +104,6 @@ func update_student_remediation_data(student_code: int, student_remediation: Use
 # TODO POUR ADD / UPDATE / REMOVE STUDENT : RECUPERER LE TIMESTAMP POUR METTRE A JOUR LE USER
 func add_student(p_student: Dictionary) -> Dictionary:
 	await _post_request("add_student", p_student)
-	return _response()
-
-
-func update_student(student: StudentData) -> Dictionary:
-	await _post_request("update_student", {"code": student.code, "name": student.name, "level": student.level, "age": student.age})
 	return _response()
 
 
@@ -242,14 +235,17 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 		Logger.trace("Cannot complete http request. Error code %d = %s" % [result_code, error_string(result_code)])
 	else:
 		code = response_code
+		Logger.trace("ServerManager Request Completed. Response code = %d" % response_code)
 		if body:
-			Logger.trace("ServerManager Request Completed.\n    Response code = %d\n    Body received = %s" % [response_code, body.get_string_from_utf8()])
+			Logger.trace("Body received = %s" % body.get_string_from_utf8())
 			var strBody: String = body.get_string_from_utf8()
 			var result: Variant = JSON.parse_string(strBody)
 			if result != null:
 				json = result
 			else:
 				Logger.trace("ServerManager: result null after parsing String to JSON")
+		else:
+			Logger.trace("Body received is empty")
 	success = result_code == OK and response_code == 200
 	request_completed.emit(success, response_code, json)
 	loading_rect.hide()

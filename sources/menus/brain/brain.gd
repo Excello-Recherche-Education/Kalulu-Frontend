@@ -74,7 +74,7 @@ func _ready() -> void:
 	var lesson_ind: int = 1
 	for index: int in range(gardens_layout.gardens.size()):
 		var can_emit: bool = true
-		if UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != UserProgression.Status.Locked:
+		if UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != StudentProgression.Status.Locked:
 			garden_buttons[index].disabled = false
 			garden_buttons[index].self_modulate = unlocked_colors[index]
 		else:
@@ -86,8 +86,8 @@ func _ready() -> void:
 		for _index2: int in range(gardens_layout.gardens[index].lesson_buttons.size()):
 			if can_emit and not emitting:
 				emitting = false
-				for game: UserProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
-					if game == UserProgression.Status.Unlocked or game == UserProgression.Status.Locked:
+				for game: StudentProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
+					if game == StudentProgression.Status.Unlocked or game == StudentProgression.Status.Locked:
 						emitting = true
 						break
 			lesson_ind += 1

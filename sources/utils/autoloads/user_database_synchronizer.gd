@@ -3,12 +3,19 @@ class_name UserDataBaseSynchronizer
 
 
 var synchronizing: bool = false
-var localStringTime: String= ""
 
 var account_type_option_button: OptionButton
 var education_method_option_button: OptionButton
 
 var loading_popup: LoadingPopup
+
+enum UpdateNeeded {
+	Nothing,
+	FromLocal,
+	FromServer,
+	DeleteLocal,
+	DeleteServer
+}
 
 
 func startSync() -> void:
@@ -28,120 +35,193 @@ func stopSync(success: bool = false) -> void:
 
 
 func on_synchronize_button_pressed() -> void:
-	Logger.trace("SettingsTeacherSettings: Start synchronizing user data.")
+	Logger.trace("UserDataBaseSynchronizer: Start synchronizing user data.")
 	if synchronizing:
-		Logger.trace("SettingsTeacherSettings: User synchronization already started, cancel double-call.")
+		Logger.trace("UserDataBaseSynchronizer: User synchronization already started, cancel double-call.")
 		return
-	startSync()
-	var resGetTeacherTimestamp: Dictionary = await ServerManager.get_user_data_timestamp()
-	if resGetTeacherTimestamp.success:
-		Logger.trace("SettingsTeacherSettings: Server timestamp for user data = " + str(resGetTeacherTimestamp.body["last_modified"]))
-	else:
-		Logger.trace("Cannot get server timestamp for user data. Canceling synchronization.")
+	await startSync()
+	
+	await setLoadingProgression(1.0)
+	loading_popup.set_text("SYNCHRONIZATION_CHECK_INTERNET_ACCESS")
+	if not await (ServerManager as ServerManagerClass).check_internet_access():
+		loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_INTERNET")
+		stopSync()
+	
+	loading_popup.set_text("SYNCHRONIZATION_ASK_SERVER_TIMESTAMP")
+	var response_ge_all_timestamps: Dictionary = await (ServerManager as ServerManagerClass).pull_timestamps()
+	if not response_ge_all_timestamps.success:
+		Logger.trace("UserDataBaseSynchronizer: Cannot get all timestamps from server. Canceling synchronization.")
 		loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_SERVER")
 		stopSync()
 		return
-	var unixTimeServer: int = Time.get_unix_time_from_datetime_string(resGetTeacherTimestamp.body["last_modified"] as String)
 	
-	localStringTime = UserDataManager.teacher_settings.last_modified
-	if localStringTime == "":
-		var localResult: Dictionary = UserDataManager.get_latest_modification(UserDataManager.get_teacher_folder())
-		if localResult.error == OK:
-			localStringTime = Time.get_datetime_string_from_datetime_dict(localResult.modification_date as Dictionary, false)
-			Logger.trace("SettingsTeacherSettings: Local user file timestamp = " + localStringTime)
-		else:
-			Logger.warn("SettingsTeacherSettings: Cannot find modification date for local user data: " + error_string(localResult.error as int))
-			loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_LOCAL_TIMESTAMP")
-			stopSync()
-			return
-	var unixTimeLocal: int = Time.get_unix_time_from_datetime_string(localStringTime)
-	
-	if unixTimeLocal == unixTimeServer:
-		Logger.trace("SettingsTeacherSettings: User data timestamp is the same in local and on server. No synchronization necessary")
-		stopSync(true)
-	elif unixTimeLocal > unixTimeServer:
-		on_sync_from_local()
-		return
-	else: # unixTimeLocal < unixTimeServer
-		on_sync_from_server()
-		return
-
-
-func on_sync_from_server() -> void:
-	Logger.trace("SettingsTeacherSettings: Synchronization priority defined to server")
-	await setLoadingProgression(1.0)
-	var resGetUserData: Dictionary = await ServerManager.get_user_data()
-	if resGetUserData.success:
-		if resGetUserData.has("body"):
-			var resultBody: Dictionary = resGetUserData.body
-			if resultBody.has("account_type"):
-				UserDataManager.teacher_settings.account_type = resultBody.account_type
-				account_type_option_button.select(UserDataManager.teacher_settings.account_type)
-			else:
-				Logger.warn("SettingsTeacherSettings: user data received from the server has no account_type")
-			if resultBody.has("education_method"):
-				UserDataManager.teacher_settings.education_method = resultBody.education_method
-				education_method_option_button.select(UserDataManager.teacher_settings.education_method)
-			else:
-				Logger.warn("SettingsTeacherSettings: user data received from the server has no education_method")
-		else:
-			Logger.warn("SettingsTeacherSettings: user data received from the server has no body")
-			loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER")
-			stopSync()
-			return
-	else:
-		if resGetUserData.has("body"):
-			Logger.warn("SettingsTeacherSettings: Failed to get user data from the server: %s" % resGetUserData.body)
-		else:
-			Logger.warn("SettingsTeacherSettings: Failed to get user data from the server")
-		loading_popup.set_text("SYNCHRONIZATION_ERROR_SERVER")
+	await setLoadingProgression(20.0)
+	loading_popup.set_text("SYNCHRONIZATION_COMPARE_SERVER_TIMESTAMP")
+	var response_body: Dictionary = response_ge_all_timestamps.body
+	if not response_body.has("user"):
+		Logger.trace("UserDataBaseSynchronizer: Cannot get user from body. Canceling synchronization.")
+		loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER")
 		stopSync()
 		return
-	stopSync(true)
-
-
-func on_sync_from_local() -> void:
-	Logger.trace("SettingsTeacherSettings: Synchronization priority defined to local")
-	var numberOfStudents: int = UserDataManager.get_number_of_students()
-	var numberOfUpdatesToDo: int = numberOfStudents + 1 # +1 for user data
-	var percentOfUpdateForEachStep: float = 100.0/numberOfUpdatesToDo
-	var currentUpdateProgression: float = 0.0
-	await setLoadingProgression(1.0)
-	loading_popup.set_text("SYNCHRONIZING_USER")
-	var resSetUserData: Dictionary = await ServerManager.update_user_data(UserDataManager.teacher_settings, localStringTime, true)
-	if resSetUserData.success:
-		Logger.trace("SettingsTeacherSettings: user data successfully sent to the server")
-		currentUpdateProgression += percentOfUpdateForEachStep
-		await setLoadingProgression(currentUpdateProgression)
-	else:
-		Logger.warn("SettingsTeacherSettings: Failed to send update of user data to the server: %s" % resSetUserData.body)
-		loading_popup.set_text("SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_USER")
+	var user: Dictionary = response_body.user
+	if not user.has("last_modified"):
+		Logger.trace("UserDataBaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
+		loading_popup.set_text("SYNCHRONIZATION_ERROR")
 		stopSync()
 		return
+	var serverUnixTimeUser: int = Time.get_unix_time_from_datetime_string(user.last_modified as String)
+	var localUserStringTime: String = UserDataManager.teacher_settings.last_modified
+	var localUnixTimeUser: int = 0
+	if localUserStringTime != "":
+		localUnixTimeUser = Time.get_unix_time_from_datetime_string(localUserStringTime)
+	var need_update_user: UpdateNeeded = UpdateNeeded.Nothing
+	if localUnixTimeUser == serverUnixTimeUser:
+		Logger.trace("UserDataBaseSynchronizer: User data timestamp is the same in local and on server. No synchronization necessary")
+	elif localUnixTimeUser > serverUnixTimeUser:
+		need_update_user = UpdateNeeded.FromLocal
+	else: # localUnixTimeUser < serverUnixTimeUser
+		need_update_user = UpdateNeeded.FromServer
 	
-	var student_index: int = 0
-	for student_data: StudentData in UserDataManager.teacher_settings.get_all_students_data():
-		student_index = student_index + 1
-		var gp_remediation_scores: UserRemediation = UserDataManager.get_student_remediation_data(student_data.code)
-		var sync_student_text: String = tr("SYNCHRONIZING_STUDENT_%S")
-		if student_data.name != "":
-			loading_popup.set_text(sync_student_text % student_data.name)
-		else:
-			loading_popup.set_text(sync_student_text % student_index)
-		var resUpdateStudentRemediationScores: Dictionary = await ServerManager.update_student_remediation_data(student_data.code, gp_remediation_scores)
-		currentUpdateProgression += percentOfUpdateForEachStep
-		await setLoadingProgression(currentUpdateProgression)
-		if resUpdateStudentRemediationScores.success:
+	await setLoadingProgression(40.0)
+	loading_popup.set_text("SYNCHRONIZATION_COMPILE_SERVER_INSTRUCTIONS")
+	var need_update_students: Dictionary[int, UpdateNeeded] # student_code, status
+	if not response_body.has("students"):
+		Logger.trace("UserDataBaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
+		loading_popup.set_text("SYNCHRONIZATION_ERROR")
+		stopSync()
+		return
+	var students_timestamps: Array[Dictionary] = []
+	for item: Dictionary in response_body.students:
+		students_timestamps.append(item)
+	for studentDic: Dictionary in students_timestamps:
+		if not studentDic.has("code"):
 			continue
+		var code_to_check: int = studentDic.code
+		var serverStudentUnixTime: int = -1
+		if studentDic.has("updated_at"):
+			serverStudentUnixTime = Time.get_unix_time_from_datetime_string(studentDic.updated_at as String)
 		else:
-			loading_popup.set_text("SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_STUDENT")
-			Logger.warn("SettingsTeacherSettings: Failed to send update of student data to the server: %s" % resUpdateStudentRemediationScores.body)
+			Logger.warn("UserDataBaseSynchronizer: Student %d received from server has no timestamp" % code_to_check)
+		var found: bool = false
+		for device: int in UserDataManager.teacher_settings.students.keys():
+			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
+			for student_data: StudentData in students_in_device:
+				if student_data.code == code_to_check:
+					var localStudentUnixTime: int = Time.get_unix_time_from_datetime_string(student_data.last_modified)
+					if localStudentUnixTime == serverStudentUnixTime:
+						Logger.trace("UserDataBaseSynchronizer: Student %d data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+						need_update_students[code_to_check] = UpdateNeeded.Nothing
+					elif localStudentUnixTime > serverStudentUnixTime:
+						need_update_students[code_to_check] = UpdateNeeded.FromLocal
+					else: # localStudentUnixTime < serverStudentUnixTime
+						need_update_students[code_to_check] = UpdateNeeded.FromServer
+					found = true
+					break
+			if found:
+				break
+		if not found:
+			if need_update_user == UpdateNeeded.FromServer:
+				# If the student does not exists in local and if the user on server is more recent, we need the data to create the student
+				need_update_students[code_to_check] = UpdateNeeded.FromServer
+			elif need_update_user == UpdateNeeded.FromLocal:
+				# If the student does not exists in local and if the user on local is more recent, we need to delete the student on the server
+				need_update_students[code_to_check] = UpdateNeeded.DeleteServer
+			else:
+				Logger.warn("UserDataBaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)
+	
+	for device: int in UserDataManager.teacher_settings.students.keys():
+			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
+			for student_data: StudentData in students_in_device:
+				if not need_update_students.has(student_data.code):
+					if need_update_user == UpdateNeeded.FromServer:
+						need_update_students[student_data.code] = UpdateNeeded.DeleteLocal
+					elif need_update_user == UpdateNeeded.FromLocal:
+						need_update_students[student_data.code] = UpdateNeeded.FromLocal
+					else:
+						Logger.warn("UserDataBaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
+	var message_to_server: Dictionary
+	if need_update_user == UpdateNeeded.Nothing:
+		pass
+	elif need_update_user == UpdateNeeded.FromLocal:
+		message_to_server["user"] =	{
+										"account_type": UserDataManager.teacher_settings.account_type,
+										"education_method": UserDataManager.teacher_settings.education_method,
+										"last_modified": UserDataManager.teacher_settings.last_modified
+									}
+	elif need_update_user == UpdateNeeded.FromServer:
+		message_to_server["user"] = {"need_update": true}
+	message_to_server["students"] = {}
+	for student_code_to_update: int in need_update_students.keys():
+		if need_update_students[student_code_to_update] == UpdateNeeded.Nothing:
+			continue
+		elif need_update_students[student_code_to_update] == UpdateNeeded.FromLocal:
+			var student_device:int = UserDataManager.teacher_settings.get_student_device(student_code_to_update)
+			if student_device == -1:
+				Logger.error("UserDataBaseSynchronizer: Student code %s has no device ID" % student_code_to_update)
+				continue
+			var student_data: StudentData = UserDataManager.teacher_settings.get_student_with_code(student_code_to_update)
+			if not student_data:
+				Logger.warn("UserDataBaseSynchronizer: Cannot find student with code %d" % student_code_to_update)
+				continue
+			message_to_server["students"][student_code_to_update] =	{
+																		"device_id": student_device,
+																		"name": student_data.name,
+																		"age": student_data.age,
+																		"updated_at": student_data.last_modified,
+																	}
+		elif need_update_students[student_code_to_update] == UpdateNeeded.FromServer:
+			message_to_server["students"][student_code_to_update] = {"need_update": true}
+		elif need_update_students[student_code_to_update] == UpdateNeeded.DeleteLocal:
+			UserDataManager.delete_student(student_code_to_update)
+		elif need_update_students[student_code_to_update] == UpdateNeeded.DeleteServer:
+			message_to_server["students"][student_code_to_update] = {"delete": true}
+		else:
+			Logger.warn("UserDataBaseSynchronizer: Update needed enum not recognized: %s" % str(need_update_students[student_code_to_update]))
+	if (message_to_server["students"] as Dictionary).keys().size() == 0:
+		message_to_server.erase("students")
+	
+	await setLoadingProgression(60.0)
+	loading_popup.set_text("SYNCHRONIZATION_SEND_SERVER_INSTRUCTIONS")
+	if message_to_server.keys().size() == 0:
+		Logger.trace("UserDataBaseSynchronizer: No instruction to send to server")
+	else:
+		var res_get_server_instructions: Dictionary = await (ServerManager as ServerManagerClass).send_server_synchronization_instructions(message_to_server)
+		if not res_get_server_instructions.success:
+			Logger.trace("UserDataBaseSynchronizer: Cannot send instructions to server. Canceling synchronization.")
+			loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_SERVER")
 			stopSync()
 			return
 	
+		await setLoadingProgression(80.0)
+		loading_popup.set_text("SYNCHRONIZATION_APPLY_LOCAL_INSTRUCTIONS")
+		response_body = res_get_server_instructions.body
+		if response_body.has("user"):
+			var response_user: Dictionary = response_body.user
+			Logger.trace("UserDataBaseSynchronizer: Updating user")
+			if not response_user.has("account_type"):
+				Logger.warn("UserDataBaseSynchronizer: While updating user, no account_type found")
+			else:
+				UserDataManager.teacher_settings.account_type = response_user.account_type
+			if not response_user.has("education_method"):
+				Logger.warn("UserDataBaseSynchronizer: While updating user, no education_method found")
+			else:
+				UserDataManager.teacher_settings.education_method = response_user.education_method
+			if not response_user.has("last_modified"):
+				Logger.warn("UserDataBaseSynchronizer: While updating user, no last_modified found")
+			else:
+				UserDataManager.teacher_settings.last_modified = response_user.last_modified
+		if response_body.has("students"):
+			Logger.trace("UserDataBaseSynchronizer: Updating students")
+			var response_students: Dictionary = response_body.students
+			for response_student_code: String in response_students.keys():
+				var response_student_data: Dictionary = response_students[response_student_code]
+				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
+	
+	await setLoadingProgression(99.0)
+	UserDataManager.save_all()
 	stopSync(true)
 
 
-func setLoadingProgression(value: float, wait_time: float = 0.2) -> void:
-	loading_popup.set_progress(value)
+func setLoadingProgression(value_percent: float, wait_time: float = 0.2) -> void:
+	loading_popup.set_progress(value_percent)
 	await loading_popup.get_tree().create_timer(wait_time).timeout

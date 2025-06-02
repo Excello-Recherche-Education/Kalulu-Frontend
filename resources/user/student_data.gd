@@ -12,11 +12,13 @@ enum Level {
 @export var name: String
 @export var level: Level
 @export var age: int
+@export var last_modified: String
 
 func to_dict() -> Dictionary:
 	return {
 		"code": code,
 		"name": name,
 		"level": level,
-		"age": age
+		"age": age,
+		"last_modified": last_modified,
 	}

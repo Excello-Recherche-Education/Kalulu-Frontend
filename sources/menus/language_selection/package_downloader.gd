@@ -30,7 +30,8 @@ var current_language_path: String
 var mutex: Mutex
 var thread: Thread
 
-var server_version: Dictionary = {}
+var server_language_version: Dictionary = {}
+var current_language_version: Dictionary = {}
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -44,6 +45,7 @@ func _ready() -> void:
 	
 	device_language = UserDataManager.get_device_settings().language
 	current_language_path = user_language_resources_path.path_join(device_language)
+	current_language_version = UserDataManager.get_device_settings().language_versions.get(device_language, {})
 	
 	if not await ServerManager.check_internet_access():
 		# Offline mode, if a pack is already downloaded, go to next scene
@@ -56,27 +58,12 @@ func _ready() -> void:
 			_show_error(1)
 		return
 	
-	# Check the configuration
-	var server_configuration: Dictionary = await ServerManager.get_configuration()
-	if server_configuration.code == 401:
-		UserDataManager.logout()
-		_show_error(0)
-		return
-	elif server_configuration.code != 200:
-		UserDataManager.logout()
-		_show_error(2)
-		return
-	
-	# Check if the last_updated date is superior on the server, then update the configuration
-	UserDataManager.update_configuration(server_configuration.body as Dictionary)
-	
-	# Get the current language version
-	var current_version: Dictionary = UserDataManager.get_device_settings().language_versions.get(device_language, {})
+	# TODO WE REMOVED CONFIGURATION AT LAUNCH, BUT WE DID NOT TEST REGISTER / LOGIN
 	
 	# Gets the info of the language pack on the server
 	var res: Dictionary = await ServerManager.get_language_pack_url(device_language)
 	if res.code == 200:
-		server_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
+		server_language_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
 	# Authentication failed, disconnect the user
 	elif res.code == 401:
 		UserDataManager.logout()
@@ -88,7 +75,8 @@ func _ready() -> void:
 		return
 	
 	# If the language pack is not already downloaded or an update is needed
-	if not DirAccess.dir_exists_absolute(current_language_path) or current_version != server_version:
+	if not DirAccess.dir_exists_absolute(current_language_path) or current_language_version != server_language_version:
+		Logger.trace("A new version of the language pack has been detected.\n    Current version = " + str(current_language_version) + "\n    Server version = " + str(server_language_version))
 		
 		checking_label.hide()
 		download_label.show()
@@ -239,7 +227,9 @@ func _go_to_main_menu() -> void:
 func _go_to_next_scene() -> void:
 	if not Database.is_open:
 		Database.connect_to_db()
-	UserDataManager.set_language_version(device_language, server_version)
+	
+	if not server_language_version.is_empty():
+		UserDataManager.set_language_version(device_language, server_language_version)
 	
 	# Check if we have a valid device id
 	if not UserDataManager.get_device_settings().device_id:

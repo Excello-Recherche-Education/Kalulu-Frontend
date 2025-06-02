@@ -18,6 +18,7 @@ const device_tab_scene: PackedScene = preload("res://sources/menus/settings/devi
 
 @onready var add_device_button: Button = %AddDeviceButton
 @onready var add_student_button: Button = %AddStudentButton
+@onready var label_internet_mandatory: Label = %LabelInternetMandatory
 
 @onready var add_device_popup: CanvasLayer = %AddDevicePopup
 @onready var add_student_popup: CanvasLayer = %AddStudentPopup
@@ -29,12 +30,15 @@ var last_device_id: int = -1
 func _ready() -> void:
 	refresh_devices_tabs()
 	
+	# Internet mandatory to add student because only the server can ensure the student code is not a duplicate
 	if await ServerManager.check_internet_access():
 		add_device_button.show()
 		add_student_button.show()
+		label_internet_mandatory.hide()
 	else:
 		add_device_button.hide()
 		add_student_button.hide()
+		label_internet_mandatory.show()
 	
 	OpeningCurtain.open()
 	lesson_unlocks.teacher_settings = self

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://gbygdv35ltjx"
-path="res://.godot/imported/children_hand_180x180.png-77a80e73167b79f250fbbf2adcfc069d.ctex"
+path="res://.godot/imported/student_hand_180x180.png-d40c081ff01e5ecb7b12a4d1185cf834.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/look_and_learn/children_hand_180x180.png"
-dest_files=["res://.godot/imported/children_hand_180x180.png-77a80e73167b79f250fbbf2adcfc069d.ctex"]
+source_file="res://assets/look_and_learn/student_hand_180x180.png"
+dest_files=["res://.godot/imported/student_hand_180x180.png-d40c081ff01e5ecb7b12a4d1185cf834.ctex"]
 
 [params]
 

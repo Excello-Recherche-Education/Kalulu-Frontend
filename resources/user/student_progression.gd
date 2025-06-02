@@ -1,5 +1,5 @@
 extends Resource
-class_name UserProgression
+class_name StudentProgression
 
 signal unlocks_changed()
 

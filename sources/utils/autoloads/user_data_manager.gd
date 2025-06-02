@@ -19,7 +19,7 @@ var student: String = "" :
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
-var student_progression: UserProgression
+var student_progression: StudentProgression
 var _student_remediation: UserRemediation
 var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
@@ -90,7 +90,9 @@ func login(infos: Dictionary) -> bool:
 		DirAccess.make_dir_recursive_absolute(get_teacher_folder())
 		teacher_settings = TeacherSettings.new()
 	else:
-		teacher_settings = load(path) as TeacherSettings
+		teacher_settings = safe_load_and_fix_resource(path, 
+				["res://resources/user/children_data.gd"],
+				["res://resources/user/student_data.gd"]) as TeacherSettings
 	
 	teacher_settings.update_from_dict(infos)
 	save_teacher_settings()
@@ -99,6 +101,28 @@ func login(infos: Dictionary) -> bool:
 		set_device_id(teacher_settings.students.keys()[0] as int)
 	
 	return true
+
+func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_texts: Array[String]) -> Resource:
+	if not FileAccess.file_exists(path):
+		Logger.error("❌ File not found : " + path)
+		return null
+
+	var content: String = FileAccess.get_file_as_string(path)
+
+	for index: int in old_texts.size():
+		if content.find(old_texts[index]) != -1:
+			Logger.info("🔧 Fix resource:" + path)
+			content = content.replace(old_texts[index], new_texts[index])
+			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+			file.store_string(content)
+			file.close()
+
+	var resource: Resource = ResourceLoader.load(path)
+	if resource == null:
+		push_error("❌ Chargement échoué même après correction : " + path)
+	else:
+		print("✅ Chargement réussi :", path)
+	return resource
 
 func set_device_id(device: int) -> bool:
 	if not _device_settings:
@@ -266,7 +290,9 @@ func get_teacher_settings_path() -> String:
 
 func _load_teacher_settings() -> void:
 	if FileAccess.file_exists(get_teacher_settings_path()):
-		teacher_settings = load(get_teacher_settings_path())
+		teacher_settings = safe_load_and_fix_resource(get_teacher_settings_path(),
+				["res://resources/user/children_data.gd"],
+				["res://resources/user/student_data.gd"]) as TeacherSettings
 	if not teacher_settings:
 		_device_settings.teacher = ""
 		_device_settings.device_id = 0
@@ -345,6 +371,9 @@ func get_student_folder(student_code: int = 0) -> String:
 	else:
 		return _device_settings.get_folder_path().path_join(str(student_code))
 
+func delete_student(student_code: int) -> void:
+	teacher_settings.delete_student(student_code)
+
 #endregion
 
 #region Student progression
@@ -355,10 +384,12 @@ func get_student_progression_path() -> String:
 
 func _load_student_progression() -> void:
 	if FileAccess.file_exists(get_student_progression_path()):
-		student_progression = load(get_student_progression_path())
+		student_progression = safe_load_and_fix_resource(	get_student_progression_path(),
+				["res://resources/user/user_progression.gd", "UserProgression"],
+				["res://resources/user/student_progression.gd", "StudentProgression"])
 	
 	if not student_progression:
-		student_progression = UserProgression.new()
+		student_progression = StudentProgression.new()
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_progression()
 	
@@ -373,25 +404,28 @@ func _on_user_progression_unlocks_changed() -> void:
 	_save_student_progression()
 
 
-func get_student_progression_for_code(device: int, code: int) -> UserProgression:
+func get_student_progression_for_code(device: int, code: int) -> StudentProgression:
 	if not teacher_settings or not teacher_settings.students.has(device):
 		return
 	
 	var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code))
 	var progression_path: String = student_path.path_join("progression.tres")
 	
-	var progression: UserProgression
+	var progression: StudentProgression
 	
 	if FileAccess.file_exists(progression_path):
-		progression = load(progression_path)
+		progression = safe_load_and_fix_resource(progression_path,
+				["res://resources/user/user_progression.gd", "UserProgression"],
+				["res://resources/user/student_progression.gd", "StudentProgression"])
+
 	else:
-		progression = UserProgression.new()
+		progression = StudentProgression.new()
 		DirAccess.make_dir_recursive_absolute(student_path)
 		#ResourceSaver.save(student_progression, progression_path)
 	
 	return progression
 
-func save_student_progression_for_code(device: int, code: int, progression: UserProgression) -> void:
+func save_student_progression_for_code(device: int, code: int, progression: StudentProgression) -> void:
 	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
 	var error: Error = ResourceSaver.save(progression, progression_path)
 	if error != OK:
@@ -424,11 +458,7 @@ func get_student_remediation_data(student_code: int) -> UserRemediation:
 	Logger.trace("UserDataManager: Remediation data of student code %d not found" % student_code)
 	return null
 
-func _save_student_remediation(force_user_last_modified: String = "") -> void:
-	if force_user_last_modified == "":
-		teacher_settings.last_modified = Time.get_datetime_string_from_system(true)
-	else:
-		teacher_settings.last_modified = force_user_last_modified
+func _save_student_remediation() -> void:
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
 
 func get_GP_remediation_score(GPID: int) -> int:
@@ -541,58 +571,16 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 		return
 	save_teacher_settings()
 
-
-func get_latest_modification(path: String) -> Dictionary:
-	var result: Dictionary = {
-		"error": OK,
-		"modification_date": null
-	}
-
-	if FileAccess.file_exists(path):
-		var time: int = FileAccess.get_modified_time(path)
-		if time > 0:
-			result.modification_date = Time.get_datetime_dict_from_unix_time(time)
-		else:
-			result.error = ERR_CANT_OPEN
-		return result
-
-	if not DirAccess.dir_exists_absolute(path):
-		result.error = ERR_DOES_NOT_EXIST
-		return result
-
-	var latest_time: int = 0
-	latest_time = _scan_dir_recursive(path, latest_time)
-
-	if latest_time > 0:
-		result.modification_date = Time.get_datetime_dict_from_unix_time(latest_time)
-	else:
-		result.error = ERR_FILE_NOT_FOUND  # Aucun fichier trouvé
-
-	return result
-
-
-func _scan_dir_recursive(dir_path: String, latest_time: int) -> int:
-	var dir: DirAccess = DirAccess.open(dir_path)
-	if dir == null:
-		return latest_time
-
-	dir.list_dir_begin()
-	while true:
-		var dirName: String = dir.get_next()
-		if dirName == "":
-			break
-		if dirName.begins_with("."):
-			continue
-
-		var full_path: String = dir_path.path_join(dirName)
-		if dir.current_is_dir():
-			latest_time = _scan_dir_recursive(full_path, latest_time)
-		else:
-			var time: int = FileAccess.get_modified_time(full_path)
-			if time > latest_time:
-				latest_time = time
-	dir.list_dir_end()
-
-	return latest_time
+func save_all() -> void:
+	_save_device_settings()
+	save_teacher_settings()
+	if student_progression != null:
+		_save_student_progression()
+	if _student_remediation != null:
+		_save_student_remediation()
+	if _student_difficulty != null:
+		_save_student_difficulty()
+	if _student_speeches != null:
+		_save_student_speeches()
 
 #endregion

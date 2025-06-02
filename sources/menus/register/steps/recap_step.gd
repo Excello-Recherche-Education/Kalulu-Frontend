@@ -25,7 +25,7 @@ func on_enter() -> void:
 		education_method.text = tr("SUMMARY_METHOD").format({"method" : tr((TeacherSettings.EducationMethod.keys()[teacher_settings.education_method] as String).to_upper())})
 		education_method.show()
 		
-		students_count.text = tr("SUMMARY_NUMBER_OF_STUDENTS").format({"number" : teacher_settings.get_students_count()})
+		students_count.text = tr("SUMMARY_NUMBER_OF_STUDENTS").format({"number" : teacher_settings.get_number_of_students()})
 		students_count.show()
 	else:
 		education_method.hide()

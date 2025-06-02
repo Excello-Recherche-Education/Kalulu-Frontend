@@ -21,7 +21,7 @@ var teacher_settings: SettingsTeacherSettings = null
 @export var student: int:
 	set = _on_student_changed
 
-var progression: UserProgression
+var progression: StudentProgression
 
 func _ready() -> void:
 	name_line_edit.connect("text_submitted", _on_name_changed)

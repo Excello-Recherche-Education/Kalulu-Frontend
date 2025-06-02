@@ -318,6 +318,7 @@ STUDENT_NUM,Élève {number},Estudiante {number},Aluno {number}
 LOGOUT,Déconnexion,Cerrar sesión ,Desconexão
 SETTINGS_ADD_DEVICE,Ajout d'un appareil,Agregar un dispositivo,Adiàào de um dispositivo
 SETTINGS_ADD_STUDENT,Ajout d'un élève,Agregar un estudiante ,Adicionar um aluno
+SETTINGS_INTERNET_MANDATORY_TO_ADD_STUDENT,Une connexion internet est obligatoire pour ajouter un étudiant,Se requiere una conexión a internet para agregar un estudiante,É necessária uma conexão com a internet para adicionar um estudante
 SETTINGS_LESSONS,Leàons,Lecciones,Liààes
 CLOSE,Fermer,Cerrar,Fechar
 REGISTER_FAILED,Une erreur est survenue,Se ha producido un error,Ocorreu um erro
@@ -352,11 +353,17 @@ SERVER_PRIORITY,Serveur,Servidor,Servidor
 LOCAL_PRIORITY,Locale,Local,Local
 SYNCHRONIZATION_INITIALISATION,Initialisation de la synchronisation,Inicializando sincronizacin,Inicializando sincronizaço
 SYNCHRONIZATION_SUCCESS,Synchronisation terminée avec succès,Sincronización terminada con éxito,Sincronização concluída com sucesso
-SYNCHRONIZATION_ERROR_NO_SERVER,chec : pas de connexion serveur,Error: sin conexin con el servidor,Erro: sem conexo com o servidor
-SYNCHRONIZATION_ERROR_NO_LOCAL_TIMESTAMP,chec : horodatage local manquant,Error: falta marca de tiempo local,Erro: falta carimbo de data/hora local
-SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER,chec : réponse du serveur vide,Error: respuesta vaca del servidor,Erro: resposta vazia do servidor
-SYNCHRONIZATION_ERROR_SERVER,chec : erreur cté serveur,Error: error del servidor,Erro: erro no servidor
-SYNCHRONIZING_USER,Synchronisation de l’utilisateur,Sincronizando usuario,Sincronizando usurio
-SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_USER,chec de l’envoi des données utilisateur,Error al enviar datos del usuario,Erro ao enviar dados do usurio
-SYNCHRONIZING_STUDENT_%S,Synchronisation de l’élève %s,Sincronizando estudiante %s,Sincronizando aluno %s
-SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_STUDENT,chec de l’envoi des données élève,Error al enviar datos del estudiante,Erro ao enviar dados do aluno
+SYNCHRONIZATION_CHECK_INTERNET_ACCESS,Vérification de la connexion internet,Verificación de la conexión a internet,Verificação da conexão com a internet
+SYNCHRONIZATION_ERROR_NO_INTERNET,Synchronisation impossible sans connexion internet,Sincronización imposible sin conexión a internet,Sincronização impossível sem conexão com a internet
+SYNCHRONIZATION_ERROR_NO_SERVER,Échec : pas de connexion serveur,Error: sin conexin con el servidor,Erro: sem conexo com o servidor
+SYNCHRONIZATION_ERROR_NO_LOCAL_TIMESTAMP,Échec : horodatage local manquant,Error: falta marca de tiempo local,Erro: falta carimbo de data/hora local
+SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER,Échec : réponse du serveur vide,Error: respuesta vaca del servidor,Erro: resposta vazia do servidor
+SYNCHRONIZATION_ERROR_SERVER,Échec : erreur côté serveur,Error: error del servidor,Erro: erro no servidor
+SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_USER,Échec de l’envoi des données utilisateur,Error al enviar datos del usuario,Erro ao enviar dados do usurio
+SYNCHRONIZATION_ERROR_FAIL_SEND_DATA_STUDENT,Échec de l’envoi des données élève,Error al enviar datos del estudiante,Erro ao enviar dados do aluno
+SYNCHRONIZATION_ERROR,Échec de la synchronisation,error de sincronización,erro de sincronização
+SYNCHRONIZATION_ASK_SERVER_TIMESTAMP,Demande des horodatages au serveur,Solicitar marcas de tiempo al servidor,Solicitar carimbos de data e hora ao servidor
+SYNCHRONIZATION_COMPARE_SERVER_TIMESTAMP,Comparaison des horodatages,Comparar marcas de tiempo,Comparar carimbos de data e hora
+SYNCHRONIZATION_COMPILE_SERVER_INSTRUCTIONS,Compilation des instructions de synchronisation,Compilar instrucciones de sincronización,Compilar instruções de sincronização
+SYNCHRONIZATION_SEND_SERVER_INSTRUCTIONS,Envoie des instructions de synchronisation au serveur,Enviar instrucciones de sincronización al servidor,Enviar instruções de sincronização ao servidor
+SYNCHRONIZATION_APPLY_LOCAL_INSTRUCTIONS,Application des instructions de synchronisation en local,Aplicar instrucciones de sincronización localmente,Aplicar instruções de sincronização localmente
