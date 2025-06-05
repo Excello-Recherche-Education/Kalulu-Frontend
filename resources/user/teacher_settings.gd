@@ -32,8 +32,8 @@ func update_from_dict(dict: Dictionary) -> void:
 		email = dict.email
 	if dict.has("token"):
 		token = dict.token
-	
-	last_modified = dict.last_modified
+	if dict.has("last_modified"):
+		last_modified = dict.last_modified
 	
 	students.clear()
 	var d_students: Dictionary = dict.students
@@ -41,10 +41,16 @@ func update_from_dict(dict: Dictionary) -> void:
 		var device_students: Array[StudentData] = []
 		for student_dico: Dictionary in dict.students[device]: 
 			var student: StudentData = StudentData.new()
-			student.code = student_dico.code
-			student.name = student_dico.name
-			student.age = student_dico.age
-			student.level = student_dico.level
+			if student_dico.has("code"):
+				student.code = student_dico.code
+			if student_dico.has("name"):
+				student.name = student_dico.name
+			if student_dico.has("age"):
+				student.age = student_dico.age
+			if student_dico.has("level"):
+				student.level = student_dico.level
+			if student_dico.has("updated_at"):
+				student.last_modified = student_dico.updated_at
 			device_students.append(student)
 		
 		students[int(device)] = device_students
