@@ -1,9 +1,6 @@
 @tool
 extends Minigame
 
-# Namespace
-const Ant: = preload("res://sources/minigames/ants/ant.gd")
-
 const blank_class: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
 const ant_class: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
 const word_class: PackedScene = preload("res://sources/minigames/ants/word.tscn")

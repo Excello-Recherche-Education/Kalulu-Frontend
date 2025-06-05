@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_23tyx"]
 [ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_i6t6f"]
 [ext_resource type="PackedScene" uid="uid://dp4182l80ntvn" path="res://sources/menus/main/plants/flower.tscn" id="7_iqya7"]
-[ext_resource type="Script" uid="uid://yb5np74ubv0d" path="res://sources/menus/register/ProgressBar.gd" id="8_h8kqu"]
+[ext_resource type="Script" uid="uid://yb5np74ubv0d" path="res://sources/menus/register/progress_bar.gd" id="8_h8kqu"]
 
 [sub_resource type="Gradient" id="Gradient_dx825"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)

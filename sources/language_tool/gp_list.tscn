@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c6topd4d04tb" path="res://sources/language_tool/gp_list.gd" id="1_vqemo"]
 [ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="2_irm5b"]
-[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/ScrollContainer.gd" id="6_t1l1g"]
+[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/scroll_container.gd" id="6_t1l1g"]
 
 [node name="GpList" type="Control"]
 layout_mode = 3

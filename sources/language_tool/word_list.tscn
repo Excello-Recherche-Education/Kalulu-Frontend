@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bw3g6vfskvo54" path="res://sources/language_tool/word_list.gd" id="1_m0usq"]
 [ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="2_6no2x"]
 [ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="5_1f555"]
-[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/ScrollContainer.gd" id="6_0r6vt"]
+[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/scroll_container.gd" id="6_0r6vt"]
 
 [node name="WordList" type="Control"]
 layout_mode = 3

@@ -26,7 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://bcb58png710nc" path="res://assets/minigames/caterpillar/graphics/caterpillar_head_spit_0004.png" id="24_njvfl"]
 [ext_resource type="Texture2D" uid="uid://fshkh73oisnk" path="res://assets/minigames/caterpillar/graphics/caterpillar_head_spit_0005.png" id="25_g5ryg"]
 [ext_resource type="AudioStream" uid="uid://cwq2mee1dy4w7" path="res://assets/minigames/caterpillar/audios/caterpillar_eat_random_01.mp3" id="26_f75m3"]
-[ext_resource type="Script" uid="uid://b37yj46mbp3s2" path="res://sources/minigames/caterpillar/CaterpillarAudioStreamPlayer.gd" id="27_x0mct"]
+[ext_resource type="Script" uid="uid://b37yj46mbp3s2" path="res://sources/minigames/caterpillar/caterpillar_audio_stream_player.gd" id="27_x0mct"]
 [ext_resource type="PackedScene" uid="uid://dyn71e3ttv2le" path="res://sources/minigames/caterpillar/spit_fx.tscn" id="28_vojnm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_x8rro"]

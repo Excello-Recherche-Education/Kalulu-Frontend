@@ -1,4 +1,5 @@
 extends Node2D
+class_name Penguin
 
 # Namespace
 const Snowball: = preload("res://sources/minigames/penguin/snowball.gd")

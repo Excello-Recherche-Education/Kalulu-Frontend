@@ -2,11 +2,8 @@
 extends Control
 class_name Garden
 
-# Namespace
-const GardenFlower: = preload("res://resources/gardens/garden_flower.gd")
-
-const flower_path_model: String = "res://assets/gardens/flowers/Plant_%02d_%02d_%s.png"
-const background_path_model: String = "res://assets/gardens/gardens/garden_%02d_open.png"
+const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/Plant_%02d_%02d_%s.png"
+const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d_open.png"
 
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
@@ -74,7 +71,7 @@ func update_flowers() -> void:
 		var flower_scene: TextureRect = flower_controls[index]
 		var flower_size: String = FlowerSizes.keys()[flowers_sizes[index]]
 		
-		flower_scene.texture = load(flower_path_model % [flower.color+1, flower.type+1, flower_size])
+		flower_scene.texture = load(FLOWER_PATH_MODEL % [flower.color+1, flower.type+1, flower_size])
 		flower_scene.size = flower_scene.get_combined_minimum_size() * 3
 		flower_scene.pivot_offset = Vector2(flower_scene.size.x / 2, flower_scene.size.y)
 		flower_scene.position = Vector2(flower.position.x - flower_scene.size.x / 2, flower.position.y - flower_scene.size.y)
@@ -96,7 +93,7 @@ func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonB
 func set_background(p_color: int) -> void:
 	if not background:
 		return
-	background.texture = load(background_path_model % [p_color+1])
+	background.texture = load(BACKGROUND_PATH_MODEL % [p_color+1])
 	color = garden_colors[p_color]
 	
 	for button: LessonButton in lesson_button_controls:

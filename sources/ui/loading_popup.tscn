@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dhowigt8un22u"]
 
-[ext_resource type="Script" uid="uid://bmv36ejdmk3hc" path="res://sources/ui/LoadingPopup.gd" id="1_edhv8"]
+[ext_resource type="Script" uid="uid://bmv36ejdmk3hc" path="res://sources/ui/loading_popup.gd" id="1_edhv8"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="2_t7x2v"]
 
 [sub_resource type="Gradient" id="Gradient_22q4u"]

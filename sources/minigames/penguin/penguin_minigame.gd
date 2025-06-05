@@ -2,12 +2,7 @@
 extends Minigame
 
 # Namespace
-const Penguin: = preload("res://sources/minigames/penguin/penguin.gd")
-const PenguinLabel: = preload("res://sources/minigames/penguin/penguin_label.gd")
-
-const label_scene: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
-
-const silent_phoneme: String = "#"
+const LABEL_SCENE: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
 
 
 @onready var penguin: Penguin = $GameRoot/Penguin
@@ -108,7 +103,7 @@ func _setup_word_progression() -> void:
 			word_container = HBoxContainer.new()
 			labels_container.add_child(word_container)
 		
-		var label: PenguinLabel = label_scene.instantiate()
+		var label: PenguinLabel = LABEL_SCENE.instantiate()
 		if first_GP:
 			label.capitalized = true
 			first_GP = false

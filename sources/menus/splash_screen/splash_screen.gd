@@ -1,10 +1,10 @@
 extends Control
 
-const main_menu_scene_path: String = "res://sources/menus/main/main_menu.tscn"
+const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
 
 
 func _go_to_main_menu() -> void:
-	var err: Error = get_tree().change_scene_to_file(main_menu_scene_path)
+	var err: Error = get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 	if err != 0:
 		Logger.error("SplashScreen: Error while going to main menu: " + str(err))
 

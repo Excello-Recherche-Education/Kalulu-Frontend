@@ -4,10 +4,10 @@ class_name UserRemediation
 signal score_changed()
 
 # Defines the minimal score a GP can get, it doesn't go below that point
-const min_score: int = -3
+const MIN_SCORE: int = -3
 
 # Defines the score from which the GP should be presented for remediation
-const remediation_score: int = -2
+const REMEDIATION_SCORE: int = -2
 
 # Defines the score for each GP
 # Key is the ID of the GP
@@ -19,7 +19,7 @@ var gps_scores: Dictionary[int, int] = {}
 # Gets the score of a GP if it is below or equals to the remediation score
 func get_gp_score(ID: int) -> int:
 	if gps_scores.has(ID):
-		return gps_scores[ID] if gps_scores[ID] <= remediation_score else 0
+		return gps_scores[ID] if gps_scores[ID] <= REMEDIATION_SCORE else 0
 	return 0
 
 
@@ -37,6 +37,6 @@ func update_gp_scores(minigame_scores: Dictionary) -> void:
 		if new_gp_score >= 0:
 			gps_scores.erase(ID)
 		else:
-			gps_scores[ID] = maxi(min_score, new_gp_score)
+			gps_scores[ID] = maxi(MIN_SCORE, new_gp_score)
 	
 	score_changed.emit()

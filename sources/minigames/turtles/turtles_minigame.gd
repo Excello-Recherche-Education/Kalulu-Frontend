@@ -3,15 +3,11 @@ extends WordsMinigame
 
 signal can_spawn_turtle()
 
-# Namespace
-const Water: = preload("res://sources/minigames/turtles/water.gd")
-const Turtle: = preload("res://sources/minigames/turtles/turtle.gd")
-
-const turtle_scene: PackedScene = preload("res://sources/minigames/turtles/turtle.tscn")
+const TURTLE_SCENE: PackedScene = preload("res://sources/minigames/turtles/turtle.tscn")
 # Defines the maximum number of turtles visible on screen
-const max_turtle_count: int = 5
+const MAX_TURTLE_COUNT: int = 5
 # Defines the minimum distance between turtles when spawning them
-const min_distance: int = 500
+const MIN_DISTANCE: int = 500
 
 
 class DifficultySettings:
@@ -43,7 +39,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 var settings: DifficultySettings
 var turtle_count: int = 0:
 	set(value):
-		if turtle_count >= max_turtle_count and value < max_turtle_count:
+		if turtle_count >= MAX_TURTLE_COUNT and value < MAX_TURTLE_COUNT:
 			can_spawn_turtle.emit()
 		turtle_count = value
 var stimulus_spawned: bool = false
@@ -92,11 +88,11 @@ func _clear_turtles() -> void:
 
 func _on_spawn_timer_timeout() -> void:
 	# Checks if there are too many turtle, and wait for one to despawn
-	if turtle_count >= max_turtle_count:
+	if turtle_count >= MAX_TURTLE_COUNT:
 		await can_spawn_turtle
 	
 	# Spawn a turtle
-	var turtle: Turtle = turtle_scene.instantiate()
+	var turtle: Turtle = TURTLE_SCENE.instantiate()
 	
 	# Pick a position to spawn the turtle
 	var position_found: bool = false
@@ -105,7 +101,7 @@ func _on_spawn_timer_timeout() -> void:
 		var all_position_ok: bool = true
 		# Check if there are other turtles nearby
 		for other_turtle: Turtle in turtles.get_children():
-			if other_turtle.position.distance_squared_to(spawn_location.position) < min_distance * min_distance:
+			if other_turtle.position.distance_squared_to(spawn_location.position) < MIN_DISTANCE * MIN_DISTANCE:
 				all_position_ok = false
 				break
 		position_found = all_position_ok

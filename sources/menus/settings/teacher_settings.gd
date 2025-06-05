@@ -1,11 +1,11 @@
 extends Control
 class_name SettingsTeacherSettings
 
-const main_menu_path: String = "res://sources/menus/main/main_menu.tscn"
-const login_menu_path: String = "res://sources/menus/login/login.tscn"
-const device_selection_scene_path: String = "res://sources/menus/device_selection/device_selection.tscn"
+const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
+const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
+const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
 
-const device_tab_scene: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
+const DEVICE_TAB_SCENE: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
 
 @onready var devices_tab_container : TabContainer = %DevicesTabContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
@@ -79,7 +79,7 @@ func refresh_devices_tabs() -> void:
 	
 	for device: int in UserDataManager.teacher_settings.students.keys():
 		var device_tab: DeviceTab
-		device_tab = device_tab_scene.instantiate()
+		device_tab = DEVICE_TAB_SCENE.instantiate()
 		devices_tab_container.add_child(device_tab)
 		await get_tree().process_frame # Not optional or an auto-rename bug will occur on the tabs (especiallly if there are a lot of them)
 		device_tab.device_id = device
@@ -94,9 +94,9 @@ func refresh_devices_tabs() -> void:
 func _on_back_button_pressed() -> void:
 	await OpeningCurtain.close()
 	if not UserDataManager.get_device_settings().device_id:
-		get_tree().change_scene_to_file(device_selection_scene_path)
+		get_tree().change_scene_to_file(DEVICE_SELECTION_SCENE_PATH)
 	else:
-		get_tree().change_scene_to_file(login_menu_path)
+		get_tree().change_scene_to_file(LOGIN_MENU_PATH)
 
 
 func _on_delete_button_pressed() -> void:
@@ -108,13 +108,13 @@ func _on_delete_popup_accepted() -> void:
 	if res.code == 200:
 		UserDataManager.delete_teacher_data()
 		UserDataManager.logout()
-		get_tree().change_scene_to_file(main_menu_path)
+		get_tree().change_scene_to_file(MAIN_MENU_PATH)
 
 
 func _on_logout_button_pressed() -> void:
 	await OpeningCurtain.close()
 	UserDataManager.logout()
-	get_tree().change_scene_to_file(main_menu_path)
+	get_tree().change_scene_to_file(MAIN_MENU_PATH)
 
 
 func _on_devices_tab_container_tab_changed(tab: int) -> void:

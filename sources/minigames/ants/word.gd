@@ -2,8 +2,6 @@ extends TextureButton
 
 class_name Word
 
-const Ant: = preload("res://sources/minigames/ants/ant.gd")
-
 signal answer(good: bool)
 signal no_answer()
 

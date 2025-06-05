@@ -1,10 +1,10 @@
 extends Control
 class_name PackageDownloader
 
-const main_menu_scene_path: String = "res://sources/menus/main/main_menu.tscn"
-const device_selection_scene_path: String = "res://sources/menus/device_selection/device_selection.tscn"
-const login_scene_path: String = "res://sources/menus/login/login.tscn"
-const user_language_resources_path: String = "user://language_resources"
+const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
+const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
+const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
+const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
 
 const error_messages: Array[String] = [
 	"DISCONECTED_ERROR",
@@ -44,7 +44,7 @@ func _ready() -> void:
 		return
 	
 	device_language = UserDataManager.get_device_settings().language
-	current_language_path = user_language_resources_path.path_join(device_language)
+	current_language_path = USER_LANGUAGE_RESOURCES_PATH.path_join(device_language)
 	current_language_version = UserDataManager.get_device_settings().language_versions.get(device_language, {})
 	
 	if not await ServerManager.check_internet_access():
@@ -86,15 +86,15 @@ func _ready() -> void:
 		extract_info.show()
 		
 		# Create the language_resources folder
-		if not DirAccess.dir_exists_absolute(user_language_resources_path):
-			DirAccess.make_dir_recursive_absolute(user_language_resources_path)
+		if not DirAccess.dir_exists_absolute(USER_LANGUAGE_RESOURCES_PATH):
+			DirAccess.make_dir_recursive_absolute(USER_LANGUAGE_RESOURCES_PATH)
 			
 		# Delete the files from old language pack
 		if DirAccess.dir_exists_absolute(current_language_path):
 			_delete_dir(current_language_path)
 		
 		# Download the pack
-		http_request.set_download_file(user_language_resources_path.path_join(device_language + ".zip"))
+		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip"))
 		http_request.request(res.body.url as String)
 	else:
 		download_bar.value = 1
@@ -134,11 +134,11 @@ func _exit_tree() -> void:
 
 func _copy_data(this: PackageDownloader) -> void:
 	# Check if a zip exists for the complete locale
-	if not FileAccess.file_exists(user_language_resources_path.path_join(device_language + ".zip")):
+	if not FileAccess.file_exists(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip")):
 		return
 	
 	var language_zip: String = device_language + ".zip"
-	var language_zip_path: String = user_language_resources_path.path_join(language_zip)
+	var language_zip_path: String = USER_LANGUAGE_RESOURCES_PATH.path_join(language_zip)
 	
 	# Create and connect the unzipper to the UI
 	var unzipper: FolderUnzipper = FolderUnzipper.new()
@@ -160,12 +160,12 @@ func _copy_data(this: PackageDownloader) -> void:
 	delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
 	
 	# Extract the archive
-	var subfolder: String = unzipper.extract(language_zip_path, user_language_resources_path, false)
+	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
 	
 	# Move the data to the locale folder of the user
-	var error: Error = DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
+	var error: Error = DirAccess.rename_absolute(USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path)
 	if error != OK:
-		Logger.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [user_language_resources_path.path_join(subfolder), current_language_path])
+		Logger.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path])
 	
 	# Cleanup unnecessary files
 	DirAccess.remove_absolute(language_zip_path)
@@ -221,7 +221,7 @@ func _show_error(error: int) -> void:
 	
 
 func _go_to_main_menu() -> void:
-	get_tree().change_scene_to_file(main_menu_scene_path)
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 
 
 func _go_to_next_scene() -> void:
@@ -233,10 +233,10 @@ func _go_to_next_scene() -> void:
 	
 	# Check if we have a valid device id
 	if not UserDataManager.get_device_settings().device_id:
-		get_tree().change_scene_to_file(device_selection_scene_path)
+		get_tree().change_scene_to_file(DEVICE_SELECTION_SCENE_PATH)
 	# Go directly to the login scene
 	else:
-		get_tree().change_scene_to_file(login_scene_path)
+		get_tree().change_scene_to_file(LOGIN_SCENE_PATH)
 
 
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:

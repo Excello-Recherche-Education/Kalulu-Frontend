@@ -1,4 +1,5 @@
 extends Node2D
+class_name Turtle
 
 signal pressed(gp: Dictionary)
 signal animation_changed(position: Vector2)

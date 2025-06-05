@@ -3,7 +3,7 @@ extends Resource
 class_name DeviceSettings
 
 
-const supported_locales: Array[String] = [
+const SUPPORTED_LOCALES: Array[String] = [
 	# French France
 	"fr_FR",
 	# Spanish Argentina
@@ -54,11 +54,11 @@ const supported_locales: Array[String] = [
 func init_OS_language() -> void:
 	# Gets the OS language and checks if it is supported
 	var osLanguage: String = OS.get_locale();
-	if osLanguage and osLanguage in supported_locales:
+	if osLanguage and osLanguage in SUPPORTED_LOCALES:
 		language = osLanguage
 	
 	if not language:
-		language = supported_locales[0]
+		language = SUPPORTED_LOCALES[0]
 
 
 func get_folder_path() -> String:
@@ -67,7 +67,7 @@ func get_folder_path() -> String:
 
 
 func validate() -> bool:
-	if language not in supported_locales:
+	if language not in SUPPORTED_LOCALES:
 		init_OS_language()
 		return false
 	return true

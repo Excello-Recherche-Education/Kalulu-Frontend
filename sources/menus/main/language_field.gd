@@ -5,7 +5,7 @@ var items : Array[String] = []
 func _ready() -> void:
 	# Adds the supported locales to the field
 	var idx: int = 0
-	for language_locale: String in DeviceSettings.supported_locales:
+	for language_locale: String in DeviceSettings.SUPPORTED_LOCALES:
 		if not language_locale:
 			continue
 		

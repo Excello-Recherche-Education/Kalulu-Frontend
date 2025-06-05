@@ -6,10 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_045cm"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_e3piv"]
 [ext_resource type="PackedScene" uid="uid://bo7rpk4gebh24" path="res://sources/menus/settings/sound_settings_button.tscn" id="6_s8nbl"]
-[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/Popup.tscn" id="7_jetb7"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="7_jetb7"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="8_7h0sa"]
 [ext_resource type="PackedScene" uid="uid://qsvbq6ruc44v" path="res://sources/menus/settings/lesson_unlocks.tscn" id="9_mljfd"]
-[ext_resource type="PackedScene" uid="uid://dhowigt8un22u" path="res://sources/ui/LoadingPopup.tscn" id="10_i488h"]
+[ext_resource type="PackedScene" uid="uid://dhowigt8un22u" path="res://sources/ui/loading_popup.tscn" id="10_i488h"]
 
 [node name="TeacherSettings" type="Control"]
 layout_mode = 3
