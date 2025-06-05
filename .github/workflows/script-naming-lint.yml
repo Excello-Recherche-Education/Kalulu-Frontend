@@ -1,0 +1,13 @@
+name: Godot Script Naming Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run naming linter
+        run: python3 .github/scripts/check_script_naming.py
