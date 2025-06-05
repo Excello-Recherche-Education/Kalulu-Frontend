@@ -3,9 +3,17 @@ import re
 import sys
 
 # File extensions to validate
-TARGET_EXTS = {".gd", ".tscn"}
+TARGET_EXTS = {
+    ".gd",  # Godot scripts
+    ".tscn",  # Godot scenes
+    ".tres", ".res",  # resources
+    ".png", ".jpg",  # images
+    ".glb", ".gltf", ".dae", ".obj",  # 3D models
+    ".wav", ".ogg", ".mp3",  # sounds
+}
 
 invalid_files = []
+invalid_dirs = []
 
 _BASE_PATTERN = re.compile(r"^[a-z0-9_]+$")
 
@@ -17,26 +25,48 @@ def to_snake_case(filename: str) -> str:
     s3 = re.sub(r"[-\s]+", "_", s2)
     return s3.lower() + ext
 
-for root, _, files in os.walk('.'):
+for root, dirs, files in os.walk('.', topdown=True):
     rel_root = os.path.relpath(root, '.')
-    if rel_root == 'addons' or rel_root.startswith(os.path.join('addons', '')):
+    if rel_root == 'addons' or rel_root.startswith(f"addons{os.sep}"):
+        dirs[:] = []
         continue
+
+    if rel_root != '.':
+        dirname = os.path.basename(root)
+        if not _BASE_PATTERN.match(dirname):
+            suggestion = to_snake_case(dirname)
+            if os.path.dirname(rel_root):
+                suggested_rel = os.path.join(os.path.dirname(rel_root), suggestion)
+            else:
+                suggested_rel = suggestion
+            invalid_dirs.append((rel_root, suggested_rel))
+
+    # Validate subdirectories
+    for d in list(dirs):
+        rel_path = os.path.join(rel_root, d) if rel_root != '.' else d
+        if d == 'addons' or rel_path.startswith(f"addons{os.sep}"):
+            dirs.remove(d)
+            continue
+        if not _BASE_PATTERN.match(d):
+            suggestion = to_snake_case(d)
+            suggested_rel = os.path.join(rel_root, suggestion) if rel_root != '.' else suggestion
+            invalid_dirs.append((rel_path, suggested_rel))
+
     for name in files:
         base, ext = os.path.splitext(name)
         if ext in TARGET_EXTS:
             if not _BASE_PATTERN.match(base):
                 suggestion = to_snake_case(name)
-                invalid_files.append(
-                    (
-                        os.path.relpath(os.path.join(root, name)),
-                        os.path.relpath(os.path.join(root, suggestion)),
-                    )
-                )
+                rel_path = os.path.join(rel_root, name) if rel_root != '.' else name
+                suggested_rel = os.path.join(rel_root, suggestion) if rel_root != '.' else suggestion
+                invalid_files.append((rel_path, suggested_rel))
 
-if invalid_files:
-    print('Invalid filenames detected:')
+if invalid_dirs or invalid_files:
+    print('Invalid names detected:')
+    for path, suggestion in invalid_dirs:
+        print(f"dir: {path} -> {suggestion}")
     for path, suggestion in invalid_files:
-        print(f"{path} -> {suggestion}")
+        print(f"file: {path} -> {suggestion}")
     sys.exit(1)
 else:
-    print('All filenames follow Godot naming convention.')
+    print('All filenames and directories follow Godot naming convention.')
