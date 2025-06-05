@@ -13,6 +13,9 @@ def to_snake_case(filename: str) -> str:
     return s3.lower() + ".gd"
 
 for root, _, files in os.walk('.'):
+    rel_root = os.path.relpath(root, '.')
+    if rel_root == 'addons' or rel_root.startswith(os.path.join('addons', '')):
+        continue
     for name in files:
         if name.endswith('.gd'):
             if not pattern.match(name):

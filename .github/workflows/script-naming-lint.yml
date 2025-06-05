@@ -7,7 +7,28 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - name: Run naming linter
-        run: python3 .github/scripts/check_script_naming.py
+        id: lint
+        run: |
+          python3 .github/scripts/check_script_naming.py > lint_output.txt
+        continue-on-error: true
+      - name: Comment on PR with linter output
+        if: steps.lint.outcome != 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('lint_output.txt', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+      - name: Fail if linter failed
+        if: steps.lint.outcome != 'success'
+        run: exit 1
