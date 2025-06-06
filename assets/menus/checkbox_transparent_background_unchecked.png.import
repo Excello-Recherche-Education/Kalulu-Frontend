@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://s0k8emrncuwk"
-path="res://.godot/imported/check-box-outline-blank.512x512.png-d5178734277668170d24b9b66f656003.ctex"
+path="res://.godot/imported/checkbox_transparent_background_unchecked.png-c25351e55809d2db634289acc1028afb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/menus/check-box-outline-blank.512x512.png"
-dest_files=["res://.godot/imported/check-box-outline-blank.512x512.png-d5178734277668170d24b9b66f656003.ctex"]
+source_file="res://assets/menus/checkbox_transparent_background_unchecked.png"
+dest_files=["res://.godot/imported/checkbox_transparent_background_unchecked.png-c25351e55809d2db634289acc1028afb.ctex"]
 
 [params]
 

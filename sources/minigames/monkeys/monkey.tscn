@@ -22,7 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bahcmlqnc3lb5" path="res://assets/minigames/monkeys/graphic/stunned_15.png" id="17_io6kh"]
 [ext_resource type="Texture2D" uid="uid://cx2wrsp34gocj" path="res://assets/minigames/monkeys/graphic/stunned_16.png" id="18_hl1xy"]
 [ext_resource type="Texture2D" uid="uid://c4ey737pdl0h8" path="res://assets/minigames/monkeys/graphic/stunned_17.png" id="19_1bn1b"]
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="23_l0op8"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="23_l0op8"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_eq3s8"]
 animations = [{

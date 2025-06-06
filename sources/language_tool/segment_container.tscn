@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://bvb8iewnsnsoj"]
 
 [ext_resource type="Script" uid="uid://c75qci4r1opf1" path="res://sources/language_tool/segment_container.gd" id="1_07lpk"]
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="2_6k0sf"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="2_6k0sf"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_h02qb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_md77l"]

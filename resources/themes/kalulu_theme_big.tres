@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=14 format=3 uid="uid://cd7ftmo5x4c2r"]
 
-[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/Kalulu-Mulish-Bold.otf" id="1_7lw0t"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="1_7lw0t"]
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="2_xlrdq"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="3_0cauu"]
 [ext_resource type="Texture2D" uid="uid://cacy10k45kq6u" path="res://assets/theme/up.svg" id="4_7lqy2"]

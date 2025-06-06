@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bw8cb4e0a7ayj"
-path="res://.godot/imported/Kalulu-Mulish-Regular.otf-7936f7f1167f72ff410561e62f358106.fontdata"
+uid="uid://bj2rpti6g24kk"
+path="res://.godot/imported/kalulu_mulish_bold.otf-8edb8d8662853df132216a892492ed9a.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/Kalulu-Mulish-Regular.otf"
-dest_files=["res://.godot/imported/Kalulu-Mulish-Regular.otf-7936f7f1167f72ff410561e62f358106.fontdata"]
+source_file="res://assets/fonts/kalulu_mulish_bold.otf"
+dest_files=["res://.godot/imported/kalulu_mulish_bold.otf-8edb8d8662853df132216a892492ed9a.fontdata"]
 
 [params]
 
