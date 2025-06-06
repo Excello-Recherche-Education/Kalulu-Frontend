@@ -44,6 +44,7 @@ func _ready() -> void:
 
 func _on_code_keyboard_password_entered(password: String) -> void:
 	if UserDataManager.login_student(password):
+		UserDataManager.user_database_synchronizer.on_synchronize_button_pressed()
 		kalulu_button.hide()
 		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()
