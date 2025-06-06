@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4xm8a5y2lf3h"
-path="res://.godot/imported/button_teacher_1.png-96a88964da2971d6834e2385474b021e.ctex"
+uid="uid://dgjpftdenxiws"
+path="res://.godot/imported/symbol_03.png-bc4744f34370e7881af104c6057271ab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/menus/login/button_teacher_1.png"
-dest_files=["res://.godot/imported/button_teacher_1.png-96a88964da2971d6834e2385474b021e.ctex"]
+source_file="res://assets/menus/login/symbol_03.png"
+dest_files=["res://.godot/imported/symbol_03.png-bc4744f34370e7881af104c6057271ab.ctex"]
 
 [params]
 
