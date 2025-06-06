@@ -141,7 +141,7 @@ func synchronize() -> void:
 						need_update_students[student_data.code] = UpdateNeeded.FromLocal
 					else:
 						Logger.warn("UserDataBaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
-	var message_to_server: Dictionary
+	var message_to_server: Dictionary = {}
 	if need_update_user == UpdateNeeded.Nothing:
 		pass
 	elif need_update_user == UpdateNeeded.FromLocal:
