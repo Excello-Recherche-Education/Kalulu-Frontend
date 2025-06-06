@@ -68,6 +68,8 @@ const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 @onready var help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "help"))
 
 func _ready() -> void:
+	UserDataManager.start_synchronization_timer()
+	
 	for index: int in range(garden_buttons.size()):
 		garden_buttons[index].pressed.connect(_on_garden_button_pressed.bind(index))
 	

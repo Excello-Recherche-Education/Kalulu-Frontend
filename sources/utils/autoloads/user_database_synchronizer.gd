@@ -20,10 +20,11 @@ enum UpdateNeeded {
 
 func start_sync() -> void:
 	synchronizing = true
-	loading_popup.set_finished(false)
-	set_loading_bar_text("SYNCHRONIZATION_INITIALISATION")
-	await set_loading_bar_progression(0.0)
-	loading_popup.show()
+	if loading_popup != null:
+		loading_popup.set_finished(false)
+		set_loading_bar_text("SYNCHRONIZATION_INITIALISATION")
+		await set_loading_bar_progression(0.0)
+		loading_popup.show()
 
 
 func stop_sync(success: bool = false) -> void:
@@ -31,10 +32,11 @@ func stop_sync(success: bool = false) -> void:
 	if success:
 		await set_loading_bar_progression(100.0, 1.0)
 		set_loading_bar_text("SYNCHRONIZATION_SUCCESS")
-	loading_popup.set_finished(true)
+	if loading_popup != null:
+		loading_popup.set_finished(true)
 
 
-func on_synchronize_button_pressed() -> void:
+func synchronize() -> void:
 	Logger.trace("UserDataBaseSynchronizer: Start synchronizing user data.")
 	if synchronizing:
 		Logger.trace("UserDataBaseSynchronizer: User synchronization already started, cancel double-call.")

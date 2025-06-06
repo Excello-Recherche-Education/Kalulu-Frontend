@@ -21,6 +21,8 @@ var wrong_password_speech: AudioStream
 var right_password_speech: AudioStream
 
 func _ready() -> void:
+	UserDataManager.stop_synchronization_timer()
+	
 	# Check if the database is connected, if not go to loader
 	if not Database.is_open:
 		await get_tree().process_frame
@@ -44,7 +46,7 @@ func _ready() -> void:
 
 func _on_code_keyboard_password_entered(password: String) -> void:
 	if UserDataManager.login_student(password):
-		UserDataManager.user_database_synchronizer.on_synchronize_button_pressed()
+		UserDataManager.user_database_synchronizer.synchronize()
 		kalulu_button.hide()
 		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()

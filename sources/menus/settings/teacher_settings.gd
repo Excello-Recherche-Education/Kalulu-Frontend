@@ -189,7 +189,7 @@ func update_student_name(student_code: int, student_name: String) -> void:
 #region Synchronization
 
 func _on_synchronize_button_pressed() -> void:
-	UserDataManager.user_database_synchronizer.on_synchronize_button_pressed()
+	UserDataManager.user_database_synchronizer.synchronize()
 
 
 func _on_loading_popup_ok() -> void:
