@@ -71,7 +71,8 @@ for root, dirs, files in os.walk('.', topdown=True):
                 invalid_files.append((rel_path, suggested_rel))
 
 if invalid_dirs or invalid_files:
-    print('Invalid names detected:')
+    count = len(invalid_dirs) + len(invalid_files)
+    print(f'{count} invalid names detected:')
     for path, suggestion in invalid_dirs:
         print(f"dir: {path} -> {suggestion}")
     for path, suggestion in invalid_files:
