@@ -2,7 +2,7 @@
 extends Control
 class_name Garden
 
-const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/Plant_%02d_%02d_%s.png"
+const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/plant_%02d_%02d_%s.png"
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d_open.png"
 
 @export var garden_layout: GardenLayout:
@@ -27,10 +27,10 @@ const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d_
 ]
 
 enum FlowerSizes{
-	NotStarted,
-	Small,
-	Medium,
-	Large
+	NOT_STARTED,
+	SMALL,
+	MEDIUM,
+	LARGE
 }
 
 var flowers: Array[GardenLayout.Flower] = []
@@ -53,7 +53,7 @@ func set_garden_layout(p_garden_layout: GardenLayout) -> void:
 	set_lesson_buttons(garden_layout.lesson_buttons)
 
 
-func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSizes = FlowerSizes.NotStarted) -> void:
+func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSizes = FlowerSizes.NOT_STARTED) -> void:
 	flowers = p_flowers
 	
 	flowers_sizes = []
@@ -70,6 +70,7 @@ func update_flowers() -> void:
 		var flower: GardenLayout.Flower = flowers[index]
 		var flower_scene: TextureRect = flower_controls[index]
 		var flower_size: String = FlowerSizes.keys()[flowers_sizes[index]]
+		flower_size = flower_size.to_lower()
 		
 		flower_scene.texture = load(FLOWER_PATH_MODEL % [flower.color+1, flower.type+1, flower_size])
 		flower_scene.size = flower_scene.get_combined_minimum_size() * 3

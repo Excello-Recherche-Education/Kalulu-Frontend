@@ -69,7 +69,7 @@ func set_up_click_detection() -> void:
 			var flower_control: Control = garden_control.flower_controls[flower_ind]
 			flower_control.gui_input.connect(_on_flower_gui_input.bind(garden_control_ind, flower_ind, flower_control))
 			
-			garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Large
+			garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.LARGE
 			garden_control.update_flowers()
 			
 		for lesson_button_ind: int in garden_control.lesson_button_controls.size():
@@ -183,7 +183,7 @@ func _on_flower_gui_input(event: InputEvent, garden_control_ind: int, flower_ind
 		flower.type += 1
 		if flower.type >= flower_types_nb:
 			flower.type = 0
-		garden.set_flowers(gardens_layout.gardens[garden_control_ind].flowers, Garden.FlowerSizes.Large)
+		garden.set_flowers(gardens_layout.gardens[garden_control_ind].flowers, Garden.FlowerSizes.LARGE)
 		ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
 
 
@@ -209,7 +209,7 @@ func _on_change_flower_color_button_pressed() -> void:
 			flower.color = 0
 	gardens_layout.gardens[garden_ind].flowers = flowers
 	
-	garden.set_flowers(flowers, Garden.FlowerSizes.Large)
+	garden.set_flowers(flowers, Garden.FlowerSizes.LARGE)
 	
 	ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
 
@@ -225,7 +225,7 @@ func _on_change_flower_color_button_2_pressed() -> void:
 			flower.color = garden_textures_nb - 1
 	gardens_layout.gardens[garden_ind].flowers = flowers
 	
-	garden.set_flowers(flowers, Garden.FlowerSizes.Large)
+	garden.set_flowers(flowers, Garden.FlowerSizes.LARGE)
 	
 	ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
 
@@ -238,7 +238,7 @@ func _on_reset_garden_button_pressed() -> void:
 	for index: int in flowers.size():
 		flowers[index] = GardenLayout.Flower.new()
 	gardens_layout.gardens[garden_ind].flowers = flowers
-	garden.set_flowers(flowers, Garden.FlowerSizes.Large)
+	garden.set_flowers(flowers, Garden.FlowerSizes.LARGE)
 	
 	var lesson_buttons: = gardens_layout.gardens[garden_ind].lesson_buttons
 	for index: int in lesson_buttons.size():

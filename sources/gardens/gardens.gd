@@ -180,13 +180,13 @@ func _ready() -> void:
 		
 		while total_flowers > 0 and flower_ind < garden_control.flower_controls.size():
 			if total_flowers >= 3.0:
-				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Large
+				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.LARGE
 				total_flowers -= 3.0
 			elif total_flowers >= 2.0:
-				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Medium
+				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.MEDIUM
 				total_flowers -= 2.0
 			elif total_flowers >= 1.0:
-				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.Small
+				garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.SMALL
 				total_flowers -= 1.0
 			flower_ind += 1
 		garden_control.update_flowers()
@@ -271,16 +271,16 @@ func _ready() -> void:
 			var flower_ind: int = 0
 			while total_flowers > 0 and flower_ind < current_garden.flower_controls.size():
 				var play_animation: bool = false
-				if total_flowers >= 3.0 and current_garden.flowers_sizes[flower_ind] != Garden.FlowerSizes.Large:
-					current_garden.flowers_sizes[flower_ind] = Garden.FlowerSizes.Large
+				if total_flowers >= 3.0 and current_garden.flowers_sizes[flower_ind] != Garden.FlowerSizes.LARGE:
+					current_garden.flowers_sizes[flower_ind] = Garden.FlowerSizes.LARGE
 					total_flowers -= 3.0
 					play_animation = true
-				elif total_flowers >= 2.0 and current_garden.flowers_sizes[flower_ind] != Garden.FlowerSizes.Medium:
-					current_garden.flowers_sizes[flower_ind] = Garden.FlowerSizes.Medium
+				elif total_flowers >= 2.0 and current_garden.flowers_sizes[flower_ind] != Garden.FlowerSizes.MEDIUM:
+					current_garden.flowers_sizes[flower_ind] = Garden.FlowerSizes.MEDIUM
 					total_flowers -= 2.0
 					play_animation = true
-				elif total_flowers >= 1.0 and current_garden.flowers_sizes[flower_ind] != Garden.FlowerSizes.Small:
-					current_garden.flowers_sizes[flower_ind] = Garden.FlowerSizes.Small
+				elif total_flowers >= 1.0 and current_garden.flowers_sizes[flower_ind] != Garden.FlowerSizes.SMALL:
+					current_garden.flowers_sizes[flower_ind] = Garden.FlowerSizes.SMALL
 					total_flowers -= 1.0
 					play_animation = true
 				

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://chuny571miwxm"]
 
 [ext_resource type="Script" uid="uid://cevp5gxo42rre" path="res://sources/minigames/turtles/island.gd" id="1_bl1e4"]
-[ext_resource type="Texture2D" uid="uid://c3i6riv7blkux" path="res://assets/minigames/turtles/graphic/turtle_Island.png" id="1_shxj4"]
+[ext_resource type="Texture2D" uid="uid://c3i6riv7blkux" path="res://assets/minigames/turtles/graphic/turtle_island.png" id="1_shxj4"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="3_wk2li"]
 
 [node name="Island" type="Area2D"]
