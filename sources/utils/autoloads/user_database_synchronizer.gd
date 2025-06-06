@@ -18,56 +18,58 @@ enum UpdateNeeded {
 }
 
 
-func startSync() -> void:
+func start_sync() -> void:
 	synchronizing = true
-	loading_popup.set_finished(false)
-	loading_popup.set_text("SYNCHRONIZATION_INITIALISATION")
-	await setLoadingProgression(0.0)
-	loading_popup.show()
+	if loading_popup != null:
+		loading_popup.set_finished(false)
+		set_loading_bar_text("SYNCHRONIZATION_INITIALISATION")
+		await set_loading_bar_progression(0.0)
+		loading_popup.show()
 
 
-func stopSync(success: bool = false) -> void:
+func stop_sync(success: bool = false) -> void:
 	synchronizing = false
 	if success:
-		await setLoadingProgression(100.0, 1.0)
-		loading_popup.set_text("SYNCHRONIZATION_SUCCESS")
-	loading_popup.set_finished(true)
+		await set_loading_bar_progression(100.0, 1.0)
+		set_loading_bar_text("SYNCHRONIZATION_SUCCESS")
+	if loading_popup != null:
+		loading_popup.set_finished(true)
 
 
-func on_synchronize_button_pressed() -> void:
+func synchronize() -> void:
 	Logger.trace("UserDataBaseSynchronizer: Start synchronizing user data.")
 	if synchronizing:
 		Logger.trace("UserDataBaseSynchronizer: User synchronization already started, cancel double-call.")
 		return
-	await startSync()
+	await start_sync()
 	
-	await setLoadingProgression(1.0)
-	loading_popup.set_text("SYNCHRONIZATION_CHECK_INTERNET_ACCESS")
+	await set_loading_bar_progression(1.0)
+	set_loading_bar_text("SYNCHRONIZATION_CHECK_INTERNET_ACCESS")
 	if not await (ServerManager as ServerManagerClass).check_internet_access():
-		loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_INTERNET")
-		stopSync()
+		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_INTERNET")
+		stop_sync()
 	
-	loading_popup.set_text("SYNCHRONIZATION_ASK_SERVER_TIMESTAMP")
+	set_loading_bar_text("SYNCHRONIZATION_ASK_SERVER_TIMESTAMP")
 	var response_ge_all_timestamps: Dictionary = await (ServerManager as ServerManagerClass).pull_timestamps()
 	if not response_ge_all_timestamps.success:
 		Logger.trace("UserDataBaseSynchronizer: Cannot get all timestamps from server. Canceling synchronization.")
-		loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_SERVER")
-		stopSync()
+		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_SERVER")
+		stop_sync()
 		return
 	
-	await setLoadingProgression(20.0)
-	loading_popup.set_text("SYNCHRONIZATION_COMPARE_SERVER_TIMESTAMP")
+	await set_loading_bar_progression(20.0)
+	set_loading_bar_text("SYNCHRONIZATION_COMPARE_SERVER_TIMESTAMP")
 	var response_body: Dictionary = response_ge_all_timestamps.body
 	if not response_body.has("user"):
 		Logger.trace("UserDataBaseSynchronizer: Cannot get user from body. Canceling synchronization.")
-		loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER")
-		stopSync()
+		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER")
+		stop_sync()
 		return
 	var user: Dictionary = response_body.user
 	if not user.has("last_modified"):
 		Logger.trace("UserDataBaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
-		loading_popup.set_text("SYNCHRONIZATION_ERROR")
-		stopSync()
+		set_loading_bar_text("SYNCHRONIZATION_ERROR")
+		stop_sync()
 		return
 	var serverUnixTimeUser: int = Time.get_unix_time_from_datetime_string(user.last_modified as String)
 	var localUserStringTime: String = UserDataManager.teacher_settings.last_modified
@@ -82,13 +84,13 @@ func on_synchronize_button_pressed() -> void:
 	else: # localUnixTimeUser < serverUnixTimeUser
 		need_update_user = UpdateNeeded.FromServer
 	
-	await setLoadingProgression(40.0)
-	loading_popup.set_text("SYNCHRONIZATION_COMPILE_SERVER_INSTRUCTIONS")
+	await set_loading_bar_progression(40.0)
+	set_loading_bar_text("SYNCHRONIZATION_COMPILE_SERVER_INSTRUCTIONS")
 	var need_update_students: Dictionary[int, UpdateNeeded] # student_code, status
 	if not response_body.has("students"):
 		Logger.trace("UserDataBaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
-		loading_popup.set_text("SYNCHRONIZATION_ERROR")
-		stopSync()
+		set_loading_bar_text("SYNCHRONIZATION_ERROR")
+		stop_sync()
 		return
 	var students_timestamps: Array[Dictionary] = []
 	for item: Dictionary in response_body.students:
@@ -180,20 +182,20 @@ func on_synchronize_button_pressed() -> void:
 	if (message_to_server["students"] as Dictionary).keys().size() == 0:
 		message_to_server.erase("students")
 	
-	await setLoadingProgression(60.0)
-	loading_popup.set_text("SYNCHRONIZATION_SEND_SERVER_INSTRUCTIONS")
+	await set_loading_bar_progression(60.0)
+	set_loading_bar_text("SYNCHRONIZATION_SEND_SERVER_INSTRUCTIONS")
 	if message_to_server.keys().size() == 0:
 		Logger.trace("UserDataBaseSynchronizer: No instruction to send to server")
 	else:
 		var res_get_server_instructions: Dictionary = await (ServerManager as ServerManagerClass).send_server_synchronization_instructions(message_to_server)
 		if not res_get_server_instructions.success:
 			Logger.trace("UserDataBaseSynchronizer: Cannot send instructions to server. Canceling synchronization.")
-			loading_popup.set_text("SYNCHRONIZATION_ERROR_NO_SERVER")
-			stopSync()
+			set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_SERVER")
+			stop_sync()
 			return
 	
-		await setLoadingProgression(80.0)
-		loading_popup.set_text("SYNCHRONIZATION_APPLY_LOCAL_INSTRUCTIONS")
+		await set_loading_bar_progression(80.0)
+		set_loading_bar_text("SYNCHRONIZATION_APPLY_LOCAL_INSTRUCTIONS")
 		response_body = res_get_server_instructions.body
 		if response_body.has("user"):
 			var response_user: Dictionary = response_body.user
@@ -217,11 +219,17 @@ func on_synchronize_button_pressed() -> void:
 				var response_student_data: Dictionary = response_students[response_student_code]
 				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
 	
-	await setLoadingProgression(99.0)
+	await set_loading_bar_progression(99.0)
 	UserDataManager.save_all()
-	stopSync(true)
+	stop_sync(true)
 
 
-func setLoadingProgression(value_percent: float, wait_time: float = 0.2) -> void:
-	loading_popup.set_progress(value_percent)
-	await loading_popup.get_tree().create_timer(wait_time).timeout
+func set_loading_bar_progression(value_percent: float, wait_time: float = 0.2) -> void:
+	if loading_popup != null:
+		loading_popup.set_progress(value_percent)
+		await loading_popup.get_tree().create_timer(wait_time).timeout
+
+
+func set_loading_bar_text(message: String) -> void:
+	if loading_popup != null:
+		loading_popup.set_text(message)

@@ -58,8 +58,6 @@ func _ready() -> void:
 			_show_error(1)
 		return
 	
-	# TODO WE REMOVED CONFIGURATION AT LAUNCH, BUT WE DID NOT TEST REGISTER / LOGIN
-	
 	# Gets the info of the language pack on the server
 	var res: Dictionary = await ServerManager.get_language_pack_url(device_language)
 	if res.code == 200:

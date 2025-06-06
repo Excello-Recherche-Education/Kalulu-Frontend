@@ -3,12 +3,12 @@ extends HBoxContainer
 class_name PasswordVisualizer
 
 const icons_textures: Dictionary = {
-	"1" : preload("res://assets/menus/login/symbol01.png"),
-	"2" : preload("res://assets/menus/login/symbol02.png"),
-	"3" : preload("res://assets/menus/login/symbol03.png"),
-	"4" : preload("res://assets/menus/login/symbol04.png"),
-	"5" : preload("res://assets/menus/login/symbol05.png"),
-	"6" : preload("res://assets/menus/login/symbol06.png")
+	"1" : preload("res://assets/menus/login/symbol_01.png"),
+	"2" : preload("res://assets/menus/login/symbol_02.png"),
+	"3" : preload("res://assets/menus/login/symbol_03.png"),
+	"4" : preload("res://assets/menus/login/symbol_04.png"),
+	"5" : preload("res://assets/menus/login/symbol_05.png"),
+	"6" : preload("res://assets/menus/login/symbol_06.png")
 }
 
 @export var key_size: int = 200:

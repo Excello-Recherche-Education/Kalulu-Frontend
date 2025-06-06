@@ -25,7 +25,12 @@ var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
 
 var user_database_synchronizer: UserDataBaseSynchronizer
-
+var synchronization_timer: float = 0.0
+var synchronization_timer_running: bool = false
+var synchronization_time_limit: float = 300000.0 # 5 minutes in milliseconds
+var now: int
+var last_time: float = 0.0
+var real_delta: int
 
 func _ready() -> void:
 	if get_device_settings().teacher:
@@ -33,6 +38,29 @@ func _ready() -> void:
 	
 	user_database_synchronizer = UserDataBaseSynchronizer.new()
 
+
+func _process(_delta: float) -> void:
+	if synchronization_timer_running:
+		now = Time.get_ticks_msec()
+		real_delta = now - last_time
+		last_time = now
+		synchronization_timer += real_delta
+		if synchronization_timer >= synchronization_time_limit:
+			synchronization_timer = 0.0
+			user_database_synchronizer.synchronize()
+
+#region synchronization
+
+func start_synchronization_timer() -> void:
+	if not synchronization_timer_running:
+		synchronization_timer = 0.0
+		synchronization_timer_running = true
+
+
+func stop_synchronization_timer() -> void:
+	synchronization_timer_running = false
+
+#endregion
 
 #region Registering and logging in
 
