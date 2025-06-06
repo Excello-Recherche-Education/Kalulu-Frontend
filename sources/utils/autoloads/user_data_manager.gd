@@ -25,11 +25,11 @@ var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
 
 var user_database_synchronizer: UserDataBaseSynchronizer
-var synchronization_timer: float = 0.0
+var synchronization_timer: int = 0
 var synchronization_timer_running: bool = false
-var synchronization_time_limit: float = 300000.0 # 5 minutes in milliseconds
+var synchronization_time_limit: int = 300000 # 5 minutes in milliseconds
 var now: int
-var last_time: float = 0.0
+var last_time: int = 0
 var real_delta: int
 
 func _ready() -> void:
@@ -46,14 +46,14 @@ func _process(_delta: float) -> void:
 		last_time = now
 		synchronization_timer += real_delta
 		if synchronization_timer >= synchronization_time_limit:
-			synchronization_timer = 0.0
+			synchronization_timer = 0
 			user_database_synchronizer.synchronize()
 
 #region synchronization
 
 func start_synchronization_timer() -> void:
 	if not synchronization_timer_running:
-		synchronization_timer = 0.0
+		synchronization_timer = 0
 		synchronization_timer_running = true
 
 
