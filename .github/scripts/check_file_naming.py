@@ -12,6 +12,9 @@ TARGET_EXTS = {
     ".wav", ".ogg", ".mp3",  # sounds
 }
 
+# Directories to ignore entirely (e.g., external or tooling folders)
+EXCLUDED_DIRS = {"addons", ".git", ".github"}
+
 invalid_files = []
 invalid_dirs = []
 
@@ -27,7 +30,10 @@ def to_snake_case(filename: str) -> str:
 
 for root, dirs, files in os.walk('.', topdown=True):
     rel_root = os.path.relpath(root, '.')
-    if rel_root == 'addons' or rel_root.startswith(f"addons{os.sep}"):
+    if any(
+        rel_root == ex or rel_root.startswith(f"{ex}{os.sep}")
+        for ex in EXCLUDED_DIRS
+    ):
         dirs[:] = []
         continue
 
@@ -44,7 +50,10 @@ for root, dirs, files in os.walk('.', topdown=True):
     # Validate subdirectories
     for d in list(dirs):
         rel_path = os.path.join(rel_root, d) if rel_root != '.' else d
-        if d == 'addons' or rel_path.startswith(f"addons{os.sep}"):
+        if any(
+            rel_path == ex or rel_path.startswith(f"{ex}{os.sep}")
+            for ex in EXCLUDED_DIRS
+        ):
             dirs.remove(d)
             continue
         if not _BASE_PATTERN.match(d):
