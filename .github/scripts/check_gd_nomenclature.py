@@ -9,6 +9,13 @@ SNAKE_CASE = re.compile(r"^_?[a-z][a-z0-9_]*$")
 UPPER_SNAKE_CASE = re.compile(r"^[A-Z][A-Z0-9_]*$")
 
 issues = []
+MESSAGES = {
+    'class': 'is a class name and should be in PascalCase',
+    'function': 'is a function name and should be in snake_case',
+    'variable': 'is a variable name and should be in snake_case',
+    'constant': 'is a constant name and should be in UPPER_SNAKE_CASE',
+    'signal': 'is a signal name and should be in snake_case',
+}
 
 for root, dirs, files in os.walk('.', topdown=True):
     rel_root = os.path.relpath(root, '.')
@@ -57,7 +64,11 @@ for root, dirs, files in os.walk('.', topdown=True):
 if issues:
     print('GDScript naming issues found:')
     for path, idx, kind, name in issues:
-        print(f"{path}:{idx}: {kind} '{name}' does not follow convention")
+        if kind == 'error':
+            message = name
+        else:
+            message = f"'{name}' {MESSAGES[kind]}"
+        print(f"{path}:{idx}: {message}")
     sys.exit(1)
 else:
     print('All GDScript files follow the naming conventions.')
