@@ -69,6 +69,7 @@ if issues:
         else:
             message = f"'{name}' {MESSAGES[kind]}"
         print(f"{path}:{idx}: {message}")
+    print(f"Total issues: {len(issues)}")
     sys.exit(1)
 else:
     print('All GDScript files follow the naming conventions.')
