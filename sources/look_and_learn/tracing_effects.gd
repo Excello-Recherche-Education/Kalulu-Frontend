@@ -1,4 +1,5 @@
 extends Node2D
+class_name TracingEffects
 
 @onready var particles_effect: GPUParticles2D = $TracingParticles
 @onready var sound_effect: AudioStreamPlayer = $TracingAudioStreamPlayer
@@ -30,6 +31,6 @@ func stop() -> void:
 		timer.start()
 
 
-func _on_Timer_timeout() -> void:
+func _on_timer_timeout() -> void:
 	particles_effect.emitting = false
 	sound_effect.playing = false

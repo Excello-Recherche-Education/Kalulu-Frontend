@@ -1,10 +1,6 @@
 @tool
 extends Node2D
-
-# Namespace
-const CaterpillarHead: = preload("res://sources/minigames/caterpillar/caterpillar_head.gd")
-const CaterpillarBody: = preload("res://sources/minigames/caterpillar/caterpillar_body.gd")
-const Berry: = preload("res://sources/minigames/caterpillar/berry.gd")
+class_name Caterpillar
 
 signal berry_eaten(berry: Berry)
 

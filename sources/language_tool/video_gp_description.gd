@@ -39,7 +39,7 @@ func set_gp(p_gp: Dictionary) -> void:
 func _on_video_upload_button_pressed() -> void:
 	if not gp.is_empty():
 		file_dialog.filters = []
-		file_dialog.add_filter("*" + Database.video_extension, "Videos")
+		file_dialog.add_filter("*" + Database.VIDEO_EXTENSION, "Videos")
 		
 		for connection in file_dialog.file_selected.get_connections():
 			connection["signal"].disconnect(connection["callable"])

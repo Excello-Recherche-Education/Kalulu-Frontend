@@ -1,4 +1,5 @@
 extends Path2D
+class_name TracingPath
 
 signal finished
 signal demo_finished

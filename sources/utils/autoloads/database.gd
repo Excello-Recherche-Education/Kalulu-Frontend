@@ -15,11 +15,10 @@ const look_and_learn_sounds: String = "/look_and_learn/sounds/"
 const look_and_learn_videos: String = "/look_and_learn/video/"
 const language_sounds: String = "/language_sounds/"
 const kalulu_folder: String = "/kalulu/"
-const tracing_data_folder: String = "tracing_data/"
 const additional_word_list_path: String = "word_list.csv"
-const video_extension: String = ".ogv"
-const image_extension: String = ".png"
-const sound_extension: String = ".mp3"
+const VIDEO_EXTENSION: String = ".ogv"
+const IMAGE_EXTENSION: String = ".png"
+const SOUND_EXTENSION: String = ".mp3"
 
 var language: String:
 	set(value):
@@ -539,31 +538,31 @@ func get_gp_name(gp: Dictionary) -> String:
 
 
 func get_gp_look_and_learn_image_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_images + get_gp_name(gp) + image_extension
+	return base_path + language + look_and_learn_images + get_gp_name(gp) + IMAGE_EXTENSION
 
 
 func get_gp_look_and_learn_sound_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_sounds + get_gp_name(gp) + sound_extension
+	return base_path + language + look_and_learn_sounds + get_gp_name(gp) + SOUND_EXTENSION
 
 
 func get_gp_look_and_learn_video_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_videos + get_gp_name(gp) + video_extension
+	return base_path + language + look_and_learn_videos + get_gp_name(gp) + VIDEO_EXTENSION
 
 
 func get_gp_sound_path(gp: Dictionary) -> String:
-	return base_path + language + language_sounds + Database.get_gp_name(gp) + sound_extension
+	return base_path + language + language_sounds + Database.get_gp_name(gp) + SOUND_EXTENSION
 
 
 func get_syllable_sound_path(syllable: Dictionary) -> String:
-	return base_path + language + language_sounds + syllable.Grapheme + sound_extension
+	return base_path + language + language_sounds + syllable.Grapheme + SOUND_EXTENSION
 
 
 func get_word_sound_path(word: Dictionary) -> String:
-	return base_path + language + language_sounds + word.Word + sound_extension
+	return base_path + language + language_sounds + word.Word + SOUND_EXTENSION
 
 
 func get_kalulu_speech_path(speech_category: String, speech_name: String) -> String:
-	return base_path + language + language_sounds + kalulu_folder + speech_category + "_" + speech_name + sound_extension
+	return base_path + language + language_sounds + kalulu_folder + speech_category + "_" + speech_name + SOUND_EXTENSION
 
 
 func load_external_sound(path: String) -> AudioStreamMP3:

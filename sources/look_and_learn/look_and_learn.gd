@@ -1,7 +1,5 @@
 extends Control
-
-const Gardens: = preload("res://sources/gardens/gardens.gd")
-const TracingManager: = preload("res://sources/look_and_learn/tracing_manager.gd")
+class_name LookAndLearn
 
 @export var lesson_nb: int = 1
 @export var current_button_pressed: int = 0

@@ -1,15 +1,12 @@
 @tool
 extends Node2D
+class_name Branch
 
 signal branch_pressed()
 signal berry_pressed(gp: Dictionary)
 
-# Namespace
-const Leaf: = preload("res://sources/minigames/caterpillar/leaf.gd")
-const Berry: = preload("res://sources/minigames/caterpillar/berry.gd")
-
-const leaf_scene: PackedScene = preload("res://sources/minigames/caterpillar/leaf.tscn")
-const berry_scene: PackedScene = preload("res://sources/minigames/caterpillar/berry.tscn")
+const LEAF_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/leaf.tscn")
+const BERRY_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/berry.tscn")
 
 @onready var leaves: Node2D = $Leaves
 @onready var berries: Node2D = $Berries
@@ -32,7 +29,7 @@ func _ready() -> void:
 	# Adds some leaves from start
 	var pos: float = -leaves.position.x + velocity * randf_range(0,2)
 	while pos < 0:
-		var leaf: Leaf = leaf_scene.instantiate()
+		var leaf: Leaf = LEAF_SCENE.instantiate()
 		leaves.add_child(leaf)
 		leaf.position.x = pos
 		pos = pos + velocity * randf_range(2, 5)
@@ -54,7 +51,7 @@ func _process(delta: float) -> void:
 
 
 func spawn_berry(gp: Dictionary, is_distractor: bool) -> void:
-	var berry : Berry = berry_scene.instantiate()
+	var berry : Berry = BERRY_SCENE.instantiate()
 	berries.add_child(berry)
 	berry.gp = gp
 	berry.is_distractor = is_distractor
@@ -76,7 +73,7 @@ func _on_button_pressed() -> void:
 
 
 func _on_leaf_timer_timeout() -> void:
-	var leaf: Leaf = leaf_scene.instantiate()
+	var leaf: Leaf = LEAF_SCENE.instantiate()
 	leaves.add_child(leaf)
 	
 	leaf_timer.wait_time = randf_range(2.0, 5.0)

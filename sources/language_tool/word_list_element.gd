@@ -6,8 +6,8 @@ signal new_GP_asked(i: int)
 signal validated()
 signal GPs_updated()
 
-const gp_list_button_scene: PackedScene = preload("res://sources/language_tool/gp_list_button.tscn")
-const plus_button_scene: PackedScene = preload("res://sources/language_tool/plus_button.tscn")
+const GP_LIST_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/gp_list_button.tscn")
+const PLUS_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/plus_button.tscn")
 
 @export var table: String = "Words"
 @export var table_graph_column: String = "Word"
@@ -101,14 +101,14 @@ func set_graphemes_edit(p_gp_ids: Array[int]) -> void:
 
 
 func add_gp_list_button(gp_id: int, ind_gp_id: int) -> void:
-	var gp_list_button: GPListButton = gp_list_button_scene.instantiate()
+	var gp_list_button: GPListButton = GP_LIST_BUTTON_SCENE.instantiate()
 	gp_list_button.set_gp_list(sub_elements_list)
 	graphemes_edit_container.add_child(gp_list_button)
 	graphemes_edit_container.move_child(gp_list_button, 2 * ind_gp_id)
 	gp_list_button.select_id(gp_id)
 	gp_list_button.gp_selected.connect(_on_gp_list_button_selected.bind(gp_list_button))
 	gp_list_button.new_selected.connect(_on_gp_list_button_new_selected.bind(gp_list_button))
-	var plus_button: PlusButton = plus_button_scene.instantiate()
+	var plus_button: PlusButton = PLUS_BUTTON_SCENE.instantiate()
 	plus_button.size = Vector2(50, 50)
 	graphemes_edit_container.add_child(plus_button)
 	graphemes_edit_container.move_child(plus_button, 2 * ind_gp_id + 1)

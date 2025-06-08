@@ -8,7 +8,7 @@ extends Control
 @onready var save_ok: TextureRect = %SaveOk
 @onready var copy_from: MenuButton = %CopyFrom
 
-const extension: String = ".csv"
+const EXTENSION: String = ".csv"
 
 var letters: Array[String] = []
 var current_letter: int = -1
@@ -92,7 +92,7 @@ func upper_path(letter: String) -> String:
 
 
 func real_path(path: String) -> String:
-	return Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder).path_join(path) + extension
+	return Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder).path_join(path) + EXTENSION
 
 
 func _on_save_button_pressed() -> void:

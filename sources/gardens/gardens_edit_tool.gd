@@ -1,9 +1,9 @@
-extends "res://sources/gardens/gardens.gd"
+extends Gardens
 
-const max_lesson_number: int = 80
-const garden_textures_nb: int = 20
-const flower_types_nb: int = 5
-const gardens_layout_resource_path: String = "res://resources/gardens/gardens_layout.tres"
+const MAX_LESSON_NUMBER: int = 80
+const GARDEN_TEXTURES_NB: int = 20
+const FLOWER_TYPES_NB: int = 5
+const GARDENS_LAYOUT_RESOURCE_PATH: String = "res://resources/gardens/gardens_layout.tres"
 
 
 var dragging_element: Variant
@@ -15,16 +15,16 @@ func _ready() -> void:
 	line_particles.hide()
 	back_button.hide()
 	
-	for index: int in max_lesson_number:
+	for index: int in MAX_LESSON_NUMBER:
 		lessons[index] = index
 	
 	# Checks if a configuration exists
-	if not ResourceLoader.exists(gardens_layout_resource_path):
+	if not ResourceLoader.exists(GARDENS_LAYOUT_RESOURCE_PATH):
 		gardens_layout = GardensLayout.new()
-		gardens_layout.resource_path = gardens_layout_resource_path
+		gardens_layout.resource_path = GARDENS_LAYOUT_RESOURCE_PATH
 		_init_gardens_layout()
 	
-	gardens_layout = load(gardens_layout_resource_path)
+	gardens_layout = load(GARDENS_LAYOUT_RESOURCE_PATH)
 	set_up_click_detection()
 
 
@@ -32,7 +32,7 @@ func _init_gardens_layout() -> void:
 	# Empty the gardens configuration
 	gardens_layout.gardens.clear()
 	
-	for index: int in max_lesson_number:
+	for index: int in MAX_LESSON_NUMBER:
 		
 		var garden_layout: GardenLayout
 		
@@ -42,7 +42,7 @@ func _init_gardens_layout() -> void:
 			gardens_layout.gardens.append(garden_layout)
 			
 			@warning_ignore("integer_division")
-			garden_layout.color = (index / 4) % garden_textures_nb
+			garden_layout.color = (index / 4) % GARDEN_TEXTURES_NB
 			
 			# Add the flowers to the garden
 			for flower_i: int in 5:
@@ -181,7 +181,7 @@ func _on_flower_gui_input(event: InputEvent, garden_control_ind: int, flower_ind
 		var garden: Garden = garden_parent.get_child(garden_control_ind)
 		var flower: GardenLayout.Flower = gardens_layout.gardens[garden_control_ind].flowers[flower_ind]
 		flower.type += 1
-		if flower.type >= flower_types_nb:
+		if flower.type >= FLOWER_TYPES_NB:
 			flower.type = 0
 		garden.set_flowers(gardens_layout.gardens[garden_control_ind].flowers, Garden.FlowerSizes.LARGE)
 		ResourceSaver.save(gardens_layout, gardens_layout.resource_path)
@@ -205,7 +205,7 @@ func _on_change_flower_color_button_pressed() -> void:
 	var flowers: Array[GardenLayout.Flower] = gardens_layout.gardens[garden_ind].flowers
 	for flower: GardenLayout.Flower in flowers:
 		flower.color += 1
-		if flower.color >= garden_textures_nb:
+		if flower.color >= GARDEN_TEXTURES_NB:
 			flower.color = 0
 	gardens_layout.gardens[garden_ind].flowers = flowers
 	
@@ -222,7 +222,7 @@ func _on_change_flower_color_button_2_pressed() -> void:
 	for flower: GardenLayout.Flower in flowers:
 		flower.color -= 1
 		if flower.color < 0:
-			flower.color = garden_textures_nb - 1
+			flower.color = GARDEN_TEXTURES_NB - 1
 	gardens_layout.gardens[garden_ind].flowers = flowers
 	
 	garden.set_flowers(flowers, Garden.FlowerSizes.LARGE)

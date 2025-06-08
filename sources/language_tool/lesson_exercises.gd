@@ -1,15 +1,6 @@
 extends Control
 
-const LessonExerciceContainer: = preload("res://sources/language_tool/lesson_exercises_container.gd")
-const lesson_exercice_container_scene: = preload("res://sources/language_tool/lesson_exercises_container.tscn")
-
-const exercise_types: Array[String] = [
-	"Syllable",
-	"Pairing",
-	"Words",
-	"Sentences",
-	"Boss"
-]
+const LESSON_EXERCICE_CONTAINER_SCENE: = preload("res://sources/language_tool/lesson_exercises_container.tscn")
 
 @onready var lessons_container: VBoxContainer = %LessonsContainer
 
@@ -51,7 +42,7 @@ func _ready() -> void:
 	var sentences_by_lesson: = Database.get_sentences_by_lessons()
 	Database.db.query("Select * FROM Lessons")
 	for e in Database.db.query_result:
-		var container: LessonExerciceContainer = lesson_exercice_container_scene.instantiate()
+		var container: LessonExerciceContainer = LESSON_EXERCICE_CONTAINER_SCENE.instantiate()
 		lessons_container.add_child(container)
 		container.sentences_by_lesson = sentences_by_lesson
 		container.lesson_number = e.LessonNb

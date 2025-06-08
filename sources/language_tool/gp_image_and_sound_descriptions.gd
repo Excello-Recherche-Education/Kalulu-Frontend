@@ -3,7 +3,7 @@ class_name GPImageAndSoundDescriptions
 
 @onready var description_container: VBoxContainer = %DescriptionsContainer
 
-const description_line_scene: PackedScene  = preload("res://sources/language_tool/image_and_sound_gp_description.tscn")
+const DESCRIPTION_LINE_SCENE: PackedScene  = preload("res://sources/language_tool/image_and_sound_gp_description.tscn")
 
 
 func _ready() -> void:
@@ -11,8 +11,8 @@ func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.look_and_learn_sounds)
 	
 	Database.db.query("SELECT * FROM GPs WHERE GPs.Exception=0")
-	for res in Database.db.query_result:
-		var description_line: ImageAndSoundGPDescription = description_line_scene.instantiate()
+	for res: Dictionary in Database.db.query_result:
+		var description_line: ImageAndSoundGPDescription = DESCRIPTION_LINE_SCENE.instantiate()
 		description_container.add_child(description_line)
 		description_line.set_gp(res)
 

@@ -2,7 +2,7 @@ extends "res://sources/language_tool/word_list_element.gd"
 
 signal not_found(text: String)
 
-const word_list_element_scene: = preload("res://sources/language_tool/word_list_element.tscn")
+const WORD_LIST_ELEMENT_SCENE: = preload("res://sources/language_tool/word_list_element.tscn")
 
 var words_not_founds: PackedStringArray
 
@@ -28,7 +28,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 	var new_text_clean: = new_text.to_lower()
 	for chara in punc:
 		new_text_clean = new_text_clean.replace(chara, " ")
-	var word_list_element: WordListElement = word_list_element_scene.instantiate()
+	var word_list_element: WordListElement = WORD_LIST_ELEMENT_SCENE.instantiate()
 	var all_found: = true
 	words_not_founds.clear()
 	var word_ids: Array[int] = []

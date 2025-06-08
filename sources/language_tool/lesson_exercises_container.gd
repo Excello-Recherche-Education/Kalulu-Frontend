@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name LessonExerciceContainer
 
 @export var lesson_number: = -1:
 	set = _set_lesson_number

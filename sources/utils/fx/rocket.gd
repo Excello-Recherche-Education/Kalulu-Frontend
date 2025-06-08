@@ -1,4 +1,5 @@
 extends Path2D
+class_name Rocket
 
 @export var spread_angle: float = PI/8.0
 @export var segments: int = 5

@@ -1,8 +1,7 @@
 @tool
 extends Control
 
-const Gardens: = preload("res://sources/gardens/gardens.gd")
-const gardens_scene: PackedScene = preload("res://sources/gardens/gardens.tscn")
+const GARDENS_SCENE: PackedScene = preload("res://sources/gardens/gardens.tscn")
 const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 
 @export var locked_color: Color
@@ -126,7 +125,7 @@ func _on_garden_button_pressed(button_number: int) -> void:
 	audio_stream_player.play()
 	await OpeningCurtain.close()
 	
-	var gardens: Gardens = gardens_scene.instantiate()
+	var gardens: Gardens = GARDENS_SCENE.instantiate()
 	gardens.starting_garden = button_number
 	get_tree().root.add_child(gardens)
 	get_tree().current_scene = gardens

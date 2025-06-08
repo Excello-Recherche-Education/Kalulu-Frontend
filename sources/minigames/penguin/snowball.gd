@@ -1,4 +1,5 @@
 extends Path2D
+class_name Snowball
 
 @onready var path_follow: PathFollow2D = $PathFollow2D
 @onready var sprite: Sprite2D = $PathFollow2D/Sprite2D

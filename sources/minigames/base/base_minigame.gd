@@ -2,9 +2,6 @@
 extends Control
 class_name Minigame
 
-const Gardens: = preload("res://sources/gardens/gardens.gd")
-const Fireworks: = preload("res://sources/utils/fx/fireworks.gd")
-
 enum Type {
 	jellyfish,
 	crabs,

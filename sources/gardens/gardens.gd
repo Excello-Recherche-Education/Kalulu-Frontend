@@ -1,16 +1,16 @@
 extends Control
+class_name Gardens
+
 signal minigame_layout_opened()
 
 # Namespace
-const LookAndLearn: = preload("res://sources/look_and_learn/look_and_learn.gd")
-const MinigameLayout: = preload("res://sources/gardens/minigame_layout.gd")
-const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
+const KALULU: = preload("res://sources/minigames/base/kalulu.gd")
 
-const garden_scene: PackedScene = preload("res://resources/gardens/garden.tscn")
-const look_and_learn_scene: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
-const flower_fvx: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
+const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
+const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
+const FLOWER_FVX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 
-const garden_size: int = 2400
+const GARDEN_SIZE: int = 2400
 
 @export_category("Layout")
 @export var gardens_layout: GardensLayout:
@@ -46,7 +46,7 @@ const garden_size: int = 2400
 @onready var minigame_background: TextureRect = %MinigameBackground
 @onready var minigame_background_center: TextureRect = %MinigameBackgroundCenter
 @onready var lock: Control = %Lock
-@onready var kalulu: Kalulu = %Kalulu
+@onready var kalulu: KALULU = %Kalulu
 @onready var kalulu_button: CanvasItem = %KaluluButton
 
 @onready var intro_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "intro"))
@@ -238,9 +238,9 @@ func _ready() -> void:
 			Logger.error("Gardens: initialisation: transition_data exists but does not contains the needed current_garden_index")
 			starting_garden = 0
 	
-	scroll_container.scroll_horizontal = garden_size * starting_garden
+	scroll_container.scroll_horizontal = GARDEN_SIZE * starting_garden
 	@warning_ignore("integer_division")
-	scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
+	scroll_beginning_garden = scroll_container.scroll_horizontal / GARDEN_SIZE
 	
 	current_garden = garden_parent.get_child(starting_garden)
 	
@@ -285,7 +285,7 @@ func _ready() -> void:
 					play_animation = true
 				
 				if play_animation:
-					var fvfx: FlowerVFX = flower_fvx.instantiate()
+					var fvfx: FlowerVFX = FLOWER_FVX.instantiate()
 					current_garden.flower_controls[flower_ind].add_child(fvfx)
 					fvfx.anchor_bottom = 0.5
 					fvfx.anchor_top = 0.5
@@ -346,14 +346,14 @@ func _ready() -> void:
 			# Check if we need to scroll to the next garden
 			if is_last_lesson_of_garden:
 				@warning_ignore("integer_division")
-				scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
-				var target_scroll: int = scroll_beginning_garden * garden_size + garden_size
+				scroll_beginning_garden = scroll_container.scroll_horizontal / GARDEN_SIZE
+				var target_scroll: int = scroll_beginning_garden * GARDEN_SIZE + GARDEN_SIZE
 				var tween: Tween = create_tween()
 				tween.set_ease(Tween.EASE_IN_OUT)
 				tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
 				
 				@warning_ignore("integer_division")
-				scroll_beginning_garden = target_scroll / garden_size
+				scroll_beginning_garden = target_scroll / GARDEN_SIZE
 				
 				current_garden = garden_parent.get_child(scroll_beginning_garden)
 			
@@ -571,7 +571,7 @@ func add_gardens() -> void:
 	var current_lesson_count: int = 0
 	var garden_index: int = 0
 	for garden_layout: GardenLayout in gardens_layout.gardens:
-		var garden: Garden = garden_scene.instantiate()
+		var garden: Garden = GARDEN_SCENE.instantiate()
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
 		garden_index += 1
@@ -649,7 +649,7 @@ func _on_lesson_button_pressed() -> void:
 		current_garden_index = current_garden.garden_index,
 		look_and_learn_completed = false
 	}
-	get_tree().change_scene_to_packed(look_and_learn_scene)
+	get_tree().change_scene_to_packed(LOOK_AND_LEARN_SCENE)
 
 
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
@@ -675,21 +675,21 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		is_scrolling = true
 		@warning_ignore("integer_division")
-		scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
+		scroll_beginning_garden = scroll_container.scroll_horizontal / GARDEN_SIZE
 		if scroll_tween:
 			scroll_tween.stop()
 			scroll_tween = null
 	elif event.is_action_released("left_click"):
 		is_scrolling = false
-		var shift_value: int = scroll_container.scroll_horizontal - scroll_beginning_garden * garden_size
-		var target_scroll: int = scroll_beginning_garden * garden_size
+		var shift_value: int = scroll_container.scroll_horizontal - scroll_beginning_garden * GARDEN_SIZE
+		var target_scroll: int = scroll_beginning_garden * GARDEN_SIZE
 		var is_garden_changed: bool = false
 		if shift_value < - 400:
-			target_scroll -= garden_size
+			target_scroll -= GARDEN_SIZE
 			is_garden_changed = true
 			left_audio_stream_player.play()
 		elif shift_value > 400:
-			target_scroll += garden_size
+			target_scroll += GARDEN_SIZE
 			is_garden_changed = true
 			right_audio_stream_player.play()
 		scroll_tween = create_tween()
@@ -698,12 +698,12 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 		scroll_tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 1)
 		if is_garden_changed:
 			@warning_ignore("integer_division")
-			current_garden = garden_parent.get_child(target_scroll / garden_size)
+			current_garden = garden_parent.get_child(target_scroll / GARDEN_SIZE)
 			current_garden.pop_animation()
 		
 		await scroll_tween.finished
 		@warning_ignore("integer_division")
-		scroll_beginning_garden = scroll_container.scroll_horizontal / garden_size
+		scroll_beginning_garden = scroll_container.scroll_horizontal / GARDEN_SIZE
 		
 	if is_scrolling and event is InputEventMouseMotion:
 		var motion_event: InputEventMouseMotion = event

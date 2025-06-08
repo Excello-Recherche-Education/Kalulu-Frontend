@@ -1,7 +1,7 @@
 extends Control
 
-const base_path: String = "user://language_resources/"
-const save_file_path: String = "user://prof_tool_save.tres"
+const BASE_PATH: String = "user://language_resources/"
+const SAVE_FILE_PATH: String = "user://prof_tool_save.tres"
 var save_file: ProfToolSave
 
 @onready var language_select_button: OptionButton = %LanguageSelectButton
@@ -18,11 +18,11 @@ func _ready() -> void:
 	MusicManager.stop()
 	Database.load_additional_word_list()
 	_update_add_word_list_button()
-	if not ResourceLoader.exists(save_file_path):
+	if not ResourceLoader.exists(SAVE_FILE_PATH):
 		save_file = ProfToolSave.new()
-		save_file.resource_path = save_file_path
-		ResourceSaver.save(save_file, save_file_path)
-	save_file = load(save_file_path)
+		save_file.resource_path = SAVE_FILE_PATH
+		ResourceSaver.save(save_file, SAVE_FILE_PATH)
+	save_file = load(SAVE_FILE_PATH)
 	_display_available_languages()
 	tab_container.current_tab = Globals.main_menu_selected_tab
 	tab_container.tab_changed.connect(_on_tab_container_tab_changed)
@@ -97,11 +97,11 @@ func _on_exercises_button_pressed() -> void:
 
 
 func _on_export_filename_selected(filename: String) -> void:
-	var version_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
+	var version_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
 	version_file.store_line(Time.get_datetime_string_from_system(true, false))
 	version_file.close()
 	
-	var summary_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
+	var summary_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
 	var sentences_by_lesson: Dictionary = Database.get_sentences_by_lessons()
 	for index: int in Database.get_lessons_count():
 		
@@ -132,7 +132,7 @@ func _on_export_filename_selected(filename: String) -> void:
 	_create_sentence_csv()
 	
 	var folder_zipper: FolderZipper = FolderZipper.new()
-	folder_zipper.compress(base_path.path_join(Database.language), filename)
+	folder_zipper.compress(BASE_PATH.path_join(Database.language), filename)
 
 #region Database integrity check
 var integrity_checking: bool = false
@@ -327,13 +327,13 @@ func file_exists_case_sensitive(path: String) -> Dictionary:
 
 func _get_available_languages() -> Array[String]:
 	var available_languages: Array[String] = []
-	var dir: DirAccess = DirAccess.open(base_path)
+	var dir: DirAccess = DirAccess.open(BASE_PATH)
 	if dir:
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir():
-				if FileAccess.file_exists(base_path.path_join(file_name).path_join("language.db")):
+				if FileAccess.file_exists(BASE_PATH.path_join(file_name).path_join("language.db")):
 					available_languages.append(file_name)
 			file_name = dir.get_next()
 	return available_languages
@@ -346,7 +346,7 @@ func _on_language_select_button_item_selected(index: int) -> void:
 		return
 	
 	save_file.selected_language = language_select_button.get_item_text(index)
-	ResourceSaver.save(save_file, save_file_path)
+	ResourceSaver.save(save_file, SAVE_FILE_PATH)
 	Database.language = save_file.selected_language
 
 
@@ -354,14 +354,14 @@ func _on_validate_language_pressed() -> void:
 	if not line_edit.text:
 		return
 		
-	DirAccess.make_dir_recursive_absolute(base_path.path_join(line_edit.text))
+	DirAccess.make_dir_recursive_absolute(BASE_PATH.path_join(line_edit.text))
 	var file: FileAccess = FileAccess.open("res://model_database.db", FileAccess.READ)
-	var dest: FileAccess = FileAccess.open(base_path.path_join(line_edit.text).path_join("language.db"), FileAccess.WRITE)
+	var dest: FileAccess = FileAccess.open(BASE_PATH.path_join(line_edit.text).path_join("language.db"), FileAccess.WRITE)
 	dest.store_buffer(file.get_buffer(file.get_length()))
 	file.close()
 	dest.close()
 	save_file.selected_language = line_edit.text
-	ResourceSaver.save(save_file, save_file_path)
+	ResourceSaver.save(save_file, SAVE_FILE_PATH)
 	get_tree().reload_current_scene()
 
 
@@ -437,12 +437,12 @@ func _on_export_button_pressed() -> void:
 func _language_data_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
 		var folder_unzipper: FolderUnzipper = FolderUnzipper.new()
-		folder_unzipper.extract(file_path, base_path, false)
+		folder_unzipper.extract(file_path, BASE_PATH, false)
 	get_tree().reload_current_scene()
 
 
 func _create_GP_csv() -> void:
-	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["Grapheme", "Phoneme", "Type", "Exception"])
 	var query: String = "Select * FROM GPs ORDER BY GPs.Grapheme"
 	Database.db.query(query)
@@ -453,7 +453,7 @@ func _create_GP_csv() -> void:
 
 
 func _create_words_csv() -> void:
-	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON", "READING", "WRITING"])
 	var query: String = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception, Reading, Writing 
 			FROM Words 
@@ -482,7 +482,7 @@ func _create_words_csv() -> void:
 
 
 func _create_syllable_csv() -> void:
-	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("syllables_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("syllables_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON", "READING", "WRITING"])
 	var query: String = "SELECT Syllables.ID as SyllableId, Syllable, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Syllables.Exception, Reading, Writing 
 			FROM Syllables 
@@ -511,7 +511,7 @@ func _create_syllable_csv() -> void:
 
 
 func _create_sentence_csv() -> void:
-	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("sentences_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("sentences_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["Sentence", "Lesson"])
 	var query: String = "SELECT Sentences.ID as SentenceId, Sentence, group_concat(Word, ' ') as Words, group_concat(Word, ' ') as Words, group_concat(Words.ID, ' ') as WordIDs, Sentences.Exception 
 			FROM Sentences 
@@ -533,7 +533,7 @@ func _create_sentence_csv() -> void:
 
 
 func _on_open_folder_button_pressed() -> void:
-	OS.shell_show_in_file_manager(ProjectSettings.globalize_path(base_path))
+	OS.shell_show_in_file_manager(ProjectSettings.globalize_path(BASE_PATH))
 
 
 func _on_tab_container_tab_changed(tab: int) -> void:
@@ -542,7 +542,7 @@ func _on_tab_container_tab_changed(tab: int) -> void:
 
 #region Book Generation
 func create_book() -> void:
-	var lang_path: String = base_path.path_join(Database.language)
+	var lang_path: String = BASE_PATH.path_join(Database.language)
 	var file_names: Dictionary[String, String] = {
 		"word": "words_list.csv",
 		"syllable": "syllables_list.csv",

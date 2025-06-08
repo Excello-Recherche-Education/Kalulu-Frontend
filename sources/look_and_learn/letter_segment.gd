@@ -3,9 +3,6 @@ class_name LetterSegment
 
 signal finished()
 
-const TracingPath: = preload("res://sources/look_and_learn/tracing_path.gd")
-const TracingEffects: = preload("res://sources/look_and_learn/tracing_effects.gd")
-
 @onready var tracing_path: TracingPath = $TracingPath
 @onready var tracing_effects: TracingEffects = $TracingEffects
 @onready var complete_particles: GPUParticles2D = $CompleteParticles
@@ -43,7 +40,7 @@ func _process(_delta: float) -> void:
 		tracing_effects.stop()
 
 
-func _on_CompleteAudioStreamPlayer_finished() -> void:
+func _on_complete_audio_stream_player_finished() -> void:
 	tracing_effects.stop()
 	complete_particles.emitting = false
 	finished.emit()

@@ -1,12 +1,7 @@
 @tool
 extends WordsMinigame
 
-# Namespace
-const Caterpillar: = preload("res://sources/minigames/caterpillar/caterpillar.gd")
-const Branch: = preload("res://sources/minigames/caterpillar/branch.gd")
-const Berry: = preload("res://sources/minigames/caterpillar/berry.gd")
-
-const branch_scene: PackedScene = preload("res://sources/minigames/caterpillar/branch.tscn")
+const BRANCH_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/branch.tscn")
 
 
 class DifficultySettings:
@@ -50,7 +45,7 @@ func _setup_minigame() -> void:
 	# Spawn the right amount of branches
 	var branch_size: float = branches_zone.size.y / (settings.branches + 1)
 	for index: int in settings.branches:
-		var branch: Branch = branch_scene.instantiate()
+		var branch: Branch = BRANCH_SCENE.instantiate()
 		branch.velocity = settings.velocity
 		branches_zone.add_child(branch)
 		branch.set_position(Vector2(0, branch_size * (index+1)))

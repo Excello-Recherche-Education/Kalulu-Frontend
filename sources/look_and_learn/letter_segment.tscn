@@ -52,4 +52,4 @@ stream = ExtResource("5")
 
 [connection signal="demo_finished" from="TracingPath" to="." method="_on_tracing_path_demo_finished"]
 [connection signal="finished" from="TracingPath" to="." method="_on_tracing_path_finished"]
-[connection signal="finished" from="CompleteAudioStreamPlayer" to="." method="_on_CompleteAudioStreamPlayer_finished"]
+[connection signal="finished" from="CompleteAudioStreamPlayer" to="." method="_on_complete_audio_stream_player_finished"]
