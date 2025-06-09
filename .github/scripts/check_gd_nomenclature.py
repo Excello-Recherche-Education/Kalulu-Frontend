@@ -77,6 +77,7 @@ for root, dirs, files in os.walk('.', topdown=True):
                         issues.append((path, idx, 'variable', name))
 
 if issues:
+    print(f"Total issues: {len(issues)}")
     print('GDScript naming issues found:')
     for path, idx, kind, name in issues:
         if kind == 'error':
@@ -84,7 +85,6 @@ if issues:
         else:
             message = f"'{name}' {MESSAGES[kind]}"
         print(f"{path}:{idx}: {message}")
-    print(f"Total issues: {len(issues)}")
     sys.exit(1)
 else:
     print('All GDScript files follow the naming conventions.')
