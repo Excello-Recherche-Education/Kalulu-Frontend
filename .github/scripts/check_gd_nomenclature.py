@@ -2,6 +2,26 @@ import os
 import re
 import sys
 
+
+def split_params(param_string: str):
+    """Split a function parameter string on commas while ignoring brackets."""
+    params = []
+    current = ""
+    depth = 0
+    for char in param_string:
+        if char == '[':
+            depth += 1
+        elif char == ']':
+            depth = max(0, depth - 1)
+        if char == ',' and depth == 0:
+            params.append(current.strip())
+            current = ""
+            continue
+        current += char
+    if current:
+        params.append(current.strip())
+    return params
+
 EXCLUDED_DIRS = {"addons", ".git", ".github"}
 
 PASCAL_CASE = re.compile(r"^[A-Z][A-Za-z0-9]*$")
@@ -48,11 +68,8 @@ for root, dirs, files in os.walk('.', topdown=True):
                     params = m.group(2)
                     if params:
                         params = params.strip('()')
-                        for param in params.split(','):
-                            param_name = param.strip()
-                            if not param_name:
-                                continue
-                            param_name = param_name.split(':')[0].split('=')[0].strip()
+                        for param in split_params(params):
+                            param_name = param.split(':')[0].split('=')[0].strip()
                             if param_name and not SNAKE_CASE.match(param_name):
                                 issues.append((path, idx, 'variable', param_name))
                 m = re.match(r"(?:@export\s+)?var\s+([A-Za-z0-9_]+)", stripped)
