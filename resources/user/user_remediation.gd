@@ -17,9 +17,9 @@ var gps_scores: Dictionary[int, int] = {}
 
 
 # Gets the score of a GP if it is below or equals to the remediation score
-func get_gp_score(ID: int) -> int:
-	if gps_scores.has(ID):
-		return gps_scores[ID] if gps_scores[ID] <= REMEDIATION_SCORE else 0
+func get_gp_score(id: int) -> int:
+	if gps_scores.has(id):
+		return gps_scores[id] if gps_scores[id] <= REMEDIATION_SCORE else 0
 	return 0
 
 
@@ -28,15 +28,15 @@ func update_gp_scores(minigame_scores: Dictionary) -> void:
 	if not minigame_scores:
 		return
 	Logger.trace("UserRemediation: Update GP Scores: " + str(minigame_scores))
-	for ID: int in minigame_scores.keys():
+	for id: int in minigame_scores.keys():
 		var new_gp_score: int = 0
-		if gps_scores.has(ID):
-			new_gp_score += gps_scores[ID]
-		new_gp_score += minigame_scores[ID]
+		if gps_scores.has(id):
+			new_gp_score += gps_scores[id]
+		new_gp_score += minigame_scores[id]
 		
 		if new_gp_score >= 0:
-			gps_scores.erase(ID)
+			gps_scores.erase(id)
 		else:
-			gps_scores[ID] = maxi(MIN_SCORE, new_gp_score)
+			gps_scores[id] = maxi(MIN_SCORE, new_gp_score)
 	
 	score_changed.emit()

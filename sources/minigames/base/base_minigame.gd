@@ -318,12 +318,12 @@ func _sort_scoring(stimulus1: Dictionary, stimulus2: Dictionary) -> bool:
 
 
 # Updates the score of a GP defined by his ID
-func _update_score(ID: int, score: int) -> void:
+func _update_score(id: int, score: int) -> void:
 	var new_gp_score: int = 0
-	if gp_scores.has(ID):
-		new_gp_score += gp_scores[ID]
+	if gp_scores.has(id):
+		new_gp_score += gp_scores[id]
 	new_gp_score += score
-	gp_scores[ID] = new_gp_score
+	gp_scores[id] = new_gp_score
 
 #endregion
 

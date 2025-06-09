@@ -150,23 +150,23 @@ func get_gps_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, 
 	return result
 
 
-func get_gps_from_syllable(syllable_ID: int) -> Array[Dictionary]:
-	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type FROM Syllables INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID AND Syllables.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInSyllables.GPID ORDER BY Position", [syllable_ID])
+func get_gps_from_syllable(syllable_id: int) -> Array[Dictionary]:
+	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type FROM Syllables INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID AND Syllables.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInSyllables.GPID ORDER BY Position", [syllable_id])
 	return db.query_result
 
 
-func get_gp_from_word(ID: int) -> Array:
-	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInWords.GPID ORDER BY Position", [ID])
+func get_gp_from_word(id: int) -> Array:
+	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInWords.GPID ORDER BY Position", [id])
 	return db.query_result
 
 
-func get_gps_from_sentence(sentenceID: int) -> Array[Dictionary]:
+func get_gps_from_sentence(sentence_id: int) -> Array[Dictionary]:
 	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type, GPsInWords.WordID, GPsInWords.Position AS GPPosition, WordsInSentences.Position AS WordPosition FROM GPs
 INNER JOIN GPsInWords ON GPsInWords.GPID = GPs.ID
 INNER JOIN WordsInSentences ON WordsInSentences.WordID = GPsInWords.WordID
 INNER JOIN Sentences ON Sentences.ID = WordsInSentences.SentenceID
 WHERE Sentences.ID = ?
-ORDER BY WordPosition ASC, GPPosition ASC", [sentenceID])
+ORDER BY WordPosition ASC, GPPosition ASC", [sentence_id])
 	return db.query_result
 
 
@@ -468,8 +468,8 @@ func get_audio_stream_for_path(path: String) -> AudioStream:
 	return load(full_path)
 
 
-func get_audio_stream_for_word(ID: int) -> AudioStream:
-	var gps: Array = get_gp_from_word(ID)
+func get_audio_stream_for_word(id: int) -> AudioStream:
+	var gps: Array = get_gp_from_word(id)
 	var file_name: String = _phoneme_to_string(gps[0].Phoneme as String)
 	for index: int in range(1, gps.size()):
 		var gp: Dictionary = gps[index]
