@@ -40,11 +40,21 @@ for root, dirs, files in os.walk('.', topdown=True):
                     name = m.group(1)
                     if not PASCAL_CASE.match(name):
                         issues.append((path, idx, 'class', name))
-                m = re.match(r"func\s+([A-Za-z0-9_]+)", stripped)
+                m = re.match(r"func\s+([A-Za-z0-9_]+)\s*(\([^)]*\))?", stripped)
                 if m:
-                    name = m.group(1).split('(')[0]
+                    name = m.group(1)
                     if not SNAKE_CASE.match(name):
                         issues.append((path, idx, 'function', name))
+                    params = m.group(2)
+                    if params:
+                        params = params.strip('()')
+                        for param in params.split(','):
+                            param_name = param.strip()
+                            if not param_name:
+                                continue
+                            param_name = param_name.split(':')[0].split('=')[0].strip()
+                            if param_name and not SNAKE_CASE.match(param_name):
+                                issues.append((path, idx, 'variable', param_name))
                 m = re.match(r"(?:@export\s+)?var\s+([A-Za-z0-9_]+)", stripped)
                 if m:
                     name = m.group(1)
