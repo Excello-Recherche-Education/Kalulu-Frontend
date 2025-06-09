@@ -6,7 +6,7 @@ EXCLUDED_DIRS = {"addons", ".git", ".github"}
 
 PASCAL_CASE = re.compile(r"^[A-Z][A-Za-z0-9]*$")
 SNAKE_CASE = re.compile(r"^_?[a-z][a-z0-9_]*$")
-UPPER_SNAKE_CASE = re.compile(r"^[A-Z][A-Z0-9_]*$")
+UPPER_SNAKE_CASE = re.compile(r"^_?[A-Z][A-Z0-9_]*$")
 
 issues = []
 MESSAGES = {
