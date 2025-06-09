@@ -2,7 +2,7 @@ extends Node
 
 @onready var music_player : AudioStreamPlayer = $MusicPlayer
 
-const tracks: Array = [
+const TRACKS: Array = [
 	preload("res://assets/music/title.mp3"),
 	preload("res://assets/music/garden.mp3")
 ]
@@ -20,7 +20,7 @@ func _on_music_player_finished() -> void:
 	music_player.play()
 
 func play(track : Track) -> void:
-	music_player.stream = tracks[track]
+	music_player.stream = TRACKS[track]
 	music_player.play()
 
 func stop() -> void:

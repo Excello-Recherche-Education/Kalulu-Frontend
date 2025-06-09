@@ -3,7 +3,7 @@ extends GPImageAndSoundDescriptions
 	 
 
 func _ready() -> void:
-	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.language_sounds)
+	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH + Database.language + Database.LANGUAGE_SOUNDS)
 	
 	Database.db.query("SELECT * FROM GPs WHERE GPs.Exception=0")
 	for res: Dictionary in Database.db.query_result:

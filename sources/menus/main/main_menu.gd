@@ -1,16 +1,15 @@
 extends Control
 
-const Kalulu: = preload("res://sources/menus/main/kalulu.gd")
-const LoginForm: = preload("res://sources/menus/main/login.gd")
+const KALULU: = preload("res://sources/menus/main/kalulu.gd")
 
-const adult_check_scene_path: String = "res://sources/menus/adult_check/adult_check.tscn"
-const package_loader_scene_path: String = "res://sources/menus/language_selection/package_downloader.tscn"
+const ADULT_CHECK_SCENE_PATH: String = "res://sources/menus/adult_check/adult_check.tscn"
+const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
 @onready var version_label : Label = $Informations/BuildVersionValue
 @onready var teacher_label : Label = $Informations/TeacherValue
 @onready var device_id_label : Label = $Informations/DeviceIDValue
 
-@onready var kalulu : Kalulu = $Kalulu
+@onready var kalulu : KALULU = $Kalulu
 @onready var play_button: Button = %PlayButton
 @onready var interface_left : MarginContainer = %InterfaceLeft
 @onready var keyboard_spacer: KeyboardSpacer = %KeyboardSpacer
@@ -48,8 +47,8 @@ func _on_back_button_pressed() -> void:
 
 func _on_register_pressed() -> void:
 	await OpeningCurtain.close()
-	get_tree().change_scene_to_file(adult_check_scene_path)
+	get_tree().change_scene_to_file(ADULT_CHECK_SCENE_PATH)
 
 
 func _on_login_in() -> void:
-	get_tree().change_scene_to_file(package_loader_scene_path)
+	get_tree().change_scene_to_file(PACKAGE_LOADER_SCENE_PATH)

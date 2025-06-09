@@ -1,7 +1,7 @@
 extends Control
 
-const main_menu_path: String = "res://sources/menus/main/main_menu.tscn"
-const next_scene_path: String = "res://sources/menus/settings/teacher_settings.tscn"
+const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
+const NEXT_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 
 @onready var teacher_steps: Array[PackedScene] = [
 	preload("res://sources/menus/register/steps/teacher/method_step.tscn"),
@@ -58,7 +58,7 @@ func _go_to_step(step_index: int) -> void:
 
 func _on_step_back(_step : Step) -> void:
 	if progress_bar.value == 0:
-		get_tree().change_scene_to_file(main_menu_path)
+		get_tree().change_scene_to_file(MAIN_MENU_PATH)
 	else:
 		_go_to_step(int(progress_bar.value-1))
 
@@ -110,7 +110,7 @@ func _on_step_completed(step : Step) -> void:
 			register_data.last_modified = res.body.last_modified
 			register_data.token = res.body.token
 			if UserDataManager.register(register_data):
-				get_tree().change_scene_to_file(next_scene_path)
+				get_tree().change_scene_to_file(NEXT_SCENE_PATH)
 		else:
 			if res.has("body") and (res.body as Dictionary).has("message"):
 				popup_info_label.text = res.body.message

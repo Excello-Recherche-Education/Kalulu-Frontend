@@ -1,13 +1,9 @@
 @tool
 extends WordsMinigame
 
-# Namespace
-const KingMonkey: = preload("res://sources/minigames/monkeys/king_monkey.gd")
-const Monkey: = preload("res://sources/minigames/monkeys/monkey.gd")
+const MONKEY_SCENE: PackedScene = preload("res://sources/minigames/monkeys/monkey.tscn")
 
-const monkey_scene: PackedScene = preload("res://sources/minigames/monkeys/monkey.tscn")
-
-const audio_streams: Array[AudioStreamMP3] = [
+const AUDIO_STREAMS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_right.mp3"),
 	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_wrong.mp3"),
@@ -62,7 +58,7 @@ func _setup_minigame() -> void:
 	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
 	for index: int in settings.distractors_count + 1:
-		var monkey: Monkey = monkey_scene.instantiate()
+		var monkey: Monkey = MONKEY_SCENE.instantiate()
 		monkeys_node.add_child(monkey)
 		monkeys.append(monkey)
 		
@@ -129,7 +125,7 @@ func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
 	await monkey.play("start_throw")
 	monkey.play("finish_throw")
 	
-	audio_player.stream = audio_streams[Audio.SendToKing]
+	audio_player.stream = AUDIO_STREAMS[Audio.SendToKing]
 	audio_player.play()
 	
 	var coconut: Coconut = monkey.coconut.duplicate()
@@ -174,7 +170,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		
 		await king.play("start_right")
 	
-		audio_player.stream = audio_streams[Audio.SendToPlank]
+		audio_player.stream = AUDIO_STREAMS[Audio.SendToPlank]
 		audio_player.play()
 		
 		king.play("finish_right")
@@ -193,7 +189,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 	else:
 		await king.play("start_wrong")
 	
-		audio_player.stream = audio_streams[Audio.SendToMonkey]
+		audio_player.stream = AUDIO_STREAMS[Audio.SendToMonkey]
 		audio_player.play()
 		
 		king.play("finish_wrong")

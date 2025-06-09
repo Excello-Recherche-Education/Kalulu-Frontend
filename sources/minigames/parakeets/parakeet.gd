@@ -2,7 +2,7 @@
 extends Node2D
 class_name Parakeet
 
-const instance_scene: String = "res://sources/minigames/parakeets/parakeet.tscn"
+const INSTANCE_SCENE: String = "res://sources/minigames/parakeets/parakeet.tscn"
 
 enum Colors {
 	Red,
@@ -10,7 +10,7 @@ enum Colors {
 	Yellow,
 }
 
-const animations: Array[SpriteFrames] = [
+const ANIMATIONS: Array[SpriteFrames] = [
 	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/green_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/yellow_parakeet_spritesheet.tres")
@@ -23,7 +23,7 @@ signal pressed()
 	set(value):
 		color = value
 		if animated_sprite:
-			animated_sprite.sprite_frames = animations[color]
+			animated_sprite.sprite_frames = ANIMATIONS[color]
 @export var uppercase: bool = true:
 	set(value):
 		uppercase = value
@@ -52,7 +52,7 @@ func _on_button_pressed() -> void:
 
 
 static func instantiate() -> Parakeet:
-	return (load(instance_scene) as PackedScene).instantiate()
+	return (load(INSTANCE_SCENE) as PackedScene).instantiate()
 
 
 func turn_to_back() -> void:

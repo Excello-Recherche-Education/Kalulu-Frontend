@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name KaluluTitle
 
 
 @export var title: String = "":

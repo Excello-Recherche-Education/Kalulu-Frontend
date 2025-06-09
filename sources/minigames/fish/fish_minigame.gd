@@ -3,7 +3,7 @@ extends Minigame
 
 signal beacon_fish_dropped(is_answered_real: bool)
 
-const fish_texture_rect_scene: PackedScene = preload("res://sources/minigames/fish/fish_texture_rect.tscn")
+const FISH_TEXTURE_RECT_SCENE: PackedScene = preload("res://sources/minigames/fish/fish_texture_rect.tscn")
 
 @onready var fish_start_zone: Control = %FishStartZone
 @onready var beacon1: SpriteControl = %Beacon1
@@ -34,7 +34,7 @@ var tutorial_count: int = 0
 
 
 func _fish_get_drag_data(_at_position: Vector2) -> Variant:
-	var fish_texture_rect: Control = fish_texture_rect_scene.instantiate()
+	var fish_texture_rect: Control = FISH_TEXTURE_RECT_SCENE.instantiate()
 	fish_texture_rect.size = Vector2(200, 200)
 	set_drag_preview(fish_texture_rect)
 	return true

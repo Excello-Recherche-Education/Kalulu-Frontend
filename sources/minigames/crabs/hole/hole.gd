@@ -4,21 +4,16 @@ class_name Hole
 signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned(is_stimulus: bool)
 signal stop()
-@warning_ignore("untyped_declaration")
-signal crab_out(hole)
+signal crab_out(hole: Hole)
 
-# Namespace
-const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
-const CrabAudioStreamPlayer: = preload("res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd")
-
-const crab_scene: PackedScene = preload("res://sources/minigames/crabs/crab/crab.tscn")
+const CRAB_SCENE: PackedScene = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
 @onready var hole_back: Sprite2D = $HoleBack
 @onready var hole_front: Sprite2D = $HoleFront
 @onready var mask: Sprite2D = %Mask
 @onready var sand_vfx: SandVFX = $SandVFX
 @onready var timer: Timer = $Timer
-@onready var crab_audio_stream_player: CrabAudioStreamPlayer = $CrabAudioStreamPlayer2D
+@onready var crab_audio_stream_player: HoleAudioStreamPlayer = $CrabAudioStreamPlayer2D
 
 var crab: Crab
 var crab_x : float
@@ -70,7 +65,7 @@ func spawn_crab(gp: Dictionary, p_is_stimulus: bool) -> void:
 	self.is_stimulus = p_is_stimulus
 	
 	# Instantiate a new crab
-	crab = crab_scene.instantiate()
+	crab = CRAB_SCENE.instantiate()
 	mask.add_child(crab)
 	
 	crab.hide_label()

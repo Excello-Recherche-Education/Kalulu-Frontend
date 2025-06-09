@@ -14,7 +14,7 @@ var log_file_path: String
 var log_file: FileAccess
 var initialized: bool = false
 
-const logPath: String = "user://Logs/"
+const LOG_PATH: String = "user://Logs/"
 
 func _ready() -> void:
 	delete_old_logs()
@@ -30,7 +30,7 @@ func _ready() -> void:
 	_log_internal(LogLevel.INFO, "--- Logging set at level " + str(current_level) + " ---")
 
 func delete_old_logs(days_threshold: float = 10) -> void:
-	var dir: DirAccess = DirAccess.open(logPath)
+	var dir: DirAccess = DirAccess.open(LOG_PATH)
 	if dir == null:
 		push_warning("Logger: Could not open Logs directory for cleanup.")
 		return
@@ -53,7 +53,7 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 				var file_time: int = Time.get_unix_time_from_datetime_dict(date_dict)
 				var age_days: float = float(now - file_time) / (60.0 * 60.0 * 24.0)
 				if age_days > days_threshold:
-					var full_path: String = logPath + file_name
+					var full_path: String = LOG_PATH + file_name
 					var err: Error = dir.remove(full_path)
 					if err != OK:
 						push_warning("Logger: Failed to delete old log: " + full_path)
@@ -64,16 +64,16 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 
 func _init_log_file() -> void:
 	# Ensure Logs directory exists
-	var logs_dir: DirAccess = DirAccess.open(logPath)
+	var logs_dir: DirAccess = DirAccess.open(LOG_PATH)
 	if logs_dir == null:
-		DirAccess.make_dir_recursive_absolute(logPath)
+		DirAccess.make_dir_recursive_absolute(LOG_PATH)
 
 	var now: Dictionary = Time.get_datetime_dict_from_system()
 	var filename: String = "Kalulu_Log_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
 		now.year, now.month, now.day,
 		now.hour, now.minute, now.second
 	]
-	log_file_path = logPath + filename
+	log_file_path = LOG_PATH + filename
 
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
 	if log_file == null:

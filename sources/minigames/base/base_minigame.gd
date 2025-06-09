@@ -50,8 +50,8 @@ enum Type {
 @onready var current_lesson_stimuli_number: int = floori(max_progression * current_lesson_stimuli_ratio)
 
 # Sounds
-const win_sound_fx: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
-const lose_sound_fx: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
+const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
+const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
 
 # Lesson
 var minigame_difficulty: int
@@ -226,7 +226,7 @@ func _win() -> void:
 	else:
 		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, true)
 	
-	audio_player.stream = win_sound_fx
+	audio_player.stream = WIN_SOUND_FX
 	audio_player.play()
 	
 	fireworks.start()
@@ -254,7 +254,7 @@ func _lose() -> void:
 	# Difficulty
 	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
 	
-	audio_player.stream = lose_sound_fx
+	audio_player.stream = LOSE_SOUND_FX
 	audio_player.play()
 	await audio_player.finished
 	

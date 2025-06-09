@@ -4,8 +4,6 @@ class_name CodeKeyboard
 signal button_pressed(key : String, password : Array[String])
 signal password_entered(password : String)
 
-const button_sound: AudioStreamMP3 = preload("res://assets/menus/login/ui_play_button.mp3")
-
 @onready var password_visualizer : PasswordVisualizer = %PasswordVisualizer
 @onready var buttons: GridContainer = %Buttons
 @onready var sound_player: AudioStreamPlayer = $ButtonSoundPlayer

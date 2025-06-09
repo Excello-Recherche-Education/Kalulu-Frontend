@@ -2,13 +2,13 @@
 extends Control
 
 const GARDENS_SCENE: PackedScene = preload("res://sources/gardens/gardens.tscn")
-const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
+const KALULU: = preload("res://sources/minigames/base/kalulu.gd")
 
 @export var locked_color: Color
 @export var unlocked_colors: Array[Color] = []
 @export var gardens_layout: GardensLayout
 
-@onready var kalulu: Kalulu = $Kalulu
+@onready var kalulu: KALULU = $Kalulu
 @onready var kalulu_button: TextureButton = %KaluluButton
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 

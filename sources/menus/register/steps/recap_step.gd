@@ -2,14 +2,14 @@
 extends Step
 class_name RecapStep
 
-const device_recap_scene : PackedScene = preload("res://sources/menus/register/steps/device_recap.tscn")
+const DEVICE_RECAP_SCENE: PackedScene = preload("res://sources/menus/register/steps/device_recap.tscn")
 
-@onready var recap_container : VBoxContainer = %RecapContainer
-@onready var email : Label = %Email
-@onready var account_type : Label = %AccountType
-@onready var education_method : Label = %EducationMethod
-@onready var devices_count : Label = %DevicesCount
-@onready var students_count : Label = %StudentsCount
+@onready var recap_container: VBoxContainer = %RecapContainer
+@onready var email: Label = %Email
+@onready var account_type: Label = %AccountType
+@onready var education_method: Label = %EducationMethod
+@onready var devices_count: Label = %DevicesCount
+@onready var students_count: Label = %StudentsCount
 
 func on_enter() -> void:
 	super.on_enter()
@@ -38,7 +38,7 @@ func on_enter() -> void:
 		child.queue_free()
 	
 	for device: int in teacher_settings.students.keys():
-		var device_recap : DeviceRecap = device_recap_scene.instantiate()
+		var device_recap : DeviceRecap = DEVICE_RECAP_SCENE.instantiate()
 		
 		if teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
 			device_recap.title = tr("DEVICE_NUMBER").format({"number" : device})

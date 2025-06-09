@@ -1,4 +1,6 @@
 extends MarginContainer
+class_name LessonUnlock
+
 signal unlocks_changed
 
 @export var lesson_number: int:

@@ -7,7 +7,7 @@ const DESCRIPTION_LINE_SCENE: PackedScene = preload("res://sources/language_tool
 
 func _ready() -> void:
 	var _description_line: VideoGPDescription = DESCRIPTION_LINE_SCENE.instantiate()
-	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.look_and_learn_videos)
+	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH + Database.language + Database.LOOK_AND_LEARN_VIDEOS)
 	_description_line.queue_free()
 	
 	Database.db.query("Select * FROM GPs WHERE GPs.Exception=0")

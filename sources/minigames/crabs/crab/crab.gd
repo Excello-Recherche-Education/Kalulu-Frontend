@@ -1,5 +1,6 @@
 @tool
 extends Control
+class_name Crab
 
 signal crab_hit(stimulus: Dictionary)
 

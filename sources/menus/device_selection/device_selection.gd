@@ -1,10 +1,7 @@
 extends Control
 
-# Namespace
-const DeviceButton:= preload("res://sources/menus/main/device_button.gd")
-const device_button_scene: PackedScene = preload("res://sources/menus/main/device_button.tscn")
-
-const login_scene_path: String = "res://sources/menus/login/login.tscn"
+const DEVICE_BUTTON_SCENE: PackedScene = preload("res://sources/menus/main/device_button.tscn")
+const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 
 @onready var container: GridContainer = %GridContainer
 
@@ -19,7 +16,7 @@ func _refresh() -> void:
 		child.queue_free()
 	
 	for device: int in UserDataManager.teacher_settings.students.keys():
-		var button: DeviceButton = device_button_scene.instantiate()
+		var button: DeviceButton = DEVICE_BUTTON_SCENE.instantiate()
 		button.number = device
 		button.background_color = Globals.device_colors[device-1 % Globals.device_colors.size()]
 		container.add_child(button)
@@ -29,4 +26,4 @@ func _refresh() -> void:
 func _device_button_pressed(device: int) -> void:
 	Logger.trace("DeviceSelection: User selected device %d" % device)
 	if UserDataManager.set_device_id(device):
-		get_tree().change_scene_to_file(login_scene_path)
+		get_tree().change_scene_to_file(LOGIN_SCENE_PATH)

@@ -2,7 +2,7 @@
 extends Control
 class_name SandVFX
 
-const textures: Array[Resource] = [
+const TEXTURES: Array[CompressedTexture2D] = [
 	preload("res://assets/vfx/sand_01.png"),
 	preload("res://assets/vfx/sand_02.png"),
 	preload("res://assets/vfx/sand_03.png"),
@@ -22,7 +22,7 @@ func _ready() -> void:
 
 
 func play() -> void:
-	particles.texture = textures.pick_random()
+	particles.texture = TEXTURES.pick_random()
 	particles.amount = randi_range(6, 18)
 	particles.restart()
 

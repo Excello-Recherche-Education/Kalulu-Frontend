@@ -1,7 +1,7 @@
 @tool
 extends Node
 
-const _symbols_to_string: Dictionary[String, String] = {
+const _SYMBOLS_TO_STRING: Dictionary[String, String] = {
 	"#" : "sharp",
 	"@" : "at",
 	"*" : "star",
@@ -9,13 +9,13 @@ const _symbols_to_string: Dictionary[String, String] = {
 	"%" : "pcent",
 	"§" : "para"
 }
-const base_path: String =  "user://language_resources/"
-const look_and_learn_images: String = "/look_and_learn/images/"
-const look_and_learn_sounds: String = "/look_and_learn/sounds/"
-const look_and_learn_videos: String = "/look_and_learn/video/"
-const language_sounds: String = "/language_sounds/"
-const kalulu_folder: String = "/kalulu/"
-const additional_word_list_path: String = "word_list.csv"
+const BASE_PATH: String =  "user://language_resources/"
+const LOOK_AND_LEARN_IMAGES: String = "/look_and_learn/images/"
+const LOOK_AND_LEARN_SOUNDS: String = "/look_and_learn/sounds/"
+const LOOK_AND_LEARN_VIDEOS: String = "/look_and_learn/video/"
+const LANGUAGE_SOUNDS: String = "/language_sounds/"
+const KALULU_FOLDER: String = "/kalulu/"
+const ADDITIONAL_WORD_LIST_PATH: String = "word_list.csv"
 const VIDEO_EXTENSION: String = ".ogv"
 const IMAGE_EXTENSION: String = ".png"
 const SOUND_EXTENSION: String = ".mp3"
@@ -23,10 +23,10 @@ const SOUND_EXTENSION: String = ".mp3"
 var language: String:
 	set(value):
 		language = value
-		db_path = base_path + language + "/language.db"
-		words_path = base_path + language + "/words/"
+		db_path = BASE_PATH + language + "/language.db"
+		words_path = BASE_PATH + language + "/words/"
 
-var db_path: String = base_path + language + "/language.db":
+var db_path: String = BASE_PATH + language + "/language.db":
 	set(value):
 		db_path = value
 		if db:
@@ -34,7 +34,7 @@ var db_path: String = base_path + language + "/language.db":
 			db.foreign_keys = true
 			connect_to_db()
 
-var words_path: String = base_path + language + "/words/"
+var words_path: String = BASE_PATH + language + "/words/"
 var additional_word_list: Dictionary = {}
 
 @onready var db: SQLite = SQLite.new()
@@ -53,7 +53,7 @@ func connect_to_db() -> void:
 
 
 func get_additional_word_list_path() -> String:
-	return base_path.path_join(additional_word_list_path)
+	return BASE_PATH.path_join(ADDITIONAL_WORD_LIST_PATH)
 
 
 func load_additional_word_list() -> String:
@@ -462,7 +462,7 @@ func get_lessons_count() -> int:
 
 
 func get_audio_stream_for_path(path: String) -> AudioStream:
-	var full_path: String = base_path.path_join(language).path_join(path)
+	var full_path: String = BASE_PATH.path_join(language).path_join(path)
 	if not FileAccess.file_exists(full_path):
 		return null
 	return load(full_path)
@@ -538,31 +538,31 @@ func get_gp_name(gp: Dictionary) -> String:
 
 
 func get_gp_look_and_learn_image_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_images + get_gp_name(gp) + IMAGE_EXTENSION
+	return BASE_PATH + language + LOOK_AND_LEARN_IMAGES + get_gp_name(gp) + IMAGE_EXTENSION
 
 
 func get_gp_look_and_learn_sound_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_sounds + get_gp_name(gp) + SOUND_EXTENSION
+	return BASE_PATH + language + LOOK_AND_LEARN_SOUNDS + get_gp_name(gp) + SOUND_EXTENSION
 
 
 func get_gp_look_and_learn_video_path(gp: Dictionary) -> String:
-	return base_path + language + look_and_learn_videos + get_gp_name(gp) + VIDEO_EXTENSION
+	return BASE_PATH + language + LOOK_AND_LEARN_VIDEOS + get_gp_name(gp) + VIDEO_EXTENSION
 
 
 func get_gp_sound_path(gp: Dictionary) -> String:
-	return base_path + language + language_sounds + Database.get_gp_name(gp) + SOUND_EXTENSION
+	return BASE_PATH + language + LANGUAGE_SOUNDS + Database.get_gp_name(gp) + SOUND_EXTENSION
 
 
 func get_syllable_sound_path(syllable: Dictionary) -> String:
-	return base_path + language + language_sounds + syllable.Grapheme + SOUND_EXTENSION
+	return BASE_PATH + language + LANGUAGE_SOUNDS + syllable.Grapheme + SOUND_EXTENSION
 
 
 func get_word_sound_path(word: Dictionary) -> String:
-	return base_path + language + language_sounds + word.Word + SOUND_EXTENSION
+	return BASE_PATH + language + LANGUAGE_SOUNDS + word.Word + SOUND_EXTENSION
 
 
 func get_kalulu_speech_path(speech_category: String, speech_name: String) -> String:
-	return base_path + language + language_sounds + kalulu_folder + speech_category + "_" + speech_name + SOUND_EXTENSION
+	return BASE_PATH + language + LANGUAGE_SOUNDS + KALULU_FOLDER + speech_category + "_" + speech_name + SOUND_EXTENSION
 
 
 func load_external_sound(path: String) -> AudioStreamMP3:
@@ -578,8 +578,8 @@ func load_external_sound(path: String) -> AudioStreamMP3:
 
 
 func _phoneme_to_string(phoneme: String) -> String:
-	if _symbols_to_string.has(phoneme):
-		return _symbols_to_string[phoneme]
+	if _SYMBOLS_TO_STRING.has(phoneme):
+		return _SYMBOLS_TO_STRING[phoneme]
 	elif phoneme == phoneme.to_lower():
 		return phoneme
 	else:

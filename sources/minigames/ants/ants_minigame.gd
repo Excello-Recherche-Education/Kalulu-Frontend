@@ -1,11 +1,11 @@
 @tool
 extends Minigame
 
-const blank_class: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
-const ant_class: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
-const word_class: PackedScene = preload("res://sources/minigames/ants/word.tscn")
+const BLANK_SCENE: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
+const ANT_SCENE: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
+const WORD_SCENE: PackedScene = preload("res://sources/minigames/ants/word.tscn")
 
-const label_settings: LabelSettings = preload("res://resources/themes/minigames_label_settings.tres")
+const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_label_settings.tres")
 
 @onready var sentence_container: HFlowContainer = %Sentence
 @onready var ants_spawn: Node2D = %AntsSpawn
@@ -141,15 +141,15 @@ func _next_sentence() -> void:
 	for index: int in range(current_words.size()):
 		var current_word: String = current_words[index]
 		if index in blanks:
-			var blank: Blank = blank_class.instantiate()
+			var blank: Blank = BLANK_SCENE.instantiate()
 			blank.stimulus = current_word
 			sentence_container.add_child(blank)
 			
-			var ant: Node2D = ant_class.instantiate()
+			var ant: Node2D = ANT_SCENE.instantiate()
 			ants.add_child(ant)
 			ant.global_position = ants_spawn.global_position
 			
-			var word: Word = word_class.instantiate()
+			var word: Word = WORD_SCENE.instantiate()
 			words.add_child(word)
 			
 			word.stimulus = current_word
@@ -169,7 +169,7 @@ func _next_sentence() -> void:
 			label.text = current_word + " "
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			label.label_settings = label_settings
+			label.label_settings = LABEL_SETTINGS
 
 
 func _start_ants() -> void:

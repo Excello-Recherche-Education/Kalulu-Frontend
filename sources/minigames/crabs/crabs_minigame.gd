@@ -1,10 +1,7 @@
 @tool
 extends SyllablesMinigame
 
-# Namespace
-const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
-
-const hole_scene: PackedScene = preload("res://sources/minigames/crabs/hole/hole.tscn")
+const HOLE_SCENE: PackedScene = preload("res://sources/minigames/crabs/hole/hole.tscn")
 
 class DifficultySettings:
 	var stimuli_ratio: float = 0.75
@@ -47,7 +44,7 @@ func _setup_minigame() -> void:
 			var fj: float = float(j + 1.0) / float(settings.rows[index] as int + 1.0)
 			var x: float = fj * top_left.x + (1.0 - fj) * bottom_right.x
 			
-			var hole: Hole = hole_scene.instantiate()
+			var hole: Hole = HOLE_SCENE.instantiate()
 			game_root.add_child(hole)
 			hole.position = Vector2(x, y)
 			

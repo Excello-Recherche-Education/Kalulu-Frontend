@@ -7,8 +7,8 @@ const DESCRIPTION_LINE_SCENE: PackedScene  = preload("res://sources/language_too
 
 
 func _ready() -> void:
-	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.look_and_learn_images)
-	DirAccess.make_dir_recursive_absolute(Database.base_path + Database.language + Database.look_and_learn_sounds)
+	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH + Database.language + Database.LOOK_AND_LEARN_IMAGES)
+	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH + Database.language + Database.LOOK_AND_LEARN_SOUNDS)
 	
 	Database.db.query("SELECT * FROM GPs WHERE GPs.Exception=0")
 	for res: Dictionary in Database.db.query_result:

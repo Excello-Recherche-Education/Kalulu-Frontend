@@ -1,8 +1,8 @@
-extends "res://sources/language_tool/word_list_element.gd"
+extends WordListElement
 
 signal not_found(text: String)
 
-const WORD_LIST_ELEMENT_SCENE: = preload("res://sources/language_tool/word_list_element.tscn")
+const WORD_LIST_ELEMENT_SCENE: PackedScene = preload("res://sources/language_tool/word_list_element.tscn")
 
 var words_not_founds: PackedStringArray
 
@@ -14,7 +14,7 @@ func _ready() -> void:
 
 func update_lesson() -> void:
 	var m: int = -1
-	for gp_id in gp_ids:
+	for gp_id: int in gp_ids:
 		var i: int = Database.get_min_lesson_for_word_id(gp_id)
 		if i < 0:
 			m = -1
@@ -24,12 +24,12 @@ func update_lesson() -> void:
 
 
 func _add_from_additional_word_list(new_text: String) -> int:
-	var punc: = "'!()[]{};:'\"\\,<>./?@#$%^&*_~"
-	var new_text_clean: = new_text.to_lower()
-	for chara in punc:
+	var punc: String = "'!()[]{};:'\"\\,<>./?@#$%^&*_~"
+	var new_text_clean: String = new_text.to_lower()
+	for chara: String in punc:
 		new_text_clean = new_text_clean.replace(chara, " ")
 	var word_list_element: WordListElement = WORD_LIST_ELEMENT_SCENE.instantiate()
-	var all_found: = true
+	var all_found: bool = true
 	words_not_founds.clear()
 	var word_ids: Array[int] = []
 	for word_element: String in new_text_clean.split(" ", false):
@@ -56,7 +56,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 				Position = index
 			})
 		return id
-	var not_found_text: = "Not found:"
+	var not_found_text: String = "Not found:"
 	for word_not_found: String in words_not_founds:
 		not_found_text += " " + word_not_found 
 	not_found.emit(not_found_text)
@@ -65,6 +65,6 @@ func _add_from_additional_word_list(new_text: String) -> int:
 
 func get_graphemes(p_gp_ids: Array[int]) -> String:
 	var res: Array[String] = []
-	for gp_id in p_gp_ids:
+	for gp_id: int in p_gp_ids:
 		res.append(sub_elements_list[gp_id].grapheme)
 	return " ".join(res)

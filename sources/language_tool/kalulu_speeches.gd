@@ -1,10 +1,8 @@
 extends Control
 
-const KaluluTitle: = preload("res://sources/language_tool/kalulu_speech_title.gd")
-const KaluluSpeech: = preload("res://sources/language_tool/kalulu_speech.gd")
 
-const title_scene: PackedScene = preload("res://sources/language_tool/kalulu_speech_title.tscn")
-const speech_scene: PackedScene = preload("res://sources/language_tool/kalulu_speech.tscn")
+const TITLE_SCENE: PackedScene = preload("res://sources/language_tool/kalulu_speech_title.tscn")
+const SPEECH_SCENE: PackedScene = preload("res://sources/language_tool/kalulu_speech.tscn")
 
 @onready var speech_container: VBoxContainer = %SpeechContainer
 
@@ -93,12 +91,12 @@ func _ready() -> void:
 	}
 	
 	for speech_title: String in speeches.keys():
-		var title: KaluluTitle = title_scene.instantiate()
+		var title: KaluluTitle = TITLE_SCENE.instantiate()
 		title.title = speech_title
 		speech_container.add_child(title)
 		
 		for speech_name: String in speeches[speech_title].keys():
-			var speech: KaluluSpeech = speech_scene.instantiate()
+			var speech: KaluluSpeech = SPEECH_SCENE.instantiate()
 			speech.speech_category = speech_title
 			speech.speech_name = speech_name
 			speech.speech_description = speeches[speech_title][speech_name]

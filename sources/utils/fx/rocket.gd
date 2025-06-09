@@ -15,7 +15,7 @@ class_name Rocket
 @onready var firework_audio_player: AudioStreamPlayer2D = $FireworkAudioPlayer
 @onready var blast_audio_player: AudioStreamPlayer2D = $BlastAudioPlayer
 
-const firework_sounds: Array[AudioStreamMP3] = [
+const FIREWORK_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/fireworks_1.mp3"),
 	preload("res://assets/sfx/fireworks_2.mp3"),
 	preload("res://assets/sfx/fireworks_3.mp3"),
@@ -23,7 +23,7 @@ const firework_sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/fireworks_5.mp3"),
 ]
 
-const blast_sounds: Array[AudioStreamMP3] = [
+const BLAST_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/blast_1.mp3"),
 	preload("res://assets/sfx/blast_2.mp3"),
 	preload("res://assets/sfx/blast_3.mp3"),
@@ -31,7 +31,7 @@ const blast_sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/blast_5.mp3"),
 ]
 
-const colors: Array[Color] = [
+const COLORS: Array[Color] = [
 	Color(0.427, 0.796, 1),
 	Color(0.976, 0.322, 0.392),
 	Color(1, 0.396, 0.753),
@@ -48,12 +48,12 @@ func _ready() -> void:
 	ind_color = randi() % int(rocket.texture.get_size().x / rocket.region_rect.size.x)
 	rocket.region_rect.position.x = ind_color * rocket.region_rect.size.x
 	
-	firework_audio_player.stream = firework_sounds[randi() % firework_sounds.size()]
-	blast_audio_player.stream = blast_sounds[randi() % blast_sounds.size()]
+	firework_audio_player.stream = FIREWORK_SOUNDS[randi() % FIREWORK_SOUNDS.size()]
+	blast_audio_player.stream = BLAST_SOUNDS[randi() % BLAST_SOUNDS.size()]
 
 
 func start(start_point: Vector2, end_point: Vector2) -> void:
-	explosion_particles.modulate = colors[ind_color]
+	explosion_particles.modulate = COLORS[ind_color]
 	
 	create_path(start_point, end_point)
 	

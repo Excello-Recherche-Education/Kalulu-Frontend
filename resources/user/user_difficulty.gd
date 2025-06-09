@@ -17,7 +17,7 @@ func get_difficulty(minigame_name: String) -> int:
 
 # Adds a game to the minigame history of the user and update difficulty if needed
 func add_game(minigame_name: String, minigame_won: bool) -> void:
-	var history : UserMinigameHistory = minigames_histories.get(minigame_name, UserMinigameHistory.new())
+	var history: UserMinigameHistory = minigames_histories.get(minigame_name, UserMinigameHistory.new())
 	history.add_game(minigame_won)
 	minigames_histories[minigame_name] = history
 	difficulty_changed.emit()

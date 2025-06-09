@@ -6,7 +6,7 @@ const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selectio
 const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
 
-const error_messages: Array[String] = [
+const ERROR_MESSAGES: Array[String] = [
 	"DISCONECTED_ERROR",
 	"NO_INTERNET_ACCESS",
 	"ERROR_DOWNLOADING",
@@ -214,7 +214,7 @@ func _delete_dir(path: String) -> void:
 
 
 func _show_error(error: int) -> void:
-	error_popup.content_text = error_messages[error]
+	error_popup.content_text = ERROR_MESSAGES[error]
 	error_popup.show()
 	
 

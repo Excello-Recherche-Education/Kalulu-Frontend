@@ -1,5 +1,6 @@
 @tool
 extends TextureButton
+class_name DeviceButton
 
 @onready var background: TextureRect = $Background
 @onready var label: Label = $Label

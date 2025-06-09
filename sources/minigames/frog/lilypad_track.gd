@@ -1,13 +1,9 @@
 extends Control
+class_name LilypadTrack
 
 signal lilypad_in_center(lilypad: Lilypad)
 
-# Namespace
-const Lilypad = preload("res://sources/minigames/frog/lilypad.gd")
-
-const lilypad_scene: PackedScene = preload("res://sources/minigames/frog/lilypad.tscn")
-const lilypad_crossing_time: float = 5.0
-
+const LILYPAD_SCENE: PackedScene = preload("res://sources/minigames/frog/lilypad.tscn")
 
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var spawn_timer:  Timer = $SpawnTimer
@@ -90,7 +86,7 @@ func pick_distractor() -> Dictionary:
 #region Lilypads
 
 func _spawn_lilypad() -> void:
-	var lilypad: Lilypad = lilypad_scene.instantiate()
+	var lilypad: Lilypad = LILYPAD_SCENE.instantiate()
 	lilypads.append(lilypad)
 	add_child(lilypad)
 	

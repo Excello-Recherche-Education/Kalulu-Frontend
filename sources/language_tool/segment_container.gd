@@ -11,8 +11,8 @@ signal changed()
 @onready var segments_container: VBoxContainer = %SegmentsContainer
 @onready var lines: Node2D = %Lines
 
-const segment_build_class: PackedScene = preload("res://sources/language_tool/segment_build.tscn")
-const point_button_class: PackedScene = preload("res://sources/language_tool/segment_point_button.tscn")
+const SEGMENT_BUILD_SCENE: PackedScene = preload("res://sources/language_tool/segment_build.tscn")
+const POINT_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/segment_point_button.tscn")
 
 var gradient: Gradient
 
@@ -76,7 +76,7 @@ func match_segment_with_buttons() -> void:
 	
 	for index: int in range(points.size()):
 		while index >= buttons.size():
-			var button: SegmentPointButton = point_button_class.instantiate()
+			var button: SegmentPointButton = POINT_BUTTON_SCENE.instantiate()
 			buttons_parent.add_child(button)
 			buttons.append(button)
 			button.point_down.connect(_on_button_point_down.bind(button))
@@ -121,7 +121,7 @@ func _on_place_point_button_pressed() -> void:
 
 
 func _on_add_segment_button_pressed() -> void:
-	var segment_build: SegmentBuild = segment_build_class.instantiate()
+	var segment_build: SegmentBuild = SEGMENT_BUILD_SCENE.instantiate()
 	segments_container.add_child(segment_build)
 	
 	segment_build.modify.connect(_on_segment_modify.bind(segment_build))
