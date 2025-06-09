@@ -60,6 +60,11 @@ for root, dirs, files in os.walk('.', topdown=True):
                     name = m.group(1)
                     if not SNAKE_CASE.match(name):
                         issues.append((path, idx, 'signal', name))
+                m = re.match(r"for\s+([A-Za-z0-9_]+)(?:\s*:\s*[^\s]+)?\s+in\b", stripped)
+                if m:
+                    name = m.group(1)
+                    if not SNAKE_CASE.match(name):
+                        issues.append((path, idx, 'variable', name))
 
 if issues:
     print('GDScript naming issues found:')
