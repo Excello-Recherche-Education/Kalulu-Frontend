@@ -1,0 +1,34 @@
+name: Single Character Variable Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  single_char_vars:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run single character variable check
+        id: single
+        run: |
+          python3 .github/scripts/check_single_char_vars.py > single_char_vars_output.txt
+        continue-on-error: true
+      - name: Comment on PR with single character variable output
+        if: steps.single.outcome != 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('single_char_vars_output.txt', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+      - name: Fail if single character variable check failed
+        if: steps.single.outcome != 'success'
+        run: exit 1
