@@ -117,8 +117,8 @@ func to_dict() -> Dictionary:
 	for device: int in students.keys():
 		dict["students"][device] = []
 		var device_students: Array = dict["students"][device]
-		for s: StudentData in students[device]: 
-			device_students.append(s.to_dict())
+		for student_data: StudentData in students[device]: 
+			device_students.append(student_data.to_dict())
 	
 	return dict
 
