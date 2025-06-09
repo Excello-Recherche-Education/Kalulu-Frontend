@@ -123,7 +123,7 @@ func _on_berry_timer_timeout() -> void:
 	var gp: Dictionary = {}
 	var is_stimulus: bool = randf() < _get_difficulty_settings().stimuli_ratio
 	if is_stimulus:
-		gp = _get_GP()
+		gp = _get_gp()
 	else:
 		gp = _get_distractor()
 	
@@ -140,11 +140,11 @@ func _on_berry_eaten(berry: Berry) -> void:
 	
 	var gp: Dictionary = berry.gp
 	
-	if _is_GP_right(berry.gp):
+	if _is_gp_right(berry.gp):
 		_clear_berries()
 		_stop()
 		await caterpillar.eat_berry(berry)
-		await audio_player.play_gp(_get_GP())
+		await audio_player.play_gp(_get_gp())
 		_run()
 		current_word_progression += 1
 	else:

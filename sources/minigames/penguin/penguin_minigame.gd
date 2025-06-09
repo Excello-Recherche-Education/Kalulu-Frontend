@@ -15,7 +15,7 @@ var labels: Array[PenguinLabel] = []
 
 # Find words with silent GPs
 func _find_stimuli_and_distractions() -> void:
-	var sentences_list: Array = Database.get_sentences_for_lesson_with_silent_GPs(lesson_nb)
+	var sentences_list: Array = Database.get_sentences_for_lesson_with_silent_gps(lesson_nb)
 	
 	if sentences_list.is_empty():
 		return
@@ -69,7 +69,7 @@ func _find_stimuli_and_distractions() -> void:
 	
 	# Find the GPs and distractors for each word
 	for sentence: Dictionary in stimuli:
-		sentence.GPs = Database.get_GPs_from_sentence(sentence.ID as int)
+		sentence.GPs = Database.get_gps_from_sentence(sentence.ID as int)
 		
 	Logger.trace("PenguinMinigame: Stimuli: %s" % str(stimuli))
 
@@ -97,9 +97,9 @@ func _setup_word_progression() -> void:
 	var last_word_id: int
 	var word_container: HBoxContainer
 	
-	for GP: Dictionary in stimulus.GPs:
-		if GP.WordID != last_word_id:
-			last_word_id = GP.WordID
+	for gp: Dictionary in stimulus.GPs:
+		if gp.WordID != last_word_id:
+			last_word_id = gp.WordID
 			word_container = HBoxContainer.new()
 			labels_container.add_child(word_container)
 		
@@ -107,14 +107,14 @@ func _setup_word_progression() -> void:
 		if first_gp:
 			label.capitalized = true
 			first_gp = false
-		label.gp = GP
+		label.gp = gp
 		word_container.add_child(label)
 		
 		label.pressed.connect(_on_snowball_thrown.bind(label))
 		
 		labels.append(label)
 		
-		if GP.Type == 0:
+		if gp.Type == 0:
 			max_word_progression += 1
 	
 	current_word_progression = 0

@@ -52,7 +52,7 @@ func _set_lesson_number(value: int) -> void:
 		exercise_buttons[1].select(exercise_buttons[0].get_item_index(element.Exercise2))
 		exercise_buttons[2].select(exercise_buttons[0].get_item_index(element.Exercise3))
 	
-	var gps_in_lesson: = Database.get_GP_for_lesson(lesson_number, true)
+	var gps_in_lesson: = Database.get_gps_for_lesson(lesson_number, true)
 	var syllables_in_lesson: = Database.get_syllables_for_lesson(lesson_number)
 	var words_in_lesson: = Database.get_words_for_lesson(lesson_number)
 	var sentences_in_lesson: = Database.get_sentences(lesson_number, false, sentences_by_lesson)

@@ -83,7 +83,7 @@ func _setup_minigame() -> void:
 
 func _highlight() -> void:
 	for monkey: Monkey in monkeys:
-		if _is_GP_right(monkey.stimulus):
+		if _is_gp_right(monkey.stimulus):
 			monkey.highlight()
 
 
@@ -166,7 +166,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 	coroutine.add_future(_play_monkey_stimulus.bind(monkey))
 	await coroutine.join_all()
 	
-	if _is_GP_right(monkey.stimulus):
+	if _is_gp_right(monkey.stimulus):
 		
 		await king.play("start_right")
 	
@@ -213,7 +213,7 @@ func _on_current_word_progression_changed() -> void:
 	for index: int in monkeys.size():
 		var monkey: Monkey = monkeys[index]
 		if index == ind_good:
-			monkey.stimulus = _get_GP()
+			monkey.stimulus = _get_gp()
 		else:
 			monkey.stimulus = _get_distractor()
 		monkey.stunned = false

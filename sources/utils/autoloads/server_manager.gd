@@ -132,7 +132,7 @@ func check_internet_access() -> bool:
 	return false
 
 
-func _create_URI_with_parameters(URI: String, params: Dictionary) -> String:
+func _create_uri_with_parameters(URI: String, params: Dictionary) -> String:
 	var is_first_param: bool = true
 	for key: String in params.keys():
 		if is_first_param:
@@ -170,13 +170,13 @@ func _response() -> Dictionary:
 
 
 func _get_request(URI: String, params: Dictionary) -> void:
-	resetResult()
+	reset_result()
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
 		Logger.trace("ServerManager Sending GET request.\n    URI = %s\n    Parameters not logged because it contains a password." % URI)
 	else:
 		Logger.trace("ServerManager Sending GET request.\n    URI = %s\n    Parameters = %s" % [URI, params])
-	if http_request.request(_create_URI_with_parameters(environment_url + URI, params), headers) == OK:
+	if http_request.request(_create_uri_with_parameters(environment_url + URI, params), headers) == OK:
 		await request_completed
 	else:
 		Logger.error("ServerManager Error sending GET request")
@@ -185,8 +185,8 @@ func _get_request(URI: String, params: Dictionary) -> void:
 
 
 func _post_request(URI: String, params: Dictionary) -> void:
-	resetResult()
-	var url: String = _create_URI_with_parameters(environment_url + URI, params)
+	reset_result()
+	var url: String = _create_uri_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
 		Logger.trace("ServerManager Sending POST request.\n    URI = %s\n    Parameters not logged because it contains a password." % URI)
@@ -201,7 +201,7 @@ func _post_request(URI: String, params: Dictionary) -> void:
 
 
 func _post_json_request(URI: String, data: Dictionary) -> void:
-	resetResult()
+	reset_result()
 	var req: String = environment_url + URI
 	var headers: PackedStringArray = _create_request_headers(true)
 	if data.has("password"):
@@ -217,8 +217,8 @@ func _post_json_request(URI: String, data: Dictionary) -> void:
 
 
 func _delete_request(URI: String, params: Dictionary = {}) -> void:
-	resetResult()
-	var req: String = _create_URI_with_parameters(environment_url + URI, params)
+	reset_result()
+	var req: String = _create_uri_with_parameters(environment_url + URI, params)
 	var headers: PackedStringArray = _create_request_headers()
 	Logger.trace("ServerManager Sending DELETE request.\n    URI = %s\n    Parameters = %s" % [URI, params])
 	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == OK:
@@ -238,8 +238,8 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 		Logger.trace("ServerManager Request Completed. Response code = %d" % response_code)
 		if body:
 			Logger.trace("Body received = %s" % body.get_string_from_utf8())
-			var strBody: String = body.get_string_from_utf8()
-			var result: Variant = JSON.parse_string(strBody)
+			var str_body: String = body.get_string_from_utf8()
+			var result: Variant = JSON.parse_string(str_body)
 			if result != null:
 				json = result
 			else:
@@ -260,7 +260,7 @@ func _on_internet_check_request_completed(result_code: int, response_code: int, 
 	internet_check_completed.emit(success)
 
 
-func resetResult() -> void:
+func reset_result() -> void:
 	success = false
 	code = 0
 	json = {}

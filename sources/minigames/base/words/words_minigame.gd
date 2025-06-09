@@ -83,8 +83,8 @@ func _find_stimuli_and_distractions() -> void:
 	for stimulus: Dictionary in stimuli:
 		stimulus.GPs = Database.get_gp_from_word(stimulus.ID as int)
 		var grapheme_distractions: Array = []
-		for GP: Dictionary in stimulus.GPs:
-			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID as int, lesson_nb))
+		for gp: Dictionary in stimulus.GPs:
+			grapheme_distractions.append(Database.get_distractors_for_grapheme(gp.ID as int, lesson_nb))
 		distractions.append(grapheme_distractions)
 		
 
@@ -106,8 +106,8 @@ func _setup_minigame() -> void:
 # Setups the word progression for current progression
 func _setup_word_progression() -> void:
 	var stimulus: Dictionary = _get_current_stimulus()
-	var GPs: Array = stimulus.GPs as Array
-	max_word_progression = GPs.size()
+	var gps: Array = stimulus.GPs as Array
+	max_word_progression = gps.size()
 	current_word_progression = 0
 	
 	_play_stimulus()
@@ -155,7 +155,7 @@ func _get_current_distractors() -> Array:
 
 
 # Get the current GP to find
-func _get_GP() -> Dictionary:
+func _get_gp() -> Dictionary:
 	var stimulus: Dictionary = _get_current_stimulus()
 	if not stimulus or not stimulus.has("GPs") or current_word_progression >= (stimulus.GPs as Array).size():
 		return {}
@@ -174,23 +174,23 @@ func _get_distractor() -> Dictionary:
 
 
 # Check if the provided GP is the expected answer
-func _is_GP_right(gp: Dictionary) -> bool:
-	return gp == _get_GP()
+func _is_gp_right(gp: Dictionary) -> bool:
+	return gp == _get_gp()
 
 
 # Log the response and score
 func _log_new_response_and_score(gp: Dictionary) -> void:
 	# Logs the answer
-	_log_new_response(gp, self._get_GP())
+	_log_new_response(gp, self._get_gp())
 	
 	# Handles GP scoring
-	if self._is_GP_right(gp):
+	if self._is_gp_right(gp):
 		if not is_highlighting:
 			_update_score(gp.ID as int, 1)
 	else:
 		if gp:
 			_update_score(gp.ID as int, -1)
-		_update_score(self._get_GP().ID as int, -1)
+		_update_score(self._get_gp().ID as int, -1)
 
 
 # ------------- UI Callbacks ------------- #

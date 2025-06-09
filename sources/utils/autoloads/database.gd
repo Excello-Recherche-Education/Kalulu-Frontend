@@ -104,7 +104,7 @@ func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
 	return result
 
 
-func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false, include_exceptions: bool = false) -> Array:
+func get_gps_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false, include_exceptions: bool = false) -> Array:
 	
 	var parameters: Array = []
 	var symbol: String = "<=" if not only_new else "=="
@@ -150,7 +150,7 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	return result
 
 
-func get_GPs_from_syllable(syllable_ID: int) -> Array[Dictionary]:
+func get_gps_from_syllable(syllable_ID: int) -> Array[Dictionary]:
 	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type FROM Syllables INNER JOIN GPsInSyllables ON Syllables.ID = GPsInSyllables.SyllableID AND Syllables.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInSyllables.GPID ORDER BY Position", [syllable_ID])
 	return db.query_result
 
@@ -160,7 +160,7 @@ func get_gp_from_word(ID: int) -> Array:
 	return db.query_result
 
 
-func get_GPs_from_sentence(sentenceID: int) -> Array[Dictionary]:
+func get_gps_from_sentence(sentenceID: int) -> Array[Dictionary]:
 	db.query_with_bindings("SELECT GPs.ID, GPs.Grapheme, GPs.Phoneme, GPs.Type, GPsInWords.WordID, GPsInWords.Position AS GPPosition, WordsInSentences.Position AS WordPosition FROM GPs
 INNER JOIN GPsInWords ON GPsInWords.GPID = GPs.ID
 INNER JOIN WordsInSentences ON WordsInSentences.WordID = GPsInWords.WordID
@@ -198,7 +198,7 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[D
 	
 	var res: Array[Dictionary] = db.query_result
 	for syllable: Dictionary in res:
-		syllable.GPs = get_GPs_from_syllable(syllable.ID as int)
+		syllable.GPs = get_gps_from_syllable(syllable.ID as int)
 		var phonemes: Array[String] = []
 		for gp: Dictionary in syllable.GPs:
 			phonemes.append(gp.Phoneme)
@@ -244,11 +244,11 @@ FROM Words
 	
 	# Parse the GPs IDs
 	for word: Dictionary in res:
-		var word_GPs: Array = []
+		var word_gps: Array = []
 		var word_gps_id: String = word.GPs_IDs
-		for GPID: String in word_gps_id.split(","):
-			word_GPs.append({ID = int(GPID)})
-		word.GPs = word_GPs
+		for gp_id: String in word_gps_id.split(","):
+			word_gps.append({ID = int(gp_id)})
+		word.GPs = word_gps
 		word.erase("GPs_IDs")
 	
 	return res
@@ -346,7 +346,7 @@ WHERE Sentences.Exception = 0
 	return db.query_result
 
 
-func get_sentences_for_lesson_with_silent_GPs(lesson_nb: int, min_length: int = 2, max_length:int = 5) -> Array[Dictionary]:
+func get_sentences_for_lesson_with_silent_gps(lesson_nb: int, min_length: int = 2, max_length:int = 5) -> Array[Dictionary]:
 	var query: String = "SELECT Sentences.*, VerifiedCount.MaxLessonNb AS LessonNb FROM Sentences
 INNER JOIN 
 	(SELECT SentenceID, count() as WordsCount FROM WordsInSentences 

@@ -158,30 +158,30 @@ func _check_db_integrity() -> void:
 	var lesson_id: int
 	var known_words_list: Dictionary = {}
 	var known_gps_list: Array[Dictionary] = []
-	var gp_Known: bool = false
+	var gp_known: bool = false
 	for index: int in Database.get_lessons_count():
 		lesson_id = index +1
 		error_label.text = "Database integrity checks lesson " + str(lesson_id)
 		await get_tree().process_frame
 		Logger.trace("ProfToolMenu: Lesson_id = " + str(lesson_id))
 		
-		var new_gps_for_lesson: Array = Database.get_GP_for_lesson(lesson_id, false, true, false, false, true)
-		for new_GP: Dictionary in new_gps_for_lesson:
-			if !new_GP.has("ID"):
+		var new_gps_for_lesson: Array = Database.get_gps_for_lesson(lesson_id, false, true, false, false, true)
+		for new_gp: Dictionary in new_gps_for_lesson:
+			if !new_gp.has("ID"):
 				if !log_message("GP with no ID in lesson " + str(lesson_id)):
 					return
-			if !new_GP.has("Grapheme"):
-				if !log_message("GP (ID " + str(new_GP.ID) + ") with no Grapheme in lesson " + str(lesson_id)):
+			if !new_gp.has("Grapheme"):
+				if !log_message("GP (ID " + str(new_gp.ID) + ") with no Grapheme in lesson " + str(lesson_id)):
 					return
-			if !new_GP.has("Phoneme"):
-				if !log_message("GP (ID " + str(new_GP.ID) + ") with no Phoneme in lesson " + str(lesson_id)):
+			if !new_gp.has("Phoneme"):
+				if !log_message("GP (ID " + str(new_gp.ID) + ") with no Phoneme in lesson " + str(lesson_id)):
 					return
-			var exists: bool = known_gps_list.any(func(d: Dictionary) -> bool: return d == new_GP)
+			var exists: bool = known_gps_list.any(func(d: Dictionary) -> bool: return d == new_gp)
 			if exists:
-				if !log_message("GP ID " + str(new_GP.ID) + " already exists in lesson " + str(lesson_id)):
+				if !log_message("GP ID " + str(new_gp.ID) + " already exists in lesson " + str(lesson_id)):
 					return
 			else:
-				known_gps_list.push_back(new_GP)
+				known_gps_list.push_back(new_gp)
 		
 		var new_words_for_lesson: Array = Database.get_words_for_lesson(lesson_id, true, 1, 99, true)
 		for new_word: Dictionary in new_words_for_lesson:
@@ -194,17 +194,17 @@ func _check_db_integrity() -> void:
 			if !new_word.has("Word"):
 				if !log_message("Word with no Word (key) at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
 					return
-			for GP: Dictionary in new_word.GPs:
-				if !GP.has("ID"):
+			for gp: Dictionary in new_word.GPs:
+				if !gp.has("ID"):
 					if !log_message("GP with no ID (key) at lesson ID " + str(lesson_id) + " in word " + (new_word.Word as String) + " (ID " + str(new_word.ID) + ")"):
 						return
-				gp_Known = false
+				gp_known = false
 				for known_gp: Dictionary in known_gps_list:
-					if known_gp.ID == GP.ID:
-						gp_Known = true
+					if known_gp.ID == gp.ID:
+						gp_known = true
 						break
-				if !gp_Known:
-					if !log_message("Word " + (new_word.Word as String) + " with unknown GP (ID " + str(GP.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
+				if !gp_known:
+					if !log_message("Word " + (new_word.Word as String) + " with unknown GP (ID " + str(gp.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
 						return
 			if known_words_list.has(new_word.Word):
 				if !log_message('Word  "' + (new_word.Word as String) + '" is introduced in lesson ID ' + str(lesson_id) + " but it already was introduced in lesson ID " + str(known_words_list[new_word.Word])):
@@ -238,7 +238,7 @@ func _check_db_integrity() -> void:
 			continue #No sentence in this lesson
 	
 	error_label.text = "Database integrity checks all GP sounds file names."
-	var all_gps: Array = Database.get_GP_for_lesson(Database.get_lessons_count() + 1, false, false, false, true, true)
+	var all_gps: Array = Database.get_gps_for_lesson(Database.get_lessons_count() + 1, false, false, false, true, true)
 	for gp: Dictionary in all_gps:
 		var gp_sound_path: String = Database.get_gp_sound_path(gp)
 		var result: Dictionary = file_exists_case_sensitive(gp_sound_path)

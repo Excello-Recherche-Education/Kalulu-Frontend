@@ -110,11 +110,11 @@ func _find_stimuli_and_distractions() -> void:
 					stimulus_distractors.append(syllable)
 		
 		# Higher difficulties only changes syllables distractors
-		var stimulus_GPs: Array[Dictionary] = stimulus.GPs
-		if difficulty > 1 and stimulus_GPs.size() == 2:
+		var stimulus_gps: Array[Dictionary] = stimulus.GPs
+		if difficulty > 1 and stimulus_gps.size() == 2:
 			for syllable: Dictionary in all_syllables:
-				var syllable_GPs: Array[Dictionary] = syllable.GPs
-				if syllable_GPs.size() != 2:
+				var syllable_gps: Array[Dictionary] = syllable.GPs
+				if syllable_gps.size() != 2:
 					continue
 				
 				# Difficulty 2-3
@@ -201,25 +201,25 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		_on_stimulus_found()
 		stimulus_found.emit()
 	else:
-		var right_answer_GPs: Array[Dictionary] = _get_current_stimulus().GPs
+		var right_answer_gps: Array[Dictionary] = _get_current_stimulus().GPs
 		
-		var stimulus_GPs: Array[Dictionary] = []
+		var stimulus_gps: Array[Dictionary] = []
 		if stimulus.has("GPs"):
-			stimulus_GPs = stimulus.GPs
+			stimulus_gps = stimulus.GPs
 		
 		# Handles the right answer GPs
 		# RA os - stimulus à
-		for index: int in right_answer_GPs.size():
-			if not stimulus_GPs or (index < stimulus_GPs.size() and stimulus_GPs[index] == right_answer_GPs[index]):
+		for index: int in right_answer_gps.size():
+			if not stimulus_gps or (index < stimulus_gps.size() and stimulus_gps[index] == right_answer_gps[index]):
 				continue
-			_update_score(right_answer_GPs[index].ID as int, -1)
+			_update_score(right_answer_gps[index].ID as int, -1)
 		
 		# Handles the pressed stimulus Gps
-		if stimulus_GPs:
-			for index: int in stimulus_GPs.size():
-				if index < right_answer_GPs.size() and stimulus_GPs[index] == right_answer_GPs[index]:
+		if stimulus_gps:
+			for index: int in stimulus_gps.size():
+				if index < right_answer_gps.size() and stimulus_gps[index] == right_answer_gps[index]:
 					continue
-				_update_score(stimulus_GPs[index].ID as int, -1)
+				_update_score(stimulus_gps[index].ID as int, -1)
 	return true
 
 

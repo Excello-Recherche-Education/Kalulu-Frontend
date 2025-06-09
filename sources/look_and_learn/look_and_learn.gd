@@ -40,7 +40,7 @@ func _ready() -> void:
 
 
 func setup() -> void:
-	gp_list = Database.get_GP_for_lesson(lesson_nb, true, true)
+	gp_list = Database.get_gps_for_lesson(lesson_nb, true, true)
 	
 	if gp_list.size() <= 0:
 		Logger.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))

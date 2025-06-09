@@ -95,13 +95,13 @@ func synchronize() -> void:
 	var students_timestamps: Array[Dictionary] = []
 	for item: Dictionary in response_body.students:
 		students_timestamps.append(item)
-	for studentDic: Dictionary in students_timestamps:
-		if not studentDic.has("code"):
+	for student_dic: Dictionary in students_timestamps:
+		if not student_dic.has("code"):
 			continue
-		var code_to_check: int = studentDic.code
-		var serverStudentUnixTime: int = -1
-		if studentDic.has("updated_at"):
-			serverStudentUnixTime = Time.get_unix_time_from_datetime_string(studentDic.updated_at as String)
+		var code_to_check: int = student_dic.code
+		var server_student_unix_time: int = -1
+		if student_dic.has("updated_at"):
+			server_student_unix_time = Time.get_unix_time_from_datetime_string(student_dic.updated_at as String)
 		else:
 			Logger.warn("UserDataBaseSynchronizer: Student %d received from server has no timestamp" % code_to_check)
 		var found: bool = false
@@ -109,11 +109,11 @@ func synchronize() -> void:
 			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
 			for student_data: StudentData in students_in_device:
 				if student_data.code == code_to_check:
-					var localStudentUnixTime: int = Time.get_unix_time_from_datetime_string(student_data.last_modified)
-					if localStudentUnixTime == serverStudentUnixTime:
+					var local_student_unix_time: int = Time.get_unix_time_from_datetime_string(student_data.last_modified)
+					if local_student_unix_time == server_student_unix_time:
 						Logger.trace("UserDataBaseSynchronizer: Student %d data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 						need_update_students[code_to_check] = UpdateNeeded.Nothing
-					elif localStudentUnixTime > serverStudentUnixTime:
+					elif local_student_unix_time > server_student_unix_time:
 						need_update_students[code_to_check] = UpdateNeeded.FromLocal
 					else: # localStudentUnixTime < serverStudentUnixTime
 						need_update_students[code_to_check] = UpdateNeeded.FromServer

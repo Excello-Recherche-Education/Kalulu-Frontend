@@ -99,7 +99,7 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	stimuli = Database.get_GP_for_lesson(lesson_nb, true)
+	stimuli = Database.get_gps_for_lesson(lesson_nb, true)
 
 
 func _start() -> void:

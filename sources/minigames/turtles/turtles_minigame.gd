@@ -65,7 +65,7 @@ func _setup_minigame() -> void:
 
 func _highlight() -> void:
 	for turtle: Turtle in turtles.get_children():
-			if self._is_GP_right(turtle.gp):
+			if self._is_gp_right(turtle.gp):
 				turtle.highlight(true)
 
 
@@ -114,7 +114,7 @@ func _on_spawn_timer_timeout() -> void:
 	turtle.tree_exited.connect(
 		func() -> void:
 			turtle_count -= 1
-			if stimulus_spawned and _is_GP_right(turtle.gp):
+			if stimulus_spawned and _is_gp_right(turtle.gp):
 				stimulus_spawned = false
 	)
 	
@@ -126,7 +126,7 @@ func _on_spawn_timer_timeout() -> void:
 	# Define if the turtle is a stimulus or a distraction
 	var is_stimulus: bool = not stimulus_spawned and randf() < settings.stimuli_ratio
 	if is_stimulus:
-		turtle.gp = _get_GP()
+		turtle.gp = _get_gp()
 		if is_highlighting:
 			turtle.highlight(true)
 		stimulus_spawned = true
@@ -153,7 +153,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 	island.set_enabled(false)
 	
 	# Check if the turtle is a distractor or the awaited GP
-	if _is_GP_right(turtle.gp):
+	if _is_gp_right(turtle.gp):
 		# Handles the stimulus spawned status
 		stimulus_spawned = false
 		
@@ -170,7 +170,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 		island.progress = current_word_progression + 1
 		
 		# Play the GP
-		await audio_player.play_gp(_get_GP())
+		await audio_player.play_gp(_get_gp())
 		
 		# Update the word progression
 		current_word_progression += 1
