@@ -82,7 +82,7 @@ func create_path(start_point: Vector2, end_point: Vector2) -> void:
 		current = new
 
 
-func _on_TravelingTimer_timeout() -> void:
+func _on_traveling_timer_timeout() -> void:
 	rocket.visible = false
 	explosion_timer.start()
 	blast_audio_player.play()
@@ -90,5 +90,5 @@ func _on_TravelingTimer_timeout() -> void:
 		particles.emitting = true
 
 
-func _on_ExplosionTimer_timeout() -> void:
+func _on_explosion_timer_timeout() -> void:
 	queue_free()

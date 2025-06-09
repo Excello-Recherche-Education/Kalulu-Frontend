@@ -93,20 +93,20 @@ func _setup_word_progression() -> void:
 	
 	var stimulus: Dictionary = _get_current_stimulus()
 	
-	var first_GP: bool = true
-	var last_wordID: int
+	var first_gp: bool = true
+	var last_word_id: int
 	var word_container: HBoxContainer
 	
 	for GP: Dictionary in stimulus.GPs:
-		if GP.WordID != last_wordID:
-			last_wordID = GP.WordID
+		if GP.WordID != last_word_id:
+			last_word_id = GP.WordID
 			word_container = HBoxContainer.new()
 			labels_container.add_child(word_container)
 		
 		var label: PenguinLabel = LABEL_SCENE.instantiate()
-		if first_GP:
+		if first_gp:
 			label.capitalized = true
-			first_GP = false
+			first_gp = false
 		label.gp = GP
 		word_container.add_child(label)
 		

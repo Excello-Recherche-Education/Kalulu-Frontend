@@ -126,7 +126,7 @@ func _on_export_filename_selected(filename: String) -> void:
 		summary_file.store_line("\n\n")
 	summary_file.close()
 	
-	_create_GP_csv()
+	_create_gp_csv()
 	_create_words_csv()
 	_create_syllable_csv()
 	_create_sentence_csv()
@@ -157,16 +157,16 @@ func _check_db_integrity() -> void:
 					return
 	var lesson_id: int
 	var known_words_list: Dictionary = {}
-	var known_GPs_list: Array[Dictionary] = []
-	var GPKnown: bool = false
+	var known_gps_list: Array[Dictionary] = []
+	var gp_Known: bool = false
 	for index: int in Database.get_lessons_count():
 		lesson_id = index +1
 		error_label.text = "Database integrity checks lesson " + str(lesson_id)
 		await get_tree().process_frame
 		Logger.trace("ProfToolMenu: Lesson_id = " + str(lesson_id))
 		
-		var new_GPs_for_lesson: Array = Database.get_GP_for_lesson(lesson_id, false, true, false, false, true)
-		for new_GP: Dictionary in new_GPs_for_lesson:
+		var new_gps_for_lesson: Array = Database.get_GP_for_lesson(lesson_id, false, true, false, false, true)
+		for new_GP: Dictionary in new_gps_for_lesson:
 			if !new_GP.has("ID"):
 				if !log_message("GP with no ID in lesson " + str(lesson_id)):
 					return
@@ -176,12 +176,12 @@ func _check_db_integrity() -> void:
 			if !new_GP.has("Phoneme"):
 				if !log_message("GP (ID " + str(new_GP.ID) + ") with no Phoneme in lesson " + str(lesson_id)):
 					return
-			var exists: bool = known_GPs_list.any(func(d: Dictionary) -> bool: return d == new_GP)
+			var exists: bool = known_gps_list.any(func(d: Dictionary) -> bool: return d == new_GP)
 			if exists:
 				if !log_message("GP ID " + str(new_GP.ID) + " already exists in lesson " + str(lesson_id)):
 					return
 			else:
-				known_GPs_list.push_back(new_GP)
+				known_gps_list.push_back(new_GP)
 		
 		var new_words_for_lesson: Array = Database.get_words_for_lesson(lesson_id, true, 1, 99, true)
 		for new_word: Dictionary in new_words_for_lesson:
@@ -198,12 +198,12 @@ func _check_db_integrity() -> void:
 				if !GP.has("ID"):
 					if !log_message("GP with no ID (key) at lesson ID " + str(lesson_id) + " in word " + (new_word.Word as String) + " (ID " + str(new_word.ID) + ")"):
 						return
-				GPKnown = false
-				for knownGP: Dictionary in known_GPs_list:
-					if knownGP.ID == GP.ID:
-						GPKnown = true
+				gp_Known = false
+				for known_gp: Dictionary in known_gps_list:
+					if known_gp.ID == GP.ID:
+						gp_Known = true
 						break
-				if !GPKnown:
+				if !gp_Known:
 					if !log_message("Word " + (new_word.Word as String) + " with unknown GP (ID " + str(GP.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
 						return
 			if known_words_list.has(new_word.Word):
@@ -238,8 +238,8 @@ func _check_db_integrity() -> void:
 			continue #No sentence in this lesson
 	
 	error_label.text = "Database integrity checks all GP sounds file names."
-	var all_GPs: Array = Database.get_GP_for_lesson(Database.get_lessons_count() + 1, false, false, false, true, true)
-	for gp: Dictionary in all_GPs:
+	var all_gps: Array = Database.get_GP_for_lesson(Database.get_lessons_count() + 1, false, false, false, true, true)
+	for gp: Dictionary in all_gps:
 		var gp_sound_path: String = Database.get_gp_sound_path(gp)
 		var result: Dictionary = file_exists_case_sensitive(gp_sound_path)
 		match result.status:
@@ -441,7 +441,7 @@ func _language_data_selected(file_path: String) -> void:
 	get_tree().reload_current_scene()
 
 
-func _create_GP_csv() -> void:
+func _create_gp_csv() -> void:
 	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["Grapheme", "Phoneme", "Type", "Exception"])
 	var query: String = "Select * FROM GPs ORDER BY GPs.Grapheme"

@@ -6,8 +6,8 @@ signal unlocks_changed
 @export var lesson_number: int:
 	set = _set_lesson_number
 
-@export var lesson_GPs: String:
-	set = _set_lesson_GPs
+@export var lesson_gps: String:
+	set = _set_lesson_gps
 
 @export var unlocks: Dictionary = {}
 
@@ -27,12 +27,12 @@ func _ready() -> void:
 		exercise_option_button_3.add_item(tr(status))
 	
 	_set_lesson_number(lesson_number)
-	_set_lesson_GPs(lesson_GPs)
+	_set_lesson_gps(lesson_gps)
 
 
 func reload() -> void:
 	_set_lesson_number(lesson_number)
-	_set_lesson_GPs(lesson_GPs)
+	_set_lesson_gps(lesson_gps)
 
 
 func _set_lesson_number(value: int) -> void:
@@ -49,8 +49,8 @@ func _set_lesson_number(value: int) -> void:
 	exercise_option_button_3.select(unlocks[lesson_number]["games"][2] as int)
 
 
-func _set_lesson_GPs(value: String) -> void:
-	lesson_GPs = value
+func _set_lesson_gps(value: String) -> void:
+	lesson_gps = value
 	if not gps_label:
 		return
 	

@@ -38,7 +38,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 		if word_id < 0:
 			all_found = false
 			words_not_founds.append(word_element)
-	GPs_updated.emit()
+	gps_updated.emit()
 	word_list_element.free()
 	if all_found:
 		gp_ids = word_ids

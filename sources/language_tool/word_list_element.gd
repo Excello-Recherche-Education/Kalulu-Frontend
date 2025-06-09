@@ -2,9 +2,9 @@ extends MarginContainer
 class_name WordListElement
 
 signal delete_pressed()
-signal new_GP_asked(i: int)
+signal new_gp_asked(i: int)
 signal validated()
-signal GPs_updated()
+signal gps_updated()
 
 const GP_LIST_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/gp_list_button.tscn")
 const PLUS_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/plus_button.tscn")
@@ -125,7 +125,7 @@ func _on_gp_list_button_selected(gp_id: int, element: Node) -> void:
 func _on_gp_list_button_new_selected(element: Node) -> void:
 	@warning_ignore("integer_division")
 	var ind_gp_id: int = element.get_index() / 2
-	new_GP_asked.emit(ind_gp_id)
+	new_gp_asked.emit(ind_gp_id)
 
 
 func get_graphemes(p_gp_ids: Array[int]) -> String:
@@ -316,7 +316,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 		var is_word: bool = table == "Words"
 		# res contains an int, followed by an array of int
 		var res: Array[Variant] = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH as String, is_word)
-		GPs_updated.emit()
+		gps_updated.emit()
 		id = res[0]
 		gp_ids = res[1]
 		unvalidated_gp_ids = gp_ids

@@ -51,11 +51,11 @@ const SUPPORTED_LOCALES: Array[String] = [
 		AudioServer.set_bus_volume_db(ind, volume)
 
 
-func init_OS_language() -> void:
+func init_os_language() -> void:
 	# Gets the OS language and checks if it is supported
-	var osLanguage: String = OS.get_locale();
-	if osLanguage and osLanguage in SUPPORTED_LOCALES:
-		language = osLanguage
+	var os_language: String = OS.get_locale();
+	if os_language and os_language in SUPPORTED_LOCALES:
+		language = os_language
 	
 	if not language:
 		language = SUPPORTED_LOCALES[0]
@@ -68,6 +68,6 @@ func get_folder_path() -> String:
 
 func validate() -> bool:
 	if language not in SUPPORTED_LOCALES:
-		init_OS_language()
+		init_os_language()
 		return false
 	return true

@@ -221,7 +221,7 @@ func _load_device_settings() -> void:
 			_save_device_settings()
 	if not _device_settings:
 		_device_settings = DeviceSettings.new()
-		_device_settings.init_OS_language()
+		_device_settings.init_os_language()
 		_save_device_settings()
 
 func _save_device_settings() -> void:
@@ -489,11 +489,11 @@ func get_student_remediation_data(student_code: int) -> UserRemediation:
 func _save_student_remediation() -> void:
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
 
-func get_GP_remediation_score(GPID: int) -> int:
+func get_gp_remediation_score(gp_id: int) -> int:
 	if not _student_remediation:
 		#push_warning("No student remediation data for " + str(student))
 		return 0
-	return _student_remediation.get_gp_score(GPID)
+	return _student_remediation.get_gp_score(gp_id)
 
 func update_remediation_scores(scores: Dictionary) -> void:
 	if not _student_remediation:
@@ -580,22 +580,22 @@ func _delete_dir(path: String) -> void:
 		dir.remove(subfolder)
 
 func move_user_device_folder(old_device: String, new_device: String, student_code: int) -> void:
-	var parentDirPath: String = "user://".path_join(_device_settings.teacher)
-	var parentDir: DirAccess = DirAccess.open(parentDirPath)
-	var oldChildDir: String = old_device.path_join(_device_settings.language).path_join(str(student_code))
-	var newChildDir: String = new_device.path_join(_device_settings.language).path_join(str(student_code))
-	var newParentDir: String = newChildDir.get_base_dir()  # = "2/fr_FR"
-	if not parentDir.dir_exists(newParentDir):
-		var err: Error = parentDir.make_dir_recursive(newParentDir)
+	var parent_dir_path: String = "user://".path_join(_device_settings.teacher)
+	var parent_dir: DirAccess = DirAccess.open(parent_dir_path)
+	var old_child_dir: String = old_device.path_join(_device_settings.language).path_join(str(student_code))
+	var new_child_dir: String = new_device.path_join(_device_settings.language).path_join(str(student_code))
+	var new_parent_dir: String = new_child_dir.get_base_dir()  # = "2/fr_FR"
+	if not parent_dir.dir_exists(new_parent_dir):
+		var err: Error = parent_dir.make_dir_recursive(new_parent_dir)
 		if err != OK:
 			push_error("UserDataManager: Cannot create parent folder: %s" % error_string(err))
 			return
-	if parentDir.dir_exists(str(oldChildDir)):
-		var err: Error = parentDir.rename(oldChildDir, newChildDir)
+	if parent_dir.dir_exists(str(old_child_dir)):
+		var err: Error = parent_dir.rename(old_child_dir, new_child_dir)
 		if err != OK:
 			Logger.error("UserDataManager: Error while renaming folder: %s" % error_string(err))
 	else:
-		Logger.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parentDirPath])
+		Logger.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parent_dir_path])
 		return
 	save_teacher_settings()
 

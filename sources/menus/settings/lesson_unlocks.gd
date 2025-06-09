@@ -36,7 +36,7 @@ GROUP BY LessonNb
 ORDER BY LessonNb")
 	for element: Dictionary in Database.db.query_result:
 		var student_unlock: LessonUnlock = LESSON_UNLOCK_SCENE.instantiate()
-		student_unlock.lesson_GPs = element.GPs
+		student_unlock.lesson_gps = element.GPs
 		student_unlock.lesson_number = element.LessonNb
 		if not progression:
 			Logger.trace("LessonUnlocks: User selected a student with no progression data")
@@ -56,8 +56,8 @@ func _on_student_changed(value: int)-> void:
 	progression = UserDataManager.get_student_progression_for_code(device, student)
 	_create_lessons()
 	(%PasswordVisualizer as PasswordVisualizer).password = str(value)
-	var allStudent: Array = UserDataManager.teacher_settings.students[device]
-	for student_data : StudentData in allStudent:
+	var all_students: Array = UserDataManager.teacher_settings.students[device]
+	for student_data : StudentData in all_students:
 		if student_data.code == value:
 			name_line_edit.text = student_data.name
 			break
@@ -102,6 +102,6 @@ func _device_button_pressed(device_id: int) -> void:
 	UserDataManager.teacher_settings.update_student_device(student, device_id)
 	await teacher_settings.refresh_devices_tabs()
 	device = device_id
-	var resSet: Dictionary = await ServerManager.set_student_data(student, {"device_id": device_id})
-	if not resSet.success:
+	var res_set: Dictionary = await ServerManager.set_student_data(student, {"device_id": device_id})
+	if not res_set.success:
 		Logger.trace("LessonUnlocks: Device was updated locally for the student, but the network update failed.")

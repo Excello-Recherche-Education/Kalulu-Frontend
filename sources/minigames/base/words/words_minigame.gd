@@ -2,8 +2,8 @@
 extends Minigame
 class_name WordsMinigame
 
-# Define the maximum number of GP inside each words
-@export var max_number_of_GPs: int = 6
+# Define the maximum number of GP inside each word
+@export var max_number_of_gps: int = 6
 # Define the size of the distractor queue for each GP
 @export var distractors_queue_size: int = 6
 # Define the time of visibility of a found word between rounds
@@ -17,7 +17,7 @@ var current_gp_distractors_queue: Array[Dictionary] = []
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
-	var words_list: Array[Dictionary] = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_GPs)
+	var words_list: Array[Dictionary] = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_gps)
 	if words_list.is_empty():
 		return
 	
@@ -81,7 +81,7 @@ func _find_stimuli_and_distractions() -> void:
 	
 	# Find the GPs and distractors for each word
 	for stimulus: Dictionary in stimuli:
-		stimulus.GPs = Database.get_GP_from_word(stimulus.ID as int)
+		stimulus.GPs = Database.get_gp_from_word(stimulus.ID as int)
 		var grapheme_distractions: Array = []
 		for GP: Dictionary in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID as int, lesson_nb))

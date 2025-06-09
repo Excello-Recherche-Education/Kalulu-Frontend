@@ -18,10 +18,10 @@ var count: int = 0
 
 func start() -> void:
 	count = 0
-	_on_FireDelayTimer_timeout()
+	_on_fire_delay_timer_timeout()
 
 
-func _on_FireDelayTimer_timeout() -> void:
+func _on_fire_delay_timer_timeout() -> void:
 	if count >= number_of_rockets:
 		finished.emit()
 		return

@@ -155,38 +155,38 @@ region_rect = Rect2(0, 0, 113, 254)
 [node name="Trail" type="GPUParticles2D" parent="PathFollow2D/Rocket"]
 position = Vector2(12.9997, 110)
 amount = 16
-process_material = SubResource("9")
 texture = ExtResource("1")
 lifetime = 0.25
+process_material = SubResource("9")
 
 [node name="ExplosionParticles" type="Node2D" parent="PathFollow2D"]
 
 [node name="DustClouds" type="GPUParticles2D" parent="PathFollow2D/ExplosionParticles"]
 emitting = false
 amount = 32
-process_material = SubResource("ParticleProcessMaterial_a7mq3")
 texture = ExtResource("5")
 lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_a7mq3")
 
 [node name="Explosion" type="GPUParticles2D" parent="PathFollow2D/ExplosionParticles"]
 material = SubResource("24")
 emitting = false
-process_material = SubResource("27")
 texture = ExtResource("7")
 lifetime = 0.5
 one_shot = true
 explosiveness = 0.8
+process_material = SubResource("27")
 
 [node name="Sparkles" type="GPUParticles2D" parent="PathFollow2D/ExplosionParticles"]
 material = SubResource("22")
 emitting = false
 amount = 64
-process_material = SubResource("23")
 texture = ExtResource("6")
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("23")
 
-[connection signal="timeout" from="TravelingTimer" to="." method="_on_TravelingTimer_timeout"]
-[connection signal="timeout" from="ExplosionTimer" to="." method="_on_ExplosionTimer_timeout"]
+[connection signal="timeout" from="TravelingTimer" to="." method="_on_traveling_timer_timeout"]
+[connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]

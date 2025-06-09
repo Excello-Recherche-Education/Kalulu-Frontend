@@ -307,7 +307,7 @@ func _get_stimulus_score(stimulus: Dictionary) -> int:
 	var score: int = 0
 	if stimulus.has("GPs"):
 		for gp: Dictionary in stimulus.GPs:
-			score += UserDataManager.get_GP_remediation_score(gp.ID as int)
+			score += UserDataManager.get_gp_remediation_score(gp.ID as int)
 	return score
 
 

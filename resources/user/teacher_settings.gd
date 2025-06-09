@@ -70,13 +70,13 @@ func update_student_name(student_code: int, student_name: String) -> void:
 
 func update_student_device(student_code: int, new_student_device: int) -> void:
 	for current_student_device: int in students.keys():
-		var studentsData: Array[StudentData] = students[current_student_device]
-		for student_data: StudentData in studentsData:
+		var students_data: Array[StudentData] = students[current_student_device]
+		for student_data: StudentData in students_data:
 			if student_data.code == student_code:
 				if current_student_device == new_student_device:
 					Logger.trace("TeacherSettings: update_student_device: student %d new device is already current student device, no update necessary" % student_code)
 					return
-				studentsData.erase(student_data)
+				students_data.erase(student_data)
 				if not students.has(new_student_device):
 					Logger.warn("TeacherSettings: update_student_device: student %d new device does not exists, it should not be possible. Update will still work anyway." % student_code)
 					students[new_student_device] = []

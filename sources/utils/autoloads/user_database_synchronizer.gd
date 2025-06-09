@@ -71,17 +71,17 @@ func synchronize() -> void:
 		set_loading_bar_text("SYNCHRONIZATION_ERROR")
 		stop_sync()
 		return
-	var serverUnixTimeUser: int = Time.get_unix_time_from_datetime_string(user.last_modified as String)
-	var localUserStringTime: String = UserDataManager.teacher_settings.last_modified
-	var localUnixTimeUser: int = 0
-	if localUserStringTime != "":
-		localUnixTimeUser = Time.get_unix_time_from_datetime_string(localUserStringTime)
+	var server_unix_time_user: int = Time.get_unix_time_from_datetime_string(user.last_modified as String)
+	var local_user_string_time: String = UserDataManager.teacher_settings.last_modified
+	var local_unix_time_user: int = 0
+	if local_user_string_time != "":
+		local_unix_time_user = Time.get_unix_time_from_datetime_string(local_user_string_time)
 	var need_update_user: UpdateNeeded = UpdateNeeded.Nothing
-	if localUnixTimeUser == serverUnixTimeUser:
+	if local_unix_time_user == server_unix_time_user:
 		Logger.trace("UserDataBaseSynchronizer: User data timestamp is the same in local and on server. No synchronization necessary")
-	elif localUnixTimeUser > serverUnixTimeUser:
+	elif local_unix_time_user > server_unix_time_user:
 		need_update_user = UpdateNeeded.FromLocal
-	else: # localUnixTimeUser < serverUnixTimeUser
+	else: # local_unix_time_user < server_unix_time_user
 		need_update_user = UpdateNeeded.FromServer
 	
 	await set_loading_bar_progression(40.0)

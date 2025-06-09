@@ -142,10 +142,10 @@ func get_GP_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, o
 	var result: Array[Dictionary] = db.query_result
 	
 	if with_other_phonemes:
-		for GP: Dictionary in result:
-			if GP.OtherPhonemes:
-				var phonemes: String = GP.OtherPhonemes
-				GP.OtherPhonemes = phonemes.split(",")
+		for gp: Dictionary in result:
+			if gp.OtherPhonemes:
+				var phonemes: String = gp.OtherPhonemes
+				gp.OtherPhonemes = phonemes.split(",")
 	
 	return result
 
@@ -155,7 +155,7 @@ func get_GPs_from_syllable(syllable_ID: int) -> Array[Dictionary]:
 	return db.query_result
 
 
-func get_GP_from_word(ID: int) -> Array:
+func get_gp_from_word(ID: int) -> Array:
 	db.query_with_bindings("SELECT GPs.* FROM Words INNER JOIN GPsInWords ON Words.ID = GPsInWords.WordID AND Words.ID=? INNER JOIN GPs WHERE GPs.ID = GPsInWords.GPID ORDER BY Position", [ID])
 	return db.query_result
 
@@ -200,8 +200,8 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[D
 	for syllable: Dictionary in res:
 		syllable.GPs = get_GPs_from_syllable(syllable.ID as int)
 		var phonemes: Array[String] = []
-		for GP: Dictionary in syllable.GPs:
-			phonemes.append(GP.Phoneme)
+		for gp: Dictionary in syllable.GPs:
+			phonemes.append(gp.Phoneme)
 		syllable.Phoneme = "-".join(phonemes)
 	
 	return res
@@ -469,11 +469,11 @@ func get_audio_stream_for_path(path: String) -> AudioStream:
 
 
 func get_audio_stream_for_word(ID: int) -> AudioStream:
-	var GPs: Array = get_GP_from_word(ID)
-	var file_name: String = _phoneme_to_string(GPs[0].Phoneme as String)
-	for index: int in range(1, GPs.size()):
-		var GP: Dictionary = GPs[index]
-		file_name += "-" + _phoneme_to_string(GP.Phoneme as String)
+	var gps: Array = get_gp_from_word(ID)
+	var file_name: String = _phoneme_to_string(gps[0].Phoneme as String)
+	for index: int in range(1, gps.size()):
+		var gp: Dictionary = gps[index]
+		file_name += "-" + _phoneme_to_string(gp.Phoneme as String)
 	file_name += ".mp3"
 	return load(words_path + file_name)
 

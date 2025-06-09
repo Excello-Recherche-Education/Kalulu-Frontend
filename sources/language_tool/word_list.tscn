@@ -158,18 +158,12 @@ text = "Type"
 [node name="EditButton" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="4"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="TypeEdit" parent="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer" index="4"]
-popup/item_0/id = 0
-
 [node name="NewGP" parent="NewGPLayer/VBoxContainer" instance=ExtResource("5_1f555")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="DeleteButton" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" index="0"]
 visible = false
-
-[node name="TypeEdit" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" index="4"]
-popup/item_0/id = 0
 
 [connection signal="add_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_add_pressed"]
 [connection signal="back_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_back_pressed"]

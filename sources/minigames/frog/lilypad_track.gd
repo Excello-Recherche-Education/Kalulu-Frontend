@@ -43,8 +43,8 @@ func _process(delta: float) -> void:
 
 func _get_velocity() -> float:
 	if is_enabled:
-		return difficulty_settings.padsSpeed
-	return difficulty_settings.padsSpeedDisabled
+		return difficulty_settings.pads_speed
+	return difficulty_settings.pads_speed_disabled
 
 
 func reset() -> void:
