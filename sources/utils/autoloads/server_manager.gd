@@ -144,12 +144,12 @@ func _create_uri_with_parameters(uri: String, params: Dictionary) -> String:
 	return uri
 
 
-func _create_request_headers(contentTypeJSON: bool = false) -> PackedStringArray:
+func _create_request_headers(content_type_json: bool = false) -> PackedStringArray:
 	var headers: PackedStringArray = []
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
 	if teacher_settings and teacher_settings.token:
 		headers.append("Authorization: Bearer " + teacher_settings.token)
-	if contentTypeJSON:
+	if content_type_json:
 		headers.append("Content-Type: application/json")
 	Logger.trace("ServerManager Create Header : " + str(headers))
 	return headers
