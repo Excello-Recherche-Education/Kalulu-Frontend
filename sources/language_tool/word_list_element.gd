@@ -195,14 +195,14 @@ func _on_validate_button_pressed() -> void:
 
 
 func update_lesson() -> void:
-	var m: int = -1
+	var index: int = -1
 	for gp_id: int in gp_ids:
-		var i: int = Database.get_min_lesson_for_gp_id(gp_id)
-		if i < 0:
-			m = -1
+		var min_index: int = Database.get_min_lesson_for_gp_id(gp_id)
+		if min_index < 0:
+			index = -1
 			break
-		m = maxi(m, i)
-	lesson = m
+		index = maxi(index, min_index)
+	lesson = index
 
 
 func gp_ids_from_string(p_gp_ids: String) -> Array[int]:

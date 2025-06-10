@@ -1,13 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dbmcpgfokf0in"]
+[gd_scene load_steps=4 format=3 uid="uid://dbmcpgfokf0in"]
 
 [ext_resource type="PackedScene" uid="uid://dfw7m0a7148fu" path="res://sources/language_tool/word_list.tscn" id="1_bfjhw"]
-[ext_resource type="PackedScene" uid="uid://cy14lm72cd7cy" path="res://sources/language_tool/sentence_list_element.tscn" id="2_4jv4m"]
 [ext_resource type="Script" uid="uid://7pymixi5vsat" path="res://sources/language_tool/sentence_list.gd" id="2_q3ll5"]
 [ext_resource type="PackedScene" uid="uid://dx33ijlgd8m3w" path="res://sources/language_tool/word_list_element.tscn" id="3_jl0ks"]
 
 [node name="SentenceList" instance=ExtResource("1_bfjhw")]
 script = ExtResource("2_q3ll5")
-element_scene = ExtResource("2_4jv4m")
 
 [node name="ExportNotFoundButton" type="Button" parent="VBoxContainer" index="5"]
 unique_name_in_owner = true
@@ -49,7 +47,7 @@ text = "Word"
 [node name="Graphemes" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="3"]
 text = "Graphemes"
 
-[node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="4"]
+[node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="6"]
 modulate = Color(1, 1, 1, 0)
 
 [node name="NewGP" parent="NewGPLayer/VBoxContainer2" index="1" instance=ExtResource("3_jl0ks")]
@@ -60,7 +58,6 @@ layout_mode = 2
 initial_position = 2
 size = Vector2i(1500, 1000)
 popup_window = true
-ok_button_text = "Enregistrer"
 access = 2
 
 [connection signal="pressed" from="VBoxContainer/ExportNotFoundButton" to="." method="_on_export_not_found_button_pressed"]

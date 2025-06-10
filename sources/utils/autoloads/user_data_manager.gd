@@ -353,8 +353,8 @@ func _delete_inexistants_students_saves() -> void:
 				for p_student: String in language_dir.get_directories():
 					# Check if the folder is associated with an existing student
 					var exists: bool = false
-					for s: StudentData in teacher_settings.students[int(device)]:
-						if str(s.code) == p_student:
+					for s_data: StudentData in teacher_settings.students[int(device)]:
+						if str(s_data.code) == p_student:
 							exists = true
 							break
 					# If the code doesn't exists in the configuration, delete the folder

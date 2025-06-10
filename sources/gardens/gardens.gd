@@ -160,16 +160,16 @@ func _ready() -> void:
 				button.completed = UserDataManager.student_progression.is_lesson_completed(lesson_ind)
 			
 			# Handles progression of the minigames
-			for k: int in range(3):
+			for game_index: int in range(3):
 				garden_control.max_progression += 2.0
-				match UserDataManager.student_progression.unlocks[lesson_ind]["games"][k]:
+				match UserDataManager.student_progression.unlocks[lesson_ind]["games"][game_index]:
 					StudentProgression.Status.Unlocked:
 						garden_control.current_progression += 1.0
 					StudentProgression.Status.Completed:
 						garden_control.current_progression += 2.0
 				
 				# Remove the completion if the minigame was just completed for the first time
-				if lesson_ind == max_unlocked_lesson and is_first_clear and is_minigame_completed and transition_data.has("minigame_number") and transition_data.minigame_number == k:
+				if lesson_ind == max_unlocked_lesson and is_first_clear and is_minigame_completed and transition_data.has("minigame_number") and transition_data.minigame_number == game_index:
 					garden_control.current_progression -= 1
 			
 			lesson_ind += 1
@@ -422,8 +422,8 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.Locked and lesson_unlocks["games"][1] == StudentProgression.Status.Locked and lesson_unlocks["games"][2] == StudentProgression.Status.Locked
 	
 	# Desactivate the mouse filters on the buttons behind the layout
-	for b: LessonButton in current_garden.lesson_button_controls:
-		b.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for l_button: LessonButton in current_garden.lesson_button_controls:
+		l_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	# Background
 	if are_minigames_locked:

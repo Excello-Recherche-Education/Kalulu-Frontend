@@ -296,9 +296,9 @@ func get_sentences_by_lessons() -> Dictionary:
 	
 	for sentence: Dictionary in sentences:
 		var lesson_nb: int = get_min_lesson_for_sentence_id(sentence.ID as int)
-		var a: Array = sentences_by_lesson.get(lesson_nb, [])
-		a.append(sentence)
-		sentences_by_lesson[lesson_nb] = a
+		var arr: Array = sentences_by_lesson.get(lesson_nb, [])
+		arr.append(sentence)
+		sentences_by_lesson[lesson_nb] = arr
 	return sentences_by_lesson
 
 

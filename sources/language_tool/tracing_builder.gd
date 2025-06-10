@@ -1,3 +1,4 @@
+#TODO CLEAN WARNINGS
 extends Control
 
 @export var gradient: Gradient
@@ -66,8 +67,8 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 			if element == "":
 				break
 			
-			var s: PackedStringArray = element.split(" ")
-			points.append(Vector2(float(s[0]), float(s[1])))
+			var point: PackedStringArray = element.split(" ")
+			points.append(Vector2(float(point[0]), float(point[1])))
 		if not points.is_empty():
 			segment_container.load_segment(points)
 

@@ -1,4 +1,5 @@
 extends Control
+class_name WordList
 
 @export var element_scene: PackedScene = preload("res://sources/language_tool/word_list_element.tscn")
 
@@ -186,8 +187,8 @@ func _reorder_by(property_name: String) -> void:
 		elements_container.add_child(child)
 
 
-func sorting_function(a, b, property_name) -> bool:
-	return a.get(property_name) < b.get(property_name)
+func sorting_function(a_node, b_node, property_name) -> bool:
+	return a_node.get(property_name) < b_node.get(property_name)
 
 
 func _on_list_title_add_pressed() -> void:

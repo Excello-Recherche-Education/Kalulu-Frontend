@@ -62,9 +62,9 @@ func _setup_minigame() -> void:
 	current_progression = 0
 	
 	var max_difficulty: int = 0
-	for d: int in DIFFICULTY_SETTINGS.keys():
-		if d > max_difficulty:
-			max_difficulty = d
+	for difficulty: int in DIFFICULTY_SETTINGS.keys():
+		if difficulty > max_difficulty:
+			max_difficulty = difficulty
 	
 	if difficulty > max_difficulty:
 		difficulty = max_difficulty

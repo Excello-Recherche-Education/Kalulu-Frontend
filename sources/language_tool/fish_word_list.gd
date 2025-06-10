@@ -49,8 +49,8 @@ func _reorder_by(property_name: String) -> void:
 		elements_container.add_child(element)
 
 
-func sorting_function(a: Node, b: Node, property_name: String) -> bool:
-	return a.get(property_name) < b.get(property_name)
+func sorting_function(node_a: Node, node_b: Node, property_name: String) -> bool:
+	return node_a.get(property_name) < node_b.get(property_name)
 
 
 func _on_list_title_add_pressed() -> void:

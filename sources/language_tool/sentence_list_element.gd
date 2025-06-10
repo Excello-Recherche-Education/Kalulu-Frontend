@@ -1,4 +1,5 @@
 extends WordListElement
+class_name SentenceListElement
 
 signal not_found(text: String)
 
@@ -12,15 +13,26 @@ func _ready() -> void:
 	graphemes_label.hide()
 
 
+
+
 func update_lesson() -> void:
-	var m: int = -1
-	for gp_id: int in gp_ids:
-		var i: int = Database.get_min_lesson_for_word_id(gp_id)
-		if i < 0:
-			m = -1
+	var highest_min_lesson: int = -1
+
+	# Iterate over each word ID (gp_id)
+	for word_id: int in gp_ids:
+		# Get the minimum lesson in which this word appears
+		var min_lesson_for_word: int = Database.get_min_lesson_for_word_id(word_id)
+
+		# If word not found in any lesson, invalidate the result and stop
+		if min_lesson_for_word < 0:
+			highest_min_lesson = -1
 			break
-		m = maxi(m, i)
-	lesson = m
+
+		# Keep track of the highest minimum lesson required
+		highest_min_lesson = max(highest_min_lesson, min_lesson_for_word)
+
+	# Update the global lesson value
+	lesson = highest_min_lesson
 
 
 func _add_from_additional_word_list(new_text: String) -> int:

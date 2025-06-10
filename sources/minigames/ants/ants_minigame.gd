@@ -173,19 +173,34 @@ func _next_sentence() -> void:
 
 
 func _start_ants() -> void:
-	var number_of_ants: int = ants.get_child_count()
-	for index: int in range(number_of_ants):
-		var ant: Ant = ants.get_child(index)
-		
+	var total_ants: int = ants.get_child_count()
+
+	# Animate each ant, one after another
+	for ant_index: int in range(total_ants):
+		var ant: Ant = ants.get_child(ant_index)
+
+		# Start walking animation or logic
 		ant.walk()
-		
+
+		# Create a tween to move the ant from start to end point
 		var tween: Tween = create_tween()
-		var k: float = float(index) / float(number_of_ants - 1)
-		tween.tween_property(ant, "global_position", k * ants_start.global_position + (1.0 - k) * ants_end.global_position, 1.0)
+
+		# Compute interpolation factor (0.0 to 1.0) based on position in the list
+		var position_ratio: float = float(ant_index) / float(total_ants - 1)
+
+		# Interpolate position from ants_start to ants_end using the ratio
+		var start_position: Vector2 = ants_start.global_position
+		var end_position: Vector2 = ants_end.global_position
+		var target_position: Vector2 = lerp(start_position, end_position, position_ratio)
+
+		# Animate the movement over 1 second
+		tween.tween_property(ant, "global_position", target_position, 1.0)
 		await tween.finished
-		
+
+		# Switch to idle state once movement is complete
 		ant.idle()
-	
+
+	# Reactivate all words once ants have reached their positions
 	for word: Word in words.get_children():
 		word.disabled = false
 
@@ -204,23 +219,21 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 	answered[word.get_index()] = true
 	
 	var all_answered: bool = true
-	for a: bool in answered:
-		if not a:
+	for answer: bool in answered:
+		if not answer:
 			all_answered = false
 			break
 	
 	if all_answered:
 		var is_right: bool = true
-		for a: bool in answers:
-			if not a:
+		for answer: bool in answers:
+			if not answer:
 				is_right = false
 				break
 		
-		for word_i: Node in words.get_children():
-			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
-			@warning_ignore("UNSAFE_METHOD_ACCESS")
+		for word_i: Word in words.get_children():
+			@warning_ignore("unsafe_method_access")
 			word_i.current_anchor.set_monitorable(true)
-			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			word_i.disabled = true
 		
 		if is_right:

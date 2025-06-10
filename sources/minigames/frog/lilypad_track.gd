@@ -99,9 +99,9 @@ func _spawn_lilypad() -> void:
 	
 	lilypad_size = lilypad.button.size
 	if size.x < lilypad_size.x:
-		var s: float = size.x / lilypad_size.x
-		lilypad.button.scale = Vector2(s, s)
-		lilypad_size *= s
+		var scale: float = size.x / lilypad_size.x
+		lilypad.button.scale = Vector2(scale, scale)
+		lilypad_size *= scale
 	
 	var is_stimulus: bool = randf() < difficulty_settings.stimuli_ratio
 	lilypad.is_distractor = !is_stimulus

@@ -90,8 +90,8 @@ func _load_tracing(path: String) -> Array:
 			if element == "":
 				break
 			
-			var s: PackedStringArray = element.split(" ")
-			points.append(Vector2(float(s[0]), float(s[1])))
+			var elements: PackedStringArray = element.split(" ")
+			points.append(Vector2(float(elements[0]), float(elements[1])))
 		
 		if not points.is_empty():
 			segments.append(points)

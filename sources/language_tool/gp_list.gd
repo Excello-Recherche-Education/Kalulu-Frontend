@@ -1,3 +1,4 @@
+#TODO CLEAN WARNINGS
 extends Control
 
 var element_scene: PackedScene = preload("res://sources/language_tool/gp_list_element.tscn")
@@ -56,14 +57,14 @@ func _on_save_button_pressed() -> void:
 	var query: String = "Select * FROM GPs"
 	Database.db.query(query)
 	var result: Array[Dictionary] = Database.db.query_result
-	for e in result:
-		var found: = false
+	for res: Dictionary in result:
+		var found: bool = false
 		for element: GPListElement in elements_container.get_children():
-			if element.grapheme == e.Grapheme and element.phoneme == e.Phoneme and element.type == e.Type and element.exception == e.Exception:
+			if element.grapheme == res.Grapheme and element.phoneme == res.Phoneme and element.type == res.Type and element.exception == res.Exception:
 				found = true
 				break
 		if not found:
-			Database.db.delete_rows("GPs", "ID=%s" % e.ID)
+			Database.db.delete_rows("GPs", "ID=%s" % res.ID)
 	undo_redo.clear_history()
 
 
@@ -86,16 +87,16 @@ func _on_grapheme_gui_input(event: InputEvent) -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	var c: = elements_container.get_children()
-	c.sort_custom(sorting_function.bind(property_name))
-	for e in elements_container.get_children():
-		elements_container.remove_child(e)
-	for e in c:
-		elements_container.add_child(e)
+	var child: = elements_container.get_children()
+	child.sort_custom(sorting_function.bind(property_name))
+	for element in elements_container.get_children():
+		elements_container.remove_child(element)
+	for element in child:
+		elements_container.add_child(element)
 
 
-func sorting_function(a, b, property_name) -> bool:
-	return a.get(property_name) < b.get(property_name)
+func sorting_function(a_node, b_node, property_name) -> bool:
+	return a_node.get(property_name) < b_node.get(property_name)
 
 
 func _on_type_gui_input(event: InputEvent) -> void:
@@ -126,8 +127,8 @@ func _on_list_title_save_pressed() -> void:
 
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
-	var file: = FileAccess.open(path, FileAccess.READ)
-	var line: = file.get_csv_line()
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var line: PackedStringArray = file.get_csv_line()
 	if line.size() < 4 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type" or line[3] != "Exception":
 		error_label.text = "Column names should be Grapheme, Phoneme, Type, Exception"
 		return
@@ -156,6 +157,6 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 		var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
 		Database.db.query(query)
 		var result: = Database.db.query_result
-		for e in result:
-			if not [e.Grapheme, e.Phoneme, e.Type] in all_data:
-				Database.db.delete_rows("GPs", "ID=%s" % e.ID)
+		for element: Dictionary in result:
+			if not [element.Grapheme, element.Phoneme, element.Type] in all_data:
+				Database.db.delete_rows("GPs", "ID=%s" % element.ID)
