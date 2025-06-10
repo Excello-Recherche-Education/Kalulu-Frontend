@@ -72,9 +72,10 @@ for root, dirs, files in os.walk('.', topdown=True):
                         single_char_vars.append((path, idx, name))
 
 if single_char_vars:
-    print(f"{len(single_char_vars)} errors found:")
+    print("### \u274c Single Character Variable Check Failed\n")
+    print(f"Found {len(single_char_vars)} single-character variable name{'s' if len(single_char_vars) > 1 else ''}:\n")
     for path, idx, name in single_char_vars:
-        print(f"{path}:{idx}: variable '{name}' has a single-character name")
+        print(f"- `{path}:{idx}` variable `{name}`")
     sys.exit(1)
 else:
-    print("No single-character variable names found.")
+    print("\u2705 No single-character variable names found.")
