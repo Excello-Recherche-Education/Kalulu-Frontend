@@ -72,11 +72,12 @@ for root, dirs, files in os.walk('.', topdown=True):
 
 if invalid_dirs or invalid_files:
     count = len(invalid_dirs) + len(invalid_files)
-    print(f'{count} invalid names detected:')
+    print("### \u274c Godot File Naming Convention Check Failed\n")
+    print(f"{count} invalid name{'s' if count > 1 else ''} detected:\n")
     for path, suggestion in invalid_dirs:
-        print(f"dir: {path} -> {suggestion}")
+        print(f"- **Directory** `{path}` \u2192 `{suggestion}`")
     for path, suggestion in invalid_files:
-        print(f"file: {path} -> {suggestion}")
+        print(f"- **File** `{path}` \u2192 `{suggestion}`")
     sys.exit(1)
 else:
-    print('All filenames and directories follow Godot naming convention.')
+    print("\u2705 All filenames and directories follow Godot naming convention.")
