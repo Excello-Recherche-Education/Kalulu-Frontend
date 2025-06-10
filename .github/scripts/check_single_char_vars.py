@@ -73,7 +73,7 @@ for root, dirs, files in os.walk('.', topdown=True):
 
 if single_char_vars:
     print("### \u274c Single Character Variable Check Failed\n")
-    print(f"Found {len(single_char_vars)} single-character variable name{'s' if len(single_char_vars) > 1 else ''}:\n")
+    print(f"Variables and functions must not have a name of a single character, they must be more explicit.\nFound {len(single_char_vars)} single-character name{'s' if len(single_char_vars) > 1 else ''}:\n")
     for path, idx, name in single_char_vars:
         print(f"- `{path}:{idx}` variable `{name}`")
     sys.exit(1)
