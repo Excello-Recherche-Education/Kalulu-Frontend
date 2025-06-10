@@ -157,6 +157,6 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 		var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
 		Database.db.query(query)
 		var result: = Database.db.query_result
-		for e in result:
-			if not [e.Grapheme, e.Phoneme, e.Type] in all_data:
-				Database.db.delete_rows("GPs", "ID=%s" % e.ID)
+		for element: Dictionary in result:
+			if not [element.Grapheme, element.Phoneme, element.Type] in all_data:
+				Database.db.delete_rows("GPs", "ID=%s" % element.ID)
