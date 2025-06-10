@@ -1,4 +1,5 @@
 extends Control
+class_name WordList
 
 @export var element_scene: PackedScene = preload("res://sources/language_tool/word_list_element.tscn")
 

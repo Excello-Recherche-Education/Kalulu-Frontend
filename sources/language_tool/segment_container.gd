@@ -121,29 +121,38 @@ func _on_place_point_button_pressed() -> void:
 
 
 func _on_add_segment_button_pressed() -> void:
-	var segment_build: SegmentBuild = SEGMENT_BUILD_SCENE.instantiate()
-	segments_container.add_child(segment_build)
-	
-	segment_build.modify.connect(_on_segment_modify.bind(segment_build))
-	segment_build.delete.connect(_on_segment_delete.bind(segment_build))
-	
-	current_segment = segment_build
-	
-	var line: Line2D = Line2D.new()
-	line.width = 25
-	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
-	line.end_cap_mode = Line2D.LINE_CAP_ROUND
-	line.joint_mode = Line2D.LINE_JOINT_ROUND
-	lines.add_child(line)
-	
-	var i: int = segments_container.get_child_count()
-	var r: float = float(i % points_per_gradient) / float(points_per_gradient)
-	var color: Color = gradient.sample(r)
-	segment_build.set_color(color)
-	line.default_color = color
-	
+	# Create a new segment build instance from the scene
+	var new_segment: SegmentBuild = SEGMENT_BUILD_SCENE.instantiate()
+	segments_container.add_child(new_segment)
+
+	# Connect signals for modifying and deleting the segment
+	new_segment.modify.connect(_on_segment_modify.bind(new_segment))
+	new_segment.delete.connect(_on_segment_delete.bind(new_segment))
+
+	# Store the new segment as the currently selected one
+	current_segment = new_segment
+
+	# Create a new visual line for the segment
+	var segment_line: Line2D = Line2D.new()
+	segment_line.width = 25
+	segment_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	segment_line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	segment_line.joint_mode = Line2D.LINE_JOINT_ROUND
+	lines.add_child(segment_line)
+
+	# Compute the segment's color based on its position in the container
+	var segment_index: int = segments_container.get_child_count()
+	var gradient_position: float = float(segment_index % points_per_gradient) / float(points_per_gradient)
+	var segment_color: Color = gradient.sample(gradient_position)
+
+	# Apply the color to the segment and its line
+	new_segment.set_color(segment_color)
+	segment_line.default_color = segment_color
+
+	# Sync segment states with any associated UI or logic
 	match_segment_with_buttons()
-	
+
+	# Notify that something has changed (e.g., for undo, saving, etc.)
 	changed.emit()
 
 

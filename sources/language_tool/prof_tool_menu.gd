@@ -110,19 +110,19 @@ func _on_export_filename_selected(filename: String) -> void:
 		summary_file.store_line("Lesson %s --------------------" % lesson)
 		summary_file.store_line("\t \t Words ---")
 		var words: String = ""
-		for e: Dictionary in Database.get_words_for_lesson(lesson, true):
-			words += e.Word + ", "
+		for element: Dictionary in Database.get_words_for_lesson(lesson, true):
+			words += element.Word + ", "
 		summary_file.store_line(words.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Syllables ---")
 		var syllables: String = ""
-		for e: Dictionary in Database.get_syllables_for_lesson(lesson, true):
-			syllables += e.Grapheme + ", "
+		for element: Dictionary in Database.get_syllables_for_lesson(lesson, true):
+			syllables += element.Grapheme + ", "
 		summary_file.store_line(syllables.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Sentences ---")
-		for e: Dictionary in Database.get_sentences(lesson, true, sentences_by_lesson):
-			summary_file.store_line(e.Sentence as String)
+		for element: Dictionary in Database.get_sentences(lesson, true, sentences_by_lesson):
+			summary_file.store_line(element.Sentence as String)
 		summary_file.store_line("\n\n")
 	summary_file.close()
 	
@@ -497,8 +497,8 @@ func _create_syllable_csv() -> void:
 		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
 		for index: int in graphemes.size() - 1:
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
-		var i: int = graphemes.size() - 1
-		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
+		var last_index: int = graphemes.size() - 1
+		gpmatch += graphemes[last_index] + "-" + phonemes[last_index] + ")"
 		var lesson: int = -1
 		@warning_ignore("unsafe_method_access")
 		for gp_id: String in element.GPIDs.split(' '):
@@ -732,8 +732,8 @@ func read_csv_record(file: FileAccess) -> String:
 		record += line
 
 		var quote_count: int = 0
-		for c: String in line:
-			if c == "\"":
+		for char: String in line:
+			if char == "\"":
 				quote_count += 1
 
 		open_quotes = (quote_count % 2 != 0)

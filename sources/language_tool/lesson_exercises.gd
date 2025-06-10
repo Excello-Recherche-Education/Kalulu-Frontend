@@ -1,6 +1,6 @@
 extends Control
 
-const LESSON_EXERCICE_CONTAINER_SCENE: = preload("res://sources/language_tool/lesson_exercises_container.tscn")
+const LESSON_EXERCICE_CONTAINER_SCENE: PackedScene = preload("res://sources/language_tool/lesson_exercises_container.tscn")
 
 @onready var lessons_container: VBoxContainer = %LessonsContainer
 
@@ -11,7 +11,7 @@ func _ready() -> void:
 	if Database.db.query_result[0].nb != Minigame.Type.size():
 		Database.db.query("DROP TABLE ExerciseTypes")
 	
-	var query: = "SELECT name FROM sqlite_master WHERE type='table' AND name='ExerciseTypes'"
+	var query: String = "SELECT name FROM sqlite_master WHERE type='table' AND name='ExerciseTypes'"
 	Database.db.query(query)
 	if Database.db.query_result.is_empty():
 		Database.db.query("CREATE TABLE ExerciseTypes (ID INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, Type TEXT NOT NULL)")
@@ -39,13 +39,13 @@ func _ready() -> void:
 			FOREIGN KEY('LessonID') REFERENCES 'Lessons'('ID') ON UPDATE CASCADE ON DELETE CASCADE
 		)")
 	
-	var sentences_by_lesson: = Database.get_sentences_by_lessons()
+	var sentences_by_lesson: Dictionary = Database.get_sentences_by_lessons()
 	Database.db.query("Select * FROM Lessons")
-	for e in Database.db.query_result:
+	for result: Dictionary in Database.db.query_result:
 		var container: LessonExerciceContainer = LESSON_EXERCICE_CONTAINER_SCENE.instantiate()
 		lessons_container.add_child(container)
 		container.sentences_by_lesson = sentences_by_lesson
-		container.lesson_number = e.LessonNb
+		container.lesson_number = result.LessonNb
 		container._on_save_button_pressed()
 
 

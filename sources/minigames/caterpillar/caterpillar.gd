@@ -27,7 +27,7 @@ func walk() -> void:
 		body_part.walk()
 
 
-func move(y : float) -> void:
+func move(distance : float) -> void:
 	if is_moving or is_eating:
 		return
 	
@@ -36,29 +36,29 @@ func move(y : float) -> void:
 	var coroutine: Coroutine = Coroutine.new()
 	
 	# Move head
-	coroutine.add_future(_tween_body_part(head, y).finished)
+	coroutine.add_future(_tween_body_part(head, distance).finished)
 	
 	# Move body
 	for index: int in body_parts.get_child_count(false):
 		await get_tree().create_timer(BODY_PART_WAIT_TIME).timeout
 		var body_part: CaterpillarBody = body_parts.get_child(-index-1)
-		coroutine.add_future(_tween_body_part(body_part, y).finished)
+		coroutine.add_future(_tween_body_part(body_part, distance).finished)
 	
 	# Move tail
 	var scene_tree: SceneTree = get_tree()
 	if scene_tree != null: # Is not in editor mode
 		await get_tree().create_timer(BODY_PART_WAIT_TIME).timeout
 	
-	coroutine.add_future(_tween_body_part(tail, y).finished)
+	coroutine.add_future(_tween_body_part(tail, distance).finished)
 	
 	await coroutine.join_all()
 	is_moving = false
 	walk()
 
 
-func _tween_body_part(part: Node2D, y: float) -> Tween:
+func _tween_body_part(part: Node2D, y_position: float) -> Tween:
 	var tween: Tween = create_tween()
-	tween.tween_property(part, "global_position:y", y, BODY_PART_MOVE_TIME)
+	tween.tween_property(part, "global_position:y", y_position, BODY_PART_MOVE_TIME)
 	return tween
 
 

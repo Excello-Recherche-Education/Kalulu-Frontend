@@ -1,3 +1,4 @@
+#TODO CLEAN WARNINGS
 extends Control
 
 @onready var lessons_container: VBoxContainer = $%LessonsContainer
@@ -43,8 +44,8 @@ func _on_plus_button_pressed() -> void:
 	lessons_container.add_child(lesson_container)
 	lesson_container.lesson_dropped.connect(_on_lesson_dropped)
 	var max_nb: int = -1
-	for e in lessons.values():
-		max_nb = max(max_nb, e.number)
+	for element in lessons.values():
+		max_nb = max(max_nb, element.number)
 	lesson_container.number = max_nb + 1
 	lessons[max_nb + 1] = lesson_container
 

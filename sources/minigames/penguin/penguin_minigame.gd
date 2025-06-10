@@ -151,8 +151,8 @@ func _set_current_word_progression(p_current_word_progression: int) -> void:
 
 func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 	# Disables all labels
-	for l: PenguinLabel in labels:
-		l.set_button_enabled(false)
+	for p_label: PenguinLabel in labels:
+		p_label.set_button_enabled(false)
 	
 	# Throw the snowball
 	await penguin.throw(pos)
@@ -172,8 +172,8 @@ func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 		current_lives -= 1
 	
 	# Re-enables all labels
-	for l: PenguinLabel in labels:
-		l.set_button_enabled(true)
+	for p_label: PenguinLabel in labels:
+		p_label.set_button_enabled(true)
 	
 	penguin.idle()
 
