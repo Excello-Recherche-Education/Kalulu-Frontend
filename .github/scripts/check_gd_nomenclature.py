@@ -95,7 +95,7 @@ for root, dirs, files in os.walk('.', topdown=True):
 
 if issues:
     print("### \u274c GDScript Naming Convention Check Failed\n")
-    print(f"Total issues: {len(issues)}\n")
+    print(f"The project must follow Godot GDScript naming conventions.\nTotal issues: {len(issues)}\n")
     for path, idx, kind, name in issues:
         if kind == 'error':
             message = name
