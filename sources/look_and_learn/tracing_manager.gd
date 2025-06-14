@@ -108,7 +108,7 @@ func _upper_path(letter: String) -> String:
 
 
 func _real_path(path: String) -> String:
-	return Database.BASE_PATH.path_join(Database.language).path_join(Database.tracing_data_folder).path_join(path) + EXTENSION
+	return Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER).path_join(path) + EXTENSION
 
 
 

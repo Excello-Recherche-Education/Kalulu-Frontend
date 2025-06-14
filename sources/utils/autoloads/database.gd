@@ -10,6 +10,7 @@ const _SYMBOLS_TO_STRING: Dictionary[String, String] = {
 	"§" : "para"
 }
 const BASE_PATH: String =  "user://language_resources/"
+const TRACING_DATA_FOLDER: String = "tracing_data/"
 const LOOK_AND_LEARN_IMAGES: String = "/look_and_learn/images/"
 const LOOK_AND_LEARN_SOUNDS: String = "/look_and_learn/sounds/"
 const LOOK_AND_LEARN_VIDEOS: String = "/look_and_learn/video/"
