@@ -40,8 +40,10 @@ func set_value(value: Variant) -> void:
 			(control as Range).value = value
 		elif value is int:
 			(control as Range).value = float(value as int)
-	elif control is LineEdit or control is TextEdit:
+	elif control is LineEdit:
 		(control as LineEdit).text = str(value)
+	elif control is TextEdit:
+		(control as TextEdit).text = str(value)
 	elif control is ItemList:
 		if value is int:
 			(control as ItemList).select(value as int, true)
