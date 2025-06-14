@@ -1,16 +1,17 @@
+# TODO CLEAN WARNINGS
 extends MarginContainer
 class_name LessonContainer
 
-var gp_label_scene: = preload("res://sources/language_tool/lesson_gp_label.tscn")
+var gp_label_scene: PackedScene = preload("res://sources/language_tool/lesson_gp_label.tscn")
 
 signal lesson_dropped(before: bool, number: int, dropped_number: int)
 
-var number: = 0:
+var number: int = 0:
 	set = set_number
 
 
-@onready var gp_container: = $%GPContainer
-@onready var number_label: = $%NumberLabel
+@onready var gp_container: HBoxContainer = $%GPContainer
+@onready var number_label: Label = $%NumberLabel
 
 
 func set_number(p_number: int) -> void:
@@ -20,7 +21,7 @@ func set_number(p_number: int) -> void:
 
 
 func add_gp(new_gp: Dictionary) -> void:
-	var gp_label: = gp_label_scene.instantiate()
+	var gp_label: LessonGPLabel = gp_label_scene.instantiate()
 	gp_label.grapheme = new_gp.grapheme
 	gp_label.phoneme = new_gp.phoneme
 	gp_label.gp_id = new_gp.gp_id
@@ -29,13 +30,13 @@ func add_gp(new_gp: Dictionary) -> void:
 
 
 func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
-	var new_gp_label: = gp_label_scene.instantiate()
+	var new_gp_label: LessonGPLabel = gp_label_scene.instantiate()
 	new_gp_label.grapheme = data.grapheme
 	new_gp_label.phoneme = data.phoneme
 	new_gp_label.gp_id = data.gp_id
 	new_gp_label.gp_dropped.connect(_on_gp_dropped.bind(new_gp_label))
 	gp_container.add_child(new_gp_label)
-	var children: = gp_container.get_children()
+	var children: Array[Node] = gp_container.get_children()
 	for index: int in children.size():
 		var child = children[index]
 		if child == gp_label:
