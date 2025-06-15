@@ -1,4 +1,3 @@
-#TODO CLEAN WARNINGS
 extends Control
 
 var element_scene: PackedScene = preload("res://sources/language_tool/gp_list_element.tscn")
@@ -87,15 +86,15 @@ func _on_grapheme_gui_input(event: InputEvent) -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	var child: = elements_container.get_children()
+	var child: Array[Node] = elements_container.get_children()
 	child.sort_custom(sorting_function.bind(property_name))
-	for element in elements_container.get_children():
+	for element: Node in elements_container.get_children():
 		elements_container.remove_child(element)
-	for element in child:
+	for element: Node in child:
 		elements_container.add_child(element)
 
 
-func sorting_function(a_node, b_node, property_name) -> bool:
+func sorting_function(a_node: Node, b_node: Node, property_name: String) -> bool:
 	return a_node.get(property_name) < b_node.get(property_name)
 
 
@@ -132,13 +131,13 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 	if line.size() < 4 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type" or line[3] != "Exception":
 		error_label.text = "Column names should be Grapheme, Phoneme, Type, Exception"
 		return
-	var types_text: = ["Silent", "Vowel", "Consonant"]
-	var all_data: = {}
+	var types_text: Array[String] = ["Silent", "Vowel", "Consonant"]
+	var all_data: Dictionary = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
 		if line.size() < 4:
 			continue
-		var type: = types_text.find(line[2])
+		var type: int = types_text.find(line[2])
 		if type < 0:
 			error_label.text = "Type should be Silent, Vowel or Consonant"
 		Database.db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme = ?
@@ -154,9 +153,9 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 	get_tree().reload_current_scene()
 	
 	if match_to_file:
-		var query: = "Select * FROM GPs ORDER BY GPs.Grapheme"
+		var query: String = "Select * FROM GPs ORDER BY GPs.Grapheme"
 		Database.db.query(query)
-		var result: = Database.db.query_result
+		var result: Array[Dictionary] = Database.db.query_result
 		for element: Dictionary in result:
 			if not [element.Grapheme, element.Phoneme, element.Type] in all_data:
 				Database.db.delete_rows("GPs", "ID=%s" % element.ID)

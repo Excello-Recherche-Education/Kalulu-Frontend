@@ -1,4 +1,3 @@
-#TODO CLEAN WARNINGS
 extends "res://sources/language_tool/word_list.gd"
 
 var not_found_list: String = ""
@@ -8,6 +7,7 @@ var not_found_list: String = ""
 
 func create_sub_elements_list() -> void:
 	super()
+	@warning_ignore("unsafe_property_access")
 	new_gp.sub_elements_list = sub_elements_list.duplicate()
 	sub_elements_list.clear()
 	Database.db.query("Select Words.ID as ID, Words.Word as Word, group_concat(GPs.Phoneme, '') as Phonemes

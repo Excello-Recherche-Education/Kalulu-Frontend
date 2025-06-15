@@ -1,4 +1,3 @@
-#TODO CLEAN WARNINGS
 extends Control
 
 @export var gradient: Gradient

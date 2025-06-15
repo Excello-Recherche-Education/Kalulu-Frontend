@@ -1,4 +1,3 @@
-#TODO CLEAN WARNINGS
 extends Control
 
 @onready var lessons_container: VBoxContainer = $%LessonsContainer
@@ -51,10 +50,12 @@ func _on_plus_button_pressed() -> void:
 
 
 func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:
+	@warning_ignore("unsafe_method_access")
 	return data.has("gp_id")
 
 
 func _drop_data_in_gp_container(_at_position: Vector2, data: Variant) -> void:
+	@warning_ignore("unsafe_method_access")
 	if not data.has("gp_id"):
 		return
 	var new_gp_label: LessonGPLabel = gp_label_scene.instantiate()

@@ -1,4 +1,3 @@
-# TODO CLEAN WARNINGS
 extends MarginContainer
 class_name LessonContainer
 
@@ -38,7 +37,7 @@ func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
 	gp_container.add_child(new_gp_label)
 	var children: Array[Node] = gp_container.get_children()
 	for index: int in children.size():
-		var child = children[index]
+		var child: Node = children[index]
 		if child == gp_label:
 			if before:
 				gp_container.move_child(new_gp_label, index)
@@ -47,13 +46,15 @@ func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
 
 
 func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:
+	@warning_ignore("unsafe_method_access")
 	return data.has("gp_id")
 
 
 func _drop_data_in_gp_container(_at_position: Vector2, data: Variant) -> void:
+	@warning_ignore("unsafe_method_access")
 	if not data.has("gp_id"):
 		return
-	var new_gp_label: = gp_label_scene.instantiate()
+	var new_gp_label: LessonGPLabel = gp_label_scene.instantiate()
 	new_gp_label.grapheme = data.grapheme
 	new_gp_label.phoneme = data.phoneme
 	new_gp_label.gp_id = data.gp_id
@@ -67,19 +68,22 @@ func _ready() -> void:
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	set_drag_preview(self.duplicate())
+	set_drag_preview(self.duplicate() as Control)
 	return { number = number }
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	@warning_ignore("unsafe_method_access")
 	return (data.has("number") and number != data.number) or _can_drop_in_gp_container(at_position, data)
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
+	@warning_ignore("unsafe_method_access")
 	if not (data.has("number") or data.has("gp_id")):
 		return
+	@warning_ignore("unsafe_method_access")
 	if data.has("number"):
-		var before: = at_position.y < size.y
+		var before: bool = at_position.y < size.y
 		lesson_dropped.emit(before, number, data.number)
 	else:
 		_drop_data_in_gp_container(at_position, data)
@@ -87,6 +91,6 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 func get_gp_ids() -> Array[int]:
 	var res: Array[int] = []
-	for gp in gp_container.get_children():
+	for gp: LessonGPLabel in gp_container.get_children():
 		res.append(gp.gp_id)
 	return res
