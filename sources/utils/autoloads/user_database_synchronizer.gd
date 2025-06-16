@@ -36,41 +36,41 @@ func stop_sync(success: bool = false) -> void:
 		loading_popup.set_finished(true)
 
 
-func synchronize() -> void:
-	Logger.trace("UserDataBaseSynchronizer: Start synchronizing user data.")
-	if synchronizing:
-		Logger.trace("UserDataBaseSynchronizer: User synchronization already started, cancel double-call.")
-		return
-	await start_sync()
-	
+func _check_internet() -> bool:
 	await set_loading_bar_progression(1.0)
 	set_loading_bar_text("SYNCHRONIZATION_CHECK_INTERNET_ACCESS")
-	if not await (ServerManager as ServerManagerClass).check_internet_access():
-		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_INTERNET")
-		stop_sync()
-	
+	if await (ServerManager as ServerManagerClass).check_internet_access():
+		return true
+	set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_INTERNET")
+	stop_sync()
+	return false
+
+
+func _pull_timestamps() -> Dictionary:
 	set_loading_bar_text("SYNCHRONIZATION_ASK_SERVER_TIMESTAMP")
-	var response_ge_all_timestamps: Dictionary = await (ServerManager as ServerManagerClass).pull_timestamps()
-	if not response_ge_all_timestamps.success:
+	var res: Dictionary = await (ServerManager as ServerManagerClass).pull_timestamps()
+	if not res.success:
 		Logger.trace("UserDataBaseSynchronizer: Cannot get all timestamps from server. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_SERVER")
 		stop_sync()
-		return
-	
+		return {}
 	await set_loading_bar_progression(20.0)
+	return res.body
+
+
+func _determine_user_update(response_body: Dictionary) -> UpdateNeeded:
 	set_loading_bar_text("SYNCHRONIZATION_COMPARE_SERVER_TIMESTAMP")
-	var response_body: Dictionary = response_ge_all_timestamps.body
 	if not response_body.has("user"):
 		Logger.trace("UserDataBaseSynchronizer: Cannot get user from body. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER")
 		stop_sync()
-		return
+		return UpdateNeeded.Nothing
 	var user: Dictionary = response_body.user
 	if not user.has("last_modified"):
 		Logger.trace("UserDataBaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR")
 		stop_sync()
-		return
+		return UpdateNeeded.Nothing
 	var server_unix_time_user: int = Time.get_unix_time_from_datetime_string(user.last_modified as String)
 	var local_user_string_time: String = UserDataManager.teacher_settings.last_modified
 	var local_unix_time_user: int = 0
@@ -81,17 +81,18 @@ func synchronize() -> void:
 		Logger.trace("UserDataBaseSynchronizer: User data timestamp is the same in local and on server. No synchronization necessary")
 	elif local_unix_time_user > server_unix_time_user:
 		need_update_user = UpdateNeeded.FromLocal
-	else: # local_unix_time_user < server_unix_time_user
+	else:
 		need_update_user = UpdateNeeded.FromServer
-	
-	await set_loading_bar_progression(40.0)
-	set_loading_bar_text("SYNCHRONIZATION_COMPILE_SERVER_INSTRUCTIONS")
-	var need_update_students: Dictionary[int, UpdateNeeded] # student_code, status
+	return need_update_user
+
+
+func _determine_students_update(response_body: Dictionary, need_update_user: UpdateNeeded) -> Dictionary:
+	var need_update_students: Dictionary[int, UpdateNeeded]
 	if not response_body.has("students"):
 		Logger.trace("UserDataBaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR")
 		stop_sync()
-		return
+		return {}
 	var students_timestamps: Array[Dictionary] = []
 	for item: Dictionary in response_body.students:
 		students_timestamps.append(item)
@@ -115,7 +116,7 @@ func synchronize() -> void:
 						need_update_students[code_to_check] = UpdateNeeded.Nothing
 					elif local_student_unix_time > server_student_unix_time:
 						need_update_students[code_to_check] = UpdateNeeded.FromLocal
-					else: # localStudentUnixTime < serverStudentUnixTime
+					else:
 						need_update_students[code_to_check] = UpdateNeeded.FromServer
 					found = true
 					break
@@ -123,14 +124,12 @@ func synchronize() -> void:
 				break
 		if not found:
 			if need_update_user == UpdateNeeded.FromServer:
-				# If the student does not exists in local and if the user on server is more recent, we need the data to create the student
 				need_update_students[code_to_check] = UpdateNeeded.FromServer
 			elif need_update_user == UpdateNeeded.FromLocal:
-				# If the student does not exists in local and if the user on local is more recent, we need to delete the student on the server
 				need_update_students[code_to_check] = UpdateNeeded.DeleteServer
 			else:
 				Logger.warn("UserDataBaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)
-	
+
 	for device: int in UserDataManager.teacher_settings.students.keys():
 			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
 			for student_data: StudentData in students_in_device:
@@ -141,10 +140,12 @@ func synchronize() -> void:
 						need_update_students[student_data.code] = UpdateNeeded.FromLocal
 					else:
 						Logger.warn("UserDataBaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
+	return need_update_students
+
+
+func _build_message_to_server(need_update_user: UpdateNeeded, need_update_students: Dictionary) -> Dictionary:
 	var message_to_server: Dictionary = {}
-	if need_update_user == UpdateNeeded.Nothing:
-		pass
-	elif need_update_user == UpdateNeeded.FromLocal:
+	if need_update_user == UpdateNeeded.FromLocal:
 		message_to_server["user"] =	{
 										"account_type": UserDataManager.teacher_settings.account_type,
 										"education_method": UserDataManager.teacher_settings.education_method,
@@ -181,44 +182,80 @@ func synchronize() -> void:
 			Logger.warn("UserDataBaseSynchronizer: Update needed enum not recognized: %s" % str(need_update_students[student_code_to_update]))
 	if (message_to_server["students"] as Dictionary).keys().size() == 0:
 		message_to_server.erase("students")
-	
+	return message_to_server
+
+
+func _send_instructions(message_to_server: Dictionary) -> Dictionary:
 	await set_loading_bar_progression(60.0)
 	set_loading_bar_text("SYNCHRONIZATION_SEND_SERVER_INSTRUCTIONS")
 	if message_to_server.keys().size() == 0:
 		Logger.trace("UserDataBaseSynchronizer: No instruction to send to server")
-	else:
-		var res_get_server_instructions: Dictionary = await (ServerManager as ServerManagerClass).send_server_synchronization_instructions(message_to_server)
-		if not res_get_server_instructions.success:
-			Logger.trace("UserDataBaseSynchronizer: Cannot send instructions to server. Canceling synchronization.")
-			set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_SERVER")
-			stop_sync()
-			return
-	
-		await set_loading_bar_progression(80.0)
-		set_loading_bar_text("SYNCHRONIZATION_APPLY_LOCAL_INSTRUCTIONS")
-		response_body = res_get_server_instructions.body
-		if response_body.has("user"):
-			var response_user: Dictionary = response_body.user
-			Logger.trace("UserDataBaseSynchronizer: Updating user")
-			if not response_user.has("account_type"):
-				Logger.warn("UserDataBaseSynchronizer: While updating user, no account_type found")
-			else:
-				UserDataManager.teacher_settings.account_type = response_user.account_type
-			if not response_user.has("education_method"):
-				Logger.warn("UserDataBaseSynchronizer: While updating user, no education_method found")
-			else:
-				UserDataManager.teacher_settings.education_method = response_user.education_method
-			if not response_user.has("last_modified"):
-				Logger.warn("UserDataBaseSynchronizer: While updating user, no last_modified found")
-			else:
-				UserDataManager.teacher_settings.last_modified = response_user.last_modified
-		if response_body.has("students"):
-			Logger.trace("UserDataBaseSynchronizer: Updating students")
-			var response_students: Dictionary = response_body.students
-			for response_student_code: String in response_students.keys():
-				var response_student_data: Dictionary = response_students[response_student_code]
-				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
-	
+		return {}
+	var res_get_server_instructions: Dictionary = await (ServerManager as ServerManagerClass).send_server_synchronization_instructions(message_to_server)
+	if not res_get_server_instructions.success:
+		Logger.trace("UserDataBaseSynchronizer: Cannot send instructions to server. Canceling synchronization.")
+		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_SERVER")
+		stop_sync()
+		return {}
+	await set_loading_bar_progression(80.0)
+	set_loading_bar_text("SYNCHRONIZATION_APPLY_LOCAL_INSTRUCTIONS")
+	return res_get_server_instructions.body
+
+
+func _apply_server_response(response_body: Dictionary) -> void:
+	if response_body.has("user"):
+		var response_user: Dictionary = response_body.user
+		Logger.trace("UserDataBaseSynchronizer: Updating user")
+		if not response_user.has("account_type"):
+			Logger.warn("UserDataBaseSynchronizer: While updating user, no account_type found")
+		else:
+			UserDataManager.teacher_settings.account_type = response_user.account_type
+		if not response_user.has("education_method"):
+			Logger.warn("UserDataBaseSynchronizer: While updating user, no education_method found")
+		else:
+			UserDataManager.teacher_settings.education_method = response_user.education_method
+		if not response_user.has("last_modified"):
+			Logger.warn("UserDataBaseSynchronizer: While updating user, no last_modified found")
+		else:
+			UserDataManager.teacher_settings.last_modified = response_user.last_modified
+	if response_body.has("students"):
+		Logger.trace("UserDataBaseSynchronizer: Updating students")
+		var response_students: Dictionary = response_body.students
+		for response_student_code: String in response_students.keys():
+			var response_student_data: Dictionary = response_students[response_student_code]
+			UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
+
+
+func synchronize() -> void:
+	Logger.trace("UserDataBaseSynchronizer: Start synchronizing user data.")
+	if synchronizing:
+		Logger.trace("UserDataBaseSynchronizer: User synchronization already started, cancel double-call.")
+		return
+	await start_sync()
+
+	if not await _check_internet():
+		return
+
+	var response_body: Dictionary = await _pull_timestamps()
+	if response_body.is_empty():
+		return
+
+	var need_update_user: UpdateNeeded = _determine_user_update(response_body)
+	if not synchronizing:
+		return
+	var need_update_students: Dictionary[int, UpdateNeeded] = _determine_students_update(response_body, need_update_user)
+	if not synchronizing:
+		return
+	await set_loading_bar_progression(40.0)
+	set_loading_bar_text("SYNCHRONIZATION_COMPILE_SERVER_INSTRUCTIONS")
+
+	var message_to_server: Dictionary = _build_message_to_server(need_update_user, need_update_students)
+	var server_response: Dictionary = await _send_instructions(message_to_server)
+	if not synchronizing:
+		return
+	if server_response.size() > 0:
+		_apply_server_response(server_response)
+
 	await set_loading_bar_progression(99.0)
 	UserDataManager.save_all()
 	stop_sync(true)
