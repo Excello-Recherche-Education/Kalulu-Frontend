@@ -146,10 +146,10 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 func _build_message_to_server(need_update_user: UpdateNeeded, need_update_students: Dictionary) -> Dictionary:
 	var message_to_server: Dictionary = {}
 	if need_update_user == UpdateNeeded.FromLocal:
-		message_to_server["user"] = {
-									       "account_type": UserDataManager.teacher_settings.account_type,
-									       "education_method": UserDataManager.teacher_settings.education_method,
-									       "last_modified": UserDataManager.teacher_settings.last_modified
+		message_to_server["user"] =	{
+										"account_type": UserDataManager.teacher_settings.account_type,
+										"education_method": UserDataManager.teacher_settings.education_method,
+										"last_modified": UserDataManager.teacher_settings.last_modified
 									}
 	elif need_update_user == UpdateNeeded.FromServer:
 		message_to_server["user"] = {"need_update": true}
@@ -166,12 +166,12 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 			if not student_data:
 				Logger.warn("UserDataBaseSynchronizer: Cannot find student with code %d" % student_code_to_update)
 				continue
-			message_to_server["students"][student_code_to_update] = {
-									       "device_id": student_device,
-									       "name": student_data.name,
-									       "age": student_data.age,
-									       "updated_at": student_data.last_modified,
-									       }
+			message_to_server["students"][student_code_to_update] =	{
+																		"device_id": student_device,
+																		"name": student_data.name,
+																		"age": student_data.age,
+																		"updated_at": student_data.last_modified,
+																	}
 		elif need_update_students[student_code_to_update] == UpdateNeeded.FromServer:
 			message_to_server["students"][student_code_to_update] = {"need_update": true}
 		elif need_update_students[student_code_to_update] == UpdateNeeded.DeleteLocal:
