@@ -5,6 +5,8 @@ signal score_changed()
 
 # Defines the minimal score a GP can get, it doesn't go below that point
 const MIN_SCORE: int = -3
+# Defines the maximal score a GP can get, it doesn't go above that point
+const MAX_SCORE: int = 0
 
 # Defines the score from which the GP should be presented for remediation
 const REMEDIATION_SCORE: int = -2
@@ -14,6 +16,9 @@ const REMEDIATION_SCORE: int = -2
 # Value is the score of the GP
 @export
 var gps_scores: Dictionary[int, int] = {}
+
+@export
+var last_modified: String = ""
 
 
 # Gets the score of a GP if it is below or equals to the remediation score
@@ -34,9 +39,10 @@ func update_gp_scores(minigame_scores: Dictionary) -> void:
 			new_gp_score += gps_scores[id]
 		new_gp_score += minigame_scores[id]
 		
-		if new_gp_score >= 0:
+		if new_gp_score >= MAX_SCORE:
 			gps_scores.erase(id)
 		else:
 			gps_scores[id] = maxi(MIN_SCORE, new_gp_score)
 	
+	last_modified = Time.get_datetime_string_from_system(true)
 	score_changed.emit()

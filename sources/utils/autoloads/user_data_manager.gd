@@ -24,7 +24,7 @@ var _student_remediation: UserRemediation
 var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
 
-var user_database_synchronizer: UserDataBaseSynchronizer
+var user_database_synchronizer: UserDatabaseSynchronizer
 var synchronization_timer: int = 0
 var synchronization_timer_running: bool = false
 var synchronization_time_limit: int = 300000 # 5 minutes in milliseconds
@@ -36,10 +36,12 @@ func _ready() -> void:
 	if get_device_settings().teacher:
 		_load_teacher_settings()
 	
-	user_database_synchronizer = UserDataBaseSynchronizer.new()
+	user_database_synchronizer = UserDatabaseSynchronizer.new()
 
 
 func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return # Do nothing in editor mode
 	if synchronization_timer_running:
 		now = Time.get_ticks_msec()
 		real_delta = now - last_time
