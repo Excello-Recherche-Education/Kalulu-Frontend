@@ -107,7 +107,10 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 			Logger.warn("UserDatabaseSynchronizer: Student %d received from server has no timestamp" % code_to_check)
 		var server_student_remediation_unix_time: int = -1
 		if student_dic.has("gp_remediation_last_modified"):
-			server_student_remediation_unix_time = Time.get_unix_time_from_datetime_string(student_dic.gp_remediation_last_modified as String)
+			if student_dic.gp_remediation_last_modified != null && student_dic.gp_remediation_last_modified is String:
+				server_student_remediation_unix_time = Time.get_unix_time_from_datetime_string(student_dic.gp_remediation_last_modified as String)
+			else:
+				server_student_remediation_unix_time = 0
 		var found: bool = false
 		for device: int in UserDataManager.teacher_settings.students.keys():
 			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
@@ -153,8 +156,10 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 			for student_data: StudentData in students_in_device:
 				if not need_update_students.has(student_data.code):
 					if need_update_user == UpdateNeeded.FromServer:
+						need_update_students[student_data.code] = {}
 						need_update_students[student_data.code]["data"] = UpdateNeeded.DeleteLocal
 					elif need_update_user == UpdateNeeded.FromLocal:
+						need_update_students[student_data.code] = {}
 						need_update_students[student_data.code]["data"] = UpdateNeeded.FromLocal
 					else:
 						Logger.warn("UserDatabaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
