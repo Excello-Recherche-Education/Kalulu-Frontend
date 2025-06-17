@@ -51,7 +51,7 @@ func _process(delta: float) -> void:
 
 
 func spawn_berry(gp: Dictionary, is_distractor: bool) -> void:
-	var berry : Berry = BERRY_SCENE.instantiate()
+	var berry: Berry = BERRY_SCENE.instantiate()
 	berries.add_child(berry)
 	berry.gp = gp
 	berry.is_distractor = is_distractor

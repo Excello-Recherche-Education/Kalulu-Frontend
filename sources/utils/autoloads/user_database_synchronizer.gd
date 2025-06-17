@@ -289,7 +289,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 				var new_scores: Dictionary[int, int] = {}
 				for index: int in new_array.size():
 					# TODO ADD SECURITY
-					new_scores[int(new_array[index][0])] = int(new_array[index][1])
+					new_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_data(int(response_student_code), new_scores, response_student_data.remediation_gp.updated_at as String)
 
 

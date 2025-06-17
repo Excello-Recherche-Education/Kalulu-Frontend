@@ -41,7 +41,7 @@ func validate() -> bool:
 	for info: ValidatorInfo in list:
 		if info.validator.skip_validation:
 			continue
-		var control := info.control as Control
+		var control: Control = info.control as Control
 		if control == null:
 			Logger.error("FormValidator: ValidatorInfo.control is not a Control: %s" % [info.control])
 			continue
@@ -60,7 +60,7 @@ func validate() -> bool:
 func _get_validator_info_list() -> Array[ValidatorInfo]:
 	var list: Array[ValidatorInfo] = []
 	for controlKey in _control_validator_map.keys():
-		var control := controlKey as Control
+		var control: Control = controlKey as Control
 		if control == null:
 			Logger.error("FormValidator: _control_validator_map key is not a Control")
 			continue

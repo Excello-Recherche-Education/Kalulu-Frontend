@@ -40,7 +40,7 @@ func _set_direction(new_direction: Vector2) -> void:
 	is_changing_direction = true
 	
 	# Get the angle difference between the old and new direction
-	var angle_to : float = rad_to_deg(direction.angle_to(new_direction))
+	var angle_to: float = rad_to_deg(direction.angle_to(new_direction))
 
 	# Calculate the new angle of the body - this allows to get the closest angle for tweening
 	var angle: float = body.rotation_degrees + rad_to_deg(direction.angle_to(new_direction))

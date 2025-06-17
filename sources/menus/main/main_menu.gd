@@ -9,9 +9,9 @@ const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selectio
 @onready var teacher_label : Label = $Informations/TeacherValue
 @onready var device_id_label : Label = $Informations/DeviceIDValue
 
-@onready var kalulu : KALULU = $Kalulu
+@onready var kalulu: KALULU = $Kalulu
 @onready var play_button: Button = %PlayButton
-@onready var interface_left : MarginContainer = %InterfaceLeft
+@onready var interface_left: MarginContainer = %InterfaceLeft
 @onready var keyboard_spacer: KeyboardSpacer = %KeyboardSpacer
 @onready var no_internet_popup: ConfirmPopup = $NoInternetPopup
 

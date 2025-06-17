@@ -87,7 +87,7 @@ func get_user_data() -> Dictionary:
 
 func update_student_remediation_data(student_code: int, student_remediation: UserRemediation) -> Dictionary:
 	if not student_remediation:
-		Logger.trace("ServerManager: Cannot update studient remediation data because data does not exists")
+		Logger.trace("ServerManager: Cannot update student remediation data because data does not exists")
 		success = true
 		code = -1
 		json = {}

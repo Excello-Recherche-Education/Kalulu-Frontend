@@ -46,11 +46,11 @@ var selected: Array[Parakeet] = []
 var state: State = State.Locked
 
 const DIFFICULTY_SETTINGS: Dictionary[int, Dictionary] = {
-	0 : {"pairs_count": 2},
-	1 : {"pairs_count": 3},
-	2 : {"pairs_count": 4},
-	3 : {"pairs_count": 5},
-	4 : {"pairs_count": 6},
+	0: {"pairs_count": 2},
+	1: {"pairs_count": 3},
+	2: {"pairs_count": 4},
+	3: {"pairs_count": 5},
+	4: {"pairs_count": 6},
 }
 
 

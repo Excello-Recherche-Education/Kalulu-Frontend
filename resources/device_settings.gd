@@ -16,35 +16,35 @@ const SUPPORTED_LOCALES: Array[String] = [
 	"pt_BR"
 ]
 
-@export var language : String :
+@export var language: String:
 	set(value):
 		language = value
 		Database.language = value
 		TranslationServer.set_locale(value)
 		print("DeviceSettings: language SET: " + TranslationServer.get_locale())
-@export var teacher : String
-@export var device_id : int
+@export var teacher: String
+@export var device_id: int
 @export var language_versions: Dictionary = {} # locale : datetime
 
-@export var master_volume: float = 0.0 :
+@export var master_volume: float = 0.0:
 	set(volume):
 		master_volume = volume
 		var ind: int = AudioServer.get_bus_index("Master")
 		AudioServer.set_bus_volume_db(ind, volume)
 
-@export var music_volume: float = 0.0 :
+@export var music_volume: float = 0.0:
 	set(volume):
 		music_volume = volume
 		var ind: int = AudioServer.get_bus_index("Music")
 		AudioServer.set_bus_volume_db(ind, volume)
 
-@export var voice_volume: float = 0.0 :
+@export var voice_volume: float = 0.0:
 	set(volume):
 		voice_volume = volume
 		var ind: int = AudioServer.get_bus_index("Voice")
 		AudioServer.set_bus_volume_db(ind, volume)
 
-@export var effects_volume: float = 0.0 :
+@export var effects_volume: float = 0.0:
 	set(volume):
 		effects_volume = volume
 		var ind: int = AudioServer.get_bus_index("Effects")

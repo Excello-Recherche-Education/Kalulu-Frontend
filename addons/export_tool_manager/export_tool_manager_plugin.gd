@@ -93,4 +93,4 @@ func export_all_game_presets():
 			])
 			return
 		else:
-			print("✔ Export success : %s → %s" % [preset_name, output_path])
+			print("✔ Export success: %s → %s" % [preset_name, output_path])

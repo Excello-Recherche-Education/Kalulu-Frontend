@@ -1,7 +1,7 @@
 extends Area2D
 class_name Island
 
-@onready var label : Label = $Label
+@onready var label: Label = $Label
 @onready var collision: CollisionPolygon2D = $CollisionPolygon2D
 
 var stimulus: Dictionary = {}:

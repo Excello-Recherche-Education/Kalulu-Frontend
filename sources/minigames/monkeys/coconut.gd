@@ -6,7 +6,7 @@ class_name Coconut
 @onready var label: Label = $Label
 @onready var broken_coconut_fx: BrokenCoconutFX = $BrokenCoconutFX
 
-var text: String :
+var text: String:
 	set(value):
 		text = value
 		if label:

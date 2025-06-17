@@ -88,7 +88,7 @@ func update_student_device(student_code: int, new_student_device: int) -> void:
 	Logger.warn("TeacherSettings: update_student_device: student not found with code " + str(student_code))
 
 
-func get_new_code() -> int :
+func get_new_code() -> int:
 	var used_codes: Array[int] = []
 	for student_array: Array[StudentData] in students.values():
 		for student: StudentData in student_array:

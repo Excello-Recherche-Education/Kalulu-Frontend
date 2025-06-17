@@ -3,7 +3,7 @@ extends EditorPlugin
 
 enum EnvType { DEV, PROD }
 
-const CONFIG_PATH := "user://environment.cfg"
+const CONFIG_PATH: String = "user://environment.cfg"
 
 var env_selector: OptionButton
 var current_environment: EnvType = EnvType.DEV

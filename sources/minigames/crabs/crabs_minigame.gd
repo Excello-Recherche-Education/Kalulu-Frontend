@@ -129,7 +129,7 @@ func _spawn_crabs() -> void:
 		await get_tree().create_timer(0.1).timeout
 
 
-func _on_hole_crab_out(hole : Hole) -> void:
+func _on_hole_crab_out(hole: Hole) -> void:
 	if is_highlighting and _is_stimulus_right(hole.crab.stimulus):
 		hole.highlight()
 
@@ -158,7 +158,7 @@ func _on_hole_timer_timeout() -> void:
 					stimulus_spawned = true
 					holes[index].spawn_crab(_get_current_stimulus(), true)
 				else:
-					var current_distractors : Array = distractions[current_progression % distractions.size()]
+					var current_distractors: Array = distractions[current_progression % distractions.size()]
 					holes[index].spawn_crab(current_distractors.pick_random() as Dictionary, false)
 				hole_found = true
 				break

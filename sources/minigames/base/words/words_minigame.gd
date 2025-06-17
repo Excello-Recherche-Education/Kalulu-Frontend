@@ -55,13 +55,13 @@ func _find_stimuli_and_distractions() -> void:
 				stimuli.append_array(current_lesson_words)
 			
 			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
-			var minimal_stimuli : int = floori(current_lesson_stimuli_number/2.0)
+			var minimal_stimuli: int = floori(current_lesson_stimuli_number/2.0)
 			if stimuli.size() < minimal_stimuli:
 				while stimuli.size() < minimal_stimuli:
 					stimuli.append(current_lesson_words.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
-		var spaces_left : int = max_progression - stimuli.size()
+		var spaces_left: int = max_progression - stimuli.size()
 		if previous_lesson_words.size() >= spaces_left:
 			for index: int in spaces_left:
 				stimuli.append(previous_lesson_words[index])

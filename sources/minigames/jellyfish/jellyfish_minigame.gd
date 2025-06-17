@@ -60,7 +60,7 @@ func _stop_highlight() -> void:
 
 func _spawn() -> void:
 	# Instantiate a new jellyfish
-	var new_jellyfish : Jellyfish = JELLYFISH_SCENE.instantiate()
+	var new_jellyfish: Jellyfish = JELLYFISH_SCENE.instantiate()
 	spawning_space.add_child(new_jellyfish)
 	
 	# Find the right size for the jellyfish
@@ -85,7 +85,7 @@ func _spawn() -> void:
 		if is_highlighting:
 			new_jellyfish.highlight()
 	else:
-		var current_distractors : Array = distractions[current_progression % distractions.size()]
+		var current_distractors: Array = distractions[current_progression % distractions.size()]
 		new_jellyfish.stimulus = current_distractors.pick_random()
 	
 	# Randomize the spawn and adds the jellyfish into the scene

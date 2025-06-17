@@ -16,7 +16,7 @@ const CRAB_SCENE: PackedScene = preload("res://sources/minigames/crabs/crab/crab
 @onready var crab_audio_stream_player: HoleAudioStreamPlayer = $CrabAudioStreamPlayer2D
 
 var crab: Crab
-var crab_x : float
+var crab_x: float
 var stimulus_heard: bool = false:
 	set(value):
 		stimulus_heard = value
@@ -28,7 +28,7 @@ var crab_visible: bool = false:
 var is_stimulus: bool = false
 
 
-func _process(_delta : float) -> void:
+func _process(_delta: float) -> void:
 	if not crab:
 		if sand_vfx.is_playing:
 			sand_vfx.stop()
@@ -111,7 +111,7 @@ func spawn_crab(gp: Dictionary, p_is_stimulus: bool) -> void:
 	crab_despawned.emit(p_is_stimulus)
 
 
-func is_button_pressed_with_limit(future : Signal) -> bool:
+func is_button_pressed_with_limit(future: Signal) -> bool:
 	var coroutine: Coroutine = Coroutine.new()
 	coroutine.add_future(crab.is_button_pressed)
 	coroutine.add_future(_is_stopped)
