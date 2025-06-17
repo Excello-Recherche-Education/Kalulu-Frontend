@@ -488,6 +488,15 @@ func get_student_remediation_data(student_code: int) -> UserRemediation:
 	Logger.trace("UserDataManager: Remediation data of student code %d not found" % student_code)
 	return null
 
+func set_student_remediation_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
+	var remediation_data_path: String = _get_student_remediation_path(student_code)
+	if FileAccess.file_exists(remediation_data_path):
+		var student_remediation: UserRemediation
+		student_remediation = load(remediation_data_path)
+		student_remediation.set_gp_scores(new_scores)
+		student_remediation.set_last_modified(updated_at)
+		ResourceSaver.save(student_remediation, remediation_data_path)
+
 func _save_student_remediation() -> void:
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
 

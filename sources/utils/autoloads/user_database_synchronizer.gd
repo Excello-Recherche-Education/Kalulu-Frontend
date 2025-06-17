@@ -145,8 +145,10 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 				break
 		if not found:
 			if need_update_user == UpdateNeeded.FromServer:
+				need_update_students[code_to_check] = {}
 				need_update_students[code_to_check]["data"] = UpdateNeeded.FromServer
 			elif need_update_user == UpdateNeeded.FromLocal:
+				need_update_students[code_to_check] = {}
 				need_update_students[code_to_check]["data"] = UpdateNeeded.DeleteServer
 			else:
 				Logger.warn("UserDatabaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)
@@ -279,7 +281,16 @@ func _apply_server_response(response_body: Dictionary) -> void:
 		var response_students: Dictionary = response_body.students
 		for response_student_code: String in response_students.keys():
 			var response_student_data: Dictionary = response_students[response_student_code]
-			UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
+			if response_student_data.has("device_id") && response_student_data.has("name") && response_student_data.has("age") && response_student_data.has("updated_at"):
+				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
+			if response_student_data.has("remediation_gp") && (response_student_data.remediation_gp as Dictionary).has("score_remediation") && (response_student_data.remediation_gp  as Dictionary).has("updated_at"):
+				# TODO ADD SECURITY
+				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
+				var new_scores: Dictionary[int, int] = {}
+				for index: int in new_array.size():
+					# TODO ADD SECURITY
+					new_scores[int(new_array[index][0])] = int(new_array[index][1])
+				UserDataManager.set_student_remediation_data(int(response_student_code), new_scores, response_student_data.remediation_gp.updated_at as String)
 
 
 func synchronize() -> void:

@@ -46,3 +46,9 @@ func update_gp_scores(minigame_scores: Dictionary) -> void:
 	
 	last_modified = Time.get_datetime_string_from_system(true)
 	score_changed.emit()
+
+func set_gp_scores(new_scores: Dictionary[int, int]) -> void:
+	gps_scores = new_scores
+
+func set_last_modified(new_date: String) -> void:
+	last_modified = new_date
