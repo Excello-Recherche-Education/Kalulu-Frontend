@@ -17,7 +17,7 @@ enum EducationMethod {
 @export var account_type: AccountType
 @export var education_method: EducationMethod
 var devices_count: int
-@export var students: Dictionary[int, Array] = {} # int (device) : Array[StudentData]
+@export var students: Dictionary[int, Array] = {} # int (device): Array[StudentData]
 @export var email: String
 var password: String
 @export var token: String
@@ -126,14 +126,14 @@ func get_number_of_students() -> int:
 	if not students:
 		return 0
 	var result: int = 0
-	for datas: Array[StudentData] in students.values():
-		result += datas.size()
+	for data: Array[StudentData] in students.values():
+		result += data.size()
 	return result
 
 func get_all_students_data() -> Array[StudentData]:
 	var result: Array[StudentData]
-	for datas: Array[StudentData] in students.values():
-		result.append_array(datas)
+	for data: Array[StudentData] in students.values():
+		result.append_array(data)
 	return result
 
 func delete_student(student_code: int) -> void:

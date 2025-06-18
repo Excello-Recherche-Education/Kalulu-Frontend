@@ -2,13 +2,13 @@
 extends Minigame
 class_name SyllablesMinigame
 
-signal stimulus_heard(is_heard : bool)
+signal stimulus_heard(is_heard: bool)
 signal stimulus_found()
 
 # Time before a new stimulus when the previous one is found
-@export var between_stimuli_time : float = 2.
+@export var between_stimuli_time: float = 2.
 # Time before the current stimulus is repeated
-@export var stimulus_repeat_time : float = 15
+@export var stimulus_repeat_time: float = 15
 
 @onready var stimulus_timer: Timer = $StimulusTimer
 
@@ -69,13 +69,13 @@ func _find_stimuli_and_distractions() -> void:
 			
 			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
 			@warning_ignore("integer_division")
-			var minimal_stimuli : int = current_lesson_stimuli_number/2
+			var minimal_stimuli: int = current_lesson_stimuli_number/2
 			if stimuli.size() < minimal_stimuli:
 				while stimuli.size() < minimal_stimuli:
 					stimuli.append(current_lesson_stimuli.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
-		var spaces_left : int = max_progression - stimuli.size()
+		var spaces_left: int = max_progression - stimuli.size()
 		if previous_lesson_stimuli.size() >= spaces_left:
 			for index: int in spaces_left:
 				stimuli.append(previous_lesson_stimuli[index])
@@ -146,7 +146,7 @@ func _is_stimulus_found() -> bool:
 	return true
 
 
-func _is_stimulus_right(stimulus : Dictionary) -> bool:
+func _is_stimulus_right(stimulus: Dictionary) -> bool:
 	var current_stimulus: Dictionary = _get_current_stimulus()
 	return stimulus == current_stimulus
 
@@ -165,7 +165,7 @@ func _play_current_stimulus_phoneme() -> void:
 	stimulus_timer.start()
 
 
-func _await_for_future_or_stimulus_found(future : Signal) -> bool:
+func _await_for_future_or_stimulus_found(future: Signal) -> bool:
 	var coroutine: Coroutine = Coroutine.new()
 	coroutine.add_future(_is_stimulus_found)
 	coroutine.add_future(future)
@@ -179,7 +179,7 @@ func _await_for_future_or_stimulus_found(future : Signal) -> bool:
 # ------------ Connections ------------
 
 
-func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
+func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 	if not is_stimulus_heard:
 		return false
 	

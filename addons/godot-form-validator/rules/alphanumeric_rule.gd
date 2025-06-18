@@ -4,7 +4,7 @@ class_name AlphanumericRule
 
 
 func _init() -> void:
-	fail_message = "Value must contain only alphanumeric cahracters."
+	fail_message = "Value must contain only alphanumeric characters."
 
 
 func apply(control: Control, value) -> RuleResult:

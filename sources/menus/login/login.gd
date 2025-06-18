@@ -1,6 +1,6 @@
 extends Control
 
-const TEACHER_PASSWORD : String = "42"
+const TEACHER_PASSWORD: String = "42"
 const BACK_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const NEXT_SCENE_PATH: String = "res://sources/menus/brain/brain.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
@@ -9,10 +9,10 @@ const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selectio
 const KALULU: = preload("res://sources/minigames/base/kalulu.gd")
 
 @onready var kalulu: KALULU = $Kalulu
-@onready var music_player : AudioStreamPlayer = $MusicStreamPlayer
+@onready var music_player: AudioStreamPlayer = $MusicStreamPlayer
 @onready var device_number_label: Label = $DeviceNumber
-@onready var keyboard : CodeKeyboard = $CodeKeyboard
-@onready var teacher_timer : Timer = %TeacherTimer
+@onready var keyboard: CodeKeyboard = $CodeKeyboard
+@onready var teacher_timer: Timer = %TeacherTimer
 @onready var teacher_help_label: Label = %TeacherHelpLabel
 @onready var kalulu_button: CanvasItem = %KaluluButton
 
@@ -33,7 +33,7 @@ func _ready() -> void:
 	right_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_right_password"))
 	
 	device_number_label.show()
-	device_number_label.text = tr("DEVICE_NUMBER").format({"number" : UserDataManager.get_device_settings().device_id})
+	device_number_label.text = tr("DEVICE_NUMBER").format({"number": UserDataManager.get_device_settings().device_id})
 	
 	await OpeningCurtain.open()
 	

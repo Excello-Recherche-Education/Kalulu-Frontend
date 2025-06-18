@@ -4,7 +4,7 @@ class_name UserDifficulty
 signal difficulty_changed()
 
 # Stores the user history for all the minigames
-# Key -> minigame_name : String
+# Key -> minigame_name: String
 # Value -> UserMinigameHistory
 @export
 var minigames_histories: Dictionary = {} 

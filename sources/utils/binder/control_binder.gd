@@ -2,7 +2,7 @@
 extends Control
 class_name ControlBinder
 
-@export var property_name : String
+@export var property_name: String
 
 var control: Control
 

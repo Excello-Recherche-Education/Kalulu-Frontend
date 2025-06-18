@@ -38,7 +38,7 @@ func first_login_student() -> void:
 
 func check_email(email: String) -> Dictionary:
 	loading_rect.show()
-	await _get_request("checkemail", {"mail" : email})
+	await _get_request("checkemail", {"mail": email})
 	return _response()
 
 
@@ -99,9 +99,7 @@ func update_student_remediation_data(student_code: int, student_remediation: Use
 	await _post_json_request("submit_gp_remediation", data)
 	return _response()
 
-# p_student must have a device key
-# it can contain a name, level and age key for parents
-# TODO POUR ADD / UPDATE / REMOVE STUDENT : RECUPERER LE TIMESTAMP POUR METTRE A JOUR LE USER
+
 func add_student(p_student: Dictionary) -> Dictionary:
 	await _post_request("add_student", p_student)
 	return _response()
@@ -151,7 +149,7 @@ func _create_request_headers(content_type_json: bool = false) -> PackedStringArr
 		headers.append("Authorization: Bearer " + teacher_settings.token)
 	if content_type_json:
 		headers.append("Content-Type: application/json")
-	Logger.trace("ServerManager Create Header : " + str(headers))
+	Logger.trace("ServerManager Create Header: " + str(headers))
 	return headers
 
 
@@ -162,9 +160,9 @@ var json: Dictionary = {}
 
 func _response() -> Dictionary:
 	var res: Dictionary = {
-			"success" : success,
-			"code" : code,
-			"body" : json
+			"success": success,
+			"code": code,
+			"body": json
 		}
 	return res
 

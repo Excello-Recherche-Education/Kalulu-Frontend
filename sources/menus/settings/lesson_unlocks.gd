@@ -57,7 +57,7 @@ func _on_student_changed(value: int)-> void:
 	_create_lessons()
 	(%PasswordVisualizer as PasswordVisualizer).password = str(value)
 	var all_students: Array = UserDataManager.teacher_settings.students[device]
-	for student_data : StudentData in all_students:
+	for student_data: StudentData in all_students:
 		if student_data.code == value:
 			name_line_edit.text = student_data.name
 			break

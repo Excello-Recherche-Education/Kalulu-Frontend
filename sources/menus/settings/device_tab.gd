@@ -22,7 +22,7 @@ func refresh() -> void:
 	if not students:
 		return
 	
-	var student_count : int = 1
+	var student_count: int = 1
 	for student: StudentData in students:
 		var student_panel: StudentPanel = STUDENT_PANEL_SCENE.instantiate()
 		student_panel.student_count = student_count

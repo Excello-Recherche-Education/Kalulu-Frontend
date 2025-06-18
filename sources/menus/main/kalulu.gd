@@ -6,7 +6,7 @@ extends Control
 var tuto_speech: AudioStreamMP3
 var feedback_speech: AudioStreamMP3
 
-var is_speaking: bool = false :
+var is_speaking: bool = false:
 	set(value):
 		is_speaking = value
 		elapsed_time = 0
@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 	if elapsed_time > 20:
 		start_speech()
 
-func _play_speech(speech : AudioStream) -> void:
+func _play_speech(speech: AudioStream) -> void:
 	if not speech:
 		Logger.warn("Kalulu: Speech not found")
 		is_speaking = false

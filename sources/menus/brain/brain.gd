@@ -107,11 +107,11 @@ func _play_tutorial() -> void:
 	
 	kalulu_button.hide()
 	while tutorial_count < tutorial_speeches.size():
-		if tutorial_count == 0: # first speech : play "show"
+		if tutorial_count == 0: # first speech: play "show"
 			await kalulu.play_kalulu_speech(tutorial_speeches[tutorial_count], true, false)
 		elif tutorial_count + 1 < tutorial_speeches.size():
 			await kalulu.play_kalulu_speech(tutorial_speeches[tutorial_count], false, false)
-		else: # last speech : play "hide"
+		else: # last speech: play "hide"
 			await kalulu.play_kalulu_speech(tutorial_speeches[tutorial_count], false, true)
 		tutorial_count += 1
 		await get_tree().create_timer(0.5).timeout

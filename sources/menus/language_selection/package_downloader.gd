@@ -175,11 +175,11 @@ func _copy_data(this: PackageDownloader) -> void:
 func delete_directory_recursive(path: String) -> void:
 	var dir: DirAccess = DirAccess.open(path)
 	if dir == null:
-		Logger.error("PackageDownloader: Folder does not exists : %s" % path)
+		Logger.error("PackageDownloader: Folder does not exists: %s" % path)
 		return
 
 	if dir.list_dir_begin() != OK:
-		Logger.error("PackageDownloader: Error while reading folder : %s" % path)
+		Logger.error("PackageDownloader: Error while reading folder: %s" % path)
 		return
 
 	var err: Error
@@ -191,7 +191,7 @@ func delete_directory_recursive(path: String) -> void:
 		else:
 			err = dir.remove(full_path)
 			if err != OK:
-				Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting file : %s" % full_path)
+				Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting file: %s" % full_path)
 		file_name = dir.get_next()
 
 	dir.list_dir_end()
@@ -199,9 +199,9 @@ func delete_directory_recursive(path: String) -> void:
 	# Supprime le dossier lui-même
 	err = DirAccess.remove_absolute(path)
 	if err != OK:
-		Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting folder : %s" % path)
+		Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting folder: %s" % path)
 	else:
-		Logger.info("PackageDownloader: ✅ Folder deleted : %s" % path)
+		Logger.info("PackageDownloader: ✅ Folder deleted: %s" % path)
 
 
 func _delete_dir(path: String) -> void:

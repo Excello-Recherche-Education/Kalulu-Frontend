@@ -1,6 +1,6 @@
 extends Control
 
-const LESSON_EXERCICE_CONTAINER_SCENE: PackedScene = preload("res://sources/language_tool/lesson_exercises_container.tscn")
+const LESSON_EXERCISE_CONTAINER_SCENE: PackedScene = preload("res://sources/language_tool/lesson_exercises_container.tscn")
 
 @onready var lessons_container: VBoxContainer = %LessonsContainer
 
@@ -42,7 +42,7 @@ func _ready() -> void:
 	var sentences_by_lesson: Dictionary = Database.get_sentences_by_lessons()
 	Database.db.query("Select * FROM Lessons")
 	for result: Dictionary in Database.db.query_result:
-		var container: LessonExerciceContainer = LESSON_EXERCICE_CONTAINER_SCENE.instantiate()
+		var container: LessonExerciseContainer = LESSON_EXERCISE_CONTAINER_SCENE.instantiate()
 		lessons_container.add_child(container)
 		container.sentences_by_lesson = sentences_by_lesson
 		container.lesson_number = result.LessonNb
@@ -50,7 +50,7 @@ func _ready() -> void:
 
 
 func _on_save_button_pressed() -> void:
-	for container: LessonExerciceContainer in lessons_container.get_children():
+	for container: LessonExerciseContainer in lessons_container.get_children():
 		container._on_save_button_pressed()
 
 

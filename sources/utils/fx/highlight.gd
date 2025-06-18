@@ -4,7 +4,7 @@ class_name HighlightFX
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-var is_playing : bool = false
+var is_playing: bool = false
 
 func play() -> void:
 	is_playing = true

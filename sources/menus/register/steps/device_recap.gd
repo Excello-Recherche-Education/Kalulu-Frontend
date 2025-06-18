@@ -16,7 +16,7 @@ func _ready() -> void:
 	
 	var index: int = 1
 	for student: StudentData in students:
-		var student_panel : StudentPanel = STUDENT_PANEL_SCENE.instantiate()
+		var student_panel: StudentPanel = STUDENT_PANEL_SCENE.instantiate()
 		student_panel.student_count = index
 		student_panel.student_data = student
 		students_container.add_child(student_panel)

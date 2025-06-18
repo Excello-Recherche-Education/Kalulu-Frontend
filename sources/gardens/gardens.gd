@@ -225,10 +225,10 @@ func _ready() -> void:
 						var unlock: Dictionary = UserDataManager.student_progression.unlocks[lesson_ind]
 						
 						var look_and_learn_unlocked: bool = unlock["look_and_learn"] == StudentProgression.Status.Unlocked
-						var exercice_unlock_1: bool = unlock["games"][0] == StudentProgression.Status.Unlocked
-						var exercice_unlock_2: bool = unlock["games"][1] == StudentProgression.Status.Unlocked
-						var exercice_unlock_3: bool = unlock["games"][2] == StudentProgression.Status.Unlocked
-						if look_and_learn_unlocked or exercice_unlock_1 or exercice_unlock_2 or exercice_unlock_3:
+						var exercise_unlock_1: bool = unlock["games"][0] == StudentProgression.Status.Unlocked
+						var exercise_unlock_2: bool = unlock["games"][1] == StudentProgression.Status.Unlocked
+						var exercise_unlock_3: bool = unlock["games"][2] == StudentProgression.Status.Unlocked
+						if look_and_learn_unlocked or exercise_unlock_1 or exercise_unlock_2 or exercise_unlock_3:
 							starting_garden = garden_ind
 							break
 	else:
@@ -323,7 +323,7 @@ func _ready() -> void:
 				for index: int in garden_control.lesson_button_controls.size():
 					if lesson_ind == max_lesson + 1:
 						new_lesson_button = garden_control.lesson_button_controls[index]
-					if lesson_ind == max_lesson :
+					if lesson_ind == max_lesson:
 						last_lesson_button = garden_control.lesson_button_controls[index]
 						if index == garden_control.lesson_button_controls.size() -1:
 							is_last_lesson_of_garden = true
@@ -404,7 +404,7 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	in_minigame_selection = true
 	
 	# Gets the correct exercises for the lesson
-	var exercises: Array[int] = Database.get_exercice_for_lesson(lesson_ind)
+	var exercises: Array[int] = Database.get_exercise_for_lesson(lesson_ind)
 	if not exercises or exercises.size() < 3:
 		return
 	
@@ -421,7 +421,7 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	
 	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.Locked and lesson_unlocks["games"][1] == StudentProgression.Status.Locked and lesson_unlocks["games"][2] == StudentProgression.Status.Locked
 	
-	# Desactivate the mouse filters on the buttons behind the layout
+	# Deactivate the mouse filters on the buttons behind the layout
 	for l_button: LessonButton in current_garden.lesson_button_controls:
 		l_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	

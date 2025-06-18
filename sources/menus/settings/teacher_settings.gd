@@ -7,7 +7,7 @@ const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selectio
 
 const DEVICE_TAB_SCENE: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
 
-@onready var devices_tab_container : TabContainer = %DevicesTabContainer
+@onready var devices_tab_container: TabContainer = %DevicesTabContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
 @onready var loading_popup: LoadingPopup = %LoadingPopup
@@ -84,7 +84,7 @@ func refresh_devices_tabs() -> void:
 		await get_tree().process_frame # Not optional or an auto-rename bug will occur on the tabs (especiallly if there are a lot of them)
 		device_tab.device_id = device
 		device_tab.students = UserDataManager.teacher_settings.students[device]
-		device_tab.name = tr("DEVICE_NUMBER").format({"number" : device})
+		device_tab.name = tr("DEVICE_NUMBER").format({"number": device})
 		device_tab.student_pressed.connect(_on_student_pressed)
 		device_tab.refresh()
 		
@@ -135,7 +135,7 @@ func _on_add_student_popup_accepted() -> void:
 	if not current_tab:
 		Logger.error("SettingsTeacherSettings: DeviceTab not found")
 		return
-	var res: Dictionary = await ServerManager.add_student({"device" :  current_tab.device_id})
+	var res: Dictionary = await ServerManager.add_student({"device":  current_tab.device_id})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
@@ -149,7 +149,7 @@ func _on_add_device_button_pressed() -> void:
 
 
 func _on_add_device_popup_accepted() -> void:
-	var res: Dictionary = await ServerManager.add_student({"device" : last_device_id + 1})
+	var res: Dictionary = await ServerManager.add_student({"device": last_device_id + 1})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
 		refresh_devices_tabs()

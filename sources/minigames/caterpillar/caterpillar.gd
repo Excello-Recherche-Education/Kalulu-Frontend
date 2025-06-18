@@ -27,7 +27,7 @@ func walk() -> void:
 		body_part.walk()
 
 
-func move(distance : float) -> void:
+func move(distance: float) -> void:
 	if is_moving or is_eating:
 		return
 	
@@ -105,7 +105,7 @@ func eat_berry(berry: Berry) -> void:
 func spit_berry(berry: Berry) -> void:
 	is_eating = true
 	
-	var pos_x : float = berry.global_position.x
+	var pos_x: float = berry.global_position.x
 	
 	# Eat the berry
 	var tween: Tween = create_tween()

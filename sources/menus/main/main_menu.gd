@@ -5,9 +5,9 @@ const KALULU: = preload("res://sources/menus/main/kalulu.gd")
 const ADULT_CHECK_SCENE_PATH: String = "res://sources/menus/adult_check/adult_check.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
-@onready var version_label : Label = $Informations/BuildVersionValue
-@onready var teacher_label : Label = $Informations/TeacherValue
-@onready var device_id_label : Label = $Informations/DeviceIDValue
+@onready var version_label: Label = $Informations/BuildVersionValue
+@onready var teacher_label: Label = $Informations/TeacherValue
+@onready var device_id_label: Label = $Informations/DeviceIDValue
 
 @onready var kalulu: KALULU = $Kalulu
 @onready var play_button: Button = %PlayButton

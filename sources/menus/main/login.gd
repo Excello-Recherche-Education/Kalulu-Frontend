@@ -2,13 +2,13 @@ extends Control
 
 signal logged_in
 
-@onready var validator : FormValidator = %LoginFormValidator
-@onready var email_field : LineEdit = %EmailField
-@onready var password_field : LineEdit = %PasswordField
-@onready var login_message : Label = %LoginError
+@onready var validator: FormValidator = %LoginFormValidator
+@onready var email_field: LineEdit = %EmailField
+@onready var password_field: LineEdit = %PasswordField
+@onready var login_message: Label = %LoginError
 
-@onready var device_id_container : VBoxContainer = %DeviceIDContainer
-@onready var device_id_field : SpinBox = %DeviceIDField
+@onready var device_id_container: VBoxContainer = %DeviceIDContainer
+@onready var device_id_field: SpinBox = %DeviceIDField
 
 
 func _ready() -> void:

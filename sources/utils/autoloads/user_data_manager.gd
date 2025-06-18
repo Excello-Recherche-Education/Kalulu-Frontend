@@ -2,11 +2,11 @@
 extends Node
 
 
-var student: String = "" :
+var student: String = "":
 	set(student_name):
 		student = student_name
 		student_progression = null
-		if student :
+		if student:
 			_load_student_progression()
 			_load_student_remediation()
 			_load_student_difficulty()
@@ -134,14 +134,14 @@ func login(infos: Dictionary) -> bool:
 
 func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_texts: Array[String]) -> Resource:
 	if not FileAccess.file_exists(path):
-		Logger.error("❌ File not found : " + path)
+		Logger.error("UserDataManager: File not found: " + path)
 		return null
 
 	var content: String = FileAccess.get_file_as_string(path)
 
 	for index: int in old_texts.size():
 		if content.find(old_texts[index]) != -1:
-			Logger.info("🔧 Fix resource:" + path)
+			Logger.info("UserDataManager: Fix resource:" + path)
 			content = content.replace(old_texts[index], new_texts[index])
 			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 			file.store_string(content)
@@ -149,9 +149,11 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 	var resource: Resource = ResourceLoader.load(path)
 	if resource == null:
-		push_error("❌ Chargement échoué même après correction : " + path)
+		#TODO REPLACE WITH LOGGER
+		push_error("UserDataManager: Loading failed after correction: " + path)
 	else:
-		print("✅ Chargement réussi :", path)
+		#TODO REPLACE WITH LOGGER
+		print("UserDataManager: Loading success: " + path)
 	return resource
 
 func set_device_id(device: int) -> bool:
@@ -183,7 +185,7 @@ func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
 		_delete_dir(get_teacher_folder())
 
-func login_student(code : String) -> bool:
+func login_student(code: String) -> bool:
 	if not _device_settings or not teacher_settings:
 		return false
 	
@@ -230,7 +232,7 @@ func _save_device_settings() -> void:
 	Logger.trace("UserDataManager: Saving device settings in " + get_device_settings_path())
 	ResourceSaver.save(_device_settings, get_device_settings_path())
 
-func set_language(language : String) -> void:
+func set_language(language: String) -> void:
 	if _device_settings:
 		_device_settings.language = language
 		_save_device_settings()
@@ -312,7 +314,7 @@ func denormalize_volume(value: float) -> float:
 func get_teacher_folder() -> String:
 	return "user://".path_join(_device_settings.teacher)
 
-func _get_teacher_settings_path(teacher : String) -> String:
+func _get_teacher_settings_path(teacher: String) -> String:
 	return "user://".path_join(teacher).path_join("teacher_settings.tres")
 
 func get_teacher_settings_path() -> String:

@@ -12,10 +12,10 @@ const TEXTURES: Array[CompressedTexture2D] = [
 	preload("res://assets/vfx/sand_07.png")
 ]
 
-@onready var particles : GPUParticles2D = $Particles
-@onready var timer : Timer = $Timer
+@onready var particles: GPUParticles2D = $Particles
+@onready var timer: Timer = $Timer
 
-var is_playing : bool = false
+var is_playing: bool = false
 
 func _ready() -> void:
 	timer.wait_time = particles.lifetime

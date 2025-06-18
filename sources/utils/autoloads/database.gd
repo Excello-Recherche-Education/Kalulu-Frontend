@@ -2,12 +2,12 @@
 extends Node
 
 const _SYMBOLS_TO_STRING: Dictionary[String, String] = {
-	"#" : "sharp",
-	"@" : "at",
-	"*" : "star",
-	"$" : "usd",
-	"%" : "pcent",
-	"§" : "para"
+	"#": "sharp",
+	"@": "at",
+	"*": "star",
+	"$": "usd",
+	"%": "pcent",
+	"§": "para"
 }
 const BASE_PATH: String =  "user://language_resources/"
 const TRACING_DATA_FOLDER: String = "tracing_data/"
@@ -80,7 +80,7 @@ func load_additional_word_list() -> String:
 	return ""
 
 
-func get_exercice_for_lesson(lesson_nb: int) -> Array[int]:
+func get_exercise_for_lesson(lesson_nb: int) -> Array[int]:
 	var query: String = "Select Exercise1, Exercise2, Exercise3 FROM LessonsExercises
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
 	WHERE LessonNB == " + str(lesson_nb)

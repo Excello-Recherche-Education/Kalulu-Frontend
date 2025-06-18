@@ -3,16 +3,16 @@ extends Control
 const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const REGISTER_SCENE_PATH: String = "res://sources/menus/register/register.tscn"
 const SYMBOLS_NAMES: Dictionary[String, String] = {
-	"1" : "STAR",
-	"2" : "BAR",
-	"3" : "CIRCLE",
-	"4" : "PLUS",
-	"5" : "SQUARE",
-	"6" : "TRIANGLE",
+	"1": "STAR",
+	"2": "BAR",
+	"3": "CIRCLE",
+	"4": "PLUS",
+	"5": "SQUARE",
+	"6": "TRIANGLE",
 }
 
-@onready var code_keyboard : CodeKeyboard = %CodeKeyboard
-@onready var password_label : Label = %PasswordLabel
+@onready var code_keyboard: CodeKeyboard = %CodeKeyboard
+@onready var password_label: Label = %PasswordLabel
 
 var password: String = ""
 
@@ -27,9 +27,9 @@ func _reset_password() -> void:
 	var password_array: PackedStringArray = password.split("")
 	password_label.text = tr("ADULT_CHECK_PROMPT").format(
 		{
-			"1" : tr(SYMBOLS_NAMES[password_array[0]]),
-			"2" : tr(SYMBOLS_NAMES[password_array[1]]),
-			"3" : tr(SYMBOLS_NAMES[password_array[2]])
+			"1": tr(SYMBOLS_NAMES[password_array[0]]),
+			"2": tr(SYMBOLS_NAMES[password_array[1]]),
+			"3": tr(SYMBOLS_NAMES[password_array[2]])
 		}
 	)
 

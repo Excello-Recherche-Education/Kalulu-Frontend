@@ -2,18 +2,18 @@
 extends Control
 class_name Step
 
-signal back(step : Step)
-signal next(step : Step)
+signal back(step: Step)
+signal next(step: Step)
 
-@onready var question_label : Label = %QuestionLabel
-@onready var info_label : Label = %InfoLabel
-@onready var form_validator : FormValidator = %FormValidator
-@onready var form_binder : FormBinder = %FormBinder
-@onready var form_container : Control = %FormContainer
+@onready var question_label: Label = %QuestionLabel
+@onready var info_label: Label = %InfoLabel
+@onready var form_validator: FormValidator = %FormValidator
+@onready var form_binder: FormBinder = %FormBinder
+@onready var form_container: Control = %FormContainer
 
-@export var step_name : String
-@export_multiline var question : String
-@export_multiline var infos : String
+@export var step_name: String
+@export_multiline var question: String
+@export_multiline var infos: String
 @export var data: Resource
 
 func on_enter() -> void:

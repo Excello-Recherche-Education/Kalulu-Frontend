@@ -150,7 +150,7 @@ func wrong() -> void:
 	crab.wrong()
 
 
-func _set_crab_button_active(is_active : bool) -> void:
+func _set_crab_button_active(is_active: bool) -> void:
 	if crab:
 		crab.set_button_active(is_active)
 
@@ -182,7 +182,7 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	crab = null
 
 
-func on_stimulus_heard(is_heard : bool) -> void:
+func on_stimulus_heard(is_heard: bool) -> void:
 	stimulus_heard = is_heard
 
 

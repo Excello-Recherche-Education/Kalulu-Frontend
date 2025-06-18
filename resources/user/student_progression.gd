@@ -23,7 +23,7 @@ func init_unlocks() -> bool:
 	if not unlocks:
 		unlocks = {}
 	
-	# Verifiy the lessons
+	# Verify the lessons
 	var number_of_lessons: int = Database.get_lessons_count()
 	if unlocks.size() != number_of_lessons:
 		for index: int in number_of_lessons:

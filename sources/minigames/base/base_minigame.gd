@@ -24,11 +24,11 @@ enum Type {
 @export var minigame_number: int = 1
 
 @export_category("Difficulty")
-@export var max_number_of_lives: int = 0 :
+@export var max_number_of_lives: int = 0:
 	set(value):
 		max_number_of_lives = value
 
-@export var max_progression: int = 0 :
+@export var max_progression: int = 0:
 	set(value):
 		max_progression = value
 		if minigame_ui:
@@ -68,7 +68,7 @@ var stimuli: Array = []
 var distractions: Array = []
 
 # Lives
-var current_lives: int = 0 :
+var current_lives: int = 0:
 	set(value):
 		var previous_lives: int = current_lives
 		current_lives = value
@@ -82,7 +82,7 @@ var current_lives: int = 0 :
 			is_highlighting = true
 
 # Progression
-var current_progression: int = 0 : set = set_current_progression
+var current_progression: int = 0: set = set_current_progression
 var current_number_of_hints: int = 0
 var consecutive_errors: int = 0
 var is_highlighting: bool = false:

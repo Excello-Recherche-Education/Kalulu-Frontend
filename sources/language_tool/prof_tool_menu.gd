@@ -557,7 +557,7 @@ func create_book() -> void:
 		var file_path: String = lang_path.path_join(file_names[category])
 		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
 		if file == null:
-			Logger.error("ProfToolMenu: Erreur d'ouverture : " + file_path)
+			Logger.error("ProfToolMenu: Error opening file: " + file_path)
 			continue
 
 		if file.eof_reached():
@@ -601,7 +601,7 @@ func create_book() -> void:
 
 			var values: PackedStringArray = parse_csv_line(line)
 			if values.size() != raw_headers.size():
-				Logger.warn("ProfToolMenu: Ligne malformée ignorée : %s" % values)
+				Logger.warn("ProfToolMenu: Malformed line ignored: %s" % values)
 				continue
 
 			var row_dict: Dictionary[String, String] = {}
@@ -634,7 +634,7 @@ func create_book() -> void:
 	var output_path: String = lang_path.path_join("booklet.csv")
 	var output_file: FileAccess = FileAccess.open(output_path, FileAccess.WRITE)
 	if output_file == null:
-		Logger.error("ProfToolMenu: Impossible d'écrire : " + output_path)
+		Logger.error("ProfToolMenu: Impossible to write: " + output_path)
 		return
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
@@ -648,7 +648,7 @@ func create_book() -> void:
 
 	output_file.close()
 	
-	error_label.text = "📘 Export des données du livret terminé vers : " + output_path
+	error_label.text = "📘 Export data of the booklet finished to path: " + output_path
 	Logger.trace("ProfToolMenu: " + error_label.text)
 
 # Fonction qui ajoute une ligne au dictionnaire
@@ -668,7 +668,7 @@ func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[S
 			dict[header] = filler
 		dict[header].append(row_data.get(header, "") as String)
 
-	# Colonne spéciale : Categorie
+	# Special column: "Categorie"
 	if not dict.has("Categorie"):
 		var filler: PackedStringArray
 		filler.resize(current_size)
@@ -732,8 +732,8 @@ func read_csv_record(file: FileAccess) -> String:
 		record += line
 
 		var quote_count: int = 0
-		for char: String in line:
-			if char == "\"":
+		for chara: String in line:
+			if chara == "\"":
 				quote_count += 1
 
 		open_quotes = (quote_count % 2 != 0)

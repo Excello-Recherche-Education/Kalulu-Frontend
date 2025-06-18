@@ -24,7 +24,7 @@ const SUPPORTED_LOCALES: Array[String] = [
 		print("DeviceSettings: language SET: " + TranslationServer.get_locale())
 @export var teacher: String
 @export var device_id: int
-@export var language_versions: Dictionary = {} # locale : datetime
+@export var language_versions: Dictionary = {} # locale: datetime
 
 @export var master_volume: float = 0.0:
 	set(volume):
