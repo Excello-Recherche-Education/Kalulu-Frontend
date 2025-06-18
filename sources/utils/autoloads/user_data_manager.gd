@@ -496,7 +496,7 @@ func set_student_remediation_data(student_code: int, new_scores: Dictionary[int,
 		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
 		student_remediation.set_gp_scores(new_scores)
-		student_remediation.set_last_modified(updated_at)
+		student_remediation.set_gp_last_modified(updated_at)
 		ResourceSaver.save(student_remediation, remediation_data_path)
 
 func _save_student_remediation() -> void:

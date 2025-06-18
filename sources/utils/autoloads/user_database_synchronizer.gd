@@ -131,8 +131,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					# Synchronize student gp remediation
 					var student_gp_remediation: UserRemediation = UserDataManager.get_student_remediation_data(code_to_check)
 					if student_gp_remediation != null:
-						var local_student_gp_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_gp_remediation.last_modified)
-						#server_student_remediation_unix_time
+						var local_student_gp_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_gp_remediation.gp_last_modified)
 						if local_student_gp_remediation_unix_time == server_student_remediation_unix_time:
 							Logger.trace("UserDatabaseSynchronizer: Student %d GP remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 							need_update_students[code_to_check] = {"remediation_gp": UpdateNeeded.Nothing}
@@ -225,7 +224,7 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 				var tuple_list: Array = []
 				for key: int in student_remediation.gps_scores.keys():
 					tuple_list.append([key, student_remediation.gps_scores[key]])
-				gp_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.last_modified}
+				gp_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.gp_last_modified}
 			elif student_entry.remediation_gp == UpdateNeeded.FromServer:
 				gp_remediation_block = {"need_update": true}
 			elif student_entry.remediation_gp == UpdateNeeded.DeleteServer:
