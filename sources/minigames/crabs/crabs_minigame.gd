@@ -32,20 +32,20 @@ var stimulus_spawned: bool = false
 func _setup_minigame() -> void:
 	super._setup_minigame()
 
-	var difficulty: DifficultySettings = _get_difficulty_settings()
+	var current_difficulty_settings: DifficultySettings = _get_difficulty_settings()
 
 	# Define the rectangular zone where holes will be placed
 	var zone_top_left: Vector2 = crab_zone.position
 	var zone_bottom_right: Vector2 = zone_top_left + crab_zone.size
 
 	# Loop through each row defined by the difficulty settings
-	for row_index: int in range(difficulty.rows.size()):
+	for row_index: int in range(current_difficulty_settings.rows.size()):
 		# Compute vertical placement ratio (between 0 and 1, skipping the edges)
-		var vertical_ratio: float = float(row_index + 1) / float(difficulty.rows.size() + 1)
+		var vertical_ratio: float = float(row_index + 1) / float(current_difficulty_settings.rows.size() + 1)
 		var hole_y: float = lerp(zone_top_left.y, zone_bottom_right.y, vertical_ratio)
 
 		# Get the number of holes to place in this row
-		var holes_in_row: int = difficulty.rows[row_index]
+		var holes_in_row: int = current_difficulty_settings.rows[row_index]
 
 		# Loop through each hole in the current row
 		for column_index: int in range(holes_in_row):

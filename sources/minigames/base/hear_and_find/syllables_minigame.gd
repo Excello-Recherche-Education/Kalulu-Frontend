@@ -22,6 +22,7 @@ var is_stimulus_heard: bool = false:
 func _start() -> void:
 	super()
 	if stimuli.is_empty():
+		Logger.error("SyllablesMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	stimulus_timer.wait_time = stimulus_repeat_time
@@ -50,7 +51,7 @@ func _find_stimuli_and_distractions() -> void:
 	current_lesson_stimuli.shuffle()
 	previous_lesson_stimuli.shuffle()
 	
-	# Sort for remediation
+	# Sort for remediation, based on GP
 	current_lesson_stimuli.sort_custom(_sort_scoring)
 	previous_lesson_stimuli.sort_custom(_sort_scoring)
 	
@@ -191,9 +192,11 @@ func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 	
 	# Checks the answer and update scores
 	if _is_stimulus_right(stimulus):
+		# Positive score only if the answer was not highlighted
 		if not is_highlighting:
 			for gp: Dictionary in stimulus.GPs:
-				_update_score(gp.ID as int, 1)
+				_update_gp_score(gp.ID as int, 1)
+			_update_syllable_score(stimulus.ID as int, 1)
 		else:
 			# Handles highlight
 			is_highlighting = false
@@ -212,14 +215,18 @@ func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 		for index: int in right_answer_gps.size():
 			if not stimulus_gps or (index < stimulus_gps.size() and stimulus_gps[index] == right_answer_gps[index]):
 				continue
-			_update_score(right_answer_gps[index].ID as int, -1)
+			_update_gp_score(right_answer_gps[index].ID as int, -1)
+		if _get_current_stimulus().has("ID"):
+			_update_syllable_score(_get_current_stimulus().ID as int, -1)
 		
 		# Handles the pressed stimulus Gps
 		if stimulus_gps:
 			for index: int in stimulus_gps.size():
 				if index < right_answer_gps.size() and stimulus_gps[index] == right_answer_gps[index]:
 					continue
-				_update_score(stimulus_gps[index].ID as int, -1)
+				_update_gp_score(stimulus_gps[index].ID as int, -1)
+		if stimulus.has("ID"):
+			_update_syllable_score(stimulus.ID as int, -1)
 	return true
 
 

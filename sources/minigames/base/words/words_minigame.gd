@@ -37,7 +37,7 @@ func _find_stimuli_and_distractions() -> void:
 	current_lesson_words.shuffle()
 	previous_lesson_words.shuffle()
 	
-	# Sort for remediation
+	# Sort for remediation based on GP
 	current_lesson_words.sort_custom(_sort_scoring)
 	previous_lesson_words.sort_custom(_sort_scoring)
 	
@@ -93,6 +93,7 @@ func _find_stimuli_and_distractions() -> void:
 func _start() -> void:
 	super()
 	if stimuli.is_empty():
+		Logger.error("WordsMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	_setup_word_progression()
@@ -186,11 +187,11 @@ func _log_new_response_and_score(gp: Dictionary) -> void:
 	# Handles GP scoring
 	if self._is_gp_right(gp):
 		if not is_highlighting:
-			_update_score(gp.ID as int, 1)
+			_update_gp_score(gp.ID as int, 1)
 	else:
 		if gp:
-			_update_score(gp.ID as int, -1)
-		_update_score(self._get_gp().ID as int, -1)
+			_update_gp_score(gp.ID as int, -1)
+		_update_gp_score(self._get_gp().ID as int, -1)
 
 
 # ------------- UI Callbacks ------------- #

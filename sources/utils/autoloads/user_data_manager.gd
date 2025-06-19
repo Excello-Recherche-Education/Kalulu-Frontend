@@ -526,12 +526,26 @@ func get_gp_remediation_score(gp_id: int) -> int:
 		return 0
 	return _student_remediation.get_gp_score(gp_id)
 
-func update_remediation_scores(scores: Dictionary) -> void:
+func update_remediation_gp_scores(gp_scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
-	if scores:
-		_student_remediation.update_gp_scores(scores)
+	if gp_scores:
+		_student_remediation.update_gp_scores(gp_scores)
+
+func update_remediation_syllables_scores(syllables_scores: Dictionary) -> void:
+	if not _student_remediation:
+		Logger.warn("UserDataManager: No student remediation data for " + str(student))
+		return
+	if syllables_scores:
+		_student_remediation.update_syllables_scores(syllables_scores)
+
+func update_remediation_words_scores(words_scores: Dictionary) -> void:
+	if not _student_remediation:
+		Logger.warn("UserDataManager: No student remediation data for " + str(student))
+		return
+	if words_scores:
+		_student_remediation.update_words_scores(words_scores)
 
 #endregion
 

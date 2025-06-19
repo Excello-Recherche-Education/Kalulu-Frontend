@@ -58,6 +58,9 @@ func _ready() -> void:
 
 func _find_stimuli_and_distractions() -> void:
 	var data_array: Array[Dictionary] = Database.get_pseudowords_for_lesson(lesson_nb)
+	if data_array.size() <= 0:
+		Logger.error("FishMinigame: Cannot start fish minigame since data is empty for lesson %d" % lesson_nb)
+		return
 	data_array.shuffle()
 	words_to_present.clear()
 	words_to_present_next.clear()

@@ -61,7 +61,9 @@ var lesson_difficulty: int
 var logs: Dictionary = {}
 
 # Scores for the remediation engine
-var gp_scores: Dictionary = {} 
+var gp_scores: Dictionary = {}
+var syllables_scores: Dictionary = {}
+var words_scores: Dictionary = {}
 
 # Stimuli
 var stimuli: Array = []
@@ -216,9 +218,7 @@ func _win() -> void:
 	if UserDataManager.student_progression:
 		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
-	# Remediation
-	if gp_scores:
-		UserDataManager.update_remediation_scores(gp_scores)
+	update_remediation()
 	
 	# Difficulty
 	if current_lives <= 0:
@@ -238,6 +238,15 @@ func _win() -> void:
 	_go_back_to_the_garden()
 
 
+func update_remediation() -> void:
+	if gp_scores:
+		UserDataManager.update_remediation_gp_scores(gp_scores)
+	if syllables_scores:
+		UserDataManager.update_remediation_syllables_scores(syllables_scores)
+	if words_scores:
+		UserDataManager.update_remediation_words_scores(words_scores)
+
+
 func _lose() -> void:
 	# Lock the UI
 	minigame_ui.lock()
@@ -247,9 +256,7 @@ func _lose() -> void:
 	if gardens_data:
 		gardens_data.minigame_completed = false
 	
-	# Remediation
-	if gp_scores:
-		UserDataManager.update_remediation_scores(gp_scores)
+	update_remediation()
 	
 	# Difficulty
 	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
@@ -318,12 +325,28 @@ func _sort_scoring(stimulus1: Dictionary, stimulus2: Dictionary) -> bool:
 
 
 # Updates the score of a GP defined by his ID
-func _update_score(id: int, score: int) -> void:
+func _update_gp_score(id: int, score: int) -> void:
 	var new_gp_score: int = 0
 	if gp_scores.has(id):
 		new_gp_score += gp_scores[id]
 	new_gp_score += score
 	gp_scores[id] = new_gp_score
+
+# Updates the score of a syllable defined by his ID
+func _update_syllable_score(id: int, score: int) -> void:
+	var new_syllable_score: int = 0
+	if syllables_scores.has(id):
+		new_syllable_score += syllables_scores[id]
+	new_syllable_score += score
+	syllables_scores[id] = new_syllable_score
+
+# Updates the score of a syllable defined by his ID
+func _update_word_score(id: int, score: int) -> void:
+	var new_word_score: int = 0
+	if words_scores.has(id):
+		new_word_score += words_scores[id]
+	new_word_score += score
+	words_scores[id] = new_word_score
 
 #endregion
 
@@ -387,8 +410,7 @@ func set_current_progression(p_current_progression: int) -> void:
 
 func _on_minigame_ui_garden_button_pressed() -> void:
 	_go_back_to_the_garden()
-	if gp_scores:
-		UserDataManager.update_remediation_scores(gp_scores)
+	update_remediation()
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:
