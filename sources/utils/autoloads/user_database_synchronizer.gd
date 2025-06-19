@@ -105,12 +105,24 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 			server_student_unix_time = Time.get_unix_time_from_datetime_string(student_dic.updated_at as String)
 		else:
 			Logger.warn("UserDatabaseSynchronizer: Student %d received from server has no timestamp" % code_to_check)
-		var server_student_remediation_unix_time: int = -1
+		var server_student_remediation_gp_unix_time: int = -1
 		if student_dic.has("gp_remediation_last_modified"):
 			if student_dic.gp_remediation_last_modified != null && student_dic.gp_remediation_last_modified is String:
-				server_student_remediation_unix_time = Time.get_unix_time_from_datetime_string(student_dic.gp_remediation_last_modified as String)
+				server_student_remediation_gp_unix_time = Time.get_unix_time_from_datetime_string(student_dic.gp_remediation_last_modified as String)
 			else:
-				server_student_remediation_unix_time = 0
+				server_student_remediation_gp_unix_time = 0
+		var server_student_remediation_syllables_unix_time: int = -1
+		if student_dic.has("syllables_remediation_last_modified"):
+			if student_dic.syllables_remediation_last_modified != null && student_dic.syllables_remediation_last_modified is String:
+				server_student_remediation_syllables_unix_time = Time.get_unix_time_from_datetime_string(student_dic.syllables_remediation_last_modified as String)
+			else:
+				server_student_remediation_syllables_unix_time = 0
+		var server_student_remediation_words_unix_time: int = -1
+		if student_dic.has("words_remediation_last_modified"):
+			if student_dic.words_remediation_last_modified != null && student_dic.words_remediation_last_modified is String:
+				server_student_remediation_words_unix_time = Time.get_unix_time_from_datetime_string(student_dic.words_remediation_last_modified as String)
+			else:
+				server_student_remediation_words_unix_time = 0
 		var found: bool = false
 		for device: int in UserDataManager.teacher_settings.students.keys():
 			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
@@ -128,17 +140,35 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					else:
 						need_update_students[code_to_check] = {"data": UpdateNeeded.FromServer}
 					
-					# Synchronize student gp remediation
-					var student_gp_remediation: UserRemediation = UserDataManager.get_student_remediation_data(code_to_check)
-					if student_gp_remediation != null:
-						var local_student_gp_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_gp_remediation.gp_last_modified)
-						if local_student_gp_remediation_unix_time == server_student_remediation_unix_time:
+					# Synchronize student remediation
+					var student_remediation: UserRemediation = UserDataManager.get_student_remediation_data(code_to_check)
+					if student_remediation != null:
+						var local_student_gp_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.gp_last_modified)
+						if local_student_gp_remediation_unix_time == server_student_remediation_gp_unix_time:
 							Logger.trace("UserDatabaseSynchronizer: Student %d GP remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 							need_update_students[code_to_check] = {"remediation_gp": UpdateNeeded.Nothing}
-						elif local_student_gp_remediation_unix_time > server_student_remediation_unix_time:
+						elif local_student_gp_remediation_unix_time > server_student_remediation_gp_unix_time:
 							need_update_students[code_to_check] = {"remediation_gp": UpdateNeeded.FromLocal}
 						else:
 							need_update_students[code_to_check] = {"remediation_gp": UpdateNeeded.FromServer}
+						
+						var local_student_syllables_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.syllables_last_modified)
+						if local_student_syllables_remediation_unix_time == server_student_remediation_syllables_unix_time:
+							Logger.trace("UserDatabaseSynchronizer: Student %d syllables remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+							need_update_students[code_to_check] = {"remediation_syllables": UpdateNeeded.Nothing}
+						elif local_student_syllables_remediation_unix_time > server_student_remediation_syllables_unix_time:
+							need_update_students[code_to_check] = {"remediation_syllables": UpdateNeeded.FromLocal}
+						else:
+							need_update_students[code_to_check] = {"remediation_syllables": UpdateNeeded.FromServer}
+						
+						var local_student_words_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.words_last_modified)
+						if local_student_words_remediation_unix_time == server_student_remediation_words_unix_time:
+							Logger.trace("UserDatabaseSynchronizer: Student %d words remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+							need_update_students[code_to_check] = {"remediation_words": UpdateNeeded.Nothing}
+						elif local_student_words_remediation_unix_time > server_student_remediation_words_unix_time:
+							need_update_students[code_to_check] = {"remediation_words": UpdateNeeded.FromLocal}
+						else:
+							need_update_students[code_to_check] = {"remediation_words": UpdateNeeded.FromServer}
 					break
 			if found:
 				break
@@ -216,11 +246,11 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 			elif student_update == UpdateNeeded.FromServer:
 				student_block["need_update"] = true
 
-		# Traitement de "remediation_gp"
+		# Traitement des remediations scores
+		var student_remediation: UserRemediation = UserDataManager.get_student_remediation_data(student_code)
 		if student_entry.has("remediation_gp"):
 			var gp_remediation_block: Dictionary = {}
 			if student_entry.remediation_gp == UpdateNeeded.FromLocal:
-				var student_remediation: UserRemediation = UserDataManager.get_student_remediation_data(student_code)
 				var tuple_list: Array = []
 				for key: int in student_remediation.gps_scores.keys():
 					tuple_list.append([key, student_remediation.gps_scores[key]])
@@ -232,6 +262,36 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 
 			if gp_remediation_block.size() > 0:
 				student_block["remediation_gp"] = gp_remediation_block
+		
+		if student_entry.has("remediation_syllables"):
+			var syllables_remediation_block: Dictionary = {}
+			if student_entry.remediation_syllables == UpdateNeeded.FromLocal:
+				var tuple_list: Array = []
+				for key: int in student_remediation.syllables_scores.keys():
+					tuple_list.append([key, student_remediation.syllables_scores[key]])
+				syllables_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.syllables_last_modified}
+			elif student_entry.remediation_gp == UpdateNeeded.FromServer:
+				syllables_remediation_block = {"need_update": true}
+			elif student_entry.remediation_gp == UpdateNeeded.DeleteServer:
+				syllables_remediation_block = {"delete": true}
+
+			if syllables_remediation_block.size() > 0:
+				student_block["remediation_syllables"] = syllables_remediation_block
+		
+		if student_entry.has("remediation_words"):
+			var words_remediation_block: Dictionary = {}
+			if student_entry.remediation_words == UpdateNeeded.FromLocal:
+				var tuple_list: Array = []
+				for key: int in student_remediation.words_scores.keys():
+					tuple_list.append([key, student_remediation.words_scores[key]])
+				words_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.words_last_modified}
+			elif student_entry.remediation_gp == UpdateNeeded.FromServer:
+				words_remediation_block = {"need_update": true}
+			elif student_entry.remediation_gp == UpdateNeeded.DeleteServer:
+				words_remediation_block = {"delete": true}
+
+			if words_remediation_block.size() > 0:
+				student_block["remediation_syllables"] = words_remediation_block
 
 		if student_block.size() > 0:
 			message_to_server["students"][student_code] = student_block
@@ -280,16 +340,33 @@ func _apply_server_response(response_body: Dictionary) -> void:
 		var response_students: Dictionary = response_body.students
 		for response_student_code: String in response_students.keys():
 			var response_student_data: Dictionary = response_students[response_student_code]
+			# TODO SEPARATE EACH ELEMENT AND ADD LOGGER ERROR IF MISSING OF STUDENT DATA
 			if response_student_data.has("device_id") && response_student_data.has("name") && response_student_data.has("age") && response_student_data.has("updated_at"):
 				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
 			if response_student_data.has("remediation_gp") && (response_student_data.remediation_gp as Dictionary).has("score_remediation") && (response_student_data.remediation_gp  as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
-				var new_scores: Dictionary[int, int] = {}
+				var new_gp_scores: Dictionary[int, int] = {}
 				for index: int in new_array.size():
 					# TODO ADD SECURITY
-					new_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
-				UserDataManager.set_student_remediation_data(int(response_student_code), new_scores, response_student_data.remediation_gp.updated_at as String)
+					new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+				UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
+			if response_student_data.has("remediation_syllables") && (response_student_data.remediation_syllables as Dictionary).has("score_remediation") && (response_student_data.remediation_syllables  as Dictionary).has("updated_at"):
+				# TODO ADD SECURITY
+				var new_array: Array = JSON.parse_string(response_student_data.remediation_syllables.score_remediation as String) as Array
+				var new_syllables_scores: Dictionary[int, int] = {}
+				for index: int in new_array.size():
+					# TODO ADD SECURITY
+					new_syllables_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+				UserDataManager.set_student_remediation_syllables_data(int(response_student_code), new_syllables_scores, response_student_data.remediation_syllables.updated_at as String)
+			if response_student_data.has("remediation_words") && (response_student_data.remediation_words as Dictionary).has("score_remediation") && (response_student_data.remediation_words  as Dictionary).has("updated_at"):
+				# TODO ADD SECURITY
+				var new_array: Array = JSON.parse_string(response_student_data.remediation_words.score_remediation as String) as Array
+				var new_words_scores: Dictionary[int, int] = {}
+				for index: int in new_array.size():
+					# TODO ADD SECURITY
+					new_words_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+				UserDataManager.set_student_remediation_words_data(int(response_student_code), new_words_scores, response_student_data.remediation_words.updated_at as String)
 
 
 func synchronize() -> void:
