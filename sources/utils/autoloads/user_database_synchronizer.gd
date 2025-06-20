@@ -285,9 +285,9 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 				for key: int in student_remediation.words_scores.keys():
 					tuple_list.append([key, student_remediation.words_scores[key]])
 				words_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.words_last_modified}
-			elif student_entry.remediation_gp == UpdateNeeded.FromServer:
+			elif student_entry.remediation_words == UpdateNeeded.FromServer:
 				words_remediation_block = {"need_update": true}
-			elif student_entry.remediation_gp == UpdateNeeded.DeleteServer:
+			elif student_entry.remediation_words == UpdateNeeded.DeleteServer:
 				words_remediation_block = {"delete": true}
 
 			if words_remediation_block.size() > 0:

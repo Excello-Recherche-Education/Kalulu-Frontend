@@ -602,13 +602,15 @@ func _save_student_speeches() -> void:
 
 func mark_speech_as_played(speech: String) -> void:
 	if not _student_speeches:
-		Logger.warn("UserDataManager: No student speeches data for " + str(student))
+		if not Engine.is_editor_hint():
+			Logger.warn("UserDataManager: No student speeches data for " + str(student))
 		return
 	_student_speeches.add_speech(speech)
 
 func is_speech_played(speech: String) -> bool:
 	if not _student_speeches:
-		Logger.warn("UserDataManager: No student speeches data for " + str(student))
+		if not Engine.is_editor_hint():
+			Logger.warn("UserDataManager: No student speeches data for " + str(student))
 		return false
 	return _student_speeches.is_speech_played(speech)
 	

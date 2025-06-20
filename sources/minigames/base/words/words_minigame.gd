@@ -14,6 +14,8 @@ var max_word_progression: int = 0
 
 var current_gp_distractors_queue: Array[Dictionary] = []
 
+var current_word_has_errors: bool = false
+
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
@@ -191,6 +193,7 @@ func _log_new_response_and_score(gp: Dictionary) -> void:
 	else:
 		if gp:
 			_update_gp_score(gp.ID as int, -1)
+			current_word_has_errors = true
 		_update_gp_score(self._get_gp().ID as int, -1)
 
 
@@ -209,6 +212,11 @@ func _on_current_word_progression_changed() -> void:
 
 
 func _on_current_progression_changed() -> void:
+	if current_word_has_errors:
+		_update_word_score(_get_current_stimulus().ID as int, -1)
+		current_word_has_errors = false
+	else:
+		_update_word_score(_get_current_stimulus().ID as int, 1)
 	if current_progression >= max_progression:
 		return
 	_setup_word_progression()
