@@ -336,6 +336,7 @@ func _get_available_languages() -> Array[String]:
 				if FileAccess.file_exists(BASE_PATH.path_join(file_name).path_join("language.db")):
 					available_languages.append(file_name)
 			file_name = dir.get_next()
+		dir.list_dir_end()
 	return available_languages
 
 

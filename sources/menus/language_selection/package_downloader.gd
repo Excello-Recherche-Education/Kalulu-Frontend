@@ -107,6 +107,7 @@ func is_language_directory_valid(path: String) -> bool:
 		return false
 
 	if dir.list_dir_begin() != OK:
+		dir.list_dir_end()
 		return false
 
 	var file_name: String = dir.get_next()
@@ -179,6 +180,7 @@ func delete_directory_recursive(path: String) -> void:
 		return
 
 	if dir.list_dir_begin() != OK:
+		dir.list_dir_end()
 		Logger.error("PackageDownloader: Error while reading folder: %s" % path)
 		return
 

@@ -270,9 +270,9 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 				for key: int in student_remediation.syllables_scores.keys():
 					tuple_list.append([key, student_remediation.syllables_scores[key]])
 				syllables_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.syllables_last_modified}
-			elif student_entry.remediation_gp == UpdateNeeded.FromServer:
+			elif student_entry.remediation_syllables == UpdateNeeded.FromServer:
 				syllables_remediation_block = {"need_update": true}
-			elif student_entry.remediation_gp == UpdateNeeded.DeleteServer:
+			elif student_entry.remediation_syllables == UpdateNeeded.DeleteServer:
 				syllables_remediation_block = {"delete": true}
 
 			if syllables_remediation_block.size() > 0:
@@ -291,7 +291,7 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 				words_remediation_block = {"delete": true}
 
 			if words_remediation_block.size() > 0:
-				student_block["remediation_syllables"] = words_remediation_block
+				student_block["remediation_words"] = words_remediation_block
 
 		if student_block.size() > 0:
 			message_to_server["students"][student_code] = student_block

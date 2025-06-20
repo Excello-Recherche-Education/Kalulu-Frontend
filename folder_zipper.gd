@@ -19,6 +19,7 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 				var file: FileAccess = FileAccess.open(abs_path.path_join(rel_path).path_join(file_name), FileAccess.READ)
 				write_file(file.get_buffer(file.get_length()))
 			file_name = dir.get_next()
+		dir.list_dir_end()
 	else:
 		return DirAccess.get_open_error()
 	return OK
