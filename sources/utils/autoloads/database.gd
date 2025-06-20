@@ -105,7 +105,7 @@ func get_exercise_for_lesson(lesson_nb: int) -> Array[int]:
 	return result
 
 
-func get_gps_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false, include_exceptions: bool = false) -> Array:
+func get_gps_for_lesson(lesson_nb: int, distinct: bool, only_new: bool = false, only_vowels: bool = false, with_other_phonemes: bool = false, include_exceptions: bool = false) -> Array[Dictionary]:
 	
 	var parameters: Array = []
 	var symbol: String = "<=" if not only_new else "=="

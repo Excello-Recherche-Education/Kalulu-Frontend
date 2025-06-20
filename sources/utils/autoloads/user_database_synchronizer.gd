@@ -124,6 +124,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 			else:
 				server_student_remediation_words_unix_time = 0
 		var found: bool = false
+		need_update_students[code_to_check] = {}
 		for device: int in UserDataManager.teacher_settings.students.keys():
 			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
 			for student_data: StudentData in students_in_device:
@@ -134,11 +135,11 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					var local_student_unix_time: int = Time.get_unix_time_from_datetime_string(student_data.last_modified)
 					if local_student_unix_time == server_student_unix_time:
 						Logger.trace("UserDatabaseSynchronizer: Student %d data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
-						need_update_students[code_to_check] = {"data": UpdateNeeded.Nothing}
+						need_update_students[code_to_check].merge({"data": UpdateNeeded.Nothing})
 					elif local_student_unix_time > server_student_unix_time:
-						need_update_students[code_to_check] = {"data": UpdateNeeded.FromLocal}
+						need_update_students[code_to_check].merge({"data": UpdateNeeded.FromLocal})
 					else:
-						need_update_students[code_to_check] = {"data": UpdateNeeded.FromServer}
+						need_update_students[code_to_check].merge({"data": UpdateNeeded.FromServer})
 					
 					# Synchronize student remediation
 					var student_remediation: UserRemediation = UserDataManager.get_student_remediation_data(code_to_check)
@@ -146,38 +147,36 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 						var local_student_gp_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.gp_last_modified)
 						if local_student_gp_remediation_unix_time == server_student_remediation_gp_unix_time:
 							Logger.trace("UserDatabaseSynchronizer: Student %d GP remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
-							need_update_students[code_to_check] = {"remediation_gp": UpdateNeeded.Nothing}
+							need_update_students[code_to_check].merge({"remediation_gp": UpdateNeeded.Nothing})
 						elif local_student_gp_remediation_unix_time > server_student_remediation_gp_unix_time:
-							need_update_students[code_to_check] = {"remediation_gp": UpdateNeeded.FromLocal}
+							need_update_students[code_to_check].merge({"remediation_gp": UpdateNeeded.FromLocal})
 						else:
-							need_update_students[code_to_check] = {"remediation_gp": UpdateNeeded.FromServer}
+							need_update_students[code_to_check].merge({"remediation_gp": UpdateNeeded.FromServer})
 						
 						var local_student_syllables_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.syllables_last_modified)
 						if local_student_syllables_remediation_unix_time == server_student_remediation_syllables_unix_time:
 							Logger.trace("UserDatabaseSynchronizer: Student %d syllables remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
-							need_update_students[code_to_check] = {"remediation_syllables": UpdateNeeded.Nothing}
+							need_update_students[code_to_check].merge({"remediation_syllables": UpdateNeeded.Nothing})
 						elif local_student_syllables_remediation_unix_time > server_student_remediation_syllables_unix_time:
-							need_update_students[code_to_check] = {"remediation_syllables": UpdateNeeded.FromLocal}
+							need_update_students[code_to_check].merge({"remediation_syllables": UpdateNeeded.FromLocal})
 						else:
-							need_update_students[code_to_check] = {"remediation_syllables": UpdateNeeded.FromServer}
+							need_update_students[code_to_check].merge({"remediation_syllables": UpdateNeeded.FromServer})
 						
 						var local_student_words_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.words_last_modified)
 						if local_student_words_remediation_unix_time == server_student_remediation_words_unix_time:
 							Logger.trace("UserDatabaseSynchronizer: Student %d words remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
-							need_update_students[code_to_check] = {"remediation_words": UpdateNeeded.Nothing}
+							need_update_students[code_to_check].merge({"remediation_words": UpdateNeeded.Nothing})
 						elif local_student_words_remediation_unix_time > server_student_remediation_words_unix_time:
-							need_update_students[code_to_check] = {"remediation_words": UpdateNeeded.FromLocal}
+							need_update_students[code_to_check].merge({"remediation_words": UpdateNeeded.FromLocal})
 						else:
-							need_update_students[code_to_check] = {"remediation_words": UpdateNeeded.FromServer}
+							need_update_students[code_to_check].merge({"remediation_words": UpdateNeeded.FromServer})
 					break
 			if found:
 				break
 		if not found:
 			if need_update_user == UpdateNeeded.FromServer:
-				need_update_students[code_to_check] = {}
 				need_update_students[code_to_check]["data"] = UpdateNeeded.FromServer
 			elif need_update_user == UpdateNeeded.FromLocal:
-				need_update_students[code_to_check] = {}
 				need_update_students[code_to_check]["data"] = UpdateNeeded.DeleteServer
 			else:
 				Logger.warn("UserDatabaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)

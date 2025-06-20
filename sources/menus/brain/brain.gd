@@ -1,4 +1,3 @@
-@tool
 extends Control
 
 const GARDENS_SCENE: PackedScene = preload("res://sources/gardens/gardens.tscn")

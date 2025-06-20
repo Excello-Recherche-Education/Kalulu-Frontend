@@ -1,7 +1,7 @@
 extends PanelContainer
 class_name LessonExerciseContainer
 
-@export var lesson_number: = -1:
+@export var lesson_number: int = -1:
 	set = _set_lesson_number
 
 @onready var lesson_id_label: Label = %LessonIDLabel
@@ -21,7 +21,7 @@ func _ready() -> void:
 	
 	for element: Dictionary in Database.db.query_result:
 		for exercise_button: OptionButton in exercise_buttons:
-			exercise_button.add_item(element.Type, element.ID)
+			exercise_button.add_item(element.Type as String, element.ID as int)
 
 
 func _set_lesson_number(value: int) -> void:
@@ -39,7 +39,7 @@ func _set_lesson_number(value: int) -> void:
 		WHERE LessonNb = " + str(lesson_number))
 	
 	for element: Dictionary in Database.db.query_result:
-		var gp: = Label.new()
+		var gp: Label = Label.new()
 		gp.text = Database.get_gp_name(element)
 		lesson_gps.add_child(gp)
 	
@@ -48,14 +48,14 @@ func _set_lesson_number(value: int) -> void:
 	WHERE LessonNb = " + str(lesson_number))
 	
 	for element: Dictionary in Database.db.query_result:
-		exercise_buttons[0].select(exercise_buttons[0].get_item_index(element.Exercise1))
-		exercise_buttons[1].select(exercise_buttons[0].get_item_index(element.Exercise2))
-		exercise_buttons[2].select(exercise_buttons[0].get_item_index(element.Exercise3))
+		exercise_buttons[0].select(exercise_buttons[0].get_item_index(element.Exercise1 as int))
+		exercise_buttons[1].select(exercise_buttons[0].get_item_index(element.Exercise2 as int))
+		exercise_buttons[2].select(exercise_buttons[0].get_item_index(element.Exercise3 as int))
 	
-	var gps_in_lesson: = Database.get_gps_for_lesson(lesson_number, true)
-	var syllables_in_lesson: = Database.get_syllables_for_lesson(lesson_number)
-	var words_in_lesson: = Database.get_words_for_lesson(lesson_number)
-	var sentences_in_lesson: = Database.get_sentences(lesson_number, false, sentences_by_lesson)
+	var gps_in_lesson: Array[Dictionary] = Database.get_gps_for_lesson(lesson_number, true)
+	var syllables_in_lesson: Array[Dictionary] = Database.get_syllables_for_lesson(lesson_number)
+	var words_in_lesson: Array[Dictionary] = Database.get_words_for_lesson(lesson_number)
+	var sentences_in_lesson: Array = Database.get_sentences(lesson_number, false, sentences_by_lesson)
 	
 	number_of_g_ps.text = str(gps_in_lesson.size())
 	number_of_syllables.text = str(syllables_in_lesson.size())
@@ -81,10 +81,10 @@ func _on_save_button_pressed() -> void:
 	Database.db.query("Select * FROM Lessons WHERE LessonNb = " + str(lesson_number))
 	var lesson_id: int = Database.db.query_result[0].ID
 	
-	var exercise1: = exercise_buttons[0].get_item_id(exercise_buttons[0].selected)
-	var exercise2: = exercise_buttons[1].get_item_id(exercise_buttons[1].selected)
-	var exercise3: = exercise_buttons[2].get_item_id(exercise_buttons[2].selected)
-	var lesson_dict: = {Exercise1= exercise1, Exercise2= exercise2, Exercise3= exercise3}
+	var exercise1: int = exercise_buttons[0].get_item_id(exercise_buttons[0].selected)
+	var exercise2: int = exercise_buttons[1].get_item_id(exercise_buttons[1].selected)
+	var exercise3: int = exercise_buttons[2].get_item_id(exercise_buttons[2].selected)
+	var lesson_dict: Dictionary = {"Exercise1": exercise1, "Exercise2": exercise2, "Exercise3": exercise3}
 	
 	Database.db.query("Select * FROM LessonsExercises WHERE LessonID = " + str(lesson_id))
 	if Database.db.query_result.is_empty():

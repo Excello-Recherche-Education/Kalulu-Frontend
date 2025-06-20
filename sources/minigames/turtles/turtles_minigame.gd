@@ -1,4 +1,3 @@
-@tool
 extends WordsMinigame
 
 signal can_spawn_turtle()
