@@ -74,7 +74,7 @@ func _setup_minigame() -> void:
 	var pairs_count: int = min(settings.pairs_count, stimuli.size())
 	var possible_start_positions: Array = possible_start_positions_parent.get_children()
 	possible_start_positions.shuffle()
-	var stimuli2: Array[Dictionary] = stimuli.duplicate()
+	var stimuli2: Array = stimuli.duplicate()
 	stimuli2.shuffle()
 	max_progression = pairs_count
 	var color: Parakeet.Colors = randi_range(0, Parakeet.Colors.size() - 1) as Parakeet.Colors
