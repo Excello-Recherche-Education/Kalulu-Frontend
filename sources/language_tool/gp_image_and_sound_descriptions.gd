@@ -3,7 +3,7 @@ class_name GPImageAndSoundDescriptions
 
 @onready var description_container: VBoxContainer = %DescriptionsContainer
 
-const DESCRIPTION_LINE_SCENE: PackedScene  = preload("res://sources/language_tool/image_and_sound_gp_description.tscn")
+const DESCRIPTION_LINE_SCENE: PackedScene = preload("res://sources/language_tool/image_and_sound_gp_description.tscn")
 
 
 func _ready() -> void:

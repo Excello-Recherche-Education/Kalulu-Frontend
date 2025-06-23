@@ -207,7 +207,7 @@ func _check_db_integrity() -> void:
 					if !log_message("Word " + (new_word.Word as String) + " with unknown GP (ID " + str(gp.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
 						return
 			if known_words_list.has(new_word.Word):
-				if !log_message('Word  "' + (new_word.Word as String) + '" is introduced in lesson ID ' + str(lesson_id) + " but it already was introduced in lesson ID " + str(known_words_list[new_word.Word])):
+				if !log_message('Word "' + (new_word.Word as String) + '" is introduced in lesson ID ' + str(lesson_id) + " but it already was introduced in lesson ID " + str(known_words_list[new_word.Word])):
 					return
 			known_words_list[new_word.Word] = lesson_id
 		
@@ -584,7 +584,7 @@ func create_book() -> void:
 				var filler: PackedStringArray
 				filler.resize(current_row_count)
 				for index: int in range(current_row_count):
-					filler[index] = ""  # Valeur vide pour rattraper
+					filler[index] = "" # Valeur vide pour rattraper
 				columns[normalized] = filler
 
 		# Init colonne "Categorie" si pas encore
@@ -640,7 +640,7 @@ func create_book() -> void:
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
 	
-	var row_count: int = (columns["Categorie"] as PackedStringArray).size()  # Toutes les colonnes sont synchronisées
+	var row_count: int = (columns["Categorie"] as PackedStringArray).size() # Toutes les colonnes sont synchronisées
 	for index: int in range(row_count):
 		var row: PackedStringArray = []
 		for header: String in ordered_headers:
@@ -691,7 +691,7 @@ func parse_csv_line(line: String) -> PackedStringArray:
 		var character: String = line[index]
 		if character == "\"":
 			if in_quotes and index + 1 < line.length() and line[index + 1] == "\"":
-				current += "\""  # escaped quote
+				current += "\"" # escaped quote
 				index += 1
 			else:
 				in_quotes = !in_quotes

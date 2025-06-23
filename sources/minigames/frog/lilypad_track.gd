@@ -6,7 +6,7 @@ signal lilypad_in_center(lilypad: Lilypad)
 const LILYPAD_SCENE: PackedScene = preload("res://sources/minigames/frog/lilypad.tscn")
 
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
-@onready var spawn_timer:  Timer = $SpawnTimer
+@onready var spawn_timer: Timer = $SpawnTimer
 
 var top_to_bottom: bool = false
 var is_stopped: bool = false

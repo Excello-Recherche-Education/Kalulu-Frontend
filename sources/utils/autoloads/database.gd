@@ -9,7 +9,7 @@ const _SYMBOLS_TO_STRING: Dictionary[String, String] = {
 	"%": "pcent",
 	"§": "para"
 }
-const BASE_PATH: String =  "user://language_resources/"
+const BASE_PATH: String = "user://language_resources/"
 const TRACING_DATA_FOLDER: String = "tracing_data/"
 const LOOK_AND_LEARN_IMAGES: String = "/look_and_learn/images/"
 const LOOK_AND_LEARN_SOUNDS: String = "/look_and_learn/sounds/"
@@ -186,13 +186,13 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[D
 	INNER JOIN 
 	(SELECT SyllableID, count() as Count, max(LessonNb) AS LessonNb FROM GPsInSyllables 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?
 		GROUP BY SyllableID 
 		) VerifiedCount ON VerifiedCount.SyllableID = Syllables.ID AND VerifiedCount.Count = TotalCount.Count"
 	if only_new:
 		query += " INNER JOIN GPsInSyllables ON GPsInSyllables.SyllableID = Syllables.ID 
 			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
-			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
+			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb = ?"
 		db.query_with_bindings(query, [lesson_nb, lesson_nb])
 	else:
 		db.query_with_bindings(query, [lesson_nb])
@@ -220,7 +220,7 @@ FROM Words
 	INNER JOIN 
 	(SELECT WordID, count() as Count, max(LessonNb) as MaxLessonNb, group_concat(GPsInWords.GPID) as gpsid FROM GPsInWords 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?
 		GROUP BY WordID 
 		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
 	parameters.append(lesson_nb)
@@ -228,7 +228,7 @@ FROM Words
 	if only_new:
 		query += " INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID 
 			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
+			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb = ?"
 		parameters.append(lesson_nb)
 	
 	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ?"
@@ -267,7 +267,7 @@ FROM Words
 	INNER JOIN 
 	(SELECT WordID, count() as Count, max(LessonNb) as MaxLessonNb, group_concat(GPs.Phoneme) as gpphoneme FROM GPsInWords 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?
 		INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
 		GROUP BY WordID 
 		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
@@ -276,7 +276,7 @@ FROM Words
 	if only_new:
 		query += " INNER JOIN GPsInWords ON GPsInWords.WordID = Words.ID 
 			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb = ?"
+			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb = ?"
 		parameters.append(lesson_nb)
 	
 	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ?
@@ -334,7 +334,7 @@ INNER JOIN
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
 		INNER JOIN WordsInSentences ON GPsInWords.WordID = WordsInSentences.WordID
 		INNER JOIN Sentences ON WordsInSentences.SentenceID = Sentences.ID
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?
 		INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
 	GROUP BY SentenceID 
 	) VerifiedCount ON VerifiedCount.SentenceID = Sentences.ID AND VerifiedCount.Count = TotalCount.Count
@@ -365,7 +365,7 @@ INNER JOIN
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
 		INNER JOIN WordsInSentences ON GPsInWords.WordID = WordsInSentences.WordID
 		INNER JOIN Sentences ON WordsInSentences.SentenceID = Sentences.ID
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ?
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ?
 		INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
 	GROUP BY SentenceID 
 	) VerifiedCount ON VerifiedCount.SentenceID = Sentences.ID AND VerifiedCount.Count = TotalCount.Count
@@ -389,7 +389,7 @@ func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array[Dictionary]:
 	INNER JOIN 
 	(SELECT WordID, count() as Count FROM GPsInWords 
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
-		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID  AND Lessons.LessonNb <= ? 
+		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ? 
 		GROUP BY WordID 
 		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
 	db.query_with_bindings(query, [p_lesson_nb])
@@ -406,7 +406,7 @@ func get_distractors_for_grapheme(id: int, lesson_nb: int) -> Array[Dictionary]:
 	AND distractor.Grapheme != stimuli.Grapheme 
 	AND distractor.Phoneme != stimuli.Phoneme
 	AND CASE WHEN length(distractor.Grapheme) < length(stimuli.Grapheme) 
-		THEN stimuli.Grapheme NOT LIKE  distractor.Grapheme || '%'
+		THEN stimuli.Grapheme NOT LIKE distractor.Grapheme || '%'
 		ELSE true
 	END
 	AND GPsInLessons.GPID = distractor.ID

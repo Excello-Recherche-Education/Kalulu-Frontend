@@ -36,7 +36,7 @@ const AUDIO_STREAMS: Array[AudioStreamMP3] = [
 @onready var fly_away_position_1: Control = $GameRoot/FlyAway/Position1
 @onready var fly_away_position_2: Control = $GameRoot/FlyAway/Position2
 @onready var fly_away_positions: Array[Vector2] = [
-	fly_away_position_1.global_position, 
+	fly_away_position_1.global_position,
 	fly_away_position_2.global_position
 ]
 

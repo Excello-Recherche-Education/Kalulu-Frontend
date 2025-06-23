@@ -95,7 +95,7 @@ func play_videos() -> void:
 		current_video += 1
 
 
-func play_images_and_sounds()  -> void:
+func play_images_and_sounds() -> void:
 	if current_image_and_sound >= images.size() or current_image_and_sound >= sounds.size():
 		animation_player.play("end_images_and_sounds")
 	else:

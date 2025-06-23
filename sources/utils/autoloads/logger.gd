@@ -24,7 +24,7 @@ func _ready() -> void:
 	elif OS.has_feature("debug"):
 		current_level = LogLevel.DEBUG # Exported: debug mode
 	else:
-		current_level = LogLevel.INFO  # Exported: release mode
+		current_level = LogLevel.INFO # Exported: release mode
 	initialized = true
 	_log_internal(LogLevel.INFO, "--- Logging started at " + Time.get_datetime_string_from_system() + " ---")
 	_log_internal(LogLevel.INFO, "--- Logging set at level " + str(current_level) + " ---")

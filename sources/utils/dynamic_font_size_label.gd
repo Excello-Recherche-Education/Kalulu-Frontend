@@ -50,8 +50,8 @@ func _calculate_best_font_size() -> int:
 		# Si le texte rentre, on essaie de l'augmenter
 		if text_size.x <= available_width and text_size.y <= available_height:
 			best_size = mid
-			low = mid + 1  # On essaie une taille plus grande
+			low = mid + 1 # On essaie une taille plus grande
 		else:
-			high = mid - 1  # On essaie une taille plus petite
+			high = mid - 1 # On essaie une taille plus petite
 
 	return best_size

@@ -631,7 +631,7 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 	var parent_dir: DirAccess = DirAccess.open(parent_dir_path)
 	var old_child_dir: String = old_device.path_join(_device_settings.language).path_join(str(student_code))
 	var new_child_dir: String = new_device.path_join(_device_settings.language).path_join(str(student_code))
-	var new_parent_dir: String = new_child_dir.get_base_dir()  # = "2/fr_FR"
+	var new_parent_dir: String = new_child_dir.get_base_dir() # = "2/fr_FR"
 	if not parent_dir.dir_exists(new_parent_dir):
 		var err: Error = parent_dir.make_dir_recursive(new_parent_dir)
 		if err != OK:

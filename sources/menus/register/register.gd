@@ -79,7 +79,7 @@ func _on_step_completed(step: Step) -> void:
 			# Adds students steps for teachers
 			_remove_future_steps()
 			for device: int in register_data.devices_count:
-				var students_step_scene: Node  = students_step.instantiate()
+				var students_step_scene: Node = students_step.instantiate()
 				if students_step_scene is StudentsCountStep:
 					(students_step_scene as StudentsCountStep).question = tr((students_step_scene as StudentsCountStep).question).format({"number": (device + 1)})
 					(students_step_scene as StudentsCountStep).device_id = device + 1

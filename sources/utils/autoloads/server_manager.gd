@@ -17,7 +17,7 @@ func _ready() -> void:
 		var env: int = int(config.get_value("environment", "current", 0) as int)
 		set_environment(env)
 	else:
-		set_environment(1)  # fallback PROD
+		set_environment(1) # fallback PROD
 
 
 func set_environment(env: int) -> void:

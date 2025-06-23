@@ -20,7 +20,7 @@ func _process(_delta: float) -> void:
 func place_segments(labels: Array) -> void:
 	for label: Label in labels:
 		for segment: LetterSegment in label.get_children():
-			segment.global_position = label.global_position + label.size / 2.0  + Vector2(0.0, 72.0)
+			segment.global_position = label.global_position + label.size / 2.0 + Vector2(0.0, 72.0)
 
 
 func reset() -> void:

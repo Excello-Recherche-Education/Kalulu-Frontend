@@ -135,7 +135,7 @@ func _on_add_student_popup_accepted() -> void:
 	if not current_tab:
 		Logger.error("SettingsTeacherSettings: DeviceTab not found")
 		return
-	var res: Dictionary = await ServerManager.add_student({"device":  current_tab.device_id})
+	var res: Dictionary = await ServerManager.add_student({"device": current_tab.device_id})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]

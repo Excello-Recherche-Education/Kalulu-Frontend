@@ -92,7 +92,7 @@ func _process(delta: float) -> void:
 			var garden_layout: GardenLayout = gardens_layout.gardens[drag_data.garden_ind]
 			var garden: Garden = garden_parent.get_child(drag_data.garden_ind as int)
 			
-			garden_layout.lesson_buttons[drag_data.sub_ind].path_out_position = garden.get_local_mouse_position() -  Vector2(garden_layout.lesson_buttons[drag_data.sub_ind].position)
+			garden_layout.lesson_buttons[drag_data.sub_ind].path_out_position = garden.get_local_mouse_position() - Vector2(garden_layout.lesson_buttons[drag_data.sub_ind].position)
 			garden.set_lesson_buttons(garden_layout.lesson_buttons)
 			set_up_path()
 

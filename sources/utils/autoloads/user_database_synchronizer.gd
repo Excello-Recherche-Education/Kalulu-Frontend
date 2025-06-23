@@ -342,7 +342,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 			# TODO SEPARATE EACH ELEMENT AND ADD LOGGER ERROR IF MISSING OF STUDENT DATA
 			if response_student_data.has("device_id") && response_student_data.has("name") && response_student_data.has("age") && response_student_data.has("updated_at"):
 				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
-			if response_student_data.has("remediation_gp") && (response_student_data.remediation_gp as Dictionary).has("score_remediation") && (response_student_data.remediation_gp  as Dictionary).has("updated_at"):
+			if response_student_data.has("remediation_gp") && (response_student_data.remediation_gp as Dictionary).has("score_remediation") && (response_student_data.remediation_gp as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
 				var new_gp_scores: Dictionary[int, int] = {}
@@ -350,7 +350,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					# TODO ADD SECURITY
 					new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
-			if response_student_data.has("remediation_syllables") && (response_student_data.remediation_syllables as Dictionary).has("score_remediation") && (response_student_data.remediation_syllables  as Dictionary).has("updated_at"):
+			if response_student_data.has("remediation_syllables") && (response_student_data.remediation_syllables as Dictionary).has("score_remediation") && (response_student_data.remediation_syllables as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_syllables.score_remediation as String) as Array
 				var new_syllables_scores: Dictionary[int, int] = {}
@@ -358,7 +358,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					# TODO ADD SECURITY
 					new_syllables_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_syllables_data(int(response_student_code), new_syllables_scores, response_student_data.remediation_syllables.updated_at as String)
-			if response_student_data.has("remediation_words") && (response_student_data.remediation_words as Dictionary).has("score_remediation") && (response_student_data.remediation_words  as Dictionary).has("updated_at"):
+			if response_student_data.has("remediation_words") && (response_student_data.remediation_words as Dictionary).has("score_remediation") && (response_student_data.remediation_words as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_words.score_remediation as String) as Array
 				var new_words_scores: Dictionary[int, int] = {}
