@@ -390,6 +390,9 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					# TODO ADD SECURITY
 					new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
+			if response_student_data.has("progression") && (response_student_data.progression as Dictionary).has("version") && (response_student_data.progression as Dictionary).has("unlocked") && (response_student_data.progression as Dictionary).has("updated_at"):
+				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, response_student_data.progression.unlocked as Dictionary, response_student_data.progression.updated_at as String)
+				pass
 			if response_student_data.has("remediation_syllables") && (response_student_data.remediation_syllables as Dictionary).has("score_remediation") && (response_student_data.remediation_syllables as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_syllables.score_remediation as String) as Array

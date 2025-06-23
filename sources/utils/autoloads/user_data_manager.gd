@@ -407,9 +407,15 @@ func delete_student(student_code: int) -> void:
 
 #region Student progression
 
-func get_student_progression_path() -> String:
-	var file_path: String = get_student_folder().path_join("progression.tres")
-	return file_path
+func get_student_progression_path(device: int = 0, student_code: int = 0) -> String:
+	if student_code == 0:
+		return get_student_folder().path_join("progression.tres")
+	elif device == 0 and student_code != 0:
+		return find_student_dir(student_code).path_join("progression.tres")
+	else:
+		var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(student_code))
+		var remediation_path: String = student_path.path_join("progression.tres")
+		return remediation_path
 
 func _load_student_progression() -> void:
 	if FileAccess.file_exists(get_student_progression_path()):
@@ -431,7 +437,6 @@ func _save_student_progression() -> void:
 
 func _on_user_progression_unlocks_changed() -> void:
 	_save_student_progression()
-
 
 func get_student_progression_for_code(device: int, code: int) -> StudentProgression:
 	if device == 0:
@@ -466,6 +471,16 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 	var error: Error = ResourceSaver.save(progression, progression_path)
 	if error != OK:
 		Logger.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
+
+func set_student_progression_data(student_code: int, version: String, new_data: Dictionary, updated_at: String) -> void:
+	pass
+	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
+	if current_data == null:
+		current_data = StudentProgression.new()
+	current_data.version = version
+	current_data.unlocks = new_data
+	current_data.last_modified = updated_at
+	ResourceSaver.save(current_data, get_student_progression_path(0, student_code))
 
 #endregion
 
@@ -503,37 +518,42 @@ func get_student_remediation_data(student_code: int) -> UserRemediation:
 
 func set_student_remediation_gp_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
 	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
+	var student_remediation: UserRemediation
 	if FileAccess.file_exists(remediation_data_path):
-		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
-		student_remediation.set_gp_scores(new_scores)
-		student_remediation.set_gp_last_modified(updated_at)
-		ResourceSaver.save(student_remediation, remediation_data_path)
+	else:
+		student_remediation = UserRemediation.new()
+	student_remediation.set_gp_scores(new_scores)
+	student_remediation.set_gp_last_modified(updated_at)
+	ResourceSaver.save(student_remediation, remediation_data_path)
 
 func set_student_remediation_syllables_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
 	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
+	var student_remediation: UserRemediation
 	if FileAccess.file_exists(remediation_data_path):
-		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
-		student_remediation.set_syllables_scores(new_scores)
-		student_remediation.set_syllables_last_modified(updated_at)
-		ResourceSaver.save(student_remediation, remediation_data_path)
+	else:
+		student_remediation = UserRemediation.new()
+	student_remediation.set_syllables_scores(new_scores)
+	student_remediation.set_syllables_last_modified(updated_at)
+	ResourceSaver.save(student_remediation, remediation_data_path)
 
 func set_student_remediation_words_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
 	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
+	var student_remediation: UserRemediation
 	if FileAccess.file_exists(remediation_data_path):
-		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
-		student_remediation.set_words_scores(new_scores)
-		student_remediation.set_words_last_modified(updated_at)
-		ResourceSaver.save(student_remediation, remediation_data_path)
+	else:
+		student_remediation = UserRemediation.new()
+	student_remediation.set_words_scores(new_scores)
+	student_remediation.set_words_last_modified(updated_at)
+	ResourceSaver.save(student_remediation, remediation_data_path)
 
 func _save_student_remediation() -> void:
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
 
 func get_gp_remediation_score(gp_id: int) -> int:
 	if not _student_remediation:
-		#push_warning("No student remediation data for " + str(student))
 		return 0
 	return _student_remediation.get_gp_score(gp_id)
 
