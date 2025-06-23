@@ -467,8 +467,15 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 
 #region Student remediation
 
-func _get_student_remediation_path(student_code: int = 0) -> String:
-	return get_student_folder(student_code).path_join("remediation.tres")
+func _get_student_remediation_path(device: int = 0, student_code: int = 0) -> String:
+	if student_code == 0:
+		return get_student_folder().path_join("remediation.tres")
+	elif device == 0 and student_code != 0:
+		return find_student_dir(student_code).path_join("remediation.tres")
+	else:
+		var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(student_code))
+		var remediation_path: String = student_path.path_join("remediation.tres")
+		return remediation_path
 
 func _load_student_remediation() -> void:
 	if FileAccess.file_exists(_get_student_remediation_path()):
@@ -482,7 +489,7 @@ func _load_student_remediation() -> void:
 	_student_remediation.score_changed.connect(_save_student_remediation)
 
 func get_student_remediation_data(student_code: int) -> UserRemediation:
-	var remediation_data_path: String = _get_student_remediation_path(student_code)
+	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
 	if FileAccess.file_exists(remediation_data_path):
 		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
@@ -491,7 +498,7 @@ func get_student_remediation_data(student_code: int) -> UserRemediation:
 	return null
 
 func set_student_remediation_gp_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
-	var remediation_data_path: String = _get_student_remediation_path(student_code)
+	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
 	if FileAccess.file_exists(remediation_data_path):
 		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
@@ -500,7 +507,7 @@ func set_student_remediation_gp_data(student_code: int, new_scores: Dictionary[i
 		ResourceSaver.save(student_remediation, remediation_data_path)
 
 func set_student_remediation_syllables_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
-	var remediation_data_path: String = _get_student_remediation_path(student_code)
+	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
 	if FileAccess.file_exists(remediation_data_path):
 		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
@@ -509,7 +516,7 @@ func set_student_remediation_syllables_data(student_code: int, new_scores: Dicti
 		ResourceSaver.save(student_remediation, remediation_data_path)
 
 func set_student_remediation_words_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
-	var remediation_data_path: String = _get_student_remediation_path(student_code)
+	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
 	if FileAccess.file_exists(remediation_data_path):
 		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
@@ -645,6 +652,41 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 		Logger.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parent_dir_path])
 		return
 	save_teacher_settings()
+
+func find_student_dir(student_code: int) -> String:
+	var teacher_path: String = "user://".path_join(_device_settings.teacher)
+	var dir: DirAccess = DirAccess.open(teacher_path)
+	if not dir:
+		Logger.error("UserDataManager: Impossible to open teacher folder: %s" % teacher_path)
+		return ""
+
+	var language: String = _device_settings.language
+
+	dir.list_dir_begin()
+	var file_name: String = dir.get_next()
+	while file_name != "":
+		if dir.current_is_dir() and file_name.is_valid_int():
+			var device_dir: String = teacher_path.path_join(file_name)
+			var lang_dir: String = device_dir.path_join(language)
+
+			if DirAccess.dir_exists_absolute(lang_dir):
+				var lang_subdir: DirAccess = DirAccess.open(lang_dir)
+				if lang_subdir:
+					lang_subdir.list_dir_begin()
+					var sub_file: String = lang_subdir.get_next()
+					while sub_file != "":
+						if lang_subdir.current_is_dir() and sub_file == str(student_code):
+							var student_path: String = lang_dir.path_join(sub_file)
+							return student_path
+						sub_file = lang_subdir.get_next()
+					lang_subdir.list_dir_end()
+			else:
+				Logger.warn("UserDataManager: Device folder %s has no language sub-folder" % device_dir)    
+
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return ""
+
 
 func save_all() -> void:
 	_save_device_settings()
