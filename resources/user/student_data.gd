@@ -8,11 +8,11 @@ enum Level {
 	Adult
 }
 
-@export var code: int
-@export var name: String
-@export var level: Level
-@export var age: int
-@export var last_modified: String
+@export var code: int = 0
+@export var name: String = ""
+@export var level: Level = Level.Beginner
+@export var age: int = 0
+@export var last_modified: String = ""
 
 func to_dict() -> Dictionary:
 	return {

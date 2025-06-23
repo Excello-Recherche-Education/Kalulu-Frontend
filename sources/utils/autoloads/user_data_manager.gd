@@ -1,4 +1,3 @@
-@tool
 extends Node
 
 
@@ -149,11 +148,9 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 	var resource: Resource = ResourceLoader.load(path)
 	if resource == null:
-		#TODO REPLACE WITH LOGGER
-		push_error("UserDataManager: Loading failed after correction: " + path)
+		Logger.error("UserDataManager: Loading failed after correction: " + path)
 	else:
-		#TODO REPLACE WITH LOGGER
-		print("UserDataManager: Loading success: " + path)
+		Logger.trace("UserDataManager: Loading success: " + path)
 	return resource
 
 func set_device_id(device: int) -> bool:
@@ -437,6 +434,13 @@ func _on_user_progression_unlocks_changed() -> void:
 
 
 func get_student_progression_for_code(device: int, code: int) -> StudentProgression:
+	if device == 0:
+		var device_path: String = find_device_dir_for_student(code)
+		var device_name: String = device_path.get_file()
+		if device_name.is_valid_int():
+			device = int(device_name)
+		else:
+			return null
 	if not teacher_settings or not teacher_settings.students.has(device):
 		return
 	
@@ -453,7 +457,7 @@ func get_student_progression_for_code(device: int, code: int) -> StudentProgress
 	else:
 		progression = StudentProgression.new()
 		DirAccess.make_dir_recursive_absolute(student_path)
-		#ResourceSaver.save(student_progression, progression_path)
+		ResourceSaver.save(student_progression, progression_path)
 	
 	return progression
 
@@ -654,6 +658,20 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 	save_teacher_settings()
 
 func find_student_dir(student_code: int) -> String:
+	@warning_ignore("unused_parameter")
+	return _scan_teacher_devices(func(device_dir: String, lang_dir: String, sub_file: String) -> String:
+		if sub_file == str(student_code):
+			return lang_dir.path_join(sub_file)
+		return "")
+
+func find_device_dir_for_student(student_code: int) -> String:
+	@warning_ignore("unused_parameter")
+	return _scan_teacher_devices(func(device_dir: String, lang_dir: String, sub_file: String) -> String:
+		if sub_file == str(student_code):
+			return device_dir
+		return "")
+
+func _scan_teacher_devices(match_callback: Callable) -> String:
 	var teacher_path: String = "user://".path_join(_device_settings.teacher)
 	var dir: DirAccess = DirAccess.open(teacher_path)
 	if not dir:
@@ -675,9 +693,10 @@ func find_student_dir(student_code: int) -> String:
 					lang_subdir.list_dir_begin()
 					var sub_file: String = lang_subdir.get_next()
 					while sub_file != "":
-						if lang_subdir.current_is_dir() and sub_file == str(student_code):
-							var student_path: String = lang_dir.path_join(sub_file)
-							return student_path
+						if lang_subdir.current_is_dir():
+							var result: Variant = match_callback.call(device_dir, lang_dir, sub_file)
+							if result != "":
+								return result
 						sub_file = lang_subdir.get_next()
 					lang_subdir.list_dir_end()
 			else:
@@ -686,7 +705,6 @@ func find_student_dir(student_code: int) -> String:
 		file_name = dir.get_next()
 	dir.list_dir_end()
 	return ""
-
 
 func save_all() -> void:
 	_save_device_settings()

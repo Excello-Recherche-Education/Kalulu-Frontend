@@ -9,8 +9,9 @@ enum Status{
 	Completed,
 }
 
-@export var version: float = 1.0
+@export var version: String = ProjectSettings.get_setting("application/config/version")
 @export var unlocks: Dictionary = {}
+@export var last_modified: String = ""
 
 
 func _init() -> void:
@@ -47,6 +48,9 @@ func init_unlocks() -> bool:
 		unlocks[1]["look_and_learn"] = Status.Unlocked
 		has_changes = true
 	
+	if has_changes:
+		last_modified = Time.get_datetime_string_from_system(true)
+		
 	return has_changes
 
 
@@ -75,6 +79,7 @@ func look_and_learn_completed(lesson_number: int) -> bool:
 	for index: int in range(3):
 		unlocks[lesson_number]["games"][index] = Status.Unlocked
 	
+	last_modified = Time.get_datetime_string_from_system(true)
 	unlocks_changed.emit()
 	return true
 
@@ -94,5 +99,6 @@ func game_completed(lesson_number: int, game_number: int) -> bool:
 	if all_completed and unlocks.has(lesson_number + 1):
 		unlocks[lesson_number + 1]["look_and_learn"] = Status.Unlocked
 	
+	last_modified = Time.get_datetime_string_from_system(true)
 	unlocks_changed.emit()
 	return true

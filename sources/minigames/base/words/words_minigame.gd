@@ -1,4 +1,3 @@
-@tool
 extends Minigame
 class_name WordsMinigame
 

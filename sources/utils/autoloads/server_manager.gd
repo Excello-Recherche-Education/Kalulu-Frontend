@@ -238,7 +238,7 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 			var str_body: String = body.get_string_from_utf8()
 			var result: Variant = JSON.parse_string(str_body)
 			if result is Dictionary or result is Array:
-				var pretty = JSON.stringify(result, "\t")
+				var pretty: String = JSON.stringify(result, "\t")
 				Logger.trace("JSON Body received :\n%s" % pretty)
 			else:
 				Logger.trace("Body received = %s" % body.get_string_from_utf8())
