@@ -462,7 +462,7 @@ func get_student_progression_for_code(device: int, code: int) -> StudentProgress
 	else:
 		progression = StudentProgression.new()
 		DirAccess.make_dir_recursive_absolute(student_path)
-		ResourceSaver.save(student_progression, progression_path)
+		ResourceSaver.save(progression, progression_path)
 	
 	return progression
 

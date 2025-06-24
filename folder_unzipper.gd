@@ -6,7 +6,10 @@ signal file_copied(count: int, name: String)
 signal finished()
 
 func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool = true) -> String:
-	open(zip_path)
+	var err: Error = open(zip_path)
+	if err != OK:
+		Logger.error("FolderUnzipper: Error " + error_string(err) + " while opening file: %s" % zip_path)
+		return ""
 	var extract_folder: String = extract_path.path_join(zip_path.get_file().get_basename()) if extract_in_subfolder else extract_path
 	
 	var all_files: PackedStringArray = get_files()

@@ -38,9 +38,12 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 
 
 func compress(path: String, output_name: String) -> void:
-	open(output_name, ZIPPacker.APPEND_CREATE)
+	var err: Error = open(output_name, ZIPPacker.APPEND_CREATE)
+	if err != OK:
+			Logger.error("FolderZipper: Error " + error_string(err) + " while opening archive: %s" % output_name)
+			return
 	path = path.simplify_path()
-	var err: Error = write_folder_recursive(path.get_base_dir(), path.get_file())
+	err = write_folder_recursive(path.get_base_dir(), path.get_file())
 	if err != OK:
 		Logger.error("FolderZipper: Error " + error_string(err) + " while compressing folder: %s" % path)
 	close()
