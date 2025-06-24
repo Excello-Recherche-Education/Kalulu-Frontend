@@ -6,7 +6,7 @@ const NEXT_SCENE_PATH: String = "res://sources/menus/brain/brain.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
-const KALULU: = preload("res://sources/minigames/base/kalulu.gd")
+const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 
 @onready var kalulu: KALULU = $Kalulu
 @onready var music_player: AudioStreamPlayer = $MusicStreamPlayer

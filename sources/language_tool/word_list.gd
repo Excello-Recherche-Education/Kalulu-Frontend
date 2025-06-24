@@ -221,7 +221,7 @@ func _on_word_gui_input(event: InputEvent) -> void:
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	var line: PackedStringArray = file.get_csv_line()
-	if line.size() < 1 or line[0] != "ORTHO" and line[1] != "GPMATCH":
+	if line.size() < 2 or line[0] != "ORTHO" or line[1] != "GPMATCH":
 		error_label.text = "Column names should be ORTHO, GPMATCH"
 		return
 	var all_data: Dictionary = {}

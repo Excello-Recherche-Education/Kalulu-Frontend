@@ -1,6 +1,6 @@
 extends Control
 
-const KALULU: = preload("res://sources/menus/main/kalulu.gd")
+const KALULU := preload("res://sources/menus/main/kalulu.gd")
 
 const ADULT_CHECK_SCENE_PATH: String = "res://sources/menus/adult_check/adult_check.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"

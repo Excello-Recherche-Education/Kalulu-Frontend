@@ -12,7 +12,7 @@ signal kalulu_speech_ended
 
 signal pause_ended
 
-const KALULU: = preload("res://sources/minigames/base/kalulu.gd")
+const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture

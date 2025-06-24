@@ -24,6 +24,7 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 		var file: FileAccess = FileAccess.open(file_name, FileAccess.WRITE)
 		if file != null:
 			file.store_buffer(read_file(sub_path))
+			file.close()
 		copied_file += 1
 		file_copied.emit(copied_file, file_name)
 	

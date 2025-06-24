@@ -56,7 +56,7 @@ func setup() -> void:
 	sounds = []
 	videos = []
 	
-	var gp_display: PackedStringArray
+	var gp_display: PackedStringArray = PackedStringArray()
 	for gp: Dictionary in gp_list:
 		var gp_image: Texture = Database.get_gp_look_and_learn_image(gp)
 		var gp_sound: AudioStream = Database.get_gp_look_and_learn_sound(gp)

@@ -1,7 +1,7 @@
 extends Control
 
 const GARDENS_SCENE: PackedScene = preload("res://sources/gardens/gardens.tscn")
-const KALULU: = preload("res://sources/minigames/base/kalulu.gd")
+const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 
 @export var locked_color: Color
 @export var unlocked_colors: Array[Color] = []
