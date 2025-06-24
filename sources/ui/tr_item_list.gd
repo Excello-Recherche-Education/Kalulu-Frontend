@@ -1,5 +1,4 @@
 extends ItemList
-class_name TrItemLisst
 
 func _ready() -> void:
 	for index: int in self.item_count:
