@@ -25,7 +25,7 @@ func add_point_at(point: Vector2, ind: int) -> void:
 
 
 func remove_point(point: Vector2) -> int:
-	var ind: = points.find(point)
+	var ind: int = points.find(point)
 	points.erase(point)
 	return ind
 

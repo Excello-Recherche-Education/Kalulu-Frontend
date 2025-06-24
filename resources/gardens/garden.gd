@@ -64,7 +64,7 @@ func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSize
 
 
 func update_flowers() -> void:
-	for index: int in flowers.size():
+	for index: int in range(flowers.size()):
 		if index >= flower_controls.size():
 			break
 		var flower: GardenLayout.Flower = flowers[index]
@@ -81,7 +81,7 @@ func update_flowers() -> void:
 func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton]) -> void:
 	for lesson_button_control: LessonButton in lesson_button_controls:
 		lesson_button_control.visible = false
-	for index: int in p_lesson_buttons.size():
+	for index: int in range(p_lesson_buttons.size()):
 		if index >= lesson_button_controls.size():
 			break
 		var lesson_button: GardenLayout.GardenLayoutLessonButton = p_lesson_buttons[index]

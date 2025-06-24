@@ -209,7 +209,7 @@ func gp_ids_from_string(p_gp_ids: String) -> Array[int]:
 	var res: Array[int] = []
 	var pack: PackedStringArray = p_gp_ids.split(" ")
 	res.resize(pack.size())
-	for index: int in pack.size():
+	for index: int in range(pack.size()):
 		res[index] = int(pack[index])
 	return res
 
@@ -249,7 +249,7 @@ func insert_in_database() -> void:
 				var gps_in_words_ids: Array[String] = Array((element[relational_table + "IDs"] as String).split(" "))
 				while gps_in_words_ids.size() > gp_ids.size():
 					Database.db.delete_rows(relational_table, "ID=%s" % int(gps_in_words_ids.pop_back() as String))
-				for index: int in gps_in_words_ids.size():
+				for index: int in range(gps_in_words_ids.size()):
 					var gps_in_words_id: int = int(gps_in_words_ids[index])
 					Database.db.update_rows(relational_table, "ID=%s" % gps_in_words_id, {
 						table_graph_column + "ID": id,
@@ -281,7 +281,7 @@ func insert_in_database() -> void:
 	if Database.db.query_result.is_empty():
 		Database.db.insert_row(table, {table_graph_column: word})
 		id = Database.db.last_insert_rowid
-		for index: int in gp_ids.size():
+		for index: int in range(gp_ids.size()):
 			Database.db.insert_row(relational_table, {
 						table_graph_column + "ID": id,
 						sub_table_id: gp_ids[index],

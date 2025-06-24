@@ -44,7 +44,7 @@ func _setup_minigame() -> void:
 	
 	# Spawn the right amount of branches
 	var branch_size: float = branches_zone.size.y / (settings.branches + 1)
-	for index: int in settings.branches:
+	for index: int in range(settings.branches):
 		var branch: Branch = BRANCH_SCENE.instantiate()
 		branch.velocity = settings.velocity
 		branches_zone.add_child(branch)

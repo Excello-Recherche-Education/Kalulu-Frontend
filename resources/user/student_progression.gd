@@ -27,7 +27,7 @@ func init_unlocks() -> bool:
 	# Verify the lessons
 	var number_of_lessons: int = Database.get_lessons_count()
 	if unlocks.size() != number_of_lessons:
-		for index: int in number_of_lessons:
+		for index: int in range(number_of_lessons):
 			if not unlocks.has(index+1):
 				unlocks[index + 1] = {
 					"look_and_learn": Status.Locked,

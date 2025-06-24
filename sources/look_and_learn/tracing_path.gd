@@ -76,7 +76,7 @@ func _tracing_process() -> void:
 				
 				should_play_effects = true
 				var remove_up_to: int = 0
-				for index: int in curve_points.size():
+				for index: int in range(curve_points.size()):
 					var offset: float = curve.get_closest_offset(curve_points[index])
 					if offset > guide.progress:
 						remove_up_to = index

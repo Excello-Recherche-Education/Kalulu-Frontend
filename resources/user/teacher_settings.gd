@@ -138,7 +138,7 @@ func get_all_students_data() -> Array[StudentData]:
 
 func delete_student(student_code: int) -> void:
 	for device: int in students.keys():
-		for index: int in students[device].size():
+		for index: int in range(students[device].size()):
 			if students[device][index].code == student_code:
 				students[device].remove_at(index)
 				if students[device].is_empty():
@@ -154,7 +154,7 @@ func get_student_with_code(student_code: int) -> StudentData:
 
 func get_student_device(student_code: int) -> int:
 	for device: int in students.keys():
-		for index: int in students[device].size():
+		for index: int in range(students[device].size()):
 			if students[device][index].code == student_code:
 				return device
 	return -1

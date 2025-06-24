@@ -78,7 +78,7 @@ func _setup_minigame() -> void:
 	stimuli2.shuffle()
 	max_progression = pairs_count
 	var color: Parakeet.Colors = randi_range(0, Parakeet.Colors.size() - 1) as Parakeet.Colors
-	for index: int in pairs_count:
+	for index: int in range(pairs_count):
 		var new_parakeet1: Parakeet = Parakeet.instantiate()
 		var new_parakeet2: Parakeet = Parakeet.instantiate()
 		parakeets_node.add_child(new_parakeet1)
@@ -243,7 +243,7 @@ func _flying_arrival(to: Array[Vector2]) -> void:
 	audio_player.stream = AUDIO_STREAMS[Audio.Fly]
 	audio_player.play()
 	coroutine.add_future(audio_player.finished)
-	for index: int in parakeets.size():
+	for index: int in range(parakeets.size()):
 		coroutine.add_future(parakeets[index].fly_to.bind(to[index], fly_duration))
 	await coroutine.join_all()
 	for parakeet: Parakeet in parakeets:

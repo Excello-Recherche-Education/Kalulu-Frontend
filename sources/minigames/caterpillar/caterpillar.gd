@@ -39,7 +39,7 @@ func move(distance: float) -> void:
 	coroutine.add_future(_tween_body_part(head, distance).finished)
 	
 	# Move body
-	for index: int in body_parts.get_child_count(false):
+	for index: int in range(body_parts.get_child_count(false)):
 		await get_tree().create_timer(BODY_PART_WAIT_TIME).timeout
 		var body_part: CaterpillarBody = body_parts.get_child(-index-1)
 		coroutine.add_future(_tween_body_part(body_part, distance).finished)

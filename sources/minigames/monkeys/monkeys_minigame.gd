@@ -57,7 +57,7 @@ func _setup_minigame() -> void:
 	
 	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
-	for index: int in settings.distractors_count + 1:
+	for index: int in range(settings.distractors_count + 1):
 		var monkey: Monkey = MONKEY_SCENE.instantiate()
 		monkeys_node.add_child(monkey)
 		monkeys.append(monkey)
@@ -90,7 +90,7 @@ func _highlight() -> void:
 func _update_label(progress: int) -> void:
 	var gps_count: int = self._get_current_stimulus().GPsCount as int
 	word_label.text = ""
-	for index: int in gps_count:
+	for index: int in range(gps_count):
 		if progress > index or progress == gps_count:
 			word_label.text += self._get_current_stimulus().GPs[index].Grapheme
 		else:
@@ -210,7 +210,7 @@ func _on_current_word_progression_changed() -> void:
 	super()
 	
 	var ind_good: int = randi_range(0, monkeys.size() - 1)
-	for index: int in monkeys.size():
+	for index: int in range(monkeys.size()):
 		var monkey: Monkey = monkeys[index]
 		if index == ind_good:
 			monkey.stimulus = _get_gp()

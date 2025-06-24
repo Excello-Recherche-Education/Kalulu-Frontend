@@ -129,7 +129,7 @@ func _ready() -> void:
 	for garden_control: Garden in garden_parent.get_children():
 		
 		# Handles the lesson buttons and calculate the progression of the garden
-		for index: int in garden_control.lesson_button_controls.size():
+		for index: int in range(garden_control.lesson_button_controls.size()):
 			var button: LessonButton = garden_control.lesson_button_controls[index]
 			if not lesson_ind in lessons:
 				button.disabled = true
@@ -217,7 +217,7 @@ func _ready() -> void:
 					break
 				if not lesson_ind in lessons:
 					break
-				for index: int in garden_control.lesson_button_controls.size():
+				for index: int in range(garden_control.lesson_button_controls.size()):
 					if not lesson_ind in lessons:
 						break
 					
@@ -320,7 +320,7 @@ func _ready() -> void:
 			var new_lesson_button: LessonButton
 			var is_last_lesson_of_garden: bool = false
 			for garden_control: Garden in garden_parent.get_children():
-				for index: int in garden_control.lesson_button_controls.size():
+				for index: int in range(garden_control.lesson_button_controls.size()):
 					if lesson_ind == max_lesson + 1:
 						new_lesson_button = garden_control.lesson_button_controls[index]
 					if lesson_ind == max_lesson:
@@ -543,7 +543,7 @@ func _set_up_lessons() -> void:
 		
 		var garden_control: Garden = garden_parent.get_child(garden_ind)
 		
-		for index: int in garden_control.lesson_button_controls.size():
+		for index: int in range(garden_control.lesson_button_controls.size()):
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(index, lessons[lesson_ind][0].grapheme as String)
@@ -576,7 +576,7 @@ func add_gardens() -> void:
 		garden.garden_index = garden_index
 		garden_index += 1
 		
-		for index: int in garden_layout.lesson_buttons.size():
+		for index: int in range(garden_layout.lesson_buttons.size()):
 			if current_lesson_count >= lessons.size():
 				garden_layout.lesson_buttons.resize(index)
 				break
@@ -596,7 +596,7 @@ func set_up_path() -> void:
 	points = []
 	var curve: Curve2D = Curve2D.new()
 	
-	for index: int in gardens_layout.gardens.size():
+	for index: int in range(gardens_layout.gardens.size()):
 		if index >= garden_parent.get_child_count():
 			break
 		var garden_layout: GardenLayout = gardens_layout.gardens[index]
@@ -625,7 +625,7 @@ func _unlock() -> void:
 func _get_current_lesson_button(lesson: int) -> LessonButton:
 	var lesson_ind: int = 1
 	for garden_control: Garden in garden_parent.get_children():
-		for index: int in garden_control.lesson_button_controls.size():
+		for index: int in range(garden_control.lesson_button_controls.size()):
 			if lesson_ind == lesson:
 				return garden_control.lesson_button_controls[index]
 			lesson_ind += 1

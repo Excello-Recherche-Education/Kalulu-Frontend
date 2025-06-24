@@ -104,7 +104,7 @@ func set_progression(new_progression: int) -> void:
 	if new_progression > max_progression:
 		set_max_progression(new_progression)
 	var progression_rects: Array[Node] = progression_container.get_children()
-	for index: int in max_progression:
+	for index: int in range(max_progression):
 		var progression_rect: TextureRect = progression_rects[index]
 		if index < new_progression:
 			progression_rect.texture = full_progression_icon

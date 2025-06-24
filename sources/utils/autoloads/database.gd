@@ -616,7 +616,7 @@ func _import_word_from_csv(ortho: String, gpmatch: String, is_word: bool = true)
 				Word = ortho,
 			})
 			word_id = db.last_insert_rowid
-			for index: int in gp_ids.size():
+			for index: int in range(gp_ids.size()):
 				var gp_id: int = gp_ids[index]
 				db.insert_row("GPsInWords", {
 					WordID = word_id,

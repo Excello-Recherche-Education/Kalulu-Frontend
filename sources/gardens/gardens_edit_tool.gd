@@ -15,7 +15,7 @@ func _ready() -> void:
 	line_particles.hide()
 	back_button.hide()
 	
-	for index: int in MAX_LESSON_NUMBER:
+	for index: int in range(MAX_LESSON_NUMBER):
 		lessons[index] = index
 	
 	# Checks if a configuration exists
@@ -32,7 +32,7 @@ func _init_gardens_layout() -> void:
 	# Empty the gardens configuration
 	gardens_layout.gardens.clear()
 	
-	for index: int in MAX_LESSON_NUMBER:
+	for index: int in range(MAX_LESSON_NUMBER):
 		
 		var garden_layout: GardenLayout
 		
@@ -235,13 +235,13 @@ func _on_reset_garden_button_pressed() -> void:
 	var garden: Garden = garden_parent.get_child(garden_ind)
 	
 	var flowers: Array[GardenLayout.Flower] = gardens_layout.gardens[garden_ind].flowers
-	for index: int in flowers.size():
+	for index: int in range(flowers.size()):
 		flowers[index] = GardenLayout.Flower.new()
 	gardens_layout.gardens[garden_ind].flowers = flowers
 	garden.set_flowers(flowers, Garden.FlowerSizes.LARGE)
 	
-	var lesson_buttons: = gardens_layout.gardens[garden_ind].lesson_buttons
-	for index: int in lesson_buttons.size():
+	var lesson_buttons: Array = gardens_layout.gardens[garden_ind].lesson_buttons
+	for index: int in range(lesson_buttons.size()):
 		lesson_buttons[index] = GardenLayout.GardenLayoutLessonButton.new()
 	gardens_layout.gardens[garden_ind].lesson_buttons = lesson_buttons
 	garden.set_lesson_buttons(lesson_buttons)

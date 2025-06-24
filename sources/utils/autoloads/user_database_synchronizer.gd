@@ -397,7 +397,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_syllables.score_remediation as String) as Array
 				var new_syllables_scores: Dictionary[int, int] = {}
-				for index: int in new_array.size():
+				for index: int in range(new_array.size()):
 					# TODO ADD SECURITY
 					new_syllables_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_syllables_data(int(response_student_code), new_syllables_scores, response_student_data.remediation_syllables.updated_at as String)

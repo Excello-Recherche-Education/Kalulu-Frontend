@@ -36,7 +36,7 @@ func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
 	new_gp_label.gp_dropped.connect(_on_gp_dropped.bind(new_gp_label))
 	gp_container.add_child(new_gp_label)
 	var children: Array[Node] = gp_container.get_children()
-	for index: int in children.size():
+	for index: int in range(children.size()):
 		var child: Node = children[index]
 		if child == gp_label:
 			if before:
