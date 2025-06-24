@@ -2,7 +2,7 @@ extends TextureButton
 
 class_name Word
 
-signal answer(good: bool)
+signal answer(stimulus: String, expected_stimulus: String)
 signal no_answer()
 
 @onready var area: Area2D = $Area2D

@@ -103,7 +103,7 @@ func _ready() -> void:
 	# Transition variables #
 	
 	# The maximum unlocked lesson by the player
-	var max_unlocked_lesson: int = UserDataManager.student_progression.get_max_unlocked_lesson() + 1
+	var max_unlocked_lesson: int = UserDataManager.student_progression.get_max_unlocked_lesson_index() + 1
 	
 	# Defines if the last played minigame or lookandlearn is of the last available lesson
 	var is_current_lesson: bool = transition_data and transition_data.current_lesson_number == max_unlocked_lesson
@@ -118,7 +118,7 @@ func _ready() -> void:
 	var is_first_clear: bool = transition_data and transition_data.has("first_clear") and transition_data.first_clear
 	
 	# Defines if a new lesson has been unlocked by the player, setups to play the right animation
-	var new_lesson_unlocked: bool = transition_data and transition_data.current_lesson_number == UserDataManager.student_progression.get_max_unlocked_lesson() and transition_data.has("minigame_number") && transition_data.minigame_number == 2 and transition_data.minigame_completed
+	var new_lesson_unlocked: bool = transition_data and transition_data.current_lesson_number == UserDataManager.student_progression.get_max_unlocked_lesson_index() and transition_data.has("minigame_number") && transition_data.minigame_number == 2 and transition_data.minigame_completed
 	
 #region Progression
 
@@ -193,7 +193,7 @@ func _ready() -> void:
 	
 	# Handles the path
 	var curve: Curve2D = Curve2D.new()
-	var max_lesson: int = UserDataManager.student_progression.get_max_unlocked_lesson()
+	var max_lesson: int = UserDataManager.student_progression.get_max_unlocked_lesson_index()
 	if not new_lesson_unlocked:
 		max_lesson += 1
 	

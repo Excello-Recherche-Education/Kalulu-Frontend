@@ -54,7 +54,7 @@ func init_unlocks() -> bool:
 	return has_changes
 
 
-func get_max_unlocked_lesson() -> int:
+func get_max_unlocked_lesson_index() -> int:
 	var max_unlocked_level: int = 1
 	for index: int in range(unlocks.size()):
 		if unlocks[index + 1]["look_and_learn"] >= Status.Unlocked:
