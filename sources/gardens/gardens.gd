@@ -118,7 +118,7 @@ func _ready() -> void:
 	var is_first_clear: bool = transition_data and transition_data.has("first_clear") and transition_data.first_clear
 	
 	# Defines if a new lesson has been unlocked by the player, setups to play the right animation
-	var new_lesson_unlocked: bool = transition_data and transition_data.current_lesson_number == UserDataManager.student_progression.get_max_unlocked_lesson_index() and transition_data.has("minigame_number") && transition_data.minigame_number == 2 and transition_data.minigame_completed
+	var new_lesson_unlocked: bool = transition_data and transition_data.current_lesson_number == UserDataManager.student_progression.get_max_unlocked_lesson_index() and transition_data.has("minigame_completed") and transition_data.minigame_completed and UserDataManager.student_progression.is_lesson_completed(transition_data.current_lesson_number as int)
 	
 #region Progression
 
