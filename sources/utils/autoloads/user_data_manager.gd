@@ -138,7 +138,7 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 	var content: String = FileAccess.get_file_as_string(path)
 
-	for index: int in old_texts.size():
+	for index: int in range(old_texts.size()):
 		if content.find(old_texts[index]) != -1:
 			Logger.info("UserDataManager: Fix resource:" + path)
 			content = content.replace(old_texts[index], new_texts[index])

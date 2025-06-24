@@ -73,7 +73,7 @@ func load_additional_word_list() -> String:
 			if line.size() != title_line.size():
 				return "Formatting error on: %s" % line
 			var data: Dictionary = {}
-			for index: int in line.size():
+			for index: int in range(line.size()):
 				data[title_line[index]] = line[index]
 			additional_word_list[line[ortho_index]] = data
 		file.close()
@@ -311,7 +311,7 @@ func get_sentences(p_lesson_nb: int, only_new: bool = false, sentences_by_lesson
 		return sentences_by_lesson.get(p_lesson_nb, [])
 	
 	var ret: Array = []
-	for index: int in p_lesson_nb:
+	for index: int in range(p_lesson_nb):
 		ret.append_array(sentences_by_lesson.get(index, []) as Array)
 	return ret
 
@@ -628,7 +628,7 @@ func _import_word_from_csv(ortho: String, gpmatch: String, is_word: bool = true)
 				Syllable = ortho,
 			})
 			word_id = db.last_insert_rowid
-			for index: int in gp_ids.size():
+			for index: int in range(gp_ids.size()):
 				var gp_id: int = gp_ids[index]
 				db.insert_row("GPsInSyllables", {
 					SyllableID = word_id,

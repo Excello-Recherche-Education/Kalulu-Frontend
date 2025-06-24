@@ -386,7 +386,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
 				var new_gp_scores: Dictionary[int, int] = {}
-				for index: int in new_array.size():
+				for index: int in range(new_array.size()):
 					# TODO ADD SECURITY
 					new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
@@ -405,7 +405,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_words.score_remediation as String) as Array
 				var new_words_scores: Dictionary[int, int] = {}
-				for index: int in new_array.size():
+				for index: int in range(new_array.size()):
 					# TODO ADD SECURITY
 					new_words_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_words_data(int(response_student_code), new_words_scores, response_student_data.remediation_words.updated_at as String)

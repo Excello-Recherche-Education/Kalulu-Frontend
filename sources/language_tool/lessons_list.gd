@@ -78,7 +78,7 @@ func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
 		index += 1
 	lessons_container.move_child(dropped_lesson, index)
 	var children: Array[Node] = lessons_container.get_children()
-	for ind: int in children.size():
+	for ind: int in range(children.size()):
 		var child: LessonContainer = children[ind]
 		child.number = ind + 1
 		lessons[child.number] = child
@@ -87,7 +87,7 @@ func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
 func _on_save_button_pressed() -> void:
 	Database.db.query("DELETE FROM GPsInLessons")
 	var children: Array[Node] = lessons_container.get_children()
-	for index: int in children.size():
+	for index: int in range(children.size()):
 		var child: LessonContainer = children[index]
 		Database.db.query_with_bindings("SELECT * FROM Lessons WHERE LessonNb = ?", [index + 1])
 		var lesson_id: int = -1

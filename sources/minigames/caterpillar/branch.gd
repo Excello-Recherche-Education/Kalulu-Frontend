@@ -16,7 +16,7 @@ var velocity: float = 0.0
 var is_highlighting: bool = false:
 	set = _set_highlighting
 
-var is_running: float = true
+var is_running: bool = true
 
 func _set_highlighting(value: bool) -> void:
 	is_highlighting = value

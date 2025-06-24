@@ -103,7 +103,7 @@ func _on_export_filename_selected(filename: String) -> void:
 	
 	var summary_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
 	var sentences_by_lesson: Dictionary = Database.get_sentences_by_lessons()
-	for index: int in Database.get_lessons_count():
+	for index: int in range(Database.get_lessons_count()):
 		
 		var lesson: int = index +1
 		
@@ -159,7 +159,7 @@ func _check_db_integrity() -> void:
 	var known_words_list: Dictionary = {}
 	var known_gps_list: Array[Dictionary] = []
 	var gp_known: bool = false
-	for index: int in Database.get_lessons_count():
+	for index: int in range(Database.get_lessons_count()):
 		lesson_id = index +1
 		error_label.text = "Database integrity checks lesson " + str(lesson_id)
 		await get_tree().process_frame
@@ -389,7 +389,7 @@ func _word_list_file_selected(file_path: String) -> void:
 			if master_gplist.size() != graphemes.size():
 				same = false
 			else:
-				for index: int in master_gplist.size():
+				for index: int in range(master_gplist.size()):
 					same = same and (graphemes[index] + "-" + phonemes[index] == master_gplist[index])
 			if not same:
 				Database.db.delete_rows("Words", "ID=%s" % result.WordId)
@@ -467,7 +467,7 @@ func _create_words_csv() -> void:
 		var gpmatch: String = "("
 		var graphemes: PackedStringArray = (element.Graphemes as String).split(" ")
 		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
-		for index: int in graphemes.size() - 1:
+		for index: int in range(graphemes.size() - 1):
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
 		var index: int = graphemes.size() - 1
 		gpmatch += graphemes[index] + "-" + phonemes[index] + ")"
@@ -496,7 +496,7 @@ func _create_syllable_csv() -> void:
 		var gpmatch: String = "("
 		var graphemes: PackedStringArray = (element.Graphemes as String).split(" ")
 		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
-		for index: int in graphemes.size() - 1:
+		for index: int in range(graphemes.size() - 1):
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
 		var last_index: int = graphemes.size() - 1
 		gpmatch += graphemes[last_index] + "-" + phonemes[last_index] + ")"

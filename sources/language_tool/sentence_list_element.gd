@@ -60,7 +60,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 			Sentence = new_text,
 		})
 		id = Database.db.last_insert_rowid
-		for index: int in word_ids.size():
+		for index: int in range(word_ids.size()):
 			var word_id: int = word_ids[index]
 			Database.db.insert_row("WordsInSentences", {
 				WordID = word_id,

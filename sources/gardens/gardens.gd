@@ -112,7 +112,7 @@ func _ready() -> void:
 	var is_look_and_learn_completed: bool = transition_data.has("look_and_learn_completed") and transition_data.look_and_learn_completed
 	
 	# Defines if a minigame was just completed
-	var is_minigame_completed: bool = transition_data.has("look_and_learn_completed") and transition_data.look_and_learn_completed
+	var is_minigame_completed: bool = transition_data.has("minigame_completed") and transition_data.minigame_completed
 	
 	# Defines if the minigame or lookandlearn cleared is for the first time
 	var is_first_clear: bool = transition_data and transition_data.has("first_clear") and transition_data.first_clear
