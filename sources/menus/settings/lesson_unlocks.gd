@@ -64,6 +64,7 @@ func _on_student_changed(value: int)-> void:
 
 
 func _on_back_button_pressed() -> void:
+	progression.last_modified = Time.get_datetime_string_from_system(true)
 	UserDataManager.save_student_progression_for_code(device, student, progression)
 	hide()
 

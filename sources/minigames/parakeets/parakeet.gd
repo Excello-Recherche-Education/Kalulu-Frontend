@@ -13,7 +13,7 @@ enum Colors {
 const ANIMATIONS: Array[SpriteFrames] = [
 	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/green_parakeet_animations.tres"),
-	preload("res://sources/minigames/parakeets/yellow_parakeet_spritesheet.tres")
+	preload("res://sources/minigames/parakeets/yellow_parakeet_animation.tres")
 ]
 
 signal pressed()
