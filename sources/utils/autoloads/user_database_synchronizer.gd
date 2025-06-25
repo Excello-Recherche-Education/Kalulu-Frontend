@@ -379,9 +379,17 @@ func _apply_server_response(response_body: Dictionary) -> void:
 		var response_students: Dictionary = response_body.students
 		for response_student_code: String in response_students.keys():
 			var response_student_data: Dictionary = response_students[response_student_code]
-			# TODO SEPARATE EACH ELEMENT AND ADD LOGGER ERROR IF MISSING OF STUDENT DATA
-			if response_student_data.has("device_id") && response_student_data.has("name") && response_student_data.has("age") && response_student_data.has("updated_at"):
+			if validate_student_data(response_student_data):
 				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
+			if response_student_data.has("progression") && (response_student_data.progression as Dictionary).has("version") && (response_student_data.progression as Dictionary).has("unlocked") && (response_student_data.progression as Dictionary).has("updated_at"):
+				#Cleaning data because of JSON parsing changing types int / float / string
+				var received_unlock_data: Dictionary = response_student_data.progression.unlocked as Dictionary
+				var new_unlock_data: Dictionary = {}
+				for key_lesson: Variant in received_unlock_data.keys():
+					new_unlock_data[int(key_lesson)] = {"games": [], "look_and_learn": int(received_unlock_data[key_lesson]["look_and_learn"])}
+					for game_result: Variant in received_unlock_data[key_lesson]["games"]:
+						new_unlock_data[int(key_lesson)]["games"].push_back(int(game_result))
+				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
 			if response_student_data.has("remediation_gp") && (response_student_data.remediation_gp as Dictionary).has("score_remediation") && (response_student_data.remediation_gp as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
@@ -390,9 +398,6 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					# TODO ADD SECURITY
 					new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
-			if response_student_data.has("progression") && (response_student_data.progression as Dictionary).has("version") && (response_student_data.progression as Dictionary).has("unlocked") && (response_student_data.progression as Dictionary).has("updated_at"):
-				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, response_student_data.progression.unlocked as Dictionary, response_student_data.progression.updated_at as String)
-				pass
 			if response_student_data.has("remediation_syllables") && (response_student_data.remediation_syllables as Dictionary).has("score_remediation") && (response_student_data.remediation_syllables as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_syllables.score_remediation as String) as Array
@@ -443,9 +448,29 @@ func synchronize() -> void:
 
 	await set_loading_bar_progression(99.0)
 	if message_to_server.keys().size() > 0:
-		UserDataManager.save_all()
+		UserDataManager._save_device_settings()
+		UserDataManager.save_teacher_settings()
 	stop_sync(true)
 
+#region utils
+
+func validate_student_data(data: Dictionary) -> bool:
+	var required_keys := ["device_id", "name", "age", "updated_at"]
+	
+	if not data.has_all(required_keys):
+		# Student data is empty (no student data to process)
+		return false
+
+	var missing := []
+	for key in required_keys:
+		if not data.has(key):
+			missing.append(key)
+	
+	if missing.is_empty():
+		return true
+
+	Logger.error("UserDatabaseSynchronizer: Student data is partially incomplete. Missing keys: %s" % str(missing))
+	return false
 
 func set_loading_bar_progression(value_percent: float, wait_time: float = 0.2) -> void:
 	if loading_popup != null:
@@ -456,3 +481,5 @@ func set_loading_bar_progression(value_percent: float, wait_time: float = 0.2) -
 func set_loading_bar_text(message: String) -> void:
 	if loading_popup != null:
 		loading_popup.set_text(message)
+
+#endregion

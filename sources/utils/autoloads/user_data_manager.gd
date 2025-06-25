@@ -182,6 +182,16 @@ func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
 		_delete_dir(get_teacher_folder())
 
+func student_exists(code: String) -> bool:
+	if not _device_settings or not teacher_settings:
+		return false
+	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
+	if students:
+		for stud: StudentData in students:
+			if int(stud.code) == int(code):
+				return true
+	return false
+
 func login_student(code: String) -> bool:
 	if not _device_settings or not teacher_settings:
 		return false
@@ -462,6 +472,7 @@ func get_student_progression_for_code(device: int, code: int) -> StudentProgress
 
 	else:
 		progression = StudentProgression.new()
+		progression.last_modified = Time.get_datetime_string_from_system(true)
 		DirAccess.make_dir_recursive_absolute(student_path)
 		ResourceSaver.save(progression, progression_path)
 	
@@ -474,14 +485,15 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 		Logger.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
 
 func set_student_progression_data(student_code: int, version: String, new_data: Dictionary, updated_at: String) -> void:
-	pass
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
 	if current_data == null:
 		current_data = StudentProgression.new()
 	current_data.version = version
 	current_data.unlocks = new_data
 	current_data.last_modified = updated_at
-	ResourceSaver.save(current_data, get_student_progression_path(0, student_code))
+	var err: Error = ResourceSaver.save(current_data, get_student_progression_path(0, student_code))
+	if err != OK:
+		Logger.error("UserDataManager: Error while saving student progression: %s" % error_string(err))
 
 #endregion
 

@@ -11,7 +11,7 @@ enum Status{
 
 @export var version: String = ProjectSettings.get_setting("application/config/version")
 @export var unlocks: Dictionary = {}
-@export var last_modified: String = ""
+@export var last_modified: String
 
 
 func _init() -> void:
