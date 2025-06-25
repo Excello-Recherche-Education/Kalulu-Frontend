@@ -442,7 +442,8 @@ func synchronize() -> void:
 		_apply_server_response(server_response)
 
 	await set_loading_bar_progression(99.0)
-	UserDataManager.save_all()
+	if message_to_server.keys().size() > 0:
+		UserDataManager.save_all()
 	stop_sync(true)
 
 

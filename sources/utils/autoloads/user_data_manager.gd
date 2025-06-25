@@ -226,7 +226,7 @@ func _load_device_settings() -> void:
 		_save_device_settings()
 
 func _save_device_settings() -> void:
-	Logger.trace("UserDataManager: Saving device settings in " + get_device_settings_path())
+	Logger.trace("UserDataManager: Saving device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
 	ResourceSaver.save(_device_settings, get_device_settings_path())
 
 func set_language(language: String) -> void:
@@ -328,6 +328,7 @@ func _load_teacher_settings() -> void:
 		_save_device_settings()
 
 func save_teacher_settings() -> void:
+	Logger.trace("UserDataManager: Saving teacher settings in " + ProjectSettings.globalize_path(get_teacher_settings_path()))
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
 func _delete_inexistants_students_saves() -> void:
@@ -432,6 +433,7 @@ func _load_student_progression() -> void:
 	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
 
 func _save_student_progression() -> void:
+	Logger.trace("UserDataManager: Saving student progression in " + ProjectSettings.globalize_path(get_student_progression_path()))
 	ResourceSaver.save(student_progression, get_student_progression_path())
 
 func _on_user_progression_unlocks_changed() -> void:
@@ -549,6 +551,7 @@ func set_student_remediation_words_data(student_code: int, new_scores: Dictionar
 	ResourceSaver.save(student_remediation, remediation_data_path)
 
 func _save_student_remediation() -> void:
+	Logger.trace("UserDataManager: Saving student remediation in " + ProjectSettings.globalize_path(_get_student_remediation_path()))
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
 
 func get_gp_remediation_score(gp_id: int) -> int:
@@ -596,6 +599,7 @@ func _load_student_difficulty() -> void:
 	_student_difficulty.difficulty_changed.connect(_save_student_difficulty)
 
 func _save_student_difficulty() -> void:
+	Logger.trace("UserDataManager: Saving student difficulty in " + ProjectSettings.globalize_path(_get_student_difficulty_path()))
 	ResourceSaver.save(_student_difficulty, _get_student_difficulty_path())
 
 func get_difficulty_for_minigame(minigame_name: String) -> int:
@@ -628,6 +632,7 @@ func _load_student_speeches() -> void:
 	_student_speeches.speeches_changed.connect(_save_student_speeches)
 
 func _save_student_speeches() -> void:
+	Logger.trace("UserDataManager: Saving student speeches in " + ProjectSettings.globalize_path(_get_student_speeches_path()))
 	ResourceSaver.save(_student_speeches, _get_student_speeches_path())
 
 func mark_speech_as_played(speech: String) -> void:
