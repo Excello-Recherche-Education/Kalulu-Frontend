@@ -386,8 +386,10 @@ func _apply_server_response(response_body: Dictionary) -> void:
 				var received_unlock_data: Dictionary = response_student_data.progression.unlocked as Dictionary
 				var new_unlock_data: Dictionary = {}
 				for key_lesson: Variant in received_unlock_data.keys():
+					@warning_ignore("unsafe_call_argument")
 					new_unlock_data[int(key_lesson)] = {"games": [], "look_and_learn": int(received_unlock_data[key_lesson]["look_and_learn"])}
 					for game_result: Variant in received_unlock_data[key_lesson]["games"]:
+						@warning_ignore("unsafe_call_argument", "unsafe_method_access")
 						new_unlock_data[int(key_lesson)]["games"].push_back(int(game_result))
 				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
 			if response_student_data.has("remediation_gp") && (response_student_data.remediation_gp as Dictionary).has("score_remediation") && (response_student_data.remediation_gp as Dictionary).has("updated_at"):
@@ -455,14 +457,14 @@ func synchronize() -> void:
 #region utils
 
 func validate_student_data(data: Dictionary) -> bool:
-	var required_keys := ["device_id", "name", "age", "updated_at"]
+	var required_keys: Array[String] = ["device_id", "name", "age", "updated_at"]
 	
 	if not data.has_all(required_keys):
 		# Student data is empty (no student data to process)
 		return false
 
-	var missing := []
-	for key in required_keys:
+	var missing: Array[String] = []
+	for key: String in required_keys:
 		if not data.has(key):
 			missing.append(key)
 	
