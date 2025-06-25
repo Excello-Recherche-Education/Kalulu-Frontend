@@ -18,9 +18,7 @@ func _init() -> void:
 	init_unlocks()
 
 # Make sure the unlocks are correct
-func init_unlocks() -> bool:
-	var has_changes: bool = false
-	
+func init_unlocks() -> void:
 	if not unlocks:
 		unlocks = {}
 	
@@ -41,17 +39,9 @@ func init_unlocks() -> bool:
 		while unlocks.size() > number_of_lessons:
 			unlocks.erase(unlocks.size())
 		
-		has_changes = true
-	
 	# Make sure that the first garden is always accessible
 	if unlocks[1]["look_and_learn"] == Status.Locked:
 		unlocks[1]["look_and_learn"] = Status.Unlocked
-		has_changes = true
-	
-	if has_changes:
-		last_modified = Time.get_datetime_string_from_system(true)
-		
-	return has_changes
 
 
 func get_max_unlocked_lesson_index() -> int:
