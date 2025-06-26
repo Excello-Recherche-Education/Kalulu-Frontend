@@ -187,10 +187,10 @@ text = "Open language resource Folder"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 85.0
+offset_left = 50.0
 offset_top = 117.0
-offset_right = 626.0
-offset_bottom = 515.0
+offset_right = 667.0
+offset_bottom = 547.0
 theme_override_constants/separation = 50
 
 [node name="ImportLanguageButton" type="Button" parent="VBoxContainer"]

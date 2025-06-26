@@ -32,10 +32,12 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	@warning_ignore("unsafe_method_access")
 	return data.has("gp_id") and data.gp_id != gp_id
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
+	@warning_ignore("unsafe_method_access")
 	if not data.has("gp_id"):
 		return
 	var before: bool = at_position.x < size.x / 2

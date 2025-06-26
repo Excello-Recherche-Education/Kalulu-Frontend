@@ -5,7 +5,7 @@ class_name WordList
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 @onready var new_gp_layer: CanvasLayer = $NewGPLayer
-@onready var new_gp: GPListElement = %NewGP
+@onready var new_gp := %NewGP
 @onready var title: ListTitle = %ListTitle
 @onready var lesson_title: Label = %Lesson
 @onready var word_title: Label = %Word

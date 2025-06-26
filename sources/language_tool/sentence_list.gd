@@ -1,4 +1,4 @@
-extends "res://sources/language_tool/word_list.gd"
+extends WordList
 
 var not_found_list: String = ""
 @onready var export_not_found_button: Button = %ExportNotFoundButton
@@ -28,7 +28,7 @@ func get_lesson_for_element(id: int) -> int:
 
 
 func _on_list_title_new_search(new_text: String) -> void:
-	for element: SentenceListElement in elements_container.get_children():
+	for element in elements_container.get_children():
 		var found: bool = false
 		for word: String in element.word.split(" "):
 			if word.begins_with(new_text):
@@ -43,9 +43,9 @@ func _ready() -> void:
 
 
 func connect_not_found() -> void:
-	for element: SentenceListElement in elements_container.get_children():
-		if not element.not_found.is_connected(_on_not_found):
-			element.not_found.connect(_on_not_found)
+	for element in elements_container.get_children(): 
+		if element is SentenceListElement and not (element as SentenceListElement).not_found.is_connected(_on_not_found):
+			(element as SentenceListElement).not_found.connect(_on_not_found)
 	if _element is SentenceListElement and not (_element as SentenceListElement).not_found.is_connected(_on_not_found_csv):
 		(_element as SentenceListElement).not_found.connect(_on_not_found_csv)
 
