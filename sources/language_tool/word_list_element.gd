@@ -116,15 +116,13 @@ func add_gp_list_button(gp_id: int, ind_gp_id: int) -> void:
 
 
 func _on_gp_list_button_selected(gp_id: int, element: Node) -> void:
-	@warning_ignore("integer_division")
-	var ind_gp_id: int = element.get_index() / 2
+	var ind_gp_id: int = int(element.get_index() / 2.0)
 	unvalidated_gp_ids[ind_gp_id] = gp_id
 	word_edit.text = get_graphemes(unvalidated_gp_ids)
 
 
 func _on_gp_list_button_new_selected(element: Node) -> void:
-	@warning_ignore("integer_division")
-	var ind_gp_id: int = element.get_index() / 2
+	var ind_gp_id: int = int(element.get_index() / 2.0)
 	new_gp_asked.emit(ind_gp_id)
 
 
@@ -363,8 +361,7 @@ func new_gp_asked_added(ind: int, gp_id: int) -> void:
 
 
 func _on_add_gp_button_pressed(element: Node) -> void:
-	@warning_ignore("integer_division")
-	var ind_gp_id: int = element.get_index() / 2
+	var ind_gp_id: int = int(element.get_index() / 2.0)
 	var gp_id: int = sub_elements_list.keys()[0]
 	unvalidated_gp_ids.insert(ind_gp_id + 1, gp_id)
 	add_gp_list_button(gp_id, ind_gp_id + 1)

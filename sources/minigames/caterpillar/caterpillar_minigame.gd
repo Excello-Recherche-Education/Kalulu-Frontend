@@ -58,8 +58,7 @@ func _setup_minigame() -> void:
 		branches_spawn_indexes.append(index)
 	
 		# Move the caterpillar to the right branch
-		@warning_ignore("integer_division")
-		if index == int(settings.branches/2):
+		if index == int(settings.branches/2.0):
 			_on_branch_pressed(branch)
 	
 	# Setups the timer

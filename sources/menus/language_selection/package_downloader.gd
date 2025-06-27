@@ -117,10 +117,8 @@ func is_language_directory_valid(path: String) -> bool:
 
 func _process(_delta: float) -> void:
 	if http_request.get_body_size() > 0:
-		@warning_ignore("integer_division")
-		var maximum: int = int(http_request.get_body_size()/1024)
-		@warning_ignore("integer_division")
-		var current: int = int(http_request.get_downloaded_bytes()/1024)
+		var maximum: int = int(http_request.get_body_size()/1024.0)
+		var current: int = int(http_request.get_downloaded_bytes()/1024.0)
 		download_bar.max_value = maximum
 		download_bar.value = current
 		download_info.text = str(current) + "KB/" + str(maximum) + "KB"

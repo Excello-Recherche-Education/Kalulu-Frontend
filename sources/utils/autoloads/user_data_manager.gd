@@ -694,15 +694,13 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 	save_teacher_settings()
 
 func find_student_dir(student_code: int) -> String:
-	@warning_ignore("unused_parameter")
-	return _scan_teacher_devices(func(device_dir: String, lang_dir: String, sub_file: String) -> String:
+	return _scan_teacher_devices(func(_device_dir: String, lang_dir: String, sub_file: String) -> String:
 		if sub_file == str(student_code):
 			return lang_dir.path_join(sub_file)
 		return "")
 
 func find_device_dir_for_student(student_code: int) -> String:
-	@warning_ignore("unused_parameter")
-	return _scan_teacher_devices(func(device_dir: String, lang_dir: String, sub_file: String) -> String:
+	return _scan_teacher_devices(func(device_dir: String, _lang_dir: String, sub_file: String) -> String:
 		if sub_file == str(student_code):
 			return device_dir
 		return "")

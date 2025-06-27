@@ -43,8 +43,7 @@ func _calculate_best_font_size() -> int:
 	var best_size: int = low
 
 	while low <= high:
-		@warning_ignore("integer_division")
-		var mid: int = int((low + high) / 2)
+		var mid: int = int((low + high) / 2.0)
 		var text_size: Vector2 = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, mid)
 		
 		# Si le texte rentre, on essaie de l'augmenter

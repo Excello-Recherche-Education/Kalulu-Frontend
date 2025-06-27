@@ -244,10 +244,8 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 			current_progression += 1
 		else:
 			for index: int in range(words.get_child_count() - 1):
-				@warning_ignore("UNSAFE_METHOD_ACCESS")
-				words.get_child(index).wrong()
-			@warning_ignore("UNSAFE_METHOD_ACCESS")
-			await words.get_child(words.get_child_count() - 1).wrong()
+				(words.get_child(index) as Word).wrong()
+			await (words.get_child(words.get_child_count() - 1) as Word).wrong()
 			
 			current_lives -= 1
 			

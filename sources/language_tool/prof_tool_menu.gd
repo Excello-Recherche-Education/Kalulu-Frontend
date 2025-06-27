@@ -472,8 +472,7 @@ func _create_words_csv() -> void:
 		var index: int = graphemes.size() - 1
 		gpmatch += graphemes[index] + "-" + phonemes[index] + ")"
 		var lesson: int = -1
-		@warning_ignore("unsafe_method_access")
-		for gp_id: String in element.GPIDs.split(' '):
+		for gp_id: String in (element.GPIDs as String).split(' '):
 			var gp_id_lesson: int = Database.get_min_lesson_for_gp_id(int(gp_id))
 			if gp_id_lesson < 0:
 				lesson = -1
@@ -501,8 +500,7 @@ func _create_syllable_csv() -> void:
 		var last_index: int = graphemes.size() - 1
 		gpmatch += graphemes[last_index] + "-" + phonemes[last_index] + ")"
 		var lesson: int = -1
-		@warning_ignore("unsafe_method_access")
-		for gp_id: String in element.GPIDs.split(' '):
+		for gp_id: String in (element.GPIDs as String).split(' '):
 			var gp_id_lesson: int = Database.get_min_lesson_for_gp_id(int(gp_id))
 			if gp_id_lesson < 0:
 				lesson = -1
@@ -523,8 +521,7 @@ func _create_sentence_csv() -> void:
 	var result: Array[Dictionary] = Database.db.query_result
 	for element: Dictionary in result:
 		var lesson: int = -1
-		@warning_ignore("unsafe_method_access")
-		for word_id: String in element.WordIDs.split(' '):
+		for word_id: String in (element.WordIDs as String).split(' '):
 			var ind: int = Database.get_min_lesson_for_word_id(int(word_id))
 			if ind < 0:
 				lesson = -1
