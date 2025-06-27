@@ -79,7 +79,6 @@ func game_completed(lesson_number: int, game_number: int) -> bool:
 	if unlocks[lesson_number]["games"][game_number] == Status.Completed:
 		return false
 	
-	
 	unlocks[lesson_number]["games"][game_number] = Status.Completed
 	
 	var all_completed: bool = true

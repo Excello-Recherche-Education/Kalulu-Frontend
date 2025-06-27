@@ -176,6 +176,16 @@ func get_words_containing_grapheme(grapheme: String) -> Array[Dictionary]:
 	return db.query_result
 
 
+func get_word_id_from_text(text: String) -> int:
+	text = text.replace(".", "").replace(",", "") # Remove points and comas
+	db.query("SELECT ID FROM Words WHERE Word = '%s' COLLATE NOCASE;" % text)
+	if db.query_result.size() > 0:
+		if db.query_result[0].has("ID"):
+			return db.query_result[0].ID
+	Logger.trace("Database: Word " + text + " ID not found")
+	return -1
+
+
 func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[Dictionary]:
 	var query: String = "SELECT Syllables.ID, Syllables.Syllable as Grapheme, VerifiedCount.LessonNb FROM Syllables
 	 INNER JOIN 
