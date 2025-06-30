@@ -3,6 +3,7 @@
 .DS_Store
 
 addons/godot-sqlite/bin
+addons/script-ide
 
 language_resources/
 
