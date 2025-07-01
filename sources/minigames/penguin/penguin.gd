@@ -1,9 +1,8 @@
 extends Node2D
+class_name Penguin
 
-# Namespace
-const Snowball: = preload("res://sources/minigames/penguin/snowball.gd")
 
-const snowball_scene: PackedScene = preload("res://sources/minigames/penguin/snowball.tscn")
+const SNOWBALL_SCENE: PackedScene = preload("res://sources/minigames/penguin/snowball.tscn")
 
 @onready var snowball_position: Marker2D = $Sprite2D/Snowball
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -13,7 +12,7 @@ var throw_position: Vector2
 
 
 func _create_snowball() -> void:
-	var snowball: Snowball = snowball_scene.instantiate()
+	var snowball: Snowball = SNOWBALL_SCENE.instantiate()
 	snowball.position = snowball_position.global_position
 	snowball.target_position = throw_position - snowball_position.global_position
 	audiostream_player.play()

@@ -5,7 +5,7 @@
 
 [node name="WordsMinigame" instance=ExtResource("1_c25or")]
 script = ExtResource("2_nc3s1")
-max_number_of_GPs = 6
+max_number_of_gps = 6
 distractors_queue_size = 6
 time_between_words = 3.0
 lesson_nb = 4

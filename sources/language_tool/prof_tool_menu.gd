@@ -1,7 +1,7 @@
 extends Control
 
-const base_path: String = "user://language_resources/"
-const save_file_path: String = "user://prof_tool_save.tres"
+const BASE_PATH: String = "user://language_resources/"
+const SAVE_FILE_PATH: String = "user://prof_tool_save.tres"
 var save_file: ProfToolSave
 
 @onready var language_select_button: OptionButton = %LanguageSelectButton
@@ -18,11 +18,11 @@ func _ready() -> void:
 	MusicManager.stop()
 	Database.load_additional_word_list()
 	_update_add_word_list_button()
-	if not ResourceLoader.exists(save_file_path):
+	if not ResourceLoader.exists(SAVE_FILE_PATH):
 		save_file = ProfToolSave.new()
-		save_file.resource_path = save_file_path
-		ResourceSaver.save(save_file, save_file_path)
-	save_file = load(save_file_path)
+		save_file.resource_path = SAVE_FILE_PATH
+		ResourceSaver.save(save_file, SAVE_FILE_PATH)
+	save_file = load(SAVE_FILE_PATH)
 	_display_available_languages()
 	tab_container.current_tab = Globals.main_menu_selected_tab
 	tab_container.tab_changed.connect(_on_tab_container_tab_changed)
@@ -97,42 +97,42 @@ func _on_exercises_button_pressed() -> void:
 
 
 func _on_export_filename_selected(filename: String) -> void:
-	var version_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
+	var version_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
 	version_file.store_line(Time.get_datetime_string_from_system(true, false))
 	version_file.close()
 	
-	var summary_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
+	var summary_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("summary.txt"), FileAccess.WRITE)
 	var sentences_by_lesson: Dictionary = Database.get_sentences_by_lessons()
-	for index: int in Database.get_lessons_count():
+	for index: int in range(Database.get_lessons_count()):
 		
 		var lesson: int = index +1
 		
 		summary_file.store_line("Lesson %s --------------------" % lesson)
 		summary_file.store_line("\t \t Words ---")
 		var words: String = ""
-		for e: Dictionary in Database.get_words_for_lesson(lesson, true):
-			words += e.Word + ", "
+		for element: Dictionary in Database.get_words_for_lesson(lesson, true):
+			words += element.Word + ", "
 		summary_file.store_line(words.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Syllables ---")
 		var syllables: String = ""
-		for e: Dictionary in Database.get_syllables_for_lesson(lesson, true):
-			syllables += e.Grapheme + ", "
+		for element: Dictionary in Database.get_syllables_for_lesson(lesson, true):
+			syllables += element.Grapheme + ", "
 		summary_file.store_line(syllables.trim_suffix(", "))
 		summary_file.store_line("\n")
 		summary_file.store_line("\t \t Sentences ---")
-		for e: Dictionary in Database.get_sentences(lesson, true, sentences_by_lesson):
-			summary_file.store_line(e.Sentence as String)
+		for element: Dictionary in Database.get_sentences(lesson, true, sentences_by_lesson):
+			summary_file.store_line(element.Sentence as String)
 		summary_file.store_line("\n\n")
 	summary_file.close()
 	
-	_create_GP_csv()
+	_create_gp_csv()
 	_create_words_csv()
 	_create_syllable_csv()
 	_create_sentence_csv()
 	
 	var folder_zipper: FolderZipper = FolderZipper.new()
-	folder_zipper.compress(base_path.path_join(Database.language), filename)
+	folder_zipper.compress(BASE_PATH.path_join(Database.language), filename)
 
 #region Database integrity check
 var integrity_checking: bool = false
@@ -157,31 +157,31 @@ func _check_db_integrity() -> void:
 					return
 	var lesson_id: int
 	var known_words_list: Dictionary = {}
-	var known_GPs_list: Array[Dictionary] = []
-	var GPKnown: bool = false
-	for index: int in Database.get_lessons_count():
+	var known_gps_list: Array[Dictionary] = []
+	var gp_known: bool = false
+	for index: int in range(Database.get_lessons_count()):
 		lesson_id = index +1
 		error_label.text = "Database integrity checks lesson " + str(lesson_id)
 		await get_tree().process_frame
-		Logger.debug("ProfToolMenu: Lesson_id = " + str(lesson_id))
+		Logger.trace("ProfToolMenu: Lesson_id = " + str(lesson_id))
 		
-		var new_GPs_for_lesson: Array = Database.get_GP_for_lesson(lesson_id, false, true, false, false, true)
-		for new_GP: Dictionary in new_GPs_for_lesson:
-			if !new_GP.has("ID"):
+		var new_gps_for_lesson: Array = Database.get_gps_for_lesson(lesson_id, false, true, false, false, true)
+		for new_gp: Dictionary in new_gps_for_lesson:
+			if !new_gp.has("ID"):
 				if !log_message("GP with no ID in lesson " + str(lesson_id)):
 					return
-			if !new_GP.has("Grapheme"):
-				if !log_message("GP (ID " + str(new_GP.ID) + ") with no Grapheme in lesson " + str(lesson_id)):
+			if !new_gp.has("Grapheme"):
+				if !log_message("GP (ID " + str(new_gp.ID) + ") with no Grapheme in lesson " + str(lesson_id)):
 					return
-			if !new_GP.has("Phoneme"):
-				if !log_message("GP (ID " + str(new_GP.ID) + ") with no Phoneme in lesson " + str(lesson_id)):
+			if !new_gp.has("Phoneme"):
+				if !log_message("GP (ID " + str(new_gp.ID) + ") with no Phoneme in lesson " + str(lesson_id)):
 					return
-			var exists: bool = known_GPs_list.any(func(d: Dictionary) -> bool: return d == new_GP)
+			var exists: bool = known_gps_list.any(func(d: Dictionary) -> bool: return d == new_gp)
 			if exists:
-				if !log_message("GP ID " + str(new_GP.ID) + " already exists in lesson " + str(lesson_id)):
+				if !log_message("GP ID " + str(new_gp.ID) + " already exists in lesson " + str(lesson_id)):
 					return
 			else:
-				known_GPs_list.push_back(new_GP)
+				known_gps_list.push_back(new_gp)
 		
 		var new_words_for_lesson: Array = Database.get_words_for_lesson(lesson_id, true, 1, 99, true)
 		for new_word: Dictionary in new_words_for_lesson:
@@ -194,20 +194,20 @@ func _check_db_integrity() -> void:
 			if !new_word.has("Word"):
 				if !log_message("Word with no Word (key) at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
 					return
-			for GP: Dictionary in new_word.GPs:
-				if !GP.has("ID"):
+			for gp: Dictionary in new_word.GPs:
+				if !gp.has("ID"):
 					if !log_message("GP with no ID (key) at lesson ID " + str(lesson_id) + " in word " + (new_word.Word as String) + " (ID " + str(new_word.ID) + ")"):
 						return
-				GPKnown = false
-				for knownGP: Dictionary in known_GPs_list:
-					if knownGP.ID == GP.ID:
-						GPKnown = true
+				gp_known = false
+				for known_gp: Dictionary in known_gps_list:
+					if known_gp.ID == gp.ID:
+						gp_known = true
 						break
-				if !GPKnown:
-					if !log_message("Word " + (new_word.Word as String) + " with unknown GP (ID " + str(GP.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
+				if !gp_known:
+					if !log_message("Word " + (new_word.Word as String) + " with unknown GP (ID " + str(gp.ID) + ") at lesson ID " + str(lesson_id) + " and word ID " + str(new_word.ID)):
 						return
 			if known_words_list.has(new_word.Word):
-				if !log_message('Word  "' + (new_word.Word as String) + '" is introduced in lesson ID ' + str(lesson_id) + " but it already was introduced in lesson ID " + str(known_words_list[new_word.Word])):
+				if !log_message('Word "' + (new_word.Word as String) + '" is introduced in lesson ID ' + str(lesson_id) + " but it already was introduced in lesson ID " + str(known_words_list[new_word.Word])):
 					return
 			known_words_list[new_word.Word] = lesson_id
 		
@@ -237,11 +237,26 @@ func _check_db_integrity() -> void:
 		else:
 			continue #No sentence in this lesson
 	
+	error_label.text = "Database integrity checks all GP sounds file names."
+	var all_gps: Array = Database.get_gps_for_lesson(Database.get_lessons_count() + 1, false, false, false, true, true)
+	for gp: Dictionary in all_gps:
+		var gp_sound_path: String = Database.get_gp_sound_path(gp)
+		var result: Dictionary = file_exists_case_sensitive(gp_sound_path)
+		match result.status:
+			FileCheckResult.OK:
+				pass # Nothing
+			FileCheckResult.ERROR_CASE_MISMATCH:
+				if !log_message("GP " + Database.get_gp_name(gp) + " sound file exists, but its name does not match the expected casing"):
+					return
+			FileCheckResult.ERROR_NOT_FOUND:
+				if !log_message("GP " + Database.get_gp_name(gp) + " sound file does not exists"):
+					return
+	
 	error_label.text = "Database integrity check finished. " + str(total_integrity_warnings) + " warnings found."
 	integrity_checking = false
 	if check_box_log.button_pressed:
 		var file_path: String = ProjectSettings.globalize_path(integrity_log_path)
-		Logger.debug("ProfToolMenu: Logs saved at " + file_path)
+		Logger.trace("ProfToolMenu: Logs saved at " + file_path)
 		OS.shell_open(file_path)
 #endregion
 
@@ -266,17 +281,62 @@ func log_message(message: String) -> bool:
 		integrity_checking = false
 		return false
 
+enum FileCheckResult {
+	OK,
+	ERROR_NOT_FOUND,
+	ERROR_CASE_MISMATCH
+}
+
+func file_exists_case_sensitive(path: String) -> Dictionary:
+	var result: Dictionary = {
+		"status": FileCheckResult.OK,
+		"exists": false
+	}
+
+	if not FileAccess.file_exists(path):
+		result.status = FileCheckResult.ERROR_NOT_FOUND
+		return result
+
+	var dir_path: String = path.get_base_dir()
+	var file_name: String = path.get_file()
+
+	var dir: DirAccess = DirAccess.open(dir_path)
+	if dir == null:
+		result.status = FileCheckResult.ERROR_NOT_FOUND
+		return result
+
+	dir.list_dir_begin()
+	while true:
+		var test_name: String = dir.get_next()
+		if test_name == "":
+			break
+		if !dir.current_is_dir():
+			if test_name == file_name:
+				result.exists = true
+				result.status = FileCheckResult.OK
+				dir.list_dir_end()
+				return result
+			elif test_name.to_lower() == file_name.to_lower():
+				result.status = FileCheckResult.ERROR_CASE_MISMATCH
+	dir.list_dir_end()
+
+	if result.status != FileCheckResult.ERROR_CASE_MISMATCH:
+		result.status = FileCheckResult.ERROR_NOT_FOUND
+
+	return result
+
 func _get_available_languages() -> Array[String]:
 	var available_languages: Array[String] = []
-	var dir: DirAccess = DirAccess.open(base_path)
+	var dir: DirAccess = DirAccess.open(BASE_PATH)
 	if dir:
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir():
-				if FileAccess.file_exists(base_path.path_join(file_name).path_join("language.db")):
+				if FileAccess.file_exists(BASE_PATH.path_join(file_name).path_join("language.db")):
 					available_languages.append(file_name)
 			file_name = dir.get_next()
+		dir.list_dir_end()
 	return available_languages
 
 
@@ -287,7 +347,7 @@ func _on_language_select_button_item_selected(index: int) -> void:
 		return
 	
 	save_file.selected_language = language_select_button.get_item_text(index)
-	ResourceSaver.save(save_file, save_file_path)
+	ResourceSaver.save(save_file, SAVE_FILE_PATH)
 	Database.language = save_file.selected_language
 
 
@@ -295,14 +355,14 @@ func _on_validate_language_pressed() -> void:
 	if not line_edit.text:
 		return
 		
-	DirAccess.make_dir_recursive_absolute(base_path.path_join(line_edit.text))
+	DirAccess.make_dir_recursive_absolute(BASE_PATH.path_join(line_edit.text))
 	var file: FileAccess = FileAccess.open("res://model_database.db", FileAccess.READ)
-	var dest: FileAccess = FileAccess.open(base_path.path_join(line_edit.text).path_join("language.db"), FileAccess.WRITE)
+	var dest: FileAccess = FileAccess.open(BASE_PATH.path_join(line_edit.text).path_join("language.db"), FileAccess.WRITE)
 	dest.store_buffer(file.get_buffer(file.get_length()))
 	file.close()
 	dest.close()
 	save_file.selected_language = line_edit.text
-	ResourceSaver.save(save_file, save_file_path)
+	ResourceSaver.save(save_file, SAVE_FILE_PATH)
 	get_tree().reload_current_scene()
 
 
@@ -329,7 +389,7 @@ func _word_list_file_selected(file_path: String) -> void:
 			if master_gplist.size() != graphemes.size():
 				same = false
 			else:
-				for index: int in master_gplist.size():
+				for index: int in range(master_gplist.size()):
 					same = same and (graphemes[index] + "-" + phonemes[index] == master_gplist[index])
 			if not same:
 				Database.db.delete_rows("Words", "ID=%s" % result.WordId)
@@ -378,12 +438,12 @@ func _on_export_button_pressed() -> void:
 func _language_data_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
 		var folder_unzipper: FolderUnzipper = FolderUnzipper.new()
-		folder_unzipper.extract(file_path, base_path, false)
+		folder_unzipper.extract(file_path, BASE_PATH, false)
 	get_tree().reload_current_scene()
 
 
-func _create_GP_csv() -> void:
-	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
+func _create_gp_csv() -> void:
+	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("gp_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["Grapheme", "Phoneme", "Type", "Exception"])
 	var query: String = "Select * FROM GPs ORDER BY GPs.Grapheme"
 	Database.db.query(query)
@@ -394,7 +454,7 @@ func _create_GP_csv() -> void:
 
 
 func _create_words_csv() -> void:
-	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("words_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON", "READING", "WRITING"])
 	var query: String = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception, Reading, Writing 
 			FROM Words 
@@ -407,7 +467,7 @@ func _create_words_csv() -> void:
 		var gpmatch: String = "("
 		var graphemes: PackedStringArray = (element.Graphemes as String).split(" ")
 		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
-		for index: int in graphemes.size() - 1:
+		for index: int in range(graphemes.size() - 1):
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
 		var index: int = graphemes.size() - 1
 		gpmatch += graphemes[index] + "-" + phonemes[index] + ")"
@@ -423,7 +483,7 @@ func _create_words_csv() -> void:
 
 
 func _create_syllable_csv() -> void:
-	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("syllables_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("syllables_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["ORTHO", "GPMATCH", "LESSON", "READING", "WRITING"])
 	var query: String = "SELECT Syllables.ID as SyllableId, Syllable, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Syllables.Exception, Reading, Writing 
 			FROM Syllables 
@@ -436,10 +496,10 @@ func _create_syllable_csv() -> void:
 		var gpmatch: String = "("
 		var graphemes: PackedStringArray = (element.Graphemes as String).split(" ")
 		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
-		for index: int in graphemes.size() - 1:
+		for index: int in range(graphemes.size() - 1):
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
-		var i: int = graphemes.size() - 1
-		gpmatch += graphemes[i] + "-" + phonemes[i] + ")"
+		var last_index: int = graphemes.size() - 1
+		gpmatch += graphemes[last_index] + "-" + phonemes[last_index] + ")"
 		var lesson: int = -1
 		@warning_ignore("unsafe_method_access")
 		for gp_id: String in element.GPIDs.split(' '):
@@ -452,7 +512,7 @@ func _create_syllable_csv() -> void:
 
 
 func _create_sentence_csv() -> void:
-	var gp_list_file: FileAccess = FileAccess.open(base_path.path_join(Database.language).path_join("sentences_list.csv"), FileAccess.WRITE)
+	var gp_list_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("sentences_list.csv"), FileAccess.WRITE)
 	gp_list_file.store_csv_line(["Sentence", "Lesson"])
 	var query: String = "SELECT Sentences.ID as SentenceId, Sentence, group_concat(Word, ' ') as Words, group_concat(Word, ' ') as Words, group_concat(Words.ID, ' ') as WordIDs, Sentences.Exception 
 			FROM Sentences 
@@ -474,7 +534,7 @@ func _create_sentence_csv() -> void:
 
 
 func _on_open_folder_button_pressed() -> void:
-	OS.shell_show_in_file_manager(ProjectSettings.globalize_path(base_path))
+	OS.shell_show_in_file_manager(ProjectSettings.globalize_path(BASE_PATH))
 
 
 func _on_tab_container_tab_changed(tab: int) -> void:
@@ -483,7 +543,7 @@ func _on_tab_container_tab_changed(tab: int) -> void:
 
 #region Book Generation
 func create_book() -> void:
-	var lang_path: String = base_path.path_join(Database.language)
+	var lang_path: String = BASE_PATH.path_join(Database.language)
 	var file_names: Dictionary[String, String] = {
 		"word": "words_list.csv",
 		"syllable": "syllables_list.csv",
@@ -498,7 +558,7 @@ func create_book() -> void:
 		var file_path: String = lang_path.path_join(file_names[category])
 		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
 		if file == null:
-			Logger.error("ProfToolMenu: Erreur d'ouverture : " + file_path)
+			Logger.error("ProfToolMenu: Error opening file: " + file_path)
 			continue
 
 		if file.eof_reached():
@@ -524,7 +584,7 @@ func create_book() -> void:
 				var filler: PackedStringArray
 				filler.resize(current_row_count)
 				for index: int in range(current_row_count):
-					filler[index] = ""  # Valeur vide pour rattraper
+					filler[index] = "" # Valeur vide pour rattraper
 				columns[normalized] = filler
 
 		# Init colonne "Categorie" si pas encore
@@ -542,7 +602,7 @@ func create_book() -> void:
 
 			var values: PackedStringArray = parse_csv_line(line)
 			if values.size() != raw_headers.size():
-				Logger.warn("ProfToolMenu: Ligne malformée ignorée : %s" % values)
+				Logger.warn("ProfToolMenu: Malformed line ignored: %s" % values)
 				continue
 
 			var row_dict: Dictionary[String, String] = {}
@@ -575,12 +635,12 @@ func create_book() -> void:
 	var output_path: String = lang_path.path_join("booklet.csv")
 	var output_file: FileAccess = FileAccess.open(output_path, FileAccess.WRITE)
 	if output_file == null:
-		Logger.error("ProfToolMenu: Impossible d'écrire : " + output_path)
+		Logger.error("ProfToolMenu: Impossible to write: " + output_path)
 		return
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
 	
-	var row_count: int = (columns["Categorie"] as PackedStringArray).size()  # Toutes les colonnes sont synchronisées
+	var row_count: int = (columns["Categorie"] as PackedStringArray).size() # Toutes les colonnes sont synchronisées
 	for index: int in range(row_count):
 		var row: PackedStringArray = []
 		for header: String in ordered_headers:
@@ -589,8 +649,8 @@ func create_book() -> void:
 
 	output_file.close()
 	
-	error_label.text = "📘 Export des données du livret terminé vers : " + output_path
-	Logger.debug("ProfToolMenu: " + error_label.text)
+	error_label.text = "📘 Export data of the booklet finished to path: " + output_path
+	Logger.trace("ProfToolMenu: " + error_label.text)
 
 # Fonction qui ajoute une ligne au dictionnaire
 func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[String, String], categorie: String, all_headers: Array) -> void:
@@ -609,7 +669,7 @@ func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[S
 			dict[header] = filler
 		dict[header].append(row_data.get(header, "") as String)
 
-	# Colonne spéciale : Categorie
+	# Special column: "Categorie"
 	if not dict.has("Categorie"):
 		var filler: PackedStringArray
 		filler.resize(current_size)
@@ -631,7 +691,7 @@ func parse_csv_line(line: String) -> PackedStringArray:
 		var character: String = line[index]
 		if character == "\"":
 			if in_quotes and index + 1 < line.length() and line[index + 1] == "\"":
-				current += "\""  # escaped quote
+				current += "\"" # escaped quote
 				index += 1
 			else:
 				in_quotes = !in_quotes
@@ -673,8 +733,8 @@ func read_csv_record(file: FileAccess) -> String:
 		record += line
 
 		var quote_count: int = 0
-		for c: String in line:
-			if c == "\"":
+		for chara: String in line:
+			if chara == "\"":
 				quote_count += 1
 
 		open_quotes = (quote_count % 2 != 0)

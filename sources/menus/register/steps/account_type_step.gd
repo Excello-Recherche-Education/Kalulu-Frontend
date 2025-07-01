@@ -4,6 +4,7 @@ extends Step
 @onready var type: ItemList = %TypeSelect
 
 func _ready() -> void:
+	type.clear()
 	type.add_item(tr("TEACHER"))
 	type.add_item(tr("PARENT"))
 

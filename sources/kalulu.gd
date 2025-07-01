@@ -9,9 +9,9 @@ func _on_animation_finished() -> void:
 	
 	match animation:
 		"Idle1", "Idle2":
-			if rand < 0.5 :
+			if rand < 0.5:
 				play("Idle1") 
-			else : 
+			else: 
 				play("Idle2")
 		"Talk1", "Talk2", "Talk3":
 			if rand < 1.0 / 3.0:
@@ -21,9 +21,9 @@ func _on_animation_finished() -> void:
 			else:
 				play("Talk3")
 		"Tc_Idle1", "Tc_Idle2":
-			if rand < 0.5 :
+			if rand < 0.5:
 				play("Tc_Idle1") 
-			else : 
+			else: 
 				play("Tc_Idle2")
 		"Tc_Talk1", "Tc_Talk2", "Tc_Talk3":
 			if rand < 1.0 / 3.0:

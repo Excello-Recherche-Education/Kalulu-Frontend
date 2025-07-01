@@ -9,7 +9,7 @@ signal jumped()
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var sprite: Sprite2D = $Sprite
 
-const jump_sounds: Array[AudioStreamMP3] = [
+const JUMP_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_jump_random_01.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_jump_random_02.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_jump_random_03.mp3"),
@@ -17,7 +17,7 @@ const jump_sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_jump_random_05.mp3"),
 ]
 
-const frog_sounds: Array[AudioStreamMP3] = [
+const FROG_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_random_01.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_random_02.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_random_03.mp3"),
@@ -38,14 +38,14 @@ func drown() -> void:
 
 
 func _play_jump_sound() -> void:
-	audio_player.stream = jump_sounds[randi() % jump_sounds.size()]
+	audio_player.stream = JUMP_SOUNDS[randi() % JUMP_SOUNDS.size()]
 	audio_player.play()
 
 
 func _play_frog_sound() -> void:
 	var rand: float = randf()
 	if rand <= 0.75:
-		audio_player.stream = frog_sounds[randi() % frog_sounds.size()]
+		audio_player.stream = FROG_SOUNDS[randi() % FROG_SOUNDS.size()]
 		audio_player.play()
 
 

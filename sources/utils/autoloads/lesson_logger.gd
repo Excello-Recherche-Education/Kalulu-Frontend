@@ -1,7 +1,5 @@
 extends Node
 
-const Log: = preload("res://sources/utils/minigame_resources/log.gd")
-
 # Contains the current log resource
 var log_resources: Dictionary = {}
 
@@ -11,7 +9,7 @@ func save_logs(logs: Dictionary, folder_path: String, minigame_name: String, les
 	
 	var log_resource: LogResource
 	if not ResourceLoader.exists(file_path):
-		log_resource = Log.new()
+		log_resource = LogResource.new()
 		ResourceSaver.save(log_resource, file_path, ResourceSaver.FLAG_COMPRESS)
 	
 	if not file_path in log_resources:

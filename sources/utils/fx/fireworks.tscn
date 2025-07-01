@@ -77,4 +77,4 @@ position = Vector2(2252, 492)
 
 [node name="Rockets" type="Node2D" parent="."]
 
-[connection signal="timeout" from="FireDelayTimer" to="." method="_on_FireDelayTimer_timeout"]
+[connection signal="timeout" from="FireDelayTimer" to="." method="_on_fire_delay_timer_timeout"]

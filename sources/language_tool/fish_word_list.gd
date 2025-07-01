@@ -1,6 +1,6 @@
 extends Control
 
-const element_scene: PackedScene = preload("res://sources/language_tool/fish_word_list_element.tscn")
+const ELEMENT_SCENE: PackedScene = preload("res://sources/language_tool/fish_word_list_element.tscn")
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 
@@ -30,7 +30,7 @@ func _ready() -> void:
 	Database.db.query(query)
 	
 	for word: Dictionary in Database.db.query_result.duplicate():
-		var element: FishWordListElement = element_scene.instantiate()
+		var element: FishWordListElement = ELEMENT_SCENE.instantiate()
 		elements_container.add_child(element)
 		element.set_word_list(word_list)
 		element.word_id = word.WordID
@@ -49,12 +49,12 @@ func _reorder_by(property_name: String) -> void:
 		elements_container.add_child(element)
 
 
-func sorting_function(a: Node, b: Node, property_name: String) -> bool:
-	return a.get(property_name) < b.get(property_name)
+func sorting_function(node_a: Node, node_b: Node, property_name: String) -> bool:
+	return node_a.get(property_name) < node_b.get(property_name)
 
 
 func _on_list_title_add_pressed() -> void:
-	var element: FishWordListElement = element_scene.instantiate()
+	var element: FishWordListElement = ELEMENT_SCENE.instantiate()
 	elements_container.add_child(element)
 	element.set_word_list(word_list)
 

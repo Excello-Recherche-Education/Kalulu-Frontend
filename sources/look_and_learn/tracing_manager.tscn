@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cboa82q0bjlvc"]
 
 [ext_resource type="Script" uid="uid://bkjitwhuf67dg" path="res://sources/look_and_learn/tracing_manager.gd" id="1"]
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="2_mtk4m"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="2_mtk4m"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6xos"]
 font = ExtResource("2_mtk4m")

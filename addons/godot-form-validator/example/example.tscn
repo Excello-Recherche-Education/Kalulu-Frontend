@@ -58,7 +58,7 @@ rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_j4pud"), SubResourc
 
 [sub_resource type="Resource" id="Resource_ftvbf"]
 script = ExtResource("8_mu0ia")
-fail_message = "Value must contain only alphanumeric cahracters."
+fail_message = "Value must contain only alphanumeric characters."
 
 [sub_resource type="Resource" id="Resource_my5ss"]
 script = ExtResource("5_cu56g")

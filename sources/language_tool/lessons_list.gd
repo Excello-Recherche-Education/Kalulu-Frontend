@@ -1,12 +1,12 @@
 extends Control
 
-@onready var lessons_container: MarginContainer = $%LessonsContainer
+@onready var lessons_container: VBoxContainer = $%LessonsContainer
 @onready var unused_gp_container: GridContainer = $%UnusedGPContainer
 
 var lesson_container_scene: PackedScene = preload("res://sources/language_tool/lesson_container.tscn")
 var gp_label_scene: PackedScene = preload("res://sources/language_tool/lesson_gp_label.tscn")
 
-var lessons: Dictionary = {}
+var lessons: Dictionary[int, LessonContainer] = {}
 
 
 func _ready() -> void:
@@ -43,17 +43,19 @@ func _on_plus_button_pressed() -> void:
 	lessons_container.add_child(lesson_container)
 	lesson_container.lesson_dropped.connect(_on_lesson_dropped)
 	var max_nb: int = -1
-	for e in lessons.values():
-		max_nb = max(max_nb, e.number)
+	for element: LessonContainer in lessons.values():
+		max_nb = max(max_nb, element.number)
 	lesson_container.number = max_nb + 1
 	lessons[max_nb + 1] = lesson_container
 
 
 func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:
+	@warning_ignore("unsafe_method_access")
 	return data.has("gp_id")
 
 
 func _drop_data_in_gp_container(_at_position: Vector2, data: Variant) -> void:
+	@warning_ignore("unsafe_method_access")
 	if not data.has("gp_id"):
 		return
 	var new_gp_label: LessonGPLabel = gp_label_scene.instantiate()
@@ -69,15 +71,15 @@ func _on_gp_dropped(_before: bool, data: Dictionary) -> void:
 
 
 func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
-	var dropped_lesson = lessons[dropped_number]
-	var where_lesson = lessons[number]
+	var dropped_lesson: LessonContainer = lessons[dropped_number]
+	var where_lesson: LessonContainer = lessons[number]
 	var index: int = where_lesson.get_index()
 	if not before:
 		index += 1
 	lessons_container.move_child(dropped_lesson, index)
-	var children: = lessons_container.get_children()
-	for ind in children.size():
-		var child: = children[ind]
+	var children: Array[Node] = lessons_container.get_children()
+	for ind: int in range(children.size()):
+		var child: LessonContainer = children[ind]
 		child.number = ind + 1
 		lessons[child.number] = child
 
@@ -85,10 +87,10 @@ func _on_lesson_dropped(before: bool, number: int, dropped_number: int) -> void:
 func _on_save_button_pressed() -> void:
 	Database.db.query("DELETE FROM GPsInLessons")
 	var children: Array[Node] = lessons_container.get_children()
-	for index: int in children.size():
-		var child: = children[index]
+	for index: int in range(children.size()):
+		var child: LessonContainer = children[index]
 		Database.db.query_with_bindings("SELECT * FROM Lessons WHERE LessonNb = ?", [index + 1])
-		var lesson_id: = -1
+		var lesson_id: int = -1
 		if Database.db.query_result.is_empty():
 			Database.db.insert_row("Lessons",
 			{
@@ -98,7 +100,7 @@ func _on_save_button_pressed() -> void:
 		else:
 			lesson_id = Database.db.query_result[0].ID
 		
-		for gp_id in child.get_gp_ids():
+		for gp_id: int in child.get_gp_ids():
 			Database.db.insert_row("GPsInLessons",
 			{
 				GPID = gp_id,

@@ -8,7 +8,7 @@ signal swipe(start_position: Vector2, end_position: Vector2)
 var current_preview: TextureRect
 var start_position: Vector2
 
-func _ready() -> void :
+func _ready() -> void:
 	set_drag_forwarding(
 		# _get_drag_data
 		func(at_position: Vector2) -> Dictionary:

@@ -1,4 +1,5 @@
 extends Area2D
+class_name Berry
 
 signal pressed(gp: Dictionary)
 

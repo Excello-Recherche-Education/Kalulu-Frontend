@@ -1,9 +1,5 @@
-@tool
 extends Control
 class_name Minigame
-
-const Gardens: = preload("res://sources/gardens/gardens.gd")
-const Fireworks: = preload("res://sources/utils/fx/fireworks.gd")
 
 enum Type {
 	jellyfish,
@@ -27,11 +23,11 @@ enum Type {
 @export var minigame_number: int = 1
 
 @export_category("Difficulty")
-@export var max_number_of_lives: int = 0 :
+@export var max_number_of_lives: int = 0:
 	set(value):
 		max_number_of_lives = value
 
-@export var max_progression: int = 0 :
+@export var max_progression: int = 0:
 	set(value):
 		max_progression = value
 		if minigame_ui:
@@ -53,8 +49,8 @@ enum Type {
 @onready var current_lesson_stimuli_number: int = floori(max_progression * current_lesson_stimuli_ratio)
 
 # Sounds
-const win_sound_fx: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
-const lose_sound_fx: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
+const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
+const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
 
 # Lesson
 var minigame_difficulty: int
@@ -64,14 +60,16 @@ var lesson_difficulty: int
 var logs: Dictionary = {}
 
 # Scores for the remediation engine
-var scores: Dictionary = {} 
+var gp_scores: Dictionary = {}
+var syllables_scores: Dictionary = {}
+var words_scores: Dictionary = {}
 
 # Stimuli
 var stimuli: Array = []
 var distractions: Array = []
 
 # Lives
-var current_lives: int = 0 :
+var current_lives: int = 0:
 	set(value):
 		var previous_lives: int = current_lives
 		current_lives = value
@@ -85,7 +83,7 @@ var current_lives: int = 0 :
 			is_highlighting = true
 
 # Progression
-var current_progression: int = 0 : set = set_current_progression
+var current_progression: int = 0: set = set_current_progression
 var current_number_of_hints: int = 0
 var consecutive_errors: int = 0
 var is_highlighting: bool = false:
@@ -151,6 +149,7 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
+	Logger.error("Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
 	return
 
 
@@ -218,14 +217,15 @@ func _win() -> void:
 	if UserDataManager.student_progression:
 		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
-	# Remediation
-	if scores:
-		UserDataManager.update_remediation_scores(scores)
+	update_remediation()
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, true)
+	if current_lives <= 0:
+		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
+	else:
+		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, true)
 	
-	audio_player.stream = win_sound_fx
+	audio_player.stream = WIN_SOUND_FX
 	audio_player.play()
 	
 	fireworks.start()
@@ -237,6 +237,15 @@ func _win() -> void:
 	_go_back_to_the_garden()
 
 
+func update_remediation() -> void:
+	if gp_scores:
+		UserDataManager.update_remediation_gp_scores(gp_scores)
+	if syllables_scores:
+		UserDataManager.update_remediation_syllables_scores(syllables_scores)
+	if words_scores:
+		UserDataManager.update_remediation_words_scores(words_scores)
+
+
 func _lose() -> void:
 	# Lock the UI
 	minigame_ui.lock()
@@ -246,14 +255,12 @@ func _lose() -> void:
 	if gardens_data:
 		gardens_data.minigame_completed = false
 	
-	# Remediation
-	if scores:
-		UserDataManager.update_remediation_scores(scores)
+	update_remediation()
 	
 	# Difficulty
 	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
 	
-	audio_player.stream = lose_sound_fx
+	audio_player.stream = LOSE_SOUND_FX
 	audio_player.play()
 	await audio_player.finished
 	
@@ -306,22 +313,39 @@ func _get_stimulus_score(stimulus: Dictionary) -> int:
 	var score: int = 0
 	if stimulus.has("GPs"):
 		for gp: Dictionary in stimulus.GPs:
-			score += UserDataManager.get_GP_remediation_score(gp.ID as int)
+			score += UserDataManager.get_gp_remediation_score(gp.ID as int)
 	return score
 
 
 # Sorting function to sort arrays of stimuli based on their remediation score
+# If the score is lower (had more errors in the past), then the element is moved in first place
 func _sort_scoring(stimulus1: Dictionary, stimulus2: Dictionary) -> bool:
-	return _get_stimulus_score(stimulus2) > _get_stimulus_score(stimulus1)
+	return _get_stimulus_score(stimulus1) < _get_stimulus_score(stimulus2)
 
 
 # Updates the score of a GP defined by his ID
-func _update_score(ID: int, score: int) -> void:
-	var new_score: int = 0
-	if scores.has(ID):
-		new_score += scores[ID]
-	new_score += score
-	scores[ID] = new_score
+func _update_gp_score(id: int, score: int) -> void:
+	var new_gp_score: int = 0
+	if gp_scores.has(id):
+		new_gp_score += gp_scores[id]
+	new_gp_score += score
+	gp_scores[id] = new_gp_score
+
+# Updates the score of a syllable defined by his ID
+func _update_syllable_score(id: int, score: int) -> void:
+	var new_syllable_score: int = 0
+	if syllables_scores.has(id):
+		new_syllable_score += syllables_scores[id]
+	new_syllable_score += score
+	syllables_scores[id] = new_syllable_score
+
+# Updates the score of a syllable defined by his ID
+func _update_word_score(id: int, score: int) -> void:
+	var new_word_score: int = 0
+	if words_scores.has(id):
+		new_word_score += words_scores[id]
+	new_word_score += score
+	words_scores[id] = new_word_score
 
 #endregion
 
@@ -385,6 +409,7 @@ func set_current_progression(p_current_progression: int) -> void:
 
 func _on_minigame_ui_garden_button_pressed() -> void:
 	_go_back_to_the_garden()
+	update_remediation()
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:

@@ -8,7 +8,7 @@ func _init() -> void:
 	fail_message = "Value must be the same in both fields."
 
 
-func apply(control: Control, value) -> RuleResult:
+func apply(control: Control, value: Variant) -> RuleResult:
 	var result: RuleResult = RuleResult.new()
 	if confirm_control_path && value is String:
 		var confirm_control: Control = control.get_child(0).get_node(confirm_control_path)

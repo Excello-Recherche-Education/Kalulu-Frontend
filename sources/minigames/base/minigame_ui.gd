@@ -12,7 +12,7 @@ signal kalulu_speech_ended
 
 signal pause_ended
 
-const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
+const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture
@@ -40,7 +40,7 @@ const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 @onready var center_menu: MarginContainer = %CenterMenu
 
 # Kalulu
-@onready var kalulu: Kalulu = %Kalulu
+@onready var kalulu: KALULU = %Kalulu
 
 @onready var progression_container: VBoxContainer = %ProgressionContainer
 @onready var progression_gauge: NinePatchRect = %ProgressionGauge
@@ -104,7 +104,7 @@ func set_progression(new_progression: int) -> void:
 	if new_progression > max_progression:
 		set_max_progression(new_progression)
 	var progression_rects: Array[Node] = progression_container.get_children()
-	for index: int in max_progression:
+	for index: int in range(max_progression):
 		var progression_rect: TextureRect = progression_rects[index]
 		if index < new_progression:
 			progression_rect.texture = full_progression_icon

@@ -1,10 +1,10 @@
 [gd_scene load_steps=16 format=3 uid="uid://bpfcrbd5pxbtm"]
 
 [ext_resource type="Script" uid="uid://bqp3akngv876c" path="res://sources/gardens/flower_particle.gd" id="1_8kusj"]
-[ext_resource type="Texture2D" uid="uid://bhlxctbycwwg6" path="res://assets/vfx/Cloud01.png" id="1_osgji"]
-[ext_resource type="Texture2D" uid="uid://dybj3kcr7txvb" path="res://assets/vfx/Cloud02.png" id="2_ijsw8"]
+[ext_resource type="Texture2D" uid="uid://bhlxctbycwwg6" path="res://assets/vfx/cloud_01.png" id="1_osgji"]
+[ext_resource type="Texture2D" uid="uid://dybj3kcr7txvb" path="res://assets/vfx/cloud_02.png" id="2_ijsw8"]
 [ext_resource type="AudioStream" uid="uid://cusw38jbclkxs" path="res://assets/sfx/ui_fertilizer_random_02.mp3" id="3_hopxg"]
-[ext_resource type="Texture2D" uid="uid://dnaq6ormhmw3k" path="res://assets/vfx/cloud03.png" id="3_wp5xb"]
+[ext_resource type="Texture2D" uid="uid://dnaq6ormhmw3k" path="res://assets/vfx/cloud_03.png" id="3_wp5xb"]
 [ext_resource type="AudioStream" uid="uid://cxt1fou1408wb" path="res://assets/sfx/ui_fertilizer_random_01.mp3" id="4_0jd3r"]
 [ext_resource type="AudioStream" uid="uid://bgpe512komo6r" path="res://assets/sfx/ui_fertilizer_random_03.mp3" id="4_3jfcb"]
 [ext_resource type="AudioStream" uid="uid://bnl2tymireca3" path="res://assets/sfx/ui_fertilizer_random_04.mp3" id="5_oxx05"]

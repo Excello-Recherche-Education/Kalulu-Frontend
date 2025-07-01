@@ -1,15 +1,16 @@
 extends Control
 class_name PackageDownloader
 
-const main_menu_scene_path: String = "res://sources/menus/main/main_menu.tscn"
-const device_selection_scene_path: String = "res://sources/menus/device_selection/device_selection.tscn"
-const login_scene_path: String = "res://sources/menus/login/login.tscn"
-const user_language_resources_path: String = "user://language_resources"
+const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
+const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
+const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
+const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
 
-const error_messages: Array[String] = [
+const ERROR_MESSAGES: Array[String] = [
 	"DISCONECTED_ERROR",
 	"NO_INTERNET_ACCESS",
-	"ERROR_DOWNLOADING"
+	"ERROR_DOWNLOADING",
+	"INVALID_LANGUAGE_DIRECTORY",
 ]
 
 
@@ -29,7 +30,8 @@ var current_language_path: String
 var mutex: Mutex
 var thread: Thread
 
-var server_version: Dictionary = {}
+var server_language_version: Dictionary = {}
+var current_language_version: Dictionary = {}
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -42,37 +44,24 @@ func _ready() -> void:
 		return
 	
 	device_language = UserDataManager.get_device_settings().language
-	current_language_path = user_language_resources_path.path_join(device_language)
+	current_language_path = USER_LANGUAGE_RESOURCES_PATH.path_join(device_language)
+	current_language_version = UserDataManager.get_device_settings().language_versions.get(device_language, {})
 	
 	if not await ServerManager.check_internet_access():
 		# Offline mode, if a pack is already downloaded, go to next scene
-		if DirAccess.dir_exists_absolute(current_language_path) && is_language_directory_valid(current_language_path):
-			_go_to_next_scene()
+		if DirAccess.dir_exists_absolute(current_language_path):
+			if is_language_directory_valid(current_language_path):
+				_go_to_next_scene()
+			else:
+				_show_error(3)
 		else:
 			_show_error(1)
 		return
 	
-	# Check the configuration
-	var server_configuration: Dictionary = await ServerManager.get_configuration()
-	if server_configuration.code == 401:
-		UserDataManager.logout()
-		_show_error(0)
-		return
-	elif server_configuration.code != 200:
-		UserDataManager.logout()
-		_show_error(2)
-		return
-	
-	# Check if the last_updated date is superior on the server, then update the configuration
-	UserDataManager.update_configuration(server_configuration.body as Dictionary)
-	
-	# Get the current language version
-	var current_version: Dictionary = UserDataManager.get_device_settings().language_versions.get(device_language, {})
-	
 	# Gets the info of the language pack on the server
 	var res: Dictionary = await ServerManager.get_language_pack_url(device_language)
 	if res.code == 200:
-		server_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
+		server_language_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
 	# Authentication failed, disconnect the user
 	elif res.code == 401:
 		UserDataManager.logout()
@@ -84,7 +73,8 @@ func _ready() -> void:
 		return
 	
 	# If the language pack is not already downloaded or an update is needed
-	if not DirAccess.dir_exists_absolute(current_language_path) or current_version != server_version:
+	if not DirAccess.dir_exists_absolute(current_language_path) or current_language_version != server_language_version:
+		Logger.trace("A new version of the language pack has been detected.\n    Current version = " + str(current_language_version) + "\n    Server version = " + str(server_language_version))
 		
 		checking_label.hide()
 		download_label.show()
@@ -94,15 +84,15 @@ func _ready() -> void:
 		extract_info.show()
 		
 		# Create the language_resources folder
-		if not DirAccess.dir_exists_absolute(user_language_resources_path):
-			DirAccess.make_dir_recursive_absolute(user_language_resources_path)
+		if not DirAccess.dir_exists_absolute(USER_LANGUAGE_RESOURCES_PATH):
+			DirAccess.make_dir_recursive_absolute(USER_LANGUAGE_RESOURCES_PATH)
 			
 		# Delete the files from old language pack
 		if DirAccess.dir_exists_absolute(current_language_path):
 			_delete_dir(current_language_path)
 		
 		# Download the pack
-		http_request.set_download_file(user_language_resources_path.path_join(device_language + ".zip"))
+		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip"))
 		http_request.request(res.body.url as String)
 	else:
 		download_bar.value = 1
@@ -117,12 +107,12 @@ func is_language_directory_valid(path: String) -> bool:
 		return false
 
 	if dir.list_dir_begin() != OK:
+		dir.list_dir_end()
 		return false
 
 	var file_name: String = dir.get_next()
 	dir.list_dir_end()
-
-	return file_name != "" && dir.file_exists(current_language_path + "language.db")
+	return file_name != "" && dir.file_exists("language.db")
 
 
 func _process(_delta: float) -> void:
@@ -143,11 +133,11 @@ func _exit_tree() -> void:
 
 func _copy_data(this: PackageDownloader) -> void:
 	# Check if a zip exists for the complete locale
-	if not FileAccess.file_exists(user_language_resources_path.path_join(device_language + ".zip")):
+	if not FileAccess.file_exists(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip")):
 		return
 	
 	var language_zip: String = device_language + ".zip"
-	var language_zip_path: String = user_language_resources_path.path_join(language_zip)
+	var language_zip_path: String = USER_LANGUAGE_RESOURCES_PATH.path_join(language_zip)
 	
 	# Create and connect the unzipper to the UI
 	var unzipper: FolderUnzipper = FolderUnzipper.new()
@@ -169,12 +159,12 @@ func _copy_data(this: PackageDownloader) -> void:
 	delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
 	
 	# Extract the archive
-	var subfolder: String = unzipper.extract(language_zip_path, user_language_resources_path, false)
+	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
 	
 	# Move the data to the locale folder of the user
-	var error: Error = DirAccess.rename_absolute(user_language_resources_path.path_join(subfolder), current_language_path)
+	var error: Error = DirAccess.rename_absolute(USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path)
 	if error != OK:
-		Logger.error("PackageDownloader: Error " + str(error) + " while renaming folder from %s to %s" % [user_language_resources_path.path_join(subfolder), current_language_path])
+		Logger.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path])
 	
 	# Cleanup unnecessary files
 	DirAccess.remove_absolute(language_zip_path)
@@ -186,11 +176,12 @@ func _copy_data(this: PackageDownloader) -> void:
 func delete_directory_recursive(path: String) -> void:
 	var dir: DirAccess = DirAccess.open(path)
 	if dir == null:
-		Logger.error("PackageDownloader: Folder does not exists : %s" % path)
+		Logger.error("PackageDownloader: Folder does not exists: %s" % path)
 		return
 
 	if dir.list_dir_begin() != OK:
-		Logger.error("PackageDownloader: Error while reading folder : %s" % path)
+		dir.list_dir_end()
+		Logger.error("PackageDownloader: Error while reading folder: %s" % path)
 		return
 
 	var err: Error
@@ -202,7 +193,7 @@ func delete_directory_recursive(path: String) -> void:
 		else:
 			err = dir.remove(full_path)
 			if err != OK:
-				Logger.error("PackageDownloader: Error " + str(err) + " while deleting file : %s" % full_path)
+				Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting file: %s" % full_path)
 		file_name = dir.get_next()
 
 	dir.list_dir_end()
@@ -210,9 +201,9 @@ func delete_directory_recursive(path: String) -> void:
 	# Supprime le dossier lui-même
 	err = DirAccess.remove_absolute(path)
 	if err != OK:
-		Logger.error("PackageDownloader: Error " + str(err) + " while deleting folder : %s" % path)
+		Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting folder: %s" % path)
 	else:
-		Logger.info("PackageDownloader: ✅ Folder deleted : %s" % path)
+		Logger.info("PackageDownloader: ✅ Folder deleted: %s" % path)
 
 
 func _delete_dir(path: String) -> void:
@@ -225,25 +216,27 @@ func _delete_dir(path: String) -> void:
 
 
 func _show_error(error: int) -> void:
-	error_popup.content_text = error_messages[error]
+	error_popup.content_text = ERROR_MESSAGES[error]
 	error_popup.show()
 	
 
 func _go_to_main_menu() -> void:
-	get_tree().change_scene_to_file(main_menu_scene_path)
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 
 
 func _go_to_next_scene() -> void:
 	if not Database.is_open:
 		Database.connect_to_db()
-	UserDataManager.set_language_version(device_language, server_version)
+	
+	if not server_language_version.is_empty():
+		UserDataManager.set_language_version(device_language, server_language_version)
 	
 	# Check if we have a valid device id
 	if not UserDataManager.get_device_settings().device_id:
-		get_tree().change_scene_to_file(device_selection_scene_path)
+		get_tree().change_scene_to_file(DEVICE_SELECTION_SCENE_PATH)
 	# Go directly to the login scene
 	else:
-		get_tree().change_scene_to_file(login_scene_path)
+		get_tree().change_scene_to_file(LOGIN_SCENE_PATH)
 
 
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:

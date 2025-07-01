@@ -1,16 +1,16 @@
 extends Control
+class_name TracingManager
 
 signal finished()
 
-const letter_segment_class: PackedScene = preload("res://sources/look_and_learn/letter_segment.tscn")
+const LETTER_SEGMENT_CLASS: PackedScene = preload("res://sources/look_and_learn/letter_segment.tscn")
 
 @export var label_settings: LabelSettings
 
 @onready var lower_labels: HBoxContainer = %LowerLabels
 @onready var upper_labels: HBoxContainer = %UpperLabels
 
-const tracing_data_folder: String = "tracing_data/"
-const extension: String = ".csv"
+const EXTENSION: String = ".csv"
 
 func _process(_delta: float) -> void:
 	place_segments(upper_labels.get_children())
@@ -20,7 +20,7 @@ func _process(_delta: float) -> void:
 func place_segments(labels: Array) -> void:
 	for label: Label in labels:
 		for segment: LetterSegment in label.get_children():
-			segment.global_position = label.global_position + label.size / 2.0  + Vector2(0.0, 72.0)
+			segment.global_position = label.global_position + label.size / 2.0 + Vector2(0.0, 72.0)
 
 
 func reset() -> void:
@@ -65,7 +65,7 @@ func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lowe
 	parent.add_child(label)
 	
 	for points: Array in letter_tracings:
-		var segment: LetterSegment = letter_segment_class.instantiate()
+		var segment: LetterSegment = LETTER_SEGMENT_CLASS.instantiate()
 		label.add_child(segment)
 		segment.setup(points)
 
@@ -90,8 +90,8 @@ func _load_tracing(path: String) -> Array:
 			if element == "":
 				break
 			
-			var s: PackedStringArray = element.split(" ")
-			points.append(Vector2(float(s[0]), float(s[1])))
+			var elements: PackedStringArray = element.split(" ")
+			points.append(Vector2(float(elements[0]), float(elements[1])))
 		
 		if not points.is_empty():
 			segments.append(points)
@@ -108,7 +108,7 @@ func _upper_path(letter: String) -> String:
 
 
 func _real_path(path: String) -> String:
-	return Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder).path_join(path) + extension
+	return Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER).path_join(path) + EXTENSION
 
 
 

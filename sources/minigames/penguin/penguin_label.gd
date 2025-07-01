@@ -1,4 +1,6 @@
 extends Label
+class_name PenguinLabel
+
 signal pressed(pos: Vector2)
 
 @onready var highlight_fx: HighlightFX = %HighlightFX

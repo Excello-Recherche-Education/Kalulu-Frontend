@@ -1,18 +1,12 @@
-@tool
 extends WordsMinigame
 
 signal can_spawn_turtle()
 
-# Namespace
-const Water: = preload("res://sources/minigames/turtles/water.gd")
-const Island: = preload("res://sources/minigames/turtles/island.gd")
-const Turtle: = preload("res://sources/minigames/turtles/turtle.gd")
-
-const turtle_scene: PackedScene = preload("res://sources/minigames/turtles/turtle.tscn")
+const TURTLE_SCENE: PackedScene = preload("res://sources/minigames/turtles/turtle.tscn")
 # Defines the maximum number of turtles visible on screen
-const max_turtle_count: int = 5
+const MAX_TURTLE_COUNT: int = 5
 # Defines the minimum distance between turtles when spawning them
-const min_distance: int = 500
+const MIN_DISTANCE: int = 500
 
 
 class DifficultySettings:
@@ -44,7 +38,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 var settings: DifficultySettings
 var turtle_count: int = 0:
 	set(value):
-		if turtle_count >= max_turtle_count and value < max_turtle_count:
+		if turtle_count >= MAX_TURTLE_COUNT and value < MAX_TURTLE_COUNT:
 			can_spawn_turtle.emit()
 		turtle_count = value
 var stimulus_spawned: bool = false
@@ -64,13 +58,13 @@ func _setup_minigame() -> void:
 	# Setups the timer
 	spawn_timer.wait_time = settings.spawn_rate
 	
-	for s: Dictionary in stimuli:
-		Logger.debug("TurtleMinigame: %s" % s.Word)
+	for stimulus: Dictionary in stimuli:
+		Logger.trace("TurtleMinigame: %s" % stimulus.Word)
 
 
 func _highlight() -> void:
 	for turtle: Turtle in turtles.get_children():
-			if self._is_GP_right(turtle.gp):
+			if self._is_gp_right(turtle.gp):
 				turtle.highlight(true)
 
 
@@ -93,11 +87,11 @@ func _clear_turtles() -> void:
 
 func _on_spawn_timer_timeout() -> void:
 	# Checks if there are too many turtle, and wait for one to despawn
-	if turtle_count >= max_turtle_count:
+	if turtle_count >= MAX_TURTLE_COUNT:
 		await can_spawn_turtle
 	
 	# Spawn a turtle
-	var turtle: Turtle = turtle_scene.instantiate()
+	var turtle: Turtle = TURTLE_SCENE.instantiate()
 	
 	# Pick a position to spawn the turtle
 	var position_found: bool = false
@@ -106,7 +100,7 @@ func _on_spawn_timer_timeout() -> void:
 		var all_position_ok: bool = true
 		# Check if there are other turtles nearby
 		for other_turtle: Turtle in turtles.get_children():
-			if other_turtle.position.distance_squared_to(spawn_location.position) < min_distance * min_distance:
+			if other_turtle.position.distance_squared_to(spawn_location.position) < MIN_DISTANCE * MIN_DISTANCE:
 				all_position_ok = false
 				break
 		position_found = all_position_ok
@@ -119,7 +113,7 @@ func _on_spawn_timer_timeout() -> void:
 	turtle.tree_exited.connect(
 		func() -> void:
 			turtle_count -= 1
-			if stimulus_spawned and _is_GP_right(turtle.gp):
+			if stimulus_spawned and _is_gp_right(turtle.gp):
 				stimulus_spawned = false
 	)
 	
@@ -131,7 +125,7 @@ func _on_spawn_timer_timeout() -> void:
 	# Define if the turtle is a stimulus or a distraction
 	var is_stimulus: bool = not stimulus_spawned and randf() < settings.stimuli_ratio
 	if is_stimulus:
-		turtle.gp = _get_GP()
+		turtle.gp = _get_gp()
 		if is_highlighting:
 			turtle.highlight(true)
 		stimulus_spawned = true
@@ -158,7 +152,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 	island.set_enabled(false)
 	
 	# Check if the turtle is a distractor or the awaited GP
-	if _is_GP_right(turtle.gp):
+	if _is_gp_right(turtle.gp):
 		# Handles the stimulus spawned status
 		stimulus_spawned = false
 		
@@ -175,7 +169,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 		island.progress = current_word_progression + 1
 		
 		# Play the GP
-		await audio_player.play_gp(_get_GP())
+		await audio_player.play_gp(_get_gp())
 		
 		# Update the word progression
 		current_word_progression += 1

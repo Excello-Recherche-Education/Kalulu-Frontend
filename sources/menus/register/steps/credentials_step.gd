@@ -16,7 +16,7 @@ func _on_validate_button_pressed() -> void:
 		Logger.warn("CredentialsStep: Impossible to write data in object (" + str(self) + ")")
 		return
 	
-	var res: Dictionary = await ServerManager.check_email(data.email as String)
+	var res: Dictionary = await ServerManager.check_email((data as TeacherSettings).email as String)
 	if res.code != 200:
 		api_email_field_error.visible = true
 		return

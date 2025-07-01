@@ -2,13 +2,13 @@
 extends HBoxContainer
 class_name PasswordVisualizer
 
-const icons_textures: Dictionary = {
-	"1" : preload("res://assets/menus/login/symbol01.png"),
-	"2" : preload("res://assets/menus/login/symbol02.png"),
-	"3" : preload("res://assets/menus/login/symbol03.png"),
-	"4" : preload("res://assets/menus/login/symbol04.png"),
-	"5" : preload("res://assets/menus/login/symbol05.png"),
-	"6" : preload("res://assets/menus/login/symbol06.png")
+const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
+	"1": preload("res://assets/menus/login/symbol_01.png"),
+	"2": preload("res://assets/menus/login/symbol_02.png"),
+	"3": preload("res://assets/menus/login/symbol_03.png"),
+	"4": preload("res://assets/menus/login/symbol_04.png"),
+	"5": preload("res://assets/menus/login/symbol_05.png"),
+	"6": preload("res://assets/menus/login/symbol_06.png")
 }
 
 @export var key_size: int = 200:
@@ -41,12 +41,12 @@ func _draw_password() -> void:
 	if not password:
 		return
 	
-	var i: int = 0
+	var index: int = 0
 	for value: String in password.split(""):
-		if i >= 3:
+		if index >= 3:
 			Logger.error("PasswordVisualizer: A password cannot be more than 3 characters long")
 			return
 		
-		if value in icons_textures:
-			icons[i].texture = icons_textures[value]
-		i += 1
+		if value in ICONS_TEXTURES:
+			icons[index].texture = ICONS_TEXTURES[value]
+		index += 1

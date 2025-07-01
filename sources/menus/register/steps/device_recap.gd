@@ -1,8 +1,7 @@
 extends Control
 class_name DeviceRecap
 
-const StudentPanel = preload("res://sources/menus/settings/student_panel.gd")
-const student_panel_scene: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
+const STUDENT_PANEL_SCENE: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
 
 @export var title: String
 @export var students: Array[StudentData] = []
@@ -17,7 +16,7 @@ func _ready() -> void:
 	
 	var index: int = 1
 	for student: StudentData in students:
-		var student_panel : StudentPanel = student_panel_scene.instantiate()
+		var student_panel: StudentPanel = STUDENT_PANEL_SCENE.instantiate()
 		student_panel.student_count = index
 		student_panel.student_data = student
 		students_container.add_child(student_panel)

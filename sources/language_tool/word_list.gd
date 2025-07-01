@@ -1,18 +1,19 @@
 extends Control
+class_name WordList
 
 @export var element_scene: PackedScene = preload("res://sources/language_tool/word_list_element.tscn")
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 @onready var new_gp_layer: CanvasLayer = $NewGPLayer
-@onready var new_gp := %NewGP
+@onready var new_gp: GPListElement = %NewGP
 @onready var title: ListTitle = %ListTitle
 @onready var lesson_title: Label = %Lesson
 @onready var word_title: Label = %Word
 @onready var graphemes_title: Label = %Graphemes
 @onready var error_label: Label = %ErrorLabel
 
-var undo_redo: = UndoRedo.new()
-var in_new_gp_mode: = false:
+var undo_redo: UndoRedo = UndoRedo.new()
+var in_new_gp_mode: bool = false:
 	set = set_in_new_gp_mode
 var _element: WordListElement
 var sub_elements_list: Dictionary = {}
@@ -23,7 +24,7 @@ var new_gp_asked_ind: int
 func create_sub_elements_list() -> void:
 	sub_elements_list.clear()
 	Database.db.query("Select * FROM GPs ORDER BY GPs.Grapheme")
-	for element in Database.db.query_result:
+	for element: Dictionary in Database.db.query_result:
 		sub_elements_list[element.ID] = {
 			grapheme = element.Grapheme,
 			phoneme = element.Phoneme,
@@ -40,7 +41,7 @@ func _ready() -> void:
 	
 	Database.db.query(_get_query())
 	
-	var results: = Database.db.query_result
+	var results: Array[Dictionary] = Database.db.query_result
 	for elem: Dictionary in results:
 		var element: WordListElement = element_scene.instantiate()
 		element.sub_elements_list = sub_elements_list
@@ -53,8 +54,8 @@ func _ready() -> void:
 		elements_container.add_child(element)
 		element.undo_redo = undo_redo
 		element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
-		element.new_GP_asked.connect(_on_element_new_GP_asked.bind(element))
-		element.GPs_updated.connect(_on_GPs_updated)
+		element.new_gp_asked.connect(_on_element_new_gp_asked.bind(element))
+		element.gps_updated.connect(_on_gps_updated)
 		element.update_lesson()
 	
 	title.set_title(_element.table_graph_column + " List")
@@ -83,7 +84,7 @@ func _get_query() -> String:
 func ensure_column_exists(table_name: String, column_name: String, default_value: String) -> void:
 	Database.db.query("PRAGMA table_info(%s);" % table_name)
 	var column_exists: bool = false
-	for row in Database.db.query_result:
+	for row: Dictionary in Database.db.query_result:
 		if row.has("name") and row["name"] == column_name:
 			column_exists = true
 			break
@@ -117,8 +118,8 @@ func _on_plus_button_pressed() -> void:
 	element.word = ""
 	element.undo_redo = undo_redo
 	element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
-	element.new_GP_asked.connect(_on_element_new_GP_asked.bind(element))
-	element.GPs_updated.connect(_on_GPs_updated)
+	element.new_gp_asked.connect(_on_element_new_gp_asked.bind(element))
+	element.gps_updated.connect(_on_gps_updated)
 	undo_redo.add_do_method(elements_container.add_child.bind(element))
 	undo_redo.add_do_method(elements_container.move_child.bind(element, 0))
 	undo_redo.add_undo_method(elements_container.remove_child.bind(element))
@@ -126,7 +127,7 @@ func _on_plus_button_pressed() -> void:
 	element.edit_mode()
 
 
-func _on_element_new_GP_asked(ind: int, element: WordListElement) -> void:
+func _on_element_new_gp_asked(ind: int, element: WordListElement) -> void:
 	in_new_gp_mode = true
 	new_gp_asked_element = element
 	new_gp_asked_ind = ind
@@ -141,6 +142,7 @@ func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
 func _on_gp_list_element_validated() -> void:
 	new_gp.insert_in_database()
 	if new_gp.has_method("update_lesson"):
+		@warning_ignore("unsafe_method_access")
 		new_gp.update_lesson()
 	in_new_gp_mode = false
 	create_sub_elements_list()
@@ -149,7 +151,7 @@ func _on_gp_list_element_validated() -> void:
 	new_gp_asked_element.new_gp_asked_added(new_gp_asked_ind, new_gp.id)
 
 
-func _on_GPs_updated() -> void:
+func _on_gps_updated() -> void:
 	create_sub_elements_list()
 	for element: WordListElement in elements_container.get_children():
 		element.sub_elements_list = sub_elements_list
@@ -185,8 +187,8 @@ func _reorder_by(property_name: String) -> void:
 		elements_container.add_child(child)
 
 
-func sorting_function(a, b, property_name) -> bool:
-	return a.get(property_name) < b.get(property_name)
+func sorting_function(a_node: Node, b_node: Node, property_name: String) -> bool:
+	return a_node.get(property_name) < b_node.get(property_name)
 
 
 func _on_list_title_add_pressed() -> void:
@@ -217,12 +219,12 @@ func _on_word_gui_input(event: InputEvent) -> void:
 
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
-	var file: = FileAccess.open(path, FileAccess.READ)
-	var line: = file.get_csv_line()
-	if line.size() < 1 or line[0] != "ORTHO" and line[1] != "GPMATCH":
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var line: PackedStringArray = file.get_csv_line()
+	if line.size() < 2 or line[0] != "ORTHO" or line[1] != "GPMATCH":
 		error_label.text = "Column names should be ORTHO, GPMATCH"
 		return
-	var all_data = {}
+	var all_data: Dictionary = {}
 	while not file.eof_reached():
 		line = file.get_csv_line()
 		if line.size() < 2:
@@ -233,9 +235,9 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 	
 	# delete elements that are not in file
 	if match_to_file:
-		var query: = "Select * FROM Words"
+		var query: String = "Select * FROM Words"
 		Database.db.query(query)
-		var result: = Database.db.query_result
+		var result: Array[Dictionary] = Database.db.query_result
 		for element: Dictionary in result:
 			if not element.Word in all_data:
 				Database.db.delete_rows("Words", "ID=%s" % element.ID)

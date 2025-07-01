@@ -1,7 +1,5 @@
 extends Control
-
-const Gardens: = preload("res://sources/gardens/gardens.gd")
-const TracingManager: = preload("res://sources/look_and_learn/tracing_manager.gd")
+class_name LookAndLearn
 
 @export var lesson_nb: int = 1
 @export var current_button_pressed: int = 0
@@ -42,7 +40,7 @@ func _ready() -> void:
 
 
 func setup() -> void:
-	gp_list = Database.get_GP_for_lesson(lesson_nb, true, true)
+	gp_list = Database.get_gps_for_lesson(lesson_nb, true, true)
 	
 	if gp_list.size() <= 0:
 		Logger.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))
@@ -58,7 +56,7 @@ func setup() -> void:
 	sounds = []
 	videos = []
 	
-	var gp_display: PackedStringArray
+	var gp_display: PackedStringArray = PackedStringArray()
 	for gp: Dictionary in gp_list:
 		var gp_image: Texture = Database.get_gp_look_and_learn_image(gp)
 		var gp_sound: AudioStream = Database.get_gp_look_and_learn_sound(gp)
@@ -97,7 +95,7 @@ func play_videos() -> void:
 		current_video += 1
 
 
-func play_images_and_sounds()  -> void:
+func play_images_and_sounds() -> void:
 	if current_image_and_sound >= images.size() or current_image_and_sound >= sounds.size():
 		animation_player.play("end_images_and_sounds")
 	else:

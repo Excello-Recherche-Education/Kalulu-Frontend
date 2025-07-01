@@ -1,5 +1,6 @@
 @tool
 extends Node2D
+class_name Monkey
 
 signal pressed()
 signal dragged_into_self()

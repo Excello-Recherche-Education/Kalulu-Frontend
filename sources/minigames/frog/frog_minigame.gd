@@ -2,22 +2,17 @@
 extends WordsMinigame
 class_name FrogMinigame
 
-# Namespace
-const LilypadTrack: = preload("res://sources/minigames/frog/lilypad_track.gd")
-const Lilypad: = preload("res://sources/minigames/frog/lilypad.gd")
-
-const lilypad_track_scene: PackedScene = preload("res://sources/minigames/frog/lilypad_track.tscn")
-
+const LILYPAD_TRACK_SCENE: PackedScene = preload("res://sources/minigames/frog/lilypad_track.tscn")
 
 class DifficultySettings:
 	var stimuli_ratio: float = 0.75
-	var padsSpeedDisabled: float = 100.0
-	var padsSpeed: float = 200.0
+	var pads_speed_disabled: float = 100.0
+	var pads_speed: float = 200.0
 	
-	func _init(p_stimuli_ratio: float, p_padsSpeedDisabled: float, p_padsSpeed: float) -> void:
+	func _init(p_stimuli_ratio: float, p_pads_speed_disabled: float, p_pads_speed: float) -> void:
 		stimuli_ratio = p_stimuli_ratio
-		padsSpeedDisabled = p_padsSpeedDisabled
-		padsSpeed = p_padsSpeed
+		pads_speed_disabled = p_pads_speed_disabled
+		pads_speed = p_pads_speed
 
 
 var difficulty_settings: Array[DifficultySettings] = [
@@ -85,7 +80,7 @@ func _create_tracks() -> void:
 	var current_distractors: Array = _get_current_distractors()
 	
 	for index: int in range((current_word.GPs as Array).size()):
-		var track: LilypadTrack = lilypad_track_scene.instantiate()
+		var track: LilypadTrack = LILYPAD_TRACK_SCENE.instantiate()
 		lilypad_tracks_container.add_child(track)
 		
 		track.difficulty_settings = difficulty_settings[difficulty]

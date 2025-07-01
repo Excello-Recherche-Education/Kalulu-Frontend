@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://m40vp7pb30bn" path="res://sources/look_and_learn/tracing_path.gd" id="1_4lqdu"]
 [ext_resource type="Texture2D" uid="uid://bfgwv7jidb5bs" path="res://assets/look_and_learn/guide.svg" id="2_2guls"]
 [ext_resource type="Texture2D" uid="uid://doql1x228r1bv" path="res://assets/look_and_learn/arrow.svg" id="3_imidm"]
-[ext_resource type="Texture2D" uid="uid://gbygdv35ltjx" path="res://assets/look_and_learn/children_hand_180x180.png" id="4_ey17m"]
+[ext_resource type="Texture2D" uid="uid://gbygdv35ltjx" path="res://assets/look_and_learn/student_hand_180x180.png" id="4_ey17m"]
 
 [sub_resource type="Curve2D" id="Curve2D_ypwnx"]
 

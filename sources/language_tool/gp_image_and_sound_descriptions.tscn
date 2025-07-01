@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dcc1st4oqub6k" path="res://sources/language_tool/gp_image_and_sound_descriptions.gd" id="1_8rkii"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_tjhx5"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_04mkx"]
-[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/ScrollContainer.gd" id="4_groag"]
+[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/scroll_container.gd" id="4_groag"]
 
 [node name="GpImageAndSoundDescriptions" type="Control"]
 layout_mode = 3

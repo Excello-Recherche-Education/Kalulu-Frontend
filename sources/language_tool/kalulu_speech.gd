@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name KaluluSpeech
 
 @export var speech_category: String
 @export var speech_name: String:
@@ -17,7 +18,7 @@ extends PanelContainer
 func _ready() -> void:
 	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
 	file_dialog.filters = []
-	file_dialog.add_filter("*" + Database.sound_extension, "Sounds")
+	file_dialog.add_filter("*" + Database.SOUND_EXTENSION, "Sounds")
 	
 	_set_speech_name(speech_name)
 	_set_speech_description(speech_description)

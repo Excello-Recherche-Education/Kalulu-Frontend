@@ -1,0 +1,102 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhowigt8un22u"]
+
+[ext_resource type="Script" uid="uid://bmv36ejdmk3hc" path="res://sources/ui/loading_popup.gd" id="1_edhv8"]
+[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="2_t7x2v"]
+
+[sub_resource type="Gradient" id="Gradient_22q4u"]
+colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ymust"]
+gradient = SubResource("Gradient_22q4u")
+
+[node name="LoadingPopup" type="CanvasLayer"]
+script = ExtResource("1_edhv8")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = SubResource("GradientTexture1D_ymust")
+
+[node name="PanelContainer" type="PanelContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelKalulu"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ContentLabel" type="Label" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("2_t7x2v")
+theme_type_variation = &"HeaderMedium"
+autowrap_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_t7x2v")
+value = 25.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VSeparatorLeft" type="VSeparator" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_t7x2v")
+
+[node name="OKButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_t7x2v")
+theme_type_variation = &"DangerButton"
+theme_override_font_sizes/font_size = 50
+text = "OK"
+
+[node name="CancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_t7x2v")
+theme_type_variation = &"DangerButton"
+theme_override_font_sizes/font_size = 50
+text = "CANCEL"
+
+[node name="VSeparatorRight" type="VSeparator" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

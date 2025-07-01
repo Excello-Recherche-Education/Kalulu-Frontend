@@ -1,15 +1,13 @@
-@tool
 extends Control
 
-const Gardens: = preload("res://sources/gardens/gardens.gd")
-const gardens_scene: PackedScene = preload("res://sources/gardens/gardens.tscn")
-const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
+const GARDENS_SCENE: PackedScene = preload("res://sources/gardens/gardens.tscn")
+const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 
 @export var locked_color: Color
 @export var unlocked_colors: Array[Color] = []
 @export var gardens_layout: GardensLayout
 
-@onready var kalulu: Kalulu = $Kalulu
+@onready var kalulu: KALULU = $Kalulu
 @onready var kalulu_button: TextureButton = %KaluluButton
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
@@ -68,13 +66,15 @@ const Kalulu: = preload("res://sources/minigames/base/kalulu.gd")
 @onready var help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "help"))
 
 func _ready() -> void:
+	UserDataManager.start_synchronization_timer()
+	
 	for index: int in range(garden_buttons.size()):
 		garden_buttons[index].pressed.connect(_on_garden_button_pressed.bind(index))
 	
 	var lesson_ind: int = 1
 	for index: int in range(gardens_layout.gardens.size()):
 		var can_emit: bool = true
-		if UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != UserProgression.Status.Locked:
+		if UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != StudentProgression.Status.Locked:
 			garden_buttons[index].disabled = false
 			garden_buttons[index].self_modulate = unlocked_colors[index]
 		else:
@@ -86,8 +86,8 @@ func _ready() -> void:
 		for _index2: int in range(gardens_layout.gardens[index].lesson_buttons.size()):
 			if can_emit and not emitting:
 				emitting = false
-				for game: UserProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
-					if game == UserProgression.Status.Unlocked or game == UserProgression.Status.Locked:
+				for game: StudentProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
+					if game == StudentProgression.Status.Unlocked or game == StudentProgression.Status.Locked:
 						emitting = true
 						break
 			lesson_ind += 1
@@ -100,16 +100,17 @@ func _ready() -> void:
 	if not UserDataManager.is_speech_played("brain"):
 		_play_tutorial()
 
+
 func _play_tutorial() -> void:
 	var tutorial_count: int = 0
 	
 	kalulu_button.hide()
 	while tutorial_count < tutorial_speeches.size():
-		if tutorial_count == 0: # first speech : play "show"
+		if tutorial_count == 0: # first speech: play "show"
 			await kalulu.play_kalulu_speech(tutorial_speeches[tutorial_count], true, false)
 		elif tutorial_count + 1 < tutorial_speeches.size():
 			await kalulu.play_kalulu_speech(tutorial_speeches[tutorial_count], false, false)
-		else: # last speech : play "hide"
+		else: # last speech: play "hide"
 			await kalulu.play_kalulu_speech(tutorial_speeches[tutorial_count], false, true)
 		tutorial_count += 1
 		await get_tree().create_timer(0.5).timeout
@@ -123,7 +124,7 @@ func _on_garden_button_pressed(button_number: int) -> void:
 	audio_stream_player.play()
 	await OpeningCurtain.close()
 	
-	var gardens: Gardens = gardens_scene.instantiate()
+	var gardens: Gardens = GARDENS_SCENE.instantiate()
 	gardens.starting_garden = button_number
 	get_tree().root.add_child(gardens)
 	get_tree().current_scene = gardens

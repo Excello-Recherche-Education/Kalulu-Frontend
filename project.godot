@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Kalulu"
-config/version="2.1.1"
+config/version="2.1.2"
 run/main_scene="res://sources/menus/splash_screen/splash_screen.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
@@ -25,15 +25,15 @@ buses/default_bus_layout="res://resources/audio_buses/main_audio_bus_layout.tres
 
 [autoload]
 
+Logger="*res://sources/utils/autoloads/logger.gd"
 LessonLogger="*res://sources/utils/autoloads/lesson_logger.gd"
-Database="*res://sources/utils/autoloads/Database.gd"
+ServerManager="*res://sources/utils/autoloads/server_manager.tscn"
+Database="*res://sources/utils/autoloads/database.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
-ServerManager="*res://sources/utils/autoloads/ServerManager.tscn"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
 Validation="*res://addons/godot-form-validator/validation.gd"
 OpeningCurtain="*res://sources/utils/autoloads/opening_curtain.tscn"
 Globals="*res://sources/language_tool/globals.gd"
-Logger="*res://sources/utils/autoloads/Logger.gd"
 
 [debug]
 

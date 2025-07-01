@@ -36,10 +36,10 @@ script = ExtResource("1_fwn5n")
 [node name="TracingParticles" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 12
-process_material = SubResource("ParticleProcessMaterial_me6ey")
 texture = ExtResource("2_3m3v8")
 lifetime = 0.5
 visibility_rect = Rect2(-500, -500, 1000, 1000)
+process_material = SubResource("ParticleProcessMaterial_me6ey")
 
 [node name="TracingAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_m2u4r")
@@ -49,4 +49,4 @@ volume_db = -5.0
 wait_time = 0.2
 one_shot = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

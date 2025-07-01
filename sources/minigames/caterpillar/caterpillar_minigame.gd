@@ -1,12 +1,7 @@
 @tool
 extends WordsMinigame
 
-# Namespace
-const Caterpillar: = preload("res://sources/minigames/caterpillar/caterpillar.gd")
-const Branch: = preload("res://sources/minigames/caterpillar/branch.gd")
-const Berry: = preload("res://sources/minigames/caterpillar/berry.gd")
-
-const branch_scene: PackedScene = preload("res://sources/minigames/caterpillar/branch.tscn")
+const BRANCH_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/branch.tscn")
 
 
 class DifficultySettings:
@@ -49,8 +44,8 @@ func _setup_minigame() -> void:
 	
 	# Spawn the right amount of branches
 	var branch_size: float = branches_zone.size.y / (settings.branches + 1)
-	for index: int in settings.branches:
-		var branch: Branch = branch_scene.instantiate()
+	for index: int in range(settings.branches):
+		var branch: Branch = BRANCH_SCENE.instantiate()
 		branch.velocity = settings.velocity
 		branches_zone.add_child(branch)
 		branch.set_position(Vector2(0, branch_size * (index+1)))
@@ -128,7 +123,7 @@ func _on_berry_timer_timeout() -> void:
 	var gp: Dictionary = {}
 	var is_stimulus: bool = randf() < _get_difficulty_settings().stimuli_ratio
 	if is_stimulus:
-		gp = _get_GP()
+		gp = _get_gp()
 	else:
 		gp = _get_distractor()
 	
@@ -145,11 +140,11 @@ func _on_berry_eaten(berry: Berry) -> void:
 	
 	var gp: Dictionary = berry.gp
 	
-	if _is_GP_right(berry.gp):
+	if _is_gp_right(berry.gp):
 		_clear_berries()
 		_stop()
 		await caterpillar.eat_berry(berry)
-		await audio_player.play_gp(_get_GP())
+		await audio_player.play_gp(_get_gp())
 		_run()
 		current_word_progression += 1
 	else:

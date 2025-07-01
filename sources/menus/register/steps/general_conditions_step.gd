@@ -1,9 +1,9 @@
 @tool
 extends Step
 
-@onready var conditions_label : RichTextLabel = %ConditionsLabel
-@onready var accept : CheckBox = %Accept
-@onready var accept_error : Label = %AcceptError
+@onready var conditions_label: RichTextLabel = %ConditionsLabel
+@onready var accept: CheckBox = %Accept
+@onready var accept_error: Label = %AcceptError
 
 
 func _on_back() -> bool:

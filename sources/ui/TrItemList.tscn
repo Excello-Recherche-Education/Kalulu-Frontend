@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bi7ltpiskd1pm"]
-
-[ext_resource type="Script" uid="uid://dv82313fptjgb" path="res://sources/ui/TrItemList.gd" id="1_j71th"]
-
-[node name="TrItemList" type="ItemList"]
-script = ExtResource("1_j71th")

@@ -2,12 +2,12 @@ extends MarginContainer
 class_name WordListElement
 
 signal delete_pressed()
-signal new_GP_asked(i: int)
+signal new_gp_asked(i: int)
 signal validated()
-signal GPs_updated()
+signal gps_updated()
 
-const gp_list_button_scene: PackedScene = preload("res://sources/language_tool/gp_list_button.tscn")
-const plus_button_scene: PackedScene = preload("res://sources/language_tool/plus_button.tscn")
+const GP_LIST_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/gp_list_button.tscn")
+const PLUS_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/plus_button.tscn")
 
 @export var table: String = "Words"
 @export var table_graph_column: String = "Word"
@@ -101,14 +101,14 @@ func set_graphemes_edit(p_gp_ids: Array[int]) -> void:
 
 
 func add_gp_list_button(gp_id: int, ind_gp_id: int) -> void:
-	var gp_list_button: GPListButton = gp_list_button_scene.instantiate()
+	var gp_list_button: GPListButton = GP_LIST_BUTTON_SCENE.instantiate()
 	gp_list_button.set_gp_list(sub_elements_list)
 	graphemes_edit_container.add_child(gp_list_button)
 	graphemes_edit_container.move_child(gp_list_button, 2 * ind_gp_id)
 	gp_list_button.select_id(gp_id)
 	gp_list_button.gp_selected.connect(_on_gp_list_button_selected.bind(gp_list_button))
 	gp_list_button.new_selected.connect(_on_gp_list_button_new_selected.bind(gp_list_button))
-	var plus_button: PlusButton = plus_button_scene.instantiate()
+	var plus_button: PlusButton = PLUS_BUTTON_SCENE.instantiate()
 	plus_button.size = Vector2(50, 50)
 	graphemes_edit_container.add_child(plus_button)
 	graphemes_edit_container.move_child(plus_button, 2 * ind_gp_id + 1)
@@ -125,7 +125,7 @@ func _on_gp_list_button_selected(gp_id: int, element: Node) -> void:
 func _on_gp_list_button_new_selected(element: Node) -> void:
 	@warning_ignore("integer_division")
 	var ind_gp_id: int = element.get_index() / 2
-	new_GP_asked.emit(ind_gp_id)
+	new_gp_asked.emit(ind_gp_id)
 
 
 func get_graphemes(p_gp_ids: Array[int]) -> String:
@@ -195,21 +195,21 @@ func _on_validate_button_pressed() -> void:
 
 
 func update_lesson() -> void:
-	var m: int = -1
+	var index: int = -1
 	for gp_id: int in gp_ids:
-		var i: int = Database.get_min_lesson_for_gp_id(gp_id)
-		if i < 0:
-			m = -1
+		var min_index: int = Database.get_min_lesson_for_gp_id(gp_id)
+		if min_index < 0:
+			index = -1
 			break
-		m = maxi(m, i)
-	lesson = m
+		index = maxi(index, min_index)
+	lesson = index
 
 
 func gp_ids_from_string(p_gp_ids: String) -> Array[int]:
 	var res: Array[int] = []
 	var pack: PackedStringArray = p_gp_ids.split(" ")
 	res.resize(pack.size())
-	for index: int in pack.size():
+	for index: int in range(pack.size()):
 		res[index] = int(pack[index])
 	return res
 
@@ -249,7 +249,7 @@ func insert_in_database() -> void:
 				var gps_in_words_ids: Array[String] = Array((element[relational_table + "IDs"] as String).split(" "))
 				while gps_in_words_ids.size() > gp_ids.size():
 					Database.db.delete_rows(relational_table, "ID=%s" % int(gps_in_words_ids.pop_back() as String))
-				for index: int in gps_in_words_ids.size():
+				for index: int in range(gps_in_words_ids.size()):
 					var gps_in_words_id: int = int(gps_in_words_ids[index])
 					Database.db.update_rows(relational_table, "ID=%s" % gps_in_words_id, {
 						table_graph_column + "ID": id,
@@ -281,7 +281,7 @@ func insert_in_database() -> void:
 	if Database.db.query_result.is_empty():
 		Database.db.insert_row(table, {table_graph_column: word})
 		id = Database.db.last_insert_rowid
-		for index: int in gp_ids.size():
+		for index: int in range(gp_ids.size()):
 			Database.db.insert_row(relational_table, {
 						table_graph_column + "ID": id,
 						sub_table_id: gp_ids[index],
@@ -316,7 +316,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 		var is_word: bool = table == "Words"
 		# res contains an int, followed by an array of int
 		var res: Array[Variant] = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH as String, is_word)
-		GPs_updated.emit()
+		gps_updated.emit()
 		id = res[0]
 		gp_ids = res[1]
 		unvalidated_gp_ids = gp_ids

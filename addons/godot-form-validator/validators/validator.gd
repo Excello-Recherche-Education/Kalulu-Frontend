@@ -10,7 +10,7 @@ class_name Validator
 var _messages: PackedStringArray = PackedStringArray()
 
 
-func get_value(control: Control):
+func get_value(control: Control) -> Variant:
 	return null
 
 

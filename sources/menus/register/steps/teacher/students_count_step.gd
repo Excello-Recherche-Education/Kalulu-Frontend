@@ -2,7 +2,7 @@
 extends Step
 class_name StudentsCountStep
 
-@export var device_id : int
+@export var device_id: int
 @onready var students_count_field: SpinBox = %StudentsCountField
 
 func _on_back() -> bool:

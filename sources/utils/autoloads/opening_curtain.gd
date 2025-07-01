@@ -5,7 +5,7 @@ signal animation_finished(animation_name: StringName)
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-var is_closed : bool = false
+var is_closed: bool = false
 
 func open() -> void:
 	if is_closed:

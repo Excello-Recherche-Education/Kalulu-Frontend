@@ -2,12 +2,7 @@
 extends Minigame
 
 # Namespace
-const Penguin: = preload("res://sources/minigames/penguin/penguin.gd")
-const PenguinLabel: = preload("res://sources/minigames/penguin/penguin_label.gd")
-
-const label_scene: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
-
-const silent_phoneme: String = "#"
+const LABEL_SCENE: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
 
 
 @onready var penguin: Penguin = $GameRoot/Penguin
@@ -20,7 +15,7 @@ var labels: Array[PenguinLabel] = []
 
 # Find words with silent GPs
 func _find_stimuli_and_distractions() -> void:
-	var sentences_list: Array = Database.get_sentences_for_lesson_with_silent_GPs(lesson_nb)
+	var sentences_list: Array = Database.get_sentences_for_lesson_with_silent_gps(lesson_nb)
 	
 	if sentences_list.is_empty():
 		return
@@ -45,21 +40,21 @@ func _find_stimuli_and_distractions() -> void:
 		if not current_lesson_sentences.is_empty():
 			# If there are more stimuli in current lesson than needed
 			if current_lesson_sentences.size() >= current_lesson_stimuli_number:
-				for index: int in current_lesson_stimuli_number:
+				for index: int in range(current_lesson_stimuli_number):
 					stimuli.append(current_lesson_sentences[index])
 			else:
 				stimuli.append_array(current_lesson_sentences)
 			
 			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
-			var minimal_stimuli : int = floori(current_lesson_stimuli_number/2.0)
+			var minimal_stimuli: int = floori(current_lesson_stimuli_number/2.0)
 			if stimuli.size() < minimal_stimuli:
 				while stimuli.size() < minimal_stimuli:
 					stimuli.append(current_lesson_sentences.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
-		var spaces_left : int = max_progression - stimuli.size()
+		var spaces_left: int = max_progression - stimuli.size()
 		if previous_lesson_sentences.size() >= spaces_left:
-			for index: int in spaces_left:
+			for index: int in range(spaces_left):
 				stimuli.append(previous_lesson_sentences[index])
 		else:
 			stimuli.append_array(previous_lesson_sentences)
@@ -74,15 +69,16 @@ func _find_stimuli_and_distractions() -> void:
 	
 	# Find the GPs and distractors for each word
 	for sentence: Dictionary in stimuli:
-		sentence.GPs = Database.get_GPs_from_sentence(sentence.ID as int)
+		sentence.GPs = Database.get_gps_from_sentence(sentence.ID as int)
 		
-	Logger.debug("PenguinMinigame: Stimuli: %s" % str(stimuli))
+	Logger.trace("PenguinMinigame: Stimuli: %s" % str(stimuli))
 
 
 # Launch the minigame
 func _start() -> void:
 	super()
 	if stimuli.is_empty():
+		Logger.error("PenguinMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	_setup_word_progression()
@@ -98,28 +94,28 @@ func _setup_word_progression() -> void:
 	
 	var stimulus: Dictionary = _get_current_stimulus()
 	
-	var first_GP: bool = true
-	var last_wordID: int
+	var first_gp: bool = true
+	var last_word_id: int
 	var word_container: HBoxContainer
 	
-	for GP: Dictionary in stimulus.GPs:
-		if GP.WordID != last_wordID:
-			last_wordID = GP.WordID
+	for gp: Dictionary in stimulus.GPs:
+		if gp.WordID != last_word_id:
+			last_word_id = gp.WordID
 			word_container = HBoxContainer.new()
 			labels_container.add_child(word_container)
 		
-		var label: PenguinLabel = label_scene.instantiate()
-		if first_GP:
+		var label: PenguinLabel = LABEL_SCENE.instantiate()
+		if first_gp:
 			label.capitalized = true
-			first_GP = false
-		label.gp = GP
+			first_gp = false
+		label.gp = gp
 		word_container.add_child(label)
 		
 		label.pressed.connect(_on_snowball_thrown.bind(label))
 		
 		labels.append(label)
 		
-		if GP.Type == 0:
+		if gp.Type == 0:
 			max_word_progression += 1
 	
 	current_word_progression = 0
@@ -156,8 +152,8 @@ func _set_current_word_progression(p_current_word_progression: int) -> void:
 
 func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 	# Disables all labels
-	for l: PenguinLabel in labels:
-		l.set_button_enabled(false)
+	for p_label: PenguinLabel in labels:
+		p_label.set_button_enabled(false)
 	
 	# Throw the snowball
 	await penguin.throw(pos)
@@ -165,18 +161,20 @@ func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 	# Checks if the GP pressed is silent
 	if _is_silent(label.gp):
 		penguin.happy()
+		_update_gp_score(label.gp.ID as int, 1)
 		await label.right()
 		
 		current_word_progression += 1
 	else:
 		penguin.sad()
+		_update_gp_score(label.gp.ID as int, -1)
 		await label.wrong()
 		
 		current_lives -= 1
 	
 	# Re-enables all labels
-	for l: PenguinLabel in labels:
-		l.set_button_enabled(true)
+	for p_label: PenguinLabel in labels:
+		p_label.set_button_enabled(true)
 	
 	penguin.idle()
 

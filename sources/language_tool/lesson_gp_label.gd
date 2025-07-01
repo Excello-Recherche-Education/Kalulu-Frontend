@@ -23,7 +23,7 @@ func set_phoneme(p_phoneme: String) -> void:
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
 	is_being_dragged = true
-	set_drag_preview(self.duplicate())
+	set_drag_preview(self.duplicate() as Control)
 	return {
 		gp_id = gp_id,
 		grapheme = grapheme,
@@ -38,7 +38,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if not data.has("gp_id"):
 		return
-	var before: = at_position.x < size.x / 2
+	var before: bool = at_position.x < size.x / 2
 	gp_dropped.emit(before, data)
 
 

@@ -3,7 +3,7 @@ extends Validator
 class_name LineEditValidator
 
 
-func get_value(control: Control):
+func get_value(control: Control) -> Variant:
 	var line_edit = control as LineEdit
 	if not line_edit:
 		return null

@@ -17,8 +17,8 @@ func _enter_tree() -> void:
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, tool_selector)
 
 	var settings: EditorSettings = get_editor_interface().get_editor_settings()
-	var current := settings.get_setting("export_tool_manager/current_tool")
-	var current_tool := "game"
+	var current: Variant = settings.get_setting("export_tool_manager/current_tool")
+	var current_tool: String = "game"
 
 	if typeof(current) == TYPE_STRING and current.strip_edges() != "":
 		current_tool = current.strip_edges()
@@ -49,40 +49,43 @@ func _exit_tree() -> void:
 	remove_export_plugin(exporter_plugin)
 
 func _on_tool_selected(index: int) -> void:
-	var tool := "game"
+	var tool: String = "game"
 	match index:
 		1:
 			tool = "prof_tool"
 		0, _:
 			tool = "game"
 
-	var settings := get_editor_interface().get_editor_settings()
+	var settings: EditorSettings = get_editor_interface().get_editor_settings()
 	settings.set_setting("export_tool_manager/current_tool", tool)
 
 func _on_export_all_game_pressed():
 	export_all_game_presets()
 
 func export_all_game_presets():
-	var godot_path := OS.get_executable_path()
-	var presets := {
-		"Android Kalulu AAB": "../Export/autobuilds/Android/kalulu_app.aab",
-		"Android Kalulu APK": "../Export/autobuilds/Android/kalulu_app.apk",
-		"Windows Kalulu": "../Export/autobuilds/Windows/Kalulu.exe",
-		"Linux Kalulu": "../Export/autobuilds/Linux/Kalulu.x86_64",
+	var godot_path: String = OS.get_executable_path()
+	var exportFolder = "../Export/autobuilds/"
+	var presets: Dictionary[String, String]= {
+		"Android Kalulu AAB": "/Android/kalulu_app.aab",
+		"Android Kalulu APK": "/Android/kalulu_app.apk",
+		"Windows Kalulu": "/Windows/Kalulu.exe",
+		"Linux Kalulu": "/Linux/Kalulu.x86_64",
 		
 		# Apple in last because it's always the most complicated
-		#"iOS Kalulu": "../Export/autobuilds/iOS/KaluluApp.ipa",
-		#"macOS Kalulu": "../Export/autobuilds/macOS/Kalulu.dmg"
+		#"iOS Kalulu": "/iOS/KaluluApp.ipa",
+		#"macOS Kalulu": "/macOS/Kalulu.dmg"
 	}
 
 	for preset_name in presets.keys():
 		await get_tree().create_timer(1).timeout
-		var output_path: String = presets[preset_name]
+		var version = ProjectSettings.get_setting("application/config/version")
+		var output_path: String = exportFolder + version + presets[preset_name]
+		print("Start exporting " + preset_name)
 		DirAccess.make_dir_recursive_absolute(output_path.get_base_dir())
 
-		var args := ["--headless", "--export-release", preset_name, output_path]
-		var output := []
-		var result := OS.execute(godot_path, args, output, true)
+		var args: PackedStringArray = ["--headless", "--export-release", preset_name, output_path]
+		var output: Array = []
+		var result: int = OS.execute(godot_path, args, output, true)
 
 		if result != OK:
 			push_error("Export failed for %s (%s)\nOutput:\n%s" % [
@@ -90,4 +93,4 @@ func export_all_game_presets():
 			])
 			return
 		else:
-			print("✔ Export success : %s → %s" % [preset_name, output_path])
+			print("✔ Export success: %s → %s" % [preset_name, output_path])

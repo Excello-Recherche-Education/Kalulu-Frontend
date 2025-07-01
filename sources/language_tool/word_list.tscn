@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bw3g6vfskvo54" path="res://sources/language_tool/word_list.gd" id="1_m0usq"]
 [ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="2_6no2x"]
 [ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="5_1f555"]
-[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/ScrollContainer.gd" id="6_0r6vt"]
+[ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/scroll_container.gd" id="6_0r6vt"]
 
 [node name="WordList" type="Control"]
 layout_mode = 3
@@ -158,18 +158,12 @@ text = "Type"
 [node name="EditButton" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="4"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="TypeEdit" parent="NewGPLayer/VBoxContainer/Title/TabContainer/EditContainer" index="4"]
-popup/item_0/id = 0
-
 [node name="NewGP" parent="NewGPLayer/VBoxContainer" instance=ExtResource("5_1f555")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="DeleteButton" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" index="0"]
 visible = false
-
-[node name="TypeEdit" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" index="4"]
-popup/item_0/id = 0
 
 [connection signal="add_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_add_pressed"]
 [connection signal="back_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_back_pressed"]

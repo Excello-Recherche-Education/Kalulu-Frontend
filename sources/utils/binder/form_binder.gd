@@ -2,7 +2,7 @@
 extends Control
 class_name FormBinder
 
-@export var data : Resource
+@export var data: Resource
 
 var _control_binder_map: Dictionary[Control, ControlBinder] = {}
 

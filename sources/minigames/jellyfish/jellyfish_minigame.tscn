@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b5own5tlvbofc" path="res://sources/minigames/jellyfish/jellyfish_minigame.gd" id="2_gnjlp"]
 [ext_resource type="Texture2D" uid="uid://c0shai0eqdrbf" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_empty.png" id="4_1m7js"]
 [ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="5_4gwjw"]
-[ext_resource type="Texture2D" uid="uid://c7oq86cgq7okn" path="res://assets/minigames/jellyfish/graphic/backgroung.png" id="6_sn7hv"]
+[ext_resource type="Texture2D" uid="uid://c7oq86cgq7okn" path="res://assets/minigames/jellyfish/graphic/background.png" id="6_sn7hv"]
 
 [node name="JellyfishMinigame" instance=ExtResource("1_hauef")]
 script = ExtResource("2_gnjlp")

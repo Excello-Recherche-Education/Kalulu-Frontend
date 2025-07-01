@@ -14,4 +14,4 @@ dest_files=["res://kalulu_localization.fr.translation", "res://kalulu_localizati
 [params]
 
 compress=true
-delimiter=1
+delimiter=0

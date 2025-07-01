@@ -1,15 +1,15 @@
 [gd_resource type="Theme" load_steps=77 format=3 uid="uid://dqjvrt5nrtwn1"]
 
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/Kalulu-Mulish-Regular.otf" id="1_10vt2"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="1_10vt2"]
 [ext_resource type="Texture2D" uid="uid://2pldpmhcg6v4" path="res://assets/theme/previous.svg" id="1_mdn6k"]
 [ext_resource type="StyleBox" uid="uid://blkufkitnlfqi" path="res://danger_button_stylebox.tres" id="2_0ex6x"]
-[ext_resource type="Texture2D" uid="uid://7q3lm3o8ihxn" path="res://assets/menus/check-box.512x512.png" id="2_8yw3g"]
+[ext_resource type="Texture2D" uid="uid://7q3lm3o8ihxn" path="res://assets/menus/checkbox_transparent_background_checked.png" id="2_8yw3g"]
 [ext_resource type="Texture2D" uid="uid://c156h72ld8d4s" path="res://assets/theme/next.svg" id="2_hbp6q"]
 [ext_resource type="Texture2D" uid="uid://cacy10k45kq6u" path="res://assets/theme/up.svg" id="3_1nwm4"]
-[ext_resource type="Texture2D" uid="uid://dji28uchuubxn" path="res://assets/menus/check-box.512x512 (1).png" id="3_pt4x8"]
-[ext_resource type="Texture2D" uid="uid://s0k8emrncuwk" path="res://assets/menus/check-box-outline-blank.512x512.png" id="4_w8eq8"]
+[ext_resource type="Texture2D" uid="uid://dji28uchuubxn" path="res://assets/menus/checkbox_white_background_checked.png" id="3_pt4x8"]
+[ext_resource type="Texture2D" uid="uid://s0k8emrncuwk" path="res://assets/menus/checkbox_transparent_background_unchecked.png" id="4_w8eq8"]
 [ext_resource type="Texture2D" uid="uid://b7fqrj816kdjg" path="res://assets/theme/refresh.svg" id="4_ymfot"]
-[ext_resource type="Texture2D" uid="uid://d32u1cm8m7wiw" path="res://assets/menus/check-box-unchecked.512x512.png" id="5_qa8vs"]
+[ext_resource type="Texture2D" uid="uid://d32u1cm8m7wiw" path="res://assets/menus/checkbox_white_background_unchecked.png" id="5_qa8vs"]
 [ext_resource type="Texture2D" uid="uid://dxmj0s0yecf1q" path="res://assets/theme/visibility.svg" id="5_yja2v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nikxc"]
@@ -594,6 +594,7 @@ PopupMenu/font_sizes/font_size = 100
 PopupMenu/fonts/font = ExtResource("1_10vt2")
 PopupMenu/fonts/font_separator = ExtResource("1_10vt2")
 PopupMenu/fonts/title_font = null
+ProgressBar/font_sizes/font_size = 50
 ProgressBar/fonts/font = ExtResource("1_10vt2")
 ProgressBar/styles/background = SubResource("StyleBoxEmpty_nolh0")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_unu58")

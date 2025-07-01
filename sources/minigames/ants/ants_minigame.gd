@@ -1,14 +1,11 @@
 @tool
 extends Minigame
 
-# Namespace
-const Ant: = preload("res://sources/minigames/ants/ant.gd")
+const BLANK_SCENE: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
+const ANT_SCENE: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
+const WORD_SCENE: PackedScene = preload("res://sources/minigames/ants/word.tscn")
 
-const blank_class: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
-const ant_class: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
-const word_class: PackedScene = preload("res://sources/minigames/ants/word.tscn")
-
-const label_settings: LabelSettings = preload("res://resources/themes/minigames_label_settings.tres")
+const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_label_settings.tres")
 
 @onready var sentence_container: HFlowContainer = %Sentence
 @onready var ants_spawn: Node2D = %AntsSpawn
@@ -44,7 +41,7 @@ func _find_stimuli_and_distractions() -> void:
 	# If there is no previous stimuli, only adds from current lesson
 	if not previous_lesson_sentences:
 		if current_lesson_sentences.size() >= max_progression:
-			for index: int in max_progression:
+			for index: int in range(max_progression):
 				stimuli.append(current_lesson_sentences[index])
 		else:
 			while stimuli.size() < max_progression:
@@ -53,7 +50,7 @@ func _find_stimuli_and_distractions() -> void:
 		if current_lesson_sentences:
 			# If there are more stimuli in current lesson than needed
 			if current_lesson_sentences.size() >= current_lesson_stimuli_number:
-				for index: int in current_lesson_stimuli_number:
+				for index: int in range(current_lesson_stimuli_number):
 					stimuli.append(current_lesson_sentences[index])
 			else:
 				stimuli.append_array(current_lesson_sentences)
@@ -67,7 +64,7 @@ func _find_stimuli_and_distractions() -> void:
 		# Gets other stimuli from previous errors or lessons
 		var spaces_left: int = max_progression - stimuli.size()
 		if previous_lesson_sentences.size() >= spaces_left:
-			for index: int in spaces_left:
+			for index: int in range(spaces_left):
 				stimuli.append(previous_lesson_sentences[index])
 		else:
 			stimuli.append_array(previous_lesson_sentences)
@@ -144,15 +141,15 @@ func _next_sentence() -> void:
 	for index: int in range(current_words.size()):
 		var current_word: String = current_words[index]
 		if index in blanks:
-			var blank: Blank = blank_class.instantiate()
+			var blank: Blank = BLANK_SCENE.instantiate()
 			blank.stimulus = current_word
 			sentence_container.add_child(blank)
 			
-			var ant: Node2D = ant_class.instantiate()
+			var ant: Node2D = ANT_SCENE.instantiate()
 			ants.add_child(ant)
 			ant.global_position = ants_spawn.global_position
 			
-			var word: Word = word_class.instantiate()
+			var word: Word = WORD_SCENE.instantiate()
 			words.add_child(word)
 			
 			word.stimulus = current_word
@@ -172,23 +169,38 @@ func _next_sentence() -> void:
 			label.text = current_word + " "
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			label.label_settings = label_settings
+			label.label_settings = LABEL_SETTINGS
 
 
 func _start_ants() -> void:
-	var number_of_ants: int = ants.get_child_count()
-	for index: int in range(number_of_ants):
-		var ant: Ant = ants.get_child(index)
-		
+	var total_ants: int = ants.get_child_count()
+
+	# Animate each ant, one after another
+	for ant_index: int in range(total_ants):
+		var ant: Ant = ants.get_child(ant_index)
+
+		# Start walking animation or logic
 		ant.walk()
-		
+
+		# Create a tween to move the ant from start to end point
 		var tween: Tween = create_tween()
-		var k: float = float(index) / float(number_of_ants - 1)
-		tween.tween_property(ant, "global_position", k * ants_start.global_position + (1.0 - k) * ants_end.global_position, 1.0)
+
+		# Compute interpolation factor (0.0 to 1.0) based on position in the list
+		var position_ratio: float = float(ant_index) / float(total_ants - 1)
+
+		# Interpolate position from ants_start to ants_end using the ratio
+		var start_position: Vector2 = ants_start.global_position
+		var end_position: Vector2 = ants_end.global_position
+		var target_position: Vector2 = lerp(start_position, end_position, position_ratio)
+
+		# Animate the movement over 1 second
+		tween.tween_property(ant, "global_position", target_position, 1.0)
 		await tween.finished
-		
+
+		# Switch to idle state once movement is complete
 		ant.idle()
-	
+
+	# Reactivate all words once ants have reached their positions
 	for word: Word in words.get_children():
 		word.disabled = false
 
@@ -207,23 +219,21 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 	answered[word.get_index()] = true
 	
 	var all_answered: bool = true
-	for a: bool in answered:
-		if not a:
+	for answer: bool in answered:
+		if not answer:
 			all_answered = false
 			break
 	
 	if all_answered:
 		var is_right: bool = true
-		for a: bool in answers:
-			if not a:
+		for answer: bool in answers:
+			if not answer:
 				is_right = false
 				break
 		
-		for word_i: Node in words.get_children():
-			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
-			@warning_ignore("UNSAFE_METHOD_ACCESS")
+		for word_i: Word in words.get_children():
+			@warning_ignore("unsafe_method_access")
 			word_i.current_anchor.set_monitorable(true)
-			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			word_i.disabled = true
 		
 		if is_right:

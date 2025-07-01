@@ -1,12 +1,13 @@
 extends "res://sources/language_tool/word_list.gd"
 
-var not_found_list: = ""
-@onready var export_not_found_button: = %ExportNotFoundButton
-@onready var file_dialog_export: = $FileDialogExport
+var not_found_list: String = ""
+@onready var export_not_found_button: Button = %ExportNotFoundButton
+@onready var file_dialog_export: FileDialog = $FileDialogExport
 
 
 func create_sub_elements_list() -> void:
 	super()
+	@warning_ignore("unsafe_property_access")
 	new_gp.sub_elements_list = sub_elements_list.duplicate()
 	sub_elements_list.clear()
 	Database.db.query("Select Words.ID as ID, Words.Word as Word, group_concat(GPs.Phoneme, '') as Phonemes
@@ -15,10 +16,10 @@ func create_sub_elements_list() -> void:
 	INNER JOIN GPs ON GPs.ID = GPsInWords.GPID
 	GROUP BY Words.ID
 	ORDER BY Words.Word")
-	for e in Database.db.query_result:
-		sub_elements_list[e.ID] = {
-			grapheme = e.Word,
-			phoneme = e.Phonemes
+	for result: Dictionary in Database.db.query_result:
+		sub_elements_list[result.ID] = {
+			grapheme = result.Word,
+			phoneme = result.Phonemes
 		}
 
 
@@ -27,13 +28,13 @@ func get_lesson_for_element(id: int) -> int:
 
 
 func _on_list_title_new_search(new_text: String) -> void:
-	for e in elements_container.get_children():
-		var found: = false
-		for word in e.word.split(" "):
+	for element: SentenceListElement in elements_container.get_children():
+		var found: bool = false
+		for word: String in element.word.split(" "):
 			if word.begins_with(new_text):
 				found = true
 				break
-		e.visible = found
+		element.visible = found
 
 
 func _ready() -> void:
@@ -42,11 +43,11 @@ func _ready() -> void:
 
 
 func connect_not_found() -> void:
-	for element in elements_container.get_children():
+	for element: SentenceListElement in elements_container.get_children():
 		if not element.not_found.is_connected(_on_not_found):
 			element.not_found.connect(_on_not_found)
-	if not _element.not_found.is_connected(_on_not_found_csv):
-		_element.not_found.connect(_on_not_found_csv)
+	if _element is SentenceListElement and not (_element as SentenceListElement).not_found.is_connected(_on_not_found_csv):
+		(_element as SentenceListElement).not_found.connect(_on_not_found_csv)
 
 
 func _on_plus_button_pressed() -> void:
@@ -92,7 +93,7 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 		var query: String = "Select * FROM Sentences"
 		Database.db.query(query)
 		var result: Array[Dictionary] = Database.db.query_result
-		for element in result:
+		for element: Dictionary in result:
 			if not element.Sentence in all_data:
 				Database.db.delete_rows("Sentences", "ID=%s" % element.ID)
 				inserted_one = true
@@ -107,8 +108,8 @@ func _on_export_not_found_button_pressed() -> void:
 	file_dialog_export.filters = []
 	file_dialog_export.add_filter("*.txt", "txt")
 	
-	for connection in file_dialog_export.file_selected.get_connections():
-		connection["signal"].disconnect(connection["callable"])
+	for connection: Dictionary in file_dialog_export.file_selected.get_connections():
+		(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
 	
 	file_dialog_export.file_selected.connect(_on_export_filename_selected)
 	
@@ -116,6 +117,6 @@ func _on_export_not_found_button_pressed() -> void:
 
 
 func _on_export_filename_selected(path: String) -> void:
-	var file: = FileAccess.open(path, FileAccess.WRITE)
+	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(not_found_list)
 	file.close()

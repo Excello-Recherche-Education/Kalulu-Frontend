@@ -1,6 +1,7 @@
 extends AudioStreamPlayer2D
+class_name HoleAudioStreamPlayer
 
-const crab_sound_list: Array[AudioStreamMP3] = [
+const CRAB_SOUND_LIST: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
@@ -30,5 +31,5 @@ func stop_playing() -> void:
 
 func _on_finished() -> void:
 	if _should_play:
-		stream = crab_sound_list[randi() % crab_sound_list.size()]
+		stream = CRAB_SOUND_LIST[randi() % CRAB_SOUND_LIST.size()]
 		playing = true

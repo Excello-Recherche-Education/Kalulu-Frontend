@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ci7ueo06f24k3"]
+[gd_scene load_steps=11 format=3 uid="uid://ci7ueo06f24k3"]
 
 [ext_resource type="Script" uid="uid://cil0o87dsb7q4" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_v06h8"]
@@ -6,8 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_045cm"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_e3piv"]
 [ext_resource type="PackedScene" uid="uid://bo7rpk4gebh24" path="res://sources/menus/settings/sound_settings_button.tscn" id="6_s8nbl"]
-[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/Popup.tscn" id="7_jetb7"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="7_jetb7"]
+[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="8_7h0sa"]
 [ext_resource type="PackedScene" uid="uid://qsvbq6ruc44v" path="res://sources/menus/settings/lesson_unlocks.tscn" id="9_mljfd"]
+[ext_resource type="PackedScene" uid="uid://dhowigt8un22u" path="res://sources/ui/loading_popup.tscn" id="10_i488h"]
 
 [node name="TeacherSettings" type="Control"]
 layout_mode = 3
@@ -56,6 +58,17 @@ theme_override_constants/margin_right = 75
 [node name="VolumeButton" parent="InterfaceLeft/Container/VolumeContainer" instance=ExtResource("6_s8nbl")]
 layout_mode = 2
 
+[node name="SynchronizeButton" type="Button" parent="InterfaceLeft/Container"]
+layout_mode = 2
+theme_type_variation = &"FlatButton"
+theme_override_font_sizes/font_size = 40
+text = "SYNCHRONIZE_ACCOUNT"
+
+[node name="DeletePopup" parent="InterfaceLeft/Container/SynchronizeButton" instance=ExtResource("7_jetb7")]
+visible = false
+content_text = "Voulez-vous vraiment supprimer votre compte ?
+Cette action est irréversible !"
+
 [node name="DeleteButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2
 theme_type_variation = &"DangerButton"
@@ -74,7 +87,7 @@ theme_override_font_sizes/font_size = 40
 text = "LOGOUT"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-custom_minimum_size = Vector2(2112, 1800)
+custom_minimum_size = Vector2(1970, 1800)
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -83,6 +96,64 @@ anchor_bottom = 1.0
 offset_left = -632.0
 grow_horizontal = 0
 grow_vertical = 2
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="AccountTypeLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("8_7h0sa")
+theme_override_font_sizes/font_size = 70
+text = "ACCOUNT_TYPE"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="AccountTypeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("8_7h0sa")
+theme_override_font_sizes/font_size = 70
+item_count = 2
+popup/item_0/text = "TEACHER"
+popup/item_0/id = 0
+popup/item_1/text = "PARENT"
+popup/item_1/id = 1
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="EducationMethodeLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("8_7h0sa")
+theme_override_font_sizes/font_size = 70
+text = "EDUCATION_METHOD"
+
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="EducationMethodOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("8_7h0sa")
+theme_override_font_sizes/font_size = 70
+item_count = 2
+popup/item_0/text = "METHOD_APP_ONLY"
+popup/item_0/id = 0
+popup/item_1/text = "METHOD_COMPLETE"
+popup/item_1/id = 1
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
 
 [node name="DevicesTabContainer" type="TabContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
@@ -104,6 +175,7 @@ alignment = 2
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
 text = "SETTINGS_ADD_STUDENT"
 
@@ -111,8 +183,16 @@ text = "SETTINGS_ADD_STUDENT"
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
 text = "SETTINGS_ADD_DEVICE"
+
+[node name="LabelInternetMandatory" type="Label" parent="VBoxContainer/InterfaceBottom/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("8_7h0sa")
+theme_override_font_sizes/font_size = 60
+text = "SETTINGS_INTERNET_MANDATORY_TO_ADD_STUDENT"
 
 [node name="LessonUnlocks" parent="." instance=ExtResource("9_mljfd")]
 visible = false
@@ -133,10 +213,18 @@ unique_name_in_owner = true
 visible = false
 content_text = "DELETE_STUDENT_POPUP"
 
+[node name="LoadingPopup" parent="." instance=ExtResource("10_i488h")]
+unique_name_in_owner = true
+visible = false
+
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="InterfaceLeft/Container/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
+[connection signal="accepted" from="InterfaceLeft/Container/SynchronizeButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
 [connection signal="pressed" from="InterfaceLeft/Container/DeleteButton" to="." method="_on_delete_button_pressed"]
 [connection signal="accepted" from="InterfaceLeft/Container/DeleteButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
 [connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/AccountTypeOptionButton" to="." method="_on_account_type_option_button_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/EducationMethodOptionButton" to="." method="_on_education_method_option_button_item_selected"]
 [connection signal="tab_changed" from="VBoxContainer/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
@@ -144,3 +232,5 @@ content_text = "DELETE_STUDENT_POPUP"
 [connection signal="accepted" from="AddStudentPopup" to="." method="_on_add_student_popup_accepted"]
 [connection signal="accepted" from="AddDevicePopup" to="." method="_on_add_device_popup_accepted"]
 [connection signal="accepted" from="DeleteStudentPopup" to="." method="_on_delete_student_popup_accepted"]
+[connection signal="cancel" from="LoadingPopup" to="." method="_on_loading_popup_cancel"]
+[connection signal="ok" from="LoadingPopup" to="." method="_on_loading_popup_ok"]

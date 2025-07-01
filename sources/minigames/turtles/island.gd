@@ -1,6 +1,7 @@
 extends Area2D
+class_name Island
 
-@onready var label : Label = $Label
+@onready var label: Label = $Label
 @onready var collision: CollisionPolygon2D = $CollisionPolygon2D
 
 var stimulus: Dictionary = {}:
@@ -20,7 +21,7 @@ func set_enabled(is_enabled: bool) -> void:
 
 func _update_label() -> void:
 	label.text = ""
-	for index: int in stimulus.GPsCount:
+	for index: int in range(stimulus.GPsCount):
 		if progress > index or progress == stimulus.GPsCount:
 			label.text += stimulus.GPs[index].Grapheme
 		else:

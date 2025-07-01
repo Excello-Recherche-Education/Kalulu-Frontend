@@ -1,15 +1,15 @@
 extends OptionButton
 
-var items : Array[String] = []
+var items: Array[String] = []
 
 func _ready() -> void:
 	# Adds the supported locales to the field
 	var idx: int = 0
-	for language_locale: String in DeviceSettings.supported_locales:
+	for language_locale: String in DeviceSettings.SUPPORTED_LOCALES:
 		if not language_locale:
 			continue
 		
-		var language_locale_name : String = TranslationServer.get_locale_name(language_locale)
+		var language_locale_name: String = TranslationServer.get_locale_name(language_locale)
 		
 		if not language_locale_name:
 			continue

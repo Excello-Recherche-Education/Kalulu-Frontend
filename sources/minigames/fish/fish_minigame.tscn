@@ -715,6 +715,7 @@ theme_override_constants/margin_right = 30
 
 [node name="Label" type="Label" parent="GameRoot/TextPlank/MarginContainer" index="0"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "a"

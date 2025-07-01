@@ -9,24 +9,24 @@ enum Colors {
 	Green,
 }
 
-const animations: Array[SpriteFrames] = [
+const ANIMATIONS: Array[SpriteFrames] = [
 	preload("res://sources/minigames/jellyfish/red_jellyfish_animations.tres"),
 	preload("res://sources/minigames/jellyfish/green_jellyfish_animations.tres"),
 ]
 
-const scales: Array[Vector2] = [
+const SCALES: Array[Vector2] = [
 	Vector2(1.,1.),
 	Vector2(1.25, 1.25)
 ]
 
-const scale_factor : float = 0.2
+const SCALE_FACTOR: float = 0.2
 
 @export var color: int = Colors.Red:
 	set(value):
 		color = value
 		if animated_sprite:
-			animated_sprite.sprite_frames = animations[color]
-		scale = scales[color] * (1. + randf() * scale_factor)
+			animated_sprite.sprite_frames = ANIMATIONS[color]
+		scale = SCALES[color] * (1. + randf() * SCALE_FACTOR)
 		
 		# Handles sprite size
 		sprite_control.resized.emit()

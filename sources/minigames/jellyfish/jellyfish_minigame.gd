@@ -1,7 +1,7 @@
 @tool
 extends SyllablesMinigame
 
-const jellyfish_scene: PackedScene = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
+const JELLYFISH_SCENE: PackedScene = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
 
 class DifficultySettings:
 	var spawn_time: float = 4.0
@@ -60,7 +60,7 @@ func _stop_highlight() -> void:
 
 func _spawn() -> void:
 	# Instantiate a new jellyfish
-	var new_jellyfish : Jellyfish = jellyfish_scene.instantiate()
+	var new_jellyfish: Jellyfish = JELLYFISH_SCENE.instantiate()
 	spawning_space.add_child(new_jellyfish)
 	
 	# Find the right size for the jellyfish
@@ -85,7 +85,7 @@ func _spawn() -> void:
 		if is_highlighting:
 			new_jellyfish.highlight()
 	else:
-		var current_distractors : Array = distractions[current_progression % distractions.size()]
+		var current_distractors: Array = distractions[current_progression % distractions.size()]
 		new_jellyfish.stimulus = current_distractors.pick_random()
 	
 	# Randomize the spawn and adds the jellyfish into the scene
@@ -104,7 +104,7 @@ func _spawn() -> void:
 	
 	# Insert the new jellyfish on the right spot in the blocking array
 	var found_ind: int = -1
-	for index: int in blocking_jellyfish.size():
+	for index: int in range(blocking_jellyfish.size()):
 		var blocking: Jellyfish = blocking_jellyfish[index]
 		if blocking.position.x > new_jellyfish.position.x:
 			found_ind = index

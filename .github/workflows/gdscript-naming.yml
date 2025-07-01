@@ -1,0 +1,34 @@
+name: GDScript Naming Convention
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  gdscript_naming:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run GDScript naming convention check
+        id: naming
+        run: |
+          python3 .github/scripts/check_gd_nomenclature.py > gd_naming_output.txt
+        continue-on-error: true
+      - name: Comment on PR with naming convention output
+        if: steps.naming.outcome != 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('gd_naming_output.txt', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+      - name: Fail if naming convention check failed
+        if: steps.naming.outcome != 'success'
+        run: exit 1

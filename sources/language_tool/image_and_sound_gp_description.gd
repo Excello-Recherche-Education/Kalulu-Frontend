@@ -35,7 +35,7 @@ func set_image_preview(img_path: String) -> void:
 		image_upload_button.show()
 		image_preview.texture = null
 	else:
-		var image: = Image.load_from_file(img_path)
+		var image: Image = Image.load_from_file(img_path)
 		image_preview.texture = ImageTexture.create_from_image(image)
 		image_clear_button.show()
 		image_upload_button.hide()
@@ -48,8 +48,8 @@ func set_sound_preview(sound_path: String) -> void:
 		sound_player.stream = null
 		sound_preview.hide()
 	else:
-		var file = FileAccess.open(sound_path, FileAccess.READ)
-		var sound = AudioStreamMP3.new()
+		var file: FileAccess = FileAccess.open(sound_path, FileAccess.READ)
+		var sound: AudioStreamMP3 = AudioStreamMP3.new()
 		sound.data = file.get_buffer(file.get_length())
 		sound_player.stream = sound
 		sound_clear_button.show()
@@ -71,9 +71,7 @@ func _sound_file_selected(file_path: String) -> void:
 
 func set_gp(value: Dictionary) -> void:
 	gp = value
-	gp_menu_button.text = gp["Grapheme"]
-	if gp.has("Phoneme"):
-		gp_menu_button.text += "-" + gp["Phoneme"]
+	gp_menu_button.text = Database.get_gp_name(gp)
 	
 	var image_path: String = get_image_path.call(gp)
 	if FileAccess.file_exists(image_path):
@@ -93,10 +91,10 @@ func set_gp(value: Dictionary) -> void:
 func _on_image_upload_button_pressed() -> void:
 	if not gp.is_empty():
 		file_dialog.filters = []
-		file_dialog.add_filter("*" + Database.image_extension, "Images")
+		file_dialog.add_filter("*" + Database.IMAGE_EXTENSION, "Images")
 		
-		for connection in file_dialog.file_selected.get_connections():
-			connection["signal"].disconnect(connection["callable"])
+		for connection: Dictionary in file_dialog.file_selected.get_connections():
+			(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
 		
 		file_dialog.file_selected.connect(_image_file_selected)
 		
@@ -106,10 +104,10 @@ func _on_image_upload_button_pressed() -> void:
 func _on_sound_upload_button_pressed() -> void:
 	if not gp.is_empty():
 		file_dialog.filters = []
-		file_dialog.add_filter("*" + Database.sound_extension, "Sounds")
+		file_dialog.add_filter("*" + Database.SOUND_EXTENSION, "Sounds")
 		
-		for connection in file_dialog.file_selected.get_connections():
-			connection["signal"].disconnect(connection["callable"])
+		for connection: Dictionary in file_dialog.file_selected.get_connections():
+			(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
 		
 		file_dialog.file_selected.connect(_sound_file_selected)
 		
@@ -142,4 +140,4 @@ func _on_sound_clear_button_pressed() -> void:
 
 
 func hide_image_part() -> void:
-	%ImageContainer.hide()
+	(%ImageContainer as MarginContainer).hide()

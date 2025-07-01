@@ -26,14 +26,17 @@ static func bezier_sampling(points: Array, number_of_samples: int) -> Array[Vect
 	return sample_points
 
 
-static func bezier(t: float, points: Array) -> Vector2:
-	var n: int = points.size() - 1
-	var r: Vector2 = Vector2.ZERO
-	for index: int in range(n + 1):
-		var bern: float = bernstein(t, n, index)
-		r += bern * points[index]
-	
-	return r
+static func bezier(t: float, control_points: Array) -> Vector2:
+	var degree: int = control_points.size() - 1
+	var result: Vector2 = Vector2.ZERO
+
+	# Compute the weighted sum of the control points using Bernstein polynomials
+	for point_index: int in range(degree + 1):
+		var bernstein_weight: float = bernstein(t, degree, point_index)
+		var weighted_point: Vector2 = bernstein_weight * control_points[point_index]
+		result += weighted_point
+
+	return result
 
 
 static func bernstein(t: float, m: int, i: int) -> float:

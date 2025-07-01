@@ -2,13 +2,13 @@
 extends Minigame
 class_name SyllablesMinigame
 
-signal stimulus_heard(is_heard : bool)
+signal stimulus_heard(is_heard: bool)
 signal stimulus_found()
 
 # Time before a new stimulus when the previous one is found
-@export var between_stimuli_time : float = 2.
+@export var between_stimuli_time: float = 2.
 # Time before the current stimulus is repeated
-@export var stimulus_repeat_time : float = 15
+@export var stimulus_repeat_time: float = 15
 
 @onready var stimulus_timer: Timer = $StimulusTimer
 
@@ -22,6 +22,7 @@ var is_stimulus_heard: bool = false:
 func _start() -> void:
 	super()
 	if stimuli.is_empty():
+		Logger.error("SyllablesMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	stimulus_timer.wait_time = stimulus_repeat_time
@@ -50,7 +51,7 @@ func _find_stimuli_and_distractions() -> void:
 	current_lesson_stimuli.shuffle()
 	previous_lesson_stimuli.shuffle()
 	
-	# Sort for remediation
+	# Sort for remediation, based on GP
 	current_lesson_stimuli.sort_custom(_sort_scoring)
 	previous_lesson_stimuli.sort_custom(_sort_scoring)
 	
@@ -62,22 +63,22 @@ func _find_stimuli_and_distractions() -> void:
 		if current_lesson_stimuli:
 			# If there are more stimuli in current lesson than needed
 			if current_lesson_stimuli.size() >= current_lesson_stimuli_number:
-				for index: int in current_lesson_stimuli_number:
+				for index: int in range(current_lesson_stimuli_number):
 					stimuli.append(current_lesson_stimuli[index])
 			else:
 				stimuli.append_array(current_lesson_stimuli)
 			
 			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
 			@warning_ignore("integer_division")
-			var minimal_stimuli : int = current_lesson_stimuli_number/2
+			var minimal_stimuli: int = current_lesson_stimuli_number/2
 			if stimuli.size() < minimal_stimuli:
 				while stimuli.size() < minimal_stimuli:
 					stimuli.append(current_lesson_stimuli.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
-		var spaces_left : int = max_progression - stimuli.size()
+		var spaces_left: int = max_progression - stimuli.size()
 		if previous_lesson_stimuli.size() >= spaces_left:
-			for index: int in spaces_left:
+			for index: int in range(spaces_left):
 				stimuli.append(previous_lesson_stimuli[index])
 		else:
 			stimuli.append_array(previous_lesson_stimuli)
@@ -110,11 +111,11 @@ func _find_stimuli_and_distractions() -> void:
 					stimulus_distractors.append(syllable)
 		
 		# Higher difficulties only changes syllables distractors
-		var stimulus_GPs: Array[Dictionary] = stimulus.GPs
-		if difficulty > 1 and stimulus_GPs.size() == 2:
+		var stimulus_gps: Array[Dictionary] = stimulus.GPs
+		if difficulty > 1 and stimulus_gps.size() == 2:
 			for syllable: Dictionary in all_syllables:
-				var syllable_GPs: Array[Dictionary] = syllable.GPs
-				if syllable_GPs.size() != 2:
+				var syllable_gps: Array[Dictionary] = syllable.GPs
+				if syllable_gps.size() != 2:
 					continue
 				
 				# Difficulty 2-3
@@ -146,7 +147,7 @@ func _is_stimulus_found() -> bool:
 	return true
 
 
-func _is_stimulus_right(stimulus : Dictionary) -> bool:
+func _is_stimulus_right(stimulus: Dictionary) -> bool:
 	var current_stimulus: Dictionary = _get_current_stimulus()
 	return stimulus == current_stimulus
 
@@ -165,7 +166,7 @@ func _play_current_stimulus_phoneme() -> void:
 	stimulus_timer.start()
 
 
-func _await_for_future_or_stimulus_found(future : Signal) -> bool:
+func _await_for_future_or_stimulus_found(future: Signal) -> bool:
 	var coroutine: Coroutine = Coroutine.new()
 	coroutine.add_future(_is_stimulus_found)
 	coroutine.add_future(future)
@@ -179,7 +180,7 @@ func _await_for_future_or_stimulus_found(future : Signal) -> bool:
 # ------------ Connections ------------
 
 
-func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
+func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 	if not is_stimulus_heard:
 		return false
 	
@@ -191,9 +192,11 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 	
 	# Checks the answer and update scores
 	if _is_stimulus_right(stimulus):
+		# Positive score only if the answer was not highlighted
 		if not is_highlighting:
 			for gp: Dictionary in stimulus.GPs:
-				_update_score(gp.ID as int, 1)
+				_update_gp_score(gp.ID as int, 1)
+			_update_syllable_score(stimulus.ID as int, 1)
 		else:
 			# Handles highlight
 			is_highlighting = false
@@ -201,25 +204,29 @@ func _on_stimulus_pressed(stimulus : Dictionary, _node : Node) -> bool:
 		_on_stimulus_found()
 		stimulus_found.emit()
 	else:
-		var right_answer_GPs: Array[Dictionary] = _get_current_stimulus().GPs
+		var right_answer_gps: Array[Dictionary] = _get_current_stimulus().GPs
 		
-		var stimulus_GPs: Array[Dictionary] = []
+		var stimulus_gps: Array[Dictionary] = []
 		if stimulus.has("GPs"):
-			stimulus_GPs = stimulus.GPs
+			stimulus_gps = stimulus.GPs
 		
 		# Handles the right answer GPs
 		# RA os - stimulus à
-		for index: int in right_answer_GPs.size():
-			if not stimulus_GPs or (index < stimulus_GPs.size() and stimulus_GPs[index] == right_answer_GPs[index]):
+		for index: int in range(right_answer_gps.size()):
+			if not stimulus_gps or (index < stimulus_gps.size() and stimulus_gps[index] == right_answer_gps[index]):
 				continue
-			_update_score(right_answer_GPs[index].ID as int, -1)
+			_update_gp_score(right_answer_gps[index].ID as int, -1)
+		if _get_current_stimulus().has("ID"):
+			_update_syllable_score(_get_current_stimulus().ID as int, -1)
 		
 		# Handles the pressed stimulus Gps
-		if stimulus_GPs:
-			for index: int in stimulus_GPs.size():
-				if index < right_answer_GPs.size() and stimulus_GPs[index] == right_answer_GPs[index]:
+		if stimulus_gps:
+			for index: int in range(stimulus_gps.size()):
+				if index < right_answer_gps.size() and stimulus_gps[index] == right_answer_gps[index]:
 					continue
-				_update_score(stimulus_GPs[index].ID as int, -1)
+				_update_gp_score(stimulus_gps[index].ID as int, -1)
+		if stimulus.has("ID"):
+			_update_syllable_score(stimulus.ID as int, -1)
 	return true
 
 

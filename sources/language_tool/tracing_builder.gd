@@ -8,7 +8,7 @@ extends Control
 @onready var save_ok: TextureRect = %SaveOk
 @onready var copy_from: MenuButton = %CopyFrom
 
-const extension: String = ".csv"
+const EXTENSION: String = ".csv"
 
 var letters: Array[String] = []
 var current_letter: int = -1
@@ -66,14 +66,14 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 			if element == "":
 				break
 			
-			var s: PackedStringArray = element.split(" ")
-			points.append(Vector2(float(s[0]), float(s[1])))
+			var point: PackedStringArray = element.split(" ")
+			points.append(Vector2(float(point[0]), float(point[1])))
 		if not points.is_empty():
 			segment_container.load_segment(points)
 
 
 func _save_segments(segments: Array[SegmentBuild], path: String) -> void:
-	DirAccess.make_dir_recursive_absolute(Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder))
+	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER))
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.WRITE)
 	for segment: SegmentBuild in segments:
 		var values: PackedStringArray
@@ -92,7 +92,7 @@ func upper_path(letter: String) -> String:
 
 
 func real_path(path: String) -> String:
-	return Database.base_path.path_join(Database.language).path_join(Database.tracing_data_folder).path_join(path) + extension
+	return Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER).path_join(path) + EXTENSION
 
 
 func _on_save_button_pressed() -> void:

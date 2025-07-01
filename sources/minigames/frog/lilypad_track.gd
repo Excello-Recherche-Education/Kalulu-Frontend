@@ -1,16 +1,12 @@
 extends Control
+class_name LilypadTrack
 
 signal lilypad_in_center(lilypad: Lilypad)
 
-# Namespace
-const Lilypad = preload("res://sources/minigames/frog/lilypad.gd")
-
-const lilypad_scene: PackedScene = preload("res://sources/minigames/frog/lilypad.tscn")
-const lilypad_crossing_time: float = 5.0
-
+const LILYPAD_SCENE: PackedScene = preload("res://sources/minigames/frog/lilypad.tscn")
 
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
-@onready var spawn_timer:  Timer = $SpawnTimer
+@onready var spawn_timer: Timer = $SpawnTimer
 
 var top_to_bottom: bool = false
 var is_stopped: bool = false
@@ -47,8 +43,8 @@ func _process(delta: float) -> void:
 
 func _get_velocity() -> float:
 	if is_enabled:
-		return difficulty_settings.padsSpeed
-	return difficulty_settings.padsSpeedDisabled
+		return difficulty_settings.pads_speed
+	return difficulty_settings.pads_speed_disabled
 
 
 func reset() -> void:
@@ -90,7 +86,7 @@ func pick_distractor() -> Dictionary:
 #region Lilypads
 
 func _spawn_lilypad() -> void:
-	var lilypad: Lilypad = lilypad_scene.instantiate()
+	var lilypad: Lilypad = LILYPAD_SCENE.instantiate()
 	lilypads.append(lilypad)
 	add_child(lilypad)
 	
@@ -103,9 +99,9 @@ func _spawn_lilypad() -> void:
 	
 	lilypad_size = lilypad.button.size
 	if size.x < lilypad_size.x:
-		var s: float = size.x / lilypad_size.x
-		lilypad.button.scale = Vector2(s, s)
-		lilypad_size *= s
+		var lily_scale: float = size.x / lilypad_size.x
+		lilypad.button.scale = Vector2(lily_scale, lily_scale)
+		lilypad_size *= lily_scale
 	
 	var is_stimulus: bool = randf() < difficulty_settings.stimuli_ratio
 	lilypad.is_distractor = !is_stimulus

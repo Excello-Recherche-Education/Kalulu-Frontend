@@ -1,10 +1,7 @@
 @tool
 extends SyllablesMinigame
 
-# Namespace
-const Crab: = preload("res://sources/minigames/crabs/crab/crab.gd")
-
-const hole_scene: PackedScene = preload("res://sources/minigames/crabs/hole/hole.tscn")
+const HOLE_SCENE: PackedScene = preload("res://sources/minigames/crabs/hole/hole.tscn")
 
 class DifficultySettings:
 	var stimuli_ratio: float = 0.75
@@ -34,31 +31,41 @@ var stimulus_spawned: bool = false
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
 	super._setup_minigame()
-	
-	var settings: DifficultySettings = _get_difficulty_settings()
-	
-	# Spawns the good amount of holes and places them
-	var top_left: Vector2 = crab_zone.position
-	var bottom_right: Vector2 = top_left + crab_zone.size
-	for index: int in range(settings.rows.size()):
-		var fi: float = float(index + 1.0) / float(settings.rows.size() + 1.0)
-		var y: float = (1.0 - fi) * top_left.y + fi * bottom_right.y
-		for j: int in range(settings.rows[index]):
-			var fj: float = float(j + 1.0) / float(settings.rows[index] as int + 1.0)
-			var x: float = fj * top_left.x + (1.0 - fj) * bottom_right.x
-			
-			var hole: Hole = hole_scene.instantiate()
+
+	var current_difficulty_settings: DifficultySettings = _get_difficulty_settings()
+
+	# Define the rectangular zone where holes will be placed
+	var zone_top_left: Vector2 = crab_zone.position
+	var zone_bottom_right: Vector2 = zone_top_left + crab_zone.size
+
+	# Loop through each row defined by the difficulty settings
+	for row_index: int in range(current_difficulty_settings.rows.size()):
+		# Compute vertical placement ratio (between 0 and 1, skipping the edges)
+		var vertical_ratio: float = float(row_index + 1) / float(current_difficulty_settings.rows.size() + 1)
+		var hole_y: float = lerp(zone_top_left.y, zone_bottom_right.y, vertical_ratio)
+
+		# Get the number of holes to place in this row
+		var holes_in_row: int = current_difficulty_settings.rows[row_index]
+
+		# Loop through each hole in the current row
+		for column_index: int in range(holes_in_row):
+			# Compute horizontal placement ratio (between 0 and 1, skipping the edges)
+			var horizontal_ratio: float = float(column_index + 1) / float(holes_in_row + 1)
+			var hole_x: float = lerp(zone_bottom_right.x, zone_top_left.x, horizontal_ratio)
+
+			# Instantiate and position the hole
+			var hole: Hole = HOLE_SCENE.instantiate()
 			game_root.add_child(hole)
-			hole.position = Vector2(x, y)
-			
+			hole.position = Vector2(hole_x, hole_y)
+
 			if not Engine.is_editor_hint():
 				hole.crab_out.connect(_on_hole_crab_out.bind(hole))
 				hole.stimulus_hit.connect(_on_stimulus_pressed.bind(hole))
 				hole.crab_despawned.connect(_on_hole_crab_despawned)
 				stimulus_heard.connect(hole.on_stimulus_heard)
-				
-			holes.append(hole)
 
+			holes.append(hole)
+ 
 
 # Launch the minigame
 func _start() -> void:
@@ -122,7 +129,7 @@ func _spawn_crabs() -> void:
 		await get_tree().create_timer(0.1).timeout
 
 
-func _on_hole_crab_out(hole : Hole) -> void:
+func _on_hole_crab_out(hole: Hole) -> void:
 	if is_highlighting and _is_stimulus_right(hole.crab.stimulus):
 		hole.highlight()
 
@@ -151,7 +158,7 @@ func _on_hole_timer_timeout() -> void:
 					stimulus_spawned = true
 					holes[index].spawn_crab(_get_current_stimulus(), true)
 				else:
-					var current_distractors : Array = distractions[current_progression % distractions.size()]
+					var current_distractors: Array = distractions[current_progression % distractions.size()]
 					holes[index].spawn_crab(current_distractors.pick_random() as Dictionary, false)
 				hole_found = true
 				break

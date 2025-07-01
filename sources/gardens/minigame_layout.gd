@@ -1,4 +1,6 @@
 extends TextureRect
+class_name MinigameLayout
+
 signal pressed()
 
 @onready var icon: TextureRect = $TextureRect

@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://qsvbq6ruc44v"]
+[gd_scene load_steps=7 format=3 uid="uid://qsvbq6ruc44v"]
 
 [ext_resource type="Script" uid="uid://idm8o2vp60up" path="res://sources/menus/settings/lesson_unlocks.gd" id="1_rlqp5"]
 [ext_resource type="PackedScene" uid="uid://c5ey1jk06asiq" path="res://sources/menus/components/password_visualizer.tscn" id="2_jm5xx"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_wiajt"]
+[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="3_h5j4j"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_v7dp3"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_3kkg7"]
@@ -49,6 +50,19 @@ layout_mode = 2
 [node name="PasswordVisualizer" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" instance=ExtResource("2_jm5xx")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="NameLineEdit" type="LineEdit" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.0
+theme = ExtResource("3_h5j4j")
+theme_override_font_sizes/font_size = 130
+placeholder_text = "Kalulu"
 
 [node name="BackButton" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" instance=ExtResource("2_wiajt")]
 layout_mode = 2
@@ -147,14 +161,60 @@ theme_override_constants/margin_bottom = 25
 layout_mode = 2
 alignment = 2
 
+[node name="ChangeDeviceButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_h5j4j")
+theme_type_variation = &"FlatButton"
+theme_override_font_sizes/font_size = 40
+text = "CHANGE_DEVICE"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="DeleteButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme = ExtResource("3_h5j4j")
 theme_type_variation = &"DangerButton"
 theme_override_font_sizes/font_size = 40
 text = "DELETE_STUDENT"
 
+[node name="DeviceSelectionContainer" type="PanelContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"PanelKaluluBig"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/DeviceSelectionContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/DeviceSelectionContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Label" type="Label" parent="MarginContainer/DeviceSelectionContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+text = "PICK_YOUR_DEVICE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/DeviceSelectionContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 30
+columns = 3
+
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer/ChangeDeviceButton" to="." method="_on_device_change_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
 
 [editable path="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer/BackButton"]

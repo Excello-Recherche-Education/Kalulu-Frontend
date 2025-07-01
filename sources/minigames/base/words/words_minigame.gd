@@ -1,9 +1,8 @@
-@tool
 extends Minigame
 class_name WordsMinigame
 
-# Define the maximum number of GP inside each words
-@export var max_number_of_GPs: int = 6
+# Define the maximum number of GP inside each word
+@export var max_number_of_gps: int = 6
 # Define the size of the distractor queue for each GP
 @export var distractors_queue_size: int = 6
 # Define the time of visibility of a found word between rounds
@@ -14,10 +13,12 @@ var max_word_progression: int = 0
 
 var current_gp_distractors_queue: Array[Dictionary] = []
 
+var current_word_has_errors: bool = false
+
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	# Get the currently known words list
-	var words_list: Array[Dictionary] = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_GPs)
+	var words_list: Array[Dictionary] = Database.get_words_for_lesson(lesson_nb, false, 2, max_number_of_gps)
 	if words_list.is_empty():
 		return
 	
@@ -37,7 +38,7 @@ func _find_stimuli_and_distractions() -> void:
 	current_lesson_words.shuffle()
 	previous_lesson_words.shuffle()
 	
-	# Sort for remediation
+	# Sort for remediation based on GP
 	current_lesson_words.sort_custom(_sort_scoring)
 	previous_lesson_words.sort_custom(_sort_scoring)
 	
@@ -49,21 +50,21 @@ func _find_stimuli_and_distractions() -> void:
 		if not current_lesson_words.is_empty():
 			# If there are more stimuli in current lesson than needed
 			if current_lesson_words.size() >= current_lesson_stimuli_number:
-				for index: int in current_lesson_stimuli_number:
+				for index: int in range(current_lesson_stimuli_number):
 					stimuli.append(current_lesson_words[index])
 			else:
 				stimuli.append_array(current_lesson_words)
 			
 			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
-			var minimal_stimuli : int = floori(current_lesson_stimuli_number/2.0)
+			var minimal_stimuli: int = floori(current_lesson_stimuli_number/2.0)
 			if stimuli.size() < minimal_stimuli:
 				while stimuli.size() < minimal_stimuli:
 					stimuli.append(current_lesson_words.pick_random())
 		
 		# Gets other stimuli from previous errors or lessons
-		var spaces_left : int = max_progression - stimuli.size()
+		var spaces_left: int = max_progression - stimuli.size()
 		if previous_lesson_words.size() >= spaces_left:
-			for index: int in spaces_left:
+			for index: int in range(spaces_left):
 				stimuli.append(previous_lesson_words[index])
 		else:
 			stimuli.append_array(previous_lesson_words)
@@ -81,10 +82,10 @@ func _find_stimuli_and_distractions() -> void:
 	
 	# Find the GPs and distractors for each word
 	for stimulus: Dictionary in stimuli:
-		stimulus.GPs = Database.get_GP_from_word(stimulus.ID as int)
+		stimulus.GPs = Database.get_gp_from_word(stimulus.ID as int)
 		var grapheme_distractions: Array = []
-		for GP: Dictionary in stimulus.GPs:
-			grapheme_distractions.append(Database.get_distractors_for_grapheme(GP.ID as int, lesson_nb))
+		for gp: Dictionary in stimulus.GPs:
+			grapheme_distractions.append(Database.get_distractors_for_grapheme(gp.ID as int, lesson_nb))
 		distractions.append(grapheme_distractions)
 		
 
@@ -93,6 +94,7 @@ func _find_stimuli_and_distractions() -> void:
 func _start() -> void:
 	super()
 	if stimuli.is_empty():
+		Logger.error("WordsMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	_setup_word_progression()
@@ -106,8 +108,8 @@ func _setup_minigame() -> void:
 # Setups the word progression for current progression
 func _setup_word_progression() -> void:
 	var stimulus: Dictionary = _get_current_stimulus()
-	var GPs: Array = stimulus.GPs as Array
-	max_word_progression = GPs.size()
+	var gps: Array = stimulus.GPs as Array
+	max_word_progression = gps.size()
 	current_word_progression = 0
 	
 	_play_stimulus()
@@ -155,7 +157,7 @@ func _get_current_distractors() -> Array:
 
 
 # Get the current GP to find
-func _get_GP() -> Dictionary:
+func _get_gp() -> Dictionary:
 	var stimulus: Dictionary = _get_current_stimulus()
 	if not stimulus or not stimulus.has("GPs") or current_word_progression >= (stimulus.GPs as Array).size():
 		return {}
@@ -174,23 +176,24 @@ func _get_distractor() -> Dictionary:
 
 
 # Check if the provided GP is the expected answer
-func _is_GP_right(gp: Dictionary) -> bool:
-	return gp == _get_GP()
+func _is_gp_right(gp: Dictionary) -> bool:
+	return gp == _get_gp()
 
 
 # Log the response and score
 func _log_new_response_and_score(gp: Dictionary) -> void:
 	# Logs the answer
-	_log_new_response(gp, self._get_GP())
+	_log_new_response(gp, self._get_gp())
 	
 	# Handles GP scoring
-	if self._is_GP_right(gp):
+	if self._is_gp_right(gp):
 		if not is_highlighting:
-			_update_score(gp.ID as int, 1)
+			_update_gp_score(gp.ID as int, 1)
 	else:
 		if gp:
-			_update_score(gp.ID as int, -1)
-		_update_score(self._get_GP().ID as int, -1)
+			_update_gp_score(gp.ID as int, -1)
+			current_word_has_errors = true
+		_update_gp_score(self._get_gp().ID as int, -1)
 
 
 # ------------- UI Callbacks ------------- #
@@ -208,6 +211,11 @@ func _on_current_word_progression_changed() -> void:
 
 
 func _on_current_progression_changed() -> void:
+	if current_word_has_errors:
+		_update_word_score(_get_current_stimulus().ID as int, -1)
+		current_word_has_errors = false
+	else:
+		_update_word_score(_get_current_stimulus().ID as int, 1)
 	if current_progression >= max_progression:
 		return
 	_setup_word_progression()

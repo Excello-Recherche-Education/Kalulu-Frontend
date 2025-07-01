@@ -3,7 +3,7 @@ extends Validator
 class_name ButtonValidator
 
 
-func get_value(control: Control):
+func get_value(control: Control) -> Variant:
 	var button = control as Button
 	if not button:
 		return null

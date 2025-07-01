@@ -26,7 +26,7 @@ func show_placeholder(is_shown: bool) -> void:
 	label.visible = !is_shown
 
 
-func right() ->  void:
+func right() -> void:
 	right_fx.play()
 	await right_fx.finished
 

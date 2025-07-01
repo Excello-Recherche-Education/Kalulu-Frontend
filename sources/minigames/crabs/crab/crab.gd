@@ -1,5 +1,6 @@
 @tool
 extends Control
+class_name Crab
 
 signal crab_hit(stimulus: Dictionary)
 
@@ -90,9 +91,9 @@ func _on_button_pressed() -> void:
 func _on_animated_sprite_2d_animation_finished() -> void:
 	match animated_sprite.animation:
 		"idle1", "idle2":
-			if randf() < 0.5 :
+			if randf() < 0.5:
 				animated_sprite.play("idle1") 
-			else : 
+			else: 
 				animated_sprite.play("idle2")
 		"hit":
 			animated_sprite.play("hurt")

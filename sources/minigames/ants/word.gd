@@ -1,11 +1,8 @@
-# TODO: Clean the reason why there is so much UNSAFE_PROPERTY_ACCESS in this script.
 extends TextureButton
 
 class_name Word
 
-const Ant: = preload("res://sources/minigames/ants/ant.gd")
-
-signal answer(good: bool)
+signal answer(stimulus: String, expected_stimulus: String)
 signal no_answer()
 
 @onready var area: Area2D = $Area2D
