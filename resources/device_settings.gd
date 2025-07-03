@@ -25,6 +25,7 @@ const SUPPORTED_LOCALES: Array[String] = [
 @export var teacher: String
 @export var device_id: int
 @export var language_versions: Dictionary = {} # locale: datetime
+@export var game_version: String = "0.0.1"
 
 @export var master_volume: float = 0.0:
 	set(volume):

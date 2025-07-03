@@ -35,8 +35,47 @@ func _ready() -> void:
 	if get_device_settings().teacher:
 		_load_teacher_settings()
 	
+	purge_user_folders_if_needed()
+	
 	user_database_synchronizer = UserDatabaseSynchronizer.new()
 
+func purge_user_folders_if_needed() -> void:
+	var current_version: String = ProjectSettings.get_setting("application/config/version")
+	var previous_version: String = _device_settings.game_version
+	
+	if previous_version == "" or compare_versions(previous_version, "2.1.3") < 0:
+		Logger.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
+		var dir: DirAccess = DirAccess.open("user://")
+		if dir:
+			dir.list_dir_begin()
+			var file_name: String = dir.get_next()
+			while file_name != "":
+				if dir.current_is_dir() and file_name != "." and file_name != "..":
+					var full_path: String = "user://".path_join(file_name)
+					_delete_dir(full_path)
+					var err: Error = DirAccess.remove_absolute(full_path)
+					if err != OK:
+						Logger.error("UserDataManager: Failed to delete folder %s. Error %s" % [full_path, error_string(err)])
+				file_name = dir.get_next()
+			dir.list_dir_end()
+		
+		Logger.trace("UserDataManager: Purge completed")
+		_device_settings.game_version = current_version
+		ResourceSaver.save(_device_settings, "user://device_settings.tres")
+
+
+func compare_versions(version_a: String, version_b: String) -> int:
+	var va: PackedStringArray = version_a.split(".")
+	var vb: PackedStringArray = version_b.split(".")
+	
+	for index: int in 3:
+		var ai: int = int(va[index]) if index < va.size() else 0
+		var bi: int = int(vb[index]) if index < vb.size() else 0
+		if ai < bi:
+			return -1
+		elif ai > bi:
+			return 1
+	return 0
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
