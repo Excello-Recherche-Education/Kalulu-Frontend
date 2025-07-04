@@ -46,13 +46,19 @@ func _on_gp_dropped(before: bool, data: Dictionary, gp_label: Control) -> void:
 
 
 func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:
-	@warning_ignore("unsafe_method_access")
-	return data.has("gp_id")
+	if data is Dictionary:
+		return (data as Dictionary).has("gp_id")
+	else:
+		Logger.error("LessonContainer: Can not drop data (that is not of type Dictionary) in GP Container")
+		return false
 
 
 func _drop_data_in_gp_container(_at_position: Vector2, data: Variant) -> void:
-	@warning_ignore("unsafe_method_access")
-	if not data.has("gp_id"):
+	if not data is Dictionary:
+		Logger.error("LessonContainer: Cancel drop data in GP container because data is not of type Dictionary")
+		return
+	if not (data as Dictionary).has("gp_id"):
+		Logger.trace("LessonContainer: Cancel drop data in GP container because data has no key gp_id")
 		return
 	var new_gp_label: LessonGPLabel = gp_label_scene.instantiate()
 	new_gp_label.grapheme = data.grapheme
@@ -73,16 +79,20 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	@warning_ignore("unsafe_method_access")
-	return (data.has("number") and number != data.number) or _can_drop_in_gp_container(at_position, data)
+	if data is Dictionary:
+		return ((data as Dictionary).has("number") and number != (data as Dictionary).number) or _can_drop_in_gp_container(at_position, data)
+	else:
+		Logger.error("LessonContainer: Can not drop data that is not of type Dictionary")
+		return false
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	@warning_ignore("unsafe_method_access")
-	if not (data.has("number") or data.has("gp_id")):
+	if not data is Dictionary:
+		Logger.error("LessonContainer: drop data failed because data is not of type Dictionary")
 		return
-	@warning_ignore("unsafe_method_access")
-	if data.has("number"):
+	if not (data as Dictionary).has("number") or (data as Dictionary).has("gp_id"):
+		return
+	if (data as Dictionary).has("number"):
 		var before: bool = at_position.y < size.y
 		lesson_dropped.emit(before, number, data.number)
 	else:

@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbmcpgfokf0in"]
+[gd_scene load_steps=5 format=3 uid="uid://dbmcpgfokf0in"]
 
 [ext_resource type="PackedScene" uid="uid://dfw7m0a7148fu" path="res://sources/language_tool/word_list.tscn" id="1_bfjhw"]
 [ext_resource type="Script" uid="uid://7pymixi5vsat" path="res://sources/language_tool/sentence_list.gd" id="2_q3ll5"]
 [ext_resource type="PackedScene" uid="uid://dx33ijlgd8m3w" path="res://sources/language_tool/word_list_element.tscn" id="3_jl0ks"]
+[ext_resource type="PackedScene" uid="uid://cy14lm72cd7cy" path="res://sources/language_tool/sentence_list_element.tscn" id="3_ys88k"]
 
 [node name="SentenceList" instance=ExtResource("1_bfjhw")]
 script = ExtResource("2_q3ll5")
+element_scene = ExtResource("3_ys88k")
 
 [node name="ExportNotFoundButton" type="Button" parent="VBoxContainer" index="5"]
 unique_name_in_owner = true

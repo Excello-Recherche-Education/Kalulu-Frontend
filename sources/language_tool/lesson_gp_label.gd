@@ -32,11 +32,17 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return data.has("gp_id") and data.gp_id != gp_id
+	if data is Dictionary:
+		return (data as Dictionary).has("gp_id") and data.gp_id != gp_id
+	else:
+		Logger.error("LessonGPLabel: Can not drop data that is not of type Dictionary")
+		return false
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	if not data.has("gp_id"):
+	if not data is Dictionary:
+		Logger.error("LessonGPLabel: drop data failed because data is not of type Dictionary")
+	if not (data as Dictionary).has("gp_id"):
 		return
 	var before: bool = at_position.x < size.x / 2
 	gp_dropped.emit(before, data)

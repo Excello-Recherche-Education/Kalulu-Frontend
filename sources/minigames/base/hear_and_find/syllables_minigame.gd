@@ -69,8 +69,7 @@ func _find_stimuli_and_distractions() -> void:
 				stimuli.append_array(current_lesson_stimuli)
 			
 			# If there are not enough stimuli from current lesson, we want at least half the target number of stimuli
-			@warning_ignore("integer_division")
-			var minimal_stimuli: int = current_lesson_stimuli_number/2
+			var minimal_stimuli: int = floori(current_lesson_stimuli_number / 2.0)
 			if stimuli.size() < minimal_stimuli:
 				while stimuli.size() < minimal_stimuli:
 					stimuli.append(current_lesson_stimuli.pick_random())

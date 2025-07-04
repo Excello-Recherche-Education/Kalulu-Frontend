@@ -5,7 +5,7 @@ class_name WordList
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 @onready var new_gp_layer: CanvasLayer = $NewGPLayer
-@onready var new_gp: GPListElement = %NewGP
+@onready var new_gp: Variant = %NewGP
 @onready var title: ListTitle = %ListTitle
 @onready var lesson_title: Label = %Lesson
 @onready var word_title: Label = %Word
@@ -131,7 +131,12 @@ func _on_element_new_gp_asked(ind: int, element: WordListElement) -> void:
 	in_new_gp_mode = true
 	new_gp_asked_element = element
 	new_gp_asked_ind = ind
-	new_gp.edit_mode()
+	if new_gp is WordListElement:
+		(new_gp as WordListElement).edit_mode()
+	elif new_gp is GPListElement:
+		(new_gp as GPListElement).edit_mode()
+	else:
+		Logger.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
 
 
 func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
@@ -140,15 +145,27 @@ func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
 
 
 func _on_gp_list_element_validated() -> void:
-	new_gp.insert_in_database()
-	if new_gp.has_method("update_lesson"):
-		@warning_ignore("unsafe_method_access")
-		new_gp.update_lesson()
+	if new_gp is WordListElement:
+		(new_gp as WordListElement).insert_in_database()
+	elif new_gp is GPListElement:
+		(new_gp as GPListElement).insert_in_database()
+	else:
+		Logger.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
+	if new_gp is Object:
+		if (new_gp as Object).has_method("update_lesson"):
+			if new_gp is WordListElement:
+				(new_gp as WordListElement).update_lesson()
+			elif new_gp is SentenceListElement:
+				(new_gp as SentenceListElement).update_lesson()
+			else:
+				Logger.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
+	else:
+		Logger.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
 	in_new_gp_mode = false
 	create_sub_elements_list()
 	for element: WordListElement in elements_container.get_children():
 		element.sub_elements_list = sub_elements_list
-	new_gp_asked_element.new_gp_asked_added(new_gp_asked_ind, new_gp.id)
+	new_gp_asked_element.new_gp_asked_added(new_gp_asked_ind, new_gp.id as int)
 
 
 func _on_gps_updated() -> void:

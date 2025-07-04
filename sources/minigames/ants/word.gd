@@ -30,9 +30,8 @@ func _process(_delta: float) -> void:
 	if follow_mouse:
 		global_position = get_global_mouse_position() - size / 2.0
 	else:
-		if current_anchor is Area2D:
-			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
-			global_position = current_anchor.anchor.global_position
+		if current_anchor is Ant:
+			global_position = (current_anchor as Ant).anchor.global_position
 		else:
 			@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 			global_position = current_anchor.global_position

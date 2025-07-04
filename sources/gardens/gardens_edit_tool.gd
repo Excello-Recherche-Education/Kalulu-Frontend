@@ -41,8 +41,7 @@ func _init_gardens_layout() -> void:
 			garden_layout = GardenLayout.new()
 			gardens_layout.gardens.append(garden_layout)
 			
-			@warning_ignore("integer_division")
-			garden_layout.color = (index / 4) % GARDEN_TEXTURES_NB
+			garden_layout.color = int(index / 4.0) % GARDEN_TEXTURES_NB
 			
 			# Add the flowers to the garden
 			for flower_i: int in 5:

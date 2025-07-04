@@ -400,7 +400,6 @@ func set_current_progression(p_current_progression: int) -> void:
 	if p_current_progression == max_progression and previous_progression != max_progression:
 		await _win()
 	else:
-		@warning_ignore("redundant_await")
 		await _on_current_progression_changed()
 
 #endregion
@@ -436,6 +435,7 @@ func _on_minigame_ui_restart_button_pressed() -> void:
 
 
 func _on_current_progression_changed() -> void:
-	pass
+	# Make Godot understands that this function is a coroutine even if it does nothing, to avoid warning
+	await get_tree().create_timer(0).timeout
 
 #endregion

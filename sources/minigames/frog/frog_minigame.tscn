@@ -16,7 +16,7 @@
 
 [node name="FrogMinigame" instance=ExtResource("1_ng5er")]
 script = ExtResource("2_0xg3r")
-max_number_of_GPs = 6
+max_number_of_gps = 6
 distractors_queue_size = 6
 time_between_words = 3.0
 minigame_name = 5

@@ -239,8 +239,7 @@ func _ready() -> void:
 			starting_garden = 0
 	
 	scroll_container.scroll_horizontal = GARDEN_SIZE * starting_garden
-	@warning_ignore("integer_division")
-	scroll_beginning_garden = scroll_container.scroll_horizontal / GARDEN_SIZE
+	scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
 	
 	current_garden = garden_parent.get_child(starting_garden)
 	
@@ -345,15 +344,13 @@ func _ready() -> void:
 			
 			# Check if we need to scroll to the next garden
 			if is_last_lesson_of_garden:
-				@warning_ignore("integer_division")
-				scroll_beginning_garden = scroll_container.scroll_horizontal / GARDEN_SIZE
+				scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
 				var target_scroll: int = scroll_beginning_garden * GARDEN_SIZE + GARDEN_SIZE
 				var tween: Tween = create_tween()
 				tween.set_ease(Tween.EASE_IN_OUT)
 				tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
 				
-				@warning_ignore("integer_division")
-				scroll_beginning_garden = target_scroll / GARDEN_SIZE
+				scroll_beginning_garden = int(float(target_scroll) / GARDEN_SIZE)
 				
 				current_garden = garden_parent.get_child(scroll_beginning_garden)
 			
@@ -674,8 +671,7 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 		return
 	if event.is_action_pressed("left_click"):
 		is_scrolling = true
-		@warning_ignore("integer_division")
-		scroll_beginning_garden = scroll_container.scroll_horizontal / GARDEN_SIZE
+		scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
 		if scroll_tween:
 			scroll_tween.stop()
 			scroll_tween = null
@@ -697,13 +693,11 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 		scroll_tween.set_trans(Tween.TRANS_SPRING)
 		scroll_tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 1)
 		if is_garden_changed:
-			@warning_ignore("integer_division")
-			current_garden = garden_parent.get_child(target_scroll / GARDEN_SIZE)
+			current_garden = garden_parent.get_child(int(float(target_scroll) / GARDEN_SIZE))
 			current_garden.pop_animation()
 		
 		await scroll_tween.finished
-		@warning_ignore("integer_division")
-		scroll_beginning_garden = scroll_container.scroll_horizontal / GARDEN_SIZE
+		scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
 		
 	if is_scrolling and event is InputEventMouseMotion:
 		var motion_event: InputEventMouseMotion = event

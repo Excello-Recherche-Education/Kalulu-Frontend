@@ -389,8 +389,8 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					@warning_ignore("unsafe_call_argument")
 					new_unlock_data[int(key_lesson)] = {"games": [], "look_and_learn": int(received_unlock_data[key_lesson]["look_and_learn"])}
 					for game_result: Variant in received_unlock_data[key_lesson]["games"]:
-						@warning_ignore("unsafe_call_argument", "unsafe_method_access")
-						new_unlock_data[int(key_lesson)]["games"].push_back(int(game_result))
+						@warning_ignore("unsafe_call_argument")
+						(new_unlock_data[int(key_lesson)]["games"] as Array).push_back(int(game_result))
 				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
 			if response_student_data.has("remediation_gp") && (response_student_data.remediation_gp as Dictionary).has("score_remediation") && (response_student_data.remediation_gp as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
