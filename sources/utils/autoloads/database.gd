@@ -51,6 +51,8 @@ func connect_to_db() -> void:
 		db.close_db()
 	if FileAccess.file_exists(db.path):
 		is_open = db.open_db()
+	else:
+		Logger.warn("Database: DB file not found at %s" % db.path)
 
 
 func get_additional_word_list_path() -> String:
@@ -77,6 +79,8 @@ func load_additional_word_list() -> String:
 				data[title_line[index]] = line[index]
 			additional_word_list[line[ortho_index]] = data
 		file.close()
+	else:
+		Logger.warn("Database: Additional word list file not found: %s" % word_list_path)
 	return ""
 
 
@@ -85,16 +89,6 @@ func get_exercise_for_lesson(lesson_nb: int) -> Array[int]:
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
 	WHERE LessonNB == " + str(lesson_nb)
 	db.query(query)
-	
-	#var answer: Array[String] = []
-	#for res in Database.db.query_result:
-	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise1))
-	#	answer.append(Database.db.query_result[0].Type)
-	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise2))
-	#	answer.append(Database.db.query_result[0].Type)
-	#	Database.db.query("Select Type FROM ExerciseTypes WHERE ID == " + str(res.Exercise3))
-	#	answer.append(Database.db.query_result[0].Type)
-	#return answer
 	
 	var result: Array[int] = []
 	for element: Dictionary in db.query_result:
@@ -488,6 +482,7 @@ func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
 	
 	if FileAccess.file_exists(path) and ResourceLoader.exists(path):
 		return load(path)
+	Logger.trace("Database: Audio stream not found for phoneme %s" % phoneme)
 	return null
 
 
@@ -501,6 +496,7 @@ func get_gp_look_and_learn_image(gp: Dictionary) -> Texture:
 			var texture: ImageTexture = ImageTexture.create_from_image(image)
 			return texture
 	
+	Logger.trace("Database: Look & Learn image not found for GP %s" % str(gp))
 	return null
 
 
@@ -515,6 +511,7 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 			sound.data = file.get_buffer(file.get_length())
 			return sound
 	
+	Logger.trace("Database: Look & Learn sound not found for GP %s" % str(gp))
 	return null
 
 
@@ -524,6 +521,7 @@ func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:
 		var video: VideoStream = load(path)
 		return video
 	
+	Logger.trace("Database: Look & Learn video not found for GP %s" % gp)
 	return null
 
 
@@ -568,6 +566,7 @@ func get_kalulu_speech_path(speech_category: String, speech_name: String) -> Str
 
 func load_external_sound(path: String) -> AudioStreamMP3:
 	if not FileAccess.file_exists(path):
+		Logger.trace("Database: External sound file not found: %s" % path)
 		return null
 	
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)

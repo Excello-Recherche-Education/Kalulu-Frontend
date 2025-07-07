@@ -106,6 +106,7 @@ func stop_synchronization_timer() -> void:
 
 func register(register_settings: TeacherSettings) -> bool:
 	if not register_settings:
+		Logger.warn("UserDataManager: register called with invalid register_settings")
 		return false
 	
 	# Handles device settings
@@ -194,9 +195,11 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 func set_device_id(device: int) -> bool:
 	if not _device_settings:
+		Logger.warn("UserDataManager: set_device_id called with no device settings loaded")
 		return false
 	
 	if not device:
+		Logger.warn("UserDataManager: set_device_id called with invalid device")
 		return false
 	
 	_device_settings.device_id = device
@@ -222,7 +225,11 @@ func delete_teacher_data() -> void:
 		_delete_dir(get_teacher_folder())
 
 func student_exists(code: String) -> bool:
-	if not _device_settings or not teacher_settings:
+	if not _device_settings:
+		Logger.trace("UserDataManager: student_exists called with invalid _device_settings")
+		return false
+	if not teacher_settings:
+		Logger.trace("UserDataManager: student_exists called with invalid teacher_settings")
 		return false
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
 	if students:
@@ -232,7 +239,11 @@ func student_exists(code: String) -> bool:
 	return false
 
 func login_student(code: String) -> bool:
-	if not _device_settings or not teacher_settings:
+	if not _device_settings:
+		Logger.warn("UserDataManager: login_student failed because of invalid _device_settings")
+		return false
+	if not teacher_settings:
+		Logger.warn("UserDataManager: login_student failed because of invalid teacher_settings")
 		return false
 	
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
@@ -243,10 +254,15 @@ func login_student(code: String) -> bool:
 				(ServerManager as ServerManagerClass).first_login_student()
 				return true
 	
+	Logger.warn("UserDataManager: login_student failed, code not found: " + code)
 	return false
 
 func logout_student() -> bool:
-	if not _device_settings or not teacher_settings:
+	if not _device_settings:
+		Logger.warn("UserDataManager: logout_student failed because of invalid _device_settings")
+		return false
+	if not teacher_settings:
+		Logger.warn("UserDataManager: logout_student failed because of invalid teacher_settings")
 		return false
 	
 	student = ""
