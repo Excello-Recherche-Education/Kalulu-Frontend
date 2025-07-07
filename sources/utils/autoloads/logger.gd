@@ -96,6 +96,8 @@ func _log_internal(level: LogLevel, message: String) -> void:
 	var log_message: String = "%s %s %s" % [time_str, prefix, message]
 
 	match level:
+		LogLevel.DEBUG:
+			print_debug(log_message)
 		LogLevel.WARNING:
 			push_warning(log_message)
 		LogLevel.ERROR:
