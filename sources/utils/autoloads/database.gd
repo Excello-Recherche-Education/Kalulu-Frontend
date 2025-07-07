@@ -23,6 +23,7 @@ const SOUND_EXTENSION: String = ".mp3"
 
 var language: String:
 	set(value):
+		Log.trace("Database: set language from %s to %s" % [language, value])
 		language = value
 		db_path = get_language_folder() + "/language.db"
 		words_path = get_language_folder() + "/words/"

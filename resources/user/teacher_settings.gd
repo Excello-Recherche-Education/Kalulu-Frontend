@@ -18,6 +18,19 @@ const AVAILABLE_CODES: Array[int] = [123, 124, 125, 126, 132, 134, 135, 136, 142
 @export var email: String
 @export var token: String
 @export var last_modified: String = ""
+@export var _language: String = "" # internal variable exported by the inspector
+var language: String:
+	get:
+		return _language if _language != "" else _get_default_language()
+	set(value):
+		Log.trace("TeacherSettings: set language from %s to %s" % [_language, value])
+		_language = value
+		Database.language = value
+		TranslationServer.set_locale(value)
+
+func _get_default_language() -> String:
+	Log.warn("TeacherSettings: get_language called but language is empty, returning device language by default. This should not happen.")
+	return UserDataManager.get_device_settings().language
 
 var devices_count: int
 var password: String
@@ -34,6 +47,8 @@ func update_from_dict(dict: Dictionary) -> void:
 		token = dict.token
 	if dict.has("last_modified"):
 		last_modified = dict.last_modified
+	if dict.has("language"):
+		language = dict.language
 	
 	students.clear()
 	var d_students: Dictionary = dict.students
@@ -112,6 +127,7 @@ func to_dict() -> Dictionary:
 		"password": password,
 		"education_method": education_method,
 		"last_modified": last_modified,
+		"language": language
 	}
 	
 	dict["students"] = {}

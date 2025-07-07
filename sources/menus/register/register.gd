@@ -5,11 +5,14 @@ const NEXT_SCENE_PATH: String = "res://sources/menus/language_selection/package_
 
 var current_steps: Array[Step] = []
 
+@onready var language_step: PackedScene = preload("res://sources/menus/register/steps/language/language_step.tscn")
 @onready var teacher_steps: Array[PackedScene] = [
+	language_step,
 	preload("res://sources/menus/register/steps/teacher/method_step.tscn"),
 	preload("res://sources/menus/register/steps/teacher/devices_count_step.tscn")
 ]
 @onready var parent_steps: Array[PackedScene] = [
+	language_step,
 	preload("res://sources/menus/register/steps/parent/players_count_step.tscn")
 ]
 @onready var last_steps: Array[PackedScene] = [
@@ -87,7 +90,7 @@ func _on_step_completed(step: Step) -> void:
 				else:
 					students_step_scene.queue_free()
 			for scene: PackedScene in last_steps:
-					current_steps.append(scene.instantiate())
+				current_steps.append(scene.instantiate())
 			progress_bar.max_value = current_steps.size()
 		"players":
 			# Adds students steps for parents

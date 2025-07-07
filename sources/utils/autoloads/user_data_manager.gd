@@ -318,6 +318,8 @@ func set_language_version(language: String, version: Dictionary) -> void:
 	if _device_settings:
 		_device_settings.language_versions[language] = version
 		_save_device_settings()
+	else:
+		Log.warn("UserDataManager: Cannot set language version because device settings not found")
 
 
 func set_master_volume(value: float) -> void:

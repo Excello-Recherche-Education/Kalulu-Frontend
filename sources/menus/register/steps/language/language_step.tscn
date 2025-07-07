@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6bpwjbb7crii"]
+
+[ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bd4h7edjvj8yf" path="res://sources/menus/register/steps/language/language_step.gd" id="2"]
+[ext_resource type="Script" uid="uid://dugl3xh4di2a5" path="res://sources/menus/main/language_field.gd" id="3"]
+
+[node name="LanguageStep" instance=ExtResource("1")]
+script = ExtResource("2")
+step_name = "language"
+question = "LANGUAGE"
+
+[node name="LanguageContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
+layout_mode = 2
+
+[node name="LanguageLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LanguageContainer" index="0"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 50
+text = "LANGUAGE"
+autowrap_mode = 3
+
+[node name="LanguageField" type="OptionButton" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LanguageContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Combobox"
+theme_override_font_sizes/font_size = 70
+script = ExtResource("3")
+
+[connection signal="item_selected" from="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LanguageContainer/LanguageField" to="." method="_on_language_selected"]
