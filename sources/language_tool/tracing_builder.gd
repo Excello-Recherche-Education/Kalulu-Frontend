@@ -76,7 +76,7 @@ func _save_segments(segments: Array[SegmentBuild], path: String) -> void:
 	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER))
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.WRITE)
 	for segment: SegmentBuild in segments:
-		var values: PackedStringArray
+		var values: PackedStringArray = []
 		for point: Vector2 in segment.points:
 			values.append(str(point.x) + " " + str(point.y))
 		file.store_csv_line(values)
