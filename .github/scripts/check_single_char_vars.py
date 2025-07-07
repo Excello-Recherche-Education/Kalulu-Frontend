@@ -49,15 +49,15 @@ for root, dirs, files in os.walk('.', topdown=True):
                 if stripped.startswith('#') or not stripped:
                     continue
 
-                m = VAR_PATTERN.match(stripped)
-                if m:
-                    name = m.group(1)
+                match_var = VAR_PATTERN.match(stripped)
+                if match_var:
+                    name = match_var.group(1)
                     if len(name) == 1:
                         single_char_vars.append((path, idx, name))
 
-                m = FUNC_PATTERN.match(stripped)
-                if m:
-                    params = m.group(1)
+                match_func = FUNC_PATTERN.match(stripped)
+                if match_func:
+                    params = match_func.group(1)
                     if params:
                         params = params.strip('()')
                         for param in split_params(params):
@@ -65,9 +65,9 @@ for root, dirs, files in os.walk('.', topdown=True):
                             if param_name and len(param_name) == 1:
                                 single_char_vars.append((path, idx, param_name))
 
-                m = FOR_PATTERN.match(stripped)
-                if m:
-                    name = m.group(1)
+                match_for = FOR_PATTERN.match(stripped)
+                if match_for:
+                    name = match_for.group(1)
                     if len(name) == 1:
                         single_char_vars.append((path, idx, name))
 
