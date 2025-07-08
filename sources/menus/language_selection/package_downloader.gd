@@ -7,7 +7,7 @@ const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
 
 const ERROR_MESSAGES: Array[String] = [
-	"DISCONECTED_ERROR",
+	"DISCONNECTED_ERROR",
 	"NO_INTERNET_ACCESS",
 	"ERROR_DOWNLOADING",
 	"INVALID_LANGUAGE_DIRECTORY",
