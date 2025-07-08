@@ -64,7 +64,7 @@ func compare_versions(version_a: String, version_b: String) -> int:
 	var va: PackedStringArray = version_a.split(".")
 	var vb: PackedStringArray = version_b.split(".")
 	
-	for index: int in 3:
+	for index: int in range(3):
 		var ai: int = int(va[index]) if index < va.size() else 0
 		var bi: int = int(vb[index]) if index < vb.size() else 0
 		if ai < bi:
