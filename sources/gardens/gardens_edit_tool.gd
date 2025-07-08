@@ -61,7 +61,7 @@ func _init_gardens_layout() -> void:
 
 
 func set_up_click_detection() -> void:
-	for garden_control_ind: int in garden_parent.get_child_count():
+	for garden_control_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(garden_control_ind)
 		
 		for flower_ind: int in garden_control.flower_controls.size():
@@ -145,7 +145,7 @@ func _input(event: InputEvent) -> void:
 
 func get_garden_and_sub_ind_from_ind(ind: int) -> Array[int]:
 	var count: int = 0
-	for garden_control_ind: int in garden_parent.get_child_count():
+	for garden_control_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(garden_control_ind)
 		for lesson_button_ind: int in garden_control.lesson_button_controls.size():
 			if count == ind:
@@ -155,7 +155,7 @@ func get_garden_and_sub_ind_from_ind(ind: int) -> Array[int]:
 
 
 func get_best_showing_garden() -> int:
-	for garden_ind: int in garden_parent.get_child_count():
+	for garden_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Control = garden_parent.get_child(garden_ind)
 		if abs(garden_control.global_position.x) < garden_control.size.x / 2:
 			return garden_ind

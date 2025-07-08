@@ -211,7 +211,7 @@ func _ready() -> void:
 	if not transition_data:
 		if starting_garden == -1:
 			lesson_ind = 1
-			for garden_ind: int in garden_parent.get_child_count():
+			for garden_ind: int in range(garden_parent.get_child_count()):
 				var garden_control: Garden = garden_parent.get_child(garden_ind)
 				if starting_garden != -1:
 					break
@@ -535,11 +535,8 @@ func _close_minigames_layout() -> void:
 
 func _set_up_lessons() -> void:
 	var lesson_ind: int = 1
-	
-	for garden_ind: int in garden_parent.get_child_count():
-		
+	for garden_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(garden_ind)
-		
 		for index: int in range(garden_control.lesson_button_controls.size()):
 			if not lesson_ind in lessons:
 				break
