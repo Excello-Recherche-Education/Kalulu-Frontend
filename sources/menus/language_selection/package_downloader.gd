@@ -89,7 +89,7 @@ func _ready() -> void:
 			
 		# Delete the files from old language pack
 		if DirAccess.dir_exists_absolute(current_language_path):
-			_delete_dir(current_language_path)
+			Utils.delete_dir(current_language_path)
 		
 		# Download the pack
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip"))
@@ -196,7 +196,7 @@ func delete_directory_recursive(path: String) -> void:
 
 	dir.list_dir_end()
 
-	# Supprime le dossier lui-même
+	# Delete the folder itself
 	err = DirAccess.remove_absolute(path)
 	if err != OK:
 		Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting folder: %s" % path)
@@ -204,19 +204,11 @@ func delete_directory_recursive(path: String) -> void:
 		Logger.info("PackageDownloader: ✅ Folder deleted: %s" % path)
 
 
-func _delete_dir(path: String) -> void:
-	var dir: DirAccess = DirAccess.open(path)
-	for file: String in dir.get_files():
-		dir.remove(file)
-	for subfolder: String in dir.get_directories():
-		_delete_dir(path.path_join(subfolder))
-		dir.remove(subfolder)
-
-
 func _show_error(error: int) -> void:
 	error_popup.content_text = ERROR_MESSAGES[error]
 	error_popup.show()
 	
+
 
 func _go_to_main_menu() -> void:
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)

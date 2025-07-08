@@ -14,3 +14,18 @@ func sort_by_property(node_a: Node, node_b: Node, property_name: String) -> bool
 func disconnect_all(signals: Signal) -> void:
 		for connection: Dictionary in signals.get_connections():
 				(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
+
+func delete_dir(path: String) -> void:
+	var dir: DirAccess = DirAccess.open(path)
+	var error: Error = DirAccess.get_open_error()
+	if error != OK:
+		Logger.warn("Utils: delete_dir error while opening path %s: %s" % [path, error_string(error)])
+		return
+	if dir == null:
+		Logger.warn("Utils: delete_dir called on missing path %s" % path)
+		return
+	for file: String in dir.get_files():
+		dir.remove(file)
+	for subfolder: String in dir.get_directories():
+		delete_dir(path.path_join(subfolder))
+		dir.remove(subfolder)
