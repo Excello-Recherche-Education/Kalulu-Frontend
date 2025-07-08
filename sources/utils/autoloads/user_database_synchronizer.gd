@@ -458,11 +458,6 @@ func synchronize() -> void:
 
 func validate_student_data(data: Dictionary) -> bool:
 	var required_keys: Array[String] = ["device_id", "name", "age", "updated_at"]
-	
-	if not data.has_all(required_keys):
-		# Student data is empty (no student data to process)
-		return false
-
 	var missing: Array[String] = []
 	for key: String in required_keys:
 		if not data.has(key):
