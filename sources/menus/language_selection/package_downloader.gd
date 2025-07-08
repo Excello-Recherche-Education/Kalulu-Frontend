@@ -89,7 +89,7 @@ func _ready() -> void:
 			
 		# Delete the files from old language pack
 		if DirAccess.dir_exists_absolute(current_language_path):
-			Utils.delete_dir(current_language_path)
+			Utils.clean_dir(current_language_path)
 		
 		# Download the pack
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip"))
