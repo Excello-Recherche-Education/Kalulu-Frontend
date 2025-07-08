@@ -29,3 +29,11 @@ func delete_dir(path: String) -> void:
 	for subfolder: String in dir.get_directories():
 		delete_dir(path.path_join(subfolder))
 		dir.remove(subfolder)
+
+func delete_directory_recursive(path: String) -> void:
+	delete_dir(path)
+	var err: Error = DirAccess.remove_absolute(path)
+	if err != OK:
+		Logger.error("Utils: Error " + error_string(err) + " while deleting folder: %s" % path)
+	else:
+		Logger.info("Utils: Folder deleted: %s" % path)

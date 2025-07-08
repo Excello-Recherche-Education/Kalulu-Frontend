@@ -154,7 +154,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	)
 	
 	# Cleanup previous files
-	delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
+	Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
 	
 	# Extract the archive
 	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
@@ -169,39 +169,6 @@ func _copy_data(this: PackageDownloader) -> void:
 	
 	# Go to main menu
 	this.call_thread_safe("_go_to_next_scene")
-
-
-func delete_directory_recursive(path: String) -> void:
-	var dir: DirAccess = DirAccess.open(path)
-	if dir == null:
-		Logger.error("PackageDownloader: Folder does not exists: %s" % path)
-		return
-
-	if dir.list_dir_begin() != OK:
-		dir.list_dir_end()
-		Logger.error("PackageDownloader: Error while reading folder: %s" % path)
-		return
-
-	var err: Error
-	var file_name: String = dir.get_next()
-	while file_name != "":
-		var full_path: String = path.path_join(file_name)
-		if dir.current_is_dir():
-			delete_directory_recursive(full_path)
-		else:
-			err = dir.remove(full_path)
-			if err != OK:
-				Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting file: %s" % full_path)
-		file_name = dir.get_next()
-
-	dir.list_dir_end()
-
-	# Delete the folder itself
-	err = DirAccess.remove_absolute(path)
-	if err != OK:
-		Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting folder: %s" % path)
-	else:
-		Logger.info("PackageDownloader: ✅ Folder deleted: %s" % path)
 
 
 func _show_error(error: int) -> void:
