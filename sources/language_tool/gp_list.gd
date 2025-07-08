@@ -86,12 +86,7 @@ func _on_grapheme_gui_input(event: InputEvent) -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	var child: Array[Node] = elements_container.get_children()
-	child.sort_custom(sorting_function.bind(property_name))
-	for element: Node in elements_container.get_children():
-		elements_container.remove_child(element)
-	for element: Node in child:
-		elements_container.add_child(element)
+	Utils.reorder_children_by_property(elements_container, property_name)
 
 
 func sorting_function(a_node: Node, b_node: Node, property_name: String) -> bool:

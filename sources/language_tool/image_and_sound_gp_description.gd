@@ -92,12 +92,8 @@ func _on_image_upload_button_pressed() -> void:
 	if not gp.is_empty():
 		file_dialog.filters = []
 		file_dialog.add_filter("*" + Database.IMAGE_EXTENSION, "Images")
-		
-		for connection: Dictionary in file_dialog.file_selected.get_connections():
-			(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
-		
+		Utils.disconnect_all(file_dialog.file_selected)
 		file_dialog.file_selected.connect(_image_file_selected)
-		
 		file_dialog.show()
 
 
@@ -105,12 +101,8 @@ func _on_sound_upload_button_pressed() -> void:
 	if not gp.is_empty():
 		file_dialog.filters = []
 		file_dialog.add_filter("*" + Database.SOUND_EXTENSION, "Sounds")
-		
-		for connection: Dictionary in file_dialog.file_selected.get_connections():
-			(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
-		
+		Utils.disconnect_all(file_dialog.file_selected)
 		file_dialog.file_selected.connect(_sound_file_selected)
-		
 		file_dialog.show()
 
 
