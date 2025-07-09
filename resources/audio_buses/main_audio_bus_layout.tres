@@ -18,5 +18,5 @@ bus/3/name = &"Effects"
 bus/3/solo = false
 bus/3/mute = false
 bus/3/bypass_fx = false
-bus/3/volume_db = -3.41635
+bus/3/volume_db = -5.04224
 bus/3/send = &"Master"
