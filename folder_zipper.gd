@@ -29,6 +29,7 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 				if file:
 					write_file(file.get_buffer(file.get_length()))
 					file.close()
+					close_file()
 				else:
 					return FileAccess.get_open_error()
 
