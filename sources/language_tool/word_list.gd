@@ -196,16 +196,7 @@ func _on_back_button_pressed() -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	var children: Array[Node] = elements_container.get_children()
-	children.sort_custom(sorting_function.bind(property_name))
-	for element: Node in elements_container.get_children():
-		elements_container.remove_child(element)
-	for child: Node in children:
-		elements_container.add_child(child)
-
-
-func sorting_function(a_node: Node, b_node: Node, property_name: String) -> bool:
-	return a_node.get(property_name) < b_node.get(property_name)
+	Utils.reorder_children_by_property(elements_container, property_name)
 
 
 func _on_list_title_add_pressed() -> void:

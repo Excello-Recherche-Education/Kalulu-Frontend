@@ -34,6 +34,7 @@ MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
 Validation="*res://addons/godot-form-validator/validation.gd"
 OpeningCurtain="*res://sources/utils/autoloads/opening_curtain.tscn"
 Globals="*res://sources/language_tool/globals.gd"
+Utils="*res://sources/utils/autoloads/utils.gd"
 
 [debug]
 

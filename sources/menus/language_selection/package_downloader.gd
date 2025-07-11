@@ -89,7 +89,7 @@ func _ready() -> void:
 			
 		# Delete the files from old language pack
 		if DirAccess.dir_exists_absolute(current_language_path):
-			_delete_dir(current_language_path)
+			Utils.clean_dir(current_language_path)
 		
 		# Download the pack
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip"))
@@ -154,7 +154,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	)
 	
 	# Cleanup previous files
-	delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
+	Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
 	
 	# Extract the archive
 	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
@@ -171,52 +171,11 @@ func _copy_data(this: PackageDownloader) -> void:
 	this.call_thread_safe("_go_to_next_scene")
 
 
-func delete_directory_recursive(path: String) -> void:
-	var dir: DirAccess = DirAccess.open(path)
-	if dir == null:
-		Logger.error("PackageDownloader: Folder does not exists: %s" % path)
-		return
-
-	if dir.list_dir_begin() != OK:
-		dir.list_dir_end()
-		Logger.error("PackageDownloader: Error while reading folder: %s" % path)
-		return
-
-	var err: Error
-	var file_name: String = dir.get_next()
-	while file_name != "":
-		var full_path: String = path.path_join(file_name)
-		if dir.current_is_dir():
-			delete_directory_recursive(full_path)
-		else:
-			err = dir.remove(full_path)
-			if err != OK:
-				Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting file: %s" % full_path)
-		file_name = dir.get_next()
-
-	dir.list_dir_end()
-
-	# Supprime le dossier lui-même
-	err = DirAccess.remove_absolute(path)
-	if err != OK:
-		Logger.error("PackageDownloader: Error " + error_string(err) + " while deleting folder: %s" % path)
-	else:
-		Logger.info("PackageDownloader: ✅ Folder deleted: %s" % path)
-
-
-func _delete_dir(path: String) -> void:
-	var dir: DirAccess = DirAccess.open(path)
-	for file: String in dir.get_files():
-		dir.remove(file)
-	for subfolder: String in dir.get_directories():
-		_delete_dir(path.path_join(subfolder))
-		dir.remove(subfolder)
-
-
 func _show_error(error: int) -> void:
 	error_popup.content_text = ERROR_MESSAGES[error]
 	error_popup.show()
 	
+
 
 func _go_to_main_menu() -> void:
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)

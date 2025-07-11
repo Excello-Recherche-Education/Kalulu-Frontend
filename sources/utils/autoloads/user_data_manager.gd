@@ -51,11 +51,7 @@ func purge_user_folders_if_needed() -> void:
 			var file_name: String = dir.get_next()
 			while file_name != "":
 				if dir.current_is_dir() and file_name != "." and file_name != "..":
-					var full_path: String = "user://".path_join(file_name)
-					_delete_dir(full_path)
-					var err: Error = DirAccess.remove_absolute(full_path)
-					if err != OK:
-						Logger.error("UserDataManager: Failed to delete folder %s. Error %s" % [full_path, error_string(err)])
+					Utils.delete_directory_recursive("user://".path_join(file_name))
 				file_name = dir.get_next()
 			dir.list_dir_end()
 		
@@ -222,7 +218,7 @@ func logout() -> void:
 
 func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
-		_delete_dir(get_teacher_folder())
+		Utils.clean_dir(get_teacher_folder())
 
 func student_exists(code: String) -> bool:
 	if not _device_settings:
@@ -408,8 +404,7 @@ func _delete_inexistants_students_saves() -> void:
 		for device: String in directories:
 			# If the device does not exists, delete it
 			if int(device) not in teacher_settings.students.keys():
-				_delete_dir(path.path_join(device))
-				dirc.remove(device)
+				Utils.delete_directory_recursive(path.path_join(device))
 				continue
 			
 			# Go through each language folder
@@ -426,8 +421,7 @@ func _delete_inexistants_students_saves() -> void:
 							break
 					# If the code doesn't exists in the configuration, delete the folder
 					if not exists:
-						_delete_dir(path.path_join(device).path_join(language).path_join(p_student))
-						language_dir.remove(p_student)
+						Utils.delete_directory_recursive(path.path_join(device).path_join(language).path_join(p_student))
 
 func update_configuration(configuration: Dictionary) -> bool:
 	if not teacher_settings:
@@ -719,14 +713,6 @@ func is_speech_played(speech: String) -> bool:
 #endregion
 
 #region utils
-
-func _delete_dir(path: String) -> void:
-	var dir: DirAccess = DirAccess.open(path)
-	for file: String in dir.get_files():
-		dir.remove(file)
-	for subfolder: String in dir.get_directories():
-		_delete_dir(path.path_join(subfolder))
-		dir.remove(subfolder)
 
 func move_user_device_folder(old_device: String, new_device: String, student_code: int) -> void:
 	var parent_dir_path: String = "user://".path_join(_device_settings.teacher)

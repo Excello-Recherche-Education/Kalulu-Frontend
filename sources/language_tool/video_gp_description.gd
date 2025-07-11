@@ -18,9 +18,7 @@ func _video_file_selected(file_path: String) -> void:
 		var current_file: String = Database.get_gp_look_and_learn_video_path(gp)
 		if FileAccess.file_exists(current_file):
 			DirAccess.remove_absolute(current_file)
-		
 		DirAccess.copy_absolute(file_path, current_file)
-		
 		set_video_preview(current_file)
 
 
@@ -32,7 +30,6 @@ func set_video_preview(video_path: String) -> void:
 func set_gp(p_gp: Dictionary) -> void:
 	gp = p_gp
 	gp_menu_button.text = Database.get_gp_name(gp)
-	
 	if FileAccess.file_exists(Database.get_gp_look_and_learn_video_path(gp)):
 		set_video_preview(Database.get_gp_look_and_learn_video_path(gp))
 
@@ -41,12 +38,8 @@ func _on_video_upload_button_pressed() -> void:
 	if not gp.is_empty():
 		file_dialog.filters = []
 		file_dialog.add_filter("*" + Database.VIDEO_EXTENSION, "Videos")
-		
-		for connection: Dictionary in file_dialog.file_selected.get_connections():
-			(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
-		
+		Utils.disconnect_all(file_dialog.file_selected)
 		file_dialog.file_selected.connect(_video_file_selected)
-		
 		file_dialog.show()
 
 

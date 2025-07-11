@@ -41,12 +41,7 @@ func _ready() -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	var children: Array[Node] = elements_container.get_children()
-	children.sort_custom(sorting_function.bind(property_name))
-	for element: FishWordListElement in elements_container.get_children():
-		elements_container.remove_child(element)
-	for element: FishWordListElement in children:
-		elements_container.add_child(element)
+	Utils.reorder_children_by_property(elements_container, property_name)
 
 
 func sorting_function(node_a: Node, node_b: Node, property_name: String) -> bool:
