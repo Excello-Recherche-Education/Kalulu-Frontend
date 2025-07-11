@@ -1,7 +1,7 @@
 extends Control
 
 const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
-const NEXT_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
+const NEXT_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
 @onready var teacher_steps: Array[PackedScene] = [
 	preload("res://sources/menus/register/steps/teacher/method_step.tscn"),
