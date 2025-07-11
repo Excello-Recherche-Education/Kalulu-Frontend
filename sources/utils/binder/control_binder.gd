@@ -47,3 +47,6 @@ func set_value(value: Variant) -> void:
 	elif control is ItemList:
 		if value is int:
 			(control as ItemList).select(value as int, true)
+		elif value is PackedInt32Array:
+			for index: int in value:
+				(control as ItemList).select(index, true)

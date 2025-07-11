@@ -81,7 +81,7 @@ func _tracing_process() -> void:
 					if offset > guide.progress:
 						remove_up_to = index
 						break
-				for _index: int in min(remove_up_to, curve_points.size() - 2):
+				for _index: int in range(mini(remove_up_to, curve_points.size() - 2)):
 					curve_points.remove_at(0)
 					remaining_curve.remove_point(0)
 

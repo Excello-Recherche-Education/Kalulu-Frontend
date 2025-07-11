@@ -455,8 +455,8 @@ func _create_words_csv() -> void:
 		var phonemes: PackedStringArray = (element.Phonemes as String).split(" ")
 		for index: int in range(graphemes.size() - 1):
 			gpmatch += graphemes[index] + "-" + phonemes[index] + "."
-		var index: int = graphemes.size() - 1
-		gpmatch += graphemes[index] + "-" + phonemes[index] + ")"
+		var last_index: int = graphemes.size() - 1
+		gpmatch += graphemes[last_index] + "-" + phonemes[last_index] + ")"
 		var lesson: int = -1
 		for gp_id: String in (element.GPIDs as String).split(' '):
 			var gp_id_lesson: int = Database.get_min_lesson_for_gp_id(int(gp_id))

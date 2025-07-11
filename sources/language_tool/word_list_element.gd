@@ -95,7 +95,7 @@ func set_graphemes_edit(p_gp_ids: Array[int]) -> void:
 		for child: Node in graphemes_edit_container.get_children():
 			graphemes_edit_container.remove_child(child)
 			child.queue_free()
-		for ind_gp_id: int in p_gp_ids.size():
+		for ind_gp_id: int in range(p_gp_ids.size()):
 			var gp_id: int = p_gp_ids[ind_gp_id]
 			add_gp_list_button(gp_id, ind_gp_id)
 
