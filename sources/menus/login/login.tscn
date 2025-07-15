@@ -103,7 +103,6 @@ alignment = 2
 
 [node name="TeacherHelpLabel" type="Label" parent="InterfaceRight/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 8
