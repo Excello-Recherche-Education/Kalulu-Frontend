@@ -41,3 +41,17 @@ func delete_directory_recursive(path: String) -> void:
 		Logger.error("Utils: Error " + error_string(err) + " while deleting folder: %s" % path)
 	else:
 		Logger.info("Utils: Folder deleted: %s" % path)
+
+## Returns -1 if version_a is lower than version_b, 0 if they are equals, and 1 if version_a is greater than version_b
+func compare_versions(version_a: String, version_b: String) -> int:
+	var va: PackedStringArray = version_a.split(".")
+	var vb: PackedStringArray = version_b.split(".")
+	
+	for index: int in range(3):
+		var ai: int = int(va[index]) if index < va.size() else 0
+		var bi: int = int(vb[index]) if index < vb.size() else 0
+		if ai < bi:
+			return -1
+		elif ai > bi:
+			return 1
+	return 0

@@ -43,7 +43,7 @@ func purge_user_folders_if_needed() -> void:
 	var current_version: String = ProjectSettings.get_setting("application/config/version")
 	var previous_version: String = _device_settings.game_version
 	
-	if previous_version == "" or compare_versions(previous_version, "2.1.3") < 0:
+	if previous_version == "" or Utils.compare_versions(previous_version, "2.1.3") < 0:
 		Logger.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
 		var dir: DirAccess = DirAccess.open("user://")
 		if dir:
@@ -58,20 +58,6 @@ func purge_user_folders_if_needed() -> void:
 		Logger.trace("UserDataManager: Purge completed")
 		_device_settings.game_version = current_version
 		ResourceSaver.save(_device_settings, "user://device_settings.tres")
-
-
-func compare_versions(version_a: String, version_b: String) -> int:
-	var va: PackedStringArray = version_a.split(".")
-	var vb: PackedStringArray = version_b.split(".")
-	
-	for index: int in range(3):
-		var ai: int = int(va[index]) if index < va.size() else 0
-		var bi: int = int(vb[index]) if index < vb.size() else 0
-		if ai < bi:
-			return -1
-		elif ai > bi:
-			return 1
-	return 0
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
