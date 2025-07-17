@@ -6,20 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="3_5uhvd"]
 [ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="3_vllju"]
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
+[ext_resource type="SpriteFrames" uid="uid://dijfxjt76waan" path="res://sources/minigames/jellyfish/pink_jellyfish_animations_body.tres" id="5_ah5ir"]
 [ext_resource type="Texture2D" uid="uid://c34sgkbvr3h8q" path="res://assets/minigames/minigame_ui/graphic/primary_text_box.png" id="6_ah5ir"]
-[ext_resource type="SpriteFrames" uid="uid://033w5t1wyg3w" path="res://sources/minigames/jellyfish/blue_jellyfish_animations_arms.tres" id="6_i86t4"]
-[ext_resource type="SpriteFrames" uid="uid://cyllu3lpjcxej" path="res://sources/minigames/jellyfish/blue_jellyfish_animations_body.tres" id="6_p6hdi"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
 [ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="8_p6hdi"]
 [ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="10_jfr88"]
+[ext_resource type="SpriteFrames" uid="uid://cu631qur8h6sj" path="res://sources/minigames/jellyfish/pink_jellyfish_animations_arms.tres" id="11_jfr88"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qqnw2"]
 font = ExtResource("8_p6hdi")
 font_size = 120
-outline_size = 8
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 15
-shadow_color = Color(0, 0, 0, 0.639216)
+font_color = Color(0.2, 0.2, 0.2, 1)
+outline_color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="Jellyfish" type="Control"]
 custom_minimum_size = Vector2(400, 400)
@@ -27,8 +25,9 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.06029, 1.06029)
+scale = Vector2(1.40046, 1.40046)
 script = ExtResource("1_06uwq")
+color = 1
 
 [node name="BackFX" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 220)
@@ -78,16 +77,16 @@ sprites = [NodePath("AnimatedSprite2D_Body"), NodePath("AnimatedSprite2D_Arms")]
 [node name="AnimatedSprite2D_Body" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
-sprite_frames = ExtResource("6_p6hdi")
+sprite_frames = ExtResource("5_ah5ir")
 animation = &"idle"
-frame_progress = 0.943092
+frame_progress = 0.332284
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
 [node name="TextBox_Sprite2D" type="Sprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
 position = Vector2(200.421, 242.545)
-scale = Vector2(0.4711, 0.466974)
+scale = Vector2(0.471, 0.471)
 texture = ExtResource("6_ah5ir")
 
 [node name="PercentMarginContainer" type="Container" parent="SpriteControl/TextBox_Sprite2D"]
@@ -104,7 +103,7 @@ script = ExtResource("3_vllju")
 margin_left_ratio = 0.2
 margin_top_ratio = 0.1
 margin_right_ratio = 0.2
-margin_bottom_ratio = 0.1
+margin_bottom_ratio = 0.2
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer"]
 layout_mode = 2
@@ -126,9 +125,9 @@ texture = ExtResource("10_jfr88")
 [node name="AnimatedSprite2D_Arms" type="AnimatedSprite2D" parent="SpriteControl"]
 unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
-sprite_frames = ExtResource("6_i86t4")
+sprite_frames = ExtResource("11_jfr88")
 animation = &"idle"
-frame_progress = 0.943092
+frame_progress = 0.332284
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
