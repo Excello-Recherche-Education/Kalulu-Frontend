@@ -36,6 +36,8 @@ var current_language_version: Dictionary = {}
 func _ready() -> void:
 	await get_tree().process_frame
 	
+	Logger.trace("PackageDownloader: Starting with device language %s" % UserDataManager.get_device_settings().language)
+	
 	# Check the teacher settings, if we are logged in (this scene should not be accessible otherwise)
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
 	if not teacher_settings:
@@ -47,6 +49,7 @@ func _ready() -> void:
 	current_language_path = USER_LANGUAGE_RESOURCES_PATH.path_join(device_language)
 	current_language_version = UserDataManager.get_device_settings().language_versions.get(device_language, {})
 	
+	Logger.trace("PackageDownloader: Checking internet access")
 	if not await ServerManager.check_internet_access():
 		# Offline mode, if a pack is already downloaded, go to next scene
 		if DirAccess.dir_exists_absolute(current_language_path):
@@ -60,6 +63,7 @@ func _ready() -> void:
 	
 	# Gets the info of the language pack on the server
 	var res: Dictionary = await ServerManager.get_language_pack_url(device_language)
+	Logger.trace("PackageDownloader: Language pack info received with code %d" % res.code)
 	if res.code == 200:
 		server_language_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
 	# Authentication failed, disconnect the user
@@ -93,6 +97,7 @@ func _ready() -> void:
 		
 		# Download the pack
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip"))
+		Logger.trace("PackageDownloader: Downloading pack from %s" % res.body.url)
 		http_request.request(res.body.url as String)
 	else:
 		download_bar.value = 1
@@ -134,6 +139,8 @@ func _copy_data(this: PackageDownloader) -> void:
 	if not FileAccess.file_exists(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip")):
 		return
 	
+	Logger.trace("PackageDownloader: Extracting downloaded package")
+	
 	var language_zip: String = device_language + ".zip"
 	var language_zip_path: String = USER_LANGUAGE_RESOURCES_PATH.path_join(language_zip)
 	
@@ -163,9 +170,12 @@ func _copy_data(this: PackageDownloader) -> void:
 	var error: Error = DirAccess.rename_absolute(USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path)
 	if error != OK:
 		Logger.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path])
+	else:
+		Logger.trace("PackageDownloader: Package extracted to %s" % current_language_path)
 	
 	# Cleanup unnecessary files
 	DirAccess.remove_absolute(language_zip_path)
+	Logger.trace("PackageDownloader: Removed temporary archive %s" % language_zip_path)
 	
 	# Go to main menu
 	this.call_thread_safe("_go_to_next_scene")
@@ -197,6 +207,7 @@ func _go_to_next_scene() -> void:
 
 
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+	Logger.trace("PackageDownloader: Download completed with HTTP code %d" % response_code)
 	if response_code == 200:
 		mutex = Mutex.new()
 		thread = Thread.new()
