@@ -64,6 +64,13 @@ func load_additional_word_list() -> String:
 	var word_list_path: String = get_additional_word_list_path()
 	if FileAccess.file_exists(word_list_path):
 		var file: FileAccess = FileAccess.open(word_list_path, FileAccess.READ)
+		var error: Error = DirAccess.get_open_error()
+		if error != OK:
+			Logger.error("Database: Load additional word list: Cannot open file %s. Error: %s" % [word_list_path, error_string(error)])
+			return ""
+		if file == null:
+			Logger.error("Database: Load additional word list: Cannot open file %s. File is null" % word_list_path)
+			return ""
 		var title_line: PackedStringArray = file.get_csv_line()
 		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
 			var msg: String = "word list should have columns ORTHO, PHON and GPMATCH"
@@ -517,6 +524,13 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 			return load(path)
 		else:
 			var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+			var error: Error = DirAccess.get_open_error()
+			if error != OK:
+				Logger.error("Database: Get GP look and learn sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
+				return null
+			if file == null:
+				Logger.error("Database: Get GP look and learn sound: Cannot open file %s. File is null" % path)
+				return null
 			var sound: AudioStreamMP3 = AudioStreamMP3.new()
 			sound.data = file.get_buffer(file.get_length())
 			return sound
@@ -580,6 +594,13 @@ func load_external_sound(path: String) -> AudioStreamMP3:
 		return null
 	
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var error: Error = DirAccess.get_open_error()
+	if error != OK:
+		Logger.error("Database: Load external sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		return null
+	if file == null:
+		Logger.error("Database: Load external sound: Cannot open file %s. File is null" % path)
+		return null
 	var audio_stream: AudioStreamMP3 = AudioStreamMP3.new()
 	audio_stream.data = file.get_buffer(file.get_length())
 	file.close()

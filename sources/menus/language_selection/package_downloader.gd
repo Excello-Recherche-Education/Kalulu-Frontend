@@ -165,6 +165,9 @@ func _copy_data(this: PackageDownloader) -> void:
 	
 	# Extract the archive
 	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
+	if subfolder == "":
+		Logger.error("PackageDownloader: Extraction failed for %s" % language_zip_path)
+		return
 	
 	# Move the data to the locale folder of the user
 	var error: Error = DirAccess.rename_absolute(USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path)

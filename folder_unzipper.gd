@@ -27,6 +27,13 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 		if not DirAccess.dir_exists_absolute(folder_name):
 			DirAccess.make_dir_recursive_absolute(folder_name)
 		var file: FileAccess = FileAccess.open(file_name, FileAccess.WRITE)
+		var error: Error = DirAccess.get_open_error()
+		if error != OK:
+			Logger.error("FolderUnzipper: Extract: Cannot open file %s. Error: %s" % [file_name, error_string(error)])
+			return first_folder
+		if file == null:
+			Logger.error("FolderUnzipper: Extract: Cannot open file %s. File is null" % file_name)
+			return first_folder
 		if file != null:
 			file.store_buffer(read_file(sub_path))
 			file.close()
