@@ -6,6 +6,7 @@ signal file_copied(count: int, name: String)
 signal finished()
 
 func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool = true) -> String:
+	Logger.trace("FolderUnzipper: Extracting %s to %s" % [zip_path, extract_path])
 	var err: Error = open(zip_path)
 	if err != OK:
 		Logger.error("FolderUnzipper: Error " + error_string(err) + " while opening file: %s" % zip_path)
@@ -14,6 +15,7 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 	
 	var all_files: PackedStringArray = get_files()
 	file_count.emit(all_files.size())
+	Logger.trace("FolderUnzipper: %d files found" % all_files.size())
 	
 	var copied_file: int = 0
 	var first_folder: String = ""
@@ -28,10 +30,12 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 		if file != null:
 			file.store_buffer(read_file(sub_path))
 			file.close()
+		Logger.trace("FolderUnzipper: Copied %s" % file_name)
 		copied_file += 1
 		file_copied.emit(copied_file, file_name)
 	
 	close()
 	
 	finished.emit()
+	Logger.trace("FolderUnzipper: Extraction finished in %s" % extract_folder)
 	return first_folder
