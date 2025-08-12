@@ -1,4 +1,5 @@
 extends Node
+class_name UserDataManagerClass
 
 
 var student: String = "":
