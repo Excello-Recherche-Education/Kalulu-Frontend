@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d60ylt2dvc2s"
-path="res://.godot/imported/background.png-efb3c9298c89dad479689fd212c0f1b2.ctex"
+uid="uid://c34sgkbvr3h8q"
+path="res://.godot/imported/primary_text_box.png-e6e7d0f2e6a28bafc3bf983ee5c88924.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/jellyfish/graphic/background.png"
-dest_files=["res://.godot/imported/background.png-efb3c9298c89dad479689fd212c0f1b2.ctex"]
+source_file="res://assets/minigames/minigame_ui/graphic/primary_text_box.png"
+dest_files=["res://.godot/imported/primary_text_box.png-e6e7d0f2e6a28bafc3bf983ee5c88924.ctex"]
 
 [params]
 

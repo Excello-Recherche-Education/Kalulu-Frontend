@@ -20,5 +20,6 @@ func _ready() -> void:
 
 func _rescale() -> void:
 	label.pivot_offset = label.size / 2
-	label.scale = size / ref_size
+	var min_size: float = minf(ref_size.x, ref_size.y)
+	label.scale = size / min_size
 	label.position = size / 2 - label.pivot_offset
