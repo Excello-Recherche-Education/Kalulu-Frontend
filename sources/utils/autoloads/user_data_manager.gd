@@ -47,14 +47,20 @@ func purge_user_folders_if_needed() -> void:
 	if previous_version == "" or Utils.compare_versions(previous_version, "2.1.3") < 0:
 		Logger.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
 		var dir: DirAccess = DirAccess.open("user://")
-		if dir:
-			dir.list_dir_begin()
-			var file_name: String = dir.get_next()
-			while file_name != "":
-				if dir.current_is_dir() and file_name != "." and file_name != "..":
-					Utils.delete_directory_recursive("user://".path_join(file_name))
-				file_name = dir.get_next()
-			dir.list_dir_end()
+		var error: Error = DirAccess.get_open_error()
+		if error != OK:
+			Logger.error("UserDataManager: Could not open user:// directory for cleanup. Error: %s" % error_string(error))
+			return
+		if not dir:
+			Logger.warn("UserDataManager: Could not open user:// directory for cleanup.")
+			return
+		dir.list_dir_begin()
+		var file_name: String = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				Utils.delete_directory_recursive("user://".path_join(file_name))
+			file_name = dir.get_next()
+		dir.list_dir_end()
 		
 		Logger.trace("UserDataManager: Purge completed")
 		_device_settings.game_version = current_version
@@ -166,6 +172,13 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 			Logger.info("UserDataManager: Fix resource:" + path)
 			content = content.replace(old_texts[index], new_texts[index])
 			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+			var error: Error = DirAccess.get_open_error()
+			if error != OK:
+				Logger.error("UserDataManager: Safe load and fix resource: Cannot open file %s. Error: %s" % [path, error_string(error)])
+				return null
+			if file == null:
+				Logger.error("UserDataManager: Safe load and fix resource: Cannot open file %s. File is null" % path)
+				return null
 			file.store_string(content)
 			file.close()
 

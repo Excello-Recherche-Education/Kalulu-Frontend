@@ -108,13 +108,18 @@ func _ready() -> void:
 # Check that folder is not empty and contains a file language.db
 func is_language_directory_valid(path: String) -> bool:
 	var dir: DirAccess = DirAccess.open(path)
-	if not dir:
+	var error: Error = DirAccess.get_open_error()
+	if error != OK:
+		Logger.error("PackageDownloader: Is language directory valid: Cannot open directory %s. Error: %s" % [path, error_string(error)])
 		return false
-
+	if not dir:
+		Logger.error("PackageDownloader: Is language directory valid: Cannot open directory %s. dir is null" % path)
+		return false
+	
 	if dir.list_dir_begin() != OK:
 		dir.list_dir_end()
 		return false
-
+	
 	var file_name: String = dir.get_next()
 	dir.list_dir_end()
 	return file_name != "" && dir.file_exists("language.db")
@@ -165,6 +170,9 @@ func _copy_data(this: PackageDownloader) -> void:
 	
 	# Extract the archive
 	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
+	if subfolder == "":
+		Logger.error("PackageDownloader: Extraction failed for %s" % language_zip_path)
+		return
 	
 	# Move the data to the locale folder of the user
 	var error: Error = DirAccess.rename_absolute(USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path)
@@ -184,7 +192,6 @@ func _copy_data(this: PackageDownloader) -> void:
 func _show_error(error: int) -> void:
 	error_popup.content_text = ERROR_MESSAGES[error]
 	error_popup.show()
-	
 
 
 func _go_to_main_menu() -> void:
