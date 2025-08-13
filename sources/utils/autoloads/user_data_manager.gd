@@ -47,14 +47,20 @@ func purge_user_folders_if_needed() -> void:
 	if previous_version == "" or Utils.compare_versions(previous_version, "2.1.3") < 0:
 		Logger.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
 		var dir: DirAccess = DirAccess.open("user://")
-		if dir:
-			dir.list_dir_begin()
-			var file_name: String = dir.get_next()
-			while file_name != "":
-				if dir.current_is_dir() and file_name != "." and file_name != "..":
-					Utils.delete_directory_recursive("user://".path_join(file_name))
-				file_name = dir.get_next()
-			dir.list_dir_end()
+		var error: Error = DirAccess.get_open_error()
+		if error != OK:
+			Logger.error("UserDataManager: Could not open user:// directory for cleanup. Error: %s" % error_string(error))
+			return
+		if not dir:
+			Logger.warn("UserDataManager: Could not open user:// directory for cleanup.")
+			return
+		dir.list_dir_begin()
+		var file_name: String = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				Utils.delete_directory_recursive("user://".path_join(file_name))
+			file_name = dir.get_next()
+		dir.list_dir_end()
 		
 		Logger.trace("UserDataManager: Purge completed")
 		_device_settings.game_version = current_version
