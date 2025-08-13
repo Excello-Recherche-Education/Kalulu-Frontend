@@ -122,7 +122,7 @@ func _on_list_title_save_pressed() -> void:
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	var error: Error = DirAccess.get_open_error()
+	var error: Error = FileAccess.get_open_error()
 	if error != OK:
 		Logger.error("GPList: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return

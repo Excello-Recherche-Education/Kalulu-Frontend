@@ -80,8 +80,13 @@ func _init_log_file() -> void:
 	log_file_path = LOG_PATH + filename
 	
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
+	var error: Error = FileAccess.get_open_error()
+	if error != OK:
+		push_error("Logger: Load external sound: Cannot open file %s. Error: %s" % [log_file_path, error_string(error)])
+		return
 	if log_file == null:
 		push_error("Logger: Could not open log file at " + log_file_path)
+		return
 
 # Internal log function (renamed to avoid conflict)
 func _log_internal(level: LogLevel, message: String) -> void:

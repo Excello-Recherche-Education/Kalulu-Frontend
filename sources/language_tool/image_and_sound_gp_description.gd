@@ -49,7 +49,7 @@ func set_sound_preview(sound_path: String) -> void:
 		sound_preview.hide()
 	else:
 		var file: FileAccess = FileAccess.open(sound_path, FileAccess.READ)
-		var error: Error = DirAccess.get_open_error()
+		var error: Error = FileAccess.get_open_error()
 		if error != OK:
 			Logger.error("ImageAndSoundGPDescription: Cannot open file %s. Error: %s" % [sound_path, error_string(error)])
 			return

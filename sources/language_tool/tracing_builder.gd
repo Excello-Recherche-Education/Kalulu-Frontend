@@ -59,7 +59,7 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 		return
 	
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.READ)
-	var error: Error = DirAccess.get_open_error()
+	var error: Error = FileAccess.get_open_error()
 	if error != OK:
 		Logger.error("TracingBuilder: Load segment: Cannot open file %s. Error: %s" % [real_path(path), error_string(error)])
 		return
@@ -82,7 +82,7 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 func _save_segments(segments: Array[SegmentBuild], path: String) -> void:
 	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER))
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.WRITE)
-	var error: Error = DirAccess.get_open_error()
+	var error: Error = FileAccess.get_open_error()
 	if error != OK:
 		Logger.error("TracingBuilder: Save segment: Cannot open file %s. Error: %s" % [real_path(path), error_string(error)])
 		return
