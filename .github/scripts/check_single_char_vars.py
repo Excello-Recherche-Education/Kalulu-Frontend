@@ -4,16 +4,18 @@ import sys
 
 
 def split_params(param_string: str):
-    """Split a function parameter string on commas while ignoring brackets."""
+    """Split parameters on commas while ignoring nested structures."""
     params = []
     current = ""
-    depth = 0
+    stack = []
+    pairs = {')': '(', ']': '[', '}': '{'}
     for char in param_string:
-        if char == '[':
-            depth += 1
-        elif char == ']':
-            depth = max(0, depth - 1)
-        if char == ',' and depth == 0:
+        if char in '([{':
+            stack.append(char)
+        elif char in ')]}':
+            if stack and stack[-1] == pairs.get(char):
+                stack.pop()
+        if char == ',' and not stack:
             params.append(current.strip())
             current = ""
             continue
