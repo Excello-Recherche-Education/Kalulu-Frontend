@@ -83,7 +83,7 @@ func _load_tracing(path: String) -> Array:
 	
 	var segments: Array = []
 	var file: FileAccess = FileAccess.open(_real_path(path), FileAccess.READ)
-	var error: Error = DirAccess.get_open_error()
+	var error: Error = FileAccess.get_open_error()
 	if error != OK:
 		Logger.error("TracingManager: Load tracing: Cannot open file %s. Error: %s" % [_real_path(path), error_string(error)])
 		return segments

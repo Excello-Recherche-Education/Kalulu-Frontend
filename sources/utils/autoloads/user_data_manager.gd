@@ -172,7 +172,7 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 			Logger.info("UserDataManager: Fix resource:" + path)
 			content = content.replace(old_texts[index], new_texts[index])
 			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
-			var error: Error = DirAccess.get_open_error()
+			var error: Error = FileAccess.get_open_error()
 			if error != OK:
 				Logger.error("UserDataManager: Safe load and fix resource: Cannot open file %s. Error: %s" % [path, error_string(error)])
 				return null

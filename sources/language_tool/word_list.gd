@@ -232,7 +232,7 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 		error_label.text = "File not found"
 		return
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	var error: Error = DirAccess.get_open_error()
+	var error: Error = FileAccess.get_open_error()
 	if error != OK:
 		Logger.error("WordList: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return

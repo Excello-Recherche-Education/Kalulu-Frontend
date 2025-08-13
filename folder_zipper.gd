@@ -27,7 +27,7 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 					return error
 				
 				var file: FileAccess = FileAccess.open(current_full_path, FileAccess.READ)
-				error = DirAccess.get_open_error()
+				error = FileAccess.get_open_error()
 				if error != OK:
 					Logger.error("FolderZipper: Extract: Cannot open file %s. Error: %s" % [file_name, error_string(error)])
 					return error

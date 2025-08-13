@@ -64,7 +64,7 @@ func load_additional_word_list() -> String:
 	var word_list_path: String = get_additional_word_list_path()
 	if FileAccess.file_exists(word_list_path):
 		var file: FileAccess = FileAccess.open(word_list_path, FileAccess.READ)
-		var error: Error = DirAccess.get_open_error()
+		var error: Error = FileAccess.get_open_error()
 		if error != OK:
 			Logger.error("Database: Load additional word list: Cannot open file %s. Error: %s" % [word_list_path, error_string(error)])
 			return ""
@@ -524,7 +524,7 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 			return load(path)
 		else:
 			var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-			var error: Error = DirAccess.get_open_error()
+			var error: Error = FileAccess.get_open_error()
 			if error != OK:
 				Logger.error("Database: Get GP look and learn sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
 				return null
@@ -594,7 +594,7 @@ func load_external_sound(path: String) -> AudioStreamMP3:
 		return null
 	
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	var error: Error = DirAccess.get_open_error()
+	var error: Error = FileAccess.get_open_error()
 	if error != OK:
 		Logger.error("Database: Load external sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return null
