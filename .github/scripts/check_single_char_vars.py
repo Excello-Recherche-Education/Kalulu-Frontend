@@ -7,21 +7,45 @@ def split_params(param_string: str):
     """Split parameters on commas while ignoring nested structures."""
     params = []
     current = ""
-    stack = []
+    stack: list[str] = []
     pairs = {')': '(', ']': '[', '}': '{'}
+    in_quote = None
+    escape = False
     for char in param_string:
+        if escape:
+            current += char
+            escape = False
+            continue
+
+        if char == "\\":
+            current += char
+            escape = True
+            continue
+
+        if in_quote:
+            current += char
+            if char == in_quote:
+                in_quote = None
+            continue
+
+        if char in "'\"":
+            current += char
+            in_quote = char
+            continue
+        
         if char in '([{':
             stack.append(char)
         elif char in ')]}':
             if stack and stack[-1] == pairs.get(char):
                 stack.pop()
+        
         if char == ',' and not stack:
             params.append(current.strip())
             current = ""
-            continue
-        current += char
-    if current:
-        params.append(current.strip())
+        else:
+            current += char
+            
+    params.append(current.strip())
     return params
 
 EXCLUDED_DIRS = {"addons", ".git", ".github"}
