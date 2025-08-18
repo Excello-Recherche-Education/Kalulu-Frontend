@@ -5,7 +5,7 @@ class_name ValidatorFunctions
 static func matches(pattern: String, text: String) -> bool:
 	var regex = RegEx.create_from_string(pattern)
 	if not regex.is_valid():
-		Logger.debug("ValidatorFunctions: Invalid RegEx pattern supplied to matches function: %s" % pattern)
+		Logger.error("ValidatorFunctions: Invalid RegEx pattern supplied to matches function: %s" % pattern)
 		return false
 	var result = regex.search(text)
 	return result != null and result.strings.size() > 0
@@ -14,7 +14,7 @@ static func matches(pattern: String, text: String) -> bool:
 static func does_not_match(pattern: String, text: String) -> bool:
 	var regex = RegEx.create_from_string(pattern)
 	if not regex.is_valid():
-		Logger.debug("ValidatorFunctions: Invalid RegEx pattern supplied to does_not_match function: %s" % pattern)
+		Logger.error("ValidatorFunctions: Invalid RegEx pattern supplied to does_not_match function: %s" % pattern)
 		return false
 	var result = regex.search(text)
 	return result == null

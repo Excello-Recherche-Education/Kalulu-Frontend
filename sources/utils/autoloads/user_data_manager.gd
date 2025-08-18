@@ -169,7 +169,7 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 	for index: int in range(old_texts.size()):
 		if content.find(old_texts[index]) != -1:
-			Logger.info("UserDataManager: Fix resource:" + path)
+			Logger.trace("UserDataManager: Fix resource:" + path)
 			content = content.replace(old_texts[index], new_texts[index])
 			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 			var error: Error = FileAccess.get_open_error()
