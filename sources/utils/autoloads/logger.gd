@@ -31,9 +31,9 @@ func _ready() -> void:
 
 func delete_old_logs(days_threshold: float = 10) -> void:
 	var dir: DirAccess = DirAccess.open(LOG_PATH)
-	var error: Error = DirAccess.get_open_error()
-	if error != OK:
-		push_error("Logger: Could not open Logs directory for cleanup. Error: %s" % error_string(error))
+	var err: Error = DirAccess.get_open_error()
+	if err != OK:
+		push_error("Logger: Could not open Logs directory for cleanup. Error: %s" % error_string(err))
 		return
 	if not dir:
 		push_warning("Logger: Could not open Logs directory for cleanup.")
@@ -58,7 +58,7 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 				var age_days: float = float(now - file_time) / (60.0 * 60.0 * 24.0)
 				if age_days > days_threshold:
 					var full_path: String = LOG_PATH + file_name
-					var err: Error = dir.remove(full_path)
+					err = dir.remove(full_path)
 					if err != OK:
 						push_warning("Logger: Failed to delete old log: " + full_path)
 					else:
@@ -80,9 +80,9 @@ func _init_log_file() -> void:
 	log_file_path = LOG_PATH + filename
 	
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
-	var error: Error = FileAccess.get_open_error()
-	if error != OK:
-		push_error("Logger: Load external sound: Cannot open file %s. Error: %s" % [log_file_path, error_string(error)])
+	var err: Error = FileAccess.get_open_error()
+	if err != OK:
+		push_error("Logger: Load external sound: Cannot open file %s. Error: %s" % [log_file_path, error_string(err)])
 		return
 	if log_file == null:
 		push_error("Logger: Could not open log file at " + log_file_path)
