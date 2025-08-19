@@ -10,6 +10,7 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 	var err: Error = open(zip_path)
 	if err != OK:
 		Logger.error("FolderUnzipper: Error " + error_string(err) + " while opening file: %s" % zip_path)
+		close()
 		return ""
 	var extract_folder: String = extract_path.path_join(zip_path.get_file().get_basename()) if extract_in_subfolder else extract_path
 	
@@ -30,9 +31,11 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 		var error: Error = FileAccess.get_open_error()
 		if error != OK:
 			Logger.error("FolderUnzipper: Extract: Cannot open file %s. Error: %s" % [file_name, error_string(error)])
+			close()
 			return first_folder
 		if file == null:
 			Logger.error("FolderUnzipper: Extract: Cannot open file %s. File is null" % file_name)
+			close()
 			return first_folder
 		if file != null:
 			file.store_buffer(read_file(sub_path))
@@ -42,7 +45,6 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 		file_copied.emit(copied_file, file_name)
 	
 	close()
-	
 	finished.emit()
 	Logger.trace("FolderUnzipper: Extraction finished in %s" % extract_folder)
 	return first_folder
