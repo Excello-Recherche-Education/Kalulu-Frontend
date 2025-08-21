@@ -6,30 +6,30 @@ import sys
 def split_params(param_string: str):
     """Split parameters on commas while ignoring nested structures."""
     params = []
-    current = ""
+    current: list[str] = []
     stack: list[str] = []
     pairs = {')': '(', ']': '[', '}': '{'}
     in_quote = None
     escape = False
     for char in param_string:
         if escape:
-            current += char
+            current.append(char)
             escape = False
             continue
 
         if char == "\\":
-            current += char
+            current.append(char)
             escape = True
             continue
 
         if in_quote:
-            current += char
+            current.append(char)
             if char == in_quote:
                 in_quote = None
             continue
 
         if char in "'\"":
-            current += char
+            current.append(char)
             in_quote = char
             continue
         
@@ -38,14 +38,22 @@ def split_params(param_string: str):
         elif char in ')]}':
             if stack and stack[-1] == pairs.get(char):
                 stack.pop()
+            else:
+                raise ValueError("unbalance in delimiter")
         
         if char == ',' and not stack:
-            params.append(current.strip())
-            current = ""
+            params.append(''.join(current).strip())
+            current = []
         else:
-            current += char
-            
-    params.append(current.strip())
+            current.append(char)
+
+    if stack:
+        raise ValueError("unbalance in delimiter")
+    if in_quote:
+        raise ValueError(f"Unclosed quote: {in_quote}")
+
+    params.append(''.join(current).strip())
+    params = [p for p in params if p]
     return params
 
 EXCLUDED_DIRS = {"addons", ".git", ".github"}
