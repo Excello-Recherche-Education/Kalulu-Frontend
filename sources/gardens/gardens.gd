@@ -386,7 +386,7 @@ func _ready() -> void:
 
 
 static func compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
-	Logger.debug("compute_lessons_distribution: total_lessons = %s, garden_layouts count = %s" % [str(total_lessons), str(garden_layouts.size())])
+	Logger.trace("Gardens: compute_lessons_distribution: total_lessons = %s, garden_layouts count = %s" % [str(total_lessons), str(garden_layouts.size())])
 	var distribution: Array[int] = []
 	var lessons_left: int = total_lessons
 	var gardens_left: int = garden_layouts.size()
