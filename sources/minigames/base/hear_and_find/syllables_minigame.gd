@@ -193,9 +193,7 @@ func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 	if _is_stimulus_right(stimulus):
 		# Positive score only if the answer was not highlighted
 		if not is_highlighting:
-			for gp: Dictionary in stimulus.GPs:
-				_update_gp_score(gp.ID as int, 1)
-			_update_syllable_score(stimulus.ID as int, 1)
+			_update_remediation_syllable_score(stimulus.ID as int, 1)
 		else:
 			# Handles highlight
 			is_highlighting = false
@@ -203,29 +201,17 @@ func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 		_on_stimulus_found()
 		stimulus_found.emit()
 	else:
-		var right_answer_gps: Array[Dictionary] = _get_current_stimulus().GPs
-		
-		var stimulus_gps: Array[Dictionary] = []
-		if stimulus.has("GPs"):
-			stimulus_gps = stimulus.GPs
-		
 		# Handles the right answer GPs
-		# RA os - stimulus à
-		for index: int in range(right_answer_gps.size()):
-			if not stimulus_gps or (index < stimulus_gps.size() and stimulus_gps[index] == right_answer_gps[index]):
-				continue
-			_update_gp_score(right_answer_gps[index].ID as int, -1)
 		if _get_current_stimulus().has("ID"):
-			_update_syllable_score(_get_current_stimulus().ID as int, -1)
+			_update_remediation_syllable_score(_get_current_stimulus().ID as int, -1)
+		else:
+			Logger.error("SyllablesMinigame: current stimulus has no ID")
 		
 		# Handles the pressed stimulus Gps
-		if stimulus_gps:
-			for index: int in range(stimulus_gps.size()):
-				if index < right_answer_gps.size() and stimulus_gps[index] == right_answer_gps[index]:
-					continue
-				_update_gp_score(stimulus_gps[index].ID as int, -1)
 		if stimulus.has("ID"):
-			_update_syllable_score(stimulus.ID as int, -1)
+			_update_remediation_syllable_score(stimulus.ID as int, -1)
+		else:
+			Logger.error("SyllablesMinigame: stimulus has no ID")
 	return true
 
 

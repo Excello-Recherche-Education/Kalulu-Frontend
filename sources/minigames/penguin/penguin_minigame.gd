@@ -158,18 +158,20 @@ func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 	# Throw the snowball
 	await penguin.throw(pos)
 	
-	# Checks if the GP pressed is silent
-	if _is_silent(label.gp):
+	var correct_answer: bool = _is_silent(label.gp)
+	
+	if label.gp.has("WordID"):
+		_update_remediation_word_score(label.gp.WordID as int, 1 if correct_answer else -1)
+	else:
+		Logger.error("PenguinMinigame: Cannot update remediation score because label GP has no WordID")
+	
+	if correct_answer:
 		penguin.happy()
-		_update_gp_score(label.gp.ID as int, 1)
 		await label.right()
-		
 		current_word_progression += 1
 	else:
 		penguin.sad()
-		_update_gp_score(label.gp.ID as int, -1)
 		await label.wrong()
-		
 		current_lives -= 1
 	
 	# Re-enables all labels

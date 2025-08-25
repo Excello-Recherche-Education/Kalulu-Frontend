@@ -233,13 +233,13 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 			if key != answers[key]:
 				is_right = false
 				if word_id != -1:
-					_update_word_score(word_id, -1)
+					_update_remediation_word_score(word_id, -1)
 				word_id = Database.get_word_id_from_text(answers[key])
 				if word_id != -1:
-					_update_word_score(word_id, -1)
+					_update_remediation_word_score(word_id, -1)
 			else:
 				if word_id != -1:
-					_update_word_score(word_id, 1)
+					_update_remediation_word_score(word_id, 1)
 		
 		for word_i: Word in words.get_children():
 			@warning_ignore("unsafe_method_access")

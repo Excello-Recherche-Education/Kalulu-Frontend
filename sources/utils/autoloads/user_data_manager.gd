@@ -9,18 +9,21 @@ var student: String = "":
 		if student:
 			_load_student_progression()
 			_load_student_remediation()
+			_load_student_confusion_matrix()
 			_load_student_difficulty()
 			_load_student_speeches()
 		else:
 			student_progression = null
 			_student_difficulty = null
 			_student_remediation = null
+			_student_confusion_matrix = null
 			_student_speeches = null
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
 var student_progression: StudentProgression
 var _student_remediation: UserRemediation
+var _student_confusion_matrix: UserConfusionMatrix
 var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
 
@@ -620,26 +623,87 @@ func get_gp_remediation_score(gp_id: int) -> int:
 		return 0
 	return _student_remediation.get_gp_score(gp_id)
 
-func update_remediation_gp_scores(gp_scores: Dictionary) -> void:
+func update_remediation_gp_scores(remediation_gp_scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
-	if gp_scores:
-		_student_remediation.update_gp_scores(gp_scores)
+	if remediation_gp_scores:
+		_student_remediation.update_gp_scores(remediation_gp_scores)
 
-func update_remediation_syllables_scores(syllables_scores: Dictionary) -> void:
+func update_remediation_syllables_scores(remediation_syllables_scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
-	if syllables_scores:
-		_student_remediation.update_syllables_scores(syllables_scores)
+	if remediation_syllables_scores:
+		_student_remediation.update_syllables_scores(remediation_syllables_scores)
 
-func update_remediation_words_scores(words_scores: Dictionary) -> void:
+func update_remediation_words_scores(remediation_words_scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
-	if words_scores:
-		_student_remediation.update_words_scores(words_scores)
+	if remediation_words_scores:
+		_student_remediation.update_words_scores(remediation_words_scores)
+
+#endregion
+
+#region Student Confusion Matrix
+
+func _get_student_confusion_matrix_path(device: int = 0, student_code: int = 0) -> String:
+	if student_code == 0:
+		return get_student_folder().path_join("confusion_matrix.tres")
+	elif device == 0 and student_code != 0:
+		return find_student_dir(student_code).path_join("confusion_matrix.tres")
+	else:
+		var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(student_code))
+		var confusion_matrix_path: String = student_path.path_join("confusion_matrix.tres")
+		return confusion_matrix_path
+
+func _load_student_confusion_matrix() -> void:
+	if FileAccess.file_exists(_get_student_confusion_matrix_path()):
+		_student_confusion_matrix = load(_get_student_confusion_matrix_path())
+	
+	if not _student_confusion_matrix:
+		_student_confusion_matrix = UserConfusionMatrix.new()
+		DirAccess.make_dir_recursive_absolute(get_student_folder())
+		_save_student_confusion_matrix()
+	
+	_student_confusion_matrix.score_changed.connect(_save_student_confusion_matrix)
+
+func get_student_confusion_matrix_data(student_code: int) -> UserConfusionMatrix:
+	var confusion_matrix_data_path: String = _get_student_confusion_matrix_path(0, student_code)
+	if FileAccess.file_exists(confusion_matrix_data_path):
+		var student_confusion_matrix: UserConfusionMatrix
+		student_confusion_matrix = load(confusion_matrix_data_path)
+		return student_confusion_matrix
+	Logger.trace("UserDataManager: Confusion matrix data of student code %d not found" % student_code)
+	return null
+
+func set_student_confusion_matrix_gp_data(student_code: int, new_scores: Dictionary[int, PackedInt32Array], updated_at: String) -> void:
+	var confusion_matrix_data_path: String = _get_student_confusion_matrix_path(0, student_code)
+	var student_confusion_matrix: UserConfusionMatrix
+	if FileAccess.file_exists(confusion_matrix_data_path):
+		student_confusion_matrix = load(confusion_matrix_data_path)
+	else:
+		student_confusion_matrix = UserConfusionMatrix.new()
+	student_confusion_matrix.set_gp_scores(new_scores)
+	student_confusion_matrix.set_gp_last_modified(updated_at)
+	ResourceSaver.save(student_confusion_matrix, confusion_matrix_data_path)
+
+func _save_student_confusion_matrix() -> void:
+	Logger.trace("UserDataManager: Saving student confusion_matrix in " + ProjectSettings.globalize_path(_get_student_confusion_matrix_path()))
+	ResourceSaver.save(_student_confusion_matrix, _get_student_confusion_matrix_path())
+
+func get_gp_confusion_matrix_score(gp_id: int) -> PackedInt32Array:
+	if not _student_confusion_matrix:
+		return []
+	return _student_confusion_matrix.get_gp_scores(gp_id)
+
+func update_confusion_matrix_gp_scores(confusion_matrix_gp_scores: Dictionary) -> void:
+	if not _student_confusion_matrix:
+		Logger.warn("UserDataManager: No student confusion matrix data for " + str(student))
+		return
+	if confusion_matrix_gp_scores:
+		_student_confusion_matrix.update_gp_scores(confusion_matrix_gp_scores)
 
 #endregion
 
@@ -788,6 +852,8 @@ func save_all() -> void:
 		_save_student_progression()
 	if _student_remediation != null:
 		_save_student_remediation()
+	if _student_confusion_matrix != null:
+		_save_student_confusion_matrix()
 	if _student_difficulty != null:
 		_save_student_difficulty()
 	if _student_speeches != null:

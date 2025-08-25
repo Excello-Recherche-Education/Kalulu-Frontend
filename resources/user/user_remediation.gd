@@ -1,5 +1,10 @@
-extends Resource
 class_name UserRemediation
+extends Resource
+
+## A remediation score indicates how much extra practice an item needs.
+## It is a cumulative value that becomes more negative when the student struggles
+## and rises back toward 0 as they succeed. Items at or below a defined
+## threshold are flagged for remediation; 0 means no remediation needed.
 
 signal score_changed()
 
@@ -32,17 +37,14 @@ func update_gp_scores(minigame_scores: Dictionary) -> void:
 		return
 	Logger.trace("UserRemediation: Update GP Scores: " + str(minigame_scores))
 	for id: int in minigame_scores.keys():
-		var new_gp_score: int = 0
-		if gps_scores.has(id):
-			new_gp_score += gps_scores[id]
+		var new_gp_score: int = get_gp_score(id)
 		new_gp_score += minigame_scores[id]
-		
 		if new_gp_score >= MAX_SCORE:
 			gps_scores.erase(id)
 		else:
 			gps_scores[id] = maxi(MIN_SCORE, new_gp_score)
 	
-	gp_last_modified = Time.get_datetime_string_from_system(true)
+	set_gp_last_modified(Time.get_datetime_string_from_system(true))
 	score_changed.emit()
 
 func set_gp_scores(new_scores: Dictionary[int, int]) -> void:
@@ -75,17 +77,14 @@ func update_syllables_scores(minigame_scores: Dictionary) -> void:
 		return
 	Logger.trace("UserRemediation: Update Syllable Scores: " + str(minigame_scores))
 	for id: int in minigame_scores.keys():
-		var new_syllable_score: int = 0
-		if syllables_scores.has(id):
-			new_syllable_score += syllables_scores[id]
+		var new_syllable_score: int = get_syllable_score(id)
 		new_syllable_score += minigame_scores[id]
-		
 		if new_syllable_score >= MAX_SCORE:
 			syllables_scores.erase(id)
 		else:
 			syllables_scores[id] = maxi(MIN_SCORE, new_syllable_score)
 	
-	syllables_last_modified = Time.get_datetime_string_from_system(true)
+	set_syllables_last_modified(Time.get_datetime_string_from_system(true))
 	score_changed.emit()
 
 func set_syllables_scores(new_scores: Dictionary[int, int]) -> void:
@@ -118,17 +117,14 @@ func update_words_scores(minigame_scores: Dictionary) -> void:
 		return
 	Logger.trace("UserRemediation: Update Syllable Scores: " + str(minigame_scores))
 	for id: int in minigame_scores.keys():
-		var new_word_score: int = 0
-		if words_scores.has(id):
-			new_word_score += words_scores[id]
+		var new_word_score: int = get_word_score(id)
 		new_word_score += minigame_scores[id]
-		
 		if new_word_score >= MAX_SCORE:
 			words_scores.erase(id)
 		else:
 			words_scores[id] = maxi(MIN_SCORE, new_word_score)
 	
-	words_last_modified = Time.get_datetime_string_from_system(true)
+	set_words_last_modified(Time.get_datetime_string_from_system(true))
 	score_changed.emit()
 
 func set_words_scores(new_scores: Dictionary[int, int]) -> void:
