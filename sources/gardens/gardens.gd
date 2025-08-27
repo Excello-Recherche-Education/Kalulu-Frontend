@@ -394,7 +394,7 @@ static func compute_lessons_distribution(total_lessons: int, garden_layouts: Arr
 		var max_lessons: int = garden_layouts[layout_index].lesson_buttons.size()
 		var lessons_for_garden: int = 0
 		if gardens_left > 0:
-			lessons_for_garden = int(ceil(float(lessons_left) / float(gardens_left)))
+			lessons_for_garden = int(ceili(float(lessons_left) / float(gardens_left)))
 		lessons_for_garden = min(lessons_for_garden, max_lessons)
 		if lessons_for_garden > lessons_left:
 				lessons_for_garden = lessons_left

@@ -60,9 +60,12 @@ var lesson_difficulty: int
 var logs: Dictionary = {}
 
 # Scores for the remediation engine
-var gp_scores: Dictionary = {}
-var syllables_scores: Dictionary = {}
-var words_scores: Dictionary = {}
+var remediation_gp_scores: Dictionary = {}
+var remediation_syllables_scores: Dictionary = {}
+var remediation_words_scores: Dictionary = {}
+
+# Scores for the confusion matrix engine
+var confusion_matrix_gp_scores: Dictionary[int, PackedInt32Array] = {}
 
 # Stimuli
 var stimuli: Array = []
@@ -217,7 +220,7 @@ func _win() -> void:
 	if UserDataManager.student_progression:
 		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
-	update_remediation()
+	update_scores()
 	
 	# Difficulty
 	if current_lives <= 0:
@@ -237,13 +240,18 @@ func _win() -> void:
 	_go_back_to_the_garden()
 
 
-func update_remediation() -> void:
-	if gp_scores:
-		UserDataManager.update_remediation_gp_scores(gp_scores)
-	if syllables_scores:
-		UserDataManager.update_remediation_syllables_scores(syllables_scores)
-	if words_scores:
-		UserDataManager.update_remediation_words_scores(words_scores)
+func update_scores() -> void:
+	# Remediation
+	if remediation_gp_scores:
+		UserDataManager.update_remediation_gp_scores(remediation_gp_scores)
+	if remediation_syllables_scores:
+		UserDataManager.update_remediation_syllables_scores(remediation_syllables_scores)
+	if remediation_words_scores:
+		UserDataManager.update_remediation_words_scores(remediation_words_scores)
+	
+	# Confusion Matrix
+	if confusion_matrix_gp_scores:
+		UserDataManager.update_confusion_matrix_gp_scores(confusion_matrix_gp_scores)
 
 
 func _lose() -> void:
@@ -255,7 +263,7 @@ func _lose() -> void:
 	if gardens_data:
 		gardens_data.minigame_completed = false
 	
-	update_remediation()
+	update_scores()
 	
 	# Difficulty
 	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
@@ -323,29 +331,40 @@ func _sort_scoring(stimulus1: Dictionary, stimulus2: Dictionary) -> bool:
 	return _get_stimulus_score(stimulus1) < _get_stimulus_score(stimulus2)
 
 
-# Updates the score of a GP defined by his ID
-func _update_gp_score(id: int, score: int) -> void:
-	var new_gp_score: int = 0
-	if gp_scores.has(id):
-		new_gp_score += gp_scores[id]
-	new_gp_score += score
-	gp_scores[id] = new_gp_score
+# Updates the remediation score of a GP defined by his ID
+func _update_remediation_gp_score(id: int, score: int) -> void:
+	var new_remediation_gp_score: int = 0
+	if remediation_gp_scores.has(id):
+		new_remediation_gp_score += remediation_gp_scores[id]
+	new_remediation_gp_score += score
+	remediation_gp_scores[id] = new_remediation_gp_score
 
-# Updates the score of a syllable defined by his ID
-func _update_syllable_score(id: int, score: int) -> void:
-	var new_syllable_score: int = 0
-	if syllables_scores.has(id):
-		new_syllable_score += syllables_scores[id]
-	new_syllable_score += score
-	syllables_scores[id] = new_syllable_score
+# Updates the remediation score of a syllable defined by his ID
+func _update_remediation_syllable_score(id: int, score: int) -> void:
+	var new_remediation_syllable_score: int = 0
+	if remediation_syllables_scores.has(id):
+		new_remediation_syllable_score += remediation_syllables_scores[id]
+	new_remediation_syllable_score += score
+	remediation_syllables_scores[id] = new_remediation_syllable_score
 
-# Updates the score of a syllable defined by his ID
-func _update_word_score(id: int, score: int) -> void:
-	var new_word_score: int = 0
-	if words_scores.has(id):
-		new_word_score += words_scores[id]
-	new_word_score += score
-	words_scores[id] = new_word_score
+# Updates the remediation score of a word defined by his ID
+func _update_remediation_word_score(id: int, score: int) -> void:
+	var new_remediation_word_score: int = 0
+	if remediation_words_scores.has(id):
+		new_remediation_word_score += remediation_words_scores[id]
+	new_remediation_word_score += score
+	remediation_words_scores[id] = new_remediation_word_score
+
+#endregion
+
+#region Confusion Matrix
+
+func _update_confusion_matrix_gp_score(expected_id: int, selected_id: int) -> void:
+	var stored: PackedInt32Array = PackedInt32Array()
+	if confusion_matrix_gp_scores.has(expected_id):
+		stored = confusion_matrix_gp_scores[expected_id]
+	stored.append(selected_id)
+	confusion_matrix_gp_scores[expected_id] = stored
 
 #endregion
 
@@ -408,7 +427,7 @@ func set_current_progression(p_current_progression: int) -> void:
 
 func _on_minigame_ui_garden_button_pressed() -> void:
 	_go_back_to_the_garden()
-	update_remediation()
+	update_scores()
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:
