@@ -132,6 +132,13 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 			else:
 				server_student_remediation_words_unix_time = 0
 		
+		var server_student_confusion_matrix_gp_unix_time: int = -1
+		if student_dic.has("confusion_matrix_gp_last_modified"):
+			if student_dic.confusion_matrix_gp_last_modified != null && student_dic.confusion_matrix_gp_last_modified is String:
+				server_student_confusion_matrix_gp_unix_time = Time.get_unix_time_from_datetime_string(student_dic.confusion_matrix_gp_last_modified as String)
+			else:
+				server_student_confusion_matrix_gp_unix_time = 0
+		
 		var found: bool = false
 		need_update_students[code_to_check] = {}
 		for device: int in UserDataManager.teacher_settings.students.keys():
@@ -190,6 +197,19 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 							need_update_students[code_to_check].merge({"remediation_words": UpdateNeeded.FromLocal})
 						else:
 							need_update_students[code_to_check].merge({"remediation_words": UpdateNeeded.FromServer})
+					
+					# Synchronize student confusion matrix
+					var student_confusion_matrix: UserConfusionMatrix = UserDataManager.get_student_confusion_matrix_data(code_to_check)
+					if student_confusion_matrix != null:
+						var local_student_gp_confusion_matrix_unix_time: int = Time.get_unix_time_from_datetime_string(student_confusion_matrix.gp_last_modified)
+						if local_student_gp_confusion_matrix_unix_time == server_student_confusion_matrix_gp_unix_time:
+							Logger.trace("UserDatabaseSynchronizer: Student %d GP confusion matrix data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+							need_update_students[code_to_check].merge({"confusion_matrix_gp": UpdateNeeded.Nothing})
+						elif local_student_gp_confusion_matrix_unix_time > server_student_confusion_matrix_gp_unix_time:
+							need_update_students[code_to_check].merge({"confusion_matrix_gp": UpdateNeeded.FromLocal})
+						else:
+							need_update_students[code_to_check].merge({"confusion_matrix_gp": UpdateNeeded.FromServer})
+					
 					break
 			if found:
 				break
@@ -332,6 +352,22 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 			if words_remediation_block.size() > 0:
 				student_block["remediation_words"] = words_remediation_block
 
+		var student_confusion_matrix: UserConfusionMatrix = UserDataManager.get_student_confusion_matrix_data(student_code)
+		if student_entry.has("confusion_matrix_gp"):
+			var gp_confusion_matrix_block: Dictionary = {}
+			if student_entry.confusion_matrix_gp == UpdateNeeded.FromLocal:
+				var tuple_list: Array = []
+				for key: int in student_confusion_matrix.gp_scores.keys():
+					tuple_list.append([key, student_confusion_matrix.gp_scores[key]])
+				gp_confusion_matrix_block = {"confusion_matrix": tuple_list, "updated_at": student_confusion_matrix.gp_last_modified}
+			elif student_entry.confusion_matrix_gp == UpdateNeeded.FromServer:
+				gp_confusion_matrix_block = {"need_update": true}
+			elif student_entry.confusion_matrix_gp == UpdateNeeded.DeleteServer:
+				gp_confusion_matrix_block = {"delete": true}
+
+			if gp_confusion_matrix_block.size() > 0:
+				student_block["confusion_matrix_gp"] = gp_confusion_matrix_block
+
 		if student_block.size() > 0:
 			message_to_server["students"][student_code] = student_block
 
@@ -416,6 +452,17 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					# TODO ADD SECURITY
 					new_words_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_words_data(int(response_student_code), new_words_scores, response_student_data.remediation_words.updated_at as String)
+			if response_student_data.has("confusion_matrix_gp") && (response_student_data.confusion_matrix_gp as Dictionary).has("confusion_matrix") && (response_student_data.confusion_matrix_gp as Dictionary).has("updated_at"):
+				# TODO ADD SECURITY
+				var new_array: Array = response_student_data.confusion_matrix_gp.confusion_matrix
+				var new_confusion_matrix_gp: Dictionary[int, PackedInt32Array] = {}
+				for index: int in range(new_array.size()):
+					# TODO ADD SECURITY
+					var sub_array: PackedInt32Array = []
+					for subindex: int in range((new_array[index][1] as Array).size()):
+						sub_array.append(int(new_array[index][1][subindex] as float))
+					new_confusion_matrix_gp.set(int(new_array[index][0] as float), sub_array as PackedInt32Array)
+				UserDataManager.set_student_confusion_matrix_gp_data(int(response_student_code), new_confusion_matrix_gp, response_student_data.confusion_matrix_gp.updated_at as String)
 
 
 func synchronize() -> void:
@@ -466,7 +513,7 @@ func validate_student_data(data: Dictionary) -> bool:
 	if missing.is_empty():
 		return true
 
-	Logger.error("UserDatabaseSynchronizer: Student data is partially incomplete. Missing keys: %s" % str(missing))
+	Logger.trace("UserDatabaseSynchronizer: Student data is incomplete. Missing keys: %s" % str(missing))
 	return false
 
 func set_loading_bar_progression(value_percent: float, wait_time: float = 0.2) -> void:
