@@ -209,6 +209,9 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 							need_update_students[code_to_check].merge({"confusion_matrix_gp": UpdateNeeded.FromLocal})
 						else:
 							need_update_students[code_to_check].merge({"confusion_matrix_gp": UpdateNeeded.FromServer})
+					else:
+						if server_student_confusion_matrix_gp_unix_time > 0:
+							need_update_students[code_to_check].merge({"confusion_matrix_gp": UpdateNeeded.FromServer})
 					
 					break
 			if found:
