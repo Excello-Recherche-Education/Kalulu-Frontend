@@ -1,16 +1,16 @@
-extends Node2D
 class_name Coconut
-
-@onready var highlight_fx: HighlightFX = $HighlightFX
-@onready var sprite: Sprite2D = $Sprite2D
-@onready var label: Label = $Label
-@onready var broken_coconut_fx: BrokenCoconutFX = $BrokenCoconutFX
+extends Node2D
 
 var text: String:
 	set(value):
 		text = value
 		if label:
 			label.text = text
+
+@onready var highlight_fx: HighlightFX = $HighlightFX
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var label: Label = $Label
+@onready var broken_coconut_fx: BrokenCoconutFX = $BrokenCoconutFX
 
 
 func highlight() -> void:

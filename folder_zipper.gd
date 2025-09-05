@@ -1,5 +1,5 @@
-extends ZIPPacker
 class_name FolderZipper
+extends ZIPPacker
 
 
 func write_folder_recursive(abs_path: String, rel_path: String) -> Error:

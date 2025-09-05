@@ -1,9 +1,9 @@
-extends Control
 class_name GPImageAndSoundDescriptions
-
-@onready var description_container: VBoxContainer = %DescriptionsContainer
+extends Control
 
 const DESCRIPTION_LINE_SCENE: PackedScene = preload("res://sources/language_tool/image_and_sound_gp_description.tscn")
+
+@onready var description_container: VBoxContainer = %DescriptionsContainer
 
 
 func _ready() -> void:

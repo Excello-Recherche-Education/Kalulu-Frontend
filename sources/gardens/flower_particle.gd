@@ -1,5 +1,5 @@
-extends Control
 class_name FlowerVFX
+extends Control
 
 @export var sounds: Array[AudioStream] = []
 
@@ -8,8 +8,8 @@ class_name FlowerVFX
 	$Particles2,
 	$Particles3
 ]
-
 @onready var audio_stream_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
+
 
 func play() -> void:
 	audio_stream_player.stream = sounds.pick_random()

@@ -1,6 +1,6 @@
 @tool
-extends ValidatorRule
 class_name DoesNotMatchRule
+extends ValidatorRule
 
 @export var pattern: String
 

@@ -1,8 +1,9 @@
-extends MarginContainer
 class_name KeyboardSpacer
+extends MarginContainer
 
 var screen_scale: float
 var last_margin: int = -1
+
 
 func _ready() -> void:
 	screen_scale = DisplayServer.screen_get_scale()

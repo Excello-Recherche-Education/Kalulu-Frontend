@@ -26,7 +26,6 @@ var language: String:
 		language = value
 		db_path = BASE_PATH + language + "/language.db"
 		words_path = BASE_PATH + language + "/words/"
-
 var db_path: String = BASE_PATH + language + "/language.db":
 	set(value):
 		db_path = value
@@ -34,12 +33,11 @@ var db_path: String = BASE_PATH + language + "/language.db":
 			db.path = db_path
 			db.foreign_keys = true
 			connect_to_db()
-
 var words_path: String = BASE_PATH + language + "/words/"
 var additional_word_list: Dictionary = {}
+var is_open: bool = false
 
 @onready var db: SQLite = SQLite.new()
-var is_open: bool = false
 
 
 func _exit_tree() -> void:
@@ -615,6 +613,7 @@ func _phoneme_to_string(phoneme: String) -> String:
 		return phoneme
 	else:
 		return "cap." + phoneme.to_lower()
+
 
 # Returns an array containing an int followed by an array of int
 func _import_word_from_csv(ortho: String, gpmatch: String, is_word: bool = true) -> Array[Variant]:

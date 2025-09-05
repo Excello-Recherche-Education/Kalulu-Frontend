@@ -1,19 +1,9 @@
 @tool
-extends Node2D
 class_name Monkey
+extends Node2D
 
 signal pressed()
 signal dragged_into_self()
-
-
-@onready var stars: AnimatedSprite2D = $Stars
-@onready var coconut: Coconut = $Marker2D/Coconut
-@onready var coconut_pivot: Marker2D = $Marker2D
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var drag_preview_label: Label = $Button/DragPreview/Label
-@onready var drag_preview: TextureRect = $Button/DragPreview
-@onready var button: Button = $Button
-@onready var hit_position: Marker2D = $HitPosition
 
 var locked: bool = true:
 	set(value):
@@ -23,8 +13,6 @@ var stunned: bool = false:
 		stunned = value
 		stars.visible = stunned
 		locked = true
-
-
 var stimulus: Dictionary = {}:
 	set(value):
 		stimulus = value
@@ -35,6 +23,15 @@ var stimulus: Dictionary = {}:
 			coconut.text = ""
 			drag_preview_label.text = ""
 		coconut_pivot.hide()
+
+@onready var stars: AnimatedSprite2D = $Stars
+@onready var coconut: Coconut = $Marker2D/Coconut
+@onready var coconut_pivot: Marker2D = $Marker2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var drag_preview_label: Label = $Button/DragPreview/Label
+@onready var drag_preview: TextureRect = $Button/DragPreview
+@onready var button: Button = $Button
+@onready var hit_position: Marker2D = $HitPosition
 
 
 func _ready() -> void:

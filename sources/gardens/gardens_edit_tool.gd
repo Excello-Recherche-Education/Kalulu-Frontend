@@ -5,7 +5,6 @@ const GARDEN_TEXTURES_NB: int = 20
 const FLOWER_TYPES_NB: int = 5
 const GARDENS_LAYOUT_RESOURCE_PATH: String = "res://resources/gardens/gardens_layout.tres"
 
-
 var dragging_element: Variant
 var drag_data: Dictionary = {}
 

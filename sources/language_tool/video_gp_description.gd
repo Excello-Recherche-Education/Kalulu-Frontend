@@ -1,15 +1,15 @@
-extends HBoxContainer
 class_name VideoGPDescription
+extends HBoxContainer
 
 @warning_ignore("unused_signal")
-signal delete
+signal deleted()
+
+var gp: Dictionary = {}
 
 @onready var gp_menu_button: MenuButton = %GPMenuButton
 @onready var video_player: VideoStreamPlayer = %VideoStreamPlayer
 @onready var video_upload_button: PlusButton = %VideoUploadButton
 @onready var file_dialog: FileDialog = $FileDialog
-
-var gp: Dictionary = {}
 
 
 func _video_file_selected(file_path: String) -> void:

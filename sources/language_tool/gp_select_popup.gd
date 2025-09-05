@@ -4,14 +4,12 @@ signal gp_selected(grapheme_ind: int, gp_id: int, text: String)
 signal focus_changed(has_focus: bool)
 signal new_gp_asked()
 
-@onready var container: VBoxContainer = $VBoxContainer
-@onready var button: Button = $Button
-
-
 var grapheme_ind: int = -1
 var ind_selected: int = -1:
 	set = set_ind_selected
 
+@onready var container: VBoxContainer = $VBoxContainer
+@onready var button: Button = $Button
 
 
 func _ready() -> void:

@@ -1,6 +1,6 @@
 @tool
-extends Step
 class_name RecapStep
+extends Step
 
 const DEVICE_RECAP_SCENE: PackedScene = preload("res://sources/menus/register/steps/device_recap.tscn")
 
@@ -10,6 +10,7 @@ const DEVICE_RECAP_SCENE: PackedScene = preload("res://sources/menus/register/st
 @onready var education_method: Label = %EducationMethod
 @onready var devices_count: Label = %DevicesCount
 @onready var students_count: Label = %StudentsCount
+
 
 func on_enter() -> void:
 	super.on_enter()

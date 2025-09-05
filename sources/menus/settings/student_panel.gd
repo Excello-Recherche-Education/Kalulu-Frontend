@@ -1,13 +1,14 @@
-extends Control
 class_name StudentPanel
+extends Control
 
-signal pressed
+signal pressed()
+
+@export var student_count: int
+@export var student_data: StudentData
 
 @onready var name_label: Label = %NameLabel
 @onready var password_visualizer: PasswordVisualizer = %PasswordVisualizer
 
-@export var student_count: int
-@export var student_data: StudentData
 
 func _ready() -> void:
 	if not student_data:

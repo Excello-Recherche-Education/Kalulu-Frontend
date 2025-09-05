@@ -1,15 +1,13 @@
-extends RefCounted
 class_name Coroutine
+extends RefCounted
 
 # For resume functionality
 signal resume_signal()
+signal _join()
+
 var _is_started: bool = false
 var is_completed: bool = false
-
-# For join functionality
-signal _join()
 var _ended_count: int = -1
-
 var return_value: Array = []
 
 

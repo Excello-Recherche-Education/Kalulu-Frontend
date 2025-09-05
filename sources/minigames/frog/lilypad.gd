@@ -1,15 +1,8 @@
-extends Control
 class_name Lilypad
+extends Control
 
 signal pressed()
 signal disappeared()
-
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var button: TextureButton = $TextureButton
-@onready var label: Label = %Label
-@onready var highlight_fx: HighlightFX = %HighlightFX
-@onready var right_fx: RightFX = %RightFX
-@onready var wrong_fx: WrongFX = %WrongFX
 
 var stimulus: Dictionary = {}:
 	set = _set_stimulus
@@ -17,6 +10,13 @@ var disabled: bool = false:
 	set = _set_disabled
 var is_distractor: bool = true
 var top_to_bottom: bool = false
+
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var button: TextureButton = $TextureButton
+@onready var label: Label = %Label
+@onready var highlight_fx: HighlightFX = %HighlightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var wrong_fx: WrongFX = %WrongFX
 
 
 func disappear() -> void:

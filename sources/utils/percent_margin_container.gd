@@ -1,6 +1,6 @@
 @tool
-extends Container
 class_name PercentMarginContainer
+extends Container
 
 @export var margin_left_ratio: float = 0.0:
 	set = set_margin_left_ratio

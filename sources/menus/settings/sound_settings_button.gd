@@ -7,6 +7,7 @@ extends TextureButton
 @onready var voice_volume_slider: HSlider = %VoiceVolumeSlider
 @onready var effects_volume_slider: HSlider = %EffectsVolumeSlider
 
+
 func _ready() -> void:
 	set_master_volume_slider(UserDataManager.get_master_volume())
 	set_music_volume_slider(UserDataManager.get_music_volume())

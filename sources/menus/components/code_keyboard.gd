@@ -1,14 +1,15 @@
-extends Control
 class_name CodeKeyboard
+extends Control
 
 signal button_pressed(key: String, password: Array[String])
 signal password_entered(password: String)
+
+var password: Array[String] = []
 
 @onready var password_visualizer: PasswordVisualizer = %PasswordVisualizer
 @onready var buttons: GridContainer = %Buttons
 @onready var sound_player: AudioStreamPlayer = $ButtonSoundPlayer
 
-var password: Array[String] = []
 
 func _ready() -> void:
 	for button: TextureButton in buttons.get_children(false):

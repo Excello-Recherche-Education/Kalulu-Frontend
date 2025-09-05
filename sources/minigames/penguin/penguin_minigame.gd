@@ -1,17 +1,15 @@
 @tool
 extends Minigame
 
-# Namespace
 const LABEL_SCENE: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
 
+var current_word_progression: int = 0: set = _set_current_word_progression
+var max_word_progression: int = 0
+var labels: Array[PenguinLabel] = []
 
 @onready var penguin: Penguin = $GameRoot/Penguin
 @onready var labels_container: HFlowContainer = $GameRoot/Control/LabelsContainer
 
-var current_word_progression: int = 0: set = _set_current_word_progression
-var max_word_progression: int = 0
-
-var labels: Array[PenguinLabel] = []
 
 # Find words with silent GPs
 func _find_stimuli_and_distractions() -> void:

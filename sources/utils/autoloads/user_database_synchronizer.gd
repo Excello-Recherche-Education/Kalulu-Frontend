@@ -1,13 +1,5 @@
-extends Node
 class_name UserDatabaseSynchronizer
-
-
-var synchronizing: bool = false
-
-var account_type_option_button: OptionButton
-var education_method_option_button: OptionButton
-
-var loading_popup: LoadingPopup
+extends Node
 
 enum UpdateNeeded {
 	Nothing,
@@ -16,6 +8,11 @@ enum UpdateNeeded {
 	DeleteLocal,
 	DeleteServer
 }
+
+var synchronizing: bool = false
+var account_type_option_button: OptionButton
+var education_method_option_button: OptionButton
+var loading_popup: LoadingPopup
 
 
 func start_sync() -> void:
@@ -518,6 +515,7 @@ func validate_student_data(data: Dictionary) -> bool:
 
 	Logger.trace("UserDatabaseSynchronizer: Student data is incomplete. Missing keys: %s" % str(missing))
 	return false
+
 
 func set_loading_bar_progression(value_percent: float, wait_time: float = 0.2) -> void:
 	if loading_popup != null:

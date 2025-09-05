@@ -8,18 +8,6 @@ const MAX_TURTLE_COUNT: int = 5
 # Defines the minimum distance between turtles when spawning them
 const MIN_DISTANCE: int = 500
 
-
-class DifficultySettings:
-	var stimuli_ratio: float = 0.75
-	var velocity: float = 250.
-	var spawn_rate: float = 4.
-	
-	func _init(p_stimuli_ratio: float, p_velocity: float, p_spawn_rate: float) -> void:
-		stimuli_ratio = p_stimuli_ratio
-		velocity = p_velocity
-		spawn_rate = p_spawn_rate
-
-
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(.75, 200., 4.),
 	DifficultySettings.new(.66, 250., 3.5),
@@ -27,14 +15,6 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(.25, 333., 2.5),
 	DifficultySettings.new(.25, 366., 2.)
 ]
-
-
-@onready var water: Water = $GameRoot/Water
-@onready var island: Island = $GameRoot/Island
-@onready var turtles: Control = %Turtles
-@onready var spawn_location: PathFollow2D = $GameRoot/SpawnPath/SpawnLocation
-@onready var spawn_timer: Timer = $GameRoot/SpawnTimer
-
 var settings: DifficultySettings
 var turtle_count: int = 0:
 	set(value):
@@ -42,6 +22,13 @@ var turtle_count: int = 0:
 			can_spawn_turtle.emit()
 		turtle_count = value
 var stimulus_spawned: bool = false
+
+@onready var water: Water = $GameRoot/Water
+@onready var island: Island = $GameRoot/Island
+@onready var turtles: Control = %Turtles
+@onready var spawn_location: PathFollow2D = $GameRoot/SpawnPath/SpawnLocation
+@onready var spawn_timer: Timer = $GameRoot/SpawnTimer
+
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
@@ -216,3 +203,14 @@ func _on_current_progression_changed() -> void:
 	spawn_timer.start()
 
 #endregion
+
+class DifficultySettings:
+	var stimuli_ratio: float = 0.75
+	var velocity: float = 250.
+	var spawn_rate: float = 4.
+	
+	
+	func _init(p_stimuli_ratio: float, p_velocity: float, p_spawn_rate: float) -> void:
+		stimuli_ratio = p_stimuli_ratio
+		velocity = p_velocity
+		spawn_rate = p_spawn_rate

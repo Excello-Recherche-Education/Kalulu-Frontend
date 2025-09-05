@@ -1,12 +1,11 @@
 extends Control
 
-@onready var lessons_container: VBoxContainer = $%LessonsContainer
-@onready var unused_gp_container: GridContainer = $%UnusedGPContainer
-
 var lesson_container_scene: PackedScene = preload("res://sources/language_tool/lesson_container.tscn")
 var gp_label_scene: PackedScene = preload("res://sources/language_tool/lesson_gp_label.tscn")
-
 var lessons: Dictionary[int, LessonContainer] = {}
+
+@onready var lessons_container: VBoxContainer = $%LessonsContainer
+@onready var unused_gp_container: GridContainer = $%UnusedGPContainer
 
 
 func _ready() -> void:

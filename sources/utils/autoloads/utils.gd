@@ -1,5 +1,6 @@
 extends Node
 
+
 func reorder_children_by_property(container: Node, property_name: String) -> void:
 	var children: Array[Node] = container.get_children()
 	children.sort_custom(Utils.sort_by_property.bind(property_name))
@@ -8,12 +9,15 @@ func reorder_children_by_property(container: Node, property_name: String) -> voi
 	for element: Node in children:
 		container.add_child(element)
 
+
 func sort_by_property(node_a: Node, node_b: Node, property_name: String) -> bool:
 	return node_a.get(property_name) < node_b.get(property_name)
+
 
 func disconnect_all(signals: Signal) -> void:
 	for connection: Dictionary in signals.get_connections():
 		(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
+
 
 func clean_dir(path: String) -> Error:
 	var dir: DirAccess = DirAccess.open(path)
@@ -31,6 +35,7 @@ func clean_dir(path: String) -> Error:
 		dir.remove(subfolder)
 	return OK
 
+
 func delete_directory_recursive(path: String) -> void:
 	var err: Error = clean_dir(path)
 	if err != OK:
@@ -41,6 +46,7 @@ func delete_directory_recursive(path: String) -> void:
 		Logger.error("Utils: Error " + error_string(err) + " while deleting folder: %s" % path)
 	else:
 		Logger.info("Utils: Folder deleted: %s" % path)
+
 
 ## Returns -1 if version_a is lower than version_b, 0 if they are equals, and 1 if version_a is greater than version_b
 func compare_versions(version_a: String, version_b: String) -> int:

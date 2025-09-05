@@ -1,6 +1,6 @@
 @tool
-extends Minigame
 class_name SyllablesMinigame
+extends Minigame
 
 signal stimulus_heard(is_heard: bool)
 signal stimulus_found()
@@ -10,13 +10,13 @@ signal stimulus_found()
 # Time before the current stimulus is repeated
 @export var stimulus_repeat_time: float = 15
 
-@onready var stimulus_timer: Timer = $StimulusTimer
-
 # Define if the current stimulus have been heard by the player. The stimuli can't be pressed if this is false
 var is_stimulus_heard: bool = false:
 	set(value):
 		is_stimulus_heard = value
 		stimulus_heard.emit(value)
+
+@onready var stimulus_timer: Timer = $StimulusTimer
 
 
 func _start() -> void:
@@ -178,7 +178,6 @@ func _await_for_future_or_stimulus_found(future: Signal) -> bool:
 
 # ------------ Connections ------------
 
-
 func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 	if not is_stimulus_heard:
 		return false
@@ -221,7 +220,6 @@ func _on_stimulus_timer_timeout() -> void:
 
 func _on_stimulus_found() -> void:
 	pass
-
 
 #region UI Callbacks
 

@@ -1,13 +1,13 @@
-extends HBoxContainer
 class_name SegmentBuild
+extends HBoxContainer
 
-signal modify()
-signal delete()
+signal modified()
+signal deleted()
+
+var points: Array[Vector2] = []
 
 @onready var number_of_points_labels: Label = %NumberOfPointsLabel
 @onready var color_rect: ColorRect = %ColorRect
-
-var points: Array[Vector2] = []
 
 
 func add_point(point: Vector2) -> void:
@@ -35,9 +35,9 @@ func set_color(color: Color) -> void:
 
 
 func _on_modify_button_pressed() -> void:
-	modify.emit()
+	modified.emit()
 
 
 func _on_delete_button_pressed() -> void:
-	delete.emit()
+	deleted.emit()
 	queue_free()

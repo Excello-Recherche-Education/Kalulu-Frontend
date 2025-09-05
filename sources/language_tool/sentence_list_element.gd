@@ -1,5 +1,5 @@
-extends WordListElement
 class_name SentenceListElement
+extends WordListElement
 
 signal not_found(text: String)
 
@@ -11,8 +11,6 @@ var words_not_founds: PackedStringArray
 func _ready() -> void:
 	super()
 	graphemes_label.hide()
-
-
 
 
 func update_lesson() -> void:

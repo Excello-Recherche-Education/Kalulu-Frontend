@@ -1,29 +1,27 @@
-extends Path2D
 class_name TracingPath
+extends Path2D
 
-signal finished
-signal demo_finished
+signal finished()
+signal demo_finished()
 
 @export var points_per_curve: int = 25
 @export var hand_min_travel_time: float = 0.5
 @export var hand_max_travel_time: float = 2.0
 @export var distance: float = 100.0
-
 @export var color_gradient: Gradient
+
+var curve_points: PackedVector2Array
+var is_playing: bool = false
+var is_in_demo: bool = false
+var touch_positions: Array[Vector2] = []
+var should_play_effects: bool = false
 
 @onready var line: Line2D = $Line2D
 @onready var guide: PathFollow2D = $GuidePathFollow
 @onready var hand: PathFollow2D = $HandPathFollow2D
 @onready var guide_sprite: Sprite2D = $GuidePathFollow/Guide
 @onready var hand_sprite: Sprite2D = $HandPathFollow2D/Hand
-
-var curve_points: PackedVector2Array
 @onready var remaining_curve: Curve2D = Curve2D.new()
-
-var is_playing: bool = false
-var is_in_demo: bool = false
-var touch_positions: Array[Vector2] = []
-var should_play_effects: bool = false
 
 
 func _ready() -> void:

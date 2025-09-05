@@ -1,14 +1,27 @@
 @tool
-extends Control
 class_name Garden
+extends Control
+
+enum FlowerSizes{
+	NOT_STARTED,
+	SMALL,
+	MEDIUM,
+	LARGE
+}
 
 const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/plant_%02d_%02d_%s.png"
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d_open.png"
 
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
-
 @export var garden_colors: Array[Color] = []
+
+var flowers: Array[GardenLayout.Flower] = []
+var flowers_sizes: Array[FlowerSizes] = []
+var color: Color
+var current_progression: float = 0.0
+var max_progression: float = 0.0
+var garden_index: int = -1
 
 @onready var buttons: Control = $Buttons
 @onready var flower_controls: Array[TextureRect] = [
@@ -26,21 +39,6 @@ const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d_
 	%Button4,
 ]
 
-enum FlowerSizes{
-	NOT_STARTED,
-	SMALL,
-	MEDIUM,
-	LARGE
-}
-
-var flowers: Array[GardenLayout.Flower] = []
-var flowers_sizes: Array[FlowerSizes] = []
-var color: Color
-
-var current_progression: float = 0.0
-var max_progression: float = 0.0
-
-var garden_index: int = -1
 
 func get_button_size() -> Vector2:
 	return lesson_button_controls[0].get_size()

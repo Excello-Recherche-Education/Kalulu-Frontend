@@ -1,5 +1,5 @@
-extends Control
 class_name Minigame
+extends Control
 
 enum Type {
 	jellyfish,
@@ -14,63 +14,43 @@ enum Type {
 	fish
 }
 
+const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
+const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
+
+static var transition_data: Dictionary = {}
 
 @export var minigame_name: Type
-
 @export var lesson_nb: int = 1
 @export_range(0, 4) var difficulty: int = 0
 @export_range(0, 1) var current_lesson_stimuli_ratio: float = 0.7
 @export var minigame_number: int = 1
-
 @export_category("Difficulty")
 @export var max_number_of_lives: int = 0:
 	set(value):
 		max_number_of_lives = value
-
 @export var max_progression: int = 0:
 	set(value):
 		max_progression = value
 		if minigame_ui:
 			minigame_ui.set_max_progression(value)
-
 @export_category("Hints")
 @export var errors_before_help_speech: int = 2
 @export var errors_before_highlight: int = 3
 
-@onready var minigame_ui: MinigameUI = $MinigameUI
-@onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
-@onready var fireworks: Fireworks = $Fireworks
-
-# Game root shall contain all the game tree.
-# This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
-@onready var game_root: Control = $GameRoot
-
-# Expected number of stimuli from current lesson
-@onready var current_lesson_stimuli_number: int = floori(max_progression * current_lesson_stimuli_ratio)
-
-# Sounds
-const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
-const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
-
 # Lesson
 var minigame_difficulty: int
 var lesson_difficulty: int
-
 # Logs
 var logs: Dictionary = {}
-
 # Scores for the remediation engine
 var remediation_gp_scores: Dictionary = {}
 var remediation_syllables_scores: Dictionary = {}
 var remediation_words_scores: Dictionary = {}
-
 # Scores for the confusion matrix engine
 var confusion_matrix_gp_scores: Dictionary[int, PackedInt32Array] = {}
-
 # Stimuli
 var stimuli: Array = []
 var distractions: Array = []
-
 # Lives
 var current_lives: int = 0:
 	set(value):
@@ -84,7 +64,6 @@ var current_lives: int = 0:
 			_play_kalulu_help_speech()
 		elif consecutive_errors == errors_before_highlight:
 			is_highlighting = true
-
 # Progression
 var current_progression: int = 0: set = set_current_progression
 var current_number_of_hints: int = 0
@@ -96,16 +75,22 @@ var is_highlighting: bool = false:
 			_highlight()
 		else:
 			_stop_highlight()
-
 # Speeches
 var intro_kalulu_speech: AudioStreamMP3
 var help_kalulu_speech: AudioStreamMP3
 var win_kalulu_speech: AudioStreamMP3
 var lose_kalulu_speech: AudioStreamMP3
-
 # data to go back to the right place in gardens
 var gardens_data: Dictionary = {}
-static var transition_data: Dictionary = {}
+
+@onready var minigame_ui: MinigameUI = $MinigameUI
+@onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
+@onready var fireworks: Fireworks = $Fireworks
+# Game root shall contain all the game tree.
+# This node is pausable unlike the others, so the pause button can stop the game but not other essential processes.
+@onready var game_root: Control = $GameRoot
+# Expected number of stimuli from current lesson
+@onready var current_lesson_stimuli_number: int = floori(max_progression * current_lesson_stimuli_ratio)
 
 #region Initialisation
 
@@ -277,6 +262,7 @@ func _lose() -> void:
 	
 	_reset()
 
+
 func _submit_student_level_time() -> void:
 	var elapsed_time: int = int(Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused)
 	ServerManager.submit_student_level_time(lesson_nb, elapsed_time)
@@ -339,6 +325,7 @@ func _update_remediation_gp_score(id: int, score: int) -> void:
 	new_remediation_gp_score += score
 	remediation_gp_scores[id] = new_remediation_gp_score
 
+
 # Updates the remediation score of a syllable defined by his ID
 func _update_remediation_syllable_score(id: int, score: int) -> void:
 	var new_remediation_syllable_score: int = 0
@@ -346,6 +333,7 @@ func _update_remediation_syllable_score(id: int, score: int) -> void:
 		new_remediation_syllable_score += remediation_syllables_scores[id]
 	new_remediation_syllable_score += score
 	remediation_syllables_scores[id] = new_remediation_syllable_score
+
 
 # Updates the remediation score of a word defined by his ID
 func _update_remediation_word_score(id: int, score: int) -> void:

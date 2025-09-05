@@ -22,12 +22,19 @@ extends _BASE_
 ## and any further detail.
 
 #05. signals
+
 #06. enums
+
 #07. constants
+
 #08. static variables
+
 #09. @export variables
+
 #10. remaning regular variables
+
 #11. @onready variables
+
 
 #12. static_init
 # Called automatically when the class is loaded, after the static variables have been initialized
@@ -38,6 +45,8 @@ static func _static_init():
 
 
 #13. remaining static methods
+
+
 #14-1. overridden built-in virtual methods:
 # Called upon creating the object in memory.
 func _init():
@@ -66,6 +75,11 @@ func _physics_process(float) -> void:
 
 #14-2. remaining virtual methods
 
+
 #15. overridden custom methods
+
+
 #16. remaining methods
+
+
 #17. subclasses

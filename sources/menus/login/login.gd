@@ -5,8 +5,11 @@ const BACK_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const NEXT_SCENE_PATH: String = "res://sources/menus/brain/brain.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
-
 const KALULU := preload("res://sources/minigames/base/kalulu.gd")
+
+var help_speech: AudioStream
+var wrong_password_speech: AudioStream
+var right_password_speech: AudioStream
 
 @onready var kalulu: KALULU = $Kalulu
 @onready var music_player: AudioStreamPlayer = $MusicStreamPlayer
@@ -16,9 +19,6 @@ const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 @onready var teacher_help_label: Label = %TeacherHelpLabel
 @onready var kalulu_button: CanvasItem = %KaluluButton
 
-var help_speech: AudioStream
-var wrong_password_speech: AudioStream
-var right_password_speech: AudioStream
 
 func _ready() -> void:
 	UserDataManager.stop_synchronization_timer()

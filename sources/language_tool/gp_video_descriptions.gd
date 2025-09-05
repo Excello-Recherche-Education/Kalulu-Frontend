@@ -1,8 +1,8 @@
 extends Control
 
-@onready var description_container: VBoxContainer = %DescriptionsContainer
-
 const DESCRIPTION_LINE_SCENE: PackedScene = preload("res://sources/language_tool/video_gp_description.tscn")
+
+@onready var description_container: VBoxContainer = %DescriptionsContainer
 
 
 func _ready() -> void:

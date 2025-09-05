@@ -1,19 +1,8 @@
 @tool
-extends WordsMinigame
 class_name FrogMinigame
+extends WordsMinigame
 
 const LILYPAD_TRACK_SCENE: PackedScene = preload("res://sources/minigames/frog/lilypad_track.tscn")
-
-class DifficultySettings:
-	var stimuli_ratio: float = 0.75
-	var pads_speed_disabled: float = 100.0
-	var pads_speed: float = 200.0
-	
-	func _init(p_stimuli_ratio: float, p_pads_speed_disabled: float, p_pads_speed: float) -> void:
-		stimuli_ratio = p_stimuli_ratio
-		pads_speed_disabled = p_pads_speed_disabled
-		pads_speed = p_pads_speed
-
 
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.75, 100., 200.),
@@ -23,13 +12,10 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.25, 300., 400.)
 ]
 
-
 @onready var start: Control = %Start
 @onready var end: Control = %End
-
 @onready var frog_spawn_point: Control = %FrogSpawnPoint
 @onready var frog_despawn_point: Control = %FrogDespawnPoint
-
 @onready var river: River = $GameRoot/Background/River
 @onready var lilypad_tracks_container: HBoxContainer = %LilypadTracksContainer
 @onready var frog: Frog = %Frog
@@ -174,3 +160,14 @@ func _on_current_progression_changed() -> void:
 	super()
 
 #endregion
+
+class DifficultySettings:
+	var stimuli_ratio: float = 0.75
+	var pads_speed_disabled: float = 100.0
+	var pads_speed: float = 200.0
+	
+	
+	func _init(p_stimuli_ratio: float, p_pads_speed_disabled: float, p_pads_speed: float) -> void:
+		stimuli_ratio = p_stimuli_ratio
+		pads_speed_disabled = p_pads_speed_disabled
+		pads_speed = p_pads_speed

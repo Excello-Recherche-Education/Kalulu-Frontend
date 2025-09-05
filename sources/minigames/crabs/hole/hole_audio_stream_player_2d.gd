@@ -1,5 +1,5 @@
-extends AudioStreamPlayer2D
 class_name HoleAudioStreamPlayer
+extends AudioStreamPlayer2D
 
 const CRAB_SOUND_LIST: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),

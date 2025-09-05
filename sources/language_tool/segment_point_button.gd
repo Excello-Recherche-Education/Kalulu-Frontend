@@ -1,5 +1,5 @@
-extends Control
 class_name SegmentPointButton
+extends Control
 
 signal point_down()
 signal point_up()

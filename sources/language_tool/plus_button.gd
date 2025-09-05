@@ -1,5 +1,5 @@
-extends MarginContainer
 class_name PlusButton
+extends MarginContainer
 
 signal pressed()
 

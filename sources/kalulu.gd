@@ -1,12 +1,11 @@
 extends AnimatedSprite2D
 
+
 func _on_animation_finished() -> void:
-	
 	if animation in ["Hide", "Show"]:
 		return
 	
 	var rand: float = randf()
-	
 	match animation:
 		"Idle1", "Idle2":
 			if rand < 0.5:

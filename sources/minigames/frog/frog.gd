@@ -1,13 +1,8 @@
-extends Control
-
 class_name Frog
+extends Control
 
 signal drowned()
 signal jumped()
-
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
-@onready var sprite: Sprite2D = $Sprite
 
 const JUMP_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_jump_random_01.mp3"),
@@ -16,7 +11,6 @@ const JUMP_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_jump_random_04.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_jump_random_05.mp3"),
 ]
-
 const FROG_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_random_01.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_random_02.mp3"),
@@ -24,6 +18,10 @@ const FROG_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_random_04.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_random_05.mp3"),
 ]
+
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var sprite: Sprite2D = $Sprite
 
 
 func jump_to(destination: Vector2) -> void:

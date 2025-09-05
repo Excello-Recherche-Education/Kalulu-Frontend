@@ -1,8 +1,10 @@
-extends PanelContainer
 class_name LessonExerciseContainer
+extends PanelContainer
 
 @export var lesson_number: int = -1:
 	set = _set_lesson_number
+
+var sentences_by_lesson: Dictionary = {}
 
 @onready var lesson_id_label: Label = %LessonIDLabel
 @onready var lesson_gps: HBoxContainer = %LessonGPs
@@ -12,8 +14,6 @@ class_name LessonExerciseContainer
 @onready var number_of_syllables: Label = %NumberOfSyllables
 @onready var number_of_words: Label = %NumberOfWords
 @onready var number_of_sentences: Label = %NumberOfSentences
-
-var sentences_by_lesson: Dictionary = {}
 
 
 func _ready() -> void:

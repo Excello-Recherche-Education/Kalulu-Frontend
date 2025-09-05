@@ -1,6 +1,5 @@
 extends GPImageAndSoundDescriptions
 
-	 
 
 func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH + Database.language + Database.LANGUAGE_SOUNDS)

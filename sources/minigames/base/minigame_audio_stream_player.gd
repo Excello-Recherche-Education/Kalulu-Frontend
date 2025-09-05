@@ -1,5 +1,6 @@
-extends AudioStreamPlayer
 class_name MinigameAudioStreamPlayer
+extends AudioStreamPlayer
+
 
 func play_gp(gp: Dictionary) -> void:
 	Logger.trace("Minigame Audio Stream Player: Playing GP " + str(gp))
@@ -12,6 +13,7 @@ func play_gp(gp: Dictionary) -> void:
 		return
 	
 	await play_audio_stream(phoneme_audiostream)
+
 
 func play_syllable(syllable: Dictionary) -> void:
 	Logger.trace("Minigame Audio Stream Player: Playing Syllable " + str(syllable))
@@ -36,6 +38,7 @@ func play_word(word: String) -> void:
 		return
 	
 	await play_audio_stream(word_audiostream)
+
 
 func play_audio_stream(audio: AudioStreamMP3) -> void:
 	stream = audio

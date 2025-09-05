@@ -1,5 +1,6 @@
-extends Node2D
 class_name Leaf
+extends Node2D
+
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	queue_free()

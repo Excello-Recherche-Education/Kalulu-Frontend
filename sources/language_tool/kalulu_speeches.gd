@@ -1,6 +1,5 @@
 extends Control
 
-
 const TITLE_SCENE: PackedScene = preload("res://sources/language_tool/kalulu_speech_title.tscn")
 const SPEECH_SCENE: PackedScene = preload("res://sources/language_tool/kalulu_speech.tscn")
 

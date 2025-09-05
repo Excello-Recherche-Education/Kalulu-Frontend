@@ -1,5 +1,5 @@
-extends Node2D
 class_name LetterSegment
+extends Node2D
 
 signal finished()
 
@@ -24,6 +24,7 @@ func start() -> void:
 
 func stop() -> void:
 	finished.emit()
+
 
 func demo() -> void:
 	tracing_path.demo()

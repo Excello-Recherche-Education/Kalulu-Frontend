@@ -1,5 +1,5 @@
-extends ZIPReader
 class_name FolderUnzipper
+extends ZIPReader
 
 signal file_count(count: int)
 signal file_copied(count: int, name: String)

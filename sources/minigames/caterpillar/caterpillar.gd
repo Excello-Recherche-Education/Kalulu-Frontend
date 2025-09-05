@@ -1,21 +1,21 @@
 @tool
-extends Node2D
 class_name Caterpillar
+extends Node2D
 
 signal berry_eaten(berry: Berry)
 
 const BODY_PART_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/caterpillar_body.tscn")
-
 const BODY_PART_WIDTH: int = 128
 const BODY_PART_MOVE_TIME: float = 0.25
 const BODY_PART_WAIT_TIME: float = 0.04
+
+var is_moving: bool = false
+var is_eating: bool = false
 
 @onready var head: CaterpillarHead = $Head
 @onready var body_parts: Node2D = $BodyParts
 @onready var tail: Node2D = $Tail
 
-var is_moving: bool = false
-var is_eating: bool = false
 
 func idle() -> void:
 	for body_part: CaterpillarBody in body_parts.get_children():

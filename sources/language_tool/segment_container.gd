@@ -1,24 +1,23 @@
-extends HBoxContainer
 class_name SegmentContainer
+extends HBoxContainer
 
 signal changed()
 
+const SEGMENT_BUILD_SCENE: PackedScene = preload("res://sources/language_tool/segment_build.tscn")
+const POINT_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/segment_point_button.tscn")
+
 @export var points_per_lines: int = 25
 @export var points_per_gradient: int = 7
+
+var gradient: Gradient
+var current_segment: SegmentBuild
+var current_button: SegmentPointButton
+var buttons: Array[SegmentPointButton] = []
 
 @onready var grapheme_label: Label = %GraphemeLabel
 @onready var buttons_parent: Control = %ButtonsParent
 @onready var segments_container: VBoxContainer = %SegmentsContainer
 @onready var lines: Node2D = %Lines
-
-const SEGMENT_BUILD_SCENE: PackedScene = preload("res://sources/language_tool/segment_build.tscn")
-const POINT_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/segment_point_button.tscn")
-
-var gradient: Gradient
-
-var current_segment: SegmentBuild
-var current_button: SegmentPointButton
-var buttons: Array[SegmentPointButton] = []
 
 
 func reset() -> void:
@@ -126,8 +125,8 @@ func _on_add_segment_button_pressed() -> void:
 	segments_container.add_child(new_segment)
 
 	# Connect signals for modifying and deleting the segment
-	new_segment.modify.connect(_on_segment_modify.bind(new_segment))
-	new_segment.delete.connect(_on_segment_delete.bind(new_segment))
+	new_segment.modified.connect(_on_segment_modified.bind(new_segment))
+	new_segment.deleted.connect(_on_segment_deleted.bind(new_segment))
 
 	# Store the new segment as the currently selected one
 	current_segment = new_segment
@@ -156,15 +155,13 @@ func _on_add_segment_button_pressed() -> void:
 	changed.emit()
 
 
-func _on_segment_modify(segment: SegmentBuild) -> void:
+func _on_segment_modified(segment: SegmentBuild) -> void:
 	current_segment = segment
-	
 	match_segment_with_buttons()
-	
 	changed.emit()
 
 
-func _on_segment_delete(segment: SegmentBuild) -> void:
+func _on_segment_deleted(segment: SegmentBuild) -> void:
 	if segment == current_segment:
 		var possible_segments: Array[Node] = segments_container.get_children()
 		if not possible_segments.is_empty():
