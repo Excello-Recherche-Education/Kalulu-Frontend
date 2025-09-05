@@ -5,6 +5,16 @@ signal file_count(count: int)
 signal file_copied(count: int, name: String)
 signal finished()
 
+
+func guess_path_type(path: String) -> String:
+	if path.ends_with("/"):
+		return "directory"
+	elif "." in path.get_file():
+		return "file"
+	else:
+		return "directory"
+
+
 func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool = true) -> String:
 	Logger.trace("FolderUnzipper: Extracting %s to %s" % [zip_path, extract_path])
 	var err: Error = open(zip_path)
@@ -27,6 +37,8 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 		var folder_name: String = file_name.get_base_dir()
 		if not DirAccess.dir_exists_absolute(folder_name):
 			DirAccess.make_dir_recursive_absolute(folder_name)
+		if guess_path_type(file_name) == "directory":
+			continue
 		var file: FileAccess = FileAccess.open(file_name, FileAccess.WRITE)
 		var error: Error = FileAccess.get_open_error()
 		if error != OK:
