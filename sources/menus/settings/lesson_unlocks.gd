@@ -29,7 +29,7 @@ func _create_lessons() -> void:
 	for lesson_unlock: Node in lesson_container.get_children():
 		lesson_unlock.queue_free()
 	
-	Database.db.query("SELECT LessonNb, group_concat(Grapheme || '-' ||Phoneme, ' ') GPs FROM Lessons
+	Database.db.query("SELECT LessonNb, group_concat(Grapheme || '-' || Phoneme, ' ') GPs FROM Lessons
 INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
 INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
 GROUP BY LessonNb
