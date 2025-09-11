@@ -9,3 +9,5 @@ language_resources/
 
 android/
 
+*.diff
+*.patch
