@@ -59,6 +59,13 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 		return
 	
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.READ)
+	var error: Error = FileAccess.get_open_error()
+	if error != OK:
+		Logger.error("TracingBuilder: Load segment: Cannot open file %s. Error: %s" % [real_path(path), error_string(error)])
+		return
+	if file == null:
+		Logger.error("TracingBuilder: Load segment: Cannot open file %s. File is null" % real_path(path))
+		return
 	while not file.eof_reached():
 		var line: PackedStringArray = file.get_csv_line()
 		var points: Array[Vector2] = []
@@ -75,8 +82,15 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 func _save_segments(segments: Array[SegmentBuild], path: String) -> void:
 	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER))
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.WRITE)
+	var error: Error = FileAccess.get_open_error()
+	if error != OK:
+		Logger.error("TracingBuilder: Save segment: Cannot open file %s. Error: %s" % [real_path(path), error_string(error)])
+		return
+	if file == null:
+		Logger.error("TracingBuilder: Save segment: Cannot open file %s. File is null" % real_path(path))
+		return
 	for segment: SegmentBuild in segments:
-		var values: PackedStringArray
+		var values: PackedStringArray = []
 		for point: Vector2 in segment.points:
 			values.append(str(point.x) + " " + str(point.y))
 		file.store_csv_line(values)

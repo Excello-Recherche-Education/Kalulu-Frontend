@@ -1,7 +1,7 @@
 extends Control
 
 const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
-const NEXT_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
+const NEXT_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
 @onready var teacher_steps: Array[PackedScene] = [
 	preload("res://sources/menus/register/steps/teacher/method_step.tscn"),
@@ -78,7 +78,7 @@ func _on_step_completed(step: Step) -> void:
 		"devices":
 			# Adds students steps for teachers
 			_remove_future_steps()
-			for device: int in register_data.devices_count:
+			for device: int in range(register_data.devices_count):
 				var students_step_scene: Node = students_step.instantiate()
 				if students_step_scene is StudentsCountStep:
 					(students_step_scene as StudentsCountStep).question = tr((students_step_scene as StudentsCountStep).question).format({"number": (device + 1)})

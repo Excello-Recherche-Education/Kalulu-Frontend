@@ -86,12 +86,7 @@ func _on_grapheme_gui_input(event: InputEvent) -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	var child: Array[Node] = elements_container.get_children()
-	child.sort_custom(sorting_function.bind(property_name))
-	for element: Node in elements_container.get_children():
-		elements_container.remove_child(element)
-	for element: Node in child:
-		elements_container.add_child(element)
+	Utils.reorder_children_by_property(elements_container, property_name)
 
 
 func sorting_function(a_node: Node, b_node: Node, property_name: String) -> bool:
@@ -127,6 +122,13 @@ func _on_list_title_save_pressed() -> void:
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var error: Error = FileAccess.get_open_error()
+	if error != OK:
+		Logger.error("GPList: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		return
+	if file == null:
+		Logger.error("GPList: Cannot open file %s. File is null" % path)
+		return
 	var line: PackedStringArray = file.get_csv_line()
 	if line.size() < 4 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type" or line[3] != "Exception":
 		error_label.text = "Column names should be Grapheme, Phoneme, Type, Exception"

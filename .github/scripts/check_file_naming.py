@@ -13,7 +13,7 @@ TARGET_EXTS = {
 }
 
 # Directories to ignore entirely (e.g., external or tooling folders)
-EXCLUDED_DIRS = {"addons", ".git", ".github"}
+EXCLUDED_DIRS = {"addons", "script_templates", ".git", ".github", ".godot", "android"}
 
 invalid_files = []
 invalid_dirs = []

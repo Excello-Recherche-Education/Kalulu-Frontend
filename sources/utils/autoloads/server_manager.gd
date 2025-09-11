@@ -80,6 +80,11 @@ func send_server_synchronization_instructions(data: Dictionary) -> Dictionary:
 	return _response()
 
 
+func get_dashboard() -> Dictionary:
+	await _get_request("dashboard_user", {})
+	return _response()
+
+
 func get_user_data() -> Dictionary:
 	await _get_request("get_user_data", {})
 	return _response()

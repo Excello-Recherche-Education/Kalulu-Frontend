@@ -131,7 +131,7 @@ func get_number_of_students() -> int:
 	return result
 
 func get_all_students_data() -> Array[StudentData]:
-	var result: Array[StudentData]
+	var result: Array[StudentData] = []
 	for data: Array[StudentData] in students.values():
 		result.append_array(data)
 	return result

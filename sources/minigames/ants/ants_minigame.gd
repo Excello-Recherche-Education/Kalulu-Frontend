@@ -16,8 +16,8 @@ const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_
 @onready var words: Node2D = %Words
 
 var current_sentence: Dictionary = {}
-var answered: Array[bool] = []
-var answers: Array[bool] = []
+var answer_input_done: Array[bool] = []
+var answers: Dictionary[String, String] # Expected, current
 
 
 func _find_stimuli_and_distractions() -> void:
@@ -79,6 +79,7 @@ func _find_stimuli_and_distractions() -> void:
 
 	# Shuffle the stimuli
 	stimuli.shuffle()
+	Logger.trace("AntsMinigame: stimuli = " + str(stimuli))
 
 
 func _start() -> void:
@@ -136,8 +137,8 @@ func _next_sentence() -> void:
 	while blanks.size() > number_of_blanks:
 		blanks.pop_back()
 	
-	answers = []
-	answered = []
+	answers.clear()
+	answer_input_done = []
 	for index: int in range(current_words.size()):
 		var current_word: String = current_words[index]
 		if index in blanks:
@@ -157,8 +158,8 @@ func _next_sentence() -> void:
 			@warning_ignore("UNSAFE_METHOD_ACCESS")
 			word.current_anchor.set_monitorable(false)
 			
-			answered.append(false)
-			answers.append(false)
+			answer_input_done.append(false)
+			answers[current_word] = ""
 			
 			word.answer.connect(_on_word_answer.bind(word))
 			word.no_answer.connect(_on_word_no_answer.bind(word))
@@ -215,21 +216,30 @@ func _on_current_progression_changed() -> void:
 func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureButton) -> void:
 	_log_new_response({"Word": stimulus}, {"Word": expected_stimulus})
 	
-	answers[word.get_index()] = stimulus == expected_stimulus
-	answered[word.get_index()] = true
+	answers[expected_stimulus] = stimulus
+	answer_input_done[word.get_index()] = true
 	
 	var all_answered: bool = true
-	for answer: bool in answered:
+	for answer: bool in answer_input_done:
 		if not answer:
 			all_answered = false
 			break
 	
 	if all_answered:
 		var is_right: bool = true
-		for answer: bool in answers:
-			if not answer:
+		var word_id: int = -1
+		for key: String in answers.keys():
+			word_id = Database.get_word_id_from_text(key)
+			if key != answers[key]:
 				is_right = false
-				break
+				if word_id != -1:
+					_update_remediation_word_score(word_id, -1)
+				word_id = Database.get_word_id_from_text(answers[key])
+				if word_id != -1:
+					_update_remediation_word_score(word_id, -1)
+			else:
+				if word_id != -1:
+					_update_remediation_word_score(word_id, 1)
 		
 		for word_i: Word in words.get_children():
 			@warning_ignore("unsafe_method_access")
@@ -250,7 +260,7 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 			current_lives -= 1
 			
 			for index: int in range(ants.get_child_count()):
-				answered[index] = false
+				answer_input_done[index] = false
 				@warning_ignore("UNSAFE_PROPERTY_ACCESS")
 				words.get_child(index).current_anchor = ants.get_child(index)
 				@warning_ignore("UNSAFE_METHOD_ACCESS")
@@ -261,4 +271,4 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 
 
 func _on_word_no_answer(word: TextureButton) -> void:
-	answered[word.get_index()] = false
+	answer_input_done[word.get_index()] = false

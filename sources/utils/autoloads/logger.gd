@@ -31,10 +31,14 @@ func _ready() -> void:
 
 func delete_old_logs(days_threshold: float = 10) -> void:
 	var dir: DirAccess = DirAccess.open(LOG_PATH)
-	if dir == null:
+	var err: Error = DirAccess.get_open_error()
+	if err != OK:
+		push_error("Logger: Could not open Logs directory for cleanup. Error: %s" % error_string(err))
+		return
+	if not dir:
 		push_warning("Logger: Could not open Logs directory for cleanup.")
 		return
-
+	
 	var now: float = Time.get_unix_time_from_system()
 	dir.list_dir_begin()
 	var file_name: String = dir.get_next()
@@ -54,7 +58,7 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 				var age_days: float = float(now - file_time) / (60.0 * 60.0 * 24.0)
 				if age_days > days_threshold:
 					var full_path: String = LOG_PATH + file_name
-					var err: Error = dir.remove(full_path)
+					err = dir.remove(full_path)
 					if err != OK:
 						push_warning("Logger: Failed to delete old log: " + full_path)
 					else:
@@ -67,23 +71,28 @@ func _init_log_file() -> void:
 	var logs_dir: DirAccess = DirAccess.open(LOG_PATH)
 	if logs_dir == null:
 		DirAccess.make_dir_recursive_absolute(LOG_PATH)
-
+	
 	var now: Dictionary = Time.get_datetime_dict_from_system()
 	var filename: String = "Kalulu_Log_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
 		now.year, now.month, now.day,
 		now.hour, now.minute, now.second
 	]
 	log_file_path = LOG_PATH + filename
-
+	
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
+	var err: Error = FileAccess.get_open_error()
+	if err != OK:
+		push_error("Logger: Load external sound: Cannot open file %s. Error: %s" % [log_file_path, error_string(err)])
+		return
 	if log_file == null:
 		push_error("Logger: Could not open log file at " + log_file_path)
+		return
 
 # Internal log function (renamed to avoid conflict)
 func _log_internal(level: LogLevel, message: String) -> void:
 	if initialized && level < current_level: # If not initialized, no logs are filtered
 		return
-
+	
 	var prefix: String = "[LOG]"
 	match level:
 		LogLevel.TRACE: prefix = "[TRACE]"
@@ -91,18 +100,20 @@ func _log_internal(level: LogLevel, message: String) -> void:
 		LogLevel.INFO: prefix = "[INFO]"
 		LogLevel.WARNING: prefix = "[WARNING]"
 		LogLevel.ERROR: prefix = "[ERROR]"
-
+	
 	var time_str: String = Time.get_time_string_from_system()
 	var log_message: String = "%s %s %s" % [time_str, prefix, message]
-
+	
 	match level:
+		LogLevel.DEBUG:
+			print_debug(log_message)
 		LogLevel.WARNING:
 			push_warning(log_message)
 		LogLevel.ERROR:
 			push_error(log_message)
 		_:
 			print(log_message)
-
+	
 	_log_to_file(log_message)
 
 func _log_to_file(message: String) -> void:

@@ -26,10 +26,9 @@ void fragment() {
 							   alpha);
 
 	vec4 color = texture(TEXTURE, UV);
-	if (rainbow == true){//if rainbow is activated
+	if (rainbow == true){ //if rainbow is activated
 		COLOR = mix(color, animated_line_color, outline - color.a);
-	}
-	if (rainbow == false){//if rainbow not is activated and you pick a color
+	} else { //if rainbow not is activated and you pick a color
 		COLOR = mix(color, line_color , outline - color.a);
 	}
 }

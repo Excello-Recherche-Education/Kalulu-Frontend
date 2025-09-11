@@ -196,16 +196,7 @@ func _on_back_button_pressed() -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	var children: Array[Node] = elements_container.get_children()
-	children.sort_custom(sorting_function.bind(property_name))
-	for element: Node in elements_container.get_children():
-		elements_container.remove_child(element)
-	for child: Node in children:
-		elements_container.add_child(child)
-
-
-func sorting_function(a_node: Node, b_node: Node, property_name: String) -> bool:
-	return a_node.get(property_name) < b_node.get(property_name)
+	Utils.reorder_children_by_property(elements_container, property_name)
 
 
 func _on_list_title_add_pressed() -> void:
@@ -236,7 +227,18 @@ func _on_word_gui_input(event: InputEvent) -> void:
 
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
+	if not FileAccess.file_exists(path):
+		Logger.error("WordList: File not found %s" % path)
+		error_label.text = "File not found"
+		return
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var error: Error = FileAccess.get_open_error()
+	if error != OK:
+		Logger.error("WordList: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		return
+	if file == null:
+		Logger.error("WordList: Cannot open file %s. File is null" % path)
+		return
 	var line: PackedStringArray = file.get_csv_line()
 	if line.size() < 2 or line[0] != "ORTHO" or line[1] != "GPMATCH":
 		error_label.text = "Column names should be ORTHO, GPMATCH"

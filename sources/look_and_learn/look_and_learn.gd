@@ -78,11 +78,7 @@ func setup() -> void:
 	if gp_display.is_empty():
 		gp_display.append(gp_list[0].Grapheme as String)
 	
-	grapheme_label.text = ""
-	for gp: String in gp_display:
-		if grapheme_label.text:
-			grapheme_label.text += " "
-		grapheme_label.text += "%s" % gp
+	grapheme_label.text = " ".join(gp_display)
 
 
 func play_videos() -> void:

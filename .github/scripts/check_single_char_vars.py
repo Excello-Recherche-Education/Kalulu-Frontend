@@ -4,22 +4,56 @@ import sys
 
 
 def split_params(param_string: str):
-    """Split a function parameter string on commas while ignoring brackets."""
+    """Split parameters on commas while ignoring nested structures."""
     params = []
-    current = ""
-    depth = 0
+    current: list[str] = []
+    stack: list[str] = []
+    pairs = {')': '(', ']': '[', '}': '{'}
+    in_quote = None
+    escape = False
     for char in param_string:
-        if char == '[':
-            depth += 1
-        elif char == ']':
-            depth = max(0, depth - 1)
-        if char == ',' and depth == 0:
-            params.append(current.strip())
-            current = ""
+        if escape:
+            current.append(char)
+            escape = False
             continue
-        current += char
-    if current:
-        params.append(current.strip())
+
+        if char == "\\":
+            current.append(char)
+            escape = True
+            continue
+
+        if in_quote:
+            current.append(char)
+            if char == in_quote:
+                in_quote = None
+            continue
+
+        if char in "'\"":
+            current.append(char)
+            in_quote = char
+            continue
+        
+        if char in '([{':
+            stack.append(char)
+        elif char in ')]}':
+            if stack and stack[-1] == pairs.get(char):
+                stack.pop()
+            else:
+                raise ValueError("unbalance in delimiter")
+        
+        if char == ',' and not stack:
+            params.append(''.join(current).strip())
+            current = []
+        else:
+            current.append(char)
+
+    if stack:
+        raise ValueError("unbalance in delimiter")
+    if in_quote:
+        raise ValueError(f"Unclosed quote: {in_quote}")
+
+    params.append(''.join(current).strip())
+    params = [p for p in params if p]
     return params
 
 EXCLUDED_DIRS = {"addons", ".git", ".github"}

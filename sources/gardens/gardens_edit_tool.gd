@@ -44,7 +44,7 @@ func _init_gardens_layout() -> void:
 			garden_layout.color = int(index / 4.0) % GARDEN_TEXTURES_NB
 			
 			# Add the flowers to the garden
-			for flower_i: int in 5:
+			for flower_i: int in range(5):
 				var flower: GardenLayout.Flower = GardenLayout.Flower.new(garden_layout.color, flower_i, Vector2i(980 + flower_i * 100, 900))
 				garden_layout.flowers.append(flower)
 			garden_layout.flowers = garden_layout.flowers
@@ -61,20 +61,20 @@ func _init_gardens_layout() -> void:
 
 
 func set_up_click_detection() -> void:
-	for garden_control_ind: int in garden_parent.get_child_count():
+	for garden_control_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(garden_control_ind)
 		
-		for flower_ind: int in garden_control.flower_controls.size():
+		for flower_ind: int in range(garden_control.flower_controls.size()):
 			var flower_control: Control = garden_control.flower_controls[flower_ind]
 			flower_control.gui_input.connect(_on_flower_gui_input.bind(garden_control_ind, flower_ind, flower_control))
 			
 			garden_control.flowers_sizes[flower_ind] = Garden.FlowerSizes.LARGE
 			garden_control.update_flowers()
 			
-		for lesson_button_ind: int in garden_control.lesson_button_controls.size():
+		for lesson_button_ind: int in range(garden_control.lesson_button_controls.size()):
 			var lesson_button_control: Control = garden_control.lesson_button_controls[lesson_button_ind]
 			lesson_button_control.gui_input.connect(_on_lesson_button_gui_input.bind(garden_control_ind, lesson_button_ind, lesson_button_control))
-	
+
 
 func _process(delta: float) -> void:
 	super(delta)
@@ -118,36 +118,11 @@ func _input(event: InputEvent) -> void:
 		dragging_element = null
 
 
-#func _unhandled_input(event: InputEvent) -> void:
-	#if event.is_action_pressed("left_click"):
-		## Get the closest point to the mouse
-		#var closest_point: = curve.get_closest_point(locked_line.get_local_mouse_position())
-		#
-		## If the user clicked on a line, do the drag event
-		#if closest_point.distance_to(locked_line.get_local_mouse_position()) < locked_line.width:
-			#dragging_element = get_previous_point_on_curve(closest_point)
-			#var a: = get_garden_and_sub_ind_from_ind(dragging_element as int)
-			#drag_data = {
-				#type = "path_middle",
-				#garden_ind = a[0],
-				#sub_ind = a[1],
-			#}
-
-
-#func get_previous_point_on_curve(point: Vector2) -> int:
-	#var offset: = curve.get_closest_offset(point)
-	#for index: int in curve.point_count:
-		#var point_offset: = curve.get_closest_offset(curve.get_point_position(index))
-		#if point_offset > offset:
-			#return index - 1
-	#return curve.point_count
-
-
 func get_garden_and_sub_ind_from_ind(ind: int) -> Array[int]:
 	var count: int = 0
-	for garden_control_ind: int in garden_parent.get_child_count():
+	for garden_control_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(garden_control_ind)
-		for lesson_button_ind: int in garden_control.lesson_button_controls.size():
+		for lesson_button_ind: int in range(garden_control.lesson_button_controls.size()):
 			if count == ind:
 				return [garden_control_ind, lesson_button_ind]
 			count += 1
@@ -155,7 +130,7 @@ func get_garden_and_sub_ind_from_ind(ind: int) -> Array[int]:
 
 
 func get_best_showing_garden() -> int:
-	for garden_ind: int in garden_parent.get_child_count():
+	for garden_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Control = garden_parent.get_child(garden_ind)
 		if abs(garden_control.global_position.x) < garden_control.size.x / 2:
 			return garden_ind

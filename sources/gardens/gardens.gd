@@ -211,7 +211,7 @@ func _ready() -> void:
 	if not transition_data:
 		if starting_garden == -1:
 			lesson_ind = 1
-			for garden_ind: int in garden_parent.get_child_count():
+			for garden_ind: int in range(garden_parent.get_child_count()):
 				var garden_control: Garden = garden_parent.get_child(garden_ind)
 				if starting_garden != -1:
 					break
@@ -385,6 +385,25 @@ func _ready() -> void:
 	
 
 
+static func compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
+	Logger.trace("Gardens: compute_lessons_distribution: total_lessons = %s, garden_layouts count = %s" % [str(total_lessons), str(garden_layouts.size())])
+	var distribution: Array[int] = []
+	var lessons_left: int = total_lessons
+	var gardens_left: int = garden_layouts.size()
+	for layout_index: int in range(garden_layouts.size()):
+		var max_lessons: int = garden_layouts[layout_index].lesson_buttons.size()
+		var lessons_for_garden: int = 0
+		if gardens_left > 0:
+			lessons_for_garden = int(ceili(float(lessons_left) / float(gardens_left)))
+		lessons_for_garden = min(lessons_for_garden, max_lessons)
+		if lessons_for_garden > lessons_left:
+				lessons_for_garden = lessons_left
+		distribution.append(lessons_for_garden)
+		lessons_left -= lessons_for_garden
+		gardens_left -= 1
+	return distribution
+
+
 func _process(_delta: float) -> void:
 	locked_line.position.x = - scroll_container.scroll_horizontal
 	unlocked_line.position.x = - scroll_container.scroll_horizontal
@@ -535,12 +554,10 @@ func _close_minigames_layout() -> void:
 
 func _set_up_lessons() -> void:
 	var lesson_ind: int = 1
-	
-	for garden_ind: int in garden_parent.get_child_count():
-		
+	for garden_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(garden_ind)
-		
-		for index: int in range(garden_control.lesson_button_controls.size()):
+		var button_count: int = garden_control.garden_layout.lesson_buttons.size()
+		for index: int in range(button_count):
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(index, lessons[lesson_ind][0].grapheme as String)
@@ -564,26 +581,20 @@ func add_gardens() -> void:
 	for child: Node in garden_parent.get_children():
 		child.free()
 	
-	# Adds the gardens needed from the layout configuration
-	var current_lesson_count: int = 0
+	var distribution: Array[int] = compute_lessons_distribution(lessons.size(), gardens_layout.gardens)
+
 	var garden_index: int = 0
-	for garden_layout: GardenLayout in gardens_layout.gardens:
+	for layout_index: int in range(gardens_layout.gardens.size()):
+		var garden_layout: GardenLayout = gardens_layout.gardens[layout_index]
 		var garden: Garden = GARDEN_SCENE.instantiate()
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
 		garden_index += 1
-		
-		for index: int in range(garden_layout.lesson_buttons.size()):
-			if current_lesson_count >= lessons.size():
-				garden_layout.lesson_buttons.resize(index)
-				break
-			current_lesson_count += 1
-		
+
+		var lessons_for_garden: int = distribution[layout_index]
+		garden_layout.lesson_buttons.resize(lessons_for_garden)
+
 		garden.garden_layout = garden_layout
-		
-		# Don't add empty gardens
-		if current_lesson_count >= lessons.size():
-			break
 
 
 func set_up_path() -> void:

@@ -188,6 +188,18 @@ func update_student_name(student_code: int, student_name: String) -> void:
 
 #region Synchronization
 
+func _on_dashboard_button_pressed() -> void:
+	var res: Dictionary = await ServerManager.get_dashboard()
+	if res.code == 200:
+		if res.has("body") and res.body is Dictionary:
+			if (res.body as Dictionary).has("url"):
+				OS.shell_open(res.body.url as String)
+				return
+		Logger.error("SettingsTeacherSettings: Request to get Dashboard link has an invalid content")
+	else:
+		Logger.error("SettingsTeacherSettings: Request to get Dashboard link failed. Error code " + str(res.code))
+
+
 func _on_synchronize_button_pressed() -> void:
 	UserDataManager.user_database_synchronizer.synchronize()
 

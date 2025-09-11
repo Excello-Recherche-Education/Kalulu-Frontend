@@ -87,7 +87,6 @@ func _find_stimuli_and_distractions() -> void:
 		for gp: Dictionary in stimulus.GPs:
 			grapheme_distractions.append(Database.get_distractors_for_grapheme(gp.ID as int, lesson_nb))
 		distractions.append(grapheme_distractions)
-		
 
 
 # Launch the minigame
@@ -185,15 +184,20 @@ func _log_new_response_and_score(gp: Dictionary) -> void:
 	# Logs the answer
 	_log_new_response(gp, self._get_gp())
 	
-	# Handles GP scoring
+	if gp.has("ID"): # GP can be an empty dictionary (empty word)
+		_update_confusion_matrix_gp_score(self._get_gp().ID as int, gp.ID as int)
+	else:
+		Logger.trace("WordsMinigame: Confusion matrix cannot be updated because word is empty") # Empty word is normal, it just does not update the confusion matrix
+	
+	# Handles Remediation GP scoring
 	if self._is_gp_right(gp):
 		if not is_highlighting:
-			_update_gp_score(gp.ID as int, 1)
+			_update_remediation_gp_score(gp.ID as int, 1)
 	else:
 		if gp:
-			_update_gp_score(gp.ID as int, -1)
+			_update_remediation_gp_score(gp.ID as int, -1)
 			current_word_has_errors = true
-		_update_gp_score(self._get_gp().ID as int, -1)
+		_update_remediation_gp_score(self._get_gp().ID as int, -1)
 
 
 # ------------- UI Callbacks ------------- #
@@ -212,10 +216,10 @@ func _on_current_word_progression_changed() -> void:
 
 func _on_current_progression_changed() -> void:
 	if current_word_has_errors:
-		_update_word_score(_get_current_stimulus().ID as int, -1)
+		_update_remediation_word_score(_get_current_stimulus().ID as int, -1)
 		current_word_has_errors = false
 	else:
-		_update_word_score(_get_current_stimulus().ID as int, 1)
+		_update_remediation_word_score(_get_current_stimulus().ID as int, 1)
 	if current_progression >= max_progression:
 		return
 	_setup_word_progression()

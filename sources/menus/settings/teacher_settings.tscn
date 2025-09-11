@@ -58,16 +58,17 @@ theme_override_constants/margin_right = 75
 [node name="VolumeButton" parent="InterfaceLeft/Container/VolumeContainer" instance=ExtResource("6_s8nbl")]
 layout_mode = 2
 
+[node name="Dashboard" type="Button" parent="InterfaceLeft/Container"]
+layout_mode = 2
+theme_type_variation = &"FlatButton"
+theme_override_font_sizes/font_size = 40
+text = "DASHBOARD"
+
 [node name="SynchronizeButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2
 theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 40
 text = "SYNCHRONIZE_ACCOUNT"
-
-[node name="DeletePopup" parent="InterfaceLeft/Container/SynchronizeButton" instance=ExtResource("7_jetb7")]
-visible = false
-content_text = "Voulez-vous vraiment supprimer votre compte ?
-Cette action est irréversible !"
 
 [node name="DeleteButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2
@@ -218,8 +219,8 @@ unique_name_in_owner = true
 visible = false
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="InterfaceLeft/Container/Dashboard" to="." method="_on_dashboard_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
-[connection signal="accepted" from="InterfaceLeft/Container/SynchronizeButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
 [connection signal="pressed" from="InterfaceLeft/Container/DeleteButton" to="." method="_on_delete_button_pressed"]
 [connection signal="accepted" from="InterfaceLeft/Container/DeleteButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
 [connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]

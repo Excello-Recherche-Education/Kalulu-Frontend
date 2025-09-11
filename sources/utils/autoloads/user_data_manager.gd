@@ -1,4 +1,5 @@
 extends Node
+class_name UserDataManagerClass
 
 
 var student: String = "":
@@ -8,18 +9,21 @@ var student: String = "":
 		if student:
 			_load_student_progression()
 			_load_student_remediation()
+			_load_student_confusion_matrix()
 			_load_student_difficulty()
 			_load_student_speeches()
 		else:
 			student_progression = null
 			_student_difficulty = null
 			_student_remediation = null
+			_student_confusion_matrix = null
 			_student_speeches = null
 
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
 var student_progression: StudentProgression
 var _student_remediation: UserRemediation
+var _student_confusion_matrix: UserConfusionMatrix
 var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
 
@@ -43,39 +47,27 @@ func purge_user_folders_if_needed() -> void:
 	var current_version: String = ProjectSettings.get_setting("application/config/version")
 	var previous_version: String = _device_settings.game_version
 	
-	if previous_version == "" or compare_versions(previous_version, "2.1.3") < 0:
+	if previous_version == "" or Utils.compare_versions(previous_version, "2.1.3") < 0:
 		Logger.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
 		var dir: DirAccess = DirAccess.open("user://")
-		if dir:
-			dir.list_dir_begin()
-			var file_name: String = dir.get_next()
-			while file_name != "":
-				if dir.current_is_dir() and file_name != "." and file_name != "..":
-					var full_path: String = "user://".path_join(file_name)
-					_delete_dir(full_path)
-					var err: Error = DirAccess.remove_absolute(full_path)
-					if err != OK:
-						Logger.error("UserDataManager: Failed to delete folder %s. Error %s" % [full_path, error_string(err)])
-				file_name = dir.get_next()
-			dir.list_dir_end()
+		var error: Error = DirAccess.get_open_error()
+		if error != OK:
+			Logger.error("UserDataManager: Could not open user:// directory for cleanup. Error: %s" % error_string(error))
+			return
+		if not dir:
+			Logger.warn("UserDataManager: Could not open user:// directory for cleanup.")
+			return
+		dir.list_dir_begin()
+		var file_name: String = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				Utils.delete_directory_recursive("user://".path_join(file_name))
+			file_name = dir.get_next()
+		dir.list_dir_end()
 		
 		Logger.trace("UserDataManager: Purge completed")
 		_device_settings.game_version = current_version
 		ResourceSaver.save(_device_settings, "user://device_settings.tres")
-
-
-func compare_versions(version_a: String, version_b: String) -> int:
-	var va: PackedStringArray = version_a.split(".")
-	var vb: PackedStringArray = version_b.split(".")
-	
-	for index: int in 3:
-		var ai: int = int(va[index]) if index < va.size() else 0
-		var bi: int = int(vb[index]) if index < vb.size() else 0
-		if ai < bi:
-			return -1
-		elif ai > bi:
-			return 1
-	return 0
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -106,6 +98,7 @@ func stop_synchronization_timer() -> void:
 
 func register(register_settings: TeacherSettings) -> bool:
 	if not register_settings:
+		Logger.warn("UserDataManager: register called with invalid register_settings")
 		return false
 	
 	# Handles device settings
@@ -179,9 +172,16 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 	for index: int in range(old_texts.size()):
 		if content.find(old_texts[index]) != -1:
-			Logger.info("UserDataManager: Fix resource:" + path)
+			Logger.trace("UserDataManager: Fix resource:" + path)
 			content = content.replace(old_texts[index], new_texts[index])
 			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+			var error: Error = FileAccess.get_open_error()
+			if error != OK:
+				Logger.error("UserDataManager: Safe load and fix resource: Cannot open file %s. Error: %s" % [path, error_string(error)])
+				return null
+			if file == null:
+				Logger.error("UserDataManager: Safe load and fix resource: Cannot open file %s. File is null" % path)
+				return null
 			file.store_string(content)
 			file.close()
 
@@ -194,9 +194,11 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 func set_device_id(device: int) -> bool:
 	if not _device_settings:
+		Logger.warn("UserDataManager: set_device_id called with no device settings loaded")
 		return false
 	
 	if not device:
+		Logger.warn("UserDataManager: set_device_id called with invalid device")
 		return false
 	
 	_device_settings.device_id = device
@@ -219,10 +221,14 @@ func logout() -> void:
 
 func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
-		_delete_dir(get_teacher_folder())
+		Utils.clean_dir(get_teacher_folder())
 
 func student_exists(code: String) -> bool:
-	if not _device_settings or not teacher_settings:
+	if not _device_settings:
+		Logger.trace("UserDataManager: student_exists called with invalid _device_settings")
+		return false
+	if not teacher_settings:
+		Logger.trace("UserDataManager: student_exists called with invalid teacher_settings")
 		return false
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
 	if students:
@@ -232,7 +238,11 @@ func student_exists(code: String) -> bool:
 	return false
 
 func login_student(code: String) -> bool:
-	if not _device_settings or not teacher_settings:
+	if not _device_settings:
+		Logger.warn("UserDataManager: login_student failed because of invalid _device_settings")
+		return false
+	if not teacher_settings:
+		Logger.warn("UserDataManager: login_student failed because of invalid teacher_settings")
 		return false
 	
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
@@ -243,10 +253,15 @@ func login_student(code: String) -> bool:
 				(ServerManager as ServerManagerClass).first_login_student()
 				return true
 	
+	Logger.warn("UserDataManager: login_student failed, code not found: " + code)
 	return false
 
 func logout_student() -> bool:
-	if not _device_settings or not teacher_settings:
+	if not _device_settings:
+		Logger.warn("UserDataManager: logout_student failed because of invalid _device_settings")
+		return false
+	if not teacher_settings:
+		Logger.warn("UserDataManager: logout_student failed because of invalid teacher_settings")
 		return false
 	
 	student = ""
@@ -392,8 +407,7 @@ func _delete_inexistants_students_saves() -> void:
 		for device: String in directories:
 			# If the device does not exists, delete it
 			if int(device) not in teacher_settings.students.keys():
-				_delete_dir(path.path_join(device))
-				dirc.remove(device)
+				Utils.delete_directory_recursive(path.path_join(device))
 				continue
 			
 			# Go through each language folder
@@ -410,8 +424,7 @@ func _delete_inexistants_students_saves() -> void:
 							break
 					# If the code doesn't exists in the configuration, delete the folder
 					if not exists:
-						_delete_dir(path.path_join(device).path_join(language).path_join(p_student))
-						language_dir.remove(p_student)
+						Utils.delete_directory_recursive(path.path_join(device).path_join(language).path_join(p_student))
 
 func update_configuration(configuration: Dictionary) -> bool:
 	if not teacher_settings:
@@ -610,26 +623,87 @@ func get_gp_remediation_score(gp_id: int) -> int:
 		return 0
 	return _student_remediation.get_gp_score(gp_id)
 
-func update_remediation_gp_scores(gp_scores: Dictionary) -> void:
+func update_remediation_gp_scores(remediation_gp_scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
-	if gp_scores:
-		_student_remediation.update_gp_scores(gp_scores)
+	if remediation_gp_scores:
+		_student_remediation.update_gp_scores(remediation_gp_scores)
 
-func update_remediation_syllables_scores(syllables_scores: Dictionary) -> void:
+func update_remediation_syllables_scores(remediation_syllables_scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
-	if syllables_scores:
-		_student_remediation.update_syllables_scores(syllables_scores)
+	if remediation_syllables_scores:
+		_student_remediation.update_syllables_scores(remediation_syllables_scores)
 
-func update_remediation_words_scores(words_scores: Dictionary) -> void:
+func update_remediation_words_scores(remediation_words_scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
-	if words_scores:
-		_student_remediation.update_words_scores(words_scores)
+	if remediation_words_scores:
+		_student_remediation.update_words_scores(remediation_words_scores)
+
+#endregion
+
+#region Student Confusion Matrix
+
+func _get_student_confusion_matrix_path(device: int = 0, student_code: int = 0) -> String:
+	if student_code == 0:
+		return get_student_folder().path_join("confusion_matrix.tres")
+	elif device == 0 and student_code != 0:
+		return find_student_dir(student_code).path_join("confusion_matrix.tres")
+	else:
+		var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(student_code))
+		var confusion_matrix_path: String = student_path.path_join("confusion_matrix.tres")
+		return confusion_matrix_path
+
+func _load_student_confusion_matrix() -> void:
+	if FileAccess.file_exists(_get_student_confusion_matrix_path()):
+		_student_confusion_matrix = load(_get_student_confusion_matrix_path())
+	
+	if not _student_confusion_matrix:
+		_student_confusion_matrix = UserConfusionMatrix.new()
+		DirAccess.make_dir_recursive_absolute(get_student_folder())
+		_save_student_confusion_matrix()
+	
+	_student_confusion_matrix.score_changed.connect(_save_student_confusion_matrix)
+
+func get_student_confusion_matrix_data(student_code: int) -> UserConfusionMatrix:
+	var confusion_matrix_data_path: String = _get_student_confusion_matrix_path(0, student_code)
+	if FileAccess.file_exists(confusion_matrix_data_path):
+		var student_confusion_matrix: UserConfusionMatrix
+		student_confusion_matrix = load(confusion_matrix_data_path)
+		return student_confusion_matrix
+	Logger.trace("UserDataManager: Confusion matrix data of student code %d not found" % student_code)
+	return null
+
+func set_student_confusion_matrix_gp_data(student_code: int, new_scores: Dictionary[int, PackedInt32Array], updated_at: String) -> void:
+	var confusion_matrix_data_path: String = _get_student_confusion_matrix_path(0, student_code)
+	var student_confusion_matrix: UserConfusionMatrix
+	if FileAccess.file_exists(confusion_matrix_data_path):
+		student_confusion_matrix = load(confusion_matrix_data_path)
+	else:
+		student_confusion_matrix = UserConfusionMatrix.new()
+	student_confusion_matrix.set_gp_scores(new_scores)
+	student_confusion_matrix.set_gp_last_modified(updated_at)
+	ResourceSaver.save(student_confusion_matrix, confusion_matrix_data_path)
+
+func _save_student_confusion_matrix() -> void:
+	Logger.trace("UserDataManager: Saving student confusion_matrix in " + ProjectSettings.globalize_path(_get_student_confusion_matrix_path()))
+	ResourceSaver.save(_student_confusion_matrix, _get_student_confusion_matrix_path())
+
+func get_gp_confusion_matrix_score(gp_id: int) -> PackedInt32Array:
+	if not _student_confusion_matrix:
+		return []
+	return _student_confusion_matrix.get_gp_scores(gp_id)
+
+func update_confusion_matrix_gp_scores(confusion_matrix_gp_scores: Dictionary) -> void:
+	if not _student_confusion_matrix:
+		Logger.warn("UserDataManager: No student confusion matrix data for " + str(student))
+		return
+	if confusion_matrix_gp_scores:
+		_student_confusion_matrix.update_gp_scores(confusion_matrix_gp_scores)
 
 #endregion
 
@@ -703,14 +777,6 @@ func is_speech_played(speech: String) -> bool:
 #endregion
 
 #region utils
-
-func _delete_dir(path: String) -> void:
-	var dir: DirAccess = DirAccess.open(path)
-	for file: String in dir.get_files():
-		dir.remove(file)
-	for subfolder: String in dir.get_directories():
-		_delete_dir(path.path_join(subfolder))
-		dir.remove(subfolder)
 
 func move_user_device_folder(old_device: String, new_device: String, student_code: int) -> void:
 	var parent_dir_path: String = "user://".path_join(_device_settings.teacher)
@@ -786,6 +852,8 @@ func save_all() -> void:
 		_save_student_progression()
 	if _student_remediation != null:
 		_save_student_remediation()
+	if _student_confusion_matrix != null:
+		_save_student_confusion_matrix()
 	if _student_difficulty != null:
 		_save_student_difficulty()
 	if _student_speeches != null:
