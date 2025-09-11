@@ -90,7 +90,7 @@ func _init_log_file() -> void:
 
 # Internal log function (renamed to avoid conflict)
 func _log_internal(level: LogLevel, message: String) -> void:
-	if initialized && level < current_level: # If not initialized, no logs are filtered
+	if initialized and level < current_level: # If not initialized, no logs are filtered
 		return
 	
 	var prefix: String = "[LOG]"
