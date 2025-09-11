@@ -105,33 +105,33 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 		
 		var server_student_progression_unix_time: int = -1
 		if student_dic.has("progression_last_modified"):
-			if student_dic.progression_last_modified != null && student_dic.progression_last_modified is String:
+			if student_dic.progression_last_modified != null and student_dic.progression_last_modified is String:
 				server_student_progression_unix_time = Time.get_unix_time_from_datetime_string(student_dic.progression_last_modified as String)
 			else:
 				server_student_progression_unix_time = 0
 		
 		var server_student_remediation_gp_unix_time: int = -1
 		if student_dic.has("gp_remediation_last_modified"):
-			if student_dic.gp_remediation_last_modified != null && student_dic.gp_remediation_last_modified is String:
+			if student_dic.gp_remediation_last_modified != null and student_dic.gp_remediation_last_modified is String:
 				server_student_remediation_gp_unix_time = Time.get_unix_time_from_datetime_string(student_dic.gp_remediation_last_modified as String)
 			else:
 				server_student_remediation_gp_unix_time = 0
 		var server_student_remediation_syllables_unix_time: int = -1
 		if student_dic.has("syllables_remediation_last_modified"):
-			if student_dic.syllables_remediation_last_modified != null && student_dic.syllables_remediation_last_modified is String:
+			if student_dic.syllables_remediation_last_modified != null and student_dic.syllables_remediation_last_modified is String:
 				server_student_remediation_syllables_unix_time = Time.get_unix_time_from_datetime_string(student_dic.syllables_remediation_last_modified as String)
 			else:
 				server_student_remediation_syllables_unix_time = 0
 		var server_student_remediation_words_unix_time: int = -1
 		if student_dic.has("words_remediation_last_modified"):
-			if student_dic.words_remediation_last_modified != null && student_dic.words_remediation_last_modified is String:
+			if student_dic.words_remediation_last_modified != null and student_dic.words_remediation_last_modified is String:
 				server_student_remediation_words_unix_time = Time.get_unix_time_from_datetime_string(student_dic.words_remediation_last_modified as String)
 			else:
 				server_student_remediation_words_unix_time = 0
 		
 		var server_student_confusion_matrix_gp_unix_time: int = -1
 		if student_dic.has("confusion_matrix_gp_last_modified"):
-			if student_dic.confusion_matrix_gp_last_modified != null && student_dic.confusion_matrix_gp_last_modified is String:
+			if student_dic.confusion_matrix_gp_last_modified != null and student_dic.confusion_matrix_gp_last_modified is String:
 				server_student_confusion_matrix_gp_unix_time = Time.get_unix_time_from_datetime_string(student_dic.confusion_matrix_gp_last_modified as String)
 			else:
 				server_student_confusion_matrix_gp_unix_time = 0
@@ -417,7 +417,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 			var response_student_data: Dictionary = response_students[response_student_code]
 			if validate_student_data(response_student_data):
 				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
-			if response_student_data.has("progression") && (response_student_data.progression as Dictionary).has("version") && (response_student_data.progression as Dictionary).has("unlocked") && (response_student_data.progression as Dictionary).has("updated_at"):
+			if response_student_data.has("progression") and (response_student_data.progression as Dictionary).has("version") and (response_student_data.progression as Dictionary).has("unlocked") and (response_student_data.progression as Dictionary).has("updated_at"):
 				#Cleaning data because of JSON parsing changing types int / float / string
 				var received_unlock_data: Dictionary = response_student_data.progression.unlocked as Dictionary
 				var new_unlock_data: Dictionary = {}
@@ -428,7 +428,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 						@warning_ignore("unsafe_call_argument")
 						(new_unlock_data[int(key_lesson)]["games"] as Array).push_back(int(game_result))
 				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
-			if response_student_data.has("remediation_gp") && (response_student_data.remediation_gp as Dictionary).has("score_remediation") && (response_student_data.remediation_gp as Dictionary).has("updated_at"):
+			if response_student_data.has("remediation_gp") and (response_student_data.remediation_gp as Dictionary).has("score_remediation") and (response_student_data.remediation_gp as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
 				var new_gp_scores: Dictionary[int, int] = {}
@@ -436,7 +436,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					# TODO ADD SECURITY
 					new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
-			if response_student_data.has("remediation_syllables") && (response_student_data.remediation_syllables as Dictionary).has("score_remediation") && (response_student_data.remediation_syllables as Dictionary).has("updated_at"):
+			if response_student_data.has("remediation_syllables") and (response_student_data.remediation_syllables as Dictionary).has("score_remediation") and (response_student_data.remediation_syllables as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_syllables.score_remediation as String) as Array
 				var new_syllables_scores: Dictionary[int, int] = {}
@@ -444,7 +444,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					# TODO ADD SECURITY
 					new_syllables_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_syllables_data(int(response_student_code), new_syllables_scores, response_student_data.remediation_syllables.updated_at as String)
-			if response_student_data.has("remediation_words") && (response_student_data.remediation_words as Dictionary).has("score_remediation") && (response_student_data.remediation_words as Dictionary).has("updated_at"):
+			if response_student_data.has("remediation_words") and (response_student_data.remediation_words as Dictionary).has("score_remediation") and (response_student_data.remediation_words as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_words.score_remediation as String) as Array
 				var new_words_scores: Dictionary[int, int] = {}
@@ -452,7 +452,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					# TODO ADD SECURITY
 					new_words_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
 				UserDataManager.set_student_remediation_words_data(int(response_student_code), new_words_scores, response_student_data.remediation_words.updated_at as String)
-			if response_student_data.has("confusion_matrix_gp") && (response_student_data.confusion_matrix_gp as Dictionary).has("confusion_matrix") && (response_student_data.confusion_matrix_gp as Dictionary).has("updated_at"):
+			if response_student_data.has("confusion_matrix_gp") and (response_student_data.confusion_matrix_gp as Dictionary).has("confusion_matrix") and (response_student_data.confusion_matrix_gp as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = response_student_data.confusion_matrix_gp.confusion_matrix
 				var new_confusion_matrix_gp: Dictionary[int, PackedInt32Array] = {}

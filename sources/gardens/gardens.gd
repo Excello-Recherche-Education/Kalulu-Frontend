@@ -6,7 +6,7 @@ signal minigame_layout_opened()
 const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
-const FLOWER_FVX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
+const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 const GARDEN_SIZE: int = 2400
 
 static var transition_data: Dictionary = {}
@@ -277,14 +277,14 @@ func _ready() -> void:
 					play_animation = true
 				
 				if play_animation:
-					var fvfx: FlowerVFX = FLOWER_FVX.instantiate()
-					current_garden.flower_controls[flower_ind].add_child(fvfx)
-					fvfx.anchor_bottom = 0.5
-					fvfx.anchor_top = 0.5
-					fvfx.anchor_left = 0.5
-					fvfx.anchor_right = 0.5
+					var flower_vfx: FlowerVFX = FLOWER_VFX.instantiate()
+					current_garden.flower_controls[flower_ind].add_child(flower_vfx)
+					flower_vfx.anchor_bottom = 0.5
+					flower_vfx.anchor_top = 0.5
+					flower_vfx.anchor_left = 0.5
+					flower_vfx.anchor_right = 0.5
 					
-					fvfx.play()
+					flower_vfx.play()
 					await get_tree().create_timer(0.5).timeout
 					current_garden.update_flowers()
 				

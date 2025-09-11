@@ -120,7 +120,7 @@ func is_language_directory_valid(path: String) -> bool:
 	
 	var file_name: String = dir.get_next()
 	dir.list_dir_end()
-	return file_name != "" && dir.file_exists("language.db")
+	return file_name != "" and dir.file_exists("language.db")
 
 
 func _process(_delta: float) -> void:

@@ -11,9 +11,9 @@ func _init() -> void:
 
 func apply(control: Control, value: Variant) -> RuleResult:
 	var result: RuleResult = RuleResult.new()
-	if confirm_control_path && value is String:
+	if confirm_control_path and value is String:
 		var confirm_control: Control = control.get_child(0).get_node(confirm_control_path)
-		result.passed = confirm_control && Validation.find_validator(control).get_value(confirm_control) == value
+		result.passed = confirm_control and Validation.find_validator(control).get_value(confirm_control) == value
 	if not result.passed:
 		result.message = fail_message
 	return result
