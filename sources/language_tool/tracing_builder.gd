@@ -1,17 +1,17 @@
 extends Control
 
+const EXTENSION: String = ".csv"
+
 @export var gradient: Gradient
+
+var letters: Array[String] = []
+var current_letter: int = -1
 
 @onready var lower_container: SegmentContainer = %Lower
 @onready var upper_container: SegmentContainer = %Upper
 @onready var letter_picker: OptionButton = %LetterPicker
 @onready var save_ok: TextureRect = %SaveOk
 @onready var copy_from: MenuButton = %CopyFrom
-
-const EXTENSION: String = ".csv"
-
-var letters: Array[String] = []
-var current_letter: int = -1
 
 
 func _ready() -> void:

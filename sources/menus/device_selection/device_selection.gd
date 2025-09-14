@@ -5,8 +5,10 @@ const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 
 @onready var container: GridContainer = %GridContainer
 
+
 func _ready() -> void:
 	_refresh()
+
 
 func _refresh() -> void:
 	if not UserDataManager.teacher_settings:
@@ -22,6 +24,7 @@ func _refresh() -> void:
 		container.add_child(button)
 		button.pressed.connect(_device_button_pressed.bind(device))
 	OpeningCurtain.open()
+
 
 func _device_button_pressed(device: int) -> void:
 	Logger.trace("DeviceSelection: User selected device %d" % device)

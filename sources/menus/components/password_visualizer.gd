@@ -1,6 +1,6 @@
 @tool
-extends HBoxContainer
 class_name PasswordVisualizer
+extends HBoxContainer
 
 const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
 	"1": preload("res://assets/menus/login/symbol_01.png"),
@@ -24,11 +24,13 @@ const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
 
 @onready var icons: Array[TextureRect] = []
 
+
 func _ready() -> void:
 	_draw_password()
 	for icon: TextureRect in icons:
 		icon.custom_minimum_size.x = key_size
 		icon.custom_minimum_size.y = key_size
+
 
 func _draw_password() -> void:
 	

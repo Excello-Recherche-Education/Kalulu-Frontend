@@ -1,8 +1,19 @@
-extends Control
 class_name LookAndLearn
+extends Control
+
+static var transition_data: Dictionary = {}
 
 @export var lesson_nb: int = 1
 @export var current_button_pressed: int = 0
+
+var gp_list: Array[Dictionary] = []
+var current_video: int = 0
+var videos: Array[VideoStream] = []
+var current_image_and_sound: int = 0
+var images: Array[Texture] = []
+var sounds: Array[AudioStream] = []
+var gardens_data: Dictionary = {}
+var current_tracing: int = 0
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
@@ -11,21 +22,6 @@ class_name LookAndLearn
 @onready var grapheme_label: Label = %GraphemeLabel
 @onready var tracing_manager: TracingManager = %TracingManager
 @onready var grapheme_particles: GPUParticles2D = $GraphemeParticles
-
-
-var gp_list: Array[Dictionary] = []
-var current_video: int = 0
-var videos: Array[VideoStream] = []
-
-var current_image_and_sound: int = 0
-var images: Array[Texture] = []
-var sounds: Array[AudioStream] = []
-
-static var transition_data: Dictionary = {}
-var gardens_data: Dictionary = {}
-
-
-var current_tracing: int = 0
 
 
 func _ready() -> void:
@@ -155,7 +151,6 @@ func _on_tracing_manager_finished() -> void:
 		gardens_data.first_clear = UserDataManager.student_progression.look_and_learn_completed(lesson_nb)
 		gardens_data.look_and_learn_completed = true
 		_back_to_gardens()
-
 
 
 func _back_to_gardens() -> void:

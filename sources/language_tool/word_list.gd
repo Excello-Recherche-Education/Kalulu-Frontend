@@ -1,7 +1,15 @@
-extends Control
 class_name WordList
+extends Control
 
 @export var element_scene: PackedScene = preload("res://sources/language_tool/word_list_element.tscn")
+
+var undo_redo: UndoRedo = UndoRedo.new()
+var in_new_gp_mode: bool = false:
+	set = set_in_new_gp_mode
+var _element: WordListElement
+var sub_elements_list: Dictionary = {}
+var new_gp_asked_element: WordListElement
+var new_gp_asked_ind: int
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 @onready var new_gp_layer: CanvasLayer = $NewGPLayer
@@ -11,14 +19,6 @@ class_name WordList
 @onready var word_title: Label = %Word
 @onready var graphemes_title: Label = %Graphemes
 @onready var error_label: Label = %ErrorLabel
-
-var undo_redo: UndoRedo = UndoRedo.new()
-var in_new_gp_mode: bool = false:
-	set = set_in_new_gp_mode
-var _element: WordListElement
-var sub_elements_list: Dictionary = {}
-var new_gp_asked_element: WordListElement
-var new_gp_asked_ind: int
 
 
 func create_sub_elements_list() -> void:
@@ -188,7 +188,6 @@ func _on_save_button_pressed() -> void:
 		if not found:
 			Database.db.delete_rows(_element.table, "ID=%s" % elem[_element.table_graph_column + "Id"])
 	undo_redo.clear_history()
-
 
 
 func _on_back_button_pressed() -> void:

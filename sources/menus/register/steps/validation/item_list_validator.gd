@@ -1,6 +1,6 @@
 @tool
-extends Validator
 class_name ItemListValidator
+extends Validator
 
 
 func get_value(control: Control) -> Variant:

@@ -3,20 +3,6 @@ extends WordsMinigame
 
 const BRANCH_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/branch.tscn")
 
-
-class DifficultySettings:
-	var branches: int = 2
-	var stimuli_ratio: float = 0.75
-	var velocity: float = 400.
-	var spawn_rate: float = 3.
-	
-	func _init(p_branches: int, p_stimuli_ratio: float, p_velocity: float, p_spawn_rate: float) -> void:
-		branches = p_branches
-		stimuli_ratio = p_stimuli_ratio
-		velocity = p_velocity
-		spawn_rate = p_spawn_rate
-
-
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(2, 0.75, 400., 3.),
 	DifficultySettings.new(2, 0.66, 450., 2.5),
@@ -24,15 +10,13 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(3, 0.25, 550., 1.),
 	DifficultySettings.new(4, 0.25, 600., 1.)
 ]
-
+var branches: Array[Branch] = []
+var branches_spawn_indexes: Array[int] = []
 
 @onready var branches_zone: Control = $GameRoot/BranchesZone
 @onready var caterpillar: Caterpillar = $GameRoot/Caterpillar
 @onready var berry_timer: Timer = $GameRoot/BerryTimer
 
-
-var branches: Array[Branch] = []
-var branches_spawn_indexes: Array[int] = []
 
 func _setup_minigame() -> void:
 	super._setup_minigame()
@@ -82,15 +66,18 @@ func _stop_highlight() -> void:
 	for branch: Branch in branches:
 		branch.is_highlighting = false
 
+
 func _run() -> void:
 	caterpillar.walk()
 	for branch: Branch in branches:
 		branch.is_running = true
 
+
 func _stop() -> void:
 	caterpillar.idle()
 	for branch: Branch in branches:
 		branch.is_running = false
+
 
 func _get_difficulty_settings() -> DifficultySettings:
 	return difficulty_settings[difficulty]
@@ -176,3 +163,16 @@ func _on_current_progression_changed() -> void:
 	berry_timer.start()
 
 #endregion
+
+class DifficultySettings:
+	var branches: int = 2
+	var stimuli_ratio: float = 0.75
+	var velocity: float = 400.
+	var spawn_rate: float = 3.
+	
+	
+	func _init(p_branches: int, p_stimuli_ratio: float, p_velocity: float, p_spawn_rate: float) -> void:
+		branches = p_branches
+		stimuli_ratio = p_stimuli_ratio
+		velocity = p_velocity
+		spawn_rate = p_spawn_rate

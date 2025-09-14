@@ -1,13 +1,11 @@
-extends MarginContainer
 class_name LessonContainer
-
-var gp_label_scene: PackedScene = preload("res://sources/language_tool/lesson_gp_label.tscn")
+extends MarginContainer
 
 signal lesson_dropped(before: bool, number: int, dropped_number: int)
 
+var gp_label_scene: PackedScene = preload("res://sources/language_tool/lesson_gp_label.tscn")
 var number: int = 0:
 	set = set_number
-
 
 @onready var gp_container: HBoxContainer = $%GPContainer
 @onready var number_label: Label = $%NumberLabel

@@ -1,6 +1,6 @@
 @tool
-extends ValidatorRule
 class_name EqualsRule
+extends ValidatorRule
 
 @export var target_value: String
 

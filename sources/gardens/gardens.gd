@@ -1,29 +1,38 @@
-extends Control
 class_name Gardens
+extends Control
 
 signal minigame_layout_opened()
 
-# Namespace
 const KALULU := preload("res://sources/minigames/base/kalulu.gd")
-
 const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
-
 const GARDEN_SIZE: int = 2400
+
+static var transition_data: Dictionary = {}
 
 @export_category("Layout")
 @export var gardens_layout: GardensLayout:
 	set = set_gardens_layout
 @export var starting_garden: int = -1
-
 @export_category("Colors")
 @export var unlocked_color: Color = Color("1c2662") #blue
 @export var locked_color: Color = Color("1d2229") #black
-
 @export_group("Minigames")
 @export var minigames_scenes: Array[PackedScene] = []
 @export var minigames_icons: Array[Texture] = []
+
+var lessons: Dictionary = {}
+var points: Array[Array] = []
+var is_scrolling: bool = false
+var scroll_beginning_garden: int = 0
+var scroll_tween: Tween
+var is_locked: bool = false
+var in_minigame_selection: bool = false
+var current_lesson_number: int = -1
+var current_garden: Garden
+var current_button_global_position: Vector2 = Vector2.ZERO
+var current_button: LessonButton
 
 @onready var garden_parent: HBoxContainer = %GardenParent
 @onready var locked_line: Line2D = $ScrollContainer/LockedLine
@@ -48,25 +57,9 @@ const GARDEN_SIZE: int = 2400
 @onready var lock: Control = %Lock
 @onready var kalulu: KALULU = %Kalulu
 @onready var kalulu_button: CanvasItem = %KaluluButton
-
 @onready var intro_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "intro"))
 @onready var help_few_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
 @onready var help_many_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_many_plants"))
-
-var lessons: Dictionary = {}
-var points: Array[Array] = []
-var is_scrolling: bool = false
-var scroll_beginning_garden: int = 0
-var scroll_tween: Tween
-var is_locked: bool = false
-
-var in_minigame_selection: bool = false
-var current_lesson_number: int = -1
-var current_garden: Garden
-var current_button_global_position: Vector2 = Vector2.ZERO
-var current_button: LessonButton
-
-static var transition_data: Dictionary = {}
 
 
 func _ready() -> void:
@@ -382,7 +375,6 @@ func _ready() -> void:
 		await kalulu.play_kalulu_speech(intro_speech)
 		kalulu_button.show()
 		UserDataManager.mark_speech_as_played("gardens")
-	
 
 
 static func compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:

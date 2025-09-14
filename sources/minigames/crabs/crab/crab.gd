@@ -1,17 +1,8 @@
 @tool
-extends Control
 class_name Crab
+extends Control
 
 signal crab_hit(stimulus: Dictionary)
-
-@onready var body: Control = $Body
-@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
-@onready var label: Label = $Body/Label
-@onready var button: Button = $Button
-@onready var highlight_fx: HighlightFX = %HighlightFX
-@onready var right_fx: RightFX = %RightFX
-@onready var wrong_fx: WrongFX = %WrongFX
-@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 var sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
@@ -28,9 +19,17 @@ var sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_12.mp3"),
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_13.mp3"),
 ]
-
 var stimulus: Dictionary:
 	set = _set_stimulus
+
+@onready var body: Control = $Body
+@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
+@onready var label: Label = $Body/Label
+@onready var button: Button = $Button
+@onready var highlight_fx: HighlightFX = %HighlightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var wrong_fx: WrongFX = %WrongFX
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 
 func _ready() -> void:

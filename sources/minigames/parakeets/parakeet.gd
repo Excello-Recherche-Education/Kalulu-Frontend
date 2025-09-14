@@ -1,8 +1,8 @@
 @tool
-extends Node2D
 class_name Parakeet
+extends Node2D
 
-const INSTANCE_SCENE: String = "res://sources/minigames/parakeets/parakeet.tscn"
+signal pressed()
 
 enum Colors {
 	Red,
@@ -10,13 +10,12 @@ enum Colors {
 	Yellow,
 }
 
+const INSTANCE_SCENE: String = "res://sources/minigames/parakeets/parakeet.tscn"
 const ANIMATIONS: Array[SpriteFrames] = [
 	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/green_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/yellow_parakeet_animation.tres")
 ]
-
-signal pressed()
 
 @export var sad_duration: float = 2.0
 @export var color: Colors = Colors.Red:
@@ -30,16 +29,20 @@ signal pressed()
 		if label:
 			label.text = label.text.to_upper() if uppercase else label.text.to_lower()
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var label: Label = $Label
-@onready var right_FX: RightFX = $RightFX
-@onready var wrong_FX: WrongFX = $WrongFX
-
 var stimulus: Dictionary = {}:
 	set(value):
 		stimulus = value
 		var grapheme: String = value.Grapheme as String
 		label.text = grapheme.to_upper() if uppercase else grapheme
+
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var label: Label = $Label
+@onready var right_FX: RightFX = $RightFX
+@onready var wrong_FX: WrongFX = $WrongFX
+
+
+static func instantiate() -> Parakeet:
+	return (load(INSTANCE_SCENE) as PackedScene).instantiate()
 
 
 func _ready() -> void:
@@ -49,10 +52,6 @@ func _ready() -> void:
 
 func _on_button_pressed() -> void:
 	pressed.emit()
-
-
-static func instantiate() -> Parakeet:
-	return (load(INSTANCE_SCENE) as PackedScene).instantiate()
 
 
 func turn_to_back() -> void:

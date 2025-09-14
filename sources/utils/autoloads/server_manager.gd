@@ -1,15 +1,21 @@
-extends CanvasLayer
 class_name ServerManagerClass
+extends CanvasLayer
 
 signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_acces: bool)
+
+const INTERNET_CHECK_URL: String = "https://google.com"
+
+# Response from the last request
+var success: bool
+var code: int
+var json: Dictionary = {}
+var environment_url: String = ""
 
 @onready var internet_check: HTTPRequest = $InternetCheck
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var loading_rect: TextureRect = $TextureRect
 
-const INTERNET_CHECK_URL: String = "https://google.com"
-var environment_url: String = ""
 
 func _ready() -> void:
 	var config: ConfigFile = ConfigFile.new()
@@ -157,11 +163,6 @@ func _create_request_headers(content_type_json: bool = false) -> PackedStringArr
 	Logger.trace("ServerManager Create Header: " + str(headers))
 	return headers
 
-
-# Response from the last request
-var success: bool
-var code: int
-var json: Dictionary = {}
 
 func _response() -> Dictionary:
 	var res: Dictionary = {

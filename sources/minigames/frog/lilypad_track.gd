@@ -1,12 +1,9 @@
-extends Control
 class_name LilypadTrack
+extends Control
 
 signal lilypad_in_center(lilypad: Lilypad)
 
 const LILYPAD_SCENE: PackedScene = preload("res://sources/minigames/frog/lilypad.tscn")
-
-@onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
-@onready var spawn_timer: Timer = $SpawnTimer
 
 var top_to_bottom: bool = false
 var is_stopped: bool = false
@@ -15,8 +12,6 @@ var is_enabled: bool = false:
 	set = _set_enabled
 var is_highlighting: bool = false:
 	set = _set_highlighting
-
-
 var difficulty_settings: FrogMinigame.DifficultySettings
 var gp: Dictionary = {}:
 	set(value):
@@ -26,9 +21,11 @@ var gp: Dictionary = {}:
 var distractors: Array[Dictionary] = []
 var distractors_queue: Array[Dictionary] = []
 var distractors_queue_size: int = 5
-
 var lilypads: Array[Lilypad] = []
 var lilypad_size: Vector2
+
+@onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var spawn_timer: Timer = $SpawnTimer
 
 
 func _process(delta: float) -> void:

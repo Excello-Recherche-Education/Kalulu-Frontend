@@ -1,5 +1,5 @@
-extends Resource
 class_name LogResource
+extends Resource
 
 @export var logs: Dictionary = {} # int: Dictionary {String: Dictionary}
 

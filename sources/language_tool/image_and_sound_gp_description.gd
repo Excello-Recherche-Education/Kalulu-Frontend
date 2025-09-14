@@ -1,7 +1,11 @@
-extends HBoxContainer
 class_name ImageAndSoundGPDescription
+extends HBoxContainer
 
-signal delete
+signal deleted()
+
+var gp: Dictionary = {}
+var get_image_path: Callable = Database.get_gp_look_and_learn_image_path
+var get_sound_path: Callable = Database.get_gp_look_and_learn_sound_path
 
 @onready var gp_menu_button: MenuButton = %GPMenuButton
 @onready var image_preview: TextureRect = %ImagePreview
@@ -12,10 +16,6 @@ signal delete
 @onready var sound_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var image_clear_button: MarginContainer = %ImageClearButton
 @onready var sound_clear_button: MarginContainer = %SoundClearButton
-
-var gp: Dictionary = {}
-var get_image_path: Callable = Database.get_gp_look_and_learn_image_path
-var get_sound_path: Callable = Database.get_gp_look_and_learn_sound_path
 
 
 func _image_file_selected(file_path: String) -> void:
@@ -114,7 +114,7 @@ func _on_sound_upload_button_pressed() -> void:
 
 
 func _on_button_pressed() -> void:
-	delete.emit()
+	deleted.emit()
 
 
 func _on_sound_preview_pressed() -> void:

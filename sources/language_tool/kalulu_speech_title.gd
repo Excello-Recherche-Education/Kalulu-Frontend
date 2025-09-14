@@ -1,6 +1,5 @@
-extends PanelContainer
 class_name KaluluTitle
-
+extends PanelContainer
 
 @export var title: String = "":
 	set = _set_title

@@ -1,10 +1,11 @@
 @tool
-extends Control
 class_name HighlightFX
+extends Control
+
+var is_playing: bool = false
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-var is_playing: bool = false
 
 func play() -> void:
 	is_playing = true

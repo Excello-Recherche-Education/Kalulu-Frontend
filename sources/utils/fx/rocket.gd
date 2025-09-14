@@ -1,19 +1,5 @@
-extends Path2D
 class_name Rocket
-
-@export var spread_angle: float = PI/8.0
-@export var segments: int = 5
-
-@onready var path_follow: PathFollow2D = $PathFollow2D
-
-@onready var traveling_timer: Timer = $TravelingTimer
-@onready var explosion_timer: Timer = $ExplosionTimer
-
-@onready var rocket: Sprite2D = $PathFollow2D/Rocket
-@onready var explosion_particles: Node2D = $PathFollow2D/ExplosionParticles
-
-@onready var firework_audio_player: AudioStreamPlayer2D = $FireworkAudioPlayer
-@onready var blast_audio_player: AudioStreamPlayer2D = $BlastAudioPlayer
+extends Path2D
 
 const FIREWORK_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/fireworks_1.mp3"),
@@ -22,7 +8,6 @@ const FIREWORK_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/fireworks_4.mp3"),
 	preload("res://assets/sfx/fireworks_5.mp3"),
 ]
-
 const BLAST_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/blast_1.mp3"),
 	preload("res://assets/sfx/blast_2.mp3"),
@@ -30,7 +15,6 @@ const BLAST_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/sfx/blast_4.mp3"),
 	preload("res://assets/sfx/blast_5.mp3"),
 ]
-
 const COLORS: Array[Color] = [
 	Color(0.427, 0.796, 1),
 	Color(0.976, 0.322, 0.392),
@@ -41,7 +25,18 @@ const COLORS: Array[Color] = [
 	Color(0.216, 0.757, 0.341),
 ]
 
+@export var spread_angle: float = PI/8.0
+@export var segments: int = 5
+
 var ind_color: int = 0
+
+@onready var path_follow: PathFollow2D = $PathFollow2D
+@onready var traveling_timer: Timer = $TravelingTimer
+@onready var explosion_timer: Timer = $ExplosionTimer
+@onready var rocket: Sprite2D = $PathFollow2D/Rocket
+@onready var explosion_particles: Node2D = $PathFollow2D/ExplosionParticles
+@onready var firework_audio_player: AudioStreamPlayer2D = $FireworkAudioPlayer
+@onready var blast_audio_player: AudioStreamPlayer2D = $BlastAudioPlayer
 
 
 func _ready() -> void:

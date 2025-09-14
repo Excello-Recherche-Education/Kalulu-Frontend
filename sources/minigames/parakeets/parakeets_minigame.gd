@@ -7,7 +7,6 @@ enum State {
 	Selected1,
 	Selected2,
 }
-
 enum Audio {
 	Fly,
 	Happy,
@@ -21,8 +20,20 @@ const AUDIO_STREAMS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/parakeets/audio/parakeet_turn_over.mp3"),
 	preload("res://assets/minigames/parakeets/audio/parakeet_win.mp3"),
 ]
+const DIFFICULTY_SETTINGS: Dictionary[int, Dictionary] = {
+	0: {"pairs_count": 2},
+	1: {"pairs_count": 3},
+	2: {"pairs_count": 4},
+	3: {"pairs_count": 5},
+	4: {"pairs_count": 6},
+}
 
 @export var fly_duration: float = 3.0
+
+var possible_branch_positions: Array[Vector2] = []
+var parakeets: Array[Parakeet] = []
+var selected: Array[Parakeet] = []
+var state: State = State.Locked
 
 @onready var branches: Control = $GameRoot/TreeTrunk/Branches
 @onready var possible_start_positions_parent: Control = $GameRoot/FlyFrom
@@ -39,19 +50,6 @@ const AUDIO_STREAMS: Array[AudioStreamMP3] = [
 	fly_away_position_1.global_position,
 	fly_away_position_2.global_position
 ]
-
-var possible_branch_positions: Array[Vector2] = []
-var parakeets: Array[Parakeet] = []
-var selected: Array[Parakeet] = []
-var state: State = State.Locked
-
-const DIFFICULTY_SETTINGS: Dictionary[int, Dictionary] = {
-	0: {"pairs_count": 2},
-	1: {"pairs_count": 3},
-	2: {"pairs_count": 4},
-	3: {"pairs_count": 5},
-	4: {"pairs_count": 6},
-}
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.

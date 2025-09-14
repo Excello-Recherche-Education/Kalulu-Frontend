@@ -1,18 +1,17 @@
-extends Area2D
 class_name Island
-
-@onready var label: Label = $Label
-@onready var collision: CollisionPolygon2D = $CollisionPolygon2D
+extends Area2D
 
 var stimulus: Dictionary = {}:
 	set(value):
 		stimulus = value
 		progress = 0
-
 var progress: int = 0:
 	set(value):
 		progress = value
 		_update_label()
+
+@onready var label: Label = $Label
+@onready var collision: CollisionPolygon2D = $CollisionPolygon2D
 
 
 func set_enabled(is_enabled: bool) -> void:

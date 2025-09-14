@@ -1,5 +1,5 @@
-extends MarginContainer
 class_name GPListElement
+extends MarginContainer
 
 signal delete_pressed()
 signal validated()
@@ -9,18 +9,6 @@ enum Type {
 	Vowel,
 	Consonant,
 }
-
-@onready var exception_checkbox: CheckBox = %ExceptionCheckBox
-@onready var exception_edit_checkbox: CheckBox = %ExceptionEditCheckBox
-@onready var grapheme_label: Label = $%Grapheme
-@onready var phoneme_label: Label = $%Phoneme
-@onready var type_label: Label = $%Type
-@onready var grapheme_edit: LineEdit = $%GraphemeEdit
-@onready var phoneme_edit: LineEdit = $%PhonemeEdit
-@onready var type_edit: OptionButton = $%TypeEdit
-@onready var tab_container: TabContainer = $%TabContainer
-
-
 
 var grapheme: String = "":
 	set = set_grapheme
@@ -36,6 +24,16 @@ var undo_redo: UndoRedo:
 		if not undo_redo:
 			undo_redo = UndoRedo.new()
 		return undo_redo
+
+@onready var exception_checkbox: CheckBox = %ExceptionCheckBox
+@onready var exception_edit_checkbox: CheckBox = %ExceptionEditCheckBox
+@onready var grapheme_label: Label = $%Grapheme
+@onready var phoneme_label: Label = $%Phoneme
+@onready var type_label: Label = $%Type
+@onready var grapheme_edit: LineEdit = $%GraphemeEdit
+@onready var phoneme_edit: LineEdit = $%PhonemeEdit
+@onready var type_edit: OptionButton = $%TypeEdit
+@onready var tab_container: TabContainer = $%TabContainer
 
 
 func set_grapheme(p_grapheme: String) -> void:
@@ -60,6 +58,7 @@ func set_type(p_type: Type) -> void:
 		type_label.text = Type.keys()[type]
 	if type_edit:
 		type_edit.selected = type
+
 
 func set_exception(p_exception: bool) -> void:
 	exception = p_exception

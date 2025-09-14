@@ -1,13 +1,13 @@
-extends Control
 class_name BrokenCoconutFX
+extends Control
 
 signal finished()
-
 
 @onready var top_particles: GPUParticles2D = $TopParticles
 @onready var shards_particles: GPUParticles2D = $ShardsParticles
 @onready var bottom_particles: GPUParticles2D = $BottomParticles
 @onready var lines_particles: GPUParticles2D = $LinesParticles
+
 
 func play() -> void:
 	shards_particles.amount = randi_range(4, 10)

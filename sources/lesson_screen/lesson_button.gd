@@ -1,5 +1,5 @@
-extends TextureButton
 class_name LessonButton
+extends TextureButton
 
 @export_color_no_alpha var base_color: Color:
 	set = _set_base_color
@@ -15,11 +15,12 @@ class_name LessonButton
 @onready var placeholder: TextureRect = %Placeholder
 @onready var right_fx: RightFX = %RightFX
 
+
 func _ready() -> void:
 	_set_base_color(base_color)
 	_set_completed_color(completed_color)
 	_set_text(text)
-
+	
 
 func show_placeholder(is_shown: bool) -> void:
 	placeholder.visible = is_shown
@@ -29,6 +30,7 @@ func show_placeholder(is_shown: bool) -> void:
 func right() -> void:
 	right_fx.play()
 	await right_fx.finished
+
 
 func _set_base_color(color: Color) -> void:
 	base_color = color

@@ -1,5 +1,5 @@
-extends Node
 class_name Fireworks
+extends Node
 
 signal finished()
 
@@ -7,13 +7,12 @@ const ROCKET_SCENE: PackedScene = preload("res://sources/utils/fx/rocket.tscn")
 
 @export var number_of_rockets: int = 25
 
+var count: int = 0
+
 @onready var fire_delay_timer: Timer = $FireDelayTimer
 @onready var starts: Array[Node] = $Starts.get_children()
 @onready var ends: Array[Node] = $Ends.get_children()
 @onready var rockets: Node2D = $Rockets
-
-
-var count: int = 0
 
 
 func start() -> void:

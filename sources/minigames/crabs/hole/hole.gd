@@ -1,5 +1,5 @@
-extends Node2D
 class_name Hole
+extends Node2D
 
 signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned(is_stimulus: bool)
@@ -7,13 +7,6 @@ signal stop()
 signal crab_out(hole: Hole)
 
 const CRAB_SCENE: PackedScene = preload("res://sources/minigames/crabs/crab/crab.tscn")
-
-@onready var hole_back: Sprite2D = $HoleBack
-@onready var hole_front: Sprite2D = $HoleFront
-@onready var mask: Sprite2D = %Mask
-@onready var sand_vfx: SandVFX = $SandVFX
-@onready var timer: Timer = $Timer
-@onready var crab_audio_stream_player: HoleAudioStreamPlayer = $CrabAudioStreamPlayer2D
 
 var crab: Crab
 var crab_x: float
@@ -26,6 +19,13 @@ var crab_visible: bool = false:
 		crab_visible = value
 		_set_crab_button_active(stimulus_heard and crab_visible)
 var is_stimulus: bool = false
+
+@onready var hole_back: Sprite2D = $HoleBack
+@onready var hole_front: Sprite2D = $HoleFront
+@onready var mask: Sprite2D = %Mask
+@onready var sand_vfx: SandVFX = $SandVFX
+@onready var timer: Timer = $Timer
+@onready var crab_audio_stream_player: HoleAudioStreamPlayer = $CrabAudioStreamPlayer2D
 
 
 func _process(_delta: float) -> void:
@@ -154,9 +154,7 @@ func _set_crab_button_active(is_active: bool) -> void:
 	if crab:
 		crab.set_button_active(is_active)
 
-
 # ------------ Connections ------------
-
 
 func _on_crab_hit(stimulus: Dictionary) -> void:
 	

@@ -1,6 +1,5 @@
-extends TextureRect
-
 class_name Blank
+extends TextureRect
 
 const IMAGES: Array[String] = [
 	"res://assets/minigames/ants/graphics/hole_02.png",

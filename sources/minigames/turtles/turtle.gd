@@ -1,19 +1,8 @@
-extends Node2D
 class_name Turtle
+extends Node2D
 
 signal pressed(gp: Dictionary)
 signal animation_changed(position: Vector2)
-
-@onready var body: Node2D = $Body
-@onready var sprite: AnimatedSprite2D = $Body/AnimatedSprite2D
-@onready var label: Label = $Label
-@onready var head_area_collision_shape: CollisionShape2D = $Body/HeadArea/CollisionShape2D
-@onready var body_area_collision_shape: CollisionShape2D = $Body/BodyArea/CollisionShape2D
-@onready var highlight_fx: HighlightFX = $HighlightFX
-@onready var right_fx: RightFX = $RightFX
-@onready var wrong_fx: WrongFX = $WrongFX
-@onready var delete_timer: Timer = $DeleteTimer
-@onready var audio_stream_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var gp: Dictionary = {}:
 	set(value):
@@ -28,6 +17,17 @@ var direction: Vector2 = Vector2(0,-1):
 var is_moving: bool = true
 var is_changing_direction: bool = false
 var is_visible_on_screen: bool = false
+
+@onready var body: Node2D = $Body
+@onready var sprite: AnimatedSprite2D = $Body/AnimatedSprite2D
+@onready var label: Label = $Label
+@onready var head_area_collision_shape: CollisionShape2D = $Body/HeadArea/CollisionShape2D
+@onready var body_area_collision_shape: CollisionShape2D = $Body/BodyArea/CollisionShape2D
+@onready var highlight_fx: HighlightFX = $HighlightFX
+@onready var right_fx: RightFX = $RightFX
+@onready var wrong_fx: WrongFX = $WrongFX
+@onready var delete_timer: Timer = $DeleteTimer
+@onready var audio_stream_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 
 func _process(delta: float) -> void:

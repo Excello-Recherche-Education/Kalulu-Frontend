@@ -1,8 +1,9 @@
 @tool
-extends ValidatorRule
 class_name ConfirmRule
+extends ValidatorRule
 
 @export_node_path("Control") var confirm_control_path: NodePath
+
 
 func _init() -> void:
 	fail_message = "Value must be the same in both fields."

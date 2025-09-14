@@ -1,6 +1,6 @@
 @tool
-extends ValidatorRule
 class_name AlphanumericRule
+extends ValidatorRule
 
 
 func _init() -> void:

@@ -2,9 +2,9 @@ extends Control
 
 const ELEMENT_SCENE: PackedScene = preload("res://sources/language_tool/fish_word_list_element.tscn")
 
-@onready var elements_container: VBoxContainer = %ElementsContainer
-
 var word_list: Array = []
+
+@onready var elements_container: VBoxContainer = %ElementsContainer
 
 
 func _ready() -> void:

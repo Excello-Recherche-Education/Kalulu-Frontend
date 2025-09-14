@@ -1,10 +1,11 @@
 @tool
-extends Control
 class_name ControlBinder
+extends Control
 
 @export var property_name: String
 
 var control: Control
+
 
 func _ready() -> void:
 	control = get_parent()

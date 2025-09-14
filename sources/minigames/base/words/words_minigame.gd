@@ -1,5 +1,5 @@
-extends Minigame
 class_name WordsMinigame
+extends Minigame
 
 # Define the maximum number of GP inside each word
 @export var max_number_of_gps: int = 6
@@ -10,10 +10,9 @@ class_name WordsMinigame
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
-
 var current_gp_distractors_queue: Array[Dictionary] = []
-
 var current_word_has_errors: bool = false
+
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
@@ -199,16 +198,12 @@ func _log_new_response_and_score(gp: Dictionary) -> void:
 			current_word_has_errors = true
 		_update_remediation_gp_score(self._get_gp().ID as int, -1)
 
-
 # ------------- UI Callbacks ------------- #
-
 
 func _play_stimulus() -> void:
 	await audio_player.play_word(_get_current_stimulus().Word as String)
 
-
 # -------------- CONNECTIONS -------------- #
-
 
 func _on_current_word_progression_changed() -> void:
 	_reset_distractors_queue()

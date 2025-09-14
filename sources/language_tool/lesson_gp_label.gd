@@ -1,5 +1,5 @@
-extends Label
 class_name LessonGPLabel
+extends Label
 
 signal gp_dropped(before: bool, data: Dictionary)
 

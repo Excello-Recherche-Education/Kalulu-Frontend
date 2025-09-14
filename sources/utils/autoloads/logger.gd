@@ -6,15 +6,17 @@ enum LogLevel {
 	INFO,
 	WARNING,
 	ERROR,
+	# TODO : PANIC
 	NONE
 }
+
+const LOG_PATH: String = "user://Logs/"
 
 var current_level: LogLevel = LogLevel.INFO
 var log_file_path: String
 var log_file: FileAccess
 var initialized: bool = false
 
-const LOG_PATH: String = "user://Logs/"
 
 func _ready() -> void:
 	delete_old_logs()
@@ -28,6 +30,7 @@ func _ready() -> void:
 	initialized = true
 	_log_internal(LogLevel.INFO, "--- Logging started at " + Time.get_datetime_string_from_system() + " ---")
 	_log_internal(LogLevel.INFO, "--- Logging set at level " + str(current_level) + " ---")
+
 
 func delete_old_logs(days_threshold: float = 10) -> void:
 	var dir: DirAccess = DirAccess.open(LOG_PATH)
@@ -66,6 +69,7 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 		file_name = dir.get_next()
 	dir.list_dir_end()
 
+
 func _init_log_file() -> void:
 	# Ensure Logs directory exists
 	var logs_dir: DirAccess = DirAccess.open(LOG_PATH)
@@ -87,6 +91,7 @@ func _init_log_file() -> void:
 	if log_file == null:
 		push_error("Logger: Could not open log file at " + log_file_path)
 		return
+
 
 # Internal log function (renamed to avoid conflict)
 func _log_internal(level: LogLevel, message: String) -> void:
@@ -116,17 +121,28 @@ func _log_internal(level: LogLevel, message: String) -> void:
 	
 	_log_to_file(log_message)
 
+
 func _log_to_file(message: String) -> void:
 	if log_file:
 		log_file.store_line(message)
 		log_file.flush()
 
-# Sugar functions
+
 # trace can be used everywhere, in order to have a full log of all that is hapenning
 func trace(msg: String) -> void: _log_internal(LogLevel.TRACE, msg)
+
+
 # debug should only be used in a dev environment to track a specific bug.
 func debug(msg: String) -> void: _log_internal(LogLevel.DEBUG, msg)
+
+
 # info can carry important information(s) that should always be logged but that are not problematic
 func info(msg: String) -> void: _log_internal(LogLevel.INFO, msg)
+
+
+# warning should be used when a behaviour is not normal, but this is not blocking or it could be ignored
 func warn(msg: String) -> void: _log_internal(LogLevel.WARNING, msg)
+
+
+# error should be used everytime the program does something that is problematic and could potentially harm the user experience
 func error(msg: String) -> void: _log_internal(LogLevel.ERROR, msg)

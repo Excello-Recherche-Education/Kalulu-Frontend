@@ -1,5 +1,5 @@
-extends MarginContainer
 class_name ListTitle
+extends MarginContainer
 
 signal add_pressed()
 signal save_pressed()
@@ -7,10 +7,11 @@ signal back_pressed()
 signal new_search(new_text: String)
 signal import_path_selected(path: String, match_to_file: bool)
 
+var my_button: Button
+
 @onready var title_label: Label = %TitleLabel
 @onready var file_dialog: FileDialog = $FileDialog
 
-var my_button: Button
 
 func _ready() -> void:
 	my_button = file_dialog.add_button("Match list to file (delete elements not in file)", true, "act")

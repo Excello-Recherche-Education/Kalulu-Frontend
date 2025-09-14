@@ -1,12 +1,13 @@
-extends Button
 class_name SwipeDetector
+extends Button
 
 signal swipe(start_position: Vector2, end_position: Vector2)
 
-@onready var drag_preview: TextureRect = $DragPreview
-
 var current_preview: TextureRect
 var start_position: Vector2
+
+@onready var drag_preview: TextureRect = $DragPreview
+
 
 func _ready() -> void:
 	set_drag_forwarding(

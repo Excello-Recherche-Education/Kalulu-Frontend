@@ -1,13 +1,7 @@
-extends Area2D
 class_name Berry
+extends Area2D
 
 signal pressed(gp: Dictionary)
-
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var label: Label = %Label
-@onready var path_follow: PathFollow2D = $Path2D/PathFollow2D
-@onready var highlight_fx: HighlightFX = $HighlightFX
-@onready var wrong_fx: WrongFX = $WrongFX
 
 var gp: Dictionary = {}: 
 	set(value):
@@ -16,14 +10,18 @@ var gp: Dictionary = {}:
 			label.text = gp.Grapheme
 		else:
 			label.text = ""
-
-var is_distractor: bool = false
-
 var is_eaten: bool = false: 
 	set(value):
 		is_eaten = value
 		if is_eaten:
 			collision_shape.set_deferred("disabled", true)
+var is_distractor: bool = false
+
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+@onready var label: Label = %Label
+@onready var path_follow: PathFollow2D = $Path2D/PathFollow2D
+@onready var highlight_fx: HighlightFX = $HighlightFX
+@onready var wrong_fx: WrongFX = $WrongFX
 
 
 func highlight() -> void:

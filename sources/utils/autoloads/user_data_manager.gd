@@ -1,6 +1,5 @@
-extends Node
 class_name UserDataManagerClass
-
+extends Node
 
 var student: String = "":
 	set(student_name):
@@ -18,7 +17,6 @@ var student: String = "":
 			_student_remediation = null
 			_student_confusion_matrix = null
 			_student_speeches = null
-
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
 var student_progression: StudentProgression
@@ -26,7 +24,6 @@ var _student_remediation: UserRemediation
 var _student_confusion_matrix: UserConfusionMatrix
 var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
-
 var user_database_synchronizer: UserDatabaseSynchronizer
 var synchronization_timer: int = 0
 var synchronization_timer_running: bool = false
@@ -35,6 +32,7 @@ var now: int
 var last_time: int = 0
 var real_delta: int
 
+
 func _ready() -> void:
 	if get_device_settings().teacher:
 		_load_teacher_settings()
@@ -42,6 +40,7 @@ func _ready() -> void:
 	purge_user_folders_if_needed()
 	
 	user_database_synchronizer = UserDatabaseSynchronizer.new()
+
 
 func purge_user_folders_if_needed() -> void:
 	var current_version: String = ProjectSettings.get_setting("application/config/version")
@@ -68,6 +67,7 @@ func purge_user_folders_if_needed() -> void:
 		Logger.trace("UserDataManager: Purge completed")
 		_device_settings.game_version = current_version
 		ResourceSaver.save(_device_settings, "user://device_settings.tres")
+
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -113,6 +113,7 @@ func register(register_settings: TeacherSettings) -> bool:
 	save_teacher_settings()
 	
 	return true
+
 
 # Allow the user to log-in from the server
 func login(infos: Dictionary) -> bool:
@@ -163,6 +164,7 @@ func login(infos: Dictionary) -> bool:
 	
 	return true
 
+
 func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_texts: Array[String]) -> Resource:
 	if not FileAccess.file_exists(path):
 		Logger.error("UserDataManager: File not found: " + path)
@@ -192,6 +194,7 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 		Logger.trace("UserDataManager: Loading success: " + path)
 	return resource
 
+
 func set_device_id(device: int) -> bool:
 	if not _device_settings:
 		Logger.warn("UserDataManager: set_device_id called with no device settings loaded")
@@ -204,6 +207,7 @@ func set_device_id(device: int) -> bool:
 	_device_settings.device_id = device
 	_save_device_settings()
 	return true
+
 
 func logout() -> void:
 	
@@ -219,9 +223,11 @@ func logout() -> void:
 	if student:
 		student = ""
 
+
 func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
 		Utils.clean_dir(get_teacher_folder())
+
 
 func student_exists(code: String) -> bool:
 	if not _device_settings:
@@ -236,6 +242,7 @@ func student_exists(code: String) -> bool:
 			if int(stud.code) == int(code):
 				return true
 	return false
+
 
 func login_student(code: String) -> bool:
 	if not _device_settings:
@@ -256,6 +263,7 @@ func login_student(code: String) -> bool:
 	Logger.warn("UserDataManager: login_student failed, code not found: " + code)
 	return false
 
+
 func logout_student() -> bool:
 	if not _device_settings:
 		Logger.warn("UserDataManager: logout_student failed because of invalid _device_settings")
@@ -274,10 +282,12 @@ func logout_student() -> bool:
 func get_device_settings_path() -> String:
 	return "user://device_settings.tres"
 
+
 func get_device_settings() -> DeviceSettings:
 	if not _device_settings:
 		_load_device_settings()
 	return _device_settings
+
 
 func _load_device_settings() -> void:
 	if FileAccess.file_exists(get_device_settings_path()):
@@ -289,19 +299,23 @@ func _load_device_settings() -> void:
 		_device_settings.init_os_language()
 		_save_device_settings()
 
+
 func _save_device_settings() -> void:
 	Logger.trace("UserDataManager: Saving device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
 	ResourceSaver.save(_device_settings, get_device_settings_path())
+
 
 func set_language(language: String) -> void:
 	if _device_settings:
 		_device_settings.language = language
 		_save_device_settings()
 
+
 func set_language_version(language: String, version: Dictionary) -> void:
 	if _device_settings:
 		_device_settings.language_versions[language] = version
 		_save_device_settings()
+
 
 func set_master_volume(value: float) -> void:
 	if _device_settings:
@@ -309,11 +323,13 @@ func set_master_volume(value: float) -> void:
 		_device_settings.master_volume = volume
 		_save_device_settings()
 
+
 func set_music_volume(value: float) -> void:
 	if _device_settings:
 		var volume: float = denormalize_volume(value)
 		_device_settings.music_volume = volume
 		_save_device_settings()
+
 
 func set_voice_volume(value: float) -> void:
 	if _device_settings:
@@ -321,48 +337,51 @@ func set_voice_volume(value: float) -> void:
 		_device_settings.voice_volume = volume
 		_save_device_settings()
 
+
 func set_effects_volume(value: float) -> void:
 	if _device_settings:
 		var volume: float = denormalize_volume(value)
 		_device_settings.effects_volume = volume
 		_save_device_settings()
 
+
 func get_master_volume() -> float:
 	var value: float = 0.0
 	if _device_settings:
 		var volume: float = _device_settings.master_volume
 		value = normalize_slider(volume)
-
 	return value
+
 
 func get_music_volume() -> float:
 	var value: float = 0.0
 	if _device_settings:
 		var volume: float = _device_settings.music_volume
 		value = normalize_slider(volume)
-
 	return value
+
 
 func get_voice_volume() -> float:
 	var value: float = 0.0
 	if _device_settings:
 		var volume: float = _device_settings.voice_volume
 		value = normalize_slider(volume)
-
 	return value
+
 
 func get_effects_volume() -> float:
 	var value: float = 0.0
 	if _device_settings:
 		var volume: float = _device_settings.effects_volume
 		value = normalize_slider(volume)
-
 	return value
+
 
 # Convert the volume from [-80, 6]db to [0, 100] and back
 func normalize_slider(volume: float) -> float:
 	var value: float = pow((volume + 80.0) / 86, 5.0) * 100.0
 	return value
+
 
 func denormalize_volume(value: float) -> float:
 	var volume: float = pow(float(value) / 100.0, 0.2) * 86 - 80
@@ -375,11 +394,14 @@ func denormalize_volume(value: float) -> float:
 func get_teacher_folder() -> String:
 	return "user://".path_join(_device_settings.teacher)
 
+
 func _get_teacher_settings_path(teacher: String) -> String:
 	return "user://".path_join(teacher).path_join("teacher_settings.tres")
 
+
 func get_teacher_settings_path() -> String:
 	return _get_teacher_settings_path(_device_settings.teacher)
+
 
 func _load_teacher_settings() -> void:
 	if FileAccess.file_exists(get_teacher_settings_path()):
@@ -391,9 +413,11 @@ func _load_teacher_settings() -> void:
 		_device_settings.device_id = 0
 		_save_device_settings()
 
+
 func save_teacher_settings() -> void:
 	Logger.trace("UserDataManager: Saving teacher settings in " + ProjectSettings.globalize_path(get_teacher_settings_path()))
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
+
 
 func _delete_inexistants_students_saves() -> void:
 	if not teacher_settings:
@@ -426,6 +450,7 @@ func _delete_inexistants_students_saves() -> void:
 					if not exists:
 						Utils.delete_directory_recursive(path.path_join(device).path_join(language).path_join(p_student))
 
+
 func update_configuration(configuration: Dictionary) -> bool:
 	if not teacher_settings:
 		return false
@@ -448,6 +473,7 @@ func update_configuration(configuration: Dictionary) -> bool:
 	
 	return true
 
+
 func get_number_of_students() -> int:
 	if not teacher_settings:
 		return 0
@@ -462,6 +488,7 @@ func get_student_folder(student_code: int = 0) -> String:
 		return _device_settings.get_folder_path().path_join(student)
 	else:
 		return _device_settings.get_folder_path().path_join(str(student_code))
+
 
 func delete_student(student_code: int) -> void:
 	teacher_settings.delete_student(student_code)
@@ -480,6 +507,7 @@ func get_student_progression_path(device: int = 0, student_code: int = 0) -> Str
 		var remediation_path: String = student_path.path_join("progression.tres")
 		return remediation_path
 
+
 func _load_student_progression() -> void:
 	if FileAccess.file_exists(get_student_progression_path()):
 		student_progression = safe_load_and_fix_resource(	get_student_progression_path(),
@@ -494,12 +522,15 @@ func _load_student_progression() -> void:
 	student_progression.init_unlocks()
 	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
 
+
 func _save_student_progression() -> void:
 	Logger.trace("UserDataManager: Saving student progression in " + ProjectSettings.globalize_path(get_student_progression_path()))
 	ResourceSaver.save(student_progression, get_student_progression_path())
 
+
 func _on_user_progression_unlocks_changed() -> void:
 	_save_student_progression()
+
 
 func get_student_progression_for_code(device: int, code: int) -> StudentProgression:
 	if device == 0:
@@ -530,11 +561,13 @@ func get_student_progression_for_code(device: int, code: int) -> StudentProgress
 	
 	return progression
 
+
 func save_student_progression_for_code(device: int, code: int, progression: StudentProgression) -> void:
 	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
 	var error: Error = ResourceSaver.save(progression, progression_path)
 	if error != OK:
 		Logger.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
+
 
 func set_student_progression_data(student_code: int, version: String, new_data: Dictionary, updated_at: String) -> void:
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
@@ -561,6 +594,7 @@ func _get_student_remediation_path(device: int = 0, student_code: int = 0) -> St
 		var remediation_path: String = student_path.path_join("remediation.tres")
 		return remediation_path
 
+
 func _load_student_remediation() -> void:
 	if FileAccess.file_exists(_get_student_remediation_path()):
 		_student_remediation = load(_get_student_remediation_path())
@@ -572,6 +606,7 @@ func _load_student_remediation() -> void:
 	
 	_student_remediation.score_changed.connect(_save_student_remediation)
 
+
 func get_student_remediation_data(student_code: int) -> UserRemediation:
 	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
 	if FileAccess.file_exists(remediation_data_path):
@@ -580,6 +615,7 @@ func get_student_remediation_data(student_code: int) -> UserRemediation:
 		return student_remediation
 	Logger.trace("UserDataManager: Remediation data of student code %d not found" % student_code)
 	return null
+
 
 func set_student_remediation_gp_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
 	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
@@ -592,6 +628,7 @@ func set_student_remediation_gp_data(student_code: int, new_scores: Dictionary[i
 	student_remediation.set_gp_last_modified(updated_at)
 	ResourceSaver.save(student_remediation, remediation_data_path)
 
+
 func set_student_remediation_syllables_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
 	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
 	var student_remediation: UserRemediation
@@ -602,6 +639,7 @@ func set_student_remediation_syllables_data(student_code: int, new_scores: Dicti
 	student_remediation.set_syllables_scores(new_scores)
 	student_remediation.set_syllables_last_modified(updated_at)
 	ResourceSaver.save(student_remediation, remediation_data_path)
+
 
 func set_student_remediation_words_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
 	var remediation_data_path: String = _get_student_remediation_path(0, student_code)
@@ -614,14 +652,17 @@ func set_student_remediation_words_data(student_code: int, new_scores: Dictionar
 	student_remediation.set_words_last_modified(updated_at)
 	ResourceSaver.save(student_remediation, remediation_data_path)
 
+
 func _save_student_remediation() -> void:
 	Logger.trace("UserDataManager: Saving student remediation in " + ProjectSettings.globalize_path(_get_student_remediation_path()))
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
+
 
 func get_gp_remediation_score(gp_id: int) -> int:
 	if not _student_remediation:
 		return 0
 	return _student_remediation.get_gp_score(gp_id)
+
 
 func update_remediation_gp_scores(remediation_gp_scores: Dictionary) -> void:
 	if not _student_remediation:
@@ -630,12 +671,14 @@ func update_remediation_gp_scores(remediation_gp_scores: Dictionary) -> void:
 	if remediation_gp_scores:
 		_student_remediation.update_gp_scores(remediation_gp_scores)
 
+
 func update_remediation_syllables_scores(remediation_syllables_scores: Dictionary) -> void:
 	if not _student_remediation:
 		Logger.warn("UserDataManager: No student remediation data for " + str(student))
 		return
 	if remediation_syllables_scores:
 		_student_remediation.update_syllables_scores(remediation_syllables_scores)
+
 
 func update_remediation_words_scores(remediation_words_scores: Dictionary) -> void:
 	if not _student_remediation:
@@ -658,6 +701,7 @@ func _get_student_confusion_matrix_path(device: int = 0, student_code: int = 0) 
 		var confusion_matrix_path: String = student_path.path_join("confusion_matrix.tres")
 		return confusion_matrix_path
 
+
 func _load_student_confusion_matrix() -> void:
 	if FileAccess.file_exists(_get_student_confusion_matrix_path()):
 		_student_confusion_matrix = load(_get_student_confusion_matrix_path())
@@ -669,6 +713,7 @@ func _load_student_confusion_matrix() -> void:
 	
 	_student_confusion_matrix.score_changed.connect(_save_student_confusion_matrix)
 
+
 func get_student_confusion_matrix_data(student_code: int) -> UserConfusionMatrix:
 	var confusion_matrix_data_path: String = _get_student_confusion_matrix_path(0, student_code)
 	if FileAccess.file_exists(confusion_matrix_data_path):
@@ -677,6 +722,7 @@ func get_student_confusion_matrix_data(student_code: int) -> UserConfusionMatrix
 		return student_confusion_matrix
 	Logger.trace("UserDataManager: Confusion matrix data of student code %d not found" % student_code)
 	return null
+
 
 func set_student_confusion_matrix_gp_data(student_code: int, new_scores: Dictionary[int, PackedInt32Array], updated_at: String) -> void:
 	var confusion_matrix_data_path: String = _get_student_confusion_matrix_path(0, student_code)
@@ -689,14 +735,17 @@ func set_student_confusion_matrix_gp_data(student_code: int, new_scores: Diction
 	student_confusion_matrix.set_gp_last_modified(updated_at)
 	ResourceSaver.save(student_confusion_matrix, confusion_matrix_data_path)
 
+
 func _save_student_confusion_matrix() -> void:
 	Logger.trace("UserDataManager: Saving student confusion_matrix in " + ProjectSettings.globalize_path(_get_student_confusion_matrix_path()))
 	ResourceSaver.save(_student_confusion_matrix, _get_student_confusion_matrix_path())
+
 
 func get_gp_confusion_matrix_score(gp_id: int) -> PackedInt32Array:
 	if not _student_confusion_matrix:
 		return []
 	return _student_confusion_matrix.get_gp_scores(gp_id)
+
 
 func update_confusion_matrix_gp_scores(confusion_matrix_gp_scores: Dictionary) -> void:
 	if not _student_confusion_matrix:
@@ -712,6 +761,7 @@ func update_confusion_matrix_gp_scores(confusion_matrix_gp_scores: Dictionary) -
 func _get_student_difficulty_path() -> String:
 	return get_student_folder().path_join("difficulty.tres")
 
+
 func _load_student_difficulty() -> void:
 	if FileAccess.file_exists(_get_student_difficulty_path()):
 		_student_difficulty = load(_get_student_difficulty_path())
@@ -723,15 +773,18 @@ func _load_student_difficulty() -> void:
 	
 	_student_difficulty.difficulty_changed.connect(_save_student_difficulty)
 
+
 func _save_student_difficulty() -> void:
 	Logger.trace("UserDataManager: Saving student difficulty in " + ProjectSettings.globalize_path(_get_student_difficulty_path()))
 	ResourceSaver.save(_student_difficulty, _get_student_difficulty_path())
+
 
 func get_difficulty_for_minigame(minigame_name: String) -> int:
 	if not _student_difficulty:
 		Logger.warn("UserDataManager: No student difficulty data for " + str(student))
 		return 0
 	return _student_difficulty.get_difficulty(minigame_name)
+
 
 func update_difficulty_for_minigame(minigame_name: String, minigame_won: bool) -> void:
 	if not _student_difficulty:
@@ -746,6 +799,7 @@ func update_difficulty_for_minigame(minigame_name: String, minigame_won: bool) -
 func _get_student_speeches_path() -> String:
 	return get_student_folder().path_join("speeches.tres")
 
+
 func _load_student_speeches() -> void:
 	if FileAccess.file_exists(_get_student_speeches_path()):
 		_student_speeches = load(_get_student_speeches_path())
@@ -756,9 +810,11 @@ func _load_student_speeches() -> void:
 		_save_student_speeches()
 	_student_speeches.speeches_changed.connect(_save_student_speeches)
 
+
 func _save_student_speeches() -> void:
 	Logger.trace("UserDataManager: Saving student speeches in " + ProjectSettings.globalize_path(_get_student_speeches_path()))
 	ResourceSaver.save(_student_speeches, _get_student_speeches_path())
+
 
 func mark_speech_as_played(speech: String) -> void:
 	if not _student_speeches:
@@ -766,6 +822,7 @@ func mark_speech_as_played(speech: String) -> void:
 			Logger.warn("UserDataManager: No student speeches data for " + str(student))
 		return
 	_student_speeches.add_speech(speech)
+
 
 func is_speech_played(speech: String) -> bool:
 	if not _student_speeches:
@@ -798,17 +855,20 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 		return
 	save_teacher_settings()
 
+
 func find_student_dir(student_code: int) -> String:
 	return _scan_teacher_devices(func(_device_dir: String, lang_dir: String, sub_file: String) -> String:
 		if sub_file == str(student_code):
 			return lang_dir.path_join(sub_file)
 		return "")
 
+
 func find_device_dir_for_student(student_code: int) -> String:
 	return _scan_teacher_devices(func(device_dir: String, _lang_dir: String, sub_file: String) -> String:
 		if sub_file == str(student_code):
 			return device_dir
 		return "")
+
 
 func _scan_teacher_devices(match_callback: Callable) -> String:
 	var teacher_path: String = "user://".path_join(_device_settings.teacher)
@@ -844,6 +904,7 @@ func _scan_teacher_devices(match_callback: Callable) -> String:
 		file_name = dir.get_next()
 	dir.list_dir_end()
 	return ""
+
 
 func save_all() -> void:
 	_save_device_settings()

@@ -1,5 +1,5 @@
-extends MarginContainer
 class_name WordListElement
+extends MarginContainer
 
 signal delete_pressed()
 signal new_gp_asked(i: int)
@@ -16,21 +16,6 @@ const PLUS_BUTTON_SCENE: PackedScene = preload("res://sources/language_tool/plus
 @export var sub_table_phon_column: String = "Phoneme"
 @export var relational_table: String = "GPsInWords"
 @export var sub_table_id: String = "GPID"
-
-@onready var word_label: Label = %Word
-@onready var graphemes_label: Label = %Graphemes
-@onready var word_edit: LineEdit = %WordEdit
-@onready var tab_container: TabContainer = $TabContainer
-@onready var lesson_label: Label = %Lesson
-@onready var exception_checkbox: CheckBox = %ExceptionCheckBox
-@onready var exception_edit_checkbox: CheckBox = %ExceptionEditCheckBox
-@onready var reading_checkbox: CheckBox = %ReadingCheckBox
-@onready var writing_checkbox: CheckBox = %WritingCheckBox
-@onready var reading_edit_checkbox: CheckBox = %ReadingEditCheckBox
-@onready var writing_edit_checkbox: CheckBox = %WritingEditCheckBox
-@onready var graphemes_edit_container: HBoxContainer = %GraphemesEditContainer
-@onready var add_gp_button: MarginContainer = %AddGPButton
-@onready var remove_gp_button: MarginContainer = %RemoveGPButton2
 
 var word: String = "":
 	set = set_word
@@ -53,6 +38,21 @@ var writing: int = 0:
 	set = set_writing
 var sub_elements_list: Dictionary = {}
 
+@onready var word_label: Label = %Word
+@onready var graphemes_label: Label = %Graphemes
+@onready var word_edit: LineEdit = %WordEdit
+@onready var tab_container: TabContainer = $TabContainer
+@onready var lesson_label: Label = %Lesson
+@onready var exception_checkbox: CheckBox = %ExceptionCheckBox
+@onready var exception_edit_checkbox: CheckBox = %ExceptionEditCheckBox
+@onready var reading_checkbox: CheckBox = %ReadingCheckBox
+@onready var writing_checkbox: CheckBox = %WritingCheckBox
+@onready var reading_edit_checkbox: CheckBox = %ReadingEditCheckBox
+@onready var writing_edit_checkbox: CheckBox = %WritingEditCheckBox
+@onready var graphemes_edit_container: HBoxContainer = %GraphemesEditContainer
+@onready var add_gp_button: MarginContainer = %AddGPButton
+@onready var remove_gp_button: MarginContainer = %RemoveGPButton2
+
 
 func set_exception(p_exception: bool) -> void:
 	exception = p_exception
@@ -61,12 +61,14 @@ func set_exception(p_exception: bool) -> void:
 	if exception_edit_checkbox:
 		exception_edit_checkbox.button_pressed = bool(exception)
 
+
 func set_reading(p_reading: bool) -> void:
 	reading = p_reading
 	if reading_checkbox:
 		reading_checkbox.button_pressed = bool(reading)
 	if reading_edit_checkbox:
 		reading_edit_checkbox.button_pressed = bool(reading)
+
 
 func set_writing(p_writing: bool) -> void:
 	writing = p_writing
@@ -365,7 +367,6 @@ func _on_add_gp_button_pressed(element: Node) -> void:
 	var gp_id: int = sub_elements_list.keys()[0]
 	unvalidated_gp_ids.insert(ind_gp_id + 1, gp_id)
 	add_gp_list_button(gp_id, ind_gp_id + 1)
-
 
 
 func _on_empty_add_gp_button_pressed() -> void:

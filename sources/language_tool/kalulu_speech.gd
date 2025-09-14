@@ -1,5 +1,5 @@
-extends PanelContainer
 class_name KaluluSpeech
+extends PanelContainer
 
 @export var speech_category: String
 @export var speech_name: String:

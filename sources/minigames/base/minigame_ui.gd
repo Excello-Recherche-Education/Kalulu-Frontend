@@ -1,16 +1,13 @@
 @tool
-extends CanvasLayer
 class_name MinigameUI
+extends CanvasLayer
 
-signal garden_button_pressed
-signal stimulus_button_pressed
-
-signal restart_button_pressed
-
-signal kalulu_button_pressed
-signal kalulu_speech_ended
-
-signal pause_ended
+signal garden_button_pressed()
+signal stimulus_button_pressed()
+signal restart_button_pressed()
+signal kalulu_button_pressed()
+signal kalulu_speech_ended()
+signal pause_ended()
 
 const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 
@@ -22,33 +19,22 @@ const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 		if stimulus_button:
 			_handle_stimulus_button()
 
-# Using unique names to avoid changing the path if the interface architecture changes
-# Left panel
-@onready var garden_button: TextureButton = %GardenButton
+var is_paused: bool = false
 
+@onready var garden_button: TextureButton = %GardenButton
 @onready var stimulus_margin: MarginContainer = %StimulusMargin
 @onready var stimulus_button: TextureButton = %StimulusButton
-
 @onready var stimulus_texture: TextureRect = %StimulusTexture
-
 @onready var pause_margin: MarginContainer = %PauseMargin
 @onready var pause_button: TextureButton = %PauseButton
-
 @onready var kalulu_button: TextureButton = %KaluluButton
-
-# Center menu
 @onready var center_menu: MarginContainer = %CenterMenu
-
-# Kalulu
 @onready var kalulu: KALULU = %Kalulu
-
 @onready var progression_container: VBoxContainer = %ProgressionContainer
 @onready var progression_gauge: NinePatchRect = %ProgressionGauge
 @onready var model_progression_rect: TextureRect = %ProgressionIconsRect
-
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-var is_paused: bool = false
 
 func _ready() -> void:
 	model_progression_rect.texture = empty_progression_icon
@@ -127,8 +113,6 @@ func _on_pause_button_pressed() -> void:
 	is_paused = true
 	show_center_menu(true)
 	get_tree().paused = true
-	
-	#pause_button_pressed.emit()
 
 
 func _on_kalulu_button_pressed() -> void:

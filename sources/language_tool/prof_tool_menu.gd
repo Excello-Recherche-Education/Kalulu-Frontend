@@ -1,7 +1,14 @@
 extends Control
 
+enum FileCheckResult {
+	OK,
+	ERROR_NOT_FOUND,
+	ERROR_CASE_MISMATCH
+}
+
 const BASE_PATH: String = "user://language_resources/"
 const SAVE_FILE_PATH: String = "user://prof_tool_save.tres"
+
 var save_file: ProfToolSave
 
 @onready var language_select_button: OptionButton = %LanguageSelectButton
@@ -140,6 +147,7 @@ var integrity_checking: bool = false
 var integrity_log_path: String = "user://database-integrity-log.txt"
 var total_integrity_warnings: int = 0
 
+
 func _check_db_integrity() -> void:
 	if integrity_checking:
 		return
@@ -258,6 +266,7 @@ func _check_db_integrity() -> void:
 		var file_path: String = ProjectSettings.globalize_path(integrity_log_path)
 		Logger.trace("ProfToolMenu: Logs saved at " + file_path)
 		OS.shell_open(file_path)
+
 #endregion
 
 func log_message(message: String) -> bool:
@@ -281,11 +290,6 @@ func log_message(message: String) -> bool:
 		integrity_checking = false
 		return false
 
-enum FileCheckResult {
-	OK,
-	ERROR_NOT_FOUND,
-	ERROR_CASE_MISMATCH
-}
 
 func file_exists_case_sensitive(path: String) -> Dictionary:
 	var result: Dictionary = {
@@ -324,6 +328,7 @@ func file_exists_case_sensitive(path: String) -> Dictionary:
 		result.status = FileCheckResult.ERROR_NOT_FOUND
 
 	return result
+
 
 func _get_available_languages() -> Array[String]:
 	var available_languages: Array[String] = []
@@ -523,8 +528,8 @@ func _on_open_folder_button_pressed() -> void:
 func _on_tab_container_tab_changed(tab: int) -> void:
 	Globals.main_menu_selected_tab = tab
 
-
 #region Book Generation
+
 func create_book() -> void:
 	var lang_path: String = BASE_PATH.path_join(Database.language)
 	var file_names: Dictionary[String, String] = {
@@ -635,6 +640,7 @@ func create_book() -> void:
 	error_label.text = "📘 Export data of the booklet finished to path: " + output_path
 	Logger.trace("ProfToolMenu: " + error_label.text)
 
+
 # Fonction qui ajoute une ligne au dictionnaire
 func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[String, String], categorie: String, all_headers: Array) -> void:
 	# Nombre de lignes déjà enregistrées (doit être égal pour chaque colonne)
@@ -688,6 +694,7 @@ func parse_csv_line(line: String) -> PackedStringArray:
 	result.append(current)
 	return result
 
+
 # Transforme une ligne pour l'écriture CSV, avec échappement
 func escape_csv_line(fields: PackedStringArray) -> String:
 	var output: String = ""
@@ -700,9 +707,11 @@ func escape_csv_line(fields: PackedStringArray) -> String:
 			output += ","
 	return output
 
+
 # Normalise les noms de colonnes (ex: writing page -> Writing page)
 func normalize_header(header_name: String) -> String:
 	return header_name.strip_edges()[0].to_upper() + header_name.strip_edges().substr(1, -1).to_lower()
+
 
 # Lit une "ligne logique" complète d’un CSV (même si elle est sur plusieurs lignes à cause des guillemets)
 func read_csv_record(file: FileAccess) -> String:
@@ -726,6 +735,5 @@ func read_csv_record(file: FileAccess) -> String:
 			break
 
 	return record
-
 
 #endregion

@@ -2,6 +2,7 @@ extends PanelContainer
 
 @onready var form_validator_control: FormValidator = $MarginContainer/FormValidator
 
+
 func _on_form_validator_control_control_validated(control, passed, messages) -> void:
 	var error_label = _get_error_label(control)
 	var valid_label = _get_valid_label(control)

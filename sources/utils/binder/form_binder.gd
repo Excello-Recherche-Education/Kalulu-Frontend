@@ -1,10 +1,11 @@
 @tool
-extends Control
 class_name FormBinder
+extends Control
 
 @export var data: Resource
 
 var _control_binder_map: Dictionary[Control, ControlBinder] = {}
+
 
 func _ready() -> void:
 	_find_binders(self)

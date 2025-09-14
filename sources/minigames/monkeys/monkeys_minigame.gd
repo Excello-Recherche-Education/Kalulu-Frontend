@@ -1,27 +1,22 @@
 @tool
 extends WordsMinigame
 
-const MONKEY_SCENE: PackedScene = preload("res://sources/minigames/monkeys/monkey.tscn")
-
-const AUDIO_STREAMS: Array[AudioStreamMP3] = [
-	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),
-	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_right.mp3"),
-	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_wrong.mp3"),
-]
-
 enum Audio {
 	SendToKing,
 	SendToPlank,
 	SendToMonkey,
 }
 
+const MONKEY_SCENE: PackedScene = preload("res://sources/minigames/monkeys/monkey.tscn")
+const AUDIO_STREAMS: Array[AudioStreamMP3] = [
+	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3"),
+	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_right.mp3"),
+	preload("res://assets/minigames/monkeys/audio/monkey_sendcoco_wrong.mp3"),
+]
 
-class DifficultySettings:
-	var distractors_count: int = 1
-	
-	func _init(p_distractors_count: int) -> void:
-		distractors_count = p_distractors_count
-
+@export var throw_to_king_duration: float = 1.2
+@export var throw_to_monkey_duration: float = 0.4
+@export var throw_to_plank_duration: float = 0.8
 
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(1),
@@ -30,11 +25,12 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(3),
 	DifficultySettings.new(3)
 ]
-
-
-@export var throw_to_king_duration: float = 1.2
-@export var throw_to_monkey_duration: float = 0.4
-@export var throw_to_plank_duration: float = 0.8
+var monkeys: Array[Monkey] = []
+var is_locked: bool = true: 
+	set(value):
+		is_locked = value
+		for monkey: Monkey in monkeys:
+			monkey.locked = value
 
 @onready var monkeys_node: Control = $GameRoot/Monkeys
 @onready var possible_positions_parent: TextureRect = $GameRoot/PalmTreeMonkeys
@@ -42,13 +38,6 @@ var difficulty_settings: Array[DifficultySettings] = [
 @onready var word_label: RichTextLabel = $GameRoot/TextPlank/MarginContainer/Label
 @onready var parabola_summit: Control = $GameRoot/ParabolaSummit
 @onready var text_plank: TextureRect = $GameRoot/TextPlank
-
-var monkeys: Array[Monkey] = []
-var is_locked: bool = true: 
-	set(value):
-		is_locked = value
-		for monkey: Monkey in monkeys:
-			monkey.locked = value
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
@@ -250,3 +239,10 @@ func _on_current_progression_changed() -> void:
 	is_locked = false
 
 #endregion
+
+class DifficultySettings:
+	var distractors_count: int = 1
+	
+	
+	func _init(p_distractors_count: int) -> void:
+		distractors_count = p_distractors_count

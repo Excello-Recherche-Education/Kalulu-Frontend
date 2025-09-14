@@ -39,11 +39,9 @@ func append_and_trim(target: Dictionary[int, PackedInt32Array], expected_id: int
 
 # Key is the ID of the expected answer
 # Value is a PackedInt32Array whose entries are the IDs of the answers
-@export
-var gp_scores: Dictionary[int, PackedInt32Array] = {}
+@export var gp_scores: Dictionary[int, PackedInt32Array] = {}
+@export var gp_last_modified: String = ""
 
-@export
-var gp_last_modified: String = ""
 
 # Gets (a copy of) the data of a GP
 func get_gp_scores(id: int) -> PackedInt32Array:
@@ -51,6 +49,7 @@ func get_gp_scores(id: int) -> PackedInt32Array:
 		# Return a copy to avoid mutations
 		return PackedInt32Array(gp_scores[id])
 	return PackedInt32Array()
+
 
 # Updates the confusion matrix from a minigame scores
 func update_gp_scores(minigame_scores: Dictionary[int, PackedInt32Array]) -> void:
@@ -63,6 +62,7 @@ func update_gp_scores(minigame_scores: Dictionary[int, PackedInt32Array]) -> voi
 	set_gp_last_modified(Time.get_datetime_string_from_system(true))
 	score_changed.emit()
 
+
 func set_gp_scores(new_scores: Dictionary[int, PackedInt32Array]) -> void:
 	var cleaned: Dictionary[int, PackedInt32Array] = {}
 	for expected_id: int in new_scores.keys():
@@ -70,6 +70,7 @@ func set_gp_scores(new_scores: Dictionary[int, PackedInt32Array]) -> void:
 		append_and_trim(cleaned, expected_id, arr) # auto-trim
 	gp_scores = cleaned
 	set_gp_last_modified(Time.get_datetime_string_from_system(true))
+
 
 func set_gp_last_modified(new_date: String) -> void:
 	gp_last_modified = new_date

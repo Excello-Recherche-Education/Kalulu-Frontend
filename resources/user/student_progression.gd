@@ -1,5 +1,5 @@
-extends Resource
 class_name StudentProgression
+extends Resource
 
 signal unlocks_changed()
 
@@ -16,6 +16,7 @@ enum Status{
 
 func _init() -> void:
 	init_unlocks()
+
 
 # Make sure the unlocks are correct
 func init_unlocks() -> void:
@@ -72,6 +73,7 @@ func look_and_learn_completed(lesson_number: int) -> bool:
 	last_modified = Time.get_datetime_string_from_system(true)
 	unlocks_changed.emit()
 	return true
+
 
 # Return true if the progression is saved or false if the game was already completed
 func game_completed(lesson_number: int, game_number: int) -> bool:

@@ -1,19 +1,18 @@
-extends TextureButton
-
 class_name Word
+extends TextureButton
 
 signal answer(stimulus: String, expected_stimulus: String)
 signal no_answer()
-
-@onready var area: Area2D = $Area2D
-@onready var label: Label = %Label
-@onready var right_fx: RightFX = $RightFX
-@onready var wrong_fx: WrongFX = $WrongFX
 
 var stimulus: String:
 	set = _set_stimulus
 var follow_mouse: bool = false
 var current_anchor: CanvasItem
+
+@onready var area: Area2D = $Area2D
+@onready var label: Label = %Label
+@onready var right_fx: RightFX = $RightFX
+@onready var wrong_fx: WrongFX = $WrongFX
 
 
 func right() -> void:

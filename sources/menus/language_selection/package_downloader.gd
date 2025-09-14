@@ -1,11 +1,10 @@
-extends Control
 class_name PackageDownloader
+extends Control
 
 const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
 const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
-
 const ERROR_MESSAGES: Array[String] = [
 	"DISCONNECTED_ERROR",
 	"NO_INTERNET_ACCESS",
@@ -13,6 +12,12 @@ const ERROR_MESSAGES: Array[String] = [
 	"INVALID_LANGUAGE_DIRECTORY",
 ]
 
+var device_language: String
+var current_language_path: String
+var mutex: Mutex
+var thread: Thread
+var server_language_version: Dictionary = {}
+var current_language_version: Dictionary = {}
 
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var checking_label: Label = %CheckingLabel
@@ -25,13 +30,6 @@ const ERROR_MESSAGES: Array[String] = [
 @onready var error_label: Label = %ErrorLabel
 @onready var error_popup: ConfirmPopup = $ErrorPopup
 
-var device_language: String
-var current_language_path: String
-var mutex: Mutex
-var thread: Thread
-
-var server_language_version: Dictionary = {}
-var current_language_version: Dictionary = {}
 
 func _ready() -> void:
 	await get_tree().process_frame

@@ -1,6 +1,5 @@
-extends Resource
 class_name StudentData
-
+extends Resource
 
 enum Level {
 	Beginner,
@@ -13,6 +12,7 @@ enum Level {
 @export var level: Level = Level.Beginner
 @export var age: int = 0
 @export var last_modified: String = ""
+
 
 func to_dict() -> Dictionary:
 	return {

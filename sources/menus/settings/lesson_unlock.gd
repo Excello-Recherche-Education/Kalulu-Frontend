@@ -1,14 +1,12 @@
-extends MarginContainer
 class_name LessonUnlock
+extends MarginContainer
 
-signal unlocks_changed
+signal unlocks_changed()
 
 @export var lesson_number: int:
 	set = _set_lesson_number
-
 @export var lesson_gps: String:
 	set = _set_lesson_gps
-
 @export var unlocks: Dictionary = {}
 
 @onready var lesson_label: Label = %LessonLabel

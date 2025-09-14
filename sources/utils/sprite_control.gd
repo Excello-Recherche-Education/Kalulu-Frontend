@@ -1,6 +1,6 @@
 @tool
-extends Control
 class_name SpriteControl
+extends Control
 
 @export var sprites: Array[CanvasItem] = []:
 	set = set_sprites

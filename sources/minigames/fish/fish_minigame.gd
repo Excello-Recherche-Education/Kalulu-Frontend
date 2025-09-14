@@ -5,6 +5,18 @@ signal beacon_fish_dropped(is_answered_real: bool)
 
 const FISH_TEXTURE_RECT_SCENE: PackedScene = preload("res://sources/minigames/fish/fish_texture_rect.tscn")
 
+@export var game_duration: int = 4 * 60
+@export var minimum_correct_ratio: float = 0.8
+@export var winning_color: Color = Color.WHITE
+@export var max_words_count: int = 15
+
+var tween: Tween
+var words_to_present: Array[String] = []
+var words_to_present_next: Array[String] = []
+var progress_gauge_max_margin: float = 0.95
+var total_number_of_words: int = 30
+var tutorial_count: int = 0
+
 @onready var fish_start_zone: Control = %FishStartZone
 @onready var beacon1: SpriteControl = %Beacon1
 @onready var beacon2: SpriteControl = %Beacon2
@@ -18,19 +30,6 @@ const FISH_TEXTURE_RECT_SCENE: PackedScene = preload("res://sources/minigames/fi
 @onready var progress_gauge: PercentMarginContainer = %ProgressionGaugePercentMarginContainer
 @onready var progress_gauge_goal: PercentMarginContainer = %ProgressionGaugeGoalPercentMarginContainer2
 @onready var progress_gauge_internal: NinePatchRect = %ProgressionGaugeInternal
-
-
-@export var game_duration: int = 4 * 60
-@export var minimum_correct_ratio: float = 0.8
-@export var winning_color: Color = Color.WHITE
-@export var max_words_count: int = 15
-
-var tween: Tween
-var words_to_present: Array[String] = []
-var words_to_present_next: Array[String] = []
-var progress_gauge_max_margin: float = 0.95
-var total_number_of_words: int = 30
-var tutorial_count: int = 0
 
 
 func _fish_get_drag_data(_at_position: Vector2) -> Variant:

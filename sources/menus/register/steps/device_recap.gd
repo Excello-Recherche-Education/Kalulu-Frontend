@@ -1,5 +1,5 @@
-extends Control
 class_name DeviceRecap
+extends Control
 
 const STUDENT_PANEL_SCENE: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
 
@@ -8,6 +8,7 @@ const STUDENT_PANEL_SCENE: PackedScene = preload("res://sources/menus/settings/s
 
 @onready var title_label: Label = %Title
 @onready var students_container: GridContainer = %StudentsContainer
+
 
 func _ready() -> void:
 	

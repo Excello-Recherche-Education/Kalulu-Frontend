@@ -1,11 +1,10 @@
 extends Control
 
+var undo_redo: UndoRedo = UndoRedo.new()
 var element_scene: PackedScene = preload("res://sources/language_tool/gp_list_element.tscn")
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 @onready var error_label: Label = %ErrorLabel
-
-var undo_redo: UndoRedo = UndoRedo.new()
 
 
 func _ready() -> void:
@@ -77,7 +76,6 @@ func _on_element_delete_pressed(element: Control) -> void:
 
 func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")
-
 
 
 func _on_grapheme_gui_input(event: InputEvent) -> void:

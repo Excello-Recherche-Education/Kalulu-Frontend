@@ -1,17 +1,10 @@
-extends Control
 class_name LessonUnlocks
+extends Control
 
 signal student_deleted(code: int)
 
 const DEVICE_BUTTON_SCENE: PackedScene = preload("res://sources/menus/main/device_button.tscn")
 const LESSON_UNLOCK_SCENE: PackedScene = preload("res://sources/menus/settings/lesson_unlock.tscn")
-
-@onready var lesson_container: VBoxContainer = %LessonContainer
-@onready var name_line_edit: LineEdit = %NameLineEdit
-@onready var device_selection_container: PanelContainer = %DeviceSelectionContainer
-@onready var container: GridContainer = %GridContainer
-
-var teacher_settings: SettingsTeacherSettings = null
 
 @export var device: int:
 	set = _on_device_changed
@@ -19,6 +12,13 @@ var teacher_settings: SettingsTeacherSettings = null
 	set = _on_student_changed
 
 var progression: StudentProgression
+var teacher_settings: SettingsTeacherSettings = null
+
+@onready var lesson_container: VBoxContainer = %LessonContainer
+@onready var name_line_edit: LineEdit = %NameLineEdit
+@onready var device_selection_container: PanelContainer = %DeviceSelectionContainer
+@onready var container: GridContainer = %GridContainer
+
 
 func _ready() -> void:
 	name_line_edit.connect("text_submitted", _on_name_changed)
