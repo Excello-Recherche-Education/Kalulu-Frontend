@@ -5,6 +5,7 @@ signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_acces: bool)
 
 const INTERNET_CHECK_URL: String = "https://google.com"
+const AWS_API_GATEWAY_ADRESS: String = "https://xwvmrarnb7.execute-api.eu-west-3.amazonaws.com"
 
 # Response from the last request
 var success: bool
@@ -28,8 +29,8 @@ func _ready() -> void:
 
 func set_environment(env: int) -> void:
 	match env:
-		0: environment_url = "https://iu695b0nk5.execute-api.eu-west-3.amazonaws.com/dev/"
-		1: environment_url = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
+		0: environment_url = AWS_API_GATEWAY_ADRESS + "/dev/"
+		1: environment_url = AWS_API_GATEWAY_ADRESS + "/prod/"
 		_: environment_url = ""
 	Log.info("Environment URL set to " + environment_url)
 
