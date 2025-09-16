@@ -210,7 +210,7 @@ func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 		if stimulus.has("ID"):
 			_update_remediation_syllable_score(stimulus.ID as int, -1)
 		else:
-			Logger.error("SyllablesMinigame: stimulus has no ID")
+			Logger.warn("SyllablesMinigame: stimulus has no ID")
 	return true
 
 
