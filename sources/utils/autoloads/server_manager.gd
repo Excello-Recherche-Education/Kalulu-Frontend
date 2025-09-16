@@ -87,26 +87,6 @@ func get_dashboard() -> Dictionary:
 	return _response()
 
 
-func get_user_data() -> Dictionary:
-	await _get_request("get_user_data", {})
-	return _response()
-
-
-func update_student_remediation_data(student_code: int, student_remediation: UserRemediation) -> Dictionary:
-	if not student_remediation:
-		Log.trace("ServerManager: Cannot update student remediation data because data does not exists")
-		success = true
-		code = -1
-		json = {}
-		return _response()
-	var tuple_list: Array = []
-	for key: int in student_remediation.gps_scores.keys():
-		tuple_list.append([key, student_remediation.gps_scores[key]])
-	var data: Dictionary = {"student_id": student_code, "score_remediation": tuple_list}
-	await _post_json_request("submit_gp_remediation", data)
-	return _response()
-
-
 func add_student(p_student: Dictionary) -> Dictionary:
 	await _post_request("add_student", p_student)
 	return _response()
@@ -114,11 +94,6 @@ func add_student(p_student: Dictionary) -> Dictionary:
 
 func remove_student(p_code: int) -> Dictionary:
 	await _delete_request("remove_student", {"code": p_code})
-	return _response()
-
-
-func get_student_data_timestamp(student_code: int) -> Dictionary:
-	await _get_request("get_student_data_timestamp", {"student_id": student_code})
 	return _response()
 
 
