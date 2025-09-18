@@ -98,9 +98,9 @@ func game_completed(lesson_number: int, game_number: int) -> bool:
 
 
 func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> void:
-	Logger.trace("StudentProgression: Add time to level %d, minigame %d. Time added: %s" % [lesson_number, game_number, time_spent])
+	Log.trace("StudentProgression: Add time to level %d, minigame %d. Time added: %s" % [lesson_number, game_number, time_spent])
 	if game_number > 2:
-		Logger.error("StudentProgression: Cannot log a level time for a minigame number superior to 2")
+		Log.error("StudentProgression: Cannot log a level time for a minigame number superior to 2")
 		return
 	
 	if level_times.has(lesson_number):
