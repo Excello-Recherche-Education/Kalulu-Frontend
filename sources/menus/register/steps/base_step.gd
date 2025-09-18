@@ -56,12 +56,12 @@ func _on_back_button_pressed() -> void:
 func _on_validate_button_pressed() -> void:
 	# Validate the fields
 	if not form_validator.validate():
-		Logger.warn("BaseStep: Validation failed (" + str(self) + ")")
+		Log.warn("BaseStep: Validation failed (" + str(self) + ")")
 		return
 	
 	# Writes data in object
 	if not form_binder.write():
-		Logger.warn("BaseStep: Impossible to write data in object (" + str(self) + ")")
+		Log.warn("BaseStep: Impossible to write data in object (" + str(self) + ")")
 		return
 	
 	if _on_next():

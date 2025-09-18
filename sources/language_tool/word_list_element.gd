@@ -240,7 +240,7 @@ func insert_in_database() -> void:
 				table,
 				table]
 		Database.db.query_with_bindings(query, [id])
-		Logger.trace("WordListElement: Sending query to insert in database: %s" % query)
+		Log.trace("WordListElement: Sending query to insert in database: %s" % query)
 		if not Database.db.query_result.is_empty():
 			var element: Dictionary = Database.db.query_result[0]
 			if word != element[table_graph_column] or exception != element.Exception or reading != element.Reading or writing != element.Writing:
@@ -327,7 +327,7 @@ func _add_from_additional_word_list(new_text: String) -> int:
 func _try_to_complete_from_word(new_text: String) -> int:
 	var index: int = _already_in_database(new_text)
 	if index >= 0:
-		Logger.trace("WordListElement: Already in DB " + new_text)
+		Log.trace("WordListElement: Already in DB " + new_text)
 		return index
 	
 	index = _add_from_additional_word_list(new_text)

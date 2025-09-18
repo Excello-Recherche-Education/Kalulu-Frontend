@@ -47,7 +47,7 @@ func _pull_timestamps() -> Dictionary:
 	set_loading_bar_text("SYNCHRONIZATION_ASK_SERVER_TIMESTAMP")
 	var res: Dictionary = await (ServerManager as ServerManagerClass).pull_timestamps()
 	if not res.success:
-		Logger.trace("UserDatabaseSynchronizer: Cannot get all timestamps from server. Canceling synchronization.")
+		Log.trace("UserDatabaseSynchronizer: Cannot get all timestamps from server. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_SERVER")
 		stop_sync()
 		return {}
@@ -58,13 +58,13 @@ func _pull_timestamps() -> Dictionary:
 func _determine_user_update(response_body: Dictionary) -> UpdateNeeded:
 	set_loading_bar_text("SYNCHRONIZATION_COMPARE_SERVER_TIMESTAMP")
 	if not response_body.has("user"):
-		Logger.trace("UserDatabaseSynchronizer: Cannot get user from body. Canceling synchronization.")
+		Log.trace("UserDatabaseSynchronizer: Cannot get user from body. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER")
 		stop_sync()
 		return UpdateNeeded.Nothing
 	var user: Dictionary = response_body.user
 	if not user.has("last_modified"):
-		Logger.trace("UserDatabaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
+		Log.trace("UserDatabaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR")
 		stop_sync()
 		return UpdateNeeded.Nothing
@@ -75,7 +75,7 @@ func _determine_user_update(response_body: Dictionary) -> UpdateNeeded:
 		local_unix_time_user = Time.get_unix_time_from_datetime_string(local_user_string_time)
 	var need_update_user: UpdateNeeded = UpdateNeeded.Nothing
 	if local_unix_time_user == server_unix_time_user:
-		Logger.trace("UserDatabaseSynchronizer: User data timestamp is the same in local and on server. No synchronization necessary")
+		Log.trace("UserDatabaseSynchronizer: User data timestamp is the same in local and on server. No synchronization necessary")
 	elif local_unix_time_user > server_unix_time_user:
 		need_update_user = UpdateNeeded.FromLocal
 	else:
@@ -86,7 +86,7 @@ func _determine_user_update(response_body: Dictionary) -> UpdateNeeded:
 func _determine_students_update(response_body: Dictionary, need_update_user: UpdateNeeded) -> Dictionary:
 	var need_update_students: Dictionary[int, Dictionary] = {}
 	if not response_body.has("students"):
-		Logger.trace("UserDatabaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
+		Log.trace("UserDatabaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR")
 		stop_sync()
 		return {}
@@ -101,7 +101,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 		if student_dic.has("updated_at"):
 			server_student_unix_time = Time.get_unix_time_from_datetime_string(student_dic.updated_at as String)
 		else:
-			Logger.warn("UserDatabaseSynchronizer: Student %d received from server has no timestamp" % code_to_check)
+			Log.warn("UserDatabaseSynchronizer: Student %d received from server has no timestamp" % code_to_check)
 		
 		var server_student_progression_unix_time: int = -1
 		if student_dic.has("progression_last_modified"):
@@ -147,7 +147,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					# Synchronize student data
 					var local_student_unix_time: int = Time.get_unix_time_from_datetime_string(student_data.last_modified)
 					if local_student_unix_time == server_student_unix_time:
-						Logger.trace("UserDatabaseSynchronizer: Student %d data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+						Log.trace("UserDatabaseSynchronizer: Student %d data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 						need_update_students[code_to_check].merge({"data": UpdateNeeded.Nothing})
 					elif local_student_unix_time > server_student_unix_time:
 						need_update_students[code_to_check].merge({"data": UpdateNeeded.FromLocal})
@@ -158,7 +158,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					var student_progression: StudentProgression = UserDataManager.get_student_progression_for_code(device, code_to_check)
 					var local_student_progression_unix_time: int = Time.get_unix_time_from_datetime_string(student_progression.last_modified)
 					if local_student_progression_unix_time == server_student_progression_unix_time:
-						Logger.trace("UserDatabaseSynchronizer: Student %d progression data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+						Log.trace("UserDatabaseSynchronizer: Student %d progression data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 						need_update_students[code_to_check].merge({"progression": UpdateNeeded.Nothing})
 					elif local_student_progression_unix_time > server_student_progression_unix_time:
 						need_update_students[code_to_check].merge({"progression": UpdateNeeded.FromLocal})
@@ -170,7 +170,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					if student_remediation != null:
 						var local_student_gp_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.gp_last_modified)
 						if local_student_gp_remediation_unix_time == server_student_remediation_gp_unix_time:
-							Logger.trace("UserDatabaseSynchronizer: Student %d GP remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+							Log.trace("UserDatabaseSynchronizer: Student %d GP remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 							need_update_students[code_to_check].merge({"remediation_gp": UpdateNeeded.Nothing})
 						elif local_student_gp_remediation_unix_time > server_student_remediation_gp_unix_time:
 							need_update_students[code_to_check].merge({"remediation_gp": UpdateNeeded.FromLocal})
@@ -179,7 +179,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 						
 						var local_student_syllables_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.syllables_last_modified)
 						if local_student_syllables_remediation_unix_time == server_student_remediation_syllables_unix_time:
-							Logger.trace("UserDatabaseSynchronizer: Student %d syllables remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+							Log.trace("UserDatabaseSynchronizer: Student %d syllables remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 							need_update_students[code_to_check].merge({"remediation_syllables": UpdateNeeded.Nothing})
 						elif local_student_syllables_remediation_unix_time > server_student_remediation_syllables_unix_time:
 							need_update_students[code_to_check].merge({"remediation_syllables": UpdateNeeded.FromLocal})
@@ -188,7 +188,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 						
 						var local_student_words_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.words_last_modified)
 						if local_student_words_remediation_unix_time == server_student_remediation_words_unix_time:
-							Logger.trace("UserDatabaseSynchronizer: Student %d words remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+							Log.trace("UserDatabaseSynchronizer: Student %d words remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 							need_update_students[code_to_check].merge({"remediation_words": UpdateNeeded.Nothing})
 						elif local_student_words_remediation_unix_time > server_student_remediation_words_unix_time:
 							need_update_students[code_to_check].merge({"remediation_words": UpdateNeeded.FromLocal})
@@ -200,7 +200,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					if student_confusion_matrix != null:
 						var local_student_gp_confusion_matrix_unix_time: int = Time.get_unix_time_from_datetime_string(student_confusion_matrix.gp_last_modified)
 						if local_student_gp_confusion_matrix_unix_time == server_student_confusion_matrix_gp_unix_time:
-							Logger.trace("UserDatabaseSynchronizer: Student %d GP confusion matrix data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
+							Log.trace("UserDatabaseSynchronizer: Student %d GP confusion matrix data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 							need_update_students[code_to_check].merge({"confusion_matrix_gp": UpdateNeeded.Nothing})
 						elif local_student_gp_confusion_matrix_unix_time > server_student_confusion_matrix_gp_unix_time:
 							need_update_students[code_to_check].merge({"confusion_matrix_gp": UpdateNeeded.FromLocal})
@@ -219,7 +219,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 			elif need_update_user == UpdateNeeded.FromLocal:
 				need_update_students[code_to_check]["data"] = UpdateNeeded.DeleteServer
 			else:
-				Logger.warn("UserDatabaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)
+				Log.warn("UserDatabaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)
 
 	for device: int in UserDataManager.teacher_settings.students.keys():
 			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
@@ -232,7 +232,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 						need_update_students[student_data.code] = {}
 						need_update_students[student_data.code]["data"] = UpdateNeeded.FromLocal
 					else:
-						Logger.warn("UserDatabaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
+						Log.warn("UserDatabaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
 	return need_update_students
 
 
@@ -269,11 +269,11 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 			elif student_update == UpdateNeeded.FromLocal:
 				var device_id: int = UserDataManager.teacher_settings.get_student_device(student_code)
 				if device_id == -1:
-					Logger.error("UserDatabaseSynchronizer: Student code %s has no device ID" % student_code)
+					Log.error("UserDatabaseSynchronizer: Student code %s has no device ID" % student_code)
 					continue
 				var student_data: StudentData = UserDataManager.teacher_settings.get_student_with_code(student_code)
 				if not student_data:
-					Logger.warn("UserDatabaseSynchronizer: Cannot find student with code %d" % student_code)
+					Log.warn("UserDatabaseSynchronizer: Cannot find student with code %d" % student_code)
 					continue
 				student_block.merge({
 					"device_id": device_id,
@@ -288,7 +288,7 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 		# Traitement des data de progression
 		var student_progression: StudentProgression = UserDataManager.get_student_progression_for_code(0, student_code)
 		if student_progression == null:
-			Logger.trace("Cannot find progression data for student %s" % str(student_code))
+			Log.trace("Cannot find progression data for student %s" % str(student_code))
 		elif student_entry.has("progression"):
 			var progression_block: Dictionary = {}
 			if student_entry.progression == UpdateNeeded.FromLocal:
@@ -381,11 +381,11 @@ func _send_instructions(message_to_server: Dictionary) -> Dictionary:
 	await set_loading_bar_progression(60.0)
 	set_loading_bar_text("SYNCHRONIZATION_SEND_SERVER_INSTRUCTIONS")
 	if message_to_server.keys().size() == 0:
-		Logger.trace("UserDatabaseSynchronizer: No instruction to send to server")
+		Log.trace("UserDatabaseSynchronizer: No instruction to send to server")
 		return {}
 	var res_get_server_instructions: Dictionary = await (ServerManager as ServerManagerClass).send_server_synchronization_instructions(message_to_server)
 	if not res_get_server_instructions.success:
-		Logger.trace("UserDatabaseSynchronizer: Cannot send instructions to server. Canceling synchronization.")
+		Log.trace("UserDatabaseSynchronizer: Cannot send instructions to server. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_SERVER")
 		stop_sync()
 		return {}
@@ -397,21 +397,21 @@ func _send_instructions(message_to_server: Dictionary) -> Dictionary:
 func _apply_server_response(response_body: Dictionary) -> void:
 	if response_body.has("user"):
 		var response_user: Dictionary = response_body.user
-		Logger.trace("UserDatabaseSynchronizer: Updating user")
+		Log.trace("UserDatabaseSynchronizer: Updating user")
 		if not response_user.has("account_type"):
-			Logger.warn("UserDatabaseSynchronizer: While updating user, no account_type found")
+			Log.warn("UserDatabaseSynchronizer: While updating user, no account_type found")
 		else:
 			UserDataManager.teacher_settings.account_type = response_user.account_type
 		if not response_user.has("education_method"):
-			Logger.warn("UserDatabaseSynchronizer: While updating user, no education_method found")
+			Log.warn("UserDatabaseSynchronizer: While updating user, no education_method found")
 		else:
 			UserDataManager.teacher_settings.education_method = response_user.education_method
 		if not response_user.has("last_modified"):
-			Logger.warn("UserDatabaseSynchronizer: While updating user, no last_modified found")
+			Log.warn("UserDatabaseSynchronizer: While updating user, no last_modified found")
 		else:
 			UserDataManager.teacher_settings.last_modified = response_user.last_modified
 	if response_body.has("students"):
-		Logger.trace("UserDatabaseSynchronizer: Updating students")
+		Log.trace("UserDatabaseSynchronizer: Updating students")
 		var response_students: Dictionary = response_body.students
 		for response_student_code: String in response_students.keys():
 			var response_student_data: Dictionary = response_students[response_student_code]
@@ -466,9 +466,9 @@ func _apply_server_response(response_body: Dictionary) -> void:
 
 
 func synchronize() -> void:
-	Logger.trace("UserDatabaseSynchronizer: Start synchronizing user data.")
+	Log.trace("UserDatabaseSynchronizer: Start synchronizing user data.")
 	if synchronizing:
-		Logger.trace("UserDatabaseSynchronizer: User synchronization already started, cancel double-call.")
+		Log.trace("UserDatabaseSynchronizer: User synchronization already started, cancel double-call.")
 		return
 	await start_sync()
 
@@ -513,7 +513,7 @@ func validate_student_data(data: Dictionary) -> bool:
 	if missing.is_empty():
 		return true
 
-	Logger.trace("UserDatabaseSynchronizer: Student data is incomplete. Missing keys: %s" % str(missing))
+	Log.trace("UserDatabaseSynchronizer: Student data is incomplete. Missing keys: %s" % str(missing))
 	return false
 
 

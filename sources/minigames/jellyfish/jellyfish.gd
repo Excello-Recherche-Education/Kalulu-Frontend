@@ -29,11 +29,11 @@ const SCALE_FACTOR: float = 0.2
 		if animated_sprite_body:
 			animated_sprite_body.sprite_frames = ANIMATIONS_BODY[color]
 		else:
-			Logger.error("Jellyfish: no animated sprite body")
+			Log.error("Jellyfish: no animated sprite body")
 		if animated_sprite_arms:
 			animated_sprite_arms.sprite_frames = ANIMATIONS_ARMS[color]
 		else:
-			Logger.error("Jellyfish: no animated sprite arms")
+			Log.error("Jellyfish: no animated sprite arms")
 		scale = SCALES[color] * (1. + randf() * SCALE_FACTOR)
 		
 		# Handles sprite size

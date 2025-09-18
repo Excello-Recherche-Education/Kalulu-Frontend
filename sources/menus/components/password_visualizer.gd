@@ -46,7 +46,7 @@ func _draw_password() -> void:
 	var index: int = 0
 	for value: String in password.split(""):
 		if index >= 3:
-			Logger.error("PasswordVisualizer: A password cannot be more than 3 characters long")
+			Log.error("PasswordVisualizer: A password cannot be more than 3 characters long")
 			return
 		
 		if value in ICONS_TEXTURES:

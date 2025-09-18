@@ -46,7 +46,7 @@ func _setup_minigame() -> void:
 	spawn_timer.wait_time = settings.spawn_rate
 	
 	for stimulus: Dictionary in stimuli:
-		Logger.trace("TurtleMinigame: %s" % stimulus.Word)
+		Log.trace("TurtleMinigame: %s" % stimulus.Word)
 
 
 func _highlight() -> void:

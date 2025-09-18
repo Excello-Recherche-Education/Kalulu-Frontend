@@ -55,7 +55,7 @@ func get_gp_scores(id: int) -> PackedInt32Array:
 func update_gp_scores(minigame_scores: Dictionary[int, PackedInt32Array]) -> void:
 	if not minigame_scores or minigame_scores.is_empty():
 		return
-	Logger.trace("UserConfusionMatrix: Update GP scores: %s" % [str(minigame_scores)])
+	Log.trace("UserConfusionMatrix: Update GP scores: %s" % [str(minigame_scores)])
 	for expected_id: int in minigame_scores.keys():
 		var given_list: PackedInt32Array = minigame_scores[expected_id]
 		append_and_trim(gp_scores, expected_id, given_list)

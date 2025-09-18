@@ -78,7 +78,7 @@ func _find_stimuli_and_distractions() -> void:
 
 	# Shuffle the stimuli
 	stimuli.shuffle()
-	Logger.trace("AntsMinigame: stimuli = " + str(stimuli))
+	Log.trace("AntsMinigame: stimuli = " + str(stimuli))
 
 
 func _start() -> void:

@@ -61,11 +61,11 @@ func update_student_name(student_code: int, student_name: String) -> void:
 		for student_data: StudentData in device_students:
 			if student_data.code == student_code:
 				student_data.name = student_name
-				Logger.trace("TeacherSettings: Updated student code " + str(student_code) + ": new name is " + student_name)
+				Log.trace("TeacherSettings: Updated student code " + str(student_code) + ": new name is " + student_name)
 				student_data.last_modified = Time.get_datetime_string_from_system(true)
 				UserDataManager.save_all()
 				return
-	Logger.warn("TeacherSettings: update_student_name: student not found with code " + str(student_code))
+	Log.warn("TeacherSettings: update_student_name: student not found with code " + str(student_code))
 
 
 func update_student_device(student_code: int, new_student_device: int) -> void:
@@ -74,18 +74,18 @@ func update_student_device(student_code: int, new_student_device: int) -> void:
 		for student_data: StudentData in students_data:
 			if student_data.code == student_code:
 				if current_student_device == new_student_device:
-					Logger.trace("TeacherSettings: update_student_device: student %d new device is already current student device, no update necessary" % student_code)
+					Log.trace("TeacherSettings: update_student_device: student %d new device is already current student device, no update necessary" % student_code)
 					return
 				students_data.erase(student_data)
 				if not students.has(new_student_device):
-					Logger.warn("TeacherSettings: update_student_device: student %d new device does not exists, it should not be possible. Update will still work anyway." % student_code)
+					Log.warn("TeacherSettings: update_student_device: student %d new device does not exists, it should not be possible. Update will still work anyway." % student_code)
 					students[new_student_device] = []
 				students[new_student_device].append(student_data)
 				UserDataManager.move_user_device_folder(str(current_student_device), str(new_student_device), student_code)
 				student_data.last_modified = Time.get_datetime_string_from_system(true)
 				UserDataManager.save_all()
 				return
-	Logger.warn("TeacherSettings: update_student_device: student not found with code " + str(student_code))
+	Log.warn("TeacherSettings: update_student_device: student not found with code " + str(student_code))
 
 
 func get_new_code() -> int:
@@ -148,7 +148,7 @@ func delete_student(student_code: int) -> void:
 				if students[device].is_empty():
 					students.erase(device)
 				return
-	Logger.warn("TeacherSettings: Trying to delete student, but code %d not found" % student_code)
+	Log.warn("TeacherSettings: Trying to delete student, but code %d not found" % student_code)
 
 
 func get_student_with_code(student_code: int) -> StudentData:
@@ -174,4 +174,4 @@ func set_data_student_with_code(student_code: int, new_device_id: int, new_name:
 			student_data.age = new_age
 			student_data.last_modified = new_last_modified
 			return
-	Logger.error("TeacherSettings: Student %d not found to set data on it" % student_code)
+	Log.error("TeacherSettings: Student %d not found to set data on it" % student_code)

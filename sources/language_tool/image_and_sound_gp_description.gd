@@ -51,10 +51,10 @@ func set_sound_preview(sound_path: String) -> void:
 		var file: FileAccess = FileAccess.open(sound_path, FileAccess.READ)
 		var error: Error = FileAccess.get_open_error()
 		if error != OK:
-			Logger.error("ImageAndSoundGPDescription: Cannot open file %s. Error: %s" % [sound_path, error_string(error)])
+			Log.error("ImageAndSoundGPDescription: Cannot open file %s. Error: %s" % [sound_path, error_string(error)])
 			return
 		if file == null:
-			Logger.error("ImageAndSoundGPDescription: Cannot open file %s. File is null" % sound_path)
+			Log.error("ImageAndSoundGPDescription: Cannot open file %s. File is null" % sound_path)
 			return
 		var sound: AudioStreamMP3 = AudioStreamMP3.new()
 		sound.data = file.get_buffer(file.get_length())

@@ -137,7 +137,7 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	Logger.error("Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
+	Log.error("Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
 	return
 
 
@@ -272,7 +272,7 @@ func _submit_student_level_time() -> void:
 #region Logs
 
 func _save_logs() -> void:
-	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
+	LessonLog.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
