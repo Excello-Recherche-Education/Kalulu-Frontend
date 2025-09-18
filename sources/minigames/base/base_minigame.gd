@@ -23,7 +23,7 @@ static var transition_data: Dictionary = {}
 @export var lesson_nb: int = 1
 @export_range(0, 4) var difficulty: int = 0
 @export_range(0, 1) var current_lesson_stimuli_ratio: float = 0.7
-@export var minigame_number: int = 1
+@export var minigame_number: int = 0
 @export_category("Difficulty")
 @export var max_number_of_lives: int = 0:
 	set(value):
@@ -265,7 +265,7 @@ func _lose() -> void:
 
 func _submit_student_level_time() -> void:
 	var elapsed_time: int = int(Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused)
-	ServerManager.submit_student_level_time(lesson_nb, elapsed_time)
+	UserDataManager.add_level_time(lesson_nb, minigame_number, elapsed_time)
 
 #endregion
 

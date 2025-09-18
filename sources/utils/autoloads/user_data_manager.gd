@@ -581,6 +581,13 @@ func set_student_progression_data(student_code: int, version: String, new_data: 
 	if err != OK:
 		Log.error("UserDataManager: Error while saving student progression: %s" % error_string(err))
 
+
+func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> void:
+	if not student_progression:
+		Logger.warn("UserDataManager: Cannot save time spent in level because data of student progression cannot be found")
+		return
+	student_progression.add_level_time(lesson_number, game_number, time_spent)
+
 #endregion
 
 #region Student remediation

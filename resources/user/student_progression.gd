@@ -12,6 +12,8 @@ enum Status{
 @export var version: String = ProjectSettings.get_setting("application/config/version")
 @export var unlocks: Dictionary = {}
 @export var last_modified: String
+@export var level_times: Dictionary[int, PackedInt32Array] = {}  # Level ID, Last number of seconds for minigames 0, 1 and 2
+@export var level_total_times: Dictionary[int, PackedInt32Array] = {}  # Level ID, Total number of seconds for minigames 0, 1 and 2
 
 
 func _init() -> void:
@@ -93,3 +95,24 @@ func game_completed(lesson_number: int, game_number: int) -> bool:
 	last_modified = Time.get_datetime_string_from_system(true)
 	unlocks_changed.emit()
 	return true
+
+
+func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> void:
+	Logger.trace("StudentProgression: Add time to level %d, minigame %d. Time added: %s" % [lesson_number, game_number, time_spent])
+	if game_number > 2:
+		Logger.error("StudentProgression: Cannot log a level time for a minigame number superior to 2")
+		return
+	
+	if level_times.has(lesson_number):
+		if level_times[lesson_number].size() != 3:
+			level_times[lesson_number] = [0, 0, 0]
+	else:
+		level_times.set(lesson_number, PackedInt32Array([0, 0, 0]))
+	level_times[lesson_number][game_number] = time_spent
+	
+	if level_total_times.has(lesson_number):
+		if level_total_times[lesson_number].size() != 3:
+			level_total_times[lesson_number] = PackedInt32Array([0, 0, 0])
+	else:
+		level_total_times.set(lesson_number, PackedInt32Array([0, 0, 0]))
+	level_total_times[lesson_number][game_number] += time_spent
