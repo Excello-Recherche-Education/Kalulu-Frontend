@@ -22,7 +22,7 @@ var is_stimulus_heard: bool = false:
 func _start() -> void:
 	super()
 	if stimuli.is_empty():
-		Logger.error("SyllablesMinigame: Cannot start game because stimuli is empty")
+		Log.error("SyllablesMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	stimulus_timer.wait_time = stimulus_repeat_time
@@ -204,13 +204,13 @@ func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 		if _get_current_stimulus().has("ID"):
 			_update_remediation_syllable_score(_get_current_stimulus().ID as int, -1)
 		else:
-			Logger.error("SyllablesMinigame: current stimulus has no ID")
+			Log.error("SyllablesMinigame: current stimulus has no ID")
 		
 		# Handles the pressed stimulus Gps
 		if stimulus.has("ID"):
 			_update_remediation_syllable_score(stimulus.ID as int, -1)
 		else:
-			Logger.warn("SyllablesMinigame: stimulus has no ID")
+			Log.warn("SyllablesMinigame: stimulus has no ID")
 	return true
 
 

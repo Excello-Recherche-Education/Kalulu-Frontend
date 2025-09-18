@@ -47,14 +47,14 @@ func purge_user_folders_if_needed() -> void:
 	var previous_version: String = _device_settings.game_version
 	
 	if previous_version == "" or Utils.compare_versions(previous_version, "2.1.3") < 0:
-		Logger.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
+		Log.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
 		var dir: DirAccess = DirAccess.open("user://")
 		var error: Error = DirAccess.get_open_error()
 		if error != OK:
-			Logger.error("UserDataManager: Could not open user:// directory for cleanup. Error: %s" % error_string(error))
+			Log.error("UserDataManager: Could not open user:// directory for cleanup. Error: %s" % error_string(error))
 			return
 		if not dir:
-			Logger.warn("UserDataManager: Could not open user:// directory for cleanup.")
+			Log.warn("UserDataManager: Could not open user:// directory for cleanup.")
 			return
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
@@ -64,7 +64,7 @@ func purge_user_folders_if_needed() -> void:
 			file_name = dir.get_next()
 		dir.list_dir_end()
 		
-		Logger.trace("UserDataManager: Purge completed")
+		Log.trace("UserDataManager: Purge completed")
 		_device_settings.game_version = current_version
 		ResourceSaver.save(_device_settings, "user://device_settings.tres")
 
@@ -98,7 +98,7 @@ func stop_synchronization_timer() -> void:
 
 func register(register_settings: TeacherSettings) -> bool:
 	if not register_settings:
-		Logger.warn("UserDataManager: register called with invalid register_settings")
+		Log.warn("UserDataManager: register called with invalid register_settings")
 		return false
 	
 	# Handles device settings
@@ -118,27 +118,27 @@ func register(register_settings: TeacherSettings) -> bool:
 # Allow the user to log-in from the server
 func login(infos: Dictionary) -> bool:
 	if not _device_settings:
-		Logger.error("UserDataManager: User cannot login because they have no _device_settings.")
+		Log.error("UserDataManager: User cannot login because they have no _device_settings.")
 		return false
 		
 	if not infos:
-		Logger.error("UserDataManager: User cannot login because they have no _device_settings.")
+		Log.error("UserDataManager: User cannot login because they have no _device_settings.")
 		return false
 	
 	if not infos.has("email") or not infos.email:
-		Logger.error("UserDataManager: User cannot login because they have no infos.")
+		Log.error("UserDataManager: User cannot login because they have no infos.")
 		return false
 	
 	if not infos.has("account_type"):
-		Logger.error("UserDataManager: User cannot login because they have no account_type.")
+		Log.error("UserDataManager: User cannot login because they have no account_type.")
 		return false
 	
 	if infos.account_type < 0 or infos.account_type > 1:
-		Logger.error("UserDataManager: User cannot login because they have invalid account_type: " + str(infos.account_type))
+		Log.error("UserDataManager: User cannot login because they have invalid account_type: " + str(infos.account_type))
 		return false
 	
 	if not infos.has("token") or not infos.token:
-		Logger.error("UserDataManager: User cannot login because they have no token.")
+		Log.error("UserDataManager: User cannot login because they have no token.")
 		return false
 	
 	# Handles device settings
@@ -167,41 +167,41 @@ func login(infos: Dictionary) -> bool:
 
 func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_texts: Array[String]) -> Resource:
 	if not FileAccess.file_exists(path):
-		Logger.error("UserDataManager: File not found: " + path)
+		Log.error("UserDataManager: File not found: " + path)
 		return null
 
 	var content: String = FileAccess.get_file_as_string(path)
 
 	for index: int in range(old_texts.size()):
 		if content.find(old_texts[index]) != -1:
-			Logger.trace("UserDataManager: Fix resource:" + path)
+			Log.trace("UserDataManager: Fix resource:" + path)
 			content = content.replace(old_texts[index], new_texts[index])
 			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 			var error: Error = FileAccess.get_open_error()
 			if error != OK:
-				Logger.error("UserDataManager: Safe load and fix resource: Cannot open file %s. Error: %s" % [path, error_string(error)])
+				Log.error("UserDataManager: Safe load and fix resource: Cannot open file %s. Error: %s" % [path, error_string(error)])
 				return null
 			if file == null:
-				Logger.error("UserDataManager: Safe load and fix resource: Cannot open file %s. File is null" % path)
+				Log.error("UserDataManager: Safe load and fix resource: Cannot open file %s. File is null" % path)
 				return null
 			file.store_string(content)
 			file.close()
 
 	var resource: Resource = ResourceLoader.load(path)
 	if resource == null:
-		Logger.error("UserDataManager: Loading failed after correction: " + path)
+		Log.error("UserDataManager: Loading failed after correction: " + path)
 	else:
-		Logger.trace("UserDataManager: Loading success: " + path)
+		Log.trace("UserDataManager: Loading success: " + path)
 	return resource
 
 
 func set_device_id(device: int) -> bool:
 	if not _device_settings:
-		Logger.warn("UserDataManager: set_device_id called with no device settings loaded")
+		Log.warn("UserDataManager: set_device_id called with no device settings loaded")
 		return false
 	
 	if not device:
-		Logger.warn("UserDataManager: set_device_id called with invalid device")
+		Log.warn("UserDataManager: set_device_id called with invalid device")
 		return false
 	
 	_device_settings.device_id = device
@@ -231,10 +231,10 @@ func delete_teacher_data() -> void:
 
 func student_exists(code: String) -> bool:
 	if not _device_settings:
-		Logger.trace("UserDataManager: student_exists called with invalid _device_settings")
+		Log.trace("UserDataManager: student_exists called with invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Logger.trace("UserDataManager: student_exists called with invalid teacher_settings")
+		Log.trace("UserDataManager: student_exists called with invalid teacher_settings")
 		return false
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
 	if students:
@@ -246,10 +246,10 @@ func student_exists(code: String) -> bool:
 
 func login_student(code: String) -> bool:
 	if not _device_settings:
-		Logger.warn("UserDataManager: login_student failed because of invalid _device_settings")
+		Log.warn("UserDataManager: login_student failed because of invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Logger.warn("UserDataManager: login_student failed because of invalid teacher_settings")
+		Log.warn("UserDataManager: login_student failed because of invalid teacher_settings")
 		return false
 	
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
@@ -260,16 +260,16 @@ func login_student(code: String) -> bool:
 				(ServerManager as ServerManagerClass).first_login_student()
 				return true
 	
-	Logger.warn("UserDataManager: login_student failed, code not found: " + code)
+	Log.warn("UserDataManager: login_student failed, code not found: " + code)
 	return false
 
 
 func logout_student() -> bool:
 	if not _device_settings:
-		Logger.warn("UserDataManager: logout_student failed because of invalid _device_settings")
+		Log.warn("UserDataManager: logout_student failed because of invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Logger.warn("UserDataManager: logout_student failed because of invalid teacher_settings")
+		Log.warn("UserDataManager: logout_student failed because of invalid teacher_settings")
 		return false
 	
 	student = ""
@@ -301,7 +301,7 @@ func _load_device_settings() -> void:
 
 
 func _save_device_settings() -> void:
-	Logger.trace("UserDataManager: Saving device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
+	Log.trace("UserDataManager: Saving device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
 	ResourceSaver.save(_device_settings, get_device_settings_path())
 
 
@@ -415,7 +415,7 @@ func _load_teacher_settings() -> void:
 
 
 func save_teacher_settings() -> void:
-	Logger.trace("UserDataManager: Saving teacher settings in " + ProjectSettings.globalize_path(get_teacher_settings_path()))
+	Log.trace("UserDataManager: Saving teacher settings in " + ProjectSettings.globalize_path(get_teacher_settings_path()))
 	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
 
 
@@ -524,7 +524,7 @@ func _load_student_progression() -> void:
 
 
 func _save_student_progression() -> void:
-	Logger.trace("UserDataManager: Saving student progression in " + ProjectSettings.globalize_path(get_student_progression_path()))
+	Log.trace("UserDataManager: Saving student progression in " + ProjectSettings.globalize_path(get_student_progression_path()))
 	ResourceSaver.save(student_progression, get_student_progression_path())
 
 
@@ -566,7 +566,7 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
 	var error: Error = ResourceSaver.save(progression, progression_path)
 	if error != OK:
-		Logger.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
+		Log.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
 
 
 func set_student_progression_data(student_code: int, version: String, new_data: Dictionary, updated_at: String) -> void:
@@ -578,7 +578,7 @@ func set_student_progression_data(student_code: int, version: String, new_data: 
 	current_data.last_modified = updated_at
 	var err: Error = ResourceSaver.save(current_data, get_student_progression_path(0, student_code))
 	if err != OK:
-		Logger.error("UserDataManager: Error while saving student progression: %s" % error_string(err))
+		Log.error("UserDataManager: Error while saving student progression: %s" % error_string(err))
 
 #endregion
 
@@ -613,7 +613,7 @@ func get_student_remediation_data(student_code: int) -> UserRemediation:
 		var student_remediation: UserRemediation
 		student_remediation = load(remediation_data_path)
 		return student_remediation
-	Logger.trace("UserDataManager: Remediation data of student code %d not found" % student_code)
+	Log.trace("UserDataManager: Remediation data of student code %d not found" % student_code)
 	return null
 
 
@@ -654,7 +654,7 @@ func set_student_remediation_words_data(student_code: int, new_scores: Dictionar
 
 
 func _save_student_remediation() -> void:
-	Logger.trace("UserDataManager: Saving student remediation in " + ProjectSettings.globalize_path(_get_student_remediation_path()))
+	Log.trace("UserDataManager: Saving student remediation in " + ProjectSettings.globalize_path(_get_student_remediation_path()))
 	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
 
 
@@ -666,7 +666,7 @@ func get_gp_remediation_score(gp_id: int) -> int:
 
 func update_remediation_gp_scores(remediation_gp_scores: Dictionary) -> void:
 	if not _student_remediation:
-		Logger.warn("UserDataManager: No student remediation data for " + str(student))
+		Log.warn("UserDataManager: No student remediation data for " + str(student))
 		return
 	if remediation_gp_scores:
 		_student_remediation.update_gp_scores(remediation_gp_scores)
@@ -674,7 +674,7 @@ func update_remediation_gp_scores(remediation_gp_scores: Dictionary) -> void:
 
 func update_remediation_syllables_scores(remediation_syllables_scores: Dictionary) -> void:
 	if not _student_remediation:
-		Logger.warn("UserDataManager: No student remediation data for " + str(student))
+		Log.warn("UserDataManager: No student remediation data for " + str(student))
 		return
 	if remediation_syllables_scores:
 		_student_remediation.update_syllables_scores(remediation_syllables_scores)
@@ -682,7 +682,7 @@ func update_remediation_syllables_scores(remediation_syllables_scores: Dictionar
 
 func update_remediation_words_scores(remediation_words_scores: Dictionary) -> void:
 	if not _student_remediation:
-		Logger.warn("UserDataManager: No student remediation data for " + str(student))
+		Log.warn("UserDataManager: No student remediation data for " + str(student))
 		return
 	if remediation_words_scores:
 		_student_remediation.update_words_scores(remediation_words_scores)
@@ -720,7 +720,7 @@ func get_student_confusion_matrix_data(student_code: int) -> UserConfusionMatrix
 		var student_confusion_matrix: UserConfusionMatrix
 		student_confusion_matrix = load(confusion_matrix_data_path)
 		return student_confusion_matrix
-	Logger.trace("UserDataManager: Confusion matrix data of student code %d not found" % student_code)
+	Log.trace("UserDataManager: Confusion matrix data of student code %d not found" % student_code)
 	return null
 
 
@@ -737,7 +737,7 @@ func set_student_confusion_matrix_gp_data(student_code: int, new_scores: Diction
 
 
 func _save_student_confusion_matrix() -> void:
-	Logger.trace("UserDataManager: Saving student confusion_matrix in " + ProjectSettings.globalize_path(_get_student_confusion_matrix_path()))
+	Log.trace("UserDataManager: Saving student confusion_matrix in " + ProjectSettings.globalize_path(_get_student_confusion_matrix_path()))
 	ResourceSaver.save(_student_confusion_matrix, _get_student_confusion_matrix_path())
 
 
@@ -749,7 +749,7 @@ func get_gp_confusion_matrix_score(gp_id: int) -> PackedInt32Array:
 
 func update_confusion_matrix_gp_scores(confusion_matrix_gp_scores: Dictionary) -> void:
 	if not _student_confusion_matrix:
-		Logger.warn("UserDataManager: No student confusion matrix data for " + str(student))
+		Log.warn("UserDataManager: No student confusion matrix data for " + str(student))
 		return
 	if confusion_matrix_gp_scores:
 		_student_confusion_matrix.update_gp_scores(confusion_matrix_gp_scores)
@@ -775,20 +775,20 @@ func _load_student_difficulty() -> void:
 
 
 func _save_student_difficulty() -> void:
-	Logger.trace("UserDataManager: Saving student difficulty in " + ProjectSettings.globalize_path(_get_student_difficulty_path()))
+	Log.trace("UserDataManager: Saving student difficulty in " + ProjectSettings.globalize_path(_get_student_difficulty_path()))
 	ResourceSaver.save(_student_difficulty, _get_student_difficulty_path())
 
 
 func get_difficulty_for_minigame(minigame_name: String) -> int:
 	if not _student_difficulty:
-		Logger.warn("UserDataManager: No student difficulty data for " + str(student))
+		Log.warn("UserDataManager: No student difficulty data for " + str(student))
 		return 0
 	return _student_difficulty.get_difficulty(minigame_name)
 
 
 func update_difficulty_for_minigame(minigame_name: String, minigame_won: bool) -> void:
 	if not _student_difficulty:
-		Logger.warn("UserDataManager: No student difficulty data for " + str(student))
+		Log.warn("UserDataManager: No student difficulty data for " + str(student))
 		return
 	_student_difficulty.add_game(minigame_name, minigame_won)
 
@@ -812,14 +812,14 @@ func _load_student_speeches() -> void:
 
 
 func _save_student_speeches() -> void:
-	Logger.trace("UserDataManager: Saving student speeches in " + ProjectSettings.globalize_path(_get_student_speeches_path()))
+	Log.trace("UserDataManager: Saving student speeches in " + ProjectSettings.globalize_path(_get_student_speeches_path()))
 	ResourceSaver.save(_student_speeches, _get_student_speeches_path())
 
 
 func mark_speech_as_played(speech: String) -> void:
 	if not _student_speeches:
 		if not Engine.is_editor_hint():
-			Logger.warn("UserDataManager: No student speeches data for " + str(student))
+			Log.warn("UserDataManager: No student speeches data for " + str(student))
 		return
 	_student_speeches.add_speech(speech)
 
@@ -827,7 +827,7 @@ func mark_speech_as_played(speech: String) -> void:
 func is_speech_played(speech: String) -> bool:
 	if not _student_speeches:
 		if not Engine.is_editor_hint():
-			Logger.warn("UserDataManager: No student speeches data for " + str(student))
+			Log.warn("UserDataManager: No student speeches data for " + str(student))
 		return false
 	return _student_speeches.is_speech_played(speech)
 	
@@ -849,9 +849,9 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 	if parent_dir.dir_exists(str(old_child_dir)):
 		var err: Error = parent_dir.rename(old_child_dir, new_child_dir)
 		if err != OK:
-			Logger.error("UserDataManager: Error while renaming folder: %s" % error_string(err))
+			Log.error("UserDataManager: Error while renaming folder: %s" % error_string(err))
 	else:
-		Logger.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parent_dir_path])
+		Log.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parent_dir_path])
 		return
 	save_teacher_settings()
 
@@ -874,7 +874,7 @@ func _scan_teacher_devices(match_callback: Callable) -> String:
 	var teacher_path: String = "user://".path_join(_device_settings.teacher)
 	var dir: DirAccess = DirAccess.open(teacher_path)
 	if not dir:
-		Logger.error("UserDataManager: Impossible to open teacher folder: %s" % teacher_path)
+		Log.error("UserDataManager: Impossible to open teacher folder: %s" % teacher_path)
 		return ""
 
 	var language: String = _device_settings.language
@@ -899,7 +899,7 @@ func _scan_teacher_devices(match_callback: Callable) -> String:
 						sub_file = lang_subdir.get_next()
 					lang_subdir.list_dir_end()
 			else:
-				Logger.warn("UserDataManager: Device folder %s has no language sub-folder" % device_dir)    
+				Log.warn("UserDataManager: Device folder %s has no language sub-folder" % device_dir)    
 
 		file_name = dir.get_next()
 	dir.list_dir_end()

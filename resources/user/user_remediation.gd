@@ -33,7 +33,7 @@ func get_gp_score(id: int) -> int:
 func update_gp_scores(minigame_scores: Dictionary) -> void:
 	if not minigame_scores:
 		return
-	Logger.trace("UserRemediation: Update GP Scores: " + str(minigame_scores))
+	Log.trace("UserRemediation: Update GP Scores: " + str(minigame_scores))
 	for id: int in minigame_scores.keys():
 		var new_gp_score: int = get_gp_score(id)
 		new_gp_score += minigame_scores[id]
@@ -74,7 +74,7 @@ func get_syllable_score(id: int) -> int:
 func update_syllables_scores(minigame_scores: Dictionary) -> void:
 	if not minigame_scores:
 		return
-	Logger.trace("UserRemediation: Update Syllable Scores: " + str(minigame_scores))
+	Log.trace("UserRemediation: Update Syllable Scores: " + str(minigame_scores))
 	for id: int in minigame_scores.keys():
 		var new_syllable_score: int = get_syllable_score(id)
 		new_syllable_score += minigame_scores[id]
@@ -115,7 +115,7 @@ func get_word_score(id: int) -> int:
 func update_words_scores(minigame_scores: Dictionary) -> void:
 	if not minigame_scores:
 		return
-	Logger.trace("UserRemediation: Update Syllable Scores: " + str(minigame_scores))
+	Log.trace("UserRemediation: Update Syllable Scores: " + str(minigame_scores))
 	for id: int in minigame_scores.keys():
 		var new_word_score: int = get_word_score(id)
 		new_word_score += minigame_scores[id]

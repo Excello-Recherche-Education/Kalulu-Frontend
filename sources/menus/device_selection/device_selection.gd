@@ -27,6 +27,6 @@ func _refresh() -> void:
 
 
 func _device_button_pressed(device: int) -> void:
-	Logger.trace("DeviceSelection: User selected device %d" % device)
+	Log.trace("DeviceSelection: User selected device %d" % device)
 	if UserDataManager.set_device_id(device):
 		get_tree().change_scene_to_file(LOGIN_SCENE_PATH)

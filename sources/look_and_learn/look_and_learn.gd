@@ -30,7 +30,7 @@ func _ready() -> void:
 	gardens_data = transition_data
 	transition_data = {}
 	lesson_nb = gardens_data.get("current_lesson_number", lesson_nb)
-	Logger.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
+	Log.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
 	setup()
 	await OpeningCurtain.open()
 
@@ -39,7 +39,7 @@ func setup() -> void:
 	gp_list = Database.get_gps_for_lesson(lesson_nb, true, true)
 	
 	if gp_list.size() <= 0:
-		Logger.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))
+		Log.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))
 		await OpeningCurtain.open()
 		_on_tracing_manager_finished()
 		return
@@ -114,14 +114,14 @@ func _on_grapheme_button_pressed() -> void:
 			0:
 				current_button_pressed += 1
 				if videos.is_empty():
-					Logger.warn("LookAndLearn: Skipping video because empty in lesson %d" % lesson_nb)
+					Log.warn("LookAndLearn: Skipping video because empty in lesson %d" % lesson_nb)
 					continue
 				animation_player.play("to_videos")
 				loop = false
 			1:
 				current_button_pressed += 1
 				if images.is_empty() or sounds.is_empty():
-					Logger.warn("LookAndLearn: Skipping image&sound because empty in lesson %d" % lesson_nb)
+					Log.warn("LookAndLearn: Skipping image&sound because empty in lesson %d" % lesson_nb)
 					continue
 				animation_player.play("to_images_and_sounds")
 				loop = false

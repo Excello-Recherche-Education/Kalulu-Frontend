@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 
 func _play_speech(speech: AudioStream) -> void:
 	if not speech:
-		Logger.warn("Kalulu: Speech not found")
+		Log.warn("Kalulu: Speech not found")
 		is_speaking = false
 		return
 	is_speaking = true

@@ -50,7 +50,7 @@ func connect_to_db() -> void:
 	if FileAccess.file_exists(db.path):
 		is_open = db.open_db()
 	else:
-		Logger.warn("Database: DB file not found at %s" % db.path)
+		Log.warn("Database: DB file not found at %s" % db.path)
 
 
 func get_additional_word_list_path() -> String:
@@ -64,15 +64,15 @@ func load_additional_word_list() -> String:
 		var file: FileAccess = FileAccess.open(word_list_path, FileAccess.READ)
 		var error: Error = FileAccess.get_open_error()
 		if error != OK:
-			Logger.error("Database: Load additional word list: Cannot open file %s. Error: %s" % [word_list_path, error_string(error)])
+			Log.error("Database: Load additional word list: Cannot open file %s. Error: %s" % [word_list_path, error_string(error)])
 			return ""
 		if file == null:
-			Logger.error("Database: Load additional word list: Cannot open file %s. File is null" % word_list_path)
+			Log.error("Database: Load additional word list: Cannot open file %s. File is null" % word_list_path)
 			return ""
 		var title_line: PackedStringArray = file.get_csv_line()
 		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
 			var msg: String = "word list should have columns ORTHO, PHON and GPMATCH"
-			Logger.error("Database: " + msg)
+			Log.error("Database: " + msg)
 			return msg
 		var ortho_index: int = title_line.find("ORTHO")
 		while not file.eof_reached():
@@ -85,7 +85,7 @@ func load_additional_word_list() -> String:
 			additional_word_list[line[ortho_index]] = data
 		file.close()
 	else:
-		Logger.warn("Database: Additional word list file not found: %s" % word_list_path)
+		Log.warn("Database: Additional word list file not found: %s" % word_list_path)
 	return ""
 
 
@@ -181,7 +181,7 @@ func get_word_id_from_text(text: String) -> int:
 	if db.query_result.size() > 0:
 		if db.query_result[0].has("ID"):
 			return db.query_result[0].ID
-	Logger.trace("Database: Word " + text + " ID not found")
+	Log.trace("Database: Word " + text + " ID not found")
 	return -1
 
 
@@ -497,7 +497,7 @@ func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
 	
 	if FileAccess.file_exists(path) and ResourceLoader.exists(path):
 		return load(path)
-	Logger.trace("Database: Audio stream not found for phoneme %s" % phoneme)
+	Log.trace("Database: Audio stream not found for phoneme %s" % phoneme)
 	return null
 
 
@@ -511,7 +511,7 @@ func get_gp_look_and_learn_image(gp: Dictionary) -> Texture:
 			var texture: ImageTexture = ImageTexture.create_from_image(image)
 			return texture
 	
-	Logger.trace("Database: Look & Learn image not found for GP %s" % str(gp))
+	Log.trace("Database: Look & Learn image not found for GP %s" % str(gp))
 	return null
 
 
@@ -524,16 +524,16 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 			var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 			var error: Error = FileAccess.get_open_error()
 			if error != OK:
-				Logger.error("Database: Get GP look and learn sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
+				Log.error("Database: Get GP look and learn sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
 				return null
 			if file == null:
-				Logger.error("Database: Get GP look and learn sound: Cannot open file %s. File is null" % path)
+				Log.error("Database: Get GP look and learn sound: Cannot open file %s. File is null" % path)
 				return null
 			var sound: AudioStreamMP3 = AudioStreamMP3.new()
 			sound.data = file.get_buffer(file.get_length())
 			return sound
 	
-	Logger.trace("Database: Look & Learn sound not found for GP %s" % str(gp))
+	Log.trace("Database: Look & Learn sound not found for GP %s" % str(gp))
 	return null
 
 
@@ -543,7 +543,7 @@ func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:
 		var video: VideoStream = load(path)
 		return video
 	
-	Logger.trace("Database: Look & Learn video not found for GP %s" % gp)
+	Log.trace("Database: Look & Learn video not found for GP %s" % gp)
 	return null
 
 
@@ -588,16 +588,16 @@ func get_kalulu_speech_path(speech_category: String, speech_name: String) -> Str
 
 func load_external_sound(path: String) -> AudioStreamMP3:
 	if not FileAccess.file_exists(path):
-		Logger.trace("Database: External sound file not found: %s" % path)
+		Log.trace("Database: External sound file not found: %s" % path)
 		return null
 	
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Logger.error("Database: Load external sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		Log.error("Database: Load external sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return null
 	if file == null:
-		Logger.error("Database: Load external sound: Cannot open file %s. File is null" % path)
+		Log.error("Database: Load external sound: Cannot open file %s. File is null" % path)
 		return null
 	var audio_stream: AudioStreamMP3 = AudioStreamMP3.new()
 	audio_stream.data = file.get_buffer(file.get_length())

@@ -171,7 +171,7 @@ func _check_db_integrity() -> void:
 		lesson_id = index +1
 		error_label.text = "Database integrity checks lesson " + str(lesson_id)
 		await get_tree().process_frame
-		Logger.trace("ProfToolMenu: Lesson_id = " + str(lesson_id))
+		Log.trace("ProfToolMenu: Lesson_id = " + str(lesson_id))
 		
 		var new_gps_for_lesson: Array = Database.get_gps_for_lesson(lesson_id, false, true, false, false, true)
 		for new_gp: Dictionary in new_gps_for_lesson:
@@ -264,7 +264,7 @@ func _check_db_integrity() -> void:
 	integrity_checking = false
 	if check_box_log.button_pressed:
 		var file_path: String = ProjectSettings.globalize_path(integrity_log_path)
-		Logger.trace("ProfToolMenu: Logs saved at " + file_path)
+		Log.trace("ProfToolMenu: Logs saved at " + file_path)
 		OS.shell_open(file_path)
 
 #endregion
@@ -283,7 +283,7 @@ func log_message(message: String) -> bool:
 			file.store_line(message)
 			file.close()
 		else:
-			Logger.warn("ProfToolMenu: Integrity log file not found")
+			Log.warn("ProfToolMenu: Integrity log file not found")
 		return true
 	else:
 		error_label.text = message
@@ -546,7 +546,7 @@ func create_book() -> void:
 		var file_path: String = lang_path.path_join(file_names[category])
 		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
 		if file == null:
-			Logger.error("ProfToolMenu: Error opening file: " + file_path)
+			Log.error("ProfToolMenu: Error opening file: " + file_path)
 			continue
 
 		if file.eof_reached():
@@ -590,7 +590,7 @@ func create_book() -> void:
 
 			var values: PackedStringArray = parse_csv_line(line)
 			if values.size() != raw_headers.size():
-				Logger.warn("ProfToolMenu: Malformed line ignored: %s" % values)
+				Log.warn("ProfToolMenu: Malformed line ignored: %s" % values)
 				continue
 
 			var row_dict: Dictionary[String, String] = {}
@@ -623,7 +623,7 @@ func create_book() -> void:
 	var output_path: String = lang_path.path_join("booklet.csv")
 	var output_file: FileAccess = FileAccess.open(output_path, FileAccess.WRITE)
 	if output_file == null:
-		Logger.error("ProfToolMenu: Impossible to write: " + output_path)
+		Log.error("ProfToolMenu: Impossible to write: " + output_path)
 		return
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
@@ -638,7 +638,7 @@ func create_book() -> void:
 	output_file.close()
 	
 	error_label.text = "📘 Export data of the booklet finished to path: " + output_path
-	Logger.trace("ProfToolMenu: " + error_label.text)
+	Log.trace("ProfToolMenu: " + error_label.text)
 
 
 # Fonction qui ajoute une ligne au dictionnaire

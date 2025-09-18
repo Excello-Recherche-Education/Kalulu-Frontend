@@ -83,10 +83,10 @@ func _load_tracing(path: String) -> Array:
 	var file: FileAccess = FileAccess.open(_real_path(path), FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Logger.error("TracingManager: Load tracing: Cannot open file %s. Error: %s" % [_real_path(path), error_string(error)])
+		Log.error("TracingManager: Load tracing: Cannot open file %s. Error: %s" % [_real_path(path), error_string(error)])
 		return segments
 	if file == null:
-		Logger.error("TracingManager: Load tracing: Cannot open file %s. File is null" % _real_path(path))
+		Log.error("TracingManager: Load tracing: Cannot open file %s. File is null" % _real_path(path))
 		return segments
 	while not file.eof_reached():
 		var points: Array[Vector2] = []

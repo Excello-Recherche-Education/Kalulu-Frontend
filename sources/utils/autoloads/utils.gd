@@ -39,13 +39,13 @@ func clean_dir(path: String) -> Error:
 func delete_directory_recursive(path: String) -> void:
 	var err: Error = clean_dir(path)
 	if err != OK:
-		Logger.error("Utils: Error " + error_string(err) + " while cleaning folder: %s" % path)
+		Log.error("Utils: Error " + error_string(err) + " while cleaning folder: %s" % path)
 		return
 	err = DirAccess.remove_absolute(path)
 	if err != OK:
-		Logger.error("Utils: Error " + error_string(err) + " while deleting folder: %s" % path)
+		Log.error("Utils: Error " + error_string(err) + " while deleting folder: %s" % path)
 	else:
-		Logger.info("Utils: Folder deleted: %s" % path)
+		Log.info("Utils: Folder deleted: %s" % path)
 
 
 ## Returns -1 if version_a is lower than version_b, 0 if they are equals, and 1 if version_a is greater than version_b

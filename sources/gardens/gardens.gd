@@ -228,7 +228,7 @@ func _ready() -> void:
 		if transition_data.has("current_garden_index"):
 			starting_garden = transition_data.current_garden_index
 		else:
-			Logger.error("Gardens: initialisation: transition_data exists but does not contains the needed current_garden_index")
+			Log.error("Gardens: initialisation: transition_data exists but does not contains the needed current_garden_index")
 			starting_garden = 0
 	
 	scroll_container.scroll_horizontal = GARDEN_SIZE * starting_garden
@@ -378,7 +378,7 @@ func _ready() -> void:
 
 
 static func compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
-	Logger.trace("Gardens: compute_lessons_distribution: total_lessons = %s, garden_layouts count = %s" % [str(total_lessons), str(garden_layouts.size())])
+	Log.trace("Gardens: compute_lessons_distribution: total_lessons = %s, garden_layouts count = %s" % [str(total_lessons), str(garden_layouts.size())])
 	var distribution: Array[int] = []
 	var lessons_left: int = total_lessons
 	var gardens_left: int = garden_layouts.size()

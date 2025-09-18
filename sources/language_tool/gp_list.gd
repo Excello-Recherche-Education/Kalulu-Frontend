@@ -122,10 +122,10 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Logger.error("GPList: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		Log.error("GPList: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return
 	if file == null:
-		Logger.error("GPList: Cannot open file %s. File is null" % path)
+		Log.error("GPList: Cannot open file %s. File is null" % path)
 		return
 	var line: PackedStringArray = file.get_csv_line()
 	if line.size() < 4 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type" or line[3] != "Exception":

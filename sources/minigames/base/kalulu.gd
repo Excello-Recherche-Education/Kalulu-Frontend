@@ -33,7 +33,7 @@ func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_a
 		audio_player.play()
 		await audio_player.finished
 	else:
-		Logger.warn("Kalulu: Speech not found")
+		Log.warn("Kalulu: Speech not found")
 	
 	if hide_animation:
 		audio_player.stream = HIDE_SOUND

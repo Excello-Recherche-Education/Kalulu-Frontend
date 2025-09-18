@@ -39,7 +39,7 @@ ORDER BY LessonNb")
 		student_unlock.lesson_gps = element.GPs
 		student_unlock.lesson_number = element.LessonNb
 		if not progression:
-			Logger.trace("LessonUnlocks: User selected a student with no progression data")
+			Log.trace("LessonUnlocks: User selected a student with no progression data")
 			return
 		student_unlock.unlocks = progression.unlocks
 		lesson_container.add_child(student_unlock)
@@ -105,4 +105,4 @@ func _device_button_pressed(device_id: int) -> void:
 	device = device_id
 	var res_set: Dictionary = await ServerManager.set_student_data(student, {"device_id": device_id})
 	if not res_set.success:
-		Logger.trace("LessonUnlocks: Device was updated locally for the student, but the network update failed.")
+		Log.trace("LessonUnlocks: Device was updated locally for the student, but the network update failed.")

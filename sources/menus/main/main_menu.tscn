@@ -33,9 +33,7 @@ fail_message = "A value is required."
 
 [sub_resource type="Resource" id="Resource_owox8"]
 script = ExtResource("20_6xsd1")
-validation_order = 1
 validation_method = 1
-skip_validation = false
 rules = Array[ExtResource("18_5m8xx")]([SubResource("Resource_mh75v")])
 
 [sub_resource type="Resource" id="Resource_j516d"]
@@ -48,9 +46,7 @@ fail_message = "Value must be a valid email address."
 
 [sub_resource type="Resource" id="Resource_hxkvx"]
 script = ExtResource("21_1bl4i")
-validation_order = 1
 validation_method = 1
-skip_validation = false
 rules = Array[ExtResource("18_5m8xx")]([SubResource("Resource_j516d"), SubResource("Resource_ayewh")])
 
 [sub_resource type="Resource" id="Resource_b08p8"]
@@ -59,9 +55,7 @@ fail_message = "A value is required."
 
 [sub_resource type="Resource" id="Resource_k2y4u"]
 script = ExtResource("21_1bl4i")
-validation_order = 1
 validation_method = 1
-skip_validation = false
 rules = Array[ExtResource("18_5m8xx")]([SubResource("Resource_b08p8")])
 
 [sub_resource type="Gradient" id="Gradient_22q4u"]
@@ -123,7 +117,7 @@ grow_vertical = 2
 script = ExtResource("8_cxg8l")
 
 [node name="Title" type="TextureRect" parent="Kalulu"]
-layout_mode = 2
+layout_mode = 0
 offset_left = -324.0
 offset_top = -644.0
 offset_right = 323.0
@@ -135,7 +129,7 @@ texture = ExtResource("7_ftt26")
 
 [node name="Background" type="TextureRect" parent="Kalulu"]
 custom_minimum_size = Vector2(868, 868)
-layout_mode = 2
+layout_mode = 0
 offset_left = -434.0
 offset_top = -250.0
 offset_right = 434.0
@@ -376,7 +370,7 @@ grow_vertical = 0
 
 [node name="BuildVersionTitle" type="Label" parent="Informations"]
 custom_minimum_size = Vector2(400, 0)
-layout_mode = 2
+layout_mode = 0
 offset_left = 10.0
 offset_right = 261.0
 offset_bottom = 56.0
@@ -510,7 +504,6 @@ text = "CANCEL"
 
 [connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
 [connection signal="logged_in" from="KeyboardSpacer/LoginForm" to="." method="_on_login_in"]
-[connection signal="control_validated" from="KeyboardSpacer/LoginForm/LoginFormValidator" to="KeyboardSpacer/LoginForm" method="_on_login_form_validator_control_validated"]
 [connection signal="item_selected" from="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/LanguageContainer/LanguageField" to="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/LanguageContainer/LanguageField" method="_on_item_selected"]
 [connection signal="pressed" from="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/ValidateButton" to="KeyboardSpacer/LoginForm" method="_on_validate_button_pressed"]
 [connection signal="pressed" from="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/Register" to="." method="_on_register_pressed"]

@@ -92,7 +92,7 @@ func _find_stimuli_and_distractions() -> void:
 func _start() -> void:
 	super()
 	if stimuli.is_empty():
-		Logger.error("WordsMinigame: Cannot start game because stimuli is empty")
+		Log.error("WordsMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	_setup_word_progression()
@@ -186,7 +186,7 @@ func _log_new_response_and_score(gp: Dictionary) -> void:
 	if gp.has("ID"): # GP can be an empty dictionary (empty word)
 		_update_confusion_matrix_gp_score(self._get_gp().ID as int, gp.ID as int)
 	else:
-		Logger.trace("WordsMinigame: Confusion matrix cannot be updated because word is empty") # Empty word is normal, it just does not update the confusion matrix
+		Log.trace("WordsMinigame: Confusion matrix cannot be updated because word is empty") # Empty word is normal, it just does not update the confusion matrix
 	
 	# Handles Remediation GP scoring
 	if self._is_gp_right(gp):
