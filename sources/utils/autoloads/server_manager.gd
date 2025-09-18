@@ -236,23 +236,40 @@ func _delete_request(uri: String, params: Dictionary = {}) -> void:
 
 func _on_http_request_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result_code != OK:
-		Logger.trace("Cannot complete http request. Error code %d = %s" % [result_code, error_string(result_code)])
+		Logger.warn("Cannot complete http request. Error code %d = %s" % [result_code, error_string(result_code)])
 	else:
 		code = response_code
-		Logger.trace("ServerManager Request Completed. Response code = %d" % response_code)
+		if code == 200:
+			Logger.trace("ServerManager Request Completed. Response code = %d" % response_code)
+		else:
+			Logger.warn("ServerManager Request Completed. Response code = %d" % response_code)
 		if body:
 			var str_body: String = body.get_string_from_utf8()
 			var result: Variant = JSON.parse_string(str_body)
-			Logger.trace("Body received = %s" % str_body)
+			
 			if result is Dictionary or result is Array:
 				var pretty: String = JSON.stringify(result, "\t")
-				Logger.trace("Prettyfied Body received :\n%s" % pretty)
+				if code == 200:
+					Logger.trace("ServerManager Prettyfied Body received :\n%s" % pretty)
+				else:
+					Logger.warn("ServerManager Prettyfied Body received :\n%s" % pretty)
+			else:
+				if code == 200:
+					Logger.trace("ServerManager Body received = %s" % str_body)
+				else:
+					Logger.warn("ServerManager Body received = %s" % str_body)
 			if result != null:
 				json = result
 			else:
-				Logger.trace("ServerManager: result null after parsing String to JSON")
+				if code == 200:
+					Logger.trace("ServerManager: result null after parsing String to JSON")
+				else:
+					Logger.warn("ServerManager: result null after parsing String to JSON")
 		else:
-			Logger.trace("Body received is empty")
+			if code == 200:
+				Logger.trace("ServerManager Body received is empty")
+			else:
+				Logger.warn("ServerManager Body received is empty")
 	success = result_code == OK and response_code == 200
 	request_completed.emit(success, response_code, json)
 	loading_rect.hide()
@@ -260,7 +277,7 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 
 func _on_internet_check_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
 	if result_code != OK:
-		Logger.trace("Cannot check internet request. Error code %d = %s" % [result_code, error_string(result_code)])
+		Logger.warn("Cannot check internet request. Error code %d = %s" % [result_code, error_string(result_code)])
 	else:
 		Logger.trace("ServerManager Internet check completed.\n    Response code = %s. (200 = OK)" % str(response_code))
 	success = result_code == OK and response_code == 200
