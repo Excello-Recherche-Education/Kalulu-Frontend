@@ -12,7 +12,9 @@ const SUPPORTED_LOCALES: Array[String] = [
 	# Spanish Colombia
 	"es_CO",
 	# Portuguese Brazil
-	"pt_BR"
+	"pt_BR",
+	# Spanish Dominican Republic
+	"es_DO"
 ]
 
 @export var language: String:
