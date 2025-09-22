@@ -272,7 +272,7 @@ func _submit_student_level_time() -> void:
 #region Logs
 
 func _save_logs() -> void:
-	LessonLog.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
+	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 

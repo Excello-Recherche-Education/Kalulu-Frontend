@@ -6,13 +6,14 @@ enum LogLevel {
 	INFO,
 	WARNING,
 	ERROR,
-	# TODO : PANIC
+	ALERT,
+	PANIC,
 	NONE
 }
 
 const LOG_PATH: String = "user://Logs/"
 
-var current_level: LogLevel = LogLevel.INFO
+var current_level: LogLevel = LogLevel.NONE
 var log_file_path: String
 var log_file: FileAccess
 var initialized: bool = false
@@ -36,10 +37,10 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 	var dir: DirAccess = DirAccess.open(LOG_PATH)
 	var err: Error = DirAccess.get_open_error()
 	if err != OK:
-		push_error("Logger: Could not open Logs directory for cleanup. Error: %s" % error_string(err))
+		push_error("Log: Could not open Logs directory for cleanup. Error: %s" % error_string(err))
 		return
 	if not dir:
-		push_warning("Logger: Could not open Logs directory for cleanup.")
+		push_warning("Log: Could not open Logs directory for cleanup.")
 		return
 	
 	var now: float = Time.get_unix_time_from_system()
@@ -63,9 +64,9 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 					var full_path: String = LOG_PATH + file_name
 					err = dir.remove(full_path)
 					if err != OK:
-						push_warning("Logger: Failed to delete old log: " + full_path)
+						push_warning("Log: Failed to delete old log: " + full_path)
 					else:
-						print("Logger: Deleted old log:", full_path)
+						print("Log: Deleted old log:", full_path)
 		file_name = dir.get_next()
 	dir.list_dir_end()
 
@@ -86,10 +87,10 @@ func _init_log_file() -> void:
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
 	var err: Error = FileAccess.get_open_error()
 	if err != OK:
-		push_error("Logger: Load external sound: Cannot open file %s. Error: %s" % [log_file_path, error_string(err)])
+		push_error("Log: Load external sound: Cannot open file %s. Error: %s" % [log_file_path, error_string(err)])
 		return
 	if log_file == null:
-		push_error("Logger: Could not open log file at " + log_file_path)
+		push_error("Log: Could not open log file at " + log_file_path)
 		return
 
 
@@ -105,10 +106,12 @@ func _log_internal(level: LogLevel, message: String) -> void:
 		LogLevel.INFO: prefix = "[INFO]"
 		LogLevel.WARNING: prefix = "[WARNING]"
 		LogLevel.ERROR: prefix = "[ERROR]"
+		LogLevel.PANIC: prefix = "[ALERT]"
+		LogLevel.PANIC: prefix = "[PANIC]"
 	
 	var time_str: String = Time.get_time_string_from_system()
 	var log_message: String = "%s %s %s" % [time_str, prefix, message]
-	
+	_log_to_file(log_message)
 	match level:
 		LogLevel.DEBUG:
 			print_debug(log_message)
@@ -116,10 +119,12 @@ func _log_internal(level: LogLevel, message: String) -> void:
 			push_warning(log_message)
 		LogLevel.ERROR:
 			push_error(log_message)
+		LogLevel.ALERT:
+			OS.alert(log_message)
+		LogLevel.PANIC:
+			OS.crash(log_message)
 		_:
 			print(log_message)
-	
-	_log_to_file(log_message)
 
 
 func _log_to_file(message: String) -> void:
@@ -146,3 +151,11 @@ func warn(msg: String) -> void: _log_internal(LogLevel.WARNING, msg)
 
 # error should be used everytime the program does something that is problematic and could potentially harm the user experience
 func error(msg: String) -> void: _log_internal(LogLevel.ERROR, msg)
+
+
+# alert will displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
+func alert(msg: String) -> void: _log_internal(LogLevel.ALERT, msg)
+
+
+# panic will crash the app and should only be used for testing the system's crash handler, not for any other purpose.
+func panic(msg: String) -> void: _log_internal(LogLevel.PANIC, msg)
