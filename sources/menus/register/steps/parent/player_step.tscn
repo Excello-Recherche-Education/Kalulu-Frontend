@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dv82313fptjgb" path="res://sources/ui/tr_item_list.gd" id="2_rmdcs"]
 [ext_resource type="Script" uid="uid://b0dbsne0vdlsi" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_pj58p"]
 [ext_resource type="Script" uid="uid://83q48kwp3p6p" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_fcdvy"]
-[ext_resource type="Script" uid="uid://bsai1004ag8h6" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="5_hwl8b"]
+[ext_resource type="Script" uid="uid://dg17cfvs2w257" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="5_hwl8b"]
 [ext_resource type="Script" uid="uid://7uwoocpe7ieu" path="res://sources/utils/binder/control_binder.gd" id="5_kb1ut"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="6_nuhb7"]
 [ext_resource type="Script" uid="uid://daolm78xg3qgd" path="res://addons/godot-form-validator/rules/length_rule.gd" id="6_qcc6t"]
@@ -19,9 +19,7 @@ fail_message = "A value is required."
 
 [sub_resource type="Resource" id="Resource_pdktm"]
 script = ExtResource("4_fcdvy")
-validation_order = 1
 validation_method = 1
-skip_validation = false
 rules = Array[ExtResource("5_hwl8b")]([SubResource("Resource_kw8sn")])
 
 [sub_resource type="Resource" id="Resource_fybs1"]
@@ -40,9 +38,7 @@ fail_message = "Value must contain only alpha characters."
 
 [sub_resource type="Resource" id="Resource_40trb"]
 script = ExtResource("7_22xb4")
-validation_order = 1
 validation_method = 1
-skip_validation = false
 rules = Array[ExtResource("5_hwl8b")]([SubResource("Resource_fybs1"), SubResource("Resource_y65lh"), SubResource("Resource_g77h5")])
 
 [node name="PlayerStep" instance=ExtResource("1_ggdon")]
@@ -75,7 +71,6 @@ item_2/text = "ADULT"
 script = ExtResource("2_rmdcs")
 
 [node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LevelContainer/VBoxContainer/LevelSelect" index="2"]
-layout_mode = 2
 anchors_preset = 0
 script = ExtResource("5_kb1ut")
 property_name = "level"
@@ -145,7 +140,6 @@ min_value = 1.0
 value = 1.0
 
 [node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/AgeContainer/AgeField" index="2"]
-layout_mode = 2
 anchors_preset = 0
 script = ExtResource("5_kb1ut")
 property_name = "age"

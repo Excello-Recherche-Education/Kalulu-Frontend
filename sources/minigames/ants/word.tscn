@@ -47,6 +47,7 @@ vertical_alignment = 1
 
 [node name="RightFX" parent="." instance=ExtResource("3_hml8s")]
 show_behind_parent = true
+layout_mode = 0
 offset_left = 256.0
 offset_top = 128.0
 offset_right = 256.0
@@ -54,6 +55,7 @@ offset_bottom = 128.0
 mouse_filter = 2
 
 [node name="WrongFX" parent="." instance=ExtResource("4_tbe68")]
+layout_mode = 0
 offset_left = 256.0
 offset_top = 128.0
 offset_right = 256.0

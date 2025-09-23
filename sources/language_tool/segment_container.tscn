@@ -8,15 +8,15 @@
 font = ExtResource("2_6k0sf")
 font_size = 768
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ssy0w"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qds63"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_54blg"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agg5x"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8xb3m"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agg5x"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_54blg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qds63"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ssy0w"]
 
 [node name="SegmentContainer" type="HBoxContainer"]
 anchors_preset = 15
@@ -61,11 +61,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ssy0w")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_qds63")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_54blg")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_8xb3m")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_agg5x")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8xb3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_54blg")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qds63")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ssy0w")
 
 [node name="ButtonsParent" type="Control" parent="DrawingContainer/MarginContainer"]
 unique_name_in_owner = true

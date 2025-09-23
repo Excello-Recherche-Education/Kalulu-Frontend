@@ -297,7 +297,7 @@ script = ExtResource("28_kvgph")
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground1"]
 material = SubResource("ShaderMaterial_mpipb")
 custom_minimum_size = Vector2(256, 256)
-layout_mode = 2
+layout_mode = 0
 offset_left = 704.0
 offset_top = 576.0
 offset_right = 960.0
@@ -335,7 +335,7 @@ script = ExtResource("28_kvgph")
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground2"]
 material = SubResource("ShaderMaterial_t7vua")
 custom_minimum_size = Vector2(256, 256)
-layout_mode = 2
+layout_mode = 0
 offset_left = 1600.0
 offset_top = 576.0
 offset_right = 1856.0
@@ -373,7 +373,7 @@ script = ExtResource("28_kvgph")
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground3"]
 material = SubResource("ShaderMaterial_js0rl")
 custom_minimum_size = Vector2(256, 256)
-layout_mode = 2
+layout_mode = 0
 offset_left = 1152.0
 offset_top = 1248.0
 offset_right = 1408.0

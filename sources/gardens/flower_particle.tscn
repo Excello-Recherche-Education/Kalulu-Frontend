@@ -52,26 +52,26 @@ sounds = Array[AudioStream]([ExtResource("4_0jd3r"), ExtResource("3_hopxg"), Ext
 [node name="Particles" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 10
-process_material = SubResource("ParticleProcessMaterial_8m4ej")
 texture = ExtResource("1_osgji")
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8m4ej")
 
 [node name="Particles2" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 10
-process_material = SubResource("ParticleProcessMaterial_8m4ej")
 texture = ExtResource("2_ijsw8")
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8m4ej")
 
 [node name="Particles3" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 10
-process_material = SubResource("ParticleProcessMaterial_8m4ej")
 texture = ExtResource("3_wp5xb")
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8m4ej")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_0jd3r")
