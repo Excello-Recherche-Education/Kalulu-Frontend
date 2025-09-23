@@ -195,6 +195,10 @@ func _on_dashboard_button_pressed() -> void:
 		Log.error("SettingsTeacherSettings: Request to get Dashboard link failed. Error code " + str(res.code))
 
 
+func _on_logs_viewer_button_pressed() -> void:
+	Log.open_log_popup()
+
+
 func _on_synchronize_button_pressed() -> void:
 	UserDataManager.user_database_synchronizer.synchronize()
 
