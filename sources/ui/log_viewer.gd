@@ -1,14 +1,15 @@
 class_name LogViewer
 extends AcceptDialog
 
+var file_path: String
+var all_lines: PackedStringArray = []
+var line_steps: PackedInt32Array = [10, 50, 100, 200, 500, 1000, -1] # -1 = all
+
 @onready var log_text: TextEdit = $VBox/LogText
 @onready var slider: HSlider = $VBox/Controls/LineCountSlider
 @onready var slider_label: Label = $VBox/Controls/SliderLabel
 @onready var level_dropdown: OptionButton = $VBox/Controls/LogLevelDropdown
 
-var file_path: String
-var all_lines: PackedStringArray = []
-var line_steps: PackedInt32Array = [10, 50, 100, 200, 500, 1000, -1] # -1 = all
 
 func _ready() -> void:
 	# Fill the list with the log enum
@@ -18,6 +19,7 @@ func _ready() -> void:
 			level_dropdown.add_item(level_name, value)
 		
 		level_dropdown.item_selected.connect(_on_level_changed)
+
 
 func show_log_file(path: String) -> void:
 	file_path = path
@@ -52,6 +54,7 @@ func show_log_file(path: String) -> void:
 func _on_slider_changed(_value: float) -> void:
 	_update_log_text()
 
+
 func _update_log_text() -> void:
 	var idx: int = int(slider.value)
 	var lines_to_show: int = line_steps[idx]
@@ -68,6 +71,7 @@ func _update_log_text() -> void:
 	
 	log_text.text = "\n".join(subset)
 	log_text.scroll_vertical = log_text.get_line_count() # Scroll down
+
 
 func _on_level_changed(_index: int) -> void:
 	var selected_level: int = level_dropdown.get_selected_id()
