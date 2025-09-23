@@ -64,6 +64,12 @@ theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 40
 text = "DASHBOARD"
 
+[node name="Logs" type="Button" parent="InterfaceLeft/Container"]
+layout_mode = 2
+theme_type_variation = &"FlatButton"
+theme_override_font_sizes/font_size = 40
+text = "Logs"
+
 [node name="SynchronizeButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2
 theme_type_variation = &"FlatButton"
@@ -220,6 +226,7 @@ visible = false
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/Dashboard" to="." method="_on_dashboard_button_pressed"]
+[connection signal="pressed" from="InterfaceLeft/Container/Logs" to="." method="_on_logs_viewer_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/DeleteButton" to="." method="_on_delete_button_pressed"]
 [connection signal="accepted" from="InterfaceLeft/Container/DeleteButton/DeletePopup" to="." method="_on_delete_popup_accepted"]

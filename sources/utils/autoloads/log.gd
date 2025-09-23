@@ -12,6 +12,7 @@ enum LogLevel {
 }
 
 const LOG_PATH: String = "user://Logs/"
+const VIEWER_SCENE: PackedScene = preload("res://sources/ui/log_viewer.tscn")
 
 var current_level: LogLevel = LogLevel.NONE
 var log_file_path: String
@@ -131,6 +132,12 @@ func _log_to_file(message: String) -> void:
 	if log_file:
 		log_file.store_line(message)
 		log_file.flush()
+
+
+func open_log_popup() -> void:
+	var viewer: LogViewer = VIEWER_SCENE.instantiate()
+	get_tree().root.add_child(viewer)
+	viewer.show_log_file(log_file_path)
 
 
 # trace can be used everywhere, in order to have a full log of all that is hapenning
