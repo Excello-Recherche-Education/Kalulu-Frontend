@@ -10,7 +10,7 @@ mouse_filter = 2
 script = ExtResource("1_d6v6o")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 2
+layout_mode = 0
 offset_left = -25.0
 offset_top = -25.0
 offset_right = 175.0

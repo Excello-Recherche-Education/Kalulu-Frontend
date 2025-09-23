@@ -48,6 +48,6 @@ texture = ExtResource("1_2mmp5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_j6jql")
+&"": SubResource("AnimationLibrary_j6jql")
 }
 autoplay = "sway"

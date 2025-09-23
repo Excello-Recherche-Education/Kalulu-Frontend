@@ -56,7 +56,7 @@ color_gradient = SubResource("Gradient_n7idr")
 [node name="GuideAnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_ei5ps")
+&"": SubResource("AnimationLibrary_ei5ps")
 }
 autoplay = "animate"
 

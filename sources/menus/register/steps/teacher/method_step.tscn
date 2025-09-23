@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b0dbsne0vdlsi" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_qewnl"]
 [ext_resource type="Script" uid="uid://7uwoocpe7ieu" path="res://sources/utils/binder/control_binder.gd" id="4_1k1yt"]
 [ext_resource type="Script" uid="uid://83q48kwp3p6p" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_rimto"]
-[ext_resource type="Script" uid="uid://bsai1004ag8h6" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="4_wmpac"]
+[ext_resource type="Script" uid="uid://dg17cfvs2w257" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="4_wmpac"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="6_sf33v"]
 
 [sub_resource type="Resource" id="Resource_kw8sn"]
@@ -15,9 +15,7 @@ fail_message = "A value is required."
 
 [sub_resource type="Resource" id="Resource_ar6ux"]
 script = ExtResource("4_rimto")
-validation_order = 1
 validation_method = 1
-skip_validation = false
 rules = Array[ExtResource("4_wmpac")]([SubResource("Resource_kw8sn")])
 
 [node name="MethodStep" instance=ExtResource("1_ksrhk")]
@@ -53,7 +51,6 @@ script = ExtResource("2_03dua")
 validator = SubResource("Resource_ar6ux")
 
 [node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="3"]
-layout_mode = 2
 anchors_preset = 0
 offset_top = 236.0
 offset_right = 411.0
