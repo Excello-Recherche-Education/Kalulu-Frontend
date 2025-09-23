@@ -77,3 +77,11 @@ func _on_level_changed(_index: int) -> void:
 	var selected_level: int = level_dropdown.get_selected_id()
 	Log.current_level = selected_level as Log.LogLevel
 	Log.info("Log level changed to %s" % Log.LogLevel.keys()[selected_level])
+
+
+func _on_confirmed() -> void:
+	queue_free()
+
+
+func _on_canceled() -> void:
+	queue_free()

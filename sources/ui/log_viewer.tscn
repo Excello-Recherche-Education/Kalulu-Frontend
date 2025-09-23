@@ -45,3 +45,6 @@ size_flags_vertical = 3
 placeholder_text = "Placeholder Text"
 editable = false
 context_menu_enabled = false
+
+[connection signal="canceled" from="." to="." method="_on_canceled"]
+[connection signal="confirmed" from="." to="." method="_on_confirmed"]
