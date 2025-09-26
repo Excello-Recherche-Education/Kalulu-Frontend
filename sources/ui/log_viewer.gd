@@ -1,8 +1,6 @@
 class_name LogViewer
 extends AcceptDialog
 
-var file_path: String
-var all_lines: PackedStringArray = []
 var line_steps: PackedInt32Array = [10, 50, 100, 200, 500, 1000, -1] # -1 = all
 
 @onready var log_text: TextEdit = $VBox/LogText
@@ -21,22 +19,7 @@ func _ready() -> void:
 		level_dropdown.item_selected.connect(_on_level_changed)
 
 
-func show_log_file(path: String) -> void:
-	file_path = path
-	if not FileAccess.file_exists(file_path):
-		log_text.text = "File not found: %s" % file_path
-		popup_centered()
-		return
-	
-	var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
-	if file == null:
-		log_text.text = "Cannot load file: %s" % file_path
-		return
-	
-	all_lines.clear()
-	while not file.eof_reached():
-		all_lines.append(file.get_line())
-	
+func show_logs() -> void:
 	slider.min_value = 0
 	slider.max_value = line_steps.size() - 1
 	slider.step = 1
@@ -58,16 +41,16 @@ func _on_slider_changed(_value: float) -> void:
 func _update_log_text() -> void:
 	var idx: int = int(slider.value)
 	var lines_to_show: int = line_steps[idx]
-	var total: int = all_lines.size()
+	var total: int = Log.all_logs.size()
 	
 	var subset: PackedStringArray
 	if lines_to_show == -1:
 		slider_label.text = "Show: all (%d lines)" % total
-		subset = all_lines
+		subset = Log.all_logs
 	else:
 		slider_label.text = "Show: %d last lines" % lines_to_show
 		var start: int = maxi(total - lines_to_show, 0)
-		subset = all_lines.slice(start, total)
+		subset = Log.all_logs.slice(start, total)
 	
 	log_text.text = "\n".join(subset)
 	log_text.scroll_vertical = log_text.get_line_count() # Scroll down

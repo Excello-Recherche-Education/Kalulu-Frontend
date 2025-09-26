@@ -94,6 +94,7 @@ var gardens_data: Dictionary = {}
 
 #region Initialisation
 
+
 func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
