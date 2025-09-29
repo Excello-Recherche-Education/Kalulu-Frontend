@@ -21,6 +21,9 @@ var sounds: Array[AudioStreamMP3] = [
 ]
 var stimulus: Dictionary:
 	set = _set_stimulus
+var blink_counter: int = 0
+var blink_delay: int = 3
+var blink_random: int = 3
 
 @onready var body: Control = $Body
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
@@ -34,7 +37,7 @@ var stimulus: Dictionary:
 
 func _ready() -> void:
 	set_button_active(false)
-	animated_sprite.play("idle1")
+	animated_sprite.play("idle")
 	if not Engine.is_editor_hint():
 		_on_audio_stream_player_finished()
 
@@ -89,13 +92,15 @@ func _on_button_pressed() -> void:
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	match animated_sprite.animation:
-		"idle1", "idle2":
-			if randf() < 0.5:
-				animated_sprite.play("idle1") 
+		"idle":
+			blink_counter -= 1
+			if blink_counter <= 0:
+				blink_counter = blink_delay + randi_range(0, blink_random)
+				animated_sprite.play("idle_blink") 
 			else: 
-				animated_sprite.play("idle2")
-		"hit":
-			animated_sprite.play("hurt")
+				animated_sprite.play("idle")
+		"idle_blink":
+			animated_sprite.play("idle")
 
 
 func _on_audio_stream_player_finished() -> void:
