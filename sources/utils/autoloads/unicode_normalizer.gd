@@ -8,84 +8,83 @@ extends Node
 ## List of OK-covered languages: Turkish => ı (dotless i) has no decomposition
 ## List of partially covered : Vietnamese => not all tone/diacritic combinations are listed
 
-const _grave_accent: String			= "\u0300" #  ̀
-const _acute_accent: String			= "\u0301" #  ́
-const _circumflex: String			= "\u0302" #  ̂
-const _tilde: String					= "\u0303" #  ̃
-const _diaresis: String				= "\u0308" #  ̈
-const cedilla: String				= "\u0327" # ¸
-const caron: String					= "\u030C" # ˇ
-const breve: String					= "\u0306" # ˘
-const ring_above: String				= "\u030A" # ˚
-const dot_above: String				= "\u0307" # ˙
-const macron: String					= "\u0304" # ˉ
-const comma_below: String			= "\u0326" #  ̦
-const ogonek: String					= "\u0328" #  ̨
-const double_acute: String			= "\u030B" # ˝
-const dot_below: String				= "\u0323" # ̣
-const hook_above: String				= "\u0309" # ̉
-const horn: String					= "\u031B" # ̛
-const short_stroke_overlay: String	= "\u0335" # ̵ (ø/ł/đ en NFKD)
-const long_solidus_overlay: String	= "\u0338" # ̸ (Ø en NFKD)
-
+const _GRAVE_ACCENT: String			= "\u0300" #  ̀
+const _ACUTE_ACCENT: String			= "\u0301" #  ́
+const _CIRCUMFLEX: String			= "\u0302" #  ̂
+const _TILDE: String					= "\u0303" #  ̃
+const _DIARESIS: String				= "\u0308" #  ̈
+const _CEDILLA: String				= "\u0327" # ¸
+const _CARON: String					= "\u030C" # ˇ
+const _BREVE: String					= "\u0306" # ˘
+const _RING_ABOVE: String			= "\u030A" # ˚
+const _DOT_ABOVE: String				= "\u0307" # ˙
+const _MACRON: String				= "\u0304" # ˉ
+const _COMMA_BELOW: String			= "\u0326" #  ̦
+const _OGONEK: String				= "\u0328" #  ̨
+const _DOUBLE_ACUTE: String			= "\u030B" # ˝
+const _DOT_BELOW: String				= "\u0323" # ̣
+const _HOOK_ABOVE: String			= "\u0309" # ̉
+const _HORN: String					= "\u031B" # ̛
+const _SHORT_STROKE_OVERLAY: String	= "\u0335" # ̵ (ø/ł/đ en NFKD)
+const _LONG_SOLIDUS_OVERLAY: String	= "\u0338" # ̸ (Ø en NFKD)
 # List is incomplete and should be updated as needed
 const _MAP: Dictionary = {
-	"à": "a" + _grave_accent, "á": "a" + _acute_accent, "â": "a" + _circumflex, "ã": "a" + _tilde, "ä": "a" + _diaresis, "å": "a" + ring_above, "ą": "a" + ogonek, "ā": "a" + macron, "ă": "a" + breve, "ạ": "a" + dot_below, "ả": "a" + hook_above,
-	"À": "A" + _grave_accent, "Á": "A" + _acute_accent, "Â": "A" + _circumflex, "Ã": "A" + _tilde, "Ä": "A" + _diaresis, "Å": "A" + ring_above, "Ą": "A" + ogonek, "Ā": "A" + macron, "Ă": "A" + breve, "Ạ": "A" + dot_below, "Ả": "A" + hook_above,
+	"à": "a" + _GRAVE_ACCENT, "á": "a" + _ACUTE_ACCENT, "â": "a" + _CIRCUMFLEX, "ã": "a" + _TILDE, "ä": "a" + _DIARESIS, "å": "a" + _RING_ABOVE, "ą": "a" + _OGONEK, "ā": "a" + _MACRON, "ă": "a" + _BREVE, "ạ": "a" + _DOT_BELOW, "ả": "a" + _HOOK_ABOVE,
+	"À": "A" + _GRAVE_ACCENT, "Á": "A" + _ACUTE_ACCENT, "Â": "A" + _CIRCUMFLEX, "Ã": "A" + _TILDE, "Ä": "A" + _DIARESIS, "Å": "A" + _RING_ABOVE, "Ą": "A" + _OGONEK, "Ā": "A" + _MACRON, "Ă": "A" + _BREVE, "Ạ": "A" + _DOT_BELOW, "Ả": "A" + _HOOK_ABOVE,
 	
-	"ç": "c" + cedilla, "č": "c" + caron, "ć": "c" + _acute_accent, "ĉ": "c" + _circumflex, "ċ": "c" + dot_above, 
-	"Ç": "C" + cedilla, "Č": "C" + caron, "Ć": "C" + _acute_accent, "Ĉ": "C" + _circumflex, "Ċ": "C" + dot_above,
+	"ç": "c" + _CEDILLA, "č": "c" + _CARON, "ć": "c" + _ACUTE_ACCENT, "ĉ": "c" + _CIRCUMFLEX, "ċ": "c" + _DOT_ABOVE, 
+	"Ç": "C" + _CEDILLA, "Č": "C" + _CARON, "Ć": "C" + _ACUTE_ACCENT, "Ĉ": "C" + _CIRCUMFLEX, "Ċ": "C" + _DOT_ABOVE,
 	
-	"ď": "d" + caron,
-	"Ď": "D" + caron,
+	"ď": "d" + _CARON,
+	"Ď": "D" + _CARON,
 	
-	"è": "e" + _grave_accent, "é": "e" + _acute_accent, "ê": "e" + _circumflex, "ẽ": "e" + _tilde, "ë": "e" + _diaresis, "ě": "e" + caron, "ę": "e" + ogonek, "ē": "e" + macron, "ẹ": "e" + dot_below, "ẻ": "e" + hook_above, "ė": "e" + dot_above,
-	"È": "E" + _grave_accent, "É": "E" + _acute_accent, "Ê": "E" + _circumflex, "Ẽ": "E" + _tilde, "Ë": "E" + _diaresis, "Ě": "E" + caron, "Ę": "E" + ogonek, "Ē": "E" + macron, "Ẹ": "E" + dot_below, "Ẻ": "E" + hook_above, "Ė": "E" + dot_above,
+	"è": "e" + _GRAVE_ACCENT, "é": "e" + _ACUTE_ACCENT, "ê": "e" + _CIRCUMFLEX, "ẽ": "e" + _TILDE, "ë": "e" + _DIARESIS, "ě": "e" + _CARON, "ę": "e" + _OGONEK, "ē": "e" + _MACRON, "ẹ": "e" + _DOT_BELOW, "ẻ": "e" + _HOOK_ABOVE, "ė": "e" + _DOT_ABOVE,
+	"È": "E" + _GRAVE_ACCENT, "É": "E" + _ACUTE_ACCENT, "Ê": "E" + _CIRCUMFLEX, "Ẽ": "E" + _TILDE, "Ë": "E" + _DIARESIS, "Ě": "E" + _CARON, "Ę": "E" + _OGONEK, "Ē": "E" + _MACRON, "Ẹ": "E" + _DOT_BELOW, "Ẻ": "E" + _HOOK_ABOVE, "Ė": "E" + _DOT_ABOVE,
 	
-	"ğ": "g" + breve, "ģ": "g" + cedilla, "ĝ": "g" + _circumflex, "ġ": "g" + dot_above,
-	"Ğ": "G" + breve, "Ģ": "G" + cedilla, "Ĝ": "G" + _circumflex, "Ġ": "G" + dot_above,
+	"ğ": "g" + _BREVE, "ģ": "g" + _CEDILLA, "ĝ": "g" + _CIRCUMFLEX, "ġ": "g" + _DOT_ABOVE,
+	"Ğ": "G" + _BREVE, "Ģ": "G" + _CEDILLA, "Ĝ": "G" + _CIRCUMFLEX, "Ġ": "G" + _DOT_ABOVE,
 	
-	"ĥ": "h" + _circumflex,
-	"Ĥ": "H" + _circumflex,
+	"ĥ": "h" + _CIRCUMFLEX,
+	"Ĥ": "H" + _CIRCUMFLEX,
 	
-	"ì": "i" + _grave_accent, "í": "i" + _acute_accent, "î": "i" + _circumflex, "ĩ": "i" + _tilde, "ï": "i" + _diaresis, "ī": "i" + macron, "ị": "i" + dot_below, "ỉ": "i" + hook_above, "į": "i" + ogonek,
-	"Ì": "I" + _grave_accent, "Í": "I" + _acute_accent, "Î": "I" + _circumflex, "Ĩ": "I" + _tilde, "Ï": "I" + _diaresis, "Ī": "I" + macron, "Ị": "I" + dot_below, "Ỉ": "I" + hook_above, "Į": "I" + ogonek, "İ": "I" + dot_above,
+	"ì": "i" + _GRAVE_ACCENT, "í": "i" + _ACUTE_ACCENT, "î": "i" + _CIRCUMFLEX, "ĩ": "i" + _TILDE, "ï": "i" + _DIARESIS, "ī": "i" + _MACRON, "ị": "i" + _DOT_BELOW, "ỉ": "i" + _HOOK_ABOVE, "į": "i" + _OGONEK,
+	"Ì": "I" + _GRAVE_ACCENT, "Í": "I" + _ACUTE_ACCENT, "Î": "I" + _CIRCUMFLEX, "Ĩ": "I" + _TILDE, "Ï": "I" + _DIARESIS, "Ī": "I" + _MACRON, "Ị": "I" + _DOT_BELOW, "Ỉ": "I" + _HOOK_ABOVE, "Į": "I" + _OGONEK, "İ": "I" + _DOT_ABOVE,
 	
-	"ĵ": "j" + _circumflex,
-	"Ĵ": "J" + _circumflex,
+	"ĵ": "j" + _CIRCUMFLEX,
+	"Ĵ": "J" + _CIRCUMFLEX,
 	
-	"ķ": "k" + cedilla,
-	"Ķ": "K" + cedilla,
+	"ķ": "k" + _CEDILLA,
+	"Ķ": "K" + _CEDILLA,
 	
-	"ļ": "l" + cedilla, "ĺ": "l" + _acute_accent, "ľ": "l" + caron,
-	"Ļ": "L" + cedilla, "Ĺ": "L" + _acute_accent, "Ľ": "L" + caron,
+	"ļ": "l" + _CEDILLA, "ĺ": "l" + _ACUTE_ACCENT, "ľ": "l" + _CARON,
+	"Ļ": "L" + _CEDILLA, "Ĺ": "L" + _ACUTE_ACCENT, "Ľ": "L" + _CARON,
 	
-	"ñ": "n" + _tilde, "ň": "n" + caron, "ń": "n" + _acute_accent, "ņ": "n" + cedilla,
-	"Ñ": "N" + _tilde, "Ň": "N" + caron, "Ń": "N" + _acute_accent, "Ņ": "N" + cedilla,
+	"ñ": "n" + _TILDE, "ň": "n" + _CARON, "ń": "n" + _ACUTE_ACCENT, "ņ": "n" + _CEDILLA,
+	"Ñ": "N" + _TILDE, "Ň": "N" + _CARON, "Ń": "N" + _ACUTE_ACCENT, "Ņ": "N" + _CEDILLA,
 	
-	"ò": "o" + _grave_accent, "ó": "o" + _acute_accent, "ô": "o" + _circumflex, "õ": "o" + _tilde, "ö": "o" + _diaresis, "ō": "o" + macron, "ő": "o" + double_acute, "ọ": "o" + dot_below, "ỏ": "o" + hook_above, "ơ": "o" + horn, "ộ": "o" + dot_below + _circumflex, "ớ": "o" + horn + _acute_accent, "ở": "o" + horn + hook_above, "ỡ": "o" + horn + _tilde, "ợ": "o" + horn + dot_below,
-	"Ò": "O" + _grave_accent, "Ó": "O" + _acute_accent, "Ô": "O" + _circumflex, "Õ": "O" + _tilde, "Ö": "O" + _diaresis, "Ō": "O" + macron, "Ő": "O" + double_acute, "Ọ": "O" + dot_below, "Ỏ": "O" + hook_above, "Ơ": "O" + horn, "Ộ": "O" + dot_below + _circumflex, "Ờ": "O" + horn + _grave_accent, "Ở": "O" + horn + hook_above, "Ỡ": "O" + horn + _tilde, "Ợ": "O" + horn + dot_below,
+	"ò": "o" + _GRAVE_ACCENT, "ó": "o" + _ACUTE_ACCENT, "ô": "o" + _CIRCUMFLEX, "õ": "o" + _TILDE, "ö": "o" + _DIARESIS, "ō": "o" + _MACRON, "ő": "o" + _DOUBLE_ACUTE, "ọ": "o" + _DOT_BELOW, "ỏ": "o" + _HOOK_ABOVE, "ơ": "o" + _HORN, "ộ": "o" + _DOT_BELOW + _CIRCUMFLEX, "ớ": "o" + _HORN + _ACUTE_ACCENT, "ở": "o" + _HORN + _HOOK_ABOVE, "ỡ": "o" + _HORN + _TILDE, "ợ": "o" + _HORN + _DOT_BELOW,
+	"Ò": "O" + _GRAVE_ACCENT, "Ó": "O" + _ACUTE_ACCENT, "Ô": "O" + _CIRCUMFLEX, "Õ": "O" + _TILDE, "Ö": "O" + _DIARESIS, "Ō": "O" + _MACRON, "Ő": "O" + _DOUBLE_ACUTE, "Ọ": "O" + _DOT_BELOW, "Ỏ": "O" + _HOOK_ABOVE, "Ơ": "O" + _HORN, "Ộ": "O" + _DOT_BELOW + _CIRCUMFLEX, "Ờ": "O" + _HORN + _GRAVE_ACCENT, "Ở": "O" + _HORN + _HOOK_ABOVE, "Ỡ": "O" + _HORN + _TILDE, "Ợ": "O" + _HORN + _DOT_BELOW,
 	
-	"ř": "r" + caron, "ŗ": "r" + cedilla, "ŕ": "r" + _acute_accent,
-	"Ř": "R" + caron, "Ŗ": "R" + cedilla, "Ŕ": "R" + _acute_accent,
+	"ř": "r" + _CARON, "ŗ": "r" + _CEDILLA, "ŕ": "r" + _ACUTE_ACCENT,
+	"Ř": "R" + _CARON, "Ŗ": "R" + _CEDILLA, "Ŕ": "R" + _ACUTE_ACCENT,
 	
-	"š": "s" + caron, "ş": "s" + cedilla, "ș": "s" + comma_below, "ś": "s" + _acute_accent, "ŝ": "s" + _circumflex,
-	"Š": "S" + caron, "Ş": "S" + cedilla, "Ș": "S" + comma_below, "Ś": "S" + _acute_accent, "Ŝ": "S" + _circumflex,
+	"š": "s" + _CARON, "ş": "s" + _CEDILLA, "ș": "s" + _COMMA_BELOW, "ś": "s" + _ACUTE_ACCENT, "ŝ": "s" + _CIRCUMFLEX,
+	"Š": "S" + _CARON, "Ş": "S" + _CEDILLA, "Ș": "S" + _COMMA_BELOW, "Ś": "S" + _ACUTE_ACCENT, "Ŝ": "S" + _CIRCUMFLEX,
 	
-	"ť": "t" + caron, "ț": "t" + comma_below,
-	"Ť": "T" + caron, "Ț": "T" + comma_below,
+	"ť": "t" + _CARON, "ț": "t" + _COMMA_BELOW,
+	"Ť": "T" + _CARON, "Ț": "T" + _COMMA_BELOW,
 	
-	"ù": "u" + _grave_accent, "ú": "u" + _acute_accent, "û": "u" + _circumflex, "ũ": "u" + _tilde, "ü": "u" + _diaresis, "ů": "u" + ring_above, "ū": "u" + macron, "ű": "u" + double_acute, "ŭ": "u" + breve, "ụ": "u" + dot_below, "ủ": "u" + hook_above, "ư": "u" + horn, "ứ": "u" + horn + _acute_accent, "ừ": "u" + horn + _grave_accent, "ử": "u" + horn + hook_above, "ữ": "u" + horn + _tilde, "ự": "u" + horn + dot_below, "ų": "u" + ogonek,
-	"Ù": "U" + _grave_accent, "Ú": "U" + _acute_accent, "Û": "U" + _circumflex, "Ũ": "U" + _tilde, "Ü": "U" + _diaresis, "Ů": "U" + ring_above, "Ū": "U" + macron, "Ű": "U" + double_acute, "Ŭ": "U" + breve, "Ụ": "U" + dot_below, "Ủ": "U" + hook_above, "Ư": "U" + horn, "Ứ": "U" + horn + _acute_accent, "Ừ": "U" + horn + _grave_accent, "Ử": "U" + horn + hook_above, "Ữ": "U" + horn + _tilde, "Ự": "U" + horn + dot_below, "Ų": "U" + ogonek,
+	"ù": "u" + _GRAVE_ACCENT, "ú": "u" + _ACUTE_ACCENT, "û": "u" + _CIRCUMFLEX, "ũ": "u" + _TILDE, "ü": "u" + _DIARESIS, "ů": "u" + _RING_ABOVE, "ū": "u" + _MACRON, "ű": "u" + _DOUBLE_ACUTE, "ŭ": "u" + _BREVE, "ụ": "u" + _DOT_BELOW, "ủ": "u" + _HOOK_ABOVE, "ư": "u" + _HORN, "ứ": "u" + _HORN + _ACUTE_ACCENT, "ừ": "u" + _HORN + _GRAVE_ACCENT, "ử": "u" + _HORN + _HOOK_ABOVE, "ữ": "u" + _HORN + _TILDE, "ự": "u" + _HORN + _DOT_BELOW, "ų": "u" + _OGONEK,
+	"Ù": "U" + _GRAVE_ACCENT, "Ú": "U" + _ACUTE_ACCENT, "Û": "U" + _CIRCUMFLEX, "Ũ": "U" + _TILDE, "Ü": "U" + _DIARESIS, "Ů": "U" + _RING_ABOVE, "Ū": "U" + _MACRON, "Ű": "U" + _DOUBLE_ACUTE, "Ŭ": "U" + _BREVE, "Ụ": "U" + _DOT_BELOW, "Ủ": "U" + _HOOK_ABOVE, "Ư": "U" + _HORN, "Ứ": "U" + _HORN + _ACUTE_ACCENT, "Ừ": "U" + _HORN + _GRAVE_ACCENT, "Ử": "U" + _HORN + _HOOK_ABOVE, "Ữ": "U" + _HORN + _TILDE, "Ự": "U" + _HORN + _DOT_BELOW, "Ų": "U" + _OGONEK,
 	
-	"ŵ": "w" + _circumflex,
-	"Ŵ": "W" + _circumflex,
+	"ŵ": "w" + _CIRCUMFLEX,
+	"Ŵ": "W" + _CIRCUMFLEX,
 	
-	"ỳ": "y" + _grave_accent, "ý": "y" + _acute_accent, "ŷ": "y" + _circumflex, "ỹ": "y" + _tilde, "ÿ": "y" + _diaresis, "ỵ": "y" + dot_below, "ỷ": "y" + hook_above,
-	"Ỳ": "Y" + _grave_accent, "Ý": "Y" + _acute_accent, "Ŷ": "Y" + _circumflex, "Ỹ": "Y" + _tilde, "Ÿ": "Y" + _diaresis, "Ỵ": "Y" + dot_below, "Ỷ": "Y" + hook_above,
+	"ỳ": "y" + _GRAVE_ACCENT, "ý": "y" + _ACUTE_ACCENT, "ŷ": "y" + _CIRCUMFLEX, "ỹ": "y" + _TILDE, "ÿ": "y" + _DIARESIS, "ỵ": "y" + _DOT_BELOW, "ỷ": "y" + _HOOK_ABOVE,
+	"Ỳ": "Y" + _GRAVE_ACCENT, "Ý": "Y" + _ACUTE_ACCENT, "Ŷ": "Y" + _CIRCUMFLEX, "Ỹ": "Y" + _TILDE, "Ÿ": "Y" + _DIARESIS, "Ỵ": "Y" + _DOT_BELOW, "Ỷ": "Y" + _HOOK_ABOVE,
 	
-	"ž": "z" + caron, "ź": "z" + _acute_accent, "ż": "z" + dot_above,
-	"Ž": "Z" + caron, "Ź": "Z" + _acute_accent, "Ż": "Z" + dot_above,
+	"ž": "z" + _CARON, "ź": "z" + _ACUTE_ACCENT, "ż": "z" + _DOT_ABOVE,
+	"Ž": "Z" + _CARON, "Ź": "Z" + _ACUTE_ACCENT, "Ż": "Z" + _DOT_ABOVE,
 }
 # Not canonical, cannot be decomposed in NFD strict, but can be useful to check anyway
 const _MAP_NOT_CANONICAL: Dictionary = {
@@ -94,14 +93,15 @@ const _MAP_NOT_CANONICAL: Dictionary = {
 	"œ": "o" + "e",
 	"Œ": "O" + "E",
 	"ß": "s" + "s", "ẞ": "S" + "S",
-	"ø": "o" + long_solidus_overlay, "Ø": "O" + long_solidus_overlay,
-	"ł": "l" + short_stroke_overlay, "Ł": "L" + short_stroke_overlay,
-	"đ": "d" + short_stroke_overlay, "Đ": "D" + short_stroke_overlay,
+	"ø": "o" + _LONG_SOLIDUS_OVERLAY, "Ø": "O" + _LONG_SOLIDUS_OVERLAY,
+	"ł": "l" + _SHORT_STROKE_OVERLAY, "Ł": "L" + _SHORT_STROKE_OVERLAY,
+	"đ": "d" + _SHORT_STROKE_OVERLAY, "Đ": "D" + _SHORT_STROKE_OVERLAY,
 	"ð": "d", "Ð": "D",
 	"þ": "th", "Þ": "Th",
 	"ĳ": "i" + "j", "Ĳ": "I" + "J",
-	"ħ": "h" + short_stroke_overlay, "Ħ": "H" + short_stroke_overlay,
+	"ħ": "h" + _SHORT_STROKE_OVERLAY, "Ħ": "H" + _SHORT_STROKE_OVERLAY,
 }
+
 
 # Replace NFC -> NFD
 func to_nfd_basic(input: String) -> String:
@@ -109,6 +109,7 @@ func to_nfd_basic(input: String) -> String:
 	for ch: String in input:
 		output += _MAP.get(ch, ch)
 	return output
+
 
 func to_nfd_extended(input: String) -> String:
 	var output_temp: String = to_nfd_basic(input)
