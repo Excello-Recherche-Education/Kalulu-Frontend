@@ -60,11 +60,6 @@ func login(mail: String, password: String) -> Dictionary:
 	return _response()
 
 
-func get_configuration() -> Dictionary:
-	await _get_request("configuration", {})
-	return _response()
-
-
 func delete_account() -> Dictionary:
 	loading_rect.show()
 	await _delete_request("delete_account")
