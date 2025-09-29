@@ -2,6 +2,7 @@
 extends SyllablesMinigame
 
 const HOLE_SCENE: PackedScene = preload("res://sources/minigames/crabs/hole/hole.tscn")
+const BACKGROUND_2: CompressedTexture2D = preload("res://assets/minigames/crabs/graphic/background_2.png")
 
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.75, [2, 1]),
@@ -14,12 +15,15 @@ var holes: Array[Hole] = []
 var stimulus_spawned: bool = false
 
 @onready var crab_zone: Control = $GameRoot/CrabZone
+@onready var background: TextureRect = %Background
 
-# ------------ Initialisation ------------
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
 	super._setup_minigame()
+	
+	if randf() < 0.5:
+		background.texture = BACKGROUND_2
 
 	var current_difficulty_settings: DifficultySettings = _get_difficulty_settings()
 
