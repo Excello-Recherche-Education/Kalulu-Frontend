@@ -43,6 +43,7 @@ func _on_validate_button_pressed() -> void:
 		# Login
 		if UserDataManager.login(res.body as Dictionary):
 			logged_in.emit()
+			UserDataManager.user_database_synchronizer.synchronize()
 		else:
 			login_message.visible = true
 	else:
