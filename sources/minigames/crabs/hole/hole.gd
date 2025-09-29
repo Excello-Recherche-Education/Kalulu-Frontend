@@ -166,7 +166,7 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	# Move the crab up and rotate
 	var tween: Tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y * 1.5), 1)
-	tween.parallel().tween_property(crab.body, "rotation_degrees", 900.0, 1)
+	#tween.parallel().tween_property(crab.body, "rotation_degrees", 900.0, 1)
 	await tween.finished
 
 	crab.reparent(mask)

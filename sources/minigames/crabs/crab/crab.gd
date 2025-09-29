@@ -27,7 +27,7 @@ var blink_random: int = 3
 
 @onready var body: Control = $Body
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
-@onready var label: Label = $Body/Label
+@onready var label: Label = %AutoSizeLabel.get_node("Label")
 @onready var button: Button = $Button
 @onready var highlight_fx: HighlightFX = %HighlightFX
 @onready var right_fx: RightFX = %RightFX
@@ -70,11 +70,13 @@ func is_highlighted() -> bool:
 
 
 func right() -> void:
+	animated_sprite.play("right")
 	right_fx.play()
 	await right_fx.finished
 
 
 func wrong() -> void:
+	animated_sprite.play("wrong")
 	wrong_fx.play()
 	await wrong_fx.finished
 
@@ -87,7 +89,6 @@ func _set_stimulus(value: Dictionary) -> void:
 
 func _on_button_pressed() -> void:
 	crab_hit.emit(stimulus)
-	animated_sprite.play("hit")
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
