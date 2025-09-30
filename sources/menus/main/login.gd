@@ -42,6 +42,7 @@ func _on_validate_button_pressed() -> void:
 	if res.code == 200:
 		# Login
 		if UserDataManager.login(res.body as Dictionary):
+			await UserDataManager.user_database_synchronizer.synchronize()
 			logged_in.emit()
 		else:
 			login_message.visible = true
