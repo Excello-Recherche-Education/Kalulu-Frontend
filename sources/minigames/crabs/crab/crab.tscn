@@ -422,6 +422,5 @@ disabled = true
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="animation_finished" from="Body/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 
 [editable path="Body/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel"]
