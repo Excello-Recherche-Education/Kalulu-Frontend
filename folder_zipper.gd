@@ -45,7 +45,6 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 		
 		file_name = dir.get_next()
 	dir.list_dir_end()
-	close()
 	return OK
 
 
