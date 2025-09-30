@@ -33,6 +33,8 @@ var blink_random: int = 3
 @onready var right_fx: RightFX = %RightFX
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var text_outline: Sprite2D = %TextBox_Outline_Sprite2D
+@onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
 
 
 func _ready() -> void:
@@ -52,13 +54,11 @@ func is_button_pressed() -> bool:
 
 
 func show_label() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(label, "modulate:a", 1, .5)
+	label.visible = true
 
 
 func hide_label() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(label, "modulate:a", 0, .5)
+	label.visible = false
 
 
 func highlight() -> void:
@@ -70,12 +70,20 @@ func is_highlighted() -> bool:
 
 
 func right() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	text_outline.self_modulate = Color("#009344")
+	text_box_sprite_2d.self_modulate = Color("#e6f3e0")
+	label.label_settings.font_color = Color("#009444")
 	animated_sprite.play("right")
 	right_fx.play()
 	await right_fx.finished
 
 
 func wrong() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	text_outline.self_modulate = Color("#be1e2d")
+	text_box_sprite_2d.self_modulate = Color("#fce6e6")
+	label.label_settings.font_color = Color("#be1e2d")
 	animated_sprite.play("wrong")
 	wrong_fx.play()
 	await wrong_fx.finished
