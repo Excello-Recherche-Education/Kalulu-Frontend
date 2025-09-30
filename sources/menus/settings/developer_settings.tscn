@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8hlfrsgrkmy"]
+
+[ext_resource type="Script" uid="uid://dutga8wms2uy4" path="res://sources/menus/settings/developer_settings.gd" id="1_qqqt3"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_h4f88"]
+[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="3_vjlw0"]
+[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_s0ywi"]
+[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_4q33k"]
+
+[node name="DeveloperSettings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qqqt3")
+
+[node name="Background" parent="." instance=ExtResource("2_h4f88")]
+layout_mode = 1
+
+[node name="InterfaceLeft" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 450.0
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Container" type="VBoxContainer" parent="InterfaceLeft"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("3_vjlw0")
+texture_pressed = ExtResource("4_s0ywi")
+texture_disabled = ExtResource("5_4q33k")
+stretch_mode = 4
+
+[node name="Logs" type="Button" parent="InterfaceLeft/Container"]
+layout_mode = 2
+theme_type_variation = &"FlatButton"
+theme_override_font_sizes/font_size = 40
+text = "Logs"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(1970, 1800)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -632.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="DevicesTabContainer" type="TabContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="InterfaceLeft/Container/Logs" to="." method="_on_logs_viewer_button_pressed"]
+[connection signal="tab_changed" from="VBoxContainer/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
