@@ -231,7 +231,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_10bej")
 }],
-"loop": false,
+"loop": true,
 "name": &"right",
 "speed": 10.0
 }, {
@@ -260,7 +260,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kww4x")
 }],
-"loop": false,
+"loop": true,
 "name": &"wrong",
 "speed": 10.0
 }]
@@ -378,9 +378,8 @@ texture = ExtResource("11_mgkmu")
 unique_name_in_owner = true
 scale = Vector2(1.8, 1.8)
 sprite_frames = SubResource("SpriteFrames_g5q5i")
-animation = &"idle"
+animation = &"wrong"
 autoplay = "idle"
-frame_progress = 0.7344731
 centered = false
 
 [node name="FrontFX" type="Control" parent="."]
