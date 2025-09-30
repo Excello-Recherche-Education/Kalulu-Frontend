@@ -35,6 +35,7 @@ Validation="*res://addons/godot-form-validator/validation.gd"
 OpeningCurtain="*res://sources/utils/autoloads/opening_curtain.tscn"
 Globals="*res://sources/language_tool/globals.gd"
 Utils="*res://sources/utils/autoloads/utils.gd"
+UnicodeNormalizer="*res://sources/utils/autoloads/unicode_normalizer.gd"
 
 [debug]
 

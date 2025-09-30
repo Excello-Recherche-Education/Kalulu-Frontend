@@ -18,6 +18,7 @@ var current_level: LogLevel = LogLevel.NONE
 var log_file_path: String
 var log_file: FileAccess
 var initialized: bool = false
+var all_logs: PackedStringArray = []
 
 
 func _ready() -> void:
@@ -112,6 +113,7 @@ func _log_internal(level: LogLevel, message: String) -> void:
 	
 	var time_str: String = Time.get_time_string_from_system()
 	var log_message: String = "%s %s %s" % [time_str, prefix, message]
+	all_logs.append(log_message)
 	_log_to_file(log_message)
 	match level:
 		LogLevel.DEBUG:
@@ -137,7 +139,7 @@ func _log_to_file(message: String) -> void:
 func open_log_popup() -> void:
 	var viewer: LogViewer = VIEWER_SCENE.instantiate()
 	get_tree().root.add_child(viewer)
-	viewer.show_log_file(log_file_path)
+	viewer.show_logs()
 
 
 # trace can be used everywhere, in order to have a full log of all that is hapenning

@@ -24,16 +24,16 @@ const SOUND_EXTENSION: String = ".mp3"
 var language: String:
 	set(value):
 		language = value
-		db_path = BASE_PATH + language + "/language.db"
-		words_path = BASE_PATH + language + "/words/"
-var db_path: String = BASE_PATH + language + "/language.db":
+		db_path = get_language_folder() + "/language.db"
+		words_path = get_language_folder() + "/words/"
+var db_path: String = get_language_folder() + "/language.db":
 	set(value):
 		db_path = value
 		if db:
 			db.path = db_path
 			db.foreign_keys = true
 			connect_to_db()
-var words_path: String = BASE_PATH + language + "/words/"
+var words_path: String = get_language_folder() + "/words/"
 var additional_word_list: Dictionary = {}
 var is_open: bool = false
 
@@ -558,51 +558,73 @@ func get_gp_name(gp: Dictionary) -> String:
 	return result
 
 
+func get_language_folder() -> String:
+	return BASE_PATH + language
+
+
+func get_language_sound_folder() -> String:
+	return get_language_folder() + LANGUAGE_SOUNDS
+
+
 func get_gp_look_and_learn_image_path(gp: Dictionary) -> String:
-	return BASE_PATH + language + LOOK_AND_LEARN_IMAGES + get_gp_name(gp) + IMAGE_EXTENSION
+	return get_language_folder() + LOOK_AND_LEARN_IMAGES + get_gp_name(gp) + IMAGE_EXTENSION
 
 
 func get_gp_look_and_learn_sound_path(gp: Dictionary) -> String:
-	return BASE_PATH + language + LOOK_AND_LEARN_SOUNDS + get_gp_name(gp) + SOUND_EXTENSION
+	return get_language_folder() + LOOK_AND_LEARN_SOUNDS + get_gp_name(gp) + SOUND_EXTENSION
 
 
 func get_gp_look_and_learn_video_path(gp: Dictionary) -> String:
-	return BASE_PATH + language + LOOK_AND_LEARN_VIDEOS + get_gp_name(gp) + VIDEO_EXTENSION
+	return get_language_folder() + LOOK_AND_LEARN_VIDEOS + get_gp_name(gp) + VIDEO_EXTENSION
 
 
 func get_gp_sound_path(gp: Dictionary) -> String:
-	return BASE_PATH + language + LANGUAGE_SOUNDS + Database.get_gp_name(gp) + SOUND_EXTENSION
+	return get_language_sound_folder() + Database.get_gp_name(gp) + SOUND_EXTENSION
 
 
 func get_syllable_sound_path(syllable: Dictionary) -> String:
-	return BASE_PATH + language + LANGUAGE_SOUNDS + syllable.Grapheme + SOUND_EXTENSION
+	return get_language_sound_folder() + syllable.Grapheme + SOUND_EXTENSION
 
 
 func get_word_sound_path(word: Dictionary) -> String:
-	return BASE_PATH + language + LANGUAGE_SOUNDS + word.Word + SOUND_EXTENSION
+	return get_language_sound_folder() + word.Word + SOUND_EXTENSION
 
 
 func get_kalulu_speech_path(speech_category: String, speech_name: String) -> String:
-	return BASE_PATH + language + LANGUAGE_SOUNDS + KALULU_FOLDER + speech_category + "_" + speech_name + SOUND_EXTENSION
+	return get_language_sound_folder() + KALULU_FOLDER + speech_category + "_" + speech_name + SOUND_EXTENSION
 
 
 func load_external_sound(path: String) -> AudioStreamMP3:
+	Log.trace("Database: Load External Sound: %s" % path)
 	if not FileAccess.file_exists(path):
-		Log.trace("Database: External sound file not found: %s" % path)
-		return null
-	
+		path = UnicodeNormalizer.to_nfd_basic(path)
+		Log.trace("Database: Load External Sound: file not found: trying to normalize path to unicode NFD: %s" % path)
+		if not FileAccess.file_exists(path):
+			path = UnicodeNormalizer.to_nfd_extended(path)
+			Log.trace("Database: Load External Sound: file not found: trying to normalize path to unicode NFD extended: %s" % path)
+			if not FileAccess.file_exists(path):
+				Log.error("Database: Load External Sound: file not found even after unicode normalization")
+				return null
+	Log.trace("Database: Load External Sound: file found.")
+	Log.trace("Database: Load External Sound: Opening file.")
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Log.error("Database: Load external sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		Log.error("Database: Load External Sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return null
 	if file == null:
-		Log.error("Database: Load external sound: Cannot open file %s. File is null" % path)
+		Log.error("Database: Load External Sound: Cannot open file %s. File is null")
 		return null
+	var file_length: int = file.get_length()
+	Log.trace("Database: Load External Sound: File length = %d" % file_length)
+	Log.trace("Database: Load External Sound: Creating audio stream")
 	var audio_stream: AudioStreamMP3 = AudioStreamMP3.new()
-	audio_stream.data = file.get_buffer(file.get_length())
+	audio_stream.data = file.get_buffer(file_length)
 	file.close()
-	
+	if not audio_stream:
+		Log.error("Database: Load External Sound: Audio stream is not valid")
+	elif audio_stream == null:
+		Log.error("Database: Load External Sound: Audio stream is null")
 	return audio_stream
 
 
