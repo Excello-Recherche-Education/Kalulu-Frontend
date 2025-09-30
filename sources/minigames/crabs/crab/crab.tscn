@@ -372,6 +372,7 @@ label_settings = SubResource("LabelSettings_c4r2k")
 
 [node name="TextBox_Outline_Sprite2D" type="Sprite2D" parent="Body/TextBox_Sprite2D"]
 unique_name_in_owner = true
+visible = false
 texture = ExtResource("11_mgkmu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
