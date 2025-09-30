@@ -20,8 +20,8 @@ position = Vector2(0, -138)
 texture = ExtResource("3_ietrg")
 
 [node name="SandVFX" parent="." instance=ExtResource("5_vress")]
-offset_top = 57.7778
-offset_bottom = 57.7778
+offset_top = 45.0
+offset_bottom = 45.0
 scale = Vector2(1.8, 1.8)
 
 [node name="HoleFront" type="Sprite2D" parent="."]
