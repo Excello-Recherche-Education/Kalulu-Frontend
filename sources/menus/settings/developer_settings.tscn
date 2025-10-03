@@ -106,7 +106,7 @@ layout_mode = 0
 offset_left = 30.0
 offset_top = 14.0
 offset_right = 1930.0
-offset_bottom = 1614.0
+offset_bottom = 1414.0
 size_flags_vertical = 3
 placeholder_text = "Placeholder Text
 Contains all logs textss"

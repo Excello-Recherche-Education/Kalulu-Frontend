@@ -61,6 +61,8 @@ func _ready() -> void:
 	
 	slider.value_changed.connect(_on_slider_changed)
 	_update_log_text()
+	
+	await OpeningCurtain.open()
 
 
 func _update_log_text() -> void:
