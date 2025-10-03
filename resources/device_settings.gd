@@ -47,7 +47,7 @@ const SUPPORTED_LOCALES: Array[String] = [
 		effects_volume = volume
 		var ind: int = AudioServer.get_bus_index("Effects")
 		AudioServer.set_bus_volume_db(ind, volume)
-@export var log_level: Log.LogLevel = Log.LogLevel.TRACE
+@export var log_level: Log.LogLevel = Log.LogLevel.INFO
 
 
 func init_os_language() -> void:
