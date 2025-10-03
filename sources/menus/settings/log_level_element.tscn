@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://6wsos3jta373"]
+
+[ext_resource type="Script" uid="uid://by4sblxaaubdk" path="res://sources/menus/settings/log_level_element.gd" id="1_opayw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_emsyu"]
+bg_color = Color(0.254902, 0.329412, 0.572549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t1yui"]
+
+[node name="LogLevelElement" type="MarginContainer"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -900.0
+offset_right = -2250.0
+offset_bottom = -811.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_opayw")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_emsyu")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_t1yui")
+current_tab = 0
+tabs_visible = false
+
+[node name="NormalContainer" type="HBoxContainer" parent="TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+metadata/_tab_index = 0
+
+[node name="VSeparator" type="VSeparator" parent="TabContainer/NormalContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="CheckBox" type="CheckBox" parent="TabContainer/NormalContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_stretch_ratio = 0.5
+button_pressed = true
+
+[node name="VSeparator2" type="VSeparator" parent="TabContainer/NormalContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="LogLevel" type="Label" parent="TabContainer/NormalContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+theme_override_font_sizes/font_size = 70
+text = "Trace"
+clip_text = true
