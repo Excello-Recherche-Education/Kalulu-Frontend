@@ -1,26 +1,8 @@
 class_name DeveloperSettings
 extends Control
 
-#const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
 const LOG_LEVEL_ELEMENT: PackedScene = preload("res://sources/menus/settings/log_level_element.tscn")
-#const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
-#const DEVICE_TAB_SCENE: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
-#
-#var last_device_id: int = -1
-#
-#@onready var devices_tab_container: TabContainer = %DevicesTabContainer
-#@onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
-#@onready var delete_popup: ConfirmPopup = %DeletePopup
-#@onready var loading_popup: LoadingPopup = %LoadingPopup
-#@onready var account_type_option_button: OptionButton = %AccountTypeOptionButton
-#@onready var education_method_option_button: OptionButton = %EducationMethodOptionButton
-#@onready var add_device_button: Button = %AddDeviceButton
-#@onready var add_student_button: Button = %AddStudentButton
-#@onready var label_internet_mandatory: Label = %LabelInternetMandatory
-#@onready var add_device_popup: CanvasLayer = %AddDevicePopup
-#@onready var add_student_popup: CanvasLayer = %AddStudentPopup
-#@onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
 
 var filters: Dictionary[int, bool] = {}
 var line_steps: PackedInt32Array = [10, 50, 100, 200, 500, 1000, -1] # -1 = all
