@@ -292,6 +292,7 @@ func get_device_settings() -> DeviceSettings:
 func _load_device_settings() -> void:
 	if FileAccess.file_exists(get_device_settings_path()):
 		_device_settings = load(get_device_settings_path())
+		Log.current_level = _device_settings.log_level
 		if not _device_settings.validate():
 			_save_device_settings()
 	if not _device_settings:

@@ -39,6 +39,7 @@ func _ready() -> void:
 	loglevel_regex = RegEx.new()
 	loglevel_regex.compile(pattern)
 	
+	log_level_dropdown.select(Log.current_level)
 	log_level_dropdown.item_selected.connect(_on_level_changed)
 	
 	slider.value_changed.connect(_on_slider_changed)
@@ -83,8 +84,10 @@ func _extract_log_level(line: String) -> int:
 
 
 func _on_level_changed(_index: int) -> void:
-	var selected_level: int = log_level_dropdown.get_selected_id()
-	Log.current_level = selected_level as Log.LogLevel
+	var selected_level: Log.LogLevel = log_level_dropdown.get_selected_id() as Log.LogLevel
+	Log.current_level = selected_level
+	UserDataManager.get_device_settings().log_level = selected_level
+	UserDataManager._save_device_settings()
 	Log.info("Log level changed to %s" % Log.LogLevel.keys()[selected_level])
 
 
