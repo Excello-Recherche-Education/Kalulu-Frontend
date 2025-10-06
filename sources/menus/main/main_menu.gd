@@ -15,6 +15,7 @@ const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selectio
 
 
 func _ready() -> void:
+	Log.info("MainMenu loaded successfulyy")
 	version_label.text = ProjectSettings.get_setting("application/config/version")
 	teacher_label.text = UserDataManager.get_device_settings().teacher
 	device_id_label.text = str(UserDataManager.get_device_settings().device_id)
