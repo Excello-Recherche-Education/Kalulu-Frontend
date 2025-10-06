@@ -4,12 +4,17 @@ const TEACHER_PASSWORD: String = "42"
 const BACK_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const NEXT_SCENE_PATH: String = "res://sources/menus/brain/brain.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
+const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 const KALULU := preload("res://sources/minigames/base/kalulu.gd")
+const DEV_CLICK_THRESHOLD: int = 10 # Number of clicks needed to open Developer Settings
+const DEV_CLICK_MAX_DELAY: float = 0.6 # Delay between each clicks (in seconds)
 
 var help_speech: AudioStream
 var wrong_password_speech: AudioStream
 var right_password_speech: AudioStream
+var dev_click_count: int = 0
+var dev_last_click_time: float = 0.0
 
 @onready var kalulu: KALULU = $Kalulu
 @onready var music_player: AudioStreamPlayer = $MusicStreamPlayer
@@ -69,8 +74,20 @@ func _on_kalulu_button_pressed() -> void:
 
 
 func _on_teacher_button_button_down() -> void:
-	if keyboard.get_password_as_string() == TEACHER_PASSWORD:
-		teacher_timer.start()
+	if keyboard.get_password_as_string() != TEACHER_PASSWORD:
+		return
+	teacher_timer.start()
+	var now: float = Time.get_ticks_msec() / 1000.0
+	if now - dev_last_click_time <= DEV_CLICK_MAX_DELAY:
+		dev_click_count += 1
+	else:
+		dev_click_count = 1  # Too slow, reset
+	dev_last_click_time = now
+	if dev_click_count >= DEV_CLICK_THRESHOLD:
+		dev_click_count = 0
+		teacher_timer.stop()
+		await OpeningCurtain.close()
+		get_tree().change_scene_to_file(DEVELOPER_SCENE_PATH)
 
 
 func _on_teacher_button_button_up() -> void:
