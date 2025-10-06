@@ -239,7 +239,6 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 func _build_message_to_server(need_update_user: UpdateNeeded, need_update_students: Dictionary[int, Dictionary]) -> Dictionary:
 	var message_to_server: Dictionary = {}
 
-	# Gérer l'utilisateur
 	if need_update_user == UpdateNeeded.FromLocal:
 		message_to_server["user"] = {
 			"account_type": UserDataManager.teacher_settings.account_type,
@@ -255,7 +254,6 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 		var student_entry: Dictionary = need_update_students[student_code]
 		var student_block: Dictionary = {}
 
-		# Traitement de l'étudiant lui-même
 		if student_entry.has("data"):
 			var student_update: UpdateNeeded = student_entry["data"]
 
@@ -285,7 +283,6 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 			elif student_update == UpdateNeeded.FromServer:
 				student_block["need_update"] = true
 		
-		# Traitement des data de progression
 		var student_progression: StudentProgression = UserDataManager.get_student_progression_for_code(0, student_code)
 		if student_progression == null:
 			Log.trace("Cannot find progression data for student %s" % str(student_code))
@@ -301,11 +298,10 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 				progression_block = {"need_update": true}
 			elif student_entry.progression == UpdateNeeded.DeleteServer:
 				progression_block = {"delete": true}
-#
+			
 			if progression_block.size() > 0:
 				student_block["progression"] = progression_block
-
-		# Traitement des remediations scores
+		
 		var student_remediation: UserRemediation = UserDataManager.get_student_remediation_data(student_code)
 		if student_entry.has("remediation_gp"):
 			var gp_remediation_block: Dictionary = {}
@@ -418,7 +414,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 			if validate_student_data(response_student_data):
 				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
 			if response_student_data.has("progression") and (response_student_data.progression as Dictionary).has("version") and (response_student_data.progression as Dictionary).has("unlocked") and (response_student_data.progression as Dictionary).has("updated_at"):
-				#Cleaning data because of JSON parsing changing types int / float / string
+				# Cleaning data because of JSON parsing changing types int / float / string
 				var received_unlock_data: Dictionary = response_student_data.progression.unlocked as Dictionary
 				var new_unlock_data: Dictionary = {}
 				for key_lesson: Variant in received_unlock_data.keys():
