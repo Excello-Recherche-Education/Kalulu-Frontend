@@ -156,6 +156,11 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					
 					# Synchronize student progression
 					var student_progression: StudentProgression = UserDataManager.get_student_progression_for_code(device, code_to_check)
+					if not student_progression:
+						Log.error("UserDatabaseSynchronizer: Cannot get student progression. Canceling synchronization.")
+						set_loading_bar_text("SYNCHRONIZATION_ERROR")
+						stop_sync()
+						return {}
 					var local_student_progression_unix_time: int = Time.get_unix_time_from_datetime_string(student_progression.last_modified)
 					if local_student_progression_unix_time == server_student_progression_unix_time:
 						Log.trace("UserDatabaseSynchronizer: Student %d progression data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
@@ -292,6 +297,8 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 				progression_block =	{
 										"version": student_progression.version,
 										"unlocked": student_progression.unlocks,
+										"level_times": student_progression.level_times,
+										"level_total_times": student_progression.level_total_times,
 										"updated_at": student_progression.last_modified
 									}
 			elif student_entry.progression == UpdateNeeded.FromServer:
@@ -417,13 +424,15 @@ func _apply_server_response(response_body: Dictionary) -> void:
 				# Cleaning data because of JSON parsing changing types int / float / string
 				var received_unlock_data: Dictionary = response_student_data.progression.unlocked as Dictionary
 				var new_unlock_data: Dictionary = {}
+				var last_duration: Dictionary[int, PackedInt32Array] = {}
+				var total_duration: Dictionary[int, PackedInt32Array] = {}
 				for key_lesson: Variant in received_unlock_data.keys():
-					@warning_ignore("unsafe_call_argument")
-					new_unlock_data[int(key_lesson)] = {"games": [], "look_and_learn": int(received_unlock_data[key_lesson]["look_and_learn"])}
+					new_unlock_data[int(key_lesson as int)] = {"games": [], "look_and_learn": received_unlock_data[key_lesson]["look_and_learn"] as int}
 					for game_result: Variant in received_unlock_data[key_lesson]["games"]:
-						@warning_ignore("unsafe_call_argument")
-						(new_unlock_data[int(key_lesson)]["games"] as Array).push_back(int(game_result))
-				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
+						(new_unlock_data[key_lesson as int]["games"] as Array).push_back(game_result as int)
+					last_duration.set(key_lesson as int, PackedInt32Array(received_unlock_data[key_lesson]["last_duration"] as Array))
+					total_duration.set(key_lesson as int, PackedInt32Array(received_unlock_data[key_lesson]["total_duration"] as Array))
+				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String, last_duration, total_duration)
 			if response_student_data.has("remediation_gp") and (response_student_data.remediation_gp as Dictionary).has("score_remediation") and (response_student_data.remediation_gp as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
