@@ -11,9 +11,9 @@ enum Status{
 
 @export var version: String = ProjectSettings.get_setting("application/config/version")
 @export var unlocks: Dictionary = {}
-@export var last_modified: String
 @export var level_times: Dictionary[int, PackedInt32Array] = {}  # Level ID, Last number of seconds for minigames 0, 1 and 2
 @export var level_total_times: Dictionary[int, PackedInt32Array] = {}  # Level ID, Total number of seconds for minigames 0, 1 and 2
+@export var last_modified: String
 
 
 func _init() -> void:
@@ -116,3 +116,4 @@ func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> vo
 	else:
 		level_total_times.set(lesson_number, PackedInt32Array([0, 0, 0]))
 	level_total_times[lesson_number][game_number] += time_spent
+	last_modified = Time.get_datetime_string_from_system(true)
