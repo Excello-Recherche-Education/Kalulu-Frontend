@@ -107,7 +107,7 @@ func _log_internal(level: LogLevel, message: String) -> void:
 		LogLevel.INFO: prefix = "[INFO]"
 		LogLevel.WARNING: prefix = "[WARNING]"
 		LogLevel.ERROR: prefix = "[ERROR]"
-		LogLevel.PANIC: prefix = "[ALERT]"
+		LogLevel.ALERT: prefix = "[ALERT]"
 		LogLevel.PANIC: prefix = "[PANIC]"
 	
 	var time_str: String = Time.get_time_string_from_system()
