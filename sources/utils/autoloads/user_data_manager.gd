@@ -165,6 +165,8 @@ func login(infos: Dictionary) -> bool:
 	return true
 
 
+## Safely loads a resource from the given path.  
+## If the file contains outdated text patterns (old_texts), they are replaced with new ones before loading.  
 func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_texts: Array[String]) -> Resource:
 	if not FileAccess.file_exists(path):
 		Log.error("UserDataManager: File not found: " + path)
@@ -521,7 +523,7 @@ func _load_student_progression() -> void:
 		_save_student_progression()
 	
 	student_progression.init_unlocks()
-	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
+	student_progression.progression_changed.connect(_on_user_progression_changed)
 
 
 func _save_student_progression() -> void:
@@ -529,7 +531,7 @@ func _save_student_progression() -> void:
 	ResourceSaver.save(student_progression, get_student_progression_path())
 
 
-func _on_user_progression_unlocks_changed() -> void:
+func _on_user_progression_changed() -> void:
 	_save_student_progression()
 
 
@@ -570,14 +572,12 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 		Log.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
 
 
-func set_student_progression_data(student_code: int, version: String, new_data: Dictionary, updated_at: String, last_duration: Dictionary[int, PackedInt32Array], total_duration: Dictionary[int, PackedInt32Array]) -> void:
+func set_student_progression_data(student_code: int, version: String, new_data: Dictionary, updated_at: String) -> void:
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
 	if current_data == null:
 		current_data = StudentProgression.new()
 	current_data.version = version
 	current_data.unlocks = new_data
-	current_data.level_times = last_duration
-	current_data.level_total_times = total_duration
 	current_data.last_modified = updated_at
 	var err: Error = ResourceSaver.save(current_data, get_student_progression_path(0, student_code))
 	if err != OK:

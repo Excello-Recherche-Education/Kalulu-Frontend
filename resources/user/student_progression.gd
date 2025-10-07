@@ -1,7 +1,7 @@
 class_name StudentProgression
 extends Resource
 
-signal unlocks_changed()
+signal progression_changed()
 
 enum Status{
 	Locked,
@@ -12,9 +12,7 @@ enum Status{
 @export var version: String = ProjectSettings.get_setting("application/config/version")
 @export var unlocks: Dictionary = {}:
 	set(value):
-		unlocks = check_data_integrity(value)
-@export var level_times: Dictionary[int, PackedInt32Array] = {}  # Level ID, Last number of seconds for minigames 0, 1 and 2
-@export var level_total_times: Dictionary[int, PackedInt32Array] = {}  # Level ID, Total number of seconds for minigames 0, 1 and 2
+		unlocks = ensure_data_integrity(value)
 @export var last_modified: String
 
 
@@ -25,7 +23,7 @@ func _init() -> void:
 # Make sure the unlocks are correct
 func init_unlocks() -> void:
 	if not unlocks:
-		unlocks = {}
+		unlocks = {} # Triggers ensure_data_integrity(), that will fill the default values
 	
 	# Verify the lessons
 	var number_of_lessons: int = Database.get_lessons_count()
@@ -41,64 +39,60 @@ func init_unlocks() -> void:
 					]
 				}
 		
-		while unlocks.size() > number_of_lessons:
-			unlocks.erase(unlocks.size())
-		
 	# Make sure that the first garden is always accessible
 	if unlocks[1]["look_and_learn"] == Status.Locked:
 		unlocks[1]["look_and_learn"] = Status.Unlocked
 
 
-func check_data_integrity(data: Dictionary) -> Dictionary:
+func ensure_data_integrity(data: Dictionary) -> Dictionary:
+	var is_init: bool = data.is_empty()
 	var result: Dictionary = data.duplicate(true)
-
-	# Check missin keys
+	var number_of_lessons: int = Database.get_lessons_count()
+	# Check too much keys
+	while result.size() > number_of_lessons:
+		result.erase(result.size())
+	# Check missing keys
 	var min_key: int = 1
-	var max_key: int = 1
-	if result.size() > 0:
-		if result.keys()[0] is int:
-			min_key = result.keys().min() as int
-			max_key = result.keys().max() as int
-		else:
-			Log.error("StudentProgression: Received keys with wrong datatype")
-
+	var max_key: int = number_of_lessons
 	for index: int in range(min_key, max_key + 1):
 		if not result.has(index):
-			Log.warn("StudentProgression: Garden %d missing → added with default values." % index)
+			if not is_init:
+				Log.warn("StudentProgression: Garden %d missing → added with default values." % index)
 			result[index] = {
-				"games": [0, 0, 0],
-				"look_and_learn": 0,
-				"last_duration": 0.0,
-				"total_duration": 0.0
+				"games": [Status.Locked, Status.Locked, Status.Locked],
+				"look_and_learn": Status.Locked,
+				"last_duration": PackedInt32Array([0, 0, 0]),
+				"total_duration": PackedInt32Array([0, 0, 0])
 			}
-
 	# Check internal structure
 	for index: int in result.keys():
 		var garden: Dictionary = result[index]
-
 		# Check missing keys
 		if not garden.has("games"):
-			Log.warn("Garden %d : Add missing key 'games'." % index)
-			garden["games"] = [0, 0, 0]
+			if not is_init:
+				Log.warn("Garden %d : Add missing key 'games'." % index)
+			garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
 		if not garden.has("look_and_learn"):
-			Log.warn("Garden %d : Add missing key 'look_and_learn'." % index)
-			garden["look_and_learn"] = 0
+			if not is_init:
+				Log.warn("Garden %d : Add missing key 'look_and_learn'." % index)
+			garden["look_and_learn"] = Status.Locked
 		if not garden.has("last_duration"):
-			garden["last_duration"] = 0.0
+			garden["last_duration"] =PackedInt32Array([0, 0, 0])
 		if not garden.has("total_duration"):
-			garden["total_duration"] = 0.0
+			garden["total_duration"] = PackedInt32Array([0, 0, 0])
 
 		# Check array "games"
 		if typeof(garden["games"]) != TYPE_ARRAY or (garden["games"] as Array).size() != 3:
-			Log.warn("Garden %d : invalid format for 'games' → reset." % index)
-			garden["games"] = [0, 0, 0]
+			if not is_init:
+				Log.warn("Garden %d : invalid format for 'games' → reset." % index)
+			garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
 
-		# Check value outside of 0/1/2
+		# Check value outside of possible enum values
 		for game_index: int in range(3):
-			if garden["games"][game_index] not in [0, 1, 2]:
-				garden["games"][game_index] = 0
-		if garden["look_and_learn"] not in [0, 1, 2]:
-			garden["look_and_learn"] = 0
+			if garden["games"][game_index] not in [Status.Locked, Status.Unlocked, Status.Completed]:
+				garden["games"][game_index] = Status.Locked
+		if garden["look_and_learn"] not in [Status.Locked, Status.Unlocked, Status.Completed]:
+			garden["look_and_learn"] = Status.Locked
 
 	# Check progression rules
 	for index: int in range(min_key, max_key + 1):
@@ -109,8 +103,8 @@ func check_data_integrity(data: Dictionary) -> Dictionary:
 		if result.has(index - 1):
 			var prev: Dictionary = result[index - 1]
 			prev_completed = (
-				prev["look_and_learn"] == 2 and
-				(prev["games"] as Array).all(func(x: int) -> bool: return x == 2)
+				prev["look_and_learn"] == Status.Completed and
+				(prev["games"] as Array).all(func(x: int) -> bool: return x == Status.Completed)
 			)
 		else:
 			# First garden (key 1) is always unlocked
@@ -119,24 +113,27 @@ func check_data_integrity(data: Dictionary) -> Dictionary:
 		# Case : previous garden not completed
 		if not prev_completed:
 			for game_index: int in range(3):
-				if garden["games"][game_index] != 0 or garden["look_and_learn"] != 0:
-					Log.warn("Garden %d : invalid progression (previous not finished) → reset." % index)
-					garden["games"] = [0, 0, 0]
-					garden["look_and_learn"] = 0
+				if garden["games"][game_index] != Status.Locked or garden["look_and_learn"] != Status.Locked:
+					if not is_init:
+						Log.warn("Garden %d : invalid progression (previous not finished) → reset." % index)
+					garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
+					garden["look_and_learn"] = Status.Locked
 					break
 			continue
 
 		# Case : lesson completed → games unlocked if needed
-		if garden["look_and_learn"] == 2:
+		if garden["look_and_learn"] == Status.Completed:
 			for game_index: int in range(3):
-				if garden["games"][game_index] == 0:
-					garden["games"][game_index] = 1
-					Log.warn("Garden %d : game %d unlocked because lesson is completed" % [index, game_index + 1])
+				if garden["games"][game_index] == Status.Locked:
+					garden["games"][game_index] = Status.Unlocked
+					if not is_init:
+						Log.warn("Garden %d : game %d unlocked because lesson is completed" % [index, game_index + 1])
 
 		# Case : previous garden completed → lesson unlocked if needed
-		elif garden["look_and_learn"] == 0:
-			garden["look_and_learn"] = 1
-			Log.warn("Garden %d : lesson unlocked because previous garden is completed" % index)
+		elif garden["look_and_learn"] == Status.Locked:
+			garden["look_and_learn"] = Status.Unlocked
+			if not is_init:
+				Log.warn("Garden %d : lesson unlocked because previous garden is completed" % index)
 
 	return result
 
@@ -167,7 +164,7 @@ func look_and_learn_completed(lesson_number: int) -> bool:
 		unlocks[lesson_number]["games"][index] = Status.Unlocked
 	
 	last_modified = Time.get_datetime_string_from_system(true)
-	unlocks_changed.emit()
+	progression_changed.emit()
 	return true
 
 
@@ -187,7 +184,7 @@ func game_completed(lesson_number: int, game_number: int) -> bool:
 		unlocks[lesson_number + 1]["look_and_learn"] = Status.Unlocked
 	
 	last_modified = Time.get_datetime_string_from_system(true)
-	unlocks_changed.emit()
+	progression_changed.emit()
 	return true
 
 
@@ -197,17 +194,19 @@ func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> vo
 		Log.error("StudentProgression: Cannot log a level time for a minigame number superior to 2")
 		return
 	
-	if level_times.has(lesson_number):
-		if level_times[lesson_number].size() != 3:
-			level_times[lesson_number] = [0, 0, 0]
-	else:
-		level_times.set(lesson_number, PackedInt32Array([0, 0, 0]))
-	level_times[lesson_number][game_number] = time_spent
+	if not unlocks.has(lesson_number):
+		Log.error("StudentProgression: Cannot log a level time for lesson %d because it does not exists in progression data" % lesson_number)
+		return
 	
-	if level_total_times.has(lesson_number):
-		if level_total_times[lesson_number].size() != 3:
-			level_total_times[lesson_number] = PackedInt32Array([0, 0, 0])
+	if not (unlocks[lesson_number] as Dictionary).has("last_duration") or not (unlocks[lesson_number]["last_duration"] as Array).size() > game_number:
+		Log.error("StudentProgression: Cannot log a last_duration for lesson %d, game %d, because it does not exists" % [lesson_number, game_number])
 	else:
-		level_total_times.set(lesson_number, PackedInt32Array([0, 0, 0]))
-	level_total_times[lesson_number][game_number] += time_spent
+		unlocks[lesson_number]["last_duration"][game_number] = time_spent
+	
+	if not (unlocks[lesson_number] as Dictionary).has("total_duration") or not (unlocks[lesson_number]["total_duration"] as Array).size() > game_number:
+		Log.error("StudentProgression: Cannot log a total_duration for lesson %d, game %d, because it does not exists" % [lesson_number, game_number])
+	else:
+		unlocks[lesson_number]["total_duration"][game_number] += time_spent
+	
 	last_modified = Time.get_datetime_string_from_system(true)
+	progression_changed.emit()
