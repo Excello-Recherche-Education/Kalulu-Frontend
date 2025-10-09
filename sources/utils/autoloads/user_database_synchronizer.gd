@@ -399,13 +399,17 @@ func _apply_server_response(response_body: Dictionary) -> void:
 			if response_student_data.has("progression") and (response_student_data.progression as Dictionary).has("version") and (response_student_data.progression as Dictionary).has("unlocked") and (response_student_data.progression as Dictionary).has("updated_at"):
 				# Cleaning data because of JSON parsing changing types int / float / string
 				var received_unlock_data: Dictionary = response_student_data.progression.unlocked as Dictionary
-				var new_unlock_data: Dictionary = {}
+				var new_unlock_data: Dictionary[int, Dictionary] = {}
 				for key_lesson: Variant in received_unlock_data.keys():
-					new_unlock_data[int(key_lesson as int)] = {"games": [], "look_and_learn": received_unlock_data[key_lesson]["look_and_learn"] as int}
+					var key_lesson_int: int = int(str(key_lesson)) if str(key_lesson).is_valid_int() else -1
+					if key_lesson_int == -1:
+						Log.error("UserDatabaseSynchronizer: Received invalid key for lesson: %s" % str(key_lesson))
+						continue
+					new_unlock_data[key_lesson_int] = {"games": [], "look_and_learn": received_unlock_data[key_lesson]["look_and_learn"] as int}
 					for game_result: Variant in received_unlock_data[key_lesson]["games"]:
-						(new_unlock_data[key_lesson as int]["games"] as Array).push_back(game_result as int)
-					(new_unlock_data[int(key_lesson as int)] as Dictionary).merge({"last_duration": PackedInt32Array(received_unlock_data[key_lesson]["last_duration"] as Array)})
-					(new_unlock_data[int(key_lesson as int)] as Dictionary).merge({"total_duration": PackedInt32Array(received_unlock_data[key_lesson]["total_duration"] as Array)})
+						(new_unlock_data[key_lesson_int]["games"] as Array).push_back(game_result as int)
+					new_unlock_data[key_lesson_int].merge({"last_duration": PackedInt32Array(received_unlock_data[key_lesson]["last_duration"] as Array)})
+					new_unlock_data[key_lesson_int].merge({"total_duration": PackedInt32Array(received_unlock_data[key_lesson]["total_duration"] as Array)})
 				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
 			if response_student_data.has("remediation_gp") and (response_student_data.remediation_gp as Dictionary).has("score_remediation") and (response_student_data.remediation_gp as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY

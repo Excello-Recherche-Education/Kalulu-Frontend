@@ -10,7 +10,7 @@ enum Status{
 }
 
 @export var version: String = ProjectSettings.get_setting("application/config/version")
-@export var unlocks: Dictionary = {}:
+@export var unlocks: Dictionary[int, Dictionary] = {}:
 	set(value):
 		unlocks = ensure_data_integrity(value)
 @export var last_modified: String
@@ -44,13 +44,14 @@ func init_unlocks() -> void:
 		unlocks[1]["look_and_learn"] = Status.Unlocked
 
 
-func ensure_data_integrity(data: Dictionary) -> Dictionary:
+func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 	var is_init: bool = data.is_empty()
-	var result: Dictionary = data.duplicate(true)
+	var result: Dictionary[int, Dictionary] = data.duplicate(true)
 	var number_of_lessons: int = Database.get_lessons_count()
 	# Check too much keys
-	while result.size() > number_of_lessons:
-		result.erase(result.size())
+	for key: int in result.keys():
+		if key > number_of_lessons:
+			result.erase(key)
 	# Check missing keys
 	var min_key: int = 1
 	var max_key: int = number_of_lessons

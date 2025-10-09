@@ -572,7 +572,7 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 		Log.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
 
 
-func set_student_progression_data(student_code: int, version: String, new_data: Dictionary, updated_at: String) -> void:
+func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String) -> void:
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
 	if current_data == null:
 		current_data = StudentProgression.new()
