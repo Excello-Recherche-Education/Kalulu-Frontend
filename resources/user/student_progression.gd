@@ -36,7 +36,9 @@ func init_unlocks() -> void:
 						Status.Locked,
 						Status.Locked,
 						Status.Locked,
-					]
+					],
+					"last_duration": PackedInt32Array([0, 0, 0]),
+					"total_duration": PackedInt32Array([0, 0, 0])
 				}
 		
 	# Make sure that the first garden is always accessible
@@ -78,7 +80,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 				Log.warn("Garden %d : Add missing key 'look_and_learn'." % index)
 			garden["look_and_learn"] = Status.Locked
 		if not garden.has("last_duration"):
-			garden["last_duration"] =PackedInt32Array([0, 0, 0])
+			garden["last_duration"] = PackedInt32Array([0, 0, 0])
 		if not garden.has("total_duration"):
 			garden["total_duration"] = PackedInt32Array([0, 0, 0])
 
@@ -199,12 +201,12 @@ func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> vo
 		Log.error("StudentProgression: Cannot log a level time for lesson %d because it does not exists in progression data" % lesson_number)
 		return
 	
-	if not (unlocks[lesson_number] as Dictionary).has("last_duration") or not (unlocks[lesson_number]["last_duration"] as Array).size() > game_number:
+	if not (unlocks[lesson_number] as Dictionary).has("last_duration") or not (unlocks[lesson_number]["last_duration"] as PackedInt32Array).size() > game_number:
 		Log.error("StudentProgression: Cannot log a last_duration for lesson %d, game %d, because it does not exists" % [lesson_number, game_number])
 	else:
 		unlocks[lesson_number]["last_duration"][game_number] = time_spent
 	
-	if not (unlocks[lesson_number] as Dictionary).has("total_duration") or not (unlocks[lesson_number]["total_duration"] as Array).size() > game_number:
+	if not (unlocks[lesson_number] as Dictionary).has("total_duration") or not (unlocks[lesson_number]["total_duration"] as PackedInt32Array).size() > game_number:
 		Log.error("StudentProgression: Cannot log a total_duration for lesson %d, game %d, because it does not exists" % [lesson_number, game_number])
 	else:
 		unlocks[lesson_number]["total_duration"][game_number] += time_spent
