@@ -26,8 +26,10 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 	var copied_file: int = 0
 	var first_folder: String = ""
 	for sub_path: String in all_files:
-		if not first_folder:
-			first_folder = sub_path.split("/")[0]
+		if _is_directory_path(sub_path):
+			first_folder = sub_path.trim_suffix("/")
+			break
+	for sub_path: String in all_files:
 		var file_name: String = extract_folder.path_join(sub_path)
 		var folder_name: String = file_name.get_base_dir()
 		if not DirAccess.dir_exists_absolute(folder_name):
