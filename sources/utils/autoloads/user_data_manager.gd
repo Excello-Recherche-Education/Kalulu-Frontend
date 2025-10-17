@@ -165,6 +165,8 @@ func login(infos: Dictionary) -> bool:
 	return true
 
 
+## Safely loads a resource from the given path.  
+## If the file contains outdated text patterns (old_texts), they are replaced with new ones before loading.  
 func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_texts: Array[String]) -> Resource:
 	if not FileAccess.file_exists(path):
 		Log.error("UserDataManager: File not found: " + path)
@@ -521,7 +523,7 @@ func _load_student_progression() -> void:
 		_save_student_progression()
 	
 	student_progression.init_unlocks()
-	student_progression.unlocks_changed.connect(_on_user_progression_unlocks_changed)
+	student_progression.progression_changed.connect(_on_user_progression_changed)
 
 
 func _save_student_progression() -> void:
@@ -529,7 +531,7 @@ func _save_student_progression() -> void:
 	ResourceSaver.save(student_progression, get_student_progression_path())
 
 
-func _on_user_progression_unlocks_changed() -> void:
+func _on_user_progression_changed() -> void:
 	_save_student_progression()
 
 
@@ -570,7 +572,7 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 		Log.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
 
 
-func set_student_progression_data(student_code: int, version: String, new_data: Dictionary, updated_at: String) -> void:
+func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String) -> void:
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
 	if current_data == null:
 		current_data = StudentProgression.new()
@@ -580,6 +582,13 @@ func set_student_progression_data(student_code: int, version: String, new_data: 
 	var err: Error = ResourceSaver.save(current_data, get_student_progression_path(0, student_code))
 	if err != OK:
 		Log.error("UserDataManager: Error while saving student progression: %s" % error_string(err))
+
+
+func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> void:
+	if not student_progression:
+		Log.warn("UserDataManager: Cannot save time spent in level because data of student progression cannot be found")
+		return
+	student_progression.add_level_time(lesson_number, game_number, time_spent)
 
 #endregion
 

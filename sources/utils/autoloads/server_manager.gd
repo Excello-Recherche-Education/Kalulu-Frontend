@@ -5,6 +5,7 @@ signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_acces: bool)
 
 const INTERNET_CHECK_URL: String = "https://google.com"
+const AWS_API_GATEWAY_ADRESS: String = "https://xwvmrarnb7.execute-api.eu-west-3.amazonaws.com"
 
 # Response from the last request
 var success: bool
@@ -28,14 +29,10 @@ func _ready() -> void:
 
 func set_environment(env: int) -> void:
 	match env:
-		0: environment_url = "https://iu695b0nk5.execute-api.eu-west-3.amazonaws.com/dev/"
-		1: environment_url = "https://uqkpbayw1k.execute-api.eu-west-3.amazonaws.com/prod/"
+		0: environment_url = AWS_API_GATEWAY_ADRESS + "/dev/"
+		1: environment_url = AWS_API_GATEWAY_ADRESS + "/prod/"
 		_: environment_url = ""
 	Log.info("Environment URL set to " + environment_url)
-
-
-func submit_student_level_time(level: int, elapsed_time: int) -> void:
-	await _post_json_request("submit_student_metrics", {"student_id": UserDataManager.student, "level": level, "time_spent": elapsed_time})
 
 
 func first_login_student() -> void:
@@ -86,26 +83,6 @@ func get_dashboard() -> Dictionary:
 	return _response()
 
 
-func get_user_data() -> Dictionary:
-	await _get_request("get_user_data", {})
-	return _response()
-
-
-func update_student_remediation_data(student_code: int, student_remediation: UserRemediation) -> Dictionary:
-	if not student_remediation:
-		Log.trace("ServerManager: Cannot update student remediation data because data does not exists")
-		success = true
-		code = -1
-		json = {}
-		return _response()
-	var tuple_list: Array = []
-	for key: int in student_remediation.gps_scores.keys():
-		tuple_list.append([key, student_remediation.gps_scores[key]])
-	var data: Dictionary = {"student_id": student_code, "score_remediation": tuple_list}
-	await _post_json_request("submit_gp_remediation", data)
-	return _response()
-
-
 func add_student(p_student: Dictionary) -> Dictionary:
 	await _post_request("add_student", p_student)
 	return _response()
@@ -113,11 +90,6 @@ func add_student(p_student: Dictionary) -> Dictionary:
 
 func remove_student(p_code: int) -> Dictionary:
 	await _delete_request("remove_student", {"code": p_code})
-	return _response()
-
-
-func get_student_data_timestamp(student_code: int) -> Dictionary:
-	await _get_request("get_student_data_timestamp", {"student_id": student_code})
 	return _response()
 
 
