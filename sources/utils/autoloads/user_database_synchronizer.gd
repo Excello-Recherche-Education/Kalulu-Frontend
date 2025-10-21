@@ -412,29 +412,35 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					new_unlock_data[key_lesson_int].merge({"total_duration": PackedInt32Array(received_unlock_data[key_lesson]["total_duration"] as Array)})
 				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
 			if response_student_data.has("remediation_gp") and (response_student_data.remediation_gp as Dictionary).has("score_remediation") and (response_student_data.remediation_gp as Dictionary).has("updated_at"):
-				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
-				var new_gp_scores: Dictionary[int, int] = {}
-				for index: int in range(new_array.size()):
-					# TODO ADD SECURITY
-					new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
-				UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
+				if new_array == null:
+					Log.warn("UserDatabaseSynchronizer: Cannot parse to JSON the received GP score remediation: %s" % response_student_data.remediation_gp.score_remediation as String)
+				else:
+					var new_gp_scores: Dictionary[int, int] = {}
+					for index: int in range(new_array.size()):
+						# TODO ADD SECURITY
+						new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+					UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
 			if response_student_data.has("remediation_syllables") and (response_student_data.remediation_syllables as Dictionary).has("score_remediation") and (response_student_data.remediation_syllables as Dictionary).has("updated_at"):
-				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_syllables.score_remediation as String) as Array
-				var new_syllables_scores: Dictionary[int, int] = {}
-				for index: int in range(new_array.size()):
-					# TODO ADD SECURITY
-					new_syllables_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
-				UserDataManager.set_student_remediation_syllables_data(int(response_student_code), new_syllables_scores, response_student_data.remediation_syllables.updated_at as String)
+				if new_array == null:
+					Log.warn("UserDatabaseSynchronizer: Cannot parse to JSON the received syllables score remediation: %s" % response_student_data.remediation_syllables.score_remediation as String)
+				else:
+					var new_syllables_scores: Dictionary[int, int] = {}
+					for index: int in range(new_array.size()):
+						# TODO ADD SECURITY
+						new_syllables_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+					UserDataManager.set_student_remediation_syllables_data(int(response_student_code), new_syllables_scores, response_student_data.remediation_syllables.updated_at as String)
 			if response_student_data.has("remediation_words") and (response_student_data.remediation_words as Dictionary).has("score_remediation") and (response_student_data.remediation_words as Dictionary).has("updated_at"):
-				# TODO ADD SECURITY
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_words.score_remediation as String) as Array
-				var new_words_scores: Dictionary[int, int] = {}
-				for index: int in range(new_array.size()):
-					# TODO ADD SECURITY
-					new_words_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
-				UserDataManager.set_student_remediation_words_data(int(response_student_code), new_words_scores, response_student_data.remediation_words.updated_at as String)
+				if new_array == null:
+					Log.warn("UserDatabaseSynchronizer: Cannot parse to JSON the received words score remediation: %s" % response_student_data.remediation_words.score_remediation as String)
+				else:
+					var new_words_scores: Dictionary[int, int] = {}
+					for index: int in range(new_array.size()):
+						# TODO ADD SECURITY
+						new_words_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+					UserDataManager.set_student_remediation_words_data(int(response_student_code), new_words_scores, response_student_data.remediation_words.updated_at as String)
 			if response_student_data.has("confusion_matrix_gp") and (response_student_data.confusion_matrix_gp as Dictionary).has("confusion_matrix") and (response_student_data.confusion_matrix_gp as Dictionary).has("updated_at"):
 				# TODO ADD SECURITY
 				var new_array: Array = response_student_data.confusion_matrix_gp.confusion_matrix
