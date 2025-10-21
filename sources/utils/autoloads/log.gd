@@ -37,6 +37,13 @@ func _ready() -> void:
 func delete_old_logs(days_threshold: float = 10) -> void:
 	var dir: DirAccess = DirAccess.open(LOG_PATH)
 	var err: Error = DirAccess.get_open_error()
+	if err == ERR_DOES_NOT_EXIST:
+		var create_err: Error = DirAccess.make_dir_recursive_absolute(LOG_PATH)
+		if create_err != OK:
+			push_error("Log: Could not create Logs directory for cleanup. Error: %s" % error_string(create_err))
+			return
+		dir = DirAccess.open(LOG_PATH)
+		err = DirAccess.get_open_error()
 	if err != OK:
 		push_error("Log: Could not open Logs directory for cleanup. Error: %s" % error_string(err))
 		return
