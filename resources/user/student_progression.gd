@@ -42,8 +42,9 @@ func init_unlocks() -> void:
 				}
 		
 	# Make sure that the first garden is always accessible
-	if unlocks[1]["look_and_learn"] == Status.Locked:
-		unlocks[1]["look_and_learn"] = Status.Unlocked
+	if unlocks.has(1):
+		if unlocks[1]["look_and_learn"] == Status.Locked:
+			unlocks[1]["look_and_learn"] = Status.Unlocked
 
 
 func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
