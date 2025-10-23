@@ -164,7 +164,8 @@ func _copy_data(this: PackageDownloader) -> void:
 	)
 	
 	# Cleanup previous files
-	Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
+	if DirAccess.dir_exists_absolute(current_language_path):
+		Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
 	
 	# Extract the archive
 	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
