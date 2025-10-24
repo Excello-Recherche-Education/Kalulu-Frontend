@@ -45,11 +45,11 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 		if error != OK:
 			Log.error("FolderUnzipper: Extract: Cannot open file %s. Error: %s" % [file_name, error_string(error)])
 			close()
-			return first_folder
+			return ""
 		if file == null:
 			Log.error("FolderUnzipper: Extract: Cannot open file %s. File is null" % file_name)
 			close()
-			return first_folder
+			return ""
 		file.store_buffer(read_file(sub_path))
 		file.close()
 		Log.trace("FolderUnzipper: Copied %s" % file_name)
