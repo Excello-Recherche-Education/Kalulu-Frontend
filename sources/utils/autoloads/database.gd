@@ -596,35 +596,46 @@ func get_kalulu_speech_path(speech_category: String, speech_name: String) -> Str
 
 func load_external_sound(path: String) -> AudioStreamMP3:
 	Log.trace("Database: Load External Sound: %s" % path)
+	
+	path = Utils.get_safe_file_path(path)
+	
 	if not FileAccess.file_exists(path):
 		path = UnicodeNormalizer.to_nfd_basic(path)
-		Log.trace("Database: Load External Sound: file not found: trying to normalize path to unicode NFD: %s" % path)
+		Log.trace("Database: Load External Sound: File not found, retrying with Unicode NFD: %s" % path)
 		if not FileAccess.file_exists(path):
 			path = UnicodeNormalizer.to_nfd_extended(path)
-			Log.trace("Database: Load External Sound: file not found: trying to normalize path to unicode NFD extended: %s" % path)
+			Log.trace("Database: Load External Sound: File not found, retrying with Unicode NFD extended: %s" % path)
 			if not FileAccess.file_exists(path):
-				Log.error("Database: Load External Sound: file not found even after unicode normalization")
+				Log.error("Database: Load External Sound: File not found after normalization attempts")
 				return null
-	Log.trace("Database: Load External Sound: file found.")
-	Log.trace("Database: Load External Sound: Opening file.")
+	
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
-	if error != OK:
+	if error != OK or file == null:
 		Log.error("Database: Load External Sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return null
-	if file == null:
-		Log.error("Database: Load External Sound: Cannot open file %s. File is null")
-		return null
+	
 	var file_length: int = file.get_length()
-	Log.trace("Database: Load External Sound: File length = %d" % file_length)
-	Log.trace("Database: Load External Sound: Creating audio stream")
-	var audio_stream: AudioStreamMP3 = AudioStreamMP3.new()
-	audio_stream.data = file.get_buffer(file_length)
+	if file_length <= 0:
+		Log.error("Database: Load External Sound: Invalid file length for %s" % path)
+		file.close()
+		return null
+	
+	var data: PackedByteArray = file.get_buffer(file_length)
 	file.close()
-	if not audio_stream:
-		Log.error("Database: Load External Sound: Audio stream is not valid")
-	elif audio_stream == null:
-		Log.error("Database: Load External Sound: Audio stream is null")
+	
+	if data.is_empty():
+		Log.error("Database: Load External Sound: Empty buffer read for %s" % path)
+		return null
+	
+	var audio_stream: AudioStreamMP3 = AudioStreamMP3.new()
+	audio_stream.data = data
+	
+	if not audio_stream or audio_stream == null:
+		Log.error("Database: Load External Sound: Failed to create AudioStreamMP3 for %s" % path)
+		return null
+	
+	Log.trace("Database: Load External Sound: Loaded %s successfully (%d bytes)" % [path, file_length])
 	return audio_stream
 
 
