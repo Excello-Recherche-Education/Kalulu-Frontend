@@ -585,6 +585,8 @@ func add_gardens() -> void:
 
 		var lessons_for_garden: int = distribution[layout_index]
 		garden_layout.lesson_buttons.resize(lessons_for_garden)
+		# TODO : HANDLE WHEN NUMBER OF LESSONS IS MORE THAN 4
+		garden.lesson_button_controls.resize(lessons_for_garden)
 
 		garden.garden_layout = garden_layout
 
