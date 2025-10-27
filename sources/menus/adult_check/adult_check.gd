@@ -11,10 +11,11 @@ const SYMBOLS_NAMES: Dictionary[String, String] = {
 	"6": "TRIANGLE",
 }
 
+var password: String = ""
+
 @onready var code_keyboard: CodeKeyboard = %CodeKeyboard
 @onready var password_label: Label = %PasswordLabel
 
-var password: String = ""
 
 func _ready() -> void:
 	_reset_password()

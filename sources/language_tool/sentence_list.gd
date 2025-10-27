@@ -1,6 +1,7 @@
 extends WordList
 
 var not_found_list: String = ""
+
 @onready var export_not_found_button: Button = %ExportNotFoundButton
 @onready var file_dialog_export: FileDialog = $FileDialogExport
 

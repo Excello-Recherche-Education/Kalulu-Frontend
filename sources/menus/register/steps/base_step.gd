@@ -1,9 +1,14 @@
 @tool
-extends Control
 class_name Step
+extends Control
 
 signal back(step: Step)
 signal next(step: Step)
+
+@export var step_name: String
+@export_multiline var question: String
+@export_multiline var infos: String
+@export var data: Resource
 
 @onready var question_label: Label = %QuestionLabel
 @onready var info_label: Label = %InfoLabel
@@ -11,10 +16,6 @@ signal next(step: Step)
 @onready var form_binder: FormBinder = %FormBinder
 @onready var form_container: Control = %FormContainer
 
-@export var step_name: String
-@export_multiline var question: String
-@export_multiline var infos: String
-@export var data: Resource
 
 func on_enter() -> void:
 	form_binder.read(data)
@@ -25,12 +26,14 @@ func on_enter() -> void:
 	else:
 		info_label.visible = false
 
+
 func _on_back() -> bool:
 	return true
 
 
 func _on_next() -> bool:
 	return true
+
 
 # Display error messages
 func _on_form_validator_control_validated(control: Control, passed: bool, messages: PackedStringArray) -> void:
@@ -53,12 +56,12 @@ func _on_back_button_pressed() -> void:
 func _on_validate_button_pressed() -> void:
 	# Validate the fields
 	if not form_validator.validate():
-		Logger.warn("BaseStep: Validation failed (" + str(self) + ")")
+		Log.warn("BaseStep: Validation failed (" + str(self) + ")")
 		return
 	
 	# Writes data in object
 	if not form_binder.write():
-		Logger.warn("BaseStep: Impossible to write data in object (" + str(self) + ")")
+		Log.warn("BaseStep: Impossible to write data in object (" + str(self) + ")")
 		return
 	
 	if _on_next():

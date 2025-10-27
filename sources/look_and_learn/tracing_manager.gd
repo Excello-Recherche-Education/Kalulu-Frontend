@@ -1,16 +1,16 @@
-extends Control
 class_name TracingManager
+extends Control
 
 signal finished()
 
 const LETTER_SEGMENT_CLASS: PackedScene = preload("res://sources/look_and_learn/letter_segment.tscn")
+const EXTENSION: String = ".csv"
 
 @export var label_settings: LabelSettings
 
 @onready var lower_labels: HBoxContainer = %LowerLabels
 @onready var upper_labels: HBoxContainer = %UpperLabels
 
-const EXTENSION: String = ".csv"
 
 func _process(_delta: float) -> void:
 	place_segments(upper_labels.get_children())
@@ -33,8 +33,6 @@ func reset() -> void:
 	upper_labels.visible = false
 	await get_tree().process_frame
 
-
-# --- Setup ---
 
 func setup(grapheme: String) -> void:
 	await reset()
@@ -85,10 +83,10 @@ func _load_tracing(path: String) -> Array:
 	var file: FileAccess = FileAccess.open(_real_path(path), FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Logger.error("TracingManager: Load tracing: Cannot open file %s. Error: %s" % [_real_path(path), error_string(error)])
+		Log.error("TracingManager: Load tracing: Cannot open file %s. Error: %s" % [_real_path(path), error_string(error)])
 		return segments
 	if file == null:
-		Logger.error("TracingManager: Load tracing: Cannot open file %s. File is null" % _real_path(path))
+		Log.error("TracingManager: Load tracing: Cannot open file %s. File is null" % _real_path(path))
 		return segments
 	while not file.eof_reached():
 		var points: Array[Vector2] = []
@@ -116,10 +114,6 @@ func _upper_path(letter: String) -> String:
 
 func _real_path(path: String) -> String:
 	return Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER).path_join(path) + EXTENSION
-
-
-
-# --- Start ---
 
 
 func start() -> void:

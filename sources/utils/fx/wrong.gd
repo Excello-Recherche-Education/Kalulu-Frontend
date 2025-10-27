@@ -1,12 +1,12 @@
-extends Control
 class_name WrongFX
+extends Control
 
 signal finished()
 
+var is_playing: bool = false
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
-
-var is_playing: bool = false
 
 
 func play() -> void:

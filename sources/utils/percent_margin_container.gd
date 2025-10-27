@@ -1,6 +1,6 @@
 @tool
-extends Container
 class_name PercentMarginContainer
+extends Container
 
 @export var margin_left_ratio: float = 0.0:
 	set = set_margin_left_ratio
@@ -27,10 +27,12 @@ func _notification(what: int) -> void:
 
 func _get_minimum_size() -> Vector2:
 	var min_size: Vector2 = Vector2(0, 0)
-	for child: Control in get_children():
-		var c_min_size: Vector2 = child.get_combined_minimum_size()
-		min_size.x = maxf(c_min_size.x, min_size.x)
-		min_size.y = maxf(c_min_size.y, min_size.y)
+	var combined_min_size: Vector2
+	for child: Node in get_children():
+		if child is Control:
+			combined_min_size = (child as Control).get_combined_minimum_size()
+			min_size.x = maxf(combined_min_size.x, min_size.x)
+			min_size.y = maxf(combined_min_size.y, min_size.y)
 	return min_size
 
 

@@ -1,4 +1,4 @@
-extends "res://sources/language_tool/word_list.gd"
+extends WordList
 
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:

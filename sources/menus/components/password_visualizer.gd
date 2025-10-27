@@ -1,6 +1,6 @@
 @tool
-extends HBoxContainer
 class_name PasswordVisualizer
+extends HBoxContainer
 
 const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
 	"1": preload("res://assets/menus/login/symbol_01.png"),
@@ -24,11 +24,13 @@ const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
 
 @onready var icons: Array[TextureRect] = []
 
+
 func _ready() -> void:
 	_draw_password()
 	for icon: TextureRect in icons:
 		icon.custom_minimum_size.x = key_size
 		icon.custom_minimum_size.y = key_size
+
 
 func _draw_password() -> void:
 	
@@ -44,7 +46,7 @@ func _draw_password() -> void:
 	var index: int = 0
 	for value: String in password.split(""):
 		if index >= 3:
-			Logger.error("PasswordVisualizer: A password cannot be more than 3 characters long")
+			Log.error("PasswordVisualizer: A password cannot be more than 3 characters long")
 			return
 		
 		if value in ICONS_TEXTURES:

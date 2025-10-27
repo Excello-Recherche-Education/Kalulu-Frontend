@@ -1,9 +1,11 @@
 @tool
-extends Step
 class_name StudentsCountStep
+extends Step
 
 @export var device_id: int
+
 @onready var students_count_field: SpinBox = %StudentsCountField
+
 
 func _on_back() -> bool:
 	var register_data: TeacherSettings = data as TeacherSettings

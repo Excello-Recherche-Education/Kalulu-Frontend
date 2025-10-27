@@ -1,10 +1,6 @@
 @tool
-extends Node2D
 class_name CaterpillarBody
-
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var label: Label = $Label
-@onready var right_FX: RightFX = $RightFX
+extends Node2D
 
 var gp: Dictionary = {}:
 	set(value):
@@ -13,6 +9,10 @@ var gp: Dictionary = {}:
 			label.text = gp.Grapheme
 		else:
 			label.text = ""
+
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var label: Label = $Label
+@onready var right_FX: RightFX = $RightFX
 
 
 func _ready() -> void:

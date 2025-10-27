@@ -1,46 +1,6 @@
 @tool
-extends Resource
 class_name GardenLayout
-
-
-class Flower:
-	var color: int = 0
-	var type: int = 0
-	var position: Vector2 = Vector2i.ZERO
-	
-	func _init(p_color: int = 0, p_type: int = 0, p_position: Vector2i = Vector2i.ZERO) -> void:
-		color = p_color
-		type = p_type
-		position = p_position
-	
-	static func from_dict(d: Dictionary) -> Flower:
-		return Flower.new(d.color as int, d.type as int, d.position as Vector2i)
-	
-	func to_dict() -> Dictionary:
-		return {
-			color = color,
-			type = type,
-			position = position,
-		}
-
-
-class GardenLayoutLessonButton:
-	var position: Vector2i = Vector2i.ZERO
-	var path_out_position: Vector2i = Vector2i.ZERO
-	
-	func _init(p_position: Vector2i = Vector2i.ZERO, p_path_out_position: Vector2i = Vector2i.ZERO) -> void:
-		position = p_position
-		path_out_position = p_path_out_position
-	
-	static func from_dict(d: Dictionary) -> GardenLayoutLessonButton:
-		return GardenLayoutLessonButton.new(d.position as Vector2i, d.path_out_position as Vector2i)
-	
-	func to_dict() -> Dictionary:
-		return {
-			position = position,
-			path_out_position = path_out_position
-		}
-
+extends Resource
 
 enum FirstOrLast {
 	First,
@@ -48,17 +8,17 @@ enum FirstOrLast {
 	Last
 }
 
-
 @export var color: int = 0
-var flowers: Array[Flower] = []:
-	set = set_flowers
 @export var flowers_export: Array[Dictionary] = []:
 	set = set_flowers_export
-var lesson_buttons: Array[GardenLayoutLessonButton] = []:
-	set = set_lesson_buttons
 @export var lesson_buttons_export: Array[Dictionary] = []:
 	set = set_lesson_buttons_export
 @export var is_first_or_last: FirstOrLast = FirstOrLast.Neither
+
+var flowers: Array[Flower] = []:
+	set = set_flowers
+var lesson_buttons: Array[GardenLayoutLessonButton] = []:
+	set = set_lesson_buttons
 
 
 func set_flowers_export(p_flowers_export: Array[Dictionary]) -> void:
@@ -87,3 +47,48 @@ func set_lesson_buttons(p_lesson_buttons: Array[GardenLayoutLessonButton]) -> vo
 	lesson_buttons_export.clear()
 	for lesson_button: GardenLayoutLessonButton in lesson_buttons:
 		lesson_buttons_export.append(lesson_button.to_dict())
+
+
+class Flower:
+	var color: int = 0
+	var type: int = 0
+	var position: Vector2 = Vector2i.ZERO
+	
+	
+	func _init(p_color: int = 0, p_type: int = 0, p_position: Vector2i = Vector2i.ZERO) -> void:
+		color = p_color
+		type = p_type
+		position = p_position
+	
+	
+	static func from_dict(d: Dictionary) -> Flower:
+		return Flower.new(d.color as int, d.type as int, d.position as Vector2i)
+	
+	
+	func to_dict() -> Dictionary:
+		return {
+			color = color,
+			type = type,
+			position = position,
+		}
+
+
+class GardenLayoutLessonButton:
+	var position: Vector2i = Vector2i.ZERO
+	var path_out_position: Vector2i = Vector2i.ZERO
+	
+	
+	func _init(p_position: Vector2i = Vector2i.ZERO, p_path_out_position: Vector2i = Vector2i.ZERO) -> void:
+		position = p_position
+		path_out_position = p_path_out_position
+	
+	
+	static func from_dict(d: Dictionary) -> GardenLayoutLessonButton:
+		return GardenLayoutLessonButton.new(d.position as Vector2i, d.path_out_position as Vector2i)
+	
+	
+	func to_dict() -> Dictionary:
+		return {
+			position = position,
+			path_out_position = path_out_position
+		}

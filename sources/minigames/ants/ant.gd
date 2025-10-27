@@ -1,5 +1,5 @@
-extends Area2D
 class_name Ant
+extends Area2D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var anchor: Node2D = $Anchor

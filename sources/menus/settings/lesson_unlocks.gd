@@ -1,17 +1,10 @@
-extends Control
 class_name LessonUnlocks
+extends Control
 
 signal student_deleted(code: int)
 
 const DEVICE_BUTTON_SCENE: PackedScene = preload("res://sources/menus/main/device_button.tscn")
 const LESSON_UNLOCK_SCENE: PackedScene = preload("res://sources/menus/settings/lesson_unlock.tscn")
-
-@onready var lesson_container: VBoxContainer = %LessonContainer
-@onready var name_line_edit: LineEdit = %NameLineEdit
-@onready var device_selection_container: PanelContainer = %DeviceSelectionContainer
-@onready var container: GridContainer = %GridContainer
-
-var teacher_settings: SettingsTeacherSettings = null
 
 @export var device: int:
 	set = _on_device_changed
@@ -19,6 +12,13 @@ var teacher_settings: SettingsTeacherSettings = null
 	set = _on_student_changed
 
 var progression: StudentProgression
+var teacher_settings: SettingsTeacherSettings = null
+
+@onready var lesson_container: VBoxContainer = %LessonContainer
+@onready var name_line_edit: LineEdit = %NameLineEdit
+@onready var device_selection_container: PanelContainer = %DeviceSelectionContainer
+@onready var container: GridContainer = %GridContainer
+
 
 func _ready() -> void:
 	name_line_edit.connect("text_submitted", _on_name_changed)
@@ -29,7 +29,7 @@ func _create_lessons() -> void:
 	for lesson_unlock: Node in lesson_container.get_children():
 		lesson_unlock.queue_free()
 	
-	Database.db.query("SELECT LessonNb, group_concat(Grapheme || '-' ||Phoneme, ' ') GPs FROM Lessons
+	Database.db.query("SELECT LessonNb, group_concat(Grapheme || '-' || Phoneme, ' ') GPs FROM Lessons
 INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
 INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
 GROUP BY LessonNb
@@ -39,7 +39,7 @@ ORDER BY LessonNb")
 		student_unlock.lesson_gps = element.GPs
 		student_unlock.lesson_number = element.LessonNb
 		if not progression:
-			Logger.trace("LessonUnlocks: User selected a student with no progression data")
+			Log.trace("LessonUnlocks: User selected a student with no progression data")
 			return
 		student_unlock.unlocks = progression.unlocks
 		lesson_container.add_child(student_unlock)
@@ -105,4 +105,4 @@ func _device_button_pressed(device_id: int) -> void:
 	device = device_id
 	var res_set: Dictionary = await ServerManager.set_student_data(student, {"device_id": device_id})
 	if not res_set.success:
-		Logger.trace("LessonUnlocks: Device was updated locally for the student, but the network update failed.")
+		Log.trace("LessonUnlocks: Device was updated locally for the student, but the network update failed.")

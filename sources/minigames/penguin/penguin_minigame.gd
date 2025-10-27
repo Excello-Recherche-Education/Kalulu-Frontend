@@ -1,17 +1,15 @@
 @tool
 extends Minigame
 
-# Namespace
 const LABEL_SCENE: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
 
+var current_word_progression: int = 0: set = _set_current_word_progression
+var max_word_progression: int = 0
+var labels: Array[PenguinLabel] = []
 
 @onready var penguin: Penguin = $GameRoot/Penguin
 @onready var labels_container: HFlowContainer = $GameRoot/Control/LabelsContainer
 
-var current_word_progression: int = 0: set = _set_current_word_progression
-var max_word_progression: int = 0
-
-var labels: Array[PenguinLabel] = []
 
 # Find words with silent GPs
 func _find_stimuli_and_distractions() -> void:
@@ -71,14 +69,14 @@ func _find_stimuli_and_distractions() -> void:
 	for sentence: Dictionary in stimuli:
 		sentence.GPs = Database.get_gps_from_sentence(sentence.ID as int)
 		
-	Logger.trace("PenguinMinigame: Stimuli: %s" % str(stimuli))
+	Log.trace("PenguinMinigame: Stimuli: %s" % str(stimuli))
 
 
 # Launch the minigame
 func _start() -> void:
 	super()
 	if stimuli.is_empty():
-		Logger.error("PenguinMinigame: Cannot start game because stimuli is empty")
+		Log.error("PenguinMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	_setup_word_progression()
@@ -163,7 +161,7 @@ func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 	if label.gp.has("WordID"):
 		_update_remediation_word_score(label.gp.WordID as int, 1 if correct_answer else -1)
 	else:
-		Logger.error("PenguinMinigame: Cannot update remediation score because label GP has no WordID")
+		Log.error("PenguinMinigame: Cannot update remediation score because label GP has no WordID")
 	
 	if correct_answer:
 		penguin.happy()

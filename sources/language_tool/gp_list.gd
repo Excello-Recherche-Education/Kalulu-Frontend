@@ -1,11 +1,10 @@
 extends Control
 
+var undo_redo: UndoRedo = UndoRedo.new()
 var element_scene: PackedScene = preload("res://sources/language_tool/gp_list_element.tscn")
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 @onready var error_label: Label = %ErrorLabel
-
-var undo_redo: UndoRedo = UndoRedo.new()
 
 
 func _ready() -> void:
@@ -79,7 +78,6 @@ func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://sources/language_tool/prof_tool_menu.tscn")
 
 
-
 func _on_grapheme_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		_reorder_by("grapheme")
@@ -124,10 +122,10 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Logger.error("GPList: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		Log.error("GPList: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return
 	if file == null:
-		Logger.error("GPList: Cannot open file %s. File is null" % path)
+		Log.error("GPList: Cannot open file %s. File is null" % path)
 		return
 	var line: PackedStringArray = file.get_csv_line()
 	if line.size() < 4 or line[0] != "Grapheme" or line[1] != "Phoneme" or line[2] != "Type" or line[3] != "Exception":

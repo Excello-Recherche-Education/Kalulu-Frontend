@@ -1,11 +1,10 @@
-extends Control
 class_name PackageDownloader
+extends Control
 
 const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
 const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
-
 const ERROR_MESSAGES: Array[String] = [
 	"DISCONNECTED_ERROR",
 	"NO_INTERNET_ACCESS",
@@ -13,6 +12,12 @@ const ERROR_MESSAGES: Array[String] = [
 	"INVALID_LANGUAGE_DIRECTORY",
 ]
 
+var device_language: String
+var current_language_path: String
+var mutex: Mutex
+var thread: Thread
+var server_language_version: Dictionary = {}
+var current_language_version: Dictionary = {}
 
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var checking_label: Label = %CheckingLabel
@@ -25,18 +30,11 @@ const ERROR_MESSAGES: Array[String] = [
 @onready var error_label: Label = %ErrorLabel
 @onready var error_popup: ConfirmPopup = $ErrorPopup
 
-var device_language: String
-var current_language_path: String
-var mutex: Mutex
-var thread: Thread
-
-var server_language_version: Dictionary = {}
-var current_language_version: Dictionary = {}
 
 func _ready() -> void:
 	await get_tree().process_frame
 	
-	Logger.trace("PackageDownloader: Starting with device language %s" % UserDataManager.get_device_settings().language)
+	Log.trace("PackageDownloader: Starting with device language %s" % UserDataManager.get_device_settings().language)
 	
 	# Check the teacher settings, if we are logged in (this scene should not be accessible otherwise)
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
@@ -49,7 +47,7 @@ func _ready() -> void:
 	current_language_path = USER_LANGUAGE_RESOURCES_PATH.path_join(device_language)
 	current_language_version = UserDataManager.get_device_settings().language_versions.get(device_language, {})
 	
-	Logger.trace("PackageDownloader: Checking internet access")
+	Log.trace("PackageDownloader: Checking internet access")
 	if not await ServerManager.check_internet_access():
 		# Offline mode, if a pack is already downloaded, go to next scene
 		if DirAccess.dir_exists_absolute(current_language_path):
@@ -63,7 +61,7 @@ func _ready() -> void:
 	
 	# Gets the info of the language pack on the server
 	var res: Dictionary = await ServerManager.get_language_pack_url(device_language)
-	Logger.trace("PackageDownloader: Language pack info received with code %d" % res.code)
+	Log.trace("PackageDownloader: Language pack info received with code %d" % res.code)
 	if res.code == 200:
 		server_language_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
 	# Authentication failed, disconnect the user
@@ -78,7 +76,7 @@ func _ready() -> void:
 	
 	# If the language pack is not already downloaded or an update is needed
 	if not DirAccess.dir_exists_absolute(current_language_path) or current_language_version != server_language_version:
-		Logger.trace("A new version of the language pack has been detected.\n    Current version = " + str(current_language_version) + "\n    Server version = " + str(server_language_version))
+		Log.trace("A new version of the language pack has been detected.\n    Current version = " + str(current_language_version) + "\n    Server version = " + str(server_language_version))
 		
 		checking_label.hide()
 		download_label.show()
@@ -97,7 +95,7 @@ func _ready() -> void:
 		
 		# Download the pack
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip"))
-		Logger.trace("PackageDownloader: Downloading pack from %s" % res.body.url)
+		Log.trace("PackageDownloader: Downloading pack from %s" % res.body.url)
 		http_request.request(res.body.url as String)
 	else:
 		download_bar.value = 1
@@ -110,10 +108,10 @@ func is_language_directory_valid(path: String) -> bool:
 	var dir: DirAccess = DirAccess.open(path)
 	var error: Error = DirAccess.get_open_error()
 	if error != OK:
-		Logger.error("PackageDownloader: Is language directory valid: Cannot open directory %s. Error: %s" % [path, error_string(error)])
+		Log.error("PackageDownloader: Is language directory valid: Cannot open directory %s. Error: %s" % [path, error_string(error)])
 		return false
 	if not dir:
-		Logger.error("PackageDownloader: Is language directory valid: Cannot open directory %s. dir is null" % path)
+		Log.error("PackageDownloader: Is language directory valid: Cannot open directory %s. dir is null" % path)
 		return false
 	
 	if dir.list_dir_begin() != OK:
@@ -122,7 +120,7 @@ func is_language_directory_valid(path: String) -> bool:
 	
 	var file_name: String = dir.get_next()
 	dir.list_dir_end()
-	return file_name != "" && dir.file_exists("language.db")
+	return file_name != "" and dir.file_exists("language.db")
 
 
 func _process(_delta: float) -> void:
@@ -144,7 +142,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	if not FileAccess.file_exists(USER_LANGUAGE_RESOURCES_PATH.path_join(device_language + ".zip")):
 		return
 	
-	Logger.trace("PackageDownloader: Extracting downloaded package")
+	Log.trace("PackageDownloader: Extracting downloaded package")
 	
 	var language_zip: String = device_language + ".zip"
 	var language_zip_path: String = USER_LANGUAGE_RESOURCES_PATH.path_join(language_zip)
@@ -166,24 +164,25 @@ func _copy_data(this: PackageDownloader) -> void:
 	)
 	
 	# Cleanup previous files
-	Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
+	if DirAccess.dir_exists_absolute(current_language_path):
+		Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
 	
 	# Extract the archive
 	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
 	if subfolder == "":
-		Logger.error("PackageDownloader: Extraction failed for %s" % language_zip_path)
+		Log.error("PackageDownloader: Extraction failed for %s" % language_zip_path)
 		return
 	
 	# Move the data to the locale folder of the user
 	var error: Error = DirAccess.rename_absolute(USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path)
 	if error != OK:
-		Logger.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path])
+		Log.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path])
 	else:
-		Logger.trace("PackageDownloader: Package extracted to %s" % current_language_path)
+		Log.trace("PackageDownloader: Package extracted to %s" % current_language_path)
 	
 	# Cleanup unnecessary files
 	DirAccess.remove_absolute(language_zip_path)
-	Logger.trace("PackageDownloader: Removed temporary archive %s" % language_zip_path)
+	Log.trace("PackageDownloader: Removed temporary archive %s" % language_zip_path)
 	
 	# Go to main menu
 	this.call_thread_safe("_go_to_next_scene")
@@ -214,7 +213,7 @@ func _go_to_next_scene() -> void:
 
 
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
-	Logger.trace("PackageDownloader: Download completed with HTTP code %d" % response_code)
+	Log.trace("PackageDownloader: Download completed with HTTP code %d" % response_code)
 	if response_code == 200:
 		mutex = Mutex.new()
 		thread = Thread.new()

@@ -4,8 +4,11 @@ extends Minigame
 const BLANK_SCENE: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
 const ANT_SCENE: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
 const WORD_SCENE: PackedScene = preload("res://sources/minigames/ants/word.tscn")
-
 const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_label_settings.tres")
+
+var current_sentence: Dictionary = {}
+var answer_input_done: Array[bool] = []
+var answers: Dictionary[String, String] # Expected, current
 
 @onready var sentence_container: HFlowContainer = %Sentence
 @onready var ants_spawn: Node2D = %AntsSpawn
@@ -14,10 +17,6 @@ const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_
 @onready var ants_despawn: Node2D = %AntsDespawn
 @onready var ants: Node2D = %Ants
 @onready var words: Node2D = %Words
-
-var current_sentence: Dictionary = {}
-var answer_input_done: Array[bool] = []
-var answers: Dictionary[String, String] # Expected, current
 
 
 func _find_stimuli_and_distractions() -> void:
@@ -79,7 +78,7 @@ func _find_stimuli_and_distractions() -> void:
 
 	# Shuffle the stimuli
 	stimuli.shuffle()
-	Logger.trace("AntsMinigame: stimuli = " + str(stimuli))
+	Log.trace("AntsMinigame: stimuli = " + str(stimuli))
 
 
 func _start() -> void:

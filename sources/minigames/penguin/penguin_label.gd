@@ -1,16 +1,17 @@
-extends Label
 class_name PenguinLabel
+extends Label
 
 signal pressed(pos: Vector2)
+
+var gp: Dictionary = {}
+var capitalized: bool = false
+var is_pressed: bool = false
 
 @onready var highlight_fx: HighlightFX = %HighlightFX
 @onready var right_fx: RightFX = %RightFX
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var button: Button = $Button
 
-var gp: Dictionary = {}
-var capitalized: bool = false
-var is_pressed: bool = false
 
 func _ready() -> void:
 	if gp:
@@ -35,6 +36,7 @@ func wrong() -> void:
 	wrong_fx.play()
 	set("theme_override_colors/font_color",Color.RED)
 	await wrong_fx.finished
+
 
 func highlight(value: bool = true) -> void:
 	if value:

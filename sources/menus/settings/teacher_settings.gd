@@ -1,30 +1,25 @@
-extends Control
 class_name SettingsTeacherSettings
+extends Control
 
 const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
-
 const DEVICE_TAB_SCENE: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
+
+var last_device_id: int = -1
 
 @onready var devices_tab_container: TabContainer = %DevicesTabContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
 @onready var loading_popup: LoadingPopup = %LoadingPopup
-
-
 @onready var account_type_option_button: OptionButton = %AccountTypeOptionButton
 @onready var education_method_option_button: OptionButton = %EducationMethodOptionButton
-
 @onready var add_device_button: Button = %AddDeviceButton
 @onready var add_student_button: Button = %AddStudentButton
 @onready var label_internet_mandatory: Label = %LabelInternetMandatory
-
 @onready var add_device_popup: CanvasLayer = %AddDevicePopup
 @onready var add_student_popup: CanvasLayer = %AddStudentPopup
 @onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
-
-var last_device_id: int = -1
 
 
 func _ready() -> void:
@@ -57,7 +52,7 @@ func _on_account_type_option_button_item_selected(index: int) -> void:
 		UserDataManager.teacher_settings.last_modified = Time.get_datetime_string_from_system(true)
 		UserDataManager.save_teacher_settings()
 	else:
-		Logger.warn("SettingsTeacherSettings: Cannot assign index %d to AccountType" % index)
+		Log.warn("SettingsTeacherSettings: Cannot assign index %d to AccountType" % index)
 
 
 func _on_education_method_option_button_item_selected(index: int) -> void:
@@ -66,7 +61,7 @@ func _on_education_method_option_button_item_selected(index: int) -> void:
 		UserDataManager.teacher_settings.last_modified = Time.get_datetime_string_from_system(true)
 		UserDataManager.save_teacher_settings()
 	else:
-		Logger.warn("SettingsTeacherSettings: Cannot assign index %d to EducationMethod" % index)
+		Log.warn("SettingsTeacherSettings: Cannot assign index %d to EducationMethod" % index)
 
 
 func refresh_devices_tabs() -> void:
@@ -74,7 +69,7 @@ func refresh_devices_tabs() -> void:
 		child.queue_free()
 	
 	if not UserDataManager.teacher_settings:
-		Logger.error("SettingsTeacherSettings: Teacher settings not found")
+		Log.error("SettingsTeacherSettings: Teacher settings not found")
 		return
 	
 	for device: int in UserDataManager.teacher_settings.students.keys():
@@ -133,7 +128,7 @@ func _on_add_student_button_pressed() -> void:
 func _on_add_student_popup_accepted() -> void:
 	var current_tab: DeviceTab = devices_tab_container.get_current_tab_control() as DeviceTab
 	if not current_tab:
-		Logger.error("SettingsTeacherSettings: DeviceTab not found")
+		Log.error("SettingsTeacherSettings: DeviceTab not found")
 		return
 	var res: Dictionary = await ServerManager.add_student({"device": current_tab.device_id})
 	if res.code == 200:
@@ -141,7 +136,7 @@ func _on_add_student_popup_accepted() -> void:
 		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
 		current_tab.refresh()
 	else:
-		Logger.error("SettingsTeacherSettings: Request to add student failed. Error code " + str(res.code))
+		Log.error("SettingsTeacherSettings: Request to add student failed. Error code " + str(res.code))
 
 
 func _on_add_device_button_pressed() -> void:
@@ -184,7 +179,7 @@ func update_student_name(student_code: int, student_name: String) -> void:
 			if student_panel.student_data.code == student_code:
 				student_panel.name_label.text = student_name
 				return
-	Logger.warn("SettingsTeacherSettings: update_student_name: student not found with code " + str(student_code))
+	Log.warn("SettingsTeacherSettings: update_student_name: student not found with code " + str(student_code))
 
 #region Synchronization
 
@@ -195,9 +190,9 @@ func _on_dashboard_button_pressed() -> void:
 			if (res.body as Dictionary).has("url"):
 				OS.shell_open(res.body.url as String)
 				return
-		Logger.error("SettingsTeacherSettings: Request to get Dashboard link has an invalid content")
+		Log.error("SettingsTeacherSettings: Request to get Dashboard link has an invalid content")
 	else:
-		Logger.error("SettingsTeacherSettings: Request to get Dashboard link failed. Error code " + str(res.code))
+		Log.error("SettingsTeacherSettings: Request to get Dashboard link failed. Error code " + str(res.code))
 
 
 func _on_synchronize_button_pressed() -> void:
@@ -209,6 +204,6 @@ func _on_loading_popup_ok() -> void:
 
 
 func _on_loading_popup_cancel() -> void:
-	Logger.warn("SettingsTeacherSettings: User wanted to cancel synchronization but it is impossible to interrupt.")
+	Log.warn("SettingsTeacherSettings: User wanted to cancel synchronization but it is impossible to interrupt.")
 
 #endregion

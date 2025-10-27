@@ -1,5 +1,5 @@
-extends Node
 class_name Bezier
+extends Node
 
 
 static func bezier_square_error(current_points: Array, ref_points: Array) -> float:

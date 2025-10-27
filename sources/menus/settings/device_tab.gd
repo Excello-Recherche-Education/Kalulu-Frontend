@@ -1,14 +1,14 @@
-extends TabBar
 class_name DeviceTab
+extends TabBar
 
 signal student_pressed(code: int)
 
 const STUDENT_PANEL_SCENE: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
 
-@onready var students_container: GridContainer = %StudentsContainer
-
 @export var device_id: int
 @export var students: Array[StudentData] = []
+
+@onready var students_container: GridContainer = %StudentsContainer
 
 
 func _ready() -> void:

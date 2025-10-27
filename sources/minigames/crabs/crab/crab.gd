@@ -1,17 +1,6 @@
 @tool
-extends Control
 class_name Crab
-
-signal crab_hit(stimulus: Dictionary)
-
-@onready var body: Control = $Body
-@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
-@onready var label: Label = $Body/Label
-@onready var button: Button = $Button
-@onready var highlight_fx: HighlightFX = %HighlightFX
-@onready var right_fx: RightFX = %RightFX
-@onready var wrong_fx: WrongFX = %WrongFX
-@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+extends Control
 
 var sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_1.mp3"),
@@ -28,14 +17,27 @@ var sounds: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_12.mp3"),
 	preload("res://assets/minigames/crabs/audio/sfx/crab_random_13.mp3"),
 ]
-
 var stimulus: Dictionary:
 	set = _set_stimulus
+var blink_counter: int = 0
+var blink_delay: int = 3
+var blink_random: int = 3
+
+@onready var body: Control = $Body
+@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
+@onready var label: Label = %AutoSizeLabel.get_node("Label")
+@onready var button: Button = $Button
+@onready var highlight_fx: HighlightFX = %HighlightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var wrong_fx: WrongFX = %WrongFX
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var text_outline: Sprite2D = %TextBox_Outline_Sprite2D
+@onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
 
 
 func _ready() -> void:
 	set_button_active(false)
-	animated_sprite.play("idle1")
+	animated_sprite.play("idle")
 	if not Engine.is_editor_hint():
 		_on_audio_stream_player_finished()
 
@@ -50,13 +52,11 @@ func is_button_pressed() -> bool:
 
 
 func show_label() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(label, "modulate:a", 1, .5)
+	label.visible = true
 
 
 func hide_label() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(label, "modulate:a", 0, .5)
+	label.visible = false
 
 
 func highlight() -> void:
@@ -68,11 +68,23 @@ func is_highlighted() -> bool:
 
 
 func right() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Color("#009444")
+	text_box_sprite_2d.self_modulate = Color("#e6f3e0")
+	text_outline.self_modulate = Color("#009344")
+	text_outline.visible = true
+	animated_sprite.play("right")
 	right_fx.play()
 	await right_fx.finished
 
 
 func wrong() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Color("#be1e2d")
+	text_box_sprite_2d.self_modulate = Color("#fce6e6")
+	text_outline.self_modulate = Color("#be1e2d")
+	text_outline.visible = true
+	animated_sprite.play("wrong")
 	wrong_fx.play()
 	await wrong_fx.finished
 
@@ -83,20 +95,17 @@ func _set_stimulus(value: Dictionary) -> void:
 		label.text = stimulus.Grapheme
 
 
-func _on_button_pressed() -> void:
-	crab_hit.emit(stimulus)
-	animated_sprite.play("hit")
-
-
 func _on_animated_sprite_2d_animation_finished() -> void:
 	match animated_sprite.animation:
-		"idle1", "idle2":
-			if randf() < 0.5:
-				animated_sprite.play("idle1") 
+		"idle":
+			blink_counter -= 1
+			if blink_counter <= 0:
+				blink_counter = blink_delay + randi_range(0, blink_random)
+				animated_sprite.play("idle_blink") 
 			else: 
-				animated_sprite.play("idle2")
-		"hit":
-			animated_sprite.play("hurt")
+				animated_sprite.play("idle")
+		"idle_blink":
+			animated_sprite.play("idle")
 
 
 func _on_audio_stream_player_finished() -> void:

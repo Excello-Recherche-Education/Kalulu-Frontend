@@ -48,6 +48,6 @@ offset = Vector2(0, -300)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_7dqrr")
+&"": SubResource("AnimationLibrary_7dqrr")
 }
 autoplay = "shiver"

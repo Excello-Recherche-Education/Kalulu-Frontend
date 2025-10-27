@@ -1,10 +1,11 @@
 @tool
-extends Control
 class_name FormBinder
+extends Control
 
 @export var data: Resource
 
 var _control_binder_map: Dictionary[Control, ControlBinder] = {}
+
 
 func _ready() -> void:
 	_find_binders(self)
@@ -34,7 +35,7 @@ func read(resource: Resource) -> void:
 			var property_value: Variant = data.get(binder.property_name)
 			binder.set_value(property_value)
 		else:
-			Logger.warn("FormBinder: Property " + binder.property_name + " not found in " + data.get_class())
+			Log.warn("FormBinder: Property " + binder.property_name + " not found in " + data.get_class())
 
 
 func write() -> bool:
@@ -46,6 +47,6 @@ func write() -> bool:
 		if binder.property_name in data:
 			data.set(binder.property_name as StringName, binder.get_value())
 		else:
-			Logger.warn("FormBinder: Property " + str(binder.property_name) + " not found in " + data.get_class())
+			Log.warn("FormBinder: Property " + str(binder.property_name) + " not found in " + data.get_class())
 	
 	return true

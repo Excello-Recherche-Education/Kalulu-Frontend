@@ -1,6 +1,6 @@
 @tool
-extends Node2D
 class_name Branch
+extends Node2D
 
 signal branch_pressed()
 signal berry_pressed(gp: Dictionary)
@@ -8,15 +8,15 @@ signal berry_pressed(gp: Dictionary)
 const LEAF_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/leaf.tscn")
 const BERRY_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/berry.tscn")
 
+var velocity: float = 0.0
+var is_highlighting: bool = false:
+	set = _set_highlighting
+var is_running: bool = true
+
 @onready var leaves: Node2D = $Leaves
 @onready var berries: Node2D = $Berries
 @onready var leaf_timer: Timer = $LeafTimer
 
-var velocity: float = 0.0
-var is_highlighting: bool = false:
-	set = _set_highlighting
-
-var is_running: bool = true
 
 func _set_highlighting(value: bool) -> void:
 	is_highlighting = value
@@ -64,7 +64,6 @@ func spawn_berry(gp: Dictionary, is_distractor: bool) -> void:
 func clear_berries() -> void:
 	for berry: Berry in berries.get_children():
 		berry.fall()
-
 
 # ---------- CONNECTIONS ---------- # 
 

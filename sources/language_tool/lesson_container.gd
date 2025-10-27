@@ -1,13 +1,11 @@
-extends MarginContainer
 class_name LessonContainer
-
-var gp_label_scene: PackedScene = preload("res://sources/language_tool/lesson_gp_label.tscn")
+extends MarginContainer
 
 signal lesson_dropped(before: bool, number: int, dropped_number: int)
 
+var gp_label_scene: PackedScene = preload("res://sources/language_tool/lesson_gp_label.tscn")
 var number: int = 0:
 	set = set_number
-
 
 @onready var gp_container: HBoxContainer = $%GPContainer
 @onready var number_label: Label = $%NumberLabel
@@ -49,16 +47,16 @@ func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:
 	if data is Dictionary:
 		return (data as Dictionary).has("gp_id")
 	else:
-		Logger.error("LessonContainer: Can not drop data (that is not of type Dictionary) in GP Container")
+		Log.error("LessonContainer: Can not drop data (that is not of type Dictionary) in GP Container")
 		return false
 
 
 func _drop_data_in_gp_container(_at_position: Vector2, data: Variant) -> void:
 	if not data is Dictionary:
-		Logger.error("LessonContainer: Cancel drop data in GP container because data is not of type Dictionary")
+		Log.error("LessonContainer: Cancel drop data in GP container because data is not of type Dictionary")
 		return
 	if not (data as Dictionary).has("gp_id"):
-		Logger.trace("LessonContainer: Cancel drop data in GP container because data has no key gp_id")
+		Log.trace("LessonContainer: Cancel drop data in GP container because data has no key gp_id")
 		return
 	var new_gp_label: LessonGPLabel = gp_label_scene.instantiate()
 	new_gp_label.grapheme = data.grapheme
@@ -82,13 +80,13 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	if data is Dictionary:
 		return ((data as Dictionary).has("number") and number != (data as Dictionary).number) or _can_drop_in_gp_container(at_position, data)
 	else:
-		Logger.error("LessonContainer: Can not drop data that is not of type Dictionary")
+		Log.error("LessonContainer: Can not drop data that is not of type Dictionary")
 		return false
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if not data is Dictionary:
-		Logger.error("LessonContainer: drop data failed because data is not of type Dictionary")
+		Log.error("LessonContainer: drop data failed because data is not of type Dictionary")
 		return
 	if not (data as Dictionary).has("number") or (data as Dictionary).has("gp_id"):
 		return

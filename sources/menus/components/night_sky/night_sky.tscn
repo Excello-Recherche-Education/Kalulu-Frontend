@@ -52,7 +52,6 @@ color = Color(0, 0.00392157, 0.0980392, 1)
 light_mask = 0
 position = Vector2(1280, 896)
 amount = 300
-process_material = SubResource("ParticleProcessMaterial_qhymc")
 texture = ExtResource("1_j3m5j")
 lifetime = 8.0
 preprocess = 6.0
@@ -60,6 +59,7 @@ speed_scale = 0.25
 explosiveness = 0.1
 randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
+process_material = SubResource("ParticleProcessMaterial_qhymc")
 
 [node name="Light" type="PointLight2D" parent="."]
 light_mask = 512

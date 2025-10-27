@@ -1,6 +1,6 @@
 @tool
-extends Control
 class_name SandVFX
+extends Control
 
 const TEXTURES: Array[CompressedTexture2D] = [
 	preload("res://assets/vfx/sand_01.png"),
@@ -12,10 +12,11 @@ const TEXTURES: Array[CompressedTexture2D] = [
 	preload("res://assets/vfx/sand_07.png")
 ]
 
+var is_playing: bool = false
+
 @onready var particles: GPUParticles2D = $Particles
 @onready var timer: Timer = $Timer
 
-var is_playing: bool = false
 
 func _ready() -> void:
 	timer.wait_time = particles.lifetime

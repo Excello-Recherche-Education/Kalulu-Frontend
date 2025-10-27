@@ -1,7 +1,15 @@
-extends Control
 class_name WordList
+extends Control
 
 @export var element_scene: PackedScene = preload("res://sources/language_tool/word_list_element.tscn")
+
+var undo_redo: UndoRedo = UndoRedo.new()
+var in_new_gp_mode: bool = false:
+	set = set_in_new_gp_mode
+var _element: WordListElement
+var sub_elements_list: Dictionary = {}
+var new_gp_asked_element: WordListElement
+var new_gp_asked_ind: int
 
 @onready var elements_container: VBoxContainer = %ElementsContainer
 @onready var new_gp_layer: CanvasLayer = $NewGPLayer
@@ -11,14 +19,6 @@ class_name WordList
 @onready var word_title: Label = %Word
 @onready var graphemes_title: Label = %Graphemes
 @onready var error_label: Label = %ErrorLabel
-
-var undo_redo: UndoRedo = UndoRedo.new()
-var in_new_gp_mode: bool = false:
-	set = set_in_new_gp_mode
-var _element: WordListElement
-var sub_elements_list: Dictionary = {}
-var new_gp_asked_element: WordListElement
-var new_gp_asked_ind: int
 
 
 func create_sub_elements_list() -> void:
@@ -93,7 +93,7 @@ func ensure_column_exists(table_name: String, column_name: String, default_value
 		var alter_sql: String = "ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT %s;" % [table_name, column_name, default_value]
 		var result: bool = Database.db.query(alter_sql)
 		if not result:
-			Logger.error("WordList: Failed to add column '%s' to table '%s'" % [column_name, table_name])
+			Log.error("WordList: Failed to add column '%s' to table '%s'" % [column_name, table_name])
 
 
 func _input(event: InputEvent) -> void:
@@ -136,7 +136,7 @@ func _on_element_new_gp_asked(ind: int, element: WordListElement) -> void:
 	elif new_gp is GPListElement:
 		(new_gp as GPListElement).edit_mode()
 	else:
-		Logger.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
+		Log.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
 
 
 func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
@@ -150,7 +150,7 @@ func _on_gp_list_element_validated() -> void:
 	elif new_gp is GPListElement:
 		(new_gp as GPListElement).insert_in_database()
 	else:
-		Logger.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
+		Log.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
 	if new_gp is Object:
 		if (new_gp as Object).has_method("update_lesson"):
 			if new_gp is WordListElement:
@@ -158,9 +158,9 @@ func _on_gp_list_element_validated() -> void:
 			elif new_gp is SentenceListElement:
 				(new_gp as SentenceListElement).update_lesson()
 			else:
-				Logger.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
+				Log.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
 	else:
-		Logger.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
+		Log.error("WordList: Variable new_gp is of unknown type %s" % type_string(typeof(new_gp)))
 	in_new_gp_mode = false
 	create_sub_elements_list()
 	for element: WordListElement in elements_container.get_children():
@@ -188,7 +188,6 @@ func _on_save_button_pressed() -> void:
 		if not found:
 			Database.db.delete_rows(_element.table, "ID=%s" % elem[_element.table_graph_column + "Id"])
 	undo_redo.clear_history()
-
 
 
 func _on_back_button_pressed() -> void:
@@ -228,16 +227,16 @@ func _on_word_gui_input(event: InputEvent) -> void:
 
 func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> void:
 	if not FileAccess.file_exists(path):
-		Logger.error("WordList: File not found %s" % path)
+		Log.error("WordList: File not found %s" % path)
 		error_label.text = "File not found"
 		return
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Logger.error("WordList: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		Log.error("WordList: Cannot open file %s. Error: %s" % [path, error_string(error)])
 		return
 	if file == null:
-		Logger.error("WordList: Cannot open file %s. File is null" % path)
+		Log.error("WordList: Cannot open file %s. File is null" % path)
 		return
 	var line: PackedStringArray = file.get_csv_line()
 	if line.size() < 2 or line[0] != "ORTHO" or line[1] != "GPMATCH":

@@ -1,6 +1,6 @@
 @tool
-extends Control
 class_name Jellyfish
+extends Control
 
 signal pressed(stimulus: Dictionary)
 
@@ -17,12 +17,10 @@ const ANIMATIONS_ARMS: Array[SpriteFrames] = [
 	preload("res://sources/minigames/jellyfish/blue_jellyfish_animations_arms.tres"),
 	preload("res://sources/minigames/jellyfish/pink_jellyfish_animations_arms.tres"),
 ]
-
 const SCALES: Array[Vector2] = [
 	Vector2(1.,1.),
 	Vector2(1.25, 1.25)
 ]
-
 const SCALE_FACTOR: float = 0.2
 
 @export var color: int = Colors.Red:
@@ -31,15 +29,24 @@ const SCALE_FACTOR: float = 0.2
 		if animated_sprite_body:
 			animated_sprite_body.sprite_frames = ANIMATIONS_BODY[color]
 		else:
-			Logger.error("Jellyfish: no animated sprite body")
+			Log.error("Jellyfish: no animated sprite body")
 		if animated_sprite_arms:
 			animated_sprite_arms.sprite_frames = ANIMATIONS_ARMS[color]
 		else:
-			Logger.error("Jellyfish: no animated sprite arms")
+			Log.error("Jellyfish: no animated sprite arms")
 		scale = SCALES[color] * (1. + randf() * SCALE_FACTOR)
 		
 		# Handles sprite size
 		sprite_control.resized.emit()
+
+var stimulus: Dictionary = {}:
+	set(value):
+		stimulus = value
+		if label:
+			if value.has("Grapheme"):
+				label.text = value.Grapheme
+			else:
+				label.text = ""
 
 @onready var sprite_control: SpriteControl = $SpriteControl
 @onready var animated_sprite_body: AnimatedSprite2D = %AnimatedSprite2D_Body
@@ -50,16 +57,6 @@ const SCALE_FACTOR: float = 0.2
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
 @onready var text_box_outline_sprite_2d: Sprite2D = %TextBox_Outline_Sprite2D
-
-
-var stimulus: Dictionary = {}:
-	set(value):
-		stimulus = value
-		if label:
-			if value.has("Grapheme"):
-				label.text = value.Grapheme
-			else:
-				label.text = ""
 
 
 func _ready() -> void:

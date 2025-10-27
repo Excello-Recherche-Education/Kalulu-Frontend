@@ -1,13 +1,12 @@
-extends Resource
 class_name UserDifficulty
+extends Resource
 
 signal difficulty_changed()
 
 # Stores the user history for all the minigames
 # Key -> minigame_name: String
 # Value -> UserMinigameHistory
-@export
-var minigames_histories: Dictionary = {} 
+@export var minigames_histories: Dictionary = {} 
 
 
 # Gets the difficulty of the user for the given minigame

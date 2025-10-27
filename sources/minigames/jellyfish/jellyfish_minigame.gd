@@ -3,16 +3,6 @@ extends SyllablesMinigame
 
 const JELLYFISH_SCENE: PackedScene = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
 
-class DifficultySettings:
-	var spawn_time: float = 4.0
-	var stimuli_ratio: float = 0.75
-	var velocity: int = 150
-	
-	func _init(p_spawn_time: float, p_stimuli_ratio: float, p_velocity: int) -> void:
-		spawn_time = p_spawn_time
-		stimuli_ratio = p_stimuli_ratio
-		velocity = p_velocity
-
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(4, 0.75, 150),
 	DifficultySettings.new(3, 0.66, 175),
@@ -20,12 +10,11 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(1, 0.25, 250),
 	DifficultySettings.new(1, 0.25, 300)
 ]
-
+var blocking_jellyfish: Array[Jellyfish] = []
 
 @onready var spawning_space: Control = %SpawningSpace
 @onready var spawn_timer: Timer = $GameRoot/SpawnTimer
 
-var blocking_jellyfish: Array[Jellyfish] = []
 
 func _start() -> void:
 	super()
@@ -127,9 +116,7 @@ func _on_current_progression_changed() -> void:
 	# Restarts the spawning of jellyfishes
 	spawn_timer.start()
 
-
 # ------------ Connections ------------
-
 
 func _on_spawn_timer_timeout() -> void:
 	_spawn()
@@ -184,3 +171,15 @@ func _on_stimulus_found() -> void:
 		jellyfish.delete()
 	
 	blocking_jellyfish.clear()
+
+
+class DifficultySettings:
+	var spawn_time: float = 4.0
+	var stimuli_ratio: float = 0.75
+	var velocity: int = 150
+	
+	
+	func _init(p_spawn_time: float, p_stimuli_ratio: float, p_velocity: int) -> void:
+		spawn_time = p_spawn_time
+		stimuli_ratio = p_stimuli_ratio
+		velocity = p_velocity

@@ -1,17 +1,17 @@
 extends Control
 
+const EXTENSION: String = ".csv"
+
 @export var gradient: Gradient
+
+var letters: Array[String] = []
+var current_letter: int = -1
 
 @onready var lower_container: SegmentContainer = %Lower
 @onready var upper_container: SegmentContainer = %Upper
 @onready var letter_picker: OptionButton = %LetterPicker
 @onready var save_ok: TextureRect = %SaveOk
 @onready var copy_from: MenuButton = %CopyFrom
-
-const EXTENSION: String = ".csv"
-
-var letters: Array[String] = []
-var current_letter: int = -1
 
 
 func _ready() -> void:
@@ -61,10 +61,10 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Logger.error("TracingBuilder: Load segment: Cannot open file %s. Error: %s" % [real_path(path), error_string(error)])
+		Log.error("TracingBuilder: Load segment: Cannot open file %s. Error: %s" % [real_path(path), error_string(error)])
 		return
 	if file == null:
-		Logger.error("TracingBuilder: Load segment: Cannot open file %s. File is null" % real_path(path))
+		Log.error("TracingBuilder: Load segment: Cannot open file %s. File is null" % real_path(path))
 		return
 	while not file.eof_reached():
 		var line: PackedStringArray = file.get_csv_line()
@@ -84,10 +84,10 @@ func _save_segments(segments: Array[SegmentBuild], path: String) -> void:
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.WRITE)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Logger.error("TracingBuilder: Save segment: Cannot open file %s. Error: %s" % [real_path(path), error_string(error)])
+		Log.error("TracingBuilder: Save segment: Cannot open file %s. Error: %s" % [real_path(path), error_string(error)])
 		return
 	if file == null:
-		Logger.error("TracingBuilder: Save segment: Cannot open file %s. File is null" % real_path(path))
+		Log.error("TracingBuilder: Save segment: Cannot open file %s. File is null" % real_path(path))
 		return
 	for segment: SegmentBuild in segments:
 		var values: PackedStringArray = []

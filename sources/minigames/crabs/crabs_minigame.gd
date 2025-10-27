@@ -2,14 +2,7 @@
 extends SyllablesMinigame
 
 const HOLE_SCENE: PackedScene = preload("res://sources/minigames/crabs/hole/hole.tscn")
-
-class DifficultySettings:
-	var stimuli_ratio: float = 0.75
-	var rows: Array[int] = [2, 1]
-	
-	func _init(p_stimuli_ratio: float, p_rows: Array[int]) -> void:
-		stimuli_ratio = p_stimuli_ratio
-		rows = p_rows
+const BACKGROUND_2: CompressedTexture2D = preload("res://assets/minigames/crabs/graphic/background_2.png")
 
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.75, [2, 1]),
@@ -18,19 +11,19 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.25, [4, 3, 2]),
 	DifficultySettings.new(0.25, [4, 3, 4])
 ]
-
-@onready var crab_zone: Control = $GameRoot/CrabZone
-
 var holes: Array[Hole] = []
 var stimulus_spawned: bool = false
 
-
-# ------------ Initialisation ------------
+@onready var crab_zone: Control = $GameRoot/CrabZone
+@onready var background: TextureRect = %Background
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
 	super._setup_minigame()
+	
+	if randf() < 0.5:
+		background.texture = BACKGROUND_2
 
 	var current_difficulty_settings: DifficultySettings = _get_difficulty_settings()
 
@@ -119,7 +112,6 @@ func _on_current_progression_changed() -> void:
 	# Restarts the spawning of crabs
 	_spawn_crabs()
 
-
 # ------------ Crabs ------------
 
 # Spawn a set amount of crabs in random holes
@@ -172,3 +164,13 @@ func _on_stimulus_found() -> void:
 	# Despawn all the crabs
 	for hole: Hole in holes:
 		hole.stop.emit()
+
+
+class DifficultySettings:
+	var stimuli_ratio: float = 0.75
+	var rows: Array[int] = [2, 1]
+	
+	
+	func _init(p_stimuli_ratio: float, p_rows: Array[int]) -> void:
+		stimuli_ratio = p_stimuli_ratio
+		rows = p_rows

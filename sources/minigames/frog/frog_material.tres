@@ -20,9 +20,9 @@ domain_warp_fractal_gain = 0.1
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5gfk0"]
 width = 128
 height = 128
-seamless_blend_skirt = 0.0
-color_ramp = SubResource("Gradient_s16dt")
 noise = SubResource("FastNoiseLite_c8rmy")
+color_ramp = SubResource("Gradient_s16dt")
+seamless_blend_skirt = 0.0
 
 [resource]
 shader = ExtResource("1_obtft")

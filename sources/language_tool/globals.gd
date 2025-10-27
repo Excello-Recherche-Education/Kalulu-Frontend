@@ -1,8 +1,7 @@
 extends Node
+## Global data for prof_tool only
 
-# For prof_tool only
 var main_menu_selected_tab: int = 0
-
 var device_colors: Array[Color] = [
 	Color("9670e0"),
 	Color("ffe823"),

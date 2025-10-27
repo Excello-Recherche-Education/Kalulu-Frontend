@@ -159,6 +159,6 @@ texture = ExtResource("2_mfmfc")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_47w0h")
+&"": SubResource("AnimationLibrary_47w0h")
 }
 autoplay = "Spread"

@@ -1,7 +1,14 @@
 extends Control
 
+enum FileCheckResult {
+	OK,
+	ERROR_NOT_FOUND,
+	ERROR_CASE_MISMATCH
+}
+
 const BASE_PATH: String = "user://language_resources/"
 const SAVE_FILE_PATH: String = "user://prof_tool_save.tres"
+
 var save_file: ProfToolSave
 
 @onready var language_select_button: OptionButton = %LanguageSelectButton
@@ -140,6 +147,7 @@ var integrity_checking: bool = false
 var integrity_log_path: String = "user://database-integrity-log.txt"
 var total_integrity_warnings: int = 0
 
+
 func _check_db_integrity() -> void:
 	if integrity_checking:
 		return
@@ -163,7 +171,7 @@ func _check_db_integrity() -> void:
 		lesson_id = index +1
 		error_label.text = "Database integrity checks lesson " + str(lesson_id)
 		await get_tree().process_frame
-		Logger.trace("ProfToolMenu: Lesson_id = " + str(lesson_id))
+		Log.trace("ProfToolMenu: Lesson_id = " + str(lesson_id))
 		
 		var new_gps_for_lesson: Array = Database.get_gps_for_lesson(lesson_id, false, true, false, false, true)
 		for new_gp: Dictionary in new_gps_for_lesson:
@@ -256,8 +264,9 @@ func _check_db_integrity() -> void:
 	integrity_checking = false
 	if check_box_log.button_pressed:
 		var file_path: String = ProjectSettings.globalize_path(integrity_log_path)
-		Logger.trace("ProfToolMenu: Logs saved at " + file_path)
+		Log.trace("ProfToolMenu: Logs saved at " + file_path)
 		OS.shell_open(file_path)
+
 #endregion
 
 func log_message(message: String) -> bool:
@@ -274,18 +283,13 @@ func log_message(message: String) -> bool:
 			file.store_line(message)
 			file.close()
 		else:
-			Logger.warn("ProfToolMenu: Integrity log file not found")
+			Log.warn("ProfToolMenu: Integrity log file not found")
 		return true
 	else:
 		error_label.text = message
 		integrity_checking = false
 		return false
 
-enum FileCheckResult {
-	OK,
-	ERROR_NOT_FOUND,
-	ERROR_CASE_MISMATCH
-}
 
 func file_exists_case_sensitive(path: String) -> Dictionary:
 	var result: Dictionary = {
@@ -324,6 +328,7 @@ func file_exists_case_sensitive(path: String) -> Dictionary:
 		result.status = FileCheckResult.ERROR_NOT_FOUND
 
 	return result
+
 
 func _get_available_languages() -> Array[String]:
 	var available_languages: Array[String] = []
@@ -523,8 +528,8 @@ func _on_open_folder_button_pressed() -> void:
 func _on_tab_container_tab_changed(tab: int) -> void:
 	Globals.main_menu_selected_tab = tab
 
-
 #region Book Generation
+
 func create_book() -> void:
 	var lang_path: String = BASE_PATH.path_join(Database.language)
 	var file_names: Dictionary[String, String] = {
@@ -541,7 +546,7 @@ func create_book() -> void:
 		var file_path: String = lang_path.path_join(file_names[category])
 		var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
 		if file == null:
-			Logger.error("ProfToolMenu: Error opening file: " + file_path)
+			Log.error("ProfToolMenu: Error opening file: " + file_path)
 			continue
 
 		if file.eof_reached():
@@ -585,7 +590,7 @@ func create_book() -> void:
 
 			var values: PackedStringArray = parse_csv_line(line)
 			if values.size() != raw_headers.size():
-				Logger.warn("ProfToolMenu: Malformed line ignored: %s" % values)
+				Log.warn("ProfToolMenu: Malformed line ignored: %s" % values)
 				continue
 
 			var row_dict: Dictionary[String, String] = {}
@@ -618,7 +623,7 @@ func create_book() -> void:
 	var output_path: String = lang_path.path_join("booklet.csv")
 	var output_file: FileAccess = FileAccess.open(output_path, FileAccess.WRITE)
 	if output_file == null:
-		Logger.error("ProfToolMenu: Impossible to write: " + output_path)
+		Log.error("ProfToolMenu: Impossible to write: " + output_path)
 		return
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
@@ -633,7 +638,8 @@ func create_book() -> void:
 	output_file.close()
 	
 	error_label.text = "📘 Export data of the booklet finished to path: " + output_path
-	Logger.trace("ProfToolMenu: " + error_label.text)
+	Log.trace("ProfToolMenu: " + error_label.text)
+
 
 # Fonction qui ajoute une ligne au dictionnaire
 func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[String, String], categorie: String, all_headers: Array) -> void:
@@ -688,6 +694,7 @@ func parse_csv_line(line: String) -> PackedStringArray:
 	result.append(current)
 	return result
 
+
 # Transforme une ligne pour l'écriture CSV, avec échappement
 func escape_csv_line(fields: PackedStringArray) -> String:
 	var output: String = ""
@@ -700,9 +707,11 @@ func escape_csv_line(fields: PackedStringArray) -> String:
 			output += ","
 	return output
 
+
 # Normalise les noms de colonnes (ex: writing page -> Writing page)
 func normalize_header(header_name: String) -> String:
 	return header_name.strip_edges()[0].to_upper() + header_name.strip_edges().substr(1, -1).to_lower()
+
 
 # Lit une "ligne logique" complète d’un CSV (même si elle est sur plusieurs lignes à cause des guillemets)
 func read_csv_record(file: FileAccess) -> String:
@@ -726,6 +735,5 @@ func read_csv_record(file: FileAccess) -> String:
 			break
 
 	return record
-
 
 #endregion

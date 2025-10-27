@@ -29,7 +29,6 @@ max_value = 90.0
 value = 1.0
 
 [node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/DevicesCountContainer/DevicesCountField" index="2"]
-layout_mode = 2
 anchors_preset = 0
 offset_left = -354.0
 offset_top = -20.0

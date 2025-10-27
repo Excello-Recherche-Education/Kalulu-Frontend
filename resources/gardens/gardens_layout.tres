@@ -5,7 +5,6 @@
 
 [sub_resource type="Resource" id="Resource_fr4uw"]
 script = ExtResource("1_wyhh0")
-color = 0
 flowers_export = Array[Dictionary]([{
 "color": 0,
 "position": Vector2i(1648, 1216),
@@ -40,7 +39,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(674, -580),
 "position": Vector2i(1854, 772)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_613ra"]
 script = ExtResource("1_wyhh0")
@@ -79,7 +77,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(-93, -301),
 "position": Vector2i(1631, 793)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_hx083"]
 script = ExtResource("1_wyhh0")
@@ -118,7 +115,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(722, -757),
 "position": Vector2i(1678, 1149)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_kpsso"]
 script = ExtResource("1_wyhh0")
@@ -157,7 +153,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(752, 471),
 "position": Vector2i(1917, 385)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_wpces"]
 script = ExtResource("1_wyhh0")
@@ -196,7 +191,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(218, -52),
 "position": Vector2i(1790, 1052)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_k0mq8"]
 script = ExtResource("1_wyhh0")
@@ -235,7 +229,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(786, 1163),
 "position": Vector2i(1845, 361)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_ikqrb"]
 script = ExtResource("1_wyhh0")
@@ -274,7 +267,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(515, -293),
 "position": Vector2i(1764, 813)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_3fweq"]
 script = ExtResource("1_wyhh0")
@@ -313,7 +305,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(1060, 223),
 "position": Vector2i(1607, 737)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_cafmm"]
 script = ExtResource("1_wyhh0")
@@ -352,7 +343,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(465, 235),
 "position": Vector2i(1442, 540)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_4s0ts"]
 script = ExtResource("1_wyhh0")
@@ -391,7 +381,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(1772, 839),
 "position": Vector2i(938, 77)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_kseol"]
 script = ExtResource("1_wyhh0")
@@ -430,7 +419,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(804, 168),
 "position": Vector2i(1427, 973)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_hrrh3"]
 script = ExtResource("1_wyhh0")
@@ -469,7 +457,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(535, -141),
 "position": Vector2i(1136, 85)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_qrofo"]
 script = ExtResource("1_wyhh0")
@@ -508,7 +495,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(894, 971),
 "position": Vector2i(1163, 177)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_4w17v"]
 script = ExtResource("1_wyhh0")
@@ -547,7 +533,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(1105, -145),
 "position": Vector2i(1718, 209)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_34a7r"]
 script = ExtResource("1_wyhh0")
@@ -586,7 +571,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(2078, -724),
 "position": Vector2i(558, 1324)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_on6xc"]
 script = ExtResource("1_wyhh0")
@@ -625,7 +609,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(470, -344),
 "position": Vector2i(1698, 1256)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_jvuuw"]
 script = ExtResource("1_wyhh0")
@@ -664,7 +647,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(362, 40),
 "position": Vector2i(1962, 572)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_x50x8"]
 script = ExtResource("1_wyhh0")
@@ -703,7 +685,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(970, -508),
 "position": Vector2i(1622, 1304)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_xuyep"]
 script = ExtResource("1_wyhh0")
@@ -742,7 +723,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(314, 224),
 "position": Vector2i(534, 1296)
 }])
-is_first_or_last = 1
 
 [sub_resource type="Resource" id="Resource_ectbt"]
 script = ExtResource("1_wyhh0")
@@ -781,7 +761,6 @@ lesson_buttons_export = Array[Dictionary]([{
 "path_out_position": Vector2i(0, 0),
 "position": Vector2i(1638, 840)
 }])
-is_first_or_last = 1
 
 [resource]
 script = ExtResource("2_0vfv5")

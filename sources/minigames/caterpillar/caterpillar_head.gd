@@ -1,10 +1,11 @@
 @tool
-extends Node2D
 class_name CaterpillarHead
+extends Node2D
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var audio_stream_player: CaterpillarAudioStreamPlayer = $CaterpillarAudioStreamPlayer
 @onready var spit_vfx: SpitVFX = $SpitFX
+
 
 func _ready() -> void:
 	idle()

@@ -2,19 +2,19 @@
 
 [ext_resource type="Script" uid="uid://w3bvkvn7umfw" path="res://addons/godot-form-validator/example/example.gd" id="1_8caq6"]
 [ext_resource type="Script" uid="uid://ddmyah1o42hwp" path="res://addons/godot-form-validator/form_validator.gd" id="2_mtxo0"]
-[ext_resource type="Script" uid="uid://dg4qit8mffvjh" path="res://addons/godot-form-validator/control_validator.gd" id="3_hkwup"]
+[ext_resource type="Script" uid="uid://b23qfes63s2no" path="res://addons/godot-form-validator/control_validator.gd" id="3_hkwup"]
 [ext_resource type="Script" uid="uid://dg17cfvs2w257" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="4_d7ctn"]
-[ext_resource type="Script" uid="uid://wgfr07ktmqap" path="res://addons/godot-form-validator/rules/alpha_rule.gd" id="4_dq1df"]
-[ext_resource type="Script" uid="uid://dw5aercmfe4" path="res://addons/godot-form-validator/rules/required_rule.gd" id="5_cu56g"]
+[ext_resource type="Script" uid="uid://ce2mdbvkkvvt4" path="res://addons/godot-form-validator/rules/alpha_rule.gd" id="4_dq1df"]
+[ext_resource type="Script" uid="uid://b0dbsne0vdlsi" path="res://addons/godot-form-validator/rules/required_rule.gd" id="5_cu56g"]
 [ext_resource type="Script" uid="uid://c1cqwb15yoqb3" path="res://addons/godot-form-validator/validators/line_edit_validator.gd" id="5_rknpr"]
-[ext_resource type="Script" uid="uid://dgk131fex3ts2" path="res://addons/godot-form-validator/rules/numeric_rule.gd" id="7_6vtuw"]
+[ext_resource type="Script" uid="uid://cklaq6vs6ekl5" path="res://addons/godot-form-validator/rules/numeric_rule.gd" id="7_6vtuw"]
 [ext_resource type="Script" uid="uid://bueqq0cpyjwtg" path="res://addons/godot-form-validator/rules/alphanumeric_rule.gd" id="8_mu0ia"]
-[ext_resource type="Script" uid="uid://dvpln5snrt4mq" path="res://addons/godot-form-validator/rules/email_rule.gd" id="9_4ynyw"]
-[ext_resource type="Script" uid="uid://bj4s5o33vkcts" path="res://addons/godot-form-validator/rules/length_rule.gd" id="10_iuueu"]
-[ext_resource type="Script" uid="uid://snmw7k006wch" path="res://addons/godot-form-validator/rules/greater_than_rule.gd" id="11_1tya3"]
+[ext_resource type="Script" uid="uid://f4gllyb5w8eb" path="res://addons/godot-form-validator/rules/email_rule.gd" id="9_4ynyw"]
+[ext_resource type="Script" uid="uid://daolm78xg3qgd" path="res://addons/godot-form-validator/rules/length_rule.gd" id="10_iuueu"]
+[ext_resource type="Script" uid="uid://dxd215tab7r34" path="res://addons/godot-form-validator/rules/greater_than_rule.gd" id="11_1tya3"]
 [ext_resource type="Script" uid="uid://kleihw30fvoh" path="res://addons/godot-form-validator/validators/range_validator.gd" id="11_51cp7"]
 [ext_resource type="Script" uid="uid://couf48gpjy4yt" path="res://addons/godot-form-validator/validators/button_validator.gd" id="13_eri47"]
-[ext_resource type="Script" uid="uid://c7tybiqm6xgvi" path="res://addons/godot-form-validator/rules/custom_rule.gd" id="13_ibg52"]
+[ext_resource type="Script" uid="uid://drref7rcao1tw" path="res://addons/godot-form-validator/rules/custom_rule.gd" id="13_ibg52"]
 [ext_resource type="Script" uid="uid://dsrxfoqxxycoi" path="res://addons/godot-form-validator/rules/boolean_rule.gd" id="15_xjpko"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nw8ds"]
@@ -30,9 +30,6 @@ fail_message = "Value must contain only alpha characters."
 
 [sub_resource type="Resource" id="Resource_15man"]
 script = ExtResource("5_rknpr")
-validation_order = 1
-validation_method = 0
-skip_validation = false
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_i25hd"), SubResource("Resource_4mimn")])
 
 [sub_resource type="LabelSettings" id="LabelSettings_su7t3"]
@@ -51,9 +48,6 @@ fail_message = "Value must contain only numbers."
 
 [sub_resource type="Resource" id="Resource_1t3q0"]
 script = ExtResource("5_rknpr")
-validation_order = 1
-validation_method = 0
-skip_validation = false
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_j4pud"), SubResource("Resource_xxhfq")])
 
 [sub_resource type="Resource" id="Resource_ftvbf"]
@@ -66,9 +60,6 @@ fail_message = "A value is required."
 
 [sub_resource type="Resource" id="Resource_61y5a"]
 script = ExtResource("5_rknpr")
-validation_order = 1
-validation_method = 0
-skip_validation = false
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_ftvbf"), SubResource("Resource_my5ss")])
 
 [sub_resource type="Resource" id="Resource_f3i8j"]
@@ -81,9 +72,6 @@ fail_message = "A value is required."
 
 [sub_resource type="Resource" id="Resource_q4oax"]
 script = ExtResource("5_rknpr")
-validation_order = 1
-validation_method = 0
-skip_validation = false
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_f3i8j"), SubResource("Resource_l5e3w")])
 
 [sub_resource type="Resource" id="Resource_d1g5r"]
@@ -94,13 +82,9 @@ fail_message = "A value is required."
 script = ExtResource("10_iuueu")
 min_length = 5
 max_length = 10
-fail_message = ""
 
 [sub_resource type="Resource" id="Resource_62odm"]
 script = ExtResource("5_rknpr")
-validation_order = 1
-validation_method = 0
-skip_validation = false
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_d1g5r"), SubResource("Resource_jqdfw")])
 
 [sub_resource type="Resource" id="Resource_qm2iv"]
@@ -110,13 +94,9 @@ fail_message = "A value is required."
 [sub_resource type="Resource" id="Resource_brbah"]
 script = ExtResource("11_1tya3")
 target_value = "3"
-fail_message = ""
 
 [sub_resource type="Resource" id="Resource_smogv"]
 script = ExtResource("11_51cp7")
-validation_order = 1
-validation_method = 0
-skip_validation = false
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_qm2iv"), SubResource("Resource_brbah")])
 
 [sub_resource type="Resource" id="Resource_4riv3"]
@@ -126,9 +106,6 @@ fail_message = "The red channel must be greater than 0.5."
 
 [sub_resource type="Resource" id="Resource_mh7td"]
 script = ExtResource("13_eri47")
-validation_order = 1
-validation_method = 0
-skip_validation = false
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_4riv3")])
 
 [sub_resource type="Resource" id="Resource_3nuq2"]
@@ -139,8 +116,6 @@ fail_message = "The check box must be checked."
 [sub_resource type="Resource" id="Resource_kbsj8"]
 script = ExtResource("13_eri47")
 validation_order = -1
-validation_method = 0
-skip_validation = false
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_3nuq2")])
 
 [node name="Example" type="PanelContainer"]

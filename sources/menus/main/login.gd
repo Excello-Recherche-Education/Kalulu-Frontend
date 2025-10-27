@@ -1,12 +1,11 @@
 extends Control
 
-signal logged_in
+signal logged_in()
 
 @onready var validator: FormValidator = %LoginFormValidator
 @onready var email_field: LineEdit = %EmailField
 @onready var password_field: LineEdit = %PasswordField
 @onready var login_message: Label = %LoginError
-
 @onready var device_id_container: VBoxContainer = %DeviceIDContainer
 @onready var device_id_field: SpinBox = %DeviceIDField
 
@@ -43,6 +42,7 @@ func _on_validate_button_pressed() -> void:
 	if res.code == 200:
 		# Login
 		if UserDataManager.login(res.body as Dictionary):
+			await UserDataManager.user_database_synchronizer.synchronize()
 			logged_in.emit()
 		else:
 			login_message.visible = true

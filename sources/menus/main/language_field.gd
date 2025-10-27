@@ -2,6 +2,7 @@ extends OptionButton
 
 var items: Array[String] = []
 
+
 func _ready() -> void:
 	# Adds the supported locales to the field
 	var idx: int = 0

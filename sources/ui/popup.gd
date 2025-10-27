@@ -1,18 +1,18 @@
 @tool
-extends CanvasLayer
 class_name ConfirmPopup
+extends CanvasLayer
 
-signal accepted
-signal refused
+signal accepted()
+signal refused()
 
 @export_multiline var content_text: String = "": set = _set_content_text
+@export var confirm_text_override: String = ""
+@export var cancel_text_override: String = ""
 
 @onready var content_label: Label = %ContentLabel
 @onready var confirm_button: Button = %ConfirmButton
 @onready var cancel_button: Button = %CancelButton
 
-@export var confirm_text_override: String = ""
-@export var cancel_text_override: String = ""
 
 func _ready() -> void:
 	_set_content_text(content_text)

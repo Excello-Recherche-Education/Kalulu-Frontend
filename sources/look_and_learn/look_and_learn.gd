@@ -1,8 +1,19 @@
-extends Control
 class_name LookAndLearn
+extends Control
+
+static var transition_data: Dictionary = {}
 
 @export var lesson_nb: int = 1
 @export var current_button_pressed: int = 0
+
+var gp_list: Array[Dictionary] = []
+var current_video: int = 0
+var videos: Array[VideoStream] = []
+var current_image_and_sound: int = 0
+var images: Array[Texture] = []
+var sounds: Array[AudioStream] = []
+var gardens_data: Dictionary = {}
+var current_tracing: int = 0
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
@@ -13,28 +24,13 @@ class_name LookAndLearn
 @onready var grapheme_particles: GPUParticles2D = $GraphemeParticles
 
 
-var gp_list: Array[Dictionary] = []
-var current_video: int = 0
-var videos: Array[VideoStream] = []
-
-var current_image_and_sound: int = 0
-var images: Array[Texture] = []
-var sounds: Array[AudioStream] = []
-
-static var transition_data: Dictionary = {}
-var gardens_data: Dictionary = {}
-
-
-var current_tracing: int = 0
-
-
 func _ready() -> void:
 	MusicManager.stop()
 	
 	gardens_data = transition_data
 	transition_data = {}
 	lesson_nb = gardens_data.get("current_lesson_number", lesson_nb)
-	Logger.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
+	Log.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
 	setup()
 	await OpeningCurtain.open()
 
@@ -43,7 +39,7 @@ func setup() -> void:
 	gp_list = Database.get_gps_for_lesson(lesson_nb, true, true)
 	
 	if gp_list.size() <= 0:
-		Logger.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))
+		Log.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))
 		await OpeningCurtain.open()
 		_on_tracing_manager_finished()
 		return
@@ -84,6 +80,7 @@ func setup() -> void:
 func play_videos() -> void:
 	if current_video >= videos.size():
 		animation_player.play("end_videos")
+		video_player.visible = false
 	else:
 		video_player.stream = videos[current_video]
 		video_player.play()
@@ -118,14 +115,14 @@ func _on_grapheme_button_pressed() -> void:
 			0:
 				current_button_pressed += 1
 				if videos.is_empty():
-					Logger.warn("LookAndLearn: Skipping video because empty in lesson %d" % lesson_nb)
+					Log.warn("LookAndLearn: Skipping video because empty in lesson %d" % lesson_nb)
 					continue
 				animation_player.play("to_videos")
 				loop = false
 			1:
 				current_button_pressed += 1
 				if images.is_empty() or sounds.is_empty():
-					Logger.warn("LookAndLearn: Skipping image&sound because empty in lesson %d" % lesson_nb)
+					Log.warn("LookAndLearn: Skipping image&sound because empty in lesson %d" % lesson_nb)
 					continue
 				animation_player.play("to_images_and_sounds")
 				loop = false
@@ -155,7 +152,6 @@ func _on_tracing_manager_finished() -> void:
 		gardens_data.first_clear = UserDataManager.student_progression.look_and_learn_completed(lesson_nb)
 		gardens_data.look_and_learn_completed = true
 		_back_to_gardens()
-
 
 
 func _back_to_gardens() -> void:

@@ -1,19 +1,17 @@
 @tool
-extends CanvasLayer
 class_name LoadingPopup
+extends CanvasLayer
 
-signal cancel
-signal ok
+signal cancel()
+signal ok()
 
 @export_multiline var content_text: String = "": set = _set_content_text
+@export var cancel_text_override: String = ""
 
 @onready var content_label: Label = %ContentLabel
 @onready var progress_bar: ProgressBar = %ProgressBar
-
 @onready var cancel_button: Button = %CancelButton
 @onready var ok_button: Button = %OKButton
-
-@export var cancel_text_override: String = ""
 
 
 func set_text(text: String) -> void:

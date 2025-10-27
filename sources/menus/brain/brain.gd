@@ -10,7 +10,6 @@ const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 @onready var kalulu: KALULU = $Kalulu
 @onready var kalulu_button: TextureButton = %KaluluButton
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
-
 @onready var garden_buttons: Array[TextureButton] = [
 	%GardenButton1,
 	%GardenButton2,
@@ -33,7 +32,6 @@ const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 	%GardenButton19,
 	%GardenButton20,
 ]
-
 @onready var particles: Array[GPUParticles2D] = [
 	%Particles1,
 	%Particles2,
@@ -56,17 +54,17 @@ const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 	%Particles19,
 	%Particles20,
 ]
-
 @onready var tutorial_speeches: Array[AudioStream]= [
 	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_1")),
 	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_2")),
 	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_3"))
 ]
-
 @onready var help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "help"))
+
 
 static func _compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
 	return Gardens.compute_lessons_distribution(total_lessons, garden_layouts)
+
 
 func _ready() -> void:
 	UserDataManager.start_synchronization_timer()
