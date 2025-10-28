@@ -606,7 +606,7 @@ func load_external_sound(path: String) -> AudioStreamMP3:
 			path = UnicodeNormalizer.to_nfd_extended(path)
 			Log.trace("Database: Load External Sound: File not found, retrying with Unicode NFD extended: %s" % path)
 			if not FileAccess.file_exists(path):
-				Log.error("Database: Load External Sound: File not found after normalization attempts")
+				Log.error("Database: Load External Sound: File not found after normalization attempts: %s" % path)
 				return null
 	
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
