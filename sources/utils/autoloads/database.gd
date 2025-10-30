@@ -47,11 +47,18 @@ func _exit_tree() -> void:
 
 func connect_to_db() -> void:
 	if is_open:
+		Log.trace("Database: Opening database while a connection is already opened. Closing the previous one.")
 		db.close_db()
+		is_open = false
 	if FileAccess.file_exists(db.path):
 		is_open = db.open_db()
+		if not is_open:
+			Log.error("Database: Database is not opened")
+			return
+		if db.get_error_message() != "":
+			Log.warn("Database: Database just opened but already contains an error message: %s" % db.get_error_message())
 	else:
-		Log.warn("Database: DB file not found at %s" % db.path)
+		Log.warn("Database: Database file not found at %s" % db.path)
 
 
 func get_additional_word_list_path() -> String:
