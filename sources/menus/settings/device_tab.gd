@@ -6,7 +6,7 @@ signal student_pressed(code: int)
 const STUDENT_PANEL_SCENE: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
 
 @export var device_id: int
-@export var students: Array[StudentData] = []
+@export var students: Array = [] # Array[StudentData]. Not hard-typed because of an incompatibility in teacher_settings/refresh_devices_tabs
 
 @onready var students_container: GridContainer = %StudentsContainer
 
@@ -27,9 +27,6 @@ func refresh() -> void:
 		var student_panel: StudentPanel = STUDENT_PANEL_SCENE.instantiate()
 		student_panel.student_count = student_count
 		student_panel.student_data = student
-		
 		student_panel.pressed.connect(func() -> void: student_pressed.emit(student.code))
-		
 		students_container.add_child(student_panel)
-		
 		student_count += 1

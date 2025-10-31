@@ -168,10 +168,20 @@ func get_student_device(student_code: int) -> int:
 
 func set_data_student_with_code(student_code: int, new_device_id: int, new_name: String, new_age: int, new_last_modified: String) -> void:
 	update_student_device(student_code, new_device_id)
+	if not students.has(new_device_id):
+		students.set(new_device_id, [])
+	var found: bool = false
 	for student_data: StudentData in students[new_device_id]:
 		if student_data.code == student_code:
 			student_data.name = new_name
 			student_data.age = new_age
 			student_data.last_modified = new_last_modified
 			return
-	Log.error("TeacherSettings: Student %d not found to set data on it" % student_code)
+	if not found:
+		Log.warn("TeacherSettings: Student %d not found to set data on it. Creating new student data" % student_code)
+		var new_student_data: StudentData = StudentData.new()
+		new_student_data.code = student_code
+		new_student_data.name = new_name
+		new_student_data.age = new_age
+		new_student_data.last_modified = new_last_modified
+		students[new_device_id].append(new_student_data)
