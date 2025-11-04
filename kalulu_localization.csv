@@ -335,6 +335,10 @@ EXERCISE3,Exercice 3,Ejercicio 3,Exercício 3
 Locked,Verrouillé,Bloqueado,Bloqueado
 Unlocked,Déverrouillé,Desbloqueado,Desbloqueado
 Completed,Terminé,Completado,Concluído
+CHECKING_LANGUAGE,Vérification de la langue...,Comprobando idioma...,Verificação de idioma...
+NO_TEACHER_SETTINGS_ON_DEVICE,Aucun paramètre enseignant n'est configuré sur cet appareil.,No hay ajustes de profesor en este dispositivo.,Nenhuma configuração de professor neste dispositivo.
+LANGUAGE_NOT_SUPPORTED,La langue « %s » n’est pas prise en charge.,El idioma « %s » no es compatible.,O idioma « %s » não é suportado.
+NO_VALID_LANGUAGE_DATA_AVAILABLE,Aucune donnée de langue disponible.,No hay datos de idioma disponibles.,Não há dados de idioma disponíveis.
 CHECKING_DATA,Vérification des données...,Comprobando datos...,Verificação de dados...
 TEACHER_SETTINGS_HELP,"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes","Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos","Para acessar as configurações, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botão \"Parâmetros\" por 5 segundos"
 DELETE_ACCOUNT,Supprimer le compte,Eliminar cuenta,Excluir conta

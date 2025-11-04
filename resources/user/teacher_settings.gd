@@ -19,6 +19,13 @@ const AVAILABLE_CODES: Array[int] = [123, 124, 125, 126, 132, 134, 135, 136, 142
 @export var token: String
 @export var last_modified: String = ""
 @export var _language: String = "" # internal variable exported by the inspector
+@export var server_language_validated: bool = false:
+	set(value):
+		Log.trace("TeacherSettings: set server_language_validated %s" % str(value))
+		server_language_validated = value
+
+var devices_count: int
+var password: String
 var language: String:
 	get:
 		return _language if _language != "" else _get_default_language()
@@ -28,12 +35,10 @@ var language: String:
 		Database.language = value
 		TranslationServer.set_locale(value)
 
+
 func _get_default_language() -> String:
 	Log.warn("TeacherSettings: get_language called but language is empty, returning device language by default. This should not happen.")
 	return UserDataManager.get_device_settings().language
-
-var devices_count: int
-var password: String
 
 
 func update_from_dict(dict: Dictionary) -> void:
@@ -47,8 +52,8 @@ func update_from_dict(dict: Dictionary) -> void:
 		token = dict.token
 	if dict.has("last_modified"):
 		last_modified = dict.last_modified
-	if dict.has("language"):
-		language = dict.language
+	if dict.has("language") and not dict.language == null and dict.language is String and dict.language in Utils.SUPPORTED_LOCALES.keys():
+		UserDataManager.set_language(dict.language as String, true)
 	
 	students.clear()
 	var d_students: Dictionary = dict.students

@@ -1,5 +1,14 @@
 extends Node
 
+const SUPPORTED_LOCALES: Dictionary[String, String] = {
+	"fr_FR": "Français (France)",
+	"es_AR": "Español (Argentina)",
+	"es_UY": "Español (Uruguay)",
+	"es_CO": "Español (Colombia)",
+	"pt_BR": "Português (Brasil)",
+	"es_DO": "Español (República Dominicana)"
+}
+
 
 func reorder_children_by_property(container: Node, property_name: String) -> void:
 	var children: Array[Node] = container.get_children()

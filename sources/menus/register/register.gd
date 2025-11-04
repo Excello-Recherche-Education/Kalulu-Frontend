@@ -7,12 +7,10 @@ var current_steps: Array[Step] = []
 
 @onready var language_step: PackedScene = preload("res://sources/menus/register/steps/language/language_step.tscn")
 @onready var teacher_steps: Array[PackedScene] = [
-	language_step,
 	preload("res://sources/menus/register/steps/teacher/method_step.tscn"),
 	preload("res://sources/menus/register/steps/teacher/devices_count_step.tscn")
 ]
 @onready var parent_steps: Array[PackedScene] = [
-	language_step,
 	preload("res://sources/menus/register/steps/parent/players_count_step.tscn")
 ]
 @onready var last_steps: Array[PackedScene] = [
@@ -31,7 +29,7 @@ var current_steps: Array[Step] = []
 
 
 func _ready() -> void:
-	current_steps = [account_type_step.instantiate()]
+	current_steps = [language_step.instantiate(), account_type_step.instantiate()]
 	_go_to_step(int(progress_bar.value))
 	OpeningCurtain.open()
 
@@ -105,6 +103,8 @@ func _on_step_completed(step: Step) -> void:
 			for scene: PackedScene in last_steps:
 				current_steps.append(scene.instantiate())
 			progress_bar.max_value = current_steps.size()
+		"language":
+			register_data.language = UserDataManager.get_language()
 	
 	if progress_bar.value == current_steps.size()-1:
 		# Send register via API

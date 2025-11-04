@@ -9,6 +9,9 @@ script = ExtResource("2")
 step_name = "language"
 question = "LANGUAGE"
 
+[node name="BackButton" parent="LeftMargin/LeftContainer" index="0"]
+text = "CANCEL"
+
 [node name="LanguageContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
 layout_mode = 2
 

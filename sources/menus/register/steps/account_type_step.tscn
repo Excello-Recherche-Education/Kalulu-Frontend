@@ -23,9 +23,6 @@ script = ExtResource("2_k6524")
 step_name = "type"
 question = "ACCOUNT_TYPE_PROMPT"
 
-[node name="BackButton" parent="LeftMargin/LeftContainer" index="0"]
-text = "CANCEL"
-
 [node name="TypeContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
 layout_mode = 2
 theme_override_constants/separation = 20
