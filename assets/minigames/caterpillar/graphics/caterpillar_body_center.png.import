@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vc5usf0x7cph"
-path="res://.godot/imported/branch_end.png-4f3b4dd90944a434bf873c6c1e2120e4.ctex"
+uid="uid://bxqxl2iflusat"
+path="res://.godot/imported/caterpillar_body_center.png-3080666b7bd5113b7b0db23940969db1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/caterpillar/graphics/branch_end.png"
-dest_files=["res://.godot/imported/branch_end.png-4f3b4dd90944a434bf873c6c1e2120e4.ctex"]
+source_file="res://assets/minigames/caterpillar/graphics/caterpillar_body_center.png"
+dest_files=["res://.godot/imported/caterpillar_body_center.png-3080666b7bd5113b7b0db23940969db1.ctex"]
 
 [params]
 

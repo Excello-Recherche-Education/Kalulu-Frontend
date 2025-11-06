@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7noke1ky61q8"
-path="res://.godot/imported/caterpillar_tail_2.png-5b41e17389c7c3dd812f28ac9628c688.ctex"
+uid="uid://3hqfi1r6s4sp"
+path="res://.godot/imported/berry_pink.png-1d9fdf90d571920f854a6f8b2b5e2ca1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/caterpillar/graphics/caterpillar_tail_2.png"
-dest_files=["res://.godot/imported/caterpillar_tail_2.png-5b41e17389c7c3dd812f28ac9628c688.ctex"]
+source_file="res://assets/minigames/caterpillar/graphics/berry_pink.png"
+dest_files=["res://.godot/imported/berry_pink.png-1d9fdf90d571920f854a6f8b2b5e2ca1.ctex"]
 
 [params]
 

@@ -1,4 +1,3 @@
-@tool
 extends Minigame
 
 enum State {

@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://dpnq3a54okbm7"]
+
+[ext_resource type="Texture2D" uid="uid://dg035yddvs04o" path="res://assets/minigames/caterpillar/graphics/caterpillar_legs_spritesheet.png" id="1_cf674"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mar67"]
+atlas = ExtResource("1_cf674")
+region = Rect2(0, 0, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlsel"]
+atlas = ExtResource("1_cf674")
+region = Rect2(58, 0, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbqxf"]
+atlas = ExtResource("1_cf674")
+region = Rect2(116, 0, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trbgy"]
+atlas = ExtResource("1_cf674")
+region = Rect2(174, 0, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_en6ls"]
+atlas = ExtResource("1_cf674")
+region = Rect2(232, 0, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0aqu6"]
+atlas = ExtResource("1_cf674")
+region = Rect2(290, 0, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3ehn"]
+atlas = ExtResource("1_cf674")
+region = Rect2(348, 0, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wudb4"]
+atlas = ExtResource("1_cf674")
+region = Rect2(406, 0, 58, 58)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_odigb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mar67")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlsel")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbqxf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trbgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_en6ls")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0aqu6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u3ehn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wudb4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="CaterpillarLegFront" type="Node2D"]
+
+[node name="AnimatedSprite2D_Leg_Front" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_odigb")
+autoplay = "default"
+frame_progress = 0.22068515
+speed_scale = 2.0

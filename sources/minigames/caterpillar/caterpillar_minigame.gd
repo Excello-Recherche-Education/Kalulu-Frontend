@@ -1,4 +1,3 @@
-@tool
 extends WordsMinigame
 
 const BRANCH_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/branch.tscn")

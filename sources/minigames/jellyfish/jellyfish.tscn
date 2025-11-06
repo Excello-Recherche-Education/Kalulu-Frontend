@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cpkwyypyikpfc"]
+[gd_scene load_steps=13 format=3 uid="uid://cpkwyypyikpfc"]
 
 [ext_resource type="Script" uid="uid://bk5oyj8r6aw2h" path="res://sources/utils/sprite_control.gd" id="1_1b85n"]
 [ext_resource type="Script" uid="uid://b1lfi4hen3e7" path="res://sources/minigames/jellyfish/jellyfish.gd" id="1_06uwq"]
@@ -10,14 +10,8 @@
 [ext_resource type="SpriteFrames" uid="uid://033w5t1wyg3w" path="res://sources/minigames/jellyfish/blue_jellyfish_animations_arms.tres" id="6_i86t4"]
 [ext_resource type="SpriteFrames" uid="uid://cyllu3lpjcxej" path="res://sources/minigames/jellyfish/blue_jellyfish_animations_body.tres" id="6_p6hdi"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="8_p6hdi"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="9_ah5ir"]
 [ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="10_jfr88"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_qqnw2"]
-font = ExtResource("8_p6hdi")
-font_size = 120
-font_color = Color(0.2, 0.2, 0.2, 1)
-outline_color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="Jellyfish" type="Control"]
 custom_minimum_size = Vector2(400, 400)
@@ -25,12 +19,11 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.07045, 1.07045)
+scale = Vector2(1.0708268, 1.0708268)
 script = ExtResource("1_06uwq")
 
 [node name="BackFX" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 220)
-layout_mode = 2
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 0.55
@@ -78,7 +71,7 @@ unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("6_p6hdi")
 animation = &"idle"
-frame_progress = 0.17636
+frame_progress = 0.7961169
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
@@ -113,8 +106,8 @@ layout_mode = 2
 
 [node name="Label" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = ""
-label_settings = SubResource("LabelSettings_qqnw2")
+text = "ent"
+label_settings = ExtResource("9_ah5ir")
 
 [node name="TextBox_Outline_Sprite2D" type="Sprite2D" parent="SpriteControl/TextBox_Sprite2D"]
 unique_name_in_owner = true
@@ -126,13 +119,12 @@ unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("6_i86t4")
 animation = &"idle"
-frame_progress = 0.17636
+frame_progress = 0.7961169
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
 [node name="FrontFX" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 220)
-layout_mode = 2
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 0.55

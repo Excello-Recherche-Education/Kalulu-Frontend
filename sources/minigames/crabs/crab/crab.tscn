@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://bwe3fp0vkpufb"]
+[gd_scene load_steps=50 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" uid="uid://dsv0728uv1y5l" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
 [ext_resource type="AudioStream" uid="uid://1ibmtydnewa8" path="res://assets/minigames/crabs/audio/sfx/crab_random_6.mp3" id="2_gc7a0"]
@@ -8,15 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_3sw4w"]
 [ext_resource type="Texture2D" uid="uid://c34sgkbvr3h8q" path="res://assets/minigames/minigame_ui/graphic/primary_text_box.png" id="7_wj62x"]
 [ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="8_6t11r"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="8_c4r2k"]
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="9_3nie6"]
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="10_kdwxe"]
 [ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="11_mgkmu"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_c4r2k"]
-font = ExtResource("10_kdwxe")
-font_size = 120
-font_color = Color(0.2, 0.2, 0.2, 1)
-outline_color = Color(0.2, 0.2, 0.2, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c4r2k"]
 atlas = ExtResource("2_yu4q0")
@@ -368,7 +362,7 @@ layout_mode = 2
 visible = false
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = ""
-label_settings = SubResource("LabelSettings_c4r2k")
+label_settings = ExtResource("8_c4r2k")
 
 [node name="TextBox_Outline_Sprite2D" type="Sprite2D" parent="Body/TextBox_Sprite2D"]
 unique_name_in_owner = true
@@ -381,8 +375,7 @@ scale = Vector2(1.8, 1.8)
 sprite_frames = SubResource("SpriteFrames_g5q5i")
 animation = &"idle"
 autoplay = "idle"
-frame = 7
-frame_progress = 1.0
+frame_progress = 0.8367004
 centered = false
 
 [node name="FrontFX" type="Control" parent="."]
