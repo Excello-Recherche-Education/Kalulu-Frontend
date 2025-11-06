@@ -80,7 +80,7 @@ func setup() -> void:
 func play_videos() -> void:
 	if current_video >= videos.size():
 		animation_player.play("end_videos")
-		video_player.visible = false
+		video_player.hide()
 	else:
 		video_player.stream = videos[current_video]
 		video_player.play()

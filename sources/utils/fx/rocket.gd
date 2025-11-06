@@ -78,7 +78,7 @@ func create_path(start_point: Vector2, end_point: Vector2) -> void:
 
 
 func _on_traveling_timer_timeout() -> void:
-	rocket.visible = false
+	rocket.hide()
 	explosion_timer.start()
 	blast_audio_player.play()
 	for particles: GPUParticles2D in explosion_particles.get_children():

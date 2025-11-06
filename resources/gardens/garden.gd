@@ -78,14 +78,14 @@ func update_flowers() -> void:
 
 func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton]) -> void:
 	for lesson_button_control: LessonButton in lesson_button_controls:
-		lesson_button_control.visible = false
+		lesson_button_control.hide()
 	for index: int in range(p_lesson_buttons.size()):
 		if index >= lesson_button_controls.size():
 			break
 		var lesson_button: GardenLayout.GardenLayoutLessonButton = p_lesson_buttons[index]
 		var lesson_button_control: LessonButton = lesson_button_controls[index]
 		lesson_button_control.position = Vector2(lesson_button.position)
-		lesson_button_control.visible = true
+		lesson_button_control.show()
 		lesson_button_control.pivot_offset = lesson_button_control.size / 2
 
 

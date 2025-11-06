@@ -141,7 +141,7 @@ func _on_element_new_gp_asked(ind: int, element: WordListElement) -> void:
 
 func set_in_new_gp_mode(p_in_new_gp_mode: bool) -> void:
 	in_new_gp_mode = p_in_new_gp_mode
-	new_gp_layer.visible = in_new_gp_mode
+	new_gp_layer.set_visible(in_new_gp_mode)
 
 
 func _on_gp_list_element_validated() -> void:
@@ -208,7 +208,7 @@ func _on_list_title_back_pressed() -> void:
 
 func _on_list_title_new_search(new_text: String) -> void:
 	for element: WordListElement in elements_container.get_children():
-		element.visible = element.word.begins_with(new_text)
+		element.set_visible(element.word.begins_with(new_text))
 
 
 func _on_list_title_save_pressed() -> void:

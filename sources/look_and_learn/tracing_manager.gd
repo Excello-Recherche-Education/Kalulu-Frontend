@@ -29,8 +29,8 @@ func reset() -> void:
 	for child: Node in lower_labels.get_children():
 		child.queue_free()
 	
-	lower_labels.visible = false
-	upper_labels.visible = false
+	lower_labels.hide()
+	upper_labels.hide()
 	await get_tree().process_frame
 
 
@@ -118,15 +118,15 @@ func _real_path(path: String) -> String:
 
 func start() -> void:
 	if upper_labels.get_child_count(false) > 0:
-		lower_labels.visible = false
-		upper_labels.visible = true
+		lower_labels.hide()
+		upper_labels.show()
 		
 		await demo_labels(upper_labels)
 		await start_labels(upper_labels)
 	
 	if lower_labels.get_child_count(false) > 0:
-		lower_labels.visible = true
-		upper_labels.visible = false
+		lower_labels.show()
+		upper_labels.hide()
 		
 		await demo_labels(lower_labels)
 		await start_labels(lower_labels)

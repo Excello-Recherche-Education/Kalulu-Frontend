@@ -42,7 +42,7 @@ func _ready() -> void:
 
 
 func _handle_stimulus_button() -> void:
-	stimulus_margin.visible = stimulus_button_visible
+	stimulus_margin.set_visible(stimulus_button_visible)
 	if stimulus_button_visible:
 		pause_margin.size_flags_stretch_ratio = 1
 	else:
@@ -80,7 +80,7 @@ func set_max_progression(new_max_progression: int) -> void:
 		new_progression_rect.show()
 		new_progression_rect.texture = empty_progression_icon
 		progression_container.add_child(new_progression_rect)
-	model_progression_rect.visible = new_max_progression >= 1
+	model_progression_rect.set_visible(new_max_progression >= 1)
 
 
 func set_progression(new_progression: int) -> void:
@@ -123,11 +123,11 @@ func _on_kalulu_button_pressed() -> void:
 #region Pause Menu
 
 func show_center_menu(show_menu: bool) -> void:
-	center_menu.visible = show_menu
+	center_menu.set_visible(show_menu)
 	garden_button.disabled = show_menu
 	stimulus_button.disabled = show_menu
 	kalulu_button.disabled = show_menu
-	pause_button.visible = !show_menu
+	pause_button.set_visible(!show_menu)
 
 
 func _on_restart_button_pressed() -> void:
