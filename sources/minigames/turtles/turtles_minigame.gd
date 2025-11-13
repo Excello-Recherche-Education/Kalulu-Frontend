@@ -26,8 +26,9 @@ var stimulus_spawned: bool = false
 @onready var water: Water = $GameRoot/Water
 @onready var island: Island = $GameRoot/Island
 @onready var turtles: Control = %Turtles
-@onready var spawn_location: PathFollow2D = $GameRoot/SpawnPath/SpawnLocation
 @onready var spawn_timer: Timer = $GameRoot/SpawnTimer
+@onready var spawn_points_container: Node2D = $GameRoot/SpawnPoints
+@onready var spawn_location: Node2D
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
@@ -83,7 +84,7 @@ func _on_spawn_timer_timeout() -> void:
 	# Pick a position to spawn the turtle
 	var position_found: bool = false
 	while not position_found:
-		spawn_location.progress_ratio = randf()
+		spawn_location = spawn_points_container.get_children().pick_random()
 		var all_position_ok: bool = true
 		# Check if there are other turtles nearby
 		for other_turtle: Turtle in turtles.get_children():
@@ -107,7 +108,8 @@ func _on_spawn_timer_timeout() -> void:
 	turtles.add_child(turtle)
 	
 	# Set the direction of the turtle
-	turtle.direction = Vector2.DOWN.rotated(spawn_location.rotation).normalized()
+	var random_offset: float = deg_to_rad(randf_range(-5, 5))
+	turtle.direction = Vector2.DOWN.rotated(spawn_location.rotation + random_offset).normalized()
 	
 	# Define if the turtle is a stimulus or a distraction
 	var is_stimulus: bool = not stimulus_spawned and randf() < settings.stimuli_ratio
