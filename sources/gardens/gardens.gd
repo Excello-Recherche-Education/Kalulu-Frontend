@@ -125,7 +125,7 @@ func _ready() -> void:
 		for index: int in range(garden_control.lesson_button_controls.size()):
 			var button: LessonButton = garden_control.lesson_button_controls[index]
 			if not lesson_ind in lessons:
-				button.disabled = true
+				button.set_disabled(true)
 				continue
 			
 			# Adds the max progression of the look and learn
@@ -137,13 +137,13 @@ func _ready() -> void:
 						garden_control.current_progression += 1.0
 					StudentProgression.Status.Completed:
 						garden_control.current_progression += 2.0
-				button.disabled = false
+				button.set_disabled(false)
 			else:
-				button.disabled = true
+				button.set_disabled(true)
 			
 			# If we just unlocked the new lesson, leave the button disabled
 			if new_lesson_unlocked and lesson_ind == max_unlocked_lesson:
-				button.disabled = true
+				button.set_disabled(true)
 			
 			# Remove the completion if the look and learn was just completed for the first time
 			if is_look_and_learn_completed and is_first_clear:
@@ -359,7 +359,7 @@ func _ready() -> void:
 			
 			# Enable the next lesson button
 			if new_lesson_button:
-				new_lesson_button.disabled = false
+				new_lesson_button.set_disabled(false)
 	
 #endregion
 	
@@ -476,7 +476,7 @@ func _handle_lesson_button(lesson: int, status: StudentProgression.Status, color
 	lesson_button.text = lessons[lesson][0].grapheme
 	lesson_button.completed_color = color
 	
-	lesson_button.disabled = status == StudentProgression.Status.Locked
+	lesson_button.set_disabled(status == StudentProgression.Status.Locked)
 	lesson_button.completed = status == StudentProgression.Status.Completed
 	lesson_button_particles.emitting = status == StudentProgression.Status.Unlocked
 	

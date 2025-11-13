@@ -23,7 +23,7 @@ func _ready() -> void:
 
 
 func _on_main_button_pressed() -> void:
-	play_button.disabled = true
+	play_button.set_disabled(true)
 	if UserDataManager.get_device_settings().teacher:
 		_on_login_in()
 	else:
@@ -35,7 +35,7 @@ func _on_main_button_pressed() -> void:
 			interface_left.show()
 		else:
 			no_internet_popup.show()
-	play_button.disabled = false
+	play_button.set_disabled(false)
 
 
 func _on_back_button_pressed() -> void:

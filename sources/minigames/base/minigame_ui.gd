@@ -51,17 +51,17 @@ func _handle_stimulus_button() -> void:
 #region Locking
 
 func lock() -> void:
-	garden_button.disabled = true
-	stimulus_button.disabled = true
-	pause_button.disabled = true
-	kalulu_button.disabled = true
+	garden_button.set_disabled(true)
+	stimulus_button.set_disabled(true)
+	pause_button.set_disabled(true)
+	kalulu_button.set_disabled(true)
 
 
 func unlock() -> void:
-	garden_button.disabled = false
-	stimulus_button.disabled = false
-	pause_button.disabled = false
-	kalulu_button.disabled = false
+	garden_button.set_disabled(false)
+	stimulus_button.set_disabled(false)
+	pause_button.set_disabled(false)
+	kalulu_button.set_disabled(false)
 
 #endregion
 
@@ -124,9 +124,9 @@ func _on_kalulu_button_pressed() -> void:
 
 func show_center_menu(show_menu: bool) -> void:
 	center_menu.set_visible(show_menu)
-	garden_button.disabled = show_menu
-	stimulus_button.disabled = show_menu
-	kalulu_button.disabled = show_menu
+	garden_button.set_disabled(show_menu)
+	stimulus_button.set_disabled(show_menu)
+	kalulu_button.set_disabled(show_menu)
 	pause_button.set_visible(!show_menu)
 
 

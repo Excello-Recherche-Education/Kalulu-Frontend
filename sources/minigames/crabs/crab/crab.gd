@@ -43,7 +43,7 @@ func _ready() -> void:
 
 
 func set_button_active(active: bool) -> void:
-	button.disabled = not active
+	button.set_disabled(not active)
 
 
 func is_button_pressed() -> bool:
