@@ -1,69 +1,167 @@
-[gd_scene load_steps=47 format=3 uid="uid://djykrpdu58f3v"]
+[gd_scene load_steps=46 format=3 uid="uid://djykrpdu58f3v"]
 
-[ext_resource type="Texture2D" uid="uid://bi8db32muvyqp" path="res://assets/minigames/turtles/graphic/turtle_disappears_0000.png" id="1_phg5d"]
 [ext_resource type="Script" uid="uid://doq6myv45i4w6" path="res://sources/minigames/turtles/turtle.gd" id="1_vx1yr"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_dmkbj"]
-[ext_resource type="Texture2D" uid="uid://b04s06613lgyo" path="res://assets/minigames/turtles/graphic/turtle_disappears_0001.png" id="2_qodey"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_rllc5"]
-[ext_resource type="Texture2D" uid="uid://dncvc4dkurogg" path="res://assets/minigames/turtles/graphic/turtle_disappears_0002.png" id="3_pinqg"]
-[ext_resource type="Texture2D" uid="uid://dvwkb0orntj6j" path="res://assets/minigames/turtles/graphic/turtle_disappears_0003.png" id="4_bk8j5"]
-[ext_resource type="Texture2D" uid="uid://18okbnsktp37" path="res://assets/minigames/turtles/graphic/turtle_disappears_0004.png" id="5_1gjjo"]
-[ext_resource type="Texture2D" uid="uid://nw2j0ycp152v" path="res://assets/minigames/turtles/graphic/turtle_disappears_0005.png" id="6_p62ix"]
-[ext_resource type="Texture2D" uid="uid://b7j5s6f4v7vvs" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0000.png" id="7_j4sb3"]
-[ext_resource type="Texture2D" uid="uid://cbujnks858vx6" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0001.png" id="8_svqjj"]
-[ext_resource type="Texture2D" uid="uid://bsc3y7q64tcrc" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0002.png" id="9_462ho"]
-[ext_resource type="Texture2D" uid="uid://c8epswbsg00h6" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0003.png" id="10_wuwnk"]
-[ext_resource type="Texture2D" uid="uid://cv02hdm4yq533" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0004.png" id="11_6ujr8"]
-[ext_resource type="Texture2D" uid="uid://chdxsh8h3wjv7" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0005.png" id="12_blo4o"]
-[ext_resource type="Texture2D" uid="uid://dsnjvyk7yvkxb" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0006.png" id="13_dkec0"]
-[ext_resource type="Texture2D" uid="uid://b60cruqr5qmb7" path="res://assets/minigames/turtles/graphic/turtle_swim_01_0007.png" id="14_qtyrk"]
-[ext_resource type="Texture2D" uid="uid://cesqkl04s6y16" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0000.png" id="23_726ul"]
-[ext_resource type="Texture2D" uid="uid://ch5lbd4ikks4y" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0001.png" id="24_vp3io"]
-[ext_resource type="Texture2D" uid="uid://diruxicvubrvc" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0002.png" id="25_fsba2"]
-[ext_resource type="Texture2D" uid="uid://bmbxkoaxymce" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0003.png" id="26_t67l6"]
-[ext_resource type="Texture2D" uid="uid://bru55t06kq52h" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0004.png" id="27_icd8k"]
-[ext_resource type="Texture2D" uid="uid://buh5bovia2ddn" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0005.png" id="28_aqx01"]
-[ext_resource type="Texture2D" uid="uid://bnj8hhyr4i80y" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0006.png" id="29_etcdo"]
-[ext_resource type="Texture2D" uid="uid://dcw2p2xq35mrx" path="res://assets/minigames/turtles/graphic/turtle_swim_left_0007.png" id="30_gl7yj"]
-[ext_resource type="Texture2D" uid="uid://uownk5w4n4s7" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0000.png" id="31_p00ya"]
-[ext_resource type="Texture2D" uid="uid://mx0klfi4e6dg" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0001.png" id="32_xkdnr"]
-[ext_resource type="Texture2D" uid="uid://mjiejohtu03" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0002.png" id="33_p2hny"]
-[ext_resource type="Texture2D" uid="uid://cf8v0gvlc2tci" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0003.png" id="34_hyqym"]
-[ext_resource type="Texture2D" uid="uid://disauvnpo18kh" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0004.png" id="35_w2gqq"]
-[ext_resource type="Texture2D" uid="uid://b6liuwjatyp38" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0005.png" id="36_up3k2"]
-[ext_resource type="Texture2D" uid="uid://dgtm8qvsyq8lv" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0006.png" id="37_mi7w2"]
-[ext_resource type="Texture2D" uid="uid://30w5sssd8c1e" path="res://assets/minigames/turtles/graphic/turtle_swim_right_0007.png" id="38_dmtwb"]
-[ext_resource type="Texture2D" uid="uid://c5kar2p8ae8yu" path="res://assets/minigames/turtles/graphic/turtle_victory_0000.png" id="39_a8d4f"]
-[ext_resource type="Texture2D" uid="uid://pcty3etq3036" path="res://assets/minigames/turtles/graphic/turtle_victory_0001.png" id="40_rg80s"]
+[ext_resource type="Texture2D" uid="uid://cgtaho31ifol5" path="res://assets/minigames/turtles/graphic/turtle_spritesheet.png" id="11_3b3ei"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="40_vguhy"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="41_enfmr"]
-[ext_resource type="Texture2D" uid="uid://bg6603ct43g00" path="res://assets/minigames/turtles/graphic/turtle_victory_0002.png" id="41_hkvwr"]
-[ext_resource type="Texture2D" uid="uid://25h5xdesr8mk" path="res://assets/minigames/turtles/graphic/turtle_victory_0003.png" id="42_1is74"]
 [ext_resource type="AudioStream" uid="uid://cmsn7q4fxnghr" path="res://assets/sfx/splash.mp3" id="42_p3fqk"]
-[ext_resource type="Texture2D" uid="uid://vgqt4v6pgerb" path="res://assets/minigames/turtles/graphic/turtle_victory_0004.png" id="43_lvi8j"]
-[ext_resource type="Texture2D" uid="uid://64w00rvu3xfe" path="res://assets/minigames/turtles/graphic/turtle_victory_0005.png" id="44_w2vrc"]
 [ext_resource type="PackedScene" uid="uid://cjg6pgc7yfp1p" path="res://sources/utils/swipe_detector.tscn" id="49_0qwwy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6373"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(0, 4000, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8my05"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(800, 4000, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1r4iv"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(1600, 4000, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fdorw"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(2400, 4000, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4xw3"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(3200, 4000, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tinqr"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(0, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjcj8"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(800, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jjktv"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(1600, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhmcw"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(2400, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4obg"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(3200, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_61th3"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(4000, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eufa2"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(4800, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ebdps"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(5600, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbpgw"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(0, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4juk7"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(800, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d5x3l"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(1600, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhidj"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(2400, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8syuy"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(3200, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oxwih"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(4000, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eg23a"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(4800, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p0pfx"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(5600, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s54nu"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(0, 1600, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_edqdb"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(800, 1600, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p24xq"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(1600, 1600, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sv4dl"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(2400, 1600, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yovpm"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(3200, 1600, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2sepv"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(4000, 1600, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74pfv"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(4800, 1600, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wcw11"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(5600, 1600, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_81y3d"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(0, 2400, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r80uy"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(800, 2400, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7qs4e"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(1600, 2400, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l7snx"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(2400, 2400, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2frwj"]
+atlas = ExtResource("11_3b3ei")
+region = Rect2(3200, 2400, 800, 800)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1emmd"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_phg5d")
+"texture": SubResource("AtlasTexture_b6373")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_qodey")
+"texture": SubResource("AtlasTexture_8my05")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_pinqg")
+"texture": SubResource("AtlasTexture_1r4iv")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_bk8j5")
+"texture": SubResource("AtlasTexture_fdorw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_1gjjo")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_p62ix")
+"texture": SubResource("AtlasTexture_a4xw3")
 }, {
 "duration": 1.0,
 "texture": null
@@ -74,28 +172,28 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("7_j4sb3")
+"texture": SubResource("AtlasTexture_tinqr")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_svqjj")
+"texture": SubResource("AtlasTexture_yjcj8")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_462ho")
+"texture": SubResource("AtlasTexture_jjktv")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_wuwnk")
+"texture": SubResource("AtlasTexture_qhmcw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_6ujr8")
+"texture": SubResource("AtlasTexture_u4obg")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_blo4o")
+"texture": SubResource("AtlasTexture_61th3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_dkec0")
+"texture": SubResource("AtlasTexture_eufa2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("14_qtyrk")
+"texture": SubResource("AtlasTexture_ebdps")
 }],
 "loop": true,
 "name": &"swim",
@@ -103,28 +201,28 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("23_726ul")
+"texture": SubResource("AtlasTexture_xbpgw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("24_vp3io")
+"texture": SubResource("AtlasTexture_4juk7")
 }, {
 "duration": 1.0,
-"texture": ExtResource("25_fsba2")
+"texture": SubResource("AtlasTexture_d5x3l")
 }, {
 "duration": 1.0,
-"texture": ExtResource("26_t67l6")
+"texture": SubResource("AtlasTexture_yhidj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("27_icd8k")
+"texture": SubResource("AtlasTexture_8syuy")
 }, {
 "duration": 1.0,
-"texture": ExtResource("28_aqx01")
+"texture": SubResource("AtlasTexture_oxwih")
 }, {
 "duration": 1.0,
-"texture": ExtResource("29_etcdo")
+"texture": SubResource("AtlasTexture_eg23a")
 }, {
 "duration": 1.0,
-"texture": ExtResource("30_gl7yj")
+"texture": SubResource("AtlasTexture_p0pfx")
 }],
 "loop": false,
 "name": &"swim_left",
@@ -132,28 +230,28 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("31_p00ya")
+"texture": SubResource("AtlasTexture_s54nu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("32_xkdnr")
+"texture": SubResource("AtlasTexture_edqdb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("33_p2hny")
+"texture": SubResource("AtlasTexture_p24xq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("34_hyqym")
+"texture": SubResource("AtlasTexture_sv4dl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("35_w2gqq")
+"texture": SubResource("AtlasTexture_yovpm")
 }, {
 "duration": 1.0,
-"texture": ExtResource("36_up3k2")
+"texture": SubResource("AtlasTexture_2sepv")
 }, {
 "duration": 1.0,
-"texture": ExtResource("37_mi7w2")
+"texture": SubResource("AtlasTexture_74pfv")
 }, {
 "duration": 1.0,
-"texture": ExtResource("38_dmtwb")
+"texture": SubResource("AtlasTexture_wcw11")
 }],
 "loop": false,
 "name": &"swim_right",
@@ -161,22 +259,19 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("39_a8d4f")
+"texture": SubResource("AtlasTexture_81y3d")
 }, {
 "duration": 1.0,
-"texture": ExtResource("40_rg80s")
+"texture": SubResource("AtlasTexture_r80uy")
 }, {
 "duration": 1.0,
-"texture": ExtResource("41_hkvwr")
+"texture": SubResource("AtlasTexture_7qs4e")
 }, {
 "duration": 1.0,
-"texture": ExtResource("42_1is74")
+"texture": SubResource("AtlasTexture_l7snx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("43_lvi8j")
-}, {
-"duration": 1.0,
-"texture": ExtResource("44_w2vrc")
+"texture": SubResource("AtlasTexture_2frwj")
 }],
 "loop": false,
 "name": &"victory",
@@ -209,7 +304,7 @@ bus = &"Effects"
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
 unique_name_in_owner = true
 position = Vector2(0, -16)
-scale = Vector2(2, 2)
+scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_1emmd")
 animation = &"swim"
 autoplay = "swim"

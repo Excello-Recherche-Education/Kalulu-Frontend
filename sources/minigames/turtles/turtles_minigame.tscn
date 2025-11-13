@@ -24,7 +24,6 @@ layout_mode = 1
 
 [node name="Island" parent="GameRoot" index="1" instance=ExtResource("5_bgryf")]
 position = Vector2(1280, 830)
-scale = Vector2(0.6, 0.6)
 
 [node name="Turtles" type="Control" parent="GameRoot" index="2"]
 unique_name_in_owner = true
