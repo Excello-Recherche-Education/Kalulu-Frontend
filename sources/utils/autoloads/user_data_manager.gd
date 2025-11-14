@@ -59,7 +59,7 @@ func purge_user_folders_if_needed() -> void:
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
 		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
+			if dir.current_is_dir() and file_name != "." and file_name != ".." and file_name != "logs":
 				Utils.delete_directory_recursive("user://".path_join(file_name))
 			file_name = dir.get_next()
 		dir.list_dir_end()
