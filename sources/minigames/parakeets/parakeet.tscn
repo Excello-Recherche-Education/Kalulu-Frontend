@@ -1,62 +1,127 @@
-[gd_scene load_steps=12 format=3 uid="uid://cmoeum0oc0p2"]
+[gd_scene load_steps=18 format=3 uid="uid://cmoeum0oc0p2"]
 
 [ext_resource type="Script" uid="uid://cir1ejxole7pu" path="res://sources/minigames/parakeets/parakeet.gd" id="1_p0nqk"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_afmcm"]
 [ext_resource type="SpriteFrames" uid="uid://wybpq21deku7" path="res://sources/minigames/parakeets/red_parakeet_animations.tres" id="2_k0dcm"]
-[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="4_a2lqo"]
+[ext_resource type="Texture2D" uid="uid://c34sgkbvr3h8q" path="res://assets/minigames/minigame_ui/graphic/primary_text_box.png" id="3_jc4en"]
+[ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="4_oc4sp"]
 [ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="4_xdkkw"]
+[ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="5_q71gb"]
+[ext_resource type="LabelSettings" uid="uid://c7aoyw5gjrrnp" path="res://resources/themes/minigames_label_settings_parakeet.tres" id="5_xdkkw"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_7mdw2"]
+[ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="7_erv6y"]
+[ext_resource type="SpriteFrames" uid="uid://bvi4lwir6n27s" path="res://sources/minigames/parakeets/red_parakeet_feathers_animations.tres" id="9_oc4sp"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45x46"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b6a1p"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aup5h"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mmhru"]
+[sub_resource type="LabelSettings" id="LabelSettings_thibt"]
+font = ExtResource("4_xdkkw")
+font_size = 120
+font_color = Color(0.2, 0.2, 0.2, 1)
+outline_color = Color(0.2, 0.2, 0.2, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2q8kg"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mmhru"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aup5h"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b6a1p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45x46"]
+
 [node name="Parakeet" type="Node2D"]
+scale = Vector2(0.2, 0.2)
 script = ExtResource("1_p0nqk")
 
 [node name="RightFX" parent="." instance=ExtResource("2_afmcm")]
 offset_top = -104.0
 offset_bottom = -104.0
 
+[node name="TextBox_Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 600)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_jc4en")
+
+[node name="PercentMarginContainer" type="Container" parent="TextBox_Sprite2D"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -297.0
+offset_top = -114.5
+offset_right = -297.0
+offset_bottom = -114.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_oc4sp")
+margin_left_ratio = 0.2
+margin_top_ratio = 0.1
+margin_right_ratio = 0.2
+margin_bottom_ratio = 0.2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="TextBox_Sprite2D/PercentMarginContainer"]
+layout_mode = 2
+
+[node name="AutoSizeLabel" parent="TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("5_q71gb")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" parent="TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = ""
+label_settings = SubResource("LabelSettings_thibt")
+
+[node name="TextBox_Outline_Sprite2D" type="Sprite2D" parent="TextBox_Sprite2D"]
+unique_name_in_owner = true
+visible = false
+texture = ExtResource("7_erv6y")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_k0dcm")
-animation = &"idle_front"
+animation = &"sad"
 autoplay = "idle_front"
-frame_progress = 0.660885
+offset = Vector2(2.08165e-12, -82)
+
+[node name="AnimatedSprite2D_Feathers" type="AnimatedSprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("9_oc4sp")
+animation = &"feathers_fall"
 offset = Vector2(2.08165e-12, -82)
 
 [node name="Label" type="Label" parent="."]
-offset_left = -88.0
-offset_top = -166.0
-offset_right = 88.0
-offset_bottom = -44.0
-theme_override_fonts/font = ExtResource("4_xdkkw")
-theme_override_font_sizes/font_size = 90
-label_settings = ExtResource("4_a2lqo")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = 439.99994
+offset_right = 320.0
+offset_bottom = 759.99994
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = ExtResource("5_xdkkw")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Button" type="Button" parent="."]
-offset_left = -91.0
-offset_top = -255.0
-offset_right = 90.0
-offset_bottom = 13.0
-theme_override_styles/focus = SubResource("StyleBoxEmpty_45x46")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_b6a1p")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_aup5h")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_mmhru")
+offset_left = -325.0
+offset_top = -680.0
+offset_right = 325.0
+offset_bottom = 420.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2q8kg")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_mmhru")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_aup5h")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_b6a1p")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_45x46")
 
 [node name="WrongFX" parent="." instance=ExtResource("6_7mdw2")]
 offset_top = -104.0
 offset_bottom = -104.0
 
 [connection signal="animation_looped" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_looped"]
+[connection signal="animation_looped" from="AnimatedSprite2D_Feathers" to="." method="_on_animated_sprite_2d_animation_looped"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+
+[editable path="TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel"]
