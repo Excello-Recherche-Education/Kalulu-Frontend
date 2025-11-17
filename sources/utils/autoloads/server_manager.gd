@@ -2,7 +2,7 @@ class_name ServerManagerClass
 extends CanvasLayer
 
 signal request_completed(success: bool, code: int, body: Dictionary)
-signal internet_check_completed(has_acces: bool)
+signal internet_check_completed(has_access: bool)
 
 const INTERNET_CHECK_URL: String = "https://google.com"
 const AWS_API_GATEWAY_ADRESS: String = "https://xwvmrarnb7.execute-api.eu-west-3.amazonaws.com"
