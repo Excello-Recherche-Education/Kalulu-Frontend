@@ -278,13 +278,12 @@ animations = [{
 "speed": 12.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uo0u3"]
-radius = 24.0
-height = 80.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_xbpgw"]
+radius = 48.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xsnve"]
-radius = 88.0
-height = 224.0
+radius = 128.0
+height = 352.0
 
 [node name="Turtle" type="Node2D"]
 script = ExtResource("1_vx1yr")
@@ -318,8 +317,8 @@ collision_mask = 0
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body/HeadArea"]
-position = Vector2(0, -152)
-shape = SubResource("CapsuleShape2D_uo0u3")
+position = Vector2(0, -176)
+shape = SubResource("CircleShape2D_xbpgw")
 debug_color = Color(0.129412, 0.458824, 0, 0.505882)
 
 [node name="BodyArea" type="Area2D" parent="Body"]
@@ -328,7 +327,7 @@ collision_layer = 0
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body/BodyArea"]
-position = Vector2(0, 32)
+position = Vector2(0, 24)
 shape = SubResource("CapsuleShape2D_xsnve")
 debug_color = Color(0.870588, 0.117647, 0, 0.388235)
 
