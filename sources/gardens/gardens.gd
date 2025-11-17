@@ -3,7 +3,7 @@ extends Control
 
 signal minigame_layout_opened()
 
-const KALULU := preload("res://sources/minigames/base/kalulu.gd")
+const KALULU: GDScript = preload("res://sources/minigames/base/kalulu.gd")
 const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
