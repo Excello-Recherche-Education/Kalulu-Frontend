@@ -4,7 +4,7 @@ extends EditorExportPlugin
 func _get_name() -> String:
 	return "KaluluExportToolExporter"
 
-var tool_configs: Dictionary = {
+var tool_configs: Dictionary[String, Dictionary] = {
 	"game": {
 		"main_scene": "res://sources/menus/splash_screen/splash_screen.tscn",
 		"output_name": "kalulu_app"
@@ -26,6 +26,6 @@ func _export_begin(features: PackedStringArray, is_debug: bool, path: String, fl
 		push_error("Outil '%s' non défini dans la configuration." % selected_tool)
 		return
 
-	var config = tool_configs[selected_tool]
+	var config: Dictionary[String, String] = tool_configs[selected_tool]
 	ProjectSettings.set_setting("application/run/main_scene", config["main_scene"])
 	ProjectSettings.save()

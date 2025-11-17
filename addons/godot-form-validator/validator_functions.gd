@@ -3,20 +3,20 @@ class_name ValidatorFunctions
 
 
 static func matches(pattern: String, text: String) -> bool:
-	var regex = RegEx.create_from_string(pattern)
+	var regex: RegEx = RegEx.create_from_string(pattern)
 	if not regex.is_valid():
 		Log.error("ValidatorFunctions: Invalid RegEx pattern supplied to matches function: %s" % pattern)
 		return false
-	var result = regex.search(text)
+	var result: RegExMatch = regex.search(text)
 	return result != null and result.strings.size() > 0
 
 
 static func does_not_match(pattern: String, text: String) -> bool:
-	var regex = RegEx.create_from_string(pattern)
+	var regex: RegEx = RegEx.create_from_string(pattern)
 	if not regex.is_valid():
 		Log.error("ValidatorFunctions: Invalid RegEx pattern supplied to does_not_match function: %s" % pattern)
 		return false
-	var result = regex.search(text)
+	var result: RegExMatch = regex.search(text)
 	return result == null
 
 
@@ -39,26 +39,26 @@ static func not_blank(text: String) -> bool:
 
 
 static func alpha(text: String) -> bool:
-	var regex = RegEx.create_from_string("[^a-zA-Z]+")
-	var result = regex.search(text)
+	var regex: RegEx = RegEx.create_from_string("[^a-zA-Z]+")
+	var result: RegExMatch = regex.search(text)
 	return result == null
 
 
 static func numeric(text: String) -> bool:
-	var regex = RegEx.create_from_string("[^0-9]+")
-	var result = regex.search(text)
+	var regex: RegEx = RegEx.create_from_string("[^0-9]+")
+	var result: RegExMatch = regex.search(text)
 	return result == null
 
 
 static func alphanumeric(text: String) -> bool:
-	var regex = RegEx.create_from_string("[^a-zA-Z0-9]+")
-	var result = regex.search(text)
+	var regex: RegEx = RegEx.create_from_string("[^a-zA-Z0-9]+")
+	var result: RegExMatch = regex.search(text)
 	return result == null
 
 
 static func email(text: String) -> bool:
-	var regex = RegEx.create_from_string("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
-	var result = regex.search(text)
+	var regex: RegEx = RegEx.create_from_string("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+	var result: RegExMatch = regex.search(text)
 	return result != null and result.strings.size() > 0
 
 

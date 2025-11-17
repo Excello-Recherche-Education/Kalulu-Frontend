@@ -4,11 +4,11 @@ class_name LineEditValidator
 
 
 func get_value(control: Control) -> Variant:
-	var line_edit = control as LineEdit
+	var line_edit: LineEdit = control as LineEdit
 	if not line_edit:
 		return null
 	return line_edit.text
 
 
-func is_type(node) -> bool:
+func is_type(node: Node) -> bool:
 	return node is LineEdit
