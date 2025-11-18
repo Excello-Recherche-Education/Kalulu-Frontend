@@ -56,10 +56,8 @@ var current_lives: int = 0:
 	set(value):
 		var previous_lives: int = current_lives
 		current_lives = value
-		
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
-		
 		if current_lives <= max_number_of_lives - errors_before_help_speech:
 			_play_kalulu_help_speech()
 		elif consecutive_errors == errors_before_highlight:
@@ -129,6 +127,7 @@ func _initialize() -> void:
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
+	Log.trace("BaseMinigame: SetupMinigame")
 	max_progression = max_progression
 	max_number_of_lives = max_number_of_lives
 	current_lives = max_number_of_lives

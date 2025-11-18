@@ -19,10 +19,10 @@ const AUDIO_STREAMS: Array[AudioStreamMP3] = [
 
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(1),
+	DifficultySettings.new(1),
+	DifficultySettings.new(1),
 	DifficultySettings.new(2),
-	DifficultySettings.new(2),
-	DifficultySettings.new(3),
-	DifficultySettings.new(3)
+	DifficultySettings.new(2)
 ]
 var monkeys: Array[Monkey] = []
 var is_locked: bool = true: 
@@ -32,35 +32,40 @@ var is_locked: bool = true:
 			monkey.locked = value
 
 @onready var monkeys_node: Control = $GameRoot/Monkeys
-@onready var possible_positions_parent: TextureRect = $GameRoot/PalmTreeMonkeys
+@onready var possible_positions_parent: Sprite2D = $GameRoot/PalmTreeMonkeys
 @onready var king: KingMonkey = $GameRoot/PlamTreeKing/KingMonkey
-@onready var word_label: RichTextLabel = $GameRoot/TextPlank/MarginContainer/Label
+@onready var word_label: RichTextLabel = $GameRoot/TextPlank/Label
 @onready var parabola_summit: Control = $GameRoot/ParabolaSummit
-@onready var text_plank: TextureRect = $GameRoot/TextPlank
+@onready var text_plank: Sprite2D = $GameRoot/TextPlank
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
+	Log.trace("MonkeysMinigame: SetupMinigame")
 	super()
 	
 	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
 	for index: int in range(settings.distractors_count + 1):
+		Log.trace("MonkeysMinigame: SetupMinigame: Instantiate new monkey")
 		var monkey: Monkey = MONKEY_SCENE.instantiate()
 		monkeys_node.add_child(monkey)
 		monkeys.append(monkey)
 		
-		var pos: Control = possible_positions_parent.get_child(index) as Control
+		var pos: Node2D = possible_positions_parent.get_child(index) as Node2D
 		monkey.global_position = pos.global_position
 		
 		monkey.pressed.connect(_on_monkey_pressed.bind(monkey))
 		monkey.dragged_into_self.connect(_on_monkey_pressed.bind(monkey))
 	
 	monkeys_node.set_drag_forwarding(
+		# drag_func
 		func(_at_position: Vector2) -> Variant:
 			return null,
+		# can_drop_func
 		func(_at_position: Vector2, _data: Variant) -> bool: 
 			return true,
+		# drop_func
 		func(at_position: Vector2, data: Variant) -> void:
 			if (at_position - data.start_position).x < 0:
 				_on_coconut_thrown(data.monkey as Monkey)
@@ -91,19 +96,17 @@ func _stop_highlight() -> void:
 
 
 func _reset_plank_label() -> void:
+	Log.trace("MonkeysMinigame: ResetPlankLabel")
 	var word: String = _get_current_stimulus().Word as String
 	word_label.text = "_".repeat(word.length())
 
 
 func _play_monkey_stimulus(monkey: Monkey) -> void:
 	var coroutine: Coroutine = Coroutine.new()
-	
 	coroutine.add_future(monkey.talk)
-	
 	audio_player.play_gp(monkey.stimulus)
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
-	
 	await coroutine.join_all()
 
 
@@ -117,6 +120,7 @@ func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
 	audio_player.play()
 	
 	var coconut: Coconut = monkey.coconut.duplicate()
+	monkey.coconut.hide()
 	game_root.add_child(coconut)
 	coconut.text = monkey.coconut.text
 	coconut.global_transform = monkey.coconut.global_transform
@@ -155,43 +159,29 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 	await coroutine.join_all()
 	
 	if _is_gp_right(monkey.stimulus):
-		
 		await king.play("start_right")
-	
 		audio_player.stream = AUDIO_STREAMS[Audio.SendToPlank]
 		audio_player.play()
-		
 		king.play("finish_right")
 		var tween: Tween = create_tween()
-		coconut.show()
-		coconut.global_transform = king.coconut.global_transform
 		tween.tween_property(coconut, "global_position:y", text_plank.global_position.y, throw_to_plank_duration).set_trans(Tween.TRANS_LINEAR)
 		await tween.finished
 		coconut.explode()
-		
-		# Update the label
 		_update_label(current_word_progression + 1)
-		
 		current_word_progression += 1
-		
 	else:
 		await king.play("start_wrong")
-	
 		audio_player.stream = AUDIO_STREAMS[Audio.SendToMonkey]
 		audio_player.play()
-		
 		king.play("finish_wrong")
-		coconut.show()
-		coconut.global_transform = king.coconut.global_transform
 		var tween: Tween = create_tween()
 		tween.tween_property(coconut, "global_position", monkey.hit_position.global_position, throw_to_monkey_duration).set_trans(Tween.TRANS_LINEAR)
 		await tween.finished
 		await monkey.hit(coconut)
-		current_lives -= 1
+		await get_tree().create_timer(1.0).timeout
 		coconut.queue_free()
-		
+		current_lives -= 1
 		is_locked = false
-	#is_locked = false
 
 
 func _on_current_word_progression_changed() -> void:
@@ -205,11 +195,13 @@ func _on_current_word_progression_changed() -> void:
 		else:
 			monkey.stimulus = _get_distractor()
 		monkey.stunned = false
+		monkey.coconut.show()
 	
 	var coroutine: Coroutine = Coroutine.new()
 	if audio_player.playing:
 		coroutine.add_future(audio_player.finished)
 	for monkey: Monkey in monkeys:
+		monkey.coconut.hide()
 		coroutine.add_future(monkey.play.bind("grab"))
 	await coroutine.join_all()
 	

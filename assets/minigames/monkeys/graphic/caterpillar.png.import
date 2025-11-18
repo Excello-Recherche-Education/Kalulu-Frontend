@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://disgg14rdmp81"
-path="res://.godot/imported/textplank.png-2123bd1e56f64a2b11a8f9d5348ba445.ctex"
+uid="uid://u2x8lg54e1g"
+path="res://.godot/imported/caterpillar.png-c28d405f3f7d508211c0ecbc27d2cc5c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/monkeys/graphic/textplank.png"
-dest_files=["res://.godot/imported/textplank.png-2123bd1e56f64a2b11a8f9d5348ba445.ctex"]
+source_file="res://assets/minigames/monkeys/graphic/caterpillar.png"
+dest_files=["res://.godot/imported/caterpillar.png-c28d405f3f7d508211c0ecbc27d2cc5c.ctex"]
 
 [params]
 
