@@ -88,7 +88,7 @@ func _on_level_changed(_index: int) -> void:
 	Log.current_level = selected_level
 	UserDataManager.get_device_settings().log_level = selected_level
 	UserDataManager._save_device_settings()
-	Log.info("Log level changed to %s" % Log.LogLevel.keys()[selected_level])
+	Log.info("DeveloperSettings: Log level changed to %s" % Log.LogLevel.keys()[selected_level])
 
 
 func _on_filters_changed(checked: bool, index: int) -> void:

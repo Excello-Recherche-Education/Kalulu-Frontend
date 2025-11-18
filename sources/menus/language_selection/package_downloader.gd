@@ -76,7 +76,7 @@ func _ready() -> void:
 	
 	# If the language pack is not already downloaded or an update is needed
 	if not DirAccess.dir_exists_absolute(current_language_path) or current_language_version != server_language_version:
-		Log.trace("A new version of the language pack has been detected.\n    Current version = " + str(current_language_version) + "\n    Server version = " + str(server_language_version))
+		Log.trace("PackageDownloader: A new version of the language pack has been detected.\n    Current version = " + str(current_language_version) + "\n    Server version = " + str(server_language_version))
 		
 		checking_label.hide()
 		download_label.show()
