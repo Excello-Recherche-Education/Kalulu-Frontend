@@ -1,47 +1,97 @@
-[gd_scene load_steps=8 format=3 uid="uid://cqx0qux4msnm7"]
+[gd_scene load_steps=14 format=3 uid="uid://cqx0qux4msnm7"]
 
 [ext_resource type="Script" uid="uid://ui362fnglx0k" path="res://sources/minigames/caterpillar/caterpillar.gd" id="1_addut"]
-[ext_resource type="PackedScene" uid="uid://dryu60mtiqv3" path="res://sources/minigames/caterpillar/caterpillar_body.tscn" id="2_vrjdf"]
-[ext_resource type="Texture2D" uid="uid://bb3pue3wwsyc0" path="res://assets/minigames/caterpillar/graphics/caterpillar_tail_1.png" id="14_dchxm"]
-[ext_resource type="Texture2D" uid="uid://c7noke1ky61q8" path="res://assets/minigames/caterpillar/graphics/caterpillar_tail_2.png" id="15_i1gfi"]
-[ext_resource type="Texture2D" uid="uid://77xcd53bfk3h" path="res://assets/minigames/caterpillar/graphics/caterpillar_tail_3.png" id="16_w74x8"]
+[ext_resource type="Texture2D" uid="uid://cyxl5ep0vuavl" path="res://assets/minigames/caterpillar/graphics/caterpillar_spritesheet.png" id="3_iusck"]
 [ext_resource type="PackedScene" uid="uid://cm7e5ir8ykhpv" path="res://sources/minigames/caterpillar/caterpillar_head.tscn" id="17_ty72k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6qw72"]
 size = Vector2(34, 256)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_noi0q"]
+atlas = ExtResource("3_iusck")
+region = Rect2(0, 2050, 410, 410)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nx4nf"]
+atlas = ExtResource("3_iusck")
+region = Rect2(410, 2050, 410, 410)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ddt3b"]
+atlas = ExtResource("3_iusck")
+region = Rect2(820, 2050, 410, 410)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5c23"]
+atlas = ExtResource("3_iusck")
+region = Rect2(1230, 2050, 410, 410)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s16mg"]
+atlas = ExtResource("3_iusck")
+region = Rect2(1640, 2050, 410, 410)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q6eh7"]
+atlas = ExtResource("3_iusck")
+region = Rect2(2050, 2050, 410, 410)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_thukv"]
+atlas = ExtResource("3_iusck")
+region = Rect2(2460, 2050, 410, 410)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3nhcw"]
+atlas = ExtResource("3_iusck")
+region = Rect2(2870, 2050, 410, 410)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2eysc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_noi0q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nx4nf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ddt3b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5c23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s16mg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q6eh7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_thukv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3nhcw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
 [node name="Caterpillar" type="Node2D"]
 script = ExtResource("1_addut")
 
 [node name="BodyParts" type="Node2D" parent="."]
-position = Vector2(64, 0)
 
-[node name="CaterpillarBody" parent="BodyParts" instance=ExtResource("2_vrjdf")]
+[node name="Head" parent="." instance=ExtResource("17_ty72k")]
+position = Vector2(165, 0)
+
+[node name="EatArea2D" type="Area2D" parent="Head"]
+position = Vector2(184, -128)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head/EatArea2D"]
+position = Vector2(200, 0)
+shape = SubResource("RectangleShape2D_6qw72")
 
 [node name="Tail" type="Node2D" parent="."]
 
-[node name="Tail1" type="Sprite2D" parent="Tail"]
-position = Vector2(40, -168)
-scale = Vector2(2, 2)
-texture = ExtResource("14_dchxm")
-
-[node name="Tail2" type="Sprite2D" parent="Tail"]
-position = Vector2(8, -192)
-scale = Vector2(2, 2)
-texture = ExtResource("15_i1gfi")
-
-[node name="Tail3" type="Sprite2D" parent="Tail"]
-position = Vector2(-16, -192)
-scale = Vector2(2, 2)
-texture = ExtResource("16_w74x8")
-
-[node name="Head" parent="." instance=ExtResource("17_ty72k")]
-
-[node name="EatArea2D" type="Area2D" parent="Head"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Head/EatArea2D"]
-position = Vector2(416, -128)
-shape = SubResource("RectangleShape2D_6qw72")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tail"]
+position = Vector2(88, -99)
+scale = Vector2(0.48, 0.48)
+sprite_frames = SubResource("SpriteFrames_2eysc")
+autoplay = "default"
 
 [connection signal="area_entered" from="Head/EatArea2D" to="." method="_on_eat_area_2d_area_entered"]
-[connection signal="body_entered" from="Head/EatArea2D" to="." method="_on_eat_area_2d_body_entered"]

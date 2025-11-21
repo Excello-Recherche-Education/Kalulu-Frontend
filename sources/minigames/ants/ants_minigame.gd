@@ -1,4 +1,3 @@
-@tool
 extends Minigame
 
 const BLANK_SCENE: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
