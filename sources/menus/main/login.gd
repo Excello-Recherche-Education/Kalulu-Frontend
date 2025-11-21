@@ -17,7 +17,7 @@ func _ready() -> void:
 
 
 func _hide_login_error(_value: Variant) -> void:
-	if login_message.visible:
+	if login_message.is_visible():
 		login_message.hide()
 
 
@@ -45,6 +45,6 @@ func _on_validate_button_pressed() -> void:
 			await UserDataManager.user_database_synchronizer.synchronize()
 			logged_in.emit()
 		else:
-			login_message.visible = true
+			login_message.show()
 	else:
-		login_message.visible = true
+		login_message.show()

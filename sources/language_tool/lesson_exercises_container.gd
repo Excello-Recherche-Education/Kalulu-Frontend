@@ -62,19 +62,19 @@ func _set_lesson_number(value: int) -> void:
 	number_of_words.text = str(words_in_lesson.size())
 	number_of_sentences.text = str(sentences_in_lesson.size())
 	
-	ok_texture.visible = true
+	ok_texture.show()
 
 
 func _on_exercise_button_1_item_selected(_index: int) -> void:
-	ok_texture.visible = false
+	ok_texture.hide()
 
 
 func _on_exercise_button_2_item_selected(_index: int) -> void:
-	ok_texture.visible = false
+	ok_texture.hide()
 
 
 func _on_exercise_button_3_item_selected(_index: int) -> void:
-	ok_texture.visible = false
+	ok_texture.hide()
 
 
 func _on_save_button_pressed() -> void:
@@ -93,4 +93,4 @@ func _on_save_button_pressed() -> void:
 	else:
 		Database.db.update_rows("LessonsExercises", "LessonID=" + str(lesson_id), lesson_dict)
 	
-	ok_texture.visible = true
+	ok_texture.show()

@@ -125,7 +125,7 @@ func _ready() -> void:
 		for index: int in range(garden_control.lesson_button_controls.size()):
 			var button: LessonButton = garden_control.lesson_button_controls[index]
 			if not lesson_ind in lessons:
-				button.disabled = true
+				button.set_disabled(true)
 				continue
 			
 			# Adds the max progression of the look and learn
@@ -137,13 +137,13 @@ func _ready() -> void:
 						garden_control.current_progression += 1.0
 					StudentProgression.Status.Completed:
 						garden_control.current_progression += 2.0
-				button.disabled = false
+				button.set_disabled(false)
 			else:
-				button.disabled = true
+				button.set_disabled(true)
 			
 			# If we just unlocked the new lesson, leave the button disabled
 			if new_lesson_unlocked and lesson_ind == max_unlocked_lesson:
-				button.disabled = true
+				button.set_disabled(true)
 			
 			# Remove the completion if the look and learn was just completed for the first time
 			if is_look_and_learn_completed and is_first_clear:
@@ -359,7 +359,7 @@ func _ready() -> void:
 			
 			# Enable the next lesson button
 			if new_lesson_button:
-				new_lesson_button.disabled = false
+				new_lesson_button.set_disabled(false)
 	
 #endregion
 	
@@ -448,18 +448,18 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	_fill_minigame_choice(minigame_layout_3, exercises[2], lesson_unlocks["games"][2] as StudentProgression.Status, 2)
 	
 	# Animations
-	minigame_selection.visible = true
-	back_button.visible = false
-	kalulu_button.visible = false
-	line_particles.visible = false
+	minigame_selection.show()
+	back_button.hide()
+	kalulu_button.hide()
+	line_particles.hide()
 	
 	minigame_background.size = 300.0 * Vector2.ONE
 	minigame_background.global_position = current_button_global_position
-	minigame_background.visible = true
+	minigame_background.show()
 	
 	minigame_background_center.size = 300.0 * Vector2.ONE
 	minigame_background_center.global_position = current_button_global_position
-	minigame_background_center.visible = true
+	minigame_background_center.show()
 	
 	var tween: Tween = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_background_center, "scale", (1800.0 / 300.0) * Vector2.ONE, 0.25)
@@ -476,7 +476,7 @@ func _handle_lesson_button(lesson: int, status: StudentProgression.Status, color
 	lesson_button.text = lessons[lesson][0].grapheme
 	lesson_button.completed_color = color
 	
-	lesson_button.disabled = status == StudentProgression.Status.Locked
+	lesson_button.set_disabled(status == StudentProgression.Status.Locked)
 	lesson_button.completed = status == StudentProgression.Status.Completed
 	lesson_button_particles.emitting = status == StudentProgression.Status.Unlocked
 	
@@ -529,12 +529,12 @@ func _close_minigames_layout() -> void:
 	if current_button:
 		current_button.show_placeholder(false)
 	
-	minigame_selection.visible = false
-	minigame_background.visible = false
-	minigame_background_center.visible = false
-	back_button.visible = true
-	kalulu_button.visible = true
-	line_particles.visible = true
+	minigame_selection.hide()
+	minigame_background.hide()
+	minigame_background_center.hide()
+	back_button.show()
+	kalulu_button.show()
+	line_particles.show()
 	
 	for button: LessonButton in current_garden.lesson_button_controls:
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -616,12 +616,12 @@ func set_up_path() -> void:
 
 func _lock() -> void:
 	is_locked = true
-	lock.visible = true
+	lock.show()
 
 
 func _unlock() -> void:
 	is_locked = false
-	lock.visible = false
+	lock.hide()
 
 
 func _get_current_lesson_button(lesson: int) -> LessonButton:

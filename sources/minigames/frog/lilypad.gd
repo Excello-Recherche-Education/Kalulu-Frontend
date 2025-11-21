@@ -20,7 +20,7 @@ var top_to_bottom: bool = false
 
 
 func disappear() -> void:
-	button.disabled = true
+	button.set_disabled(true)
 	animation_player.play("disappear")
 
 
@@ -54,9 +54,8 @@ func _set_stimulus(value: Dictionary) -> void:
 
 func _set_disabled(value: bool) -> void:
 	disabled = value
-	
-	button.disabled = disabled
-	label.visible = !disabled
+	button.set_disabled(disabled)
+	label.set_visible(!disabled)
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
