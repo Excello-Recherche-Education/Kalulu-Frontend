@@ -1,13 +1,13 @@
 @tool
 extends Step
 
-@onready var type: ItemList = %TypeSelect
+@onready var method: ItemList = %MethodSelect
 
 
 func _ready() -> void:
-	type.clear()
-	type.add_item("TEACHER")
-	type.add_item("PARENT")
+	method.clear()
+	method.add_item("METHOD_APP_ONLY")
+	method.add_item("METHOD_COMPLETE")
 
 
 func _on_next() -> bool:

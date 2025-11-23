@@ -34,6 +34,7 @@ var real_delta: int
 
 
 func _ready() -> void:
+	Log.info("UserDataManager initialization")
 	if get_device_settings().teacher:
 		_load_teacher_settings()
 	
@@ -228,7 +229,7 @@ func logout() -> void:
 
 func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
-		Utils.clean_dir(get_teacher_folder())
+		Utils.delete_directory_recursive(get_teacher_folder())
 
 
 func student_exists(code: String) -> bool:
@@ -292,6 +293,7 @@ func get_device_settings() -> DeviceSettings:
 
 
 func _load_device_settings() -> void:
+	Log.info("UserDataManager: Load device settings")
 	if FileAccess.file_exists(get_device_settings_path()):
 		_device_settings = load(get_device_settings_path())
 		Log.current_level = _device_settings.log_level
@@ -304,20 +306,35 @@ func _load_device_settings() -> void:
 
 
 func _save_device_settings() -> void:
-	Log.trace("UserDataManager: Saving device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
+	Log.trace("UserDataManager: Save device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
 	ResourceSaver.save(_device_settings, get_device_settings_path())
 
 
-func set_language(language: String) -> void:
+func set_language(language: String, server_validated: bool = false) -> void:
+	Log.trace("UserDataManager: Set language %s, %s" % [language, str(server_validated)] )
 	if _device_settings:
 		_device_settings.language = language
 		_save_device_settings()
+	if teacher_settings and not teacher_settings.server_language_validated:
+		teacher_settings.language = language
+		if server_validated:
+			teacher_settings.server_language_validated = true
+
+
+func get_language() -> String:
+	if teacher_settings and teacher_settings.language:
+		return teacher_settings.language
+	elif _device_settings and _device_settings.language:
+		return _device_settings.language
+	return OS.get_locale()
 
 
 func set_language_version(language: String, version: Dictionary) -> void:
 	if _device_settings:
 		_device_settings.language_versions[language] = version
 		_save_device_settings()
+	else:
+		Log.warn("UserDataManager: Cannot set language version because device settings not found")
 
 
 func set_master_volume(value: float) -> void:

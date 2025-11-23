@@ -6,15 +6,12 @@ var items: Array[String] = []
 func _ready() -> void:
 	# Adds the supported locales to the field
 	var idx: int = 0
-	for language_locale: String in DeviceSettings.SUPPORTED_LOCALES:
+	for language_locale: String in Utils.SUPPORTED_LOCALES.keys():
 		if not language_locale:
 			continue
-		
-		var language_locale_name: String = TranslationServer.get_locale_name(language_locale)
-		
+		var language_locale_name: String = Utils.SUPPORTED_LOCALES[language_locale]
 		if not language_locale_name:
 			continue
-		
 		add_item(language_locale_name, idx)
 		items.append(language_locale)
 		if language_locale == UserDataManager.get_device_settings().language:

@@ -97,7 +97,18 @@ func set_student_data(student_code: int, data: Dictionary) -> Dictionary:
 	data.merge({"student_id": student_code})
 	await _post_request("set_student_data", data)
 	return _response()
-	
+
+
+func get_user_language() -> Dictionary:
+	await _get_request("get_language", {})
+	return _response()
+
+
+func set_user_language(language: String) -> Dictionary:
+	var data: Dictionary = {"language": language}
+	await _post_request("set_language", data)
+	return _response()
+
 #region Sender functions
 
 func check_internet_access() -> bool:
