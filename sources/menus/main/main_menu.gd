@@ -1,6 +1,6 @@
 extends Control
 
-const KALULU := preload("res://sources/menus/main/kalulu.gd")
+const KALULU: GDScript = preload("res://sources/menus/main/kalulu.gd")
 const ADULT_CHECK_SCENE_PATH: PackedScene = preload("res://sources/menus/adult_check/adult_check.tscn")
 const LANGUAGE_CHECK_SCENE_PATH: PackedScene = preload("res://sources/menus/language_selection/language_check.tscn")
 
