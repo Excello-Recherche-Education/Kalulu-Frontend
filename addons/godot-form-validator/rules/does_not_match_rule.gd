@@ -9,8 +9,8 @@ func _init() -> void:
 	fail_message = "Invalid value."
 
 
-func apply(control: Control, value) -> RuleResult:
-	var result = RuleResult.new()
+func apply(control: Control, value: Variant) -> RuleResult:
+	var result: RuleResult = RuleResult.new()
 	if value is String:
 		result.passed = ValidatorFunctions.empty(value) or ValidatorFunctions.does_not_match(pattern, value)
 	if not result.passed:

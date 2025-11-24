@@ -2,7 +2,7 @@
 extends Control
 class_name FormValidator
 
-signal control_validated(control: Control, passed: bool, messages: Array)
+signal control_validated(control: Control, passed: bool, messages: PackedStringArray)
 
 class ValidatorInfo extends RefCounted:
 	var control: Control
@@ -15,7 +15,7 @@ class ValidatorInfo extends RefCounted:
 		_update_validation_methods()
 
 var _control_validator_map: Dictionary[Control, Validator] = {}
-var _control_messages_map: Dictionary = {}
+var _control_messages_map: Dictionary[Control, PackedStringArray] = {}
 
 
 func _ready() -> void:
@@ -36,8 +36,8 @@ func get_messages_for_control(control: Control) -> PackedStringArray:
 
 func validate() -> bool:
 	_control_messages_map.clear()
-	var list = _get_validator_info_list()
-	var valid = true
+	var list: Array[ValidatorInfo] = _get_validator_info_list()
+	var valid: bool = true
 	for info: ValidatorInfo in list:
 		if info.validator.skip_validation:
 			continue
@@ -45,8 +45,8 @@ func validate() -> bool:
 		if control == null:
 			Log.error("FormValidator: ValidatorInfo.control is not a Control: %s" % [info.control])
 			continue
-		var passed = info.validator.validate(control)
-		var messages = info.validator.get_messages()
+		var passed: bool = info.validator.validate(control)
+		var messages: PackedStringArray = info.validator.get_messages()
 		if not passed:
 			_control_messages_map[control] = messages
 		control_validated.emit(control, passed, messages)
@@ -59,15 +59,15 @@ func validate() -> bool:
 
 func _get_validator_info_list() -> Array[ValidatorInfo]:
 	var list: Array[ValidatorInfo] = []
-	for controlKey in _control_validator_map.keys():
+	for controlKey: Control in _control_validator_map.keys():
 		var control: Control = controlKey as Control
 		if control == null:
 			Log.error("FormValidator: _control_validator_map key is not a Control")
 			continue
-		var validator = _control_validator_map[control]
+		var validator: Validator = _control_validator_map[control]
 		if not validator:
 			continue
-		var info = ValidatorInfo.new()
+		var info: ValidatorInfo = ValidatorInfo.new()
 		info.control = control
 		info.validator = validator
 		list.append(info)
@@ -78,9 +78,9 @@ func _get_validator_info_list() -> Array[ValidatorInfo]:
 
 
 func _update_validation_methods() -> void:
-	var validators = _control_validator_map.values()
+	var validators: Array = _control_validator_map.values()
 	for item in validators:
-		var validator = item as Validator
+		var validator: Validator = item as Validator
 		if not validator:
 			continue
 		validator.validation_method = validation_method
@@ -88,7 +88,7 @@ func _update_validation_methods() -> void:
 
 func _find_validators(node: Node) -> void:
 	for child in node.get_children():
-		var control_validator = child as ControlValidator
+		var control_validator: ControlValidator = child as ControlValidator
 		if control_validator:
 			control_validator._on_validator_added()
 		_find_validators(child)
@@ -97,10 +97,10 @@ func _find_validators(node: Node) -> void:
 func _auto_validate(control: Control) -> void:
 	if not auto_validate:
 		return
-	var validator = _control_validator_map[control] as Validator
+	var validator: Validator = _control_validator_map[control] as Validator
 	if not validator:
 		return
-	var passed = validator.validate(control)
+	var passed: bool = validator.validate(control)
 	control_validated.emit(control, passed, validator.get_messages())
 
 

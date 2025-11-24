@@ -64,7 +64,7 @@ func _on_export_all_game_pressed() -> void:
 
 func export_all_game_presets() -> void:
 	var godot_path: String = OS.get_executable_path()
-	var exportFolder = "../Export/autobuilds/"
+	var exportFolder: String = "../Export/autobuilds/"
 	var presets: Dictionary[String, String]= {
 		"Android Kalulu AAB": "/Android/kalulu_app.aab",
 		"Android Kalulu APK": "/Android/kalulu_app.apk",
@@ -78,13 +78,13 @@ func export_all_game_presets() -> void:
 
 	for preset_name in presets.keys():
 		await get_tree().create_timer(1).timeout
-		var version = ProjectSettings.get_setting("application/config/version")
+		var version: String = ProjectSettings.get_setting("application/config/version")
 		var output_path: String = exportFolder + version + presets[preset_name]
 		print("Start exporting " + preset_name)
 		DirAccess.make_dir_recursive_absolute(output_path.get_base_dir())
 
 		var args: PackedStringArray = ["--headless", "--export-release", preset_name, output_path]
-		var output: Array = []
+		var output: Array[String] = []
 		var result: int = OS.execute(godot_path, args, output, true)
 
 		if result != OK:

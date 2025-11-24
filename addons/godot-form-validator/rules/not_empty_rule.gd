@@ -7,7 +7,7 @@ func _init() -> void:
 	fail_message = "Value must not be empty."
 
 
-func apply(control: Control, value) -> RuleResult:
+func apply(control: Control, value: Variant) -> RuleResult:
 	var result: RuleResult = RuleResult.new()
 	if value is String:
 		result.passed = ValidatorFunctions.not_empty(value)
