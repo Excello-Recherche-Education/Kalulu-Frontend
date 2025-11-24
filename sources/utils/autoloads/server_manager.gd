@@ -120,15 +120,21 @@ func check_internet_access() -> bool:
 
 
 func _create_uri_with_parameters(uri: String, params: Dictionary) -> String:
-	var is_first_param: bool = true
+	if params.is_empty():
+		return uri
+
+	var query_parts: Array[String] = []
 	for key: String in params.keys():
-		if is_first_param:
-			uri += "?"
-			is_first_param = false
-		else:
-			uri += "&"
-		uri += str(key) + "=" + str(params[key])
-	return uri
+		var encoded_key: String = str(key).uri_encode()
+		var encoded_value: String = str(params[key]).uri_encode()
+		query_parts.append("%s=%s" % [encoded_key, encoded_value])
+
+	var full_uri: String = uri + "?" + "&".join(query_parts)
+	if not params.has("password"):
+		Log.trace("ServerManager: Encoded URI = %s" % full_uri)
+	else:
+		Log.warn("ServerManager: A password should probably not be sent as URI parameter")
+	return full_uri
 
 
 func _create_request_headers(content_type_json: bool = false) -> PackedStringArray:
