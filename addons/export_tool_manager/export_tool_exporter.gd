@@ -23,7 +23,7 @@ func _export_begin(features: PackedStringArray, is_debug: bool, path: String, fl
 		selected_tool = str(editor_settings.get_setting("export_tool_manager/current_tool")).strip_edges()
 
 	if selected_tool == "" or not tool_configs.has(selected_tool):
-		push_error("Outil '%s' non défini dans la configuration." % selected_tool)
+		push_error("Tool '%s' is not defined in the configuration." % selected_tool)
 		return
 
 	var config = tool_configs[selected_tool]
