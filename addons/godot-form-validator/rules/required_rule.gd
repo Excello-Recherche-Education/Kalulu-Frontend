@@ -3,7 +3,7 @@ extends ValidatorRule
 class_name RequiredRule
 
 
-func _init():
+func _init() -> void:
 	fail_message = "A value is required."
 
 

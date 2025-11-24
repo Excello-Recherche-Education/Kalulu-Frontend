@@ -59,10 +59,10 @@ func _on_tool_selected(index: int) -> void:
 	var settings: EditorSettings = get_editor_interface().get_editor_settings()
 	settings.set_setting("export_tool_manager/current_tool", tool)
 
-func _on_export_all_game_pressed():
+func _on_export_all_game_pressed() -> void:
 	export_all_game_presets()
 
-func export_all_game_presets():
+func export_all_game_presets() -> void:
 	var godot_path: String = OS.get_executable_path()
 	var exportFolder = "../Export/autobuilds/"
 	var presets: Dictionary[String, String]= {
