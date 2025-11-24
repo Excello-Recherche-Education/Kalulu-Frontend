@@ -98,7 +98,6 @@ func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
-	#transition_data = {}
 	
 	# Difficulty
 	if (UserDataManager as UserDataManagerClass)._student_difficulty:

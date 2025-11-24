@@ -12,7 +12,7 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 	dir.list_dir_begin()
 	var file_name: String = dir.get_next()
 	while file_name != "":
-		# Ignore "." et ".."
+		# Ignore "." and ".."
 		if file_name != "." and file_name != "..":
 			var current_rel_path: String = rel_path.path_join(file_name)
 			var current_full_path: String = full_path.path_join(file_name)
