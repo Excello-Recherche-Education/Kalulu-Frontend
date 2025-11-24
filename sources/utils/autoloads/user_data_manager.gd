@@ -99,7 +99,7 @@ func stop_synchronization_timer() -> void:
 
 func register(register_settings: TeacherSettings) -> bool:
 	if not register_settings:
-		Log.warn("UserDataManager: register called with invalid register_settings")
+		Log.warn("UserDataManager: Register: Function called with invalid register_settings")
 		return false
 	
 	# Handles device settings
@@ -200,11 +200,11 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 func set_device_id(device: int) -> bool:
 	if not _device_settings:
-		Log.warn("UserDataManager: set_device_id called with no device settings loaded")
+		Log.warn("UserDataManager: SetDeviceID: Function called with no device settings loaded")
 		return false
 	
 	if not device:
-		Log.warn("UserDataManager: set_device_id called with invalid device")
+		Log.warn("UserDataManager: SetDeviceID: Function called with invalid device ID")
 		return false
 	
 	_device_settings.device_id = device
@@ -234,10 +234,10 @@ func delete_teacher_data() -> void:
 
 func student_exists(code: String) -> bool:
 	if not _device_settings:
-		Log.trace("UserDataManager: student_exists called with invalid _device_settings")
+		Log.trace("UserDataManager: StudentExists: Function failed because of invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Log.trace("UserDataManager: student_exists called with invalid teacher_settings")
+		Log.trace("UserDataManager: StudentExists: Function failed because of invalid teacher_settings")
 		return false
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
 	if students:
@@ -249,10 +249,10 @@ func student_exists(code: String) -> bool:
 
 func login_student(code: String) -> bool:
 	if not _device_settings:
-		Log.warn("UserDataManager: login_student failed because of invalid _device_settings")
+		Log.warn("UserDataManager: LoginStudent: Function failed because of invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Log.warn("UserDataManager: login_student failed because of invalid teacher_settings")
+		Log.warn("UserDataManager: LoginStudent: Function failed because of invalid teacher_settings")
 		return false
 	
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
@@ -263,16 +263,16 @@ func login_student(code: String) -> bool:
 				(ServerManager as ServerManagerClass).first_login_student()
 				return true
 	
-	Log.warn("UserDataManager: login_student failed, code not found: " + code)
+	Log.warn("UserDataManager: LoginStudent: Code not found: " + code)
 	return false
 
 
 func logout_student() -> bool:
 	if not _device_settings:
-		Log.warn("UserDataManager: logout_student failed because of invalid _device_settings")
+		Log.warn("UserDataManager: LogoutStudent: Function failed because of invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Log.warn("UserDataManager: logout_student failed because of invalid teacher_settings")
+		Log.warn("UserDataManager: LogoutStudent: Function failed because of invalid teacher_settings")
 		return false
 	
 	student = ""
@@ -586,7 +586,7 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
 	var error: Error = ResourceSaver.save(progression, progression_path)
 	if error != OK:
-		Log.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
+		Log.error("UserDataManager: SaveStudentProgressionForCode: Device = %s, Code = %s: error %s" % [str(device), str(code), error_string(error)])
 
 
 func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String) -> void:

@@ -136,7 +136,7 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	Log.error("Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
+	Log.error("BaseMinigame: Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
 	return
 
 

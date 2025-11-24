@@ -3,7 +3,7 @@ extends AudioStreamPlayer
 
 
 func play_gp(gp: Dictionary) -> void:
-	Log.trace("Minigame Audio Stream Player: Playing GP " + str(gp))
+	Log.trace("MinigameAudioStreamPlayer: Playing GP " + str(gp))
 	if not gp or gp.is_empty():
 		return
 	
@@ -16,7 +16,7 @@ func play_gp(gp: Dictionary) -> void:
 
 
 func play_syllable(syllable: Dictionary) -> void:
-	Log.trace("Minigame Audio Stream Player: Playing Syllable " + str(syllable))
+	Log.trace("MinigameAudioStreamPlayer: Playing Syllable " + str(syllable))
 	if not syllable or syllable.is_empty():
 		return
 	
@@ -28,7 +28,7 @@ func play_syllable(syllable: Dictionary) -> void:
 
 
 func play_word(word: String) -> void:
-	Log.trace("Minigame Audio Stream Player: Playing Word " + str(word))
+	Log.trace("MinigameAudioStreamPlayer: Playing Word " + str(word))
 	if not word or word.is_empty():
 		return
 	

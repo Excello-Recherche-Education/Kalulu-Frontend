@@ -15,7 +15,7 @@ const LANGUAGE_CHECK_SCENE_PATH: PackedScene = preload("res://sources/menus/lang
 
 
 func _ready() -> void:
-	Log.info("MainMenu loaded successfulyy")
+	Log.info("MainMenu: Loaded successfulyy")
 	version_label.text = ProjectSettings.get_setting("application/config/version")
 	teacher_label.text = UserDataManager.get_device_settings().teacher
 	device_id_label.text = str(UserDataManager.get_device_settings().device_id)
