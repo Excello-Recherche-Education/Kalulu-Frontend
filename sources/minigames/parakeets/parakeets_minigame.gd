@@ -34,11 +34,11 @@ var parakeets: Array[Parakeet] = []
 var selected: Array[Parakeet] = []
 var state: State = State.Locked
 
-@onready var branches: Control = $GameRoot/TreeTrunk/Branches
+@onready var branches: Node2D = $GameRoot/TreeTrunk/Branches
 @onready var possible_start_positions_parent: Control = $GameRoot/FlyFrom
-@onready var parakeets_node: Control = $GameRoot/Parakeets
-@onready var nest_position_1: Control = $GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position1
-@onready var nest_position_2: Control = $GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position2
+@onready var parakeets_node: Node = $GameRoot/Parakeets
+@onready var nest_position_1: Node2D = $GameRoot/TreeTrunk/Branches/TreeBranch5/Nest/Position1
+@onready var nest_position_2: Node2D = $GameRoot/TreeTrunk/Branches/TreeBranch5/Nest/Position2
 @onready var nest_positions: Array[Vector2] = [
 	nest_position_1.global_position,
 	nest_position_2.global_position
@@ -103,7 +103,7 @@ func _start() -> void:
 	super()
 	var possible_positions: Array[Vector2] = []
 	for branch: Node in branches.get_children():
-		for child: Control in branch.get_children():
+		for child: Node2D in branch.get_children():
 			if "Position" in child.name:
 				possible_positions.append(child.global_position)
 	possible_positions.shuffle()
@@ -139,21 +139,16 @@ func _on_parakeet_pressed(parakeet: Parakeet) -> void:
 
 
 func _correct() -> void:
-	if selected[0].global_position.x > selected[1].global_position.x:
+	# Ensure Upper letter is on the left
+	if selected[1].label.text == selected[0].label.text.to_upper():
 		var buffer: Parakeet = selected[0]
 		selected[0] = selected[1]
 		selected[1] = buffer
-
 	await _make_selected_happy()
 	current_progression += 1
-	
 	await _fly_to(nest_positions)
-	
 	await _make_selected_coo()
-	
 	_fly_to(fly_away_positions)
-	
-	
 	state = State.Idle
 	selected.clear()
 
@@ -215,6 +210,9 @@ func _make_selected_coo() -> void:
 
 
 func _fly_to(targets: Array[Vector2]) -> void:
+	var parent: Node = selected[0].get_parent()
+	parent.move_child(selected[0], parent.get_child_count() - 1)
+	parent.move_child(selected[1], parent.get_child_count() - 1)
 	var coroutine: Coroutine = Coroutine.new()
 	audio_player.stream = AUDIO_STREAMS[Audio.Fly]
 	audio_player.play()

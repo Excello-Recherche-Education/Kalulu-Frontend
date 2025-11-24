@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dv1ombj8eolb1"
-path="res://.godot/imported/background.png-380b8919214d9661fc20bff1be9c792a.ctex"
+uid="uid://w835wgqcmdvg"
+path="res://.godot/imported/ant.png-d584eb4304f188a08002ea7df358de05.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/parakeets/graphic/background.png"
-dest_files=["res://.godot/imported/background.png-380b8919214d9661fc20bff1be9c792a.ctex"]
+source_file="res://assets/minigames/parakeets/graphic/ant.png"
+dest_files=["res://.godot/imported/ant.png-d584eb4304f188a08002ea7df358de05.ctex"]
 
 [params]
 
