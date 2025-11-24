@@ -41,7 +41,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if not data is Dictionary:
-		Log.error("LessonGPLabel: drop data failed because data is not of type Dictionary")
+		Log.error("LessonGPLabel: Drop data failed because data is not of type Dictionary")
 	if not (data as Dictionary).has("gp_id"):
 		return
 	var before: bool = at_position.x < size.x / 2

@@ -1,4 +1,3 @@
-@tool
 extends Minigame
 
 const LABEL_SCENE: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")

@@ -1,4 +1,3 @@
-@tool
 extends SyllablesMinigame
 
 const HOLE_SCENE: PackedScene = preload("res://sources/minigames/crabs/hole/hole.tscn")

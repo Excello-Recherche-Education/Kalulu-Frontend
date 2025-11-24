@@ -1,4 +1,3 @@
-@tool
 extends Minigame
 
 const BLANK_SCENE: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
@@ -202,7 +201,7 @@ func _start_ants() -> void:
 
 	# Reactivate all words once ants have reached their positions
 	for word: Word in words.get_children():
-		word.disabled = false
+		word.set_disabled(false)
 
 
 func _on_current_progression_changed() -> void:
@@ -243,7 +242,7 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 		for word_i: Word in words.get_children():
 			@warning_ignore("unsafe_method_access")
 			word_i.current_anchor.set_monitorable(true)
-			word_i.disabled = true
+			word_i.set_disabled(true)
 		
 		if is_right:
 			for index: int in range(words.get_child_count() - 1):
@@ -266,7 +265,7 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 				ants.get_child(index).set_monitorable(false)
 		
 			for word_i: Word in words.get_children():
-				word_i.disabled = false
+				word_i.set_disabled(false)
 
 
 func _on_word_no_answer(word: TextureButton) -> void:

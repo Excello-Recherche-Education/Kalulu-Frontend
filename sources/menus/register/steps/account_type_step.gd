@@ -6,8 +6,8 @@ extends Step
 
 func _ready() -> void:
 	type.clear()
-	type.add_item(tr("TEACHER"))
-	type.add_item(tr("PARENT"))
+	type.add_item("TEACHER")
+	type.add_item("PARENT")
 
 
 func _on_next() -> bool:

@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="12_crt1m"]
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="13_2j53i"]
 [ext_resource type="Texture2D" uid="uid://vcfpmwst262s" path="res://assets/minigames/minigame_ui/graphic/popin_background.png" id="14_ubv3y"]
-[ext_resource type="Texture2D" uid="uid://f2ys2fy1il2k" path="res://assets/minigames/minigame_ui/graphic/popin_frontground.png" id="15_ym1dd"]
+[ext_resource type="Texture2D" uid="uid://f2ys2fy1il2k" path="res://assets/minigames/minigame_ui/graphic/popin_foreground.png" id="15_ym1dd"]
 [ext_resource type="Texture2D" uid="uid://b6b8kb5l3yh04" path="res://assets/minigames/minigame_ui/graphic/large_flower_body.png" id="16_mdaib"]
 [ext_resource type="Texture2D" uid="uid://dqtmyedk1ylbw" path="res://assets/minigames/minigame_ui/graphic/button_replay_up.png" id="17_ipxst"]
 [ext_resource type="Texture2D" uid="uid://bvu8ud6hkwusb" path="res://assets/minigames/minigame_ui/graphic/button_replay_down.png" id="18_5pefo"]

@@ -18,10 +18,10 @@ func _ready() -> void:
 func _configure_validator() -> void:
 	if validator != null:
 		return
-	var parent = get_parent()
+	var parent: Node = get_parent()
 	if not parent:
 		return
-	var found = Validation.find_validator(parent)
+	var found: Validator = Validation.find_validator(parent)
 	if found:
 		validator = found.duplicate(true)
 	else:
@@ -31,8 +31,8 @@ func _configure_validator() -> void:
 func _get_configuration_warnings() -> PackedStringArray:
 	if not validator:
 		return []
-	var list = PackedStringArray()
-	for rule in validator.rules:
+	var list: PackedStringArray = PackedStringArray()
+	for rule: ValidatorRule in validator.rules:
 		if not rule.is_valid():
 			list.append(rule.get_invalid_message())
 	return list
@@ -48,7 +48,7 @@ func _on_tree_exiting() -> void:
 
 
 func _on_validator_added() -> void:
-	var parent = get_parent()
+	var parent: Node = get_parent()
 	if not parent or not validator:
 		return
 	Validation.validator_added.emit(parent, validator)

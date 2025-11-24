@@ -5,7 +5,7 @@ extends Resource
 @export var fail_message: String = ""
 
 
-func apply(control: Control, value) -> RuleResult:
+func apply(control: Control, value: Variant) -> RuleResult:
 	return RuleResult.new()
 
 

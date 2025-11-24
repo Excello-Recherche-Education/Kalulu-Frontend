@@ -22,7 +22,7 @@ func _ready() -> void:
 
 
 func set_button_enabled(is_enabled: bool) -> void:
-	button.disabled = !is_enabled
+	button.set_disabled(!is_enabled)
 
 #region Particles
 

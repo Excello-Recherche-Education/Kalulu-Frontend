@@ -39,7 +39,7 @@ func setup() -> void:
 	gp_list = Database.get_gps_for_lesson(lesson_nb, true, true)
 	
 	if gp_list.size() <= 0:
-		Log.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))
+		Log.error("LookAndLearn: Setup: Did not found any GP for lesson " + str(lesson_nb))
 		await OpeningCurtain.open()
 		_on_tracing_manager_finished()
 		return
@@ -80,7 +80,7 @@ func setup() -> void:
 func play_videos() -> void:
 	if current_video >= videos.size():
 		animation_player.play("end_videos")
-		video_player.visible = false
+		video_player.hide()
 	else:
 		video_player.stream = videos[current_video]
 		video_player.play()

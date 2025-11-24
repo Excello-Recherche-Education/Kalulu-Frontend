@@ -5,10 +5,10 @@ extends ValidatorRule
 @export var target_value: bool
 
 
-func apply(control: Control, value) -> RuleResult:
+func apply(control: Control, value: Variant) -> RuleResult:
 	if ValidatorFunctions.empty(fail_message):
 		fail_message = "The value must equal %s." % target_value
-	var result = RuleResult.new()
+	var result: RuleResult = RuleResult.new()
 	result.passed = value is bool and value == target_value
 	if not result.passed:
 		result.message = fail_message

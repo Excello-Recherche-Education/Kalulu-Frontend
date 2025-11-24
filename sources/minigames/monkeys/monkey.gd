@@ -11,7 +11,7 @@ var locked: bool = true:
 var stunned: bool = false:
 	set(value):
 		stunned = value
-		stars.visible = stunned
+		stars.set_visible(stunned)
 		locked = true
 var stimulus: Dictionary = {}:
 	set(value):

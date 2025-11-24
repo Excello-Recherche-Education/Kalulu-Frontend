@@ -13,7 +13,7 @@ func _ready() -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(path_follow, "progress_ratio", 1, .5)
 	await tween.finished
-	sprite.visible = false
+	sprite.hide()
 	# Particles
 	particles.restart()
 	await particles.finished

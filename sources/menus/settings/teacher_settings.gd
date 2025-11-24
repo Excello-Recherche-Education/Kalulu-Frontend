@@ -78,7 +78,7 @@ func refresh_devices_tabs() -> void:
 		devices_tab_container.add_child(device_tab)
 		await get_tree().process_frame # Not optional or an auto-rename bug will occur on the tabs (especiallly if there are a lot of them)
 		device_tab.device_id = device
-		device_tab.students = UserDataManager.teacher_settings.students[device]
+		(device_tab as DeviceTab).students = UserDataManager.teacher_settings.students[device] as Array[StudentData]
 		device_tab.name = tr("DEVICE_NUMBER").format({"number": device})
 		device_tab.student_pressed.connect(_on_student_pressed)
 		device_tab.refresh()

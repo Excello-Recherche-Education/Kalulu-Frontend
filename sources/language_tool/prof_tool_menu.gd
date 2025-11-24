@@ -275,7 +275,7 @@ func log_message(message: String) -> bool:
 		var file: FileAccess
 		if FileAccess.file_exists(integrity_log_path):
 			file = FileAccess.open(integrity_log_path, FileAccess.READ_WRITE)
-			file.seek_end() # Se placer à la fin pour ajouter
+			file.seek_end() # Move to the end to append
 		else:
 			file = FileAccess.open(integrity_log_path, FileAccess.WRITE_READ)
 		if file:
@@ -557,7 +557,7 @@ func create_book() -> void:
 		var raw_headers: PackedStringArray = parse_csv_line(headers_line)
 		var header_map: Dictionary[String, String] = {} # Original -> Normalized
 		
-		# On mesure combien de lignes ont déjà été ajoutées
+		# Measure how many rows have already been added
 		var current_row_count: int = 0
 		if columns.has("Categorie"):
 			current_row_count = columns["Categorie"].size()
@@ -572,10 +572,10 @@ func create_book() -> void:
 				var filler: PackedStringArray
 				filler.resize(current_row_count)
 				for index: int in range(current_row_count):
-					filler[index] = "" # Valeur vide pour rattraper
+					filler[index] = "" # Empty value to catch up
 				columns[normalized] = filler
 
-		# Init colonne "Categorie" si pas encore
+		# Initialize the "Categorie" column if missing
 		if not columns.has("Categorie"):
 			var filler: PackedStringArray
 			filler.resize(current_row_count)
@@ -599,7 +599,7 @@ func create_book() -> void:
 				var normalized: String = header_map.get(original, original)
 				row_dict[normalized] = values[index]
 
-			# Ligne principale
+			# Main row
 			add_row(columns, row_dict, category, all_headers)
 
 			if row_dict.get("Writing", "0") == "1":
@@ -610,16 +610,16 @@ func create_book() -> void:
 
 		file.close()
 
-	# Forcer "Lesson" en tête
+	# Force "Lesson" to be first
 	var ordered_headers: Array[String] = all_headers.duplicate()
 	if "Lesson" in ordered_headers:
 		ordered_headers.erase("Lesson")
 		ordered_headers = ["Lesson"] + ordered_headers
 
-	# Ajouter Categorie à la fin
+	# Add Categorie at the end
 	ordered_headers.append("Categorie")
 
-	# Écriture du fichier final
+	# Write the final file
 	var output_path: String = lang_path.path_join("booklet.csv")
 	var output_file: FileAccess = FileAccess.open(output_path, FileAccess.WRITE)
 	if output_file == null:
@@ -628,7 +628,7 @@ func create_book() -> void:
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
 	
-	var row_count: int = (columns["Categorie"] as PackedStringArray).size() # Toutes les colonnes sont synchronisées
+	var row_count: int = (columns["Categorie"] as PackedStringArray).size() # All columns are synchronized
 	for index: int in range(row_count):
 		var row: PackedStringArray = []
 		for header: String in ordered_headers:
@@ -641,18 +641,18 @@ func create_book() -> void:
 	Log.trace("ProfToolMenu: " + error_label.text)
 
 
-# Fonction qui ajoute une ligne au dictionnaire
+# Function that adds a row to the dictionary
 func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[String, String], categorie: String, all_headers: Array) -> void:
-	# Nombre de lignes déjà enregistrées (doit être égal pour chaque colonne)
+	# Number of rows already recorded (must be equal for each column)
 	var current_size: int = 0
 	if dict.has("Categorie"):
 		current_size= dict["Categorie"].size()
 
-	# S'assurer que toutes les colonnes existantes reçoivent une valeur
+	# Ensure that every existing column receives a value
 	for header: String in all_headers:
 		if not dict.has(header):
 			var filler: PackedStringArray
-			filler.resize(current_size) # rattrape les lignes précédentes
+			filler.resize(current_size) # Catch up with previous rows
 			for index: int in range(current_size):
 				filler[index] = ""
 			dict[header] = filler
@@ -669,7 +669,7 @@ func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[S
 	dict["Categorie"].append(categorie)
 
 
-# Parse une ligne CSV même si elle contient des virgules et guillemets
+# Parse a CSV line even if it contains commas and quotes
 func parse_csv_line(line: String) -> PackedStringArray:
 	var result: PackedStringArray = []
 	var current: String = ""
@@ -695,7 +695,7 @@ func parse_csv_line(line: String) -> PackedStringArray:
 	return result
 
 
-# Transforme une ligne pour l'écriture CSV, avec échappement
+# Converts a line for CSV writing, with escaping
 func escape_csv_line(fields: PackedStringArray) -> String:
 	var output: String = ""
 	for index: int in range(fields.size()):
@@ -708,12 +708,12 @@ func escape_csv_line(fields: PackedStringArray) -> String:
 	return output
 
 
-# Normalise les noms de colonnes (ex: writing page -> Writing page)
+# Normalizes column names (ex: writing page -> Writing page)
 func normalize_header(header_name: String) -> String:
 	return header_name.strip_edges()[0].to_upper() + header_name.strip_edges().substr(1, -1).to_lower()
 
 
-# Lit une "ligne logique" complète d’un CSV (même si elle est sur plusieurs lignes à cause des guillemets)
+# Reads a complete "logical line" from a CSV (even if it spans multiple lines because of quotes)
 func read_csv_record(file: FileAccess) -> String:
 	var record: String = ""
 	var open_quotes: bool = false

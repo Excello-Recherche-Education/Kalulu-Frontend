@@ -95,10 +95,10 @@ func _init_log_file() -> void:
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
 	var err: Error = FileAccess.get_open_error()
 	if err != OK:
-		push_error("Log: Load external sound: Cannot open file %s. Error: %s" % [log_file_path, error_string(err)])
+		push_error("Log: Init Log File: Cannot open file %s. Error: %s" % [log_file_path, error_string(err)])
 		return
 	if log_file == null:
-		push_error("Log: Could not open log file at " + log_file_path)
+		push_error("Log: Init Log File: Could not open log file at " + log_file_path)
 		return
 
 

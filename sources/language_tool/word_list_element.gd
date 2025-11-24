@@ -352,8 +352,8 @@ func _on_remove_gp_button_2_pressed() -> void:
 
 
 func _process(_delta: float) -> void:
-	add_gp_button.visible = graphemes_edit_container.get_child_count() <= 0
-	remove_gp_button.visible = graphemes_edit_container.get_child_count() > 0
+	add_gp_button.set_visible(graphemes_edit_container.get_child_count() <= 0)
+	remove_gp_button.set_visible(graphemes_edit_container.get_child_count() > 0)
 
 
 func new_gp_asked_added(ind: int, gp_id: int) -> void:

@@ -51,7 +51,7 @@ func _next_letter() -> void:
 	_load_segments(upper_container, upper_path(letters[current_letter]))
 	
 	letter_picker.selected = current_letter
-	save_ok.visible = true
+	save_ok.show()
 
 
 func _load_segments(segment_container: SegmentContainer, path: String) -> void:
@@ -113,7 +113,7 @@ func _on_save_button_pressed() -> void:
 	_save_segments(lower_container.segments_container.get_children() as Array[SegmentBuild], lower_path(letters[current_letter]))
 	_save_segments(upper_container.segments_container.get_children() as Array[SegmentBuild], upper_path(letters[current_letter]))
 	
-	save_ok.visible = true
+	save_ok.show()
 
 
 func _on_back_button_pressed() -> void:
@@ -131,8 +131,8 @@ func _on_copy_from_id_pressed(index: int) -> void:
 
 
 func _on_lower_container_changed() -> void:
-	save_ok.visible = false
+	save_ok.hide()
 
 
 func _on_upper_container_changed() -> void:
-	save_ok.visible = false
+	save_ok.hide()

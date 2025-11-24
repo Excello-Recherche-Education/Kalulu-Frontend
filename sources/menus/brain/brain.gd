@@ -77,10 +77,10 @@ func _ready() -> void:
 	for index: int in range(gardens_layout.gardens.size()):
 		var can_emit: bool = true
 		if distribution[index] > 0 and UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != StudentProgression.Status.Locked:
-			garden_buttons[index].disabled = false
+			garden_buttons[index].set_disabled(false)
 			garden_buttons[index].self_modulate = unlocked_colors[index]
 		else:
-			garden_buttons[index].disabled = true
+			garden_buttons[index].set_disabled(true)
 			garden_buttons[index].self_modulate = locked_color
 			can_emit = false
 

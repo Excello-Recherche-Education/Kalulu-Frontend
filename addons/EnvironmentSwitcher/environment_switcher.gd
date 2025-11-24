@@ -47,13 +47,13 @@ func _environment_to_string(env: EnvType) -> String:
 
 
 func save_environment() -> void:
-	var config = ConfigFile.new()
+	var config: ConfigFile = ConfigFile.new()
 	config.set_value("environment", "current", str(current_environment))
 	config.save(CONFIG_PATH)
 
 
 func load_environment() -> void:
-	var config = ConfigFile.new()
+	var config: ConfigFile = ConfigFile.new()
 	if config.load(CONFIG_PATH) == OK:
-		var env = config.get_value("environment", "current", str(EnvType.DEV))
+		var env: String = config.get_value("environment", "current", str(EnvType.DEV))
 		current_environment = int(env)

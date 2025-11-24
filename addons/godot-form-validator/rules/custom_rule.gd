@@ -7,13 +7,13 @@ class_name CustomRule
 var _expression: Expression = Expression.new()
 
 
-func apply(control: Control, value) -> RuleResult:
-	var result = RuleResult.new()
+func apply(control: Control, value: Variant) -> RuleResult:
+	var result: RuleResult = RuleResult.new()
 	if not _validate_expression():
 		result.passed = false
 		result.message = "Specified expression is not valid."
 		return result
-	var res = _expression.execute([ control, value ])
+	var res: Variant = _expression.execute([ control, value ])
 	if _expression.has_execute_failed():
 		result.passed = false
 		result.message = "Execution of the specified expression has failed."

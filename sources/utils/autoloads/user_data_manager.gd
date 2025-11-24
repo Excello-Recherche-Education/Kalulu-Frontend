@@ -34,6 +34,7 @@ var real_delta: int
 
 
 func _ready() -> void:
+	Log.info("UserDataManager initialization")
 	if get_device_settings().teacher:
 		_load_teacher_settings()
 	
@@ -59,7 +60,7 @@ func purge_user_folders_if_needed() -> void:
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
 		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
+			if dir.current_is_dir() and file_name != "." and file_name != ".." and file_name != "logs":
 				Utils.delete_directory_recursive("user://".path_join(file_name))
 			file_name = dir.get_next()
 		dir.list_dir_end()
@@ -98,7 +99,7 @@ func stop_synchronization_timer() -> void:
 
 func register(register_settings: TeacherSettings) -> bool:
 	if not register_settings:
-		Log.warn("UserDataManager: register called with invalid register_settings")
+		Log.warn("UserDataManager: Register: Function called with invalid register_settings")
 		return false
 	
 	# Handles device settings
@@ -199,11 +200,11 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 
 func set_device_id(device: int) -> bool:
 	if not _device_settings:
-		Log.warn("UserDataManager: set_device_id called with no device settings loaded")
+		Log.warn("UserDataManager: SetDeviceID: Function called with no device settings loaded")
 		return false
 	
 	if not device:
-		Log.warn("UserDataManager: set_device_id called with invalid device")
+		Log.warn("UserDataManager: SetDeviceID: Function called with invalid device ID")
 		return false
 	
 	_device_settings.device_id = device
@@ -228,15 +229,15 @@ func logout() -> void:
 
 func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
-		Utils.clean_dir(get_teacher_folder())
+		Utils.delete_directory_recursive(get_teacher_folder())
 
 
 func student_exists(code: String) -> bool:
 	if not _device_settings:
-		Log.trace("UserDataManager: student_exists called with invalid _device_settings")
+		Log.trace("UserDataManager: StudentExists: Function failed because of invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Log.trace("UserDataManager: student_exists called with invalid teacher_settings")
+		Log.trace("UserDataManager: StudentExists: Function failed because of invalid teacher_settings")
 		return false
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
 	if students:
@@ -248,10 +249,10 @@ func student_exists(code: String) -> bool:
 
 func login_student(code: String) -> bool:
 	if not _device_settings:
-		Log.warn("UserDataManager: login_student failed because of invalid _device_settings")
+		Log.warn("UserDataManager: LoginStudent: Function failed because of invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Log.warn("UserDataManager: login_student failed because of invalid teacher_settings")
+		Log.warn("UserDataManager: LoginStudent: Function failed because of invalid teacher_settings")
 		return false
 	
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
@@ -262,16 +263,16 @@ func login_student(code: String) -> bool:
 				(ServerManager as ServerManagerClass).first_login_student()
 				return true
 	
-	Log.warn("UserDataManager: login_student failed, code not found: " + code)
+	Log.warn("UserDataManager: LoginStudent: Code not found: " + code)
 	return false
 
 
 func logout_student() -> bool:
 	if not _device_settings:
-		Log.warn("UserDataManager: logout_student failed because of invalid _device_settings")
+		Log.warn("UserDataManager: LogoutStudent: Function failed because of invalid _device_settings")
 		return false
 	if not teacher_settings:
-		Log.warn("UserDataManager: logout_student failed because of invalid teacher_settings")
+		Log.warn("UserDataManager: LogoutStudent: Function failed because of invalid teacher_settings")
 		return false
 	
 	student = ""
@@ -292,6 +293,7 @@ func get_device_settings() -> DeviceSettings:
 
 
 func _load_device_settings() -> void:
+	Log.info("UserDataManager: Load device settings")
 	if FileAccess.file_exists(get_device_settings_path()):
 		_device_settings = load(get_device_settings_path())
 		Log.current_level = _device_settings.log_level
@@ -304,20 +306,35 @@ func _load_device_settings() -> void:
 
 
 func _save_device_settings() -> void:
-	Log.trace("UserDataManager: Saving device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
+	Log.trace("UserDataManager: Save device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
 	ResourceSaver.save(_device_settings, get_device_settings_path())
 
 
-func set_language(language: String) -> void:
+func set_language(language: String, server_validated: bool = false) -> void:
+	Log.trace("UserDataManager: Set language %s, %s" % [language, str(server_validated)] )
 	if _device_settings:
 		_device_settings.language = language
 		_save_device_settings()
+	if teacher_settings and not teacher_settings.server_language_validated:
+		teacher_settings.language = language
+		if server_validated:
+			teacher_settings.server_language_validated = true
+
+
+func get_language() -> String:
+	if teacher_settings and teacher_settings.language:
+		return teacher_settings.language
+	elif _device_settings and _device_settings.language:
+		return _device_settings.language
+	return OS.get_locale()
 
 
 func set_language_version(language: String, version: Dictionary) -> void:
 	if _device_settings:
 		_device_settings.language_versions[language] = version
 		_save_device_settings()
+	else:
+		Log.warn("UserDataManager: Cannot set language version because device settings not found")
 
 
 func set_master_volume(value: float) -> void:
@@ -569,7 +586,7 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
 	var error: Error = ResourceSaver.save(progression, progression_path)
 	if error != OK:
-		Log.error("UserDataManager: save_student_progression_for_code(device = %s, code = %s): error %s" % [str(device), str(code), error_string(error)])
+		Log.error("UserDataManager: SaveStudentProgressionForCode: Device = %s, Code = %s: error %s" % [str(device), str(code), error_string(error)])
 
 
 func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String) -> void:

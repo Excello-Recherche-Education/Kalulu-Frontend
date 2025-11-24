@@ -1,6 +1,7 @@
-@tool
 class_name CaterpillarHead
 extends Node2D
+
+var is_paused: bool = false
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var audio_stream_player: CaterpillarAudioStreamPlayer = $CaterpillarAudioStreamPlayer
@@ -13,9 +14,9 @@ func _ready() -> void:
 
 func idle() -> void:
 	if randf() < 0.8:
-		animated_sprite.play("idle1")
+		animated_sprite.play("idle")
 	else:
-		animated_sprite.play("idle2")
+		animated_sprite.play("idle_blink")
 
 
 func eat() -> void:
@@ -31,4 +32,17 @@ func spit() -> void:
 
 
 func _on_animation_finished() -> void:
+	if not is_paused:
+		idle()
+	else:
+		animated_sprite.set_frame_and_progress(0, 0)
+
+
+func pause_animation() -> void:
+	is_paused = true
+	animated_sprite.pause()
+
+
+func resume_animation() -> void:
+	is_paused = false
 	idle()

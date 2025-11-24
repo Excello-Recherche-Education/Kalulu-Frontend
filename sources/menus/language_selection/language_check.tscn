@@ -1,0 +1,134 @@
+[gd_scene load_steps=6 format=3 uid="uid://cstjcvopullr1"]
+
+[ext_resource type="Script" uid="uid://cf8j23m8xiqx8" path="res://sources/menus/language_selection/language_check.gd" id="1_ja11f"]
+[ext_resource type="Script" uid="uid://58twmknv6bl5" path="res://sources/ui/popup.gd" id="2_cy44h"]
+[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_u8e4y"]
+
+[sub_resource type="Gradient" id="Gradient_22q4u"]
+colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_u8e4y"]
+gradient = SubResource("Gradient_22q4u")
+
+[node name="LanguageCheck" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ja11f")
+
+[node name="Background" parent="." instance=ExtResource("2_u8e4y")]
+layout_mode = 1
+offset_right = 2560.0
+offset_bottom = 1800.0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 2560.0
+offset_bottom = 1800.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_top = 600
+theme_override_constants/margin_right = 400
+theme_override_constants/margin_bottom = 600
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelKalulu"
+
+[node name="QuestionContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/QuestionContainer"]
+layout_mode = 2
+
+[node name="CheckingLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 90
+text = "CHECKING_LANGUAGE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ErrorPopup" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("2_cy44h")
+content_text = "NO_VALID_LANGUAGE_DATA_AVAILABLE"
+
+[node name="TextureRect" type="TextureRect" parent="ErrorPopup"]
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = SubResource("GradientTexture1D_u8e4y")
+
+[node name="PanelContainer" type="PanelContainer" parent="ErrorPopup/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelKalulu"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ContentLabel" type="Label" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 70
+text = "NO_VALID_LANGUAGE_DATA_AVAILABLE"
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "RETURN_TO_MAIN_MENU"
+
+[node name="Separator" type="Control" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CancelButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "CANCEL"
+
+[connection signal="pressed" from="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/ConfirmButton" to="ErrorPopup" method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="ErrorPopup" method="_on_cancel_button_pressed"]

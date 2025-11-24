@@ -74,11 +74,11 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 		# Check missing keys
 		if not garden.has("games"):
 			if not is_init:
-				Log.warn("Garden %d : Add missing key 'games'." % index)
+				Log.warn("StudentProgression: Garden %d: Add missing key 'games'." % index)
 			garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
 		if not garden.has("look_and_learn"):
 			if not is_init:
-				Log.warn("Garden %d : Add missing key 'look_and_learn'." % index)
+				Log.warn("StudentProgression: Garden %d: Add missing key 'look_and_learn'." % index)
 			garden["look_and_learn"] = Status.Locked
 		if not garden.has("last_duration"):
 			garden["last_duration"] = PackedInt32Array([0, 0, 0])
@@ -88,7 +88,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 		# Check array "games"
 		if typeof(garden["games"]) != TYPE_ARRAY or (garden["games"] as Array).size() != 3:
 			if not is_init:
-				Log.warn("Garden %d : invalid format for 'games' → reset." % index)
+				Log.warn("StudentProgression: Garden %d: invalid format for 'games' → reset." % index)
 			garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
 
 		# Check value outside of possible enum values
@@ -119,7 +119,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 			for game_index: int in range(3):
 				if garden["games"][game_index] != Status.Locked or garden["look_and_learn"] != Status.Locked:
 					if not is_init:
-						Log.warn("Garden %d : invalid progression (previous not finished) → reset." % index)
+						Log.warn("StudentProgression: Garden %d: invalid progression (previous not finished) → reset." % index)
 					garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
 					garden["look_and_learn"] = Status.Locked
 					break
@@ -131,13 +131,13 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 				if garden["games"][game_index] == Status.Locked:
 					garden["games"][game_index] = Status.Unlocked
 					if not is_init:
-						Log.warn("Garden %d : game %d unlocked because lesson is completed" % [index, game_index + 1])
+						Log.warn("StudentProgression: Garden %d: game %d unlocked because lesson is completed" % [index, game_index + 1])
 
 		# Case : previous garden completed → lesson unlocked if needed
 		elif garden["look_and_learn"] == Status.Locked:
 			garden["look_and_learn"] = Status.Unlocked
 			if not is_init:
-				Log.warn("Garden %d : lesson unlocked because previous garden is completed" % index)
+				Log.warn("StudentProgression: Garden %d: lesson unlocked because previous garden is completed" % index)
 
 	return result
 

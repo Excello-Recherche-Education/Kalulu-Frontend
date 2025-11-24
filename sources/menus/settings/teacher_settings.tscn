@@ -79,8 +79,7 @@ text = "DELETE_ACCOUNT"
 [node name="DeletePopup" parent="InterfaceLeft/Container/DeleteButton" instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
-content_text = "Voulez-vous vraiment supprimer votre compte ?
-Cette action est irréversible !"
+content_text = "DELETE_ACCOUNT_POPUP"
 
 [node name="LogoutButton" type="Button" parent="InterfaceLeft/Container"]
 layout_mode = 2

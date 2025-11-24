@@ -1,5 +1,14 @@
 extends Node
 
+const SUPPORTED_LOCALES: Dictionary[String, String] = {
+	"fr_FR": "Français (France)",
+	"es_AR": "Español (Argentina)",
+	"es_UY": "Español (Uruguay)",
+	"es_CO": "Español (Colombia)",
+	"pt_BR": "Português (Brasil)",
+	"es_DO": "Español (República Dominicana)"
+}
+
 
 func reorder_children_by_property(container: Node, property_name: String) -> void:
 	var children: Array[Node] = container.get_children()
@@ -39,13 +48,13 @@ func clean_dir(path: String) -> Error:
 func delete_directory_recursive(path: String) -> void:
 	var err: Error = clean_dir(path)
 	if err != OK:
-		Log.error("Utils: Error " + error_string(err) + " while cleaning folder: %s" % path)
+		Log.error("Utils: DeleteDirectoryRecursive: Error " + error_string(err) + " while cleaning folder: %s" % path)
 		return
 	err = DirAccess.remove_absolute(path)
 	if err != OK:
-		Log.error("Utils: Error " + error_string(err) + " while deleting folder: %s" % path)
+		Log.error("Utils: DeleteDirectoryRecursive: Error " + error_string(err) + " while deleting folder: %s" % path)
 	else:
-		Log.info("Utils: Folder deleted: %s" % path)
+		Log.info("Utils: DeleteDirectoryRecursive: Folder deleted: %s" % path)
 
 
 ## Returns -1 if version_a is lower than version_b, 0 if they are equals, and 1 if version_a is greater than version_b

@@ -1,4 +1,3 @@
-@tool
 class_name SyllablesMinigame
 extends Minigame
 
@@ -204,13 +203,13 @@ func _on_stimulus_pressed(stimulus: Dictionary, _node: Node) -> bool:
 		if _get_current_stimulus().has("ID"):
 			_update_remediation_syllable_score(_get_current_stimulus().ID as int, -1)
 		else:
-			Log.error("SyllablesMinigame: current stimulus has no ID")
+			Log.error("SyllablesMinigame: Current stimulus has no ID")
 		
 		# Handles the pressed stimulus Gps
 		if stimulus.has("ID"):
 			_update_remediation_syllable_score(stimulus.ID as int, -1)
 		else:
-			Log.warn("SyllablesMinigame: stimulus has no ID")
+			Log.warn("SyllablesMinigame: Stimulus has no ID")
 	return true
 
 

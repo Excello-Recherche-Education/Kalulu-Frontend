@@ -98,7 +98,6 @@ func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
-	#transition_data = {}
 	
 	# Difficulty
 	if (UserDataManager as UserDataManagerClass)._student_difficulty:
@@ -137,7 +136,7 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	Log.error("Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
+	Log.error("BaseMinigame: Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
 	return
 
 

@@ -22,7 +22,7 @@ var teacher_settings: SettingsTeacherSettings = null
 
 func _ready() -> void:
 	name_line_edit.connect("text_submitted", _on_name_changed)
-	device_selection_container.visible = false
+	device_selection_container.hide()
 
 
 func _create_lessons() -> void:
@@ -75,7 +75,7 @@ func _on_delete_button_pressed() -> void:
 
 func _on_device_change_button_pressed() -> void:
 	_device_selection_refresh()
-	device_selection_container.visible = true
+	device_selection_container.show()
 
 
 func _on_name_changed(new_name: String) -> void:
@@ -99,7 +99,7 @@ func _device_selection_refresh() -> void:
 
 
 func _device_button_pressed(device_id: int) -> void:
-	device_selection_container.visible = false
+	device_selection_container.hide()
 	UserDataManager.teacher_settings.update_student_device(student, device_id)
 	await teacher_settings.refresh_devices_tabs()
 	device = device_id

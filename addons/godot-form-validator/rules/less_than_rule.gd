@@ -5,10 +5,10 @@ class_name LessThanRule
 @export var target_value: String
 
 
-func apply(control: Control, value) -> RuleResult:
+func apply(control: Control, value: Variant) -> RuleResult:
 	if ValidatorFunctions.empty(fail_message):
 		fail_message = "The value must be less than %s." % target_value
-	var result = RuleResult.new()
+	var result: RuleResult = RuleResult.new()
 	result.passed = str(value) < target_value
 	if not result.passed:
 		result.message = fail_message

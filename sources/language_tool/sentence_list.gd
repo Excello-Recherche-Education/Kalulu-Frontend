@@ -35,7 +35,7 @@ func _on_list_title_new_search(new_text: String) -> void:
 			if word.begins_with(new_text):
 				found = true
 				break
-		element.visible = found
+		element.set_visible(found)
 
 
 func _ready() -> void:

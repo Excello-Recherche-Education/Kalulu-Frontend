@@ -34,12 +34,12 @@ func set_effects_volume_slider(volume: float) -> void:
 
 func _on_volume_menu_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
-		volume_menu.visible = not volume_menu.visible
+		volume_menu.set_visible(not volume_menu.is_visible())
 
 
 func _on_volume_button_pressed() -> void:
 	volume_panel.global_position = Vector2(self.global_position.x + 300, self.global_position.y)
-	volume_menu.visible = not volume_menu.visible
+	volume_menu.set_visible(not volume_menu.is_visible())
 
 
 func _on_master_volume_slider_value_changed(volume: float) -> void:
