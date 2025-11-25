@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsnjvyk7yvkxb"
-path="res://.godot/imported/turtle_swim_01_0006.png-233012fafd63f6fab87a33b08e42d72f.ctex"
+uid="uid://d14qsri0qk7ka"
+path="res://.godot/imported/khaki_turtle_spritesheet.png-a086f44af79aa8241854ed0402dd727c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/turtles/graphic/turtle_swim_01_0006.png"
-dest_files=["res://.godot/imported/turtle_swim_01_0006.png-233012fafd63f6fab87a33b08e42d72f.ctex"]
+source_file="res://assets/minigames/turtles/graphic/khaki_turtle_spritesheet.png"
+dest_files=["res://.godot/imported/khaki_turtle_spritesheet.png-a086f44af79aa8241854ed0402dd727c.ctex"]
 
 [params]
 

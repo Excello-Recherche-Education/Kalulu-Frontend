@@ -29,6 +29,7 @@ var stimulus_spawned: bool = false
 @onready var spawn_timer: Timer = $GameRoot/SpawnTimer
 @onready var spawn_points_container: Node2D = $GameRoot/SpawnPoints
 @onready var spawn_location: Node2D
+@onready var crab: AnimatedSprite2D = %CrabAnimatedSprite2D
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
@@ -70,15 +71,16 @@ func _clear_turtles() -> void:
 	for turtle: Turtle in turtles.get_children():
 		turtle.disappear()
 
-
 #region Connections
 
 func _on_spawn_timer_timeout() -> void:
+	Log.trace("TurtleMinigame: Spawn timer timeout")
 	# Checks if there are too many turtle, and wait for one to despawn
 	if turtle_count >= MAX_TURTLE_COUNT:
+		Log.trace("TurtleMinigame: Waiting for possibility to spawn more turtles")
 		await can_spawn_turtle
 	
-	# Spawn a turtle
+	Log.trace("TurtleMinigame: Spawn a turtle")
 	var turtle: Turtle = TURTLE_SCENE.instantiate()
 	
 	# Pick a position to spawn the turtle
@@ -203,6 +205,11 @@ func _on_current_progression_changed() -> void:
 	
 	# Restarts the spawning
 	spawn_timer.start()
+
+
+func _win() -> void:
+	crab.play("right")
+	super()
 
 #endregion
 
