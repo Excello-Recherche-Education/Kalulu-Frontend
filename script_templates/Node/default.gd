@@ -49,6 +49,9 @@ static func _static_init() -> void:
 
 #14-1. overridden built-in virtual methods:
 # Called upon creating the object in memory.
+# Init can have parameters, but it is dangerous because when instantiated by godot, it will not call new() with parameters and so any object that has parameters in _init() will fail to load.
+# Example: func _init(initial_name: String, initial_age: int)
+# Can be called this way: var person: Person = Person.new("Gandalf", 24000)
 func _init() -> void:
 	pass
 
