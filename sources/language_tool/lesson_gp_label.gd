@@ -51,5 +51,6 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 func _notification(what: int) -> void:
 	if is_being_dragged and what == NOTIFICATION_DRAG_END:
 		is_being_dragged = false
-		if is_drag_successful():
+		# The security to check if node path contains "GPContainer" does work but is extremely inneficient and should be re-done with a better drag&drop architecture.
+		if is_drag_successful() and str(get_viewport().gui_get_hovered_control().get_path()).contains("GPContainer"):
 			queue_free()
