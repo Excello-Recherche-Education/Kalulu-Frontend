@@ -41,7 +41,7 @@ func _on_plus_button_pressed() -> void:
 	var lesson_container: LessonContainer = lesson_container_scene.instantiate()
 	lessons_container.add_child(lesson_container)
 	lesson_container.lesson_dropped.connect(_on_lesson_dropped)
-	var max_nb: int = -1
+	var max_nb: int = 0
 	for element: LessonContainer in lessons.values():
 		max_nb = max(max_nb, element.number)
 	lesson_container.number = max_nb + 1
