@@ -8,6 +8,7 @@ signal logged_in()
 @onready var login_message: Label = %LoginError
 @onready var device_id_container: VBoxContainer = %DeviceIDContainer
 @onready var device_id_field: SpinBox = %DeviceIDField
+@onready var reset_password_button: Button = %ResetPasswordButton
 
 
 func _ready() -> void:
@@ -19,6 +20,7 @@ func _ready() -> void:
 func _hide_login_error(_value: Variant) -> void:
 	if login_message.is_visible():
 		login_message.hide()
+		reset_password_button.hide()
 
 
 func _on_login_form_validator_control_validated(control: Control, passed: Variant, messages: PackedStringArray) -> void:
@@ -50,6 +52,16 @@ func _on_validate_button_pressed() -> void:
 		else:
 			Log.info("Login: UserDataManager rejected server response during login")
 			login_message.show()
+			reset_password_button.show()
 	else:
 		Log.info("Login: Server responded with code %d for login attempt with email %s" % [res.code, email_field.text])
 		login_message.show()
+		reset_password_button.show()
+
+
+func _on_reset_password_button_pressed() -> void:
+	var res: Dictionary = await ServerManager.reset_password(email_field.text)
+	if res.code == 200:
+		Log.debug(str(res))
+	else:
+		login_message.text = "CHECK_YOUR_EMAIL"

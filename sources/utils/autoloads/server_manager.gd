@@ -6,6 +6,7 @@ signal internet_check_completed(has_access: bool)
 
 const INTERNET_CHECK_URL: String = "https://google.com"
 const AWS_API_GATEWAY_ADRESS: String = "https://xwvmrarnb7.execute-api.eu-west-3.amazonaws.com"
+const AWS_PASSWORD_RESET_ADRESS: String = "https://10g8bfw6c3.execute-api.eu-west-3.amazonaws.com/dev/"
 
 # Response from the last request
 var success: bool
@@ -90,6 +91,14 @@ func register(data: Dictionary) -> Dictionary:
 func login(mail: String, password: String) -> Dictionary:
 	loading_rect.show()
 	await _post_json_request("login", {"mail": mail, "password": password})
+	return _response()
+
+
+func reset_password(mail: String) -> Dictionary:
+	var previous: String = environment_url
+	environment_url = AWS_PASSWORD_RESET_ADRESS
+	await _post_json_request("forgot", {"email": mail})
+	environment_url = previous
 	return _response()
 
 
