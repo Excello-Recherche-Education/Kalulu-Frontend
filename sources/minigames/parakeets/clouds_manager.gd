@@ -42,7 +42,6 @@ func _depth_factor_for_cloud(cloud: Sprite2D) -> float:
 
 func _apply_parallax_speed(cloud: Sprite2D) -> float:
 	var factor: float = _depth_factor_for_cloud(cloud)
-	Log.debug("%s : %s" % [str(cloud.position.y), str(lerp(min_speed, max_speed, factor))])
 	return lerp(min_speed, max_speed, factor)
 
 
