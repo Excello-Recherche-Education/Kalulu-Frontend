@@ -58,7 +58,7 @@ func _on_save_button_pressed() -> void:
 	for res: Dictionary in result:
 		var found: bool = false
 		for element: GPListElement in elements_container.get_children():
-			if element.grapheme == res.Grapheme and element.phoneme == res.Phoneme and element.type == res.Type and element.exception == res.Exception:
+			if element.grapheme == res.Grapheme and element.phoneme == res.Phoneme and element.type == res.Type and int(element.exception) == res.Exception:
 				found = true
 				break
 		if not found:
