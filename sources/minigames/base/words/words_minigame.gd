@@ -100,6 +100,7 @@ func _start() -> void:
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
+	Log.trace("WordsMinigame: SetupMinigame")
 	super()
 
 

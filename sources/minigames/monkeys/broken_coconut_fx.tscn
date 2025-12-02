@@ -75,35 +75,35 @@ script = ExtResource("1_vwvtm")
 [node name="TopParticles" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 1
-process_material = SubResource("ParticleProcessMaterial_iijg8")
 texture = ExtResource("1_ivxel")
 lifetime = 3.0
 one_shot = true
+process_material = SubResource("ParticleProcessMaterial_iijg8")
 
 [node name="ShardsParticles" type="GPUParticles2D" parent="."]
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_ivqj5")
 texture = ExtResource("2_logsj")
 lifetime = 3.0
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_ivqj5")
 
 [node name="BottomParticles" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 1
-process_material = SubResource("ParticleProcessMaterial_d8slu")
 texture = ExtResource("2_kd03l")
 lifetime = 3.0
 one_shot = true
+process_material = SubResource("ParticleProcessMaterial_d8slu")
 
 [node name="LinesParticles" type="GPUParticles2D" parent="."]
 position = Vector2(0, -16)
 emitting = false
 amount = 3
-process_material = SubResource("ParticleProcessMaterial_b1p8e")
 texture = ExtResource("5_5n842")
 lifetime = 3.0
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_b1p8e")
 
 [connection signal="finished" from="ShardsParticles" to="." method="_on_shards_particles_finished"]

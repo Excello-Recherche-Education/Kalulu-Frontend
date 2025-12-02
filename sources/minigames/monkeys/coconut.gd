@@ -18,6 +18,7 @@ func highlight() -> void:
 
 
 func explode() -> void:
+	Log.trace("Coconut: Explode")
 	highlight_fx.stop()
 	sprite.hide()
 	label.hide()

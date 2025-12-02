@@ -100,3 +100,23 @@ func get_safe_file_path(file_path: String) -> String:
 		Log.trace("Utils: GetSafeFilePath: Renamed invalid file path: '%s' → '%s'" % [file_path, new_path])
 	
 	return new_path
+
+
+func get_animation_duration(sprite: AnimatedSprite2D, anim_name: String) -> float:
+	if sprite == null:
+		Log.warn("Utils: get_animation_duration(): Sprite AnimatedSprite2D is null.")
+		return 0.0
+	var frames: SpriteFrames = sprite.sprite_frames
+	if frames == null:
+		Log.warn("Utils: get_animation_duration(): sprite_frames is null for %s." % sprite.name)
+		return 0.0
+	if not frames.has_animation(anim_name):
+		Log.warn("Utils: get_animation_duration(): Animation '%s' does not exists in %s." % [anim_name, sprite.name])
+		return 0.0
+	var frame_count: int = frames.get_frame_count(anim_name)
+	var speed: float = frames.get_animation_speed(anim_name)
+	if speed <= 0:
+		Log.warn("Utils: get_animation_duration(): Animation '%s' has an invalid speed (%s)." % [anim_name, speed])
+		return 0.0
+	var base_duration: float = frame_count / speed
+	return base_duration / sprite.speed_scale

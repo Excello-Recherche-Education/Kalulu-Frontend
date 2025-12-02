@@ -2,18 +2,15 @@
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_6nhsm"]
 [ext_resource type="Script" uid="uid://dvmvvbfb666cg" path="res://sources/minigames/monkeys/monkeys_minigame.gd" id="2_12lw5"]
-[ext_resource type="Shader" uid="uid://da5cg0cin6tgm" path="res://resources/shaders/move_shader.gdshader" id="3_cw8rd"]
 [ext_resource type="Texture2D" uid="uid://demg0gbj4lwic" path="res://assets/minigames/monkeys/graphic/background.png" id="3_xpybj"]
+[ext_resource type="Texture2D" uid="uid://b5dpemo34ts5s" path="res://assets/minigames/monkeys/graphic/background_shadows.png" id="4_awer8"]
 [ext_resource type="Texture2D" uid="uid://b6k16tfsm2p4u" path="res://assets/minigames/monkeys/graphic/ground.png" id="4_m2hoh"]
 [ext_resource type="Texture2D" uid="uid://eor7gaddgj5d" path="res://assets/minigames/monkeys/graphic/palmtree_01.png" id="5_2qxen"]
 [ext_resource type="Texture2D" uid="uid://fex5yvybinsx" path="res://assets/minigames/monkeys/graphic/palmtree_02.png" id="6_f5ri1"]
 [ext_resource type="PackedScene" uid="uid://b8r26vroslasj" path="res://sources/minigames/monkeys/king_monkey.tscn" id="7_43p1x"]
-[ext_resource type="Texture2D" uid="uid://disgg14rdmp81" path="res://assets/minigames/monkeys/graphic/textplank.png" id="8_w0ndh"]
+[ext_resource type="Texture2D" uid="uid://blejqny5syems" path="res://assets/minigames/monkeys/graphic/billboard.png" id="8_j0b56"]
 [ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="10_awer8"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qdi5m"]
-shader = ExtResource("3_cw8rd")
-shader_parameter/direction = Vector2(0.015, 0)
+[ext_resource type="Texture2D" uid="uid://u2x8lg54e1g" path="res://assets/minigames/monkeys/graphic/caterpillar.png" id="11_ebf48"]
 
 [sub_resource type="FontVariation" id="FontVariation_br573"]
 base_font = ExtResource("10_awer8")
@@ -24,7 +21,7 @@ script = ExtResource("2_12lw5")
 throw_to_king_duration = 1.2
 throw_to_monkey_duration = 0.8
 throw_to_plank_duration = 0.8
-max_number_of_GPs = 6
+max_number_of_gps = 6
 distractors_queue_size = 6
 time_between_words = 3.0
 minigame_name = 3
@@ -33,104 +30,75 @@ difficulty = 4
 max_number_of_lives = 5
 max_progression = 5
 
-[node name="Environment" type="VBoxContainer" parent="GameRoot" index="0"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 0
-
-[node name="Background" type="TextureRect" parent="GameRoot/Environment" index="0"]
+[node name="Background" type="TextureRect" parent="GameRoot" index="0"]
 texture_repeat = 3
-material = SubResource("ShaderMaterial_qdi5m")
-layout_mode = 2
+layout_mode = 0
+offset_left = -0.5
+offset_top = -115.0
+offset_right = 2560.5
+offset_bottom = 1686.0
 size_flags_vertical = 3
 texture = ExtResource("3_xpybj")
 
-[node name="Ground" type="TextureRect" parent="GameRoot/Environment" index="1"]
+[node name="BackgroundShadows" type="TextureRect" parent="GameRoot" index="1"]
+texture_repeat = 3
+layout_mode = 0
+offset_top = -115.0
+offset_right = 2561.0
+offset_bottom = 1686.0
+texture = ExtResource("4_awer8")
+
+[node name="Ground" type="TextureRect" parent="GameRoot" index="2"]
 custom_minimum_size = Vector2(2.08165e-12, 250)
-layout_mode = 2
+layout_mode = 0
+offset_left = -0.5
+offset_top = 1675.5
+offset_right = 2560.5
+offset_bottom = 1925.5
 texture = ExtResource("4_m2hoh")
 
-[node name="PalmTreeMonkeys" type="TextureRect" parent="GameRoot" index="1"]
-layout_mode = 0
-offset_left = 1646.0
-offset_top = 120.0
-offset_right = 2366.0
-offset_bottom = 1686.0
+[node name="PalmTreeMonkeys" type="Sprite2D" parent="GameRoot" index="3"]
+position = Vector2(1914, 870)
+scale = Vector2(1.4, 1)
 texture = ExtResource("5_2qxen")
 
-[node name="Position1" type="Control" parent="GameRoot/PalmTreeMonkeys" index="0"]
-anchors_preset = 0
-offset_left = 362.0
-offset_top = 706.0
-offset_right = 402.0
-offset_bottom = 746.0
+[node name="Position1" type="Marker2D" parent="GameRoot/PalmTreeMonkeys" index="0"]
+position = Vector2(-36.428574, -453)
 
-[node name="Position2" type="Control" parent="GameRoot/PalmTreeMonkeys" index="1"]
-anchors_preset = 0
-offset_left = 362.0
-offset_top = 1084.0
-offset_right = 402.0
-offset_bottom = 1124.0
+[node name="Position2" type="Marker2D" parent="GameRoot/PalmTreeMonkeys" index="1"]
+position = Vector2(-36.428574, 39)
 
-[node name="Position3" type="Control" parent="GameRoot/PalmTreeMonkeys" index="2"]
-anchors_preset = 0
-offset_left = 362.0
-offset_top = 1474.0
-offset_right = 402.0
-offset_bottom = 1514.0
+[node name="Position3" type="Marker2D" parent="GameRoot/PalmTreeMonkeys" index="2"]
+position = Vector2(-36.428574, 528)
 
-[node name="Position4" type="Control" parent="GameRoot/PalmTreeMonkeys" index="3"]
-anchors_preset = 0
-offset_left = 362.0
-offset_top = 328.0
-offset_right = 402.0
-offset_bottom = 368.0
-
-[node name="PlamTreeKing" type="TextureRect" parent="GameRoot" index="2"]
-layout_mode = 0
-offset_left = 370.0
-offset_top = 272.0
-offset_right = 1078.0
-offset_bottom = 1662.0
+[node name="PlamTreeKing" type="Sprite2D" parent="GameRoot" index="4"]
+position = Vector2(819, 1039)
 texture = ExtResource("6_f5ri1")
 
 [node name="KingMonkey" parent="GameRoot/PlamTreeKing" index="0" instance=ExtResource("7_43p1x")]
-position = Vector2(362, 308)
+position = Vector2(7, -701)
 
-[node name="TextPlank" type="TextureRect" parent="GameRoot" index="3"]
-layout_mode = 0
-offset_left = 457.0
-offset_top = 1487.0
-offset_right = 1641.0
-offset_bottom = 1734.0
-texture = ExtResource("8_w0ndh")
+[node name="TextPlank" type="Sprite2D" parent="GameRoot" index="5"]
+position = Vector2(863, 1574)
+texture = ExtResource("8_j0b56")
 
-[node name="MarginContainer" type="MarginContainer" parent="GameRoot/TextPlank" index="0"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 130
-theme_override_constants/margin_top = -10
-
-[node name="Label" type="RichTextLabel" parent="GameRoot/TextPlank/MarginContainer" index="0"]
-layout_mode = 2
+[node name="Label" type="RichTextLabel" parent="GameRoot/TextPlank" index="0"]
+offset_left = -360.0
+offset_top = -125.0
+offset_right = 360.0
+offset_bottom = 20.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.568627)
-theme_override_constants/outline_size = 7
-theme_override_constants/shadow_offset_y = 7
 theme_override_constants/shadow_offset_x = 7
+theme_override_constants/shadow_offset_y = 7
+theme_override_constants/outline_size = 7
 theme_override_fonts/normal_font = SubResource("FontVariation_br573")
-theme_override_font_sizes/normal_font_size = 180
-text = "fort"
+theme_override_font_sizes/normal_font_size = 110
+text = "gfm"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Monkeys" type="Control" parent="GameRoot" index="4"]
+[node name="Monkeys" type="Control" parent="GameRoot" index="6"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -138,9 +106,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ParabolaSummit" type="Control" parent="GameRoot" index="5"]
+[node name="ParabolaSummit" type="Control" parent="GameRoot" index="7"]
 anchors_preset = 0
 offset_left = 1316.0
 offset_top = 36.0
 offset_right = 1356.0
 offset_bottom = 76.0
+
+[node name="Caterpillar" type="Sprite2D" parent="." index="4"]
+position = Vector2(1124, 1349.0001)
+scale = Vector2(0.31, 0.31)
+texture = ExtResource("11_ebf48")
