@@ -30,6 +30,8 @@ var language: String:
 	get:
 		return _language if _language != "" else _get_default_language()
 	set(value):
+		if _language == value:
+			return
 		Log.trace("TeacherSettings: set language from %s to %s" % [_language, value])
 		_language = value
 		Database.language = value
