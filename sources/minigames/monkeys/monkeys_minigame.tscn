@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c20bhtvqds4p6"]
+[gd_scene load_steps=12 format=3 uid="uid://c20bhtvqds4p6"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_6nhsm"]
 [ext_resource type="Script" uid="uid://dvmvvbfb666cg" path="res://sources/minigames/monkeys/monkeys_minigame.gd" id="2_12lw5"]
@@ -9,12 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://fex5yvybinsx" path="res://assets/minigames/monkeys/graphic/palmtree_02.png" id="6_f5ri1"]
 [ext_resource type="PackedScene" uid="uid://b8r26vroslasj" path="res://sources/minigames/monkeys/king_monkey.tscn" id="7_43p1x"]
 [ext_resource type="Texture2D" uid="uid://blejqny5syems" path="res://assets/minigames/monkeys/graphic/billboard.png" id="8_j0b56"]
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="10_awer8"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="10_ebf48"]
 [ext_resource type="Texture2D" uid="uid://u2x8lg54e1g" path="res://assets/minigames/monkeys/graphic/caterpillar.png" id="11_ebf48"]
-
-[sub_resource type="FontVariation" id="FontVariation_br573"]
-base_font = ExtResource("10_awer8")
-spacing_glyph = 20
 
 [node name="MonkeysMinigame" instance=ExtResource("1_6nhsm")]
 script = ExtResource("2_12lw5")
@@ -87,12 +83,8 @@ offset_left = -360.0
 offset_top = -125.0
 offset_right = 360.0
 offset_bottom = 20.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.568627)
-theme_override_constants/shadow_offset_x = 7
-theme_override_constants/shadow_offset_y = 7
-theme_override_constants/outline_size = 7
-theme_override_fonts/normal_font = SubResource("FontVariation_br573")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("10_ebf48")
 theme_override_font_sizes/normal_font_size = 110
 text = "gfm"
 horizontal_alignment = 1
