@@ -185,7 +185,8 @@ func _start_ants() -> void:
 		var tween: Tween = create_tween()
 
 		# Compute interpolation factor (0.0 to 1.0) based on position in the list
-		var position_ratio: float = float(ant_index) / float(total_ants - 1)
+		var denominator: float = maxf(1.0, float(total_ants - 1)) # Avoid division by zero when there is only one ant
+		var position_ratio: float = float(ant_index) / denominator
 
 		# Interpolate position from ants_start to ants_end using the ratio
 		var start_position: Vector2 = ants_start.global_position
