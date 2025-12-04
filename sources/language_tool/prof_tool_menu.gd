@@ -36,7 +36,7 @@ func _ready() -> void:
 
 
 func _display_available_languages() -> void:
-	for item: int in range(1, language_select_button.item_count):
+	for item: int in range(language_select_button.item_count - 1, 0, -1):
 		language_select_button.remove_item(item)
 	var available_languages: Array[String] = _get_available_languages()
 	var ind: int = 1
@@ -350,6 +350,8 @@ func _on_language_select_button_item_selected(index: int) -> void:
 		new_language_container.show()
 		line_edit.grab_focus()
 		return
+	else:
+		new_language_container.hide()
 	
 	save_file.selected_language = language_select_button.get_item_text(index)
 	ResourceSaver.save(save_file, SAVE_FILE_PATH)
