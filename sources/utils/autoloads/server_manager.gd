@@ -12,6 +12,8 @@ var success: bool
 var code: int
 var json: Dictionary = {}
 var environment_url: String = ""
+var custom_environment_url: String = ""
+var environment_setting: int = 1
 
 @onready var internet_check: HTTPRequest = $InternetCheck
 @onready var http_request: HTTPRequest = $HTTPRequest
@@ -21,18 +23,52 @@ var environment_url: String = ""
 func _ready() -> void:
 	var config: ConfigFile = ConfigFile.new()
 	if config.load("user://environment.cfg") == OK:
-		var env: int = int(config.get_value("environment", "current", 0) as int)
-		set_environment(env)
+		environment_setting = int(config.get_value("environment", "current", 0) as int)
+		custom_environment_url = str(config.get_value("environment", "custom_url", ""))
+		set_environment(environment_setting, custom_environment_url)
 	else:
 		set_environment(1) # fallback PROD
 
 
-func set_environment(env: int) -> void:
-	match env:
-		0: environment_url = AWS_API_GATEWAY_ADRESS + "/dev/"
-		1: environment_url = AWS_API_GATEWAY_ADRESS + "/prod/"
-		_: environment_url = ""
+func set_environment(env: int, custom_url: String = "") -> void:
+	environment_setting = env
+	custom_environment_url = _normalize_url(custom_url)
+	environment_url = _resolve_environment_url()
+	_save_environment_config()
 	Log.info("ServerManager: Environment URL set to " + environment_url)
+
+
+func set_environment_url(new_url: String) -> void:
+	custom_environment_url = _normalize_url(new_url)
+	environment_url = _resolve_environment_url()
+	_save_environment_config()
+	Log.info("ServerManager: Custom environment URL updated to " + environment_url)
+
+
+func _resolve_environment_url() -> String:
+	if custom_environment_url.strip_edges() != "":
+		return _normalize_url(custom_environment_url)
+
+	match environment_setting:
+		0: return AWS_API_GATEWAY_ADRESS + "/dev/"
+		1: return AWS_API_GATEWAY_ADRESS + "/prod/"
+		_: return ""
+
+
+func _normalize_url(url: String) -> String:
+	var normalized: String = url.strip_edges()
+	if normalized == "":
+		return ""
+	if not normalized.ends_with("/"):
+		normalized += "/"
+	return normalized
+
+
+func _save_environment_config() -> void:
+	var config: ConfigFile = ConfigFile.new()
+	config.set_value("environment", "current", environment_setting)
+	config.set_value("environment", "custom_url", custom_environment_url)
+	config.save("user://environment.cfg")
 
 
 func first_login_student() -> void:

@@ -13,6 +13,8 @@ var loglevel_regex: RegEx
 @onready var log_level_dropdown: OptionButton = $VBoxContainer/LogControls/LogLevelDropdown
 @onready var filters_container: HBoxContainer = $VBoxContainer/Filters
 @onready var log_text: TextEdit = $VBoxContainer/ColorRect/LogText
+@onready var api_path_input: LineEdit = $VBoxContainer/ApiPathControls/PathRow/ApiPathEdit
+@onready var api_path_status_label: Label = $VBoxContainer/ApiPathControls/StatusLabel
 
 
 func _ready() -> void:
@@ -44,6 +46,10 @@ func _ready() -> void:
 	
 	slider.value_changed.connect(_on_slider_changed)
 	_update_log_text()
+	
+	api_path_input.text = ServerManager.environment_url
+	api_path_input.text_submitted.connect(_on_api_path_submitted)
+	api_path_status_label.text = ""
 	
 	await OpeningCurtain.open()
 
@@ -105,3 +111,18 @@ func _on_back_button_pressed() -> void:
 
 func _on_slider_changed(_value: float) -> void:
 	_update_log_text()
+
+
+func _on_api_path_submitted(_value: String) -> void:
+	_update_api_path()
+
+
+func _on_api_path_apply_pressed() -> void:
+	_update_api_path()
+
+
+func _update_api_path() -> void:
+	var new_path: String = api_path_input.text
+	(ServerManager as ServerManagerClass).set_environment_url(new_path)
+	api_path_input.text = (ServerManager as ServerManagerClass).environment_url
+	api_path_status_label.text = "AWS API path updated"

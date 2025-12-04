@@ -69,6 +69,30 @@ text = "Change log level:"
 [node name="LogLevelDropdown" type="OptionButton" parent="VBoxContainer/LogControls"]
 layout_mode = 2
 
+[node name="ApiPathControls" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PathRow" type="HBoxContainer" parent="VBoxContainer/ApiPathControls"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/ApiPathControls/PathRow"]
+layout_mode = 2
+text = "AWS API path:"
+
+[node name="ApiPathEdit" type="LineEdit" parent="VBoxContainer/ApiPathControls/PathRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ApplyButton" type="Button" parent="VBoxContainer/ApiPathControls/PathRow"]
+layout_mode = 2
+text = "Apply"
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer/ApiPathControls"]
+layout_mode = 2
+horizontal_alignment = 1
+
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 50
@@ -113,3 +137,4 @@ Contains all logs textss"
 editable = false
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ApiPathControls/PathRow/ApplyButton" to="." method="_on_api_path_apply_pressed"]
