@@ -395,14 +395,8 @@ layout_mode = 1
 [node name="Island" parent="GameRoot" index="1" instance=ExtResource("5_bgryf")]
 position = Vector2(1280, 830)
 
-[node name="Turtles" type="Control" parent="GameRoot" index="2"]
+[node name="Turtles" type="Node" parent="GameRoot" index="2"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="SpawnPoints" type="Node2D" parent="GameRoot" index="3"]
 

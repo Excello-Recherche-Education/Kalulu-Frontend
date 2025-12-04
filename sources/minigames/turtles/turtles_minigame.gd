@@ -26,7 +26,7 @@ var color: Turtle.Colors
 
 @onready var water: Water = $GameRoot/Water
 @onready var island: Island = $GameRoot/Island
-@onready var turtles: Control = %Turtles
+@onready var turtles: Node = %Turtles
 @onready var spawn_timer: Timer = $GameRoot/SpawnTimer
 @onready var spawn_points_container: Node2D = $GameRoot/SpawnPoints
 @onready var spawn_location: Node2D
