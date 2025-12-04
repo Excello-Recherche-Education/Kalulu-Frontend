@@ -182,7 +182,7 @@ func _create_request_headers(content_type_json: bool = false) -> PackedStringArr
 	var headers: PackedStringArray = []
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
 	if teacher_settings and teacher_settings.token:
-		headers.append("Authorization: Bearer " + teacher_settings.token)
+		headers.append("authorization: Bearer " + teacher_settings.token)
 	if content_type_json:
 		headers.append("Content-Type: application/json")
 	Log.trace("ServerManager: Create Header: " + str(headers))
