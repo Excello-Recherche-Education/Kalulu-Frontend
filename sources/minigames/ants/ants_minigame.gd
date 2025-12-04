@@ -7,7 +7,7 @@ const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_
 
 var current_sentence: Dictionary = {}
 var answer_input_done: Array[bool] = []
-var answers: Dictionary[String, String] # Expected, current
+var answers: Dictionary[String, String] = {} # Expected, current
 
 @onready var sentence_container: HFlowContainer = %Sentence
 @onready var ants_spawn: Node2D = %AntsSpawn
