@@ -5,7 +5,7 @@ signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_access: bool)
 
 const INTERNET_CHECK_URL: String = "https://google.com"
-const AWS_API_GATEWAY_ADRESS: String = "https://api.kalulu.org"
+const AWS_API_GATEWAY_ADRESS: String = "api.kalulu.org"
 
 # Response from the last request
 var success: bool
