@@ -5,11 +5,11 @@ signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_access: bool)
 
 const INTERNET_CHECK_URL: String = "https://google.com"
-const AWS_API_GATEWAY_DOMAIN_ADRESS: String = "api.kalulu.org/"
+const AWS_API_GATEWAY_DOMAIN_ADRESS: String = "api.kalulu.org"
 const SUBDOMAIN_DEV: String = "dev."
 const PROTOCOL: String = "https://"
-const STAGE_DEV: String = "dev/"
-const STAGE_PROD: String = "prod/"
+const STAGE_DEV: String = "/dev"
+const STAGE_PROD: String = "/prod"
 
 # Response from the last request
 var success: bool
@@ -54,8 +54,8 @@ func _resolve_environment_url() -> String:
 		return _normalize_url(custom_environment_url)
 
 	match environment_setting:
-		0: return AWS_API_GATEWAY_ADRESS + "/dev/"
-		1: return AWS_API_GATEWAY_ADRESS + "/prod/"
+		0: return PROTOCOL + SUBDOMAIN_DEV + AWS_API_GATEWAY_DOMAIN_ADRESS + STAGE_DEV
+		1: return PROTOCOL + 				 AWS_API_GATEWAY_DOMAIN_ADRESS + STAGE_PROD
 		_: return ""
 
 
