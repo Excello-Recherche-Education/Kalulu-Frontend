@@ -55,7 +55,7 @@ func connect_to_db() -> void:
 		if not is_open:
 			Log.error("Database: Database is not opened")
 			return
-		if db.get_error_message() != "":
+		if db.get_error_message() != "" and db.get_error_message() != "not an error":
 			Log.warn("Database: Database just opened but already contains an error message: %s" % db.get_error_message())
 	else:
 		Log.warn("Database: Database file not found at %s" % db.path)
