@@ -26,6 +26,7 @@ const DIFFICULTY_SETTINGS: Dictionary[int, Dictionary] = {
 	3: {"pairs_count": 5},
 	4: {"pairs_count": 6},
 }
+const PARAKEET_SCENE: PackedScene = preload("res://sources/minigames/parakeets/parakeet.tscn")
 
 @export var fly_duration: float = 3.0
 
@@ -76,22 +77,22 @@ func _setup_minigame() -> void:
 	max_progression = pairs_count
 	var color: Parakeet.Colors = randi_range(0, Parakeet.Colors.size() - 1) as Parakeet.Colors
 	for index: int in range(pairs_count):
-		var new_parakeet1: Parakeet = Parakeet.instantiate()
-		var new_parakeet2: Parakeet = Parakeet.instantiate()
-		parakeets_node.add_child(new_parakeet1)
-		parakeets_node.add_child(new_parakeet2)
-		new_parakeet1.color = color
-		new_parakeet2.color = color
-		new_parakeet1.uppercase = true
-		new_parakeet2.uppercase = false
-		new_parakeet1.global_position = possible_start_positions[2 * index].global_position
-		new_parakeet2.global_position = possible_start_positions[2 * index + 1].global_position
-		parakeets.append_array([new_parakeet1, new_parakeet2])
+		var new_parakeet_uppercase: Parakeet = PARAKEET_SCENE.instantiate()
+		var new_parakeet_lowercase: Parakeet = PARAKEET_SCENE.instantiate()
+		parakeets_node.add_child(new_parakeet_uppercase)
+		parakeets_node.add_child(new_parakeet_lowercase)
+		new_parakeet_uppercase.color = color
+		new_parakeet_lowercase.color = color
+		new_parakeet_uppercase.uppercase = true
+		new_parakeet_lowercase.uppercase = false
+		new_parakeet_uppercase.global_position = possible_start_positions[2 * index].global_position
+		new_parakeet_lowercase.global_position = possible_start_positions[2 * index + 1].global_position
+		parakeets.append_array([new_parakeet_uppercase, new_parakeet_lowercase])
 		var stimulus: Dictionary = stimuli2.pop_back()
-		new_parakeet1.stimulus = stimulus
-		new_parakeet2.stimulus = stimulus
-		new_parakeet1.pressed.connect(_on_parakeet_pressed.bind(new_parakeet1))
-		new_parakeet2.pressed.connect(_on_parakeet_pressed.bind(new_parakeet2))
+		new_parakeet_uppercase.stimulus = stimulus
+		new_parakeet_lowercase.stimulus = stimulus
+		new_parakeet_uppercase.pressed.connect(_on_parakeet_pressed.bind(new_parakeet_uppercase))
+		new_parakeet_lowercase.pressed.connect(_on_parakeet_pressed.bind(new_parakeet_lowercase))
 
 
 # Find the stimuli and distractions of the minigame.

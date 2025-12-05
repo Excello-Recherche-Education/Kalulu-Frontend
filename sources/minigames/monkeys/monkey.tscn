@@ -121,13 +121,12 @@ frame_progress = 0.6102003
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.9, 0.9)
 sprite_frames = ExtResource("20_l0op8")
-animation = &"stunned"
+animation = &"idle"
 autoplay = "idle"
 offset = Vector2(2.08165e-12, -54)
 
 [node name="Coconut" parent="." instance=ExtResource("3_tws3c")]
-visible = false
-position = Vector2(-121, -61)
+position = Vector2(-224, -31.99999)
 rotation = -0.10472
 scale = Vector2(0.99999994, 0.99999994)
 
@@ -140,10 +139,10 @@ position = Vector2(-96, 104)
 gizmo_extents = 20.0
 
 [node name="Button" type="Button" parent="."]
-offset_left = -182.0
-offset_top = -220.0
-offset_right = 81.0
-offset_bottom = 1.0
+offset_left = -320.0
+offset_top = -144.0
+offset_right = -57.0
+offset_bottom = 77.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_cbnv3")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ma8s2")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_o7lt8")

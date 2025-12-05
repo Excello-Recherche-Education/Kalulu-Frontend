@@ -9,7 +9,6 @@ enum Colors {
 	Yellow,
 }
 
-const INSTANCE_SCENE: String = "res://sources/minigames/parakeets/parakeet.tscn"
 const ANIMATIONS: Array[SpriteFrames] = [
 	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/green_parakeet_animations.tres"),
@@ -49,10 +48,6 @@ var original_text_box_color: Color
 @onready var wrong_FX: WrongFX = $WrongFX
 @onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
 @onready var text_box_outline_sprite_2d: Sprite2D = %TextBox_Outline_Sprite2D
-
-
-static func instantiate() -> Parakeet:
-	return (load(INSTANCE_SCENE) as PackedScene).instantiate()
 
 
 func _ready() -> void:
