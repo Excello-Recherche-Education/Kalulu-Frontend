@@ -41,11 +41,12 @@ func _on_plus_button_pressed() -> void:
 	var lesson_container: LessonContainer = lesson_container_scene.instantiate()
 	lessons_container.add_child(lesson_container)
 	lesson_container.lesson_dropped.connect(_on_lesson_dropped)
-	var max_nb: int = 0
+	var current_max_lesson_number: int = 0
 	for element: LessonContainer in lessons.values():
-		max_nb = max(max_nb, element.number)
-	lesson_container.number = max_nb + 1
-	lessons[max_nb + 1] = lesson_container
+		if element.number > current_max_lesson_number:
+			current_max_lesson_number = element.number
+	lesson_container.number = current_max_lesson_number + 1
+	lessons[current_max_lesson_number + 1] = lesson_container
 
 
 func _can_drop_in_gp_container(_at_position: Vector2, data: Variant) -> bool:
