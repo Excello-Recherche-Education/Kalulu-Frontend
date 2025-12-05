@@ -55,14 +55,14 @@ func _on_save_button_pressed() -> void:
 	var query: String = "Select * FROM GPs"
 	Database.db.query(query)
 	var result: Array[Dictionary] = Database.db.query_result
-	for res: Dictionary in result:
+	for item: Dictionary in result:
 		var found: bool = false
 		for element: GPListElement in elements_container.get_children():
-			if element.grapheme == res.Grapheme and element.phoneme == res.Phoneme and element.type == res.Type and element.exception == res.Exception:
+			if element.grapheme == item.Grapheme and element.phoneme == item.Phoneme and element.type == item.Type and int(element.exception) == item.Exception:
 				found = true
 				break
 		if not found:
-			Database.db.delete_rows("GPs", "ID=%s" % res.ID)
+			Database.db.delete_rows("GPs", "ID=%s" % item.ID)
 	undo_redo.clear_history()
 
 
