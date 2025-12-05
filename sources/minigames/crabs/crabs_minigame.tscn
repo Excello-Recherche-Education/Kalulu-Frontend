@@ -8,6 +8,8 @@
 
 [node name="CrabsMinigame" instance=ExtResource("1_lbq56")]
 script = ExtResource("2_gierf")
+lesson_nb = 30
+difficulty = 4
 
 [node name="MinigameUI" parent="." index="1"]
 empty_progression_icon = ExtResource("5_7vlrm")
@@ -27,6 +29,6 @@ texture = ExtResource("7_s0cgt")
 layout_mode = 1
 anchors_preset = 0
 offset_left = 162.0
-offset_top = 441.0
+offset_top = 292.0
 offset_right = 2494.0
-offset_bottom = 1787.0
+offset_bottom = 1488.0
