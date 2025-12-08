@@ -23,9 +23,9 @@ func sort_by_property(node_a: Node, node_b: Node, property_name: String) -> bool
 	return node_a.get(property_name) < node_b.get(property_name)
 
 
-func disconnect_all(signals: Signal) -> void:
-	for connection: Dictionary in signals.get_connections():
-		(connection["signal"] as Signal).disconnect(connection["callable"] as Callable)
+func disconnect_all(disconnecting_signal: Signal) -> void:
+	for connection: Dictionary in disconnecting_signal.get_connections():
+		disconnecting_signal.disconnect(connection["callable"] as Callable)
 
 
 func clean_dir(path: String) -> Error:
