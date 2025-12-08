@@ -23,6 +23,7 @@ var dev_last_click_time: float = 0.0
 @onready var teacher_timer: Timer = %TeacherTimer
 @onready var teacher_help_label: Label = %TeacherHelpLabel
 @onready var kalulu_button: CanvasItem = %KaluluButton
+@onready var version_label: Label = %BuildVersionValue
 
 
 func _ready() -> void:
@@ -39,6 +40,9 @@ func _ready() -> void:
 	
 	device_number_label.show()
 	device_number_label.text = tr("DEVICE_NUMBER").format({"number": UserDataManager.get_device_settings().device_id})
+	
+	version_label.text = ProjectSettings.get_setting("application/config/version")
+	version_label.gui_input.connect(_on_version_label_gui_input)
 	
 	await OpeningCurtain.open()
 	
@@ -77,17 +81,6 @@ func _on_teacher_button_button_down() -> void:
 	if keyboard.get_password_as_string() != TEACHER_PASSWORD:
 		return
 	teacher_timer.start()
-	var now: float = Time.get_ticks_msec() / 1000.0
-	if now - dev_last_click_time <= DEV_CLICK_MAX_DELAY:
-		dev_click_count += 1
-	else:
-		dev_click_count = 1  # Too slow, reset
-	dev_last_click_time = now
-	if dev_click_count >= DEV_CLICK_THRESHOLD:
-		dev_click_count = 0
-		teacher_timer.stop()
-		await OpeningCurtain.close()
-		get_tree().change_scene_to_file(DEVELOPER_SCENE_PATH)
 
 
 func _on_teacher_button_button_up() -> void:
@@ -99,3 +92,20 @@ func _on_teacher_timer_timeout() -> void:
 	teacher_help_label.hide()
 	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(TEACHER_SCENE_PATH)
+
+
+func _on_version_label_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			var now: float = Time.get_ticks_msec() / 1000.0
+			if now - dev_last_click_time <= DEV_CLICK_MAX_DELAY:
+				dev_click_count += 1
+			else:
+				dev_click_count = 1
+			dev_last_click_time = now
+			if dev_click_count >= DEV_CLICK_THRESHOLD:
+				dev_click_count = 0
+				await OpeningCurtain.close()
+				DeveloperSettings.return_path = get_tree().current_scene.scene_file_path
+				get_tree().change_scene_to_file(DEVELOPER_SCENE_PATH)

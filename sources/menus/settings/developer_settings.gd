@@ -1,8 +1,9 @@
 class_name DeveloperSettings
 extends Control
 
-const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
 const LOG_LEVEL_ELEMENT: PackedScene = preload("res://sources/menus/settings/log_level_element.tscn")
+
+static var return_path: String = "res://sources/menus/main/main_menu.tscn"
 
 var filters: Dictionary[int, bool] = {}
 var line_steps: PackedInt32Array = [10, 50, 100, 200, 500, 1000, -1] # -1 = all
@@ -106,7 +107,7 @@ func _on_filters_changed(checked: bool, index: int) -> void:
 
 func _on_back_button_pressed() -> void:
 	await OpeningCurtain.close()
-	get_tree().change_scene_to_file(LOGIN_MENU_PATH)
+	get_tree().change_scene_to_file(return_path)
 
 
 func _on_slider_changed(_value: float) -> void:
