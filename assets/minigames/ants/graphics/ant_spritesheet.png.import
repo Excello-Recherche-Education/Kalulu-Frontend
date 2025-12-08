@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1v26b2ic2fo4"
-path="res://.godot/imported/hole_02.png-0f01db616ebdaec1f4a8848f2f9d2180.ctex"
+uid="uid://cfd278lhnobop"
+path="res://.godot/imported/ant_spritesheet.png-c145cf97a43c25c5c71895b7ed6c1eb5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/ants/graphics/hole_02.png"
-dest_files=["res://.godot/imported/hole_02.png-0f01db616ebdaec1f4a8848f2f9d2180.ctex"]
+source_file="res://assets/minigames/ants/graphics/ant_spritesheet.png"
+dest_files=["res://.godot/imported/ant_spritesheet.png-c145cf97a43c25c5c71895b7ed6c1eb5.ctex"]
 
 [params]
 

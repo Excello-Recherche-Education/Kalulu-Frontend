@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwciokg3prohr"
-path="res://.godot/imported/leaf.png-74226a539fd9ae681980f508555e7f02.ctex"
+uid="uid://b2bcmo1keh217"
+path="res://.godot/imported/sentence_text_box.png-26340fa40aaa48e743d64966bd2c4afa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/ants/graphics/leaf.png"
-dest_files=["res://.godot/imported/leaf.png-74226a539fd9ae681980f508555e7f02.ctex"]
+source_file="res://assets/minigames/ants/graphics/sentence_text_box.png"
+dest_files=["res://.godot/imported/sentence_text_box.png-26340fa40aaa48e743d64966bd2c4afa.ctex"]
 
 [params]
 

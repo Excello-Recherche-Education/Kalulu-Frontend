@@ -1,8 +1,14 @@
 class_name Word
-extends TextureButton
+extends Button
 
 signal answer(stimulus: String, expected_stimulus: String)
 signal no_answer()
+
+const MINIGAMES_LABEL_SETTINGS_ANTS: LabelSettings = preload("res://resources/themes/minigames_label_settings_ants.tres")
+const TEXT_BOX_BASE_COLOR: Color = Color("#fef7dd")
+const TEXT_BOX_RIGHT_COLOR: Color = Color("#009444")
+const TEXT_BOX_WRONG_COLOR: Color = Color("#be1e2d")
+const FONT_ANSWER_COLOR: Color = Color("#fef7dd")
 
 var stimulus: String:
 	set = _set_stimulus
@@ -13,16 +19,27 @@ var current_anchor: CanvasItem
 @onready var label: Label = %Label
 @onready var right_fx: RightFX = $RightFX
 @onready var wrong_fx: WrongFX = $WrongFX
+@onready var text_box: TextureRect = $TextBox
 
 
 func right() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = FONT_ANSWER_COLOR
+	text_box.self_modulate = TEXT_BOX_RIGHT_COLOR
 	right_fx.play()
 	await right_fx.finished
+	text_box.self_modulate = TEXT_BOX_BASE_COLOR
+	label.label_settings = MINIGAMES_LABEL_SETTINGS_ANTS
 
 
 func wrong() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = FONT_ANSWER_COLOR
+	text_box.self_modulate = TEXT_BOX_WRONG_COLOR
 	wrong_fx.play()
 	await wrong_fx.finished
+	text_box.self_modulate = TEXT_BOX_BASE_COLOR
+	label.label_settings = MINIGAMES_LABEL_SETTINGS_ANTS
 
 
 func _process(_delta: float) -> void:

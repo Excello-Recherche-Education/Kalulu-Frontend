@@ -12,9 +12,5 @@ var stimulus: String
 @onready var area: Area2D = $Area2D
 
 
-func _ready() -> void:
-	texture = load(IMAGES[randi() % IMAGES.size()])
-
-
 func set_monitorable(p_monitorable: bool) -> void:
 	area.monitorable = p_monitorable
