@@ -46,6 +46,8 @@ func _process(_delta: float) -> void:
 	if follow_mouse:
 		global_position = get_global_mouse_position() - size / 2.0
 	else:
+		if current_anchor == null or not is_instance_valid(current_anchor):
+			return
 		if current_anchor is Ant:
 			global_position = (current_anchor as Ant).anchor.global_position
 		else:

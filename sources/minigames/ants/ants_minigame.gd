@@ -98,6 +98,8 @@ func _get_new_sentence() -> void:
 
 func _next_sentence() -> void:
 	Log.trace("Ants Minigame: Next sentence")
+	for word: Word in words.get_children():
+		word.set_process(false)
 	var nodes: Array[Node] = []
 	for ant: Ant in ants.get_children():
 		ant.walk()
