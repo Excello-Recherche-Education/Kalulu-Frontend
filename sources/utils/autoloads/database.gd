@@ -184,12 +184,24 @@ func get_words_containing_grapheme(grapheme: String) -> Array[Dictionary]:
 
 
 func get_word_id_from_text(text: String) -> int:
-	text = text.replace(".", "").replace(",", "") # Remove points and comas
-	db.query("SELECT ID FROM Words WHERE Word = '%s' COLLATE NOCASE;" % text)
+	var clean_text: String = text.replace(".", "").replace(",", "")
+	db.query_with_bindings(
+		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE;",
+		[clean_text]
+	)
 	if db.query_result.size() > 0:
 		if db.query_result[0].has("ID"):
 			return db.query_result[0].ID
-	Log.trace("Database: Word " + text + " ID not found")
+	# If not found, trying again with even cleaner text
+	clean_text = clean_text.replace("'", "")
+	db.query_with_bindings(
+		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE;",
+		[clean_text]
+	)
+	if db.query_result.size() > 0:
+		if db.query_result[0].has("ID"):
+			return db.query_result[0].ID
+	Log.trace("Database: Word " + clean_text + " ID not found")
 	return -1
 
 
