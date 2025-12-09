@@ -1,6 +1,16 @@
 # Godot 4+ specific ignores
 .godot/
+.nomedia
 .DS_Store
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_credentials.cfg
+*.tmp
+
+# Imported translations (automatically generated from CSV files)
+*.translation
 
 addons/godot-sqlite/bin
 addons/script-ide
