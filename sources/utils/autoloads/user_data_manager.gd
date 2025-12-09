@@ -88,10 +88,12 @@ func start_synchronization_timer() -> void:
 	if not synchronization_timer_running:
 		synchronization_timer = 0
 		synchronization_timer_running = true
+		Log.trace("UserDataManager: Synchronization timer started")
 
 
 func stop_synchronization_timer() -> void:
 	synchronization_timer_running = false
+	Log.trace("UserDataManager: Synchronization timer stopped")
 
 #endregion
 
@@ -112,7 +114,7 @@ func register(register_settings: TeacherSettings) -> bool:
 	DirAccess.make_dir_recursive_absolute(get_teacher_folder())
 	teacher_settings = register_settings
 	save_teacher_settings()
-	
+	Log.info("UserDataManager: Register successful for user %s" % register_settings.email)
 	return true
 
 
@@ -163,6 +165,7 @@ func login(infos: Dictionary) -> bool:
 	if teacher_settings.students.keys().size() == 1:
 		set_device_id(teacher_settings.students.keys()[0] as int)
 	
+	Log.info("UserDataManager: Login successful for teacher %s" % infos.email)
 	return true
 
 
