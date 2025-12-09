@@ -212,27 +212,26 @@ func set_device_id(device: int) -> bool:
 	
 	_device_settings.device_id = device
 	_save_device_settings()
+	Log.trace("UserDataManager: Device ID set to %d" % device)
 	return true
 
 
 func logout() -> void:
-	
-	# Handles device settings
 	_device_settings.teacher = ""
 	_device_settings.device_id = 0
 	_save_device_settings()
-	
-	# Handles teacher settings
 	teacher_settings = null
-	
-	# Handles student settings
 	if student:
 		student = ""
+	Log.info("UserDataManager: Logout complete - device, teacher, and student data cleared")
 
 
 func delete_teacher_data() -> void:
 	if DirAccess.dir_exists_absolute(get_teacher_folder()):
 		Utils.delete_directory_recursive(get_teacher_folder())
+		Log.info("UserDataManager: Teacher data deleted from %s" % get_teacher_folder())
+	else:
+		Log.warn("UserDataManager: No teacher data folder found at %s" % get_teacher_folder())
 
 
 func student_exists(code: String) -> bool:
@@ -264,6 +263,7 @@ func login_student(code: String) -> bool:
 			if int(stud.code) == int(code):
 				student = code
 				(ServerManager as ServerManagerClass).first_login_student()
+				Log.info("UserDataManager: Student %s logged in" % code)
 				return true
 	
 	Log.warn("UserDataManager: LoginStudent: Code not found: " + code)
@@ -279,6 +279,7 @@ func logout_student() -> bool:
 		return false
 	
 	student = ""
+	Log.info("UserDataManager: Student logged out")
 	return true
 
 #endregion

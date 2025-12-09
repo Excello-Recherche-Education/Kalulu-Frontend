@@ -14,15 +14,18 @@ const TRACKS: Array = [
 
 
 func _ready() -> void:
+	Log.trace("MusicManager: Ready - starting title track")
 	play(Track.Title)
 
 
 func _on_music_player_finished() -> void:
+	Log.trace("MusicManager: Track finished - restarting current stream")
 	music_player.stream_paused = false
 	music_player.play()
 
 
 func play(track: Track) -> void:
+	Log.trace("MusicManager: Requested play for track \"%s\"" % str(Track.keys()[track]))
 	music_player.stream = TRACKS[track]
 	music_player.play()
 
