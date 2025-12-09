@@ -33,18 +33,23 @@ func _on_login_form_validator_control_validated(control: Control, passed: Varian
 
 
 func _on_validate_button_pressed() -> void:
-	# Validator
+	Log.trace("Login: Validate button pressed")
 	if not validator.validate():
+		Log.info("Login: Validation failed for email %s" % email_field.text)
 		return
 	
 	# Request server for login
+	Log.info("Login: Sending login request for email %s" % email_field.text)
 	var res: Dictionary = await ServerManager.login(email_field.text, password_field.text)
 	if res.code == 200:
 		# Login
 		if UserDataManager.login(res.body as Dictionary):
+			Log.info("Login: Login successful, synchronizing user data")
 			await UserDataManager.user_database_synchronizer.synchronize()
 			logged_in.emit()
 		else:
+			Log.info("Login: UserDataManager rejected server response during login")
 			login_message.show()
 	else:
+		Log.info("Login: Server responded with code %d for login attempt with email %s" % [res.code, email_field.text])
 		login_message.show()
