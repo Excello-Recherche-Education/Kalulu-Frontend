@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfd278lhnobop"
-path="res://.godot/imported/ant.png-aa818a33730c2fc77bcd255e2a0f8107.ctex"
+uid="uid://wxh75x4c17x3"
+path="res://.godot/imported/white_box.png-c8dde3fbc4f70af22b1d14f08282c9cf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/ants/graphics/ant.png"
-dest_files=["res://.godot/imported/ant.png-aa818a33730c2fc77bcd255e2a0f8107.ctex"]
+source_file="res://assets/minigames/ants/graphics/white_box.png"
+dest_files=["res://.godot/imported/white_box.png-c8dde3fbc4f70af22b1d14f08282c9cf.ctex"]
 
 [params]
 
