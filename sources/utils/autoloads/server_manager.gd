@@ -5,11 +5,11 @@ signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_access: bool)
 
 const INTERNET_CHECK_URL: String = "https://google.com"
-const AWS_API_GATEWAY_DOMAIN_ADRESS: String = "api.kalulu.org"
+const AWS_API_GATEWAY_DOMAIN_ADRESS: String = "api.kalulu.org/"
 const SUBDOMAIN_DEV: String = "dev."
 const PROTOCOL: String = "https://"
-const STAGE_DEV: String = "/dev"
-const STAGE_PROD: String = "/prod"
+const STAGE_DEV: String = "dev/"
+const STAGE_PROD: String = "prod/"
 
 # Response from the last request
 var success: bool
@@ -186,7 +186,7 @@ func _create_request_headers(content_type_json: bool = false) -> PackedStringArr
 	var headers: PackedStringArray = []
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
 	if teacher_settings and teacher_settings.token:
-		headers.append("authorization: Bearer " + teacher_settings.token)
+		headers.append("Authorization: Bearer " + teacher_settings.token)
 	if content_type_json:
 		headers.append("Content-Type: application/json")
 	Log.trace("ServerManager: Create Header: " + str(headers))
@@ -209,6 +209,8 @@ func _get_request(uri: String, params: Dictionary) -> void:
 		Log.trace("ServerManager: Sending GET request.\n    URI = %s\n    Parameters not logged because it contains a password." % uri)
 	else:
 		Log.trace("ServerManager: Sending GET request.\n    URI = %s\n    Parameters = %s" % [uri, params])
+	Log.debug(environment_url + uri)
+	Log.debug(str(params))
 	if http_request.request(_create_uri_with_parameters(environment_url + uri, params), headers) == OK:
 		await request_completed
 	else:
