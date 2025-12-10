@@ -5,7 +5,11 @@ signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_access: bool)
 
 const INTERNET_CHECK_URL: String = "https://google.com"
-const AWS_API_GATEWAY_ADRESS: String = "https://xwvmrarnb7.execute-api.eu-west-3.amazonaws.com"
+const AWS_API_GATEWAY_DOMAIN_ADRESS: String = "api.kalulu.org/"
+const SUBDOMAIN_DEV: String = "dev."
+const PROTOCOL: String = "https://"
+const STAGE_DEV: String = "dev/"
+const STAGE_PROD: String = "prod/"
 
 # Response from the last request
 var success: bool
@@ -50,8 +54,8 @@ func _resolve_environment_url() -> String:
 		return _normalize_url(custom_environment_url)
 
 	match environment_setting:
-		0: return AWS_API_GATEWAY_ADRESS + "/dev/"
-		1: return AWS_API_GATEWAY_ADRESS + "/prod/"
+		0: return PROTOCOL + SUBDOMAIN_DEV + AWS_API_GATEWAY_DOMAIN_ADRESS + STAGE_DEV
+		1: return PROTOCOL + 				 AWS_API_GATEWAY_DOMAIN_ADRESS + STAGE_PROD
 		_: return ""
 
 
@@ -90,6 +94,11 @@ func register(data: Dictionary) -> Dictionary:
 func login(mail: String, password: String) -> Dictionary:
 	loading_rect.show()
 	await _post_json_request("login", {"mail": mail, "password": password})
+	return _response()
+
+
+func reset_password(mail: String) -> Dictionary:
+	await _post_json_request("forgot", {"email": mail})
 	return _response()
 
 
@@ -200,6 +209,8 @@ func _get_request(uri: String, params: Dictionary) -> void:
 		Log.trace("ServerManager: Sending GET request.\n    URI = %s\n    Parameters not logged because it contains a password." % uri)
 	else:
 		Log.trace("ServerManager: Sending GET request.\n    URI = %s\n    Parameters = %s" % [uri, params])
+	Log.debug(environment_url + uri)
+	Log.debug(str(params))
 	if http_request.request(_create_uri_with_parameters(environment_url + uri, params), headers) == OK:
 		await request_completed
 	else:
@@ -211,6 +222,7 @@ func _get_request(uri: String, params: Dictionary) -> void:
 func _post_request(uri: String, params: Dictionary) -> void:
 	reset_result()
 	var url: String = _create_uri_with_parameters(environment_url + uri, params)
+	Log.debug(url)
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
 		Log.trace("ServerManager: Sending POST request.\n    URI = %s\n    Parameters not logged because it contains a password." % uri)
@@ -227,6 +239,7 @@ func _post_request(uri: String, params: Dictionary) -> void:
 func _post_json_request(uri: String, data: Dictionary) -> void:
 	reset_result()
 	var req: String = environment_url + uri
+	Log.debug(req)
 	var headers: PackedStringArray = _create_request_headers(true)
 	if data.has("password"):
 		Log.trace("ServerManager: Sending POST JSON request.\n    URI = %s\n    Data not logged because it contains a password." % uri)
@@ -243,6 +256,7 @@ func _post_json_request(uri: String, data: Dictionary) -> void:
 func _delete_request(uri: String, params: Dictionary = {}) -> void:
 	reset_result()
 	var req: String = _create_uri_with_parameters(environment_url + uri, params)
+	Log.debug(req)
 	var headers: PackedStringArray = _create_request_headers()
 	Log.trace("ServerManager: Sending DELETE request.\n    URI = %s\n    Parameters = %s" % [uri, params])
 	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == OK:

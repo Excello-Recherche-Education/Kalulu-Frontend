@@ -1,7 +1,10 @@
-[gd_resource type="LabelSettings" format=3 uid="uid://ohvlqccl2oog"]
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://ohvlqccl2oog"]
+
+[ext_resource type="FontFile" uid="uid://dnulwsojj835p" path="res://assets/fonts/kalulu_mulish_black.otf" id="1_pq2gh"]
 
 [resource]
-font_size = 32
+font = ExtResource("1_pq2gh")
+font_size = 42
 font_color = Color(1, 0.317647, 0.298039, 1)
 outline_size = 1
 outline_color = Color(0, 0, 0, 1)
