@@ -175,6 +175,7 @@ grow_vertical = 2
 
 [node name="KeyboardSpacer" parent="." instance=ExtResource("13_6pvxs")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 
 [node name="LoginForm" type="Control" parent="KeyboardSpacer"]
@@ -516,6 +517,7 @@ text = "CANCEL"
 
 [connection signal="pressed" from="Kalulu/PlayButton" to="." method="_on_main_button_pressed"]
 [connection signal="logged_in" from="KeyboardSpacer/LoginForm" to="." method="_on_login_in"]
+[connection signal="control_validated" from="KeyboardSpacer/LoginForm/LoginFormValidator" to="KeyboardSpacer/LoginForm" method="_on_login_form_validator_control_validated"]
 [connection signal="item_selected" from="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/LanguageContainer/LanguageField" to="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/LanguageContainer/LanguageField" method="_on_item_selected"]
 [connection signal="pressed" from="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/ValidateButton" to="KeyboardSpacer/LoginForm" method="_on_validate_button_pressed"]
 [connection signal="pressed" from="KeyboardSpacer/LoginForm/LoginFormValidator/FormContainer/ResetPasswordButton" to="KeyboardSpacer/LoginForm" method="_on_reset_password_button_pressed"]
