@@ -10,7 +10,7 @@
 [ext_resource type="LabelSettings" uid="uid://c7aoyw5gjrrnp" path="res://resources/themes/minigames_label_settings_parakeet.tres" id="5_xdkkw"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_7mdw2"]
 [ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="7_erv6y"]
-[ext_resource type="SpriteFrames" uid="uid://bvi4lwir6n27s" path="res://sources/minigames/parakeets/red_parakeet_feathers_animations.tres" id="9_oc4sp"]
+[ext_resource type="SpriteFrames" uid="uid://bortxskacy6vx" path="res://sources/minigames/parakeets/red_parakeet_feathers_animations.tres" id="9_oc4sp"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_thibt"]
 font = ExtResource("4_xdkkw")
