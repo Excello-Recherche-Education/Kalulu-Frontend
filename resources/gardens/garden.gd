@@ -11,6 +11,7 @@ enum FlowerSizes{
 
 const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/plant_%02d_%02d_%s.png"
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d_open.png"
+const LESSON_BUTTON_SCENE: PackedScene = preload("res://sources/lesson_screen/lesson_button.tscn")
 
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
@@ -32,16 +33,13 @@ var garden_index: int = -1
 	%Flower5,
 ]
 @onready var background: TextureRect = %Background
-@onready var lesson_button_controls: Array[LessonButton] = [
-	%Button1,
-	%Button2,
-	%Button3,
-	%Button4,
-]
 
 
 func get_button_size() -> Vector2:
-	return lesson_button_controls[0].get_size()
+	var lesson_buttons: Array[LessonButton] = get_lesson_buttons()
+	if lesson_buttons.is_empty():
+		return Vector2.ZERO
+	return lesson_buttons[0].get_size()
 
 
 func set_garden_layout(p_garden_layout: GardenLayout) -> void:
@@ -53,11 +51,9 @@ func set_garden_layout(p_garden_layout: GardenLayout) -> void:
 
 func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSizes = FlowerSizes.NOT_STARTED) -> void:
 	flowers = p_flowers
-	
 	flowers_sizes = []
 	for _i: int in range(flowers.size()):
 		flowers_sizes.append(default_size)
-	
 	update_flowers()
 
 
@@ -69,7 +65,6 @@ func update_flowers() -> void:
 		var flower_scene: TextureRect = flower_controls[index]
 		var flower_size: String = FlowerSizes.keys()[flowers_sizes[index]]
 		flower_size = flower_size.to_lower()
-		
 		flower_scene.texture = load(FLOWER_PATH_MODEL % [flower.color+1, flower.type+1, flower_size])
 		flower_scene.size = flower_scene.get_combined_minimum_size() * 3
 		flower_scene.pivot_offset = Vector2(flower_scene.size.x / 2, flower_scene.size.y)
@@ -77,13 +72,13 @@ func update_flowers() -> void:
 
 
 func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton]) -> void:
-	for lesson_button_control: LessonButton in lesson_button_controls:
+	_ensure_button_controls_count(p_lesson_buttons.size())
+	var lesson_buttons: Array[LessonButton] = get_lesson_buttons()
+	for lesson_button_control: LessonButton in lesson_buttons:
 		lesson_button_control.hide()
 	for index: int in range(p_lesson_buttons.size()):
-		if index >= lesson_button_controls.size():
-			break
 		var lesson_button: GardenLayout.GardenLayoutLessonButton = p_lesson_buttons[index]
-		var lesson_button_control: LessonButton = lesson_button_controls[index]
+		var lesson_button_control: LessonButton = lesson_buttons[index]
 		lesson_button_control.position = Vector2(lesson_button.position)
 		lesson_button_control.show()
 		lesson_button_control.pivot_offset = lesson_button_control.size / 2
@@ -94,18 +89,30 @@ func set_background(p_color: int) -> void:
 		return
 	background.texture = load(BACKGROUND_PATH_MODEL % [p_color+1])
 	color = garden_colors[p_color]
-	
-	for button: LessonButton in lesson_button_controls:
+	for button: LessonButton in get_lesson_buttons():
 		button.completed_color = color
 
 
-func _ready() -> void:
-	set_garden_layout(garden_layout)
+func _ensure_button_controls_count(target_count: int) -> void:
+	while get_lesson_buttons().size() < target_count:
+		var new_button: LessonButton = LESSON_BUTTON_SCENE.instantiate()
+		new_button.completed_color = color
+		buttons.add_child(new_button)
+		new_button.owner = self
+
+
+func get_lesson_buttons() -> Array[LessonButton]:
+	var lesson_buttons: Array[LessonButton] = []
+	for button: Node in buttons.get_children():
+		if button is LessonButton:
+			lesson_buttons.append(button as LessonButton)
+	return lesson_buttons
 
 
 func set_lesson_label(ind: int, text: String) -> void:
-	assert(ind < lesson_button_controls.size())
-	lesson_button_controls[ind].text = text
+	var lesson_buttons: Array[LessonButton] = get_lesson_buttons()
+	assert(ind < lesson_buttons.size())
+	lesson_buttons[ind].text = text
 
 
 func pop_animation() -> void:
@@ -113,7 +120,7 @@ func pop_animation() -> void:
 	tween.set_parallel(true)
 	for flower_control: TextureRect in flower_controls:
 		tween.tween_property(flower_control, "scale", Vector2(0, 0), 0.1)
-	for lesson_button_control: LessonButton in lesson_button_controls:
+	for lesson_button_control: LessonButton in get_lesson_buttons():
 		tween.tween_property(lesson_button_control, "scale", Vector2(0.7, 0.7), 0.1)
 	await tween.finished
 	tween = create_tween()
@@ -122,7 +129,7 @@ func pop_animation() -> void:
 	tween.set_trans(Tween.TRANS_BOUNCE)
 	for flower_control: TextureRect in flower_controls:
 		tween.tween_property(flower_control, "scale", Vector2(1., 1.), 0.9)
-	for lesson_button_control: LessonButton in lesson_button_controls:
+	for lesson_button_control: LessonButton in get_lesson_buttons():
 		tween.tween_property(lesson_button_control, "scale", Vector2(1., 1.), 0.9)
 
 

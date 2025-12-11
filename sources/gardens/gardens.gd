@@ -8,6 +8,14 @@ const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 const GARDEN_SIZE: int = 2400
+const GARDEN_TEXTURES_NB: int = 20
+const FLOWER_TYPES_NB: int = 5
+const FLOWER_COLORS_NB: int = 20
+const FLOWER_COUNT_PER_GARDEN: int = 5
+const FLOWER_VERTICAL_BASE: float = 1100.0
+const FLOWER_VERTICAL_RANGE: float = 260.0
+const LESSON_VERTICAL_BASE: float = 780.0
+const LESSON_VERTICAL_RANGE: float = 360.0
 
 static var transition_data: Dictionary = {}
 
@@ -75,11 +83,8 @@ func _ready() -> void:
 		var lesson_array: Array = lessons[element.LessonNb]
 		lesson_array.append({grapheme = element.Grapheme, phoneme = element.Phoneme, gp_id = element.GPID})
 	
-	# Loads the layout
-	if not gardens_layout:
-		gardens_layout = load("res://resources/gardens/gardens_layout.tres")
-	else:
-		set_gardens_layout(gardens_layout)
+	gardens_layout = generate_gardens_layout(lessons.size())
+	set_gardens_layout(gardens_layout)
 	
 	# Setups the lessons
 	_set_up_lessons()
@@ -122,8 +127,8 @@ func _ready() -> void:
 	for garden_control: Garden in garden_parent.get_children():
 		
 		# Handles the lesson buttons and calculate the progression of the garden
-		for index: int in range(garden_control.lesson_button_controls.size()):
-			var button: LessonButton = garden_control.lesson_button_controls[index]
+		for index: int in range(garden_control.get_lesson_buttons().size()):
+			var button: LessonButton = garden_control.get_lesson_buttons()[index]
 			if not lesson_ind in lessons:
 				button.set_disabled(true)
 				continue
@@ -210,7 +215,7 @@ func _ready() -> void:
 					break
 				if not lesson_ind in lessons:
 					break
-				for index: int in range(garden_control.lesson_button_controls.size()):
+				for index: int in range(garden_control.get_lesson_buttons().size()):
 					if not lesson_ind in lessons:
 						break
 					
@@ -312,12 +317,12 @@ func _ready() -> void:
 			var new_lesson_button: LessonButton
 			var is_last_lesson_of_garden: bool = false
 			for garden_control: Garden in garden_parent.get_children():
-				for index: int in range(garden_control.lesson_button_controls.size()):
+				for index: int in range(garden_control.get_lesson_buttons().size()):
 					if lesson_ind == max_lesson + 1:
-						new_lesson_button = garden_control.lesson_button_controls[index]
+						new_lesson_button = garden_control.get_lesson_buttons()[index]
 					if lesson_ind == max_lesson:
-						last_lesson_button = garden_control.lesson_button_controls[index]
-						if index == garden_control.lesson_button_controls.size() -1:
+						last_lesson_button = garden_control.get_lesson_buttons()[index]
+						if index == garden_control.get_lesson_buttons().size() -1:
 							is_last_lesson_of_garden = true
 					if last_lesson_button and new_lesson_button:
 						break
@@ -378,22 +383,107 @@ func _ready() -> void:
 
 
 static func compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
+	Log.info("Gardens: Computing lessons distribution")
 	Log.trace("Gardens: ComputeLessonsDistribution: Parameters total_lessons = %s, garden_layouts count = %s" % [str(total_lessons), str(garden_layouts.size())])
 	var distribution: Array[int] = []
 	var lessons_left: int = total_lessons
 	var gardens_left: int = garden_layouts.size()
 	for layout_index: int in range(garden_layouts.size()):
 		var max_lessons: int = garden_layouts[layout_index].lesson_buttons.size()
+		Log.trace("Gardens: Garden index %s can host up to %s lessons" % [str(layout_index), str(max_lessons)])
 		var lessons_for_garden: int = 0
 		if gardens_left > 0:
 			lessons_for_garden = int(ceili(float(lessons_left) / float(gardens_left)))
 		lessons_for_garden = min(lessons_for_garden, max_lessons)
 		if lessons_for_garden > lessons_left:
-				lessons_for_garden = lessons_left
+			lessons_for_garden = lessons_left
 		distribution.append(lessons_for_garden)
+		Log.trace("Gardens: Assigning %s lessons to garden index %s (lessons left before assignment: %s)" % [str(lessons_for_garden), str(layout_index), str(lessons_left)])
 		lessons_left -= lessons_for_garden
 		gardens_left -= 1
+		Log.trace("Gardens: Lessons left after assignment: %s, gardens left: %s" % [str(lessons_left), str(gardens_left)])
 	return distribution
+
+
+static func generate_gardens_layout(total_lessons: int) -> GardensLayout:
+	var layout: GardensLayout = GardensLayout.new()
+	if total_lessons <= 0:
+		return layout
+	Log.info("Gardens: Generating dynamic gardens layout")
+	Log.trace("Gardens: Total lessons to layout: %s" % str(total_lessons))
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.seed = 13985
+	Log.trace("Gardens: RNG seeded with %s" % str(rng.seed))
+	var lessons_left: int = total_lessons
+	var garden_index: int = 0
+	while lessons_left > 0 and garden_index < GARDEN_TEXTURES_NB:
+		var gardens_left: int = GARDEN_TEXTURES_NB - garden_index
+		var lessons_for_garden: int = int(ceili(float(lessons_left) / float(gardens_left)))
+		Log.trace("Gardens: Generating layout for garden %s with %s lessons left" % [str(garden_index), str(lessons_left)])
+		layout.gardens.append(_generate_single_garden_layout(garden_index, lessons_for_garden, rng))
+		lessons_left -= lessons_for_garden
+		Log.trace("Gardens: Lessons left after garden %s generation: %s" % [str(garden_index), str(lessons_left)])
+		garden_index += 1
+	Log.info("Gardens: Completed layout generation with %s gardens" % str(layout.gardens.size()))
+	return layout
+
+
+static func _generate_single_garden_layout(garden_index: int, lessons_for_garden: int, rng: RandomNumberGenerator) -> GardenLayout:
+	Log.info("Gardens: Generating single garden layout for garden %s" % str(garden_index))
+	Log.trace("Gardens: Garden %s will include %s lessons" % [str(garden_index), str(lessons_for_garden)])
+	var garden_layout: GardenLayout = GardenLayout.new()
+	garden_layout.color = garden_index % GARDEN_TEXTURES_NB
+	Log.trace("Gardens: Garden %s color index set to %s" % [str(garden_index), str(garden_layout.color)])
+	var lesson_positions: Array[Vector2i] = _generate_lesson_positions(lessons_for_garden, garden_index)
+	var lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton] = []
+	for lesson_index: int in range(lessons_for_garden):
+		var lesson_position: Vector2i = lesson_positions[lesson_index]
+		Log.trace("Gardens: Garden %s lesson %s position calculated at %s" % [str(garden_index), str(lesson_index), str(lesson_position)])
+		var path_out: Vector2i = Vector2i.ZERO
+		if lesson_index + 1 < lesson_positions.size():
+			var next_position: Vector2i = lesson_positions[lesson_index + 1]
+			var tangent: Vector2 = (next_position - lesson_position) * 0.5
+			Log.trace("Gardens: Garden %s lesson %s tangent to next lesson: %s" % [str(garden_index), str(lesson_index), str(tangent)])
+			path_out = Vector2i(int(tangent.x), int(tangent.y))
+		else:
+			path_out = Vector2i(int(GARDEN_SIZE * 0.15), int((-1.0 if (garden_index % 2) == 0 else 1.0) * 60))
+			Log.trace("Gardens: Garden %s last lesson %s path out set to %s" % [str(garden_index), str(lesson_index), str(path_out)])
+		lesson_buttons.append(GardenLayout.GardenLayoutLessonButton.new(lesson_position, path_out))
+	garden_layout.lesson_buttons = lesson_buttons
+	var flowers: Array[GardenLayout.Flower] = []
+	var flower_spacing: float = float(GARDEN_SIZE) / float(FLOWER_COUNT_PER_GARDEN + 1)
+	Log.trace("Gardens: Garden %s flower spacing computed as %s" % [str(garden_index), str(flower_spacing)])
+	for flower_index: int in range(FLOWER_COUNT_PER_GARDEN):
+		var flower_x: int = int(flower_spacing * float(flower_index + 1))
+		var wave_offset: float = float(garden_index) * 0.45 + float(flower_index) * 0.65
+		var flower_y: int = int(FLOWER_VERTICAL_BASE + sin(wave_offset) * FLOWER_VERTICAL_RANGE)
+		var flower_color: int = (garden_layout.color + flower_index) % FLOWER_COLORS_NB
+		var flower_type: int = (flower_index + garden_index + rng.randi_range(0, FLOWER_TYPES_NB - 1)) % FLOWER_TYPES_NB
+		Log.trace("Gardens: Garden %s flower %s position (%s,%s), color %s, type %s" % [str(garden_index), str(flower_index), str(flower_x), str(flower_y), str(flower_color), str(flower_type)])
+		flowers.append(GardenLayout.Flower.new(flower_color, flower_type, Vector2i(flower_x, flower_y)))
+	garden_layout.flowers = flowers
+	Log.info("Gardens: Finished generating garden layout for garden %s" % str(garden_index))
+	return garden_layout
+
+
+static func _generate_lesson_positions(lessons_for_garden: int, garden_index: int) -> Array[Vector2i]:
+	Log.info("Gardens: Generating lesson positions for garden %s" % str(garden_index))
+	var positions: Array[Vector2i] = []
+	if lessons_for_garden <= 0:
+		Log.trace("Gardens: No lessons for garden %s, returning empty positions" % str(garden_index))
+		return positions
+	var spacing: float = float(GARDEN_SIZE) / float(lessons_for_garden + 1)
+	Log.trace("Gardens: Garden %s lesson spacing calculated as %s" % [str(garden_index), str(spacing)])
+	var vertical_phase: float = float(garden_index % 3) * 0.65
+	Log.trace("Gardens: Garden %s vertical phase set to %s" % [str(garden_index), str(vertical_phase)])
+	for lesson_index: int in range(lessons_for_garden):
+		var x: int = int(spacing * float(lesson_index + 1))
+		var wave_position: float = float(lesson_index) / maxf(1.0, lessons_for_garden - 1)
+		var y: int = int(LESSON_VERTICAL_BASE + sin(vertical_phase + wave_position * PI) * LESSON_VERTICAL_RANGE)
+		Log.trace("Gardens: Garden %s lesson %s position -> x: %s, wave position: %s, y: %s" % [str(garden_index), str(lesson_index), str(x), str(wave_position), str(y)])
+		positions.append(Vector2i(x, y))
+	Log.info("Gardens: Completed lesson positions for garden %s" % str(garden_index))
+	return positions
 
 
 func _process(_delta: float) -> void:
@@ -430,7 +520,7 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.Locked and lesson_unlocks["games"][1] == StudentProgression.Status.Locked and lesson_unlocks["games"][2] == StudentProgression.Status.Locked
 	
 	# Deactivate the mouse filters on the buttons behind the layout
-	for l_button: LessonButton in current_garden.lesson_button_controls:
+	for l_button: LessonButton in current_garden.get_lesson_buttons():
 		l_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	# Background
@@ -536,7 +626,7 @@ func _close_minigames_layout() -> void:
 	kalulu_button.show()
 	line_particles.show()
 	
-	for button: LessonButton in current_garden.lesson_button_controls:
+	for button: LessonButton in current_garden.get_lesson_buttons():
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
 	
 	minigame_layout_1.pressed.disconnect(_on_minigame_button_pressed)
@@ -553,14 +643,17 @@ func _set_up_lessons() -> void:
 			if not lesson_ind in lessons:
 				break
 			garden_control.set_lesson_label(index, lessons[lesson_ind][0].grapheme as String)
-			garden_control.lesson_button_controls[index].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.lesson_button_controls[index], lesson_ind))
+			garden_control.get_lesson_buttons()[index].pressed.connect(_on_garden_lesson_button_pressed.bind(garden_control.get_lesson_buttons()[index], lesson_ind))
 			lesson_ind += 1
 
 
 func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
+	Log.info("Gardens: Setting gardens layout")
 	gardens_layout = p_gardens_layout
+	Log.trace("Gardens: Layout contains %s gardens" % str(gardens_layout.gardens.size()))
 	add_gardens()
 	if garden_parent:
+		Log.trace("Gardens: Yielding a frame to ensure garden controls are ready before setting up the path")
 		await get_tree().process_frame
 	set_up_path()
 
@@ -568,26 +661,24 @@ func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
 func add_gardens() -> void:
 	if not garden_parent:
 		return
-	
 	# Removes old gardens
+	Log.info("Gardens: Clearing existing gardens before generation")
 	for child: Node in garden_parent.get_children():
 		child.free()
-	
+	Log.info("Gardens: Computing lesson distribution for new gardens")
 	var distribution: Array[int] = compute_lessons_distribution(lessons.size(), gardens_layout.gardens)
-
 	var garden_index: int = 0
 	for layout_index: int in range(gardens_layout.gardens.size()):
+		Log.trace("Gardens: Preparing garden %s with layout index %s" % [str(garden_index), str(layout_index)])
 		var garden_layout: GardenLayout = gardens_layout.gardens[layout_index]
 		var garden: Garden = GARDEN_SCENE.instantiate()
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
 		garden_index += 1
-
 		var lessons_for_garden: int = distribution[layout_index]
+		Log.trace("Gardens: Garden %s will host %s lessons" % [str(garden.garden_index), str(lessons_for_garden)])
 		garden_layout.lesson_buttons.resize(lessons_for_garden)
-		# TODO : HANDLE WHEN NUMBER OF LESSONS IS MORE THAN 4
-		garden.lesson_button_controls.resize(lessons_for_garden)
-
+		Log.trace("Gardens: Assigning layout to garden %s" % str(garden.garden_index))
 		garden.garden_layout = garden_layout
 
 
@@ -627,9 +718,9 @@ func _unlock() -> void:
 func _get_current_lesson_button(lesson: int) -> LessonButton:
 	var lesson_ind: int = 1
 	for garden_control: Garden in garden_parent.get_children():
-		for index: int in range(garden_control.lesson_button_controls.size()):
+		for index: int in range(garden_control.get_lesson_buttons().size()):
 			if lesson_ind == lesson:
-				return garden_control.lesson_button_controls[index]
+				return garden_control.get_lesson_buttons()[index]
 			lesson_ind += 1
 	return null
 

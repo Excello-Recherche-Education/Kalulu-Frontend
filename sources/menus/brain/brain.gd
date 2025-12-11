@@ -68,7 +68,8 @@ static func _compute_lessons_distribution(total_lessons: int, garden_layouts: Ar
 
 func _ready() -> void:
 	UserDataManager.start_synchronization_timer()
-	
+	if not gardens_layout or gardens_layout.gardens.is_empty():
+		gardens_layout = Gardens.generate_gardens_layout(Database.get_lessons_count())
 	for index: int in range(garden_buttons.size()):
 		garden_buttons[index].pressed.connect(_on_garden_button_pressed.bind(index))
 
