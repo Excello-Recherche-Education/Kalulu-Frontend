@@ -175,6 +175,7 @@ grow_vertical = 2
 
 [node name="KeyboardSpacer" parent="." instance=ExtResource("13_6pvxs")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 
 [node name="LoginForm" type="Control" parent="KeyboardSpacer"]
