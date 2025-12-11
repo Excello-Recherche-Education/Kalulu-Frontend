@@ -4,6 +4,7 @@ extends CanvasLayer
 signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_access: bool)
 
+const CONFIG_PATH: String = "user://environment.cfg"
 const INTERNET_CHECK_URL: String = "https://google.com"
 const AWS_API_GATEWAY_DOMAIN_ADRESS: String = "api.kalulu.org/"
 const SUBDOMAIN_DEV: String = "dev."
@@ -26,12 +27,15 @@ var environment_setting: int = 1
 
 func _ready() -> void:
 	var config: ConfigFile = ConfigFile.new()
-	if config.load("user://environment.cfg") == OK:
+	var load_error: Error = config.load(CONFIG_PATH)
+	if load_error == OK:
 		environment_setting = int(config.get_value("environment", "current", 0) as int)
 		custom_environment_url = str(config.get_value("environment", "custom_url", ""))
 		set_environment(environment_setting, custom_environment_url)
+		Log.info("ServerManager: Loaded environment config (setting=%d, custom_url=%s)" % [environment_setting, custom_environment_url])
 	else:
-		set_environment(1) # fallback PROD
+		Log.warn("ServerManager: Could not load environment config at %s. Error: %s. Falling back to PROD environment." % [ProjectSettings.globalize_path(CONFIG_PATH), error_string(load_error)])
+		set_environment(1)
 
 
 func set_environment(env: int, custom_url: String = "") -> void:
@@ -72,7 +76,11 @@ func _save_environment_config() -> void:
 	var config: ConfigFile = ConfigFile.new()
 	config.set_value("environment", "current", environment_setting)
 	config.set_value("environment", "custom_url", custom_environment_url)
-	config.save("user://environment.cfg")
+	var error: Error = config.save(CONFIG_PATH)
+	if error != OK:
+		Log.error("ServerManager: Failed to save environment config to %s. Error: %s" % [ProjectSettings.globalize_path(CONFIG_PATH), error_string(error)])
+	else:
+		Log.trace("ServerManager: Environment configuration saved to " + ProjectSettings.globalize_path(CONFIG_PATH))
 
 
 func first_login_student() -> void:
