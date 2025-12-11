@@ -61,7 +61,5 @@ func _on_validate_button_pressed() -> void:
 
 func _on_reset_password_button_pressed() -> void:
 	var res: Dictionary = await ServerManager.reset_password(email_field.text)
-	if res.code == 200:
-		Log.debug(str(res))
-	else:
+	if res.code != 200:
 		login_message.text = "CHECK_YOUR_EMAIL"
