@@ -175,24 +175,30 @@ func safe_load_and_fix_resource(path: String, old_texts: Array[String], new_text
 	if not FileAccess.file_exists(path):
 		Log.error("UserDataManager: File not found: " + path)
 		return null
-
+	if old_texts.size() != new_texts.size():
+		Log.error(
+				"UserDataManager: Safe load and fix resource: Mismatching text arrays for %s (old: %d, new: %d)" % [
+						path, old_texts.size(), new_texts.size(),
+				]
+		)
+		return ResourceLoader.load(path)
 	var content: String = FileAccess.get_file_as_string(path)
-
+	var replacement_made: bool = false
 	for index: int in range(old_texts.size()):
 		if content.find(old_texts[index]) != -1:
 			Log.trace("UserDataManager: Fix resource:" + path)
 			content = content.replace(old_texts[index], new_texts[index])
-			var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
-			var error: Error = FileAccess.get_open_error()
-			if error != OK:
-				Log.error("UserDataManager: Safe load and fix resource: Cannot open file %s. Error: %s" % [path, error_string(error)])
-				return null
-			if file == null:
-				Log.error("UserDataManager: Safe load and fix resource: Cannot open file %s. File is null" % path)
-				return null
+			replacement_made = true
+	if replacement_made:
+		var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+		var error: Error = FileAccess.get_open_error()
+		if error != OK:
+			Log.error("UserDataManager: Safe load and fix resource: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		elif file == null:
+			Log.error("UserDataManager: Safe load and fix resource: Cannot open file %s. File is null" % path)
+		else:
 			file.store_string(content)
 			file.close()
-
 	var resource: Resource = ResourceLoader.load(path)
 	if resource == null:
 		Log.error("UserDataManager: Loading failed after correction: " + path)
