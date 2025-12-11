@@ -6,6 +6,7 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 	var full_path: String = abs_path.path_join(rel_path)
 	var dir: DirAccess = DirAccess.open(full_path)
 	if not dir:
+		Log.error("FolderZipper: Cannot open directory %s. Error: %s" % [full_path, error_string(DirAccess.get_open_error())])
 		close()
 		return DirAccess.get_open_error()
 	
@@ -20,12 +21,14 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 			if dir.current_is_dir():
 				var error: Error = write_folder_recursive(abs_path, current_rel_path)
 				if error != OK:
+					Log.error("FolderZipper: Failed to zip subfolder %s. Error: %s" % [current_rel_path, error_string(error)])
 					close()
 					return error
 			else:
 				Log.trace("FolderZipper: Adding %s" % current_rel_path)
 				var error: Error = start_file(current_rel_path)
 				if error != OK:
+					Log.error("FolderZipper: Cannot start file %s in archive. Error: %s" % [current_rel_path, error_string(error)])
 					close()
 					return error
 				
@@ -40,6 +43,7 @@ func write_folder_recursive(abs_path: String, rel_path: String) -> Error:
 					file.close()
 					close_file()
 				else:
+					Log.error("FolderZipper: Unexpected null FileAccess for %s despite OK open result" % current_full_path)
 					close()
 					return FileAccess.get_open_error() # Should never happen because error = OK
 		

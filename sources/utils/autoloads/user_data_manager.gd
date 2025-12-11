@@ -316,8 +316,13 @@ func _load_device_settings() -> void:
 
 
 func _save_device_settings() -> void:
-	Log.trace("UserDataManager: Save device settings in " + ProjectSettings.globalize_path(get_device_settings_path()))
-	ResourceSaver.save(_device_settings, get_device_settings_path())
+	var path: String = get_device_settings_path()
+	Log.trace("UserDataManager: Save device settings in " + ProjectSettings.globalize_path(path))
+	var error: Error = ResourceSaver.save(_device_settings, path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save device settings to %s. Error: %s" % [path, error_string(error)])
+	else:
+		Log.trace("UserDataManager: Device settings saved successfully at " + ProjectSettings.globalize_path(path))
 
 
 func set_language(language: String, server_validated: bool = false) -> void:
@@ -445,8 +450,16 @@ func _load_teacher_settings() -> void:
 
 
 func save_teacher_settings() -> void:
-	Log.trace("UserDataManager: Saving teacher settings in " + ProjectSettings.globalize_path(get_teacher_settings_path()))
-	ResourceSaver.save(teacher_settings, get_teacher_settings_path())
+	if not teacher_settings:
+		Log.warn("UserDataManager: Cannot save teacher settings because teacher_settings is null")
+		return
+	var path: String = get_teacher_settings_path()
+	Log.trace("UserDataManager: Saving teacher settings in " + ProjectSettings.globalize_path(path))
+	var error: Error = ResourceSaver.save(teacher_settings, path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save teacher settings to %s. Error: %s" % [ProjectSettings.globalize_path(path), error_string(error)])
+	else:
+		Log.trace("UserDataManager: Teacher settings saved successfully at " + ProjectSettings.globalize_path(path))
 
 
 func _delete_inexistants_students_saves() -> void:
