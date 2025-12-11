@@ -1,6 +1,11 @@
 class_name UserDataManagerClass
 extends Node
 
+const MASTER_VOLUME_PROPERTY_NAME: String = "master_volume"
+const MUSIC_VOLUME_PROPERTY_NAME: String = "music_volume"
+const VOICE_VOLUME_PROPERTY_NAME: String = "voice_volume"
+const EFFECTS_VOLUME_PROPERTY_NAME: String = "effects_volume"
+
 var student: String = "":
 	set(student_name):
 		student = student_name
@@ -352,64 +357,53 @@ func set_language_version(language: String, version: Dictionary) -> void:
 		Log.warn("UserDataManager: Cannot set language version because device settings not found")
 
 
+func _set_volume(property_name: String, value: float) -> void:
+	if not _device_settings:
+		return
+	var volume: float = denormalize_volume(value)
+	_device_settings.set(property_name, volume)
+	_save_device_settings()
+
+
+func _get_volume(property_name: String) -> float:
+	if not _device_settings:
+		return 0.0
+	var volume: float = _device_settings.get(property_name)
+	if volume == null:
+		return 0.0
+	return normalize_slider(volume)
+
+
 func set_master_volume(value: float) -> void:
-	if _device_settings:
-		var volume: float = denormalize_volume(value)
-		_device_settings.master_volume = volume
-		_save_device_settings()
+	_set_volume(MASTER_VOLUME_PROPERTY_NAME, value)
 
 
 func set_music_volume(value: float) -> void:
-	if _device_settings:
-		var volume: float = denormalize_volume(value)
-		_device_settings.music_volume = volume
-		_save_device_settings()
+	_set_volume(MUSIC_VOLUME_PROPERTY_NAME, value)
 
 
 func set_voice_volume(value: float) -> void:
-	if _device_settings:
-		var volume: float = denormalize_volume(value)
-		_device_settings.voice_volume = volume
-		_save_device_settings()
+	_set_volume(VOICE_VOLUME_PROPERTY_NAME, value)
 
 
 func set_effects_volume(value: float) -> void:
-	if _device_settings:
-		var volume: float = denormalize_volume(value)
-		_device_settings.effects_volume = volume
-		_save_device_settings()
+	_set_volume(EFFECTS_VOLUME_PROPERTY_NAME, value)
 
 
 func get_master_volume() -> float:
-	var value: float = 0.0
-	if _device_settings:
-		var volume: float = _device_settings.master_volume
-		value = normalize_slider(volume)
-	return value
+	return _get_volume(MASTER_VOLUME_PROPERTY_NAME)
 
 
 func get_music_volume() -> float:
-	var value: float = 0.0
-	if _device_settings:
-		var volume: float = _device_settings.music_volume
-		value = normalize_slider(volume)
-	return value
+	return _get_volume(MUSIC_VOLUME_PROPERTY_NAME)
 
 
 func get_voice_volume() -> float:
-	var value: float = 0.0
-	if _device_settings:
-		var volume: float = _device_settings.voice_volume
-		value = normalize_slider(volume)
-	return value
+	return _get_volume(VOICE_VOLUME_PROPERTY_NAME)
 
 
 func get_effects_volume() -> float:
-	var value: float = 0.0
-	if _device_settings:
-		var volume: float = _device_settings.effects_volume
-		value = normalize_slider(volume)
-	return value
+	return _get_volume(EFFECTS_VOLUME_PROPERTY_NAME)
 
 
 # Convert the volume from [-80, 6]db to [0, 100] and back
