@@ -119,8 +119,14 @@ func _ready() -> void:
 	var newly_unlocked_lesson_number: int = -1
 	if new_lesson_unlocked:
 		newly_unlocked_lesson_number = max_unlocked_lesson_number + 1
+
+	# Sets the unlocked line and particles to the most advanced unlocked lesson before playing any animation
+	var most_advanced_unlocked_lesson_index: int = max_unlocked_lesson_index
+	if new_lesson_unlocked:
+		most_advanced_unlocked_lesson_index -= 1
+	_set_unlocked_path(most_advanced_unlocked_lesson_index)
 	
-	#region Progression
+#region Progression
 
 	# Loads the progression of the player without the newly unlocked stuff from the transition data
 	var lesson_ind: int = 1
@@ -677,7 +683,22 @@ func set_up_path() -> void:
 				point_in_position = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position
 			curve.add_point(point_position, point_in_position, button.path_out_position)
 			points.append([point_position, point_in_position, button.path_out_position])
-	locked_line.points = curve.get_baked_points()
+		locked_line.points = curve.get_baked_points()
+
+
+func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
+	unlocked_line.clear_points()
+	if max_unlocked_lesson_index < 0 or points.is_empty():
+		return
+	var clamped_lesson_index: int = clamp(max_unlocked_lesson_index, 0, points.size() - 1)
+	var progress_curve: Curve2D = Curve2D.new()
+	for index: int in range(clamped_lesson_index + 1):
+		var point_data: Array = points[index]
+		progress_curve.add_point(point_data[0] as Vector2, point_data[1] as Vector2, point_data[2] as Vector2)
+	var baked_points: PackedVector2Array = progress_curve.get_baked_points()
+	unlocked_line.points = baked_points
+	if baked_points.size() > 0:
+		line_particles.position = baked_points[baked_points.size() - 1]
 
 
 func _lock() -> void:
