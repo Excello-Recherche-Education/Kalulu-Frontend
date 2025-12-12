@@ -131,6 +131,9 @@ func _beacon2_drop_data(_at_position: Vector2, _data: Variant) -> void:
 func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 	var is_really_real: bool = words_to_present[0] in stimuli
 	var is_correct: bool = is_answered_real == is_really_real
+	var response_log: Dictionary = {"word": words_to_present[0], "is_real_answer": is_answered_real}
+	var awaited_response: Dictionary = {"word": words_to_present[0], "is_real_answer": is_really_real}
+	_log_new_response(response_log, awaited_response)
 	if is_correct:
 		if is_answered_real:
 			real_right_fx.play()
