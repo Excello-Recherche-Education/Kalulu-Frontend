@@ -11,11 +11,9 @@ const GARDEN_SIZE: int = 2400
 const GARDEN_TEXTURES_NB: int = 20
 const FLOWER_TYPES_NB: int = 5
 const FLOWER_COLORS_NB: int = 20
-const FLOWER_COUNT_PER_GARDEN: int = 5
-const FLOWER_VERTICAL_BASE: float = 1100.0
-const FLOWER_VERTICAL_RANGE: float = 260.0
-const LESSON_VERTICAL_BASE: float = 780.0
-const LESSON_VERTICAL_RANGE: float = 360.0
+const FLOWER_OFFSET_FROM_LESSON: float = 200.0
+const LESSON_VERTICAL_BASE: float = 920.0
+const LESSON_VERTICAL_RANGE: float = 300.0
 
 static var transition_data: Dictionary = {}
 
@@ -451,16 +449,13 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 		lesson_buttons.append(GardenLayout.GardenLayoutLessonButton.new(lesson_position, path_out))
 	garden_layout.lesson_buttons = lesson_buttons
 	var flowers: Array[GardenLayout.Flower] = []
-	var flower_spacing: float = float(GARDEN_SIZE) / float(FLOWER_COUNT_PER_GARDEN + 1)
-	Log.trace("Gardens: Garden %s flower spacing computed as %s" % [str(garden_index), str(flower_spacing)])
-	for flower_index: int in range(FLOWER_COUNT_PER_GARDEN):
-		var flower_x: int = int(flower_spacing * float(flower_index + 1))
-		var wave_offset: float = float(garden_index) * 0.45 + float(flower_index) * 0.65
-		var flower_y: int = int(FLOWER_VERTICAL_BASE + sin(wave_offset) * FLOWER_VERTICAL_RANGE)
-		var flower_color: int = (garden_layout.color + flower_index) % FLOWER_COLORS_NB
-		var flower_type: int = (flower_index + garden_index + rng.randi_range(0, FLOWER_TYPES_NB - 1)) % FLOWER_TYPES_NB
-		Log.trace("Gardens: Garden %s flower %s position (%s,%s), color %s, type %s" % [str(garden_index), str(flower_index), str(flower_x), str(flower_y), str(flower_color), str(flower_type)])
-		flowers.append(GardenLayout.Flower.new(flower_color, flower_type, Vector2i(flower_x, flower_y)))
+	for lesson_index: int in range(lesson_positions.size()):
+		var flower_position: Vector2i = lesson_positions[lesson_index]
+		flower_position.y = max(0, flower_position.y - int(FLOWER_OFFSET_FROM_LESSON))
+		var flower_color: int = (garden_layout.color + lesson_index) % FLOWER_COLORS_NB
+		var flower_type: int = (lesson_index + garden_index + rng.randi_range(0, FLOWER_TYPES_NB - 1)) % FLOWER_TYPES_NB
+		Log.trace("Gardens: Garden %s flower %s position (%s,%s), color %s, type %s" % [str(garden_index), str(lesson_index), str(flower_position.x), str(flower_position.y), str(flower_color), str(flower_type)])
+		flowers.append(GardenLayout.Flower.new(flower_color, flower_type, flower_position))
 	garden_layout.flowers = flowers
 	Log.info("Gardens: Finished generating garden layout for garden %s" % str(garden_index))
 	return garden_layout

@@ -12,6 +12,8 @@ enum FlowerSizes{
 const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/plant_%02d_%02d_%s.png"
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d_open.png"
 const LESSON_BUTTON_SCENE: PackedScene = preload("res://sources/lesson_screen/lesson_button.tscn")
+const FLOWER_MATERIAL_PATH: String = "res://resources/gardens/flower_material.tres"
+const FLOWER_Z_INDEX: int = 1
 
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
@@ -25,13 +27,9 @@ var max_progression: float = 0.0
 var garden_index: int = -1
 
 @onready var buttons: Control = $Buttons
-@onready var flower_controls: Array[TextureRect] = [
-	%Flower1,
-	%Flower2,
-	%Flower3,
-	%Flower4,
-	%Flower5,
-]
+@onready var flowers_container: Control = $Flowers
+@onready var flower_material: Material = load(FLOWER_MATERIAL_PATH)
+@onready var flower_controls: Array[TextureRect] = []
 @onready var background: TextureRect = %Background
 
 
@@ -54,6 +52,7 @@ func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSize
 	flowers_sizes = []
 	for _i: int in range(flowers.size()):
 		flowers_sizes.append(default_size)
+	_ensure_flower_controls_count(flowers.size())
 	update_flowers()
 
 
@@ -99,6 +98,25 @@ func _ensure_button_controls_count(target_count: int) -> void:
 		new_button.completed_color = color
 		buttons.add_child(new_button)
 		new_button.owner = self
+
+
+func _ensure_flower_controls_count(target_count: int) -> void:
+	for child: Node in flowers_container.get_children():
+		child.queue_free()
+	flower_controls.clear()
+	for _i: int in range(target_count):
+		var new_flower: TextureRect = _create_flower_control()
+		flowers_container.add_child(new_flower)
+		new_flower.owner = self
+		flower_controls.append(new_flower)
+
+
+func _create_flower_control() -> TextureRect:
+	var flower_control: TextureRect = TextureRect.new()
+	flower_control.material = flower_material
+	flower_control.z_index = FLOWER_Z_INDEX
+	flower_control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return flower_control
 
 
 func get_lesson_buttons() -> Array[LessonButton]:
