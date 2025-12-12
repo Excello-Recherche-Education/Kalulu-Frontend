@@ -127,6 +127,7 @@ func _on_parakeet_pressed(parakeet: Parakeet) -> void:
 				selected.append(parakeet)
 				await _turn(parakeet, false)
 				state = State.Selected2
+				_log_new_response({"pair": [selected[0].stimulus, selected[1].stimulus]}, {"pair": [selected[0].stimulus, selected[0].stimulus]})
 				if selected[0].stimulus.Grapheme == selected[1].stimulus.Grapheme:
 					_correct()
 				else:

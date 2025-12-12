@@ -120,6 +120,8 @@ func _initialize() -> void:
 	
 	_setup_minigame()
 	
+	Log.info("BaseMinigame: Initialize %s (lesson %d, minigame #%d, difficulty %d)" % [Type.keys()[minigame_name], lesson_nb, minigame_number, difficulty])
+	
 	if not Engine.is_editor_hint():
 		await _curtains_and_kalulu()
 		_start()
@@ -159,6 +161,7 @@ var _is_paused: bool = false
 
 # Launch the minigame
 func _start() -> void:
+	Log.info("BaseMinigame: Start minigame=%s lesson=%d difficulty=%d" % [Type.keys()[minigame_name], lesson_nb, difficulty])
 	_start_time = Time.get_ticks_msec() / 1000.0
 	_elapsed_paused = 0.0
 	_is_paused = false
@@ -191,7 +194,6 @@ func _reset() -> void:
 
 
 func _win() -> void:
-	
 	# Lock the UI
 	minigame_ui.lock()
 	
@@ -204,6 +206,8 @@ func _win() -> void:
 		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
 	update_scores()
+	
+	Log.info("BaseMinigame: %s won in %d seconds with progression %d/%d and %d/%d lives" % [Type.keys()[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
 	
 	# Difficulty
 	if current_lives <= 0:
@@ -248,6 +252,8 @@ func _lose() -> void:
 	
 	update_scores()
 	
+	Log.info("BaseMinigame: %s Lose in %d seconds with progression %d/%d and %d/%d lives" % [Type.keys()[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
+	
 	# Difficulty
 	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
 	
@@ -262,22 +268,27 @@ func _lose() -> void:
 
 
 func _submit_student_level_time() -> void:
-	var elapsed_time: int = int(Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused)
-	UserDataManager.add_level_time(lesson_nb, minigame_number, elapsed_time)
+	UserDataManager.add_level_time(lesson_nb, minigame_number, _get_elapsed_time_seconds())
+
+
+func _get_elapsed_time_seconds() -> int:
+	return int(Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused)
 
 #endregion
 
 #region Logs
 
 func _save_logs() -> void:
+	var logs_size: int = -1
+	if logs.has("answers") and logs.get("answers", []) is Array:
+		logs_size = (logs.get("answers", []) as Array).size()
+	Log.info("BaseMinigame: Saving logs for %s with %d answer(s)" % [Type.keys()[minigame_name], logs_size])
 	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
 func _reset_logs() -> void:
-	logs = {
-		"answers": []
-	}
+	logs = {"answers": []}
 
 
 func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> void:
@@ -292,6 +303,15 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"current_lives": current_lives,
 		"max_number_of_lives": max_number_of_lives,
 	}
+	Log.trace("BaseMinigame: Log new response minigame=%s response=%s expected=%s right=%s progression=%d/%d lives=%d/%d" % [
+				Type.keys()[minigame_name],
+				str(response),
+				str(current_stimulus),
+				str(response_log.is_right),
+				current_progression,
+				max_progression,
+				current_lives,
+				max_number_of_lives])
 	
 	var answers: Array = logs["answers"]
 	answers.append(response_log)

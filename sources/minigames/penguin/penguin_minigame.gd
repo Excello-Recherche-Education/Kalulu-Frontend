@@ -157,6 +157,8 @@ func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 	
 	var correct_answer: bool = _is_silent(label.gp)
 	
+	_log_new_response({"gp": label.gp, "is_silent": correct_answer}, {"gp": label.gp, "is_silent": true})
+	
 	if label.gp.has("WordID"):
 		_update_remediation_word_score(label.gp.WordID as int, 1 if correct_answer else -1)
 	else:
