@@ -21,6 +21,7 @@ const FLOWER_Z_INDEX: int = 1
 
 var flowers: Array[GardenLayout.Flower] = []
 var flowers_sizes: Array[FlowerSizes] = []
+var flowers_visible: Array[bool] = []
 var color: Color
 var current_progression: float = 0.0
 var max_progression: float = 0.0
@@ -50,8 +51,10 @@ func set_garden_layout(p_garden_layout: GardenLayout) -> void:
 func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSizes = FlowerSizes.NOT_STARTED) -> void:
 	flowers = p_flowers
 	flowers_sizes = []
+	flowers_visible = []
 	for _i: int in range(flowers.size()):
 		flowers_sizes.append(default_size)
+		flowers_visible.append(true)
 	_ensure_flower_controls_count(flowers.size())
 	update_flowers()
 
@@ -62,6 +65,10 @@ func update_flowers() -> void:
 			break
 		var flower: GardenLayout.Flower = flowers[index]
 		var flower_scene: TextureRect = flower_controls[index]
+		var flower_is_visible: bool = index < flowers_visible.size() and flowers_visible[index]
+		flower_scene.visible = flower_is_visible
+		if not flower_is_visible:
+			continue
 		var flower_size: String = FlowerSizes.keys()[flowers_sizes[index]]
 		flower_size = flower_size.to_lower()
 		flower_scene.texture = load(FLOWER_PATH_MODEL % [flower.color+1, flower.type+1, flower_size])
