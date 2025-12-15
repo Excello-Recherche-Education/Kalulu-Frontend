@@ -10,7 +10,6 @@ const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.t
 const GARDEN_SIZE: int = 2400
 const GARDEN_TEXTURES_NB: int = 20
 const FLOWER_TYPES_NB: int = 5
-const FLOWER_COLORS_NB: int = 20
 const FLOWER_OFFSET_FROM_LESSON: float = 200.0
 const LESSON_VERTICAL_BASE: float = 920.0
 const LESSON_VERTICAL_RANGE: float = 300.0
@@ -610,7 +609,7 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 	for lesson_index: int in range(resolved_positions.size()):
 		var flower_position: Vector2i = Vector2i(roundi(resolved_positions[lesson_index].x), roundi(resolved_positions[lesson_index].y))
 		flower_position.y = max(0, flower_position.y - int(FLOWER_OFFSET_FROM_LESSON))
-		var flower_color: int = (garden_layout.color + lesson_index) % FLOWER_COLORS_NB
+		var flower_color: int = garden_layout.color
 		var flower_type: int = (lesson_index + garden_index + rng.randi_range(0, FLOWER_TYPES_NB - 1)) % FLOWER_TYPES_NB
 		var adjusted_flower_position: Vector2 = _find_valid_position_on_garden(garden_layout.color, Vector2(flower_position), garden_dimensions)
 		if not adjusted_flower_position.is_equal_approx(Vector2(flower_position)):
