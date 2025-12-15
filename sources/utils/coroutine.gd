@@ -36,8 +36,8 @@ func add_future(param: Variant) -> void:
 	if param is Callable:
 		var param_callable: Callable = param as Callable
 		return_value[index] = await param_callable.call()
-	else:
-		await param
+	else: # signal
+		return_value[index] = await param
 	_ended_count += 1
 	if _ended_count == return_value.size():
 		_join.emit()
