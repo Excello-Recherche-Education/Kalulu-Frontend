@@ -76,7 +76,6 @@ var lesson_to_flower_index: Dictionary = {}
 
 
 func _ready() -> void:
-	
 	# Gets the lessons of the current language pack
 	Database.db.query("SELECT Grapheme, Phoneme, LessonNb, GPID FROM Lessons
 		INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
@@ -195,7 +194,6 @@ func _ready() -> void:
 					
 					if UserDataManager.student_progression:
 						var unlock: Dictionary = UserDataManager.student_progression.unlocks[lesson_ind]
-						
 						var look_and_learn_unlocked: bool = unlock["look_and_learn"] == StudentProgression.Status.Unlocked
 						var exercise_unlock_1: bool = unlock["games"][0] == StudentProgression.Status.Unlocked
 						var exercise_unlock_2: bool = unlock["games"][1] == StudentProgression.Status.Unlocked
@@ -354,14 +352,12 @@ func _ready() -> void:
 static func _get_garden_background_image(garden_color_index: int) -> Image:
 	if garden_alpha_cache.has(garden_color_index):
 		return garden_alpha_cache[garden_color_index]
-
 	var path: String = Garden.BACKGROUND_PATH_MODEL % [garden_color_index + 1]
 	var garden_image: Image = Image.new()
 	var error: Error = garden_image.load(path)
 	if error != OK:
 		Log.warn("Gardens: Unable to load garden texture %s (error %s), skipping transparency validation" % [path, str(error)])
 		return null
-
 	garden_alpha_cache[garden_color_index] = garden_image
 	return garden_image
 
@@ -371,7 +367,6 @@ static func _get_garden_dimensions(garden_color_index: int, garden_image: Image 
 		garden_image = _get_garden_background_image(garden_color_index)
 	if not garden_image:
 		return Vector2(GARDEN_SIZE, LESSON_VERTICAL_BASE + LESSON_VERTICAL_RANGE)
-
 	var width_scale: float = float(GARDEN_SIZE) / float(maxf(1, garden_image.get_width()))
 	return Vector2(GARDEN_SIZE, float(garden_image.get_height()) * width_scale)
 
@@ -379,7 +374,6 @@ static func _get_garden_dimensions(garden_color_index: int, garden_image: Image 
 static func _get_lesson_button_half_size() -> Vector2:
 	if lesson_button_half_size != Vector2.ZERO:
 		return lesson_button_half_size
-
 	var button: LessonButton = Garden.LESSON_BUTTON_SCENE.instantiate()
 	var measured_size: Vector2 = button.get_combined_minimum_size()
 	if measured_size == Vector2.ZERO:
@@ -410,8 +404,8 @@ static func _is_position_on_garden_texture(garden_color_index: int, tested_posit
 		return true
 
 	var safe_dimensions: Vector2 = Vector2(
-			maxf(1.0, garden_dimensions.x),
-			maxf(1.0, garden_dimensions.y)
+		maxf(1.0, garden_dimensions.x),
+		maxf(1.0, garden_dimensions.y)
 	)
 	var width: float = maxf(1, garden_image.get_width())
 	var height: float = maxf(1, garden_image.get_height())
@@ -419,37 +413,36 @@ static func _is_position_on_garden_texture(garden_color_index: int, tested_posit
 
 	var offsets: Array[Vector2] = [Vector2.ZERO]
 	if probe_half_size != Vector2.ZERO:
-			offsets.append_array([
-					Vector2(probe_half_size.x, 0.0),
-					Vector2(-probe_half_size.x, 0.0),
-					Vector2(0.0, probe_half_size.y),
-					Vector2(0.0, -probe_half_size.y),
-					Vector2(probe_half_size.x, probe_half_size.y),
-					Vector2(probe_half_size.x, -probe_half_size.y),
-					Vector2(-probe_half_size.x, probe_half_size.y),
-					Vector2(-probe_half_size.x, -probe_half_size.y),
-			])
-			var sample_step: float = maxf(1.0, minf(probe_half_size.x, probe_half_size.y) * 0.5)
-			var x: float = -probe_half_size.x
-			while x <= probe_half_size.x:
-					var y: float = -probe_half_size.y
-					while y <= probe_half_size.y:
-							offsets.append(Vector2(x, y))
-							y += sample_step
-					x += sample_step
+		offsets.append_array([
+			Vector2(probe_half_size.x, 0.0),
+			Vector2(-probe_half_size.x, 0.0),
+			Vector2(0.0, probe_half_size.y),
+			Vector2(0.0, -probe_half_size.y),
+			Vector2(probe_half_size.x, probe_half_size.y),
+			Vector2(probe_half_size.x, -probe_half_size.y),
+			Vector2(-probe_half_size.x, probe_half_size.y),
+			Vector2(-probe_half_size.x, -probe_half_size.y),
+		])
+		var sample_step: float = maxf(1.0, minf(probe_half_size.x, probe_half_size.y) * 0.5)
+		var x: float = -probe_half_size.x
+		while x <= probe_half_size.x:
+			var y: float = -probe_half_size.y
+			while y <= probe_half_size.y:
+				offsets.append(Vector2(x, y))
+				y += sample_step
+			x += sample_step
 
 	for offset: Vector2 in offsets:
 		var sample: Vector2 = base_position + offset
 		if sample.x < 0.0 or sample.x > safe_dimensions.x or sample.y < 0.0 or sample.y > safe_dimensions.y:
 			return false
-
 		var normalized_position: Vector2 = Vector2(
-				clampf(sample.x / safe_dimensions.x, 0.0, 1.0),
-				clampf(sample.y / safe_dimensions.y, 0.0, 1.0)
+			clampf(sample.x / safe_dimensions.x, 0.0, 1.0),
+			clampf(sample.y / safe_dimensions.y, 0.0, 1.0)
 		)
 		var pixel: Vector2i = Vector2i(
-				int(normalized_position.x * (width - 1.0)),
-				int(normalized_position.y * (height - 1.0))
+			int(normalized_position.x * (width - 1.0)),
+			int(normalized_position.y * (height - 1.0))
 		)
 		if garden_image.get_pixelv(pixel).a < TRANSPARENCY_THRESHOLD:
 			return false
@@ -732,10 +725,8 @@ func _handle_lesson_button(lesson: int, status: StudentProgression.Status, color
 
 
 func _fill_minigame_choice(layout: MinigameLayout, exercise_type: int, status: StudentProgression.Status, minigame_number: int) -> void:
-	
 	layout.icon.texture = minigames_icons[exercise_type-1]
 	layout.is_disabled = status == StudentProgression.Status.Locked
-	
 	if status == StudentProgression.Status.Completed:
 		if transition_data and transition_data.has("minigame_completed") and transition_data.minigame_completed and transition_data.has("minigame_number") and transition_data.minigame_number == minigame_number and transition_data.has("first_clear") and transition_data.first_clear:
 			layout.self_modulate = unlocked_color
@@ -749,7 +740,6 @@ func _fill_minigame_choice(layout: MinigameLayout, exercise_type: int, status: S
 		layout.self_modulate = locked_color
 	else:
 		layout.self_modulate = unlocked_color
-
 	layout.pressed.connect(_on_minigame_button_pressed.bind(minigames_scenes[exercise_type-1], minigame_number))
 
 
@@ -761,6 +751,7 @@ func _count_completed_minigames(lesson_ind: int) -> int:
 		if game_status == StudentProgression.Status.Completed:
 			completed += 1
 	return completed
+
 
 func _get_flower_size_for_completion(completed_minigames: int) -> Garden.FlowerSizes:
 	match completed_minigames:
@@ -777,12 +768,9 @@ func _get_flower_size_for_completion(completed_minigames: int) -> Garden.FlowerS
 func _close_minigames_layout() -> void:
 	if not in_minigame_selection:
 		return
-	
 	in_minigame_selection = false
-	
 	feedback_audio_stream_player2.pitch_scale = 0.75
 	feedback_audio_stream_player2.play()
-	
 	var tween: Tween = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_selection, "modulate:a", 0.0, 0.25)
 	var other_tween: Tween = tween.chain()
@@ -791,20 +779,16 @@ func _close_minigames_layout() -> void:
 	other_tween.tween_property(minigame_background, "scale", Vector2.ONE, 0.25)
 	other_tween.tween_property(minigame_background, "global_position", current_button_global_position, 0.25)
 	await tween.finished
-	
 	if current_button:
 		current_button.show_placeholder(false)
-	
 	minigame_selection.hide()
 	minigame_background.hide()
 	minigame_background_center.hide()
 	back_button.show()
 	kalulu_button.show()
 	line_particles.show()
-	
 	for button: LessonButton in current_garden.get_lesson_buttons():
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
-	
 	minigame_layout_1.pressed.disconnect(_on_minigame_button_pressed)
 	minigame_layout_2.pressed.disconnect(_on_minigame_button_pressed)
 	minigame_layout_3.pressed.disconnect(_on_minigame_button_pressed)
@@ -861,10 +845,8 @@ func add_gardens() -> void:
 func set_up_path() -> void:
 	if not garden_parent:
 		return
-	
 	points = []
 	var curve: Curve2D = Curve2D.new()
-	
 	for index: int in range(gardens_layout.gardens.size()):
 		if index >= garden_parent.get_child_count():
 			break
@@ -923,10 +905,8 @@ func _on_garden_lesson_button_pressed(button: LessonButton, lesson_ind: int) -> 
 func _on_lesson_button_pressed() -> void:
 	if is_locked:
 		return
-		
 	feedback_audio_stream_player.play()
 	await OpeningCurtain.close()
-	
 	LookAndLearn.transition_data = {
 		current_button_global_position = current_button_global_position,
 		current_lesson_number = current_lesson_number,
@@ -939,10 +919,8 @@ func _on_lesson_button_pressed() -> void:
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
 	if is_locked:
 		return
-	
 	feedback_audio_stream_player.play()
 	await OpeningCurtain.close()
-	
 	Minigame.transition_data = {
 		current_button_global_position = current_button_global_position,
 		current_lesson_number = current_lesson_number,
