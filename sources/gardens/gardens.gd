@@ -209,43 +209,60 @@ func _handle_transition_sequences(transition_context: Dictionary) -> void:
 
 
 func _apply_transition_flowers(transition_context: Dictionary) -> void:
-	# Reveal flowers for completed look and learn
-	if transition_data.has("look_and_learn_completed") and transition_data.look_and_learn_completed and transition_data.has("current_lesson_number"):
-		var lesson_number: int = transition_data.current_lesson_number as int
-		var flower_info: Dictionary = lesson_to_flower_index.get(lesson_number, {})
-		if flower_info and flower_info.has("garden") and flower_info.has("index"):
-			var target_garden: Garden = flower_info.garden
-			var target_index: int = flower_info.index
-			if target_index < target_garden.flowers_visible.size():
-				target_garden.flowers_visible[target_index] = true
-			if target_index < target_garden.flowers_sizes.size():
-				target_garden.flowers_sizes[target_index] = _get_flower_size_for_completion(_count_completed_minigames(lesson_number))
-			target_garden.update_flowers()
+	_reveal_completed_look_and_learn_flower()
 
 	# Play the flowers animation if needed
 	if transition_context.is_current_lesson and transition_context.is_first_clear and transition_context.is_minigame_completed and transition_data.has("current_lesson_number"):
 		# Wait a bit before any action to smooth the animations
 		await get_tree().create_timer(1).timeout
 		var lesson_number: int = transition_data.current_lesson_number as int
-		var flower_info: Dictionary = lesson_to_flower_index.get(lesson_number, {})
-		if flower_info and flower_info.has("garden") and flower_info.has("index"):
-			var target_garden: Garden = flower_info.garden
-			var target_index: int = flower_info.index
-			var new_completed_count: int = _count_completed_minigames(lesson_number)
-			var target_size: Garden.FlowerSizes = _get_flower_size_for_completion(new_completed_count)
-			var current_size: Garden.FlowerSizes = target_garden.flowers_sizes[target_index]
-			target_garden.flowers_visible[target_index] = true
-			if target_size != current_size:
-				var flower_vfx: FlowerVFX = FLOWER_VFX.instantiate()
-				target_garden.flower_controls[target_index].add_child(flower_vfx)
-				flower_vfx.anchor_bottom = 0.5
-				flower_vfx.anchor_top = 0.5
-				flower_vfx.anchor_left = 0.5
-				flower_vfx.anchor_right = 0.5
-				flower_vfx.play()
-				await get_tree().create_timer(0.5).timeout
-				target_garden.flowers_sizes[target_index] = target_size
-				target_garden.update_flowers()
+		var flower_info: Dictionary = _get_flower_info(lesson_number)
+		if flower_info.is_empty():
+			return
+		var target_garden: Garden = flower_info.garden
+		var target_index: int = flower_info.index
+		var new_completed_count: int = _count_completed_minigames(lesson_number)
+		var target_size: Garden.FlowerSizes = _get_flower_size_for_completion(new_completed_count)
+		var current_size: Garden.FlowerSizes = target_garden.flowers_sizes[target_index]
+		target_garden.flowers_visible[target_index] = true
+		if target_size != current_size:
+			var flower_vfx: FlowerVFX = FLOWER_VFX.instantiate()
+			target_garden.flower_controls[target_index].add_child(flower_vfx)
+			flower_vfx.anchor_bottom = 0.5
+			flower_vfx.anchor_top = 0.5
+			flower_vfx.anchor_left = 0.5
+			flower_vfx.anchor_right = 0.5
+			flower_vfx.play()
+			await get_tree().create_timer(0.5).timeout
+			target_garden.flowers_sizes[target_index] = target_size
+			target_garden.update_flowers()
+
+
+func _reveal_completed_look_and_learn_flower() -> void:
+	# Reveal flowers for completed look and learn
+	if not transition_data.get("look_and_learn_completed", false):
+		return
+	var lesson_number_variant: Variant = transition_data.get("current_lesson_number", null)
+	if lesson_number_variant == null:
+		return
+	var lesson_number: int = lesson_number_variant as int
+	var flower_info: Dictionary = _get_flower_info(lesson_number)
+	if flower_info.is_empty():
+		return
+	var target_garden: Garden = flower_info.garden
+	var target_index: int = flower_info.index
+	if target_index < target_garden.flowers_visible.size():
+		target_garden.flowers_visible[target_index] = true
+	if target_index < target_garden.flowers_sizes.size():
+		target_garden.flowers_sizes[target_index] = _get_flower_size_for_completion(_count_completed_minigames(lesson_number))
+	target_garden.update_flowers()
+
+
+func _get_flower_info(lesson_number: int) -> Dictionary:
+	var flower_info: Dictionary = lesson_to_flower_index.get(lesson_number, {})
+	if flower_info and flower_info.has("garden") and flower_info.has("index"):
+		return flower_info
+	return {}
 
 
 func _play_new_lesson_unlock_sequence() -> void:
