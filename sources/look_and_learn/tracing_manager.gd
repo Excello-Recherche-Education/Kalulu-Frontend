@@ -28,7 +28,6 @@ func reset() -> void:
 		child.queue_free()
 	for child: Node in lower_labels.get_children():
 		child.queue_free()
-	
 	lower_labels.hide()
 	upper_labels.hide()
 	await get_tree().process_frame
@@ -38,10 +37,8 @@ func setup(grapheme: String) -> void:
 	await reset()
 	for letter: String in grapheme:
 		var tracings: Dictionary = _get_letter_tracings(letter)
-		
 		if tracings.upper:
 			setup_tracing(letter, tracings["upper"] as Array, upper_labels, false)
-			
 		if tracings.lower:
 			setup_tracing(letter, tracings["lower"] as Array, lower_labels, true)
 
@@ -54,12 +51,10 @@ func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lowe
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.label_settings = label_settings
-	
 	if lower:
 		label.text = letter.to_lower()
 	else:
 		label.text = letter.to_upper()
-	
 	parent.add_child(label)
 	
 	for points: Array in letter_tracings:
@@ -71,22 +66,21 @@ func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lowe
 func _get_letter_tracings(letter: String) -> Dictionary:
 	var lower_tracing: Array = _load_tracing(_lower_path(letter))
 	var upper_tracing: Array = _load_tracing(_upper_path(letter))
-	
 	return {"lower": lower_tracing, "upper": upper_tracing}
 
 
 func _load_tracing(path: String) -> Array:
-	if not FileAccess.file_exists(_real_path(path)):
+	var real_path: String = _real_path(path)
+	if not FileAccess.file_exists(real_path):
 		return []
-	
 	var segments: Array = []
-	var file: FileAccess = FileAccess.open(_real_path(path), FileAccess.READ)
+	var file: FileAccess = FileAccess.open(real_path, FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK:
-		Log.error("TracingManager: Load tracing: Cannot open file %s. Error: %s" % [_real_path(path), error_string(error)])
+		Log.error("TracingManager: Load tracing: Cannot open file %s. Error: %s" % [real_path, error_string(error)])
 		return segments
 	if file == null:
-		Log.error("TracingManager: Load tracing: Cannot open file %s. File is null" % _real_path(path))
+		Log.error("TracingManager: Load tracing: Cannot open file %s. File is null" % real_path)
 		return segments
 	while not file.eof_reached():
 		var points: Array[Vector2] = []
@@ -94,13 +88,11 @@ func _load_tracing(path: String) -> Array:
 		for element: String in line:
 			if element == "":
 				break
-			
 			var elements: PackedStringArray = element.split(" ")
 			points.append(Vector2(float(elements[0]), float(elements[1])))
-		
 		if not points.is_empty():
 			segments.append(points)
-	
+	file.close()
 	return segments
 
 
@@ -120,17 +112,13 @@ func start() -> void:
 	if upper_labels.get_child_count(false) > 0:
 		lower_labels.hide()
 		upper_labels.show()
-		
 		await demo_labels(upper_labels)
 		await start_labels(upper_labels)
-	
 	if lower_labels.get_child_count(false) > 0:
 		lower_labels.show()
 		upper_labels.hide()
-		
 		await demo_labels(lower_labels)
 		await start_labels(lower_labels)
-	
 	finished.emit()
 
 
