@@ -89,6 +89,19 @@ size_flags_horizontal = 3
 layout_mode = 2
 text = "Apply"
 
+[node name="EnvironmentButtons" type="HBoxContainer" parent="VBoxContainer/ApiPathControls"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="ProdButton" type="Button" parent="VBoxContainer/ApiPathControls/EnvironmentButtons"]
+layout_mode = 2
+text = "Use PROD"
+
+[node name="DevButton" type="Button" parent="VBoxContainer/ApiPathControls/EnvironmentButtons"]
+layout_mode = 2
+text = "Use DEV"
+
 [node name="StatusLabel" type="Label" parent="VBoxContainer/ApiPathControls"]
 layout_mode = 2
 horizontal_alignment = 1
@@ -138,3 +151,5 @@ editable = false
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ApiPathControls/PathRow/ApplyButton" to="." method="_on_api_path_apply_pressed"]
+[connection signal="pressed" from="VBoxContainer/ApiPathControls/EnvironmentButtons/ProdButton" to="." method="_on_prod_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ApiPathControls/EnvironmentButtons/DevButton" to="." method="_on_dev_button_pressed"]

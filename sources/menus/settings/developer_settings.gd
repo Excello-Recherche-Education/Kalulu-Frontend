@@ -16,6 +16,8 @@ var loglevel_regex: RegEx
 @onready var log_text: TextEdit = $VBoxContainer/ColorRect/LogText
 @onready var api_path_input: LineEdit = $VBoxContainer/ApiPathControls/PathRow/ApiPathEdit
 @onready var api_path_status_label: Label = $VBoxContainer/ApiPathControls/StatusLabel
+@onready var prod_button: Button = $VBoxContainer/ApiPathControls/EnvironmentButtons/ProdButton
+@onready var dev_button: Button = $VBoxContainer/ApiPathControls/EnvironmentButtons/DevButton
 
 
 func _ready() -> void:
@@ -120,6 +122,20 @@ func _on_api_path_submitted(_value: String) -> void:
 
 func _on_api_path_apply_pressed() -> void:
 	_update_api_path()
+
+
+func _on_prod_button_pressed() -> void:
+	_set_environment(1, "PROD")
+
+
+func _on_dev_button_pressed() -> void:
+	_set_environment(0, "DEV")
+
+
+func _set_environment(env: int, label: String) -> void:
+	(ServerManager as ServerManagerClass).set_environment(env)
+	api_path_input.text = (ServerManager as ServerManagerClass).environment_url
+	api_path_status_label.text = "%s environment selected" % label
 
 
 func _update_api_path() -> void:
