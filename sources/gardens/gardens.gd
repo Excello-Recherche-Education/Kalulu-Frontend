@@ -350,14 +350,6 @@ func _ready() -> void:
 		UserDataManager.mark_speech_as_played("gardens")
 
 
-static func _round_vec2(v: Vector2) -> Vector2i:
-	return Vector2i(roundi(v.x), roundi(v.y))
-
-
-static func _safe_dimensions(dimensions: Vector2) -> Vector2:
-	return Vector2(maxf(1.0, dimensions.x), maxf(1.0, dimensions.y))
-
-
 static func _get_garden_background_image(garden_color_index: int) -> Image:
 	if garden_alpha_cache.has(garden_color_index):
 		return garden_alpha_cache[garden_color_index]
@@ -399,63 +391,19 @@ static func _get_lesson_button_half_size() -> Vector2:
 	return lesson_button_half_size
 
 
-static func _clamp_position_to_garden(tested_position: Vector2, garden_dimensions: Vector2, half_size: Vector2 = Vector2.ZERO) -> Vector2:
-	var safe_dim: Vector2 = _safe_dimensions(garden_dimensions)
-	return Vector2(
-		clampf(tested_position.x, half_size.x, maxf(half_size.x, safe_dim.x - half_size.x)),
-		clampf(tested_position.y, half_size.y, maxf(half_size.y, safe_dim.y - half_size.y))
-	)
-
-
-static func _build_probe_offsets(probe_half_size: Vector2) -> Array[Vector2]:
-	var offsets: Array[Vector2] = []
-	offsets.append(Vector2.ZERO)
-	if probe_half_size == Vector2.ZERO:
-		return offsets
-	offsets.append_array([
-		Vector2(probe_half_size.x, 0.0),
-		Vector2(-probe_half_size.x, 0.0),
-		Vector2(0.0, probe_half_size.y),
-		Vector2(0.0, -probe_half_size.y),
-		Vector2(probe_half_size.x, probe_half_size.y),
-		Vector2(probe_half_size.x, -probe_half_size.y),
-		Vector2(-probe_half_size.x, probe_half_size.y),
-		Vector2(-probe_half_size.x, -probe_half_size.y),
-	])
-	var sample_step: float = maxf(1.0, minf(probe_half_size.x, probe_half_size.y) * 0.5)
-	var x: float = -probe_half_size.x
-	while x <= probe_half_size.x:
-		var y: float = -probe_half_size.y
-		while y <= probe_half_size.y:
-			offsets.append(Vector2(x, y))
-			y += sample_step
-		x += sample_step
-	return offsets
-
-
-static func _position_to_pixel(sample: Vector2, safe_dim: Vector2, image: Image) -> Vector2i:
-	var width: float = maxf(1.0, image.get_width())
-	var height: float = maxf(1.0, image.get_height())
-	var normalized: Vector2 = Vector2(
-		clampf(sample.x / safe_dim.x, 0.0, 1.0),
-		clampf(sample.y / safe_dim.y, 0.0, 1.0)
-	)
-	return Vector2i(int(normalized.x * (width - 1.0)), int(normalized.y * (height - 1.0)))
-
-
 static func _is_position_on_garden_texture(garden_color_index: int, tested_position: Vector2, garden_dimensions: Vector2, probe_half_size: Vector2 = Vector2.ZERO, garden_image: Image = null) -> bool:
 	if not garden_image:
 		garden_image = _get_garden_background_image(garden_color_index)
 	if not garden_image:
 		return true
-	var safe_dim: Vector2 = _safe_dimensions(garden_dimensions)
+	var safe_dim: Vector2 = Utils.safe_dimensions(garden_dimensions)
 	var base_position: Vector2 = tested_position if probe_half_size == Vector2.ZERO else tested_position + probe_half_size
-	var offsets: Array[Vector2] = _build_probe_offsets(probe_half_size)
+	var offsets: Array[Vector2] = Utils.build_probe_offsets(probe_half_size)
 	for offset: Vector2 in offsets:
 		var sample: Vector2 = base_position + offset
 		if sample.x < 0.0 or sample.x > safe_dim.x or sample.y < 0.0 or sample.y > safe_dim.y:
 			return false
-		var pixel: Vector2i = _position_to_pixel(sample, safe_dim, garden_image)
+		var pixel: Vector2i = Utils.position_to_pixel(sample, safe_dim, garden_image)
 		if garden_image.get_pixelv(pixel).a < TRANSPARENCY_THRESHOLD:
 			return false
 	return true
@@ -464,8 +412,8 @@ static func _is_position_on_garden_texture(garden_color_index: int, tested_posit
 static func _find_valid_position_on_garden(garden_color_index: int, tested_position: Vector2, garden_dimensions: Vector2, probe_half_size: Vector2 = Vector2.ZERO) -> Vector2:
 	var garden_image: Image = _get_garden_background_image(garden_color_index)
 	if not garden_image:
-		return _clamp_position_to_garden(tested_position, garden_dimensions, probe_half_size)
-	var clamped: Vector2 = _clamp_position_to_garden(tested_position, garden_dimensions, probe_half_size)
+		return Utils.clamp_position_to_area(tested_position, garden_dimensions, probe_half_size)
+	var clamped: Vector2 = Utils.clamp_position_to_area(tested_position, garden_dimensions, probe_half_size)
 	if _is_position_on_garden_texture(garden_color_index, clamped, garden_dimensions, probe_half_size, garden_image):
 		return clamped
 	# Try moving toward the center first (helps for very irregular shapes).
@@ -474,7 +422,7 @@ static func _find_valid_position_on_garden(garden_color_index: int, tested_posit
 	if toward_center.length() > 0.0:
 		var max_radius: float = maxf(garden_dimensions.x, garden_dimensions.y)
 		for radius: int in range(POSITION_SEARCH_STEP, int(max_radius) + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
-			var candidate: Vector2 = _clamp_position_to_garden(clamped + toward_center * float(radius), garden_dimensions, probe_half_size)
+			var candidate: Vector2 = Utils.clamp_position_to_area(clamped + toward_center * float(radius), garden_dimensions, probe_half_size)
 			if _is_position_on_garden_texture(garden_color_index, candidate, garden_dimensions, probe_half_size, garden_image):
 				return candidate
 	# Radial scan around the point.
@@ -484,7 +432,7 @@ static func _find_valid_position_on_garden(garden_color_index: int, tested_posit
 	for radius: int in range(POSITION_SEARCH_STEP, MAX_POSITION_SEARCH_RADIUS + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
 		for angle: float in angles:
 			var offset: Vector2 = Vector2.RIGHT.rotated(angle) * float(radius)
-			var candidate2: Vector2 = _clamp_position_to_garden(clamped + offset, garden_dimensions, probe_half_size)
+			var candidate2: Vector2 = Utils.clamp_position_to_area(clamped + offset, garden_dimensions, probe_half_size)
 			if _is_position_on_garden_texture(garden_color_index, candidate2, garden_dimensions, probe_half_size, garden_image):
 				return candidate2
 	return clamped
@@ -592,7 +540,7 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 		if not separated.is_equal_approx(valid):
 			Log.trace("Gardens: Separated lesson %s position from %s to %s to avoid overlap" % [str(lesson_index), str(valid), str(separated)])
 		resolved_positions.append(separated)
-		var rounded: Vector2i = _round_vec2(separated)
+		var rounded: Vector2i = Utils.round_vec2(separated)
 		if not (rounded as Vector2).is_equal_approx(raw_positions[lesson_index]):
 			Log.trace("Gardens: Adjusted lesson %s position from %s to %s to stay on background" % [str(lesson_index), str(raw_positions[lesson_index]), str(rounded)])
 			raw_positions[lesson_index] = rounded
@@ -601,7 +549,7 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 	# Step 3: build lesson buttons with tangents
 	var lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton] = []
 	for lesson_index: int in range(resolved_positions.size()):
-		var lesson_position: Vector2i = _round_vec2(resolved_positions[lesson_index])
+		var lesson_position: Vector2i = Utils.round_vec2(resolved_positions[lesson_index])
 		var path_out: Vector2i = Vector2i.ZERO
 		if lesson_index + 1 < resolved_positions.size():
 			var next_position: Vector2 = resolved_positions[lesson_index + 1]
@@ -617,14 +565,14 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 	# Step 4: build flowers (keep RNG call order identical)
 	var flowers: Array[GardenLayout.Flower] = []
 	for lesson_index: int in range(resolved_positions.size()):
-		var flower_position: Vector2i = _round_vec2(resolved_positions[lesson_index])
+		var flower_position: Vector2i = Utils.round_vec2(resolved_positions[lesson_index])
 		flower_position.y = max(0, flower_position.y - int(FLOWER_OFFSET_FROM_LESSON))
 		var flower_color: int = garden_layout.color
 		var flower_type: int = (lesson_index + garden_index + rng.randi_range(0, FLOWER_TYPES_NB - 1)) % FLOWER_TYPES_NB
 		var adjusted: Vector2 = _find_valid_position_on_garden(garden_layout.color, Vector2(flower_position), garden_dimensions)
 		if not adjusted.is_equal_approx(Vector2(flower_position)):
 			Log.trace("Gardens: Adjusted flower %s position from %s to %s to stay on background" % [str(lesson_index), str(flower_position), str(adjusted)])
-			flower_position = _round_vec2(adjusted)
+			flower_position = Utils.round_vec2(adjusted)
 		Log.trace("Gardens: Garden %s flower %s position (%s,%s), color %s, type %s" % [str(garden_index), str(lesson_index), str(flower_position.x), str(flower_position.y), str(flower_color), str(flower_type)])
 		flowers.append(GardenLayout.Flower.new(flower_color, flower_type, flower_position))
 	garden_layout.flowers = flowers
