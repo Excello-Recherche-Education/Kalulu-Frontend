@@ -29,6 +29,7 @@ func _ready() -> void:
 	
 	gardens_data = transition_data
 	transition_data = {}
+	Log.trace("LookAndLearn: Transition data received = %s" % str(gardens_data))
 	lesson_nb = gardens_data.get("current_lesson_number", lesson_nb)
 	Log.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
 	setup()
@@ -37,6 +38,7 @@ func _ready() -> void:
 
 func setup() -> void:
 	gp_list = Database.get_gps_for_lesson(lesson_nb, true, true)
+	Log.info("LookAndLearn: Preparing lesson %d with %d grapheme-phoneme pairs" % [lesson_nb, gp_list.size()])
 	
 	if gp_list.size() <= 0:
 		Log.error("LookAndLearn: Setup: Did not found any GP for lesson " + str(lesson_nb))
@@ -70,6 +72,7 @@ func setup() -> void:
 			gp_display.append((gp.Grapheme as String).to_upper())
 		if tracing_data.lower:
 			gp_display.append((gp.Grapheme as String).to_lower())
+	Log.trace("LookAndLearn: Prepared %d videos, %d images, %d sounds, %d tracings" % [videos.size(), images.size(), sounds.size(), gp_display.size()])
 	
 	if gp_display.is_empty():
 		gp_display.append(gp_list[0].Grapheme as String)
@@ -151,10 +154,12 @@ func _on_tracing_manager_finished() -> void:
 		animation_player.play("end_tracing")
 		gardens_data.first_clear = UserDataManager.student_progression.look_and_learn_completed(lesson_nb)
 		gardens_data.look_and_learn_completed = true
+		Log.info("LookAndLearn: Lesson %d completed (first_clear=%s)" % [lesson_nb, str(gardens_data.first_clear)])
 		_back_to_gardens()
 
 
 func _back_to_gardens() -> void:
+	Log.info("LookAndLearn: Returning to gardens for lesson %d" % lesson_nb)
 	await OpeningCurtain.close()
 	
 	Gardens.transition_data = gardens_data
