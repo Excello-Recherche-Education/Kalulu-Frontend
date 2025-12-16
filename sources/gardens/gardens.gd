@@ -72,6 +72,7 @@ var lesson_to_flower_index: Dictionary = {}
 @onready var help_few_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
 @onready var help_many_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_many_plants"))
 
+#region Data loading and progression
 
 func _load_lessons_from_database() -> void:
 	Database.db.query("SELECT Grapheme, Phoneme, LessonNb, GPID FROM Lessons
@@ -150,6 +151,9 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 
 		garden_control.update_flowers()
 
+#endregion
+
+#region Scene setup and ready sequence
 
 func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 	if transition_data:
@@ -187,6 +191,9 @@ func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 	scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
 	current_garden = garden_parent.get_child(starting_garden)
 
+#endregion
+
+#region Transitions and animations
 
 func _handle_transition_sequences(transition_context: Dictionary) -> void:
 	await _apply_transition_flowers(transition_context)
@@ -302,6 +309,9 @@ func _play_new_lesson_unlock_sequence() -> void:
 	if new_lesson_button:
 		new_lesson_button.set_disabled(false)
 
+#endregion
+
+#region Godot lifecycle
 
 func _ready() -> void:
 	_load_lessons_from_database()
@@ -347,6 +357,9 @@ func _ready() -> void:
 		kalulu_button.show()
 		UserDataManager.mark_speech_as_played("gardens")
 
+#endregion
+
+#region Garden layout helpers
 
 static func _get_garden_background_image(garden_color_index: int) -> Image:
 	if garden_alpha_cache.has(garden_color_index):
@@ -597,6 +610,9 @@ static func _generate_lesson_positions(lessons_for_garden: int, garden_index: in
 	Log.info("Gardens: Completed lesson positions for garden %s" % str(garden_index))
 	return positions
 
+#endregion
+
+#region Runtime interactions
 
 func _process(_delta: float) -> void:
 	locked_line.position.x = - scroll_container.scroll_horizontal
@@ -608,18 +624,18 @@ func _get_minigame_layouts() -> Array[MinigameLayout]:
 	return [minigame_layout_1, minigame_layout_2, minigame_layout_3]
 
 
-func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
+func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	if in_minigame_selection or not UserDataManager.student_progression:
 		return
 	feedback_audio_stream_player2.pitch_scale = 1.1
 	feedback_audio_stream_player2.play()
 	in_minigame_selection = true
 	# Gets the correct exercises for the lesson
-	var exercises: Array[int] = Database.get_exercise_for_lesson(lesson_ind)
+	var exercises: Array[int] = Database.get_exercise_for_lesson(lesson_number)
 	if not exercises or exercises.size() < 3:
 		return
 	# Sets the variables for the current garden and lesson
-	current_lesson_number = lesson_ind
+	current_lesson_number = lesson_number
 	if button:
 		#button_global_position = button.global_position
 		current_button = button
@@ -629,8 +645,8 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[current_lesson_number]
 	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.Locked and lesson_unlocks["games"][1] == StudentProgression.Status.Locked and lesson_unlocks["games"][2] == StudentProgression.Status.Locked
 	# Deactivate the mouse filters on the buttons behind the layout
-	for l_button: LessonButton in current_garden.get_lesson_buttons():
-		l_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for lesson_button_item: LessonButton in current_garden.get_lesson_buttons():
+		lesson_button_item.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	# Background
 	if are_minigames_locked:
 		minigame_background_center.modulate = locked_color
@@ -663,8 +679,8 @@ func _open_minigames_layout(button: LessonButton, lesson_ind: int) -> void:
 	minigame_layout_opened.emit()
 
 
-func _handle_lesson_button(lesson: int, status: StudentProgression.Status, color: Color) -> void:
-	lesson_button.text = lessons[lesson][0].grapheme
+func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status, color: Color) -> void:
+	lesson_button.text = lessons[lesson_number][0].grapheme
 	lesson_button.completed_color = color
 	lesson_button.set_disabled(status == StudentProgression.Status.Locked)
 	lesson_button.completed = status == StudentProgression.Status.Completed
@@ -675,29 +691,29 @@ func _handle_lesson_button(lesson: int, status: StudentProgression.Status, color
 			lesson_button.right()
 
 
-func _fill_minigame_choice(layout: MinigameLayout, exercise_type: int, status: StudentProgression.Status, minigame_number: int) -> void:
-	layout.icon.texture = minigames_icons[exercise_type-1]
-	layout.is_disabled = status == StudentProgression.Status.Locked
+func _fill_minigame_choice(minigame_layout: MinigameLayout, exercise_type: int, status: StudentProgression.Status, minigame_number: int) -> void:
+	minigame_layout.icon.texture = minigames_icons[exercise_type-1]
+	minigame_layout.is_disabled = status == StudentProgression.Status.Locked
 	if status == StudentProgression.Status.Completed:
 		if transition_data and transition_data.has("minigame_completed") and transition_data.minigame_completed and transition_data.has("minigame_number") and transition_data.minigame_number == minigame_number and transition_data.has("first_clear") and transition_data.first_clear:
-			layout.self_modulate = unlocked_color
+			minigame_layout.self_modulate = unlocked_color
 			await minigame_layout_opened
-			create_tween().tween_property(layout, "self_modulate:a", 0, 0.5)
-			layout.right()
+			create_tween().tween_property(minigame_layout, "self_modulate:a", 0, 0.5)
+			minigame_layout.right()
 		else:
-			layout.self_modulate.a = 0
+			minigame_layout.self_modulate.a = 0
 	elif status == StudentProgression.Status.Locked:
-		layout.self_modulate = locked_color
+		minigame_layout.self_modulate = locked_color
 	else:
-		layout.self_modulate = unlocked_color
-	layout.pressed.connect(_on_minigame_button_pressed.bind(minigames_scenes[exercise_type-1], minigame_number))
+		minigame_layout.self_modulate = unlocked_color
+	minigame_layout.pressed.connect(_on_minigame_button_pressed.bind(minigames_scenes[exercise_type-1], minigame_number))
 
 
-func _count_completed_minigames(lesson_ind: int) -> int:
-	if not UserDataManager.student_progression or not UserDataManager.student_progression.unlocks.has(lesson_ind):
+func _count_completed_minigames(lesson_number: int) -> int:
+	if not UserDataManager.student_progression or not UserDataManager.student_progression.unlocks.has(lesson_number):
 		return 0
 	var completed: int = 0
-	for game_status: int in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
+	for game_status: int in UserDataManager.student_progression.unlocks[lesson_number]["games"]:
 		if game_status == StudentProgression.Status.Completed:
 			completed += 1
 	return completed
@@ -743,18 +759,19 @@ func _close_minigames_layout() -> void:
 		layout.pressed.disconnect(_on_minigame_button_pressed)
 
 
+#region Lesson setup and path
 func _set_up_lessons() -> void:
-	var lesson_ind: int = 1
+	var lesson_number: int = 1
 	for garden_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(garden_ind)
 		var button_count: int = garden_control.garden_layout.lesson_buttons.size()
 		var lesson_buttons: Array[LessonButton] = garden_control.get_lesson_buttons()
 		for index: int in range(button_count):
-			if not lesson_ind in lessons:
+			if not lesson_number in lessons:
 				break
-			garden_control.set_lesson_label(index, lessons[lesson_ind][0].grapheme as String)
-			lesson_buttons[index].pressed.connect(_on_garden_lesson_button_pressed.bind(lesson_buttons[index], lesson_ind))
-			lesson_ind += 1
+			garden_control.set_lesson_label(index, lessons[lesson_number][0].grapheme as String)
+			lesson_buttons[index].pressed.connect(_on_garden_lesson_button_pressed.bind(lesson_buttons[index], lesson_number))
+			lesson_number += 1
 
 
 func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
@@ -825,6 +842,7 @@ func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
 	unlocked_line.points = baked_points
 	if baked_points.size() > 0:
 		line_particles.position = baked_points[baked_points.size() - 1]
+#endregion
 
 
 func _lock() -> void:
@@ -838,17 +856,17 @@ func _unlock() -> void:
 
 
 func _get_current_lesson_button(lesson: int) -> LessonButton:
-	var lesson_ind: int = 1
+	var lesson_number: int = 1
 	for garden_control: Garden in garden_parent.get_children():
 		for index: int in range(garden_control.get_lesson_buttons().size()):
-			if lesson_ind == lesson:
+			if lesson_number == lesson:
 				return garden_control.get_lesson_buttons()[index]
-			lesson_ind += 1
+			lesson_number += 1
 	return null
 
 
-func _on_garden_lesson_button_pressed(button: LessonButton, lesson_ind: int) -> void:
-	_open_minigames_layout(button, lesson_ind)
+func _on_garden_lesson_button_pressed(button: LessonButton, lesson_number: int) -> void:
+	_open_minigames_layout(button, lesson_number)
 
 
 func _on_lesson_button_pressed() -> void:
@@ -891,14 +909,14 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 			scroll_tween = null
 	elif event.is_action_released("left_click"):
 		is_scrolling = false
-		var shift_value: int = scroll_container.scroll_horizontal - scroll_beginning_garden * GARDEN_SIZE
+		var scroll_delta: int = scroll_container.scroll_horizontal - scroll_beginning_garden * GARDEN_SIZE
 		var target_scroll: int = scroll_beginning_garden * GARDEN_SIZE
 		var is_garden_changed: bool = false
-		if shift_value < - 400:
+		if scroll_delta < - 400:
 			target_scroll -= GARDEN_SIZE
 			is_garden_changed = true
 			left_audio_stream_player.play()
-		elif shift_value > 400:
+		elif scroll_delta > 400:
 			target_scroll += GARDEN_SIZE
 			is_garden_changed = true
 			right_audio_stream_player.play()
@@ -935,3 +953,5 @@ func _on_kalulu_button_pressed() -> void:
 	else:
 		await kalulu.play_kalulu_speech(help_few_plants_speech)
 	kalulu_button.show()
+
+#endregion
