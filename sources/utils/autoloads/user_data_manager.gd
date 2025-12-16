@@ -309,11 +309,16 @@ func get_device_settings() -> DeviceSettings:
 
 func _load_device_settings() -> void:
 	Log.info("UserDataManager: Load device settings")
-	if FileAccess.file_exists(get_device_settings_path()):
-		_device_settings = load(get_device_settings_path())
-		Log.current_level = _device_settings.log_level
-		if not _device_settings.validate():
-			_save_device_settings()
+	var settings_path: String = get_device_settings_path()
+	if FileAccess.file_exists(settings_path):
+		_device_settings = load(settings_path)
+		if _device_settings:
+			Log.current_level = _device_settings.log_level
+			if not _device_settings.validate():
+				Log.error("UserDataManager: Device settings at %s failed validation. Regenerating saved data." % ProjectSettings.globalize_path(settings_path))
+				_save_device_settings()
+		else:
+			Log.error("UserDataManager: Failed to load device settings from %s. Recreating defaults." % ProjectSettings.globalize_path(settings_path))
 	if not _device_settings:
 		_device_settings = DeviceSettings.new()
 		_device_settings.init_os_language()
