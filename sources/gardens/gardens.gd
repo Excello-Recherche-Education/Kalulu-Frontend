@@ -90,7 +90,7 @@ func _build_transition_context() -> Dictionary:
 	var max_unlocked_lesson_index: int = UserDataManager.student_progression.get_max_unlocked_lesson_index()
 	var max_unlocked_lesson_number: int = max_unlocked_lesson_index + 1
 	var minigame_number: int = transition_data.get("minigame_number", -1) as int
-	var is_current_lesson: bool = transition_data and transition_data.current_lesson_number == max_unlocked_lesson_index
+	var is_current_lesson: bool = transition_data and transition_data.current_lesson_number == max_unlocked_lesson_index + 1
 	var is_minigame_completed: bool = transition_data.has("minigame_completed") and transition_data.minigame_completed
 	var is_first_clear: bool = transition_data and transition_data.has("first_clear") and transition_data.first_clear
 	var new_lesson_unlocked: bool = transition_data and transition_data.current_lesson_number == max_unlocked_lesson_index and is_minigame_completed and is_first_clear and UserDataManager.student_progression.is_lesson_completed(transition_data.current_lesson_number as int)
