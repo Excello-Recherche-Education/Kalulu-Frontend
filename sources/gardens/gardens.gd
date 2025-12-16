@@ -363,10 +363,13 @@ static func _get_garden_background_image(garden_color_index: int) -> Image:
 		return garden_alpha_cache[garden_color_index]
 
 	var path: String = Garden.BACKGROUND_PATH_MODEL % [garden_color_index + 1]
-	var garden_image: Image = Image.new()
-	var error: Error = garden_image.load(path)
-	if error != OK:
-		Log.warn("Gardens: Unable to load garden texture %s (error %s), skipping transparency validation" % [path, str(error)])
+	var garden_texture: Texture2D = load(path)
+	if not garden_texture:
+		Log.warn("Gardens: Unable to load garden texture %s, skipping transparency validation" % path)
+		return null
+	var garden_image: Image = garden_texture.get_image()
+	if not garden_image:
+		Log.warn("Gardens: Unable to retrieve image data for garden texture %s, skipping transparency validation" % path)
 		return null
 	garden_alpha_cache[garden_color_index] = garden_image
 	return garden_image
