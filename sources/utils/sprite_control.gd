@@ -38,8 +38,11 @@ func _resize_sprites() -> void:
 			var animated_sprite_2d: AnimatedSprite2D = sprite
 			if animated_sprite_2d.sprite_frames:
 				var texture: Texture2D = animated_sprite_2d.sprite_frames.get_frame_texture(animated_sprite_2d.animation, animated_sprite_2d.frame)
-				animated_sprite_2d.centered = false
-				animated_sprite_2d.scale = size / texture.get_size()
+				if texture:
+					animated_sprite_2d.centered = false
+					animated_sprite_2d.scale = size / texture.get_size()
+				else:
+					Log.warn("SpriteControl: Missing texture for animation '%s' frame %d on %s" % [animated_sprite_2d.animation, animated_sprite_2d.frame, animated_sprite_2d.name])
 
 
 func _ready() -> void:
