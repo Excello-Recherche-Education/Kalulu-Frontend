@@ -93,7 +93,7 @@ func _device_selection_refresh() -> void:
 	for device_id: int in UserDataManager.teacher_settings.students.keys():
 		var button: DeviceButton = DEVICE_BUTTON_SCENE.instantiate()
 		button.number = device_id
-		button.background_color = Globals.device_colors[device_id-1 % Globals.device_colors.size()]
+		button.background_color = Globals.device_colors[(device_id - 1) % Globals.device_colors.size()]
 		container.add_child(button)
 		button.pressed.connect(_device_button_pressed.bind(device_id))
 
