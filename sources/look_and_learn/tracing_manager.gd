@@ -24,6 +24,7 @@ func place_segments(labels: Array) -> void:
 
 
 func reset() -> void:
+	Log.trace("TracingManager: Reset")
 	for child: Node in upper_labels.get_children():
 		child.queue_free()
 	for child: Node in lower_labels.get_children():
@@ -34,13 +35,24 @@ func reset() -> void:
 
 
 func setup(grapheme: String) -> void:
+	Log.trace("TracingManager: Setup requested for grapheme '%s'" % grapheme)
 	await reset()
 	for letter: String in grapheme:
 		var tracings: Dictionary = _get_letter_tracings(letter)
+		var upper_tracings: Array = []
+		var lower_tracings: Array = []
 		if tracings.upper:
-			setup_tracing(letter, tracings["upper"] as Array, upper_labels, false)
+			upper_tracings = tracings["upper"] as Array
 		if tracings.lower:
-			setup_tracing(letter, tracings["lower"] as Array, lower_labels, true)
+			lower_tracings = tracings["lower"] as Array
+		if upper_tracings or lower_tracings:
+			Log.trace("TracingManager: Letter %s loaded with %d upper and %d lower tracings" % [letter, upper_tracings.size(), lower_tracings.size()])
+		else:
+			Log.warn("TracingManager: No tracing data found for letter %s" % letter)
+		if upper_tracings:
+			setup_tracing(letter, upper_tracings, upper_labels, false)
+		if lower_tracings:
+			setup_tracing(letter, lower_tracings, lower_labels, true)
 
 
 func setup_tracing(letter: String, letter_tracings: Array, parent: Control, lower: bool) -> void:
@@ -72,6 +84,7 @@ func _get_letter_tracings(letter: String) -> Dictionary:
 func _load_tracing(path: String) -> Array:
 	var real_path: String = _real_path(path)
 	if not FileAccess.file_exists(real_path):
+		Log.trace("TracingManager: Tracing file not found at %s" % real_path)
 		return []
 	var segments: Array = []
 	var file: FileAccess = FileAccess.open(real_path, FileAccess.READ)
@@ -109,6 +122,7 @@ func _real_path(path: String) -> String:
 
 
 func start() -> void:
+	Log.trace("TracingManager: Starting tracing sequence (upper=%d, lower=%d)" % [upper_labels.get_child_count(false), lower_labels.get_child_count(false)])
 	if upper_labels.get_child_count(false) > 0:
 		lower_labels.hide()
 		upper_labels.show()
@@ -119,6 +133,7 @@ func start() -> void:
 		upper_labels.hide()
 		await demo_labels(lower_labels)
 		await start_labels(lower_labels)
+	Log.trace("TracingManager: Finished tracing sequence")
 	finished.emit()
 
 
