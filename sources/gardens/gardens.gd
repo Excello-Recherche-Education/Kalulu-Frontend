@@ -336,7 +336,6 @@ func _play_new_lesson_unlock_sequence() -> void:
 func _ready() -> void:
 	_load_lessons_from_database()
 	gardens_layout = get_session_layout(lessons.size())
-	set_gardens_layout(gardens_layout)
 	_set_up_lessons()
 	
 	# If there is no data, skips the rest
