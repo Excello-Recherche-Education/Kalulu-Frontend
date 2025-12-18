@@ -20,6 +20,9 @@ const MAX_POSITION_SEARCH_RADIUS: int = 300
 static var lesson_button_half_size: Vector2 = Vector2.ZERO
 static var garden_alpha_cache: Dictionary = {}
 static var transition_data: Dictionary = {}
+static var cached_gardens_layout: GardensLayout
+static var cached_layout_session_id: int = -1
+static var cached_layout_lessons: int = 0
 
 @export_category("Layout")
 @export var gardens_layout: GardensLayout:
@@ -332,7 +335,7 @@ func _play_new_lesson_unlock_sequence() -> void:
 
 func _ready() -> void:
 	_load_lessons_from_database()
-	gardens_layout = generate_gardens_layout(lessons.size())
+	gardens_layout = get_session_layout(lessons.size())
 	set_gardens_layout(gardens_layout)
 	_set_up_lessons()
 	
@@ -521,6 +524,42 @@ static func compute_lessons_distribution(total_lessons: int, garden_layouts: Arr
 		gardens_left -= 1
 		Log.trace("Gardens: Lessons left after assignment: %s, gardens left: %s" % [str(lessons_left), str(gardens_left)])
 	return distribution
+
+
+static func get_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
+	var distribution: Array[int] = []
+	var lessons_from_layout: int = 0
+	var has_cached_distribution: bool = true
+	for layout: GardenLayout in garden_layouts:
+		if layout.lesson_buttons.is_empty():
+			has_cached_distribution = false
+			break
+		distribution.append(layout.lesson_buttons.size())
+		lessons_from_layout += layout.lesson_buttons.size()
+	if has_cached_distribution and lessons_from_layout == total_lessons:
+		Log.trace("Gardens: Using lesson distribution from provided layout")
+		return distribution
+	if has_cached_distribution:
+		Log.warn("Gardens: Layout lesson count mismatch (layout lessons: %s, expected: %s), recomputing distribution" % [str(lessons_from_layout), str(total_lessons)])
+	return compute_lessons_distribution(total_lessons, garden_layouts)
+
+
+static func get_session_layout(total_lessons: int) -> GardensLayout:
+	var session_id: int = UserDataManager.get_student_session_id()
+	var has_cached_layout: bool = cached_gardens_layout != null
+	var session_changed: bool = cached_layout_session_id != session_id
+	var lessons_changed: bool = cached_layout_lessons != total_lessons
+	if session_changed or lessons_changed:
+		if has_cached_layout:
+			Log.info("Gardens: Session or lesson count changed, regenerating gardens layout")
+		cached_gardens_layout = null
+	if not cached_gardens_layout:
+		cached_gardens_layout = generate_gardens_layout(total_lessons)
+		cached_layout_session_id = session_id
+		cached_layout_lessons = total_lessons
+	else:
+		Log.trace("Gardens: Reusing cached layout for session %s" % str(session_id))
+	return cached_gardens_layout
 
 
 static func generate_gardens_layout(total_lessons: int) -> GardensLayout:
@@ -809,7 +848,7 @@ func add_gardens() -> void:
 	for child: Node in garden_parent.get_children():
 		child.free()
 	Log.info("Gardens: Computing lesson distribution for new gardens")
-	var distribution: Array[int] = compute_lessons_distribution(lessons.size(), gardens_layout.gardens)
+	var distribution: Array[int] = get_lessons_distribution(lessons.size(), gardens_layout.gardens)
 	var garden_index: int = 0
 	for layout_index: int in range(gardens_layout.gardens.size()):
 		Log.trace("Gardens: Preparing garden %s with layout index %s" % [str(garden_index), str(layout_index)])

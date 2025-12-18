@@ -22,6 +22,7 @@ var student: String = "":
 			_student_remediation = null
 			_student_confusion_matrix = null
 			_student_speeches = null
+var student_session_id: int = 0
 var _device_settings: DeviceSettings
 var teacher_settings: TeacherSettings
 var student_progression: StudentProgression
@@ -274,6 +275,7 @@ func login_student(code: String) -> bool:
 		for stud: StudentData in students:
 			if int(stud.code) == int(code):
 				student = code
+				_start_student_session()
 				(ServerManager as ServerManagerClass).first_login_student()
 				Log.info("UserDataManager: Student %s logged in" % code)
 				return true
@@ -290,9 +292,26 @@ func logout_student() -> bool:
 		Log.warn("UserDataManager: LogoutStudent: Function failed because of invalid teacher_settings")
 		return false
 	
+	_start_student_session(true)
 	student = ""
 	Log.info("UserDataManager: Student logged out")
 	return true
+
+
+func get_student_session_id() -> int:
+	return student_session_id
+
+
+func _start_student_session(reset_only: bool = false) -> void:
+	if reset_only:
+		student_session_id = 0
+		return
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.randomize()
+	student_session_id = rng.randi()
+	while student_session_id == 0:
+		student_session_id = rng.randi()
+	Log.trace("UserDataManager: New student session id %s" % str(student_session_id))
 
 #endregion
 
