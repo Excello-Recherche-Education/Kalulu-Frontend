@@ -885,7 +885,7 @@ func set_up_path() -> void:
 			var point_position: Vector2 = garden_parent.position + garden_control.position + Vector2(button.position)
 			point_position += garden_control.get_button_size() / 2
 			var point_in_position: Vector2 = Vector2.ZERO
-			if curve.point_count > 1:
+			if curve.point_count > 0:
 				point_in_position = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position
 			curve.add_point(point_position, point_in_position, button.path_out_position)
 			points.append([point_position, point_in_position, button.path_out_position])
@@ -964,6 +964,34 @@ func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: i
 func _on_scroll_container_gui_input(event: InputEvent) -> void:
 	if in_minigame_selection:
 		return
+	if event is InputEventMouseButton:
+		var mouse_button_event: InputEventMouseButton = event
+		if mouse_button_event.pressed:
+			var direction: int = 0
+			if mouse_button_event.button_index == MOUSE_BUTTON_WHEEL_LEFT:
+				direction = -1
+			elif mouse_button_event.button_index == MOUSE_BUTTON_WHEEL_RIGHT:
+				direction = 1
+			elif mouse_button_event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				direction = -1
+			elif mouse_button_event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				direction = 1
+			if direction != 0:
+				if scroll_tween:
+					scroll_tween.stop()
+					scroll_tween = null
+				var target_scroll: int = scroll_container.scroll_horizontal + direction * GARDEN_SIZE
+				scroll_tween = create_tween()
+				scroll_tween.set_ease(Tween.EASE_OUT)
+				scroll_tween.set_trans(Tween.TRANS_SPRING)
+				scroll_tween.tween_property(
+					scroll_container,
+					"scroll_horizontal",
+					target_scroll,
+					0.6
+				)
+				await scroll_tween.finished
+				scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
 	if event.is_action_pressed("left_click"):
 		is_scrolling = true
 		scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
