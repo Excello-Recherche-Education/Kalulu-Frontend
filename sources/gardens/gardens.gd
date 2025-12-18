@@ -505,6 +505,12 @@ static func _separate_lesson_position(tested_position: Vector2, garden_color_ind
 static func compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
 	Log.info("Gardens: Computing lessons distribution")
 	Log.trace("Gardens: ComputeLessonsDistribution: Parameters total_lessons = %s, garden_layouts count = %s" % [str(total_lessons), str(garden_layouts.size())])
+	var total_capacity: int = 0
+	for layout: GardenLayout in garden_layouts:
+		total_capacity += layout.lesson_buttons.size()
+	if total_lessons > total_capacity:
+		# This should not be even possible. If this log is triggered, there is a bug on layout generation.
+		Log.error("Gardens: Not enough lesson slots in provided layouts (capacity: %s, requested: %s). Some lessons will be left undistributed." % [str(total_capacity), str(total_lessons)])
 	var distribution: Array[int] = []
 	var lessons_left: int = total_lessons
 	var gardens_left: int = garden_layouts.size()
@@ -522,6 +528,8 @@ static func compute_lessons_distribution(total_lessons: int, garden_layouts: Arr
 		lessons_left -= lessons_for_garden
 		gardens_left -= 1
 		Log.trace("Gardens: Lessons left after assignment: %s, gardens left: %s" % [str(lessons_left), str(gardens_left)])
+	if lessons_left > 0:
+		Log.error("Gardens: %s lessons could not be assigned to any garden layout" % str(lessons_left))
 	return distribution
 
 
