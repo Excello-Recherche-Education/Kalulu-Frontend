@@ -133,6 +133,7 @@ func _on_dev_button_pressed() -> void:
 
 
 func _set_environment(env: int, label: String) -> void:
+	Log.info("DeveloperSettings: Selecting %s environment (env=%d)" % [label, env])
 	(ServerManager as ServerManagerClass).set_environment(env)
 	api_path_input.text = (ServerManager as ServerManagerClass).environment_url
 	api_path_status_label.text = "%s environment selected" % label
@@ -140,6 +141,7 @@ func _set_environment(env: int, label: String) -> void:
 
 func _update_api_path() -> void:
 	var new_path: String = api_path_input.text
+	Log.info("DeveloperSettings: Updating API path to %s" % new_path)
 	(ServerManager as ServerManagerClass).set_environment_url(new_path)
 	api_path_input.text = (ServerManager as ServerManagerClass).environment_url
 	api_path_status_label.text = "AWS API path updated"
