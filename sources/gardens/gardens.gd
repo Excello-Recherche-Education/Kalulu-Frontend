@@ -977,52 +977,65 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 			elif mouse_button_event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 				direction = 1
 			if direction != 0:
-				if scroll_tween:
-					scroll_tween.stop()
-					scroll_tween = null
-				var target_scroll: int = scroll_container.scroll_horizontal + direction * GARDEN_SIZE
-				scroll_tween = create_tween()
-				scroll_tween.set_ease(Tween.EASE_OUT)
-				scroll_tween.set_trans(Tween.TRANS_SPRING)
-				scroll_tween.tween_property(
-					scroll_container,
-					"scroll_horizontal",
-					target_scroll,
-					0.6
-				)
-				await scroll_tween.finished
-				scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
+				_scroll_by_garden(direction)
+				return
 	if event.is_action_pressed("left_click"):
 		is_scrolling = true
-		scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
+		_commit_scroll_position()
 		if scroll_tween:
 			scroll_tween.stop()
 			scroll_tween = null
 	elif event.is_action_released("left_click"):
 		is_scrolling = false
-		var scroll_delta: int = scroll_container.scroll_horizontal - scroll_beginning_garden * GARDEN_SIZE
-		var target_scroll: int = scroll_beginning_garden * GARDEN_SIZE
-		var is_garden_changed: bool = false
-		if scroll_delta < - 400:
-			target_scroll -= GARDEN_SIZE
-			is_garden_changed = true
-			left_audio_stream_player.play()
-		elif scroll_delta > 400:
-			target_scroll += GARDEN_SIZE
-			is_garden_changed = true
-			right_audio_stream_player.play()
-		scroll_tween = create_tween()
-		scroll_tween.set_ease(Tween.EASE_OUT)
-		scroll_tween.set_trans(Tween.TRANS_SPRING)
-		scroll_tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 1)
-		if is_garden_changed:
-			current_garden = garden_parent.get_child(int(float(target_scroll) / GARDEN_SIZE))
-			current_garden.pop_animation()
-		await scroll_tween.finished
-		scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
+		_snap_after_drag()
+		return
 	if is_scrolling and event is InputEventMouseMotion:
 		var motion_event: InputEventMouseMotion = event
 		scroll_container.scroll_horizontal -= int(motion_event.relative.x)
+
+
+func _animate_scroll_to(p_target_scroll: int, p_duration: float) -> void:
+	if scroll_tween:
+		scroll_tween.stop()
+		scroll_tween = null
+	scroll_tween = create_tween()
+	scroll_tween.set_ease(Tween.EASE_OUT)
+	scroll_tween.set_trans(Tween.TRANS_SPRING)
+	scroll_tween.tween_property(
+		scroll_container,
+		"scroll_horizontal",
+		p_target_scroll,
+		p_duration
+	)
+	await scroll_tween.finished
+	_commit_scroll_position()
+
+
+func _commit_scroll_position() -> void:
+	scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
+
+
+func _scroll_by_garden(p_direction: int) -> void:
+	var target_scroll: int = scroll_container.scroll_horizontal + p_direction * GARDEN_SIZE
+	_animate_scroll_to(target_scroll, 0.6)
+
+
+func _snap_after_drag() -> void:
+	var scroll_delta: int = scroll_container.scroll_horizontal - scroll_beginning_garden * GARDEN_SIZE
+	var target_scroll: int = scroll_beginning_garden * GARDEN_SIZE
+	var is_garden_changed: bool = false
+	if scroll_delta < -400:
+		target_scroll -= GARDEN_SIZE
+		is_garden_changed = true
+		left_audio_stream_player.play()
+	elif scroll_delta > 400:
+		target_scroll += GARDEN_SIZE
+		is_garden_changed = true
+		right_audio_stream_player.play()
+	if is_garden_changed:
+		current_garden = garden_parent.get_child(int(float(target_scroll) / GARDEN_SIZE))
+		current_garden.pop_animation()
+	_animate_scroll_to(target_scroll, 1.0)
 
 
 func _on_back_button_pressed() -> void:
