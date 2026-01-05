@@ -55,6 +55,7 @@ func connect_to_db() -> void:
 		if not is_open:
 			Log.error("Database: Database is not opened")
 			return
+		Log.info("Database: Database opened at %s" % ProjectSettings.globalize_path(db.path))
 		if db.get_error_message() != "" and db.get_error_message() != "not an error":
 			Log.warn("Database: Database just opened but already contains an error message: %s" % db.get_error_message())
 	else:
@@ -92,6 +93,7 @@ func load_additional_word_list() -> String:
 				data[title_line[index]] = line[index]
 			additional_word_list[line[ortho_index]] = data
 		file.close()
+		Log.info("Database: Loaded additional word list from %s (%d entries)" % [word_list_path, additional_word_list.size()])
 	else:
 		Log.warn("Database: Additional word list file not found: %s" % word_list_path)
 	return ""

@@ -85,6 +85,7 @@ func _process(_delta: float) -> void:
 		synchronization_timer += real_delta
 		if synchronization_timer >= synchronization_time_limit:
 			synchronization_timer = 0
+			Log.info("UserDataManager: Synchronization timer reached, launching synchronization")
 			user_database_synchronizer.synchronize()
 
 #region synchronization
@@ -439,9 +440,12 @@ func get_teacher_settings_path() -> String:
 
 func _load_teacher_settings() -> void:
 	if FileAccess.file_exists(get_teacher_settings_path()):
+		Log.info("UserDataManager: Loading teacher settings from %s" % ProjectSettings.globalize_path(get_teacher_settings_path()))
 		teacher_settings = safe_load_and_fix_resource(get_teacher_settings_path(),
 				["res://resources/user/children_data.gd"],
 				["res://resources/user/student_data.gd"]) as TeacherSettings
+	else:
+		Log.warn("UserDataManager: Teacher settings file not found at %s" % ProjectSettings.globalize_path(get_teacher_settings_path()))
 	if not teacher_settings:
 		_device_settings.teacher = ""
 		_device_settings.device_id = 0
@@ -551,15 +555,20 @@ func get_student_progression_path(device: int = 0, student_code: int = 0) -> Str
 
 
 func _load_student_progression() -> void:
-	if FileAccess.file_exists(get_student_progression_path()):
-		student_progression = safe_load_and_fix_resource(	get_student_progression_path(),
-				["res://resources/user/user_progression.gd", "UserProgression"],
-				["res://resources/user/student_progression.gd", "StudentProgression"])
+	var progression_path: String = get_student_progression_path()
+	Log.trace("UserDataManager: Loading student progression from " + ProjectSettings.globalize_path(progression_path))
+	if FileAccess.file_exists(progression_path):
+		student_progression = safe_load_and_fix_resource(progression_path,
+			["res://resources/user/user_progression.gd", "UserProgression"],
+			["res://resources/user/student_progression.gd", "StudentProgression"])
 	
 	if not student_progression:
 		student_progression = StudentProgression.new()
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_progression()
+		Log.info("UserDataManager: Created new student progression at " + ProjectSettings.globalize_path(progression_path))
+	else:
+		Log.trace("UserDataManager: Loaded student progression from " + ProjectSettings.globalize_path(progression_path))
 	
 	student_progression.init_unlocks()
 	student_progression.progression_changed.connect(_on_user_progression_changed)
@@ -645,14 +654,18 @@ func _get_student_remediation_path(device: int = 0, student_code: int = 0) -> St
 
 
 func _load_student_remediation() -> void:
-	if FileAccess.file_exists(_get_student_remediation_path()):
-		_student_remediation = load(_get_student_remediation_path())
+	var remediation_path: String = _get_student_remediation_path()
+	Log.trace("UserDataManager: Loading student remediation from " + ProjectSettings.globalize_path(remediation_path))
+	if FileAccess.file_exists(remediation_path):
+		_student_remediation = load(remediation_path)
 	
 	if not _student_remediation:
 		_student_remediation = UserRemediation.new()
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_remediation()
-	
+		Log.info("UserDataManager: Created new student remediation at " + ProjectSettings.globalize_path(remediation_path))
+	else:
+		Log.trace("UserDataManager: Loaded student remediation from " + ProjectSettings.globalize_path(remediation_path))
 	_student_remediation.score_changed.connect(_save_student_remediation)
 
 
@@ -752,14 +765,18 @@ func _get_student_confusion_matrix_path(device: int = 0, student_code: int = 0) 
 
 
 func _load_student_confusion_matrix() -> void:
-	if FileAccess.file_exists(_get_student_confusion_matrix_path()):
-		_student_confusion_matrix = load(_get_student_confusion_matrix_path())
+	var confusion_path: String = _get_student_confusion_matrix_path()
+	Log.trace("UserDataManager: Loading student confusion matrix from " + ProjectSettings.globalize_path(confusion_path))
+	if FileAccess.file_exists(confusion_path):
+		_student_confusion_matrix = load(confusion_path)
 	
 	if not _student_confusion_matrix:
 		_student_confusion_matrix = UserConfusionMatrix.new()
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_confusion_matrix()
-	
+		Log.info("UserDataManager: Created new student confusion matrix at " + ProjectSettings.globalize_path(confusion_path))
+	else:
+		Log.trace("UserDataManager: Loaded student confusion matrix from " + ProjectSettings.globalize_path(confusion_path))
 	_student_confusion_matrix.score_changed.connect(_save_student_confusion_matrix)
 
 
@@ -812,14 +829,18 @@ func _get_student_difficulty_path() -> String:
 
 
 func _load_student_difficulty() -> void:
-	if FileAccess.file_exists(_get_student_difficulty_path()):
-		_student_difficulty = load(_get_student_difficulty_path())
+	var difficulty_path: String = _get_student_difficulty_path()
+	Log.trace("UserDataManager: Loading student difficulty from " + ProjectSettings.globalize_path(difficulty_path))
+	if FileAccess.file_exists(difficulty_path):
+		_student_difficulty = load(difficulty_path)
 	
 	if not _student_difficulty:
 		_student_difficulty = UserDifficulty.new()
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_difficulty()
-	
+		Log.info("UserDataManager: Created new student difficulty at " + ProjectSettings.globalize_path(difficulty_path))
+	else:
+		Log.trace("UserDataManager: Loaded student difficulty from " + ProjectSettings.globalize_path(difficulty_path))
 	_student_difficulty.difficulty_changed.connect(_save_student_difficulty)
 
 
@@ -850,13 +871,18 @@ func _get_student_speeches_path() -> String:
 
 
 func _load_student_speeches() -> void:
-	if FileAccess.file_exists(_get_student_speeches_path()):
-		_student_speeches = load(_get_student_speeches_path())
+	var speeches_path: String = _get_student_speeches_path()
+	Log.trace("UserDataManager: Loading student speeches from " + ProjectSettings.globalize_path(speeches_path))
+	if FileAccess.file_exists(speeches_path):
+		_student_speeches = load(speeches_path)
 	
 	if not _student_speeches:
 		_student_speeches = UserSpeeches.new()
 		DirAccess.make_dir_recursive_absolute(get_student_folder())
 		_save_student_speeches()
+		Log.info("UserDataManager: Created new student speeches at " + ProjectSettings.globalize_path(speeches_path))
+	else:
+		Log.trace("UserDataManager: Loaded student speeches from " + ProjectSettings.globalize_path(speeches_path))
 	_student_speeches.speeches_changed.connect(_save_student_speeches)
 
 
@@ -956,6 +982,7 @@ func _scan_teacher_devices(match_callback: Callable) -> String:
 
 
 func save_all() -> void:
+	Log.info("UserDataManager: Saving all user data - Started")
 	_save_device_settings()
 	save_teacher_settings()
 	if student_progression != null:
@@ -968,5 +995,6 @@ func save_all() -> void:
 		_save_student_difficulty()
 	if _student_speeches != null:
 		_save_student_speeches()
+	Log.info("UserDataManager: Saving all user data - Finished")
 
 #endregion
