@@ -699,6 +699,11 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 		return
 	# Sets the variables for the current garden and lesson
 	current_lesson_number = lesson_number
+	var flower_info: Dictionary = _get_flower_info(current_lesson_number)
+	if flower_info and flower_info.has("garden"):
+		current_garden = flower_info.garden
+	else:
+		Log.warn("Gardens: Flower info corrupted for lesson %d" % lesson_number)
 	if button:
 		#button_global_position = button.global_position
 		current_button = button
