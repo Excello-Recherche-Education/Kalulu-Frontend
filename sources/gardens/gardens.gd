@@ -427,6 +427,43 @@ static func _get_lesson_button_half_size() -> Vector2:
 	return lesson_button_half_size
 
 
+static func _get_layout_cache_base_dir() -> String:
+	if UserDataManager and UserDataManager.has_method("get_student_folder"):
+		var student_folder: String = UserDataManager.get_student_folder()
+		if student_folder != "":
+			return student_folder.path_join("gardens_layout_cache")
+	return "user://gardens_layout_cache"
+
+
+static func _get_layout_cache_path(session_id: int, total_lessons: int) -> String:
+	return _get_layout_cache_base_dir().path_join("layout_%s_%s.tres" % [str(session_id), str(total_lessons)])
+
+
+static func _load_layout_from_cache(session_id: int, total_lessons: int) -> GardensLayout:
+	var cache_path: String = _get_layout_cache_path(session_id, total_lessons)
+	if not FileAccess.file_exists(cache_path):
+		return null
+	if not ResourceLoader.exists(cache_path):
+		return null
+	var cached_layout: Resource = ResourceLoader.load(cache_path)
+	if cached_layout is GardensLayout and not (cached_layout as GardensLayout).gardens.is_empty():
+		Log.info("Gardens: Loaded cached layout from %s" % cache_path)
+		return cached_layout as GardensLayout
+	Log.warn("Gardens: Cached layout at %s was invalid, regenerating" % cache_path)
+	return null
+
+
+static func _save_layout_to_cache(layout: GardensLayout, session_id: int, total_lessons: int) -> void:
+	if not layout:
+		return
+	var base_dir: String = _get_layout_cache_base_dir()
+	DirAccess.make_dir_recursive_absolute(base_dir)
+	var cache_path: String = _get_layout_cache_path(session_id, total_lessons)
+	var error: Error = ResourceSaver.save(layout, cache_path)
+	if error != OK:
+		Log.warn("Gardens: Failed to save layout cache at %s: %s" % [cache_path, error_string(error)])
+
+
 static func _is_position_on_garden_texture(garden_color_index: int, tested_position: Vector2, garden_dimensions: Vector2, probe_half_size: Vector2 = Vector2.ZERO, garden_image: Image = null) -> bool:
 	if not garden_image:
 		garden_image = _get_garden_background_image(garden_color_index)
@@ -567,9 +604,16 @@ static func get_session_layout(total_lessons: int) -> GardensLayout:
 			Log.info("Gardens: Session or lesson count changed, regenerating gardens layout")
 		cached_gardens_layout = null
 	if not cached_gardens_layout:
+		var disk_cached_layout: GardensLayout = _load_layout_from_cache(session_id, total_lessons)
+		if disk_cached_layout:
+			cached_gardens_layout = disk_cached_layout
+			cached_layout_session_id = session_id
+			cached_layout_lessons = total_lessons
+			return cached_gardens_layout
 		cached_gardens_layout = generate_gardens_layout(total_lessons)
 		cached_layout_session_id = session_id
 		cached_layout_lessons = total_lessons
+		_save_layout_to_cache(cached_gardens_layout, session_id, total_lessons)
 	else:
 		Log.trace("Gardens: Reusing cached layout for session %s" % str(session_id))
 	return cached_gardens_layout

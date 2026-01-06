@@ -16,6 +16,9 @@ enum Status{
 @export var boss_statuses: Array[int] = []
 @export var last_modified: String
 
+static var cached_boss_gate_lessons: Array[int] = []
+static var cached_boss_gate_lessons_total: int = -1
+
 
 func _init() -> void:
 	init_unlocks()
@@ -147,8 +150,10 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 
 
 static func get_boss_gate_lessons() -> Array[int]:
-	var gates: Array[int] = []
 	var total_lessons: int = Database.get_lessons_count()
+	if cached_boss_gate_lessons_total == total_lessons:
+		return cached_boss_gate_lessons.duplicate()
+	var gates: Array[int] = []
 	if total_lessons <= 0:
 		return gates
 	var boundary_lessons: Array[int] = _get_garden_boundary_lessons(total_lessons)
@@ -159,6 +164,8 @@ static func get_boss_gate_lessons() -> Array[int]:
 		if new_pseudowords >= 40 and boundary_lessons.has(lesson_number):
 			gates.append(lesson_number)
 			last_boss_pseudowords = total_pseudowords
+	cached_boss_gate_lessons_total = total_lessons
+	cached_boss_gate_lessons = gates.duplicate()
 	return gates
 
 
