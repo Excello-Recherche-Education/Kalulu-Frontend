@@ -1019,9 +1019,32 @@ func _set_up_boss_buttons() -> void:
 func _get_boss_button_position(gate_lesson: int) -> Vector2:
 	if gate_lesson <= 0 or gate_lesson >= points.size():
 		return Vector2.ZERO
-	var start_point: Vector2 = points[gate_lesson - 1][0] as Vector2
-	var end_point: Vector2 = points[gate_lesson][0] as Vector2
-	return start_point.lerp(end_point, 0.5)
+	var start_data: Array = points[gate_lesson - 1]
+	var end_data: Array = points[gate_lesson]
+	var start_point: Vector2 = start_data[0] as Vector2
+	var end_point: Vector2 = end_data[0] as Vector2
+	var curve: Curve2D = Curve2D.new()
+	curve.add_point(start_point, start_data[1] as Vector2, start_data[2] as Vector2)
+	curve.add_point(end_point, end_data[1] as Vector2, end_data[2] as Vector2)
+	var baked_points: PackedVector2Array = curve.get_baked_points()
+	if baked_points.size() < 2:
+		return start_point.lerp(end_point, 0.5)
+	var total_length: float = 0.0
+	for index: int in range(1, baked_points.size()):
+		total_length += baked_points[index - 1].distance_to(baked_points[index])
+	if total_length <= 0.0:
+		return start_point.lerp(end_point, 0.5)
+	var target_length: float = total_length * 0.5
+	var walked_length: float = 0.0
+	for index: int in range(1, baked_points.size()):
+		var segment_length: float = baked_points[index - 1].distance_to(baked_points[index])
+		if walked_length + segment_length >= target_length:
+			var segment_progress: float = 0.0
+			if segment_length > 0.0:
+				segment_progress = (target_length - walked_length) / segment_length
+			return baked_points[index - 1].lerp(baked_points[index], segment_progress)
+		walked_length += segment_length
+	return baked_points[baked_points.size() - 1]
 
 
 func _get_garden_index_for_lesson(lesson_number: int) -> int:
