@@ -959,9 +959,20 @@ func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
 		var point_data: Array = points[index]
 		progress_curve.add_point(point_data[0] as Vector2, point_data[1] as Vector2, point_data[2] as Vector2)
 	var baked_points: PackedVector2Array = progress_curve.get_baked_points()
-	unlocked_line.points = baked_points
-	if baked_points.size() > 0:
-		line_particles.position = baked_points[baked_points.size() - 1]
+	var final_points: PackedVector2Array = baked_points
+	var pending_boss_gate: int = _get_pending_boss_gate_lesson(clamped_lesson_index)
+	if pending_boss_gate > 0:
+		var boss_segment_points: PackedVector2Array = _get_boss_segment_points(pending_boss_gate)
+		if boss_segment_points.size() > 0:
+			final_points = PackedVector2Array()
+			for point: Vector2 in baked_points:
+				final_points.append(point)
+			for point: Vector2 in boss_segment_points:
+				if final_points.size() == 0 or final_points[final_points.size() - 1] != point:
+					final_points.append(point)
+	unlocked_line.points = final_points
+	if final_points.size() > 0:
+		line_particles.position = final_points[final_points.size() - 1]
 #endregion
 
 
@@ -1017,8 +1028,28 @@ func _set_up_boss_buttons() -> void:
 
 
 func _get_boss_button_position(gate_lesson: int) -> Vector2:
-	if gate_lesson <= 0 or gate_lesson >= points.size():
+	var segment_points: PackedVector2Array = _get_boss_segment_points(gate_lesson)
+	if segment_points.size() == 0:
 		return Vector2.ZERO
+	return segment_points[segment_points.size() - 1]
+
+
+func _get_pending_boss_gate_lesson(max_unlocked_lesson_index: int) -> int:
+	if not UserDataManager.student_progression:
+		return -1
+	var gate_lessons: Array[int] = StudentProgression.get_boss_gate_lessons()
+	for gate_lesson: int in gate_lessons:
+		if gate_lesson - 1 != max_unlocked_lesson_index:
+			continue
+		if UserDataManager.student_progression.is_lesson_completed(gate_lesson) and not UserDataManager.student_progression.is_boss_completed(gate_lesson):
+			return gate_lesson
+	return -1
+
+
+func _get_boss_segment_points(gate_lesson: int, segment_ratio: float = 0.5) -> PackedVector2Array:
+	if gate_lesson <= 0 or gate_lesson >= points.size():
+		return PackedVector2Array()
+	var clamped_ratio: float = clamp(segment_ratio, 0.0, 1.0)
 	var start_data: Array = points[gate_lesson - 1]
 	var end_data: Array = points[gate_lesson]
 	var start_point: Vector2 = start_data[0] as Vector2
@@ -1028,23 +1059,31 @@ func _get_boss_button_position(gate_lesson: int) -> Vector2:
 	curve.add_point(end_point, end_data[1] as Vector2, end_data[2] as Vector2)
 	var baked_points: PackedVector2Array = curve.get_baked_points()
 	if baked_points.size() < 2:
-		return start_point.lerp(end_point, 0.5)
+		var fallback_points: PackedVector2Array = PackedVector2Array()
+		fallback_points.append(start_point.lerp(end_point, clamped_ratio))
+		return fallback_points
 	var total_length: float = 0.0
 	for index: int in range(1, baked_points.size()):
 		total_length += baked_points[index - 1].distance_to(baked_points[index])
 	if total_length <= 0.0:
-		return start_point.lerp(end_point, 0.5)
-	var target_length: float = total_length * 0.5
+		var fallback_points2: PackedVector2Array = PackedVector2Array()
+		fallback_points2.append(start_point.lerp(end_point, clamped_ratio))
+		return fallback_points2
+	var target_length: float = total_length * clamped_ratio
 	var walked_length: float = 0.0
+	var segment_points: PackedVector2Array = PackedVector2Array()
+	segment_points.append(baked_points[0])
 	for index: int in range(1, baked_points.size()):
 		var segment_length: float = baked_points[index - 1].distance_to(baked_points[index])
 		if walked_length + segment_length >= target_length:
 			var segment_progress: float = 0.0
 			if segment_length > 0.0:
 				segment_progress = (target_length - walked_length) / segment_length
-			return baked_points[index - 1].lerp(baked_points[index], segment_progress)
+			segment_points.append(baked_points[index - 1].lerp(baked_points[index], segment_progress))
+			break
+		segment_points.append(baked_points[index])
 		walked_length += segment_length
-	return baked_points[baked_points.size() - 1]
+	return segment_points
 
 
 func _get_garden_index_for_lesson(lesson_number: int) -> int:
