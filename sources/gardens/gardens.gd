@@ -6,6 +6,7 @@ signal minigame_layout_opened()
 const KALULU: GDScript = preload("res://sources/minigames/base/kalulu.gd")
 const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
+const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 const GARDEN_SIZE: int = 2400
 const GARDEN_TEXTURES_NB: int = 20
@@ -37,6 +38,7 @@ static var cached_layout_lessons: int = 0
 
 var lessons: Dictionary = {}
 var points: Array[Array] = []
+var lesson_distribution: Array[int] = []
 var is_scrolling: bool = false
 var scroll_beginning_garden: int = 0
 var scroll_tween: Tween
@@ -55,6 +57,7 @@ var lesson_to_flower_index: Dictionary = {}
 @onready var line_audio_stream_player: AudioStreamPlayer2D = %LineAudioStreamPlayer
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var parallax_background: ParallaxBackground = %ParallaxBackground
+@onready var boss_buttons_container: Control = %BossButtons
 @onready var minigame_selection: Control = %MinigameSelection
 @onready var lesson_button: LessonButton = %LessonButton
 @onready var lesson_button_particles: GPUParticles2D = %LessonButtonParticles
@@ -130,8 +133,9 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 
 			lesson_to_flower_index[lesson_index] = {"garden": garden_control, "index": button_index}
 			var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[lesson_index]
-			var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.Locked
-			var is_look_and_learn_completed: bool = lesson_unlocks["look_and_learn"] == StudentProgression.Status.Completed
+			var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_index)
+			var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.Locked and not is_blocked_by_boss
+			var is_look_and_learn_completed: bool = lesson_unlocks["look_and_learn"] == StudentProgression.Status.Completed and not is_blocked_by_boss
 			button.set_disabled(not is_lesson_unlocked)
 			if button_index < garden_control.flowers_visible.size():
 				garden_control.flowers_visible[button_index] = is_look_and_learn_completed
@@ -140,9 +144,9 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 				button.set_disabled(true)
 
 			if not(transition_context.new_lesson_unlocked and lesson_index == transition_context.newly_unlocked_lesson_number - 1):
-				button.completed = UserDataManager.student_progression.is_lesson_completed(lesson_index)
+				button.completed = UserDataManager.student_progression.is_lesson_completed(lesson_index) and not is_blocked_by_boss
 
-			var completed_minigames: int = _count_completed_minigames(lesson_index)
+			var completed_minigames: int = 0 if is_blocked_by_boss else _count_completed_minigames(lesson_index)
 			if transition_context.is_current_lesson and transition_context.is_first_clear and transition_context.is_minigame_completed and transition_context.last_played_minigame_number >= 0 and transition_context.last_played_minigame_number < (lesson_unlocks["games"] as Array).size():
 				if lesson_unlocks["games"][transition_context.last_played_minigame_number] == StudentProgression.Status.Completed:
 					completed_minigames = max(0, completed_minigames - 1)
@@ -153,6 +157,7 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 			lesson_index += 1
 
 		garden_control.update_flowers()
+	_set_up_boss_buttons()
 
 #endregion
 
@@ -179,11 +184,12 @@ func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 
 				if UserDataManager.student_progression:
 					var unlock: Dictionary = UserDataManager.student_progression.unlocks[lesson_index]
+					var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_index)
 					var look_and_learn_unlocked: bool = unlock["look_and_learn"] == StudentProgression.Status.Unlocked
 					var exercise_unlock_1: bool = unlock["games"][0] == StudentProgression.Status.Unlocked
 					var exercise_unlock_2: bool = unlock["games"][1] == StudentProgression.Status.Unlocked
 					var exercise_unlock_3: bool = unlock["games"][2] == StudentProgression.Status.Unlocked
-					if look_and_learn_unlocked or exercise_unlock_1 or exercise_unlock_2 or exercise_unlock_3:
+					if not is_blocked_by_boss and (look_and_learn_unlocked or exercise_unlock_1 or exercise_unlock_2 or exercise_unlock_3):
 						starting_garden = garden_index
 						break
 
@@ -204,7 +210,7 @@ func _handle_transition_sequences(transition_context: Dictionary) -> void:
 	# Wait a bit before any action to smooth the animations
 	await get_tree().create_timer(1).timeout
 
-	if transition_data.has("current_lesson_number"):
+	if transition_data.has("current_lesson_number") and not transition_data.get("skip_minigame_layout", false):
 		await _open_minigames_layout(_get_current_lesson_button(transition_data.current_lesson_number as int), transition_data.current_lesson_number as int)
 
 	if transition_context.new_lesson_unlocked:
@@ -851,6 +857,7 @@ func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
 		Log.trace("Gardens: Yielding a frame to ensure garden controls are ready before setting up the path")
 		await get_tree().process_frame
 	set_up_path()
+	_set_up_boss_buttons()
 
 
 func add_gardens() -> void:
@@ -860,7 +867,7 @@ func add_gardens() -> void:
 	for child: Node in garden_parent.get_children():
 		child.free()
 	Log.info("Gardens: Computing lesson distribution for new gardens")
-	var distribution: Array[int] = get_lessons_distribution(lessons.size(), gardens_layout.gardens)
+	lesson_distribution = get_lessons_distribution(lessons.size(), gardens_layout.gardens)
 	var garden_index: int = 0
 	for layout_index: int in range(gardens_layout.gardens.size()):
 		Log.trace("Gardens: Preparing garden %s with layout index %s" % [str(garden_index), str(layout_index)])
@@ -869,11 +876,12 @@ func add_gardens() -> void:
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
 		garden_index += 1
-		var lessons_for_garden: int = distribution[layout_index]
+		var lessons_for_garden: int = lesson_distribution[layout_index]
 		Log.trace("Gardens: Garden %s will host %s lessons" % [str(garden.garden_index), str(lessons_for_garden)])
 		garden_layout.lesson_buttons.resize(lessons_for_garden)
 		Log.trace("Gardens: Assigning layout to garden %s" % str(garden.garden_index))
 		garden.garden_layout = garden_layout
+	_sync_boss_buttons_container()
 
 
 func set_up_path() -> void:
@@ -913,6 +921,74 @@ func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
 #endregion
 
 
+func _sync_boss_buttons_container() -> void:
+	if not boss_buttons_container or not garden_parent:
+		return
+	boss_buttons_container.position = Vector2.ZERO
+	boss_buttons_container.size = scroll_container.size
+
+
+func _clear_boss_buttons() -> void:
+	if not boss_buttons_container:
+		return
+	for child: Node in boss_buttons_container.get_children():
+		child.queue_free()
+
+
+func _set_up_boss_buttons() -> void:
+	_clear_boss_buttons()
+	if not boss_buttons_container:
+		return
+	_sync_boss_buttons_container()
+	if lesson_distribution.is_empty() or points.is_empty():
+		return
+	var total_lessons: int = lessons.size()
+	if total_lessons <= 0:
+		return
+	var gate_lessons: Array[int] = StudentProgression.get_boss_gate_lessons()
+	for gate_lesson: int in gate_lessons:
+		if gate_lesson <= 0 or gate_lesson >= total_lessons:
+			continue
+		if gate_lesson - 1 >= points.size() or gate_lesson >= points.size():
+			continue
+		var boss_position: Vector2 = _get_boss_button_position(gate_lesson)
+		if boss_position == Vector2.ZERO:
+			continue
+		var boss_button: BossButton = BOSS_BUTTON_SCENE.instantiate()
+		boss_buttons_container.add_child(boss_button)
+		var boss_size: Vector2 = boss_button.get_combined_minimum_size()
+		if boss_size == Vector2.ZERO:
+			boss_size = boss_button.size
+		boss_button.position = boss_position - boss_size * 0.5
+		if UserDataManager.student_progression:
+			var is_completed: bool = UserDataManager.student_progression.is_boss_completed(gate_lesson)
+			var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(gate_lesson)
+			var is_unlocked: bool = UserDataManager.student_progression.is_lesson_completed(gate_lesson) and not is_blocked_by_boss
+			boss_button.set_disabled(not is_unlocked and not is_completed)
+			boss_button.completed = is_completed
+		else:
+			boss_button.set_disabled(true)
+		var garden_index: int = _get_garden_index_for_lesson(gate_lesson)
+		boss_button.pressed.connect(_on_boss_button_pressed.bind(gate_lesson, garden_index))
+
+
+func _get_boss_button_position(gate_lesson: int) -> Vector2:
+	if gate_lesson <= 0 or gate_lesson >= points.size():
+		return Vector2.ZERO
+	var start_point: Vector2 = points[gate_lesson - 1][0] as Vector2
+	var end_point: Vector2 = points[gate_lesson][0] as Vector2
+	return start_point.lerp(end_point, 0.5)
+
+
+func _get_garden_index_for_lesson(lesson_number: int) -> int:
+	var lesson_index: int = 0
+	for garden_index: int in range(lesson_distribution.size()):
+		lesson_index += lesson_distribution[garden_index]
+		if lesson_number <= lesson_index:
+			return garden_index
+	return max(0, lesson_distribution.size() - 1)
+
+
 func _lock() -> void:
 	is_locked = true
 	lock.show()
@@ -949,6 +1025,22 @@ func _on_lesson_button_pressed() -> void:
 		look_and_learn_completed = false
 	}
 	get_tree().change_scene_to_packed(LOOK_AND_LEARN_SCENE)
+
+
+func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
+	if is_locked:
+		return
+	feedback_audio_stream_player.play()
+	await OpeningCurtain.close()
+	Minigame.transition_data = {
+		current_lesson_number = lesson_number,
+		current_garden_index = garden_index,
+		minigame_number = -1,
+		minigame_completed = false,
+		skip_minigame_layout = true,
+		boss_gate_lesson = lesson_number
+	}
+	get_tree().change_scene_to_file("res://sources/minigames/fish/fish_minigame.tscn")
 
 
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:

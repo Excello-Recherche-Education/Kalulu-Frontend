@@ -205,7 +205,11 @@ func _win() -> void:
 		gardens_data.minigame_completed = true
 	
 	if UserDataManager.student_progression:
-		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
+		if gardens_data.has("boss_gate_lesson"):
+			gardens_data.boss_completed = UserDataManager.student_progression.boss_completed(gardens_data.boss_gate_lesson as int)
+			gardens_data.first_clear = gardens_data.boss_completed
+		else:
+			gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
 	update_scores()
 	
@@ -270,6 +274,8 @@ func _lose() -> void:
 
 
 func _submit_student_level_time() -> void:
+	if gardens_data.has("boss_gate_lesson"):
+		return
 	UserDataManager.add_level_time(lesson_nb, minigame_number, _get_elapsed_time_seconds())
 
 
