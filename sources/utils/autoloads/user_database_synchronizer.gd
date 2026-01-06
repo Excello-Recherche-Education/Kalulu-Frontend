@@ -17,6 +17,7 @@ var loading_popup: LoadingPopup
 
 func start_sync() -> void:
 	synchronizing = true
+	Log.info("UserDatabaseSynchronizer: Starting synchronization")
 	if loading_popup != null:
 		loading_popup.set_finished(false)
 		set_loading_bar_text("SYNCHRONIZATION_INITIALISATION")
@@ -26,6 +27,7 @@ func start_sync() -> void:
 
 func stop_sync(success: bool = false) -> void:
 	synchronizing = false
+	Log.info("UserDatabaseSynchronizer: Synchronization finished (success=%s)" % str(success))
 	if success:
 		await set_loading_bar_progression(100.0, 1.0)
 		set_loading_bar_text("SYNCHRONIZATION_SUCCESS")
@@ -38,6 +40,7 @@ func _check_internet() -> bool:
 	set_loading_bar_text("SYNCHRONIZATION_CHECK_INTERNET_ACCESS")
 	if await (ServerManager as ServerManagerClass).check_internet_access():
 		return true
+	Log.warn("UserDatabaseSynchronizer: Internet check failed during synchronization")
 	set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_INTERNET")
 	stop_sync()
 	return false
