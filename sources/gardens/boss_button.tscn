@@ -4,16 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://j7sffldhbunj" path="res://assets/theme/button_pressed_empty.svg" id="2_2g676"]
 [ext_resource type="Texture2D" uid="uid://be30a3cmy0w46" path="res://assets/theme/button_focused_empty.svg" id="3_fksie"]
 [ext_resource type="Texture2D" uid="uid://c0rumwiaimvxy" path="res://assets/theme/button_disabled.svg" id="4_4vg60"]
-[ext_resource type="Script" uid="uid://c6ek75seoq4hb" path="res://sources/gardens/boss_button.gd" id="5_3d6pj"]
+[ext_resource type="Script" uid="uid://bbjhs5nta7xxj" path="res://sources/gardens/boss_button.gd" id="5_3d6pj"]
 [ext_resource type="Texture2D" uid="uid://dwk8xgv3xsmm0" path="res://assets/theme/button_center.svg" id="6_o0qkw"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="7_rtwam"]
-[ext_resource type="Texture2D" uid="uid://cgrjm271lrc7x" path="res://assets/minigames/fish/fish_icon.png" id="8_oy4mt"]
+[ext_resource type="Texture2D" uid="uid://cfnjk06m367r3" path="res://assets/minigames/fish/fish_icon.png" id="8_oy4mt"]
 
 [node name="BossButton" type="TextureButton"]
 z_index = 2
-offset_right = 300.0
-offset_bottom = 300.0
-pivot_offset = Vector2(150, 150)
+offset_right = 512.0
+offset_bottom = 512.0
+pivot_offset = Vector2(180, 180)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("1_pdrhc")
@@ -23,9 +23,9 @@ texture_disabled = ExtResource("4_4vg60")
 texture_focused = ExtResource("1_pdrhc")
 stretch_mode = 0
 script = ExtResource("5_3d6pj")
-base_color = Color(0.109804, 0.14902, 0.384314, 1)
-completed_color = Color(0.109804, 0.14902, 0.384314, 1)
 icon_texture = ExtResource("8_oy4mt")
+base_color = Color(0.537255, 0.231373, 0.8, 1)
+completed_color = Color(0.537255, 0.231373, 0.8, 1)
 
 [node name="RightFX" parent="." instance=ExtResource("7_rtwam")]
 unique_name_in_owner = true
@@ -84,13 +84,17 @@ texture = ExtResource("6_o0qkw")
 
 [node name="Icon" type="TextureRect" parent="."]
 unique_name_in_owner = true
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 144.0
+offset_top = 80.0
+offset_right = -23.0
+offset_bottom = 84.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("8_oy4mt")
-expand_mode = 1
 stretch_mode = 6
