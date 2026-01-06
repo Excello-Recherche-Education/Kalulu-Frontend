@@ -27,7 +27,8 @@ static var cached_layout_lessons: int = 0
 
 @export_category("Layout")
 @export var gardens_layout: GardensLayout:
-	set = set_gardens_layout
+	set = set_gardens_layout,
+	get = get_gardens_layout
 @export var starting_garden: int = -1
 @export_category("Colors")
 @export var unlocked_color: Color = Color("1c2662") #blue
@@ -37,6 +38,7 @@ static var cached_layout_lessons: int = 0
 @export var minigames_icons: Array[Texture] = []
 
 var lessons: Dictionary = {}
+var _gardens_layout: GardensLayout
 var points: Array[Array] = []
 var lesson_distribution: Array[int] = []
 var is_scrolling: bool = false
@@ -893,14 +895,18 @@ func _set_up_lessons() -> void:
 
 func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
 	Log.info("Gardens: Setting gardens layout")
-	gardens_layout = p_gardens_layout
-	Log.trace("Gardens: Layout contains %s gardens" % str(gardens_layout.gardens.size()))
+	_gardens_layout = p_gardens_layout
+	Log.trace("Gardens: Layout contains %s gardens" % str(_gardens_layout.gardens.size()))
 	add_gardens()
 	if garden_parent:
 		Log.trace("Gardens: Yielding a frame to ensure garden controls are ready before setting up the path")
 		await get_tree().process_frame
 	set_up_path()
 	_set_up_boss_buttons()
+
+
+func get_gardens_layout() -> GardensLayout:
+	return _gardens_layout
 
 
 func add_gardens() -> void:
