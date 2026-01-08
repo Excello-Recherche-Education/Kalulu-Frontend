@@ -14,6 +14,7 @@ const FLOWER_TYPES_NB: int = 5
 const FLOWER_OFFSET_FROM_LESSON: float = 200.0
 const LESSON_VERTICAL_BASE: float = 920.0
 const LESSON_VERTICAL_RANGE: float = 300.0
+const FINAL_BOSS_PADDING: float = 120.0
 const TRANSPARENCY_THRESHOLD: float = 0.05
 const POSITION_SEARCH_STEP: int = 40
 const MAX_POSITION_SEARCH_RADIUS: int = 300
@@ -50,6 +51,7 @@ var current_garden: Garden
 var current_button_global_position: Vector2 = Vector2.ZERO
 var current_button: LessonButton
 var lesson_to_flower_index: Dictionary = {}
+var scroll_end_base_width: float = 0.0
 
 @onready var garden_parent: HBoxContainer = %GardenParent
 @onready var locked_line: Line2D = $ScrollContainer/LockedLine
@@ -58,6 +60,7 @@ var lesson_to_flower_index: Dictionary = {}
 @onready var line_audio_stream_player: AudioStreamPlayer2D = %LineAudioStreamPlayer
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var parallax_background: ParallaxBackground = %ParallaxBackground
+@onready var scroll_end_spacer: Control = $"ScrollContainer/HBoxContainer/Control2"
 @onready var boss_buttons_container: Control = %BossButtons
 @onready var minigame_selection: Control = %MinigameSelection
 @onready var lesson_button: LessonButton = %LessonButton
@@ -342,6 +345,8 @@ func _play_new_lesson_unlock_sequence() -> void:
 
 func _ready() -> void:
 	_load_lessons_from_database()
+	if scroll_end_spacer:
+		scroll_end_base_width = scroll_end_spacer.custom_minimum_size.x
 	gardens_layout = get_session_layout(lessons.size())
 	_set_up_lessons()
 	
@@ -976,6 +981,8 @@ func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
 				if final_points.size() == 0 or final_points[final_points.size() - 1] != point:
 					final_points.append(point)
 	unlocked_line.points = final_points
+	if _should_show_final_boss():
+		_extend_unlocked_path_to_final_boss()
 	if final_points.size() > 0:
 		line_particles.position = final_points[final_points.size() - 1]
 #endregion
@@ -1000,6 +1007,7 @@ func _set_up_boss_buttons() -> void:
 	if not boss_buttons_container:
 		return
 	_sync_boss_buttons_container()
+	_reset_final_boss_scroll_space()
 	if lesson_distribution.is_empty() or points.is_empty():
 		return
 	var total_lessons: int = lessons.size()
@@ -1030,6 +1038,104 @@ func _set_up_boss_buttons() -> void:
 			boss_button.set_disabled(true)
 		var garden_index: int = _get_garden_index_for_lesson(gate_lesson)
 		boss_button.pressed.connect(_on_boss_button_pressed.bind(gate_lesson, garden_index))
+	_set_up_final_boss_button()
+
+
+func _set_up_final_boss_button() -> void:
+	if not boss_buttons_container or not garden_parent:
+		return
+	if not _should_show_final_boss():
+		return
+	if points.is_empty():
+		return
+	var final_lesson_number: int = lessons.size()
+	if final_lesson_number <= 0:
+		return
+	var final_boss_center: Vector2 = _get_final_boss_center_position()
+	if final_boss_center == Vector2.ZERO:
+		return
+	var last_garden_index: int = max(0, garden_parent.get_child_count() - 1)
+	var final_boss_size: Vector2 = _get_final_boss_size()
+	var boss_button: BossButton = BOSS_BUTTON_SCENE.instantiate()
+	boss_buttons_container.add_child(boss_button)
+	boss_button.custom_minimum_size = final_boss_size
+	boss_button.size = final_boss_size
+	boss_button.pivot_offset = final_boss_size * 0.5
+	boss_button.position = final_boss_center - final_boss_size * 0.5
+	boss_button.set_disabled(false)
+	boss_button.pressed.connect(_on_final_boss_button_pressed.bind(final_lesson_number, last_garden_index))
+	_update_final_boss_scroll_space(final_boss_center, final_boss_size)
+
+
+func _reset_final_boss_scroll_space() -> void:
+	if scroll_end_spacer:
+		scroll_end_spacer.custom_minimum_size.x = scroll_end_base_width
+
+
+func _update_final_boss_scroll_space(final_boss_center: Vector2, final_boss_size: Vector2) -> void:
+	if not scroll_end_spacer or not garden_parent:
+		return
+	if final_boss_center == Vector2.ZERO:
+		return
+	var last_garden_index: int = max(0, garden_parent.get_child_count() - 1)
+	var last_garden: Garden = garden_parent.get_child(last_garden_index)
+	var last_garden_right_edge: float = garden_parent.position.x + last_garden.position.x + GARDEN_SIZE
+	var final_boss_right_edge: float = final_boss_center.x + final_boss_size.x * 0.5
+	var extra_width: float = max(0.0, final_boss_right_edge - last_garden_right_edge)
+	scroll_end_spacer.custom_minimum_size.x = scroll_end_base_width + extra_width
+
+
+func _extend_unlocked_path_to_final_boss() -> void:
+	if not unlocked_line or points.is_empty():
+		return
+	var final_boss_center: Vector2 = _get_final_boss_center_position()
+	if final_boss_center == Vector2.ZERO:
+		return
+	var last_point: Vector2 = points[points.size() - 1][0] as Vector2
+	if last_point == final_boss_center:
+		return
+	var extension_curve: Curve2D = Curve2D.new()
+	extension_curve.add_point(last_point)
+	extension_curve.add_point(final_boss_center)
+	var extension_points: PackedVector2Array = extension_curve.get_baked_points()
+	if extension_points.size() == 0:
+		return
+	for index: int in range(extension_points.size()):
+		if index == 0:
+			continue
+		unlocked_line.add_point(extension_points[index])
+	if line_particles:
+		line_particles.position = final_boss_center
+
+
+func _get_final_boss_center_position() -> Vector2:
+	if not garden_parent or points.is_empty():
+		return Vector2.ZERO
+	var last_point_data: Array = points[points.size() - 1]
+	var last_point: Vector2 = last_point_data[0] as Vector2
+	var final_boss_size: Vector2 = _get_final_boss_size()
+	var last_garden_index: int = max(0, garden_parent.get_child_count() - 1)
+	var last_garden: Garden = garden_parent.get_child(last_garden_index)
+	var last_garden_right_edge: float = garden_parent.position.x + last_garden.position.x + GARDEN_SIZE
+	var min_center_x: float = last_garden_right_edge + final_boss_size.x * 0.5 + FINAL_BOSS_PADDING
+	var desired_center_x: float = last_point.x + final_boss_size.x * 0.5 + FINAL_BOSS_PADDING
+	return Vector2(maxf(min_center_x, desired_center_x), last_point.y)
+
+
+func _get_final_boss_size() -> Vector2:
+	return _get_lesson_button_half_size() * 4.0
+
+
+func _should_show_final_boss() -> bool:
+	if not UserDataManager.student_progression:
+		return false
+	var total_lessons: int = lessons.size()
+	if total_lessons <= 0:
+		return false
+	for lesson_number: int in range(1, total_lessons + 1):
+		if not UserDataManager.student_progression.is_lesson_completed(lesson_number):
+			return false
+	return true
 
 
 func _get_boss_button_position(gate_lesson: int) -> Vector2:
@@ -1152,6 +1258,10 @@ func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
 		boss_gate_lesson = lesson_number
 	}
 	get_tree().change_scene_to_file("res://sources/minigames/fish/fish_minigame.tscn")
+
+
+func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
+	_on_boss_button_pressed(lesson_number, garden_index)
 
 
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
