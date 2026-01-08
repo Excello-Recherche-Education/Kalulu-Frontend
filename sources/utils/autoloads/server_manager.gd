@@ -95,23 +95,32 @@ func check_email(email: String) -> Dictionary:
 
 func register(data: Dictionary) -> Dictionary:
 	loading_rect.show()
+	if data.has("email"):
+		Log.info("ServerManager: Registration request initiated for email %s" % str(data.email))
+	else:
+		Log.error("ServerManager: Registration request cancelled: email not provided")
+		reset_result()
+		return _response()
 	await _post_json_request("register", data)
 	return _response()
 
 
 func login(mail: String, password: String) -> Dictionary:
 	loading_rect.show()
+	Log.info("ServerManager: Login request initiated for email %s" % mail)
 	await _post_json_request("login", {"mail": mail, "password": password})
 	return _response()
 
 
 func reset_password(mail: String) -> Dictionary:
+	Log.info("ServerManager: Password reset requested for email %s" % mail)
 	await _post_json_request("forgot", {"email": mail})
 	return _response()
 
 
 func delete_account() -> Dictionary:
 	loading_rect.show()
+	Log.warn("ServerManager: Delete account request initiated")
 	await _delete_request("delete_account")
 	return _response()
 
@@ -137,17 +146,20 @@ func get_dashboard() -> Dictionary:
 
 
 func add_student(p_student: Dictionary) -> Dictionary:
+	Log.info("ServerManager: Add student request initiated")
 	await _post_request("add_student", p_student)
 	return _response()
 
 
 func remove_student(p_code: int) -> Dictionary:
+	Log.info("ServerManager: Remove student request initiated for code %d" % p_code)
 	await _delete_request("remove_student", {"code": p_code})
 	return _response()
 
 
 func set_student_data(student_code: int, data: Dictionary) -> Dictionary:
 	data.merge({"student_id": student_code})
+	Log.info("ServerManager: Set student data request initiated for code %d" % student_code)
 	await _post_request("set_student_data", data)
 	return _response()
 
