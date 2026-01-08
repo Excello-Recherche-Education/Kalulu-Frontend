@@ -499,12 +499,15 @@ func _delete_inexistants_students_saves() -> void:
 
 func update_configuration(configuration: Dictionary) -> bool:
 	if not teacher_settings:
+		Log.warn("UserDataManager: Cannot update configuration because teacher_settings is null")
 		return false
 	
 	if not configuration or not configuration.students or not configuration.last_modified:
+		Log.warn("UserDataManager: Configuration update skipped because payload is invalid or incomplete")
 		return false
 	
 	if teacher_settings.last_modified != configuration.last_modified:
+		Log.trace("UserDataManager: Updating teacher configuration (last_modified=%s)" % str(configuration.last_modified))
 		# Update the teacher resource
 		teacher_settings.update_from_dict(configuration)
 		save_teacher_settings()
@@ -513,9 +516,12 @@ func update_configuration(configuration: Dictionary) -> bool:
 		if not _device_settings.device_id in teacher_settings.students.keys():
 			_device_settings.device_id = 0
 			_save_device_settings()
+			Log.warn("UserDataManager: Device ID not found in updated configuration; device ID reset to 0")
 		
 		# Cleanup the saves
 		_delete_inexistants_students_saves()
+	else:
+		Log.trace("UserDataManager: Configuration already up to date")
 	
 	return true
 
@@ -575,8 +581,13 @@ func _load_student_progression() -> void:
 
 
 func _save_student_progression() -> void:
-	Log.trace("UserDataManager: Saving student progression in " + ProjectSettings.globalize_path(get_student_progression_path()))
-	ResourceSaver.save(student_progression, get_student_progression_path())
+	var progression_path: String = get_student_progression_path()
+	Log.trace("UserDataManager: Saving student progression in " + ProjectSettings.globalize_path(progression_path))
+	var error: Error = ResourceSaver.save(student_progression, progression_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save student progression to %s. Error: %s" % [progression_path, error_string(error)])
+	else:
+		Log.trace("UserDataManager: Student progression saved successfully at " + ProjectSettings.globalize_path(progression_path))
 
 
 func _on_user_progression_changed() -> void:
@@ -688,7 +699,9 @@ func set_student_remediation_gp_data(student_code: int, new_scores: Dictionary[i
 		student_remediation = UserRemediation.new()
 	student_remediation.set_gp_scores(new_scores)
 	student_remediation.set_gp_last_modified(updated_at)
-	ResourceSaver.save(student_remediation, remediation_data_path)
+	var error: Error = ResourceSaver.save(student_remediation, remediation_data_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save remediation GP data to %s. Error: %s" % [remediation_data_path, error_string(error)])
 
 
 func set_student_remediation_syllables_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
@@ -700,7 +713,9 @@ func set_student_remediation_syllables_data(student_code: int, new_scores: Dicti
 		student_remediation = UserRemediation.new()
 	student_remediation.set_syllables_scores(new_scores)
 	student_remediation.set_syllables_last_modified(updated_at)
-	ResourceSaver.save(student_remediation, remediation_data_path)
+	var error: Error = ResourceSaver.save(student_remediation, remediation_data_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save remediation syllables data to %s. Error: %s" % [remediation_data_path, error_string(error)])
 
 
 func set_student_remediation_words_data(student_code: int, new_scores: Dictionary[int, int], updated_at: String) -> void:
@@ -712,12 +727,19 @@ func set_student_remediation_words_data(student_code: int, new_scores: Dictionar
 		student_remediation = UserRemediation.new()
 	student_remediation.set_words_scores(new_scores)
 	student_remediation.set_words_last_modified(updated_at)
-	ResourceSaver.save(student_remediation, remediation_data_path)
+	var error: Error = ResourceSaver.save(student_remediation, remediation_data_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save remediation words data to %s. Error: %s" % [remediation_data_path, error_string(error)])
 
 
 func _save_student_remediation() -> void:
-	Log.trace("UserDataManager: Saving student remediation in " + ProjectSettings.globalize_path(_get_student_remediation_path()))
-	ResourceSaver.save(_student_remediation, _get_student_remediation_path())
+	var remediation_path: String = _get_student_remediation_path()
+	Log.trace("UserDataManager: Saving student remediation in " + ProjectSettings.globalize_path(remediation_path))
+	var error: Error = ResourceSaver.save(_student_remediation, remediation_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save student remediation to %s. Error: %s" % [remediation_path, error_string(error)])
+	else:
+		Log.trace("UserDataManager: Student remediation saved successfully at " + ProjectSettings.globalize_path(remediation_path))
 
 
 func get_gp_remediation_score(gp_id: int) -> int:
@@ -799,12 +821,19 @@ func set_student_confusion_matrix_gp_data(student_code: int, new_scores: Diction
 		student_confusion_matrix = UserConfusionMatrix.new()
 	student_confusion_matrix.set_gp_scores(new_scores)
 	student_confusion_matrix.set_gp_last_modified(updated_at)
-	ResourceSaver.save(student_confusion_matrix, confusion_matrix_data_path)
+	var error: Error = ResourceSaver.save(student_confusion_matrix, confusion_matrix_data_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save confusion matrix GP data to %s. Error: %s" % [confusion_matrix_data_path, error_string(error)])
 
 
 func _save_student_confusion_matrix() -> void:
-	Log.trace("UserDataManager: Saving student confusion_matrix in " + ProjectSettings.globalize_path(_get_student_confusion_matrix_path()))
-	ResourceSaver.save(_student_confusion_matrix, _get_student_confusion_matrix_path())
+	var confusion_matrix_path: String = _get_student_confusion_matrix_path()
+	Log.trace("UserDataManager: Saving student confusion_matrix in " + ProjectSettings.globalize_path(confusion_matrix_path))
+	var error: Error = ResourceSaver.save(_student_confusion_matrix, confusion_matrix_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save student confusion matrix to %s. Error: %s" % [confusion_matrix_path, error_string(error)])
+	else:
+		Log.trace("UserDataManager: Student confusion matrix saved successfully at " + ProjectSettings.globalize_path(confusion_matrix_path))
 
 
 func get_gp_confusion_matrix_score(gp_id: int) -> PackedInt32Array:
@@ -845,8 +874,13 @@ func _load_student_difficulty() -> void:
 
 
 func _save_student_difficulty() -> void:
-	Log.trace("UserDataManager: Saving student difficulty in " + ProjectSettings.globalize_path(_get_student_difficulty_path()))
-	ResourceSaver.save(_student_difficulty, _get_student_difficulty_path())
+	var difficulty_path: String = _get_student_difficulty_path()
+	Log.trace("UserDataManager: Saving student difficulty in " + ProjectSettings.globalize_path(difficulty_path))
+	var error: Error = ResourceSaver.save(_student_difficulty, difficulty_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save student difficulty to %s. Error: %s" % [difficulty_path, error_string(error)])
+	else:
+		Log.trace("UserDataManager: Student difficulty saved successfully at " + ProjectSettings.globalize_path(difficulty_path))
 
 
 func get_difficulty_for_minigame(minigame_name: String) -> int:
@@ -887,8 +921,13 @@ func _load_student_speeches() -> void:
 
 
 func _save_student_speeches() -> void:
-	Log.trace("UserDataManager: Saving student speeches in " + ProjectSettings.globalize_path(_get_student_speeches_path()))
-	ResourceSaver.save(_student_speeches, _get_student_speeches_path())
+	var speeches_path: String = _get_student_speeches_path()
+	Log.trace("UserDataManager: Saving student speeches in " + ProjectSettings.globalize_path(speeches_path))
+	var error: Error = ResourceSaver.save(_student_speeches, speeches_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save student speeches to %s. Error: %s" % [speeches_path, error_string(error)])
+	else:
+		Log.trace("UserDataManager: Student speeches saved successfully at " + ProjectSettings.globalize_path(speeches_path))
 
 
 func mark_speech_as_played(speech: String) -> void:
@@ -919,12 +958,14 @@ func move_user_device_folder(old_device: String, new_device: String, student_cod
 	if not parent_dir.dir_exists(new_parent_dir):
 		var err: Error = parent_dir.make_dir_recursive(new_parent_dir)
 		if err != OK:
-			push_error("UserDataManager: Cannot create parent folder: %s" % error_string(err))
+			Log.error("UserDataManager: Cannot create parent folder: %s" % error_string(err))
 			return
 	if parent_dir.dir_exists(str(old_child_dir)):
 		var err: Error = parent_dir.rename(old_child_dir, new_child_dir)
 		if err != OK:
 			Log.error("UserDataManager: Error while renaming folder: %s" % error_string(err))
+		else:
+			Log.trace("UserDataManager: Student folder moved successfully to %s" % new_child_dir)
 	else:
 		Log.error("UserDataManager: The folder '%s' cannot be moved because it does no exists in %s." % [old_device, parent_dir_path])
 		return
