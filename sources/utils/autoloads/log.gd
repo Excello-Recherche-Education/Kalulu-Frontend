@@ -12,12 +12,17 @@ enum LogLevel {
 }
 
 const LOG_PATH: String = "user://Logs/"
+const LOG_MAX_SIZE_BYTES: int = 1 * 1024
+const MAX_LOG_ENTRIES_IN_RAM: int = 13985
+const MAX_LOG_ENTRIES_THRESHOLD: int = 100
 
-var current_level: LogLevel = LogLevel.NONE
+var current_level: LogLevel = LogLevel.INFO
+var log_file_base_path: String
 var log_file_path: String
 var log_file: FileAccess
 var initialized: bool = false
 var all_logs: PackedStringArray = []
+var log_rotation_index: int = 1
 
 
 func _ready() -> void:
@@ -79,18 +84,24 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 	dir.list_dir_end()
 
 
-func _init_log_file() -> void:
+func _init_log_file(path_override: String = "") -> void:
 	# Ensure Logs directory exists
 	var logs_dir: DirAccess = DirAccess.open(LOG_PATH)
 	if logs_dir == null:
 		DirAccess.make_dir_recursive_absolute(LOG_PATH)
 	
-	var now: Dictionary = Time.get_datetime_dict_from_system()
-	var filename: String = "Kalulu_Log_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
-		now.year, now.month, now.day,
-		now.hour, now.minute, now.second
-	]
-	log_file_path = LOG_PATH + filename
+	if log_file_base_path == "":
+		var now: Dictionary = Time.get_datetime_dict_from_system()
+		var filename: String = "Kalulu_Log_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
+			now.year, now.month, now.day,
+			now.hour, now.minute, now.second
+		]
+		log_file_base_path = LOG_PATH + filename
+		log_rotation_index = 1
+	if path_override == "":
+		log_file_path = _build_rotated_log_path()
+	else:
+		log_file_path = path_override
 	
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
 	var err: Error = FileAccess.get_open_error()
@@ -120,6 +131,10 @@ func _log_internal(level: LogLevel, message: String) -> void:
 	var time_str: String = Time.get_time_string_from_system()
 	var log_message: String = "%s %s %s" % [time_str, prefix, message]
 	all_logs.append(log_message)
+	if all_logs.size() > MAX_LOG_ENTRIES_IN_RAM + MAX_LOG_ENTRIES_THRESHOLD:
+		# Delete old logs
+		var overflow: int = all_logs.size() - MAX_LOG_ENTRIES_IN_RAM
+		all_logs = all_logs.slice(overflow)
 	_log_to_file(log_message)
 	match level:
 		LogLevel.DEBUG:
@@ -138,8 +153,62 @@ func _log_internal(level: LogLevel, message: String) -> void:
 
 func _log_to_file(message: String) -> void:
 	if log_file:
+		_rotate_log_file_if_needed(message)
 		log_file.store_line(message)
 		log_file.flush()
+
+
+func _rotate_log_file_if_needed(message: String) -> void:
+	if log_file == null:
+		return
+	var current_size: int = log_file.get_length()
+	var message_size: int = message.to_utf8_buffer().size() + 1
+	if current_size + message_size <= LOG_MAX_SIZE_BYTES:
+		return
+	var previous_log_path: String = log_file_path
+	_bump_rotation_index()
+	var next_log_path: String = _build_rotated_log_path()
+	log_file.store_line("Log rotation: next logs are in file \"%s\"." % next_log_path)
+	log_file.flush()
+	log_file.close()
+	_init_log_file(next_log_path)
+	if log_file:
+		log_file.store_line("Log continuation from file \"%s\"." % previous_log_path)
+		log_file.flush()
+
+
+func _build_rotated_log_path() -> String:
+	var base_name: String = log_file_base_path.get_basename()
+	var extension: String = log_file_base_path.get_extension()
+	var suffix: String = _rotation_suffix(log_rotation_index)
+	var path: String = base_name + suffix
+	if extension != "":
+		path += "." + extension
+	while FileAccess.file_exists(path):
+		_bump_rotation_index()
+		suffix = _rotation_suffix(log_rotation_index)
+		path = base_name + suffix
+		if extension != "":
+			path += "." + extension
+	return path
+
+
+func _rotation_suffix(index: int) -> String:
+	if index <= 1:
+		return ""
+	if index <= 999:
+		return "_%s" % str(index).pad_zeros(3)
+	return "_%d" % index
+
+
+func _bump_rotation_index() -> void:
+	if log_rotation_index < 999:
+		log_rotation_index += 1
+	elif log_rotation_index == 999:
+		log_rotation_index = 1000
+		alert(tr("LOG_TOO_MUCH_ROTATION"))
+	else:
+		log_rotation_index += 1
 
 
 # trace can be used everywhere, in order to have a full log of all that is hapenning
