@@ -11,7 +11,7 @@ enum LogLevel {
 	NONE
 }
 
-const FILE_BASE_NAME = "Kalulu_Log"
+const FILE_BASE_NAME: String = "Kalulu_Log"
 const LOG_PATH: String = "user://Logs/"
 const LOG_MAX_SIZE_BYTES: int = 1 * 1024
 const MAX_LOG_ENTRIES_IN_RAM: int = 13985
@@ -61,26 +61,31 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 	dir.list_dir_begin()
 	var file_name: String = dir.get_next()
 	while file_name != "":
-		if file_name.begins_with(FILE_BASE_NAME + "_") and file_name.ends_with(".txt"):
-			var parts: PackedStringArray = file_name.get_basename().replace(FILE_BASE_NAME + "_", "").split("-")
-			if parts.size() >= 6:
-				var date_dict: Dictionary = {
-					"year": parts[0].to_int(),
-					"month": parts[1].to_int(),
-					"day": parts[2].to_int(),
-					"hour": parts[3].to_int(),
-					"minute": parts[4].to_int(),
-					"second": parts[5].to_int()
-				}
-				var file_time: int = Time.get_unix_time_from_datetime_dict(date_dict)
-				var age_days: float = float(now - file_time) / (60.0 * 60.0 * 24.0)
-				if age_days > days_threshold:
-					var full_path: String = LOG_PATH + file_name
-					err = dir.remove(full_path)
-					if err != OK:
-						push_warning("Log: Failed to delete old log: " + full_path)
-					else:
-						print("Log: Deleted old log:", full_path)
+		var base: String = file_name.get_basename()
+		if base.begins_with(FILE_BASE_NAME + "_"):
+			var date_part: String = base.substr(FILE_BASE_NAME.length() + 1)
+			# Truncate at YYYY-MM-DD-HH-MM-SS (19 char)
+			if date_part.length() >= 19:
+				date_part = date_part.substr(0, 19)
+				var parts: PackedStringArray = date_part.split("-")
+				if parts.size() == 6:
+					var date_dict: Dictionary[String, int] = {
+						"year": int(parts[0]),
+						"month": int(parts[1]),
+						"day": int(parts[2]),
+						"hour": int(parts[3]),
+						"minute": int(parts[4]),
+						"second": int(parts[5]),
+					}
+					var file_time: int = Time.get_unix_time_from_datetime_dict(date_dict)
+					var age_days: float = float(now - file_time) / (60.0 * 60.0 * 24.0)
+					if age_days > days_threshold:
+						var full_path: String = LOG_PATH + file_name
+						err = dir.remove(full_path)
+						if err != OK:
+							push_warning("Log: Failed to delete old log: " + full_path)
+						else:
+							print("Log: Deleted old log:", full_path)
 		file_name = dir.get_next()
 	dir.list_dir_end()
 
