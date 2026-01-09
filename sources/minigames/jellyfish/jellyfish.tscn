@@ -19,7 +19,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.0708268, 1.0708268)
+scale = Vector2(1.0692327, 1.0692327)
 script = ExtResource("1_06uwq")
 
 [node name="BackFX" type="Control" parent="."]
@@ -55,6 +55,19 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="WrongFX" parent="BackFX" instance=ExtResource("6_w1tlu")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
 [node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
 layout_mode = 1
 anchors_preset = 15
@@ -71,7 +84,7 @@ unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("6_p6hdi")
 animation = &"idle"
-frame_progress = 0.7961169
+frame_progress = 0.1467905
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
@@ -106,7 +119,7 @@ layout_mode = 2
 
 [node name="Label" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "ent"
+text = ""
 label_settings = ExtResource("9_ah5ir")
 
 [node name="TextBox_Outline_Sprite2D" type="Sprite2D" parent="SpriteControl/TextBox_Sprite2D"]
@@ -119,7 +132,7 @@ unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("6_i86t4")
 animation = &"idle"
-frame_progress = 0.7961169
+frame_progress = 0.1467905
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
@@ -131,19 +144,6 @@ anchor_bottom = 0.55
 size_flags_vertical = 0
 mouse_filter = 1
 metadata/_edit_use_anchors_ = true
-
-[node name="WrongFX" parent="FrontFX" instance=ExtResource("6_w1tlu")]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 

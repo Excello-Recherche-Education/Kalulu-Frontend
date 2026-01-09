@@ -101,8 +101,8 @@ func stop_highlight() -> void:
 
 func right() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#009444")
-	text_box_sprite_2d.self_modulate = Color("#e6f3e0")
+	label.label_settings.font_color = Color("#e6f3e0")
+	text_box_sprite_2d.self_modulate = Color("#009344")
 	text_box_outline_sprite_2d.self_modulate = Color("#009344")
 	text_box_outline_sprite_2d.show()
 	right_fx.play()
@@ -111,8 +111,8 @@ func right() -> void:
 
 func wrong() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#be1e2d")
-	text_box_sprite_2d.self_modulate = Color("#fce6e6")
+	label.label_settings.font_color = Color("#fce6e6")
+	text_box_sprite_2d.self_modulate = Color("#be1e2d")
 	text_box_outline_sprite_2d.self_modulate = Color("#be1e2d")
 	text_box_outline_sprite_2d.show()
 	wrong_fx.play()

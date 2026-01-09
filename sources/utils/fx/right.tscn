@@ -1,17 +1,16 @@
-[gd_scene load_steps=15 format=3 uid="uid://cn2rw06pltyiu"]
+[gd_scene load_steps=13 format=3 uid="uid://cn2rw06pltyiu"]
 
 [ext_resource type="Script" uid="uid://djqbam0o37ayq" path="res://sources/utils/fx/right.gd" id="1_83pnv"]
 [ext_resource type="AudioStream" uid="uid://s0cxaexjq5l2" path="res://assets/sfx/sfx_right.mp3" id="2_ebh1q"]
-[ext_resource type="Texture2D" uid="uid://3idggaf5hbbm" path="res://assets/vfx/fx_02.png" id="3_2nlkh"]
 [ext_resource type="Texture2D" uid="uid://cbjnvgc5jkpj8" path="res://assets/vfx/halo.png" id="4_5o5es"]
-[ext_resource type="Texture2D" uid="uid://dxl5h3tqf21cv" path="res://assets/vfx/fx_03.png" id="5_300xs"]
+[ext_resource type="Texture2D" uid="uid://ckmh0rn7e8mq" path="res://assets/vfx/star.png" id="4_uanlr"]
 
 [sub_resource type="Animation" id="Animation_sc4ca"]
 length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Rays:scale:x")
+tracks/0/path = NodePath("Halo:scale:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -22,7 +21,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Rays:scale:y")
+tracks/1/path = NodePath("Halo:scale:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -33,7 +32,7 @@ tracks/1/keys = {
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Rays:modulate:a")
+tracks/2/path = NodePath("Halo:modulate:a")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -41,58 +40,25 @@ tracks/2/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.05, 0.5),
 "times": PackedFloat32Array(0)
 }
-tracks/3/type = "bezier"
+tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Halo:scale:x")
+tracks/3/path = NodePath("GPUParticles2D:emitting")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0.5),
-"times": PackedFloat32Array(0)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Halo:scale:y")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0.5),
-"times": PackedFloat32Array(0)
-}
-tracks/5/type = "bezier"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Halo:modulate:a")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.05, 0.5),
-"times": PackedFloat32Array(0)
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("GPUParticles2D:emitting")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("AudioStreamPlayer2D:playing")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -134,58 +100,25 @@ tracks/2/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.05, 0.5, 1, -0.05, 0, 0.5, 0, 0, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 0.1, 1)
 }
-tracks/3/type = "bezier"
+tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Rays:scale:x")
+tracks/3/path = NodePath("GPUParticles2D:emitting")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0.5, 1.6, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Rays:scale:y")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0.5, 1.6, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1)
-}
-tracks/5/type = "bezier"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Rays:modulate:a")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.05, 0.5, 1, -0.05, 0, 0.5, 0, 0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.1, 1)
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("GPUParticles2D:emitting")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("AudioStreamPlayer2D:playing")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -197,9 +130,6 @@ _data = {
 &"RESET": SubResource("Animation_sc4ca"),
 &"right": SubResource("Animation_xu0xr")
 }
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_v3jt2"]
-blend_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_u3fxj"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -219,11 +149,16 @@ curve = SubResource("Curve_4x1t7")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dwcrn"]
 particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(100, 50, 1)
 direction = Vector3(0, -1, 0)
 initial_velocity_min = 100.0
 initial_velocity_max = 200.0
-angular_velocity_max = 720.0
+angular_velocity_min = -100.000015
+angular_velocity_max = 49.99998
 gravity = Vector3(0, 98, 0)
+scale_min = 0.08
+scale_max = 0.12
 scale_curve = SubResource("CurveTexture_m4jha")
 color_ramp = SubResource("GradientTexture1D_c2dvd")
 
@@ -241,21 +176,16 @@ libraries = {
 stream = ExtResource("2_ebh1q")
 bus = &"Effects"
 
-[node name="Rays" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
-material = SubResource("CanvasItemMaterial_v3jt2")
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("3_2nlkh")
-
 [node name="Halo" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 0.827451, 0.4, 1)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("4_5o5es")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+self_modulate = Color(1, 0.827451, 0.4, 1)
 emitting = false
-amount = 16
-texture = ExtResource("5_300xs")
+texture = ExtResource("4_uanlr")
 lifetime = 2.5
 one_shot = true
 explosiveness = 1.0
