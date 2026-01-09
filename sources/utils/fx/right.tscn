@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cn2rw06pltyiu"]
+[gd_scene load_steps=7 format=3 uid="uid://cn2rw06pltyiu"]
 
 [ext_resource type="Script" uid="uid://djqbam0o37ayq" path="res://sources/utils/fx/right.gd" id="1_83pnv"]
 [ext_resource type="AudioStream" uid="uid://s0cxaexjq5l2" path="res://assets/sfx/sfx_right.mp3" id="2_ebh1q"]
 [ext_resource type="Texture2D" uid="uid://cbjnvgc5jkpj8" path="res://assets/vfx/halo.png" id="4_5o5es"]
-[ext_resource type="Texture2D" uid="uid://ckmh0rn7e8mq" path="res://assets/vfx/star.png" id="4_uanlr"]
 
 [sub_resource type="Animation" id="Animation_sc4ca"]
 length = 0.001
@@ -43,22 +42,10 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("GPUParticles2D:emitting")
+tracks/3/path = NodePath("AudioStreamPlayer2D:playing")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AudioStreamPlayer2D:playing")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -103,22 +90,10 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("GPUParticles2D:emitting")
+tracks/3/path = NodePath("AudioStreamPlayer2D:playing")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AudioStreamPlayer2D:playing")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -130,37 +105,6 @@ _data = {
 &"RESET": SubResource("Animation_sc4ca"),
 &"right": SubResource("Animation_xu0xr")
 }
-
-[sub_resource type="Gradient" id="Gradient_u3fxj"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_c2dvd"]
-gradient = SubResource("Gradient_u3fxj")
-width = 32
-
-[sub_resource type="Curve" id="Curve_4x1t7"]
-_limits = [0.0, 0.8, 0.0, 1.0]
-_data = [Vector2(0, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.08937, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_m4jha"]
-width = 32
-curve = SubResource("Curve_4x1t7")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dwcrn"]
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(100, 50, 1)
-direction = Vector3(0, -1, 0)
-initial_velocity_min = 100.0
-initial_velocity_max = 200.0
-angular_velocity_min = -100.000015
-angular_velocity_max = 49.99998
-gravity = Vector3(0, 98, 0)
-scale_min = 0.08
-scale_max = 0.12
-scale_curve = SubResource("CurveTexture_m4jha")
-color_ramp = SubResource("GradientTexture1D_c2dvd")
 
 [node name="RightFX" type="Control"]
 layout_mode = 3
@@ -181,14 +125,5 @@ modulate = Color(1, 1, 1, 0)
 self_modulate = Color(1, 0.827451, 0.4, 1)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("4_5o5es")
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-self_modulate = Color(1, 0.827451, 0.4, 1)
-emitting = false
-texture = ExtResource("4_uanlr")
-lifetime = 2.5
-one_shot = true
-explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_dwcrn")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

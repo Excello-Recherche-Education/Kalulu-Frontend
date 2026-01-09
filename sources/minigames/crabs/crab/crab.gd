@@ -29,6 +29,7 @@ var blink_random: int = 3
 @onready var button: Button = $Button
 @onready var highlight_fx: HighlightFX = %HighlightFX
 @onready var right_fx: RightFX = %RightFX
+@onready var right_stars: RightStarsFX = %Right_Stars
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var text_outline: Sprite2D = %TextBox_Outline_Sprite2D
@@ -75,6 +76,7 @@ func right() -> void:
 	text_outline.show()
 	animated_sprite.play("right")
 	right_fx.play()
+	right_stars.play()
 	await right_fx.finished
 
 
