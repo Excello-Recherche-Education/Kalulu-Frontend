@@ -2,7 +2,7 @@
 
 [ext_resource type="AudioStream" uid="uid://2imrfcmquc7d" path="res://assets/sfx/sfx_wrong.mp3" id="1_qd4na"]
 [ext_resource type="Script" uid="uid://b5dy0viriac74" path="res://sources/utils/fx/wrong.gd" id="1_sgjc5"]
-[ext_resource type="Texture2D" uid="uid://c161hyri7yhme" path="res://assets/vfx/fx_01.png" id="3_r5miu"]
+[ext_resource type="Texture2D" uid="uid://cbjnvgc5jkpj8" path="res://assets/vfx/halo.png" id="3_57yyh"]
 [ext_resource type="Texture2D" uid="uid://bqw5oyt88v05u" path="res://assets/vfx/cross.png" id="4_7ijh5"]
 
 [sub_resource type="Animation" id="Animation_tj5mf"]
@@ -180,7 +180,7 @@ script = ExtResource("1_sgjc5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_c86ui")
+&"": SubResource("AnimationLibrary_c86ui")
 }
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
@@ -190,7 +190,7 @@ bus = &"Effects"
 [node name="Halo" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("3_r5miu")
+texture = ExtResource("3_57yyh")
 
 [node name="Cross" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
