@@ -11,6 +11,7 @@ enum LogLevel {
 	NONE
 }
 
+const FILE_BASE_NAME = "Kalulu_Log"
 const LOG_PATH: String = "user://Logs/"
 const LOG_MAX_SIZE_BYTES: int = 1 * 1024
 const MAX_LOG_ENTRIES_IN_RAM: int = 13985
@@ -60,8 +61,8 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 	dir.list_dir_begin()
 	var file_name: String = dir.get_next()
 	while file_name != "":
-		if file_name.begins_with("Kalulu_Log_") and file_name.ends_with(".txt"):
-			var parts: PackedStringArray = file_name.get_basename().replace("Kalulu_Log_", "").split("-")
+		if file_name.begins_with(FILE_BASE_NAME + "_") and file_name.ends_with(".txt"):
+			var parts: PackedStringArray = file_name.get_basename().replace(FILE_BASE_NAME + "_", "").split("-")
 			if parts.size() >= 6:
 				var date_dict: Dictionary = {
 					"year": parts[0].to_int(),
@@ -92,7 +93,8 @@ func _init_log_file(path_override: String = "") -> void:
 	
 	if log_file_base_path == "":
 		var now: Dictionary = Time.get_datetime_dict_from_system()
-		var filename: String = "Kalulu_Log_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
+		var filename: String = "%s_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
+			FILE_BASE_NAME,
 			now.year, now.month, now.day,
 			now.hour, now.minute, now.second
 		]
