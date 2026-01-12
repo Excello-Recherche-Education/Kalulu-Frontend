@@ -19,6 +19,11 @@ const FROG_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_random_05.mp3"),
 ]
 
+var blink_counter: int = 0
+var blink_delay: int = 3
+var blink_random: int = 3
+
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var sprite: Sprite2D = $Sprite
@@ -26,7 +31,6 @@ const FROG_SOUNDS: Array[AudioStreamMP3] = [
 
 func jump_to(destination: Vector2) -> void:
 	animation_player.play("jump")
-	
 	var tween: Tween = create_tween()
 	tween.tween_property(self, "global_position", destination, animation_player.get_animation("jump").length)
 
@@ -47,30 +51,44 @@ func _play_frog_sound() -> void:
 		audio_player.play()
 
 
-func _on_animation_player_animation_finished(animation_name: StringName) -> void:
-	if animation_name == "drown":
-		drowned.emit()
-	
-	if animation_name == "jump":
-		animation_player.play("idle_side_1")
-		jumped.emit()
-	
-	if animation_name == "idle_front_1":
-		var rand: float = randf()
-		if rand <= 0.5:
-			animation_player.play("idle_front_1")
-		else:
-			animation_player.play("idle_front_2")
-	
-	if animation_name == "idle_front_2":
-		animation_player.play("idle_front_1")
-	
-	if animation_name == "idle_side_1":
-		var rand: float = randf()
-		if rand <= 0.5:
-			animation_player.play("idle_side_1")
-		else:
-			animation_player.play("idle_side_2")
-	
-	if animation_name == "idle_side_2":
-		animation_player.play("idle_side_1")
+func _on_animated_sprite_2d_animation_finished() -> void:
+	match animated_sprite.animation:
+		"idle_front":
+			blink_counter -= 1
+			if blink_counter <= 0:
+				blink_counter = blink_delay + randi_range(0, blink_random)
+				animated_sprite.play("idle_front_blink") 
+			else: 
+				animated_sprite.play("idle_front")
+		"idle_front_blink":
+			animated_sprite.play("idle_front")
+		"idle_side":
+			blink_counter -= 1
+			if blink_counter <= 0:
+				blink_counter = blink_delay + randi_range(0, blink_random)
+				animated_sprite.play("idle_side_blink") 
+			else: 
+				animated_sprite.play("idle_side")
+		"idle_side_blink":
+			animated_sprite.play("idle_side")
+		"drown":
+			drowned.emit()
+		"jump":
+			animated_sprite.play("idle_front")
+			jumped.emit()
+		#"idle_front_1":
+			#var rand: float = randf()
+			#if rand <= 0.5:
+				#animation_player.play("idle_front_1")
+			#else:
+				#animation_player.play("idle_front_2")
+		#"idle_front_2":
+			#animation_player.play("idle_front_1")
+		#"idle_side_1":
+			#var rand: float = randf()
+			#if rand <= 0.5:
+				#animation_player.play("idle_side_1")
+			#else:
+				#animation_player.play("idle_side_2")
+		#"idle_side_2":
+			#animation_player.play("idle_side_1")
