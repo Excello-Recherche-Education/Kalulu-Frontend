@@ -1,7 +1,8 @@
-[gd_scene load_steps=26 format=3 uid="uid://dryu60mtiqv3"]
+[gd_scene load_steps=27 format=3 uid="uid://dryu60mtiqv3"]
 
 [ext_resource type="Script" uid="uid://ynqc2tqeuqt3" path="res://sources/minigames/caterpillar/caterpillar_body.gd" id="1_vvkkg"]
 [ext_resource type="Texture2D" uid="uid://dg035yddvs04o" path="res://assets/minigames/caterpillar/graphics/caterpillar_legs_spritesheet.png" id="2_20a20"]
+[ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="4_t1ugq"]
 [ext_resource type="LabelSettings" uid="uid://vk8pnpl5skbd" path="res://resources/themes/minigames_label_settings_caterpillar.tres" id="7_6wjy7"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="14_cyw4o"]
 [ext_resource type="Texture2D" uid="uid://dkc630ptqucrp" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_left.png" id="15_2xyl2"]
@@ -149,9 +150,9 @@ sprite_frames = SubResource("SpriteFrames_xdpna")
 [node name="RightFX" parent="Position" instance=ExtResource("14_cyw4o")]
 unique_name_in_owner = true
 offset_left = 64.0
-offset_top = -128.0
+offset_top = 62.0
 offset_right = 64.0
-offset_bottom = -128.0
+offset_bottom = 62.0
 
 [node name="Node2D" type="Node2D" parent="Position"]
 position = Vector2(0, -29)
@@ -187,3 +188,6 @@ vertical_alignment = 1
 [node name="AnimatedSprite2D_Leg_Front" type="AnimatedSprite2D" parent="Position"]
 position = Vector2(40, 140)
 sprite_frames = SubResource("SpriteFrames_018u2")
+
+[node name="Right_Stars" parent="Position" instance=ExtResource("4_t1ugq")]
+position = Vector2(64, 62)

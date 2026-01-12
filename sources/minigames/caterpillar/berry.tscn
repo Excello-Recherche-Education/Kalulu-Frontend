@@ -24,6 +24,12 @@ offset_top = -136.0
 offset_right = 33.0
 offset_bottom = -136.0
 
+[node name="WrongFX" parent="." instance=ExtResource("4_gmtk0")]
+offset_left = 33.0
+offset_top = -136.0
+offset_right = 33.0
+offset_bottom = -136.0
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-144, -128)
 shape = SubResource("RectangleShape2D_aq0kv")
@@ -54,12 +60,6 @@ text = "ent"
 label_settings = ExtResource("4_j1h4b")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="WrongFX" parent="." instance=ExtResource("4_gmtk0")]
-offset_left = 33.0
-offset_top = -136.0
-offset_right = 33.0
-offset_bottom = -136.0
 
 [node name="Button" type="Button" parent="."]
 offset_left = -127.0

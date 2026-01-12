@@ -1,6 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://br6yhq4w7b420"]
+[gd_scene load_steps=8 format=3 uid="uid://cs6g7fhc0bjvh"]
 
-[ext_resource type="Script" uid="uid://fduykuptafux" path="res://sources/utils/fx/right_stars.gd" id="1_kulwr"]
+[ext_resource type="Script" path="res://sources/utils/fx/right_stars.gd" id="1_kulwr"]
 [ext_resource type="Texture2D" uid="uid://ckmh0rn7e8mq" path="res://assets/vfx/star.png" id="1_r3bwq"]
 
 [sub_resource type="Gradient" id="Gradient_u3fxj"]
@@ -35,6 +35,7 @@ scale_curve = SubResource("CurveTexture_m4jha")
 color_ramp = SubResource("GradientTexture1D_c2dvd")
 
 [node name="Right_Stars" type="Node2D"]
+z_index = 1000
 script = ExtResource("1_kulwr")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]

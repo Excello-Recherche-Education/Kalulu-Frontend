@@ -15,7 +15,8 @@ var base_width: int = 10 # Minimal width of the body
 
 # @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var label: Label = %Label
-@onready var right_FX: RightFX = %RightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var right_stars: RightStarsFX = $Position/Right_Stars
 @onready var body_left: Sprite2D = %Sprite2D_Body_Left
 @onready var body_center: TextureRect = %TextureRect_Body_Center
 @onready var body_right: Sprite2D = %Sprite2D_Body_Right
@@ -34,8 +35,12 @@ func walk() -> void:
 
 
 func right() -> void:
-	right_FX.play()
-	await right_FX.finished
+	var fx_position: Vector2 = Vector2(body_center.position.x + body_center.get_size().x/2, right_fx.get_position().y)
+	right_fx.set_position(fx_position)
+	right_stars.set_position(body_center.position)
+	right_fx.play()
+	right_stars.play()
+	await right_fx.finished
 
 
 func get_width() -> float:
