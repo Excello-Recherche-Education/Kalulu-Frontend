@@ -44,8 +44,9 @@ var original_text_box_color: Color
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animated_sprite_2d_feathers: AnimatedSprite2D = $AnimatedSprite2D_Feathers
 @onready var label: Label = $Label
-@onready var right_FX: RightFX = $RightFX
-@onready var wrong_FX: WrongFX = $WrongFX
+@onready var right_fx: RightFX = $RightFX
+@onready var right_stars: RightStarsFX = $Right_Stars
+@onready var wrong_fx: WrongFX = $WrongFX
 @onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
 @onready var text_box_outline_sprite_2d: Sprite2D = %TextBox_Outline_Sprite2D
 
@@ -127,8 +128,9 @@ func right() -> void:
 	text_box_sprite_2d.self_modulate = Color("#e6f3e0")
 	text_box_outline_sprite_2d.self_modulate = Color("#009344")
 	text_box_outline_sprite_2d.visible = true
-	right_FX.play()
-	await right_FX.finished
+	right_stars.play()
+	right_fx.play()
+	await right_fx.finished
 
 
 func wrong() -> void:
@@ -137,5 +139,5 @@ func wrong() -> void:
 	text_box_sprite_2d.self_modulate = Color("#fce6e6")
 	text_box_outline_sprite_2d.self_modulate = Color("#be1e2d")
 	text_box_outline_sprite_2d.visible = true
-	wrong_FX.play()
-	await wrong_FX.finished
+	wrong_fx.play()
+	await wrong_fx.finished
