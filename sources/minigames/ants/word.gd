@@ -18,6 +18,7 @@ var current_anchor: CanvasItem
 @onready var area: Area2D = $Area2D
 @onready var label: Label = %Label
 @onready var right_fx: RightFX = $RightFX
+@onready var right_stars: RightStarsFX = $Right_Stars
 @onready var wrong_fx: WrongFX = $WrongFX
 @onready var text_box: TextureRect = $TextBox
 
@@ -27,6 +28,7 @@ func right() -> void:
 	label.label_settings.font_color = FONT_ANSWER_COLOR
 	text_box.self_modulate = TEXT_BOX_RIGHT_COLOR
 	right_fx.play()
+	right_stars.play()
 	await right_fx.finished
 	text_box.self_modulate = TEXT_BOX_BASE_COLOR
 	label.label_settings = MINIGAMES_LABEL_SETTINGS_ANTS
