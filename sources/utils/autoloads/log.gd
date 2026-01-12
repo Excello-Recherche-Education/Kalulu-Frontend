@@ -11,13 +11,19 @@ enum LogLevel {
 	NONE
 }
 
+const FILE_BASE_NAME: String = "Kalulu_Log"
 const LOG_PATH: String = "user://Logs/"
+const LOG_MAX_SIZE_BYTES: int = 1 * 1024
+const MAX_LOG_ENTRIES_IN_RAM: int = 13985
+const MAX_LOG_ENTRIES_THRESHOLD: int = 100
 
-var current_level: LogLevel = LogLevel.NONE
+var current_level: LogLevel = LogLevel.INFO
+var log_file_base_path: String
 var log_file_path: String
 var log_file: FileAccess
 var initialized: bool = false
 var all_logs: PackedStringArray = []
+var log_rotation_index: int = 1
 
 
 func _ready() -> void:
@@ -55,42 +61,54 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 	dir.list_dir_begin()
 	var file_name: String = dir.get_next()
 	while file_name != "":
-		if file_name.begins_with("Kalulu_Log_") and file_name.ends_with(".txt"):
-			var parts: PackedStringArray = file_name.get_basename().replace("Kalulu_Log_", "").split("-")
-			if parts.size() >= 6:
-				var date_dict: Dictionary = {
-					"year": parts[0].to_int(),
-					"month": parts[1].to_int(),
-					"day": parts[2].to_int(),
-					"hour": parts[3].to_int(),
-					"minute": parts[4].to_int(),
-					"second": parts[5].to_int()
-				}
-				var file_time: int = Time.get_unix_time_from_datetime_dict(date_dict)
-				var age_days: float = float(now - file_time) / (60.0 * 60.0 * 24.0)
-				if age_days > days_threshold:
-					var full_path: String = LOG_PATH + file_name
-					err = dir.remove(full_path)
-					if err != OK:
-						push_warning("Log: Failed to delete old log: " + full_path)
-					else:
-						print("Log: Deleted old log:", full_path)
+		var base: String = file_name.get_basename()
+		if base.begins_with(FILE_BASE_NAME + "_"):
+			var date_part: String = base.substr(FILE_BASE_NAME.length() + 1)
+			# Truncate at YYYY-MM-DD-HH-MM-SS (19 char)
+			if date_part.length() >= 19:
+				date_part = date_part.substr(0, 19)
+				var parts: PackedStringArray = date_part.split("-")
+				if parts.size() == 6:
+					var date_dict: Dictionary[String, int] = {
+						"year": int(parts[0]),
+						"month": int(parts[1]),
+						"day": int(parts[2]),
+						"hour": int(parts[3]),
+						"minute": int(parts[4]),
+						"second": int(parts[5]),
+					}
+					var file_time: int = Time.get_unix_time_from_datetime_dict(date_dict)
+					var age_days: float = float(now - file_time) / (60.0 * 60.0 * 24.0)
+					if age_days > days_threshold:
+						var full_path: String = LOG_PATH + file_name
+						err = dir.remove(full_path)
+						if err != OK:
+							push_warning("Log: Failed to delete old log: " + full_path)
+						else:
+							print("Log: Deleted old log:", full_path)
 		file_name = dir.get_next()
 	dir.list_dir_end()
 
 
-func _init_log_file() -> void:
+func _init_log_file(path_override: String = "") -> void:
 	# Ensure Logs directory exists
 	var logs_dir: DirAccess = DirAccess.open(LOG_PATH)
 	if logs_dir == null:
 		DirAccess.make_dir_recursive_absolute(LOG_PATH)
 	
-	var now: Dictionary = Time.get_datetime_dict_from_system()
-	var filename: String = "Kalulu_Log_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
-		now.year, now.month, now.day,
-		now.hour, now.minute, now.second
-	]
-	log_file_path = LOG_PATH + filename
+	if log_file_base_path == "":
+		var now: Dictionary = Time.get_datetime_dict_from_system()
+		var filename: String = "%s_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
+			FILE_BASE_NAME,
+			now.year, now.month, now.day,
+			now.hour, now.minute, now.second
+		]
+		log_file_base_path = LOG_PATH + filename
+		log_rotation_index = 1
+	if path_override == "":
+		log_file_path = _build_rotated_log_path()
+	else:
+		log_file_path = path_override
 	
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
 	var err: Error = FileAccess.get_open_error()
@@ -120,6 +138,10 @@ func _log_internal(level: LogLevel, message: String) -> void:
 	var time_str: String = Time.get_time_string_from_system()
 	var log_message: String = "%s %s %s" % [time_str, prefix, message]
 	all_logs.append(log_message)
+	if all_logs.size() > MAX_LOG_ENTRIES_IN_RAM + MAX_LOG_ENTRIES_THRESHOLD:
+		# Delete old logs
+		var overflow: int = all_logs.size() - MAX_LOG_ENTRIES_IN_RAM
+		all_logs = all_logs.slice(overflow)
 	_log_to_file(log_message)
 	match level:
 		LogLevel.DEBUG:
@@ -138,8 +160,62 @@ func _log_internal(level: LogLevel, message: String) -> void:
 
 func _log_to_file(message: String) -> void:
 	if log_file:
+		_rotate_log_file_if_needed(message)
 		log_file.store_line(message)
 		log_file.flush()
+
+
+func _rotate_log_file_if_needed(message: String) -> void:
+	if log_file == null:
+		return
+	var current_size: int = log_file.get_length()
+	var message_size: int = message.to_utf8_buffer().size() + 1
+	if current_size + message_size <= LOG_MAX_SIZE_BYTES:
+		return
+	var previous_log_path: String = log_file_path
+	_bump_rotation_index()
+	var next_log_path: String = _build_rotated_log_path()
+	log_file.store_line("Log rotation: next logs are in file \"%s\"." % next_log_path)
+	log_file.flush()
+	log_file.close()
+	_init_log_file(next_log_path)
+	if log_file:
+		log_file.store_line("Log continuation from file \"%s\"." % previous_log_path)
+		log_file.flush()
+
+
+func _build_rotated_log_path() -> String:
+	var base_name: String = log_file_base_path.get_basename()
+	var extension: String = log_file_base_path.get_extension()
+	var suffix: String = _rotation_suffix(log_rotation_index)
+	var path: String = base_name + suffix
+	if extension != "":
+		path += "." + extension
+	while FileAccess.file_exists(path):
+		_bump_rotation_index()
+		suffix = _rotation_suffix(log_rotation_index)
+		path = base_name + suffix
+		if extension != "":
+			path += "." + extension
+	return path
+
+
+func _rotation_suffix(index: int) -> String:
+	if index <= 1:
+		return ""
+	if index <= 999:
+		return "_%s" % str(index).pad_zeros(3)
+	return "_%d" % index
+
+
+func _bump_rotation_index() -> void:
+	if log_rotation_index < 999:
+		log_rotation_index += 1
+	elif log_rotation_index == 999:
+		log_rotation_index = 1000
+		alert(tr("LOG_TOO_MUCH_ROTATION"))
+	else:
+		log_rotation_index += 1
 
 
 # trace can be used everywhere, in order to have a full log of all that is hapenning
