@@ -28,6 +28,7 @@ func _setup_word_progression() -> void:
 
 func _start() -> void:
 	super()
+	frog.last_valid_position = frog.global_position
 
 
 func _highlight() -> void:
@@ -38,15 +39,10 @@ func _highlight() -> void:
 
 
 func _reset_frog() -> void:
-	frog.global_position = frog_spawn_point.global_position
+	frog.last_valid_position = frog_spawn_point.global_position
+	await frog.appear()
 	frog.jump_to(start.global_position)
 	await frog.jumped
-	
-	# Returns to the last completed track by jumping on each pad
-	for track: LilypadTrack in lilypad_tracks_container.get_children():
-		if track.is_cleared:
-			frog.jump_to(track.lilypads[0].global_position)
-			await frog.jumped
 
 #region Tracks management
 
@@ -93,34 +89,26 @@ func _start_tracks() -> void:
 #region Connections
 
 func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
-	# Log the answer
 	_log_new_response_and_score(lilypad.stimulus)
-	
 	# Disable the tracks
 	track.stop()
-	
-	# Makes the frog jumps on the lilypad
 	frog.jump_to(lilypad.global_position)
 	await frog.jumped
-	
 	river.spawn_water_ring(lilypad.global_position)
-	
 	if lilypad.is_distractor:
 		await lilypad.wrong()
-		
-		lilypad.disappear()
-		frog.drown()
-		await frog.drowned
 		await audio_player.play_gp(lilypad.stimulus)
-		
+		lilypad.disappear()
+		frog.defeat()
+		await frog.defeated
 		current_lives -= 1
-		
 		_start_tracks()
-		await _reset_frog()
+		await frog.appear()
 	else:
 		track.is_highlighting = false
 		track.is_cleared = true
 		track.is_enabled = false
+		frog.success()
 		await audio_player.play_gp(lilypad.stimulus)
 		current_word_progression += 1
 
@@ -134,27 +122,20 @@ func _on_current_word_progression_changed() -> void:
 
 
 func _on_current_progression_changed() -> void:
-	# Makes the frog jumps to the rock on the right
 	frog.jump_to(end.global_position)
 	await frog.jumped
-	
+	frog.win()
 	# Play the animation on each pad
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		track.right()
-	
 	# Replay the stimulus
 	await audio_player.play_word(_get_previous_stimulus().Word as String)
-	
 	# Makes the frog jumps out of screen
+	await frog.flip_happy()
 	frog.jump_to(frog_despawn_point.global_position)
 	await frog.jumped
-	
-	# Free the tracks
 	await _free_tracks()
-	
-	# Resets the frog position
 	await _reset_frog()
-	
 	# Setups the next word
 	super()
 

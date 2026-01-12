@@ -294,6 +294,9 @@ region = Rect2(2870, 2880, 410, 480)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_goeu6")
 }, {
 "duration": 1.0,
@@ -317,9 +320,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8ymwq")
 }],
-"loop": true,
+"loop": false,
 "name": &"appear",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -345,21 +348,29 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_p4crn")
+}, {
+"duration": 1.0,
+"texture": null
 }],
-"loop": true,
+"loop": false,
 "name": &"defeat",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_q3vap")
+}],
+"loop": false,
+"name": &"flip_happy",
+"speed": 12.0
 }, {
+"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ntna2")
 }],
-"loop": true,
-"name": &"flip",
-"speed": 5.0
+"loop": false,
+"name": &"flip_sad",
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -386,9 +397,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fwdd7")
 }],
-"loop": true,
+"loop": false,
 "name": &"idle_front",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -415,9 +426,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1xvel")
 }],
-"loop": true,
+"loop": false,
 "name": &"idle_front_blink",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -444,9 +455,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7uavk")
 }],
-"loop": true,
+"loop": false,
 "name": &"idle_side",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -473,9 +484,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ncg8x")
 }],
-"loop": true,
+"loop": false,
 "name": &"idle_side_blink",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -520,9 +531,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2d5l0")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -549,7 +560,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gcn2i")
 }],
-"loop": true,
+"loop": false,
 "name": &"success",
-"speed": 5.0
+"speed": 12.0
 }]

@@ -1,7 +1,7 @@
 class_name Frog
 extends Control
 
-signal drowned()
+signal defeated()
 signal jumped()
 
 const JUMP_SOUNDS: Array[AudioStreamMP3] = [
@@ -22,21 +22,62 @@ const FROG_SOUNDS: Array[AudioStreamMP3] = [
 var blink_counter: int = 0
 var blink_delay: int = 3
 var blink_random: int = 3
+var last_valid_position: Vector2
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
-@onready var sprite: Sprite2D = $Sprite
 
 
 func jump_to(destination: Vector2) -> void:
-	animation_player.play("jump")
+	animated_sprite.play("jump")
+	var start: Vector2 = global_position
+	var end: Vector2 = destination
+	var duration: float = Utils.get_animation_duration(animated_sprite, "jump")
+	var height: float = 180.0
+	# Apex is above the higher of the two points (smaller Y is higher in 2D)
+	var apex_y: float = min(start.y, end.y) - height
 	var tween: Tween = create_tween()
-	tween.tween_property(self, "global_position", destination, animation_player.get_animation("jump").length)
+	tween.tween_method(
+		func(time: float) -> void:
+			# X: strictly linear over the whole jump
+			var x: float = lerpf(start.x, end.x, time)
+			# Y: fast takeoff, slow near apex, then accelerating fall
+			var y: float
+			var weight: float
+			if time < 0.5:
+				weight = time / 0.5
+				weight = ease(weight, -2.5) # ease-out: strong impulse at start
+				y = lerpf(start.y, apex_y, weight)
+			else:
+				weight = (time - 0.5) / 0.5
+				weight = ease(weight, 2.5) # ease-in: accelerates on descent
+				y = lerpf(apex_y, end.y, weight)
+			global_position = Vector2(x, y),
+		0.0,
+		1.0,
+		duration
+	).set_trans(Tween.TRANS_LINEAR)
 
 
-func drown() -> void:
-	animation_player.play("drown")
+func defeat() -> void:
+	animated_sprite.play("flip_sad")
+	await animated_sprite.animation_finished
+	animated_sprite.play("defeat")
+
+
+func success() -> void:
+	animated_sprite.play("success")
+	last_valid_position = global_position
+
+
+func win() -> void:
+	await flip_happy()
+	animated_sprite.play("idle_front")
+
+
+func flip_happy() -> void:
+	animated_sprite.play("flip_happy")
+	await animated_sprite.animation_finished
 
 
 func _play_jump_sound() -> void:
@@ -49,6 +90,14 @@ func _play_frog_sound() -> void:
 	if rand <= 0.75:
 		audio_player.stream = FROG_SOUNDS[randi() % FROG_SOUNDS.size()]
 		audio_player.play()
+
+
+func appear() -> void:
+	global_position = last_valid_position
+	animated_sprite.play("appear")
+	await animated_sprite.animation_finished
+	await flip_happy()
+	animated_sprite.play("idle_side")
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
@@ -71,24 +120,10 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 				animated_sprite.play("idle_side")
 		"idle_side_blink":
 			animated_sprite.play("idle_side")
-		"drown":
-			drowned.emit()
+		"success":
+			animated_sprite.play("idle_side")
 		"jump":
-			animated_sprite.play("idle_front")
+			animated_sprite.play("idle_side")
 			jumped.emit()
-		#"idle_front_1":
-			#var rand: float = randf()
-			#if rand <= 0.5:
-				#animation_player.play("idle_front_1")
-			#else:
-				#animation_player.play("idle_front_2")
-		#"idle_front_2":
-			#animation_player.play("idle_front_1")
-		#"idle_side_1":
-			#var rand: float = randf()
-			#if rand <= 0.5:
-				#animation_player.play("idle_side_1")
-			#else:
-				#animation_player.play("idle_side_2")
-		#"idle_side_2":
-			#animation_player.play("idle_side_1")
+		"defeat":
+			defeated.emit()
