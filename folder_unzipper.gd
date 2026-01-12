@@ -16,6 +16,8 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 	if err != OK:
 		Log.error("FolderUnzipper: Error %s while opening %s" % [error_string(err), zip_path])
 		close()
+		file_count.emit(0)
+		finished.emit()
 		return ""
 	
 	var extract_folder: String = extract_path

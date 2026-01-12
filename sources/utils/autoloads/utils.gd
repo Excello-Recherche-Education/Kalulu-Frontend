@@ -119,4 +119,7 @@ func get_animation_duration(sprite: AnimatedSprite2D, anim_name: String) -> floa
 		Log.warn("Utils: get_animation_duration(): Animation '%s' has an invalid speed (%s)." % [anim_name, speed])
 		return 0.0
 	var base_duration: float = frame_count / speed
+	if sprite.speed_scale == 0:
+		Log.warn("Utils: get_animation_duration(): Sprite '%s' has a speed_scale of zero." % [sprite.name, sprite.speed_scale])
+		return 0.0
 	return base_duration / sprite.speed_scale
