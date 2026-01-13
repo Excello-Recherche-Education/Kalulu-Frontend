@@ -39,8 +39,8 @@ func _highlight() -> void:
 
 
 func _reset_frog() -> void:
-	frog.last_valid_position = frog_spawn_point.global_position
-	await frog.appear()
+	frog.global_position = frog_spawn_point.global_position
+	frog.last_valid_position = start.global_position
 	frog.jump_to(start.global_position)
 	await frog.jumped
 
