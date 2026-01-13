@@ -40,19 +40,19 @@ func jump_to(destination: Vector2) -> void:
 	tween.tween_method(
 		func(time: float) -> void:
 			# X: strictly linear over the whole jump
-			var x: float = lerpf(start.x, end.x, time)
+			var horizontal: float = lerpf(start.x, end.x, time)
 			# Y: fast takeoff, slow near apex, then accelerating fall
-			var y: float
+			var vertical: float
 			var weight: float
 			if time < 0.5:
 				weight = time / 0.5
 				weight = ease(weight, -2.5) # ease-out: strong impulse at start
-				y = lerpf(start.y, apex_y, weight)
+				vertical = lerpf(start.y, apex_y, weight)
 			else:
 				weight = (time - 0.5) / 0.5
 				weight = ease(weight, 2.5) # ease-in: accelerates on descent
-				y = lerpf(apex_y, end.y, weight)
-			global_position = Vector2(x, y),
+				vertical = lerpf(apex_y, end.y, weight)
+			global_position = Vector2(horizontal, vertical),
 		0.0,
 		1.0,
 		duration
