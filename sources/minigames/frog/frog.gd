@@ -18,6 +18,7 @@ const FROG_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_random_04.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_random_05.mp3"),
 ]
+const JUMP_HEIGHT: float = 220.0
 
 var blink_counter: int = 0
 var blink_delay: int = 3
@@ -33,9 +34,8 @@ func jump_to(destination: Vector2) -> void:
 	var start: Vector2 = global_position
 	var end: Vector2 = destination
 	var duration: float = Utils.get_animation_duration(animated_sprite, "jump")
-	var height: float = 180.0
 	# Apex is above the higher of the two points (smaller Y is higher in 2D)
-	var apex_y: float = min(start.y, end.y) - height
+	var apex_y: float = min(start.y, end.y) - JUMP_HEIGHT
 	var tween: Tween = create_tween()
 	tween.tween_method(
 		func(time: float) -> void:
