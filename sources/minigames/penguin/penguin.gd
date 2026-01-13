@@ -5,49 +5,47 @@ const SNOWBALL_SCENE: PackedScene = preload("res://sources/minigames/penguin/sno
 
 var throw_position: Vector2
 
-@onready var snowball_position: Marker2D = $Sprite2D/Snowball
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var snowball_start: Marker2D = $AnimatedSprite2D/Snowball_Start
 @onready var audiostream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 
 func _create_snowball() -> void:
 	var snowball: Snowball = SNOWBALL_SCENE.instantiate()
-	snowball.position = snowball_position.global_position
-	snowball.target_position = throw_position - snowball_position.global_position
+	snowball.position = snowball_start.global_position
+	snowball.target_position = throw_position - snowball_start.global_position
 	audiostream_player.play()
 	get_parent().add_child(snowball)
 
 #region Animations
 
 func idle() -> void:
-	if randf() < 0.8:
-		animation_player.play("idle")
-	else:
-		animation_player.play("idle2")
+	animated_sprite.play("idle")
 
 
 func happy() -> void:
-	animation_player.play("happy")
-	await animation_player.animation_finished
+	animated_sprite.play("happy")
+	await animated_sprite.animation_finished
+	animated_sprite.play("happy")
+	await animated_sprite.animation_finished
 
 
 func sad() -> void:
-	animation_player.play("sad")
-	await animation_player.animation_finished
+	animated_sprite.play("sad")
+	await animated_sprite.animation_finished
+	animated_sprite.play("sad", -1.0)
+	await animated_sprite.animation_finished
 
 
 func throw(pos: Vector2) -> void:
 	throw_position = pos
-	animation_player.play("throw")
-	await animation_player.animation_finished
+	animated_sprite.play("flip_right")
+	await animated_sprite.animation_finished
+	_create_snowball()
+	animated_sprite.play("throw")
+	await animated_sprite.animation_finished
+	animated_sprite.play("flip_left")
+	await animated_sprite.animation_finished
 	idle()
-
-#endregion
-
-#region Connections
-
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if anim_name == "idle" or anim_name == "idle2":
-		idle()
 
 #endregion

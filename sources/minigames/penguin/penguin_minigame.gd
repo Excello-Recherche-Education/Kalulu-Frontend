@@ -165,12 +165,12 @@ func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 		Log.error("PenguinMinigame: Cannot update remediation score because label GP has no WordID")
 	
 	if correct_answer:
-		penguin.happy()
-		await label.right()
+		label.right()
+		await penguin.happy()
 		current_word_progression += 1
 	else:
-		penguin.sad()
-		await label.wrong()
+		label.wrong()
+		await penguin.sad()
 		current_lives -= 1
 	
 	# Re-enables all labels
