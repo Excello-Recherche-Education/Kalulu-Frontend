@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=38 format=3 uid="uid://c4l27gbfqffia"]
+[gd_resource type="SpriteFrames" load_steps=38 format=3 uid="uid://0pw6h7sibxap"]
 
 [ext_resource type="Texture2D" uid="uid://4mr2idafmxcp" path="res://assets/minigames/penguin/graphic/penguin.png" id="1_qjien"]
 
@@ -195,7 +195,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_aypw2")
 }],
-"loop": false,
+"loop": true,
 "name": &"happy",
 "speed": 12.0
 }, {

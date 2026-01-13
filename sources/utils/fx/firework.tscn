@@ -1,0 +1,82 @@
+[gd_scene load_steps=12 format=3 uid="uid://tpmvy7322b3a"]
+
+[ext_resource type="Script" uid="uid://bmra1v1u8b0hm" path="res://sources/utils/fx/firework.gd" id="1_5haah"]
+[ext_resource type="Texture2D" uid="uid://sa7dtkkhrjw7" path="res://assets/vfx/firework.png" id="1_wefp3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5haah"]
+atlas = ExtResource("1_wefp3")
+region = Rect2(0, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k72u6"]
+atlas = ExtResource("1_wefp3")
+region = Rect2(800, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tdpom"]
+atlas = ExtResource("1_wefp3")
+region = Rect2(1600, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hvju1"]
+atlas = ExtResource("1_wefp3")
+region = Rect2(2400, 0, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4musg"]
+atlas = ExtResource("1_wefp3")
+region = Rect2(0, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68l4n"]
+atlas = ExtResource("1_wefp3")
+region = Rect2(800, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tl27f"]
+atlas = ExtResource("1_wefp3")
+region = Rect2(1600, 800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xpt46"]
+atlas = ExtResource("1_wefp3")
+region = Rect2(2400, 800, 800, 800)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wform"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5haah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k72u6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tdpom")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hvju1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4musg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_68l4n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tl27f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xpt46")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="Firework" type="Node2D"]
+script = ExtResource("1_5haah")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_wform")
+frame_progress = 0.32164267
