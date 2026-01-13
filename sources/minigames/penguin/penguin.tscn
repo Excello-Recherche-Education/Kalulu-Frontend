@@ -393,7 +393,7 @@ texture = ExtResource("3_whe7m")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_ykcap")
+&"": SubResource("AnimationLibrary_ykcap")
 }
 autoplay = "idle"
 
