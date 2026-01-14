@@ -13,7 +13,7 @@ enum LogLevel {
 
 const FILE_BASE_NAME: String = "Kalulu_Log"
 const LOG_PATH: String = "user://Logs/"
-const LOG_MAX_SIZE_BYTES: int = 1 * 1024
+const LOG_MAX_SIZE_BYTES: int = 5 * 1024 * 1024
 const MAX_LOG_ENTRIES_IN_RAM: int = 13985
 const MAX_LOG_ENTRIES_THRESHOLD: int = 100
 
