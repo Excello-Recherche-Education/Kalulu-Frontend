@@ -1135,6 +1135,10 @@ func _should_show_final_boss() -> bool:
 	for lesson_number: int in range(1, total_lessons + 1):
 		if not UserDataManager.student_progression.is_lesson_completed(lesson_number):
 			return false
+	var gate_lessons: Array[int] = StudentProgression.get_boss_gate_lessons()
+	for gate_lesson: int in gate_lessons:
+		if not UserDataManager.student_progression.is_boss_completed(gate_lesson):
+			return false
 	return true
 
 
