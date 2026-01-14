@@ -53,6 +53,7 @@ func _setup_minigame() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#a8f0d0"), Color("#7fc8ff")])
 	berry_timer.start()
 
 

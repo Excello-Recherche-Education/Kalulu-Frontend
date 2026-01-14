@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bwe3fp0vkpufb"]
+[gd_scene load_steps=18 format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" uid="uid://dsv0728uv1y5l" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
 [ext_resource type="AudioStream" uid="uid://1ibmtydnewa8" path="res://assets/minigames/crabs/audio/sfx/crab_random_6.mp3" id="2_gc7a0"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="9_3nie6"]
 [ext_resource type="SpriteFrames" uid="uid://n1ydrtdfm4p3" path="res://sources/minigames/crabs/crab/crab_animations.tres" id="10_c4r2k"]
 [ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="11_mgkmu"]
+[ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="12_2ax6s"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tnp5x"]
 
@@ -67,6 +68,19 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.6, 0.6)
+
+[node name="WrongFX" parent="BackFX" instance=ExtResource("5_3sw4w")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="Body" type="Control" parent="."]
 layout_mode = 1
@@ -128,7 +142,7 @@ scale = Vector2(1.8, 1.8)
 sprite_frames = ExtResource("10_c4r2k")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.55351526
+frame_progress = 0.16246976
 centered = false
 
 [node name="FrontFX" type="Control" parent="."]
@@ -139,18 +153,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WrongFX" parent="FrontFX" instance=ExtResource("5_3sw4w")]
+[node name="Right_Stars" parent="FrontFX" instance=ExtResource("12_2ax6s")]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+position = Vector2(184, 160)
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1

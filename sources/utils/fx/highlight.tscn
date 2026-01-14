@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://3idggaf5hbbm" path="res://assets/vfx/fx_02.png" id="1_s57yc"]
 [ext_resource type="Script" uid="uid://bu51jb5rfc5r2" path="res://sources/utils/fx/highlight.gd" id="1_uj18s"]
-[ext_resource type="Texture2D" uid="uid://c161hyri7yhme" path="res://assets/vfx/fx_01.png" id="2_3sm6p"]
+[ext_resource type="Texture2D" uid="uid://cbjnvgc5jkpj8" path="res://assets/vfx/halo.png" id="3_v0vnn"]
 
 [sub_resource type="Animation" id="Animation_mfajw"]
 length = 0.001
@@ -231,7 +231,7 @@ script = ExtResource("1_uj18s")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_g6flg")
+&"": SubResource("AnimationLibrary_g6flg")
 }
 
 [node name="Rays" type="Sprite2D" parent="."]
@@ -243,6 +243,6 @@ texture = ExtResource("1_s57yc")
 [node name="Halo" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("2_3sm6p")
+texture = ExtResource("3_v0vnn")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dlmbxcgiv8tpr"]
+[gd_scene load_steps=7 format=3 uid="uid://dlmbxcgiv8tpr"]
 
 [ext_resource type="AudioStream" uid="uid://2imrfcmquc7d" path="res://assets/sfx/sfx_wrong.mp3" id="1_qd4na"]
 [ext_resource type="Script" uid="uid://b5dy0viriac74" path="res://sources/utils/fx/wrong.gd" id="1_sgjc5"]
-[ext_resource type="Texture2D" uid="uid://c161hyri7yhme" path="res://assets/vfx/fx_01.png" id="3_r5miu"]
-[ext_resource type="Texture2D" uid="uid://bqw5oyt88v05u" path="res://assets/vfx/cross.png" id="4_7ijh5"]
+[ext_resource type="Texture2D" uid="uid://cbjnvgc5jkpj8" path="res://assets/vfx/halo.png" id="3_57yyh"]
 
 [sub_resource type="Animation" id="Animation_tj5mf"]
 length = 0.001
@@ -52,39 +51,6 @@ tracks/3/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Cross:scale:x")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0.5),
-"times": PackedFloat32Array(0)
-}
-tracks/5/type = "bezier"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Cross:scale:y")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0.5),
-"times": PackedFloat32Array(0)
-}
-tracks/6/type = "bezier"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Cross:modulate:a")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.05, 0.5),
-"times": PackedFloat32Array(0)
-}
 
 [sub_resource type="Animation" id="Animation_dn23k"]
 resource_name = "wrong"
@@ -121,46 +87,13 @@ tracks/2/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.05, 0.5, 1, -0.05, 0, 0.5, 0, 0, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 0.1, 1)
 }
-tracks/3/type = "bezier"
+tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Cross:scale:x")
+tracks/3/path = NodePath("AudioStreamPlayer2D:playing")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0.5, 1.6, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Cross:scale:y")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0.8, -0.25, 0, 0.25, 0.5, 1.6, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1)
-}
-tracks/5/type = "bezier"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Cross:modulate:a")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.05, 0.5, 1, -0.05, 0, 0.5, 0, 0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.1, 1)
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("AudioStreamPlayer2D:playing")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -180,7 +113,7 @@ script = ExtResource("1_sgjc5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_c86ui")
+&"": SubResource("AnimationLibrary_c86ui")
 }
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
@@ -189,12 +122,8 @@ bus = &"Effects"
 
 [node name="Halo" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
+self_modulate = Color(0.74509805, 0.11764706, 0.1764706, 1)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("3_r5miu")
-
-[node name="Cross" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("4_7ijh5")
+texture = ExtResource("3_57yyh")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

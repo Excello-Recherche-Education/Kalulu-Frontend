@@ -45,7 +45,10 @@ var is_visible_on_screen: bool = false
 @onready var label: Label = $Label
 @onready var head_area_collision_shape: CollisionShape2D = $Body/HeadArea/CollisionShape2D
 @onready var body_area_collision_shape: CollisionShape2D = $Body/BodyArea/CollisionShape2D
-@onready var highlight_fx: HighlightFX = $HighlightFX
+@onready var highlight_fx: HighlightFX = %HighlightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var right_stars: RightStarsFX = %Right_Stars
+@onready var wrong_fx: WrongFX = %WrongFX
 @onready var delete_timer: Timer = $DeleteTimer
 @onready var audio_stream_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
@@ -97,13 +100,17 @@ func right() -> void:
 	sprite.play("victory")
 	await sprite.animation_finished
 	sprite.play_backwards("victory")
+	right_fx.play()
+	right_stars.play()
 	await sprite.animation_finished
+	await right_fx.finished
 
 
 func wrong() -> void:
 	is_moving = false
 	change_font_color_after_collision()
 	body_back.texture = TURTLE_BACK_WRONG
+	wrong_fx.play()
 	sprite.play("defeat")
 	await sprite.animation_finished
 	sprite.play_backwards("defeat")

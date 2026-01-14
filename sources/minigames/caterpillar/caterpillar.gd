@@ -49,7 +49,7 @@ func move(distance: float) -> void:
 	# Move body
 	for index: int in range(body_parts.get_child_count(false)):
 		await get_tree().create_timer(BODY_PART_WAIT_TIME).timeout
-		var body_part: Node = body_parts.get_child(-index-1)
+		var body_part: Node = body_parts.get_child(index)
 		if body_part is Node2D:
 			coroutine.add_future(_tween_body_part(body_part as Node2D, distance).finished)
 	
@@ -79,6 +79,7 @@ func eat_berry(berry: Berry) -> void:
 	
 	body_part = BODY_PART_SCENE.instantiate()
 	body_parts.add_child(body_part)
+	body_parts.move_child(body_part, 0)
 	body_part.gp = berry.gp
 	
 	var new_body_pos: Vector2 = Vector2(head.position.x, head.position.y)
@@ -87,6 +88,7 @@ func eat_berry(berry: Berry) -> void:
 	if body_parts.get_child_count() > 1:
 		var body_side: Node2D = BODY_SIDE_SCENE.instantiate()
 		body_parts.add_child(body_side)
+		body_parts.move_child(body_side, 0)
 		body_side.position = Vector2(head.position.x, head.position.y)
 		new_body_pos = new_body_pos + Vector2(SIDE_WIDTH, 0)
 		new_head_pos = new_head_pos + Vector2(SIDE_WIDTH, 0)

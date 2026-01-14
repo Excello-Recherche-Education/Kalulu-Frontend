@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b78362g1yif2n"]
 
 [ext_resource type="Script" uid="uid://c25qilgxaqp1h" path="res://sources/minigames/penguin/penguin.gd" id="1_gyeou"]
-[ext_resource type="SpriteFrames" uid="uid://c4l27gbfqffia" path="res://sources/minigames/penguin/penguin_animations.tres" id="2_l6pmb"]
+[ext_resource type="SpriteFrames" uid="uid://0pw6h7sibxap" path="res://sources/minigames/penguin/penguin_animations.tres" id="2_l6pmb"]
 [ext_resource type="AudioStream" uid="uid://bha6my06g7p4b" path="res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3" id="8_dqq5e"]
 
 [node name="Penguin" type="Node2D"]
@@ -11,10 +11,8 @@ script = ExtResource("1_gyeou")
 position = Vector2(0, -174)
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_l6pmb")
-animation = &"happy"
+animation = &"idle"
 autoplay = "idle"
-frame = 9
-frame_progress = 1.0
 
 [node name="Snowball_Start" type="Marker2D" parent="AnimatedSprite2D"]
 position = Vector2(132, -7.5)

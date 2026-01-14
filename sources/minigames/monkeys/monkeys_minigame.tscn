@@ -86,7 +86,8 @@ offset_bottom = 20.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = ExtResource("10_ebf48")
 theme_override_font_sizes/normal_font_size = 110
-text = "gfm"
+bbcode_enabled = true
+text = "gf[color=green]m[/color]"
 horizontal_alignment = 1
 vertical_alignment = 1
 

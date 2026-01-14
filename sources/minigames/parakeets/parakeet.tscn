@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cmoeum0oc0p2"]
+[gd_scene load_steps=19 format=3 uid="uid://cmoeum0oc0p2"]
 
 [ext_resource type="Script" uid="uid://cir1ejxole7pu" path="res://sources/minigames/parakeets/parakeet.gd" id="1_p0nqk"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_afmcm"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_7mdw2"]
 [ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="7_erv6y"]
 [ext_resource type="SpriteFrames" uid="uid://bortxskacy6vx" path="res://sources/minigames/parakeets/red_parakeet_feathers_animations.tres" id="9_oc4sp"]
+[ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="12_q71gb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_thibt"]
 font = ExtResource("4_xdkkw")
@@ -33,8 +34,14 @@ scale = Vector2(0.2, 0.2)
 script = ExtResource("1_p0nqk")
 
 [node name="RightFX" parent="." instance=ExtResource("2_afmcm")]
-offset_top = -104.0
-offset_bottom = -104.0
+offset_top = 600.0
+offset_bottom = 600.0
+scale = Vector2(2.5, 2.5)
+
+[node name="WrongFX" parent="." instance=ExtResource("6_7mdw2")]
+offset_top = 600.0
+offset_bottom = 600.0
+scale = Vector2(2.5, 2.5)
 
 [node name="TextBox_Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -116,9 +123,9 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_aup5h")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_b6a1p")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_45x46")
 
-[node name="WrongFX" parent="." instance=ExtResource("6_7mdw2")]
-offset_top = -104.0
-offset_bottom = -104.0
+[node name="Right_Stars" parent="." instance=ExtResource("12_q71gb")]
+position = Vector2(0, 600.00006)
+scale = Vector2(5, 5)
 
 [connection signal="animation_looped" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_looped"]
 [connection signal="animation_looped" from="AnimatedSprite2D_Feathers" to="." method="_on_animated_sprite_2d_animation_looped"]

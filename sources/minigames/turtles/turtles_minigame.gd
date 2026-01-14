@@ -33,6 +33,11 @@ var color: Turtle.Colors
 @onready var crab: AnimatedSprite2D = %CrabAnimatedSprite2D
 
 
+func _start() -> void:
+	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#bca4ff"), Color("#f5a8c8")])
+
+
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
 	super._setup_minigame()

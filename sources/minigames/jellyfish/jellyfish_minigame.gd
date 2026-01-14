@@ -17,6 +17,7 @@ var blocking_jellyfish: Array[Jellyfish] = []
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#ffbf94"), Color("#f5a8c8")])
 	spawn_timer.start()
 
 

@@ -102,6 +102,7 @@ func _find_stimuli_and_distractions() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#ffbf94")])
 	var possible_positions: Array[Vector2] = []
 	for branch: Node in branches.get_children():
 		for child: Node2D in branch.get_children():
