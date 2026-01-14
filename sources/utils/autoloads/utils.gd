@@ -59,13 +59,13 @@ func build_probe_offsets(probe_half_size: Vector2) -> Array[Vector2]:
 		Vector2(-probe_half_size.x, -probe_half_size.y),
 	])
 	var sample_step: float = maxf(1.0, minf(probe_half_size.x, probe_half_size.y) * 0.5)
-	var x: float = -probe_half_size.x
-	while x <= probe_half_size.x:
-		var y: float = -probe_half_size.y
-		while y <= probe_half_size.y:
-			offsets.append(Vector2(x, y))
-			y += sample_step
-		x += sample_step
+	var x_offset: float = -probe_half_size.x
+	while x_offset <= probe_half_size.x:
+		var y_offset: float = -probe_half_size.y
+		while y_offset <= probe_half_size.y:
+			offsets.append(Vector2(x_offset, y_offset))
+			y_offset += sample_step
+		x_offset += sample_step
 	return offsets
 
 

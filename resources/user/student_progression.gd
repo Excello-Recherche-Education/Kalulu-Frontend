@@ -9,6 +9,9 @@ enum Status{
 	Completed,
 }
 
+static var cached_boss_gate_lessons: Array[int] = []
+static var cached_boss_gate_lessons_total: int = -1
+
 @export var version: String = ProjectSettings.get_setting("application/config/version")
 @export var unlocks: Dictionary[int, Dictionary] = {}:
 	set(value):
@@ -17,9 +20,6 @@ enum Status{
 	set(value):
 		highest_boss_defeated = _sanitize_highest_boss(value)
 @export var last_modified: String
-
-static var cached_boss_gate_lessons: Array[int] = []
-static var cached_boss_gate_lessons_total: int = -1
 
 
 func _init() -> void:

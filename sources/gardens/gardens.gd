@@ -721,11 +721,11 @@ static func _generate_lesson_positions(lessons_for_garden: int, garden_index: in
 	var vertical_phase: float = float(garden_index % 3) * 0.65
 	Log.trace("Gardens: Garden %s vertical phase set to %s" % [str(garden_index), str(vertical_phase)])
 	for lesson_index: int in range(lessons_for_garden):
-		var x: int = int(spacing * float(lesson_index + 1))
+		var x_pos: int = int(spacing * float(lesson_index + 1))
 		var wave_position: float = float(lesson_index) / maxf(1.0, lessons_for_garden - 1)
-		var y: int = int(LESSON_VERTICAL_BASE + sin(vertical_phase + wave_position * PI) * LESSON_VERTICAL_RANGE)
-		Log.trace("Gardens: Garden %s lesson %s position -> x: %s, wave position: %s, y: %s" % [str(garden_index), str(lesson_index), str(x), str(wave_position), str(y)])
-		positions.append(Vector2i(x, y))
+		var y_pos: int = int(LESSON_VERTICAL_BASE + sin(vertical_phase + wave_position * PI) * LESSON_VERTICAL_RANGE)
+		Log.trace("Gardens: Garden %s lesson %s position -> x: %s, wave position: %s, y: %s" % [str(garden_index), str(lesson_index), str(x_pos), str(wave_position), str(y_pos)])
+		positions.append(Vector2i(x_pos, y_pos))
 	Log.info("Gardens: Completed lesson positions for garden %s" % str(garden_index))
 	return positions
 
@@ -985,8 +985,8 @@ func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
 		_extend_unlocked_path_to_final_boss()
 	if final_points.size() > 0:
 		line_particles.position = final_points[final_points.size() - 1]
-#endregion
 
+#endregion
 
 func _sync_boss_buttons_container() -> void:
 	if not boss_buttons_container or not garden_parent:
