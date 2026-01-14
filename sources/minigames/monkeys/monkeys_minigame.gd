@@ -85,14 +85,19 @@ func _highlight() -> void:
 			monkey.highlight()
 
 
-func _update_label(progress: int) -> void:
+func _update_label(progress: int, color: bool = true) -> void:
 	var gps_count: int = self._get_current_stimulus().GPsCount as int
 	word_label.text = ""
 	for index: int in range(gps_count):
 		if progress > index or progress == gps_count:
+			if color and progress == index + 1:
+				word_label.text += "[color=green]"
 			word_label.text += self._get_current_stimulus().GPs[index].Grapheme
+			if color and progress == index + 1:
+				word_label.text += "[/color]"
 		else:
 			word_label.text += "_"
+	Log.info(word_label.text)
 
 
 func _stop_highlight() -> void:
@@ -171,8 +176,9 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		var tween: Tween = create_tween()
 		tween.tween_property(coconut, "global_position:y", text_plank.global_position.y, throw_to_plank_duration).set_trans(Tween.TRANS_LINEAR)
 		await tween.finished
-		coconut.explode()
 		_update_label(current_word_progression + 1)
+		await coconut.explode()
+		_update_label(current_word_progression + 1, false)
 		current_word_progression += 1
 	else:
 		await king.play("start_wrong")
