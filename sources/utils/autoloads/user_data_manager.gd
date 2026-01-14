@@ -650,12 +650,14 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 		Log.error("UserDataManager: SaveStudentProgressionForCode: Device = %s, Code = %s: error %s" % [str(device), str(code), error_string(error)])
 
 
-func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String) -> void:
+func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String, highest_boss_defeated: int = -1) -> void:
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
 	if current_data == null:
 		current_data = StudentProgression.new()
 	current_data.version = version
 	current_data.unlocks = new_data
+	if highest_boss_defeated >= 0:
+		current_data.highest_boss_defeated = highest_boss_defeated
 	current_data.last_modified = updated_at
 	var err: Error = ResourceSaver.save(current_data, get_student_progression_path(0, student_code))
 	if err != OK:

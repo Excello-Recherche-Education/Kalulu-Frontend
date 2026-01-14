@@ -278,6 +278,7 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 				progression_block =	{
 										"version": student_progression.version,
 										"unlocked": student_progression.unlocks,
+										"highest_boss_defeated": student_progression.highest_boss_defeated,
 										"updated_at": student_progression.last_modified
 									}
 			elif student_entry.progression == UpdateNeeded.FromServer:
@@ -413,7 +414,10 @@ func _apply_server_response(response_body: Dictionary) -> void:
 						(new_unlock_data[key_lesson_int]["games"] as Array).push_back(game_result as int)
 					new_unlock_data[key_lesson_int].merge({"last_duration": PackedInt32Array(received_unlock_data[key_lesson]["last_duration"] as Array)})
 					new_unlock_data[key_lesson_int].merge({"total_duration": PackedInt32Array(received_unlock_data[key_lesson]["total_duration"] as Array)})
-				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
+				var highest_boss_defeated: int = -1
+				if (response_student_data.progression as Dictionary).has("highest_boss_defeated"):
+					highest_boss_defeated = int(response_student_data.progression.highest_boss_defeated as float)
+				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String, highest_boss_defeated)
 			if response_student_data.has("remediation_gp") and (response_student_data.remediation_gp as Dictionary).has("score_remediation") and (response_student_data.remediation_gp as Dictionary).has("updated_at"):
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
 				if new_array == null:
