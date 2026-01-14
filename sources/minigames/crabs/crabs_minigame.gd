@@ -62,6 +62,7 @@ func _setup_minigame() -> void:
 # Launch the minigame
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#7fc8ff"), Color("#f5a8c8"), Color("#bca4ff")])
 	_spawn_crabs()
 
 

@@ -74,6 +74,11 @@ func _setup_minigame() -> void:
 	_update_label(0)
 
 
+func _start() -> void:
+	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#ffbf94"), Color("#7fc8ff")])
+
+
 func _highlight() -> void:
 	for monkey: Monkey in monkeys:
 		if _is_gp_right(monkey.stimulus):

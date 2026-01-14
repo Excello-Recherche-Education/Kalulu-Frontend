@@ -220,7 +220,7 @@ func _win() -> void:
 	audio_player.stream = WIN_SOUND_FX
 	audio_player.play()
 	
-	fireworks.start()
+	fireworks.play()
 	await fireworks.finished
 	
 	minigame_ui.play_kalulu_speech(win_kalulu_speech)
