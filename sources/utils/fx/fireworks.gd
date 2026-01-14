@@ -6,7 +6,6 @@ signal finished()
 @export var firework_scene: PackedScene = preload("res://sources/utils/fx/firework.tscn")
 @export var fireworks_count: int = 50
 @export var screen_size: Vector2 = Vector2(2560, 1800)
-
 @export var min_spawn_delay: float = 0.01
 @export var max_spawn_delay: float = 0.09
 @export var min_scale: float = 0.5
@@ -22,7 +21,6 @@ var _colors: Array[Color] = [
 	Color.MAGENTA,
 	Color(1.0, 0.5, 1.0)
 ]
-
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _remaining: int = 0
 
