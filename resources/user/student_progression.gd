@@ -13,7 +13,9 @@ enum Status{
 @export var unlocks: Dictionary[int, Dictionary] = {}:
 	set(value):
 		unlocks = ensure_data_integrity(value)
-@export var boss_statuses: Array[int] = []
+@export var highest_boss_defeated: int = 0:
+	set(value):
+		highest_boss_defeated = _sanitize_highest_boss(value)
 @export var last_modified: String
 
 static var cached_boss_gate_lessons: Array[int] = []
@@ -28,7 +30,7 @@ func _init() -> void:
 func init_unlocks() -> void:
 	if not unlocks:
 		unlocks = {} # Triggers ensure_data_integrity(), that will fill the default values
-	_sanitize_boss_statuses()
+	_sanitize_boss_progression()
 	
 	# Verify the lessons
 	var number_of_lessons: int = Database.get_lessons_count()
@@ -50,7 +52,7 @@ func init_unlocks() -> void:
 	if unlocks.has(1):
 		if unlocks[1]["look_and_learn"] == Status.Locked:
 			unlocks[1]["look_and_learn"] = Status.Unlocked
-	_sanitize_boss_statuses()
+	_sanitize_boss_progression()
 
 
 func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
@@ -145,7 +147,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: lesson unlocked because previous garden is completed" % index)
 
-	_sanitize_boss_statuses()
+	_sanitize_boss_progression()
 	return result
 
 
@@ -183,26 +185,37 @@ static func _get_garden_boundary_lessons(total_lessons: int) -> Array[int]:
 	return boundaries
 
 
-func _sanitize_boss_statuses() -> void:
-	if typeof(boss_statuses) != TYPE_ARRAY:
-		boss_statuses = []
+func _sanitize_boss_progression() -> void:
+	highest_boss_defeated = _sanitize_highest_boss(highest_boss_defeated)
+
+
+func _sanitize_highest_boss(value: int) -> int:
 	var gate_lessons: Array[int] = get_boss_gate_lessons()
-	var sanitized: Array[int] = []
-	for gate_lesson: int in boss_statuses:
-		if gate_lessons.has(gate_lesson):
-			sanitized.append(gate_lesson)
-	boss_statuses = sanitized
+	if gate_lessons.is_empty():
+		return 0
+	gate_lessons.sort()
+	var sanitized: int = 0
+	for gate_lesson: int in gate_lessons:
+		if gate_lesson <= value:
+			sanitized = gate_lesson
+		else:
+			break
+	return sanitized
 
 
 func is_boss_completed(gate_lesson: int) -> bool:
-	return boss_statuses.has(gate_lesson)
+	if not get_boss_gate_lessons().has(gate_lesson):
+		return false
+	return gate_lesson <= highest_boss_defeated
 
 
 func is_lesson_blocked_by_boss(lesson_number: int) -> bool:
 	var gate_lessons: Array[int] = get_boss_gate_lessons()
 	gate_lessons.sort()
 	for gate: int in gate_lessons:
-		if gate < lesson_number and not boss_statuses.has(gate):
+		if gate >= lesson_number:
+			break
+		if gate > highest_boss_defeated:
 			return true
 	return false
 
@@ -263,9 +276,9 @@ func game_completed(lesson_number: int, game_number: int) -> bool:
 func boss_completed(lesson_number: int) -> bool:
 	if not get_boss_gate_lessons().has(lesson_number):
 		return false
-	if boss_statuses.has(lesson_number):
+	if lesson_number <= highest_boss_defeated:
 		return false
-	boss_statuses.append(lesson_number)
+	highest_boss_defeated = lesson_number
 	last_modified = Time.get_datetime_string_from_system(true)
 	progression_changed.emit()
 	return true
