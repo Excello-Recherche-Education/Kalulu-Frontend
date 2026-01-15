@@ -62,21 +62,19 @@ const KALULU: GDScript = preload("res://sources/minigames/base/kalulu.gd")
 @onready var help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "help"))
 
 
-static func _compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
-	return Gardens.compute_lessons_distribution(total_lessons, garden_layouts)
-
-
 func _ready() -> void:
 	UserDataManager.start_synchronization_timer()
-	
+	if not gardens_layout or gardens_layout.gardens.is_empty():
+		gardens_layout = Gardens.get_session_layout(Database.get_lessons_count())
 	for index: int in range(garden_buttons.size()):
 		garden_buttons[index].pressed.connect(_on_garden_button_pressed.bind(index))
 
 	var lesson_ind: int = 1
-	var distribution: Array[int] = _compute_lessons_distribution(Database.get_lessons_count(), gardens_layout.gardens)
+	var distribution: Array[int] = Gardens.get_lessons_distribution(Database.get_lessons_count(), gardens_layout.gardens)
 	for index: int in range(gardens_layout.gardens.size()):
 		var can_emit: bool = true
-		if distribution[index] > 0 and UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != StudentProgression.Status.Locked:
+		var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_ind)
+		if distribution[index] > 0 and UserDataManager.student_progression.unlocks.has(lesson_ind) and UserDataManager.student_progression.unlocks[lesson_ind]["look_and_learn"] != StudentProgression.Status.Locked and not is_blocked_by_boss:
 			garden_buttons[index].set_disabled(false)
 			garden_buttons[index].self_modulate = unlocked_colors[index]
 		else:
@@ -88,10 +86,13 @@ func _ready() -> void:
 		for _index2: int in range(distribution[index]):
 			if can_emit and not emitting:
 				emitting = false
-				for game: StudentProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
-					if game == StudentProgression.Status.Unlocked or game == StudentProgression.Status.Locked:
-						emitting = true
-						break
+				if UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_ind):
+					can_emit = false
+				else:
+					for game: StudentProgression.Status in UserDataManager.student_progression.unlocks[lesson_ind]["games"]:
+						if game == StudentProgression.Status.Unlocked or game == StudentProgression.Status.Locked:
+							emitting = true
+							break
 			lesson_ind += 1
 		
 		particles[index].emitting = emitting

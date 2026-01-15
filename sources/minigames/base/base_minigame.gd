@@ -48,6 +48,8 @@ var remediation_syllables_scores: Dictionary = {}
 var remediation_words_scores: Dictionary = {}
 # Scores for the confusion matrix engine
 var confusion_matrix_gp_scores: Dictionary[int, PackedInt32Array] = {}
+# Final boss state
+var is_final_boss: bool = false
 # Stimuli
 var stimuli: Array = []
 var distractions: Array = []
@@ -98,6 +100,7 @@ func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
+	is_final_boss = transition_data.get("is_final_boss", false) as bool
 	
 	# Difficulty
 	if (UserDataManager as UserDataManagerClass)._student_difficulty:
@@ -205,7 +208,11 @@ func _win() -> void:
 		gardens_data.minigame_completed = true
 	
 	if UserDataManager.student_progression:
-		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
+		if gardens_data.has("boss_gate_lesson"):
+			gardens_data.boss_completed = UserDataManager.student_progression.boss_completed(gardens_data.boss_gate_lesson as int)
+			gardens_data.first_clear = gardens_data.boss_completed
+		else:
+			gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
 	update_scores()
 	
@@ -270,6 +277,8 @@ func _lose() -> void:
 
 
 func _submit_student_level_time() -> void:
+	if gardens_data.has("boss_gate_lesson"):
+		return
 	UserDataManager.add_level_time(lesson_nb, minigame_number, _get_elapsed_time_seconds())
 
 

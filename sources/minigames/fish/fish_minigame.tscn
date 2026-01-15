@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://assets/minigames/minigame_ui/graphic/gauge.png" id="11_p5wnc"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="11_ueo10"]
 [ext_resource type="Texture2D" uid="uid://4ci6gmg0c15o" path="res://assets/minigames/minigame_ui/graphic/white_gauge.png" id="12_w5m1b"]
-[ext_resource type="Texture2D" uid="uid://disgg14rdmp81" path="res://assets/minigames/monkeys/graphic/textplank.png" id="13_3p0ue"]
+[ext_resource type="Texture2D" uid="uid://disgg14rdmp81" path="res://assets/minigames/fish/textplank.png" id="13_3p0ue"]
 [ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="14_b3ilp"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="17_47luc"]
 
@@ -536,7 +536,6 @@ texture = ExtResource("5_dc51h")
 
 [node name="Beacon1" type="Control" parent="GameRoot" index="4" node_paths=PackedStringArray("sprites")]
 unique_name_in_owner = true
-layout_mode = 3
 anchors_preset = 0
 offset_left = 408.0
 offset_top = 200.0
@@ -546,7 +545,7 @@ script = ExtResource("4_8mkk3")
 sprites = [NodePath("Beacon")]
 
 [node name="Beacon" type="AnimatedSprite2D" parent="GameRoot/Beacon1" index="0"]
-scale = Vector2(1.79651, 1.74845)
+scale = Vector2(1.7965117, 1.7484472)
 sprite_frames = SubResource("SpriteFrames_25r11")
 animation = &"idle"
 autoplay = "idle"
@@ -555,6 +554,7 @@ centered = false
 
 [node name="FalseWrongFX" parent="GameRoot/Beacon1" index="1" instance=ExtResource("11_ueo10")]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 306.0
 offset_top = 533.0
 offset_right = 306.0
@@ -562,6 +562,7 @@ offset_bottom = 533.0
 
 [node name="FalseRightFX" parent="GameRoot/Beacon1" index="2" instance=ExtResource("9_mcq4c")]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 306.0
 offset_top = 521.0
 offset_right = 306.0
@@ -569,7 +570,6 @@ offset_bottom = 521.0
 
 [node name="Beacon2" type="Control" parent="GameRoot" index="5" node_paths=PackedStringArray("sprites")]
 unique_name_in_owner = true
-layout_mode = 3
 anchors_preset = 0
 offset_left = 1600.0
 offset_top = 200.0
@@ -579,7 +579,7 @@ script = ExtResource("4_8mkk3")
 sprites = [NodePath("Beacon")]
 
 [node name="Beacon" type="AnimatedSprite2D" parent="GameRoot/Beacon2" index="0"]
-scale = Vector2(1.79651, 1.74845)
+scale = Vector2(1.7965117, 1.7484472)
 sprite_frames = SubResource("SpriteFrames_ru7b5")
 animation = &"idle"
 centered = false
@@ -604,6 +604,7 @@ speed_scale = 0.5
 
 [node name="RealWrongFX" parent="GameRoot/Beacon2" index="3" instance=ExtResource("11_ueo10")]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 306.0
 offset_top = 533.0
 offset_right = 306.0
@@ -611,6 +612,7 @@ offset_bottom = 533.0
 
 [node name="RealRightFX" parent="GameRoot/Beacon2" index="4" instance=ExtResource("9_mcq4c")]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 306.0
 offset_top = 521.0
 offset_right = 306.0
@@ -634,7 +636,7 @@ sprites = [NodePath("FishAnimatedSprite")]
 
 [node name="FishAnimatedSprite" type="AnimatedSprite2D" parent="GameRoot/AspectRatioContainer/Fish" index="0"]
 unique_name_in_owner = true
-scale = Vector2(2.20411, 2.2041)
+scale = Vector2(2.2041097, 2.2040977)
 sprite_frames = SubResource("SpriteFrames_ukbiw")
 animation = &"idle"
 autoplay = "idle"
