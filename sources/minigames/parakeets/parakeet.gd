@@ -48,7 +48,6 @@ var original_text_box_color: Color
 @onready var right_stars: RightStarsFX = $Right_Stars
 @onready var wrong_fx: WrongFX = $WrongFX
 @onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
-@onready var text_box_outline_sprite_2d: Sprite2D = %TextBox_Outline_Sprite2D
 
 
 func _ready() -> void:
@@ -109,7 +108,6 @@ func sad() -> void:
 	await get_tree().create_timer(sad_duration).timeout
 	label.label_settings = original_label_settings
 	text_box_sprite_2d.self_modulate = original_text_box_color
-	text_box_outline_sprite_2d.visible = false
 	call_deferred("_hide_feathers")
 
 
@@ -126,8 +124,6 @@ func right() -> void:
 	label.label_settings = label.label_settings.duplicate()
 	label.label_settings.font_color = Color("#009444")
 	text_box_sprite_2d.self_modulate = Color("#e6f3e0")
-	text_box_outline_sprite_2d.self_modulate = Color("#009344")
-	text_box_outline_sprite_2d.visible = true
 	right_stars.play()
 	right_fx.play()
 	await right_fx.finished
@@ -137,7 +133,5 @@ func wrong() -> void:
 	label.label_settings = label.label_settings.duplicate()
 	label.label_settings.font_color = Color("#be1e2d")
 	text_box_sprite_2d.self_modulate = Color("#fce6e6")
-	text_box_outline_sprite_2d.self_modulate = Color("#be1e2d")
-	text_box_outline_sprite_2d.visible = true
 	wrong_fx.play()
 	await wrong_fx.finished
