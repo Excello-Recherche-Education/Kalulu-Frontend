@@ -163,7 +163,7 @@ static func get_boss_gate_lessons() -> Array[int]:
 	for lesson_number: int in range(1, total_lessons + 1):
 		var total_pseudowords: int = Database.get_pseudowords_for_lesson(lesson_number).size()
 		var new_pseudowords: int = total_pseudowords - last_boss_pseudowords
-		if new_pseudowords >= 40 and boundary_lessons.has(lesson_number):
+		if new_pseudowords >= 30 and boundary_lessons.has(lesson_number):
 			gates.append(lesson_number)
 			last_boss_pseudowords = total_pseudowords
 	cached_boss_gate_lessons_total = total_lessons

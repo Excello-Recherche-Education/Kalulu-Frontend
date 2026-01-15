@@ -7,13 +7,13 @@ const FISH_TEXTURE_RECT_SCENE: PackedScene = preload("res://sources/minigames/fi
 @export var game_duration: int = 4 * 60
 @export var minimum_correct_ratio: float = 0.8
 @export var winning_color: Color = Color.WHITE
-@export var max_words_count: int = 1
+@export var max_words_count: int = 15
 
 var tween: Tween
 var words_to_present: Array[String] = []
 var words_to_present_next: Array[String] = []
 var progress_gauge_max_margin: float = 0.95
-var total_number_of_words: int = 2
+var total_number_of_words: int = 30
 var tutorial_count: int = 0
 
 @onready var fish_start_zone: Control = %FishStartZone
