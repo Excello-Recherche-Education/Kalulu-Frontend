@@ -28,12 +28,14 @@ static var cached_layout_lessons: int = 0
 
 @export_category("Layout")
 @export var gardens_layout: GardensLayout:
-	set = set_gardens_layout,
-	get = get_gardens_layout
+	set(value):
+		set_gardens_layout(value)
+	get:
+		return _gardens_layout
 @export var starting_garden: int = -1
 @export_category("Colors")
-@export var unlocked_color: Color = Color("1c2662") #blue
-@export var locked_color: Color = Color("1d2229") #black
+@export var unlocked_color: Color = Color("1c2662")
+@export var locked_color: Color = Color("1d2229")
 @export_group("Minigames")
 @export var minigames_scenes: Array[PackedScene] = []
 @export var minigames_icons: Array[Texture] = []
@@ -193,7 +195,6 @@ func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 			for button_index: int in range(garden_control.get_lesson_buttons().size()):
 				if not lesson_index in lessons:
 					break
-
 				if UserDataManager.student_progression:
 					var unlock: Dictionary = UserDataManager.student_progression.unlocks[lesson_index]
 					var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_index)
@@ -207,7 +208,6 @@ func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 
 	if starting_garden == -1:
 		starting_garden = 0
-
 	scroll_container.scroll_horizontal = GARDEN_SIZE * starting_garden
 	scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
 	current_garden = garden_parent.get_child(starting_garden)
@@ -218,13 +218,9 @@ func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 
 func _handle_transition_sequences(transition_context: Dictionary) -> void:
 	await _apply_transition_flowers(transition_context)
-
-	# Wait a bit before any action to smooth the animations
 	await get_tree().create_timer(1).timeout
-
 	if transition_data.has("current_lesson_number") and not transition_data.get("skip_minigame_layout", false):
 		await _open_minigames_layout(_get_current_lesson_button(transition_data.current_lesson_number as int), transition_data.current_lesson_number as int)
-
 	if transition_context.new_lesson_unlocked:
 		await _play_new_lesson_unlock_sequence()
 	elif transition_context.pending_boss_gate_lesson > 0:
@@ -236,7 +232,6 @@ func _apply_transition_flowers(transition_context: Dictionary) -> void:
 
 	# Play the flowers animation if needed
 	if transition_context.is_current_lesson and transition_context.is_first_clear and transition_context.is_minigame_completed and transition_data.has("current_lesson_number"):
-		# Wait a bit before any action to smooth the animations
 		await get_tree().create_timer(1).timeout
 		var lesson_number: int = transition_data.current_lesson_number as int
 		var flower_info: Dictionary = _get_flower_info(lesson_number)
@@ -262,7 +257,6 @@ func _apply_transition_flowers(transition_context: Dictionary) -> void:
 
 
 func _reveal_completed_look_and_learn_flower() -> void:
-	# Reveal flowers for completed look and learn
 	if not transition_data.get("look_and_learn_completed", false):
 		return
 	var lesson_number_variant: Variant = transition_data.get("current_lesson_number", null)
@@ -290,7 +284,6 @@ func _get_flower_info(lesson_number: int) -> Dictionary:
 
 func _play_new_lesson_unlock_sequence() -> void:
 	var max_lesson: int = UserDataManager.student_progression.get_max_unlocked_lesson_index()
-	# Close the layout
 	await get_tree().create_timer(2).timeout
 	await _close_minigames_layout()
 
@@ -330,9 +323,7 @@ func _play_new_lesson_unlock_sequence() -> void:
 		var tween: Tween = create_tween()
 		tween.set_ease(Tween.EASE_IN_OUT)
 		tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
-
 		scroll_beginning_garden = int(float(target_scroll) / GARDEN_SIZE)
-
 		current_garden = garden_parent.get_child(scroll_beginning_garden)
 
 	line_audio_stream_player.pitch_scale = 0.95
@@ -385,10 +376,7 @@ func _ready() -> void:
 		await get_tree().process_frame
 		await _handle_transition_sequences(transition_context)
 	
-	# Unlock the interface
 	_unlock()
-	
-	# Empty the transition data
 	transition_data = {}
 	
 	# Play the tutorial if needed
@@ -668,10 +656,10 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 	var garden_dimensions: Vector2 = _get_garden_dimensions(garden_layout.color, garden_image)
 	var half_size: Vector2 = _get_lesson_button_half_size()
 	
-	# Step 1: initial path positions
+	# Initial path positions
 	var raw_positions: Array[Vector2i] = _generate_lesson_positions(lessons_for_garden, garden_index)
 	
-	# Step 2: clamp to texture + avoid overlaps
+	# Clamp to texture + avoid overlaps
 	var resolved_positions: Array[Vector2] = []
 	for lesson_index: int in range(lessons_for_garden):
 		var pos: Vector2 = Vector2(raw_positions[lesson_index])
@@ -686,7 +674,7 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 			raw_positions[lesson_index] = rounded
 		Log.trace("Gardens: Garden %s lesson %s position calculated at %s" % [str(garden_index), str(lesson_index), str(rounded)])
 	
-	# Step 3: build lesson buttons with tangents
+	# Build lesson buttons with tangents
 	var lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton] = []
 	for lesson_index: int in range(resolved_positions.size()):
 		var lesson_position: Vector2i = Utils.round_vec2(resolved_positions[lesson_index])
@@ -702,7 +690,7 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 		lesson_buttons.append(GardenLayout.GardenLayoutLessonButton.new(lesson_position, path_out))
 	garden_layout.lesson_buttons = lesson_buttons
 
-	# Step 4: build flowers (keep RNG call order identical)
+	# Build flowers (keep RNG call order identical)
 	var flowers: Array[GardenLayout.Flower] = []
 	for lesson_index: int in range(resolved_positions.size()):
 		var flower_position: Vector2i = Utils.round_vec2(resolved_positions[lesson_index])
@@ -771,7 +759,6 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	else:
 		Log.warn("Gardens: Flower info corrupted for lesson %d" % lesson_number)
 	if button:
-		#button_global_position = button.global_position
 		current_button = button
 		current_button.show_placeholder(true)
 	current_button_global_position = button.global_position
@@ -918,10 +905,6 @@ func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
 		await get_tree().process_frame
 	set_up_path()
 	_set_up_boss_buttons()
-
-
-func get_gardens_layout() -> GardensLayout:
-	return _gardens_layout
 
 
 func add_gardens() -> void:
