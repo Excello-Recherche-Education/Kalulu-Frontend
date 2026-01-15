@@ -136,6 +136,8 @@ func _build_transition_context() -> Dictionary:
 func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 	var lesson_index: int = 1
 	for garden_control: Garden in garden_parent.get_children():
+		garden_control.current_progression = 0.0
+		garden_control.max_progression = 0.0
 		var lesson_buttons: Array[LessonButton] = garden_control.get_lesson_buttons()
 		for button_index: int in range(lesson_buttons.size()):
 			var button: LessonButton = lesson_buttons[button_index]
@@ -167,6 +169,9 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 
 			if button_index < garden_control.flowers_sizes.size():
 				garden_control.flowers_sizes[button_index] = _get_flower_size_for_completion(completed_minigames)
+			if not is_blocked_by_boss:
+				garden_control.current_progression += float(completed_minigames)
+				garden_control.max_progression += float((lesson_unlocks["games"] as Array).size())
 
 			lesson_index += 1
 

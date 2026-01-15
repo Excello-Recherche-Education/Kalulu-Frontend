@@ -159,4 +159,6 @@ func pop_animation() -> void:
 
 
 func get_progress_ratio() -> float:
+	if max_progression <= 0.0:
+		return 0.0
 	return current_progression / max_progression
