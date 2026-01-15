@@ -616,7 +616,7 @@ func create_book() -> void:
 	var ordered_headers: Array[String] = all_headers.duplicate()
 	if "Lesson" in ordered_headers:
 		ordered_headers.erase("Lesson")
-		ordered_headers = ["Lesson"] + ordered_headers
+		ordered_headers = ["Lesson"] as Array[String] + ordered_headers
 
 	# Add Categorie at the end
 	ordered_headers.append("Categorie")
