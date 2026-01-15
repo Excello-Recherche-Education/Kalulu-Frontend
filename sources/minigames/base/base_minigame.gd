@@ -48,6 +48,8 @@ var remediation_syllables_scores: Dictionary = {}
 var remediation_words_scores: Dictionary = {}
 # Scores for the confusion matrix engine
 var confusion_matrix_gp_scores: Dictionary[int, PackedInt32Array] = {}
+# Final boss state
+var is_final_boss: bool = false
 # Stimuli
 var stimuli: Array = []
 var distractions: Array = []
@@ -98,6 +100,7 @@ func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
+	is_final_boss = transition_data.get("is_final_boss", false) as bool
 	
 	# Difficulty
 	if (UserDataManager as UserDataManagerClass)._student_difficulty:

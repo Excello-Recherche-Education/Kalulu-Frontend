@@ -1281,7 +1281,20 @@ func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
 
 
 func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
-	_on_boss_button_pressed(lesson_number, garden_index)
+	if is_locked:
+		return
+	feedback_audio_stream_player.play()
+	await OpeningCurtain.close()
+	Minigame.transition_data = {
+		current_lesson_number = lesson_number,
+		current_garden_index = garden_index,
+		minigame_number = -1,
+		minigame_completed = false,
+		skip_minigame_layout = true,
+		boss_gate_lesson = lesson_number,
+		is_final_boss = true
+	}
+	get_tree().change_scene_to_file("res://sources/minigames/fish/fish_minigame.tscn")
 
 
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
