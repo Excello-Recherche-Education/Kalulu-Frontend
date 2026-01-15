@@ -106,7 +106,14 @@ func _build_transition_context() -> Dictionary:
 	var new_lesson_unlocked: bool = transition_data and transition_data.current_lesson_number == max_unlocked_lesson_index and is_minigame_completed and is_first_clear and UserDataManager.student_progression.is_lesson_completed(transition_data.current_lesson_number as int)
 	var newly_unlocked_lesson_number: int = -1
 	if new_lesson_unlocked:
-		newly_unlocked_lesson_number = max_unlocked_lesson_number + 1
+		newly_unlocked_lesson_number = max_unlocked_lesson_number
+	var pending_boss_gate_lesson: int = -1
+	if transition_data and transition_data.has("current_lesson_number"):
+		var current_transition_lesson_number: int = transition_data.current_lesson_number as int
+		var is_boss_gate: bool = StudentProgression.get_boss_gate_lessons().has(current_transition_lesson_number)
+		if is_boss_gate and is_minigame_completed and is_first_clear and UserDataManager.student_progression.is_lesson_completed(current_transition_lesson_number):
+			if not UserDataManager.student_progression.is_boss_completed(current_transition_lesson_number):
+				pending_boss_gate_lesson = current_transition_lesson_number
 	var most_advanced_unlocked_lesson_index: int = max_unlocked_lesson_index
 	if new_lesson_unlocked:
 		most_advanced_unlocked_lesson_index -= 1
@@ -118,6 +125,7 @@ func _build_transition_context() -> Dictionary:
 		is_first_clear = is_first_clear,
 		new_lesson_unlocked = new_lesson_unlocked,
 		newly_unlocked_lesson_number = newly_unlocked_lesson_number,
+		pending_boss_gate_lesson = pending_boss_gate_lesson,
 		most_advanced_unlocked_lesson_index = most_advanced_unlocked_lesson_index,
 		last_played_minigame_number = minigame_number
 	}
@@ -219,6 +227,8 @@ func _handle_transition_sequences(transition_context: Dictionary) -> void:
 
 	if transition_context.new_lesson_unlocked:
 		await _play_new_lesson_unlock_sequence()
+	elif transition_context.pending_boss_gate_lesson > 0:
+		await _play_boss_unlock_sequence(transition_context.pending_boss_gate_lesson as int)
 
 
 func _apply_transition_flowers(transition_context: Dictionary) -> void:
@@ -362,7 +372,7 @@ func _ready() -> void:
 	
 	lesson_to_flower_index.clear()
 	var transition_context: Dictionary = _build_transition_context()
-	_set_unlocked_path(transition_context.most_advanced_unlocked_lesson_index as int)
+	_set_unlocked_path(transition_context.most_advanced_unlocked_lesson_index as int, (transition_context.pending_boss_gate_lesson <= 0) as bool)
 	_apply_progression_to_gardens(transition_context)
 	_scroll_to_starting_garden(transition_context)
 
@@ -959,7 +969,7 @@ func set_up_path() -> void:
 		locked_line.points = curve.get_baked_points()
 
 
-func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
+func _set_unlocked_path(max_unlocked_lesson_index: int, include_boss_segment: bool = true) -> void:
 	unlocked_line.clear_points()
 	if max_unlocked_lesson_index < 0 or points.is_empty():
 		return
@@ -970,7 +980,9 @@ func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
 		progress_curve.add_point(point_data[0] as Vector2, point_data[1] as Vector2, point_data[2] as Vector2)
 	var baked_points: PackedVector2Array = progress_curve.get_baked_points()
 	var final_points: PackedVector2Array = baked_points
-	var pending_boss_gate: int = _get_pending_boss_gate_lesson(clamped_lesson_index)
+	var pending_boss_gate: int = -1
+	if include_boss_segment:
+		pending_boss_gate = _get_pending_boss_gate_lesson(clamped_lesson_index)
 	if pending_boss_gate > 0:
 		var boss_segment_points: PackedVector2Array = _get_boss_segment_points(pending_boss_gate)
 		if boss_segment_points.size() > 0:
@@ -985,6 +997,27 @@ func _set_unlocked_path(max_unlocked_lesson_index: int) -> void:
 		_extend_unlocked_path_to_final_boss()
 	if final_points.size() > 0:
 		line_particles.position = final_points[final_points.size() - 1]
+
+
+func _play_boss_unlock_sequence(gate_lesson: int) -> void:
+	var boss_segment_points: PackedVector2Array = _get_boss_segment_points(gate_lesson)
+	if boss_segment_points.size() == 0:
+		return
+	var existing_points: PackedVector2Array = unlocked_line.points
+	var last_point: Vector2 = Vector2.ZERO
+	if existing_points.size() > 0:
+		last_point = existing_points[existing_points.size() - 1]
+	line_audio_stream_player.pitch_scale = 0.95
+	for point: Vector2 in boss_segment_points:
+		if point == last_point:
+			continue
+		if not line_audio_stream_player.playing:
+			line_audio_stream_player.pitch_scale += 0.05
+			line_audio_stream_player.play()
+		unlocked_line.add_point(point)
+		line_particles.position = point
+		last_point = point
+		await get_tree().create_timer(0.01).timeout
 
 #endregion
 
