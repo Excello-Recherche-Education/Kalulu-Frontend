@@ -101,8 +101,8 @@ func stop_highlight() -> void:
 
 func right() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#e6f3e0")
-	text_box_sprite_2d.self_modulate = Color("#009344")
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_WIN
 	right_fx.play()
 	right_stars.play()
 	await right_fx.finished
@@ -110,8 +110,8 @@ func right() -> void:
 
 func wrong() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#fce6e6")
-	text_box_sprite_2d.self_modulate = Color("#be1e2d")
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_LOSE
 	wrong_fx.play()
 	await wrong_fx.finished
 

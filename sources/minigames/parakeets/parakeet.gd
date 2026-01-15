@@ -122,8 +122,8 @@ func _hide_feathers() -> void:
 
 func right() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#009444")
-	text_box_sprite_2d.self_modulate = Color("#e6f3e0")
+	label.label_settings.font_color = Minigame.LABEL_COLOR_WIN
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
 	right_stars.play()
 	right_fx.play()
 	await right_fx.finished
@@ -131,7 +131,7 @@ func right() -> void:
 
 func wrong() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#be1e2d")
-	text_box_sprite_2d.self_modulate = Color("#fce6e6")
+	label.label_settings.font_color = Minigame.LABEL_COLOR_LOSE
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
 	wrong_fx.play()
 	await wrong_fx.finished
