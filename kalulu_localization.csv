@@ -17,6 +17,7 @@ DEVICE_NUMBER,Appareil {number},Dispositivo {number},Dispositivo {number}
 SETTINGS,Paramètres,Configuración,Parâmetros
 ADULT_CHECK_PROMPT,"Veuillez confirmer que vous êtes un adulte !
 Appuyez sur les touches {1}, {2} et {3}","Confirme que es un adulto! Seleccione {1}, {2} y {3}","Por favor, confirme que você é um adulto! Pressione as teclas {1}, {2} e {3}"
+ADULT_BOSS_BLOCK_PROMPT,"Un adulte doit intervenir. Refaites le boss avec l'enfant et demandez-lui de prononcer les mots à voix haute pour vérifier qu'il sait bien lire. Si l'enfant échoue à lire correctement les mots, il est recommandé de revenir en arrière dans les niveaux pour reprendre les bases. Pour débloquer l'application, appuyez sur les touches {1}, {2} et {3}","Se necesita la intervención de un adulto. Rehaga el jefe con el niño y pídale que pronuncie las palabras en voz alta para comprobar que sabe leer. Si el niño no logra leer correctamente las palabras, se recomienda volver atrás en los niveles para repasar las bases. Para desbloquear la aplicación, presione las teclas {1}, {2} y {3}","É necessária a intervenção de um adulto. Refaça o chefe com a criança e peça que ela pronuncie as palavras em voz alta para verificar se sabe ler. Se a criança não conseguir ler corretamente as palavras, recomenda-se voltar nos níveis para reforçar as bases. Para desbloquear o aplicativo, pressione as teclas {1}, {2} e {3}"
 STAR,Étoile,Estrella,Estrela
 BAR,Barre,Barra,Barra
 CIRCLE,Cercle,Círculo,Círculo
