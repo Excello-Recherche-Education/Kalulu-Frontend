@@ -7,7 +7,7 @@
 [ext_resource type="SpriteFrames" uid="uid://gm2hqn76oaib" path="res://sources/minigames/turtles/purple_turtle_animations.tres" id="5_xbpgw"]
 [ext_resource type="Texture2D" uid="uid://bhahju7y2n5ke" path="res://assets/minigames/turtles/graphic/turtle_back_neutral.png" id="6_4juk7"]
 [ext_resource type="LabelSettings" uid="uid://dn32fpff81uu" path="res://resources/themes/minigames_label_settings_turtles.tres" id="6_8k7c6"]
-[ext_resource type="PackedScene" uid="uid://br6yhq4w7b420" path="res://sources/utils/fx/right_stars.tscn" id="8_xbpgw"]
+[ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="8_xbpgw"]
 [ext_resource type="AudioStream" uid="uid://cmsn7q4fxnghr" path="res://assets/sfx/splash.mp3" id="42_p3fqk"]
 [ext_resource type="PackedScene" uid="uid://cjg6pgc7yfp1p" path="res://sources/utils/swipe_detector.tscn" id="49_0qwwy"]
 

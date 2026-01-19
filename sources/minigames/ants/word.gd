@@ -5,10 +5,6 @@ signal answer(stimulus: String, expected_stimulus: String)
 signal no_answer()
 
 const MINIGAMES_LABEL_SETTINGS_ANTS: LabelSettings = preload("res://resources/themes/minigames_label_settings_ants.tres")
-const TEXT_BOX_BASE_COLOR: Color = Color("#fef7dd")
-const TEXT_BOX_RIGHT_COLOR: Color = Color("#009444")
-const TEXT_BOX_WRONG_COLOR: Color = Color("#be1e2d")
-const FONT_ANSWER_COLOR: Color = Color("#fef7dd")
 
 var stimulus: String:
 	set = _set_stimulus
@@ -25,22 +21,22 @@ var current_anchor: CanvasItem
 
 func right() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = FONT_ANSWER_COLOR
-	text_box.self_modulate = TEXT_BOX_RIGHT_COLOR
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box.self_modulate = Minigame.LABEL_COLOR_WIN
 	right_fx.play()
 	right_stars.play()
 	await right_fx.finished
-	text_box.self_modulate = TEXT_BOX_BASE_COLOR
+	text_box.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
 	label.label_settings = MINIGAMES_LABEL_SETTINGS_ANTS
 
 
 func wrong() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = FONT_ANSWER_COLOR
-	text_box.self_modulate = TEXT_BOX_WRONG_COLOR
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box.self_modulate = Minigame.LABEL_COLOR_LOSE
 	wrong_fx.play()
 	await wrong_fx.finished
-	text_box.self_modulate = TEXT_BOX_BASE_COLOR
+	text_box.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
 	label.label_settings = MINIGAMES_LABEL_SETTINGS_ANTS
 
 

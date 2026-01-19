@@ -16,6 +16,9 @@ enum Type {
 
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
+const LABEL_COLOR_NEUTRAL: Color = Color("#e6f3e0")
+const LABEL_COLOR_WIN: Color = Color("#009344")
+const LABEL_COLOR_LOSE: Color = Color("#be1e2d")
 
 static var transition_data: Dictionary = {}
 

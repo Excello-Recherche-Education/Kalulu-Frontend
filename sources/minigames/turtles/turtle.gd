@@ -17,7 +17,6 @@ const ANIMATIONS: Array[SpriteFrames] = [
 ]
 const TURTLE_BACK_RIGHT: CompressedTexture2D = preload("res://assets/minigames/turtles/graphic/turtle_back_right.png")
 const TURTLE_BACK_WRONG: CompressedTexture2D = preload("res://assets/minigames/turtles/graphic/turtle_back_wrong.png")
-const TEXT_COLOR_AFTER_COLLISION: Color = Color("#fef7dd")
 
 @export var color: Colors = Colors.Purple:
 	set(value):
@@ -119,7 +118,7 @@ func wrong() -> void:
 
 func change_font_color_after_collision() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = TEXT_COLOR_AFTER_COLLISION
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
 
 
 func disappear() -> void:

@@ -91,7 +91,7 @@ func _update_label(progress: int, color: bool = true) -> void:
 	for index: int in range(gps_count):
 		if progress > index or progress == gps_count:
 			if color and progress == index + 1:
-				word_label.text += "[color=green]"
+				word_label.text += "[color=%s]" % Minigame.LABEL_COLOR_WIN.to_html()
 			word_label.text += self._get_current_stimulus().GPs[index].Grapheme
 			if color and progress == index + 1:
 				word_label.text += "[/color]"
