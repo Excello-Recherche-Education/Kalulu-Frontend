@@ -28,6 +28,7 @@ func _setup_word_progression() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#ffbf94")])
 	frog.last_valid_position = frog.global_position
 
 
