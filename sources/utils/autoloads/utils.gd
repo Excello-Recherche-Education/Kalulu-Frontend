@@ -19,7 +19,7 @@ const INVALID_FILE_CHARS: Array[String] = ["/", "\\", ":", "*", "?", "\"", "<", 
 func reorder_children_by_property(container: Node, property_name: String) -> void:
 	var children: Array[Node] = container.get_children()
 	children.sort_custom(Utils.sort_by_property.bind(property_name))
-	for element: Node in container.get_children():
+	for element: Node in children:
 		container.remove_child(element)
 	for element: Node in children:
 		container.add_child(element)
