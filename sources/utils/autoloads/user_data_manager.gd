@@ -339,6 +339,8 @@ func _load_device_settings() -> void:
 				_save_device_settings()
 		else:
 			Log.error("UserDataManager: Failed to load device settings from %s. Recreating defaults." % ProjectSettings.globalize_path(settings_path))
+	else:
+		Log.warn("UserDataManager: Device settings file not found at %s. Creating defaults." % ProjectSettings.globalize_path(settings_path))
 	if not _device_settings:
 		_device_settings = DeviceSettings.new()
 		_device_settings.init_os_language()
