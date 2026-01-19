@@ -361,7 +361,6 @@ func _ready() -> void:
 		Log.error("Gardens: Ready: No data for student progression")
 		await OpeningCurtain.open()
 		return
-	
 	await get_tree().process_frame
 	
 	_lock()

@@ -19,6 +19,8 @@ static var cached_boss_gate_lessons_total: int = -1
 @export var highest_boss_defeated: int = 0:
 	set(value):
 		highest_boss_defeated = _sanitize_highest_boss(value)
+@export var boss_failure_streak: int = 0
+@export var boss_blocked: bool = false
 @export var last_modified: String
 
 
@@ -279,9 +281,39 @@ func boss_completed(lesson_number: int) -> bool:
 	if lesson_number <= highest_boss_defeated:
 		return false
 	highest_boss_defeated = lesson_number
+	if boss_failure_streak != 0:
+		boss_failure_streak = 0
 	last_modified = Time.get_datetime_string_from_system(true)
 	progression_changed.emit()
 	return true
+
+
+func register_boss_failure() -> bool:
+	if boss_blocked:
+		return true
+	boss_failure_streak = max(0, boss_failure_streak) + 1
+	if boss_failure_streak >= 2:
+		boss_blocked = true
+	last_modified = Time.get_datetime_string_from_system(true)
+	progression_changed.emit()
+	return boss_blocked
+
+
+func reset_boss_failure_streak() -> void:
+	if boss_failure_streak == 0:
+		return
+	boss_failure_streak = 0
+	last_modified = Time.get_datetime_string_from_system(true)
+	progression_changed.emit()
+
+
+func clear_boss_block() -> void:
+	if not boss_blocked and boss_failure_streak == 0:
+		return
+	boss_blocked = false
+	boss_failure_streak = 0
+	last_modified = Time.get_datetime_string_from_system(true)
+	progression_changed.emit()
 
 
 func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> void:

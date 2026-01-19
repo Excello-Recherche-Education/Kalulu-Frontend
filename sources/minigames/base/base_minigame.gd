@@ -211,6 +211,8 @@ func _win() -> void:
 		if gardens_data.has("boss_gate_lesson"):
 			gardens_data.boss_completed = UserDataManager.student_progression.boss_completed(gardens_data.boss_gate_lesson as int)
 			gardens_data.first_clear = gardens_data.boss_completed
+			if not is_final_boss:
+				UserDataManager.student_progression.reset_boss_failure_streak()
 		else:
 			gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
@@ -272,6 +274,14 @@ func _lose() -> void:
 	
 	minigame_ui.play_kalulu_speech(lose_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
+	if gardens_data.has("boss_gate_lesson") and not is_final_boss and UserDataManager.student_progression:
+		var is_blocked: bool = UserDataManager.student_progression.register_boss_failure()
+		if is_blocked:
+			if has_method("show_adult_block"):
+				call("show_adult_block")
+			else:
+				Log.error("BaseMinigame: Adult block requested but no handler exists for %s" % Type.keys()[minigame_name])
+			return
 	
 	_reset()
 

@@ -31,6 +31,7 @@ var tutorial_count: int = 0
 @onready var progress_gauge: PercentMarginContainer = %ProgressionGaugePercentMarginContainer
 @onready var progress_gauge_goal: PercentMarginContainer = %ProgressionGaugeGoalPercentMarginContainer2
 @onready var progress_gauge_internal: NinePatchRect = %ProgressionGaugeInternal
+@onready var adult_block: Control = %AdultBossBlock
 
 
 func _fish_get_drag_data(_at_position: Vector2) -> Variant:
@@ -42,6 +43,8 @@ func _fish_get_drag_data(_at_position: Vector2) -> Variant:
 
 func _ready() -> void:
 	super()
+	if adult_block and adult_block.has_signal("unlocked"):
+		adult_block.unlocked.connect(_on_adult_block_unlocked)
 	fish_start_zone.set_drag_forwarding(_fish_get_drag_data, Callable(), Callable())
 	(beacon1 as Control).set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon1_drop_data)
 	(beacon2 as Control).set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon2_drop_data)
@@ -201,3 +204,12 @@ func _ensure_words_to_present_count(target_count: int) -> void:
 		words_to_present.append_array(base_pool)
 	if words_to_present.size() > target_count:
 		words_to_present.resize(target_count)
+
+
+func show_adult_block() -> void:
+	if adult_block and adult_block.has_method("show_block"):
+		adult_block.call("show_block")
+
+
+func _on_adult_block_unlocked() -> void:
+	await _reset()
