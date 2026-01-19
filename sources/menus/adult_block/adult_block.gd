@@ -1,5 +1,5 @@
-extends Control
 class_name AdultBlock
+extends Control
 
 signal unlocked()
 
