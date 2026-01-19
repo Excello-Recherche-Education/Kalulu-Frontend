@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://b7rx6esglyd6c"]
 
 [ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/components/code_keyboard.tscn" id="1_6q05s"]
-[ext_resource type="Script" uid="uid://dxs13x1x36ukn" path="res://sources/menus/adult_block/adult_boss_block.gd" id="1_jf7p7"]
+[ext_resource type="Script" uid="uid://dxs13x1x36ukn" path="res://sources/menus/adult_block/adult_block.gd" id="1_jf7p7"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_cdfx1"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_0u8tq"]
 
-[node name="AdultBossBlock" type="Control"]
+[node name="AdultBlock" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
