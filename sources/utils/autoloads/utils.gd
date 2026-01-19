@@ -8,12 +8,18 @@ const SUPPORTED_LOCALES: Dictionary[String, String] = {
 	"pt_BR": "Português (Brasil)",
 	"es_DO": "Español (República Dominicana)"
 }
+const RESERVED_FILE_NAMES: Array[String] = [
+	"CON", "PRN", "AUX", "NUL",
+	"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+	"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+]
+const INVALID_FILE_CHARS: Array[String] = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"]
 
 
 func reorder_children_by_property(container: Node, property_name: String) -> void:
 	var children: Array[Node] = container.get_children()
 	children.sort_custom(Utils.sort_by_property.bind(property_name))
-	for element: Node in container.get_children():
+	for element: Node in children:
 		container.remove_child(element)
 	for element: Node in children:
 		container.add_child(element)
@@ -130,18 +136,11 @@ func get_safe_file_path(file_path: String) -> String:
 	var base: String = file.get_basename()
 	var ext: String = file.get_extension()
 	
-	var reserved_names: Array[String] = [
-		"CON", "PRN", "AUX", "NUL",
-		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
-	]
-	
-	var invalid_chars: Array[String] = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"]
-	for chara: String in invalid_chars:
+	for chara: String in INVALID_FILE_CHARS:
 		base = base.replace(chara, "_")
 	
 	var modified: bool = false
-	if base.to_upper() in reserved_names:
+	if base.to_upper() in RESERVED_FILE_NAMES:
 		base = "_" + base
 		modified = true
 	
