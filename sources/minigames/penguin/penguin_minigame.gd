@@ -74,6 +74,7 @@ func _find_stimuli_and_distractions() -> void:
 # Launch the minigame
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#7fc8ff")])
 	if stimuli.is_empty():
 		Log.error("PenguinMinigame: Cannot start game because stimuli is empty")
 		_win()
