@@ -227,11 +227,57 @@ func _check_db_integrity() -> void:
 				if !sentence.has("Sentence"):
 					if !log_message("Sentence with no Sentence (key) at lesson ID " + str(lesson_id) + " and sentence ID " + str(sentence.ID)):
 						return
-				var word_count: int = ((sentence.Sentence) as String).replace("!", " ").replace("?", " ").replace(".", " ").replace(",", " ").replace(";", " ").replace(":", " ").replace("'", " ").replace("  ", " ").trim_suffix(" ").split(" ", false).size()
-				var word_list: Array[Dictionary] = Database.get_words_in_sentence(sentence.ID as int)
+				# More robust word count from sentence text
+				var text: String = (sentence.Sentence as String)
+				text = text.replace("’", "'")
+				text = text.replace("!", " ").replace("?", " ").replace(".", " ").replace(",", " ").replace(";", " ").replace(":", " ")
+				text = text.replace("'", " ")
+				while text.find("  ") != -1:
+					text = text.replace("  ", " ")
+				var word_count: int = text.strip_edges().split(" ", false).size()
+
+				var word_list: Array[Dictionary] = Database.get_words_in_sentence_for_integrity_check(sentence.ID as int)
+
+				# Existing check: mismatch between text word count and WordsInSentences entries
 				if word_list.size() != word_count:
-					if !log_message('Sentence "' + (sentence.Sentence as String) + '" has incoherent words count: ' + str(word_list.size())):
+					if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') has incoherent words count: expected ' + str(word_count) + ', got ' + str(word_list.size())):
 						return
+
+				# New check: detect missing WordPosition (holes) in WordsInSentences
+				var positions_present: Dictionary = {} # int -> true
+				var min_pos: int = 999999
+				var max_pos: int = -999999
+				var can_check_positions: bool = true
+
+				for word_pos_entry: Dictionary in word_list:
+					if word_pos_entry.has("WordPosition"):
+						var p: int = word_pos_entry.WordPosition as int
+						positions_present[p] = true
+						min_pos = mini(min_pos, p)
+						max_pos = maxi(max_pos, p)
+					else:
+						# If get_words_in_sentence does not return WordPosition, we cannot validate continuity.
+						can_check_positions = false
+						if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') word_list entries have no WordPosition key; cannot check missing words by position.'):
+							return
+						break
+
+				if can_check_positions and word_count > 0:
+					# Expected positions are 0..(word_count-1)
+					if !positions_present.has(0):
+						if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') has missing first word: WordPosition 0 absent. Present positions: ' + str(positions_present.keys())):
+							return
+
+					var expected_last: int = word_count - 1
+					if !positions_present.has(expected_last):
+						if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') has missing last word: expected WordPosition ' + str(expected_last) + ' absent. Present positions: ' + str(positions_present.keys())):
+							return
+
+					for expected_pos: int in range(word_count):
+						if !positions_present.has(expected_pos):
+							if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') is missing WordPosition ' + str(expected_pos) + ' in WordsInSentences. Present positions: ' + str(positions_present.keys())):
+								return
+				# Continue existing per-word checks
 				for word: Dictionary in word_list:
 					if !word.has("ID"):
 						if !log_message("Word with no ID in lesson ID " + str(lesson_id) + " and sentence ID " + str(sentence.ID)):
