@@ -62,7 +62,7 @@ var current_lives: int = 0:
 		var previous_lives: int = current_lives
 		current_lives = value
 		if current_lives != previous_lives:
-			Log.debug("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, Type.keys()[minigame_name]])
+			Log.trace("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, Type.keys()[minigame_name]])
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
 		if current_lives <= max_number_of_lives - errors_before_help_speech:
@@ -441,7 +441,7 @@ func _play_kalulu_help_speech() -> void:
 func set_current_progression(p_current_progression: int) -> void:
 	var previous_progression: int = current_progression
 	current_progression = p_current_progression
-	Log.debug("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
+	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
 	
 	consecutive_errors = 0
 	is_highlighting = false
