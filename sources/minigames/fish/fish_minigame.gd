@@ -31,7 +31,7 @@ var tutorial_count: int = 0
 @onready var progress_gauge: PercentMarginContainer = %ProgressionGaugePercentMarginContainer
 @onready var progress_gauge_goal: PercentMarginContainer = %ProgressionGaugeGoalPercentMarginContainer2
 @onready var progress_gauge_internal: NinePatchRect = %ProgressionGaugeInternal
-@onready var adult_block: Control = %AdultBossBlock
+@onready var adult_block: AdultBlock = %AdultBlock
 
 
 func _fish_get_drag_data(_at_position: Vector2) -> Variant:
