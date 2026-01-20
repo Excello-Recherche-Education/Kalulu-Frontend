@@ -7,7 +7,8 @@ var max_word_progression: int = 0
 var labels: Array[PenguinLabel] = []
 
 @onready var penguin: Penguin = $GameRoot/Penguin
-@onready var labels_container: HFlowContainer = $GameRoot/Control/LabelsContainer
+@onready var sentence_background: HFlowContainer = %SentenceBackground
+@onready var sentence_container: HFlowContainer = %Sentence
 
 
 # Find words with silent GPs
@@ -80,13 +81,14 @@ func _start() -> void:
 		_win()
 		return
 	_setup_word_progression()
+	sentence_background.show()
 
 
 # Setups the word progression for current progression
 func _setup_word_progression() -> void:
 	max_word_progression = 0
 	
-	for node: Node in labels_container.get_children():
+	for node: Node in sentence_container.get_children():
 		node.queue_free()
 	labels.clear()
 	
@@ -100,7 +102,7 @@ func _setup_word_progression() -> void:
 		if gp.WordID != last_word_id:
 			last_word_id = gp.WordID
 			word_container = HBoxContainer.new()
-			labels_container.add_child(word_container)
+			sentence_container.add_child(word_container)
 		
 		var label: PenguinLabel = LABEL_SCENE.instantiate()
 		if first_gp:
@@ -108,15 +110,36 @@ func _setup_word_progression() -> void:
 			first_gp = false
 		label.gp = gp
 		word_container.add_child(label)
-		
 		label.pressed.connect(_on_snowball_thrown.bind(label))
-		
 		labels.append(label)
 		
 		if gp.Type == 0:
 			max_word_progression += 1
 	
+	setup_sentence_background()
 	current_word_progression = 0
+
+
+func setup_sentence_background() -> void:
+	await get_tree().process_frame
+	var number_of_lines: int = sentence_container.get_line_count()
+	var children: Array[Node] = sentence_background.get_children()
+	if children.is_empty():
+		Log.error("Ants Minigame: sentence_background has no child, but it should always at least keep 1")
+		return
+	if number_of_lines == children.size():
+		return
+	while number_of_lines < sentence_background.get_children().size():
+		var child: Node = sentence_background.get_child(-1) # Get last child
+		child.queue_free()
+		await get_tree().process_frame
+	if number_of_lines == children.size():
+		return
+	var template: Node = children[0]
+	while number_of_lines > sentence_background.get_children().size():
+		var new_child: Node = template.duplicate()
+		sentence_background.add_child(new_child)
+		await get_tree().process_frame
 
 
 func _highlight() -> void:
