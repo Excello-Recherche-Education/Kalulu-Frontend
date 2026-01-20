@@ -8,12 +8,18 @@ const SUPPORTED_LOCALES: Dictionary[String, String] = {
 	"pt_BR": "Português (Brasil)",
 	"es_DO": "Español (República Dominicana)"
 }
+const RESERVED_FILE_NAMES: Array[String] = [
+	"CON", "PRN", "AUX", "NUL",
+	"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+	"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+]
+const INVALID_FILE_CHARS: Array[String] = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"]
 
 
 func reorder_children_by_property(container: Node, property_name: String) -> void:
 	var children: Array[Node] = container.get_children()
 	children.sort_custom(Utils.sort_by_property.bind(property_name))
-	for element: Node in container.get_children():
+	for element: Node in children:
 		container.remove_child(element)
 	for element: Node in children:
 		container.add_child(element)
@@ -26,6 +32,58 @@ func sort_by_property(node_a: Node, node_b: Node, property_name: String) -> bool
 func disconnect_all(disconnecting_signal: Signal) -> void:
 	for connection: Dictionary in disconnecting_signal.get_connections():
 		disconnecting_signal.disconnect(connection["callable"] as Callable)
+
+
+func round_vec2(vec: Vector2) -> Vector2i:
+	return Vector2i(roundi(vec.x), roundi(vec.y))
+
+
+func safe_dimensions(dimensions: Vector2) -> Vector2:
+	return Vector2(maxf(1.0, dimensions.x), maxf(1.0, dimensions.y))
+
+
+func clamp_position_to_area(tested_position: Vector2, area_size: Vector2, padding: Vector2 = Vector2.ZERO) -> Vector2:
+	var safe_size: Vector2 = safe_dimensions(area_size)
+	return Vector2(
+		clampf(tested_position.x, padding.x, maxf(padding.x, safe_size.x - padding.x)),
+		clampf(tested_position.y, padding.y, maxf(padding.y, safe_size.y - padding.y))
+	)
+
+
+func build_probe_offsets(probe_half_size: Vector2) -> Array[Vector2]:
+	var offsets: Array[Vector2] = [Vector2.ZERO]
+	if probe_half_size == Vector2.ZERO:
+		return offsets
+	offsets.append_array([
+		Vector2(probe_half_size.x, 0.0),
+		Vector2(-probe_half_size.x, 0.0),
+		Vector2(0.0, probe_half_size.y),
+		Vector2(0.0, -probe_half_size.y),
+		Vector2(probe_half_size.x, probe_half_size.y),
+		Vector2(probe_half_size.x, -probe_half_size.y),
+		Vector2(-probe_half_size.x, probe_half_size.y),
+		Vector2(-probe_half_size.x, -probe_half_size.y),
+	])
+	var sample_step: float = maxf(1.0, minf(probe_half_size.x, probe_half_size.y) * 0.5)
+	var x_offset: float = -probe_half_size.x
+	while x_offset <= probe_half_size.x:
+		var y_offset: float = -probe_half_size.y
+		while y_offset <= probe_half_size.y:
+			offsets.append(Vector2(x_offset, y_offset))
+			y_offset += sample_step
+		x_offset += sample_step
+	return offsets
+
+
+func position_to_pixel(sample: Vector2, area_size: Vector2, image: Image) -> Vector2i:
+	var safe_size: Vector2 = safe_dimensions(area_size)
+	var width: float = maxf(1.0, image.get_width())
+	var height: float = maxf(1.0, image.get_height())
+	var normalized: Vector2 = Vector2(
+		clampf(sample.x / safe_size.x, 0.0, 1.0),
+		clampf(sample.y / safe_size.y, 0.0, 1.0)
+	)
+	return Vector2i(int(normalized.x * (width - 1.0)), int(normalized.y * (height - 1.0)))
 
 
 func clean_dir(path: String) -> Error:
@@ -78,18 +136,11 @@ func get_safe_file_path(file_path: String) -> String:
 	var base: String = file.get_basename()
 	var ext: String = file.get_extension()
 	
-	var reserved_names: Array[String] = [
-		"CON", "PRN", "AUX", "NUL",
-		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
-	]
-	
-	var invalid_chars: Array[String] = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"]
-	for chara: String in invalid_chars:
+	for chara: String in INVALID_FILE_CHARS:
 		base = base.replace(chara, "_")
 	
 	var modified: bool = false
-	if base.to_upper() in reserved_names:
+	if base.to_upper() in RESERVED_FILE_NAMES:
 		base = "_" + base
 		modified = true
 	

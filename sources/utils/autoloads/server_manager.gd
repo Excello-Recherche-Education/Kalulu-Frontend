@@ -229,10 +229,12 @@ func _get_request(uri: String, params: Dictionary) -> void:
 		Log.trace("ServerManager: Sending GET request.\n    URI = %s\n    Parameters not logged because it contains a password." % uri)
 	else:
 		Log.trace("ServerManager: Sending GET request.\n    URI = %s\n    Parameters = %s" % [uri, params])
-	if http_request.request(_create_uri_with_parameters(environment_url + uri, params), headers) == OK:
+	var req_url: String = _create_uri_with_parameters(environment_url + uri, params)
+	var request_error: Error = http_request.request(req_url, headers)
+	if request_error == OK:
 		await request_completed
 	else:
-		Log.error("ServerManager: Error sending GET request")
+		Log.error("ServerManager: Error sending GET request to %s. Error: %s" % [req_url, error_string(request_error)])
 		code = 500
 		json = {message = "Internal Server Error"}
 
@@ -245,10 +247,11 @@ func _post_request(uri: String, params: Dictionary) -> void:
 		Log.trace("ServerManager: Sending POST request.\n    URI = %s\n    Parameters not logged because it contains a password." % uri)
 	else:
 		Log.trace("ServerManager: Sending POST request.\n    URI = %s\n    Parameters = %s" % [uri, params])
-	if http_request.request(url, headers, HTTPClient.METHOD_POST, "") == OK:
+	var request_error: Error = http_request.request(url, headers, HTTPClient.METHOD_POST, "")
+	if request_error == OK:
 		await request_completed
 	else:
-		Log.error("ServerManager: Error sending POST request")
+		Log.error("ServerManager: Error sending POST request to %s. Error: %s" % [url, error_string(request_error)])
 		code = 500
 		json = {message = "Internal Server Error"}
 
@@ -261,10 +264,11 @@ func _post_json_request(uri: String, data: Dictionary) -> void:
 		Log.trace("ServerManager: Sending POST JSON request.\n    URI = %s\n    Data not logged because it contains a password." % uri)
 	else:
 		Log.trace("ServerManager: Sending POST JSON request.\n    URI = %s\n    Data = %s" % [uri, data])
-	if http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data)) == OK:
+	var request_error: Error = http_request.request(req, headers, HTTPClient.METHOD_POST, JSON.stringify(data))
+	if request_error == OK:
 		await request_completed
 	else:
-		Log.error("ServerManager: Error sending POST JSON request")
+		Log.error("ServerManager: Error sending POST JSON request to %s. Error: %s" % [req, error_string(request_error)])
 		code = 500
 		json = {message = "Internal Server Error"}
 
@@ -274,10 +278,11 @@ func _delete_request(uri: String, params: Dictionary = {}) -> void:
 	var req: String = _create_uri_with_parameters(environment_url + uri, params)
 	var headers: PackedStringArray = _create_request_headers()
 	Log.trace("ServerManager: Sending DELETE request.\n    URI = %s\n    Parameters = %s" % [uri, params])
-	if http_request.request(req, headers, HTTPClient.METHOD_DELETE, "") == OK:
+	var request_error: Error = http_request.request(req, headers, HTTPClient.METHOD_DELETE, "")
+	if request_error == OK:
 		await request_completed
 	else:
-		Log.error("ServerManager: Error sending DELETE request")
+		Log.error("ServerManager: Error sending DELETE request to %s. Error: %s" % [req, error_string(request_error)])
 		code = 500
 		json = {message = "Internal Server Error"}
 

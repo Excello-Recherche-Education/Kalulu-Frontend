@@ -57,7 +57,6 @@ var stimulus: Dictionary = {}:
 @onready var right_stars: RightStarsFX = %Right_Stars
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
-@onready var text_box_outline_sprite_2d: Sprite2D = %TextBox_Outline_Sprite2D
 
 
 func _ready() -> void:
@@ -102,10 +101,8 @@ func stop_highlight() -> void:
 
 func right() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#e6f3e0")
-	text_box_sprite_2d.self_modulate = Color("#009344")
-	text_box_outline_sprite_2d.self_modulate = Color("#009344")
-	text_box_outline_sprite_2d.show()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_WIN
 	right_fx.play()
 	right_stars.play()
 	await right_fx.finished
@@ -113,10 +110,8 @@ func right() -> void:
 
 func wrong() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#fce6e6")
-	text_box_sprite_2d.self_modulate = Color("#be1e2d")
-	text_box_outline_sprite_2d.self_modulate = Color("#be1e2d")
-	text_box_outline_sprite_2d.show()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_LOSE
 	wrong_fx.play()
 	await wrong_fx.finished
 

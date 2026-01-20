@@ -16,6 +16,9 @@ enum Type {
 
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
+const LABEL_COLOR_NEUTRAL: Color = Color("#e6f3e0")
+const LABEL_COLOR_WIN: Color = Color("#009344")
+const LABEL_COLOR_LOSE: Color = Color("#be1e2d")
 
 static var transition_data: Dictionary = {}
 
@@ -48,6 +51,8 @@ var remediation_syllables_scores: Dictionary = {}
 var remediation_words_scores: Dictionary = {}
 # Scores for the confusion matrix engine
 var confusion_matrix_gp_scores: Dictionary[int, PackedInt32Array] = {}
+# Final boss state
+var is_final_boss: bool = false
 # Stimuli
 var stimuli: Array = []
 var distractions: Array = []
@@ -98,6 +103,7 @@ func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
+	is_final_boss = transition_data.get("is_final_boss", false) as bool
 	
 	# Difficulty
 	if (UserDataManager as UserDataManagerClass)._student_difficulty:
@@ -205,7 +211,13 @@ func _win() -> void:
 		gardens_data.minigame_completed = true
 	
 	if UserDataManager.student_progression:
-		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
+		if gardens_data.has("boss_gate_lesson"):
+			gardens_data.boss_completed = UserDataManager.student_progression.boss_completed(gardens_data.boss_gate_lesson as int)
+			gardens_data.first_clear = gardens_data.boss_completed
+			if not is_final_boss:
+				UserDataManager.student_progression.reset_boss_failure_streak()
+		else:
+			gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
 	update_scores()
 	
@@ -265,11 +277,21 @@ func _lose() -> void:
 	
 	minigame_ui.play_kalulu_speech(lose_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
+	if gardens_data.has("boss_gate_lesson") and not is_final_boss and UserDataManager.student_progression:
+		var is_blocked: bool = UserDataManager.student_progression.register_boss_failure()
+		if is_blocked:
+			if has_method("show_adult_block"):
+				call("show_adult_block")
+			else:
+				Log.error("BaseMinigame: Adult block requested but no handler exists for %s" % Type.keys()[minigame_name])
+			return
 	
 	_reset()
 
 
 func _submit_student_level_time() -> void:
+	if gardens_data.has("boss_gate_lesson"):
+		return
 	UserDataManager.add_level_time(lesson_nb, minigame_number, _get_elapsed_time_seconds())
 
 

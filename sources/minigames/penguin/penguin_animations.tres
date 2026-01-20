@@ -252,6 +252,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_h70xp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h70xp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h70xp")
 }],
 "loop": false,
 "name": &"sad",

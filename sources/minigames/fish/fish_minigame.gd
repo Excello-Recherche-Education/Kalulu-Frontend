@@ -3,6 +3,8 @@ extends Minigame
 signal beacon_fish_dropped(is_answered_real: bool)
 
 const FISH_TEXTURE_RECT_SCENE: PackedScene = preload("res://sources/minigames/fish/fish_texture_rect.tscn")
+const FINAL_BOSS_GAME_DURATION: int = 20 * 60
+const FINAL_BOSS_TOTAL_WORDS: int = 180
 
 @export var game_duration: int = 4 * 60
 @export var minimum_correct_ratio: float = 0.8
@@ -29,6 +31,7 @@ var tutorial_count: int = 0
 @onready var progress_gauge: PercentMarginContainer = %ProgressionGaugePercentMarginContainer
 @onready var progress_gauge_goal: PercentMarginContainer = %ProgressionGaugeGoalPercentMarginContainer2
 @onready var progress_gauge_internal: NinePatchRect = %ProgressionGaugeInternal
+@onready var adult_block: Control = %AdultBossBlock
 
 
 func _fish_get_drag_data(_at_position: Vector2) -> Variant:
@@ -40,6 +43,8 @@ func _fish_get_drag_data(_at_position: Vector2) -> Variant:
 
 func _ready() -> void:
 	super()
+	if adult_block and adult_block.has_signal("unlocked"):
+		adult_block.unlocked.connect(_on_adult_block_unlocked)
 	fish_start_zone.set_drag_forwarding(_fish_get_drag_data, Callable(), Callable())
 	(beacon1 as Control).set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon1_drop_data)
 	(beacon2 as Control).set_drag_forwarding(Callable(), _beacon_can_drop_data, _beacon2_drop_data)
@@ -60,6 +65,8 @@ func _find_stimuli_and_distractions() -> void:
 		Log.error("FishMinigame: Cannot start fish minigame since data is empty for lesson %d" % lesson_nb)
 		return
 	data_array.shuffle()
+	if is_final_boss:
+		max_words_count = data_array.size()
 	words_to_present.clear()
 	words_to_present_next.clear()
 	for data: Dictionary in data_array:
@@ -78,6 +85,10 @@ func _find_stimuli_and_distractions() -> void:
 		words_to_present.insert(0, distractions[0])
 		words_to_present.insert(0, stimuli[0])
 	total_number_of_words = words_to_present.size()
+	if is_final_boss:
+		game_duration = FINAL_BOSS_GAME_DURATION
+		total_number_of_words = FINAL_BOSS_TOTAL_WORDS
+		_ensure_words_to_present_count(FINAL_BOSS_TOTAL_WORDS)
 	progress_gauge_goal.margin_top_ratio = (1. - minimum_correct_ratio) * progress_gauge_max_margin
 
 
@@ -182,3 +193,23 @@ func _get_win_ratio() -> float:
 
 func _on_fish_animated_sprite_animation_finished() -> void:
 	fish_animated_sprite.play("idle")
+
+
+func _ensure_words_to_present_count(target_count: int) -> void:
+	if words_to_present.is_empty():
+		return
+	var base_pool: Array[String] = words_to_present.duplicate()
+	while words_to_present.size() < target_count:
+		base_pool.shuffle()
+		words_to_present.append_array(base_pool)
+	if words_to_present.size() > target_count:
+		words_to_present.resize(target_count)
+
+
+func show_adult_block() -> void:
+	if adult_block and adult_block.has_method("show_block"):
+		adult_block.call("show_block")
+
+
+func _on_adult_block_unlocked() -> void:
+	await _reset()

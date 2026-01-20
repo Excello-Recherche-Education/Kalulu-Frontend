@@ -13,6 +13,10 @@ var text: String:
 @onready var broken_coconut_fx: BrokenCoconutFX = $BrokenCoconutFX
 
 
+func _ready() -> void:
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+
+
 func highlight() -> void:
 	highlight_fx.play()
 
