@@ -44,11 +44,15 @@ func highlight() -> void:
 
 
 func right() -> void:
+	var previous_settings: LabelSettings = label.label_settings
+	var previous_background_color: Color = text_box_sprite_2d.self_modulate
 	label.label_settings = label.label_settings.duplicate()
 	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
 	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_WIN
 	right_fx.play()
 	await right_fx.finished
+	label.label_settings = previous_settings
+	text_box_sprite_2d.self_modulate = previous_background_color
 
 
 func wrong() -> void:
