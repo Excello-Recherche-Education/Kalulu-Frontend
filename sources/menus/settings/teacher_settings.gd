@@ -92,7 +92,7 @@ func refresh_devices_tabs() -> void:
 		var device_tab: DeviceTab
 		device_tab = DEVICE_TAB_SCENE.instantiate()
 		devices_tab_container.add_child(device_tab)
-		await get_tree().process_frame # Not optional or an auto-rename bug will occur on the tabs (especiallly if there are a lot of them)
+		await get_tree().process_frame # Not optional or an auto-rename bug will occur on the tabs (especially if there are a lot of them)
 		device_tab.device_id = device
 		(device_tab as DeviceTab).students = UserDataManager.teacher_settings.students[device] as Array[StudentData]
 		device_tab.name = tr("DEVICE_NUMBER").format({"number": device})

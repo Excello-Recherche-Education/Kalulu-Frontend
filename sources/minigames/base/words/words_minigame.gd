@@ -104,7 +104,7 @@ func _setup_minigame() -> void:
 	super()
 
 
-# Setups the word progression for current progression
+# Sets up the word progression for the current progression
 func _setup_word_progression() -> void:
 	var stimulus: Dictionary = _get_current_stimulus()
 	var gps: Array = stimulus.GPs as Array

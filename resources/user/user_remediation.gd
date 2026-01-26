@@ -29,7 +29,7 @@ func get_gp_score(id: int) -> int:
 	return 0
 
 
-# Updates the gp scores from a minigame scores
+# Updates the GP scores from a minigame's scores
 func update_gp_scores(minigame_scores: Dictionary) -> void:
 	if not minigame_scores:
 		return
@@ -70,7 +70,7 @@ func get_syllable_score(id: int) -> int:
 	return 0
 
 
-# Updates the syllables scores from a minigame scores
+# Updates the syllable scores from a minigame's scores
 func update_syllables_scores(minigame_scores: Dictionary) -> void:
 	if not minigame_scores:
 		return
@@ -111,7 +111,7 @@ func get_word_score(id: int) -> int:
 	return 0
 
 
-# Updates the words scores from a minigame scores
+# Updates the word scores from a minigame's scores
 func update_words_scores(minigame_scores: Dictionary) -> void:
 	if not minigame_scores:
 		return

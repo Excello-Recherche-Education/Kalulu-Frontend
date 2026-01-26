@@ -84,7 +84,7 @@ func _start() -> void:
 	sentence_background.show()
 
 
-# Setups the word progression for current progression
+# Sets up the word progression for the current progression
 func _setup_word_progression() -> void:
 	max_word_progression = 0
 	

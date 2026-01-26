@@ -68,7 +68,7 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 		
 		var data: PackedByteArray = read_file(sub_path)
 		if data.is_empty():
-			# Zero-byte files can be valid files, so we warn but we don"t skip
+			# Zero-byte files can be valid files, so we warn but do not skip them.
 			Log.warn("FolderUnzipper: Empty data for %s" % sub_path)
 		if typeof(data) != TYPE_PACKED_BYTE_ARRAY:
 			Log.warn("FolderUnzipper: Invalid data for %s" % sub_path)

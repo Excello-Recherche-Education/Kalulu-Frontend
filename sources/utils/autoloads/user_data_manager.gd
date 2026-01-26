@@ -157,7 +157,7 @@ func login(infos: Dictionary) -> bool:
 	
 	var path: String = get_teacher_settings_path()
 	
-	# Create the folder locally if it doesn't exists
+	# Create the folder locally if it does not exist.
 	if not FileAccess.file_exists(path):
 		DirAccess.make_dir_recursive_absolute(get_teacher_folder())
 		teacher_settings = TeacherSettings.new()
@@ -513,7 +513,7 @@ func _delete_inexistants_students_saves() -> void:
 						if str(s_data.code) == p_student:
 							exists = true
 							break
-					# If the code doesn't exists in the configuration, delete the folder
+					# If the code does not exist in the configuration, delete the folder.
 					if not exists:
 						Utils.delete_directory_recursive(path.path_join(device).path_join(language).path_join(p_student))
 
