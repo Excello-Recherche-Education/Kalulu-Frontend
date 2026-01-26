@@ -25,6 +25,10 @@ const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
 	set(value):
 		show_backgrounds = value
 		_update_panel_styles()
+@export var panel_theme_variation: StringName = &"PanelKalulu":
+	set(value):
+		panel_theme_variation = value
+		_update_panel_styles()
 
 @onready var icons: Array[TextureRect] = []
 @onready var panels: Array[PanelContainer] = []
@@ -73,7 +77,7 @@ func _update_panel_styles() -> void:
 			continue
 		if show_backgrounds:
 			panel.remove_theme_stylebox_override("panel")
-			panel.theme_type_variation = &"PanelKalulu"
+			panel.theme_type_variation = panel_theme_variation
 		else:
 			panel.theme_type_variation = &""
 			panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
