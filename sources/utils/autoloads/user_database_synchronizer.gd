@@ -208,17 +208,17 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 				Log.warn("UserDatabaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)
 
 	for device: int in UserDataManager.teacher_settings.students.keys():
-			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
-			for student_data: StudentData in students_in_device:
-				if not need_update_students.has(student_data.code):
-					if need_update_user == UpdateNeeded.FromServer:
-						need_update_students[student_data.code] = {}
-						need_update_students[student_data.code]["data"] = UpdateNeeded.DeleteLocal
-					elif need_update_user == UpdateNeeded.FromLocal:
-						need_update_students[student_data.code] = {}
-						need_update_students[student_data.code]["data"] = UpdateNeeded.FromLocal
-					else:
-						Log.warn("UserDatabaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
+		var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
+		for student_data: StudentData in students_in_device:
+			if not need_update_students.has(student_data.code):
+				if need_update_user == UpdateNeeded.FromServer:
+					need_update_students[student_data.code] = {}
+					need_update_students[student_data.code]["data"] = UpdateNeeded.DeleteLocal
+				elif need_update_user == UpdateNeeded.FromLocal:
+					need_update_students[student_data.code] = {}
+					need_update_students[student_data.code]["data"] = UpdateNeeded.FromLocal
+				else:
+					Log.warn("UserDatabaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
 	return need_update_students
 
 
