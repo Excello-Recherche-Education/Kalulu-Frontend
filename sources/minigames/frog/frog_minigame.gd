@@ -110,6 +110,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		track.is_cleared = true
 		track.is_enabled = false
 		frog.success()
+		await lilypad.right()
 		await audio_player.play_gp(lilypad.stimulus)
 		current_word_progression += 1
 
