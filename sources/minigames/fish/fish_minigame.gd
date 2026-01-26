@@ -17,6 +17,8 @@ var words_to_present_next: Array[String] = []
 var progress_gauge_max_margin: float = 0.95
 var total_number_of_words: int = 30
 var tutorial_count: int = 0
+var _boss_session_index: int = -1
+var _boss_answer_start_ms: int = 0
 
 @onready var fish_start_zone: Control = %FishStartZone
 @onready var beacon1: SpriteControl = %Beacon1
@@ -94,6 +96,8 @@ func _find_stimuli_and_distractions() -> void:
 
 func _start() -> void:
 	super()
+	if _is_boss_session() and _boss_session_index == -1:
+		_boss_session_index = UserDataManager.start_boss_session(Time.get_unix_time_from_system())
 	tween = create_tween()
 	tween.tween_property(path_follow, "progress_ratio", 1, game_duration)
 	tween.finished.connect(_on_time_out)
@@ -110,6 +114,8 @@ func _present_next_word() -> void:
 		words_to_present_next = []
 	label.show()
 	label.text = words_to_present[0]
+	if _is_boss_session():
+		_boss_answer_start_ms = Time.get_ticks_msec()
 	if tutorial_count == 0:
 		var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro_test_game_first_word"))
 		minigame_ui.play_kalulu_speech(speech)
@@ -145,6 +151,15 @@ func _on_beacon_fish_dropped(is_answered_real: bool) -> void:
 	var response_log: Dictionary = {"word": words_to_present[0], "is_real_answer": is_answered_real}
 	var awaited_response: Dictionary = {"word": words_to_present[0], "is_real_answer": is_really_real}
 	_log_new_response(response_log, awaited_response)
+	if _is_boss_session() and _boss_session_index >= 0:
+		var response_time_ms: int = max(0, Time.get_ticks_msec() - _boss_answer_start_ms)
+		UserDataManager.record_boss_answer(
+			_boss_session_index,
+			is_really_real,
+			words_to_present[0].length(),
+			response_time_ms,
+			is_correct
+		)
 	if is_correct:
 		if is_answered_real:
 			real_right_fx.play()
@@ -213,3 +228,19 @@ func show_adult_block() -> void:
 
 func _on_adult_block_unlocked() -> void:
 	await _reset()
+
+
+func _win() -> void:
+	if _is_boss_session() and _boss_session_index >= 0:
+		UserDataManager.finish_boss_session(_boss_session_index, true)
+	await super()
+
+
+func _lose() -> void:
+	if _is_boss_session() and _boss_session_index >= 0:
+		UserDataManager.finish_boss_session(_boss_session_index, false)
+	await super()
+
+
+func _is_boss_session() -> bool:
+	return is_final_boss or gardens_data.has("boss_gate_lesson")
