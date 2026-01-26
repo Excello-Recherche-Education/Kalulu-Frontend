@@ -129,7 +129,11 @@ func _on_logout_button_pressed() -> void:
 
 
 func _on_devices_tab_container_tab_changed(tab: int) -> void:
-	lesson_unlocks.device = tab + 1
+	var device_tab: DeviceTab = devices_tab_container.get_tab_control(tab) as DeviceTab
+	if not device_tab:
+		Log.error("SettingsTeacherSettings: DeviceTab not found for tab " + str(tab))
+		return
+	lesson_unlocks.device = device_tab.device_id
 
 
 func _on_student_pressed(code: int) -> void:
