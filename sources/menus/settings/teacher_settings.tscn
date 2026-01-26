@@ -194,6 +194,13 @@ theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 60
 text = "SETTINGS_INTERNET_MANDATORY_TO_ADD_STUDENT"
 
+[node name="ExportCodesButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("8_7h0sa")
+theme_override_font_sizes/font_size = 70
+text = "EXPORT_TO_PDF"
+
 [node name="LessonUnlocks" parent="." instance=ExtResource("9_mljfd")]
 visible = false
 layout_mode = 1
@@ -217,6 +224,17 @@ content_text = "DELETE_STUDENT_POPUP"
 unique_name_in_owner = true
 visible = false
 
+[node name="ExportCodesFileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+oversampling_override = 1.0
+mode = 4
+title = "EXPORT_STUDENT_CODES"
+position = Vector2i(100, 100)
+size = Vector2i(2400, 1600)
+ok_button_text = "EXPORT_STUDENT_CODES"
+cancel_button_text = "CANCEL"
+access = 2
+
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/Dashboard" to="." method="_on_dashboard_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
@@ -228,6 +246,7 @@ visible = false
 [connection signal="tab_changed" from="VBoxContainer/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/ExportCodesButton" to="." method="_on_export_codes_button_pressed"]
 [connection signal="student_deleted" from="LessonUnlocks" to="." method="_on_lesson_unlocks_student_deleted"]
 [connection signal="accepted" from="AddStudentPopup" to="." method="_on_add_student_popup_accepted"]
 [connection signal="accepted" from="AddDevicePopup" to="." method="_on_add_device_popup_accepted"]
