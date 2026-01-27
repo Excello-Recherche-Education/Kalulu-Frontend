@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bggrf54kye5vl"]
+[gd_scene format=3 uid="uid://bggrf54kye5vl"]
 
 [ext_resource type="Script" uid="uid://cxnkm84kk5l4u" path="res://sources/minigames/crabs/hole/hole.gd" id="1_05s8c"]
 [ext_resource type="Texture2D" uid="uid://tfigqbebxmal" path="res://assets/minigames/crabs/graphic/hole_back.png" id="2_osih7"]
@@ -7,30 +7,30 @@
 [ext_resource type="PackedScene" uid="uid://dt8ynpufhqs5w" path="res://sources/utils/fx/sand.tscn" id="5_vress"]
 [ext_resource type="Script" uid="uid://bwoyt0nume0gt" path="res://sources/minigames/crabs/hole/hole_audio_stream_player_2d.gd" id="6_2rg3s"]
 
-[node name="Hole" type="Node2D"]
+[node name="Hole" type="Node2D" unique_id=778845142]
 script = ExtResource("1_05s8c")
 
-[node name="HoleBack" type="Sprite2D" parent="."]
+[node name="HoleBack" type="Sprite2D" parent="." unique_id=586385878]
 texture = ExtResource("2_osih7")
 
-[node name="Mask" type="Sprite2D" parent="."]
+[node name="Mask" type="Sprite2D" parent="." unique_id=1408106167]
 unique_name_in_owner = true
 clip_children = 1
 position = Vector2(0, -138)
 texture = ExtResource("3_ietrg")
 
-[node name="SandVFX" parent="." instance=ExtResource("5_vress")]
+[node name="SandVFX" parent="." unique_id=1445853265 instance=ExtResource("5_vress")]
 offset_top = 45.0
 offset_bottom = 45.0
 scale = Vector2(1.8, 1.8)
 
-[node name="HoleFront" type="Sprite2D" parent="."]
+[node name="HoleFront" type="Sprite2D" parent="." unique_id=908671854]
 position = Vector2(0, 2)
 texture = ExtResource("5_ahgwg")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=48273841]
 
-[node name="CrabAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="CrabAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=2079139543]
 bus = &"Effects"
 script = ExtResource("6_2rg3s")
 

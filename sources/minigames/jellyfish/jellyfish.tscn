@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cpkwyypyikpfc"]
+[gd_scene format=3 uid="uid://cpkwyypyikpfc"]
 
 [ext_resource type="Script" uid="uid://bk5oyj8r6aw2h" path="res://sources/utils/sprite_control.gd" id="1_1b85n"]
 [ext_resource type="Script" uid="uid://b1lfi4hen3e7" path="res://sources/minigames/jellyfish/jellyfish.gd" id="1_06uwq"]
@@ -13,16 +13,16 @@
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="9_ah5ir"]
 [ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="13_jfr88"]
 
-[node name="Jellyfish" type="Control"]
+[node name="Jellyfish" type="Control" unique_id=2036427610]
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.0699297, 1.0699297)
+scale = Vector2(1.157944, 1.157944)
 script = ExtResource("1_06uwq")
 
-[node name="BackFX" type="Control" parent="."]
+[node name="BackFX" type="Control" parent="." unique_id=880451279]
 custom_minimum_size = Vector2(0, 220)
 anchors_preset = 0
 anchor_right = 1.0
@@ -31,7 +31,7 @@ size_flags_vertical = 0
 mouse_filter = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="RightFX" parent="BackFX" instance=ExtResource("2_edt4e")]
+[node name="RightFX" parent="BackFX" unique_id=230299175 instance=ExtResource("2_edt4e")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -42,20 +42,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HighlightFX" parent="BackFX" instance=ExtResource("3_5uhvd")]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="WrongFX" parent="BackFX" instance=ExtResource("6_w1tlu")]
+[node name="HighlightFX" parent="BackFX" unique_id=282989015 instance=ExtResource("3_5uhvd")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -68,7 +55,20 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
+[node name="WrongFX" parent="BackFX" unique_id=319720193 instance=ExtResource("6_w1tlu")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SpriteControl" type="Control" parent="." unique_id=1071148289 node_paths=PackedStringArray("sprites")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -79,22 +79,22 @@ mouse_filter = 2
 script = ExtResource("1_1b85n")
 sprites = [NodePath("AnimatedSprite2D_Body"), NodePath("AnimatedSprite2D_Arms")]
 
-[node name="AnimatedSprite2D_Body" type="AnimatedSprite2D" parent="SpriteControl"]
+[node name="AnimatedSprite2D_Body" type="AnimatedSprite2D" parent="SpriteControl" unique_id=220917894]
 unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("6_p6hdi")
 animation = &"idle"
-frame_progress = 0.8706333
+frame_progress = 0.33819497
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
-[node name="TextBox_Sprite2D" type="Sprite2D" parent="SpriteControl"]
+[node name="TextBox_Sprite2D" type="Sprite2D" parent="SpriteControl" unique_id=1927687114]
 unique_name_in_owner = true
 position = Vector2(200, 242)
 scale = Vector2(0.471, 0.471)
 texture = ExtResource("6_ah5ir")
 
-[node name="PercentMarginContainer" type="Container" parent="SpriteControl/TextBox_Sprite2D"]
+[node name="PercentMarginContainer" type="Container" parent="SpriteControl/TextBox_Sprite2D" unique_id=1086145076]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -110,10 +110,10 @@ margin_top_ratio = 0.1
 margin_right_ratio = 0.2
 margin_bottom_ratio = 0.2
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer" unique_id=884235728]
 layout_mode = 2
 
-[node name="AutoSizeLabel" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("4_26xiq")]
+[node name="AutoSizeLabel" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" unique_id=946321664 instance=ExtResource("4_26xiq")]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -122,16 +122,15 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = ""
 label_settings = ExtResource("9_ah5ir")
 
-[node name="AnimatedSprite2D_Arms" type="AnimatedSprite2D" parent="SpriteControl"]
+[node name="AnimatedSprite2D_Arms" type="AnimatedSprite2D" parent="SpriteControl" unique_id=1825015543]
 unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("6_i86t4")
 animation = &"idle"
-frame_progress = 0.8706333
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
-[node name="FrontFX" type="Control" parent="."]
+[node name="FrontFX" type="Control" parent="." unique_id=723899549]
 custom_minimum_size = Vector2(0, 220)
 anchors_preset = 0
 anchor_right = 1.0
@@ -140,7 +139,7 @@ size_flags_vertical = 0
 mouse_filter = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Right_Stars" parent="FrontFX" instance=ExtResource("13_jfr88")]
+[node name="Right_Stars" parent="FrontFX" unique_id=2145521264 instance=ExtResource("13_jfr88")]
 unique_name_in_owner = true
 position = Vector2(200, 242)
 

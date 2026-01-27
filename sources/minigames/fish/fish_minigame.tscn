@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://df5derhil64ca"]
+[gd_scene format=3 uid="uid://df5derhil64ca"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_itrpi"]
 [ext_resource type="Script" uid="uid://dgodk76761a1n" path="res://sources/minigames/fish/fish_minigame.gd" id="2_68jip"]
@@ -481,7 +481,7 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="FishMinigame" instance=ExtResource("1_itrpi")]
+[node name="FishMinigame" unique_id=1178378052 instance=ExtResource("1_itrpi")]
 script = ExtResource("2_68jip")
 game_duration = 240
 minimum_correct_ratio = 0.8
@@ -490,13 +490,13 @@ max_words_count = 15
 minigame_name = 9
 lesson_nb = 50
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0" unique_id=1518320737]
 environment = SubResource("Environment_5bcb7")
 
-[node name="MinigameUI" parent="." index="2"]
+[node name="MinigameUI" parent="." index="2" unique_id=1199249440]
 stimulus_button_visible = false
 
-[node name="Background" type="TextureRect" parent="GameRoot" index="0"]
+[node name="Background" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=1937666021]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -505,20 +505,20 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_3ty3i")
 
-[node name="Path2D" type="Path2D" parent="GameRoot" index="1"]
+[node name="Path2D" type="Path2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=191741591]
 curve = SubResource("Curve2D_8d1qx")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="GameRoot/Path2D" index="0"]
+[node name="PathFollow2D" type="PathFollow2D" parent="GameRoot/Path2D" index="0" unique_id=699263217]
 unique_name_in_owner = true
 position = Vector2(544, 469)
 rotates = false
 loop = false
 
-[node name="Sprite2D" type="Sprite2D" parent="GameRoot/Path2D/PathFollow2D" index="0"]
+[node name="Sprite2D" type="Sprite2D" parent="GameRoot/Path2D/PathFollow2D" index="0" unique_id=2147097806]
 scale = Vector2(2, 2)
 texture = ExtResource("4_2m0ff")
 
-[node name="Cloud" type="TextureRect" parent="GameRoot" index="2"]
+[node name="Cloud" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=609886137]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -526,7 +526,7 @@ offset_bottom = 861.0
 grow_horizontal = 2
 texture = ExtResource("4_ccu1v")
 
-[node name="Sea" type="TextureRect" parent="GameRoot" index="3"]
+[node name="Sea" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=2146523339]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -535,7 +535,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_dc51h")
 
-[node name="Beacon1" type="Control" parent="GameRoot" index="4" node_paths=PackedStringArray("sprites")]
+[node name="Beacon1" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=653620685 node_paths=PackedStringArray("sprites")]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 408.0
@@ -545,7 +545,7 @@ offset_bottom = 1326.0
 script = ExtResource("4_8mkk3")
 sprites = [NodePath("Beacon")]
 
-[node name="Beacon" type="AnimatedSprite2D" parent="GameRoot/Beacon1" index="0"]
+[node name="Beacon" type="AnimatedSprite2D" parent="GameRoot/Beacon1" index="0" unique_id=1764335398]
 scale = Vector2(1.7965117, 1.7484472)
 sprite_frames = SubResource("SpriteFrames_25r11")
 animation = &"idle"
@@ -553,7 +553,7 @@ autoplay = "idle"
 frame_progress = 0.600356
 centered = false
 
-[node name="FalseWrongFX" parent="GameRoot/Beacon1" index="1" instance=ExtResource("11_ueo10")]
+[node name="FalseWrongFX" parent="GameRoot/Beacon1" index="1" unique_id=818861745 instance=ExtResource("11_ueo10")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 306.0
@@ -561,7 +561,7 @@ offset_top = 533.0
 offset_right = 306.0
 offset_bottom = 533.0
 
-[node name="FalseRightFX" parent="GameRoot/Beacon1" index="2" instance=ExtResource("9_mcq4c")]
+[node name="FalseRightFX" parent="GameRoot/Beacon1" index="2" unique_id=1624850180 instance=ExtResource("9_mcq4c")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 306.0
@@ -569,7 +569,7 @@ offset_top = 521.0
 offset_right = 306.0
 offset_bottom = 521.0
 
-[node name="Beacon2" type="Control" parent="GameRoot" index="5" node_paths=PackedStringArray("sprites")]
+[node name="Beacon2" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=1720390365 node_paths=PackedStringArray("sprites")]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 1600.0
@@ -579,13 +579,13 @@ offset_bottom = 1326.0
 script = ExtResource("4_8mkk3")
 sprites = [NodePath("Beacon")]
 
-[node name="Beacon" type="AnimatedSprite2D" parent="GameRoot/Beacon2" index="0"]
+[node name="Beacon" type="AnimatedSprite2D" parent="GameRoot/Beacon2" index="0" unique_id=752086631]
 scale = Vector2(1.7965117, 1.7484472)
 sprite_frames = SubResource("SpriteFrames_ru7b5")
 animation = &"idle"
 centered = false
 
-[node name="Flag" type="TextureRect" parent="GameRoot/Beacon2" index="1"]
+[node name="Flag" type="TextureRect" parent="GameRoot/Beacon2" index="1" unique_id=140327293]
 layout_mode = 0
 offset_left = 204.0
 offset_top = 472.0
@@ -596,14 +596,12 @@ mouse_filter = 2
 texture = ExtResource("9_2adou")
 expand_mode = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="GameRoot/Beacon2" index="2"]
-libraries = {
-&"": SubResource("AnimationLibrary_tmg6i")
-}
-autoplay = "idle"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GameRoot/Beacon2" index="2" unique_id=924740165]
+libraries/ = SubResource("AnimationLibrary_tmg6i")
+autoplay = &"idle"
 speed_scale = 0.5
 
-[node name="RealWrongFX" parent="GameRoot/Beacon2" index="3" instance=ExtResource("11_ueo10")]
+[node name="RealWrongFX" parent="GameRoot/Beacon2" index="3" unique_id=2129825964 instance=ExtResource("11_ueo10")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 306.0
@@ -611,7 +609,7 @@ offset_top = 533.0
 offset_right = 306.0
 offset_bottom = 533.0
 
-[node name="RealRightFX" parent="GameRoot/Beacon2" index="4" instance=ExtResource("9_mcq4c")]
+[node name="RealRightFX" parent="GameRoot/Beacon2" index="4" unique_id=810997273 instance=ExtResource("9_mcq4c")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 306.0
@@ -619,7 +617,7 @@ offset_top = 521.0
 offset_right = 306.0
 offset_bottom = 521.0
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="GameRoot" index="6"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=1135675409]
 layout_mode = 0
 offset_left = 520.0
 offset_top = 656.0
@@ -628,14 +626,14 @@ offset_bottom = 1802.0
 mouse_filter = 2
 ratio = 1.412
 
-[node name="Fish" type="Control" parent="GameRoot/AspectRatioContainer" index="0" node_paths=PackedStringArray("sprites")]
+[node name="Fish" type="Control" parent="GameRoot/AspectRatioContainer" index="0" unique_id=63303695 node_paths=PackedStringArray("sprites")]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("4_8mkk3")
 sprites = [NodePath("FishAnimatedSprite")]
 
-[node name="FishAnimatedSprite" type="AnimatedSprite2D" parent="GameRoot/AspectRatioContainer/Fish" index="0"]
+[node name="FishAnimatedSprite" type="AnimatedSprite2D" parent="GameRoot/AspectRatioContainer/Fish" index="0" unique_id=394233767]
 unique_name_in_owner = true
 scale = Vector2(2.2041097, 2.2040977)
 sprite_frames = SubResource("SpriteFrames_ukbiw")
@@ -643,7 +641,7 @@ animation = &"idle"
 autoplay = "idle"
 centered = false
 
-[node name="FishStartZone" type="Control" parent="GameRoot/AspectRatioContainer/Fish" index="1"]
+[node name="FishStartZone" type="Control" parent="GameRoot/AspectRatioContainer/Fish" index="1" unique_id=2033291081]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 508.0
@@ -651,7 +649,7 @@ offset_top = 346.0
 offset_right = 1084.0
 offset_bottom = 1124.0
 
-[node name="ProgressionGauge" type="NinePatchRect" parent="GameRoot" index="7"]
+[node name="ProgressionGauge" type="NinePatchRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=1664248446]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
@@ -663,7 +661,7 @@ texture = ExtResource("11_p5wnc")
 patch_margin_top = 33
 patch_margin_bottom = 33
 
-[node name="ProgressionGaugeGoalPercentMarginContainer2" type="Container" parent="GameRoot/ProgressionGauge" index="0"]
+[node name="ProgressionGaugeGoalPercentMarginContainer2" type="Container" parent="GameRoot/ProgressionGauge" index="0" unique_id=1583570329]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -674,13 +672,13 @@ grow_vertical = 2
 script = ExtResource("14_b3ilp")
 margin_top_ratio = 0.19
 
-[node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugeGoalPercentMarginContainer2" index="0"]
+[node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugeGoalPercentMarginContainer2" index="0" unique_id=1583306416]
 layout_mode = 2
 texture = ExtResource("11_p5wnc")
 patch_margin_top = 33
 patch_margin_bottom = 33
 
-[node name="ProgressionGaugePercentMarginContainer" type="Container" parent="GameRoot/ProgressionGauge" index="1"]
+[node name="ProgressionGaugePercentMarginContainer" type="Container" parent="GameRoot/ProgressionGauge" index="1" unique_id=1140040548]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -691,7 +689,7 @@ grow_vertical = 2
 script = ExtResource("14_b3ilp")
 margin_top_ratio = 0.95
 
-[node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugePercentMarginContainer" index="0"]
+[node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugePercentMarginContainer" index="0" unique_id=1534553679]
 unique_name_in_owner = true
 modulate = Color(0.996078, 0.776471, 0.2, 1)
 layout_mode = 2
@@ -699,7 +697,7 @@ texture = ExtResource("12_w5m1b")
 patch_margin_top = 33
 patch_margin_bottom = 33
 
-[node name="TextPlank" type="TextureRect" parent="GameRoot" index="8"]
+[node name="TextPlank" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="8" unique_id=1794008625]
 layout_mode = 0
 offset_left = 1016.0
 offset_top = 1608.0
@@ -707,7 +705,7 @@ offset_right = 1692.0
 offset_bottom = 1743.0
 texture = ExtResource("13_3p0ue")
 
-[node name="MarginContainer" type="MarginContainer" parent="GameRoot/TextPlank" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="GameRoot/TextPlank" index="0" unique_id=415001204]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -716,7 +714,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_right = 30
 
-[node name="Label" type="Label" parent="GameRoot/TextPlank/MarginContainer" index="0"]
+[node name="Label" type="Label" parent="GameRoot/TextPlank/MarginContainer" index="0" unique_id=1229572097]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -725,7 +723,7 @@ text = "a"
 label_settings = ExtResource("17_47luc")
 horizontal_alignment = 1
 
-[node name="AdultBlock" parent="." index="5" instance=ExtResource("18_4v0wd")]
+[node name="AdultBlock" parent="." index="5" unique_id=1401891944 instance=ExtResource("18_4v0wd")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

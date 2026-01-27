@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://c4jpo4l5w2vhv"]
+[gd_scene format=3 uid="uid://c4jpo4l5w2vhv"]
 
 [ext_resource type="Script" uid="uid://dr585w0sy1t81" path="res://sources/menus/settings/device_tab.gd" id="1_40sjo"]
 
-[node name="DeviceTab" type="TabBar"]
+[node name="DeviceTab" type="TabBar" unique_id=1133008162]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,7 +10,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_40sjo")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1250163665]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,7 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer" unique_id=1570556337]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -28,7 +28,7 @@ theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
-[node name="StudentsContainer" type="GridContainer" parent="ScrollContainer/MarginContainer"]
+[node name="StudentsContainer" type="GridContainer" parent="ScrollContainer/MarginContainer" unique_id=968491762]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

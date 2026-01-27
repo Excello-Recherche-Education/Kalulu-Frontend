@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://tkfgc7fdyw1a"]
+[gd_scene format=3 uid="uid://tkfgc7fdyw1a"]
 
 [ext_resource type="PackedScene" uid="uid://cisurm74fqg2i" path="res://sources/minigames/base/words/words_minigame.tscn" id="1_geqym"]
 [ext_resource type="Script" uid="uid://crs4p0fblwt00" path="res://sources/minigames/turtles/turtles_minigame.gd" id="2_f5de7"]
@@ -377,7 +377,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="TurtlesMinigame" instance=ExtResource("1_geqym")]
+[node name="TurtlesMinigame" unique_id=115388830 instance=ExtResource("1_geqym")]
 script = ExtResource("2_f5de7")
 minigame_name = 6
 lesson_nb = 24
@@ -385,81 +385,81 @@ difficulty = 4
 max_number_of_lives = 5
 max_progression = 5
 
-[node name="MinigameUI" parent="." index="1"]
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
 empty_progression_icon = ExtResource("3_3a2rs")
 full_progression_icon = ExtResource("4_l6oqe")
 
-[node name="Water" parent="GameRoot" index="0" instance=ExtResource("5_g012u")]
+[node name="Water" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=660717362 instance=ExtResource("5_g012u")]
 layout_mode = 1
 
-[node name="Island" parent="GameRoot" index="1" instance=ExtResource("5_bgryf")]
+[node name="Island" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1944096836 instance=ExtResource("5_bgryf")]
 position = Vector2(1280, 830)
 
-[node name="Turtles" type="Node" parent="GameRoot" index="2"]
+[node name="Turtles" type="Node" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=1766161991]
 unique_name_in_owner = true
 
-[node name="SpawnPoints" type="Node2D" parent="GameRoot" index="3"]
+[node name="SpawnPoints" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=1609270337]
 
-[node name="SpawnPoint_01" type="Node2D" parent="GameRoot/SpawnPoints" index="0"]
+[node name="SpawnPoint_01" type="Node2D" parent="GameRoot/SpawnPoints" index="0" unique_id=1991308065]
 position = Vector2(512, -256)
 
-[node name="SpawnPoint_02" type="Node2D" parent="GameRoot/SpawnPoints" index="1"]
+[node name="SpawnPoint_02" type="Node2D" parent="GameRoot/SpawnPoints" index="1" unique_id=919642714]
 position = Vector2(680, -256)
 
-[node name="SpawnPoint_03" type="Node2D" parent="GameRoot/SpawnPoints" index="2"]
+[node name="SpawnPoint_03" type="Node2D" parent="GameRoot/SpawnPoints" index="2" unique_id=298462825]
 position = Vector2(960, -264)
 rotation = 0.47822022
 
-[node name="SpawnPoint_04" type="Node2D" parent="GameRoot/SpawnPoints" index="3"]
+[node name="SpawnPoint_04" type="Node2D" parent="GameRoot/SpawnPoints" index="3" unique_id=541912846]
 position = Vector2(1208, -256)
 rotation = -0.6527531
 
-[node name="SpawnPoint_05" type="Node2D" parent="GameRoot/SpawnPoints" index="4"]
+[node name="SpawnPoint_05" type="Node2D" parent="GameRoot/SpawnPoints" index="4" unique_id=1934901948]
 position = Vector2(1908, -256)
 
-[node name="SpawnPoint_06" type="Node2D" parent="GameRoot/SpawnPoints" index="5"]
+[node name="SpawnPoint_06" type="Node2D" parent="GameRoot/SpawnPoints" index="5" unique_id=445891356]
 position = Vector2(2116, -256)
 
-[node name="SpawnPoint_07" type="Node2D" parent="GameRoot/SpawnPoints" index="6"]
+[node name="SpawnPoint_07" type="Node2D" parent="GameRoot/SpawnPoints" index="6" unique_id=2128475773]
 position = Vector2(2800, 2000)
 rotation = 2.3561945
 
-[node name="SpawnPoint_08" type="Node2D" parent="GameRoot/SpawnPoints" index="7"]
+[node name="SpawnPoint_08" type="Node2D" parent="GameRoot/SpawnPoints" index="7" unique_id=1323926845]
 position = Vector2(2116, 2048)
 rotation = 3.1415927
 
-[node name="SpawnPoint_09" type="Node2D" parent="GameRoot/SpawnPoints" index="8"]
+[node name="SpawnPoint_09" type="Node2D" parent="GameRoot/SpawnPoints" index="8" unique_id=11924462]
 position = Vector2(1908, 2048)
 rotation = 3.1415927
 
-[node name="SpawnPoint_15" type="Node2D" parent="GameRoot/SpawnPoints" index="9"]
+[node name="SpawnPoint_15" type="Node2D" parent="GameRoot/SpawnPoints" index="9" unique_id=607986839]
 position = Vector2(1680, 2048)
 rotation = 3.7524579
 
-[node name="SpawnPoint_10" type="Node2D" parent="GameRoot/SpawnPoints" index="10"]
+[node name="SpawnPoint_10" type="Node2D" parent="GameRoot/SpawnPoints" index="10" unique_id=1953356765]
 position = Vector2(2912, 1640)
 rotation = 1.5707964
 
-[node name="SpawnPoint_11" type="Node2D" parent="GameRoot/SpawnPoints" index="11"]
+[node name="SpawnPoint_11" type="Node2D" parent="GameRoot/SpawnPoints" index="11" unique_id=1585651647]
 position = Vector2(1152, 2048)
 rotation = 3.9671333
 
-[node name="SpawnPoint_12" type="Node2D" parent="GameRoot/SpawnPoints" index="12"]
+[node name="SpawnPoint_12" type="Node2D" parent="GameRoot/SpawnPoints" index="12" unique_id=1388315001]
 position = Vector2(928, 2048)
 rotation = 2.750639
 
-[node name="SpawnPoint_13" type="Node2D" parent="GameRoot/SpawnPoints" index="13"]
+[node name="SpawnPoint_13" type="Node2D" parent="GameRoot/SpawnPoints" index="13" unique_id=847737063]
 position = Vector2(752, 2048)
 rotation = 3.1415927
 
-[node name="SpawnPoint_14" type="Node2D" parent="GameRoot/SpawnPoints" index="14"]
+[node name="SpawnPoint_14" type="Node2D" parent="GameRoot/SpawnPoints" index="14" unique_id=1335066907]
 position = Vector2(568, 2048)
 rotation = 3.1415927
 
-[node name="SpawnTimer" type="Timer" parent="GameRoot" index="4"]
+[node name="SpawnTimer" type="Timer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=699337110]
 one_shot = true
 
-[node name="CrabAnimatedSprite2D" type="AnimatedSprite2D" parent="." index="4"]
+[node name="CrabAnimatedSprite2D" type="AnimatedSprite2D" parent="." index="4" unique_id=1893382029]
 unique_name_in_owner = true
 position = Vector2(1544, 742)
 scale = Vector2(0.3, 0.3)

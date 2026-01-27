@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=42 format=3 uid="uid://drc65acsu0k1"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://drc65acsu0k1"]
 
 [ext_resource type="Texture2D" uid="uid://d14qsri0qk7ka" path="res://assets/minigames/turtles/graphic/khaki_turtle_spritesheet.png" id="1_mdybx"]
 

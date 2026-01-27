@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bvb8iewnsnsoj"]
+[gd_scene format=3 uid="uid://bvb8iewnsnsoj"]
 
 [ext_resource type="Script" uid="uid://c75qci4r1opf1" path="res://sources/language_tool/segment_container.gd" id="1_07lpk"]
 [ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="2_6k0sf"]
@@ -18,7 +18,7 @@ font_size = 768
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ssy0w"]
 
-[node name="SegmentContainer" type="HBoxContainer"]
+[node name="SegmentContainer" type="HBoxContainer" unique_id=1771179766]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -30,13 +30,13 @@ mouse_filter = 2
 alignment = 1
 script = ExtResource("1_07lpk")
 
-[node name="DrawingContainer" type="PanelContainer" parent="."]
+[node name="DrawingContainer" type="PanelContainer" parent="." unique_id=466470731]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="DrawingContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="DrawingContainer" unique_id=970339473]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 12
@@ -44,7 +44,7 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="GraphemeLabel" type="Label" parent="DrawingContainer/MarginContainer"]
+[node name="GraphemeLabel" type="Label" parent="DrawingContainer/MarginContainer" unique_id=122177424]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -54,7 +54,7 @@ label_settings = SubResource("LabelSettings_md77l")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlacePointButton" type="Button" parent="DrawingContainer/MarginContainer/GraphemeLabel"]
+[node name="PlacePointButton" type="Button" parent="DrawingContainer/MarginContainer/GraphemeLabel" unique_id=487808025]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -67,25 +67,25 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_54blg")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_qds63")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ssy0w")
 
-[node name="ButtonsParent" type="Control" parent="DrawingContainer/MarginContainer"]
+[node name="ButtonsParent" type="Control" parent="DrawingContainer/MarginContainer" unique_id=1542799053]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="SegmentContainer" type="MarginContainer" parent="."]
+[node name="SegmentContainer" type="MarginContainer" parent="." unique_id=298712436]
 custom_minimum_size = Vector2(800, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SegmentContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SegmentContainer" unique_id=493660913]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="AddSegmentContainer" type="PanelContainer" parent="SegmentContainer/VBoxContainer"]
+[node name="AddSegmentContainer" type="PanelContainer" parent="SegmentContainer/VBoxContainer" unique_id=1640006151]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="SegmentContainer/VBoxContainer/AddSegmentContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="SegmentContainer/VBoxContainer/AddSegmentContainer" unique_id=156741152]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 20
@@ -93,24 +93,24 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer" unique_id=381643045]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Label" type="Label" parent="SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer" unique_id=899713696]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
 text = "Add segment"
 
-[node name="AddSegmentButton" parent="SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_h02qb")]
+[node name="AddSegmentButton" parent="SegmentContainer/VBoxContainer/AddSegmentContainer/MarginContainer/HBoxContainer" unique_id=53923938 instance=ExtResource("2_h02qb")]
 layout_mode = 2
 
-[node name="AllSegmentContainer" type="PanelContainer" parent="SegmentContainer/VBoxContainer"]
+[node name="AllSegmentContainer" type="PanelContainer" parent="SegmentContainer/VBoxContainer" unique_id=1251446205]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="SegmentContainer/VBoxContainer/AllSegmentContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="SegmentContainer/VBoxContainer/AllSegmentContainer" unique_id=796078845]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 20
@@ -118,15 +118,15 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="ScrollContainer" type="ScrollContainer" parent="SegmentContainer/VBoxContainer/AllSegmentContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="SegmentContainer/VBoxContainer/AllSegmentContainer/MarginContainer" unique_id=541653340]
 layout_mode = 2
 
-[node name="SegmentsContainer" type="VBoxContainer" parent="SegmentContainer/VBoxContainer/AllSegmentContainer/MarginContainer/ScrollContainer"]
+[node name="SegmentsContainer" type="VBoxContainer" parent="SegmentContainer/VBoxContainer/AllSegmentContainer/MarginContainer/ScrollContainer" unique_id=884033770]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Lines" type="Node2D" parent="."]
+[node name="Lines" type="Node2D" parent="." unique_id=1909818594]
 unique_name_in_owner = true
 z_index = 100
 

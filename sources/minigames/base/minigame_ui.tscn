@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://weree6bnlt6f"]
+[gd_scene format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" uid="uid://mlymm66lpbi6" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_p2m3v"]
@@ -125,13 +125,13 @@ _data = {
 &"repeat_stimulus": SubResource("Animation_fr0k4")
 }
 
-[node name="MinigameUI" type="CanvasLayer"]
+[node name="MinigameUI" type="CanvasLayer" unique_id=1395941266]
 process_mode = 3
 script = ExtResource("1_g5fl4")
 empty_progression_icon = ExtResource("26_0bgo4")
 full_progression_icon = ExtResource("27_eee4l")
 
-[node name="MainControl" type="Control" parent="."]
+[node name="MainControl" type="Control" parent="." unique_id=172993784]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -140,7 +140,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Interface" type="Control" parent="MainControl"]
+[node name="Interface" type="Control" parent="MainControl" unique_id=1235106519]
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -148,7 +148,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="StimulusTexture" type="TextureRect" parent="MainControl/Interface"]
+[node name="StimulusTexture" type="TextureRect" parent="MainControl/Interface" unique_id=1226389894]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -167,7 +167,7 @@ mouse_filter = 2
 texture = ExtResource("5_d6rvg")
 stretch_mode = 5
 
-[node name="LeftMargin" type="MarginContainer" parent="MainControl/Interface"]
+[node name="LeftMargin" type="MarginContainer" parent="MainControl/Interface" unique_id=256462568]
 custom_minimum_size = Vector2(375, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -182,11 +182,11 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 10
 
-[node name="LeftContainer" type="VBoxContainer" parent="MainControl/Interface/LeftMargin"]
+[node name="LeftContainer" type="VBoxContainer" parent="MainControl/Interface/LeftMargin" unique_id=1786308687]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="GardenButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+[node name="GardenButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=1647258232]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -195,7 +195,7 @@ texture_pressed = ExtResource("3_po8ds")
 texture_disabled = ExtResource("4_7xmkh")
 stretch_mode = 5
 
-[node name="StimulusMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+[node name="StimulusMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=496943241]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -203,7 +203,7 @@ mouse_filter = 2
 theme_override_constants/margin_left = 60
 theme_override_constants/margin_right = 60
 
-[node name="StimulusButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin"]
+[node name="StimulusButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin" unique_id=2016416103]
 unique_name_in_owner = true
 layout_mode = 2
 texture_normal = ExtResource("5_d6rvg")
@@ -211,7 +211,7 @@ texture_pressed = ExtResource("6_ojtbv")
 texture_disabled = ExtResource("7_cg081")
 stretch_mode = 5
 
-[node name="PauseMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+[node name="PauseMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=3662370]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -219,7 +219,7 @@ mouse_filter = 2
 theme_override_constants/margin_left = 60
 theme_override_constants/margin_right = 60
 
-[node name="PauseButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin"]
+[node name="PauseButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin" unique_id=77193092]
 unique_name_in_owner = true
 layout_mode = 2
 texture_normal = ExtResource("8_tna5q")
@@ -227,11 +227,11 @@ texture_pressed = ExtResource("9_bxlyd")
 texture_disabled = ExtResource("10_h64tq")
 stretch_mode = 5
 
-[node name="KaluluButtonMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer"]
+[node name="KaluluButtonMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=1977883805]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="KaluluButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/KaluluButtonMargin"]
+[node name="KaluluButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/KaluluButtonMargin" unique_id=1684071537]
 unique_name_in_owner = true
 layout_mode = 2
 texture_normal = ExtResource("11_n2mcy")
@@ -239,7 +239,7 @@ texture_pressed = ExtResource("12_crt1m")
 texture_disabled = ExtResource("13_2j53i")
 stretch_mode = 5
 
-[node name="CentralPadMargin" type="MarginContainer" parent="MainControl/Interface"]
+[node name="CentralPadMargin" type="MarginContainer" parent="MainControl/Interface" unique_id=1744553475]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -258,7 +258,7 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="CenterMenu" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin"]
+[node name="CenterMenu" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin" unique_id=2108087032]
 unique_name_in_owner = true
 process_mode = 2
 visible = false
@@ -268,33 +268,33 @@ theme_override_constants/margin_top = 500
 theme_override_constants/margin_right = 500
 theme_override_constants/margin_bottom = 500
 
-[node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
+[node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu" unique_id=1842706680]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 5
 
-[node name="Shadow" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer"]
+[node name="Shadow" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/MarginContainer" unique_id=1493154121]
 layout_mode = 2
 texture = ExtResource("14_ubv3y")
 
-[node name="Panel" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
+[node name="Panel" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu" unique_id=844503491]
 layout_mode = 2
 texture = ExtResource("15_ym1dd")
 
-[node name="PauseMenu" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu"]
+[node name="PauseMenu" type="MarginContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu" unique_id=1819158860]
 layout_mode = 2
 theme_override_constants/margin_left = 92
 theme_override_constants/margin_top = 92
 theme_override_constants/margin_right = 92
 theme_override_constants/margin_bottom = 92
 
-[node name="Background" type="Control" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu"]
+[node name="Background" type="Control" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu" unique_id=1844253761]
 modulate = Color(1, 1, 1, 0.396078)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/Background"]
+[node name="TextureRect" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/Background" unique_id=2034993124]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -304,20 +304,20 @@ grow_vertical = 2
 texture = ExtResource("16_mdaib")
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu" unique_id=1411511827]
 layout_mode = 2
 alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer" unique_id=295761419]
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("19_sgl1i")
 stretch_mode = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer" unique_id=300854681]
 layout_mode = 2
 
-[node name="RestartButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer"]
+[node name="RestartButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer" unique_id=46701632]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
@@ -327,7 +327,7 @@ texture_pressed = ExtResource("18_5pefo")
 texture_disabled = ExtResource("19_mm65c")
 stretch_mode = 4
 
-[node name="ContinueButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer"]
+[node name="ContinueButton" type="TextureButton" parent="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer" unique_id=1592849626]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
@@ -337,7 +337,7 @@ texture_pressed = ExtResource("23_rb4gp")
 texture_disabled = ExtResource("24_em5b4")
 stretch_mode = 4
 
-[node name="ProgressionMargin" type="MarginContainer" parent="MainControl/Interface"]
+[node name="ProgressionMargin" type="MarginContainer" parent="MainControl/Interface" unique_id=833386199]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -351,11 +351,11 @@ mouse_filter = 2
 theme_override_constants/margin_top = 270
 theme_override_constants/margin_right = 40
 
-[node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/ProgressionMargin"]
+[node name="MarginContainer" type="MarginContainer" parent="MainControl/Interface/ProgressionMargin" unique_id=1019568300]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="ProgressionGauge" type="NinePatchRect" parent="MainControl/Interface/ProgressionMargin/MarginContainer"]
+[node name="ProgressionGauge" type="NinePatchRect" parent="MainControl/Interface/ProgressionMargin/MarginContainer" unique_id=2013985398]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -363,12 +363,12 @@ texture = ExtResource("22_6jd5r")
 patch_margin_top = 33
 patch_margin_bottom = 33
 
-[node name="ProgressionContainer" type="VBoxContainer" parent="MainControl/Interface/ProgressionMargin/MarginContainer"]
+[node name="ProgressionContainer" type="VBoxContainer" parent="MainControl/Interface/ProgressionMargin/MarginContainer" unique_id=775823009]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(135, 0)
 layout_mode = 2
 
-[node name="ProgressionIconsRect" type="TextureRect" parent="MainControl/Interface/ProgressionMargin/MarginContainer/ProgressionContainer"]
+[node name="ProgressionIconsRect" type="TextureRect" parent="MainControl/Interface/ProgressionMargin/MarginContainer/ProgressionContainer" unique_id=160385278]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -377,15 +377,13 @@ texture = ExtResource("26_0bgo4")
 expand_mode = 4
 stretch_mode = 5
 
-[node name="Kalulu" parent="MainControl" instance=ExtResource("19_wn4nd")]
+[node name="Kalulu" parent="MainControl" unique_id=1541309300 instance=ExtResource("19_wn4nd")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_umrx4")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=710236348]
+libraries/ = SubResource("AnimationLibrary_umrx4")
 
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin/StimulusButton" to="." method="_on_stimulus_button_pressed"]

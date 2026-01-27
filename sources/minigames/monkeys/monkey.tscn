@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bp0b4xkr7nwed"]
+[gd_scene format=3 uid="uid://bp0b4xkr7nwed"]
 
 [ext_resource type="Script" uid="uid://b37oioeh1rnly" path="res://sources/minigames/monkeys/monkey.gd" id="1_cvvgu"]
 [ext_resource type="Texture2D" uid="uid://cgf8gkpp0hpuf" path="res://assets/minigames/monkeys/graphic/stunned_00.png" id="2_6848f"]
@@ -108,37 +108,37 @@ signal dragging()
 		
 "
 
-[node name="Monkey" type="Node2D"]
+[node name="Monkey" type="Node2D" unique_id=1341983060]
 script = ExtResource("1_cvvgu")
 
-[node name="Stars" type="AnimatedSprite2D" parent="."]
+[node name="Stars" type="AnimatedSprite2D" parent="." unique_id=982025717]
 visible = false
 position = Vector2(0, -232)
 sprite_frames = SubResource("SpriteFrames_eq3s8")
 autoplay = "default"
 frame_progress = 0.6102003
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1188376675]
 scale = Vector2(0.9, 0.9)
 sprite_frames = ExtResource("20_l0op8")
 animation = &"idle"
 autoplay = "idle"
 offset = Vector2(2.08165e-12, -54)
 
-[node name="Coconut" parent="." instance=ExtResource("3_tws3c")]
+[node name="Coconut" parent="." unique_id=802219304 instance=ExtResource("3_tws3c")]
 position = Vector2(-224, -31.99999)
 rotation = -0.10472
 scale = Vector2(0.99999994, 0.99999994)
 
-[node name="HitPosition" type="Marker2D" parent="."]
+[node name="HitPosition" type="Marker2D" parent="." unique_id=2013723562]
 position = Vector2(-74, -151)
 gizmo_extents = 20.0
 
-[node name="GrabPosition" type="Marker2D" parent="."]
+[node name="GrabPosition" type="Marker2D" parent="." unique_id=1203812361]
 position = Vector2(-96, 104)
 gizmo_extents = 20.0
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=1017174084]
 offset_left = -320.0
 offset_top = -144.0
 offset_right = -57.0
@@ -150,14 +150,14 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_i3dnl")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d4bmj")
 script = SubResource("GDScript_fxkfh")
 
-[node name="DragPreview" type="TextureRect" parent="Button"]
+[node name="DragPreview" type="TextureRect" parent="Button" unique_id=1507351032]
 visible = false
 layout_mode = 0
 offset_right = 128.0
 offset_bottom = 128.0
 texture = ExtResource("4_8r7im")
 
-[node name="Label" type="Label" parent="Button/DragPreview"]
+[node name="Label" type="Label" parent="Button/DragPreview" unique_id=1610444995]
 custom_minimum_size = Vector2(110, 2.08165e-12)
 layout_mode = 0
 offset_left = 7.0

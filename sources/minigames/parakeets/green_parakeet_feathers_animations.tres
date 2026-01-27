@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=10 format=3 uid="uid://ecmie8tg1cf7"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://ecmie8tg1cf7"]
 
 [ext_resource type="Texture2D" uid="uid://xo0vj3ubvidu" path="res://assets/minigames/parakeets/graphic/green_parakeet_spritesheet.png" id="1_0mxru"]
 

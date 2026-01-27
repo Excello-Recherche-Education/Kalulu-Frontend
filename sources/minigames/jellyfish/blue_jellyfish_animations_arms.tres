@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=25 format=3 uid="uid://033w5t1wyg3w"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://033w5t1wyg3w"]
 
 [ext_resource type="Texture2D" uid="uid://b68gvx4lwqked" path="res://assets/minigames/jellyfish/graphic/blue_jellyfish_layer_2.png" id="1_ao52b"]
 

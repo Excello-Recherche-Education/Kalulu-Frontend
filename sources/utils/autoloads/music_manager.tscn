@@ -1,11 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://c7k8fumjjmnn0"]
+[gd_scene format=3 uid="uid://c7k8fumjjmnn0"]
 
 [ext_resource type="Script" uid="uid://bse73rwuj2jro" path="res://sources/utils/autoloads/music_manager.gd" id="1_ilk2f"]
 
-[node name="MusicManager" type="Node"]
+[node name="MusicManager" type="Node" unique_id=2071364525]
 script = ExtResource("1_ilk2f")
 
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1879909681]
 bus = &"Music"
 
 [connection signal="finished" from="MusicPlayer" to="." method="_on_music_player_finished"]

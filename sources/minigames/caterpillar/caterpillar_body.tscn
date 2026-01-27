@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dryu60mtiqv3"]
+[gd_scene format=3 uid="uid://dryu60mtiqv3"]
 
 [ext_resource type="Script" uid="uid://ynqc2tqeuqt3" path="res://sources/minigames/caterpillar/caterpillar_body.gd" id="1_vvkkg"]
 [ext_resource type="Texture2D" uid="uid://dg035yddvs04o" path="res://assets/minigames/caterpillar/graphics/caterpillar_legs_spritesheet.png" id="2_20a20"]
@@ -137,45 +137,45 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="CaterpillarBody" type="Node2D"]
+[node name="CaterpillarBody" type="Node2D" unique_id=720448943]
 script = ExtResource("1_vvkkg")
 
-[node name="Position" type="Node2D" parent="."]
+[node name="Position" type="Node2D" parent="." unique_id=1872629140]
 position = Vector2(0, -150)
 
-[node name="AnimatedSprite2D_Leg_Back" type="AnimatedSprite2D" parent="Position"]
+[node name="AnimatedSprite2D_Leg_Back" type="AnimatedSprite2D" parent="Position" unique_id=1860440445]
 position = Vector2(40, 140)
 sprite_frames = SubResource("SpriteFrames_xdpna")
 
-[node name="RightFX" parent="Position" instance=ExtResource("14_cyw4o")]
+[node name="RightFX" parent="Position" unique_id=1678292303 instance=ExtResource("14_cyw4o")]
 unique_name_in_owner = true
 offset_left = 64.0
 offset_top = 62.0
 offset_right = 64.0
 offset_bottom = 62.0
 
-[node name="Node2D" type="Node2D" parent="Position"]
+[node name="Node2D" type="Node2D" parent="Position" unique_id=29421099]
 position = Vector2(0, -29)
 scale = Vector2(1, 1.4)
 
-[node name="Sprite2D_Body_Left" type="Sprite2D" parent="Position/Node2D"]
+[node name="Sprite2D_Body_Left" type="Sprite2D" parent="Position/Node2D" unique_id=1894733226]
 unique_name_in_owner = true
 texture = ExtResource("15_2xyl2")
 centered = false
 
-[node name="TextureRect_Body_Center" type="TextureRect" parent="Position/Node2D"]
+[node name="TextureRect_Body_Center" type="TextureRect" parent="Position/Node2D" unique_id=1403458388]
 unique_name_in_owner = true
 offset_right = 9.0
 offset_bottom = 114.0
 texture = ExtResource("16_8jigi")
 stretch_mode = 1
 
-[node name="Sprite2D_Body_Right" type="Sprite2D" parent="Position/Node2D"]
+[node name="Sprite2D_Body_Right" type="Sprite2D" parent="Position/Node2D" unique_id=522931526]
 unique_name_in_owner = true
 texture = ExtResource("17_rhhiw")
 centered = false
 
-[node name="Label" type="Label" parent="Position"]
+[node name="Label" type="Label" parent="Position" unique_id=1410477586]
 unique_name_in_owner = true
 offset_top = -50.0
 offset_right = 88.0
@@ -185,9 +185,9 @@ label_settings = ExtResource("7_6wjy7")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimatedSprite2D_Leg_Front" type="AnimatedSprite2D" parent="Position"]
+[node name="AnimatedSprite2D_Leg_Front" type="AnimatedSprite2D" parent="Position" unique_id=1901335095]
 position = Vector2(40, 140)
 sprite_frames = SubResource("SpriteFrames_018u2")
 
-[node name="Right_Stars" parent="Position" instance=ExtResource("4_t1ugq")]
+[node name="Right_Stars" parent="Position" unique_id=377702285 instance=ExtResource("4_t1ugq")]
 position = Vector2(64, 62)

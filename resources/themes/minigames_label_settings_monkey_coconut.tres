@@ -1,4 +1,4 @@
-[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://c4n6n26sxuxbh"]
+[gd_resource type="LabelSettings" format=3 uid="uid://c4n6n26sxuxbh"]
 
 [ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="1_gfu6b"]
 

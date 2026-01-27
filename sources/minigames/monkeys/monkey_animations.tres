@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=46 format=3 uid="uid://b68wc2dfmh3e7"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://b68wc2dfmh3e7"]
 
 [ext_resource type="Texture2D" uid="uid://d0jobqj4fvrwy" path="res://assets/minigames/monkeys/graphic/monkey_spritesheet.png" id="2_1no8m"]
 

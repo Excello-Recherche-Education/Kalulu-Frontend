@@ -1,22 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://b78362g1yif2n"]
+[gd_scene format=3 uid="uid://b78362g1yif2n"]
 
 [ext_resource type="Script" uid="uid://c25qilgxaqp1h" path="res://sources/minigames/penguin/penguin.gd" id="1_gyeou"]
 [ext_resource type="SpriteFrames" uid="uid://0pw6h7sibxap" path="res://sources/minigames/penguin/penguin_animations.tres" id="2_l6pmb"]
 [ext_resource type="AudioStream" uid="uid://bha6my06g7p4b" path="res://assets/minigames/monkeys/audio/monkey_sendcoco.mp3" id="8_dqq5e"]
 
-[node name="Penguin" type="Node2D"]
+[node name="Penguin" type="Node2D" unique_id=1835464943]
 script = ExtResource("1_gyeou")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1888505078]
 position = Vector2(0, -174)
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_l6pmb")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="Snowball_Start" type="Marker2D" parent="AnimatedSprite2D"]
+[node name="Snowball_Start" type="Marker2D" parent="AnimatedSprite2D" unique_id=943243886]
 position = Vector2(132, -7.5)
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=65955835]
 stream = ExtResource("8_dqq5e")
 bus = &"Effects"

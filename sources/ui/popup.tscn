@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhdh5xfyauss0"]
+[gd_scene format=3 uid="uid://bhdh5xfyauss0"]
 
 [ext_resource type="Script" uid="uid://58twmknv6bl5" path="res://sources/ui/popup.gd" id="1_o3fd6"]
 
@@ -8,10 +8,10 @@ colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ymust"]
 gradient = SubResource("Gradient_22q4u")
 
-[node name="Popup" type="CanvasLayer"]
+[node name="Popup" type="CanvasLayer" unique_id=530426781]
 script = ExtResource("1_o3fd6")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=136426900]
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +21,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = SubResource("GradientTexture1D_ymust")
 
-[node name="PanelContainer" type="PanelContainer" parent="TextureRect"]
+[node name="PanelContainer" type="PanelContainer" parent="TextureRect" unique_id=2111308426]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -36,21 +36,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer" unique_id=834848286]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer/VBoxContainer" unique_id=312613373]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer" unique_id=1882938401]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="ContentLabel" type="Label" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ContentLabel" type="Label" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=819955578]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1000, 0)
 layout_mode = 2
@@ -58,20 +58,20 @@ size_flags_vertical = 1
 theme_override_font_sizes/font_size = 70
 autowrap_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1968438632]
 layout_mode = 2
 
-[node name="ConfirmButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ConfirmButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=207543569]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "VALIDATE"
 
-[node name="Separator" type="Control" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Separator" type="Control" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=504592458]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1493791231]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70

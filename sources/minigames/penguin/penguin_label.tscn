@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://hnhiv6odqvnk"]
+[gd_scene format=3 uid="uid://hnhiv6odqvnk"]
 
 [ext_resource type="LabelSettings" uid="uid://jpm7cxm0xaeq" path="res://resources/themes/minigames_label_settings_penguins.tres" id="1_a244b"]
 [ext_resource type="Script" uid="uid://dgd47ntlm731" path="res://sources/minigames/penguin/penguin_label.gd" id="2_eu3c0"]
@@ -6,13 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="4_elaak"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="5_opr0c"]
 
-[node name="PenguinLabel" type="Label"]
+[node name="PenguinLabel" type="Label" unique_id=755851211]
 mouse_filter = 0
 text = "test"
 label_settings = ExtResource("1_a244b")
 script = ExtResource("2_eu3c0")
 
-[node name="BackFX" type="Control" parent="."]
+[node name="BackFX" type="Control" parent="." unique_id=1533722512]
 show_behind_parent = true
 custom_minimum_size = Vector2(0, 265)
 layout_mode = 1
@@ -23,7 +23,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="HighlightFX" parent="BackFX" instance=ExtResource("2_vlrm2")]
+[node name="HighlightFX" parent="BackFX" unique_id=1271495487 instance=ExtResource("2_vlrm2")]
 unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 1
@@ -40,7 +40,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 
-[node name="RightFX" parent="BackFX" instance=ExtResource("4_elaak")]
+[node name="RightFX" parent="BackFX" unique_id=1747250018 instance=ExtResource("4_elaak")]
 unique_name_in_owner = true
 show_behind_parent = true
 z_index = -1
@@ -58,7 +58,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 
-[node name="FrontFX" type="Control" parent="."]
+[node name="FrontFX" type="Control" parent="." unique_id=2132029949]
 custom_minimum_size = Vector2(0, 265)
 layout_mode = 1
 anchors_preset = 12
@@ -68,7 +68,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="WrongFX" parent="FrontFX" instance=ExtResource("5_opr0c")]
+[node name="WrongFX" parent="FrontFX" unique_id=1838009452 instance=ExtResource("5_opr0c")]
 unique_name_in_owner = true
 z_index = -1
 layout_mode = 1
@@ -85,7 +85,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=624613742]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

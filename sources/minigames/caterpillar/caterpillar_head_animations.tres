@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=40 format=3 uid="uid://bv7mbvlwh758k"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://bv7mbvlwh758k"]
 
 [ext_resource type="Texture2D" uid="uid://cyxl5ep0vuavl" path="res://assets/minigames/caterpillar/graphics/caterpillar_spritesheet.png" id="1_4f65k"]
 

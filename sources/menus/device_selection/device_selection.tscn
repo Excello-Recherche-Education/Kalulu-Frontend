@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://byg15cat0mmep"]
+[gd_scene format=3 uid="uid://byg15cat0mmep"]
 
 [ext_resource type="Script" uid="uid://cn7idg6fvby4u" path="res://sources/menus/device_selection/device_selection.gd" id="1_6twkt"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_83384"]
 
-[node name="DeviceSelection" type="Control"]
+[node name="DeviceSelection" type="Control" unique_id=1703451406]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,10 +12,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6twkt")
 
-[node name="NightSky" parent="." instance=ExtResource("2_83384")]
+[node name="NightSky" parent="." unique_id=112199933 instance=ExtResource("2_83384")]
 layout_mode = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=268912689]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -30,25 +30,25 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelKaluluBig"
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=248962273]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1580150093]
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1716761857]
 layout_mode = 2
 theme_override_font_sizes/font_size = 72
 text = "PICK_YOUR_DEVICE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=505066062]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

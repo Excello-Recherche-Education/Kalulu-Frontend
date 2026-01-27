@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=44 format=3 uid="uid://dwaype8bcilxr"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://dwaype8bcilxr"]
 
 [ext_resource type="Texture2D" uid="uid://boxmlmbplr12i" path="res://assets/minigames/monkeys/graphic/king_spritesheet.png" id="1_0u278"]
 

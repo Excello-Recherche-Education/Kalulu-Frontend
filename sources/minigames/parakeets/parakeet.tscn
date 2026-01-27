@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cmoeum0oc0p2"]
+[gd_scene format=3 uid="uid://cmoeum0oc0p2"]
 
 [ext_resource type="Script" uid="uid://cir1ejxole7pu" path="res://sources/minigames/parakeets/parakeet.gd" id="1_p0nqk"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_afmcm"]
@@ -28,27 +28,27 @@ outline_color = Color(0.2, 0.2, 0.2, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45x46"]
 
-[node name="Parakeet" type="Node2D"]
+[node name="Parakeet" type="Node2D" unique_id=1132826004]
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_p0nqk")
 
-[node name="RightFX" parent="." instance=ExtResource("2_afmcm")]
+[node name="RightFX" parent="." unique_id=777040780 instance=ExtResource("2_afmcm")]
 offset_top = 600.0
 offset_bottom = 600.0
 scale = Vector2(2.5, 2.5)
 
-[node name="WrongFX" parent="." instance=ExtResource("6_7mdw2")]
+[node name="WrongFX" parent="." unique_id=428403798 instance=ExtResource("6_7mdw2")]
 offset_top = 600.0
 offset_bottom = 600.0
 scale = Vector2(2.5, 2.5)
 
-[node name="TextBox_Sprite2D" type="Sprite2D" parent="."]
+[node name="TextBox_Sprite2D" type="Sprite2D" parent="." unique_id=1673626178]
 unique_name_in_owner = true
 position = Vector2(0, 600)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("3_jc4en")
 
-[node name="PercentMarginContainer" type="Container" parent="TextBox_Sprite2D"]
+[node name="PercentMarginContainer" type="Container" parent="TextBox_Sprite2D" unique_id=852816295]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -64,10 +64,10 @@ margin_top_ratio = 0.1
 margin_right_ratio = 0.2
 margin_bottom_ratio = 0.2
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="TextBox_Sprite2D/PercentMarginContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="TextBox_Sprite2D/PercentMarginContainer" unique_id=1884152847]
 layout_mode = 2
 
-[node name="AutoSizeLabel" parent="TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("5_q71gb")]
+[node name="AutoSizeLabel" parent="TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" unique_id=1881746542 instance=ExtResource("5_q71gb")]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -76,21 +76,21 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = ""
 label_settings = SubResource("LabelSettings_thibt")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1157745331]
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_k0dcm")
 animation = &"sad"
 autoplay = "idle_front"
 offset = Vector2(2.08165e-12, -82)
 
-[node name="AnimatedSprite2D_Feathers" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D_Feathers" type="AnimatedSprite2D" parent="." unique_id=1119538634]
 visible = false
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("9_oc4sp")
 animation = &"feathers_fall"
 offset = Vector2(2.08165e-12, -82)
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=1921167596]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -106,7 +106,7 @@ label_settings = ExtResource("5_xdkkw")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=1264594927]
 offset_left = -325.0
 offset_top = -680.0
 offset_right = 325.0
@@ -117,7 +117,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_aup5h")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_b6a1p")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_45x46")
 
-[node name="Right_Stars" parent="." instance=ExtResource("12_q71gb")]
+[node name="Right_Stars" parent="." unique_id=542037013 instance=ExtResource("12_q71gb")]
 position = Vector2(0, 600.00006)
 scale = Vector2(5, 5)
 

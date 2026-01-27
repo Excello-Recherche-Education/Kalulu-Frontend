@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dl5wx8l0awoi0"]
+[gd_scene format=3 uid="uid://dl5wx8l0awoi0"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_ng5er"]
 [ext_resource type="Script" uid="uid://b7q0v031ffg1v" path="res://sources/minigames/frog/frog_minigame.gd" id="2_0xg3r"]
@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bgi4vveige3qv" path="res://assets/minigames/frog/graphics/background.png" id="6_t6p6q"]
 [ext_resource type="PackedScene" uid="uid://bloyucpsbvpx8" path="res://sources/minigames/frog/frog.tscn" id="13_o6mls"]
 
-[node name="FrogMinigame" instance=ExtResource("1_ng5er")]
+[node name="FrogMinigame" unique_id=37863016 instance=ExtResource("1_ng5er")]
 script = ExtResource("2_0xg3r")
 max_number_of_gps = 6
 distractors_queue_size = 6
@@ -19,11 +19,11 @@ difficulty = 4
 max_number_of_lives = 5
 max_progression = 5
 
-[node name="MinigameUI" parent="." index="1"]
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
 empty_progression_icon = ExtResource("2_e38i1")
 full_progression_icon = ExtResource("3_vjlmb")
 
-[node name="Background" type="Control" parent="GameRoot" index="0"]
+[node name="Background" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=122349430]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,10 +32,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="River" parent="GameRoot/Background" index="0" instance=ExtResource("5_3fy8q")]
+[node name="River" parent="GameRoot/Background" index="0" unique_id=1451318535 instance=ExtResource("5_3fy8q")]
 layout_mode = 1
 
-[node name="background" type="TextureRect" parent="GameRoot/Background" index="1"]
+[node name="background" type="TextureRect" parent="GameRoot/Background" index="1" unique_id=1762725401]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -47,12 +47,12 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("6_t6p6q")
 
-[node name="GameElements" type="Control" parent="GameRoot" index="1"]
+[node name="GameElements" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=662540418]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Start" type="Control" parent="GameRoot/GameElements" index="0"]
+[node name="Start" type="Control" parent="GameRoot/GameElements" index="0" unique_id=8288864]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 360.0
@@ -61,7 +61,7 @@ offset_right = 400.0
 offset_bottom = 940.0
 mouse_filter = 2
 
-[node name="End" type="Control" parent="GameRoot/GameElements" index="1"]
+[node name="End" type="Control" parent="GameRoot/GameElements" index="1" unique_id=810147952]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 2160.0
@@ -70,7 +70,7 @@ offset_right = 2200.0
 offset_bottom = 940.0
 mouse_filter = 2
 
-[node name="FrogSpawnPoint" type="Control" parent="GameRoot/GameElements" index="2"]
+[node name="FrogSpawnPoint" type="Control" parent="GameRoot/GameElements" index="2" unique_id=2065685693]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = -230.0
@@ -78,7 +78,7 @@ offset_top = 900.0
 offset_right = -230.0
 offset_bottom = 900.0
 
-[node name="FrogDespawnPoint" type="Control" parent="GameRoot/GameElements" index="3"]
+[node name="FrogDespawnPoint" type="Control" parent="GameRoot/GameElements" index="3" unique_id=855838816]
 unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 2800.0
@@ -86,7 +86,7 @@ offset_top = 900.0
 offset_right = 2800.0
 offset_bottom = 900.0
 
-[node name="LilypadTracksContainer" type="HBoxContainer" parent="GameRoot" index="2"]
+[node name="LilypadTracksContainer" type="HBoxContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=831152071]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -100,7 +100,7 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Frog" parent="GameRoot" index="3" instance=ExtResource("13_o6mls")]
+[node name="Frog" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=1044684229 instance=ExtResource("13_o6mls")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 360.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://v0lyity2xtdk"]
+[gd_scene format=3 uid="uid://v0lyity2xtdk"]
 
 [ext_resource type="Script" uid="uid://dn5igrr7y0o3s" path="res://sources/look_and_learn/tracing_effects.gd" id="1_fwn5n"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="2_3m3v8"]
@@ -30,10 +30,10 @@ gravity = Vector3(0, 98, 0)
 scale_curve = SubResource("CurveTexture_he5ko")
 color_ramp = SubResource("GradientTexture1D_5inok")
 
-[node name="TracingEffects" type="Node2D"]
+[node name="TracingEffects" type="Node2D" unique_id=804890647]
 script = ExtResource("1_fwn5n")
 
-[node name="TracingParticles" type="GPUParticles2D" parent="."]
+[node name="TracingParticles" type="GPUParticles2D" parent="." unique_id=1392979920]
 emitting = false
 amount = 12
 texture = ExtResource("2_3m3v8")
@@ -41,11 +41,11 @@ lifetime = 0.5
 visibility_rect = Rect2(-500, -500, 1000, 1000)
 process_material = SubResource("ParticleProcessMaterial_me6ey")
 
-[node name="TracingAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="TracingAudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=542898378]
 stream = ExtResource("3_m2u4r")
 volume_db = -5.0
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=2022364334]
 wait_time = 0.2
 one_shot = true
 

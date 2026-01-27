@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://3uwsp0ryoh4r"]
+[gd_scene format=3 uid="uid://3uwsp0ryoh4r"]
 
 [ext_resource type="Texture2D" uid="uid://dg035yddvs04o" path="res://assets/minigames/caterpillar/graphics/caterpillar_legs_spritesheet.png" id="1_3346p"]
 
@@ -66,9 +66,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="CaterpillarLegBack" type="Node2D"]
+[node name="CaterpillarLegBack" type="Node2D" unique_id=1788438449]
 
-[node name="AnimatedSprite2D_Leg_Back" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D_Leg_Back" type="AnimatedSprite2D" parent="." unique_id=1007299824]
 sprite_frames = SubResource("SpriteFrames_0q0l8")
 autoplay = "default"
 speed_scale = 2.0

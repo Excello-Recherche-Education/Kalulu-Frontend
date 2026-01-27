@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bkswcqcmf7a0r"]
+[gd_scene format=3 uid="uid://bkswcqcmf7a0r"]
 
 [ext_resource type="Material" uid="uid://3n8kdc1u25om" path="res://sources/minigames/frog/lilypad_material.tres" id="1_pbo2v"]
 [ext_resource type="Script" uid="uid://cbr7ejw51u38r" path="res://sources/minigames/frog/lilypad.gd" id="2_pdqed"]
@@ -48,18 +48,16 @@ _data = {
 &"disappear": SubResource("Animation_qb6cr")
 }
 
-[node name="Lilypad" type="Control"]
+[node name="Lilypad" type="Control" unique_id=1026795504]
 material = ExtResource("1_pbo2v")
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("2_pdqed")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_3tohd")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1499635523]
+libraries/ = SubResource("AnimationLibrary_3tohd")
 
-[node name="TextureButton" type="TextureButton" parent="."]
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1795108131]
 material = ExtResource("1_pbo2v")
 layout_mode = 1
 anchors_preset = 15
@@ -76,7 +74,7 @@ texture_normal = ExtResource("3_1ueu4")
 texture_disabled = ExtResource("3_1ueu4")
 stretch_mode = 0
 
-[node name="HighlightFX" parent="TextureButton" instance=ExtResource("5_1llgv")]
+[node name="HighlightFX" parent="TextureButton" unique_id=1896017153 instance=ExtResource("5_1llgv")]
 unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 1
@@ -88,7 +86,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="RightFX" parent="TextureButton" instance=ExtResource("6_wslmk")]
+[node name="RightFX" parent="TextureButton" unique_id=63557110 instance=ExtResource("6_wslmk")]
 unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 1
@@ -100,7 +98,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WrongFX" parent="TextureButton" instance=ExtResource("7_241b6")]
+[node name="WrongFX" parent="TextureButton" unique_id=872555076 instance=ExtResource("7_241b6")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -111,21 +109,21 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TopVisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="TextureButton"]
+[node name="TopVisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="TextureButton" unique_id=518045579]
 unique_name_in_owner = true
 position = Vector2(150, -42)
 
-[node name="BottomVisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="TextureButton"]
+[node name="BottomVisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="TextureButton" unique_id=1948593833]
 unique_name_in_owner = true
 position = Vector2(150, 406)
 
-[node name="TextBox_Sprite2D" type="Sprite2D" parent="TextureButton"]
+[node name="TextBox_Sprite2D" type="Sprite2D" parent="TextureButton" unique_id=1506495903]
 unique_name_in_owner = true
 position = Vector2(150, 330)
 scale = Vector2(0.471, 0.471)
 texture = ExtResource("7_o8d8g")
 
-[node name="PercentMarginContainer" type="Container" parent="TextureButton/TextBox_Sprite2D"]
+[node name="PercentMarginContainer" type="Container" parent="TextureButton/TextBox_Sprite2D" unique_id=227035490]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -141,10 +139,10 @@ margin_top_ratio = 0.1
 margin_right_ratio = 0.2
 margin_bottom_ratio = 0.2
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="TextureButton/TextBox_Sprite2D/PercentMarginContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="TextureButton/TextBox_Sprite2D/PercentMarginContainer" unique_id=1262459826]
 layout_mode = 2
 
-[node name="AutoSizeLabel" parent="TextureButton/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("9_r5oc0")]
+[node name="AutoSizeLabel" parent="TextureButton/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" unique_id=1935102166 instance=ExtResource("9_r5oc0")]
 unique_name_in_owner = true
 layout_mode = 2
 

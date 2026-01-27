@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://blos4rn53qkwg"]
+[gd_scene format=3 uid="uid://blos4rn53qkwg"]
 
 [ext_resource type="Script" uid="uid://ih4xg7hi7ts3" path="res://sources/minigames/base/kalulu.gd" id="1_iin3v"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu.tscn" id="2_gi4rq"]
@@ -13,7 +13,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iqd4x"]
 
-[node name="Kalulu" type="Control"]
+[node name="Kalulu" type="Control" unique_id=142765402]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_iin3v")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1006577593]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,11 +31,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.164706, 0.164706, 0.164706, 0.67451)
 
-[node name="KaluluSprite" parent="." instance=ExtResource("2_gi4rq")]
+[node name="KaluluSprite" parent="." unique_id=2101240154 instance=ExtResource("2_gi4rq")]
 position = Vector2(320, 1344)
 scale = Vector2(2, 2)
 
-[node name="PassButton" type="Button" parent="KaluluSprite"]
+[node name="PassButton" type="Button" parent="KaluluSprite" unique_id=1467057455]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -52,7 +52,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_cd4qd")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_iqd4x")
 flat = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=510547683]
 bus = &"Voice"
 
 [connection signal="pressed" from="KaluluSprite/PassButton" to="." method="_on_pass_button_pressed"]
