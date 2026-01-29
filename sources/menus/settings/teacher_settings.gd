@@ -91,9 +91,9 @@ func refresh_devices_tabs() -> void:
 	for device: int in UserDataManager.teacher_settings.students.keys():
 		var device_tab: DeviceTab
 		device_tab = DEVICE_TAB_SCENE.instantiate()
+		device_tab.device_id = device
 		devices_tab_container.add_child(device_tab)
 		await get_tree().process_frame # Not optional or an auto-rename bug will occur on the tabs (especiallly if there are a lot of them)
-		device_tab.device_id = device
 		(device_tab as DeviceTab).students = UserDataManager.teacher_settings.students[device] as Array[StudentData]
 		device_tab.name = tr("DEVICE_NUMBER").format({"number": device})
 		device_tab.student_pressed.connect(_on_student_pressed)
@@ -129,7 +129,11 @@ func _on_logout_button_pressed() -> void:
 
 
 func _on_devices_tab_container_tab_changed(tab: int) -> void:
-	lesson_unlocks.device = tab + 1
+	var device_tab: DeviceTab = devices_tab_container.get_tab_control(tab) as DeviceTab
+	if not device_tab:
+		Log.error("SettingsTeacherSettings: DeviceTab not found for tab " + str(tab))
+		return
+	lesson_unlocks.device = device_tab.device_id
 
 
 func _on_student_pressed(code: int) -> void:
