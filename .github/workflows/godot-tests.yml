@@ -1,0 +1,30 @@
+name: Godot Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  gut:
+    runs-on: ubuntu-latest
+    env:
+      GODOT_VERSION: 4.6-stable
+      GODOT_BIN: godot/Godot_v4.6-stable_linux.x86_64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Godot
+        run: |
+          GODOT_ZIP=Godot_v${GODOT_VERSION}_linux.x86_64.zip
+          curl -L -o godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_ZIP}"
+          unzip -q godot.zip -d godot
+          chmod +x "${GODOT_BIN}"
+
+      - name: Import project assets
+        run: |
+          "${GODOT_BIN}" --headless --import --path .
+
+      - name: Run GUT tests headlessly
+        run: |
+          "${GODOT_BIN}" --headless --path . -s res://addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
