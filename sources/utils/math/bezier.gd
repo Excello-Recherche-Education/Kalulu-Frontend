@@ -1,7 +1,7 @@
 class_name Bezier
 extends Node
 
-static var factorial_cache: Dictionary = {}
+static var factorial_cache: Dictionary[int, int] = {}
 
 
 static func bezier_square_error(current_points: Array, ref_points: Array) -> float:
