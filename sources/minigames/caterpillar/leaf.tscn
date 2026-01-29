@@ -1,17 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://7vxsh7sire16"]
+[gd_scene format=3 uid="uid://7vxsh7sire16"]
 
 [ext_resource type="Script" uid="uid://c2q0hpdohrix2" path="res://sources/minigames/caterpillar/leaf.gd" id="1_edw5c"]
 [ext_resource type="Texture2D" uid="uid://ck02q7sdfl522" path="res://assets/minigames/caterpillar/graphics/leaf.png" id="1_mb6lu"]
 
-[node name="Leaf" type="Node2D"]
+[node name="Leaf" type="Node2D" unique_id=1770282278]
 scale = Vector2(2, 2)
 script = ExtResource("1_edw5c")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=739353722]
 texture = ExtResource("1_mb6lu")
 offset = Vector2(-24, 42)
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=427208647]
 position = Vector2(52, 0)
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

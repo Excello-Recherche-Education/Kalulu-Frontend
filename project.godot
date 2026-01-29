@@ -13,7 +13,7 @@ config_version=5
 config/name="Kalulu"
 config/version="2.1.8"
 run/main_scene="res://sources/menus/splash_screen/splash_screen.tscn"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 config/icon="res://assets/kalulu_icon.png"
 custom/unlock_everything=false
@@ -31,11 +31,11 @@ ServerManager="*res://sources/utils/autoloads/server_manager.tscn"
 Database="*res://sources/utils/autoloads/database.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
-Validation="*res://addons/godot-form-validator/validation.gd"
 OpeningCurtain="*res://sources/utils/autoloads/opening_curtain.tscn"
 Globals="*res://sources/language_tool/globals.gd"
 Utils="*res://sources/utils/autoloads/utils.gd"
 UnicodeNormalizer="*res://sources/utils/autoloads/unicode_normalizer.gd"
+Validation="*uid://dprgt5c7gdii6"
 
 [debug]
 

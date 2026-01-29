@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwxuxey01w8ed"]
+[gd_scene format=3 uid="uid://cwxuxey01w8ed"]
 
 [ext_resource type="Script" uid="uid://b8epjs6jscmed" path="res://sources/utils/fx/fireworks.gd" id="1"]
 
-[node name="Fireworks" type="Node"]
+[node name="Fireworks" type="Node" unique_id=582977127]
 script = ExtResource("1")

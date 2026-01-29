@@ -1,30 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2f7q1tbsmwdx"]
+[gd_scene format=3 uid="uid://d2f7q1tbsmwdx"]
 
 [ext_resource type="Script" uid="uid://drwx8ngge5hn3" path="res://sources/minigames/caterpillar/branch.gd" id="1_bohwm"]
 [ext_resource type="Texture2D" uid="uid://cddv3a264muei" path="res://assets/minigames/caterpillar/graphics/branch_mid.png" id="3_8458b"]
 
-[node name="Branch" type="Node2D"]
+[node name="Branch" type="Node2D" unique_id=251693456]
 script = ExtResource("1_bohwm")
 metadata/_edit_use_anchors_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=727855678]
 scale = Vector2(80, 1.2)
 texture = ExtResource("3_8458b")
 offset = Vector2(16, 0)
 
-[node name="Leaves" type="Node2D" parent="."]
+[node name="Leaves" type="Node2D" parent="." unique_id=1316898058]
 position = Vector2(2688, 0)
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=693299748]
 offset_top = -304.0
 offset_right = 2560.0
 offset_bottom = 16.0
 theme_type_variation = &"InvisibleButton"
 
-[node name="Berries" type="Node2D" parent="."]
+[node name="Berries" type="Node2D" parent="." unique_id=532732843]
 position = Vector2(2688, 0)
 
-[node name="LeafTimer" type="Timer" parent="."]
+[node name="LeafTimer" type="Timer" parent="." unique_id=886646473]
 wait_time = 4.68803
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

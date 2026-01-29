@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://qsvbq6ruc44v"]
+[gd_scene format=3 uid="uid://qsvbq6ruc44v"]
 
 [ext_resource type="Script" uid="uid://idm8o2vp60up" path="res://sources/menus/settings/lesson_unlocks.gd" id="1_rlqp5"]
 [ext_resource type="PackedScene" uid="uid://c5ey1jk06asiq" path="res://sources/menus/components/password_visualizer.tscn" id="2_jm5xx"]
@@ -9,7 +9,7 @@
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_3kkg7"]
 color = Color(1, 1, 1, 1)
 
-[node name="LessonUnlocks" type="Control"]
+[node name="LessonUnlocks" type="Control" unique_id=318924307]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rlqp5")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1649157247]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,32 +30,32 @@ theme_override_constants/margin_top = 250
 theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 250
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=1523700652]
 layout_mode = 2
 theme_type_variation = &"PanelKaluluBig"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer" unique_id=1436905564]
 layout_mode = 2
 
-[node name="Header" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+[node name="Header" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1048959767]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Header"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Header" unique_id=262579793]
 layout_mode = 2
 
-[node name="PasswordVisualizer" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" instance=ExtResource("2_jm5xx")]
+[node name="PasswordVisualizer" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" unique_id=656418156 instance=ExtResource("2_jm5xx")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" unique_id=244633816]
 layout_mode = 2
 theme_override_constants/separation = 200
 
-[node name="NameLineEdit" type="LineEdit" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer"]
+[node name="NameLineEdit" type="LineEdit" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" unique_id=2093498091]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -64,18 +64,18 @@ theme = ExtResource("3_h5j4j")
 theme_override_font_sizes/font_size = 130
 placeholder_text = "Kalulu"
 
-[node name="BackButton" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" instance=ExtResource("2_wiajt")]
+[node name="BackButton" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" unique_id=1236517531 instance=ExtResource("2_wiajt")]
 layout_mode = 2
 size_flags_horizontal = 10
 
-[node name="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer/BackButton" index="0"]
+[node name="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer/BackButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_v7dp3")
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1426256265]
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxLine_3kkg7")
 
-[node name="Content" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+[node name="Content" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=2074597969]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 25
@@ -83,28 +83,28 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content" unique_id=1183576919]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer" unique_id=571960795]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer" unique_id=1531995288]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "LESSON"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer" unique_id=771322481]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_right = 60
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1688364131]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/separation = 32
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=682774340]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -113,7 +113,7 @@ text = "LOOKANDLEARN"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=40356526]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -121,7 +121,7 @@ theme_override_font_sizes/font_size = 34
 text = "EXERCISE1"
 horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=933140768]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -129,7 +129,7 @@ theme_override_font_sizes/font_size = 34
 text = "EXERCISE2"
 horizontal_alignment = 1
 
-[node name="Label4" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label4" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=476815784]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -137,42 +137,42 @@ theme_override_font_sizes/font_size = 34
 text = "EXERCISE3"
 horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer" unique_id=211942115]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LessonContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer"]
+[node name="LessonContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer" unique_id=1896367368]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=180339992]
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxLine_3kkg7")
 
-[node name="Footer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+[node name="Footer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1741301409]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Footer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Footer" unique_id=610002145]
 layout_mode = 2
 alignment = 2
 
-[node name="ChangeDeviceButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer"]
+[node name="ChangeDeviceButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer" unique_id=1405404165]
 layout_mode = 2
 theme = ExtResource("3_h5j4j")
 theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 40
 text = "CHANGE_DEVICE"
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer" unique_id=599624560]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DeleteButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer"]
+[node name="DeleteButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer" unique_id=1377833910]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_h5j4j")
@@ -180,31 +180,31 @@ theme_type_variation = &"DangerButton"
 theme_override_font_sizes/font_size = 40
 text = "DELETE_STUDENT"
 
-[node name="DeviceSelectionContainer" type="PanelContainer" parent="MarginContainer"]
+[node name="DeviceSelectionContainer" type="PanelContainer" parent="MarginContainer" unique_id=145683349]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"PanelKaluluBig"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/DeviceSelectionContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/DeviceSelectionContainer" unique_id=1942248596]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/DeviceSelectionContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/DeviceSelectionContainer/MarginContainer" unique_id=817414558]
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="Label" type="Label" parent="MarginContainer/DeviceSelectionContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/DeviceSelectionContainer/MarginContainer/VBoxContainer" unique_id=9056215]
 layout_mode = 2
 theme_override_font_sizes/font_size = 72
 text = "PICK_YOUR_DEVICE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/DeviceSelectionContainer/MarginContainer/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/DeviceSelectionContainer/MarginContainer/VBoxContainer" unique_id=971220857]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

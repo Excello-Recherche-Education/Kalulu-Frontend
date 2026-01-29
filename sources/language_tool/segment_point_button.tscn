@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://c71c7g4m8a1aj"]
+[gd_scene format=3 uid="uid://c71c7g4m8a1aj"]
 
 [ext_resource type="Script" uid="uid://bd8l1dgofjho" path="res://sources/language_tool/segment_point_button.gd" id="1_d6v6o"]
 [ext_resource type="Texture2D" uid="uid://bgdfoujfibsow" path="res://assets/menus/point_button.png" id="2_6rhkf"]
 
-[node name="SegmentPointButton" type="Control"]
+[node name="SegmentPointButton" type="Control" unique_id=643293915]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("1_d6v6o")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=559711477]
 layout_mode = 0
 offset_left = -25.0
 offset_top = -25.0
@@ -19,7 +19,7 @@ scale = Vector2(0.25, 0.25)
 mouse_filter = 0
 texture = ExtResource("2_6rhkf")
 
-[node name="IndexLabel" type="Label" parent="TextureRect"]
+[node name="IndexLabel" type="Label" parent="TextureRect" unique_id=1037956852]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15

@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cisurm74fqg2i"]
+[gd_scene format=3 uid="uid://cisurm74fqg2i"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_c25or"]
 [ext_resource type="Script" uid="uid://b5qwm35lgyb8b" path="res://sources/minigames/base/words/words_minigame.gd" id="2_nc3s1"]
 
-[node name="WordsMinigame" instance=ExtResource("1_c25or")]
+[node name="WordsMinigame" unique_id=1866889453 instance=ExtResource("1_c25or")]
 script = ExtResource("2_nc3s1")
 max_number_of_gps = 6
 distractors_queue_size = 6

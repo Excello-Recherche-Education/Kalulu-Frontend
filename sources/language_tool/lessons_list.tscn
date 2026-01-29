@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b75ondy7h3ssl"]
+[gd_scene format=3 uid="uid://b75ondy7h3ssl"]
 
 [ext_resource type="Script" uid="uid://dn6yxhve21bsh" path="res://sources/language_tool/lessons_list.gd" id="1_0e3ki"]
 [ext_resource type="PackedScene" uid="uid://di1ul6ixytmcj" path="res://sources/language_tool/lesson_container.tscn" id="2_lhjp5"]
@@ -12,7 +12,7 @@ bg_color = Color(0.254902, 0.329412, 0.572549, 1)
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
-[node name="LessonsList" type="Control"]
+[node name="LessonsList" type="Control" unique_id=1575853001]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0e3ki")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1505005702]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,56 +29,56 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LessonContainer" parent="VBoxContainer" instance=ExtResource("2_lhjp5")]
+[node name="LessonContainer" parent="VBoxContainer" unique_id=988627476 instance=ExtResource("2_lhjp5")]
 layout_mode = 2
 script = null
 
 [node name="NumberLabel" parent="VBoxContainer/LessonContainer/HBoxContainer" index="0"]
 text = "Number"
 
-[node name="Label" type="Label" parent="VBoxContainer/LessonContainer/HBoxContainer/HBoxContainer/GPContainer" index="0"]
+[node name="Label" type="Label" parent="VBoxContainer/LessonContainer/HBoxContainer/HBoxContainer/GPContainer" index="0" unique_id=1529253759]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GPs"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/LessonContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/LessonContainer" unique_id=1942744934]
 layout_mode = 2
 alignment = 2
 
-[node name="BackButton" parent="VBoxContainer/LessonContainer/HBoxContainer2" instance=ExtResource("3_jascd")]
+[node name="BackButton" parent="VBoxContainer/LessonContainer/HBoxContainer2" unique_id=1842825113 instance=ExtResource("3_jascd")]
 layout_mode = 2
 
 [node name="TextureRect" parent="VBoxContainer/LessonContainer/HBoxContainer2/BackButton" index="0"]
 texture = ExtResource("4_g2qry")
 
-[node name="SaveButton" parent="VBoxContainer/LessonContainer/HBoxContainer2" instance=ExtResource("3_jascd")]
+[node name="SaveButton" parent="VBoxContainer/LessonContainer/HBoxContainer2" unique_id=1694316088 instance=ExtResource("3_jascd")]
 layout_mode = 2
 
 [node name="TextureRect" parent="VBoxContainer/LessonContainer/HBoxContainer2/SaveButton" index="0"]
 texture = ExtResource("4_jdhgf")
 
-[node name="PlusButton" parent="VBoxContainer/LessonContainer/HBoxContainer2" instance=ExtResource("3_jascd")]
+[node name="PlusButton" parent="VBoxContainer/LessonContainer/HBoxContainer2" unique_id=1504011750 instance=ExtResource("3_jascd")]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=478228292]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer" unique_id=358147185]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_73um4")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer" unique_id=2134016752]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_left = 500
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer/MarginContainer" unique_id=432054366]
 custom_minimum_size = Vector2(2.08165e-12, 300)
 layout_mode = 2
 script = ExtResource("6_ej5w8")
 
-[node name="UnusedGPContainer" type="GridContainer" parent="VBoxContainer/MarginContainer/MarginContainer/ScrollContainer"]
+[node name="UnusedGPContainer" type="GridContainer" parent="VBoxContainer/MarginContainer/MarginContainer/ScrollContainer" unique_id=420297967]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
@@ -88,12 +88,12 @@ theme_override_constants/h_separation = 50
 theme_override_constants/v_separation = 100
 columns = 5
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=183362231]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("6_ej5w8")
 
-[node name="LessonsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="LessonsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=666948167]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

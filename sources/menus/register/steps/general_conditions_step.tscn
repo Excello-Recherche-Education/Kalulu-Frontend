@@ -1,21 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://dimxdgkufgo12"]
+[gd_scene format=3 uid="uid://dimxdgkufgo12"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_up4b7"]
 [ext_resource type="Script" uid="uid://ccicojpspkpmu" path="res://sources/menus/register/steps/general_conditions_step.gd" id="2_5ibpi"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="3_qdoff"]
 
-[node name="GeneralConditionsStep" instance=ExtResource("1_up4b7")]
+[node name="GeneralConditionsStep" unique_id=554321004 instance=ExtResource("1_up4b7")]
 script = ExtResource("2_5ibpi")
 
-[node name="PanelContainer" parent="." index="2"]
+[node name="PanelContainer" parent="." index="2" unique_id=824416175]
 offset_left = -785.0
 offset_right = 785.0
 offset_bottom = 1344.0
 
-[node name="QuestionContainer" parent="PanelContainer" index="0"]
+[node name="QuestionContainer" parent="PanelContainer" index="0" unique_id=788285574]
 theme_override_constants/margin_top = 25
 
-[node name="ConditionsLabel" type="RichTextLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" index="0"]
+[node name="ConditionsLabel" type="RichTextLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="0" unique_id=366575860]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
@@ -29,7 +29,7 @@ text = "GENERAL_CONDITIONS_TEXT"
 autowrap_mode = 2
 shortcut_keys_enabled = false
 
-[node name="AcceptContainer" type="MarginContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" index="1"]
+[node name="AcceptContainer" type="MarginContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="1" unique_id=740122503]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/margin_left = 20
@@ -37,30 +37,30 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer" index="0" unique_id=810850868]
 layout_mode = 2
 
-[node name="Accept" type="CheckBox" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer" index="0"]
+[node name="Accept" type="CheckBox" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer" index="0" unique_id=537282954]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "ACCEPT_GENERAL_CONDITIONS"
 flat = true
 
-[node name="AcceptError" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer" index="1"]
+[node name="AcceptError" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer" index="1" unique_id=46587503]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "ACCEPT_GENERAL_CONDITIONS_ERROR"
 label_settings = ExtResource("3_qdoff")
 
-[node name="QuestionLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" index="2"]
+[node name="QuestionLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="2" unique_id=473680384]
 visible = false
 
-[node name="InfoLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" index="3"]
+[node name="InfoLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="3" unique_id=402601850]
 visible = false
 
-[node name="FormValidator" parent="." index="3"]
+[node name="FormValidator" parent="." index="3" unique_id=577712412]
 visible = false
 
 [connection signal="pressed" from="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer/Accept" to="." method="_on_accept_pressed"]

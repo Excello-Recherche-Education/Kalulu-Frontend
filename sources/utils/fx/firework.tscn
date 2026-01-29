@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://tpmvy7322b3a"]
+[gd_scene format=3 uid="uid://tpmvy7322b3a"]
 
 [ext_resource type="Script" uid="uid://bmra1v1u8b0hm" path="res://sources/utils/fx/firework.gd" id="1_5haah"]
 [ext_resource type="Texture2D" uid="uid://sa7dtkkhrjw7" path="res://assets/vfx/firework.png" id="1_wefp3"]
@@ -73,10 +73,10 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="Firework" type="Node2D"]
+[node name="Firework" type="Node2D" unique_id=1396168111]
 script = ExtResource("1_5haah")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1010891256]
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_wform")
 frame_progress = 0.32164267

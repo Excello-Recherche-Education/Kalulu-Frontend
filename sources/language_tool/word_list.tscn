@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfw7m0a7148fu"]
+[gd_scene format=3 uid="uid://dfw7m0a7148fu"]
 
 [ext_resource type="Script" uid="uid://bw3g6vfskvo54" path="res://sources/language_tool/word_list.gd" id="1_m0usq"]
 [ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="2_6no2x"]
 [ext_resource type="PackedScene" uid="uid://l3ktlla1kreu" path="res://sources/language_tool/gp_list_element.tscn" id="5_1f555"]
 [ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/scroll_container.gd" id="6_0r6vt"]
 
-[node name="WordList" type="Control"]
+[node name="WordList" type="Control" unique_id=212454618]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_m0usq")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=502918846]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,21 +23,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="ListTitle" parent="VBoxContainer" instance=ExtResource("2_6no2x")]
+[node name="ListTitle" parent="VBoxContainer" unique_id=543544415 instance=ExtResource("2_6no2x")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1566231006]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer" unique_id=1643032933]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=911820587]
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
 
-[node name="Lesson" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Lesson" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1090607745]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -46,7 +46,7 @@ theme_override_font_sizes/font_size = 90
 text = "Lesson"
 horizontal_alignment = 1
 
-[node name="Word" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Word" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=34187819]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -55,7 +55,7 @@ theme_override_font_sizes/font_size = 90
 text = "Word"
 horizontal_alignment = 1
 
-[node name="Graphemes" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Graphemes" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=444964295]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -64,7 +64,7 @@ theme_override_font_sizes/font_size = 90
 text = "GPs"
 horizontal_alignment = 1
 
-[node name="Reading" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Reading" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1043279353]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
@@ -72,7 +72,7 @@ theme_override_font_sizes/font_size = 90
 text = "Reading"
 horizontal_alignment = 1
 
-[node name="Writing" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Writing" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1217496104]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
@@ -80,7 +80,7 @@ theme_override_font_sizes/font_size = 90
 text = "Writing"
 horizontal_alignment = 1
 
-[node name="Edit" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Edit" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=334064031]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.25
@@ -89,38 +89,38 @@ theme_override_font_sizes/font_size = 90
 text = "Edit"
 horizontal_alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer" unique_id=1349300503]
 custom_minimum_size = Vector2(2.08165e-12, 18)
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1674392587]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("6_0r6vt")
 
-[node name="ElementsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="ElementsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=1408590889]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ErrorLabel" type="Label" parent="VBoxContainer"]
+[node name="ErrorLabel" type="Label" parent="VBoxContainer" unique_id=1938580805]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
 
-[node name="NewGPLayer" type="CanvasLayer" parent="."]
+[node name="NewGPLayer" type="CanvasLayer" parent="." unique_id=36147464]
 visible = false
 
-[node name="Panel" type="Panel" parent="NewGPLayer"]
+[node name="Panel" type="Panel" parent="NewGPLayer" unique_id=292459914]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="NewGPLayer"]
+[node name="Label" type="Label" parent="NewGPLayer" unique_id=1702787233]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -132,7 +132,7 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 100
 text = "New GP"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NewGPLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="NewGPLayer" unique_id=1231377366]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -142,27 +142,27 @@ offset_bottom = 222.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" parent="NewGPLayer/VBoxContainer" instance=ExtResource("5_1f555")]
+[node name="Title" parent="NewGPLayer/VBoxContainer" unique_id=1852107010 instance=ExtResource("5_1f555")]
 layout_mode = 2
 script = null
 
-[node name="Grapheme" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="1"]
+[node name="Grapheme" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" parent_id_path=PackedInt32Array(1852107010, 1160808691) index="1" unique_id=401621236]
 text = "Grapheme"
 
-[node name="Phoneme" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="2"]
+[node name="Phoneme" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" parent_id_path=PackedInt32Array(1852107010, 1160808691) index="2" unique_id=1020329159]
 text = "Phoneme"
 
-[node name="Type" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="3"]
+[node name="Type" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" parent_id_path=PackedInt32Array(1852107010, 1160808691) index="3" unique_id=1211300606]
 text = "Type"
 
-[node name="EditButton" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" index="4"]
+[node name="EditButton" parent="NewGPLayer/VBoxContainer/Title/TabContainer/NormalContainer" parent_id_path=PackedInt32Array(1852107010, 1160808691) index="4" unique_id=296519724]
 modulate = Color(1, 1, 1, 0)
 
-[node name="NewGP" parent="NewGPLayer/VBoxContainer" instance=ExtResource("5_1f555")]
+[node name="NewGP" parent="NewGPLayer/VBoxContainer" unique_id=571530511 instance=ExtResource("5_1f555")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="DeleteButton" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" index="0"]
+[node name="DeleteButton" parent="NewGPLayer/VBoxContainer/NewGP/TabContainer/EditContainer" parent_id_path=PackedInt32Array(571530511, 1491769046) index="0" unique_id=1766970248]
 visible = false
 
 [connection signal="add_pressed" from="VBoxContainer/ListTitle" to="." method="_on_list_title_add_pressed"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bpfcrbd5pxbtm"]
+[gd_scene format=3 uid="uid://bpfcrbd5pxbtm"]
 
 [ext_resource type="Script" uid="uid://bqp3akngv876c" path="res://sources/gardens/flower_particle.gd" id="1_8kusj"]
 [ext_resource type="Texture2D" uid="uid://bhlxctbycwwg6" path="res://assets/vfx/cloud_01.png" id="1_osgji"]
@@ -42,14 +42,14 @@ scale_curve = SubResource("CurveTexture_s0j5o")
 color_ramp = SubResource("GradientTexture1D_hbug8")
 turbulence_noise_strength = 20.0
 
-[node name="FlowerParticle" type="Control"]
+[node name="FlowerParticle" type="Control" unique_id=203388971]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(1.2, 1.2)
 script = ExtResource("1_8kusj")
 sounds = Array[AudioStream]([ExtResource("4_0jd3r"), ExtResource("3_hopxg"), ExtResource("4_3jfcb"), ExtResource("5_oxx05"), ExtResource("6_7ujvn"), ExtResource("7_f62pv")])
 
-[node name="Particles" type="GPUParticles2D" parent="."]
+[node name="Particles" type="GPUParticles2D" parent="." unique_id=1926190254]
 emitting = false
 amount = 10
 texture = ExtResource("1_osgji")
@@ -57,7 +57,7 @@ one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_8m4ej")
 
-[node name="Particles2" type="GPUParticles2D" parent="."]
+[node name="Particles2" type="GPUParticles2D" parent="." unique_id=1705348747]
 emitting = false
 amount = 10
 texture = ExtResource("2_ijsw8")
@@ -65,7 +65,7 @@ one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_8m4ej")
 
-[node name="Particles3" type="GPUParticles2D" parent="."]
+[node name="Particles3" type="GPUParticles2D" parent="." unique_id=988860853]
 emitting = false
 amount = 10
 texture = ExtResource("3_wp5xb")
@@ -73,6 +73,6 @@ one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_8m4ej")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1445481898]
 stream = ExtResource("4_0jd3r")
 bus = &"Effects"

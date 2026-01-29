@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://di1ul6ixytmcj"]
+[gd_scene format=3 uid="uid://di1ul6ixytmcj"]
 
 [ext_resource type="Script" uid="uid://ri61tx6u2t7u" path="res://sources/language_tool/lesson_container.gd" id="1_vwysl"]
 
@@ -7,7 +7,7 @@ bg_color = Color(0.254902, 0.329412, 0.572549, 1)
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
-[node name="LessonContainer" type="MarginContainer"]
+[node name="LessonContainer" type="MarginContainer" unique_id=1361954394]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -18,16 +18,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vwysl")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=610231872]
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lnyia")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=528344410]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="NumberLabel" type="Label" parent="HBoxContainer"]
+[node name="NumberLabel" type="Label" parent="HBoxContainer" unique_id=1908761565]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -36,18 +36,18 @@ theme_override_font_sizes/font_size = 100
 text = "10"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=983675372]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="Padding" type="Control" parent="HBoxContainer/HBoxContainer"]
+[node name="Padding" type="Control" parent="HBoxContainer/HBoxContainer" unique_id=1440745963]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 mouse_filter = 2
 
-[node name="GPContainer" type="HBoxContainer" parent="HBoxContainer/HBoxContainer"]
+[node name="GPContainer" type="HBoxContainer" parent="HBoxContainer/HBoxContainer" unique_id=440213722]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

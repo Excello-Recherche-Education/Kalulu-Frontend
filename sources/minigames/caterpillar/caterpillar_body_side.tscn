@@ -1,10 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://sftb8mjylf53"]
+[gd_scene format=3 uid="uid://sftb8mjylf53"]
 
 [ext_resource type="Texture2D" uid="uid://dbhfoebfy5br4" path="res://assets/minigames/caterpillar/graphics/caterpillar_body_side.png" id="1_msoev"]
 
-[node name="Position" type="Node2D"]
+[node name="Position" type="Node2D" unique_id=953126364]
 
-[node name="CaterpillarBodySide" type="Sprite2D" parent="."]
+[node name="CaterpillarBodySide" type="Sprite2D" parent="." unique_id=1338480270]
 position = Vector2(5.5, -98)
 scale = Vector2(1, 1.4)
 texture = ExtResource("1_msoev")

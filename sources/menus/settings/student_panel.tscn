@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://ds3sacjbuqac"]
+[gd_scene format=3 uid="uid://ds3sacjbuqac"]
 
 [ext_resource type="PackedScene" uid="uid://c5ey1jk06asiq" path="res://sources/menus/components/password_visualizer.tscn" id="1_7chbh"]
 [ext_resource type="Script" uid="uid://hkvgcfi12huf" path="res://sources/menus/settings/student_panel.gd" id="1_teefe"]
 
-[node name="StudentPanel" type="Control"]
+[node name="StudentPanel" type="Control" unique_id=375784347]
 custom_minimum_size = Vector2(822, 500)
 layout_mode = 3
 anchors_preset = 0
@@ -12,7 +12,7 @@ offset_bottom = 500.0
 size_flags_horizontal = 3
 script = ExtResource("1_teefe")
 
-[node name="StudentContainer" type="PanelContainer" parent="."]
+[node name="StudentContainer" type="PanelContainer" parent="." unique_id=2038806584]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -27,30 +27,30 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="MarginContainer" type="MarginContainer" parent="StudentContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="StudentContainer" unique_id=401144548]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="StudentContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StudentContainer/MarginContainer" unique_id=1188479969]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="NameLabel" type="Label" parent="StudentContainer/MarginContainer/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="StudentContainer/MarginContainer/VBoxContainer" unique_id=1753874763]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PasswordVisualizer" parent="StudentContainer/MarginContainer/VBoxContainer" instance=ExtResource("1_7chbh")]
+[node name="PasswordVisualizer" parent="StudentContainer/MarginContainer/VBoxContainer" unique_id=165257522 instance=ExtResource("1_7chbh")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="DetailsButton" type="TextureButton" parent="StudentContainer"]
+[node name="DetailsButton" type="TextureButton" parent="StudentContainer" unique_id=143820170]
 layout_mode = 2
 
 [connection signal="pressed" from="StudentContainer/DetailsButton" to="." method="_on_details_button_pressed"]

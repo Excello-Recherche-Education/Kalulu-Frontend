@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8hlfrsgrkmy"]
+[gd_scene format=3 uid="uid://b8hlfrsgrkmy"]
 
 [ext_resource type="Script" uid="uid://dutga8wms2uy4" path="res://sources/menus/settings/developer_settings.gd" id="1_qqqt3"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="3_vjlw0"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_s0ywi"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_4q33k"]
 
-[node name="DeveloperSettings" type="Control"]
+[node name="DeveloperSettings" type="Control" unique_id=2110866691]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qqqt3")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1896583811]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,7 +23,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="InterfaceLeft" type="MarginContainer" parent="."]
+[node name="InterfaceLeft" type="MarginContainer" parent="." unique_id=1920836264]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -35,11 +35,11 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="Container" type="VBoxContainer" parent="InterfaceLeft"]
+[node name="Container" type="VBoxContainer" parent="InterfaceLeft" unique_id=98053274]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
+[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1761957378]
 layout_mode = 2
 size_flags_vertical = 3
 texture_normal = ExtResource("3_vjlw0")
@@ -47,7 +47,7 @@ texture_pressed = ExtResource("4_s0ywi")
 texture_disabled = ExtResource("5_4q33k")
 stretch_mode = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=485492715]
 custom_minimum_size = Vector2(1970, 1800)
 layout_mode = 1
 anchors_preset = 11
@@ -58,87 +58,87 @@ offset_left = -632.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="LogControls" type="HBoxContainer" parent="VBoxContainer"]
+[node name="LogControls" type="HBoxContainer" parent="VBoxContainer" unique_id=1823239399]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/LogControls"]
+[node name="Label" type="Label" parent="VBoxContainer/LogControls" unique_id=657364316]
 layout_mode = 2
 text = "Change log level:"
 
-[node name="LogLevelDropdown" type="OptionButton" parent="VBoxContainer/LogControls"]
+[node name="LogLevelDropdown" type="OptionButton" parent="VBoxContainer/LogControls" unique_id=584482685]
 layout_mode = 2
 
-[node name="ApiPathControls" type="VBoxContainer" parent="VBoxContainer"]
+[node name="ApiPathControls" type="VBoxContainer" parent="VBoxContainer" unique_id=1716036531]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="PathRow" type="HBoxContainer" parent="VBoxContainer/ApiPathControls"]
+[node name="PathRow" type="HBoxContainer" parent="VBoxContainer/ApiPathControls" unique_id=1621492525]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/ApiPathControls/PathRow"]
+[node name="Label" type="Label" parent="VBoxContainer/ApiPathControls/PathRow" unique_id=689636887]
 layout_mode = 2
 text = "AWS API path:"
 
-[node name="ApiPathEdit" type="LineEdit" parent="VBoxContainer/ApiPathControls/PathRow"]
+[node name="ApiPathEdit" type="LineEdit" parent="VBoxContainer/ApiPathControls/PathRow" unique_id=1457250103]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ApplyButton" type="Button" parent="VBoxContainer/ApiPathControls/PathRow"]
+[node name="ApplyButton" type="Button" parent="VBoxContainer/ApiPathControls/PathRow" unique_id=141448980]
 layout_mode = 2
 text = "Apply"
 
-[node name="EnvironmentButtons" type="HBoxContainer" parent="VBoxContainer/ApiPathControls"]
+[node name="EnvironmentButtons" type="HBoxContainer" parent="VBoxContainer/ApiPathControls" unique_id=1487447478]
 layout_mode = 2
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="ProdButton" type="Button" parent="VBoxContainer/ApiPathControls/EnvironmentButtons"]
+[node name="ProdButton" type="Button" parent="VBoxContainer/ApiPathControls/EnvironmentButtons" unique_id=1869818341]
 layout_mode = 2
 text = "Use PROD"
 
-[node name="DevButton" type="Button" parent="VBoxContainer/ApiPathControls/EnvironmentButtons"]
+[node name="DevButton" type="Button" parent="VBoxContainer/ApiPathControls/EnvironmentButtons" unique_id=1500120016]
 layout_mode = 2
 text = "Use DEV"
 
-[node name="StatusLabel" type="Label" parent="VBoxContainer/ApiPathControls"]
+[node name="StatusLabel" type="Label" parent="VBoxContainer/ApiPathControls" unique_id=24080934]
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=525731883]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Controls" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Controls" type="HBoxContainer" parent="VBoxContainer" unique_id=59146217]
 layout_mode = 2
 alignment = 1
 
-[node name="LineCountSlider" type="HSlider" parent="VBoxContainer/Controls"]
+[node name="LineCountSlider" type="HSlider" parent="VBoxContainer/Controls" unique_id=1288965092]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 max_value = 20.0
 value = 10.0
 
-[node name="SliderLabel" type="Label" parent="VBoxContainer/Controls"]
+[node name="SliderLabel" type="Label" parent="VBoxContainer/Controls" unique_id=242135549]
 layout_mode = 2
 text = "Show: ?"
 
-[node name="Control" type="Control" parent="VBoxContainer/Controls"]
+[node name="Control" type="Control" parent="VBoxContainer/Controls" unique_id=829215954]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Filters" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Filters" type="HBoxContainer" parent="VBoxContainer" unique_id=135854551]
 layout_mode = 2
 alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer" unique_id=1581536804]
 layout_mode = 2
 size_flags_vertical = 3
 color = Color(0.48962224, 0.48962224, 0.48962218, 1)
 
-[node name="LogText" type="TextEdit" parent="VBoxContainer/ColorRect"]
+[node name="LogText" type="TextEdit" parent="VBoxContainer/ColorRect" unique_id=1425590460]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 14.0

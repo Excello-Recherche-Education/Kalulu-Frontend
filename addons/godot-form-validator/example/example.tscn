@@ -1,20 +1,20 @@
-[gd_scene load_steps=42 format=3 uid="uid://dpi5vv8r80o7r"]
+[gd_scene format=3 uid="uid://dpi5vv8r80o7r"]
 
 [ext_resource type="Script" uid="uid://w3bvkvn7umfw" path="res://addons/godot-form-validator/example/example.gd" id="1_8caq6"]
 [ext_resource type="Script" uid="uid://ddmyah1o42hwp" path="res://addons/godot-form-validator/form_validator.gd" id="2_mtxo0"]
-[ext_resource type="Script" uid="uid://b23qfes63s2no" path="res://addons/godot-form-validator/control_validator.gd" id="3_hkwup"]
+[ext_resource type="Script" uid="uid://dg4qit8mffvjh" path="res://addons/godot-form-validator/control_validator.gd" id="3_hkwup"]
 [ext_resource type="Script" uid="uid://dg17cfvs2w257" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="4_d7ctn"]
-[ext_resource type="Script" uid="uid://ce2mdbvkkvvt4" path="res://addons/godot-form-validator/rules/alpha_rule.gd" id="4_dq1df"]
-[ext_resource type="Script" uid="uid://b0dbsne0vdlsi" path="res://addons/godot-form-validator/rules/required_rule.gd" id="5_cu56g"]
+[ext_resource type="Script" uid="uid://wgfr07ktmqap" path="res://addons/godot-form-validator/rules/alpha_rule.gd" id="4_dq1df"]
+[ext_resource type="Script" uid="uid://dw5aercmfe4" path="res://addons/godot-form-validator/rules/required_rule.gd" id="5_cu56g"]
 [ext_resource type="Script" uid="uid://c1cqwb15yoqb3" path="res://addons/godot-form-validator/validators/line_edit_validator.gd" id="5_rknpr"]
-[ext_resource type="Script" uid="uid://cklaq6vs6ekl5" path="res://addons/godot-form-validator/rules/numeric_rule.gd" id="7_6vtuw"]
+[ext_resource type="Script" uid="uid://dgk131fex3ts2" path="res://addons/godot-form-validator/rules/numeric_rule.gd" id="7_6vtuw"]
 [ext_resource type="Script" uid="uid://bueqq0cpyjwtg" path="res://addons/godot-form-validator/rules/alphanumeric_rule.gd" id="8_mu0ia"]
-[ext_resource type="Script" uid="uid://f4gllyb5w8eb" path="res://addons/godot-form-validator/rules/email_rule.gd" id="9_4ynyw"]
-[ext_resource type="Script" uid="uid://daolm78xg3qgd" path="res://addons/godot-form-validator/rules/length_rule.gd" id="10_iuueu"]
-[ext_resource type="Script" uid="uid://dxd215tab7r34" path="res://addons/godot-form-validator/rules/greater_than_rule.gd" id="11_1tya3"]
+[ext_resource type="Script" uid="uid://dvpln5snrt4mq" path="res://addons/godot-form-validator/rules/email_rule.gd" id="9_4ynyw"]
+[ext_resource type="Script" uid="uid://bj4s5o33vkcts" path="res://addons/godot-form-validator/rules/length_rule.gd" id="10_iuueu"]
+[ext_resource type="Script" uid="uid://snmw7k006wch" path="res://addons/godot-form-validator/rules/greater_than_rule.gd" id="11_1tya3"]
 [ext_resource type="Script" uid="uid://kleihw30fvoh" path="res://addons/godot-form-validator/validators/range_validator.gd" id="11_51cp7"]
 [ext_resource type="Script" uid="uid://couf48gpjy4yt" path="res://addons/godot-form-validator/validators/button_validator.gd" id="13_eri47"]
-[ext_resource type="Script" uid="uid://drref7rcao1tw" path="res://addons/godot-form-validator/rules/custom_rule.gd" id="13_ibg52"]
+[ext_resource type="Script" uid="uid://c7tybiqm6xgvi" path="res://addons/godot-form-validator/rules/custom_rule.gd" id="13_ibg52"]
 [ext_resource type="Script" uid="uid://dsrxfoqxxycoi" path="res://addons/godot-form-validator/rules/boolean_rule.gd" id="15_xjpko"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nw8ds"]
@@ -30,6 +30,7 @@ fail_message = "Value must contain only alpha characters."
 
 [sub_resource type="Resource" id="Resource_15man"]
 script = ExtResource("5_rknpr")
+validation_method = 0
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_i25hd"), SubResource("Resource_4mimn")])
 
 [sub_resource type="LabelSettings" id="LabelSettings_su7t3"]
@@ -48,6 +49,7 @@ fail_message = "Value must contain only numbers."
 
 [sub_resource type="Resource" id="Resource_1t3q0"]
 script = ExtResource("5_rknpr")
+validation_method = 0
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_j4pud"), SubResource("Resource_xxhfq")])
 
 [sub_resource type="Resource" id="Resource_ftvbf"]
@@ -60,6 +62,7 @@ fail_message = "A value is required."
 
 [sub_resource type="Resource" id="Resource_61y5a"]
 script = ExtResource("5_rknpr")
+validation_method = 0
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_ftvbf"), SubResource("Resource_my5ss")])
 
 [sub_resource type="Resource" id="Resource_f3i8j"]
@@ -72,6 +75,7 @@ fail_message = "A value is required."
 
 [sub_resource type="Resource" id="Resource_q4oax"]
 script = ExtResource("5_rknpr")
+validation_method = 0
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_f3i8j"), SubResource("Resource_l5e3w")])
 
 [sub_resource type="Resource" id="Resource_d1g5r"]
@@ -85,6 +89,7 @@ max_length = 10
 
 [sub_resource type="Resource" id="Resource_62odm"]
 script = ExtResource("5_rknpr")
+validation_method = 0
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_d1g5r"), SubResource("Resource_jqdfw")])
 
 [sub_resource type="Resource" id="Resource_qm2iv"]
@@ -97,6 +102,7 @@ target_value = "3"
 
 [sub_resource type="Resource" id="Resource_smogv"]
 script = ExtResource("11_51cp7")
+validation_method = 0
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_qm2iv"), SubResource("Resource_brbah")])
 
 [sub_resource type="Resource" id="Resource_4riv3"]
@@ -106,6 +112,7 @@ fail_message = "The red channel must be greater than 0.5."
 
 [sub_resource type="Resource" id="Resource_mh7td"]
 script = ExtResource("13_eri47")
+validation_method = 0
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_4riv3")])
 
 [sub_resource type="Resource" id="Resource_3nuq2"]
@@ -116,9 +123,10 @@ fail_message = "The check box must be checked."
 [sub_resource type="Resource" id="Resource_kbsj8"]
 script = ExtResource("13_eri47")
 validation_order = -1
+validation_method = 0
 rules = Array[ExtResource("4_d7ctn")]([SubResource("Resource_3nuq2")])
 
-[node name="Example" type="PanelContainer"]
+[node name="Example" type="PanelContainer" unique_id=1143668754]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -126,19 +134,20 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8caq6")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=557209502]
 layout_mode = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="FormValidator" type="Control" parent="MarginContainer"]
+[node name="FormValidator" type="Control" parent="MarginContainer" unique_id=740375273]
 layout_mode = 2
 script = ExtResource("2_mtxo0")
 auto_validate = true
+validation_method = 0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/FormValidator"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/FormValidator" unique_id=1672024461]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -146,267 +155,267 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2"]
+[node name="Title" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2" unique_id=1875744463]
 layout_mode = 2
 text = "Godot Form Validator Examples"
 label_settings = SubResource("LabelSettings_nw8ds")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/FormValidator/VBoxContainer2"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/FormValidator/VBoxContainer2" unique_id=973575488]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 columns = 4
 
-[node name="Label" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="Label" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=516411488]
 layout_mode = 2
 text = "Alpha"
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1233638864]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Alpha" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer"]
+[node name="Alpha" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer" unique_id=195719562]
 layout_mode = 2
 
-[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer/Alpha"]
+[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer/Alpha" unique_id=281329145]
 script = ExtResource("3_hkwup")
 validator = SubResource("Resource_15man")
 
-[node name="AlphaError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer"]
+[node name="AlphaError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer" unique_id=1627694098]
 visible = false
 layout_mode = 2
 text = "ERROR"
 label_settings = SubResource("LabelSettings_su7t3")
 autowrap_mode = 2
 
-[node name="AlphaValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer"]
+[node name="AlphaValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer" unique_id=84059690]
 visible = false
 layout_mode = 2
 text = "Valid!"
 label_settings = SubResource("LabelSettings_urp4f")
 
-[node name="Label2" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1097468362]
 layout_mode = 2
 text = "Numeric"
 vertical_alignment = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1159405902]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Numeric" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer2"]
+[node name="Numeric" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer2" unique_id=1678871163]
 layout_mode = 2
 
-[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer2/Numeric"]
+[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer2/Numeric" unique_id=714305967]
 script = ExtResource("3_hkwup")
 validator = SubResource("Resource_1t3q0")
 
-[node name="NumericError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer2"]
+[node name="NumericError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer2" unique_id=830938453]
 visible = false
 layout_mode = 2
 text = "ERROR"
 label_settings = SubResource("LabelSettings_su7t3")
 autowrap_mode = 2
 
-[node name="NumericValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer2"]
+[node name="NumericValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer2" unique_id=835884425]
 visible = false
 layout_mode = 2
 text = "Valid!"
 label_settings = SubResource("LabelSettings_urp4f")
 
-[node name="Label3" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1149940543]
 layout_mode = 2
 text = "Alphanumeric"
 vertical_alignment = 1
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=388333675]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Alphanumeric" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer3"]
+[node name="Alphanumeric" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer3" unique_id=1804794614]
 layout_mode = 2
 
-[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer3/Alphanumeric"]
+[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer3/Alphanumeric" unique_id=295749143]
 script = ExtResource("3_hkwup")
 validator = SubResource("Resource_61y5a")
 
-[node name="AlphanumericError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer3"]
+[node name="AlphanumericError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer3" unique_id=1860584450]
 visible = false
 layout_mode = 2
 text = "ERROR"
 label_settings = SubResource("LabelSettings_su7t3")
 autowrap_mode = 2
 
-[node name="AlphanumericValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer3"]
+[node name="AlphanumericValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer3" unique_id=493731166]
 visible = false
 layout_mode = 2
 text = "Valid!"
 label_settings = SubResource("LabelSettings_urp4f")
 
-[node name="Label4" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="Label4" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=539231275]
 layout_mode = 2
 text = "Email"
 vertical_alignment = 1
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1263223546]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Email" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer4"]
+[node name="Email" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer4" unique_id=1555844645]
 layout_mode = 2
 
-[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer4/Email"]
+[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer4/Email" unique_id=131516445]
 script = ExtResource("3_hkwup")
 validator = SubResource("Resource_q4oax")
 
-[node name="EmailError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer4"]
+[node name="EmailError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer4" unique_id=1261830767]
 visible = false
 layout_mode = 2
 text = "ERROR"
 label_settings = SubResource("LabelSettings_su7t3")
 autowrap_mode = 2
 
-[node name="EmailValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer4"]
+[node name="EmailValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer4" unique_id=384749791]
 visible = false
 layout_mode = 2
 text = "Valid!"
 label_settings = SubResource("LabelSettings_urp4f")
 
-[node name="Label5" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="Label5" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1714799108]
 layout_mode = 2
 text = "Length"
 vertical_alignment = 1
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="VBoxContainer5" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1293011567]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Length" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer5"]
+[node name="Length" type="LineEdit" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer5" unique_id=2064540250]
 layout_mode = 2
 
-[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer5/Length"]
+[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer5/Length" unique_id=1845190839]
 script = ExtResource("3_hkwup")
 validator = SubResource("Resource_62odm")
 
-[node name="LengthError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer5"]
+[node name="LengthError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer5" unique_id=1875660447]
 visible = false
 layout_mode = 2
 text = "ERROR"
 label_settings = SubResource("LabelSettings_su7t3")
 autowrap_mode = 2
 
-[node name="LengthValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer5"]
+[node name="LengthValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer5" unique_id=2021172312]
 visible = false
 layout_mode = 2
 text = "Valid!"
 label_settings = SubResource("LabelSettings_urp4f")
 
-[node name="Label6" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="Label6" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=349007451]
 layout_mode = 2
 text = "Value"
 vertical_alignment = 1
 
-[node name="VBoxContainer6" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="VBoxContainer6" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1662292642]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Value" type="SpinBox" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer6"]
+[node name="Value" type="SpinBox" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer6" unique_id=255442278]
 layout_mode = 2
 
-[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer6/Value"]
+[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer6/Value" unique_id=186846352]
 script = ExtResource("3_hkwup")
 validator = SubResource("Resource_smogv")
 
-[node name="ValueError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer6"]
+[node name="ValueError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer6" unique_id=1002570139]
 visible = false
 layout_mode = 2
 text = "ERROR"
 label_settings = SubResource("LabelSettings_su7t3")
 autowrap_mode = 2
 
-[node name="ValueValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer6"]
+[node name="ValueValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer6" unique_id=1604137535]
 visible = false
 layout_mode = 2
 text = "Valid!"
 label_settings = SubResource("LabelSettings_urp4f")
 
-[node name="Label7" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="Label7" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=2112194338]
 layout_mode = 2
 text = "Custom"
 vertical_alignment = 1
 
-[node name="VBoxContainer7" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="VBoxContainer7" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=418670733]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ColorPicker" type="ColorPickerButton" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer7"]
+[node name="ColorPicker" type="ColorPickerButton" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer7" unique_id=1750844205]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer7/ColorPicker"]
+[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer7/ColorPicker" unique_id=807038440]
 script = ExtResource("3_hkwup")
 validator = SubResource("Resource_mh7td")
 
-[node name="ColorPickerError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer7"]
+[node name="ColorPickerError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer7" unique_id=582336359]
 visible = false
 layout_mode = 2
 text = "ERROR"
 label_settings = SubResource("LabelSettings_su7t3")
 autowrap_mode = 2
 
-[node name="ColorPickerValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer7"]
+[node name="ColorPickerValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer7" unique_id=2137026177]
 visible = false
 layout_mode = 2
 text = "Valid!"
 label_settings = SubResource("LabelSettings_urp4f")
 
-[node name="Label8" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="Label8" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1475169490]
 layout_mode = 2
 text = "Checked"
 vertical_alignment = 1
 
-[node name="VBoxContainer8" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer"]
+[node name="VBoxContainer8" type="VBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer" unique_id=1031839141]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Checked" type="CheckBox" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer8"]
+[node name="Checked" type="CheckBox" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer8" unique_id=1249694583]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer8/Checked"]
+[node name="ControlValidator" type="Node" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer8/Checked" unique_id=1199739924]
 script = ExtResource("3_hkwup")
 validator = SubResource("Resource_kbsj8")
 
-[node name="CheckedError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer8"]
+[node name="CheckedError" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer8" unique_id=1247191832]
 visible = false
 layout_mode = 2
 text = "ERROR"
 label_settings = SubResource("LabelSettings_su7t3")
 autowrap_mode = 2
 
-[node name="CheckedValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer8"]
+[node name="CheckedValid" type="Label" parent="MarginContainer/FormValidator/VBoxContainer2/GridContainer/VBoxContainer8" unique_id=1900555189]
 visible = false
 layout_mode = 2
 text = "Valid!"
 label_settings = SubResource("LabelSettings_urp4f")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/FormValidator/VBoxContainer2" unique_id=566181778]
 layout_mode = 2
 theme_override_constants/separation = 32
 
-[node name="Validate" type="Button" parent="MarginContainer/FormValidator/VBoxContainer2/HBoxContainer"]
+[node name="Validate" type="Button" parent="MarginContainer/FormValidator/VBoxContainer2/HBoxContainer" unique_id=742843249]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 text = "Validate Form"
 
-[node name="Exit" type="Button" parent="MarginContainer/FormValidator/VBoxContainer2/HBoxContainer"]
+[node name="Exit" type="Button" parent="MarginContainer/FormValidator/VBoxContainer2/HBoxContainer" unique_id=809646022]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16

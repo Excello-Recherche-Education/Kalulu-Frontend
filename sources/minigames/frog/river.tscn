@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://sumrd1i3g6f7"]
+[gd_scene format=3 uid="uid://sumrd1i3g6f7"]
 
 [ext_resource type="Shader" uid="uid://da5cg0cin6tgm" path="res://resources/shaders/move_shader.gdshader" id="1_k1xuy"]
 [ext_resource type="Texture2D" uid="uid://g1pr0xqbmwcb" path="res://assets/minigames/frog/graphics/background_river.png" id="2_k1yyh"]
@@ -8,7 +8,7 @@
 shader = ExtResource("1_k1xuy")
 shader_parameter/direction = Vector2(0, -0.2)
 
-[node name="River" type="TextureRect"]
+[node name="River" type="TextureRect" unique_id=818471514]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_doj3f")
 anchors_preset = 15

@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnyl3pxt7dn8y"]
+[gd_scene format=3 uid="uid://cnyl3pxt7dn8y"]
 
 [ext_resource type="Script" uid="uid://c6topd4d04tb" path="res://sources/language_tool/gp_list.gd" id="1_vqemo"]
 [ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="2_irm5b"]
 [ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/scroll_container.gd" id="6_t1l1g"]
 
-[node name="GpList" type="Control"]
+[node name="GpList" type="Control" unique_id=1512637912]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vqemo")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1836368885]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,20 +22,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="ListTitle" parent="VBoxContainer" instance=ExtResource("2_irm5b")]
+[node name="ListTitle" parent="VBoxContainer" unique_id=418999588 instance=ExtResource("2_irm5b")]
 layout_mode = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer" unique_id=2098561334]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer2"]
+[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer2" unique_id=128646104]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2" unique_id=577818983]
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
 
-[node name="Grapheme" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Grapheme" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer" unique_id=1774349539]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -45,7 +45,7 @@ text = "Grapheme
 "
 horizontal_alignment = 1
 
-[node name="Phoneme" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Phoneme" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer" unique_id=622894466]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -54,7 +54,7 @@ theme_override_font_sizes/font_size = 100
 text = "Phoneme"
 horizontal_alignment = 1
 
-[node name="Type" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Type" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer" unique_id=329942470]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -63,24 +63,24 @@ theme_override_font_sizes/font_size = 100
 text = "Type"
 horizontal_alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer" unique_id=178930847]
 custom_minimum_size = Vector2(2.08165e-12, 18)
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1120454808]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("6_t1l1g")
 
-[node name="ElementsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="ElementsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=1212570774]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="ErrorLabel" type="Label" parent="VBoxContainer"]
+[node name="ErrorLabel" type="Label" parent="VBoxContainer" unique_id=1930979797]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 60

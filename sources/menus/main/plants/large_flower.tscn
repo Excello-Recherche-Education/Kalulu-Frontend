@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://nwur175781jf"]
+[gd_scene format=3 uid="uid://nwur175781jf"]
 
 [ext_resource type="Texture2D" uid="uid://bprn8svgct15r" path="res://assets/menus/main/plants/large_flower_petal.png" id="1_5q7s4"]
 [ext_resource type="Texture2D" uid="uid://b6l305fj6ynnv" path="res://assets/menus/main/plants/large_flower_body.png" id="2_mfmfc"]
@@ -113,52 +113,50 @@ _data = {
 &"Spread": SubResource("Animation_wj5s5")
 }
 
-[node name="LargeFlower" type="Node2D"]
+[node name="LargeFlower" type="Node2D" unique_id=1190467596]
 
-[node name="Petals" type="Node2D" parent="."]
+[node name="Petals" type="Node2D" parent="." unique_id=600439290]
 
-[node name="LeftPivot60" type="Node2D" parent="Petals"]
+[node name="LeftPivot60" type="Node2D" parent="Petals" unique_id=1696980697]
 position = Vector2(0, -520)
 rotation = -1.0472
 
-[node name="Petal" type="Sprite2D" parent="Petals/LeftPivot60"]
+[node name="Petal" type="Sprite2D" parent="Petals/LeftPivot60" unique_id=1755584610]
 position = Vector2(0, -120)
 texture = ExtResource("1_5q7s4")
 
-[node name="LeftPivot30" type="Node2D" parent="Petals"]
+[node name="LeftPivot30" type="Node2D" parent="Petals" unique_id=54176652]
 position = Vector2(0, -520)
 rotation = -0.523599
 
-[node name="Petal" type="Sprite2D" parent="Petals/LeftPivot30"]
+[node name="Petal" type="Sprite2D" parent="Petals/LeftPivot30" unique_id=1115984482]
 position = Vector2(0, -120)
 texture = ExtResource("1_5q7s4")
 
-[node name="RightPivot60" type="Node2D" parent="Petals"]
+[node name="RightPivot60" type="Node2D" parent="Petals" unique_id=1080004711]
 position = Vector2(0, -520)
 rotation = 1.0472
 
-[node name="Petal" type="Sprite2D" parent="Petals/RightPivot60"]
+[node name="Petal" type="Sprite2D" parent="Petals/RightPivot60" unique_id=768087627]
 position = Vector2(0, -120)
 texture = ExtResource("1_5q7s4")
 
-[node name="RightPivot30" type="Node2D" parent="Petals"]
+[node name="RightPivot30" type="Node2D" parent="Petals" unique_id=1810950347]
 position = Vector2(0, -520)
 rotation = 0.523599
 
-[node name="Petal" type="Sprite2D" parent="Petals/RightPivot30"]
+[node name="Petal" type="Sprite2D" parent="Petals/RightPivot30" unique_id=1821510359]
 position = Vector2(0, -120)
 texture = ExtResource("1_5q7s4")
 
-[node name="Center" type="Sprite2D" parent="Petals"]
+[node name="Center" type="Sprite2D" parent="Petals" unique_id=859333109]
 position = Vector2(0, -640)
 texture = ExtResource("1_5q7s4")
 
-[node name="Body" type="Sprite2D" parent="."]
+[node name="Body" type="Sprite2D" parent="." unique_id=947421194]
 position = Vector2(0, -336)
 texture = ExtResource("2_mfmfc")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_47w0h")
-}
-autoplay = "Spread"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1218764664]
+libraries/ = SubResource("AnimationLibrary_47w0h")
+autoplay = &"Spread"

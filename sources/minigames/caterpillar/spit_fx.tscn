@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dyn71e3ttv2le"]
+[gd_scene format=3 uid="uid://dyn71e3ttv2le"]
 
 [ext_resource type="Script" uid="uid://dpom306speb2y" path="res://sources/minigames/caterpillar/spit_fx.gd" id="1_pyr48"]
 [ext_resource type="Texture2D" uid="uid://bk1nmu2pkdenx" path="res://assets/vfx/tear.png" id="2_0nykj"]
@@ -32,16 +32,16 @@ scale_min = 0.5
 scale_curve = SubResource("CurveTexture_mx7tb")
 color_ramp = SubResource("GradientTexture1D_b6rlx")
 
-[node name="SpitFX" type="Control"]
+[node name="SpitFX" type="Control" unique_id=2061407121]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_pyr48")
 
-[node name="Particles" type="GPUParticles2D" parent="."]
+[node name="Particles" type="GPUParticles2D" parent="." unique_id=710351496]
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_2vb7t")
 texture = ExtResource("2_0nykj")
 lifetime = 1.5
 one_shot = true
 explosiveness = 1.0
 randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_2vb7t")

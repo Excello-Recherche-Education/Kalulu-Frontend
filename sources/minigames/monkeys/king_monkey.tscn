@@ -1,25 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://b8r26vroslasj"]
+[gd_scene format=3 uid="uid://b8r26vroslasj"]
 
 [ext_resource type="Script" uid="uid://dq7mfmu114cvl" path="res://sources/minigames/monkeys/king_monkey.gd" id="1_6p7n7"]
 [ext_resource type="SpriteFrames" uid="uid://dwaype8bcilxr" path="res://sources/minigames/monkeys/monkey_king_animations.tres" id="2_kvt4j"]
 
-[node name="KingMonkey" type="Node2D"]
+[node name="KingMonkey" type="Node2D" unique_id=1759988377]
 script = ExtResource("1_6p7n7")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=307280680]
 scale = Vector2(0.9, 0.9)
 sprite_frames = ExtResource("2_kvt4j")
 animation = &"catch"
 autoplay = "idle"
 
-[node name="CatchPosition" type="Marker2D" parent="."]
+[node name="CatchPosition" type="Marker2D" parent="." unique_id=1666934520]
 position = Vector2(255, 32)
 scale = Vector2(0.99999994, 0.99999994)
 
-[node name="ReadPosition" type="Marker2D" parent="."]
+[node name="ReadPosition" type="Marker2D" parent="." unique_id=1057747392]
 position = Vector2(-255, 32)
 
-[node name="ThrowPosition" type="Marker2D" parent="."]
+[node name="ThrowPosition" type="Marker2D" parent="." unique_id=1995566514]
 position = Vector2(0, 256)
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

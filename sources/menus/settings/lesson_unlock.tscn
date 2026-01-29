@@ -1,57 +1,57 @@
-[gd_scene load_steps=2 format=3 uid="uid://dht5umof6hqqy"]
+[gd_scene format=3 uid="uid://dht5umof6hqqy"]
 
 [ext_resource type="Script" uid="uid://crrnxt5bwa8wi" path="res://sources/menus/settings/lesson_unlock.gd" id="1_rlnlh"]
 
-[node name="LessonUnlock" type="MarginContainer"]
+[node name="LessonUnlock" type="MarginContainer" unique_id=2109971470]
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 script = ExtResource("1_rlnlh")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=745183540]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="LessonLabel" type="Label" parent="HBoxContainer"]
+[node name="LessonLabel" type="Label" parent="HBoxContainer" unique_id=1829884836]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 
-[node name="GPsLabel" type="Label" parent="HBoxContainer"]
+[node name="GPsLabel" type="Label" parent="HBoxContainer" unique_id=1674528069]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 42
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=164537040]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 40
 
-[node name="LookAndLearnOptionButton" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+[node name="LookAndLearnOptionButton" type="OptionButton" parent="HBoxContainer/HBoxContainer" unique_id=1667465526]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ExerciseOptionButton1" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-disabled = true
-
-[node name="ExerciseOptionButton2" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+[node name="ExerciseOptionButton1" type="OptionButton" parent="HBoxContainer/HBoxContainer" unique_id=1697241722]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 disabled = true
 
-[node name="ExerciseOptionButton3" type="OptionButton" parent="HBoxContainer/HBoxContainer"]
+[node name="ExerciseOptionButton2" type="OptionButton" parent="HBoxContainer/HBoxContainer" unique_id=796806380]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 disabled = true
 
-[node name="Pad" type="MarginContainer" parent="HBoxContainer"]
+[node name="ExerciseOptionButton3" type="OptionButton" parent="HBoxContainer/HBoxContainer" unique_id=2010481864]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+
+[node name="Pad" type="MarginContainer" parent="HBoxContainer" unique_id=1969324404]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 

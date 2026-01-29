@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://wdjp1sv55q4f"]
+[gd_scene format=3 uid="uid://wdjp1sv55q4f"]
 
 [ext_resource type="Texture2D" uid="uid://bot613w0i1p2u" path="res://assets/particles/star.png" id="1_j3m5j"]
 [ext_resource type="Texture2D" uid="uid://clwx5ksla5icp" path="res://assets/gardens/gardens/grid_mask.png" id="2_md1dy"]
@@ -30,7 +30,7 @@ scale_max = 2.0
 scale_curve = SubResource("CurveTexture_2i3g2")
 color_ramp = SubResource("GradientTexture1D_ufvor")
 
-[node name="NightSky" type="Control"]
+[node name="NightSky" type="Control" unique_id=468560040]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,7 +38,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=616680987]
 light_mask = 512
 layout_mode = 1
 anchors_preset = 15
@@ -48,7 +48,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.00392157, 0.0980392, 1)
 
-[node name="StarsParticles" type="GPUParticles2D" parent="."]
+[node name="StarsParticles" type="GPUParticles2D" parent="." unique_id=1694235257]
 light_mask = 0
 position = Vector2(1280, 896)
 amount = 300
@@ -61,7 +61,7 @@ randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
 process_material = SubResource("ParticleProcessMaterial_qhymc")
 
-[node name="Light" type="PointLight2D" parent="."]
+[node name="Light" type="PointLight2D" parent="." unique_id=1053737708]
 light_mask = 512
 position = Vector2(1284, 900.001)
 scale = Vector2(2.00625, 1.60715)

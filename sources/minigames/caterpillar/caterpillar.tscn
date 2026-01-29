@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cqx0qux4msnm7"]
+[gd_scene format=3 uid="uid://cqx0qux4msnm7"]
 
 [ext_resource type="Script" uid="uid://ui362fnglx0k" path="res://sources/minigames/caterpillar/caterpillar.gd" id="1_addut"]
 [ext_resource type="Texture2D" uid="uid://cyxl5ep0vuavl" path="res://assets/minigames/caterpillar/graphics/caterpillar_spritesheet.png" id="3_iusck"]
@@ -71,24 +71,24 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="Caterpillar" type="Node2D"]
+[node name="Caterpillar" type="Node2D" unique_id=1470993206]
 script = ExtResource("1_addut")
 
-[node name="BodyParts" type="Node2D" parent="."]
+[node name="BodyParts" type="Node2D" parent="." unique_id=1714619508]
 
-[node name="Head" parent="." instance=ExtResource("17_ty72k")]
+[node name="Head" parent="." unique_id=590640269 instance=ExtResource("17_ty72k")]
 position = Vector2(165, 0)
 
-[node name="EatArea2D" type="Area2D" parent="Head"]
+[node name="EatArea2D" type="Area2D" parent="Head" unique_id=1930994286]
 position = Vector2(184, -128)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Head/EatArea2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head/EatArea2D" unique_id=1607125256]
 position = Vector2(200, 0)
 shape = SubResource("RectangleShape2D_6qw72")
 
-[node name="Tail" type="Node2D" parent="."]
+[node name="Tail" type="Node2D" parent="." unique_id=1152394993]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tail"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tail" unique_id=1648067318]
 position = Vector2(88, -99)
 scale = Vector2(0.48, 0.48)
 sprite_frames = SubResource("SpriteFrames_2eysc")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://2mwfjg3c68p1"]
+[gd_scene format=3 uid="uid://2mwfjg3c68p1"]
 
 [ext_resource type="Texture2D" uid="uid://bh28uja7gs8u4" path="res://assets/minigames/monkeys/graphic/coconut.png" id="1_fvymg"]
 [ext_resource type="Script" uid="uid://q6go00k3f50e" path="res://sources/minigames/monkeys/coconut.gd" id="1_yojn5"]
@@ -6,17 +6,17 @@
 [ext_resource type="LabelSettings" uid="uid://c4n6n26sxuxbh" path="res://resources/themes/minigames_label_settings_monkey_coconut.tres" id="4_50ros"]
 [ext_resource type="PackedScene" uid="uid://cnt2q4hqn1wsq" path="res://sources/minigames/monkeys/broken_coconut_fx.tscn" id="5_ddd0v"]
 
-[node name="Coconut" type="Node2D"]
+[node name="Coconut" type="Node2D" unique_id=458844620]
 script = ExtResource("1_yojn5")
 
-[node name="HighlightFX" parent="." instance=ExtResource("2_8nuxj")]
+[node name="HighlightFX" parent="." unique_id=322793059 instance=ExtResource("2_8nuxj")]
 scale = Vector2(0.5, 0.5)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1698025124]
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("1_fvymg")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=1611286912]
 custom_minimum_size = Vector2(110, 2.08165e-12)
 offset_left = -91.0
 offset_top = -100.0
@@ -28,4 +28,4 @@ label_settings = ExtResource("4_50ros")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BrokenCoconutFX" parent="." instance=ExtResource("5_ddd0v")]
+[node name="BrokenCoconutFX" parent="." unique_id=745079414 instance=ExtResource("5_ddd0v")]

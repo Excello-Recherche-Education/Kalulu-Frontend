@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=34 format=3 uid="uid://ceh3p8b7tk4ry"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://ceh3p8b7tk4ry"]
 
 [ext_resource type="Texture2D" uid="uid://cfd278lhnobop" path="res://assets/minigames/ants/graphics/ant_spritesheet.png" id="1_qjcf0"]
 

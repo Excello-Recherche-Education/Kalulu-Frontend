@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbvgtp81etltf"]
+[gd_scene format=3 uid="uid://bbvgtp81etltf"]
 
 [ext_resource type="Script" uid="uid://buutin0kywi2f" path="res://sources/language_tool/kalulu_speech_title.gd" id="1_6lip0"]
 
-[node name="KaluluSpeechTitle" type="PanelContainer"]
+[node name="KaluluSpeechTitle" type="PanelContainer" unique_id=1664488222]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,10 +11,10 @@ grow_vertical = 2
 size_flags_horizontal = 3
 script = ExtResource("1_6lip0")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1879187398]
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="MarginContainer"]
+[node name="TitleLabel" type="Label" parent="MarginContainer" unique_id=1434765278]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 72

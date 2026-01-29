@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bwe3fp0vkpufb"]
+[gd_scene format=3 uid="uid://bwe3fp0vkpufb"]
 
 [ext_resource type="Script" uid="uid://dsv0728uv1y5l" path="res://sources/minigames/crabs/crab/crab.gd" id="1_5hgg8"]
 [ext_resource type="AudioStream" uid="uid://1ibmtydnewa8" path="res://assets/minigames/crabs/audio/sfx/crab_random_6.mp3" id="2_gc7a0"]
@@ -22,7 +22,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1h5my"]
 
-[node name="Crab" type="Control"]
+[node name="Crab" type="Control" unique_id=617305983]
 custom_minimum_size = Vector2(205, 179)
 layout_mode = 3
 anchors_preset = 0
@@ -30,12 +30,12 @@ offset_right = 368.0
 offset_bottom = 320.0
 script = ExtResource("1_5hgg8")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1620824890]
 stream = ExtResource("2_gc7a0")
 volume_db = -3.0
 bus = &"Effects"
 
-[node name="BackFX" type="Control" parent="."]
+[node name="BackFX" type="Control" parent="." unique_id=2010438462]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,7 +43,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="RightFX" parent="BackFX" instance=ExtResource("4_3hx0j")]
+[node name="RightFX" parent="BackFX" unique_id=1749819520 instance=ExtResource("4_3hx0j")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -56,7 +56,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="HighlightFX" parent="BackFX" instance=ExtResource("3_is4em")]
+[node name="HighlightFX" parent="BackFX" unique_id=2004554457 instance=ExtResource("3_is4em")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -68,7 +68,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 
-[node name="WrongFX" parent="BackFX" instance=ExtResource("5_3sw4w")]
+[node name="WrongFX" parent="BackFX" unique_id=1380852979 instance=ExtResource("5_3sw4w")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -81,7 +81,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Body" type="Control" parent="."]
+[node name="Body" type="Control" parent="." unique_id=1918985114]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -95,13 +95,13 @@ grow_vertical = 2
 scale = Vector2(0.24, 0.24)
 pivot_offset = Vector2(184, 160)
 
-[node name="TextBox_Sprite2D" type="Sprite2D" parent="Body"]
+[node name="TextBox_Sprite2D" type="Sprite2D" parent="Body" unique_id=1184171915]
 unique_name_in_owner = true
 position = Vector2(730, 261)
 scale = Vector2(2.3, 2.3)
 texture = ExtResource("7_wj62x")
 
-[node name="PercentMarginContainer" type="Container" parent="Body/TextBox_Sprite2D"]
+[node name="PercentMarginContainer" type="Container" parent="Body/TextBox_Sprite2D" unique_id=83370995]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -117,10 +117,10 @@ margin_top_ratio = 0.1
 margin_right_ratio = 0.2
 margin_bottom_ratio = 0.2
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Body/TextBox_Sprite2D/PercentMarginContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Body/TextBox_Sprite2D/PercentMarginContainer" unique_id=875712239]
 layout_mode = 2
 
-[node name="AutoSizeLabel" parent="Body/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("9_3nie6")]
+[node name="AutoSizeLabel" parent="Body/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" unique_id=822745301 instance=ExtResource("9_3nie6")]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -130,17 +130,15 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = ""
 label_settings = ExtResource("8_c4r2k")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body" unique_id=493781622]
 unique_name_in_owner = true
 scale = Vector2(1.8, 1.8)
 sprite_frames = ExtResource("10_c4r2k")
 animation = &"idle"
 autoplay = "idle"
-frame = 7
-frame_progress = 1.0
 centered = false
 
-[node name="FrontFX" type="Control" parent="."]
+[node name="FrontFX" type="Control" parent="." unique_id=1101942284]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -148,11 +146,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Right_Stars" parent="FrontFX" instance=ExtResource("12_2ax6s")]
+[node name="Right_Stars" parent="FrontFX" unique_id=1889411916 instance=ExtResource("12_2ax6s")]
 unique_name_in_owner = true
 position = Vector2(184, 160)
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=1469231622]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=38 format=3 uid="uid://0pw6h7sibxap"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://0pw6h7sibxap"]
 
 [ext_resource type="Texture2D" uid="uid://4mr2idafmxcp" path="res://assets/minigames/penguin/graphic/penguin.png" id="1_qjien"]
 
