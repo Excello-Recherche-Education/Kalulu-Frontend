@@ -214,8 +214,36 @@ func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 	if starting_garden == -1:
 		starting_garden = 0
 	scroll_container.scroll_horizontal = GARDEN_SIZE * starting_garden
-	scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
-	current_garden = garden_parent.get_child(starting_garden)
+	if transition_data:
+		if transition_data.has("boss_gate_lesson"):
+			var boss_center: Vector2 = Vector2.ZERO
+			if transition_data.get("is_final_boss", false):
+				boss_center = _get_final_boss_center_position()
+			if boss_center == Vector2.ZERO:
+				boss_center = _get_boss_button_position(transition_data.boss_gate_lesson as int)
+			if boss_center != Vector2.ZERO:
+				_center_scroll_on_x(boss_center.x)
+		elif transition_data.has("current_lesson_number"):
+			var lesson_number: int = transition_data.current_lesson_number as int
+			var garden_index: int = _get_garden_index_for_lesson(lesson_number)
+			if garden_index >= 0 and garden_index < garden_parent.get_child_count():
+				var garden_control: Garden = garden_parent.get_child(garden_index)
+				var garden_center_x: float = garden_parent.position.x + garden_control.position.x + GARDEN_SIZE * 0.5
+				_center_scroll_on_x(garden_center_x)
+	scroll_beginning_garden = clampi(int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE), 0, garden_parent.get_child_count() - 1)
+	current_garden = garden_parent.get_child(scroll_beginning_garden)
+
+
+func _center_scroll_on_x(target_x: float) -> void:
+	if not scroll_container:
+		return
+	var view_width: float = scroll_container.size.x
+	var desired_scroll: float = target_x - view_width * 0.5
+	var max_scroll: float = 0.0
+	var h_scroll_bar: ScrollBar = scroll_container.get_h_scroll_bar()
+	if h_scroll_bar:
+		max_scroll = h_scroll_bar.max_value
+	scroll_container.scroll_horizontal = int(roundf(clampf(desired_scroll, 0.0, max_scroll)))
 
 #endregion
 
@@ -328,7 +356,7 @@ func _play_new_lesson_unlock_sequence() -> void:
 		var tween: Tween = create_tween()
 		tween.set_ease(Tween.EASE_IN_OUT)
 		tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
-		scroll_beginning_garden = int(float(target_scroll) / GARDEN_SIZE)
+		scroll_beginning_garden = clampi(int(float(target_scroll) / GARDEN_SIZE), 0, garden_parent.get_child_count() - 1)
 		current_garden = garden_parent.get_child(scroll_beginning_garden)
 
 	line_audio_stream_player.pitch_scale = 0.95
