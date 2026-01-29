@@ -640,6 +640,7 @@ func get_student_progression_for_code(device: int, code: int) -> StudentProgress
 				["res://resources/user/student_progression.gd", "StudentProgression"])
 
 	else:
+		Log.info("UserDataManager: Creating student progression for device %s code %s at %s" % [str(device), str(code), ProjectSettings.globalize_path(progression_path)])
 		progression = StudentProgression.new()
 		progression.last_modified = Time.get_datetime_string_from_system(true)
 		DirAccess.make_dir_recursive_absolute(student_path)
@@ -650,12 +651,16 @@ func get_student_progression_for_code(device: int, code: int) -> StudentProgress
 
 func save_student_progression_for_code(device: int, code: int, progression: StudentProgression) -> void:
 	var progression_path: String = "user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(code)).path_join("progression.tres")
+	Log.trace("UserDataManager: Saving progression for device %s code %s in %s" % [str(device), str(code), ProjectSettings.globalize_path(progression_path)])
 	var error: Error = ResourceSaver.save(progression, progression_path)
 	if error != OK:
 		Log.error("UserDataManager: SaveStudentProgressionForCode: Device = %s, Code = %s: error %s" % [str(device), str(code), error_string(error)])
+	else:
+		Log.trace("UserDataManager: Saved progression for device %s code %s" % [str(device), str(code)])
 
 
 func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String, highest_boss_defeated: int = -1) -> void:
+	Log.trace("UserDataManager: Setting student progression data for code %s version %s" % [str(student_code), version])
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
 	if current_data == null:
 		current_data = StudentProgression.new()
@@ -667,6 +672,8 @@ func set_student_progression_data(student_code: int, version: String, new_data: 
 	var err: Error = ResourceSaver.save(current_data, get_student_progression_path(0, student_code))
 	if err != OK:
 		Log.error("UserDataManager: Error while saving student progression: %s" % error_string(err))
+	else:
+		Log.trace("UserDataManager: Student progression updated for code %s" % str(student_code))
 
 
 func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> void:
