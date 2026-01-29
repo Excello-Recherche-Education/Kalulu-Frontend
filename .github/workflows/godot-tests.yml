@@ -27,4 +27,5 @@ jobs:
 
       - name: Run GUT tests headlessly
         run: |
-          "${GODOT_BIN}" --headless --path . -s res://addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
+          "${GODOT_BIN}" --headless --path . -s res://addons/gut/gut_cmdln.gd -gdir=res://tests -ginclude_subdirs=true -gexit
+
