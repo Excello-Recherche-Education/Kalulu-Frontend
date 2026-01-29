@@ -14,6 +14,7 @@ var student: String = "":
 			_load_student_progression()
 			_load_student_remediation()
 			_load_student_confusion_matrix()
+			_load_student_boss_data()
 			_load_student_difficulty()
 			_load_student_speeches()
 		else:
@@ -21,6 +22,7 @@ var student: String = "":
 			_student_difficulty = null
 			_student_remediation = null
 			_student_confusion_matrix = null
+			_student_boss_data = null
 			_student_speeches = null
 var student_session_id: int = 0
 var _device_settings: DeviceSettings
@@ -28,6 +30,7 @@ var teacher_settings: TeacherSettings
 var student_progression: StudentProgression
 var _student_remediation: UserRemediation
 var _student_confusion_matrix: UserConfusionMatrix
+var _student_boss_data: UserBossData
 var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
 var user_database_synchronizer: UserDatabaseSynchronizer
@@ -871,6 +874,77 @@ func update_confusion_matrix_gp_scores(confusion_matrix_gp_scores: Dictionary) -
 		return
 	if confusion_matrix_gp_scores:
 		_student_confusion_matrix.update_gp_scores(confusion_matrix_gp_scores)
+
+#endregion
+
+#region Student Boss Data
+
+func _get_student_boss_data_path(device: int = 0, student_code: int = 0) -> String:
+	if student_code == 0:
+		return get_student_folder().path_join("boss.tres")
+	elif device == 0 and student_code != 0:
+		return find_student_dir(student_code).path_join("boss.tres")
+	else:
+		var student_path: String ="user://".path_join(_device_settings.teacher).path_join(str(device)).path_join(_device_settings.language).path_join(str(student_code))
+		var boss_path: String = student_path.path_join("boss.tres")
+		return boss_path
+
+
+func _load_student_boss_data() -> void:
+	var boss_path: String = _get_student_boss_data_path()
+	Log.trace("UserDataManager: Loading student boss data from " + ProjectSettings.globalize_path(boss_path))
+	if FileAccess.file_exists(boss_path):
+		_student_boss_data = load(boss_path)
+	
+	if not _student_boss_data:
+		_student_boss_data = UserBossData.new()
+		DirAccess.make_dir_recursive_absolute(get_student_folder())
+		_save_student_boss_data()
+		Log.info("UserDataManager: Created new student boss data at " + ProjectSettings.globalize_path(boss_path))
+	else:
+		Log.trace("UserDataManager: Loaded student boss data from " + ProjectSettings.globalize_path(boss_path))
+	_student_boss_data.boss_data_changed.connect(_save_student_boss_data)
+
+
+func _save_student_boss_data() -> void:
+	var boss_path: String = _get_student_boss_data_path()
+	Log.trace("UserDataManager: Saving student boss data in " + ProjectSettings.globalize_path(boss_path))
+	var error: Error = ResourceSaver.save(_student_boss_data, boss_path)
+	if error != OK:
+		Log.error("UserDataManager: Failed to save student boss data to %s. Error: %s" % [boss_path, error_string(error)])
+	else:
+		Log.trace("UserDataManager: Student boss data saved successfully at " + ProjectSettings.globalize_path(boss_path))
+
+
+func get_student_boss_data(student_code: int) -> UserBossData:
+	var boss_data_path: String = _get_student_boss_data_path(0, student_code)
+	if FileAccess.file_exists(boss_data_path):
+		var student_boss_data: UserBossData
+		student_boss_data = load(boss_data_path)
+		return student_boss_data
+	Log.trace("UserDataManager: Boss data of student code %d not found" % student_code)
+	return null
+
+
+func start_boss_session(timestamp: int) -> int:
+	if not _student_boss_data:
+		Log.warn("UserDataManager: No student boss data for " + str(student))
+		return -1
+	return _student_boss_data.start_session(timestamp)
+
+
+func record_boss_answer(session_index: int, is_real_word: bool, word_length: int, response_time_ms: int, is_correct: bool) -> void:
+	if not _student_boss_data:
+		Log.warn("UserDataManager: No student boss data for " + str(student))
+		return
+	_student_boss_data.add_answer(session_index, is_real_word, word_length, response_time_ms, is_correct)
+
+
+func finish_boss_session(session_index: int, victory: bool) -> void:
+	if not _student_boss_data:
+		Log.warn("UserDataManager: No student boss data for " + str(student))
+		return
+	_student_boss_data.finish_session(session_index, victory)
 
 #endregion
 
