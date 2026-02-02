@@ -33,7 +33,6 @@ var _student_confusion_matrix: UserConfusionMatrix
 var _student_boss_data: UserBossData
 var _student_difficulty: UserDifficulty
 var _student_speeches: UserSpeeches
-var user_database_synchronizer: UserDatabaseSynchronizer
 var synchronization_timer: int = 0
 var synchronization_timer_running: bool = false
 var synchronization_time_limit: int = 300000 # 5 minutes in milliseconds
@@ -48,8 +47,6 @@ func _ready() -> void:
 		_load_teacher_settings()
 	
 	purge_user_folders_if_needed()
-	
-	user_database_synchronizer = UserDatabaseSynchronizer.new()
 
 
 func purge_user_folders_if_needed() -> void:
@@ -90,7 +87,9 @@ func _process(_delta: float) -> void:
 		if synchronization_timer >= synchronization_time_limit:
 			synchronization_timer = 0
 			Log.info("UserDataManager: Synchronization timer reached, launching synchronization")
-			user_database_synchronizer.synchronize()
+			var synchronizer: UserDatabaseSynchronizer = UserDatabaseSynchronizer.new()
+			synchronizer.synchronize()
+			synchronizer.queue_free()
 
 #region synchronization
 
