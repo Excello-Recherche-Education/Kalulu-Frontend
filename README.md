@@ -1,4 +1,4 @@
-![Godot Version](https://img.shields.io/badge/Godot-4.5+-blue)
+![Godot Version](https://img.shields.io/badge/Godot-4.6+-blue)
 
 # 📖 Kalulu — Learn to Read, the Smart Way
 
