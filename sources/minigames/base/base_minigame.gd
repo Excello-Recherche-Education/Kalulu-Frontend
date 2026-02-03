@@ -116,7 +116,7 @@ func _ready() -> void:
 	
 	if not Engine.is_editor_hint():
 		# Stop the current music
-		MusicManager.stop()
+		(MusicManager as MusicManagerClass).stop()
 	
 	_reset_logs()
 	_initialize()
@@ -151,7 +151,7 @@ func _find_stimuli_and_distractions() -> void:
 
 # Opens the curtains and Kalulu explains
 func _curtains_and_kalulu() -> void:
-	await OpeningCurtain.open()
+	await (OpeningCurtain as OpeningCurtainClass).open()
 	
 	# Checks if intro needs to be played
 	if not UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
@@ -197,7 +197,7 @@ func _notification(what: int) -> void:
 
 func _reset() -> void:
 	get_tree().paused = false
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	get_tree().reload_current_scene()
 
 
@@ -402,7 +402,7 @@ func _update_confusion_matrix_gp_score(expected_id: int, selected_id: int) -> vo
 
 func _go_back_to_the_garden() -> void:
 	get_tree().paused = false
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	
 	_save_logs()
 	
