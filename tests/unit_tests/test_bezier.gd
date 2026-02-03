@@ -1,4 +1,3 @@
-class_name TestBezier
 extends GutTest
 
 const EPSILON: float = 0.00001
