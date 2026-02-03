@@ -387,7 +387,7 @@ func _ready() -> void:
 	# If there is no data, skips the rest
 	if not UserDataManager.student_progression:
 		Log.error("Gardens: Ready: No data for student progression")
-		await OpeningCurtain.open()
+		await (OpeningCurtain as OpeningCurtainClass).open()
 		return
 	await get_tree().process_frame
 	
@@ -399,8 +399,8 @@ func _ready() -> void:
 	_apply_progression_to_gardens(transition_context)
 	_scroll_to_starting_garden(transition_context)
 
-	await OpeningCurtain.open()
-	MusicManager.play(MusicManager.Track.Garden)
+	await (OpeningCurtain as OpeningCurtainClass).open()
+	(MusicManager as MusicManagerClass).play((MusicManager as MusicManagerClass).Track.Garden)
 	
 	# Handles all the animation played when entering the gardens
 	if transition_data:
@@ -1286,7 +1286,7 @@ func _on_lesson_button_pressed() -> void:
 	if is_locked:
 		return
 	feedback_audio_stream_player.play()
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	LookAndLearn.transition_data = {
 		current_button_global_position = current_button_global_position,
 		current_lesson_number = current_lesson_number,
@@ -1300,7 +1300,7 @@ func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
 	if is_locked:
 		return
 	feedback_audio_stream_player.play()
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	Minigame.transition_data = {
 		current_lesson_number = lesson_number,
 		current_garden_index = garden_index,
@@ -1316,7 +1316,7 @@ func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> voi
 	if is_locked:
 		return
 	feedback_audio_stream_player.play()
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	Minigame.transition_data = {
 		current_lesson_number = lesson_number,
 		current_garden_index = garden_index,
@@ -1333,7 +1333,7 @@ func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: i
 	if is_locked:
 		return
 	feedback_audio_stream_player.play()
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	Minigame.transition_data = {
 		current_button_global_position = current_button_global_position,
 		current_lesson_number = current_lesson_number,
@@ -1378,7 +1378,7 @@ func _scroll_by_garden(p_direction: int) -> void:
 
 
 func _on_back_button_pressed() -> void:
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
 
 
