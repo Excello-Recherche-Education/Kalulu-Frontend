@@ -1,7 +1,7 @@
 class_name LogResource
 extends Resource
 
-@export var logs: Dictionary = {} # int: Dictionary {String: Dictionary}
+@export var logs: Dictionary[int, Dictionary] = {} # First key is lesson number, second key is time
 
 
 func add_log(lesson_nb: int, new_log: Dictionary, time: String) -> void:
