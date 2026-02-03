@@ -6,3 +6,7 @@ extends Node2D
 
 func play() -> void:
 	gpu_particles_2d.set_emitting(true)
+
+
+func replay() -> void:
+	gpu_particles_2d.restart()

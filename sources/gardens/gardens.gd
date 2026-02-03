@@ -7,6 +7,7 @@ const KALULU: GDScript = preload("res://sources/minigames/base/kalulu.gd")
 const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
+const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
 const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 const GARDEN_SIZE: int = 2400
 const GARDEN_TEXTURES_NB: int = 20
@@ -1309,7 +1310,7 @@ func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
 		skip_minigame_layout = true,
 		boss_gate_lesson = lesson_number
 	}
-	get_tree().change_scene_to_file("res://sources/minigames/fish/fish_minigame.tscn")
+	get_tree().change_scene_to_file(BOSS_MINIGAME_SCENE_PATH)
 
 
 func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
@@ -1326,7 +1327,7 @@ func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> voi
 		boss_gate_lesson = lesson_number,
 		is_final_boss = true
 	}
-	get_tree().change_scene_to_file("res://sources/minigames/fish/fish_minigame.tscn")
+	get_tree().change_scene_to_file(BOSS_MINIGAME_SCENE_PATH)
 
 
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
