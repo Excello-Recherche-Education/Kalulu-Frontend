@@ -39,6 +39,7 @@ var synchronization_time_limit: int = 300000 # 5 minutes in milliseconds
 var now: int
 var last_time: int = 0
 var real_delta: int
+var user_database_synchronizer: UserDatabaseSynchronizer = UserDatabaseSynchronizer.new()
 
 
 func _ready() -> void:
@@ -87,9 +88,7 @@ func _process(_delta: float) -> void:
 		if synchronization_timer >= synchronization_time_limit:
 			synchronization_timer = 0
 			Log.info("UserDataManager: Synchronization timer reached, launching synchronization")
-			var synchronizer: UserDatabaseSynchronizer = UserDatabaseSynchronizer.new()
-			synchronizer.synchronize()
-			synchronizer.queue_free()
+			user_database_synchronizer.synchronize()
 
 #region synchronization
 
