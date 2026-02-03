@@ -1,0 +1,248 @@
+[gd_scene format=3 uid="uid://df5derhil64ca"]
+
+[ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_itrpi"]
+[ext_resource type="Script" uid="uid://dgodk76761a1n" path="res://sources/minigames/boss/boss_minigame.gd" id="2_68jip"]
+[ext_resource type="Texture2D" uid="uid://ccfocxdqxujvc" path="res://assets/minigames/boss/background.png" id="3_3ty3i"]
+[ext_resource type="Texture2D" uid="uid://bf7od6f56f516" path="res://assets/minigames/boss/sun.png" id="4_2m0ff"]
+[ext_resource type="Texture2D" uid="uid://bk4k8v5yrolt1" path="res://assets/minigames/boss/frame_corner.png" id="5_xo63t"]
+[ext_resource type="Texture2D" uid="uid://2iib006wpkux" path="res://assets/minigames/boss/frame_side.png" id="6_2c6ay"]
+[ext_resource type="Texture2D" uid="uid://cax5nncivwq4" path="res://assets/minigames/boss/bin.png" id="7_wij1o"]
+[ext_resource type="Texture2D" uid="uid://xukdk8dobsqy" path="res://assets/minigames/boss/book.png" id="8_mkvne"]
+[ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://assets/minigames/minigame_ui/graphic/gauge.png" id="11_p5wnc"]
+[ext_resource type="Texture2D" uid="uid://7w2e4mo7yssm" path="res://assets/minigames/boss/foreground.png" id="12_2c6ay"]
+[ext_resource type="Texture2D" uid="uid://4ci6gmg0c15o" path="res://assets/minigames/minigame_ui/graphic/white_gauge.png" id="12_w5m1b"]
+[ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="14_b3ilp"]
+[ext_resource type="Texture2D" uid="uid://bs1twkddxu31y" path="res://assets/minigames/boss/text_box_long_outline_dotted.png" id="15_kvjsk"]
+[ext_resource type="Texture2D" uid="uid://cdmfxx6kt5tla" path="res://assets/minigames/boss/text_box_long.png" id="16_sndot"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="17_47luc"]
+[ext_resource type="PackedScene" uid="uid://dpfn2ag2xv24s" path="res://sources/minigames/boss/kalulu_boss.tscn" id="17_kvjsk"]
+[ext_resource type="PackedScene" uid="uid://b7rx6esglyd6c" path="res://sources/menus/adult_block/adult_block.tscn" id="18_4v0wd"]
+[ext_resource type="Texture2D" uid="uid://cobv0mceg2vb8" path="res://assets/minigames/boss/friends.png" id="18_kvjsk"]
+[ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="19_b2wqe"]
+[ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="19_wi3c5"]
+
+[sub_resource type="Curve2D" id="Curve2D_8d1qx"]
+_data = {
+"points": PackedVector2Array(-668.987, 450.107, 668.987, -450.107, 544, 469, 0, 0, 0, 0, 2188, 358)
+}
+point_count = 2
+
+[node name="FishMinigame" unique_id=1178378052 instance=ExtResource("1_itrpi")]
+script = ExtResource("2_68jip")
+game_duration = 240
+minimum_correct_ratio = 0.8
+winning_color = Color(2.988, 2.328, 0.6, 1)
+max_words_count = 15
+minigame_name = 9
+lesson_nb = 50
+
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
+stimulus_button_visible = false
+
+[node name="Background" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=1937666021]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_3ty3i")
+
+[node name="Path2D" type="Path2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=191741591]
+position = Vector2(0, -128)
+curve = SubResource("Curve2D_8d1qx")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="GameRoot/Path2D" index="0" unique_id=699263217]
+unique_name_in_owner = true
+position = Vector2(544, 469)
+rotates = false
+loop = false
+
+[node name="Sprite2DSun" type="Sprite2D" parent="GameRoot/Path2D/PathFollow2D" index="0" unique_id=2147097806]
+texture = ExtResource("4_2m0ff")
+
+[node name="Frame" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=1674444498]
+position = Vector2(1080, 720)
+scale = Vector2(0.9, 0.9)
+
+[node name="FrameCornerTopLeft" type="Sprite2D" parent="GameRoot/Frame" index="0" unique_id=1469888637]
+position = Vector2(-414, -248)
+texture = ExtResource("5_xo63t")
+
+[node name="FrameCornerTopRight" type="Sprite2D" parent="GameRoot/Frame" index="1" unique_id=1229381705]
+position = Vector2(925, -248)
+texture = ExtResource("5_xo63t")
+flip_h = true
+
+[node name="FrameCornerBottomLeft" type="Sprite2D" parent="GameRoot/Frame" index="2" unique_id=444932802]
+position = Vector2(-414, 618)
+texture = ExtResource("5_xo63t")
+flip_v = true
+
+[node name="FrameCornerBottomRight" type="Sprite2D" parent="GameRoot/Frame" index="3" unique_id=2108262795]
+position = Vector2(925, 618)
+texture = ExtResource("5_xo63t")
+flip_h = true
+flip_v = true
+
+[node name="FrameSideLeft" type="Sprite2D" parent="GameRoot/Frame" index="4" unique_id=1062856773]
+position = Vector2(-719, 185)
+texture = ExtResource("6_2c6ay")
+
+[node name="FrameSideRight" type="Sprite2D" parent="GameRoot/Frame" index="5" unique_id=196742069]
+position = Vector2(1230, 185)
+texture = ExtResource("6_2c6ay")
+
+[node name="FrameSideTop" type="Sprite2D" parent="GameRoot/Frame" index="6" unique_id=2088744094]
+position = Vector2(256, -438)
+rotation = 1.5707964
+scale = Vector2(1, 1.6)
+texture = ExtResource("6_2c6ay")
+
+[node name="FrameSideBottom" type="Sprite2D" parent="GameRoot/Frame" index="7" unique_id=94970992]
+position = Vector2(255.5, 808)
+rotation = 1.5707964
+scale = Vector2(1, 1.6)
+texture = ExtResource("6_2c6ay")
+
+[node name="TextureButtonBin" type="TextureButton" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=852671648]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 768.0
+offset_right = 320.0
+offset_bottom = 768.0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("7_wij1o")
+
+[node name="TextureButtonBook" type="TextureButton" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=22079276]
+layout_mode = 0
+offset_left = 2064.0
+offset_top = 768.0
+offset_right = 2064.0
+offset_bottom = 768.0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_mkvne")
+
+[node name="ProgressionGauge" type="NinePatchRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=1664248446]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 2317.0
+offset_top = 233.0
+offset_right = 2439.0
+offset_bottom = 1599.0
+texture = ExtResource("11_p5wnc")
+patch_margin_top = 33
+patch_margin_bottom = 33
+
+[node name="ProgressionGaugeGoalPercentMarginContainer2" type="Container" parent="GameRoot/ProgressionGauge" index="0" unique_id=1583570329]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_b3ilp")
+margin_top_ratio = 0.19
+
+[node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugeGoalPercentMarginContainer2" index="0" unique_id=1583306416]
+layout_mode = 2
+texture = ExtResource("11_p5wnc")
+patch_margin_top = 33
+patch_margin_bottom = 33
+
+[node name="ProgressionGaugePercentMarginContainer" type="Container" parent="GameRoot/ProgressionGauge" index="1" unique_id=1140040548]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_b3ilp")
+margin_top_ratio = 0.95
+
+[node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugePercentMarginContainer" index="0" unique_id=1534553679]
+unique_name_in_owner = true
+modulate = Color(0.996078, 0.776471, 0.2, 1)
+layout_mode = 2
+texture = ExtResource("12_w5m1b")
+patch_margin_top = 33
+patch_margin_bottom = 33
+
+[node name="Foreground" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=942294228]
+top_level = true
+position = Vector2(1872, 424)
+texture = ExtResource("12_2c6ay")
+
+[node name="Friends" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=888328201]
+position = Vector2(1676, 1280)
+texture = ExtResource("18_kvjsk")
+
+[node name="KaluluBoss" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="8" unique_id=1776395621 instance=ExtResource("17_kvjsk")]
+unique_name_in_owner = true
+position = Vector2(800, 1224)
+scale = Vector2(0.7, 0.7)
+
+[node name="ControlText" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="9" unique_id=95008625]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1025, 234)
+anchors_preset = 0
+offset_left = 792.0
+offset_top = 760.0
+offset_right = 832.0
+offset_bottom = 800.0
+mouse_default_cursor_shape = 6
+
+[node name="TextureRectOutlineDotted" type="TextureRect" parent="GameRoot/ControlText" index="0" unique_id=2056405550]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("15_kvjsk")
+stretch_mode = 2
+
+[node name="TextureRectTextBox" type="TextureRect" parent="GameRoot/ControlText/TextureRectOutlineDotted" index="0" unique_id=1202683105]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 1056.0
+offset_bottom = 257.0
+texture = ExtResource("16_sndot")
+stretch_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GameRoot/ControlText/TextureRectOutlineDotted/TextureRectTextBox" index="0" unique_id=415001204]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -24.0
+offset_top = -32.0
+offset_right = -24.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_right = 30
+
+[node name="Label" type="Label" parent="GameRoot/ControlText/TextureRectOutlineDotted/TextureRectTextBox/MarginContainer" index="0" unique_id=1229572097]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "abc"
+label_settings = ExtResource("17_47luc")
+horizontal_alignment = 1
+
+[node name="WrongFX" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="10" unique_id=81753671 instance=ExtResource("19_wi3c5")]
+unique_name_in_owner = true
+layout_mode = 0
+
+[node name="Right_Stars" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="11" unique_id=749307022 instance=ExtResource("19_b2wqe")]
+
+[node name="AdultBlock" parent="." index="4" unique_id=1401891944 instance=ExtResource("18_4v0wd")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[connection signal="pressed" from="GameRoot/TextureButtonBin" to="." method="_on_texture_button_bin_pressed"]
+[connection signal="pressed" from="GameRoot/TextureButtonBook" to="." method="_on_texture_button_book_pressed"]
