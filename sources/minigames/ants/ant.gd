@@ -24,3 +24,12 @@ func defeat() -> void:
 	animated_sprite_2d.play_backwards("defeat")
 	await animated_sprite_2d.animation_finished
 	idle()
+
+
+func idle_boss() -> void:
+	animated_sprite_2d.play("idle")
+	animated_sprite_2d.stop()
+
+
+func victory_boss() -> void:
+	animated_sprite_2d.play("success")

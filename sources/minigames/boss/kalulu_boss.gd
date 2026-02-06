@@ -22,7 +22,7 @@ func sad() -> void:
 	play("idle_1")
 
 
-func _on_animated_sprite_2d_animation_finished() -> void:
+func _on_animation_finished() -> void:
 	match animation:
 		"idle_1":
 			animation_counter -= 1

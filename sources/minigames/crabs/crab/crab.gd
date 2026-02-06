@@ -1,4 +1,3 @@
-@tool
 class_name Crab
 extends Control
 
@@ -108,3 +107,13 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 func _on_audio_stream_player_finished() -> void:
 	audio_stream_player.stream = sounds[randi_range(0, sounds.size() - 1)]
 	audio_stream_player.play()
+
+
+func idle_boss() -> void:
+	text_box_sprite_2d.hide()
+	animated_sprite.play("idle")
+	animated_sprite.stop()
+
+
+func victory_boss() -> void:
+	animated_sprite.play("right")

@@ -1,4 +1,3 @@
-@tool
 class_name Monkey
 extends Node2D
 
@@ -133,3 +132,13 @@ func _drop_data(_at_position: Vector2, data: Dictionary) -> void:
 
 func _on_drag_preview_tree_exiting() -> void:
 	coconut.show()
+
+
+func idle_boss() -> void:
+	animated_sprite_2d.play("idle")
+	animated_sprite_2d.stop()
+	coconut.hide()
+
+
+func victory_boss() -> void:
+	animated_sprite_2d.play("idle")
