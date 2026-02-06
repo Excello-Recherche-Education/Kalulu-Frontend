@@ -78,7 +78,7 @@ unique_name_in_owner = true
 position = Vector2(0, -16)
 scale = Vector2(0.8, 0.8)
 sprite_frames = ExtResource("5_xbpgw")
-animation = &"defeat"
+animation = &"swim"
 autoplay = "swim"
 
 [node name="Sprite2D_Back" type="Sprite2D" parent="Body/AnimatedSprite2D" unique_id=1980717066]
@@ -114,7 +114,6 @@ offset_left = -64.0
 offset_top = -88.0
 offset_right = 72.0
 offset_bottom = 72.0
-text = "ch"
 label_settings = ExtResource("6_8k7c6")
 horizontal_alignment = 1
 vertical_alignment = 1

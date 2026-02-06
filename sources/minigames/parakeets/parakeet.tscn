@@ -71,7 +71,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" parent="TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
+[node name="Label" parent="TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0" unique_id=1172353947]
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = ""
 label_settings = SubResource("LabelSettings_thibt")
@@ -79,7 +79,7 @@ label_settings = SubResource("LabelSettings_thibt")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1157745331]
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_k0dcm")
-animation = &"sad"
+animation = &"idle_front"
 autoplay = "idle_front"
 offset = Vector2(2.08165e-12, -82)
 

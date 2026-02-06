@@ -18,7 +18,7 @@ shape = SubResource("RectangleShape2D_100ls")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=889635559]
 position = Vector2(1, -90.5)
 sprite_frames = ExtResource("2_rcd7x")
-animation = &"defeat"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="Anchor" type="Marker2D" parent="." unique_id=744855349]

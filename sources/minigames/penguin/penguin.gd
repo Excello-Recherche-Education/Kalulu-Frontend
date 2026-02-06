@@ -49,3 +49,11 @@ func throw(pos: Vector2) -> void:
 	idle()
 
 #endregion
+
+func idle_boss() -> void:
+	animated_sprite.play("idle")
+	animated_sprite.stop()
+
+
+func victory_boss() -> void:
+	animated_sprite.play("happy")

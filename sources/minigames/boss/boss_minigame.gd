@@ -18,6 +18,7 @@ var _boss_session_index: int = -1
 var _boss_answer_start_ms: int = 0
 var default_label_settings: LabelSettings
 var default_label_background_color: Color
+var _correct_answer_tween: Tween
 
 @onready var text_start_zone: Control = %ControlText
 @onready var texture_button_bin: TextureButton = $GameRoot/TextureButtonBin
@@ -32,10 +33,23 @@ var default_label_background_color: Color
 @onready var kalulu_boss: KaluluBoss = %KaluluBoss
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var right_stars: RightStarsFX = $GameRoot/Right_Stars
+@onready var frame_exit: Sprite2D = $GameRoot/Frame/FrameExit
+@onready var turtle: Turtle = $GameRoot/Friends/Turtle
+@onready var frog: Frog = $GameRoot/Friends/Frog
+@onready var crab: Crab = $GameRoot/Friends/Crab
+@onready var penguin: Penguin = $GameRoot/Friends/Penguin
+@onready var monkey: Monkey = $GameRoot/Friends/Monkey
+@onready var parakeet: Parakeet = $GameRoot/Friends/Parakeet
+@onready var ant: Ant = $GameRoot/Friends/Ant
+@onready var jellyfish: Jellyfish = $GameRoot/Friends_Behind_Frame/Jellyfish
 
 
 func _ready() -> void:
 	super()
+	if not is_final_boss:
+		frame_exit.show()
+	setup_animal_friends()
+	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#ffbf94")])
 	if adult_block and adult_block.has_signal("unlocked"):
 		adult_block.unlocked.connect(_on_adult_block_unlocked)
 	text_start_zone.set_drag_forwarding(_text_get_drag_data, Callable(), Callable())
@@ -53,6 +67,28 @@ func _ready() -> void:
 	# Skips the whole tutorial
 	if UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
 		tutorial_count = 2
+
+
+func setup_animal_friends() -> void:
+	turtle.idle_boss()
+	frog.idle_boss()
+	crab.idle_boss()
+	penguin.idle_boss()
+	monkey.idle_boss()
+	parakeet.idle_boss()
+	ant.idle_boss()
+	jellyfish.idle_boss()
+
+
+func win_with_friends() -> void:
+	turtle.victory_boss()
+	frog.victory_boss()
+	crab.victory_boss()
+	penguin.victory_boss()
+	monkey.victory_boss()
+	parakeet.victory_boss()
+	ant.victory_boss()
+	jellyfish.victory_boss()
 
 
 func _text_get_drag_data(_at_position: Vector2) -> Variant:
@@ -109,7 +145,10 @@ func _start() -> void:
 func _present_next_word() -> void:
 	if words_to_present.is_empty():
 		if words_to_present_next.is_empty():
-			_win()
+			if _get_win_ratio() >= minimum_correct_ratio:
+				_win()
+			else:
+				_lose()
 			return
 		words_to_present = words_to_present_next
 		words_to_present.shuffle()
@@ -175,6 +214,7 @@ func _on_answer_dropped(is_answered_real: bool) -> void:
 		label.label_settings = label.label_settings.duplicate()
 		label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
 		texture_rect_text_box.self_modulate = Minigame.LABEL_COLOR_WIN
+		var target_button: Control = texture_button_book if is_answered_real else texture_button_bin
 		if is_answered_real:
 			right_stars.global_position = texture_button_book.global_position + texture_button_book.get_size() / 2
 			right_stars.replay()
@@ -182,6 +222,7 @@ func _on_answer_dropped(is_answered_real: bool) -> void:
 			right_stars.global_position = texture_button_bin.global_position + texture_button_bin.get_size() / 2
 			right_stars.replay()
 		words_to_present.pop_front()
+		await _play_correct_answer_animation(target_button)
 		if tutorial_count == 0:
 			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
@@ -193,6 +234,9 @@ func _on_answer_dropped(is_answered_real: bool) -> void:
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 	else:
+		label.label_settings = label.label_settings.duplicate()
+		label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+		texture_rect_text_box.self_modulate = Minigame.LABEL_COLOR_LOSE
 		if is_answered_real:
 			wrong_fx.global_position = texture_button_book.global_position + texture_button_book.get_size() / 2
 			wrong_fx.play()
@@ -217,6 +261,72 @@ func _on_answer_dropped(is_answered_real: bool) -> void:
 	texture_button_book.set_disabled(false)
 	_update_progression_gauge()
 	_present_next_word()
+	text_start_zone.show()
+
+
+func _center_global(control: Control) -> Vector2:
+	var rect: Rect2 = control.get_global_rect()
+	var scaled_half: Vector2 = (rect.size * control.scale) * 0.5
+	return rect.position + scaled_half
+
+
+func _play_correct_answer_animation(target_button: Control) -> void:
+	if not is_instance_valid(text_start_zone) or not is_instance_valid(target_button):
+		return
+
+	if _correct_answer_tween and _correct_answer_tween.is_running():
+		_correct_answer_tween.kill()
+
+	var duplicated: Control = text_start_zone.duplicate()
+
+	if text_start_zone.is_visible_in_tree():
+		text_start_zone.hide()
+	else:
+		duplicated.show()
+
+	duplicated.name = "CorrectAnswerWord"
+	duplicated.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	# Place duplicated so that its center matches the original center.
+	# (We set position after adding as child to ensure layout/size is correct)
+	text_start_zone.get_parent().add_child(duplicated)
+	duplicated.scale = text_start_zone.scale
+
+	# Force layout to be up-to-date (helps if sizes depend on theme/text)
+	duplicated.queue_redraw()
+	duplicated.minimum_size_changed.emit()
+
+	var start_center: Vector2 = _center_global(text_start_zone)
+	var end_center: Vector2 = _center_global(target_button)
+
+	# Initialize duplicated at start center
+	var dup_half: Vector2 = duplicated.size * duplicated.scale * 0.5
+	duplicated.global_position = start_center - dup_half
+
+	var arc_height: float = max(200.0, start_center.distance_to(end_center) * 0.5)
+	var control_position: Vector2 = (start_center + end_center) * 0.5 + Vector2(0.0, -arc_height)
+
+	_correct_answer_tween = create_tween()
+	_correct_answer_tween.tween_method(
+		func(progress: float) -> void:
+			var new_center: Vector2 = _quadratic_bezier(start_center, control_position, end_center, progress)
+			var half: Vector2 = duplicated.size * duplicated.scale * 0.5
+			duplicated.global_position = new_center - half
+			duplicated.scale = text_start_zone.scale.lerp(Vector2(0.2, 0.2), progress),
+		0.0,
+		1.0,
+		0.6
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+	await _correct_answer_tween.finished
+
+	if is_instance_valid(duplicated):
+		duplicated.queue_free()
+
+
+func _quadratic_bezier(start: Vector2, control: Vector2, end: Vector2, progress: float) -> Vector2:
+	var one_minus: float = 1.0 - progress
+	return one_minus * one_minus * start + 2.0 * one_minus * progress * control + progress * progress * end
 
 
 func _update_progression_gauge() -> void:
@@ -252,6 +362,7 @@ func _on_adult_block_unlocked() -> void:
 func _win() -> void:
 	if _is_boss_session() and _boss_session_index >= 0:
 		UserDataManager.finish_boss_session(_boss_session_index, true)
+	win_with_friends()
 	await kalulu_boss.happy()
 	await super()
 

@@ -135,3 +135,14 @@ func wrong() -> void:
 	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
 	wrong_fx.play()
 	await wrong_fx.finished
+
+
+func idle_boss() -> void:
+	text_box_sprite_2d.hide()
+	color = Colors.Green
+	animated_sprite.play("idle_front")
+	animated_sprite.stop()
+
+
+func victory_boss() -> void:
+	animated_sprite.play("happy")

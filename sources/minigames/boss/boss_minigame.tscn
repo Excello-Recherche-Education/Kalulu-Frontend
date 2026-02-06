@@ -4,10 +4,15 @@
 [ext_resource type="Script" uid="uid://dgodk76761a1n" path="res://sources/minigames/boss/boss_minigame.gd" id="2_68jip"]
 [ext_resource type="Texture2D" uid="uid://ccfocxdqxujvc" path="res://assets/minigames/boss/background.png" id="3_3ty3i"]
 [ext_resource type="Texture2D" uid="uid://bf7od6f56f516" path="res://assets/minigames/boss/sun.png" id="4_2m0ff"]
+[ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/utils/clouds_manager.gd" id="5_rl4hv"]
 [ext_resource type="Texture2D" uid="uid://bk4k8v5yrolt1" path="res://assets/minigames/boss/frame_corner.png" id="5_xo63t"]
 [ext_resource type="Texture2D" uid="uid://2iib006wpkux" path="res://assets/minigames/boss/frame_side.png" id="6_2c6ay"]
+[ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="6_je4of"]
+[ext_resource type="Texture2D" uid="uid://dphj3hqfnnw4p" path="res://assets/minigames/parakeets/graphic/cloud_2.png" id="7_bba1f"]
 [ext_resource type="Texture2D" uid="uid://cax5nncivwq4" path="res://assets/minigames/boss/bin.png" id="7_wij1o"]
 [ext_resource type="Texture2D" uid="uid://xukdk8dobsqy" path="res://assets/minigames/boss/book.png" id="8_mkvne"]
+[ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="8_xrsj0"]
+[ext_resource type="PackedScene" uid="uid://djykrpdu58f3v" path="res://sources/minigames/turtles/turtle.tscn" id="11_je4of"]
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://assets/minigames/minigame_ui/graphic/gauge.png" id="11_p5wnc"]
 [ext_resource type="Texture2D" uid="uid://7w2e4mo7yssm" path="res://assets/minigames/boss/foreground.png" id="12_2c6ay"]
 [ext_resource type="Texture2D" uid="uid://4ci6gmg0c15o" path="res://assets/minigames/minigame_ui/graphic/white_gauge.png" id="12_w5m1b"]
@@ -17,9 +22,15 @@
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="17_47luc"]
 [ext_resource type="PackedScene" uid="uid://dpfn2ag2xv24s" path="res://sources/minigames/boss/kalulu_boss.tscn" id="17_kvjsk"]
 [ext_resource type="PackedScene" uid="uid://b7rx6esglyd6c" path="res://sources/menus/adult_block/adult_block.tscn" id="18_4v0wd"]
-[ext_resource type="Texture2D" uid="uid://cobv0mceg2vb8" path="res://assets/minigames/boss/friends.png" id="18_kvjsk"]
+[ext_resource type="PackedScene" uid="uid://bp0b4xkr7nwed" path="res://sources/minigames/monkeys/monkey.tscn" id="18_y0mix"]
 [ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="19_b2wqe"]
+[ext_resource type="PackedScene" uid="uid://b78362g1yif2n" path="res://sources/minigames/penguin/penguin.tscn" id="19_j0ia3"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="19_wi3c5"]
+[ext_resource type="PackedScene" uid="uid://bwe3fp0vkpufb" path="res://sources/minigames/crabs/crab/crab.tscn" id="20_j0ia3"]
+[ext_resource type="PackedScene" uid="uid://bloyucpsbvpx8" path="res://sources/minigames/frog/frog.tscn" id="20_xrsj0"]
+[ext_resource type="PackedScene" uid="uid://cpkwyypyikpfc" path="res://sources/minigames/jellyfish/jellyfish.tscn" id="21_3iy22"]
+[ext_resource type="PackedScene" uid="uid://cmoeum0oc0p2" path="res://sources/minigames/parakeets/parakeet.tscn" id="23_h2hey"]
+[ext_resource type="PackedScene" uid="uid://c6st16roxwloh" path="res://sources/minigames/ants/ant.tscn" id="24_ejade"]
 
 [sub_resource type="Curve2D" id="Curve2D_8d1qx"]
 _data = {
@@ -27,7 +38,7 @@ _data = {
 }
 point_count = 2
 
-[node name="FishMinigame" unique_id=1178378052 instance=ExtResource("1_itrpi")]
+[node name="BossMinigame" unique_id=1178378052 instance=ExtResource("1_itrpi")]
 script = ExtResource("2_68jip")
 game_duration = 240
 minimum_correct_ratio = 0.8
@@ -61,7 +72,35 @@ loop = false
 [node name="Sprite2DSun" type="Sprite2D" parent="GameRoot/Path2D/PathFollow2D" index="0" unique_id=2147097806]
 texture = ExtResource("4_2m0ff")
 
-[node name="Frame" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=1674444498]
+[node name="Clouds_Background" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=1520455712]
+script = ExtResource("5_rl4hv")
+max_speed = 40.0
+min_y = 100.0
+max_y = 500.0
+
+[node name="cloud_1" type="Sprite2D" parent="GameRoot/Clouds_Background" index="0" unique_id=41424144]
+position = Vector2(623, 253.5)
+texture = ExtResource("6_je4of")
+
+[node name="cloud_2" type="Sprite2D" parent="GameRoot/Clouds_Background" index="1" unique_id=1350923133]
+position = Vector2(1088, 256)
+texture = ExtResource("7_bba1f")
+
+[node name="cloud_3" type="Sprite2D" parent="GameRoot/Clouds_Background" index="2" unique_id=190014762]
+position = Vector2(1904, 248)
+texture = ExtResource("8_xrsj0")
+
+[node name="Friends_Behind_Frame" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=889769498]
+
+[node name="Jellyfish" parent="GameRoot/Friends_Behind_Frame" index="0" unique_id=2036427610 instance=ExtResource("21_3iy22")]
+offset_left = 1449.0001
+offset_top = 1301.0001
+offset_right = 1849.0001
+offset_bottom = 1701.0001
+scale = Vector2(0.45, 0.45)
+boss = true
+
+[node name="Frame" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=1674444498]
 position = Vector2(1080, 720)
 scale = Vector2(0.9, 0.9)
 
@@ -105,16 +144,48 @@ rotation = 1.5707964
 scale = Vector2(1, 1.6)
 texture = ExtResource("6_2c6ay")
 
-[node name="TextureButtonBin" type="TextureButton" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=852671648]
+[node name="FrameExit" type="Sprite2D" parent="GameRoot/Frame" index="8" unique_id=1578271912]
+visible = false
+position = Vector2(1546.6666, 195.55557)
+rotation = 1.5707964
+scale = Vector2(1, 1.6)
+texture = ExtResource("6_2c6ay")
+
+[node name="FrameEnter" type="Sprite2D" parent="GameRoot/Frame" index="9" unique_id=1113523446]
+position = Vector2(-1013.3334, 195.55557)
+rotation = 1.5707964
+scale = Vector2(1, 1.6)
+texture = ExtResource("6_2c6ay")
+
+[node name="Clouds_Foreground" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=2116541314]
+script = ExtResource("5_rl4hv")
+min_speed = 50.0
+max_speed = 80.0
+min_y = 100.0
+max_y = 500.0
+
+[node name="cloud_1" type="Sprite2D" parent="GameRoot/Clouds_Foreground" index="0" unique_id=1134925507]
+position = Vector2(623, 253.5)
+texture = ExtResource("6_je4of")
+
+[node name="cloud_2" type="Sprite2D" parent="GameRoot/Clouds_Foreground" index="1" unique_id=392578643]
+position = Vector2(1088, 256)
+texture = ExtResource("7_bba1f")
+
+[node name="cloud_3" type="Sprite2D" parent="GameRoot/Clouds_Foreground" index="2" unique_id=1502196887]
+position = Vector2(1904, 248)
+texture = ExtResource("8_xrsj0")
+
+[node name="TextureButtonBin" type="TextureButton" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=852671648]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 768.0
-offset_right = 320.0
-offset_bottom = 768.0
+offset_right = 561.0
+offset_bottom = 1020.0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("7_wij1o")
 
-[node name="TextureButtonBook" type="TextureButton" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=22079276]
+[node name="TextureButtonBook" type="TextureButton" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=22079276]
 layout_mode = 0
 offset_left = 2064.0
 offset_top = 768.0
@@ -123,7 +194,7 @@ offset_bottom = 768.0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("8_mkvne")
 
-[node name="ProgressionGauge" type="NinePatchRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=1664248446]
+[node name="ProgressionGauge" type="NinePatchRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="8" unique_id=1664248446]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
@@ -171,21 +242,56 @@ texture = ExtResource("12_w5m1b")
 patch_margin_top = 33
 patch_margin_bottom = 33
 
-[node name="Foreground" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=942294228]
+[node name="Foreground" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="9" unique_id=942294228]
 top_level = true
 position = Vector2(1872, 424)
 texture = ExtResource("12_2c6ay")
 
-[node name="Friends" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=888328201]
+[node name="Friends" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="10" unique_id=1965227465]
+self_modulate = Color(1, 1, 1, 0.34509805)
 position = Vector2(1676, 1280)
-texture = ExtResource("18_kvjsk")
 
-[node name="KaluluBoss" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="8" unique_id=1776395621 instance=ExtResource("17_kvjsk")]
+[node name="Monkey" parent="GameRoot/Friends" index="0" unique_id=1341983060 instance=ExtResource("18_y0mix")]
+position = Vector2(125, 62)
+scale = Vector2(0.7, 0.7)
+
+[node name="Turtle" parent="GameRoot/Friends" index="1" unique_id=711306409 instance=ExtResource("11_je4of")]
+position = Vector2(-220, 120)
+rotation = 1.5707964
+scale = Vector2(0.17999999, 0.17999999)
+
+[node name="Penguin" parent="GameRoot/Friends" index="2" unique_id=1835464943 instance=ExtResource("19_j0ia3")]
+position = Vector2(28, 104)
+scale = Vector2(0.3, 0.3)
+
+[node name="Frog" parent="GameRoot/Friends" index="3" unique_id=2020692812 instance=ExtResource("20_xrsj0")]
+offset_left = -43.999985
+offset_top = 112.0
+offset_right = -43.999985
+offset_bottom = 112.0
+scale = Vector2(0.4, 0.4)
+
+[node name="Crab" parent="GameRoot/Friends" index="4" unique_id=617305983 instance=ExtResource("20_j0ia3")]
+offset_left = -220.0
+offset_top = 32.0
+offset_right = 148.0
+offset_bottom = 352.0
+scale = Vector2(0.45, 0.45)
+
+[node name="Parakeet" parent="GameRoot/Friends" index="5" unique_id=1132826004 instance=ExtResource("23_h2hey")]
+position = Vector2(124, -103)
+scale = Vector2(0.09, 0.09)
+
+[node name="Ant" parent="GameRoot/Friends" index="6" unique_id=1721368901 instance=ExtResource("24_ejade")]
+position = Vector2(228, 128)
+scale = Vector2(0.17, 0.17)
+
+[node name="KaluluBoss" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="11" unique_id=1776395621 instance=ExtResource("17_kvjsk")]
 unique_name_in_owner = true
 position = Vector2(800, 1224)
 scale = Vector2(0.7, 0.7)
 
-[node name="ControlText" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="9" unique_id=95008625]
+[node name="ControlText" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="12" unique_id=95008625]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1025, 234)
 anchors_preset = 0
@@ -204,40 +310,30 @@ stretch_mode = 2
 
 [node name="TextureRectTextBox" type="TextureRect" parent="GameRoot/ControlText/TextureRectOutlineDotted" index="0" unique_id=1202683105]
 unique_name_in_owner = true
+self_modulate = Color(0.99607843, 0.96862745, 0.8666667, 1)
 layout_mode = 0
-offset_left = 32.0
-offset_top = 24.0
-offset_right = 1056.0
-offset_bottom = 257.0
+offset_right = 1024.0
+offset_bottom = 233.0
 texture = ExtResource("16_sndot")
-stretch_mode = 2
+stretch_mode = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="GameRoot/ControlText/TextureRectOutlineDotted/TextureRectTextBox" index="0" unique_id=415001204]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -24.0
-offset_top = -32.0
-offset_right = -24.0
-offset_bottom = -19.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_right = 30
-
-[node name="Label" type="Label" parent="GameRoot/ControlText/TextureRectOutlineDotted/TextureRectTextBox/MarginContainer" index="0" unique_id=1229572097]
+[node name="Label" type="Label" parent="GameRoot/ControlText/TextureRectOutlineDotted/TextureRectTextBox" index="0" unique_id=1229572097]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 0
+offset_top = 11.0
+offset_right = 1024.0
+offset_bottom = 212.0
 theme_override_font_sizes/font_size = 100
 text = "abc"
 label_settings = ExtResource("17_47luc")
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="WrongFX" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="10" unique_id=81753671 instance=ExtResource("19_wi3c5")]
+[node name="WrongFX" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="13" unique_id=81753671 instance=ExtResource("19_wi3c5")]
 unique_name_in_owner = true
 layout_mode = 0
 
-[node name="Right_Stars" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="11" unique_id=749307022 instance=ExtResource("19_b2wqe")]
+[node name="Right_Stars" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="14" unique_id=749307022 instance=ExtResource("19_b2wqe")]
 
 [node name="AdultBlock" parent="." index="4" unique_id=1401891944 instance=ExtResource("18_4v0wd")]
 unique_name_in_owner = true

@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://pj0mlw24jayt" path="res://assets/minigames/parakeets/graphic/background_2.png" id="6_6ktwy"]
 [ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="6_46vnr"]
 [ext_resource type="Texture2D" uid="uid://cs16kbsvnsltg" path="res://assets/minigames/parakeets/graphic/background_3.png" id="7_k6xou"]
-[ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/minigames/parakeets/clouds_manager.gd" id="8_cy1rn"]
+[ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/utils/clouds_manager.gd" id="8_cy1rn"]
 [ext_resource type="Texture2D" uid="uid://0p171y6thba8" path="res://assets/minigames/parakeets/graphic/tree.png" id="8_g6pid"]
 [ext_resource type="Texture2D" uid="uid://ca2jljrk2wnjt" path="res://assets/minigames/parakeets/graphic/nest.png" id="9_0u6jo"]
 [ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="9_6ktwy"]
