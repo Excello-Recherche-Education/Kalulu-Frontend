@@ -382,3 +382,8 @@ SYNCHRONIZATION_COMPILE_SERVER_INSTRUCTIONS,Compilation des instructions de sync
 SYNCHRONIZATION_SEND_SERVER_INSTRUCTIONS,Envoie des instructions de synchronisation au serveur,Enviar instrucciones de sincronización al servidor,Enviar instruções de sincronização ao servidor
 SYNCHRONIZATION_APPLY_LOCAL_INSTRUCTIONS,Application des instructions de synchronisation en local,Aplicar instrucciones de sincronización localmente,Aplicar instruções de sincronização localmente
 LOG_TOO_MUCH_ROTATION,Log: Rotation index exceeded 999; continuing with _1000. It is recommended to restart the game,Log: El índice de rotación superó los 999; continuando con _1000. Se recomienda reiniciar el juego,Log: Índice de rotação excedeu 999; continuando com _1000. Recomenda-se reiniciar o jogo
+DANGER_ZONE,ZONE DE DANGER,ZONA DE PELIGRO,ZONA DE PERIGO
+CLEAR_LOCAL_DATA,Supprimer toutes les données locales,Borrar todos los datos locales,Apagar todos os dados locais
+CLEAR_LOCAL_DATA_CONFIRM,cliquez sur OK %d fois pour confirmer,haz clic en OK %d veces para confirmar,clique em OK %d vezes para confirmar
+RESTART_APP_REQUIRED,Veuillez fermer l’application et la relancer,Por favor cierre la aplicación y vuelva a abrirla,Por favor, feche o aplicativo e reinicie-o
+OK,OK,OK,OK

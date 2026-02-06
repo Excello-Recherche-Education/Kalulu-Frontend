@@ -77,6 +77,14 @@ func purge_user_folders_if_needed() -> void:
 		ResourceSaver.save(_device_settings, "user://device_settings.tres")
 
 
+func clear_all_local_data() -> void:
+	var error: Error = Utils.clean_dir("user://")
+	if error != OK:
+		Log.error("UserDataManager: Could not clean user:// directory. Error: %s" % error_string(error))
+		return
+	Log.warn("UserDataManager: All local user data cleared from user://")
+
+
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return # Do nothing in editor mode

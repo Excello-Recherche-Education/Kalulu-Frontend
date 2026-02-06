@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="3_vjlw0"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_s0ywi"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_4q33k"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="6_7w7ds"]
 
 [node name="DeveloperSettings" type="Control" unique_id=2110866691]
 layout_mode = 3
@@ -130,6 +131,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Filters" type="HBoxContainer" parent="VBoxContainer" unique_id=135854551]
+custom_minimum_size = Vector2(1900, 100)
 layout_mode = 2
 alignment = 1
 
@@ -143,13 +145,54 @@ layout_mode = 0
 offset_left = 30.0
 offset_top = 14.0
 offset_right = 1930.0
-offset_bottom = 1414.0
+offset_bottom = 1074.0
 size_flags_vertical = 3
 placeholder_text = "Placeholder Text
 Contains all logs textss"
 editable = false
 
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer" unique_id=722273796]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="DangerZoneContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=396337752]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="DangerZoneLabel" type="Label" parent="VBoxContainer/DangerZoneContainer" unique_id=484118701]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "DANGER_ZONE"
+horizontal_alignment = 1
+
+[node name="DangerZoneButtonRow" type="HBoxContainer" parent="VBoxContainer/DangerZoneContainer" unique_id=1713354008]
+layout_mode = 2
+alignment = 1
+
+[node name="ClearLocalDataButton" type="Button" parent="VBoxContainer/DangerZoneContainer/DangerZoneButtonRow" unique_id=646582562]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "CLEAR_LOCAL_DATA"
+
+[node name="ClearLocalDataPopup" parent="VBoxContainer/DangerZoneContainer/DangerZoneButtonRow/ClearLocalDataButton" unique_id=3359874 instance=ExtResource("6_7w7ds")]
+unique_name_in_owner = true
+visible = false
+content_text = "CLEAR_LOCAL_DATA_CONFIRM"
+confirm_text_override = "OK"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer" unique_id=1265768300]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="RestartRequiredPopup" parent="." unique_id=263832703 instance=ExtResource("6_7w7ds")]
+unique_name_in_owner = true
+visible = false
+content_text = "RESTART_APP_REQUIRED"
+
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ApiPathControls/PathRow/ApplyButton" to="." method="_on_api_path_apply_pressed"]
 [connection signal="pressed" from="VBoxContainer/ApiPathControls/EnvironmentButtons/ProdButton" to="." method="_on_prod_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ApiPathControls/EnvironmentButtons/DevButton" to="." method="_on_dev_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/DangerZoneContainer/DangerZoneButtonRow/ClearLocalDataButton" to="." method="_on_clear_local_data_button_pressed"]
+[connection signal="accepted" from="VBoxContainer/DangerZoneContainer/DangerZoneButtonRow/ClearLocalDataButton/ClearLocalDataPopup" to="." method="_on_clear_local_data_popup_accepted"]
+[connection signal="refused" from="VBoxContainer/DangerZoneContainer/DangerZoneButtonRow/ClearLocalDataButton/ClearLocalDataPopup" to="." method="_on_clear_local_data_popup_refused"]

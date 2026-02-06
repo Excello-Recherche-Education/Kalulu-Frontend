@@ -8,6 +8,7 @@ signal refused()
 @export_multiline var content_text: String = "": set = _set_content_text
 @export var confirm_text_override: String = ""
 @export var cancel_text_override: String = ""
+@export var close_on_action: bool = true
 
 @onready var content_label: Label = %ContentLabel
 @onready var confirm_button: Button = %ConfirmButton
@@ -36,11 +37,23 @@ func _set_cancel_text(p_content_text: String) -> void:
 	cancel_button.text = p_content_text
 
 
+func set_buttons_visible(is_visible: bool) -> void:
+	confirm_button.visible = is_visible
+	cancel_button.visible = is_visible
+
+
+func set_buttons_enabled(is_enabled: bool) -> void:
+	confirm_button.disabled = not is_enabled
+	cancel_button.disabled = not is_enabled
+
+
 func _on_confirm_button_pressed() -> void:
 	accepted.emit()
-	hide()
+	if close_on_action:
+		hide()
 
 
 func _on_cancel_button_pressed() -> void:
 	refused.emit()
-	hide()
+	if close_on_action:
+		hide()

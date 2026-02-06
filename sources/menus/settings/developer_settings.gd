@@ -2,12 +2,14 @@ class_name DeveloperSettings
 extends Control
 
 const LOG_LEVEL_ELEMENT: PackedScene = preload("res://sources/menus/settings/log_level_element.tscn")
+const CLEAR_LOCAL_DATA_CONFIRMATIONS: int = 5
 
 static var return_path: String = "res://sources/menus/main/main_menu.tscn"
 
 var filters: Dictionary[int, bool] = {}
 var line_steps: PackedInt32Array = [10, 50, 100, 200, 500, 1000, -1] # -1 = all
 var loglevel_regex: RegEx
+var clear_local_data_confirmations: int = 0
 
 @onready var slider: HSlider = $VBoxContainer/Controls/LineCountSlider
 @onready var slider_label: Label = $VBoxContainer/Controls/SliderLabel
@@ -18,6 +20,8 @@ var loglevel_regex: RegEx
 @onready var api_path_status_label: Label = $VBoxContainer/ApiPathControls/StatusLabel
 @onready var prod_button: Button = $VBoxContainer/ApiPathControls/EnvironmentButtons/ProdButton
 @onready var dev_button: Button = $VBoxContainer/ApiPathControls/EnvironmentButtons/DevButton
+@onready var clear_local_data_popup: ConfirmPopup = $VBoxContainer/DangerZoneContainer/DangerZoneButtonRow/ClearLocalDataButton/ClearLocalDataPopup
+@onready var restart_required_popup: ConfirmPopup = $RestartRequiredPopup
 
 
 func _ready() -> void:
@@ -122,6 +126,45 @@ func _on_api_path_submitted(_value: String) -> void:
 
 func _on_api_path_apply_pressed() -> void:
 	_update_api_path()
+
+
+func _on_clear_local_data_button_pressed() -> void:
+	clear_local_data_confirmations = 0
+	clear_local_data_popup.content_text = tr("CLEAR_LOCAL_DATA_CONFIRM") % 5
+	clear_local_data_popup.show()
+
+
+func _on_clear_local_data_popup_accepted() -> void:
+	clear_local_data_confirmations += 1
+	if clear_local_data_confirmations >= CLEAR_LOCAL_DATA_CONFIRMATIONS:
+		clear_local_data_confirmations = 0
+		UserDataManager.delete_teacher_data()
+		UserDataManager.logout()
+		UserDataManager.clear_all_local_data()
+		await get_tree().process_frame
+		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+		await get_tree().process_frame
+		get_tree().set_auto_accept_quit(true)
+		get_tree().quit()
+		await get_tree().process_frame
+		await get_tree().process_frame
+		_show_restart_required_popup()
+		return
+	clear_local_data_popup.content_text = tr("CLEAR_LOCAL_DATA_CONFIRM") % (5 - clear_local_data_confirmations)
+	await get_tree().process_frame
+	clear_local_data_popup.show()
+
+
+func _on_clear_local_data_popup_refused() -> void:
+	clear_local_data_confirmations = 0
+
+
+func _show_restart_required_popup() -> void:
+	restart_required_popup.content_text = tr("RESTART_APP_REQUIRED")
+	restart_required_popup.close_on_action = false
+	restart_required_popup.set_buttons_visible(false)
+	restart_required_popup.set_buttons_enabled(false)
+	restart_required_popup.show()
 
 
 func _on_prod_button_pressed() -> void:
