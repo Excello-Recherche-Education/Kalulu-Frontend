@@ -8,12 +8,16 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Prof_Tool"
-config/version="1.3.6"
+config/version="1.3.7"
 run/main_scene="uid://cp832jmwru06w"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 config/icon="uid://dipdtrs4i7i7v"
 custom/unlock_everything=false
@@ -31,7 +35,7 @@ ServerManager="*res://sources/utils/autoloads/server_manager.tscn"
 Database="*res://sources/utils/autoloads/database.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
-Validation="*res://addons/godot-form-validator/validation.gd"
+Validation="*uid://dprgt5c7gdii6"
 OpeningCurtain="*res://sources/utils/autoloads/opening_curtain.tscn"
 Globals="*res://sources/language_tool/globals.gd"
 Utils="*res://sources/utils/autoloads/utils.gd"

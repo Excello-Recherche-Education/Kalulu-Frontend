@@ -50,6 +50,11 @@ func _ready() -> void:
 
 
 func purge_user_folders_if_needed() -> void:
+	# Never delete anything for prof_tool, let user do it, this is a technical app. Warning: since number version of prof_tool is a lot lower than kalulu, without this protection it would delete every time.
+	var app_name: String = ProjectSettings.get_setting("application/config/name")
+	if app_name.to_lower() != "kalulu":
+		return
+	
 	var current_version: String = ProjectSettings.get_setting("application/config/version")
 	var previous_version: String = _device_settings.game_version
 	
