@@ -28,7 +28,7 @@ func get_value() -> Variant:
 		if (control as ItemList).select_mode == ItemList.SELECT_SINGLE:
 			return selected_indexes[0]
 		return selected_indexes
-			
+	
 	return null
 
 
@@ -49,5 +49,6 @@ func set_value(value: Variant) -> void:
 		if value is int:
 			(control as ItemList).select(value as int, true)
 		elif value is PackedInt32Array:
+			(control as ItemList).deselect_all()
 			for index: int in value:
-				(control as ItemList).select(index, true)
+				(control as ItemList).select(index, false)
