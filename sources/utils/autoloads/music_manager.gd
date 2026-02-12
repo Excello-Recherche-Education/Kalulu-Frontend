@@ -1,3 +1,4 @@
+class_name MusicManagerClass
 extends Node
 
 enum Track {

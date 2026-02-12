@@ -187,3 +187,11 @@ func _on_body_area_area_entered(_area: Area2D) -> void:
 	disappear()
 
 #endregion
+
+func idle_boss() -> void:
+	sprite.play("swim")
+	sprite.stop()
+
+
+func victory_boss() -> void:
+	sprite.play("swim")

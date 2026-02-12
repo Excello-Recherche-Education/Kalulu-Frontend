@@ -218,7 +218,7 @@ func _bump_rotation_index() -> void:
 		log_rotation_index += 1
 
 
-# trace can be used everywhere, in order to have a full log of all that is hapenning
+# trace can be used everywhere to log everything that is happening.
 func trace(msg: String) -> void: _log_internal(LogLevel.TRACE, msg)
 
 
@@ -226,19 +226,19 @@ func trace(msg: String) -> void: _log_internal(LogLevel.TRACE, msg)
 func debug(msg: String) -> void: _log_internal(LogLevel.DEBUG, msg)
 
 
-# info can carry important information(s) that should always be logged but that are not problematic
+# info can carry important information that should always be logged but that is not problematic.
 func info(msg: String) -> void: _log_internal(LogLevel.INFO, msg)
 
 
-# warning should be used when a behaviour is not normal, but this is not blocking or it could be ignored
+# warning should be used when a behavior is not normal, but it is not blocking and can be ignored.
 func warn(msg: String) -> void: _log_internal(LogLevel.WARNING, msg)
 
 
-# error should be used everytime the program does something that is problematic and could potentially harm the user experience
+# error should be used every time the program does something problematic that could harm the user experience.
 func error(msg: String) -> void: _log_internal(LogLevel.ERROR, msg)
 
 
-# alert will displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
+# alert will display a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
 func alert(msg: String) -> void: _log_internal(LogLevel.ALERT, msg)
 
 

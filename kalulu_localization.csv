@@ -14,6 +14,9 @@ INVALID_EMAIL_OR_PASSWORD,Adresse mail ou mot de passe invalide,Correo electrón
 RESET_PASSWORD,Réinitialiser le mot de passe,Restablecer la contraseña,Redefinir senha
 CHECK_YOUR_EMAIL,Veuillez vérifier votre boîte mail,"Por favor, revise su correo electrónico","Por favor, verifique seu e-mail"
 DEVICE_NUMBER,Appareil {number},Dispositivo {number},Dispositivo {number}
+EXPORT_TO_PDF,Exporter en PDF,Exportar a PDF,Exportar para PDF
+EXPORT_STUDENT_CODES,Exporter les codes des élèves,Exportar los códigos de los estudiantes,Exportar os códigos dos alunos
+STUDENT_CODES,Codes des élèves,Códigos de los estudiantes,Códigos dos alunos
 SETTINGS,Paramètres,Configuración,Parâmetros
 ADULT_CHECK_PROMPT,"Veuillez confirmer que vous êtes un adulte !
 Appuyez sur les touches {1}, {2} et {3}","Confirme que es un adulto! Seleccione {1}, {2} y {3}","Por favor, confirme que você é um adulto! Pressione as teclas {1}, {2} e {3}"
@@ -379,3 +382,8 @@ SYNCHRONIZATION_COMPILE_SERVER_INSTRUCTIONS,Compilation des instructions de sync
 SYNCHRONIZATION_SEND_SERVER_INSTRUCTIONS,Envoie des instructions de synchronisation au serveur,Enviar instrucciones de sincronización al servidor,Enviar instruções de sincronização ao servidor
 SYNCHRONIZATION_APPLY_LOCAL_INSTRUCTIONS,Application des instructions de synchronisation en local,Aplicar instrucciones de sincronización localmente,Aplicar instruções de sincronização localmente
 LOG_TOO_MUCH_ROTATION,Log: Rotation index exceeded 999; continuing with _1000. It is recommended to restart the game,Log: El índice de rotación superó los 999; continuando con _1000. Se recomienda reiniciar el juego,Log: Índice de rotação excedeu 999; continuando com _1000. Recomenda-se reiniciar o jogo
+DANGER_ZONE,ZONE DE DANGER,ZONA DE PELIGRO,ZONA DE PERIGO
+CLEAR_LOCAL_DATA,Supprimer toutes les données locales,Borrar todos los datos locales,Apagar todos os dados locais
+CLEAR_LOCAL_DATA_CONFIRM,cliquez sur OK %d fois pour confirmer,haz clic en OK %d veces para confirmar,clique em OK %d vezes para confirmar
+RESTART_APP_REQUIRED,Veuillez fermer l’application et la relancer,Por favor cierre la aplicación y vuelva a abrirla,Por favor, feche o aplicativo e reinicie-o
+OK,OK,OK,OK

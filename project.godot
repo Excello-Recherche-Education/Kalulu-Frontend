@@ -35,11 +35,11 @@ ServerManager="*res://sources/utils/autoloads/server_manager.tscn"
 Database="*res://sources/utils/autoloads/database.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
-Validation="*uid://dprgt5c7gdii6"
 OpeningCurtain="*res://sources/utils/autoloads/opening_curtain.tscn"
 Globals="*res://sources/language_tool/globals.gd"
 Utils="*res://sources/utils/autoloads/utils.gd"
 UnicodeNormalizer="*res://sources/utils/autoloads/unicode_normalizer.gd"
+Validation="*uid://dprgt5c7gdii6"
 
 [debug]
 
@@ -60,7 +60,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/export_tool_manager/plugin.cfg", "res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/export_tool_manager/plugin.cfg", "res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 

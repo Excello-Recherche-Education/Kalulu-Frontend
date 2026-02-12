@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dx33ijlgd8m3w"]
+[gd_scene format=3 uid="uid://dx33ijlgd8m3w"]
 
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_g3tt5"]
 [ext_resource type="Script" uid="uid://cvnnauxttsciv" path="res://sources/language_tool/word_list_element.gd" id="1_q2ekb"]
@@ -12,7 +12,7 @@ border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t1yui"]
 
-[node name="WordListElement" type="MarginContainer"]
+[node name="WordListElement" type="MarginContainer" unique_id=1240230869]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -23,22 +23,22 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_q2ekb")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=1609136784]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_emsyu")
 
-[node name="TabContainer" type="TabContainer" parent="."]
+[node name="TabContainer" type="TabContainer" parent="." unique_id=1561648361]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_t1yui")
 current_tab = 0
 tabs_visible = false
 
-[node name="NormalContainer" type="HBoxContainer" parent="TabContainer"]
+[node name="NormalContainer" type="HBoxContainer" parent="TabContainer" unique_id=175623685]
 layout_mode = 2
 theme_override_constants/separation = 0
 metadata/_tab_index = 0
 
-[node name="Lesson" type="Label" parent="TabContainer/NormalContainer"]
+[node name="Lesson" type="Label" parent="TabContainer/NormalContainer" unique_id=930015408]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -48,7 +48,7 @@ text = "7"
 horizontal_alignment = 1
 clip_text = true
 
-[node name="ExceptionCheckBox" type="CheckBox" parent="TabContainer/NormalContainer"]
+[node name="ExceptionCheckBox" type="CheckBox" parent="TabContainer/NormalContainer" unique_id=1874848318]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
@@ -56,7 +56,7 @@ disabled = true
 text = "Exception"
 expand_icon = true
 
-[node name="Word" type="Label" parent="TabContainer/NormalContainer"]
+[node name="Word" type="Label" parent="TabContainer/NormalContainer" unique_id=971120727]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -65,7 +65,7 @@ text = "Bonjour"
 horizontal_alignment = 1
 clip_text = true
 
-[node name="Graphemes" type="Label" parent="TabContainer/NormalContainer"]
+[node name="Graphemes" type="Label" parent="TabContainer/NormalContainer" unique_id=376418374]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -73,7 +73,7 @@ theme_override_font_sizes/font_size = 70
 text = "b on j ou r"
 horizontal_alignment = 1
 
-[node name="ReadingCheckBox" type="CheckBox" parent="TabContainer/NormalContainer"]
+[node name="ReadingCheckBox" type="CheckBox" parent="TabContainer/NormalContainer" unique_id=657752404]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -81,38 +81,38 @@ size_flags_stretch_ratio = 0.5
 disabled = true
 button_pressed = true
 
-[node name="WritingCheckBox" type="CheckBox" parent="TabContainer/NormalContainer"]
+[node name="WritingCheckBox" type="CheckBox" parent="TabContainer/NormalContainer" unique_id=593364540]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 disabled = true
 
-[node name="EditButton" parent="TabContainer/NormalContainer" instance=ExtResource("1_g3tt5")]
+[node name="EditButton" parent="TabContainer/NormalContainer" unique_id=1575396203 instance=ExtResource("1_g3tt5")]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 
-[node name="TextureRect" parent="TabContainer/NormalContainer/EditButton" index="0"]
+[node name="TextureRect" parent="TabContainer/NormalContainer/EditButton" index="0" unique_id=1207987905]
 texture = ExtResource("2_i6x6b")
 
-[node name="EditContainer" type="VBoxContainer" parent="TabContainer"]
+[node name="EditContainer" type="VBoxContainer" parent="TabContainer" unique_id=1268476286]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 metadata/_tab_index = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EditContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EditContainer" unique_id=1153305329]
 layout_mode = 2
 
-[node name="ValidateButton" parent="TabContainer/EditContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+[node name="ValidateButton" parent="TabContainer/EditContainer/HBoxContainer" unique_id=734198539 instance=ExtResource("1_g3tt5")]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "Validate edits"
 
-[node name="TextureRect" parent="TabContainer/EditContainer/HBoxContainer/ValidateButton" index="0"]
+[node name="TextureRect" parent="TabContainer/EditContainer/HBoxContainer/ValidateButton" index="0" unique_id=1207987905]
 texture = ExtResource("2_i6x6b")
 
-[node name="ExceptionEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer/HBoxContainer"]
+[node name="ExceptionEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer/HBoxContainer" unique_id=1641855039]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Don't show the word alone in Kalulu games"
@@ -120,23 +120,23 @@ theme_override_font_sizes/font_size = 50
 text = "Exception"
 expand_icon = true
 
-[node name="MinusButton" parent="TabContainer/EditContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+[node name="MinusButton" parent="TabContainer/EditContainer/HBoxContainer" unique_id=1105940208 instance=ExtResource("1_g3tt5")]
 layout_mode = 2
 tooltip_text = "Delete list element"
 
-[node name="TextureRect" parent="TabContainer/EditContainer/HBoxContainer/MinusButton" index="0"]
+[node name="TextureRect" parent="TabContainer/EditContainer/HBoxContainer/MinusButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_mgblq")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="TabContainer/EditContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="TabContainer/EditContainer" unique_id=1396178239]
 layout_mode = 2
 
-[node name="WordEditLabel" type="Label" parent="TabContainer/EditContainer/HBoxContainer2"]
+[node name="WordEditLabel" type="Label" parent="TabContainer/EditContainer/HBoxContainer2" unique_id=1021148775]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Word: "
 
-[node name="WordEdit" type="LineEdit" parent="TabContainer/EditContainer/HBoxContainer2"]
+[node name="WordEdit" type="LineEdit" parent="TabContainer/EditContainer/HBoxContainer2" unique_id=1178281509]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -145,50 +145,50 @@ text = "bonjour"
 placeholder_text = "Press enter for autocomplete"
 alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/EditContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/EditContainer" unique_id=501411856]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Fill in this element's components"
 vertical_scroll_mode = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EditContainer/ScrollContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EditContainer/ScrollContainer" unique_id=1574718702]
 layout_mode = 2
 alignment = 1
 
-[node name="GPsEditLabel" type="Label" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer"]
+[node name="GPsEditLabel" type="Label" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" unique_id=1362139264]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "GPs: "
 
-[node name="GraphemesEditContainer" type="HBoxContainer" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer"]
+[node name="GraphemesEditContainer" type="HBoxContainer" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" unique_id=1912282083]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="AddGPButton" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+[node name="AddGPButton" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" unique_id=472156113 instance=ExtResource("1_g3tt5")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="RemoveGPButton2" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_g3tt5")]
+[node name="RemoveGPButton2" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer" unique_id=500432013 instance=ExtResource("1_g3tt5")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2" index="0"]
+[node name="TextureRect" parent="TabContainer/EditContainer/ScrollContainer/HBoxContainer/RemoveGPButton2" index="0" unique_id=1207987905]
 tooltip_text = "Remove element"
 texture = ExtResource("3_mgblq")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="TabContainer/EditContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="TabContainer/EditContainer" unique_id=1255389373]
 layout_mode = 2
 
-[node name="ReadingEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer/HBoxContainer3"]
+[node name="ReadingEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer/HBoxContainer3" unique_id=422398351]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Reading                 "
 
-[node name="WritingEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer/HBoxContainer3"]
+[node name="WritingEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer/HBoxContainer3" unique_id=1216190276]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Writing"

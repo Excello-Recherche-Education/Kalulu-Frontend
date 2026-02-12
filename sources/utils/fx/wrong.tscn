@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dlmbxcgiv8tpr"]
+[gd_scene format=3 uid="uid://dlmbxcgiv8tpr"]
 
 [ext_resource type="AudioStream" uid="uid://2imrfcmquc7d" path="res://assets/sfx/sfx_wrong.mp3" id="1_qd4na"]
 [ext_resource type="Script" uid="uid://b5dy0viriac74" path="res://sources/utils/fx/wrong.gd" id="1_sgjc5"]
@@ -106,21 +106,19 @@ _data = {
 &"wrong": SubResource("Animation_dn23k")
 }
 
-[node name="WrongFX" type="Control"]
+[node name="WrongFX" type="Control" unique_id=81753671]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_sgjc5")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_c86ui")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1776791293]
+libraries/ = SubResource("AnimationLibrary_c86ui")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1824396771]
 stream = ExtResource("1_qd4na")
 bus = &"Effects"
 
-[node name="Halo" type="Sprite2D" parent="."]
+[node name="Halo" type="Sprite2D" parent="." unique_id=2005120496]
 modulate = Color(1, 1, 1, 0)
 self_modulate = Color(0.74509805, 0.11764706, 0.1764706, 1)
 scale = Vector2(0.8, 0.8)

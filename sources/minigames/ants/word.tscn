@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://p4004yi344kw"]
+[gd_scene format=3 uid="uid://p4004yi344kw"]
 
 [ext_resource type="Script" uid="uid://c3b4mtcxn0ptp" path="res://sources/minigames/ants/word.gd" id="2_ed8h7"]
 [ext_resource type="LabelSettings" uid="uid://dc23060y6xeyx" path="res://resources/themes/minigames_label_settings_ants.tres" id="3_3galy"]
@@ -6,19 +6,19 @@
 [ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="4_3galy"]
 [ext_resource type="Texture2D" uid="uid://c34sgkbvr3h8q" path="res://assets/minigames/minigame_ui/graphic/primary_text_box.png" id="4_nsgbj"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="4_tbe68"]
-[ext_resource type="PackedScene" uid="uid://br6yhq4w7b420" path="res://sources/utils/fx/right_stars.tscn" id="7_w87cx"]
+[ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="7_w87cx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hh1fr"]
 size = Vector2(440, 128)
 
-[node name="Word" type="Button"]
+[node name="Word" type="Button" unique_id=76231340]
 self_modulate = Color(1, 1, 1, 0)
 offset_right = 441.0
 offset_bottom = 159.0
 disabled = true
 script = ExtResource("2_ed8h7")
 
-[node name="RightFX" parent="." instance=ExtResource("3_hml8s")]
+[node name="RightFX" parent="." unique_id=1716653307 instance=ExtResource("3_hml8s")]
 show_behind_parent = true
 layout_mode = 0
 offset_left = 220.0
@@ -27,7 +27,7 @@ offset_right = 220.0
 offset_bottom = 72.0
 mouse_filter = 2
 
-[node name="WrongFX" parent="." instance=ExtResource("4_tbe68")]
+[node name="WrongFX" parent="." unique_id=2009177834 instance=ExtResource("4_tbe68")]
 layout_mode = 0
 offset_left = 220.0
 offset_top = 72.0
@@ -35,15 +35,15 @@ offset_right = 220.0
 offset_bottom = 72.0
 mouse_filter = 2
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." unique_id=2105800211]
 collision_layer = 0
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1216241580]
 position = Vector2(220, 80)
 shape = SubResource("RectangleShape2D_hh1fr")
 
-[node name="TextBox" type="TextureRect" parent="."]
+[node name="TextBox" type="TextureRect" parent="." unique_id=932793759]
 self_modulate = Color(0.99607843, 0.96862745, 0.8666667, 1)
 layout_mode = 0
 offset_top = 16.0
@@ -52,7 +52,7 @@ offset_bottom = 144.0
 texture = ExtResource("4_nsgbj")
 expand_mode = 1
 
-[node name="Outline" type="TextureRect" parent="."]
+[node name="Outline" type="TextureRect" parent="." unique_id=828109949]
 self_modulate = Color(0.5254902, 0.4509804, 0.8980392, 1)
 layout_mode = 0
 offset_top = 16.0
@@ -61,7 +61,7 @@ offset_bottom = 144.0
 texture = ExtResource("4_3galy")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=2012503970]
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 440.0
@@ -71,7 +71,7 @@ label_settings = ExtResource("3_3galy")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Right_Stars" parent="." instance=ExtResource("7_w87cx")]
+[node name="Right_Stars" parent="." unique_id=274261611 instance=ExtResource("7_w87cx")]
 position = Vector2(220, 72)
 
 [connection signal="button_down" from="." to="." method="_on_button_down"]

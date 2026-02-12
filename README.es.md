@@ -1,3 +1,5 @@
+![Godot Version](https://img.shields.io/badge/Godot-4.6+-blue)
+
 # 📖 Kalulu — Aprende a leer de forma inteligente
 
 ## 🌍 Idiomas disponibles

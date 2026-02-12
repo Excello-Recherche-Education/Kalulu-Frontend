@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://2wab3q35ssta"]
+[gd_scene format=3 uid="uid://2wab3q35ssta"]
 
 [ext_resource type="Script" uid="uid://b6lcp5llq0rsq" path="res://sources/menus/login/login.gd" id="1_spyuf"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="3_0my6t"]
@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="9_k74e3"]
 [ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="24_4xfja"]
 
-[node name="Login" type="Control"]
+[node name="Login" type="Control" unique_id=552362491]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,14 +22,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_spyuf")
 
-[node name="NightSky" parent="." instance=ExtResource("3_0my6t")]
+[node name="NightSky" parent="." unique_id=2070209105 instance=ExtResource("3_0my6t")]
 layout_mode = 1
 
-[node name="Palm" parent="." instance=ExtResource("3_yrwu8")]
+[node name="Palm" parent="." unique_id=912024034 instance=ExtResource("3_yrwu8")]
 position = Vector2(1280, 1800)
 scale = Vector2(2.5, 2.5)
 
-[node name="DeviceNumber" type="Label" parent="."]
+[node name="DeviceNumber" type="Label" parent="." unique_id=1720747619]
 visible = false
 layout_mode = 1
 anchors_preset = 5
@@ -44,10 +44,10 @@ theme_override_font_sizes/font_size = 70
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CodeKeyboard" parent="." instance=ExtResource("5_xwrca")]
+[node name="CodeKeyboard" parent="." unique_id=993213192 instance=ExtResource("5_xwrca")]
 layout_mode = 1
 
-[node name="InterfaceLeft" type="MarginContainer" parent="."]
+[node name="InterfaceLeft" type="MarginContainer" parent="." unique_id=1784990784]
 custom_minimum_size = Vector2(375, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -58,10 +58,10 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="Container" type="VBoxContainer" parent="InterfaceLeft"]
+[node name="Container" type="VBoxContainer" parent="InterfaceLeft" unique_id=856964308]
 layout_mode = 2
 
-[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
+[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1570913515]
 custom_minimum_size = Vector2(0, 275)
 layout_mode = 2
 size_flags_vertical = 0
@@ -71,7 +71,7 @@ texture_pressed = ExtResource("5_vd33f")
 texture_disabled = ExtResource("6_0dhup")
 stretch_mode = 4
 
-[node name="KaluluButton" type="TextureButton" parent="InterfaceLeft/Container"]
+[node name="KaluluButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1514720972]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 275)
 layout_mode = 2
@@ -81,14 +81,14 @@ texture_pressed = ExtResource("8_nxlxw")
 texture_disabled = ExtResource("9_k74e3")
 stretch_mode = 4
 
-[node name="Padding" type="Control" parent="InterfaceLeft/Container"]
+[node name="Padding" type="Control" parent="InterfaceLeft/Container" unique_id=1126926288]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.1
 mouse_filter = 2
 
-[node name="BuildVersionValue" type="Label" parent="InterfaceLeft/Container"]
+[node name="BuildVersionValue" type="Label" parent="InterfaceLeft/Container" unique_id=758975831]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
@@ -96,7 +96,7 @@ theme_override_font_sizes/font_size = 30
 text = "?"
 vertical_alignment = 1
 
-[node name="InterfaceRight" type="MarginContainer" parent="."]
+[node name="InterfaceRight" type="MarginContainer" parent="." unique_id=488022535]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 1
 anchors_preset = 11
@@ -111,12 +111,12 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceRight"]
+[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceRight" unique_id=2016021631]
 layout_mode = 2
 theme_override_constants/separation = 50
 alignment = 2
 
-[node name="TeacherHelpLabel" type="Label" parent="InterfaceRight/VBoxContainer"]
+[node name="TeacherHelpLabel" type="Label" parent="InterfaceRight/VBoxContainer" unique_id=1747620295]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
@@ -126,21 +126,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="TeacherButton" type="Button" parent="InterfaceRight/VBoxContainer"]
+[node name="TeacherButton" type="Button" parent="InterfaceRight/VBoxContainer" unique_id=1054245540]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 70
 text = "SETTINGS"
 
-[node name="TeacherTimer" type="Timer" parent="InterfaceRight/VBoxContainer/TeacherButton"]
+[node name="TeacherTimer" type="Timer" parent="InterfaceRight/VBoxContainer/TeacherButton" unique_id=251985914]
 unique_name_in_owner = true
 wait_time = 5.0
 
-[node name="Kalulu" parent="." instance=ExtResource("3_5b1v0")]
+[node name="Kalulu" parent="." unique_id=1215167356 instance=ExtResource("3_5b1v0")]
 visible = false
 layout_mode = 1
 
-[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=239079320]
 stream = ExtResource("24_4xfja")
 
 [connection signal="password_entered" from="CodeKeyboard" to="." method="_on_code_keyboard_password_entered"]

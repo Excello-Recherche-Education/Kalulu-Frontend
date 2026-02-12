@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cpfvnjrabobgn"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cpfvnjrabobgn"]
 
 [ext_resource type="Shader" uid="uid://dbje5ee7ridyt" path="res://sources/minigames/turtles/water.gdshader" id="1_3btqb"]
 

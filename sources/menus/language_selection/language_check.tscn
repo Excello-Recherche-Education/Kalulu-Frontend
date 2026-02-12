@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cstjcvopullr1"]
+[gd_scene format=3 uid="uid://cstjcvopullr1"]
 
 [ext_resource type="Script" uid="uid://cf8j23m8xiqx8" path="res://sources/menus/language_selection/language_check.gd" id="1_ja11f"]
 [ext_resource type="Script" uid="uid://58twmknv6bl5" path="res://sources/ui/popup.gd" id="2_cy44h"]
@@ -10,17 +10,17 @@ colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_u8e4y"]
 gradient = SubResource("Gradient_22q4u")
 
-[node name="LanguageCheck" type="Control"]
+[node name="LanguageCheck" type="Control" unique_id=848713223]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_ja11f")
 
-[node name="Background" parent="." instance=ExtResource("2_u8e4y")]
+[node name="Background" parent="." unique_id=760354773 instance=ExtResource("2_u8e4y")]
 layout_mode = 1
 offset_right = 2560.0
 offset_bottom = 1800.0
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2023114824]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,21 +34,21 @@ theme_override_constants/margin_top = 600
 theme_override_constants/margin_right = 400
 theme_override_constants/margin_bottom = 600
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=1148450090]
 layout_mode = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="QuestionContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+[node name="QuestionContainer" type="MarginContainer" parent="MarginContainer/PanelContainer" unique_id=188203993]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/QuestionContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/QuestionContainer" unique_id=1687688532]
 layout_mode = 2
 
-[node name="CheckingLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="CheckingLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=592917315]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -57,12 +57,12 @@ text = "CHECKING_LANGUAGE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ErrorPopup" type="CanvasLayer" parent="."]
+[node name="ErrorPopup" type="CanvasLayer" parent="." unique_id=1207940911]
 visible = false
 script = ExtResource("2_cy44h")
 content_text = "NO_VALID_LANGUAGE_DATA_AVAILABLE"
 
-[node name="TextureRect" type="TextureRect" parent="ErrorPopup"]
+[node name="TextureRect" type="TextureRect" parent="ErrorPopup" unique_id=1374179532]
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,7 +72,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = SubResource("GradientTexture1D_u8e4y")
 
-[node name="PanelContainer" type="PanelContainer" parent="ErrorPopup/TextureRect"]
+[node name="PanelContainer" type="PanelContainer" parent="ErrorPopup/TextureRect" unique_id=1307476349]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -87,21 +87,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer" unique_id=170434358]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer" unique_id=1144166629]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer" unique_id=1450557221]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="ContentLabel" type="Label" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ContentLabel" type="Label" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=731251229]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1000, 0)
 layout_mode = 2
@@ -110,20 +110,20 @@ theme_override_font_sizes/font_size = 70
 text = "NO_VALID_LANGUAGE_DATA_AVAILABLE"
 autowrap_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1260355645]
 layout_mode = 2
 
-[node name="ConfirmButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ConfirmButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=194384875]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "RETURN_TO_MAIN_MENU"
 
-[node name="Separator" type="Control" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Separator" type="Control" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=765592800]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CancelButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CancelButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2102180890]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

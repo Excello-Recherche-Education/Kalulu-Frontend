@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://b71fcfvtqfuov"]
+[gd_scene format=3 uid="uid://b71fcfvtqfuov"]
 
 [ext_resource type="Script" uid="uid://b2x5phjrytw85" path="res://sources/language_tool/kalulu_speech.gd" id="1_7ncv6"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_sx2aj"]
 [ext_resource type="Texture2D" uid="uid://ctike5jfpr68v" path="res://assets/menus/play_button.png" id="2_kpiy8"]
 [ext_resource type="Texture2D" uid="uid://5fffpm7hc12k" path="res://assets/menus/upload.png" id="3_et87x"]
 
-[node name="KaluluSpeech" type="PanelContainer"]
+[node name="KaluluSpeech" type="PanelContainer" unique_id=715940506]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,41 +13,41 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7ncv6")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=464267222]
 bus = &"Voice"
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="FileDialog" type="FileDialog" parent="." unique_id=213927621]
 title = "Open a File"
 initial_position = 2
 size = Vector2i(1500, 1000)
 ok_button_text = "Open"
 file_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2110028807]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=2052539292]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer" unique_id=522903481]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 50
 text = "First Welcome"
 
-[node name="DescriptionLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/HBoxContainer" unique_id=1588823316]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 50
 text = "Played on the first opening of the game"
 
-[node name="PlayButton" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_sx2aj")]
+[node name="PlayButton" parent="MarginContainer/HBoxContainer" unique_id=1355251069 instance=ExtResource("1_sx2aj")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -55,7 +55,7 @@ layout_mode = 2
 [node name="TextureRect" parent="MarginContainer/HBoxContainer/PlayButton" index="0"]
 texture = ExtResource("2_kpiy8")
 
-[node name="UploadButton" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_sx2aj")]
+[node name="UploadButton" parent="MarginContainer/HBoxContainer" unique_id=1446558308 instance=ExtResource("1_sx2aj")]
 unique_name_in_owner = true
 layout_mode = 2
 

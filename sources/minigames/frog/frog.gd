@@ -127,3 +127,12 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 			jumped.emit()
 		"defeat":
 			defeated.emit()
+
+
+func idle_boss() -> void:
+	animated_sprite.play("idle_front")
+	animated_sprite.stop()
+
+
+func victory_boss() -> void:
+	animated_sprite.play("idle_front")

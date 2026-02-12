@@ -44,7 +44,7 @@ func _setup_minigame() -> void:
 		if index == int(settings.branches/2.0):
 			_on_branch_pressed(branch)
 	
-	# Setups the timer
+	# Sets up the timer
 	berry_timer.wait_time = settings.spawn_rate
 	
 	# Connects the caterpillar signals

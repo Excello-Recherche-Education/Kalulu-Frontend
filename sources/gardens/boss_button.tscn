@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkxci0n2tcyxc"]
+[gd_scene format=3 uid="uid://dkxci0n2tcyxc"]
 
 [ext_resource type="Texture2D" uid="uid://3iuuq06ovbos" path="res://assets/theme/button_normal_empty.svg" id="1_pdrhc"]
 [ext_resource type="Texture2D" uid="uid://j7sffldhbunj" path="res://assets/theme/button_pressed_empty.svg" id="2_2g676"]
@@ -7,9 +7,9 @@
 [ext_resource type="Script" uid="uid://bbjhs5nta7xxj" path="res://sources/gardens/boss_button.gd" id="5_3d6pj"]
 [ext_resource type="Texture2D" uid="uid://dwk8xgv3xsmm0" path="res://assets/theme/button_center.svg" id="6_o0qkw"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="7_rtwam"]
-[ext_resource type="Texture2D" uid="uid://cfnjk06m367r3" path="res://assets/minigames/fish/fish_icon.png" id="8_oy4mt"]
+[ext_resource type="Texture2D" uid="uid://cfnjk06m367r3" path="res://assets/minigames/boss/boss_icon.png" id="8_oy4mt"]
 
-[node name="BossButton" type="TextureButton"]
+[node name="BossButton" type="TextureButton" unique_id=1297494779]
 z_index = 2
 offset_right = 512.0
 offset_bottom = 512.0
@@ -27,7 +27,7 @@ icon_texture = ExtResource("8_oy4mt")
 base_color = Color(0.537255, 0.231373, 0.8, 1)
 completed_color = Color(0.537255, 0.231373, 0.8, 1)
 
-[node name="RightFX" parent="." instance=ExtResource("7_rtwam")]
+[node name="RightFX" parent="." unique_id=1100015067 instance=ExtResource("7_rtwam")]
 unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 1
@@ -39,7 +39,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Center" type="TextureRect" parent="."]
+[node name="Center" type="TextureRect" parent="." unique_id=758604923]
 unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 1
@@ -50,7 +50,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_o0qkw")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=962237768]
 unique_name_in_owner = true
 z_index = 1
 layout_mode = 1
@@ -69,7 +69,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="Placeholder" type="TextureRect" parent="."]
+[node name="Placeholder" type="TextureRect" parent="." unique_id=929335849]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.775063, 0.775063, 0.775063, 1)
@@ -82,7 +82,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_o0qkw")
 
-[node name="Icon" type="TextureRect" parent="."]
+[node name="Icon" type="TextureRect" parent="." unique_id=502041740]
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 1

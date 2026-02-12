@@ -21,12 +21,22 @@ const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
 	set(value):
 		password = value
 		_draw_password()
+@export var show_backgrounds: bool = true:
+	set(value):
+		show_backgrounds = value
+		_update_panel_styles()
+@export var panel_theme_variation: StringName = &"PanelKalulu":
+	set(value):
+		panel_theme_variation = value
+		_update_panel_styles()
 
 @onready var icons: Array[TextureRect] = []
+@onready var panels: Array[PanelContainer] = []
 
 
 func _ready() -> void:
 	_draw_password()
+	_update_panel_styles()
 	for icon: TextureRect in icons:
 		icon.custom_minimum_size.x = key_size
 		icon.custom_minimum_size.y = key_size
@@ -52,3 +62,22 @@ func _draw_password() -> void:
 		if value in ICONS_TEXTURES:
 			icons[index].texture = ICONS_TEXTURES[value]
 		index += 1
+
+
+func _panels_ready() -> void:
+	if not panels:
+		panels = [%Panel1, %Panel2, %Panel3]
+
+
+func _update_panel_styles() -> void:
+	_panels_ready()
+
+	for panel: PanelContainer in panels:
+		if not panel:
+			continue
+		if show_backgrounds:
+			panel.remove_theme_stylebox_override("panel")
+			panel.theme_type_variation = panel_theme_variation
+		else:
+			panel.theme_type_variation = &""
+			panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())

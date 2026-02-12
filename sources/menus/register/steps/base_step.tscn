@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bxd3i06rqpxf0"]
+[gd_scene format=3 uid="uid://bxd3i06rqpxf0"]
 
 [ext_resource type="Script" uid="uid://ddg138yuagx4i" path="res://sources/menus/register/steps/base_step.gd" id="1_02ocl"]
 [ext_resource type="Texture2D" uid="uid://d1tsqdom1rra1" path="res://assets/theme/arrow_back.svg" id="2_41tvo"]
@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://d3rhl050u0ahl" path="res://assets/menus/login/password_background.png" id="4_h32tf"]
 [ext_resource type="PackedScene" uid="uid://cr4q0ywceoasx" path="res://sources/utils/keyboard_spacer.tscn" id="6_i4s2p"]
 
-[node name="BaseRegisterForm" type="Control"]
+[node name="BaseRegisterForm" type="Control" unique_id=1136039399]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_02ocl")
 
-[node name="LeftMargin" type="MarginContainer" parent="."]
+[node name="LeftMargin" type="MarginContainer" parent="." unique_id=1086633966]
 custom_minimum_size = Vector2(450, 2.08165e-12)
 layout_mode = 1
 anchors_preset = 9
@@ -32,18 +32,18 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="LeftContainer" type="VBoxContainer" parent="LeftMargin"]
+[node name="LeftContainer" type="VBoxContainer" parent="LeftMargin" unique_id=4173744]
 layout_mode = 2
 mouse_filter = 2
 alignment = 2
 
-[node name="BackButton" type="Button" parent="LeftMargin/LeftContainer"]
+[node name="BackButton" type="Button" parent="LeftMargin/LeftContainer" unique_id=1328987959]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "BACK"
 icon = ExtResource("2_41tvo")
 
-[node name="RightMargin" type="MarginContainer" parent="."]
+[node name="RightMargin" type="MarginContainer" parent="." unique_id=1030606903]
 custom_minimum_size = Vector2(450, 2.08165e-12)
 layout_mode = 1
 anchors_preset = 11
@@ -61,19 +61,19 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="RightContainer" type="VBoxContainer" parent="RightMargin"]
+[node name="RightContainer" type="VBoxContainer" parent="RightMargin" unique_id=858860575]
 layout_mode = 2
 mouse_filter = 2
 alignment = 2
 
-[node name="ValidateButton" type="Button" parent="RightMargin/RightContainer"]
+[node name="ValidateButton" type="Button" parent="RightMargin/RightContainer" unique_id=1168378881]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "NEXT"
 icon = ExtResource("3_17uns")
 icon_alignment = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=824416175]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -84,15 +84,15 @@ offset_bottom = 502.0
 grow_horizontal = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="QuestionContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="QuestionContainer" type="MarginContainer" parent="PanelContainer" unique_id=788285574]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" unique_id=166746788]
 layout_mode = 2
 
-[node name="QuestionLabel" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="QuestionLabel" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer" unique_id=473680384]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1500, 0)
 layout_mode = 2
@@ -102,7 +102,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="InfoLabel" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="InfoLabel" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer" unique_id=402601850]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -110,7 +110,7 @@ theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FormValidator" type="Control" parent="."]
+[node name="FormValidator" type="Control" parent="." unique_id=577712412]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -120,8 +120,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_nw61e")
+validation_method = 0
 
-[node name="FormBinder" type="Control" parent="FormValidator"]
+[node name="FormBinder" type="Control" parent="FormValidator" unique_id=207335793]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -132,17 +133,17 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_mk32l")
 
-[node name="Control" parent="FormValidator/FormBinder" instance=ExtResource("6_i4s2p")]
+[node name="Control" parent="FormValidator/FormBinder" unique_id=171519431 instance=ExtResource("6_i4s2p")]
 layout_mode = 1
 
-[node name="Background" type="TextureRect" parent="FormValidator/FormBinder/Control"]
+[node name="Background" type="TextureRect" parent="FormValidator/FormBinder/Control" unique_id=1317105634]
 custom_minimum_size = Vector2(1624, 812)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 texture = ExtResource("4_h32tf")
 
-[node name="FormMargin" type="MarginContainer" parent="FormValidator/FormBinder/Control/Background"]
+[node name="FormMargin" type="MarginContainer" parent="FormValidator/FormBinder/Control/Background" unique_id=471353714]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -154,7 +155,7 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 50
 
-[node name="FormContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin"]
+[node name="FormContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin" unique_id=1375940867]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20

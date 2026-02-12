@@ -61,7 +61,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 	var is_init: bool = data.is_empty()
 	var result: Dictionary[int, Dictionary] = data.duplicate(true)
 	var number_of_lessons: int = Database.get_lessons_count()
-	# Check too much keys
+	# Check for extra keys
 	for key: int in result.keys():
 		if key > number_of_lessons:
 			result.erase(key)
@@ -124,7 +124,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 			# First garden (key 1) is always unlocked
 			prev_completed = true
 
-		# Case : previous garden not completed
+		# Case: previous garden not completed
 		if not prev_completed:
 			for game_index: int in range(3):
 				if garden["games"][game_index] != Status.Locked or garden["look_and_learn"] != Status.Locked:
@@ -135,7 +135,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 					break
 			continue
 
-		# Case : lesson completed → games unlocked if needed
+		# Case: lesson completed → unlock games if needed
 		if garden["look_and_learn"] == Status.Completed:
 			for game_index: int in range(3):
 				if garden["games"][game_index] == Status.Locked:
@@ -143,7 +143,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 					if not is_init:
 						Log.warn("StudentProgression: Garden %d: game %d unlocked because lesson is completed" % [index, game_index + 1])
 
-		# Case : previous garden completed → lesson unlocked if needed
+		# Case: previous garden completed → unlock lesson if needed
 		elif garden["look_and_learn"] == Status.Locked:
 			garden["look_and_learn"] = Status.Unlocked
 			if not is_init:

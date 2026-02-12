@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgio7muqck2bu"]
+[gd_scene format=3 uid="uid://bgio7muqck2bu"]
 
 [ext_resource type="Script" uid="uid://dogtl3y1gxiiu" path="res://sources/utils/auto_size_label.gd" id="1_j2tjj"]
 
-[node name="AutoSizeLabel" type="Container"]
+[node name="AutoSizeLabel" type="Container" unique_id=1461916897]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,7 +14,7 @@ grow_vertical = 2
 script = ExtResource("1_j2tjj")
 ref_size_text = "End"
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=1172353947]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "a"

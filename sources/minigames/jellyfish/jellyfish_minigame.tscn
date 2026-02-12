@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dtcgj6ee8jt2t"]
+[gd_scene format=3 uid="uid://dtcgj6ee8jt2t"]
 
 [ext_resource type="PackedScene" uid="uid://clbi7qphyh0so" path="res://sources/minigames/base/hear_and_find/syllables_minigame.tscn" id="1_hauef"]
 [ext_resource type="Script" uid="uid://b5own5tlvbofc" path="res://sources/minigames/jellyfish/jellyfish_minigame.gd" id="2_gnjlp"]
@@ -6,18 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="5_4gwjw"]
 [ext_resource type="Texture2D" uid="uid://d60ylt2dvc2s" path="res://assets/minigames/jellyfish/graphic/background.png" id="6_sn7hv"]
 
-[node name="JellyfishMinigame" instance=ExtResource("1_hauef")]
+[node name="JellyfishMinigame" unique_id=342628221 instance=ExtResource("1_hauef")]
 script = ExtResource("2_gnjlp")
 lesson_nb = 12
 difficulty = 4
 max_number_of_lives = 5
 max_progression = 8
 
-[node name="MinigameUI" parent="." index="1"]
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
 empty_progression_icon = ExtResource("4_1m7js")
 full_progression_icon = ExtResource("5_4gwjw")
 
-[node name="TextureRect" type="TextureRect" parent="GameRoot" index="0"]
+[node name="TextureRect" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=470838651]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,7 +26,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_sn7hv")
 
-[node name="SpawningSpace" type="Control" parent="GameRoot" index="1"]
+[node name="SpawningSpace" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1521195317]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1400, 2.08165e-12)
 layout_mode = 1
@@ -39,6 +39,6 @@ offset_right = 600.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SpawnTimer" type="Timer" parent="GameRoot" index="2"]
+[node name="SpawnTimer" type="Timer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=2032028375]
 
 [connection signal="timeout" from="GameRoot/SpawnTimer" to="." method="_on_spawn_timer_timeout"]

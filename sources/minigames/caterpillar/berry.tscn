@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b07jfpiwtajh"]
+[gd_scene format=3 uid="uid://b07jfpiwtajh"]
 
 [ext_resource type="Script" uid="uid://bf2qm2ncit8uq" path="res://sources/minigames/caterpillar/berry.gd" id="1_36web"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_4ywgh"]
@@ -15,42 +15,42 @@ _data = {
 }
 point_count = 4
 
-[node name="Berry" type="Area2D"]
+[node name="Berry" type="Area2D" unique_id=1516081714]
 script = ExtResource("1_36web")
 
-[node name="HighlightFX" parent="." instance=ExtResource("2_4ywgh")]
+[node name="HighlightFX" parent="." unique_id=2090034090 instance=ExtResource("2_4ywgh")]
 offset_left = 33.0
 offset_top = -136.0
 offset_right = 33.0
 offset_bottom = -136.0
 
-[node name="WrongFX" parent="." instance=ExtResource("4_gmtk0")]
+[node name="WrongFX" parent="." unique_id=1805131697 instance=ExtResource("4_gmtk0")]
 offset_left = 33.0
 offset_top = -136.0
 offset_right = 33.0
 offset_bottom = -136.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1043087808]
 position = Vector2(-144, -128)
 shape = SubResource("RectangleShape2D_aq0kv")
 
-[node name="Path2D" type="Path2D" parent="."]
+[node name="Path2D" type="Path2D" parent="." unique_id=1237975830]
 position = Vector2(32, -78.2222)
 curve = SubResource("Curve2D_w7ms2")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=101495356]
 rotates = false
 loop = false
 
-[node name="Sprite2D" type="Sprite2D" parent="Path2D/PathFollow2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Path2D/PathFollow2D" unique_id=1143837619]
 position = Vector2(8, -81.7778)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("3_37fog")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Path2D/PathFollow2D/Sprite2D"]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Path2D/PathFollow2D/Sprite2D" unique_id=190098366]
 position = Vector2(110.66667, -84.51854)
 
-[node name="Label" type="Label" parent="Path2D/PathFollow2D"]
+[node name="Label" type="Label" parent="Path2D/PathFollow2D" unique_id=119504217]
 unique_name_in_owner = true
 offset_left = -112.0
 offset_top = -145.7778
@@ -61,7 +61,7 @@ label_settings = ExtResource("4_j1h4b")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=2053639933]
 offset_left = -127.0
 offset_top = -160.0
 offset_right = 212.0

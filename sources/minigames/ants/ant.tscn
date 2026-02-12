@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6st16roxwloh"]
+[gd_scene format=3 uid="uid://c6st16roxwloh"]
 
 [ext_resource type="Script" uid="uid://cgglsnkgjyxid" path="res://sources/minigames/ants/ant.gd" id="2_7hdpa"]
 [ext_resource type="SpriteFrames" uid="uid://ceh3p8b7tk4ry" path="res://sources/minigames/ants/ant_animations.tres" id="2_rcd7x"]
@@ -6,20 +6,20 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_100ls"]
 size = Vector2(290, 190)
 
-[node name="Ant" type="Area2D"]
+[node name="Ant" type="Area2D" unique_id=1721368901]
 collision_mask = 0
 monitoring = false
 script = ExtResource("2_7hdpa")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=595030890]
 position = Vector2(0, -85)
 shape = SubResource("RectangleShape2D_100ls")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=889635559]
 position = Vector2(1, -90.5)
 sprite_frames = ExtResource("2_rcd7x")
-animation = &"defeat"
+animation = &"idle"
 autoplay = "idle"
 
-[node name="Anchor" type="Marker2D" parent="."]
+[node name="Anchor" type="Marker2D" parent="." unique_id=744855349]
 position = Vector2(-380, -250)

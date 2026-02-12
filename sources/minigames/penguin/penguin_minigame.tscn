@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dpp3bpy1v80jk"]
+[gd_scene format=3 uid="uid://dpp3bpy1v80jk"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_s6yuv"]
 [ext_resource type="Script" uid="uid://250f3suy83hr" path="res://sources/minigames/penguin/penguin_minigame.gd" id="2_ncha4"]
@@ -6,20 +6,22 @@
 [ext_resource type="Texture2D" uid="uid://kwcp3ondyggo" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_empty.png" id="3_gdpi3"]
 [ext_resource type="PackedScene" uid="uid://b78362g1yif2n" path="res://sources/minigames/penguin/penguin.tscn" id="4_txvyj"]
 [ext_resource type="Texture2D" uid="uid://dq23np4euf6da" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_full.png" id="4_yua7j"]
+[ext_resource type="Texture2D" uid="uid://b2bcmo1keh217" path="res://assets/minigames/ants/graphics/sentence_text_box.png" id="7_8iqp0"]
 
-[node name="PenguinMinigame" instance=ExtResource("1_s6yuv")]
+[node name="PenguinMinigame" unique_id=1041323901 instance=ExtResource("1_s6yuv")]
 script = ExtResource("2_ncha4")
 minigame_name = 8
-lesson_nb = 14
+lesson_nb = 60
 max_number_of_lives = 5
 max_progression = 5
 
-[node name="MinigameUI" parent="." index="1"]
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
 empty_progression_icon = ExtResource("3_gdpi3")
 full_progression_icon = ExtResource("4_yua7j")
 stimulus_button_visible = false
 
-[node name="Background" type="TextureRect" parent="GameRoot" index="0"]
+[node name="Background" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=731869499]
+z_index = -99
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,28 +30,50 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_8crb3")
 
-[node name="Penguin" parent="GameRoot" index="1" instance=ExtResource("4_txvyj")]
+[node name="Penguin" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=446017555 instance=ExtResource("4_txvyj")]
 position = Vector2(637, 1314)
 
-[node name="Control" type="Control" parent="GameRoot" index="2"]
+[node name="SentenceBackground" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=414621906]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 159)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 325.0
-offset_right = -264.0
-offset_bottom = -680.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="LabelsContainer" type="HFlowContainer" parent="GameRoot/Control" index="0"]
-layout_mode = 1
-anchors_preset = 14
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -800.0
+offset_top = -780.0
+offset_right = 1008.0
+offset_bottom = -180.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/v_separation = 20
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="GameRoot/SentenceBackground" index="0" unique_id=655579677]
+z_index = -2
+layout_mode = 2
+texture = ExtResource("7_8iqp0")
+stretch_mode = 2
+
+[node name="Sentence" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=162088451]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -800.0
+offset_top = -780.0
+offset_right = 1008.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/h_separation = 48
 theme_override_constants/v_separation = 20
 alignment = 1

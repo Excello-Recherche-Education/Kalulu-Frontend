@@ -83,6 +83,7 @@ func _find_stimuli_and_distractions() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#ffbf94"), Color("#f5a8c8")])
 	_on_current_progression_changed()
 	sentence_background.show()
 

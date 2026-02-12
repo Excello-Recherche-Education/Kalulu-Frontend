@@ -7,6 +7,7 @@ const KALULU: GDScript = preload("res://sources/minigames/base/kalulu.gd")
 const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
+const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
 const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 const GARDEN_SIZE: int = 2400
 const GARDEN_TEXTURES_NB: int = 20
@@ -214,8 +215,36 @@ func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 	if starting_garden == -1:
 		starting_garden = 0
 	scroll_container.scroll_horizontal = GARDEN_SIZE * starting_garden
-	scroll_beginning_garden = int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE)
-	current_garden = garden_parent.get_child(starting_garden)
+	if transition_data:
+		if transition_data.has("boss_gate_lesson"):
+			var boss_center: Vector2 = Vector2.ZERO
+			if transition_data.get("is_final_boss", false):
+				boss_center = _get_final_boss_center_position()
+			if boss_center == Vector2.ZERO:
+				boss_center = _get_boss_button_position(transition_data.boss_gate_lesson as int)
+			if boss_center != Vector2.ZERO:
+				_center_scroll_on_x(boss_center.x)
+		elif transition_data.has("current_lesson_number"):
+			var lesson_number: int = transition_data.current_lesson_number as int
+			var garden_index: int = _get_garden_index_for_lesson(lesson_number)
+			if garden_index >= 0 and garden_index < garden_parent.get_child_count():
+				var garden_control: Garden = garden_parent.get_child(garden_index)
+				var garden_center_x: float = garden_parent.position.x + garden_control.position.x + GARDEN_SIZE * 0.5
+				_center_scroll_on_x(garden_center_x)
+	scroll_beginning_garden = clampi(int(float(scroll_container.scroll_horizontal) / GARDEN_SIZE), 0, garden_parent.get_child_count() - 1)
+	current_garden = garden_parent.get_child(scroll_beginning_garden)
+
+
+func _center_scroll_on_x(target_x: float) -> void:
+	if not scroll_container:
+		return
+	var view_width: float = scroll_container.size.x
+	var desired_scroll: float = target_x - view_width * 0.5
+	var max_scroll: float = 0.0
+	var h_scroll_bar: ScrollBar = scroll_container.get_h_scroll_bar()
+	if h_scroll_bar:
+		max_scroll = h_scroll_bar.max_value
+	scroll_container.scroll_horizontal = int(roundf(clampf(desired_scroll, 0.0, max_scroll)))
 
 #endregion
 
@@ -328,7 +357,7 @@ func _play_new_lesson_unlock_sequence() -> void:
 		var tween: Tween = create_tween()
 		tween.set_ease(Tween.EASE_IN_OUT)
 		tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 4)
-		scroll_beginning_garden = int(float(target_scroll) / GARDEN_SIZE)
+		scroll_beginning_garden = clampi(int(float(target_scroll) / GARDEN_SIZE), 0, garden_parent.get_child_count() - 1)
 		current_garden = garden_parent.get_child(scroll_beginning_garden)
 
 	line_audio_stream_player.pitch_scale = 0.95
@@ -359,7 +388,7 @@ func _ready() -> void:
 	# If there is no data, skips the rest
 	if not UserDataManager.student_progression:
 		Log.error("Gardens: Ready: No data for student progression")
-		await OpeningCurtain.open()
+		await (OpeningCurtain as OpeningCurtainClass).open()
 		return
 	await get_tree().process_frame
 	
@@ -371,8 +400,8 @@ func _ready() -> void:
 	_apply_progression_to_gardens(transition_context)
 	_scroll_to_starting_garden(transition_context)
 
-	await OpeningCurtain.open()
-	MusicManager.play(MusicManager.Track.Garden)
+	await (OpeningCurtain as OpeningCurtainClass).open()
+	(MusicManager as MusicManagerClass).play((MusicManager as MusicManagerClass).Track.Garden)
 	
 	# Handles all the animation played when entering the gardens
 	if transition_data:
@@ -1258,7 +1287,7 @@ func _on_lesson_button_pressed() -> void:
 	if is_locked:
 		return
 	feedback_audio_stream_player.play()
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	LookAndLearn.transition_data = {
 		current_button_global_position = current_button_global_position,
 		current_lesson_number = current_lesson_number,
@@ -1272,7 +1301,7 @@ func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
 	if is_locked:
 		return
 	feedback_audio_stream_player.play()
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	Minigame.transition_data = {
 		current_lesson_number = lesson_number,
 		current_garden_index = garden_index,
@@ -1281,14 +1310,14 @@ func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
 		skip_minigame_layout = true,
 		boss_gate_lesson = lesson_number
 	}
-	get_tree().change_scene_to_file("res://sources/minigames/fish/fish_minigame.tscn")
+	get_tree().change_scene_to_file(BOSS_MINIGAME_SCENE_PATH)
 
 
 func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
 	if is_locked:
 		return
 	feedback_audio_stream_player.play()
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	Minigame.transition_data = {
 		current_lesson_number = lesson_number,
 		current_garden_index = garden_index,
@@ -1298,14 +1327,14 @@ func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> voi
 		boss_gate_lesson = lesson_number,
 		is_final_boss = true
 	}
-	get_tree().change_scene_to_file("res://sources/minigames/fish/fish_minigame.tscn")
+	get_tree().change_scene_to_file(BOSS_MINIGAME_SCENE_PATH)
 
 
 func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
 	if is_locked:
 		return
 	feedback_audio_stream_player.play()
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	Minigame.transition_data = {
 		current_button_global_position = current_button_global_position,
 		current_lesson_number = current_lesson_number,
@@ -1350,7 +1379,7 @@ func _scroll_by_garden(p_direction: int) -> void:
 
 
 func _on_back_button_pressed() -> void:
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
 
 

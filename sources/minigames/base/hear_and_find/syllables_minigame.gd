@@ -96,7 +96,7 @@ func _find_stimuli_and_distractions() -> void:
 		var stimulus_distractors: Array[Dictionary] = []
 		
 		# Difficulty 1
-		# Any previously learned item w/ all letters different
+		# Any previously learned item with all letters different
 		for syllable: Dictionary in all_syllables:
 			if syllable.Phoneme != stimulus.Phoneme:
 				var gp_found_in_stimuli: bool = false
@@ -122,7 +122,7 @@ func _find_stimuli_and_distractions() -> void:
 					stimulus_distractors.append(syllable)
 				
 				# Difficulty 4-5
-				# If the item has 2 GP, inversed TARGET, i.e., for 'il', 'li' is a distractor
+				# If the item has 2 GP, invert the target (e.g., for "il", "li" is a distractor)
 				if difficulty > 3 and syllable.GPs[0] == stimulus.GPs[1] and syllable.GPs[1] == stimulus.GPs[0]:
 					stimulus_distractors.append(syllable)
 		

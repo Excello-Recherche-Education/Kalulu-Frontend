@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=34 format=3 uid="uid://n1ydrtdfm4p3"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://n1ydrtdfm4p3"]
 
 [ext_resource type="Texture2D" uid="uid://cjxvog1y6wkfv" path="res://assets/minigames/crabs/graphic/crab_spritesheet.png" id="1_7itt8"]
 

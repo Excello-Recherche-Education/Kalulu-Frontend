@@ -28,6 +28,7 @@ func _setup_word_progression() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#ffbf94")])
 	frog.last_valid_position = frog.global_position
 
 
@@ -109,6 +110,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		track.is_cleared = true
 		track.is_enabled = false
 		frog.success()
+		await lilypad.right()
 		await audio_player.play_gp(lilypad.stimulus)
 		current_word_progression += 1
 
@@ -122,22 +124,39 @@ func _on_current_word_progression_changed() -> void:
 
 
 func _on_current_progression_changed() -> void:
+	var is_final_word: bool = current_progression >= max_progression
 	frog.jump_to(end.global_position)
 	await frog.jumped
 	frog.win()
-	# Play the animation on each pad
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		track.right()
-	# Replay the stimulus
 	await audio_player.play_word(_get_previous_stimulus().Word as String)
-	# Makes the frog jumps out of screen
+	if is_final_word:
+		super()
+		return
 	await frog.flip_happy()
 	frog.jump_to(frog_despawn_point.global_position)
 	await frog.jumped
 	await _free_tracks()
 	await _reset_frog()
-	# Setups the next word
 	super()
+
+
+func set_current_progression(p_current_progression: int) -> void:
+	var previous_progression: int = current_progression
+	current_progression = p_current_progression
+	Log.debug("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
+
+	consecutive_errors = 0
+	is_highlighting = false
+
+	if minigame_ui:
+		minigame_ui.set_progression(p_current_progression)
+	if p_current_progression == max_progression and previous_progression != max_progression:
+		await _on_current_progression_changed()
+		await _win()
+	else:
+		await _on_current_progression_changed()
 
 #endregion
 

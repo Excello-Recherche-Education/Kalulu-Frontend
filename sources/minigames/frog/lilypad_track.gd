@@ -94,7 +94,7 @@ func _spawn_lilypad() -> void:
 	else:
 		lilypad.global_position = global_position + Vector2(size.x / 2.0, size.y)
 	
-	lilypad_size = lilypad.button.size
+	lilypad_size = lilypad.button.size + Vector2(0, lilypad.label.size.y)
 	if size.x < lilypad_size.x:
 		var lily_scale: float = size.x / lilypad_size.x
 		lilypad.button.scale = Vector2(lily_scale, lily_scale)

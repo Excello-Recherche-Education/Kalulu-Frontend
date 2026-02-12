@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ci7ueo06f24k3"]
+[gd_scene format=3 uid="uid://ci7ueo06f24k3"]
 
 [ext_resource type="Script" uid="uid://cil0o87dsb7q4" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_v06h8"]
@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://qsvbq6ruc44v" path="res://sources/menus/settings/lesson_unlocks.tscn" id="9_mljfd"]
 [ext_resource type="PackedScene" uid="uid://dhowigt8un22u" path="res://sources/ui/loading_popup.tscn" id="10_i488h"]
 
-[node name="TeacherSettings" type="Control"]
+[node name="TeacherSettings" type="Control" unique_id=149147235]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,10 +20,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ojivk")
 
-[node name="Background" parent="." instance=ExtResource("1_v06h8")]
+[node name="Background" parent="." unique_id=482800213 instance=ExtResource("1_v06h8")]
 layout_mode = 1
 
-[node name="InterfaceLeft" type="MarginContainer" parent="."]
+[node name="InterfaceLeft" type="MarginContainer" parent="." unique_id=287585712]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -35,11 +35,11 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="Container" type="VBoxContainer" parent="InterfaceLeft"]
+[node name="Container" type="VBoxContainer" parent="InterfaceLeft" unique_id=1286353688]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
+[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=2030686467]
 layout_mode = 2
 size_flags_vertical = 3
 texture_normal = ExtResource("3_hvu1i")
@@ -47,7 +47,7 @@ texture_pressed = ExtResource("4_045cm")
 texture_disabled = ExtResource("5_e3piv")
 stretch_mode = 4
 
-[node name="VolumeContainer" type="MarginContainer" parent="InterfaceLeft/Container"]
+[node name="VolumeContainer" type="MarginContainer" parent="InterfaceLeft/Container" unique_id=1984502757]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
@@ -55,38 +55,38 @@ theme_override_constants/margin_left = 75
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 75
 
-[node name="VolumeButton" parent="InterfaceLeft/Container/VolumeContainer" instance=ExtResource("6_s8nbl")]
+[node name="VolumeButton" parent="InterfaceLeft/Container/VolumeContainer" unique_id=1259345936 instance=ExtResource("6_s8nbl")]
 layout_mode = 2
 
-[node name="Dashboard" type="Button" parent="InterfaceLeft/Container"]
+[node name="Dashboard" type="Button" parent="InterfaceLeft/Container" unique_id=1049387909]
 layout_mode = 2
 theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 40
 text = "DASHBOARD"
 
-[node name="SynchronizeButton" type="Button" parent="InterfaceLeft/Container"]
+[node name="SynchronizeButton" type="Button" parent="InterfaceLeft/Container" unique_id=1036367184]
 layout_mode = 2
 theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 40
 text = "SYNCHRONIZE_ACCOUNT"
 
-[node name="DeleteButton" type="Button" parent="InterfaceLeft/Container"]
+[node name="DeleteButton" type="Button" parent="InterfaceLeft/Container" unique_id=721919922]
 layout_mode = 2
 theme_type_variation = &"DangerButton"
 theme_override_font_sizes/font_size = 40
 text = "DELETE_ACCOUNT"
 
-[node name="DeletePopup" parent="InterfaceLeft/Container/DeleteButton" instance=ExtResource("7_jetb7")]
+[node name="DeletePopup" parent="InterfaceLeft/Container/DeleteButton" unique_id=635237219 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
 content_text = "DELETE_ACCOUNT_POPUP"
 
-[node name="LogoutButton" type="Button" parent="InterfaceLeft/Container"]
+[node name="LogoutButton" type="Button" parent="InterfaceLeft/Container" unique_id=808130432]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "LOGOUT"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2087046145]
 custom_minimum_size = Vector2(1970, 1800)
 layout_mode = 1
 anchors_preset = 11
@@ -97,24 +97,24 @@ offset_left = -632.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=258975030]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1383989464]
 layout_mode = 2
 
-[node name="AccountTypeLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="AccountTypeLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1808699389]
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
 text = "ACCOUNT_TYPE"
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer" unique_id=250669743]
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="AccountTypeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+[node name="AccountTypeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer" unique_id=1179262769]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
@@ -125,22 +125,22 @@ popup/item_0/id = 0
 popup/item_1/text = "PARENT"
 popup/item_1/id = 1
 
-[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/HBoxContainer" unique_id=75958873]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 30
 
-[node name="EducationMethodeLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="EducationMethodeLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1698158036]
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
 text = "EDUCATION_METHOD"
 
-[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/HBoxContainer" unique_id=1023308123]
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="EducationMethodOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+[node name="EducationMethodOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer" unique_id=1661492451]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
@@ -151,27 +151,27 @@ popup/item_0/id = 0
 popup/item_1/text = "METHOD_COMPLETE"
 popup/item_1/id = 1
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer" unique_id=516915003]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="DevicesTabContainer" type="TabContainer" parent="VBoxContainer"]
+[node name="DevicesTabContainer" type="TabContainer" parent="VBoxContainer" unique_id=1657386395]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="InterfaceBottom" type="MarginContainer" parent="VBoxContainer"]
+[node name="InterfaceBottom" type="MarginContainer" parent="VBoxContainer" unique_id=987344123]
 layout_mode = 2
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="Container" type="HBoxContainer" parent="VBoxContainer/InterfaceBottom"]
+[node name="Container" type="HBoxContainer" parent="VBoxContainer/InterfaceBottom" unique_id=325936073]
 layout_mode = 2
 theme_override_constants/separation = 25
 alignment = 2
 
-[node name="AddStudentButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
+[node name="AddStudentButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container" unique_id=1694799167]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -179,7 +179,7 @@ theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
 text = "SETTINGS_ADD_STUDENT"
 
-[node name="AddDeviceButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container"]
+[node name="AddDeviceButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container" unique_id=503874336]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -187,35 +187,53 @@ theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
 text = "SETTINGS_ADD_DEVICE"
 
-[node name="LabelInternetMandatory" type="Label" parent="VBoxContainer/InterfaceBottom/Container"]
+[node name="LabelInternetMandatory" type="Label" parent="VBoxContainer/InterfaceBottom/Container" unique_id=1658066828]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 60
 text = "SETTINGS_INTERNET_MANDATORY_TO_ADD_STUDENT"
 
-[node name="LessonUnlocks" parent="." instance=ExtResource("9_mljfd")]
+[node name="ExportCodesButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container" unique_id=39310172]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("8_7h0sa")
+theme_override_font_sizes/font_size = 70
+text = "EXPORT_TO_PDF"
+
+[node name="LessonUnlocks" parent="." unique_id=1063204137 instance=ExtResource("9_mljfd")]
 visible = false
 layout_mode = 1
 
-[node name="AddStudentPopup" parent="." instance=ExtResource("7_jetb7")]
+[node name="AddStudentPopup" parent="." unique_id=228068112 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
 content_text = "ADD_STUDENT_POPUP"
 
-[node name="AddDevicePopup" parent="." instance=ExtResource("7_jetb7")]
+[node name="AddDevicePopup" parent="." unique_id=1068863729 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
 content_text = "ADD_DEVICE_POPUP"
 
-[node name="DeleteStudentPopup" parent="." instance=ExtResource("7_jetb7")]
+[node name="DeleteStudentPopup" parent="." unique_id=231430561 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
 content_text = "DELETE_STUDENT_POPUP"
 
-[node name="LoadingPopup" parent="." instance=ExtResource("10_i488h")]
+[node name="LoadingPopup" parent="." unique_id=303867354 instance=ExtResource("10_i488h")]
 unique_name_in_owner = true
 visible = false
+
+[node name="ExportCodesFileDialog" type="FileDialog" parent="." unique_id=2034874559]
+unique_name_in_owner = true
+oversampling_override = 1.0
+mode = 4
+title = "EXPORT_STUDENT_CODES"
+position = Vector2i(100, 100)
+size = Vector2i(2400, 1600)
+ok_button_text = "EXPORT_STUDENT_CODES"
+cancel_button_text = "CANCEL"
+access = 2
 
 [connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="InterfaceLeft/Container/Dashboard" to="." method="_on_dashboard_button_pressed"]
@@ -228,6 +246,7 @@ visible = false
 [connection signal="tab_changed" from="VBoxContainer/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/ExportCodesButton" to="." method="_on_export_codes_button_pressed"]
 [connection signal="student_deleted" from="LessonUnlocks" to="." method="_on_lesson_unlocks_student_deleted"]
 [connection signal="accepted" from="AddStudentPopup" to="." method="_on_add_student_popup_accepted"]
 [connection signal="accepted" from="AddDevicePopup" to="." method="_on_add_device_popup_accepted"]

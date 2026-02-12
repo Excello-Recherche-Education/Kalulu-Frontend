@@ -25,15 +25,14 @@ var current_tracing: int = 0
 
 
 func _ready() -> void:
-	MusicManager.stop()
-	
+	(MusicManager as MusicManagerClass).stop()
 	gardens_data = transition_data
 	transition_data = {}
 	Log.trace("LookAndLearn: Transition data received = %s" % str(gardens_data))
 	lesson_nb = gardens_data.get("current_lesson_number", lesson_nb)
 	Log.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
 	setup()
-	await OpeningCurtain.open()
+	await (OpeningCurtain as OpeningCurtainClass).open()
 
 
 func setup() -> void:
@@ -42,7 +41,7 @@ func setup() -> void:
 	
 	if gp_list.size() <= 0:
 		Log.error("LookAndLearn: Setup: Did not found any GP for lesson " + str(lesson_nb))
-		await OpeningCurtain.open()
+		await (OpeningCurtain as OpeningCurtainClass).open()
 		_on_tracing_manager_finished()
 		return
 	
@@ -87,7 +86,6 @@ func play_videos() -> void:
 	else:
 		video_player.stream = videos[current_video]
 		video_player.play()
-		
 		current_video += 1
 
 
@@ -98,7 +96,6 @@ func play_images_and_sounds() -> void:
 		image.texture = images[current_image_and_sound]
 		audio_player.stream = sounds[current_image_and_sound]
 		audio_player.play() 
-		
 		current_image_and_sound += 1
 
 
@@ -160,8 +157,7 @@ func _on_tracing_manager_finished() -> void:
 
 func _back_to_gardens() -> void:
 	Log.info("LookAndLearn: Returning to gardens for lesson %d" % lesson_nb)
-	await OpeningCurtain.close()
-	
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	Gardens.transition_data = gardens_data
 	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cm7e5ir8ykhpv"]
+[gd_scene format=3 uid="uid://cm7e5ir8ykhpv"]
 
 [ext_resource type="Script" uid="uid://cnff6x5ax6es" path="res://sources/minigames/caterpillar/caterpillar_head.gd" id="1_775bq"]
 [ext_resource type="SpriteFrames" uid="uid://bv7mbvlwh758k" path="res://sources/minigames/caterpillar/caterpillar_head_animations.tres" id="3_5v128"]
@@ -6,23 +6,23 @@
 [ext_resource type="Script" uid="uid://b37yj46mbp3s2" path="res://sources/minigames/caterpillar/caterpillar_audio_stream_player.gd" id="27_x0mct"]
 [ext_resource type="PackedScene" uid="uid://dyn71e3ttv2le" path="res://sources/minigames/caterpillar/spit_fx.tscn" id="28_vojnm"]
 
-[node name="CaterpillarHead" type="Node2D"]
+[node name="CaterpillarHead" type="Node2D" unique_id=1650346685]
 script = ExtResource("1_775bq")
 
-[node name="SpitFX" parent="." instance=ExtResource("28_vojnm")]
+[node name="SpitFX" parent="." unique_id=2007081174 instance=ExtResource("28_vojnm")]
 offset_left = 320.0
 offset_top = -120.0
 offset_right = 320.0
 offset_bottom = -120.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1215911518]
 position = Vector2(184, -184)
 sprite_frames = ExtResource("3_5v128")
 animation = &"idle"
 autoplay = "idle"
 frame_progress = 0.6966647
 
-[node name="CaterpillarAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="CaterpillarAudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=481553941]
 stream = ExtResource("26_f75m3")
 bus = &"Effects"
 script = ExtResource("27_x0mct")

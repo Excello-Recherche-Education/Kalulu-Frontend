@@ -30,6 +30,7 @@ var current_steps: Array[Step] = []
 
 func _ready() -> void:
 	current_steps = [language_step.instantiate(), account_type_step.instantiate()]
+	Log.info("Register: Initialized registration flow with %d steps" % current_steps.size())
 	_go_to_step(int(progress_bar.value))
 	OpeningCurtain.open()
 
@@ -52,6 +53,7 @@ func _go_to_step(step_index: int) -> void:
 	next_step.back.connect(_on_step_back)
 	next_step.next.connect(_on_step_completed)
 	next_step.on_enter()
+	Log.trace("Register: Entered step %s (%d/%d)" % [next_step.step_name, step_index + 1, current_steps.size()])
 	
 	# Handles progress bar
 	progress_bar.set_value_with_tween(step_index)
@@ -59,12 +61,15 @@ func _go_to_step(step_index: int) -> void:
 
 func _on_step_back(_step: Step) -> void:
 	if progress_bar.value == 0:
+		Log.info("Register: Back to main menu from first step")
 		get_tree().change_scene_to_file(MAIN_MENU_PATH)
 	else:
+		Log.trace("Register: Moving back from step %d" % int(progress_bar.value))
 		_go_to_step(int(progress_bar.value-1))
 
 
 func _on_step_completed(step: Step) -> void:
+	Log.trace("Register: Completed step %s" % step.step_name)
 	match step.step_name:
 		"type":
 			# Adds teacher or parent steps
@@ -108,13 +113,19 @@ func _on_step_completed(step: Step) -> void:
 	
 	if progress_bar.value == current_steps.size()-1:
 		# Send register via API
+		Log.info("Register: Submitting registration for %s" % str(register_data.email))
 		var res: Dictionary = await ServerManager.register(register_data.to_dict())
 		if res.code == 200:
+			Log.info("Register: Registration request successful, saving data")
 			register_data.last_modified = res.body.last_modified
 			register_data.token = res.body.token
 			if UserDataManager.register(register_data):
+				Log.info("Register: Registration stored locally, moving to package downloader")
 				get_tree().change_scene_to_file(NEXT_SCENE_PATH)
+			else:
+				Log.error("Register: Failed to persist registration locally")
 		else:
+			Log.warn("Register: Registration failed with code %d" % res.code)
 			if res.has("body") and (res.body as Dictionary).has("message"):
 				popup_info_label.text = res.body.message
 			else:

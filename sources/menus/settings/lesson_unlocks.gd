@@ -56,6 +56,7 @@ func _on_student_changed(value: int)-> void:
 	progression = UserDataManager.get_student_progression_for_code(device, student)
 	_create_lessons()
 	(%PasswordVisualizer as PasswordVisualizer).password = str(value)
+	Log.info("LessonUnlocks: Loaded student %d for device %d" % [student, device])
 	var all_students: Array = UserDataManager.teacher_settings.students[device]
 	for student_data: StudentData in all_students:
 		if student_data.code == value:
@@ -66,14 +67,17 @@ func _on_student_changed(value: int)-> void:
 func _on_back_button_pressed() -> void:
 	progression.last_modified = Time.get_datetime_string_from_system(true)
 	UserDataManager.save_student_progression_for_code(device, student, progression)
+	Log.info("LessonUnlocks: Saved progression for student %d on device %d" % [student, device])
 	hide()
 
 
 func _on_delete_button_pressed() -> void:
+	Log.warn("LessonUnlocks: Delete requested for student %d on device %d" % [student, device])
 	student_deleted.emit(int(student))
 
 
 func _on_device_change_button_pressed() -> void:
+	Log.trace("LessonUnlocks: Device change requested for student %d" % student)
 	_device_selection_refresh()
 	device_selection_container.show()
 
@@ -81,6 +85,7 @@ func _on_device_change_button_pressed() -> void:
 func _on_name_changed(new_name: String) -> void:
 	UserDataManager.teacher_settings.update_student_name(student, new_name)
 	teacher_settings.update_student_name(student, new_name)
+	Log.info("LessonUnlocks: Updated student %d name to %s" % [student, new_name])
 
 
 func _device_selection_refresh() -> void:
@@ -103,6 +108,7 @@ func _device_button_pressed(device_id: int) -> void:
 	UserDataManager.teacher_settings.update_student_device(student, device_id)
 	await teacher_settings.refresh_devices_tabs()
 	device = device_id
+	Log.info("LessonUnlocks: Updated student %d to device %d" % [student, device_id])
 	var res_set: Dictionary = await ServerManager.set_student_data(student, {"device_id": device_id})
 	if not res_set.success:
 		Log.trace("LessonUnlocks: Device was updated locally for the student, but the network update failed.")

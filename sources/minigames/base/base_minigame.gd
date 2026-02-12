@@ -62,7 +62,7 @@ var current_lives: int = 0:
 		var previous_lives: int = current_lives
 		current_lives = value
 		if current_lives != previous_lives:
-			Log.debug("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, Type.keys()[minigame_name]])
+			Log.trace("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, Type.keys()[minigame_name]])
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
 		if current_lives <= max_number_of_lives - errors_before_help_speech:
@@ -116,7 +116,7 @@ func _ready() -> void:
 	
 	if not Engine.is_editor_hint():
 		# Stop the current music
-		MusicManager.stop()
+		(MusicManager as MusicManagerClass).stop()
 	
 	_reset_logs()
 	_initialize()
@@ -151,7 +151,7 @@ func _find_stimuli_and_distractions() -> void:
 
 # Opens the curtains and Kalulu explains
 func _curtains_and_kalulu() -> void:
-	await OpeningCurtain.open()
+	await (OpeningCurtain as OpeningCurtainClass).open()
 	
 	# Checks if intro needs to be played
 	if not UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
@@ -197,7 +197,7 @@ func _notification(what: int) -> void:
 
 func _reset() -> void:
 	get_tree().paused = false
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	get_tree().reload_current_scene()
 
 
@@ -402,7 +402,7 @@ func _update_confusion_matrix_gp_score(expected_id: int, selected_id: int) -> vo
 
 func _go_back_to_the_garden() -> void:
 	get_tree().paused = false
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	
 	_save_logs()
 	
@@ -441,7 +441,7 @@ func _play_kalulu_help_speech() -> void:
 func set_current_progression(p_current_progression: int) -> void:
 	var previous_progression: int = current_progression
 	current_progression = p_current_progression
-	Log.debug("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
+	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
 	
 	consecutive_errors = 0
 	is_highlighting = false
@@ -486,7 +486,7 @@ func _on_minigame_ui_restart_button_pressed() -> void:
 
 
 func _on_current_progression_changed() -> void:
-	# Make Godot understands that this function is a coroutine even if it does nothing, to avoid warning
+	# Make Godot understand that this function is a coroutine even if it does nothing, to avoid warning
 	await get_tree().create_timer(0).timeout
 
 #endregion

@@ -28,13 +28,15 @@ func set_button_enabled(is_enabled: bool) -> void:
 
 func right() -> void:
 	right_fx.play()
-	set("theme_override_colors/font_color", Minigame.LABEL_COLOR_WIN)
+	label_settings = label_settings.duplicate()
+	label_settings.font_color = Minigame.LABEL_COLOR_WIN
 	await right_fx.finished
 
 
 func wrong() -> void:
 	wrong_fx.play()
-	set("theme_override_colors/font_color", Minigame.LABEL_COLOR_LOSE)
+	label_settings = label_settings.duplicate()
+	label_settings.font_color = Minigame.LABEL_COLOR_LOSE
 	await wrong_fx.finished
 
 

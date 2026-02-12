@@ -43,15 +43,15 @@ func _setup_minigame() -> void:
 	super._setup_minigame()
 	pick_random_color()
 	
-	# Setups the current settings
+	# Sets up the current settings
 	settings = difficulty_settings[difficulty]
 	if not settings:
 		return
 	
-	# Setups the island for the first word
+	# Sets up the island for the first word
 	island.stimulus = self._get_current_stimulus()
 	
-	# Setups the timer
+	# Sets up the timer
 	spawn_timer.wait_time = settings.spawn_rate
 	
 	for stimulus: Dictionary in stimuli:

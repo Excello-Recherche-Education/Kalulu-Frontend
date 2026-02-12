@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://w564hds6sey0"]
+[gd_scene format=3 uid="uid://w564hds6sey0"]
 
 [ext_resource type="Script" uid="uid://b1p0ed4afojd0" path="res://sources/language_tool/lesson_exercises_container.gd" id="1_ov6jd"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_10y14"]
@@ -10,109 +10,109 @@ bg_color = Color(0.254902, 0.329412, 0.572549, 1)
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
-[node name="LessonExercisesContainer" type="PanelContainer"]
+[node name="LessonExercisesContainer" type="PanelContainer" unique_id=45130978]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qwmcw")
 script = ExtResource("1_ov6jd")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1468824048]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1310653404]
 layout_mode = 2
 
-[node name="LessonIDLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="LessonIDLabel" type="Label" parent="MarginContainer/HBoxContainer" unique_id=2119471174]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LessonGPs" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="LessonGPs" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=98973265]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1235485340]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2" unique_id=1320176890]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer" unique_id=980793569]
 layout_mode = 2
 text = "GPs:"
 
-[node name="NumberOfGPs" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer"]
+[node name="NumberOfGPs" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer" unique_id=111640101]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2" unique_id=1778928230]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer2" unique_id=183589560]
 layout_mode = 2
 text = "Syllables:"
 
-[node name="NumberOfSyllables" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer2"]
+[node name="NumberOfSyllables" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer2" unique_id=812846257]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2" unique_id=1733183061]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer3" unique_id=2017539474]
 layout_mode = 2
 text = "Words:"
 
-[node name="NumberOfWords" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer3"]
+[node name="NumberOfWords" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer3" unique_id=1513718657]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HBoxContainer2" unique_id=815071969]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer4" unique_id=2109422018]
 layout_mode = 2
 text = "Sentences:"
 
-[node name="NumberOfSentences" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer4"]
+[node name="NumberOfSentences" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2/HBoxContainer4" unique_id=1492029910]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=898228874]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer" unique_id=1991080662]
 layout_mode = 2
 
-[node name="ExerciseButton1" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="ExerciseButton1" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=202147542]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ExerciseButton2" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="ExerciseButton2" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=728808584]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ExerciseButton3" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="ExerciseButton3" type="OptionButton" parent="MarginContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=2051339404]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="SaveButton" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_10y14")]
+[node name="SaveButton" parent="MarginContainer/HBoxContainer" unique_id=167447895 instance=ExtResource("2_10y14")]
 layout_mode = 2
 
 [node name="TextureRect" parent="MarginContainer/HBoxContainer/SaveButton" index="0"]
 texture = ExtResource("3_ssxih")
 
-[node name="OKTexture" type="TextureRect" parent="MarginContainer/HBoxContainer/SaveButton/TextureRect" index="0"]
+[node name="OKTexture" type="TextureRect" parent="MarginContainer/HBoxContainer/SaveButton/TextureRect" index="0" unique_id=1427847198]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 3
@@ -128,7 +128,7 @@ scale = Vector2(0.2, 0.2)
 pivot_offset = Vector2(512, 512)
 texture = ExtResource("4_0353f")
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer" unique_id=1399234481]
 custom_minimum_size = Vector2(220, 220)
 layout_mode = 2
 

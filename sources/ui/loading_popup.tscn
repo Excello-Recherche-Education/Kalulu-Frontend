@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dhowigt8un22u"]
+[gd_scene format=3 uid="uid://dhowigt8un22u"]
 
 [ext_resource type="Script" uid="uid://bmv36ejdmk3hc" path="res://sources/ui/loading_popup.gd" id="1_edhv8"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="2_t7x2v"]
@@ -9,10 +9,10 @@ colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ymust"]
 gradient = SubResource("Gradient_22q4u")
 
-[node name="LoadingPopup" type="CanvasLayer"]
+[node name="LoadingPopup" type="CanvasLayer" unique_id=953599663]
 script = ExtResource("1_edhv8")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1180606912]
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +22,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = SubResource("GradientTexture1D_ymust")
 
-[node name="PanelContainer" type="PanelContainer" parent="TextureRect"]
+[node name="PanelContainer" type="PanelContainer" parent="TextureRect" unique_id=1737293202]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -37,21 +37,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer" unique_id=659146653]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer/VBoxContainer" unique_id=310882762]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer" unique_id=1972128447]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="ContentLabel" type="Label" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ContentLabel" type="Label" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1501977860]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1000, 0)
 layout_mode = 2
@@ -60,22 +60,22 @@ theme = ExtResource("2_t7x2v")
 theme_type_variation = &"HeaderMedium"
 autowrap_mode = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=528709124]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 theme = ExtResource("2_t7x2v")
 value = 25.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=837561413]
 layout_mode = 2
 
-[node name="VSeparatorLeft" type="VSeparator" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VSeparatorLeft" type="VSeparator" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1205750400]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_t7x2v")
 
-[node name="OKButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OKButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1370609952]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -85,7 +85,7 @@ theme_type_variation = &"DangerButton"
 theme_override_font_sizes/font_size = 50
 text = "OK"
 
-[node name="CancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1841895718]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -94,7 +94,7 @@ theme_type_variation = &"DangerButton"
 theme_override_font_sizes/font_size = 50
 text = "CANCEL"
 
-[node name="VSeparatorRight" type="VSeparator" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VSeparatorRight" type="VSeparator" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=665161591]
 layout_mode = 2
 size_flags_horizontal = 3
 

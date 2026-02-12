@@ -1,4 +1,4 @@
-[gd_scene load_steps=151 format=3 uid="uid://dnuny6200v5b0"]
+[gd_scene format=3 uid="uid://dnuny6200v5b0"]
 
 [ext_resource type="Texture2D" uid="uid://berypn513y7ts" path="res://assets/kalulu/kalulu_hide_0000.png" id="1_kedj5"]
 [ext_resource type="Texture2D" uid="uid://ctkb46hb7gd47" path="res://assets/kalulu/kalulu_hide_0001.png" id="2_u4jwh"]
@@ -657,7 +657,7 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="Kalulu" type="AnimatedSprite2D"]
+[node name="Kalulu" type="AnimatedSprite2D" unique_id=1277205438]
 sprite_frames = SubResource("SpriteFrames_bhck1")
 animation = &"Hide"
 script = ExtResource("149_lwhfy")
