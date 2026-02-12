@@ -160,11 +160,13 @@ scale = Vector2(1, 1.4)
 
 [node name="Sprite2D_Body_Left" type="Sprite2D" parent="Position/Node2D" unique_id=1894733226]
 unique_name_in_owner = true
+self_modulate = Color(0.8156863, 0.8745098, 0.39607844, 1)
 texture = ExtResource("15_2xyl2")
 centered = false
 
 [node name="TextureRect_Body_Center" type="TextureRect" parent="Position/Node2D" unique_id=1403458388]
 unique_name_in_owner = true
+self_modulate = Color(0.8156863, 0.8745098, 0.39607844, 1)
 offset_right = 9.0
 offset_bottom = 114.0
 texture = ExtResource("16_8jigi")
@@ -172,6 +174,7 @@ stretch_mode = 1
 
 [node name="Sprite2D_Body_Right" type="Sprite2D" parent="Position/Node2D" unique_id=522931526]
 unique_name_in_owner = true
+self_modulate = Color(0.8156863, 0.8745098, 0.39607844, 1)
 texture = ExtResource("17_rhhiw")
 centered = false
 
