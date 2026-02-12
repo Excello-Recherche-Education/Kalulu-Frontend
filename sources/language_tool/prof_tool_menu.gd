@@ -251,10 +251,10 @@ func _check_db_integrity() -> void:
 
 				for word_pos_entry: Dictionary in word_list:
 					if word_pos_entry.has("WordPosition"):
-						var p: int = word_pos_entry.WordPosition as int
-						positions_present[p] = true
-						min_pos = mini(min_pos, p)
-						max_pos = maxi(max_pos, p)
+						var position_index: int = word_pos_entry.WordPosition as int
+						positions_present[position_index] = true
+						min_pos = mini(min_pos, position_index)
+						max_pos = maxi(max_pos, position_index)
 					else:
 						# If get_words_in_sentence does not return WordPosition, we cannot validate continuity.
 						can_check_positions = false
