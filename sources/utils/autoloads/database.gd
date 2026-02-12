@@ -486,6 +486,22 @@ func get_words_in_sentence(sentence_id: int) -> Array[Dictionary]:
 	return db.query_result
 
 
+func get_words_in_sentence_for_integrity_check(sentence_id: int) -> Array[Dictionary]:
+	db.query_with_bindings(
+		"SELECT
+			Words.ID AS ID,
+			Words.Word AS Word,
+			WordsInSentences.Position AS WordPosition,
+			WordsInSentences.SentenceID AS SentenceID
+		FROM WordsInSentences
+		INNER JOIN Words ON Words.ID = WordsInSentences.WordID
+		WHERE WordsInSentences.SentenceID = ?
+		ORDER BY WordsInSentences.Position ASC",
+		[sentence_id]
+	)
+	return db.query_result
+
+
 func get_lessons_count() -> int:
 	db.query("SELECT MAX(Lessons.LessonNb) as i FROM Lessons")
 	if db.query_result.is_empty() or not db.query_result[0].i:
