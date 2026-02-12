@@ -14,9 +14,10 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Prof_Tool"
-config/version="1.3.7"
-run/main_scene="uid://cp832jmwru06w"
+config/name="Kalulu"
+config/description="Open-source educational app to teach reading skills using Godot, based on the graphemic method, designed for children aged 5+"
+config/version="3.0.0"
+run/main_scene="uid://xndd7r8jpai5"
 config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 config/icon="uid://dipdtrs4i7i7v"
