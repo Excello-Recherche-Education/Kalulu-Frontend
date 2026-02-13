@@ -44,7 +44,7 @@
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="41_xcos2"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="42_l35j3"]
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="43_jfyfk"]
-[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="44_okr34"]
+[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="44_okr34"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ey6av"]
 blend_mode = 1
