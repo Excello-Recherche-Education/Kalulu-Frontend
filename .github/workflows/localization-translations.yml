@@ -1,0 +1,34 @@
+name: Localization Translation Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  localization_translations:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run localization translation check
+        id: localization
+        run: |
+          python3 .github/scripts/check_localization_translations.py > localization_translation_output.txt
+        continue-on-error: true
+      - name: Comment on PR with localization translation output
+        if: steps.localization.outcome != 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('localization_translation_output.txt', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+      - name: Fail if localization translation check failed
+        if: steps.localization.outcome != 'success'
+        run: exit 1
