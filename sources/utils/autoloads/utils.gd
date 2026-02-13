@@ -6,7 +6,8 @@ const SUPPORTED_LOCALES: Dictionary[String, String] = {
 	"es_UY": "Español (Uruguay)",
 	"es_CO": "Español (Colombia)",
 	"pt_BR": "Português (Brasil)",
-	"es_DO": "Español (República Dominicana)"
+	"es_DO": "Español (República Dominicana)",
+	"it_IT": "Italiano (Italia) (BETA)",
 }
 const RESERVED_FILE_NAMES: Array[String] = [
 	"CON", "PRN", "AUX", "NUL",
