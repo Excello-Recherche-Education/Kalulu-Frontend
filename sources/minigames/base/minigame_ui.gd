@@ -8,7 +8,7 @@ signal kalulu_button_pressed()
 signal kalulu_speech_ended()
 signal pause_ended()
 
-const KALULU: GDScript = preload("res://sources/minigames/base/kalulu.gd")
+const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
 
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture

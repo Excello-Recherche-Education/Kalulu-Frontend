@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://xndd7r8jpai5"]
 
 [ext_resource type="Script" uid="uid://cyknkckeohkmb" path="res://sources/menus/splash_screen/splash_screen.gd" id="1_6qhsg"]
-[ext_resource type="Texture2D" uid="uid://r0hp4q240rhv" path="res://assets/splash.jpg" id="2_evh4b"]
+[ext_resource type="Texture2D" uid="uid://dbymcxksnha54" path="res://assets/splash.png" id="2_ffp8c"]
 
 [node name="SplashScreen" type="Control" unique_id=545356585]
 layout_mode = 3
@@ -24,7 +24,7 @@ grow_vertical = 2
 layout_mode = 0
 offset_right = 2560.0
 offset_bottom = 1792.0
-texture = ExtResource("2_evh4b")
+texture = ExtResource("2_ffp8c")
 stretch_mode = 5
 
 [node name="Timer" type="Timer" parent="." unique_id=309787310]

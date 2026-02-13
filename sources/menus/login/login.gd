@@ -6,7 +6,7 @@ const NEXT_SCENE_PATH: String = "res://sources/menus/brain/brain.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
-const KALULU: GDScript = preload("res://sources/minigames/base/kalulu.gd")
+const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
 const DEV_CLICK_THRESHOLD: int = 10 # Number of clicks needed to open Developer Settings
 const DEV_CLICK_MAX_DELAY: float = 0.6 # Delay between each clicks (in seconds)
 
