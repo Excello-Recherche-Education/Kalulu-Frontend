@@ -227,6 +227,11 @@ texture_pressed = ExtResource("9_bxlyd")
 texture_disabled = ExtResource("10_h64tq")
 stretch_mode = 5
 
+[node name="HSeparator" type="HSeparator" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=170916794]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
+
 [node name="KaluluButtonMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=1977883805]
 layout_mode = 2
 size_flags_vertical = 3
@@ -237,6 +242,7 @@ layout_mode = 2
 texture_normal = ExtResource("11_n2mcy")
 texture_pressed = ExtResource("12_crt1m")
 texture_disabled = ExtResource("13_2j53i")
+ignore_texture_size = true
 stretch_mode = 5
 
 [node name="CentralPadMargin" type="MarginContainer" parent="MainControl/Interface" unique_id=1744553475]

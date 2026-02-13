@@ -210,6 +210,7 @@ size_flags_vertical = 10
 texture_normal = ExtResource("13_xas2k")
 texture_pressed = ExtResource("14_t5yvg")
 texture_disabled = ExtResource("15_po2yv")
+ignore_texture_size = true
 stretch_mode = 4
 
 [node name="HeadContainer" type="MarginContainer" parent="." unique_id=954678459]

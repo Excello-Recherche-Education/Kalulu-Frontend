@@ -79,6 +79,7 @@ size_flags_vertical = 10
 texture_normal = ExtResource("7_2wdoi")
 texture_pressed = ExtResource("8_nxlxw")
 texture_disabled = ExtResource("9_k74e3")
+ignore_texture_size = true
 stretch_mode = 4
 
 [node name="Padding" type="Control" parent="InterfaceLeft/Container" unique_id=1126926288]
