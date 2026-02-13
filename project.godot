@@ -20,7 +20,7 @@ config/version="3.0.0"
 run/main_scene="uid://xndd7r8jpai5"
 config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
-config/icon="uid://dipdtrs4i7i7v"
+config/icon="uid://cctkobpymorie"
 custom/unlock_everything=false
 custom/unlock_everything.debug=false
 

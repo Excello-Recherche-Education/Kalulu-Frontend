@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dpfn2ag2xv24s"]
 
-[ext_resource type="SpriteFrames" uid="uid://cqtt3yu6s0txg" path="res://sources/minigames/boss/kalulu_animations.tres" id="1_u7krp"]
+[ext_resource type="SpriteFrames" uid="uid://cqtt3yu6s0txg" path="res://sources/minigames/boss/kalulu_boss_animations.tres" id="1_u7krp"]
 [ext_resource type="Script" uid="uid://bkodrvnj0ecae" path="res://sources/minigames/boss/kalulu_boss.gd" id="2_46epb"]
 
 [node name="KaluluBoss" type="AnimatedSprite2D" unique_id=1776395621]

@@ -97,8 +97,8 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 			blink_counter -= 1
 			if blink_counter <= 0:
 				blink_counter = blink_delay + randi_range(0, blink_random)
-				animated_sprite.play("idle_blink") 
-			else: 
+				animated_sprite.play("idle_blink")
+			else:
 				animated_sprite.play("idle")
 		"idle_blink":
 			animated_sprite.play("idle")
