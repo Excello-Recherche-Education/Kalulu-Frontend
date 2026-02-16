@@ -36,7 +36,7 @@
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="29_16cxq"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="30_drpbx"]
 [ext_resource type="Texture2D" uid="uid://dx7w01wdyq0b5" path="res://assets/particles/bigstar_x36_15fps.png" id="33_bjun2"]
-[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu.tscn" id="35_t3kvk"]
+[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="35_t3kvk"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iw28k"]
 blend_mode = 1
