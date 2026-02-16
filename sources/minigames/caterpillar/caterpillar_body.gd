@@ -1,6 +1,10 @@
 class_name CaterpillarBody
 extends Node2D
 
+const DEFAULT_COLOR: Color = Color("#d0df65")
+const MINIGAMES_LABEL_SETTINGS_CATERPILLAR: LabelSettings = preload("res://resources/themes/minigames_label_settings_caterpillar.tres")
+const MARGIN: float = 1.0
+
 var gp: Dictionary = {}:
 	set(value):
 		gp = value
@@ -10,7 +14,6 @@ var gp: Dictionary = {}:
 		else:
 			label.text = ""
 			resize_body()
-var margin: float = 1.0
 var base_width: int = 10 # Minimal width of the body
 
 # @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -35,18 +38,23 @@ func walk() -> void:
 
 
 func right() -> void:
+	_set_body_color(Minigame.LABEL_COLOR_WIN)
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
 	var fx_position: Vector2 = Vector2(body_center.position.x + body_center.get_size().x/2, right_fx.get_position().y)
 	right_fx.set_position(fx_position)
 	right_stars.set_position(body_center.position)
 	right_fx.play()
 	right_stars.play()
 	await right_fx.finished
+	_set_body_color(DEFAULT_COLOR)
+	label.label_settings = MINIGAMES_LABEL_SETTINGS_CATERPILLAR
 
 
 func get_width() -> float:
 	label.reset_size()
 	var text_w: float = label.size.x
-	var end_width: float = max(float(base_width), text_w + float(margin) * 2.0)
+	var end_width: float = max(float(base_width), text_w + float(MARGIN) * 2.0)
 	return end_width
 
 
@@ -87,6 +95,12 @@ func _update_body_layout() -> void:
 	body_right.position = Vector2(left_width + current_center_w, 0.0)
 	
 	label.position = Vector2(
-		left_width + margin + (current_center_w - 2.0 * margin) * 0.5 - label_width * 0.5,
+		left_width + MARGIN + (current_center_w - 2.0 * MARGIN) * 0.5 - label_width * 0.5,
 		center_height * 0.5 - label_height * 0.5
 	)
+
+
+func _set_body_color(color: Color) -> void:
+	body_left.self_modulate = color
+	body_center.self_modulate = color
+	body_right.self_modulate = color

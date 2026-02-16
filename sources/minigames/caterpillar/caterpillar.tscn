@@ -83,7 +83,7 @@ position = Vector2(165, 0)
 position = Vector2(184, -128)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Head/EatArea2D" unique_id=1607125256]
-position = Vector2(200, 0)
+position = Vector2(175, 0)
 shape = SubResource("RectangleShape2D_6qw72")
 
 [node name="Tail" type="Node2D" parent="." unique_id=1152394993]
