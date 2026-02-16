@@ -1040,6 +1040,7 @@ func _play_boss_unlock_sequence(gate_lesson: int) -> void:
 func _sync_boss_buttons_container() -> void:
 	if not boss_buttons_container or not garden_parent:
 		return
+	boss_buttons_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	boss_buttons_container.position = Vector2.ZERO
 	boss_buttons_container.size = scroll_container.size
 
