@@ -104,6 +104,8 @@ func _on_exercises_button_pressed() -> void:
 
 
 func _on_export_filename_selected(filename: String) -> void:
+	_normalize_lesson_ids_before_export()
+
 	var version_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
 	version_file.store_line(Time.get_datetime_string_from_system(true, false))
 	version_file.close()
@@ -140,6 +142,54 @@ func _on_export_filename_selected(filename: String) -> void:
 	
 	var folder_zipper: FolderZipper = FolderZipper.new()
 	folder_zipper.compress(BASE_PATH.path_join(Database.language), filename)
+
+
+# Forces lessons to have a lessonID corresponding to the lesson number, to avoid confusion in game requests
+func _normalize_lesson_ids_before_export() -> void:
+	Database.db.query("SELECT ID, LessonNb FROM Lessons")
+	var lessons: Array[Dictionary] = Database.db.query_result
+	var remapped_lessons: Array[Dictionary] = []
+	for lesson: Dictionary in lessons:
+		var lesson_id: int = lesson.ID as int
+		var lesson_nb: int = lesson.LessonNb as int
+		if lesson_id != lesson_nb:
+			remapped_lessons.push_back({"from": lesson_id, "to": lesson_nb, "temp": -1000000 - lesson_nb})
+
+	if remapped_lessons.is_empty():
+		return
+
+	Database.db.query("PRAGMA foreign_keys = OFF")
+	Database.db.query("BEGIN TRANSACTION")
+
+	for table_name: String in _get_tables_with_lesson_id_column():
+		for remap_lesson: Dictionary in remapped_lessons:
+			Database.db.query_with_bindings("UPDATE %s SET LessonID = ? WHERE LessonID = ?" % table_name, [remap_lesson.to, remap_lesson.from])
+
+	for remap_lesson: Dictionary in remapped_lessons:
+		Database.db.query_with_bindings("UPDATE Lessons SET ID = ? WHERE ID = ?", [remap_lesson.temp, remap_lesson.from])
+
+	for remap_lesson: Dictionary in remapped_lessons:
+		Database.db.query_with_bindings("UPDATE Lessons SET ID = ? WHERE ID = ?", [remap_lesson.to, remap_lesson.temp])
+
+	Database.db.query("COMMIT")
+	Database.db.query("PRAGMA foreign_keys = ON")
+	Log.trace("ProfToolMenu: Normalized %d mismatched lesson IDs before export" % remapped_lessons.size())
+
+
+func _get_tables_with_lesson_id_column() -> Array[String]:
+	Database.db.query("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
+	var tables: Array[Dictionary] = Database.db.query_result
+	var tables_with_lesson_id_column: Array[String] = []
+	for table_data: Dictionary in tables:
+		var table_name: String = table_data.name as String
+		if table_name == "Lessons":
+			continue
+		Database.db.query("PRAGMA table_info(%s)" % table_name)
+		for table_column: Dictionary in Database.db.query_result:
+			if (table_column.name as String) == "LessonID":
+				tables_with_lesson_id_column.push_back(table_name)
+				break
+	return tables_with_lesson_id_column
 
 #region Database integrity check
 var integrity_checking: bool = false
