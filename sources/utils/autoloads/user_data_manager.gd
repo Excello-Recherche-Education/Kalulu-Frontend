@@ -654,7 +654,7 @@ func get_student_progression_for_code(device: int, code: int) -> StudentProgress
 	else:
 		Log.info("UserDataManager: Creating student progression for device %s code %s at %s" % [str(device), str(code), ProjectSettings.globalize_path(progression_path)])
 		progression = StudentProgression.new()
-		progression.last_modified = Time.get_datetime_string_from_system(true)
+		progression.last_modified = ""
 		DirAccess.make_dir_recursive_absolute(student_path)
 		ResourceSaver.save(progression, progression_path)
 	
