@@ -113,6 +113,7 @@ func idle_boss() -> void:
 	text_box_sprite_2d.hide()
 	animated_sprite.play("idle")
 	animated_sprite.stop()
+	audio_stream_player.stop()
 
 
 func victory_boss() -> void:
