@@ -65,10 +65,20 @@ func _on_student_changed(value: int)-> void:
 
 
 func _on_back_button_pressed() -> void:
+	var highest_unlocked_lesson: int = _get_highest_unlocked_lesson()
+	progression.highest_boss_defeated = max(progression.highest_boss_defeated, highest_unlocked_lesson - 1)
 	progression.last_modified = Time.get_datetime_string_from_system(true)
 	UserDataManager.save_student_progression_for_code(device, student, progression)
 	Log.info("LessonUnlocks: Saved progression for student %d on device %d" % [student, device])
 	hide()
+
+
+func _get_highest_unlocked_lesson() -> int:
+	var highest_unlocked_lesson: int = 0
+	for lesson_number: int in progression.unlocks.keys():
+		if progression.unlocks[lesson_number]["look_and_learn"] >= StudentProgression.Status.Unlocked:
+			highest_unlocked_lesson = max(highest_unlocked_lesson, lesson_number)
+	return highest_unlocked_lesson
 
 
 func _on_delete_button_pressed() -> void:
