@@ -126,6 +126,10 @@ value = 10.0
 layout_mode = 2
 text = "Show: ?"
 
+[node name="ToggleLogSourceButton" type="Button" parent="VBoxContainer/Controls" unique_id=500112221]
+layout_mode = 2
+text = "Show previous session logs"
+
 [node name="Control" type="Control" parent="VBoxContainer/Controls" unique_id=829215954]
 layout_mode = 2
 size_flags_horizontal = 3
