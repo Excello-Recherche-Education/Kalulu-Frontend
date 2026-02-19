@@ -1381,7 +1381,7 @@ func _scroll_by_garden(p_direction: int) -> void:
 
 func _on_back_button_pressed() -> void:
 	await (OpeningCurtain as OpeningCurtainClass).close()
-	get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
+	get_tree().change_scene_to_file("res://sources/menus/login/login.tscn")
 
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

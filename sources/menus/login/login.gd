@@ -2,7 +2,7 @@ extends Control
 
 const TEACHER_PASSWORD: String = "42"
 const BACK_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
-const NEXT_SCENE_PATH: String = "res://sources/menus/brain/brain.tscn"
+const NEXT_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
