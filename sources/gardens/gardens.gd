@@ -38,8 +38,10 @@ static var cached_layout_lessons: int = 0
 @export var unlocked_color: Color = Color("1c2662")
 @export var locked_color: Color = Color("1d2229")
 @export_group("Minigames")
-@export var minigames_scenes: Array[PackedScene] = []
+@export var minigame_scene_paths: PackedStringArray = PackedStringArray()
 @export var minigames_icons: Array[Texture] = []
+
+var _minigame_scene_cache: Dictionary = {}
 
 var lessons: Dictionary = {}
 var _gardens_layout: GardensLayout
@@ -875,7 +877,23 @@ func _fill_minigame_choice(minigame_layout: MinigameLayout, exercise_type: int, 
 		minigame_layout.self_modulate = locked_color
 	else:
 		minigame_layout.self_modulate = unlocked_color
-	minigame_layout.pressed.connect(_on_minigame_button_pressed.bind(minigames_scenes[exercise_type-1], minigame_number))
+	minigame_layout.pressed.connect(_on_minigame_button_pressed.bind(exercise_type - 1, minigame_number))
+
+
+func _get_minigame_scene(scene_index: int) -> PackedScene:
+	if scene_index < 0 or scene_index >= minigame_scene_paths.size():
+		return null
+	if _minigame_scene_cache.has(scene_index):
+		return _minigame_scene_cache[scene_index] as PackedScene
+	var scene_path: String = minigame_scene_paths[scene_index]
+	if scene_path.is_empty():
+		return null
+	var scene_resource: Resource = load(scene_path)
+	if scene_resource is PackedScene:
+		var packed_scene: PackedScene = scene_resource as PackedScene
+		_minigame_scene_cache[scene_index] = packed_scene
+		return packed_scene
+	return null
 
 
 func _count_completed_minigames(lesson_number: int) -> int:
@@ -1346,8 +1364,12 @@ func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> voi
 	get_tree().change_scene_to_file(BOSS_MINIGAME_SCENE_PATH)
 
 
-func _on_minigame_button_pressed(minigame_scene: PackedScene, minigame_number: int) -> void:
+func _on_minigame_button_pressed(scene_index: int, minigame_number: int) -> void:
 	if is_locked:
+		return
+	var minigame_scene: PackedScene = _get_minigame_scene(scene_index)
+	if not minigame_scene:
+		Log.error("Gardens: Missing minigame scene for index %d" % scene_index)
 		return
 	feedback_audio_stream_player.play()
 	await (OpeningCurtain as OpeningCurtainClass).close()
