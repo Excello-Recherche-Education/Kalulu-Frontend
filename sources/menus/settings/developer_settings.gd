@@ -10,9 +10,12 @@ var filters: Dictionary[int, bool] = {}
 var line_steps: PackedInt32Array = [10, 50, 100, 200, 500, 1000, -1] # -1 = all
 var loglevel_regex: RegEx
 var clear_local_data_confirmations: int = 0
+var showing_previous_session_logs: bool = false
+var previous_session_logs: PackedStringArray = []
 
 @onready var slider: HSlider = $VBoxContainer/Controls/LineCountSlider
 @onready var slider_label: Label = $VBoxContainer/Controls/SliderLabel
+@onready var toggle_log_source_button: Button = $VBoxContainer/Controls/ToggleLogSourceButton
 @onready var log_level_dropdown: OptionButton = $VBoxContainer/LogControls/LogLevelDropdown
 @onready var filters_container: HBoxContainer = $VBoxContainer/Filters
 @onready var log_text: TextEdit = $VBoxContainer/ColorRect/LogText
@@ -52,6 +55,8 @@ func _ready() -> void:
 	log_level_dropdown.item_selected.connect(_on_level_changed)
 	
 	slider.value_changed.connect(_on_slider_changed)
+	toggle_log_source_button.pressed.connect(_on_toggle_log_source_button_pressed)
+	_update_log_source_button_text()
 	_update_log_text()
 	
 	api_path_input.text = ServerManager.environment_url
@@ -64,16 +69,17 @@ func _ready() -> void:
 func _update_log_text() -> void:
 	var idx: int = int(slider.value)
 	var lines_to_show: int = line_steps[idx]
-	var total: int = Log.all_logs.size()
+	var source_logs: PackedStringArray = _get_logs_source()
+	var total: int = source_logs.size()
 	
 	var subset: PackedStringArray
 	if lines_to_show == -1:
 		slider_label.text = "Show: all (%d lines)" % total
-		subset = Log.all_logs
+		subset = source_logs
 	else:
 		slider_label.text = "Show: %d last lines" % lines_to_show
 		var start: int = maxi(total - lines_to_show, 0)
-		subset = Log.all_logs.slice(start, total)
+		subset = source_logs.slice(start, total)
 	
 	var filtered: Array[String] = []
 	for line: String in subset:
@@ -84,7 +90,17 @@ func _update_log_text() -> void:
 			filtered.append(line)
 	
 	log_text.text = "\n".join(filtered)
+	if showing_previous_session_logs and filtered.is_empty():
+		log_text.text = "No previous session logs found."
 	log_text.scroll_vertical = log_text.get_line_count() # Scroll down
+
+
+func _get_logs_source() -> PackedStringArray:
+	if not showing_previous_session_logs:
+		return Log.all_logs
+	if previous_session_logs.is_empty():
+		previous_session_logs = Log.get_previous_session_logs()
+	return previous_session_logs
 
 
 func _extract_log_level(line: String) -> int:
@@ -118,6 +134,21 @@ func _on_back_button_pressed() -> void:
 
 func _on_slider_changed(_value: float) -> void:
 	_update_log_text()
+
+
+func _on_toggle_log_source_button_pressed() -> void:
+	showing_previous_session_logs = not showing_previous_session_logs
+	if showing_previous_session_logs:
+		previous_session_logs = Log.get_previous_session_logs()
+	_update_log_source_button_text()
+	_update_log_text()
+
+
+func _update_log_source_button_text() -> void:
+	if showing_previous_session_logs:
+		toggle_log_source_button.text = "Show current session logs"
+		return
+	toggle_log_source_button.text = "Show previous session logs"
 
 
 func _on_api_path_submitted(_value: String) -> void:

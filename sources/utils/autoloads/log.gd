@@ -24,9 +24,13 @@ var log_file: FileAccess
 var initialized: bool = false
 var all_logs: PackedStringArray = []
 var log_rotation_index: int = 1
+var session_filename_regex: RegEx
 
 
 func _ready() -> void:
+	session_filename_regex = RegEx.new()
+	session_filename_regex.compile("^%s_(\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2})(?:_(\\d+))?\\.txt$" % FILE_BASE_NAME)
+
 	delete_old_logs()
 	_init_log_file()
 	if Engine.is_editor_hint() or OS.has_feature("editor"):
@@ -56,7 +60,7 @@ func delete_old_logs(days_threshold: float = 10) -> void:
 	if not dir:
 		push_warning("Log: Could not open Logs directory for cleanup.")
 		return
-	
+
 	var now: float = Time.get_unix_time_from_system()
 	dir.list_dir_begin()
 	var file_name: String = dir.get_next()
@@ -95,7 +99,7 @@ func _init_log_file(path_override: String = "") -> void:
 	var logs_dir: DirAccess = DirAccess.open(LOG_PATH)
 	if logs_dir == null:
 		DirAccess.make_dir_recursive_absolute(LOG_PATH)
-	
+
 	if log_file_base_path == "":
 		var now: Dictionary = Time.get_datetime_dict_from_system()
 		var filename: String = "%s_%04d-%02d-%02d-%02d-%02d-%02d.txt" % [
@@ -109,7 +113,7 @@ func _init_log_file(path_override: String = "") -> void:
 		log_file_path = _build_rotated_log_path()
 	else:
 		log_file_path = path_override
-	
+
 	log_file = FileAccess.open(log_file_path, FileAccess.WRITE)
 	var err: Error = FileAccess.get_open_error()
 	if err != OK:
@@ -124,7 +128,7 @@ func _init_log_file(path_override: String = "") -> void:
 func _log_internal(level: LogLevel, message: String) -> void:
 	if initialized and level < current_level: # If not initialized, no logs are filtered
 		return
-	
+
 	var prefix: String = "[LOG]"
 	match level:
 		LogLevel.TRACE: prefix = "[TRACE]"
@@ -134,7 +138,7 @@ func _log_internal(level: LogLevel, message: String) -> void:
 		LogLevel.ERROR: prefix = "[ERROR]"
 		LogLevel.ALERT: prefix = "[ALERT]"
 		LogLevel.PANIC: prefix = "[PANIC]"
-	
+
 	var time_str: String = Time.get_time_string_from_system()
 	var log_message: String = "%s %s %s" % [time_str, prefix, message]
 	all_logs.append(log_message)
@@ -216,6 +220,85 @@ func _bump_rotation_index() -> void:
 		alert(tr("LOG_TOO_MUCH_ROTATION"))
 	else:
 		log_rotation_index += 1
+
+
+func get_previous_session_logs() -> PackedStringArray:
+	if session_filename_regex == null:
+		return PackedStringArray()
+
+	var dir: DirAccess = DirAccess.open(LOG_PATH)
+	if dir == null:
+		return PackedStringArray()
+
+	var sessions: Dictionary[String, Array] = {}
+	dir.list_dir_begin()
+	var file_name: String = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir():
+			var parsed_data: Dictionary = _parse_log_file_name(file_name)
+			if not parsed_data.is_empty():
+				var session_key: String = parsed_data.get("session", "")
+				if not sessions.has(session_key):
+					sessions[session_key] = []
+				sessions[session_key].append({"file_name": file_name, "rotation": parsed_data.get("rotation", 1)})
+		file_name = dir.get_next()
+	dir.list_dir_end()
+
+	if sessions.is_empty():
+		return PackedStringArray()
+
+	var session_keys: Array[String] = []
+	for key: String in sessions.keys():
+		session_keys.append(key)
+	session_keys.sort()
+
+	var current_session_key: String = _get_current_session_key()
+	for index: int in range(session_keys.size() - 1, -1, -1):
+		var candidate_key: String = session_keys[index]
+		if candidate_key == current_session_key:
+			continue
+		return _read_session_logs(sessions[candidate_key])
+
+	return PackedStringArray()
+
+
+func _parse_log_file_name(file_name: String) -> Dictionary:
+	if session_filename_regex == null:
+		return {}
+	var match: RegExMatch = session_filename_regex.search(file_name)
+	if match == null:
+		return {}
+	var rotation_text: String = match.get_string(2)
+	var rotation_index: int = 1
+	if rotation_text != "":
+		rotation_index = int(rotation_text)
+	return {
+		"session": match.get_string(1),
+		"rotation": rotation_index,
+	}
+
+
+func _get_current_session_key() -> String:
+	if log_file_base_path == "":
+		return ""
+	var parsed_data: Dictionary = _parse_log_file_name(log_file_base_path.get_file())
+	if parsed_data.is_empty():
+		return ""
+	return parsed_data.get("session", "")
+
+
+func _read_session_logs(session_files: Array) -> PackedStringArray:
+	session_files.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["rotation"] < b["rotation"])
+	var session_lines: PackedStringArray = []
+	for file_info: Dictionary in session_files:
+		var path: String = LOG_PATH + String(file_info["file_name"])
+		var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+		if file == null:
+			continue
+		while not file.eof_reached():
+			session_lines.append(file.get_line())
+		file.close()
+	return session_lines
 
 
 # trace can be used everywhere to log everything that is happening.
