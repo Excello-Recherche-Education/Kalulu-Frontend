@@ -57,7 +57,7 @@ func purge_user_folders_if_needed() -> void:
 		Log.warn("UserDataManager: Application name is not Kalulu, so user folder purge has been blocked.")
 		return
 	
-	var current_version: String = ProjectSettings.get_setting("application/config/version")
+	var current_version: String = Utils.get_application_config_version()
 	var previous_version: String = _device_settings.game_version
 	
 	if previous_version == "" or Utils.compare_versions(previous_version, "2.1.3") < 0:
