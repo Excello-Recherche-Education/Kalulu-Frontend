@@ -269,6 +269,9 @@ func student_exists(code: String) -> bool:
 	if not teacher_settings:
 		Log.trace("UserDataManager: StudentExists: Function failed because of invalid teacher_settings")
 		return false
+	if not teacher_settings.students.has(_device_settings.device_id):
+		Log.warn("UserDataManager: StudentExists: Function failed because of device ID %d not in students dictionary" % _device_settings.device_id)
+		return false
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
 	if students:
 		for stud: StudentData in students:
@@ -283,6 +286,9 @@ func login_student(code: String) -> bool:
 		return false
 	if not teacher_settings:
 		Log.warn("UserDataManager: LoginStudent: Function failed because of invalid teacher_settings")
+		return false
+	if not teacher_settings.students.has(_device_settings.device_id):
+		Log.warn("UserDataManager: LoginStudent: Function failed because of device ID %d not in students dictionary" % _device_settings.device_id)
 		return false
 	
 	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]

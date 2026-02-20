@@ -26,7 +26,16 @@ func _on_music_player_finished() -> void:
 
 
 func play(track: Track) -> void:
+	if track < 0 or track >= Track.size():
+		Log.warn("MusicManager: Cannot play %d because this key is out of Track range" % track)
+		return
 	Log.trace("MusicManager: Requested play for track \"%s\"" % str(Track.keys()[track]))
+	if track >= TRACKS.size():
+		Log.warn("MusicManager: Cannot play %d because this key is out of TRACKS range" % track)
+		return
+	if TRACKS[track] == null:
+		Log.warn("MusicManager: Cannot play %d because it is null" % track)
+		return
 	music_player.stream = TRACKS[track]
 	music_player.play()
 
