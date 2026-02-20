@@ -23,7 +23,7 @@ var dev_last_click_time: float = 0.0
 
 func _ready() -> void:
 	Log.info("MainMenu: Loaded successfuly")
-	version_label.text = ProjectSettings.get_setting("application/config/version")
+	version_label.text = Utils.get_application_version_with_code()
 	teacher_label.text = UserDataManager.get_device_settings().teacher
 	device_id_label.text = str(UserDataManager.get_device_settings().device_id)
 	version_label.gui_input.connect(_on_version_label_gui_input)

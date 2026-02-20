@@ -42,7 +42,7 @@ func _ready() -> void:
 	device_number_label.show()
 	device_number_label.text = tr("DEVICE_NUMBER").format({"number": UserDataManager.get_device_settings().device_id})
 	
-	version_label.text = ProjectSettings.get_setting("application/config/version")
+	version_label.text = Utils.get_application_version_with_code()
 	version_label.gui_input.connect(_on_version_label_gui_input)
 	Log.info("LoginScreen: Ready (device_id=%s, version=%s)" % [UserDataManager.get_device_settings().device_id, version_label.text])
 	

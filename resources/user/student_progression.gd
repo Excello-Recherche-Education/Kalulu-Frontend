@@ -12,7 +12,7 @@ enum Status{
 static var cached_boss_gate_lessons: Array[int] = []
 static var cached_boss_gate_lessons_total: int = -1
 
-@export var version: String = ProjectSettings.get_setting("application/config/version")
+@export var version: String = Utils.get_application_config_version()
 @export var unlocks: Dictionary[int, Dictionary] = {}:
 	set(value):
 		unlocks = ensure_data_integrity(value)

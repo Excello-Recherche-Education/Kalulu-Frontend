@@ -131,6 +131,23 @@ func compare_versions(version_a: String, version_b: String) -> int:
 	return 0
 
 
+func get_application_config_version() -> String:
+	return str(ProjectSettings.get_setting("application/config/version", "0"))
+
+
+func get_application_version_code() -> String:
+	var preset: ConfigFile = ConfigFile.new()
+	var err: Error = preset.load("res://export_presets.cfg")
+	if err == OK:
+		return str(preset.get_value("preset.0.options", "version/code", "0"))
+	Log.trace("Utils: Failed to load export_presets.cfg")
+	return "0"
+
+
+func get_application_version_with_code() -> String:
+	return "%s  (%s)" % [get_application_config_version(), get_application_version_code()]
+
+
 func get_safe_file_path(file_path: String) -> String:
 	var dir: String = file_path.get_base_dir()
 	var file: String = file_path.get_file()
