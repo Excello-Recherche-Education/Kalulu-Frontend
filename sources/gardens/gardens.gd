@@ -42,7 +42,6 @@ static var cached_layout_lessons: int = 0
 @export var minigames_icons: Array[Texture] = []
 
 var _minigame_scene_cache: Dictionary = {}
-
 var lessons: Dictionary = {}
 var _gardens_layout: GardensLayout
 var points: Array[Array] = []
