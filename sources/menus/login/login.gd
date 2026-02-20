@@ -2,7 +2,7 @@ extends Control
 
 const TEACHER_PASSWORD: String = "42"
 const BACK_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
-const NEXT_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
+const NEXT_SCENE: PackedScene = preload("res://sources/gardens/gardens.tscn")
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
@@ -65,8 +65,8 @@ func _on_code_keyboard_password_entered(password: String) -> void:
 		kalulu_button.hide()
 		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()
-		Log.trace("LoginScreen: Start loading next scene %s" % NEXT_SCENE_PATH)
-		get_tree().change_scene_to_file(NEXT_SCENE_PATH)
+		Log.trace("LoginScreen: Start loading next scene")
+		get_tree().change_scene_to_packed(NEXT_SCENE)
 		Log.trace("LoginScreen: End loading next scene")
 	else:
 		Log.warn("LoginScreen: Unknown student code entered (length=%d)" % password.length())
