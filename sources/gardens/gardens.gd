@@ -197,26 +197,9 @@ func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 			Log.error("Gardens: Ready: The transition_data exists but does not contains the needed current_garden_index")
 			starting_garden = 0
 	elif starting_garden == -1:
-		var lesson_index: int = 1
-		for garden_index: int in range(garden_parent.get_child_count()):
-			var garden_control: Garden = garden_parent.get_child(garden_index)
-			if starting_garden != -1:
-				break
-			if not lesson_index in lessons:
-				break
-			for button_index: int in range(garden_control.get_lesson_buttons().size()):
-				if not lesson_index in lessons:
-					break
-				if UserDataManager.student_progression:
-					var unlock: Dictionary = UserDataManager.student_progression.unlocks[lesson_index]
-					var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_index)
-					var look_and_learn_unlocked: bool = unlock["look_and_learn"] == StudentProgression.Status.Unlocked
-					var exercise_unlock_1: bool = unlock["games"][0] == StudentProgression.Status.Unlocked
-					var exercise_unlock_2: bool = unlock["games"][1] == StudentProgression.Status.Unlocked
-					var exercise_unlock_3: bool = unlock["games"][2] == StudentProgression.Status.Unlocked
-					if not is_blocked_by_boss and (look_and_learn_unlocked or exercise_unlock_1 or exercise_unlock_2 or exercise_unlock_3):
-						starting_garden = garden_index
-						break
+		if UserDataManager.student_progression:
+			var max_unlocked_lesson_number: int = UserDataManager.student_progression.get_max_unlocked_lesson_index() + 1
+			starting_garden = _get_garden_index_for_lesson(max_unlocked_lesson_number)
 
 	if starting_garden == -1:
 		starting_garden = 0
