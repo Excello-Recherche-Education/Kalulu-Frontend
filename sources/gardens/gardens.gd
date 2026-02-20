@@ -81,6 +81,12 @@ var scroll_end_base_width: float = 0.0
 @onready var lock: Control = %Lock
 @onready var kalulu: KALULU = %Kalulu
 @onready var kalulu_button: CanvasItem = %KaluluButton
+# TODO: Rename / Move those audio inside the language packs to remove all references to brain_screen which does not exists anymore
+@onready var brain_tutorial_speeches: Array[AudioStream] = [
+	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_1")),
+	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_2")),
+	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_3"))
+]
 @onready var intro_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "intro"))
 @onready var help_few_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
 @onready var help_many_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_many_plants"))
@@ -379,6 +385,7 @@ func _play_new_lesson_unlock_sequence() -> void:
 #region Godot lifecycle
 
 func _ready() -> void:
+	UserDataManager.start_synchronization_timer()
 	_load_lessons_from_database()
 	if scroll_end_spacer:
 		scroll_end_base_width = scroll_end_spacer.custom_minimum_size.x
@@ -411,6 +418,9 @@ func _ready() -> void:
 	
 	_unlock()
 	transition_data = {}
+
+	if not UserDataManager.is_speech_played("brain"):
+		await _play_brain_tutorial()
 	
 	# Play the tutorial if needed
 	if not UserDataManager.is_speech_played("gardens"):
@@ -420,6 +430,20 @@ func _ready() -> void:
 		UserDataManager.mark_speech_as_played("gardens")
 
 #endregion
+
+func _play_brain_tutorial() -> void:
+	kalulu_button.hide()
+	for speech_index: int in range(brain_tutorial_speeches.size()):
+		if speech_index == 0:
+			await kalulu.play_kalulu_speech(brain_tutorial_speeches[speech_index], true, false)
+		elif speech_index == brain_tutorial_speeches.size() - 1:
+			await kalulu.play_kalulu_speech(brain_tutorial_speeches[speech_index], false, true)
+		else:
+			await kalulu.play_kalulu_speech(brain_tutorial_speeches[speech_index], false, false)
+		await get_tree().create_timer(0.5).timeout
+
+	UserDataManager.mark_speech_as_played("brain")
+	kalulu_button.show()
 
 #region Garden layout helpers
 
@@ -1380,8 +1404,9 @@ func _scroll_by_garden(p_direction: int) -> void:
 
 
 func _on_back_button_pressed() -> void:
+	UserDataManager.logout_student()
 	await (OpeningCurtain as OpeningCurtainClass).close()
-	get_tree().change_scene_to_file("res://sources/menus/brain/brain.tscn")
+	get_tree().change_scene_to_file("res://sources/menus/login/login.tscn")
 
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
