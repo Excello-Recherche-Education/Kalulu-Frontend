@@ -48,8 +48,11 @@ func _reset_frog() -> void:
 #region Tracks management
 
 func _free_tracks() -> void:
+	var last_track: LilypadTrack
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
-		await track.reset()
+		last_track = track
+		track.reset()
+	await last_track.reset()
 	
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		track.queue_free()
@@ -78,7 +81,7 @@ func _start_tracks() -> void:
 	var index: int = 0
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		if index >= current_word_progression:
-			await track.reset()
+			track.reset()
 			if not is_first_track_enabled:
 				track.is_enabled = true
 				is_first_track_enabled = true
@@ -100,8 +103,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		await lilypad.wrong()
 		await audio_player.play_gp(lilypad.stimulus)
 		lilypad.disappear()
-		frog.defeat()
-		await frog.defeated
+		await frog.defeat()
 		current_lives -= 1
 		_start_tracks()
 		await frog.appear()
@@ -117,6 +119,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 
 func _on_current_word_progression_changed() -> void:
 	# Enables the next track
+	frog.play_frog_sound()
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		if not track.is_cleared:
 			track.is_enabled = true
