@@ -42,6 +42,9 @@ func get_button_size() -> Vector2:
 
 
 func set_garden_layout(p_garden_layout: GardenLayout) -> void:
+	if not p_garden_layout:
+		Log.error("Garden: Cannot set garden layout because it is null")
+		return
 	garden_layout = p_garden_layout
 	set_flowers(garden_layout.flowers)
 	set_background(garden_layout.color)

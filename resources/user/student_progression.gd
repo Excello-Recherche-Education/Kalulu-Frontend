@@ -32,6 +32,8 @@ func _init() -> void:
 func init_unlocks() -> void:
 	if not unlocks:
 		unlocks = {} # Triggers ensure_data_integrity(), that will fill the default values
+	else:
+		unlocks = unlocks # Force ensure_data_integrity()
 	_sanitize_boss_progression()
 	
 	# Verify the lessons

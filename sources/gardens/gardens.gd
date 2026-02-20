@@ -91,6 +91,14 @@ var scroll_end_base_width: float = 0.0
 @onready var help_few_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_few_plants"))
 @onready var help_many_plants_speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path("gardens_screen", "help_many_plants"))
 
+
+func _init() -> void:
+	Log.trace("Gardens: _init()")
+
+
+func _enter_tree() -> void:
+	Log.trace("Gardens: _enter_tree()")
+
 #region Data loading and progression
 
 func _load_lessons_from_database() -> void:

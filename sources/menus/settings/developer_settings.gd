@@ -129,6 +129,8 @@ func _on_filters_changed(checked: bool, index: int) -> void:
 
 func _on_back_button_pressed() -> void:
 	await OpeningCurtain.close()
+	if return_path == "":
+		return_path = "res://sources/menus/main/main_menu.tscn"
 	get_tree().change_scene_to_file(return_path)
 
 

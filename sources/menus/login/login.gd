@@ -65,7 +65,9 @@ func _on_code_keyboard_password_entered(password: String) -> void:
 		kalulu_button.hide()
 		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()
+		Log.trace("LoginScreen: Start loading next scene %s" % NEXT_SCENE_PATH)
 		get_tree().change_scene_to_file(NEXT_SCENE_PATH)
+		Log.trace("LoginScreen: End loading next scene")
 	else:
 		Log.warn("LoginScreen: Unknown student code entered (length=%d)" % password.length())
 		kalulu_button.hide()
@@ -120,5 +122,8 @@ func _on_version_label_gui_input(event: InputEvent) -> void:
 				Log.info("LoginScreen: Developer click threshold reached, opening Developer Settings")
 				dev_click_count = 0
 				await OpeningCurtain.close()
-				DeveloperSettings.return_path = get_tree().current_scene.scene_file_path
+				var current_scene: Node = get_tree().current_scene
+				if not current_scene:
+					Log.error("LoginScreen: Developer Settings returning scene will be main menu because current scene is null")
+				DeveloperSettings.return_path = current_scene.scene_file_path if current_scene else ""
 				get_tree().change_scene_to_file(DEVELOPER_SCENE_PATH)
