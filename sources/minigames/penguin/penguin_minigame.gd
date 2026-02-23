@@ -95,7 +95,7 @@ func _setup_word_progression() -> void:
 	var stimulus: Dictionary = _get_current_stimulus()
 	
 	var first_gp: bool = true
-	var last_word_id: int
+	var last_word_id: int = -1
 	var word_container: HBoxContainer
 	
 	for gp: Dictionary in stimulus.GPs:
