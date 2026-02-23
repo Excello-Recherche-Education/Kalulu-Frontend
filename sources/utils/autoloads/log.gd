@@ -291,7 +291,7 @@ func _read_session_logs(session_files: Array) -> PackedStringArray:
 	session_files.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["rotation"] < b["rotation"])
 	var session_lines: PackedStringArray = []
 	for file_info: Dictionary in session_files:
-		var path: String = LOG_PATH + String(file_info["file_name"])
+		var path: String = LOG_PATH + String(file_info["file_name"] as String)
 		var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 		if file == null:
 			continue

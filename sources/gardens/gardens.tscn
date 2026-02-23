@@ -1,27 +1,17 @@
 [gd_scene format=3 uid="uid://b1rkn0uwoyd7l"]
 
 [ext_resource type="Script" uid="uid://djolw68efn6r5" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
-[ext_resource type="PackedScene" uid="uid://bxh1torc05k7p" path="res://sources/minigames/crabs/crabs_minigame.tscn" id="3_vqohy"]
 [ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="3_xbvhu"]
-[ext_resource type="PackedScene" uid="uid://dtcgj6ee8jt2t" path="res://sources/minigames/jellyfish/jellyfish_minigame.tscn" id="4_cvoj1"]
 [ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="4_neut5"]
 [ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="5_2yuxn"]
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="5_h8c5w"]
-[ext_resource type="PackedScene" uid="uid://8cbihh6410yp" path="res://sources/minigames/parakeets/parakeets_minigame.tscn" id="5_ix8qe"]
-[ext_resource type="PackedScene" uid="uid://c2160x4hwd3y2" path="res://sources/minigames/caterpillar/caterpillar_minigame.tscn" id="6_flf16"]
 [ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_gs6gi"]
 [ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="6_hekq6"]
 [ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="6_p30hm"]
-[ext_resource type="PackedScene" uid="uid://c20bhtvqds4p6" path="res://sources/minigames/monkeys/monkeys_minigame.tscn" id="6_r5cos"]
 [ext_resource type="Texture2D" uid="uid://cffuqacgb1jra" path="res://assets/lesson_screen/branches.png" id="7_axgdc"]
-[ext_resource type="PackedScene" uid="uid://dl5wx8l0awoi0" path="res://sources/minigames/frog/frog_minigame.tscn" id="7_o1s4m"]
-[ext_resource type="PackedScene" uid="uid://df5oba70wj13y" path="res://sources/minigames/ants/ants_minigame.tscn" id="8_g4mhc"]
-[ext_resource type="PackedScene" uid="uid://tkfgc7fdyw1a" path="res://sources/minigames/turtles/turtles_minigame.tscn" id="8_ylxff"]
 [ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="9_68su4"]
 [ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="10_5wvwc"]
-[ext_resource type="PackedScene" uid="uid://dpp3bpy1v80jk" path="res://sources/minigames/penguin/penguin_minigame.tscn" id="10_l1gcl"]
 [ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="12_ohgqx"]
-[ext_resource type="PackedScene" uid="uid://df5derhil64ca" path="res://sources/minigames/boss/boss_minigame.tscn" id="15_6dtg2"]
 [ext_resource type="Texture2D" uid="uid://bc3e0qths2cvt" path="res://assets/minigames/boss/boss_icon_full.png" id="16_5rwfp"]
 [ext_resource type="Texture2D" uid="uid://bmdhpgxmur1vo" path="res://assets/minigames/caterpillar/graphics/gauge_icon_caterpillar_full.png" id="16_prl1o"]
 [ext_resource type="AudioStream" uid="uid://4bv1hr6r68op" path="res://assets/gardens/ui_transition_right.mp3" id="17_37f6y"]
@@ -147,7 +137,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_qlsw4")
-minigames_scenes = Array[PackedScene]([ExtResource("4_cvoj1"), ExtResource("3_vqohy"), ExtResource("5_ix8qe"), ExtResource("6_r5cos"), ExtResource("6_flf16"), ExtResource("7_o1s4m"), ExtResource("8_ylxff"), ExtResource("8_g4mhc"), ExtResource("10_l1gcl"), ExtResource("15_6dtg2")])
+minigame_scene_paths = PackedStringArray("res://sources/minigames/jellyfish/jellyfish_minigame.tscn", "res://sources/minigames/crabs/crabs_minigame.tscn", "res://sources/minigames/parakeets/parakeets_minigame.tscn", "res://sources/minigames/monkeys/monkeys_minigame.tscn", "res://sources/minigames/caterpillar/caterpillar_minigame.tscn", "res://sources/minigames/frog/frog_minigame.tscn", "res://sources/minigames/turtles/turtles_minigame.tscn", "res://sources/minigames/ants/ants_minigame.tscn", "res://sources/minigames/penguin/penguin_minigame.tscn", "res://sources/minigames/boss/boss_minigame.tscn")
 minigames_icons = Array[Texture]([ExtResource("6_p30hm"), ExtResource("5_h8c5w"), ExtResource("6_hekq6"), ExtResource("9_68su4"), ExtResource("16_prl1o"), ExtResource("10_5wvwc"), ExtResource("18_12pcf"), ExtResource("12_ohgqx"), ExtResource("20_ouafq"), ExtResource("16_5rwfp")])
 
 [node name="RightAudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=941811110]
