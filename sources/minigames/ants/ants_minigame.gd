@@ -210,7 +210,6 @@ func _start_ants() -> void:
 	for ant_index: int in range(total_ants):
 		var ant: Ant = ants.get_child(ant_index)
 
-		# Start walking animation or logic
 		ant.walk()
 
 		# Create a tween to move the ant from start to end point
