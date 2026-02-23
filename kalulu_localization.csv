@@ -4,7 +4,7 @@ BUILD_VERSION,Numéro de version,Número de versión,Número da versão,Numero d
 DEVICE_ID,Numéro d'appareil,Identificación del dispositivo,Número do dispositivo,ID del dispositivo
 LANGUAGE,Langue,Idioma,Idioma,Lingua
 SIGN_IN_TEACHER,Connexion enseignant,Conexión del docente,Login do professor,Accesso insegnante
-SIGN_IN_PARENT,Connexion parent,Conexión del padre,Login dos pais,Accesso genitore
+SIGN_IN_PARENT,Connexion parent,Conexión del progenitor,Login dos pais,Accesso genitore
 CREATE_ACCOUNT,Création de compte,Creación de cuenta,Criar uma conta,Creazione account
 LOGIN,Identifiants,Usuario,Identificadores,Credenziali
 EMAIL,Adresse mail,Correo electrónico,Endereço eletrônico,Indirizzo email
@@ -34,8 +34,8 @@ NEXT,Suivant,Siguiente,Próximo,Avanti
 CANCEL,Annuler,Cancelar,Cancelar,Annulla
 ACCOUNT_TYPE_PROMPT,Veuillez sélectionner le type de compte que vous souhaitez créer,Seleccionar el tipo de cuenta que desea crear,Selecione o tipo de conta que deseja criar,Seleziona il tipo di account che desideri creare
 ACCOUNT_TYPE,Type de compte,Tipo de cuenta,Tipo de conta,Tipo di account
-TEACHER,Enseignant,Docente,Professor,Insegnante
-PARENT,Parent,Padre,Pais,Genitore
+TEACHER,Enseignant,Soy docente,Professor,Insegnante
+PARENT,Parent,Soy progenitor,Pais,Genitore
 EDUCATION_METHOD_PROMPT,Veuillez sélectionner la méthode d'éducation utilisée,Seleccionar el método de enseñanza utilizado,Selecione o método educacional utilizado,Seleziona il metodo educativo utilizzato
 EDUCATION_METHOD_INFOS,"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier","Elegir ""Completo"" si utiliza igualmente los cuadernos y los juegos en papel",Escolha 'Completo' se você também usar os livretos e os jogos de papel,Scegli "Completo" se utilizzi anche i libretti e i giochi cartacei
 EDUCATION_METHOD,Méthode,Método,Método,Metodo
@@ -148,9 +148,9 @@ Las presentes Condiciones Generales de Uso están disponibles en todo momento: e
 
 En ellas se establecen las normas de acceso a nuestras plataformas de la web Excello y sus subdominios, que contienen contenidos educativos digitales, en adelante la plataforma.
 
-Al utilizar esta plataforma, usted reconoce que, como usuario &ndash;profesor y/o tutor legal de un menor&ndash;, conoce las condiciones, las acepta sin reservas y las cumple.
+Al utilizar esta plataforma, usted reconoce que, como usuario –profesor y/o tutor legal de un menor–, conoce las condiciones, las acepta sin reservas y las cumple.
 
-El responsable del tratamiento se reserva el derecho, a su entera discreción y sin previo aviso, de modificar, suprimir o completar las presentes &laquo;Condiciones Generales de Uso&raquo; en cualquier momento, en particular para tener en cuenta cualquier evolución jurídica, jurisprudencial, editorial y/o técnica. La versión que prevalece es la que está accesible en línea.
+El responsable del tratamiento se reserva el derecho, a su entera discreción y sin previo aviso, de modificar, suprimir o completar las presentes ""Condiciones Generales de Uso"" en cualquier momento, en particular para tener en cuenta cualquier evolución jurídica, jurisprudencial, editorial y/o técnica. La versión que prevalece es la que está accesible en línea.
 
 Por lo tanto, le aconsejamos que consulte regularmente la última versión de las presentes Condiciones Generales de Uso.
 
@@ -205,7 +205,7 @@ El acceso a esta Plataforma le otorga un derecho de uso no exclusivo, privado y/
 
 El uso de la Plataforma implica la aceptación sin reservas de las presentes Condiciones Generales de Uso.
 
-Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografías, ilustraciones, gráficos, infografías, mapas, videogramas, música, iconos y software, en lo sucesivo denominado &laquo;el Contenido&raquo;, está sujeto a una licencia CC BY-SA 4.0.
+Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografías, ilustraciones, gráficos, infografías, mapas, videogramas, música, iconos y software, en lo sucesivo denominado ""el Contenido"", está sujeto a una licencia CC BY-SA 4.0.
 
 De conformidad con el artículo L. 122-4 del Código francés de la Propiedad Intelectual, toda representación o reproducción total o parcial sin el consentimiento del autor o de sus derechohabientes o causahabientes es ilícita. Lo mismo se aplica a la traducción, adaptación o transformación, arreglo o reproducción por cualquier arte o procedimiento.
 
@@ -233,7 +233,7 @@ As presentes Condições Gerais de Uso estão disponíveis a qualquer momento: e
 
 Elas determinam as regras de acesso às nossas plataformas no site Excello e seus subdomínios, onde se encontram conteúdos digitais pedagógicos, doravante denominada plataforma.
 
-Ao utilizar esta plataforma, você reconhece, na qualidade de usuário &ndash; professor e/ou responsável legal do aluno menor de idade &ndash; que conhece os termos, os aceita sem reservas e se compromete a cumpri-los.
+Ao utilizar esta plataforma, você reconhece, na qualidade de usuário – professor e/ou responsável legal do aluno menor de idade – que conhece os termos, os aceita sem reservas e se compromete a cumpri-los.
 
 O responsável pelo tratamento se reserva o direito, a seu exclusivo critério e sem aviso prévio, de modificar, excluir ou adicionar disposições a estas **&quot;Condições Gerais de Uso&quot;** a qualquer momento, especialmente para levar em conta qualquer evolução legal, jurisprudencial, editorial e/ou técnica. A versão prevalente é aquela acessível online.
 
@@ -430,7 +430,7 @@ NO_TEACHER_SETTINGS_ON_DEVICE,Aucun paramètre enseignant n'est configuré sur c
 LANGUAGE_NOT_SUPPORTED,La langue « %s » n’est pas prise en charge.,El idioma « %s » no es compatible.,O idioma « %s » não é suportado.,La lingua « %s » non è supportata.
 NO_VALID_LANGUAGE_DATA_AVAILABLE,Aucune donnée de langue disponible.,No hay datos de idioma disponibles.,Não há dados de idioma disponíveis.,Nessun dato di lingua disponibile.
 CHECKING_DATA,Vérification des données...,Comprobando datos...,Verificação de dados...,Verifica dei dati...
-TEACHER_SETTINGS_HELP,"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes","Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos","Para acessar as configurações, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botão \"Parâmetros\" por 5 segundos","Per accedere alle impostazioni, premi il segno più e la barra verticale, quindi tieni premuto il pulsante ""Impostazioni"" per 5 secondi"
+TEACHER_SETTINGS_HELP,"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes","Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos","Para acessar as configurações, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botão ""Parâmetros"" por 5 segundos","Per accedere alle impostazioni, premi il segno più e la barra verticale, quindi tieni premuto il pulsante ""Impostazioni"" per 5 secondi"
 DELETE_ACCOUNT,Supprimer le compte,Eliminar cuenta,Excluir conta,Elimina account
 DELETE_ACCOUNT_POPUP,Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !,¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!,Você realmente deseja excluir sua conta? Essa ação é irreversível!,Vuoi davvero eliminare il tuo account? Questa azione è irreversibile!
 DISCONNECTED_ERROR,Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.,Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.,Você foi desconectado. Digite seus detalhes de login novamente.,Sei stato disconnesso. Inserisci nuovamente le tue credenziali.
