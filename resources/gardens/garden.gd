@@ -143,24 +143,6 @@ func set_lesson_label(ind: int, text: String) -> void:
 	lesson_buttons[ind].text = text
 
 
-func pop_animation() -> void:
-	var tween: Tween = create_tween()
-	tween.set_parallel(true)
-	for flower_control: TextureRect in flower_controls:
-		tween.tween_property(flower_control, "scale", Vector2(0, 0), 0.1)
-	for lesson_button_control: LessonButton in get_lesson_buttons():
-		tween.tween_property(lesson_button_control, "scale", Vector2(0.7, 0.7), 0.1)
-	await tween.finished
-	tween = create_tween()
-	tween.set_parallel(true)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.set_trans(Tween.TRANS_BOUNCE)
-	for flower_control: TextureRect in flower_controls:
-		tween.tween_property(flower_control, "scale", Vector2(1., 1.), 0.9)
-	for lesson_button_control: LessonButton in get_lesson_buttons():
-		tween.tween_property(lesson_button_control, "scale", Vector2(1., 1.), 0.9)
-
-
 func get_progress_ratio() -> float:
 	if max_progression <= 0.0:
 		return 0.0

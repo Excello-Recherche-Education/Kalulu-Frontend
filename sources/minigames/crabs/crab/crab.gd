@@ -62,10 +62,6 @@ func highlight() -> void:
 	highlight_fx.play()
 
 
-func is_highlighted() -> bool:
-	return highlight_fx.is_playing
-
-
 func right() -> void:
 	label.label_settings = label.label_settings.duplicate()
 	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
