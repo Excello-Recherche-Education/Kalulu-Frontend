@@ -3,11 +3,11 @@ extends SyllablesMinigame
 const JELLYFISH_SCENE: PackedScene = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
 
 var difficulty_settings: Array[DifficultySettings] = [
-	DifficultySettings.new(4, 0.75, 150),
-	DifficultySettings.new(3, 0.66, 175),
-	DifficultySettings.new(2, 0.33, 200),
-	DifficultySettings.new(1, 0.25, 250),
-	DifficultySettings.new(1, 0.25, 300)
+	DifficultySettings.new(4, 0.8, 150),
+	DifficultySettings.new(3, 0.7, 175),
+	DifficultySettings.new(2, 0.6, 200),
+	DifficultySettings.new(1, 0.55, 250),
+	DifficultySettings.new(1, 0.5, 300)
 ]
 var blocking_jellyfish: Array[Jellyfish] = []
 
