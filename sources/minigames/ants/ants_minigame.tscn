@@ -60,7 +60,11 @@ alignment = 1
 layout_mode = 2
 texture = ExtResource("6_8t8tw")
 
-[node name="Sentence" type="HFlowContainer" parent="GameRoot/MarginContainer" index="1" unique_id=1268823550]
+[node name="SentenceMargin" type="MarginContainer" parent="GameRoot/MarginContainer" index="1" unique_id=52399268]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+
+[node name="Sentence" type="HFlowContainer" parent="GameRoot/MarginContainer/SentenceMargin" index="0" unique_id=1268823550]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
