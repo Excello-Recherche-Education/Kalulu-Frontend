@@ -38,12 +38,12 @@ func _ready() -> void:
 				try_with_local_data()
 				return
 			else:
-				if not (res.body as Dictionary).language == null and (res.body as Dictionary).language in Utils.SUPPORTED_LOCALES.keys():
-					var server_language: String = (res.body as Dictionary).language
+				var server_language: Variant = (res.body as Dictionary).language
+				if server_language is String and server_language in Utils.SUPPORTED_LOCALES.keys():
 					teacher_settings.language = server_language
 					Log.trace("LanguageCheck: Language validated by server")
 					teacher_settings.server_language_validated = true
-					UserDataManager.set_language(server_language, true)
+					UserDataManager.set_language(server_language as String, true)
 				else:
 					Log.trace("LanguageCheck: Language received from server is invalid or not defined")
 					var local_language: String = teacher_settings.language
