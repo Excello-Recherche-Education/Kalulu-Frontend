@@ -546,8 +546,7 @@ static func _find_valid_position_on_garden(garden_color_index: int, tested_posit
 	var center: Vector2 = garden_dimensions * 0.5
 	var toward_center: Vector2 = (center - clamped).normalized()
 	if toward_center.length() > 0.0:
-		var max_radius: float = maxf(garden_dimensions.x, garden_dimensions.y)
-		for radius: int in range(POSITION_SEARCH_STEP, int(max_radius) + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
+		for radius: int in range(POSITION_SEARCH_STEP, MAX_POSITION_SEARCH_RADIUS + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
 			var candidate: Vector2 = Utils.clamp_position_to_area(clamped + toward_center * float(radius), garden_dimensions, probe_half_size)
 			if _is_position_on_garden_texture(garden_color_index, candidate, garden_dimensions, probe_half_size, garden_image):
 				return candidate
@@ -561,6 +560,23 @@ static func _find_valid_position_on_garden(garden_color_index: int, tested_posit
 			var candidate2: Vector2 = Utils.clamp_position_to_area(clamped + offset, garden_dimensions, probe_half_size)
 			if _is_position_on_garden_texture(garden_color_index, candidate2, garden_dimensions, probe_half_size, garden_image):
 				return candidate2
+	# Fallback for very irregular gardens: search the whole texture to find the closest valid spot.
+	# This is slower than the radial scan, so we only run it as a last resort.
+	Log.trace("Gardens: Falling back to full texture scan for garden %s from position %s" % [str(garden_color_index), str(clamped)])
+	var closest_valid_position: Vector2 = clamped
+	var closest_distance: float = INF
+	for height: int in range(0, int(garden_dimensions.y) + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
+		for width: int in range(0, int(garden_dimensions.x) + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
+			var candidate3: Vector2 = Utils.clamp_position_to_area(Vector2(float(width), float(height)), garden_dimensions, probe_half_size)
+			if not _is_position_on_garden_texture(garden_color_index, candidate3, garden_dimensions, probe_half_size, garden_image):
+				continue
+			var distance: float = candidate3.distance_squared_to(clamped)
+			if distance < closest_distance:
+				closest_distance = distance
+				closest_valid_position = candidate3
+	if closest_distance < INF:
+		Log.trace("Gardens: Full texture scan selected %s for garden %s" % [str(closest_valid_position), str(garden_color_index)])
+		return closest_valid_position
 	return clamped
 
 
