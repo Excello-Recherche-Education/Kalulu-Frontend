@@ -86,65 +86,71 @@ theme_override_constants/margin_bottom = 25
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content" unique_id=1183576919]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer" unique_id=571960795]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer" unique_id=211942115]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer" unique_id=1531995288]
-layout_mode = 2
-theme_override_font_sizes/font_size = 64
-text = "LESSON"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer" unique_id=771322481]
+[node name="LessonsGrid" type="GridContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer" unique_id=1896367368]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_right = 60
+theme_override_constants/h_separation = 40
+theme_override_constants/v_separation = 12
+columns = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1688364131]
+[node name="LessonHeaderLabel" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=1531995288]
+custom_minimum_size = Vector2(100, 80)
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/separation = 32
+theme_override_font_sizes/font_size = 48
+text = "LESSON"
+vertical_alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=682774340]
-custom_minimum_size = Vector2(200, 0)
+[node name="GraphemeHeaderSpacer" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=771322481]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LookAndLearnHeaderLabel" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=682774340]
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 34
 text = "LOOKANDLEARN"
 horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=40356526]
-custom_minimum_size = Vector2(200, 0)
+[node name="ExerciseHeaderLabel1" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=40356526]
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 34
 text = "EXERCISE1"
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="Label3" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=933140768]
-custom_minimum_size = Vector2(200, 0)
+[node name="ExerciseHeaderLabel2" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=933140768]
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 34
 text = "EXERCISE2"
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="Label4" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=476815784]
-custom_minimum_size = Vector2(200, 0)
+[node name="ExerciseHeaderLabel3" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=476815784]
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 34
 text = "EXERCISE3"
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer" unique_id=211942115]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="LessonContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer" unique_id=1896367368]
+[node name="LessonRowsStore" type="Node" parent="."]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=180339992]
 layout_mode = 2

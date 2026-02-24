@@ -14,7 +14,8 @@ const LESSON_UNLOCK_SCENE: PackedScene = preload("res://sources/menus/settings/l
 var progression: StudentProgression
 var teacher_settings: SettingsTeacherSettings = null
 
-@onready var lesson_container: VBoxContainer = %LessonContainer
+@onready var lessons_grid: GridContainer = %LessonsGrid
+@onready var lesson_rows_store: Node = %LessonRowsStore
 @onready var name_line_edit: LineEdit = %NameLineEdit
 @onready var device_selection_container: PanelContainer = %DeviceSelectionContainer
 @onready var container: GridContainer = %GridContainer
@@ -26,9 +27,8 @@ func _ready() -> void:
 
 
 func _create_lessons() -> void:
-	for lesson_unlock: Node in lesson_container.get_children():
-		lesson_unlock.queue_free()
-	
+	_clear_lessons_grid()
+
 	Database.db.query("SELECT LessonNb, group_concat(Grapheme || '-' || Phoneme, ' ') GPs FROM Lessons
 INNER JOIN GPsInLessons ON GPsInLessons.LessonID = Lessons.ID
 INNER JOIN GPs ON GPsInLessons.GPID = GPs.ID
@@ -42,9 +42,23 @@ ORDER BY LessonNb")
 			Log.trace("LessonUnlocks: User selected a student with no progression data")
 			return
 		student_unlock.unlocks = progression.unlocks
-		lesson_container.add_child(student_unlock)
-		
+		lesson_rows_store.add_child(student_unlock)
 		student_unlock.unlocks_changed.connect(_create_lessons)
+		_add_row_to_grid(student_unlock)
+
+
+func _clear_lessons_grid() -> void:
+	for child: Node in lesson_rows_store.get_children():
+		child.queue_free()
+	for child: Node in lessons_grid.get_children():
+		if child.get_meta("lesson_grid_cell", false):
+			child.queue_free()
+
+
+func _add_row_to_grid(lesson_unlock: LessonUnlock) -> void:
+	for cell: Control in lesson_unlock.get_grid_cells():
+		cell.set_meta("lesson_grid_cell", true)
+		cell.reparent(lessons_grid)
 
 
 func _on_device_changed(value: int)-> void:
