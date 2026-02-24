@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bb00fhnenbml5" path="res://assets/lesson_screen/big_button.png" id="20_elp7t"]
 [ext_resource type="Texture2D" uid="uid://dq23np4euf6da" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_full.png" id="20_ouafq"]
 [ext_resource type="Texture2D" uid="uid://dlnklpyefn0m2" path="res://assets/lesson_screen/big_button_center.png" id="21_r0a4h"]
+[ext_resource type="Material" uid="uid://dne7hgkrp4tdy" path="res://resources/gardens/minigame_icon_material.tres" id="22_cgp31"]
 [ext_resource type="Texture2D" uid="uid://dkomjpclxvmqf" path="res://assets/lesson_screen/top_left.png" id="23_p1d10"]
 [ext_resource type="Texture2D" uid="uid://rux5delnabp5" path="res://assets/lesson_screen/top_right.png" id="24_30f83"]
 [ext_resource type="AudioStream" uid="uid://bgof22p2ofunc" path="res://assets/sfx/ui_yes_button.mp3" id="24_ljadf"]
@@ -29,7 +30,6 @@
 [ext_resource type="Texture2D" uid="uid://cqhbpt3lk6f15" path="res://assets/lesson_screen/bottom.png" id="25_tyvq6"]
 [ext_resource type="AudioStream" uid="uid://dlxvbjp63w6wm" path="res://assets/look_and_learn/effect.wav" id="26_5g3l0"]
 [ext_resource type="Script" uid="uid://ddew42fnpmsx1" path="res://sources/gardens/minigame_layout.gd" id="28_kvgph"]
-[ext_resource type="Shader" uid="uid://bnp4dxce44hcm" path="res://resources/shaders/outline_shader.gdshader" id="29_pew8x"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="33_5y3ye"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="41_xcos2"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="42_l35j3"]
@@ -80,33 +80,6 @@ gravity = Vector3(0, 0, 0)
 scale_min = 0.25
 anim_speed_min = 2.0
 anim_speed_max = 2.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mpipb"]
-shader = ExtResource("29_pew8x")
-shader_parameter/rainbow = false
-shader_parameter/line_color = Color(1, 1, 1, 1)
-shader_parameter/line_scale = 1.2
-shader_parameter/frequency = 0.5
-shader_parameter/light_offset = 0.5
-shader_parameter/alpha = 1.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_t7vua"]
-shader = ExtResource("29_pew8x")
-shader_parameter/rainbow = false
-shader_parameter/line_color = Color(1, 1, 1, 1)
-shader_parameter/line_scale = 1.2
-shader_parameter/frequency = 0.5
-shader_parameter/light_offset = 0.5
-shader_parameter/alpha = 1.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_js0rl"]
-shader = ExtResource("29_pew8x")
-shader_parameter/rainbow = false
-shader_parameter/line_color = Color(1, 1, 1, 1)
-shader_parameter/line_scale = 1.2
-shader_parameter/frequency = 0.5
-shader_parameter/light_offset = 0.5
-shader_parameter/alpha = 1.0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5003s"]
 particles_animation = true
@@ -289,7 +262,7 @@ texture = ExtResource("23_p1d10")
 script = ExtResource("28_kvgph")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground1" unique_id=1383000761]
-material = SubResource("ShaderMaterial_mpipb")
+material = ExtResource("22_cgp31")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 0
 offset_left = 704.0
@@ -327,7 +300,7 @@ texture = ExtResource("24_30f83")
 script = ExtResource("28_kvgph")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground2" unique_id=373021186]
-material = SubResource("ShaderMaterial_t7vua")
+material = ExtResource("22_cgp31")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 0
 offset_left = 1600.0
@@ -365,7 +338,7 @@ texture = ExtResource("25_tyvq6")
 script = ExtResource("28_kvgph")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MinigameSelection/MinigameBackground3" unique_id=1532680395]
-material = SubResource("ShaderMaterial_js0rl")
+material = ExtResource("22_cgp31")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 0
 offset_left = 1152.0
