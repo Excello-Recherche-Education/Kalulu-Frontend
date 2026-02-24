@@ -24,10 +24,6 @@ func create_sub_elements_list() -> void:
 		}
 
 
-func get_lesson_for_element(id: int) -> int:
-	return Database.get_min_lesson_for_sentence_id(id) + 1
-
-
 func _on_list_title_new_search(new_text: String) -> void:
 	for element: WordListElement in elements_container.get_children():
 		var found: bool = false

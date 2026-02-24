@@ -105,12 +105,6 @@ func _stop_highlight() -> void:
 		monkey.stop_highlight()
 
 
-func _reset_plank_label() -> void:
-	Log.trace("MonkeysMinigame: ResetPlankLabel")
-	var word: String = _get_current_stimulus().Word as String
-	word_label.text = "_".repeat(word.length())
-
-
 func _play_monkey_stimulus(monkey: Monkey) -> void:
 	var coroutine: Coroutine = Coroutine.new()
 	coroutine.add_future(monkey.talk)
