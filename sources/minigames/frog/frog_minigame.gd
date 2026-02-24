@@ -48,42 +48,59 @@ func _reset_frog() -> void:
 #region Tracks management
 
 func _free_tracks() -> void:
-	for track: LilypadTrack in lilypad_tracks_container.get_children():
-		await track.reset()
-	
+	var tracks: Array = lilypad_tracks_container.get_children()
+	var tracks_count: int = tracks.size()
+	for index: int in tracks_count:
+		var track: LilypadTrack = tracks[index]
+		if index == tracks_count - 1:
+			await track.reset()
+		else:
+			track.reset()
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		track.queue_free()
-		# Waits for the track to be properly freed
 		await track.tree_exited
 
 
 func _create_tracks() -> void:
 	var current_word: Dictionary = _get_current_stimulus()
 	var current_distractors: Array = _get_current_distractors()
-	
 	for index: int in range((current_word.GPs as Array).size()):
 		var track: LilypadTrack = LILYPAD_TRACK_SCENE.instantiate()
 		lilypad_tracks_container.add_child(track)
-		
 		track.difficulty_settings = difficulty_settings[difficulty]
 		track.gp = current_word.GPs[index]
 		track.distractors = current_distractors[index]
 		track.distractors_queue_size = distractors_queue_size
-		
 		track.lilypad_in_center.connect(_on_track_lilypad_in_center.bind(track))
 
 
 func _start_tracks() -> void:
-	var is_first_track_enabled: bool = false
-	var index: int = 0
-	for track: LilypadTrack in lilypad_tracks_container.get_children():
+	var tracks: Array[Node] = lilypad_tracks_container.get_children()
+	var last_valid_index: int = -1
+	for index: int in tracks.size():
 		if index >= current_word_progression:
+			last_valid_index = index
+	if last_valid_index == -1:
+		return
+	for index: int in tracks.size():
+		if index < current_word_progression:
+			continue
+		var track: LilypadTrack = tracks[index]
+		if index == last_valid_index:
 			await track.reset()
-			if not is_first_track_enabled:
-				track.is_enabled = true
-				is_first_track_enabled = true
-			track.start()
-		index += 1
+		else:
+			track.reset()
+	var is_first_track_enabled: bool = false
+	for index: int in tracks.size():
+		if index < current_word_progression:
+			continue
+		if not is_first_track_enabled:
+			(tracks[index] as LilypadTrack).is_enabled = true
+			is_first_track_enabled = true
+	for index: int in tracks.size():
+		if index < current_word_progression:
+			continue
+		(tracks[index] as LilypadTrack).start()
 
 #endregion
 
@@ -100,8 +117,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 		await lilypad.wrong()
 		await audio_player.play_gp(lilypad.stimulus)
 		lilypad.disappear()
-		frog.defeat()
-		await frog.defeated
+		await frog.defeat()
 		current_lives -= 1
 		_start_tracks()
 		await frog.appear()
@@ -117,6 +133,7 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 
 func _on_current_word_progression_changed() -> void:
 	# Enables the next track
+	frog.play_frog_sound()
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		if not track.is_cleared:
 			track.is_enabled = true
