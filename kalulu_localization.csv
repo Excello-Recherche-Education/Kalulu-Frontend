@@ -36,11 +36,11 @@ ACCOUNT_TYPE_PROMPT,Veuillez sélectionner le type de compte que vous souhaitez 
 ACCOUNT_TYPE,Type de compte,Tipo de cuenta,Tipo de conta,Tipo di account
 TEACHER,Enseignant,Docente,Professor,Insegnante
 PARENT,Parent,Padre,Pais,Genitore
-EDUCATION_METHOD_PROMPT,Veuillez sélectionner la méthode d'éducation utilisée,Seleccionar el método de enseñanza utilizado,Selecione o método educacional utilizado,Seleziona il metodo educativo utilizzato
-EDUCATION_METHOD_INFOS,"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier","Elegir ""Completo"" si utiliza igualmente los cuadernos y los juegos en papel",Escolha 'Completo' se você também usar os livretos e os jogos de papel,Scegli "Completo" se utilizzi anche i libretti e i giochi cartacei
+EDUCATION_METHOD_PROMPT,Indiquer le type d’utilisation que vous faites de la méthode Kalulu.,Indique el tipo de uso que hace del método Kalulu.,Indique o tipo de uso que você faz do método Kalulu.,Indica il tipo di utilizzo che fai del metodo Kalulu.
+EDUCATION_METHOD_INFOS,"Choisir “J’utilise la méthode complète” si vous utilisez les cahiers et les jeux en version papier en plus de l’application. Dans le cas contraire, choisir “J’utilise uniquement l’application”.","Elija «Uso el método completo» si utiliza los cuadernos y los juegos en papel además de la aplicación. En caso contrario, elija «Uso solo la aplicación».","Escolha “Uso o método completo” se você usa os cadernos e os jogos na versão em papel além do aplicativo. Caso contrário, escolha “Uso apenas o aplicativo”.","Scegli «Uso il metodo completo» se utilizzi i quaderni e i giochi in versione cartacea oltre all’applicazione. In caso contrario, scegli «Uso solo l’applicazione»."
 EDUCATION_METHOD,Méthode,Método,Método,Metodo
-METHOD_APP_ONLY,Application,Aplicación,Aplicativo,Applicazione
-METHOD_COMPLETE,Complète,Completo,Completo,Completo
+METHOD_APP_ONLY,J’utilise uniquement l’application,Uso solo la aplicación,Uso apenas o aplicativo,Uso solo l’applicazione
+METHOD_COMPLETE,J’utilise la méthode complète,Uso el método completo,Uso o método completo,Uso il metodo completo
 DEVICE_COUNT_PROMPT,Veuillez sélectionner le nombre d'appareils,Seleccionar la cantidad de dispositivos,Selecione o número de dispositivos,Seleziona il numero di dispositivi
 DEVICE_COUNT_INFOS,Vous pourrez modifier les appareils ultérieurement dans les paramètres,Puede cambiar los dispositivos más tarde en la configuración,Você pode alterar os dispositivos posteriormente nas configurações,Potrai modificare i dispositivi in seguito nelle impostazioni
 DEVICES,Appareils,Dispositivos,Dispositivos,Dispositivi
