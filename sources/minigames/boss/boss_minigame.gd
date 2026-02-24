@@ -330,7 +330,12 @@ func _quadratic_bezier(start: Vector2, control: Vector2, end: Vector2, progress:
 
 
 func _update_progression_gauge() -> void:
-	progress_gauge.margin_top_ratio = progress_gauge_max_margin - progress_gauge_max_margin / total_number_of_words * (total_number_of_words - words_to_present.size() - words_to_present_next.size())
+	var remaining_words: int = words_to_present.size() + words_to_present_next.size()
+	var margin_top_ratio: float = progress_gauge_max_margin * float(remaining_words) / total_number_of_words
+	if remaining_words > 0 and progress_gauge.size.y > 0.0:
+		# Keep at least one pixel unfilled while there are still words to answer.
+		margin_top_ratio = max(margin_top_ratio, 1.0 / progress_gauge.size.y)
+	progress_gauge.margin_top_ratio = margin_top_ratio
 	if _get_win_ratio() >= minimum_correct_ratio:
 		progress_gauge_internal.modulate = winning_color
 
