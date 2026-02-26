@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bovwkvchretal"
-path="res://.godot/imported/boss_dot_back.png-33af95cc762562f8e5857de926a6a811.ctex"
+uid="uid://bus15py545mkl"
+path="res://.godot/imported/device_front.png-368d37d967881a116d97e0ddc2afd198.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/buttons/boss_dot_back.png"
-dest_files=["res://.godot/imported/boss_dot_back.png-33af95cc762562f8e5857de926a6a811.ctex"]
+source_file="res://assets/gardens/buttons/device_front.png"
+dest_files=["res://.godot/imported/device_front.png-368d37d967881a116d97e0ddc2afd198.ctex"]
 
 [params]
 
