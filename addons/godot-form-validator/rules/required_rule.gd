@@ -4,7 +4,7 @@ class_name RequiredRule
 
 
 func _init() -> void:
-	fail_message = "A value is required."
+	fail_message = tr("VALUE_REQUIRED")
 
 
 func apply(control: Control, value: Variant) -> RuleResult:
