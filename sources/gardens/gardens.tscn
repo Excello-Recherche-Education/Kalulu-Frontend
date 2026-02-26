@@ -30,6 +30,8 @@
 [ext_resource type="Texture2D" uid="uid://cqhbpt3lk6f15" path="res://assets/lesson_screen/bottom.png" id="25_tyvq6"]
 [ext_resource type="AudioStream" uid="uid://dlxvbjp63w6wm" path="res://assets/look_and_learn/effect.wav" id="26_5g3l0"]
 [ext_resource type="Script" uid="uid://ddew42fnpmsx1" path="res://sources/gardens/minigame_layout.gd" id="28_kvgph"]
+[ext_resource type="Script" path="res://sources/ui/hold_progress_ring.gd" id="29_hold_ring"]
+[ext_resource type="Shader" uid="uid://bnp4dxce44hcm" path="res://resources/shaders/outline_shader.gdshader" id="29_pew8x"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="33_5y3ye"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="41_xcos2"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="42_l35j3"]
@@ -429,6 +431,16 @@ texture_pressed = ExtResource("5_2yuxn")
 texture_disabled = ExtResource("6_gs6gi")
 stretch_mode = 4
 
+[node name="BackButtonHoldRing" type="Control" parent="CanvasLayer" unique_id=418574918]
+unique_name_in_owner = true
+visible = false
+offset_left = 26.0
+offset_top = 26.0
+offset_right = 324.0
+offset_bottom = 324.0
+mouse_filter = 2
+script = ExtResource("29_hold_ring")
+
 [node name="KaluluButton" type="TextureButton" parent="CanvasLayer" unique_id=999341786]
 unique_name_in_owner = true
 offset_left = 56.0
@@ -475,6 +487,7 @@ visible = false
 
 [connection signal="gui_input" from="ScrollContainer" to="." method="_on_scroll_container_gui_input"]
 [connection signal="pressed" from="CanvasLayer/MinigameSelection/LessonButton" to="." method="_on_lesson_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="button_down" from="CanvasLayer/BackButton" to="." method="_on_back_button_button_down"]
+[connection signal="button_up" from="CanvasLayer/BackButton" to="." method="_on_back_button_button_up"]
 [connection signal="pressed" from="CanvasLayer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="input_event" from="CanvasLayer/Area2D" to="." method="_on_area_2d_input_event"]

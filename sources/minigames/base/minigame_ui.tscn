@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://cg71a1qmeyls0" path="res://assets/minigames/minigame_ui/graphic/button_play_down.png" id="23_rb4gp"]
 [ext_resource type="Texture2D" uid="uid://bht8j513507q5" path="res://assets/minigames/minigame_ui/graphic/button_play_disabled.png" id="24_em5b4"]
 [ext_resource type="Texture2D" uid="uid://c3o1aolewrm4k" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_empty.png" id="26_0bgo4"]
+[ext_resource type="Script" uid="uid://cg072fld1kvrc" path="res://sources/ui/hold_progress_ring.gd" id="26_hold_ring"]
 [ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="27_eee4l"]
 
 [sub_resource type="Animation" id="Animation_qwriy"]
@@ -194,6 +195,17 @@ texture_normal = ExtResource("2_p2m3v")
 texture_pressed = ExtResource("3_po8ds")
 texture_disabled = ExtResource("4_7xmkh")
 stretch_mode = 5
+
+[node name="GardenButtonHoldRing" type="Control" parent="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" unique_id=1134742901]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+mouse_filter = 2
+script = ExtResource("26_hold_ring")
 
 [node name="StimulusMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=496943241]
 unique_name_in_owner = true
@@ -391,7 +403,8 @@ layout_mode = 1
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=710236348]
 libraries/ = SubResource("AnimationLibrary_umrx4")
 
-[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_pressed"]
+[connection signal="button_down" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_button_down"]
+[connection signal="button_up" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_button_up"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin/StimulusButton" to="." method="_on_stimulus_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButtonMargin/KaluluButton" to="." method="_on_kalulu_button_pressed"]
