@@ -122,28 +122,6 @@ func _smooth_points(points: Array) -> Array:
 	return Bezier.bezier_sampling(points, maxi(points_per_curve, points.size()))
 
 
-func set_points(points: Array) -> void:
-	curve.clear_points()
-	for point: Vector2 in points:
-		curve.add_point(point)
-
-
-func set_guide_progress(progress: float) -> void:
-	guide.progress = progress
-
-
-func get_guide_progress() -> float:
-	return guide.progress
-
-
-func get_guide_progress_ratio() -> float:
-	return guide.progress_ratio
-
-
-func set_hand_progress(progress: float) -> void:
-	hand.progress = progress
-
-
 func start() -> void:
 	is_playing = true
 	guide_sprite.show()

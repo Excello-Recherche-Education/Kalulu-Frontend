@@ -2,6 +2,8 @@
 class_name PasswordVisualizer
 extends HBoxContainer
 
+signal symbol_pressed(index: int)
+
 const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
 	"1": preload("res://assets/menus/login/symbol_01.png"),
 	"2": preload("res://assets/menus/login/symbol_02.png"),
@@ -35,11 +37,33 @@ const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
 
 
 func _ready() -> void:
+	_panels_ready()
+	for panel_index: int in range(panels.size()):
+		var panel: PanelContainer = panels[panel_index]
+		panel.gui_input.connect(_on_panel_gui_input.bind(panel_index))
+
 	_draw_password()
 	_update_panel_styles()
 	for icon: TextureRect in icons:
 		icon.custom_minimum_size.x = key_size
 		icon.custom_minimum_size.y = key_size
+
+
+func _on_panel_gui_input(event: InputEvent, panel_index: int) -> void:
+	if not event is InputEventMouseButton:
+		return
+
+	var mouse_button_event: InputEventMouseButton = event as InputEventMouseButton
+	if not mouse_button_event.pressed:
+		return
+
+	if mouse_button_event.button_index != MOUSE_BUTTON_LEFT:
+		return
+
+	if panel_index >= password.length():
+		return
+
+	symbol_pressed.emit(panel_index)
 
 
 func _draw_password() -> void:

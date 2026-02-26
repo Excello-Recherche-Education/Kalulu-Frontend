@@ -60,6 +60,10 @@ func _on_validate_button_pressed() -> void:
 
 
 func _on_reset_password_button_pressed() -> void:
+	Log.info("Login: Reset password requested for email %s" % email_field.text)
 	var res: Dictionary = await ServerManager.reset_password(email_field.text)
 	if res.code != 200:
+		Log.warn("Login: Reset password request failed with code %d" % res.code)
 		login_message.text = "CHECK_YOUR_EMAIL"
+	else:
+		Log.info("Login: Reset password request accepted by server")

@@ -1,7 +1,6 @@
 class_name Frog
 extends Control
 
-signal defeated()
 signal jumped()
 
 const JUMP_SOUNDS: Array[AudioStreamMP3] = [
@@ -18,6 +17,8 @@ const FROG_SOUNDS: Array[AudioStreamMP3] = [
 	preload("res://assets/minigames/frog/audio/frog_random_04.mp3"),
 	preload("res://assets/minigames/frog/audio/frog_random_05.mp3"),
 ]
+const FROG_SPLASH: AudioStreamMP3 = preload("res://assets/minigames/frog/audio/frog_splash.mp3")
+const FROG_BUBBLE: AudioStreamMP3 = preload("res://assets/minigames/frog/audio/frog_bubble.mp3")
 const JUMP_HEIGHT: float = 220.0
 
 var blink_counter: int = 0
@@ -57,12 +58,17 @@ func jump_to(destination: Vector2) -> void:
 		1.0,
 		duration
 	).set_trans(Tween.TRANS_LINEAR)
+	_play_jump_sound()
 
 
 func defeat() -> void:
 	animated_sprite.play("flip_sad")
 	await animated_sprite.animation_finished
 	animated_sprite.play("defeat")
+	audio_player.stream = FROG_SPLASH
+	audio_player.play()
+	await animated_sprite.animation_finished
+	await audio_player.finished
 
 
 func success() -> void:
@@ -85,7 +91,7 @@ func _play_jump_sound() -> void:
 	audio_player.play()
 
 
-func _play_frog_sound() -> void:
+func play_frog_sound() -> void:
 	var rand: float = randf()
 	if rand <= 0.75:
 		audio_player.stream = FROG_SOUNDS[randi() % FROG_SOUNDS.size()]
@@ -95,6 +101,8 @@ func _play_frog_sound() -> void:
 func appear() -> void:
 	global_position = last_valid_position
 	animated_sprite.play("appear")
+	audio_player.stream = FROG_BUBBLE
+	audio_player.play()
 	await animated_sprite.animation_finished
 	await flip_happy()
 	animated_sprite.play("idle_side")
@@ -125,8 +133,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		"jump":
 			animated_sprite.play("idle_side")
 			jumped.emit()
-		"defeat":
-			defeated.emit()
 
 
 func idle_boss() -> void:

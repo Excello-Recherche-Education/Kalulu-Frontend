@@ -64,17 +64,5 @@ func _on_button_focus_exited() -> void:
 	focus_changed.emit(false)
 
 
-func no_gp_mode() -> void:
-	button.show()
-	container.hide()
-	size.y = 0
-
-
-func gp_mode() -> void:
-	button.hide()
-	container.show()
-	size.y = 0
-
-
 func _on_button_pressed() -> void:
 	new_gp_asked.emit()

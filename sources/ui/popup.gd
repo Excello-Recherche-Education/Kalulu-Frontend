@@ -37,9 +37,9 @@ func _set_cancel_text(p_content_text: String) -> void:
 	cancel_button.text = p_content_text
 
 
-func set_buttons_visible(is_visible: bool) -> void:
-	confirm_button.visible = is_visible
-	cancel_button.visible = is_visible
+func set_buttons_visible(is_button_visible: bool) -> void:
+	confirm_button.visible = is_button_visible
+	cancel_button.visible = is_button_visible
 
 
 func set_buttons_enabled(is_enabled: bool) -> void:
