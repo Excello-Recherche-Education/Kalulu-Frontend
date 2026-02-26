@@ -15,12 +15,12 @@ difficulty = 4
 max_number_of_lives = 5
 max_progression = 3
 
-[node name="MinigameUI" parent="." index="1"]
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
 empty_progression_icon = ExtResource("5_jm3ut")
 full_progression_icon = ExtResource("6_qfybu")
 stimulus_button_visible = false
 
-[node name="Scenery" type="Control" parent="GameRoot" index="0" unique_id=2099592946]
+[node name="Scenery" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=2099592946]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,64 +39,55 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("7_ihrng")
 
-[node name="SentenceBackground" type="HFlowContainer" parent="GameRoot" index="1" unique_id=306719963]
+[node name="MarginContainer" type="MarginContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1085551937]
+layout_mode = 0
+offset_left = 530.0
+offset_top = 254.0
+offset_right = 530.0
+offset_bottom = 254.0
+theme_override_constants/margin_left = 20
+
+[node name="SentenceBackground" type="HFlowContainer" parent="GameRoot/MarginContainer" index="0" unique_id=306719963]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 159)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -854.0
-offset_top = -646.0
-offset_right = 954.0
-offset_bottom = 389.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
+theme_override_constants/v_separation = 25
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="GameRoot/SentenceBackground" index="0" unique_id=44871661]
+[node name="TextureRect" type="TextureRect" parent="GameRoot/MarginContainer/SentenceBackground" index="0" unique_id=44871661]
 layout_mode = 2
 texture = ExtResource("6_8t8tw")
 
-[node name="Sentence" type="HFlowContainer" parent="GameRoot" index="2" unique_id=1268823550]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -854.0
-offset_top = -646.0
-offset_right = 954.0
-offset_bottom = 389.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-alignment = 1
+[node name="SentenceMargin" type="MarginContainer" parent="GameRoot/MarginContainer" index="1" unique_id=52399268]
+layout_mode = 2
+theme_override_constants/margin_left = 50
 
-[node name="AntsSpawn" type="Marker2D" parent="GameRoot" index="3" unique_id=1673515301]
+[node name="Sentence" type="HFlowContainer" parent="GameRoot/MarginContainer/SentenceMargin" index="0" unique_id=1268823550]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/v_separation = 25
+
+[node name="AntsSpawn" type="Marker2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=1673515301]
 unique_name_in_owner = true
 position = Vector2(-200, 1640)
 
-[node name="AntsStart" type="Marker2D" parent="GameRoot" index="4" unique_id=280495281]
+[node name="AntsStart" type="Marker2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=280495281]
 unique_name_in_owner = true
 position = Vector2(680, 1640)
 
-[node name="AntsEnd" type="Marker2D" parent="GameRoot" index="5" unique_id=1507861359]
+[node name="AntsEnd" type="Marker2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=1507861359]
 unique_name_in_owner = true
 position = Vector2(2360, 1640)
 
-[node name="AntsDespawn" type="Marker2D" parent="GameRoot" index="6" unique_id=1410024633]
+[node name="AntsDespawn" type="Marker2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=1410024633]
 unique_name_in_owner = true
 position = Vector2(2768, 1640)
 
-[node name="Ants" type="Node2D" parent="GameRoot" index="7" unique_id=2093451028]
+[node name="Ants" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=2093451028]
 unique_name_in_owner = true
 
-[node name="Words" type="Node2D" parent="GameRoot" index="8" unique_id=118245542]
+[node name="Words" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=118245542]
 unique_name_in_owner = true

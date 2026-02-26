@@ -45,3 +45,9 @@ func test_join_either_returns_after_first_completion() -> void:
 	assert_eq(typeof(partial[1]), TYPE_NIL, "join_either should return null for unfinished futures.") # We don't use assert_null because of warning for supertype Variant
 	var full: Array = await coroutine.join_all()
 	assert_eq(full, ["fast", "slow"], "join_all should return all values once finished.")
+
+
+func test_join_either_returns_immediately_without_futures() -> void:
+	var coroutine: Coroutine = Coroutine.new()
+	var result: Array = await coroutine.join_either()
+	assert_eq(result, [], "join_either should return immediately when no future has been registered.")

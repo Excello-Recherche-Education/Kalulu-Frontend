@@ -47,10 +47,8 @@ func _get_velocity() -> float:
 func reset() -> void:
 	is_enabled = false
 	is_stopped = true
-	
 	for lilypad: Lilypad in lilypads:
 		lilypad.disappear()
-	
 	await get_tree().create_timer(0.5).timeout
 
 
@@ -73,10 +71,8 @@ func pick_distractor() -> Dictionary:
 		distractors_queue.shuffle()
 		while distractors_queue.size() > distractors_queue_size:
 			distractors_queue.pop_front()
-	
 	if distractors_queue:
 		return distractors_queue.pop_front()
-	
 	return {}
 
 
@@ -172,7 +168,6 @@ func _on_center_tween_finished(lilypad: Lilypad, center_tween: Tween) -> void:
 func _on_spawn_timer_timeout() -> void:
 	if not is_stopped:
 		_spawn_lilypad()
-	
 	# Makes sure the lilypads don't overlap
 	if lilypad_size:
 		spawn_timer.start(randf_range(lilypad_size.y / _get_velocity(), lilypad_size.y * 2 / _get_velocity()))

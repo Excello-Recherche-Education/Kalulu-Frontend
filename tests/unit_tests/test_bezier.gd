@@ -282,45 +282,6 @@ func test_bezier_sampling_matches_direct_evaluation_for_known_t_values() -> void
 
 
 # -----------------------------
-# Square error
-# -----------------------------
-func test_bezier_square_error_zero_when_ref_points_on_same_line() -> void:
-	# current_points is a segment; ref_points are on the same segment
-	var current_points: Array = [Vector2(0.0, 0.0), Vector2(10.0, 0.0)]
-	var ref_points: Array = [
-		Vector2(0.0, 0.0),
-		Vector2(2.0, 0.0),
-		Vector2(5.0, 0.0),
-		Vector2(10.0, 0.0)
-	]
-
-	var error: float = Bezier.bezier_square_error(current_points, ref_points)
-	assert_almost_eq(error, 0.0, 0.0001, "bezier_square_error(current_points, ref_points) should be ~0 when ref_points lie on the curve defined by current_points")
-
-
-func test_bezier_square_error_increases_with_distance() -> void:
-	var current_points: Array = [Vector2(0.0, 0.0), Vector2(10.0, 0.0)]
-
-	var ref_points_near: Array = [
-		Vector2(2.0, 0.5),
-		Vector2(5.0, -0.5),
-		Vector2(8.0, 0.5)
-	]
-
-	var ref_points_far: Array = [
-		Vector2(2.0, 5.0),
-		Vector2(5.0, -5.0),
-		Vector2(8.0, 5.0)
-	]
-
-	var error_near: float = Bezier.bezier_square_error(current_points, ref_points_near)
-	var error_far: float = Bezier.bezier_square_error(current_points, ref_points_far)
-
-	assert_gt(error_near, 0.0, "bezier_square_error(current_points, ref_points) should be > 0 when ref_points are off the curve")
-	assert_gt(error_far, error_near, "bezier_square_error should increase when ref_points are farther from the curve")
-
-
-# -----------------------------
 # Optional: behavior outside [0,1]
 # -----------------------------
 func test_bezier_extrapolates_outside_unit_interval() -> void:

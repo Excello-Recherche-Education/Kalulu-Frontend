@@ -51,6 +51,8 @@ func join_all() -> Array:
 
 
 func join_either() -> Array:
+	if return_value.is_empty():
+		return []
 	if _ended_count > 0:
 		return return_value
 	_ended_count = return_value.size() - 1

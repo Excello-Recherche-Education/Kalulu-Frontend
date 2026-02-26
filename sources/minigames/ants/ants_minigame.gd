@@ -136,10 +136,19 @@ func _next_sentence() -> void:
 	inds_to_remove.reverse()
 	for index: int in inds_to_remove:
 		current_words.remove_at(index)
+
+	if not current_words.is_empty() and current_words[-1].ends_with(".") and current_words[-1].length() > 1:
+		current_words[-1] = current_words[-1].left(-1)
+		current_words.append(".")
 	
+	var non_blankable_tokens: PackedStringArray = ["."]
 	var number_of_blanks: int = maxi(2, mini(difficulty, current_words.size()))
-	var blanks: Array = range(current_words.size())
+	var blanks: Array[int] = []
+	for index: int in range(current_words.size()):
+		if current_words[index] not in non_blankable_tokens:
+			blanks.append(index)
 	blanks.shuffle()
+	number_of_blanks = mini(number_of_blanks, blanks.size())
 	while blanks.size() > number_of_blanks:
 		blanks.pop_back()
 	
@@ -173,7 +182,10 @@ func _next_sentence() -> void:
 			var label: Label = Label.new()
 			sentence_container.add_child(label)
 			
-			label.text = " " + current_word + "  "
+			if current_word == ".":
+				label.text = current_word + "  "
+			else:
+				label.text = " " + current_word + "  "
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			label.label_settings = LABEL_SETTINGS
@@ -210,7 +222,6 @@ func _start_ants() -> void:
 	for ant_index: int in range(total_ants):
 		var ant: Ant = ants.get_child(ant_index)
 
-		# Start walking animation or logic
 		ant.walk()
 
 		# Create a tween to move the ant from start to end point

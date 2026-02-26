@@ -4,18 +4,6 @@ extends Node
 static var factorial_cache: Dictionary[int, int] = {}
 
 
-static func bezier_square_error(current_points: Array, ref_points: Array) -> float:
-	var samples: Array[Vector2] = bezier_sampling(current_points, 25)
-	var curve: Curve2D = Curve2D.new()
-	for point: Vector2 in samples:
-		curve.add_point(point)
-	var error: float = 0.0
-	for point: Vector2 in ref_points:
-		var curve_point: Vector2 = curve.get_closest_point(point)
-		error += pow(curve_point.distance_to(point), 2.0)
-	return error
-
-
 static func bezier_sampling(points: Array, number_of_samples: int) -> Array[Vector2]:
 	var sample_points: Array[Vector2] = []
 	if number_of_samples <= 0:

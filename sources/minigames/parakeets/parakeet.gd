@@ -43,7 +43,7 @@ var original_text_box_color: Color
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animated_sprite_2d_feathers: AnimatedSprite2D = $AnimatedSprite2D_Feathers
-@onready var label: Label = $Label
+@onready var label: Label = $TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel/Label
 @onready var right_fx: RightFX = $RightFX
 @onready var right_stars: RightStarsFX = $Right_Stars
 @onready var wrong_fx: WrongFX = $WrongFX
@@ -70,8 +70,10 @@ func turn_to_back() -> void:
 
 func turn_to_front() -> void:
 	animated_sprite.play_backwards("turn_to_back")
-	await animated_sprite.animation_finished
+	var animation_time: float = Utils.get_animation_duration(animated_sprite, "turn_to_back")
+	await get_tree().create_timer(animation_time/2).timeout
 	label.show()
+	await animated_sprite.animation_finished
 	animated_sprite.play("idle_front")
 
 
