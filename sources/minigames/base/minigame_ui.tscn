@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" uid="uid://mlymm66lpbi6" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_nomrla.png" id="2_p2m3v"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_normal.png" id="2_p2m3v"]
 [ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_pressed.png" id="3_po8ds"]
 [ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="4_7xmkh"]
 [ext_resource type="Texture2D" uid="uid://03r3arvu1r2t" path="res://assets/minigames/minigame_ui/graphic/button_shell_normal.png" id="5_d6rvg"]
