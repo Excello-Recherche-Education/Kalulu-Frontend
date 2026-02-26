@@ -25,10 +25,7 @@ var is_garden_button_hold_active: bool = false
 
 @onready var garden_button: TextureButton = %GardenButton
 @onready var garden_button_hold_ring: HoldProgressRing = %GardenButtonHoldRing
-@onready var stimulus_margin: MarginContainer = %StimulusMargin
 @onready var stimulus_button: TextureButton = %StimulusButton
-@onready var stimulus_texture: TextureRect = %StimulusTexture
-@onready var pause_margin: MarginContainer = %PauseMargin
 @onready var pause_button: TextureButton = %PauseButton
 @onready var kalulu_button: TextureButton = %KaluluButton
 @onready var center_menu: MarginContainer = %CenterMenu
@@ -36,7 +33,6 @@ var is_garden_button_hold_active: bool = false
 @onready var progression_container: VBoxContainer = %ProgressionContainer
 @onready var progression_gauge: NinePatchRect = %ProgressionGauge
 @onready var model_progression_rect: TextureRect = %ProgressionIconsRect
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 func _ready() -> void:
@@ -74,11 +70,7 @@ func _update_garden_button_hold_ring_transform() -> void:
 
 
 func _handle_stimulus_button() -> void:
-	stimulus_margin.set_visible(stimulus_button_visible)
-	if stimulus_button_visible:
-		pause_margin.size_flags_stretch_ratio = 1
-	else:
-		pause_margin.size_flags_stretch_ratio = 2
+	stimulus_button.set_visible(stimulus_button_visible)
 
 #region Locking
 
@@ -216,10 +208,3 @@ func _on_kalulu_speech_ended() -> void:
 	kalulu_speech_ended.emit()
 
 #endregion
-
-func repeat_stimulus_animation(appear: bool) -> void:
-	if appear:
-		animation_player.play("repeat_stimulus")
-	else:
-		animation_player.play_backwards("repeat_stimulus")
-	await animation_player.animation_finished
