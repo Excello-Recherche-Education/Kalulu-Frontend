@@ -7,7 +7,6 @@ const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selectio
 const DEVICE_TAB_SCENE: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
 const PASSWORD_VISUALIZER_SCENE: PackedScene = preload("res://sources/menus/components/password_visualizer.tscn")
 const EXPORT_COLUMNS: int = 2
-const EXPORT_MAX_ROWS: int = 18
 const EXPORT_TITLE_FONT_SIZE: int = 44
 const EXPORT_SECTION_FONT_SIZE: int = 32
 const EXPORT_TEXT_FONT_SIZE: int = 28
@@ -51,8 +50,6 @@ func _ready() -> void:
 	education_method_option_button.select(UserDataManager.teacher_settings.education_method)
 	
 	UserDataManager.user_database_synchronizer.loading_popup = loading_popup
-	UserDataManager.user_database_synchronizer.account_type_option_button = account_type_option_button
-	UserDataManager.user_database_synchronizer.education_method_option_button = education_method_option_button
 
 	export_codes_file_dialog.set_title(tr("EXPORT_STUDENT_CODES"))
 	export_codes_file_dialog.set_ok_button_text(tr("EXPORT_STUDENT_CODES"))

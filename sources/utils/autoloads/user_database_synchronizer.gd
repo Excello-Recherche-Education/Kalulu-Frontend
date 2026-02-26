@@ -10,8 +10,6 @@ enum UpdateNeeded {
 }
 
 var synchronizing: bool = false
-var account_type_option_button: OptionButton
-var education_method_option_button: OptionButton
 var loading_popup: LoadingPopup
 
 

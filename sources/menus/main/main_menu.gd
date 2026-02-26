@@ -4,7 +4,6 @@ const KALULU: GDScript = preload("res://sources/menus/main/kalulu_main_menu.gd")
 const ADULT_CHECK_SCENE_PATH: PackedScene = preload("res://sources/menus/adult_check/adult_check.tscn")
 const LANGUAGE_CHECK_SCENE_PATH: PackedScene = preload("res://sources/menus/language_selection/language_check.tscn")
 const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
-const DEVELOPER_SETTINGS: GDScript = preload("res://sources/menus/settings/developer_settings.gd")
 const DEV_CLICK_THRESHOLD: int = 10 # Number of clicks needed to open Developer Settings
 const DEV_CLICK_MAX_DELAY: float = 0.6 # Delay between each clicks (in seconds)
 

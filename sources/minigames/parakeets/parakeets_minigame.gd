@@ -30,7 +30,6 @@ const PARAKEET_SCENE: PackedScene = preload("res://sources/minigames/parakeets/p
 
 @export var fly_duration: float = 3.0
 
-var possible_branch_positions: Array[Vector2] = []
 var parakeets: Array[Parakeet] = []
 var selected: Array[Parakeet] = []
 var state: State = State.Locked

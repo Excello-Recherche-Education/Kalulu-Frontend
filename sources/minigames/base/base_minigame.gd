@@ -40,9 +40,6 @@ static var transition_data: Dictionary = {}
 @export var errors_before_help_speech: int = 2
 @export var errors_before_highlight: int = 3
 
-# Lesson
-var minigame_difficulty: int
-var lesson_difficulty: int
 # Logs
 var logs: Dictionary = {}
 # Scores for the remediation engine
