@@ -4,7 +4,7 @@ BUILD_VERSION,Numéro de version,Número de versión,Número da versão,Numero d
 DEVICE_ID,Numéro d'appareil,Identificación del dispositivo,Número do dispositivo,ID del dispositivo
 LANGUAGE,Langue,Idioma,Idioma,Lingua
 SIGN_IN_TEACHER,Connexion enseignant,Conexión del docente,Login do professor,Accesso insegnante
-SIGN_IN_PARENT,Connexion parent,Conexión del padre,Login dos pais,Accesso genitore
+SIGN_IN_PARENT,Connexion parent,Conexión del progenitor,Login dos pais,Accesso genitore
 CREATE_ACCOUNT,Création de compte,Creación de cuenta,Criar uma conta,Creazione account
 LOGIN,Identifiants,Usuario,Identificadores,Credenziali
 EMAIL,Adresse mail,Correo electrónico,Endereço eletrônico,Indirizzo email
@@ -34,10 +34,10 @@ NEXT,Suivant,Siguiente,Próximo,Avanti
 CANCEL,Annuler,Cancelar,Cancelar,Annulla
 ACCOUNT_TYPE_PROMPT,Veuillez sélectionner le type de compte que vous souhaitez créer,Seleccionar el tipo de cuenta que desea crear,Selecione o tipo de conta que deseja criar,Seleziona il tipo di account che desideri creare
 ACCOUNT_TYPE,Type de compte,Tipo de cuenta,Tipo de conta,Tipo di account
-TEACHER,Enseignant,Docente,Professor,Insegnante
-PARENT,Parent,Padre,Pais,Genitore
-EDUCATION_METHOD_PROMPT,Indiquer le type d’utilisation que vous faites de la méthode Kalulu.,Indique el tipo de uso que hace del método Kalulu.,Indique o tipo de uso que você faz do método Kalulu.,Indica il tipo di utilizzo che fai del metodo Kalulu.
-EDUCATION_METHOD_INFOS,"Choisir “J’utilise la méthode complète” si vous utilisez les cahiers et les jeux en version papier en plus de l’application. Dans le cas contraire, choisir “J’utilise uniquement l’application”.","Elija «Uso el método completo» si utiliza los cuadernos y los juegos en papel además de la aplicación. En caso contrario, elija «Uso solo la aplicación».","Escolha “Uso o método completo” se você usa os cadernos e os jogos na versão em papel além do aplicativo. Caso contrário, escolha “Uso apenas o aplicativo”.","Scegli «Uso il metodo completo» se utilizzi i quaderni e i giochi in versione cartacea oltre all’applicazione. In caso contrario, scegli «Uso solo l’applicazione»."
+TEACHER,Enseignant,Soy docente,Professor,Insegnante
+PARENT,Parent,Soy progenitor,Pais,Genitore
+EDUCATION_METHOD_PROMPT,Veuillez sélectionner la méthode d'éducation utilisée,Seleccionar el método de enseñanza utilizado,Selecione o método educacional utilizado,Seleziona il metodo educativo utilizzato
+EDUCATION_METHOD_INFOS,"Choisissez ""Complète"" si vous utilisez également les livrets et les jeux en papier","Elegir ""Completo"" si utiliza igualmente los cuadernos y los juegos en papel",Escolha 'Completo' se você também usar os livretos e os jogos de papel,Scegli "Completo" se utilizzi anche i libretti e i giochi cartacei
 EDUCATION_METHOD,Méthode,Método,Método,Metodo
 METHOD_APP_ONLY,J’utilise uniquement l’application,Uso solo la aplicación,Uso apenas o aplicativo,Uso solo l’applicazione
 METHOD_COMPLETE,J’utilise la méthode complète,Uso el método completo,Uso o método completo,Uso il metodo completo
@@ -142,23 +142,23 @@ Les règles applicables à l'usage de la Plateforme et à tous les contenus et i
 
 ARTICLE 5 - Conditions de modifications de la politique de confidentialité
 
-L'éditeur du site se réserve le droit de la modifier afin de garantir sa conformité avec le droit et les usages en vigueur.","**PREÁMBULO**
+L'éditeur du site se réserve le droit de la modifier afin de garantir sa conformité avec le droit et les usages en vigueur.","[b]PREÁMBULO[/b]
 
 Las presentes Condiciones Generales de Uso están disponibles en todo momento: excellolab.org/cgu
 
 En ellas se establecen las normas de acceso a nuestras plataformas de la web Excello y sus subdominios, que contienen contenidos educativos digitales, en adelante la plataforma.
 
-Al utilizar esta plataforma, usted reconoce que, como usuario &ndash;profesor y/o tutor legal de un menor&ndash;, conoce las condiciones, las acepta sin reservas y las cumple.
+Al utilizar esta plataforma, usted reconoce que, como usuario –profesor y/o tutor legal de un menor–, conoce las condiciones, las acepta sin reservas y las cumple.
 
-El responsable del tratamiento se reserva el derecho, a su entera discreción y sin previo aviso, de modificar, suprimir o completar las presentes &laquo;Condiciones Generales de Uso&raquo; en cualquier momento, en particular para tener en cuenta cualquier evolución jurídica, jurisprudencial, editorial y/o técnica. La versión que prevalece es la que está accesible en línea.
+El responsable del tratamiento se reserva el derecho, a su entera discreción y sin previo aviso, de modificar, suprimir o completar las presentes ""Condiciones Generales de Uso"" en cualquier momento, en particular para tener en cuenta cualquier evolución jurídica, jurisprudencial, editorial y/o técnica. La versión que prevalece es la que está accesible en línea.
 
 Por lo tanto, le aconsejamos que consulte regularmente la última versión de las presentes Condiciones Generales de Uso.
 
-**ARTÍCULO 1 - USO DEL USUARIO, INFORMACIÓN PRÁCTICA**
+[b]ARTÍCULO 1 - USO DEL USUARIO, INFORMACIÓN PRÁCTICA[/b]
 
 La asociación Excello tiene por objeto la investigación, el desarrollo y la difusión de conocimientos en el ámbito de la educación, especialmente en lo que se refiere a la mejora del aprendizaje de la lectura y las matemáticas. Excello desarrolla y proporciona recursos educativos asociados, en particular mediante el uso de las nuevas tecnologías.
 
-**1/** **Acceso a las aplicaciones educativas creadas por Excello**
+[b]1/ Acceso a las aplicaciones educativas creadas por Excello[/b]
 
 Las actividades están disponibles 24 horas al día, 7 días a la semana:
 
@@ -170,42 +170,42 @@ Una vez instalada la aplicación, el uso de Internet no es obligatorio. Sin emba
 
 Si la aplicación se utiliza offline (sin internet), las trazas de aprendizaje (resultados de los ejercicios) se guardan en el dispositivo y sólo se enviarán a la plataforma cuando se restablezca la conexión a internet.
 
-**2/** **Acceso a las plataformas creadas por Excello**
+[b]2/ Acceso a las plataformas creadas por Excello[/b]
 
 Para utilizar nuestras plataformas por primera vez, deberá:
 
 - Crear una cuenta de adulto (cuidador de niños/profesor).
 - Encontrar toda la información recopilada en nuestra política de privacidad.
 
-**3/** **Asistencia técnica**
+[b]3/ Asistencia técnica[/b]
 
 En caso de incidencia técnica en la aplicación o plataforma, envíe un mensaje a: contact@excellolab.org
 
 Nuestros equipos harán todo lo posible para responder y resolver cualquier incidencia lo antes posible.
 
-**4/** **Equipo utilizado**
+[b]4/ Equipo utilizado[/b]
 
 El dispositivo utilizado debe cumplir las siguientes especificaciones para garantizar el correcto uso de las aplicaciones Excello:
 
-**Mínimo:**
+[b]Mínimo:[/b]
 
 - Sistema: PC, Android, iOS (Chrome, Firefox, Safari &gt;= 13)
 - Procesador: 4 núcleos 1,4 GHz
 - Memoria: 2 GB RAM
 
-**Recomendado, para una óptima renderización:**
+[b]Recomendado, para una óptima renderización:[/b]
 
 - Sistema: PC, Android, iOS (Chrome, Firefox, Safari &gt;= 14)
 - Procesador: 4 núcleos 2 GHz
 - Memoria: 2 GB RAM
 
-**ARTÍCULO 2 - LICENCIA DE USO**
+[b]ARTÍCULO 2 - LICENCIA DE USO[/b]
 
 El acceso a esta Plataforma le otorga un derecho de uso no exclusivo, privado y/o colectivo.
 
 El uso de la Plataforma implica la aceptación sin reservas de las presentes Condiciones Generales de Uso.
 
-Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografías, ilustraciones, gráficos, infografías, mapas, videogramas, música, iconos y software, en lo sucesivo denominado &laquo;el Contenido&raquo;, está sujeto a una licencia CC BY-SA 4.0.
+Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografías, ilustraciones, gráficos, infografías, mapas, videogramas, música, iconos y software, en lo sucesivo denominado ""el Contenido"", está sujeto a una licencia CC BY-SA 4.0.
 
 De conformidad con el artículo L. 122-4 del Código francés de la Propiedad Intelectual, toda representación o reproducción total o parcial sin el consentimiento del autor o de sus derechohabientes o causahabientes es ilícita. Lo mismo se aplica a la traducción, adaptación o transformación, arreglo o reproducción por cualquier arte o procedimiento.
 
@@ -213,7 +213,7 @@ Le recordamos también que la violación de los derechos de autor es un delito c
 
 Del mismo modo, el Código francés de la Propiedad Intelectual castiga con tres años de prisión y 300.000 euros de multa toda fijación, reproducción, comunicación o puesta a disposición del público, a título oneroso o gratuito, o toda emisión televisiva de una interpretación o ejecución, de un fonograma, de un videograma o de un programa, sin la autorización, en su caso, del titular de los derechos.
 
-**ARTÍCULO 3 - LIMITACIÓN DE RESPONSABILIDAD**
+[b]ARTÍCULO 3 - LIMITACIÓN DE RESPONSABILIDAD[/b]
 
 Usted será el único responsable de cualquier daño o pérdida, directo o indirecto, material o inmaterial, si se debe, se basa o se origina en el uso de la Plataforma por su parte o por parte de cualquier persona autorizada por usted a utilizar la Plataforma. Por uso se entiende cualquier utilización de la Plataforma, sea fraudulenta o no.
 
@@ -221,29 +221,29 @@ Los menores de edad pueden acceder a la Plataforma con la condición expresa de 
 
 Los editores de la Plataforma se comprometen a hacer todo lo posible para garantizar la seguridad del acceso, la consulta y la utilización de la Plataforma.
 
-**ARTÍCULO 4 - APLICACIÓN DEL DERECHO FRANCÉS**
+[b]ARTÍCULO 4 - APLICACIÓN DEL DERECHO FRANCÉS[/b]
 
 Las normas aplicables a la utilización de la Plataforma y a todos los contenidos e informaciones que contiene se rigen por el derecho francés. En caso de litigio, los tribunales franceses serán los únicos competentes.
 
-**ARTÍCULO 5 - CONDICIONES DE MODIFICACIÓN DE LA POLÍTICA DE CONFIDENCIALIDAD**
+[b]ARTÍCULO 5 - CONDICIONES DE MODIFICACIÓN DE LA POLÍTICA DE CONFIDENCIALIDAD[/b]
 
-El editor del sitio se reserva el derecho a modificarla para garantizar su conformidad con la legislación y los usos vigentes.","**PRÉAMBULO**
+El editor del sitio se reserva el derecho a modificarla para garantizar su conformidad con la legislación y los usos vigentes.","[b]PRÉAMBULO[/b]
 
 As presentes Condições Gerais de Uso estão disponíveis a qualquer momento: excellolab.org/cgu
 
 Elas determinam as regras de acesso às nossas plataformas no site Excello e seus subdomínios, onde se encontram conteúdos digitais pedagógicos, doravante denominada plataforma.
 
-Ao utilizar esta plataforma, você reconhece, na qualidade de usuário &ndash; professor e/ou responsável legal do aluno menor de idade &ndash; que conhece os termos, os aceita sem reservas e se compromete a cumpri-los.
+Ao utilizar esta plataforma, você reconhece, na qualidade de usuário – professor e/ou responsável legal do aluno menor de idade – que conhece os termos, os aceita sem reservas e se compromete a cumpri-los.
 
-O responsável pelo tratamento se reserva o direito, a seu exclusivo critério e sem aviso prévio, de modificar, excluir ou adicionar disposições a estas **&quot;Condições Gerais de Uso&quot;** a qualquer momento, especialmente para levar em conta qualquer evolução legal, jurisprudencial, editorial e/ou técnica. A versão prevalente é aquela acessível online.
+O responsável pelo tratamento se reserva o direito, a seu exclusivo critério e sem aviso prévio, de modificar, excluir ou adicionar disposições a estas [b]""Condições Gerais de Uso""[/b] a qualquer momento, especialmente para levar em conta qualquer evolução legal, jurisprudencial, editorial e/ou técnica. A versão prevalente é aquela acessível online.
 
 Recomenda-se, portanto, que você consulte regularmente a última versão destas Condições Gerais de Uso.
 
-**ARTIGO 1 - USO DO USUÁRIO, INFORMAÇÕES PRÁTICAS**
+[b]ARTIGO 1 - USO DO USUÁRIO, INFORMAÇÕES PRÁTICAS[/b]
 
 A associação Excello tem como objetivo a pesquisa, desenvolvimento e disseminação de conhecimentos na área da educação, particularmente na melhoria da aprendizagem da leitura e matemática. A Excello desenvolve e fornece recursos pedagógicos associados, principalmente por meio de novas tecnologias.
 
-**1/** **Acesso aos aplicativos educativos criados pela Excello**
+[b]1/ Acesso aos aplicativos educativos criados pela Excello[/b]
 
 As atividades estão disponíveis 24 horas por dia, 7 dias por semana:
 
@@ -256,42 +256,42 @@ Uma vez instalado o aplicativo, o uso da internet não é obrigatório. No entan
 
 Se o aplicativo for utilizado offline (sem internet), os registros de aprendizagem (resultados dos exercícios) serão salvos no dispositivo e serão enviados para a plataforma assim que a conexão com a internet for restabelecida.
 
-**2/** **Acesso às plataformas criadas pela Excello**
+[b]2/ Acesso às plataformas criadas pela Excello[/b]
 
 Para um primeiro uso das nossas plataformas, é necessário:
 
 - Criar uma conta adulta (responsável legal/professor).
 - Consultar todas as informações coletadas em nossa política de privacidade.
 
-**3/** **Assistência técnica**
+[b]3/ Assistência técnica[/b]
 
 Em caso de problemas técnicos com o aplicativo ou a plataforma, entre em contato pelo e-mail: contact@excellolab.org
 
 Nossa equipe fará o possível para responder e resolver os problemas o mais rápido possível.
 
-**4/** **Requisitos de hardware**
+[b]4/ Requisitos de hardware[/b]
 
 O dispositivo utilizado deve atender aos seguintes requisitos para garantir o bom funcionamento dos aplicativos Excello:
 
-**Mínimo:**
+[b]Mínimo:[/b]
 
-- Sistema: PC, Android, iOS (Chrome, Firefox, Safari &gt;= 13)
+- Sistema: PC, Android, iOS (Chrome, Firefox, Safari 13+)
 - Processador: 4 núcleos 1.4 GHz
 - Memória: 2 GB RAM
 
-**Recomendado, para melhor desempenho:**
+[b]Recomendado, para melhor desempenho:[/b]
 
-- Sistema: PC, Android, iOS (Chrome, Firefox, Safari &gt;= 14)
+- Sistema: PC, Android, iOS (Chrome, Firefox, Safari 14+)
 - Processador: 4 núcleos 2 GHz
 - Memória: 2 GB RAM
 
-**ARTIGO 2 - LICENÇA DE USO**
+[b]ARTIGO 2 - LICENÇA DE USO[/b]
 
 O acesso a esta Plataforma concede a você um direito de uso não exclusivo, privado e/ou coletivo.
 
 O uso da Plataforma implica a aceitação sem reservas das presentes Condições Gerais de Uso.
 
-Todo o conteúdo publicado na Plataforma, incluindo mas não se limitando a: textos, fotografias, ilustrações, gráficos, infográficos, mapas, videogramas, músicas, ícones e softwares, doravante denominados **&quot;os Conteúdos&quot;**, está sob licença CC BY-SA 4.0.
+Todo o conteúdo publicado na Plataforma, incluindo mas não se limitando a: textos, fotografias, ilustrações, gráficos, infográficos, mapas, videogramas, músicas, ícones e softwares, doravante denominados [b]""os Conteúdos""[/b], está sob licença CC BY-SA 4.0.
 
 De acordo com o artigo L. 122-4 do Código de Propriedade Intelectual, qualquer representação ou reprodução integral ou parcial feita sem o consentimento do autor ou de seus sucessores é ilícita. O mesmo se aplica à tradução, adaptação ou transformação, arranjo ou reprodução por qualquer meio ou processo.
 
@@ -299,17 +299,17 @@ Lembramos também que a violação dos direitos autorais constitui crime de fals
 
 Da mesma forma, o Código de Propriedade Intelectual pune com três anos de prisão e multa de 300.000 euros qualquer fixação, reprodução, comunicação ou disponibilização pública, gratuita ou paga, de uma performance, fonograma, videograma ou programa sem a devida autorização quando exigida.
 
-**ARTIGO 3 - LIMITAÇÃO DE RESPONSABILIDADE**
+[b]ARTIGO 3 - LIMITAÇÃO DE RESPONSABILIDADE[/b]
 
 Você é o único responsável por quaisquer danos e prejuízos, diretos ou indiretos, materiais ou imateriais, decorrentes do uso da Plataforma por você ou por terceiros autorizados por você.
 
 Menores de idade só podem acessar a Plataforma com autorização prévia dos pais ou responsáveis.
 
-**ARTIGO 4 - APLICAÇÃO DA LEI FRANCESA**
+[b]ARTIGO 4 - APLICAÇÃO DA LEI FRANCESA[/b]
 
 As regras aplicáveis à Plataforma e seus conteúdos são regidas pela lei francesa. Em caso de litígio, os tribunais franceses terão competência exclusiva.
 
-**ARTIGO 5 - MODIFICAÇÕES NA POLÍTICA DE PRIVACIDADE**
+[b]ARTIGO 5 - MODIFICAÇÕES NA POLÍTICA DE PRIVACIDADE[/b]
 
 O editor do site se reserva o direito de modificar a política de privacidade para garantir sua conformidade com as leis e práticas vigentes.","PREMESSA
 
@@ -430,7 +430,7 @@ NO_TEACHER_SETTINGS_ON_DEVICE,Aucun paramètre enseignant n'est configuré sur c
 LANGUAGE_NOT_SUPPORTED,La langue « %s » n’est pas prise en charge.,El idioma « %s » no es compatible.,O idioma « %s » não é suportado.,La lingua « %s » non è supportata.
 NO_VALID_LANGUAGE_DATA_AVAILABLE,Aucune donnée de langue disponible.,No hay datos de idioma disponibles.,Não há dados de idioma disponíveis.,Nessun dato di lingua disponibile.
 CHECKING_DATA,Vérification des données...,Comprobando datos...,Verificação de dados...,Verifica dei dati...
-TEACHER_SETTINGS_HELP,"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes","Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos","Para acessar as configurações, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botão \"Parâmetros\" por 5 segundos","Per accedere alle impostazioni, premi il segno più e la barra verticale, quindi tieni premuto il pulsante ""Impostazioni"" per 5 secondi"
+TEACHER_SETTINGS_HELP,"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes","Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos","Para acessar as configurações, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botão ""Parâmetros"" por 5 segundos","Per accedere alle impostazioni, premi il segno più e la barra verticale, quindi tieni premuto il pulsante ""Impostazioni"" per 5 secondi"
 DELETE_ACCOUNT,Supprimer le compte,Eliminar cuenta,Excluir conta,Elimina account
 DELETE_ACCOUNT_POPUP,Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !,¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!,Você realmente deseja excluir sua conta? Essa ação é irreversível!,Vuoi davvero eliminare il tuo account? Questa azione è irreversibile!
 DISCONNECTED_ERROR,Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.,Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.,Você foi desconectado. Digite seus detalhes de login novamente.,Sei stato disconnesso. Inserisci nuovamente le tue credenziali.
