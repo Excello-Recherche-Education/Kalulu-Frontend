@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://ylee262nfnsi" path="res://sources/look_and_learn/look_and_learn.gd" id="1_12st1"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_2efp5"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="3_7ejv4"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_nomrla.png" id="3_7ejv4"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="4_1m6x7"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_down.png" id="4_adi05"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_pressed.png" id="4_adi05"]
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_bxvlx"]
 [ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="5_j5vhb"]
 [ext_resource type="Texture2D" uid="uid://c1i3kqeg7ifoo" path="res://assets/look_and_learn/video_foreground.png" id="6_8san1"]

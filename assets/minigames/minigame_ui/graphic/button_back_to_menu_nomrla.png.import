@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnqgwy3arrm4n"
-path="res://.godot/imported/button_pause_up.png-b3a1cf703ea43475f2d04a406fc228a0.ctex"
+uid="uid://dj0ygi5q6kbdw"
+path="res://.godot/imported/button_back_to_menu_nomrla.png-e090f8267a5ac3a99dc7f30a6c0465e9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/minigame_ui/graphic/button_pause_up.png"
-dest_files=["res://.godot/imported/button_pause_up.png-b3a1cf703ea43475f2d04a406fc228a0.ctex"]
+source_file="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_nomrla.png"
+dest_files=["res://.godot/imported/button_back_to_menu_nomrla.png-e090f8267a5ac3a99dc7f30a6c0465e9.ctex"]
 
 [params]
 

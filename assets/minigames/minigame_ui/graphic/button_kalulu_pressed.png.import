@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iw84x6mx8h2g"
-path="res://.godot/imported/button_kalulu_up.png-eb0b9e4294a6c73526a7e0883437fa7a.ctex"
+uid="uid://ub1dnysbojn8"
+path="res://.godot/imported/button_kalulu_pressed.png-a479a09c3b090d686ecc16921d301226.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png"
-dest_files=["res://.godot/imported/button_kalulu_up.png-eb0b9e4294a6c73526a7e0883437fa7a.ctex"]
+source_file="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png"
+dest_files=["res://.godot/imported/button_kalulu_pressed.png-a479a09c3b090d686ecc16921d301226.ctex"]
 
 [params]
 
