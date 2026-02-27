@@ -3,8 +3,6 @@ extends Area2D
 
 signal pressed(gp: Dictionary)
 
-const BLUE_BERRY: CompressedTexture2D = preload("res://assets/minigames/caterpillar/graphics/berry_bue.png")
-
 var gp: Dictionary = {}: 
 	set(value):
 		gp = value
