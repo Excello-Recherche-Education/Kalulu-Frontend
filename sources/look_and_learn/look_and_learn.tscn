@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://ylee262nfnsi" path="res://sources/look_and_learn/look_and_learn.gd" id="1_12st1"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_2efp5"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="3_7ejv4"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_normal.png" id="3_7ejv4"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="4_1m6x7"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_down.png" id="4_adi05"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_pressed.png" id="4_adi05"]
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_bxvlx"]
 [ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="5_j5vhb"]
 [ext_resource type="Texture2D" uid="uid://c1i3kqeg7ifoo" path="res://assets/look_and_learn/video_foreground.png" id="6_8san1"]
@@ -851,30 +851,19 @@ text = "o"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LeftContainer" type="VBoxContainer" parent="." unique_id=463691329]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="LeftContainer" unique_id=2001807491]
-custom_minimum_size = Vector2(450, 0)
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="GardenButton" type="TextureButton" parent="LeftContainer/MarginContainer" unique_id=970416480]
+[node name="GardenButton" type="TextureButton" parent="." unique_id=970416480]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 386)
-layout_mode = 2
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 350.0
+offset_bottom = 436.0
 size_flags_vertical = 0
 texture_normal = ExtResource("3_7ejv4")
 texture_pressed = ExtResource("4_adi05")
 texture_disabled = ExtResource("5_j5vhb")
+ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Frame" type="TextureRect" parent="." unique_id=1803400322]
@@ -995,7 +984,7 @@ lifetime = 0.5
 process_material = SubResource("ParticleProcessMaterial_vgnm5")
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
-[connection signal="pressed" from="LeftContainer/MarginContainer/GardenButton" to="." method="_on_garden_button_pressed"]
+[connection signal="pressed" from="GardenButton" to="." method="_on_garden_button_pressed"]
 [connection signal="finished" from="Frame/Mask/ColorRect/TracingManager" to="." method="_on_tracing_manager_finished"]
 [connection signal="finished" from="Frame/Mask/VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]
 [connection signal="pressed" from="GraphemeButton" to="." method="_on_grapheme_button_pressed"]

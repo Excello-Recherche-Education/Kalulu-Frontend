@@ -1,17 +1,17 @@
 [gd_scene format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" uid="uid://mlymm66lpbi6" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="2_p2m3v"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_down.png" id="3_po8ds"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_normal.png" id="2_p2m3v"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_pressed.png" id="3_po8ds"]
 [ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="4_7xmkh"]
-[ext_resource type="Texture2D" uid="uid://03r3arvu1r2t" path="res://assets/minigames/minigame_ui/graphic/button_shell_up.png" id="5_d6rvg"]
-[ext_resource type="Texture2D" uid="uid://clrnqn0fqjx3q" path="res://assets/minigames/minigame_ui/graphic/button_shell_down.png" id="6_ojtbv"]
+[ext_resource type="Texture2D" uid="uid://03r3arvu1r2t" path="res://assets/minigames/minigame_ui/graphic/button_shell_normal.png" id="5_d6rvg"]
+[ext_resource type="Texture2D" uid="uid://clrnqn0fqjx3q" path="res://assets/minigames/minigame_ui/graphic/button_shell_pressed.png" id="6_ojtbv"]
 [ext_resource type="Texture2D" uid="uid://53f3lscl7tws" path="res://assets/minigames/minigame_ui/graphic/button_shell_disabled.png" id="7_cg081"]
-[ext_resource type="Texture2D" uid="uid://bnqgwy3arrm4n" path="res://assets/minigames/minigame_ui/graphic/button_pause_up.png" id="8_tna5q"]
-[ext_resource type="Texture2D" uid="uid://bjxt5vglohmk8" path="res://assets/minigames/minigame_ui/graphic/button_pause_down.png" id="9_bxlyd"]
+[ext_resource type="Texture2D" uid="uid://bnqgwy3arrm4n" path="res://assets/minigames/minigame_ui/graphic/button_pause_normal.png" id="8_tna5q"]
+[ext_resource type="Texture2D" uid="uid://bjxt5vglohmk8" path="res://assets/minigames/minigame_ui/graphic/button_pause_pressed.png" id="9_bxlyd"]
 [ext_resource type="Texture2D" uid="uid://b0luicu7cgho5" path="res://assets/minigames/minigame_ui/graphic/button_pause_disabled.png" id="10_h64tq"]
-[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_up.png" id="11_n2mcy"]
-[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_down.png" id="12_crt1m"]
+[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_normal.png" id="11_n2mcy"]
+[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png" id="12_crt1m"]
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="13_2j53i"]
 [ext_resource type="Texture2D" uid="uid://vcfpmwst262s" path="res://assets/minigames/minigame_ui/graphic/popin_background.png" id="14_ubv3y"]
 [ext_resource type="Texture2D" uid="uid://f2ys2fy1il2k" path="res://assets/minigames/minigame_ui/graphic/popin_foreground.png" id="15_ym1dd"]
@@ -26,105 +26,8 @@
 [ext_resource type="Texture2D" uid="uid://cg71a1qmeyls0" path="res://assets/minigames/minigame_ui/graphic/button_play_down.png" id="23_rb4gp"]
 [ext_resource type="Texture2D" uid="uid://bht8j513507q5" path="res://assets/minigames/minigame_ui/graphic/button_play_disabled.png" id="24_em5b4"]
 [ext_resource type="Texture2D" uid="uid://c3o1aolewrm4k" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_empty.png" id="26_0bgo4"]
-[ext_resource type="Script" uid="uid://cg072fld1kvrc" path="res://sources/ui/hold_progress_ring.gd" id="26_hold_ring"]
+[ext_resource type="Script" path="res://sources/ui/hold_progress_ring.gd" id="26_hold_ring"]
 [ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="27_eee4l"]
-
-[sub_resource type="Animation" id="Animation_qwriy"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MainControl/Interface/StimulusTexture:size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(250, 386)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MainControl/Interface/StimulusTexture:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(101, 440)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MainControl/Interface/StimulusTexture:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_fr0k4"]
-resource_name = "repeat_stimulus"
-length = 0.5
-step = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MainControl/Interface/StimulusTexture:size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(250, 386), Vector2(1000, 1000)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MainControl/Interface/StimulusTexture:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(101, 440), Vector2(814, 325)]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"values": []
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("MainControl/Interface/StimulusTexture:modulate")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_umrx4"]
-_data = {
-&"RESET": SubResource("Animation_qwriy"),
-&"repeat_stimulus": SubResource("Animation_fr0k4")
-}
 
 [node name="MinigameUI" type="CanvasLayer" unique_id=1395941266]
 process_mode = 3
@@ -149,54 +52,21 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="StimulusTexture" type="TextureRect" parent="MainControl/Interface" unique_id=1226389894]
+[node name="GardenButton" type="TextureButton" parent="MainControl/Interface" unique_id=1647258232]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1179.0
-offset_top = -460.0
-offset_right = -929.0
-offset_bottom = -74.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("5_d6rvg")
-stretch_mode = 5
-
-[node name="LeftMargin" type="MarginContainer" parent="MainControl/Interface" unique_id=256462568]
-custom_minimum_size = Vector2(375, 0)
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 375.0
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-mouse_filter = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 10
-
-[node name="LeftContainer" type="VBoxContainer" parent="MainControl/Interface/LeftMargin" unique_id=1786308687]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="GardenButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=1647258232]
-unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 250.0
+offset_bottom = 250.0
 size_flags_vertical = 3
 texture_normal = ExtResource("2_p2m3v")
 texture_pressed = ExtResource("3_po8ds")
 texture_disabled = ExtResource("4_7xmkh")
+ignore_texture_size = true
 stretch_mode = 5
 
-[node name="GardenButtonHoldRing" type="Control" parent="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" unique_id=1134742901]
+[node name="GardenButtonHoldRing" type="Control" parent="MainControl/Interface/GardenButton" unique_id=1134742901]
 unique_name_in_owner = true
 visible = false
 anchors_preset = 0
@@ -207,50 +77,39 @@ offset_bottom = 16.0
 mouse_filter = 2
 script = ExtResource("26_hold_ring")
 
-[node name="StimulusMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=496943241]
+[node name="StimulusButton" type="TextureButton" parent="MainControl/Interface" unique_id=2016416103]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-theme_override_constants/margin_left = 60
-theme_override_constants/margin_right = 60
-
-[node name="StimulusButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin" unique_id=2016416103]
-unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 0
+offset_left = 270.0
+offset_top = 50.0
+offset_right = 470.0
+offset_bottom = 250.0
 texture_normal = ExtResource("5_d6rvg")
 texture_pressed = ExtResource("6_ojtbv")
 texture_disabled = ExtResource("7_cg081")
+ignore_texture_size = true
 stretch_mode = 5
 
-[node name="PauseMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=3662370]
+[node name="PauseButton" type="TextureButton" parent="MainControl/Interface" unique_id=77193092]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-theme_override_constants/margin_left = 60
-theme_override_constants/margin_right = 60
-
-[node name="PauseButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin" unique_id=77193092]
-unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 0
+offset_left = 490.0
+offset_top = 51.0
+offset_right = 690.0
+offset_bottom = 251.0
 texture_normal = ExtResource("8_tna5q")
 texture_pressed = ExtResource("9_bxlyd")
 texture_disabled = ExtResource("10_h64tq")
+ignore_texture_size = true
 stretch_mode = 5
 
-[node name="HSeparator" type="HSeparator" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=170916794]
-self_modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
-
-[node name="KaluluButtonMargin" type="MarginContainer" parent="MainControl/Interface/LeftMargin/LeftContainer" unique_id=1977883805]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="KaluluButton" type="TextureButton" parent="MainControl/Interface/LeftMargin/LeftContainer/KaluluButtonMargin" unique_id=1684071537]
+[node name="KaluluButton" type="TextureButton" parent="MainControl/Interface" unique_id=1684071537]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 0
+offset_left = 100.0
+offset_top = 1400.0
+offset_right = 400.0
+offset_bottom = 1700.0
 texture_normal = ExtResource("11_n2mcy")
 texture_pressed = ExtResource("12_crt1m")
 texture_disabled = ExtResource("13_2j53i")
@@ -263,8 +122,8 @@ anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -897.0
-offset_right = 897.0
+offset_left = -580.0
+offset_right = 920.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 7
@@ -400,14 +259,11 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=710236348]
-libraries/ = SubResource("AnimationLibrary_umrx4")
-
-[connection signal="button_down" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_button_down"]
-[connection signal="button_up" from="MainControl/Interface/LeftMargin/LeftContainer/GardenButton" to="." method="_on_garden_button_button_up"]
-[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/StimulusMargin/StimulusButton" to="." method="_on_stimulus_button_pressed"]
-[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/PauseMargin/PauseButton" to="." method="_on_pause_button_pressed"]
-[connection signal="pressed" from="MainControl/Interface/LeftMargin/LeftContainer/KaluluButtonMargin/KaluluButton" to="." method="_on_kalulu_button_pressed"]
+[connection signal="button_down" from="MainControl/Interface/GardenButton" to="." method="_on_garden_button_button_down"]
+[connection signal="button_up" from="MainControl/Interface/GardenButton" to="." method="_on_garden_button_button_up"]
+[connection signal="pressed" from="MainControl/Interface/StimulusButton" to="." method="_on_stimulus_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="speech_ended" from="MainControl/Kalulu" to="." method="_on_kalulu_speech_ended"]
