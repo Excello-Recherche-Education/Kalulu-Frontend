@@ -62,7 +62,6 @@ size_flags_vertical = 3
 texture_normal = ExtResource("2_p2m3v")
 texture_pressed = ExtResource("3_po8ds")
 texture_disabled = ExtResource("4_7xmkh")
-ring_padding = 16.0
 
 [node name="StimulusButton" type="TextureButton" parent="MainControl/Interface" unique_id=2016416103]
 unique_name_in_owner = true
