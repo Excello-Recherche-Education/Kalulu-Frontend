@@ -820,7 +820,6 @@ func _process_back_button_hold(delta: float) -> void:
 		_confirm_back_button_pressed()
 
 
-
 func _get_minigame_layouts() -> Array[MinigameLayout]:
 	return [minigame_layout_1, minigame_layout_2, minigame_layout_3]
 
