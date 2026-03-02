@@ -1,7 +1,7 @@
 class_name MinigameUI
 extends CanvasLayer
 
-signal garden_button_pressed()
+signal back_button_pressed()
 signal stimulus_button_pressed()
 signal restart_button_pressed()
 signal kalulu_button_pressed()
@@ -9,7 +9,7 @@ signal kalulu_speech_ended()
 signal pause_ended()
 
 const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
-const GARDEN_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
+const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
 
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture
@@ -20,11 +20,10 @@ const GARDEN_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
 			_handle_stimulus_button()
 
 var is_paused: bool = false
-var garden_button_hold_progress_seconds: float = 0.0
-var is_garden_button_hold_active: bool = false
+var back_button_hold_progress_seconds: float = 0.0
+var is_back_button_hold_active: bool = false
 
-@onready var garden_button: TextureButton = %GardenButton
-@onready var garden_button_hold_ring: HoldProgressRing = %GardenButtonHoldRing
+@onready var back_button: BackButton = %BackButton
 @onready var stimulus_button: TextureButton = %StimulusButton
 @onready var pause_button: TextureButton = %PauseButton
 @onready var kalulu_button: TextureButton = %KaluluButton
@@ -38,35 +37,28 @@ var is_garden_button_hold_active: bool = false
 func _ready() -> void:
 	model_progression_rect.texture = empty_progression_icon
 	_handle_stimulus_button()
-	_cancel_garden_button_hold()
+	_cancel_back_button_hold()
 
 
 func _process(delta: float) -> void:
-	_process_garden_button_hold(delta)
-	_update_garden_button_hold_ring_transform()
+	_process_back_button_hold(delta)
 
 
-func _process_garden_button_hold(delta: float) -> void:
-	if not is_garden_button_hold_active:
+func _process_back_button_hold(delta: float) -> void:
+	if not is_back_button_hold_active:
 		return
-	if is_paused or garden_button.disabled:
-		_cancel_garden_button_hold()
+	if is_paused or back_button.disabled:
+		_cancel_back_button_hold()
 		return
-	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or not garden_button.get_global_rect().has_point(get_viewport().get_mouse_position()):
-		_cancel_garden_button_hold()
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or not back_button.get_global_rect().has_point(get_viewport().get_mouse_position()):
+		_cancel_back_button_hold()
 		return
-	garden_button_hold_progress_seconds += delta
-	var progress_ratio: float = clampf(garden_button_hold_progress_seconds / GARDEN_BUTTON_HOLD_DURATION_SECONDS, 0.0, 1.0)
-	garden_button_hold_ring.progress_ratio = progress_ratio
+	back_button_hold_progress_seconds += delta
+	var progress_ratio: float = clampf(back_button_hold_progress_seconds / BACK_BUTTON_HOLD_DURATION_SECONDS, 0.0, 1.0)
+	back_button.set_hold_progress_ratio(progress_ratio)
 	if progress_ratio >= 1.0:
-		_cancel_garden_button_hold()
-		_emit_garden_button_pressed()
-
-
-func _update_garden_button_hold_ring_transform() -> void:
-	var ring_padding: float = 16.0
-	garden_button_hold_ring.position = Vector2.ONE * -ring_padding
-	garden_button_hold_ring.size = garden_button.size + Vector2.ONE * ring_padding * 2.0
+		_cancel_back_button_hold()
+		_emit_back_button_pressed()
 
 
 func _handle_stimulus_button() -> void:
@@ -75,15 +67,15 @@ func _handle_stimulus_button() -> void:
 #region Locking
 
 func lock() -> void:
-	garden_button.set_disabled(true)
-	_cancel_garden_button_hold()
+	back_button.set_disabled(true)
+	_cancel_back_button_hold()
 	stimulus_button.set_disabled(true)
 	pause_button.set_disabled(true)
 	kalulu_button.set_disabled(true)
 
 
 func unlock() -> void:
-	garden_button.set_disabled(false)
+	back_button.set_disabled(false)
 	stimulus_button.set_disabled(false)
 	pause_button.set_disabled(false)
 	kalulu_button.set_disabled(false)
@@ -126,28 +118,26 @@ func set_progression(new_progression: int) -> void:
 
 #region Left Panel
 
-func _emit_garden_button_pressed() -> void:
-	garden_button_pressed.emit()
+func _emit_back_button_pressed() -> void:
+	back_button_pressed.emit()
 
 
-func _on_garden_button_button_down() -> void:
-	if garden_button.disabled or is_garden_button_hold_active:
+func _on_back_button_button_down() -> void:
+	if back_button.disabled or is_back_button_hold_active:
 		return
-	is_garden_button_hold_active = true
-	garden_button_hold_progress_seconds = 0.0
-	garden_button_hold_ring.progress_ratio = 0.0
-	garden_button_hold_ring.show()
+	is_back_button_hold_active = true
+	back_button_hold_progress_seconds = 0.0
+	back_button.begin_hold()
 
 
-func _on_garden_button_button_up() -> void:
-	_cancel_garden_button_hold()
+func _on_back_button_button_up() -> void:
+	_cancel_back_button_hold()
 
 
-func _cancel_garden_button_hold() -> void:
-	is_garden_button_hold_active = false
-	garden_button_hold_progress_seconds = 0.0
-	garden_button_hold_ring.progress_ratio = 0.0
-	garden_button_hold_ring.hide()
+func _cancel_back_button_hold() -> void:
+	is_back_button_hold_active = false
+	back_button_hold_progress_seconds = 0.0
+	back_button.cancel_hold()
 
 
 func _on_stimulus_button_pressed() -> void:
@@ -169,9 +159,9 @@ func _on_kalulu_button_pressed() -> void:
 
 func show_center_menu(show_menu: bool) -> void:
 	center_menu.set_visible(show_menu)
-	garden_button.set_disabled(show_menu)
+	back_button.set_disabled(show_menu)
 	if show_menu:
-		_cancel_garden_button_hold()
+		_cancel_back_button_hold()
 	stimulus_button.set_disabled(show_menu)
 	kalulu_button.set_disabled(show_menu)
 	pause_button.set_visible(!show_menu)

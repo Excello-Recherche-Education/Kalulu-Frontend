@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cil0o87dsb7q4" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_v06h8"]
-[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="3_hvu1i"]
-[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_045cm"]
-[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_e3piv"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="3_i488h"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="4_ys1u2"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_y6ou8"]
 [ext_resource type="PackedScene" uid="uid://bo7rpk4gebh24" path="res://sources/menus/settings/sound_settings_button.tscn" id="6_s8nbl"]
 [ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="7_jetb7"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="8_7h0sa"]
@@ -42,9 +42,10 @@ theme_override_constants/separation = 20
 [node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=2030686467]
 layout_mode = 2
 size_flags_vertical = 3
-texture_normal = ExtResource("3_hvu1i")
-texture_pressed = ExtResource("4_045cm")
-texture_disabled = ExtResource("5_e3piv")
+texture_normal = ExtResource("3_i488h")
+texture_pressed = ExtResource("4_ys1u2")
+texture_disabled = ExtResource("5_y6ou8")
+ignore_texture_size = true
 stretch_mode = 4
 
 [node name="VolumeContainer" type="MarginContainer" parent="InterfaceLeft/Container" unique_id=1984502757]

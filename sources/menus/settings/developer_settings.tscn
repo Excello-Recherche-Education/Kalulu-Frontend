@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://b8hlfrsgrkmy"]
 
 [ext_resource type="Script" uid="uid://dutga8wms2uy4" path="res://sources/menus/settings/developer_settings.gd" id="1_qqqt3"]
-[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="3_vjlw0"]
-[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="4_s0ywi"]
-[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_4q33k"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="2_utgug"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="3_dttok"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="4_bsu7d"]
 [ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="6_7w7ds"]
 
 [node name="DeveloperSettings" type="Control" unique_id=2110866691]
@@ -43,9 +43,10 @@ theme_override_constants/separation = 20
 [node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1761957378]
 layout_mode = 2
 size_flags_vertical = 3
-texture_normal = ExtResource("3_vjlw0")
-texture_pressed = ExtResource("4_s0ywi")
-texture_disabled = ExtResource("5_4q33k")
+texture_normal = ExtResource("2_utgug")
+texture_pressed = ExtResource("3_dttok")
+texture_disabled = ExtResource("4_bsu7d")
+ignore_texture_size = true
 stretch_mode = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=485492715]

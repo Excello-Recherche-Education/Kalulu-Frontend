@@ -162,5 +162,5 @@ func _back_to_gardens() -> void:
 	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
 
 
-func _on_garden_button_pressed() -> void:
+func _on_back_button_pressed() -> void:
 	_back_to_gardens()

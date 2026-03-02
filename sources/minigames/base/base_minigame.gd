@@ -454,7 +454,7 @@ func set_current_progression(p_current_progression: int) -> void:
 
 #region Connections
 
-func _on_minigame_ui_garden_button_pressed() -> void:
+func _on_minigame_ui_back_button_pressed() -> void:
 	_go_back_to_the_garden()
 	update_scores()
 

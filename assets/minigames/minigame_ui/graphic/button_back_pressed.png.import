@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbhip35yyqneg"
-path="res://.godot/imported/button_back_down.png-3f0900b9068506829079db407c662074.ctex"
+uid="uid://gmoc5mxxfqin"
+path="res://.godot/imported/button_back_pressed.png-2557e870c079169f2d2bd6a17ce8aeb9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/minigames/minigame_ui/graphic/button_back_down.png"
-dest_files=["res://.godot/imported/button_back_down.png-3f0900b9068506829079db407c662074.ctex"]
+source_file="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png"
+dest_files=["res://.godot/imported/button_back_pressed.png-2557e870c079169f2d2bd6a17ce8aeb9.ctex"]
 
 [params]
 

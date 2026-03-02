@@ -72,8 +72,7 @@ var is_back_button_hold_active: bool = false
 @onready var minigame_selection: Control = %MinigameSelection
 @onready var lesson_button: LessonButton = %LessonButton
 @onready var lesson_button_particles: GPUParticles2D = %LessonButtonParticles
-@onready var back_button: TextureButton = %BackButton
-@onready var back_button_hold_ring: HoldProgressRing = %BackButtonHoldRing
+@onready var back_button: BackButton = %BackButton
 @onready var right_audio_stream_player: AudioStreamPlayer = $RightAudioStreamPlayer
 @onready var left_audio_stream_player: AudioStreamPlayer = $LeftAudioStreamPlayer
 @onready var feedback_audio_stream_player: AudioStreamPlayer = $FeedBackAudioStreamPlayer
@@ -802,7 +801,6 @@ static func _generate_lesson_positions(lessons_for_garden: int, garden_index: in
 
 func _process(_delta: float) -> void:
 	_process_back_button_hold(_delta)
-	_update_back_button_hold_ring_transform()
 	locked_line.position.x = - scroll_container.scroll_horizontal
 	unlocked_line.position.x = - scroll_container.scroll_horizontal
 	parallax_background.scroll_offset.x = - scroll_container.scroll_horizontal
@@ -816,16 +814,11 @@ func _process_back_button_hold(delta: float) -> void:
 		return
 	back_button_hold_progress_seconds += delta
 	var progress_ratio: float = clampf(back_button_hold_progress_seconds / BACK_BUTTON_HOLD_DURATION_SECONDS, 0.0, 1.0)
-	back_button_hold_ring.progress_ratio = progress_ratio
+	back_button.set_hold_progress_ratio(progress_ratio)
 	if progress_ratio >= 1.0:
 		_cancel_back_button_hold()
 		_confirm_back_button_pressed()
 
-
-func _update_back_button_hold_ring_transform() -> void:
-	var ring_padding: float = 24.0
-	back_button_hold_ring.position = back_button.position - Vector2.ONE * ring_padding
-	back_button_hold_ring.size = back_button.size + Vector2.ONE * ring_padding * 2.0
 
 
 func _get_minigame_layouts() -> Array[MinigameLayout]:
@@ -1468,8 +1461,7 @@ func _on_back_button_button_down() -> void:
 		return
 	is_back_button_hold_active = true
 	back_button_hold_progress_seconds = 0.0
-	back_button_hold_ring.progress_ratio = 0.0
-	back_button_hold_ring.visible = true
+	back_button.begin_hold()
 
 
 func _on_back_button_button_up() -> void:
@@ -1479,8 +1471,7 @@ func _on_back_button_button_up() -> void:
 func _cancel_back_button_hold() -> void:
 	is_back_button_hold_active = false
 	back_button_hold_progress_seconds = 0.0
-	back_button_hold_ring.progress_ratio = 0.0
-	back_button_hold_ring.visible = false
+	back_button.cancel_hold()
 
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

@@ -4,11 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="3_0my6t"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="3_5b1v0"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_yrwu8"]
-[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="4_3vuah"]
-[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="5_vd33f"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="5_v3me4"]
 [ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/components/code_keyboard.tscn" id="5_xwrca"]
-[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_0dhup"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="6_ee48r"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_normal.png" id="7_2wdoi"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="7_k0prv"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png" id="8_nxlxw"]
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="9_k74e3"]
 [ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="24_4xfja"]
@@ -66,9 +66,10 @@ custom_minimum_size = Vector2(0, 275)
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 4.0
-texture_normal = ExtResource("4_3vuah")
-texture_pressed = ExtResource("5_vd33f")
-texture_disabled = ExtResource("6_0dhup")
+texture_normal = ExtResource("5_v3me4")
+texture_pressed = ExtResource("6_ee48r")
+texture_disabled = ExtResource("7_k0prv")
+ignore_texture_size = true
 stretch_mode = 4
 
 [node name="KaluluButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1514720972]

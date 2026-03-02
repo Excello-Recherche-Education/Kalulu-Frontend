@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://weree6bnlt6f"]
 
 [ext_resource type="Script" uid="uid://mlymm66lpbi6" path="res://sources/minigames/base/minigame_ui.gd" id="1_g5fl4"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_normal.png" id="2_p2m3v"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_pressed.png" id="3_po8ds"]
-[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="4_7xmkh"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="2_p2m3v"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="3_po8ds"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="4_7xmkh"]
 [ext_resource type="Texture2D" uid="uid://03r3arvu1r2t" path="res://assets/minigames/minigame_ui/graphic/button_shell_normal.png" id="5_d6rvg"]
 [ext_resource type="Texture2D" uid="uid://clrnqn0fqjx3q" path="res://assets/minigames/minigame_ui/graphic/button_shell_pressed.png" id="6_ojtbv"]
 [ext_resource type="Texture2D" uid="uid://53f3lscl7tws" path="res://assets/minigames/minigame_ui/graphic/button_shell_disabled.png" id="7_cg081"]
@@ -26,7 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://cg71a1qmeyls0" path="res://assets/minigames/minigame_ui/graphic/button_play_down.png" id="23_rb4gp"]
 [ext_resource type="Texture2D" uid="uid://bht8j513507q5" path="res://assets/minigames/minigame_ui/graphic/button_play_disabled.png" id="24_em5b4"]
 [ext_resource type="Texture2D" uid="uid://c3o1aolewrm4k" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_empty.png" id="26_0bgo4"]
-[ext_resource type="Script" path="res://sources/ui/hold_progress_ring.gd" id="26_hold_ring"]
+[ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="26_back_button"]
 [ext_resource type="Texture2D" uid="uid://c3okdxpi317x5" path="res://assets/minigames/monkeys/graphic/gauge_icon_monkey_full.png" id="27_eee4l"]
 
 [node name="MinigameUI" type="CanvasLayer" unique_id=1395941266]
@@ -52,8 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="GardenButton" type="TextureButton" parent="MainControl/Interface" unique_id=1647258232]
-unique_name_in_owner = true
+[node name="BackButton" parent="MainControl/Interface" unique_id=1647258232 instance=ExtResource("26_back_button")]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 50.0
@@ -63,19 +62,7 @@ size_flags_vertical = 3
 texture_normal = ExtResource("2_p2m3v")
 texture_pressed = ExtResource("3_po8ds")
 texture_disabled = ExtResource("4_7xmkh")
-ignore_texture_size = true
-stretch_mode = 5
-
-[node name="GardenButtonHoldRing" type="Control" parent="MainControl/Interface/GardenButton" unique_id=1134742901]
-unique_name_in_owner = true
-visible = false
-anchors_preset = 0
-offset_left = -16.0
-offset_top = -16.0
-offset_right = 16.0
-offset_bottom = 16.0
-mouse_filter = 2
-script = ExtResource("26_hold_ring")
+ring_padding = 16.0
 
 [node name="StimulusButton" type="TextureButton" parent="MainControl/Interface" unique_id=2016416103]
 unique_name_in_owner = true
@@ -259,8 +246,8 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[connection signal="button_down" from="MainControl/Interface/GardenButton" to="." method="_on_garden_button_button_down"]
-[connection signal="button_up" from="MainControl/Interface/GardenButton" to="." method="_on_garden_button_button_up"]
+[connection signal="button_down" from="MainControl/Interface/BackButton" to="." method="_on_back_button_button_down"]
+[connection signal="button_up" from="MainControl/Interface/BackButton" to="." method="_on_back_button_button_up"]
 [connection signal="pressed" from="MainControl/Interface/StimulusButton" to="." method="_on_stimulus_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/KaluluButton" to="." method="_on_kalulu_button_pressed"]

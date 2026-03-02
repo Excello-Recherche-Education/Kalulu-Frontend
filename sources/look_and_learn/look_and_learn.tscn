@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://ylee262nfnsi" path="res://sources/look_and_learn/look_and_learn.gd" id="1_12st1"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_2efp5"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_normal.png" id="3_7ejv4"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="3_7ejv4"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="4_1m6x7"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_pressed.png" id="4_adi05"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="4_adi05"]
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_bxvlx"]
-[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="5_j5vhb"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_j5vhb"]
 [ext_resource type="Texture2D" uid="uid://c1i3kqeg7ifoo" path="res://assets/look_and_learn/video_foreground.png" id="6_8san1"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="6_e2avu"]
 [ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_ohnh6"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://cboa82q0bjlvc" path="res://sources/look_and_learn/tracing_manager.tscn" id="12_fkd0b"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="13_rp6w3"]
 [ext_resource type="Texture2D" uid="uid://b1227jts6lw67" path="res://assets/theme/play.svg" id="17_dhida"]
+[ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="18_back_button"]
 
 [sub_resource type="Animation" id="Animation_6mi26"]
 length = 0.001
@@ -851,8 +852,7 @@ text = "o"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GardenButton" type="TextureButton" parent="." unique_id=970416480]
-unique_name_in_owner = true
+[node name="BackButton" parent="." unique_id=970416480 instance=ExtResource("18_back_button")]
 custom_minimum_size = Vector2(0, 386)
 layout_mode = 0
 offset_left = 50.0
@@ -863,8 +863,7 @@ size_flags_vertical = 0
 texture_normal = ExtResource("3_7ejv4")
 texture_pressed = ExtResource("4_adi05")
 texture_disabled = ExtResource("5_j5vhb")
-ignore_texture_size = true
-stretch_mode = 5
+ring_padding = 16.0
 
 [node name="Frame" type="TextureRect" parent="." unique_id=1803400322]
 layout_mode = 1
@@ -984,7 +983,7 @@ lifetime = 0.5
 process_material = SubResource("ParticleProcessMaterial_vgnm5")
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
-[connection signal="pressed" from="GardenButton" to="." method="_on_garden_button_pressed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="finished" from="Frame/Mask/ColorRect/TracingManager" to="." method="_on_tracing_manager_finished"]
 [connection signal="finished" from="Frame/Mask/VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]
 [connection signal="pressed" from="GraphemeButton" to="." method="_on_grapheme_button_pressed"]

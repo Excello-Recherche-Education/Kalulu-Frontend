@@ -2,10 +2,7 @@
 
 [ext_resource type="Script" uid="uid://djolw68efn6r5" path="res://sources/gardens/gardens.gd" id="1_qlsw4"]
 [ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="3_xbvhu"]
-[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="4_neut5"]
-[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="5_2yuxn"]
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="5_h8c5w"]
-[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_gs6gi"]
 [ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="6_hekq6"]
 [ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="6_p30hm"]
 [ext_resource type="Texture2D" uid="uid://cffuqacgb1jra" path="res://assets/lesson_screen/branches.png" id="7_axgdc"]
@@ -30,8 +27,10 @@
 [ext_resource type="Texture2D" uid="uid://cqhbpt3lk6f15" path="res://assets/lesson_screen/bottom.png" id="25_tyvq6"]
 [ext_resource type="AudioStream" uid="uid://dlxvbjp63w6wm" path="res://assets/look_and_learn/effect.wav" id="26_5g3l0"]
 [ext_resource type="Script" uid="uid://ddew42fnpmsx1" path="res://sources/gardens/minigame_layout.gd" id="28_kvgph"]
-[ext_resource type="Script" path="res://sources/ui/hold_progress_ring.gd" id="29_hold_ring"]
-[ext_resource type="Shader" uid="uid://bnp4dxce44hcm" path="res://resources/shaders/outline_shader.gdshader" id="29_pew8x"]
+[ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="29_back_button"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="29_cgp31"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="30_wnxkf"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="31_b65yw"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="33_5y3ye"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_normal.png" id="41_xcos2"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png" id="42_l35j3"]
@@ -418,28 +417,18 @@ texture = ExtResource("20_elp7t")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BackButton" type="TextureButton" parent="CanvasLayer" unique_id=1838227918]
-unique_name_in_owner = true
+[node name="BackButton" parent="CanvasLayer" unique_id=1838227918 instance=ExtResource("29_back_button")]
 custom_minimum_size = Vector2(275, 275)
 offset_left = 50.0
 offset_top = 50.0
 offset_right = 300.0
 offset_bottom = 300.0
 size_flags_vertical = 0
-texture_normal = ExtResource("4_neut5")
-texture_pressed = ExtResource("5_2yuxn")
-texture_disabled = ExtResource("6_gs6gi")
+texture_normal = ExtResource("29_cgp31")
+texture_pressed = ExtResource("30_wnxkf")
+texture_disabled = ExtResource("31_b65yw")
 stretch_mode = 4
-
-[node name="BackButtonHoldRing" type="Control" parent="CanvasLayer" unique_id=418574918]
-unique_name_in_owner = true
-visible = false
-offset_left = 26.0
-offset_top = 26.0
-offset_right = 324.0
-offset_bottom = 324.0
-mouse_filter = 2
-script = ExtResource("29_hold_ring")
+ring_padding = 24.0
 
 [node name="KaluluButton" type="TextureButton" parent="CanvasLayer" unique_id=999341786]
 unique_name_in_owner = true

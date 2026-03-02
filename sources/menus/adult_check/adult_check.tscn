@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/components/code_keyboard.tscn" id="1_2c1xf"]
 [ext_resource type="Script" uid="uid://c8s16jlnw5x7y" path="res://sources/menus/adult_check/adult_check.gd" id="1_wqrmw"]
-[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="2_tyffq"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_whxas"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_pni2u"]
-[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="3_ui1cy"]
-[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="4_cnq3y"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="5_66qd1"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="6_8202e"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="7_nt72u"]
 
 [node name="AdultCheck" type="Control" unique_id=1460828883]
 layout_mode = 3
@@ -61,7 +61,7 @@ offset_bottom = 1800.0
 grow_horizontal = 1
 grow_vertical = 0
 
-[node name="PasswordVisualizer" parent="CodeKeyboard" index="0"]
+[node name="PasswordVisualizer" parent="CodeKeyboard" index="0" unique_id=595055886]
 offset_left = -376.0
 offset_top = -164.0
 offset_right = 376.0
@@ -87,9 +87,10 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
-texture_normal = ExtResource("2_tyffq")
-texture_pressed = ExtResource("3_ui1cy")
-texture_disabled = ExtResource("4_cnq3y")
+texture_normal = ExtResource("5_66qd1")
+texture_pressed = ExtResource("6_8202e")
+texture_disabled = ExtResource("7_nt72u")
+ignore_texture_size = true
 stretch_mode = 4
 
 [connection signal="password_entered" from="CodeKeyboard" to="." method="_on_code_keyboard_password_entered"]

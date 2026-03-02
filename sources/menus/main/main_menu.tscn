@@ -8,13 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="6_bi65i"]
 [ext_resource type="Texture2D" uid="uid://cgrl5x2iqbiwg" path="res://assets/menus/main/title.png" id="7_ftt26"]
 [ext_resource type="Texture2D" uid="uid://cgwun1jhj53bi" path="res://assets/menus/main/play_button.png" id="7_lr7j4"]
-[ext_resource type="Script" path="res://sources/menus/main/kalulu_main_menu.gd" id="8_cxg8l"]
+[ext_resource type="Script" uid="uid://ci68l5p7n77ym" path="res://sources/menus/main/kalulu_main_menu.gd" id="8_cxg8l"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="10_icqmp"]
 [ext_resource type="Script" uid="uid://c8yjncc0n0sbu" path="res://sources/menus/main/login.gd" id="12_6bu7q"]
 [ext_resource type="PackedScene" uid="uid://cr4q0ywceoasx" path="res://sources/utils/keyboard_spacer.tscn" id="13_6pvxs"]
-[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="13_j3nb7"]
 [ext_resource type="Script" uid="uid://dugl3xh4di2a5" path="res://sources/menus/main/language_field.gd" id="13_rs3hd"]
-[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="14_3lr3g"]
 [ext_resource type="Script" uid="uid://ddmyah1o42hwp" path="res://addons/godot-form-validator/form_validator.gd" id="15_e88oj"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="15_pcmnw"]
 [ext_resource type="Theme" uid="uid://cd7ftmo5x4c2r" path="res://resources/themes/kalulu_theme_big.tres" id="16_bq28s"]
@@ -26,6 +24,8 @@
 [ext_resource type="Texture2D" uid="uid://bbip3wpyidt1q" path="res://assets/menus/main/play_button_mask.png" id="20_oqrk5"]
 [ext_resource type="Script" uid="uid://c1cqwb15yoqb3" path="res://addons/godot-form-validator/validators/line_edit_validator.gd" id="21_1bl4i"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="24_y5bcl"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="25_q40lo"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="26_1s83n"]
 [ext_resource type="Script" uid="uid://58twmknv6bl5" path="res://sources/ui/popup.gd" id="26_pm647"]
 
 [sub_resource type="Resource" id="Resource_mh75v"]
@@ -144,9 +144,6 @@ texture = ExtResource("7_lr7j4")
 [node name="Sprite" parent="Kalulu" unique_id=877184434 instance=ExtResource("10_icqmp")]
 position = Vector2(0, -6.10352e-05)
 scale = Vector2(2, 2)
-animation = &"Idle"
-frame = 0
-frame_progress = 0.0
 
 [node name="Light" type="PointLight2D" parent="Kalulu" unique_id=985885724]
 position = Vector2(-5, 377)
@@ -369,8 +366,9 @@ layout_mode = 2
 [node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1663636855]
 layout_mode = 2
 size_flags_vertical = 3
-texture_normal = ExtResource("13_j3nb7")
-texture_pressed = ExtResource("14_3lr3g")
+texture_normal = ExtResource("25_q40lo")
+texture_pressed = ExtResource("26_1s83n")
+ignore_texture_size = true
 stretch_mode = 4
 
 [node name="Informations" type="Control" parent="." unique_id=316912755]
