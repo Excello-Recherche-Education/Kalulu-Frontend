@@ -21,6 +21,7 @@ func _hide_login_error(_value: Variant) -> void:
 	if login_message.is_visible():
 		login_message.hide()
 		reset_password_button.hide()
+		reset_password_button.disabled = false
 
 
 func _on_login_form_validator_control_validated(control: Control, passed: Variant, messages: PackedStringArray) -> void:
