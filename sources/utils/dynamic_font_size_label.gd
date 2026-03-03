@@ -8,17 +8,11 @@ extends Label
 @export var font_size_width_percent: float = 0.9
 
 var _current_font_size: int
-var _default_font_size: int
 
 
 func _ready() -> void:
 	resized.connect(_on_resized)
-	_initialize_default_font_size()
 	_update_font_size()
-
-
-func _initialize_default_font_size() -> void:
-	_default_font_size = get_theme_font_size("font_size")
 
 
 func _on_resized() -> void:

@@ -18,7 +18,6 @@ var crab_visible: bool = false:
 	set(value):
 		crab_visible = value
 		_set_crab_button_active(stimulus_heard and crab_visible)
-var is_stimulus: bool = false
 
 @onready var hole_back: Sprite2D = $HoleBack
 @onready var hole_front: Sprite2D = $HoleFront
@@ -60,10 +59,7 @@ func _process(_delta: float) -> void:
 			crab_audio_stream_player.stop_playing()
 
 
-func spawn_crab(gp: Dictionary, p_is_stimulus: bool) -> void:
-	
-	self.is_stimulus = p_is_stimulus
-	
+func spawn_crab(gp: Dictionary, is_stimulus: bool) -> void:
 	# Instantiate a new crab
 	crab = CRAB_SCENE.instantiate()
 	mask.add_child(crab)
@@ -108,7 +104,7 @@ func spawn_crab(gp: Dictionary, p_is_stimulus: bool) -> void:
 	crab = null
 	
 	# Emit the despawned signal
-	crab_despawned.emit(p_is_stimulus)
+	crab_despawned.emit(is_stimulus)
 
 
 func is_button_pressed_with_limit(future: Signal) -> bool:
