@@ -1,0 +1,21 @@
+diff --git a/project.godot b/project.godot
+index 79b17166..5c8a7d76 100644
+--- a/project.godot
++++ b/project.godot
+@@ -14,13 +14,13 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+ 
+ [application]
+ 
+-config/name="Kalulu"
++config/name="Prof_Tool"
+ config/description="Open-source educational app to teach reading skills using Godot, based on the graphemic method, designed for children aged 5+"
+ config/version="3.0.0"
+-run/main_scene="uid://xndd7r8jpai5"
++run/main_scene="uid://cp832jmwru06w"
+ config/features=PackedStringArray("4.6", "Forward Plus")
+ boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
+-config/icon="uid://cctkobpymorie"
++config/icon="uid://dipdtrs4i7i7v"
+ custom/unlock_everything=false
+ custom/unlock_everything.debug=false
+ 
