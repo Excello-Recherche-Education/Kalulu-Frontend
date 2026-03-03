@@ -13,6 +13,7 @@ LOG_IN,Se connecter,Ingresar,Conexão,Accedi
 INVALID_EMAIL_OR_PASSWORD,Adresse mail ou mot de passe invalide,Correo electrónico o contraseña inválida,Endereço de e-mail ou senha inválidos,Email o password non validi
 RESET_PASSWORD,Réinitialiser le mot de passe,Restablecer la contraseña,Redefinir senha,Reimposta password
 CHECK_YOUR_EMAIL,Veuillez vérifier votre boîte mail,"Por favor, revise su correo electrónico","Por favor, verifique seu e-mail",Controlla la tua email
+RESET_PASSWORD_FAILED,"Erreur lors de la réinitialisation, réessayez plus tard","Error al restablecer la contraseña, inténtelo más tarde","Erro ao redefinir a senha, tente novamente mais tarde","Errore nel reimpostare la password, riprova più tardi"
 DEVICE_NUMBER,Appareil {number},Dispositivo {number},Dispositivo {number},Dispositivo {number}
 EXPORT_TO_PDF,Exporter en PDF,Exportar a PDF,Exportar para PDF,Esporta in PDF
 EXPORT_STUDENT_CODES,Exporter les codes des élèves,Exportar los códigos de los estudiantes,Exportar os códigos dos alunos,Esporta i codici degli studenti

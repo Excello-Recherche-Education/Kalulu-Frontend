@@ -21,6 +21,7 @@ func _hide_login_error(_value: Variant) -> void:
 	if login_message.is_visible():
 		login_message.hide()
 		reset_password_button.hide()
+		reset_password_button.disabled = false
 
 
 func _on_login_form_validator_control_validated(control: Control, passed: Variant, messages: PackedStringArray) -> void:
@@ -61,9 +62,14 @@ func _on_validate_button_pressed() -> void:
 
 func _on_reset_password_button_pressed() -> void:
 	Log.info("Login: Reset password requested for email %s" % email_field.text)
+	reset_password_button.disabled = true
 	var res: Dictionary = await ServerManager.reset_password(email_field.text)
 	if res.code != 200:
 		Log.warn("Login: Reset password request failed with code %d" % res.code)
-		login_message.text = "CHECK_YOUR_EMAIL"
+		login_message.text = "RESET_PASSWORD_FAILED"
+		login_message.show()
+		reset_password_button.disabled = false
 	else:
 		Log.info("Login: Reset password request accepted by server")
+		login_message.text = "CHECK_YOUR_EMAIL"
+		login_message.show()
