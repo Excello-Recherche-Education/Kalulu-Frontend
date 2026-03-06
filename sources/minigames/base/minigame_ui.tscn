@@ -63,29 +63,29 @@ texture_normal = ExtResource("2_p2m3v")
 texture_pressed = ExtResource("3_po8ds")
 texture_disabled = ExtResource("4_7xmkh")
 
-[node name="StimulusButton" type="TextureButton" parent="MainControl/Interface" unique_id=2016416103]
+[node name="PauseButton" type="TextureButton" parent="MainControl/Interface" unique_id=77193092]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 270.0
 offset_top = 50.0
 offset_right = 470.0
 offset_bottom = 250.0
-texture_normal = ExtResource("5_d6rvg")
-texture_pressed = ExtResource("6_ojtbv")
-texture_disabled = ExtResource("7_cg081")
-ignore_texture_size = true
-stretch_mode = 5
-
-[node name="PauseButton" type="TextureButton" parent="MainControl/Interface" unique_id=77193092]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 490.0
-offset_top = 51.0
-offset_right = 690.0
-offset_bottom = 251.0
 texture_normal = ExtResource("8_tna5q")
 texture_pressed = ExtResource("9_bxlyd")
 texture_disabled = ExtResource("10_h64tq")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="StimulusButton" type="TextureButton" parent="MainControl/Interface" unique_id=2016416103]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 490.0
+offset_top = 50.0
+offset_right = 690.0
+offset_bottom = 250.0
+texture_normal = ExtResource("5_d6rvg")
+texture_pressed = ExtResource("6_ojtbv")
+texture_disabled = ExtResource("7_cg081")
 ignore_texture_size = true
 stretch_mode = 5
 
@@ -247,8 +247,8 @@ layout_mode = 1
 
 [connection signal="button_down" from="MainControl/Interface/BackButton" to="." method="_on_back_button_button_down"]
 [connection signal="button_up" from="MainControl/Interface/BackButton" to="." method="_on_back_button_button_up"]
-[connection signal="pressed" from="MainControl/Interface/StimulusButton" to="." method="_on_stimulus_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="MainControl/Interface/StimulusButton" to="." method="_on_stimulus_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="MainControl/Interface/CentralPadMargin/CenterMenu/PauseMenu/VBoxContainer/HBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
