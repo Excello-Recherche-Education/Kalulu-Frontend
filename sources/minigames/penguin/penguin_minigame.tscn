@@ -31,7 +31,7 @@ grow_vertical = 2
 texture = ExtResource("3_8crb3")
 
 [node name="Penguin" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=446017555 instance=ExtResource("4_txvyj")]
-position = Vector2(637, 1314)
+position = Vector2(625, 1398.5)
 
 [node name="SentenceBackground" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=414621906]
 unique_name_in_owner = true
