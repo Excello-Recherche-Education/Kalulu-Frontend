@@ -261,7 +261,7 @@ rotation = 1.5707964
 scale = Vector2(0.17999999, 0.17999999)
 
 [node name="Penguin" parent="GameRoot/Friends" index="2" unique_id=1835464943 instance=ExtResource("19_j0ia3")]
-position = Vector2(28, 104)
+position = Vector2(28, 114)
 scale = Vector2(0.3, 0.3)
 
 [node name="Frog" parent="GameRoot/Friends" index="3" unique_id=2020692812 instance=ExtResource("20_xrsj0")]
@@ -283,7 +283,7 @@ position = Vector2(124, -103)
 scale = Vector2(0.09, 0.09)
 
 [node name="Ant" parent="GameRoot/Friends" index="6" unique_id=1721368901 instance=ExtResource("24_ejade")]
-position = Vector2(228, 128)
+position = Vector2(228, 132)
 scale = Vector2(0.17, 0.17)
 
 [node name="KaluluBoss" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="11" unique_id=1776395621 instance=ExtResource("17_kvjsk")]
