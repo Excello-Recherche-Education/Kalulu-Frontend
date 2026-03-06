@@ -7,7 +7,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(2, 0.66, 450., 2.5),
 	DifficultySettings.new(3, 0.33, 500., 2.),
 	DifficultySettings.new(3, 0.25, 550., 1.),
-	DifficultySettings.new(4, 0.25, 600., 1.)
+	DifficultySettings.new(3, 0.25, 600., 1.)
 ]
 var branches: Array[Branch] = []
 var branches_spawn_indexes: Array[int] = []
