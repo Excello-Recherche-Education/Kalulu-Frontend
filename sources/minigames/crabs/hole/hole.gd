@@ -5,6 +5,7 @@ signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned(is_stimulus: bool)
 signal stop()
 signal crab_out(hole: Hole)
+signal _fx_done
 
 const CRAB_SCENE: PackedScene = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
@@ -156,11 +157,13 @@ func highlight() -> void:
 
 
 func right() -> void:
-	crab.right()
+	await crab.right()
+	_fx_done.emit()
 
 
 func wrong() -> void:
-	crab.wrong()
+	await crab.wrong()
+	_fx_done.emit()
 
 
 func _set_crab_button_active(is_active: bool) -> void:
@@ -178,8 +181,11 @@ func _on_crab_hit(stimulus: Dictionary) -> void:
 	# Stop any looping sand FX
 	sand_vfx.stop()
 
-	# Emit the stimulus
+	# Emit the stimulus — the minigame will call right() or wrong() in response
 	stimulus_hit.emit(stimulus)
+
+	# Wait for the win/lose animation to finish before retracting
+	await _fx_done
 
 	# Make the crab disappear in the hole
 	var tween: Tween = create_tween()
