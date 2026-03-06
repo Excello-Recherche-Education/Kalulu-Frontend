@@ -5,7 +5,7 @@ signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned(is_stimulus: bool)
 signal stop()
 signal crab_out(hole: Hole)
-signal _fx_done
+signal _fx_done()
 
 const CRAB_SCENE: PackedScene = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
