@@ -29,7 +29,7 @@ texture = ExtResource("7_s0cgt")
 [node name="CrabZone" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1508276448]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 162.0
-offset_top = 292.0
-offset_right = 2494.0
+offset_left = 84.0
+offset_top = 370.0
+offset_right = 2291.0
 offset_bottom = 1488.0
