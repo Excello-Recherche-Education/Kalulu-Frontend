@@ -480,6 +480,8 @@ func _on_minigame_ui_restart_button_pressed() -> void:
 
 func _on_current_progression_changed() -> void:
 	# Make Godot understand that this function is a coroutine even if it does nothing, to avoid warning
-	await get_tree().create_timer(0).timeout
+	var main_loop: MainLoop = Engine.get_main_loop()
+	if main_loop is SceneTree:
+		await (main_loop as SceneTree).create_timer(0).timeout
 
 #endregion
