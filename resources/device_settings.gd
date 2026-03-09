@@ -6,7 +6,10 @@ extends Resource
 	set(value):
 		Log.trace("DeviceSettings: set language from %s to %s" % [language, value])
 		language = value
-		Database.language = value # Database language should be set by TeacherSettings, but this is useful when game starts to know which "welcome" audio speech to play.
+		if Database != null:
+			Database.language = value # Database language should be set by TeacherSettings, but this is useful when game starts to know which "welcome" audio speech to play.
+		else:
+			Log.warn("DeviceSettings: Database is null")
 		TranslationServer.set_locale(value)
 @export var teacher: String
 @export var device_id: int
