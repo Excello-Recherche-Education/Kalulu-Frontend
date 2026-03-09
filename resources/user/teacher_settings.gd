@@ -34,7 +34,10 @@ var language: String:
 			return
 		Log.trace("TeacherSettings: set language from %s to %s" % [_language, value])
 		_language = value
-		Database.language = value
+		if Database != null:
+			Database.language = value
+		else:
+			Log.warn("TeacherSettings: Database is null")
 		TranslationServer.set_locale(value)
 
 
