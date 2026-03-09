@@ -1,14 +1,14 @@
 @tool
-class_name EqualsRule
 extends ValidatorRule
+class_name EqualsRule
 
 @export var target_value: String
 
 
-func apply(control: Control, value: Variant) -> RuleResult:
+func apply(control: Control, value) -> RuleResult:
 	if ValidatorFunctions.empty(fail_message):
 		fail_message = "The value must equal %s." % target_value
-	var result: RuleResult = RuleResult.new()
+	var result = RuleResult.new()
 	result.passed = str(value) == target_value
 	if not result.passed:
 		result.message = fail_message

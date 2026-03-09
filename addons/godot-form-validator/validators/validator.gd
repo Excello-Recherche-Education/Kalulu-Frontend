@@ -10,7 +10,7 @@ class_name Validator
 var _messages: PackedStringArray = PackedStringArray()
 
 
-func get_value(control: Control) -> Variant:
+func get_value(control: Control):
 	return null
 
 
@@ -24,9 +24,9 @@ func get_messages() -> PackedStringArray:
 
 func validate(control: Control) -> bool:
 	_messages.clear()
-	var valid: bool = true
-	for rule: ValidatorRule in rules:
-		var result: RuleResult = rule.apply(control, get_value(control))
+	var valid = true
+	for rule in rules:
+		var result = rule.apply(control, get_value(control))
 		if not result.passed:
 			_messages.append(result.message)
 		valid = valid and result.passed

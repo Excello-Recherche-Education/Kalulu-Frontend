@@ -3,12 +3,12 @@ extends Validator
 class_name ButtonValidator
 
 
-func get_value(control: Control) -> Variant:
-	var button: Button = control as Button
+func get_value(control: Control):
+	var button = control as Button
 	if not button:
 		return null
 	return button.button_pressed
 
 
-func is_type(node: Node) -> bool:
+func is_type(node) -> bool:
 	return node is Button

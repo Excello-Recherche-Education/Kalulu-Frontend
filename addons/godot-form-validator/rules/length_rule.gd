@@ -8,8 +8,8 @@ const FAIL_MESSAGE: String = "The value must be between %d and %d characters lon
 @export var max_length: int = 9999
 
 
-func apply(control: Control, value: Variant) -> RuleResult:
-	var result: RuleResult = RuleResult.new()
+func apply(control: Control, value) -> RuleResult:
+	var result = RuleResult.new()
 	if value is String:
 		result.passed = ValidatorFunctions.length(value, min_length, max_length)
 	if not result.passed:
