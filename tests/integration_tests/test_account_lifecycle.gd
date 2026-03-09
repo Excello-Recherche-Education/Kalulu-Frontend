@@ -268,8 +268,12 @@ func test_full_account_creation_login_and_deletion() -> void:
 	# Handle expected warnings that may fire outside the test method's scope
 	# (e.g. during autoload initialization or before_all). assert_engine_error
 	# cannot reach those, so we mark them manually via get_errors().
+	# "Database is null" warnings are also expected when the godot-sqlite addon
+	# is absent (e.g. in GitHub Actions), so we suppress them here too.
 	for err: GutTrackedError in get_errors():
 		if not err.handled and err.contains_text("Database file not found"):
+			err.handled = true
+		if not err.handled and err.contains_text("Database is null"):
 			err.handled = true
 
 	gut.p("All steps passed.")
