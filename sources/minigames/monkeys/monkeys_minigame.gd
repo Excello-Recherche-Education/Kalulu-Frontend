@@ -183,8 +183,6 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		tween.tween_property(coconut, "global_position", monkey.hit_position.global_position, throw_to_monkey_duration).set_trans(Tween.TRANS_LINEAR)
 		await tween.finished
 		await monkey.hit(coconut)
-		await get_tree().create_timer(1.0).timeout
-		coconut.queue_free()
 		current_lives -= 1
 		is_locked = false
 
