@@ -41,8 +41,8 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1761957378]
+custom_minimum_size = Vector2(0, 350)
 layout_mode = 2
-size_flags_vertical = 3
 texture_normal = ExtResource("2_utgug")
 texture_pressed = ExtResource("3_dttok")
 texture_disabled = ExtResource("4_bsu7d")

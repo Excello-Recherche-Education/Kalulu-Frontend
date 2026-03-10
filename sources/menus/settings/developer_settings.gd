@@ -3,6 +3,9 @@ extends Control
 
 const LOG_LEVEL_ELEMENT: PackedScene = preload("res://sources/menus/settings/log_level_element.tscn")
 const CLEAR_LOCAL_DATA_CONFIRMATIONS: int = 5
+const ZOOM_MIN: float = 1.0
+const ZOOM_MAX: float = 3.0
+const ZOOM_STEP_WHEEL: float = 0.1
 
 static var return_path: String = "res://sources/menus/main/main_menu.tscn"
 
@@ -12,6 +15,8 @@ var loglevel_regex: RegEx
 var clear_local_data_confirmations: int = 0
 var showing_previous_session_logs: bool = false
 var previous_session_logs: PackedStringArray = []
+var zoom_level: float = 1.0
+
 
 @onready var slider: HSlider = $VBoxContainer/Controls/LineCountSlider
 @onready var slider_label: Label = $VBoxContainer/Controls/SliderLabel
@@ -125,6 +130,34 @@ func _on_filters_changed(checked: bool, index: int) -> void:
 	Log.trace("DeveloperSettings: Filters changed: %s" % str(filters))
 	if loglevel_regex != null:
 		_update_log_text()
+
+
+func _input(event: InputEvent) -> void:
+	# Pinch to zoom on mobile
+	if event is InputEventMagnifyGesture:
+		var new_zoom := clampf(zoom_level * event.factor, ZOOM_MIN, ZOOM_MAX)
+		_apply_zoom(new_zoom, event.position)
+		get_viewport().set_input_as_handled()
+	# Mouse wheel zoom on desktop
+	elif event is InputEventMouseButton and event.pressed:
+		var new_zoom := zoom_level
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			new_zoom = clampf(zoom_level + ZOOM_STEP_WHEEL, ZOOM_MIN, ZOOM_MAX)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			new_zoom = clampf(zoom_level - ZOOM_STEP_WHEEL, ZOOM_MIN, ZOOM_MAX)
+		if new_zoom != zoom_level:
+			_apply_zoom(new_zoom, event.position)
+			get_viewport().set_input_as_handled()
+
+
+func _apply_zoom(new_zoom: float, screen_pos: Vector2) -> void:
+	# Convert screen position to local (pre-scale) coordinates
+	var local_pos: Vector2 = (screen_pos - pivot_offset) / zoom_level + pivot_offset
+	# Shift the pivot so the point under the gesture/cursor stays fixed on screen
+	if not is_equal_approx(new_zoom, 1.0):
+		pivot_offset = (screen_pos - local_pos * new_zoom) / (1.0 - new_zoom)
+	zoom_level = new_zoom
+	scale = Vector2(zoom_level, zoom_level)
 
 
 func _on_back_button_pressed() -> void:
