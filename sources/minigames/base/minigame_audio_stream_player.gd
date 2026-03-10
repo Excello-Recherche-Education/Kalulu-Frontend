@@ -44,4 +44,4 @@ func play_audio_stream(audio: AudioStreamMP3) -> void:
 	stream = audio
 	play()
 	if not audio.loop:
-		await get_tree().create_timer(audio.get_length() + 0.25).timeout
+		await get_tree().create_timer(audio.get_length() + 0.25, false).timeout

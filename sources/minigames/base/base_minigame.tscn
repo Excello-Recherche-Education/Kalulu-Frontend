@@ -16,7 +16,7 @@ grow_vertical = 2
 script = ExtResource("1_jdfsm")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=649246549]
-process_mode = 3
+process_mode = 1
 bus = &"Voice"
 script = ExtResource("2_dkgx4")
 

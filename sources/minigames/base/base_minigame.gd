@@ -411,11 +411,10 @@ func _play_stimulus() -> void:
 	return
 
 
-func _pause_game() -> bool:
-	var pause: bool = not get_tree().paused
-	get_tree().paused = pause
-	Log.trace("BaseMinigame: Pause toggled to %s for %s" % [str(pause), Type.keys()[minigame_name]])
-	return pause
+func _set_root_timers_paused(paused: bool) -> void:
+	for child in get_children():
+		if child is Timer:
+			child.paused = paused
 
 
 func _highlight() -> void:
@@ -460,14 +459,20 @@ func _on_minigame_ui_back_button_pressed() -> void:
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:
-	_pause_game()
+	game_root.process_mode = Node.PROCESS_MODE_DISABLED
+	set_process(false)
+	set_physics_process(false)
+	_set_root_timers_paused(true)
 	minigame_ui.lock()
-	
+
 	@warning_ignore("redundant_await")
 	await _play_stimulus()
-	
+
 	minigame_ui.unlock()
-	_pause_game()
+	_set_root_timers_paused(false)
+	set_process(true)
+	set_physics_process(true)
+	game_root.process_mode = Node.PROCESS_MODE_PAUSABLE
 
 
 func _on_minigame_ui_kalulu_button_pressed() -> void:
