@@ -3,6 +3,19 @@ extends EditorPlugin
 
 const EXPORTER_PATH: String = "res://addons/export_tool_manager/export_tool_exporter.gd"
 
+const TOOL_CONFIGS: Dictionary = {
+	"game": {
+		"name": "Kalulu",
+		"main_scene": "res://sources/menus/splash_screen/splash_screen.tscn",
+		"icon": "res://assets/kalulu_icon.png",
+	},
+	"prof_tool": {
+		"name": "Prof_Tool",
+		"main_scene": "res://sources/language_tool/prof_tool_menu.tscn",
+		"icon": "res://assets/prof_tool_icon.png",
+	}
+}
+
 var tool_selector: OptionButton
 var exporter_plugin: EditorExportPlugin
 var export_button: Button
@@ -11,7 +24,7 @@ func _enter_tree() -> void:
 	# Tool Selector UI
 	tool_selector = OptionButton.new()
 	tool_selector.name = "Tool Exporter"
-	tool_selector.add_item("Game")
+	tool_selector.add_item("Kalulu Game")
 	tool_selector.add_item("Prof Tool")
 	tool_selector.connect("item_selected", _on_tool_selected)
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, tool_selector)
@@ -28,6 +41,8 @@ func _enter_tree() -> void:
 			tool_selector.select(1)
 		"game", _:
 			tool_selector.select(0)
+
+	_apply_tool_config(current_tool)
 
 	# Exporter plugin
 	exporter_plugin = load(EXPORTER_PATH).new()
@@ -58,6 +73,20 @@ func _on_tool_selected(index: int) -> void:
 
 	var settings: EditorSettings = get_editor_interface().get_editor_settings()
 	settings.set_setting("export_tool_manager/current_tool", tool)
+	_apply_tool_config(tool)
+
+
+func _apply_tool_config(tool: String) -> void:
+	if not TOOL_CONFIGS.has(tool):
+		push_error("ExportToolManager: Unknown tool '%s'" % tool)
+		return
+
+	var config: Dictionary = TOOL_CONFIGS[tool]
+	ProjectSettings.set_setting("application/config/name", config["name"])
+	ProjectSettings.set_setting("application/run/main_scene", config["main_scene"])
+	ProjectSettings.set_setting("application/config/icon", config["icon"])
+	ProjectSettings.save()
+	print("ExportToolManager: Switched to '%s' (scene: %s)" % [config["name"], config["main_scene"]])
 
 func _on_export_all_game_pressed() -> void:
 	export_all_game_presets()
