@@ -40,7 +40,7 @@ ServerManager="*res://sources/utils/autoloads/server_manager.tscn"
 UnicodeNormalizer="*res://sources/utils/autoloads/unicode_normalizer.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 Utils="*res://sources/utils/autoloads/utils.gd"
-Validation="*uid://dprgt5c7gdii6"
+Validation="*uid://bv3og5utuwv0c"
 
 [debug]
 
