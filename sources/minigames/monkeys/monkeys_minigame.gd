@@ -63,7 +63,7 @@ func _setup_minigame() -> void:
 		func(_at_position: Vector2) -> Variant:
 			return null,
 		# can_drop_func
-		func(_at_position: Vector2, _data: Variant) -> bool: 
+		func(_at_position: Vector2, _data: Variant) -> bool:
 			return true,
 		# drop_func
 		func(at_position: Vector2, data: Variant) -> void:
@@ -72,6 +72,9 @@ func _setup_minigame() -> void:
 	)
 	
 	_update_label(0)
+	
+	# Pre-warm particle shaders to avoid stutter on first coconut explosion
+	await monkeys[0].coconut.broken_coconut_fx.warm_up()
 
 
 func _start() -> void:
@@ -183,8 +186,6 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		tween.tween_property(coconut, "global_position", monkey.hit_position.global_position, throw_to_monkey_duration).set_trans(Tween.TRANS_LINEAR)
 		await tween.finished
 		await monkey.hit(coconut)
-		await get_tree().create_timer(1.0).timeout
-		coconut.queue_free()
 		current_lives -= 1
 		is_locked = false
 

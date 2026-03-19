@@ -9,6 +9,21 @@ signal finished()
 @onready var lines_particles: GPUParticles2D = $LinesParticles
 
 
+func warm_up() -> void:
+	modulate.a = 0
+	top_particles.emitting = true
+	shards_particles.emitting = true
+	bottom_particles.emitting = true
+	lines_particles.emitting = true
+	await get_tree().process_frame
+	await get_tree().process_frame
+	top_particles.emitting = false
+	shards_particles.emitting = false
+	bottom_particles.emitting = false
+	lines_particles.emitting = false
+	modulate.a = 1
+
+
 func play() -> void:
 	shards_particles.amount = randi_range(4, 10)
 	lines_particles.amount = randi_range(1, 3)

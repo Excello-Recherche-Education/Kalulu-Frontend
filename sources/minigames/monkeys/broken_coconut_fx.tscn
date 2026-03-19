@@ -15,9 +15,9 @@ particle_flag_disable_z = true
 emission_shape_scale = Vector3(1, -1, 1)
 angle_max = 90.0
 direction = Vector3(0, -1, 0)
-initial_velocity_min = 250.0
-initial_velocity_max = 300.0
-gravity = Vector3(0, 98, 0)
+initial_velocity_min = 400.0
+initial_velocity_max = 500.0
+gravity = Vector3(0, 900, 0)
 color_ramp = SubResource("GradientTexture1D_o67aw")
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_mpadx"]
@@ -29,9 +29,9 @@ emission_shape = 1
 emission_sphere_radius = 64.0
 angle_max = 360.0
 direction = Vector3(0, -1, 0)
-initial_velocity_min = 250.0
-initial_velocity_max = 350.0
-gravity = Vector3(0, 98, 0)
+initial_velocity_min = 400.0
+initial_velocity_max = 550.0
+gravity = Vector3(0, 900, 0)
 color_ramp = SubResource("GradientTexture1D_mpadx")
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ug0v0"]
@@ -41,9 +41,9 @@ gradient = ExtResource("2_d6ibk")
 particle_flag_disable_z = true
 angle_max = 90.0
 direction = Vector3(0, -1, 0)
-initial_velocity_min = 250.0
-initial_velocity_max = 300.0
-gravity = Vector3(0, 98, 0)
+initial_velocity_min = 400.0
+initial_velocity_max = 500.0
+gravity = Vector3(0, 900, 0)
 color_ramp = SubResource("GradientTexture1D_ug0v0")
 
 [sub_resource type="Gradient" id="Gradient_k4jun"]
@@ -76,14 +76,12 @@ script = ExtResource("1_vwvtm")
 emitting = false
 amount = 1
 texture = ExtResource("1_ivxel")
-lifetime = 3.0
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_iijg8")
 
 [node name="ShardsParticles" type="GPUParticles2D" parent="." unique_id=1749583745]
 emitting = false
 texture = ExtResource("2_logsj")
-lifetime = 3.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_ivqj5")
@@ -92,7 +90,6 @@ process_material = SubResource("ParticleProcessMaterial_ivqj5")
 emitting = false
 amount = 1
 texture = ExtResource("2_kd03l")
-lifetime = 3.0
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_d8slu")
 
@@ -101,7 +98,6 @@ position = Vector2(0, -16)
 emitting = false
 amount = 3
 texture = ExtResource("5_5n842")
-lifetime = 3.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_b1p8e")
