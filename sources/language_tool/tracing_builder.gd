@@ -51,7 +51,7 @@ func _next_letter() -> void:
 	_load_segments(upper_container, upper_path(letters[current_letter]))
 	
 	letter_picker.selected = current_letter
-	save_ok.visible = true
+	save_ok.show()
 
 
 func _load_segments(segment_container: SegmentContainer, path: String) -> void:
@@ -79,7 +79,7 @@ func _load_segments(segment_container: SegmentContainer, path: String) -> void:
 			segment_container.load_segment(points)
 
 
-func _save_segments(segments: Array[SegmentBuild], path: String) -> void:
+func _save_segments(segments: Array[Node], path: String) -> void:
 	DirAccess.make_dir_recursive_absolute(Database.BASE_PATH.path_join(Database.language).path_join(Database.TRACING_DATA_FOLDER))
 	var file: FileAccess = FileAccess.open(real_path(path), FileAccess.WRITE)
 	var error: Error = FileAccess.get_open_error()
@@ -89,11 +89,15 @@ func _save_segments(segments: Array[SegmentBuild], path: String) -> void:
 	if file == null:
 		Log.error("TracingBuilder: Save segment: Cannot open file %s. File is null" % real_path(path))
 		return
-	for segment: SegmentBuild in segments:
-		var values: PackedStringArray = []
-		for point: Vector2 in segment.points:
-			values.append(str(point.x) + " " + str(point.y))
-		file.store_csv_line(values)
+	for node: Node in segments:
+		if node is SegmentBuild:
+			var segment: SegmentBuild = node as SegmentBuild
+			var values: PackedStringArray = []
+			for point: Vector2 in segment.points:
+				values.append(str(point.x) + " " + str(point.y))
+			file.store_csv_line(values)
+		else:
+			Log.error("TracingBuilder: Cannot save segment node because it is not of type SegmentBuild")
 	file.close()
 
 
@@ -110,10 +114,10 @@ func real_path(path: String) -> String:
 
 
 func _on_save_button_pressed() -> void:
-	_save_segments(lower_container.segments_container.get_children() as Array[SegmentBuild], lower_path(letters[current_letter]))
-	_save_segments(upper_container.segments_container.get_children() as Array[SegmentBuild], upper_path(letters[current_letter]))
+	_save_segments(lower_container.segments_container.get_children(), lower_path(letters[current_letter]))
+	_save_segments(upper_container.segments_container.get_children(), upper_path(letters[current_letter]))
 	
-	save_ok.visible = true
+	save_ok.show()
 
 
 func _on_back_button_pressed() -> void:
@@ -131,8 +135,8 @@ func _on_copy_from_id_pressed(index: int) -> void:
 
 
 func _on_lower_container_changed() -> void:
-	save_ok.visible = false
+	save_ok.hide()
 
 
 func _on_upper_container_changed() -> void:
-	save_ok.visible = false
+	save_ok.hide()

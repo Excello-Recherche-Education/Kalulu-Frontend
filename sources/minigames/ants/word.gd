@@ -1,8 +1,10 @@
 class_name Word
-extends TextureButton
+extends Button
 
 signal answer(stimulus: String, expected_stimulus: String)
 signal no_answer()
+
+const MINIGAMES_LABEL_SETTINGS_ANTS: LabelSettings = preload("res://resources/themes/minigames_label_settings_ants.tres")
 
 var stimulus: String:
 	set = _set_stimulus
@@ -12,23 +14,38 @@ var current_anchor: CanvasItem
 @onready var area: Area2D = $Area2D
 @onready var label: Label = %Label
 @onready var right_fx: RightFX = $RightFX
+@onready var right_stars: RightStarsFX = $Right_Stars
 @onready var wrong_fx: WrongFX = $WrongFX
+@onready var text_box: TextureRect = $TextBox
 
 
 func right() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box.self_modulate = Minigame.LABEL_COLOR_WIN
 	right_fx.play()
+	right_stars.play()
 	await right_fx.finished
+	text_box.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
+	label.label_settings = MINIGAMES_LABEL_SETTINGS_ANTS
 
 
 func wrong() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box.self_modulate = Minigame.LABEL_COLOR_LOSE
 	wrong_fx.play()
 	await wrong_fx.finished
+	text_box.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
+	label.label_settings = MINIGAMES_LABEL_SETTINGS_ANTS
 
 
 func _process(_delta: float) -> void:
 	if follow_mouse:
 		global_position = get_global_mouse_position() - size / 2.0
 	else:
+		if current_anchor == null or not is_instance_valid(current_anchor):
+			return
 		if current_anchor is Ant:
 			global_position = (current_anchor as Ant).anchor.global_position
 		else:

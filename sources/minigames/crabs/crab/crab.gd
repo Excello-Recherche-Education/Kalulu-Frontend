@@ -1,4 +1,3 @@
-@tool
 class_name Crab
 extends Control
 
@@ -29,9 +28,9 @@ var blink_random: int = 3
 @onready var button: Button = $Button
 @onready var highlight_fx: HighlightFX = %HighlightFX
 @onready var right_fx: RightFX = %RightFX
+@onready var right_stars: RightStarsFX = %Right_Stars
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
-@onready var text_outline: Sprite2D = %TextBox_Outline_Sprite2D
 @onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
 
 
@@ -43,7 +42,7 @@ func _ready() -> void:
 
 
 func set_button_active(active: bool) -> void:
-	button.disabled = not active
+	button.set_disabled(not active)
 
 
 func is_button_pressed() -> bool:
@@ -52,38 +51,31 @@ func is_button_pressed() -> bool:
 
 
 func show_label() -> void:
-	label.visible = true
+	label.show()
 
 
 func hide_label() -> void:
-	label.visible = false
+	label.hide()
 
 
 func highlight() -> void:
 	highlight_fx.play()
 
 
-func is_highlighted() -> bool:
-	return highlight_fx.is_playing
-
-
 func right() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#009444")
-	text_box_sprite_2d.self_modulate = Color("#e6f3e0")
-	text_outline.self_modulate = Color("#009344")
-	text_outline.visible = true
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_WIN
 	animated_sprite.play("right")
 	right_fx.play()
+	right_stars.play()
 	await right_fx.finished
 
 
 func wrong() -> void:
 	label.label_settings = label.label_settings.duplicate()
-	label.label_settings.font_color = Color("#be1e2d")
-	text_box_sprite_2d.self_modulate = Color("#fce6e6")
-	text_outline.self_modulate = Color("#be1e2d")
-	text_outline.visible = true
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_LOSE
 	animated_sprite.play("wrong")
 	wrong_fx.play()
 	await wrong_fx.finished
@@ -101,8 +93,8 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 			blink_counter -= 1
 			if blink_counter <= 0:
 				blink_counter = blink_delay + randi_range(0, blink_random)
-				animated_sprite.play("idle_blink") 
-			else: 
+				animated_sprite.play("idle_blink")
+			else:
 				animated_sprite.play("idle")
 		"idle_blink":
 			animated_sprite.play("idle")
@@ -111,3 +103,14 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 func _on_audio_stream_player_finished() -> void:
 	audio_stream_player.stream = sounds[randi_range(0, sounds.size() - 1)]
 	audio_stream_player.play()
+
+
+func idle_boss() -> void:
+	text_box_sprite_2d.hide()
+	animated_sprite.play("idle")
+	animated_sprite.stop()
+	audio_stream_player.stop()
+
+
+func victory_boss() -> void:
+	animated_sprite.play("right")

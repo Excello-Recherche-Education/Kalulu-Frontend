@@ -1,21 +1,21 @@
-[gd_scene load_steps=12 format=3 uid="uid://8cbihh6410yp"]
+[gd_scene format=3 uid="uid://8cbihh6410yp"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_oeg4r"]
 [ext_resource type="Script" uid="uid://dlq28cmi0bpm8" path="res://sources/minigames/parakeets/parakeets_minigame.gd" id="2_x6xn5"]
-[ext_resource type="Texture2D" uid="uid://dv1ombj8eolb1" path="res://assets/minigames/parakeets/graphic/background.png" id="3_xjvte"]
-[ext_resource type="Texture2D" uid="uid://clvh07xfgjmri" path="res://assets/minigames/parakeets/graphic/tree_trunk.png" id="4_unuga"]
-[ext_resource type="Texture2D" uid="uid://d3n327me83on7" path="res://assets/minigames/parakeets/graphic/tree_branch.png" id="5_46kss"]
-[ext_resource type="Shader" uid="uid://da5cg0cin6tgm" path="res://resources/shaders/move_shader.gdshader" id="5_q7573"]
+[ext_resource type="Texture2D" uid="uid://cc01gd1hm6hc3" path="res://assets/minigames/parakeets/graphic/background_1.png" id="5_41y6a"]
 [ext_resource type="Texture2D" uid="uid://dpx72xoqt8lkq" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_empty.png" id="5_yt7mv"]
+[ext_resource type="Texture2D" uid="uid://pj0mlw24jayt" path="res://assets/minigames/parakeets/graphic/background_2.png" id="6_6ktwy"]
 [ext_resource type="Texture2D" uid="uid://di2qcv6jw8wh0" path="res://assets/minigames/parakeets/graphic/gauge_icon_parakeet_full.png" id="6_46vnr"]
-[ext_resource type="Texture2D" uid="uid://sjxhvbq8ijbw" path="res://assets/minigames/parakeets/graphic/nest_back.png" id="6_g64mq"]
-[ext_resource type="Texture2D" uid="uid://ctvnu3s3sgwwf" path="res://assets/minigames/parakeets/graphic/nest_front.png" id="7_3mibn"]
+[ext_resource type="Texture2D" uid="uid://cs16kbsvnsltg" path="res://assets/minigames/parakeets/graphic/background_3.png" id="7_k6xou"]
+[ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/utils/clouds_manager.gd" id="8_cy1rn"]
+[ext_resource type="Texture2D" uid="uid://0p171y6thba8" path="res://assets/minigames/parakeets/graphic/tree.png" id="8_g6pid"]
+[ext_resource type="Texture2D" uid="uid://ca2jljrk2wnjt" path="res://assets/minigames/parakeets/graphic/nest.png" id="9_0u6jo"]
+[ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="9_6ktwy"]
+[ext_resource type="Texture2D" uid="uid://w835wgqcmdvg" path="res://assets/minigames/parakeets/graphic/ant.png" id="10_hrbjs"]
+[ext_resource type="Texture2D" uid="uid://dphj3hqfnnw4p" path="res://assets/minigames/parakeets/graphic/cloud_2.png" id="10_k6xou"]
+[ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="11_g6pid"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0375j"]
-shader = ExtResource("5_q7573")
-shader_parameter/direction = Vector2(0.015, 0)
-
-[node name="Parakeets" instance=ExtResource("1_oeg4r")]
+[node name="Parakeets" unique_id=1381081767 instance=ExtResource("1_oeg4r")]
 script = ExtResource("2_x6xn5")
 fly_duration = 3.0
 minigame_name = 2
@@ -23,314 +23,240 @@ lesson_nb = 8
 difficulty = 4
 max_number_of_lives = 5
 
-[node name="MinigameUI" parent="." index="1"]
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
 empty_progression_icon = ExtResource("5_yt7mv")
 full_progression_icon = ExtResource("6_46vnr")
 stimulus_button_visible = false
 
-[node name="Background" type="TextureRect" parent="GameRoot" index="0"]
+[node name="Background" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=578273821]
 texture_repeat = 3
-material = SubResource("ShaderMaterial_0375j")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_xjvte")
+texture = ExtResource("5_41y6a")
 
-[node name="TreeTrunk" type="TextureRect" parent="GameRoot" index="1"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -46.0
-offset_top = -900.0
-offset_right = 147.0
-offset_bottom = 900.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_unuga")
+[node name="BackgroundSun" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1931789052]
+position = Vector2(1900, 230)
+texture = ExtResource("7_k6xou")
 
-[node name="Branches" type="Control" parent="GameRoot/TreeTrunk" index="0"]
-anchors_preset = 0
-offset_left = -1234.0
-offset_right = -1194.0
-offset_bottom = 40.0
+[node name="Clouds" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=140913196]
+script = ExtResource("8_cy1rn")
+max_speed = 80.0
+min_y = 100.0
+max_y = 300.0
 
-[node name="TreeBranch" type="TextureRect" parent="GameRoot/TreeTrunk/Branches" index="0"]
-layout_mode = 0
-offset_left = 462.0
-offset_top = 676.0
-offset_right = 1286.0
-offset_bottom = 756.0
-texture = ExtResource("5_46kss")
+[node name="cloud_1" type="Sprite2D" parent="GameRoot/Clouds" index="0" unique_id=215660117]
+position = Vector2(623, 253.5)
+texture = ExtResource("9_6ktwy")
 
-[node name="Position" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch" index="0"]
-anchors_preset = 0
-offset_left = 109.0
-offset_top = 1.0
-offset_right = 149.0
-offset_bottom = 41.0
+[node name="cloud_2" type="Sprite2D" parent="GameRoot/Clouds" index="1" unique_id=836501247]
+position = Vector2(1088, 256)
+texture = ExtResource("10_k6xou")
 
-[node name="Position2" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch" index="1"]
-anchors_preset = 0
-offset_left = 390.0
-offset_top = 1.0
-offset_right = 430.0
-offset_bottom = 41.0
+[node name="cloud_3" type="Sprite2D" parent="GameRoot/Clouds" index="2" unique_id=41719553]
+position = Vector2(1904, 248)
+texture = ExtResource("11_g6pid")
 
-[node name="Position3" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch" index="2"]
-anchors_preset = 0
-offset_left = 658.0
-offset_top = 1.0
-offset_right = 698.0
-offset_bottom = 41.0
-
-[node name="TreeBranch2" type="TextureRect" parent="GameRoot/TreeTrunk/Branches" index="1"]
-layout_mode = 0
-offset_left = 1312.0
-offset_top = 431.0
-offset_right = 2187.0
-offset_bottom = 511.0
-texture = ExtResource("5_46kss")
-
-[node name="Position" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch2" index="0"]
-anchors_preset = 0
-offset_left = 203.0
-offset_right = 292.0
-offset_bottom = 21.0
-
-[node name="Position2" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch2" index="1"]
-anchors_preset = 0
-offset_left = 517.0
-offset_right = 557.0
-offset_bottom = 40.0
-
-[node name="Position3" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch2" index="2"]
-anchors_preset = 0
-offset_left = 794.0
-offset_right = 834.0
-
-[node name="TreeBranch3" type="TextureRect" parent="GameRoot/TreeTrunk/Branches" index="2"]
-layout_mode = 0
-offset_left = 1360.0
-offset_top = 839.0
-offset_right = 2344.0
-offset_bottom = 919.0
-texture = ExtResource("5_46kss")
-
-[node name="Position" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch3" index="0"]
-anchors_preset = 0
-offset_left = 130.0
-offset_right = 170.0
-offset_bottom = 40.0
-
-[node name="Position2" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch3" index="1"]
-anchors_preset = 0
-offset_left = 420.0
-offset_right = 460.0
-offset_bottom = 40.0
-
-[node name="Position3" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch3" index="2"]
-anchors_preset = 0
-offset_left = 689.0
-offset_right = 729.0
-offset_bottom = 40.0
-
-[node name="Position4" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch3" index="3"]
-anchors_preset = 0
-offset_left = 902.0
-offset_right = 942.0
-offset_bottom = 40.0
-
-[node name="TreeBranch4" type="TextureRect" parent="GameRoot/TreeTrunk/Branches" index="3"]
-layout_mode = 0
-offset_left = 498.0
-offset_top = 1145.0
-offset_right = 1307.0
-offset_bottom = 1225.0
-texture = ExtResource("5_46kss")
-
-[node name="Position" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch4" index="0"]
-anchors_preset = 0
-offset_left = 163.0
-offset_right = 203.0
-offset_bottom = 40.0
-
-[node name="Position2" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch4" index="1"]
-anchors_preset = 0
-offset_left = 514.0
-offset_right = 554.0
-offset_bottom = 40.0
-
-[node name="TreeBranch5" type="TextureRect" parent="GameRoot/TreeTrunk/Branches" index="4"]
-layout_mode = 0
-offset_left = 1289.0
-offset_top = 1502.0
-offset_right = 2040.0
-offset_bottom = 1582.0
-texture = ExtResource("5_46kss")
-
-[node name="TreeNestBack" type="TextureRect" parent="GameRoot/TreeTrunk/Branches/TreeBranch5" index="0"]
-layout_mode = 0
-offset_left = 268.0
-offset_top = -97.0
-offset_right = 618.0
-offset_bottom = 10.0
-texture = ExtResource("6_g64mq")
-
-[node name="TreeNestFront" type="TextureRect" parent="GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack" index="0"]
-z_index = 1
+[node name="BackgroundShadows" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=275259032]
+texture_repeat = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("7_3mibn")
+texture = ExtResource("6_6ktwy")
 
-[node name="Position1" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront" index="0"]
-anchors_preset = 0
-offset_left = 109.0
-offset_top = 45.0
-offset_right = 149.0
-offset_bottom = 85.0
+[node name="TreeTrunk" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=1782698950]
+position = Vector2(1300, 900)
+scale = Vector2(0.85, 1)
+texture = ExtResource("8_g6pid")
 
-[node name="Position2" type="Control" parent="GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront" index="1"]
-anchors_preset = 0
-offset_left = 239.0
-offset_top = 45.0
-offset_right = 279.0
-offset_bottom = 85.0
+[node name="Branches" type="Node2D" parent="GameRoot/TreeTrunk" index="0" unique_id=1075381262]
 
-[node name="Parakeets" type="Control" parent="GameRoot" index="2"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="TreeBranch" type="Node2D" parent="GameRoot/TreeTrunk/Branches" index="0" unique_id=447145458]
 
-[node name="FlyFrom" type="Control" parent="GameRoot" index="3"]
+[node name="Position" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch" index="0" unique_id=1355268610]
+position = Vector2(275, -506)
+
+[node name="Position2" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch" index="1" unique_id=2056371495]
+position = Vector2(650, -506)
+
+[node name="Position3" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch" index="2" unique_id=1745549224]
+position = Vector2(1000, -506)
+
+[node name="TreeBranch2" type="Node2D" parent="GameRoot/TreeTrunk/Branches" index="1" unique_id=103396120]
+
+[node name="Position" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch2" index="0" unique_id=984742717]
+position = Vector2(-900, -338)
+
+[node name="Position2" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch2" index="1" unique_id=1787458892]
+position = Vector2(-588, -338)
+
+[node name="Position3" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch2" index="2" unique_id=1806032991]
+position = Vector2(-290, -338)
+
+[node name="TreeBranch3" type="Node2D" parent="GameRoot/TreeTrunk/Branches" index="2" unique_id=2037136472]
+
+[node name="Position" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch3" index="0" unique_id=1927891997]
+position = Vector2(200, 38)
+
+[node name="Position2" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch3" index="1" unique_id=1351669422]
+position = Vector2(490, 38)
+
+[node name="Position3" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch3" index="2" unique_id=629385688]
+position = Vector2(780, 38)
+
+[node name="Position4" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch3" index="3" unique_id=1433795559]
+position = Vector2(1070, 38)
+
+[node name="TreeBranch4" type="Node2D" parent="GameRoot/TreeTrunk/Branches" index="3" unique_id=1058956423]
+
+[node name="Position" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch4" index="0" unique_id=1140755527]
+position = Vector2(-785, 270)
+
+[node name="Position2" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch4" index="1" unique_id=608099648]
+position = Vector2(-362, 270)
+
+[node name="TreeBranch5" type="Node2D" parent="GameRoot/TreeTrunk/Branches" index="4" unique_id=317997934]
+
+[node name="Nest" type="Sprite2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch5" index="0" unique_id=751969836]
+position = Vector2(550, 551)
+rotation = -0.012217305
+texture = ExtResource("9_0u6jo")
+
+[node name="Position1" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch5/Nest" index="0" unique_id=417460693]
+position = Vector2(-120, -77)
+
+[node name="Position2" type="Marker2D" parent="GameRoot/TreeTrunk/Branches/TreeBranch5/Nest" index="1" unique_id=1106353108]
+position = Vector2(180, -77)
+
+[node name="Ant" type="Sprite2D" parent="GameRoot/TreeTrunk" index="1" unique_id=1967925039]
+position = Vector2(-122, 777)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_hrbjs")
+
+[node name="Ant2" type="Sprite2D" parent="GameRoot/TreeTrunk" index="2" unique_id=1960238484]
+position = Vector2(-122, 600)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_hrbjs")
+
+[node name="Ant3" type="Sprite2D" parent="GameRoot/TreeTrunk" index="3" unique_id=92026929]
+position = Vector2(101, 800)
+scale = Vector2(-0.5, 0.5)
+texture = ExtResource("10_hrbjs")
+
+[node name="Parakeets" type="Node" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=1541745210]
+
+[node name="FlyFrom" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=1277151487]
 anchors_preset = 0
 offset_left = 2832.0
 offset_top = 1157.0
 offset_right = 2872.0
 offset_bottom = 1197.0
 
-[node name="Position1" type="Control" parent="GameRoot/FlyFrom" index="0"]
-layout_mode = 3
+[node name="Position1" type="Control" parent="GameRoot/FlyFrom" index="0" unique_id=1992157967]
 anchors_preset = 0
 offset_left = -2494.0
 offset_top = -1437.0
 offset_right = -2454.0
 offset_bottom = -1397.0
 
-[node name="Position2" type="Control" parent="GameRoot/FlyFrom" index="1"]
-layout_mode = 3
+[node name="Position2" type="Control" parent="GameRoot/FlyFrom" index="1" unique_id=783246546]
 anchors_preset = 0
 offset_left = -1738.0
 offset_top = -1398.0
 offset_right = -1698.0
 offset_bottom = -1358.0
 
-[node name="Position3" type="Control" parent="GameRoot/FlyFrom" index="2"]
-layout_mode = 3
+[node name="Position3" type="Control" parent="GameRoot/FlyFrom" index="2" unique_id=476802646]
 anchors_preset = 0
 offset_left = -944.0
 offset_top = -1341.0
 offset_right = -904.0
 offset_bottom = -1301.0
 
-[node name="Position4" type="Control" parent="GameRoot/FlyFrom" index="3"]
-layout_mode = 3
+[node name="Position4" type="Control" parent="GameRoot/FlyFrom" index="3" unique_id=1018606178]
 anchors_preset = 0
 offset_left = 154.0
 offset_top = -916.0
 offset_right = 194.0
 offset_bottom = -876.0
 
-[node name="Position5" type="Control" parent="GameRoot/FlyFrom" index="4"]
-layout_mode = 3
+[node name="Position5" type="Control" parent="GameRoot/FlyFrom" index="4" unique_id=1032452046]
 anchors_preset = 0
 offset_left = -4.0
 offset_top = -528.0
 offset_right = 36.0
 offset_bottom = -488.0
 
-[node name="Position6" type="Control" parent="GameRoot/FlyFrom" index="5"]
-layout_mode = 3
+[node name="Position6" type="Control" parent="GameRoot/FlyFrom" index="5" unique_id=846553517]
 anchors_preset = 0
 offset_left = -39.0
 offset_top = -205.0
 offset_right = 1.0
 offset_bottom = -165.0
 
-[node name="Position7" type="Control" parent="GameRoot/FlyFrom" index="6"]
-layout_mode = 3
+[node name="Position7" type="Control" parent="GameRoot/FlyFrom" index="6" unique_id=1588579435]
 anchors_preset = 0
 offset_left = -33.0
 offset_top = 360.0
 offset_right = 7.0
 offset_bottom = 400.0
 
-[node name="Position8" type="Control" parent="GameRoot/FlyFrom" index="7"]
-layout_mode = 3
+[node name="Position8" type="Control" parent="GameRoot/FlyFrom" index="7" unique_id=1496256635]
 anchors_preset = 0
 offset_left = -3198.0
 offset_top = 164.0
 offset_right = -3158.0
 offset_bottom = 204.0
 
-[node name="Position9" type="Control" parent="GameRoot/FlyFrom" index="8"]
-layout_mode = 3
+[node name="Position9" type="Control" parent="GameRoot/FlyFrom" index="8" unique_id=1960824835]
 anchors_preset = 0
 offset_left = -3386.0
 offset_top = -297.0
 offset_right = -3346.0
 offset_bottom = -257.0
 
-[node name="Position10" type="Control" parent="GameRoot/FlyFrom" index="9"]
-layout_mode = 3
+[node name="Position10" type="Control" parent="GameRoot/FlyFrom" index="9" unique_id=2106877896]
 anchors_preset = 0
 offset_left = -3068.0
 offset_top = -579.0
 offset_right = -3028.0
 offset_bottom = -539.0
 
-[node name="Position11" type="Control" parent="GameRoot/FlyFrom" index="10"]
-layout_mode = 3
+[node name="Position11" type="Control" parent="GameRoot/FlyFrom" index="10" unique_id=222773195]
 anchors_preset = 0
 offset_left = -3160.0
 offset_top = -967.0
 offset_right = -3120.0
 offset_bottom = -927.0
 
-[node name="Position12" type="Control" parent="GameRoot/FlyFrom" index="11"]
-layout_mode = 3
+[node name="Position12" type="Control" parent="GameRoot/FlyFrom" index="11" unique_id=1452357626]
 anchors_preset = 0
 offset_left = -2744.0
 offset_top = -1312.0
 offset_right = -2704.0
 offset_bottom = -1272.0
 
-[node name="FlyAway" type="Control" parent="GameRoot" index="4"]
+[node name="FlyAway" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=147639614]
 anchors_preset = 0
 offset_left = 3046.0
 offset_top = 1048.0
 offset_right = 3086.0
 offset_bottom = 1088.0
 
-[node name="Position1" type="Control" parent="GameRoot/FlyAway" index="0"]
-layout_mode = 3
+[node name="Position1" type="Control" parent="GameRoot/FlyAway" index="0" unique_id=450586703]
 anchors_preset = 0
 offset_left = 109.0
 offset_top = 45.0
 offset_right = 149.0
 offset_bottom = 85.0
 
-[node name="Position2" type="Control" parent="GameRoot/FlyAway" index="1"]
-layout_mode = 3
+[node name="Position2" type="Control" parent="GameRoot/FlyAway" index="1" unique_id=1417772864]
 anchors_preset = 0
 offset_left = 239.0
 offset_top = 45.0

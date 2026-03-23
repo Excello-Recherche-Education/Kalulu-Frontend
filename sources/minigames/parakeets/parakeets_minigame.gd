@@ -1,4 +1,3 @@
-@tool
 extends Minigame
 
 enum State {
@@ -27,19 +26,19 @@ const DIFFICULTY_SETTINGS: Dictionary[int, Dictionary] = {
 	3: {"pairs_count": 5},
 	4: {"pairs_count": 6},
 }
+const PARAKEET_SCENE: PackedScene = preload("res://sources/minigames/parakeets/parakeet.tscn")
 
 @export var fly_duration: float = 3.0
 
-var possible_branch_positions: Array[Vector2] = []
 var parakeets: Array[Parakeet] = []
 var selected: Array[Parakeet] = []
 var state: State = State.Locked
 
-@onready var branches: Control = $GameRoot/TreeTrunk/Branches
+@onready var branches: Node2D = $GameRoot/TreeTrunk/Branches
 @onready var possible_start_positions_parent: Control = $GameRoot/FlyFrom
-@onready var parakeets_node: Control = $GameRoot/Parakeets
-@onready var nest_position_1: Control = $GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position1
-@onready var nest_position_2: Control = $GameRoot/TreeTrunk/Branches/TreeBranch5/TreeNestBack/TreeNestFront/Position2
+@onready var parakeets_node: Node = $GameRoot/Parakeets
+@onready var nest_position_1: Node2D = $GameRoot/TreeTrunk/Branches/TreeBranch5/Nest/Position1
+@onready var nest_position_2: Node2D = $GameRoot/TreeTrunk/Branches/TreeBranch5/Nest/Position2
 @onready var nest_positions: Array[Vector2] = [
 	nest_position_1.global_position,
 	nest_position_2.global_position
@@ -77,22 +76,22 @@ func _setup_minigame() -> void:
 	max_progression = pairs_count
 	var color: Parakeet.Colors = randi_range(0, Parakeet.Colors.size() - 1) as Parakeet.Colors
 	for index: int in range(pairs_count):
-		var new_parakeet1: Parakeet = Parakeet.instantiate()
-		var new_parakeet2: Parakeet = Parakeet.instantiate()
-		parakeets_node.add_child(new_parakeet1)
-		parakeets_node.add_child(new_parakeet2)
-		new_parakeet1.color = color
-		new_parakeet2.color = color
-		new_parakeet1.uppercase = true
-		new_parakeet2.uppercase = false
-		new_parakeet1.global_position = possible_start_positions[2 * index].global_position
-		new_parakeet2.global_position = possible_start_positions[2 * index + 1].global_position
-		parakeets.append_array([new_parakeet1, new_parakeet2])
+		var new_parakeet_uppercase: Parakeet = PARAKEET_SCENE.instantiate()
+		var new_parakeet_lowercase: Parakeet = PARAKEET_SCENE.instantiate()
+		parakeets_node.add_child(new_parakeet_uppercase)
+		parakeets_node.add_child(new_parakeet_lowercase)
+		new_parakeet_uppercase.color = color
+		new_parakeet_lowercase.color = color
+		new_parakeet_uppercase.uppercase = true
+		new_parakeet_lowercase.uppercase = false
+		new_parakeet_uppercase.global_position = possible_start_positions[2 * index].global_position
+		new_parakeet_lowercase.global_position = possible_start_positions[2 * index + 1].global_position
+		parakeets.append_array([new_parakeet_uppercase, new_parakeet_lowercase])
 		var stimulus: Dictionary = stimuli2.pop_back()
-		new_parakeet1.stimulus = stimulus
-		new_parakeet2.stimulus = stimulus
-		new_parakeet1.pressed.connect(_on_parakeet_pressed.bind(new_parakeet1))
-		new_parakeet2.pressed.connect(_on_parakeet_pressed.bind(new_parakeet2))
+		new_parakeet_uppercase.stimulus = stimulus
+		new_parakeet_lowercase.stimulus = stimulus
+		new_parakeet_uppercase.pressed.connect(_on_parakeet_pressed.bind(new_parakeet_uppercase))
+		new_parakeet_lowercase.pressed.connect(_on_parakeet_pressed.bind(new_parakeet_lowercase))
 
 
 # Find the stimuli and distractions of the minigame.
@@ -102,9 +101,10 @@ func _find_stimuli_and_distractions() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#ffbf94")])
 	var possible_positions: Array[Vector2] = []
 	for branch: Node in branches.get_children():
-		for child: Control in branch.get_children():
+		for child: Node2D in branch.get_children():
 			if "Position" in child.name:
 				possible_positions.append(child.global_position)
 	possible_positions.shuffle()
@@ -127,6 +127,7 @@ func _on_parakeet_pressed(parakeet: Parakeet) -> void:
 				selected.append(parakeet)
 				await _turn(parakeet, false)
 				state = State.Selected2
+				_log_new_response({"pair": [selected[0].stimulus, selected[1].stimulus]}, {"pair": [selected[0].stimulus, selected[0].stimulus]})
 				if selected[0].stimulus.Grapheme == selected[1].stimulus.Grapheme:
 					_correct()
 				else:
@@ -140,21 +141,16 @@ func _on_parakeet_pressed(parakeet: Parakeet) -> void:
 
 
 func _correct() -> void:
-	if selected[0].global_position.x > selected[1].global_position.x:
+	# Ensure Upper letter is on the left
+	if selected[1].label.text == selected[0].label.text.to_upper():
 		var buffer: Parakeet = selected[0]
 		selected[0] = selected[1]
 		selected[1] = buffer
-
 	await _make_selected_happy()
 	current_progression += 1
-	
 	await _fly_to(nest_positions)
-	
 	await _make_selected_coo()
-	
 	_fly_to(fly_away_positions)
-	
-	
 	state = State.Idle
 	selected.clear()
 
@@ -216,6 +212,9 @@ func _make_selected_coo() -> void:
 
 
 func _fly_to(targets: Array[Vector2]) -> void:
+	var parent: Node = selected[0].get_parent()
+	parent.move_child(selected[0], parent.get_child_count() - 1)
+	parent.move_child(selected[1], parent.get_child_count() - 1)
 	var coroutine: Coroutine = Coroutine.new()
 	audio_player.stream = AUDIO_STREAMS[Audio.Fly]
 	audio_player.play()

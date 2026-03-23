@@ -3,7 +3,7 @@ extends Validator
 class_name TextEditValidator
 
 
-func get_value(control: Control) -> Variant:
+func get_value(control: Control):
 	var text_edit = control as TextEdit
 	if not text_edit:
 		return null

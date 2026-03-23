@@ -1,15 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://dbmcpgfokf0in"]
+[gd_scene format=3 uid="uid://dbmcpgfokf0in"]
 
 [ext_resource type="PackedScene" uid="uid://dfw7m0a7148fu" path="res://sources/language_tool/word_list.tscn" id="1_bfjhw"]
 [ext_resource type="Script" uid="uid://7pymixi5vsat" path="res://sources/language_tool/sentence_list.gd" id="2_q3ll5"]
 [ext_resource type="PackedScene" uid="uid://dx33ijlgd8m3w" path="res://sources/language_tool/word_list_element.tscn" id="3_jl0ks"]
 [ext_resource type="PackedScene" uid="uid://cy14lm72cd7cy" path="res://sources/language_tool/sentence_list_element.tscn" id="3_ys88k"]
 
-[node name="SentenceList" instance=ExtResource("1_bfjhw")]
+[node name="SentenceList" unique_id=39007143 instance=ExtResource("1_bfjhw")]
 script = ExtResource("2_q3ll5")
 element_scene = ExtResource("3_ys88k")
 
-[node name="ExportNotFoundButton" type="Button" parent="VBoxContainer" index="5"]
+[node name="ExportNotFoundButton" type="Button" parent="VBoxContainer" index="5" unique_id=1180980753]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -29,7 +29,7 @@ visible = false
 unique_name_in_owner = false
 visible = false
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="NewGPLayer" index="3"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="NewGPLayer" index="3" unique_id=1510368362]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -39,7 +39,7 @@ offset_bottom = 222.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" parent="NewGPLayer/VBoxContainer2" index="0" instance=ExtResource("3_jl0ks")]
+[node name="Title" parent="NewGPLayer/VBoxContainer2" index="0" unique_id=1371794616 instance=ExtResource("3_jl0ks")]
 layout_mode = 2
 script = null
 
@@ -52,11 +52,11 @@ text = "Graphemes"
 [node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="6"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="NewGP" parent="NewGPLayer/VBoxContainer2" index="1" instance=ExtResource("3_jl0ks")]
+[node name="NewGP" parent="NewGPLayer/VBoxContainer2" index="1" unique_id=248285454 instance=ExtResource("3_jl0ks")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="FileDialogExport" type="FileDialog" parent="." index="2"]
+[node name="FileDialogExport" type="FileDialog" parent="." index="2" unique_id=335461038]
 initial_position = 2
 size = Vector2i(1500, 1000)
 popup_window = true

@@ -100,10 +100,11 @@ func _start() -> void:
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
+	Log.trace("WordsMinigame: SetupMinigame")
 	super()
 
 
-# Setups the word progression for current progression
+# Sets up the word progression for the current progression
 func _setup_word_progression() -> void:
 	var stimulus: Dictionary = _get_current_stimulus()
 	var gps: Array = stimulus.GPs as Array
@@ -210,11 +211,15 @@ func _on_current_word_progression_changed() -> void:
 
 
 func _on_current_progression_changed() -> void:
+	var finished_stimulus: Dictionary = _get_previous_stimulus()
+	if finished_stimulus.is_empty():
+		Log.error("WordsMinigame: Finished stimulus is empty")
+		return
 	if current_word_has_errors:
-		_update_remediation_word_score(_get_current_stimulus().ID as int, -1)
+		_update_remediation_word_score(finished_stimulus.ID as int, -1)
 		current_word_has_errors = false
 	else:
-		_update_remediation_word_score(_get_current_stimulus().ID as int, 1)
+		_update_remediation_word_score(finished_stimulus.ID as int, 1)
 	if current_progression >= max_progression:
 		return
 	_setup_word_progression()

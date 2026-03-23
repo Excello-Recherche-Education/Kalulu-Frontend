@@ -5,6 +5,7 @@ signal stimulus_hit(stimulus: Dictionary)
 signal crab_despawned(is_stimulus: bool)
 signal stop()
 signal crab_out(hole: Hole)
+signal _fx_done()
 
 const CRAB_SCENE: PackedScene = preload("res://sources/minigames/crabs/crab/crab.tscn")
 
@@ -18,7 +19,9 @@ var crab_visible: bool = false:
 	set(value):
 		crab_visible = value
 		_set_crab_button_active(stimulus_heard and crab_visible)
-var is_stimulus: bool = false
+var _movement_tween: Tween
+var _crab_moving: bool = false
+var _sand_hole_y: float
 
 @onready var hole_back: Sprite2D = $HoleBack
 @onready var hole_front: Sprite2D = $HoleFront
@@ -28,87 +31,90 @@ var is_stimulus: bool = false
 @onready var crab_audio_stream_player: HoleAudioStreamPlayer = $CrabAudioStreamPlayer2D
 
 
+func _ready() -> void:
+	# Store the editor-placed Y as the fixed "hole mouth" position for sand bursts
+	_sand_hole_y = sand_vfx.position.y
+
+
 func _process(_delta: float) -> void:
 	if not crab:
-		if sand_vfx.is_playing:
-			sand_vfx.stop()
-		
 		if crab_audio_stream_player.is_playing:
 			crab_audio_stream_player.stop_playing()
-		
 		return
-	
-	# Handles the sounds and VFX when the crab is not out yet
-	if crab.position.y > -crab.size.y:
-		if crab_visible:
-			crab_visible = false
-		
-		if not sand_vfx.is_playing:
-			sand_vfx.start()
-		
+
+	if _crab_moving:
 		if not crab_audio_stream_player.is_playing:
 			crab_audio_stream_player.start_playing()
-	# Handles the sounds and VFX when the crab is out
+		# Keep sand VFX at the crab's leg position (bottom of the Control rect in Hole space)
+		sand_vfx.position.y = mask.position.y + crab.position.y + crab.size.y
 	else:
-		if not crab_visible:
-			crab_visible = true
-		
-		if sand_vfx.is_playing:
-			sand_vfx.stop()
-		
 		if crab_audio_stream_player.is_playing:
 			crab_audio_stream_player.stop_playing()
 
 
-func spawn_crab(gp: Dictionary, p_is_stimulus: bool) -> void:
-	
-	self.is_stimulus = p_is_stimulus
-	
+func spawn_crab(gp: Dictionary, is_stimulus: bool) -> void:
 	# Instantiate a new crab
 	crab = CRAB_SCENE.instantiate()
 	mask.add_child(crab)
-	
-	crab.hide_label()
-	
+
+	# Show the label immediately so the letter is visible as the crab emerges
+	crab.show_label()
+
 	crab_x = -crab.size.x / 2
 	crab.position = Vector2(crab_x, crab.size.y / 2)
 	crab.stimulus = gp
-	
-	# Show the crab but not the stimulus
-	var tween: Tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y/7), randf_range(0.25, 2.0))
-	if await is_button_pressed_with_limit(tween.finished):
+
+	# The letter is clickable as soon as the crab starts emerging
+	crab_visible = true
+	_crab_moving = true
+
+	# One burst at the hole mouth, then loop follows the legs (via _process position update)
+	sand_vfx.position.y = _sand_hole_y
+	sand_vfx.start()
+
+	# Show the crab (letter already visible)
+	_movement_tween = create_tween()
+	_movement_tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y/7), randf_range(0.25, 2.0))
+	if await is_button_pressed_with_limit(_movement_tween.finished):
 		return
-	
-	# Wait a bit before going out
+
+	# Wait a bit before going fully out
 	timer.start(randf_range(0.25, 1.5))
 	if await is_button_pressed_with_limit(timer.timeout):
 		return
-	
-	# The crab gets completely out
-	crab.show_label()
+
+	# The crab gets completely out — emit crab_out here for highlight timing
 	crab_out.emit()
-	tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y), 0.5)
-	if await is_button_pressed_with_limit(tween.finished):
+	_movement_tween = create_tween()
+	_movement_tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y), 0.5)
+	if await is_button_pressed_with_limit(_movement_tween.finished):
 		return
-	
+
+	# Crab is fully out — stop emergence FX
+	sand_vfx.stop()
+	_crab_moving = false
 	timer.start(randf_range(1.0, 2.5))
 	if await is_button_pressed_with_limit(timer.timeout):
 		return
-	
-	# The crab disappears in the hole
-	tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y / 2), 0.5)
-	if await is_button_pressed_with_limit(tween.finished):
+
+	# Disable the button before the crab retreats into the hole
+	crab_visible = false
+	_crab_moving = true
+	_movement_tween = create_tween()
+	_movement_tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y / 2), 0.5)
+	if await is_button_pressed_with_limit(_movement_tween.finished):
 		return
-	
+
+	# One burst at the hole mouth as the crab disappears
+	sand_vfx.position.y = _sand_hole_y
+	sand_vfx.play()
+
 	# Destroy the crab
 	crab.queue_free()
 	crab = null
-	
+
 	# Emit the despawned signal
-	crab_despawned.emit(p_is_stimulus)
+	crab_despawned.emit(is_stimulus)
 
 
 func is_button_pressed_with_limit(future: Signal) -> bool:
@@ -117,23 +123,31 @@ func is_button_pressed_with_limit(future: Signal) -> bool:
 	coroutine.add_future(_is_stopped)
 	coroutine.add_future(future)
 	await coroutine.join_either()
-	
+
 	# If the crab is pressed
 	if coroutine.return_value[0]:
+		# Stop any ongoing movement so the crab halts immediately
+		if _movement_tween:
+			_movement_tween.kill()
+		timer.stop()
 		await _on_crab_hit(crab.stimulus)
 		return true
-	
+
 	# If the crab is stopped
 	if coroutine.return_value[1]:
-		
+		if _movement_tween:
+			_movement_tween.kill()
+		timer.stop()
+		sand_vfx.stop()
+
 		# Make the crab disappear in the hole
 		var tween: Tween = create_tween()
 		tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y / 2), 0.5)
 		await tween.finished
-		
+
 		crab.queue_free()
 		crab = null
-		
+
 		return true
 	return false
 
@@ -143,11 +157,13 @@ func highlight() -> void:
 
 
 func right() -> void:
-	crab.right()
+	await crab.right()
+	_fx_done.emit()
 
 
 func wrong() -> void:
-	crab.wrong()
+	await crab.wrong()
+	_fx_done.emit()
 
 
 func _set_crab_button_active(is_active: bool) -> void:
@@ -157,24 +173,29 @@ func _set_crab_button_active(is_active: bool) -> void:
 # ------------ Connections ------------
 
 func _on_crab_hit(stimulus: Dictionary) -> void:
-	
-	crab.reparent(self)
-	
-	# Emit the stimulus
-	stimulus_hit.emit(stimulus)
-	
-	# Move the crab up and rotate
-	var tween: Tween = create_tween()
-	tween.tween_property(crab, "position", Vector2(crab_x, -crab.size.y * 1.5), 1)
-	await tween.finished
 
-	crab.reparent(mask)
-	
+	# Prevent further clicks while the hit sequence plays
+	crab_visible = false
+	_crab_moving = true
+
+	# Stop any looping sand FX
+	sand_vfx.stop()
+
+	# Emit the stimulus — the minigame will call right() or wrong() in response
+	stimulus_hit.emit(stimulus)
+
+	# Wait for the win/lose animation to finish before retracting
+	await _fx_done
+
 	# Make the crab disappear in the hole
-	tween = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(crab, "position", Vector2(crab_x, crab.size.y / 2), 0.5)
 	await tween.finished
-	
+
+	# One burst at the hole mouth as the crab disappears
+	sand_vfx.position.y = _sand_hole_y
+	sand_vfx.play()
+
 	crab.queue_free()
 	crab = null
 

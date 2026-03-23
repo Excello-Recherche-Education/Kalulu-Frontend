@@ -22,31 +22,46 @@ var turtle_count: int = 0:
 			can_spawn_turtle.emit()
 		turtle_count = value
 var stimulus_spawned: bool = false
+var color: Turtle.Colors
 
 @onready var water: Water = $GameRoot/Water
 @onready var island: Island = $GameRoot/Island
-@onready var turtles: Control = %Turtles
-@onready var spawn_location: PathFollow2D = $GameRoot/SpawnPath/SpawnLocation
+@onready var turtles: Node = %Turtles
 @onready var spawn_timer: Timer = $GameRoot/SpawnTimer
+@onready var spawn_points_container: Node2D = $GameRoot/SpawnPoints
+@onready var spawn_location: Node2D
+@onready var crab: AnimatedSprite2D = %CrabAnimatedSprite2D
+
+
+func _start() -> void:
+	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#bca4ff"), Color("#f5a8c8")])
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
 	super._setup_minigame()
+	pick_random_color()
 	
-	# Setups the current settings
+	# Sets up the current settings
 	settings = difficulty_settings[difficulty]
 	if not settings:
 		return
 	
-	# Setups the island for the first word
+	# Sets up the island for the first word
 	island.stimulus = self._get_current_stimulus()
 	
-	# Setups the timer
+	# Sets up the timer
 	spawn_timer.wait_time = settings.spawn_rate
 	
 	for stimulus: Dictionary in stimuli:
 		Log.trace("TurtleMinigame: %s" % stimulus.Word)
+	
+	crab.play("idle_claws")
+
+
+func pick_random_color() -> void:
+	color = randi_range(0, Turtle.Colors.size() - 1) as Turtle.Colors
 
 
 func _highlight() -> void:
@@ -69,21 +84,22 @@ func _clear_turtles() -> void:
 	for turtle: Turtle in turtles.get_children():
 		turtle.disappear()
 
-
 #region Connections
 
 func _on_spawn_timer_timeout() -> void:
+	Log.trace("TurtleMinigame: Spawn timer timeout")
 	# Checks if there are too many turtle, and wait for one to despawn
 	if turtle_count >= MAX_TURTLE_COUNT:
+		Log.trace("TurtleMinigame: Waiting for possibility to spawn more turtles")
 		await can_spawn_turtle
 	
-	# Spawn a turtle
+	Log.trace("TurtleMinigame: Spawn a turtle")
 	var turtle: Turtle = TURTLE_SCENE.instantiate()
 	
 	# Pick a position to spawn the turtle
 	var position_found: bool = false
 	while not position_found:
-		spawn_location.progress_ratio = randf()
+		spawn_location = spawn_points_container.get_children().pick_random()
 		var all_position_ok: bool = true
 		# Check if there are other turtles nearby
 		for other_turtle: Turtle in turtles.get_children():
@@ -105,9 +121,11 @@ func _on_spawn_timer_timeout() -> void:
 	)
 	
 	turtles.add_child(turtle)
+	turtle.color = color
 	
 	# Set the direction of the turtle
-	turtle.direction = Vector2.DOWN.rotated(spawn_location.rotation).normalized()
+	var random_offset: float = deg_to_rad(randf_range(-5, 5))
+	turtle.direction = Vector2.DOWN.rotated(spawn_location.rotation + random_offset).normalized()
 	
 	# Define if the turtle is a stimulus or a distraction
 	var is_stimulus: bool = not stimulus_spawned and randf() < settings.stimuli_ratio
@@ -147,7 +165,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 		spawn_timer.stop()
 	
 		# Play the right animation
-		turtle.right()
+		await turtle.right()
 		
 		# Clear all the turtles
 		_clear_turtles()
@@ -162,7 +180,7 @@ func _on_island_area_entered(area: Area2D) -> void:
 		current_word_progression += 1
 	else:
 		# Play the wrong animation
-		turtle.wrong()
+		await turtle.wrong()
 		
 		# Clear the turtle
 		turtle.disappear()
@@ -188,9 +206,11 @@ func _on_current_progression_changed() -> void:
 	# Stop the spawning
 	spawn_timer.stop()
 	
+	pick_random_color()
+	
 	# Replay the stimulus
 	await get_tree().create_timer(time_between_words/2).timeout
-	audio_player.play_word(_get_previous_stimulus().Word as String)
+	await audio_player.play_word(_get_previous_stimulus().Word as String)
 	await get_tree().create_timer(time_between_words/2).timeout
 	
 	# Starts a new round
@@ -201,6 +221,11 @@ func _on_current_progression_changed() -> void:
 	
 	# Restarts the spawning
 	spawn_timer.start()
+
+
+func _win() -> void:
+	crab.play("victory_claws")
+	super()
 
 #endregion
 

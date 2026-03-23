@@ -4,6 +4,26 @@ extends Node2D
 signal pressed(gp: Dictionary)
 signal animation_changed(position: Vector2)
 
+enum Colors {
+	Green,
+	Khaki,
+	Purple,
+}
+
+const ANIMATIONS: Array[SpriteFrames] = [
+	preload("res://sources/minigames/turtles/green_turtle_animations.tres"),
+	preload("res://sources/minigames/turtles/khaki_turtle_animations.tres"),
+	preload("res://sources/minigames/turtles/purple_turtle_animations.tres")
+]
+const TURTLE_BACK_RIGHT: CompressedTexture2D = preload("res://assets/minigames/turtles/graphic/turtle_back_right.png")
+const TURTLE_BACK_WRONG: CompressedTexture2D = preload("res://assets/minigames/turtles/graphic/turtle_back_wrong.png")
+
+@export var color: Colors = Colors.Purple:
+	set(value):
+		color = value
+		if sprite:
+			sprite.sprite_frames = ANIMATIONS[color]
+
 var gp: Dictionary = {}:
 	set(value):
 		gp = value
@@ -19,13 +39,15 @@ var is_changing_direction: bool = false
 var is_visible_on_screen: bool = false
 
 @onready var body: Node2D = $Body
-@onready var sprite: AnimatedSprite2D = $Body/AnimatedSprite2D
+@onready var body_back: Sprite2D = $Body/AnimatedSprite2D/Sprite2D_Back
+@onready var sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var label: Label = $Label
 @onready var head_area_collision_shape: CollisionShape2D = $Body/HeadArea/CollisionShape2D
 @onready var body_area_collision_shape: CollisionShape2D = $Body/BodyArea/CollisionShape2D
-@onready var highlight_fx: HighlightFX = $HighlightFX
-@onready var right_fx: RightFX = $RightFX
-@onready var wrong_fx: WrongFX = $WrongFX
+@onready var highlight_fx: HighlightFX = %HighlightFX
+@onready var right_fx: RightFX = %RightFX
+@onready var right_stars: RightStarsFX = %Right_Stars
+@onready var wrong_fx: WrongFX = %WrongFX
 @onready var delete_timer: Timer = $DeleteTimer
 @onready var audio_stream_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
@@ -72,25 +94,43 @@ func highlight(value: bool = true) -> void:
 
 func right() -> void:
 	is_moving = false
+	change_font_color_after_collision()
+	body_back.texture = TURTLE_BACK_RIGHT
 	sprite.play("victory")
+	await sprite.animation_finished
+	sprite.play_backwards("victory")
 	right_fx.play()
+	right_stars.play()
+	await sprite.animation_finished
 	await right_fx.finished
 
 
 func wrong() -> void:
 	is_moving = false
+	change_font_color_after_collision()
+	body_back.texture = TURTLE_BACK_WRONG
 	wrong_fx.play()
-	await wrong_fx.finished
+	sprite.play("defeat")
+	await sprite.animation_finished
+	sprite.play_backwards("defeat")
+	await sprite.animation_finished
+
+
+func change_font_color_after_collision() -> void:
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
 
 
 func disappear() -> void:
 	is_moving = false
 	head_area_collision_shape.set_deferred("disabled", true)
 	body_area_collision_shape.set_deferred("disabled", true)
-	await get_tree().create_timer(randf_range(0., 0.2)).timeout
+	await get_tree().create_timer(randf_range(0.1, 0.2)).timeout
 	sprite.play("disappear")
 	var tween: Tween = create_tween()
 	tween.tween_property(label, "modulate:a", 0, sprite.sprite_frames.get_frame_count(sprite.animation) /sprite.sprite_frames.get_animation_speed(sprite.animation))
+	var tween2: Tween = create_tween()
+	tween2.tween_property(body_back, "modulate:a", 0, sprite.sprite_frames.get_frame_count(sprite.animation) /sprite.sprite_frames.get_animation_speed(sprite.animation))
 
 #endregion
 
@@ -124,10 +164,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		audio_stream_player.play()
 		if audio_stream_player.playing:
 			coroutine.add_future(audio_stream_player.finished)
-		if right_fx.is_playing:
-			coroutine.add_future(right_fx.finished)
-		if wrong_fx.is_playing:
-			coroutine.add_future(wrong_fx.finished)
 		
 		await coroutine.join_all()
 		queue_free()
@@ -151,3 +187,11 @@ func _on_body_area_area_entered(_area: Area2D) -> void:
 	disappear()
 
 #endregion
+
+func idle_boss() -> void:
+	sprite.play("swim")
+	sprite.stop()
+
+
+func victory_boss() -> void:
+	sprite.play("swim")

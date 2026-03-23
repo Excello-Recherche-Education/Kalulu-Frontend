@@ -1,6 +1,6 @@
 @tool
-class_name BooleanRule
 extends ValidatorRule
+class_name BooleanRule
 
 @export var target_value: bool
 

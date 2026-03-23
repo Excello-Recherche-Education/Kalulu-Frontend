@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dxc82xcl7jncd"]
+[gd_scene format=3 uid="uid://dxc82xcl7jncd"]
 
 [ext_resource type="Texture2D" uid="uid://wylvu8nc54ow" path="res://assets/menus/main/plants/blue_palm.png" id="1_2mmp5"]
 
@@ -40,14 +40,12 @@ _data = {
 &"sway": SubResource("Animation_hug64")
 }
 
-[node name="Palm" type="Node2D"]
+[node name="Palm" type="Node2D" unique_id=634450107]
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1339969416]
 position = Vector2(0, -304)
 texture = ExtResource("1_2mmp5")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_j6jql")
-}
-autoplay = "sway"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=721791652]
+libraries/ = SubResource("AnimationLibrary_j6jql")
+autoplay = &"sway"

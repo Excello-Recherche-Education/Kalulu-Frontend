@@ -41,7 +41,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if not data is Dictionary:
-		Log.error("LessonGPLabel: drop data failed because data is not of type Dictionary")
+		Log.error("LessonGPLabel: Drop data failed because data is not of type Dictionary")
 	if not (data as Dictionary).has("gp_id"):
 		return
 	var before: bool = at_position.x < size.x / 2
@@ -51,5 +51,6 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 func _notification(what: int) -> void:
 	if is_being_dragged and what == NOTIFICATION_DRAG_END:
 		is_being_dragged = false
-		if is_drag_successful():
+		# The security to check if node path contains "GPContainer" does work but is extremely inneficient and should be re-done with a better drag&drop architecture.
+		if is_drag_successful() and str(get_viewport().gui_get_hovered_control().get_path()).contains("GPContainer"):
 			queue_free()

@@ -1,35 +1,35 @@
 class_name Ant
 extends Area2D
 
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var anchor: Node2D = $Anchor
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 
 func idle() -> void:
-	animation_player.play("idle_1")
+	animated_sprite_2d.play("idle")
 
 
 func walk() -> void:
-	animation_player.play("walk_1")
+	animated_sprite_2d.play("walk")
 
 
-func _on_animation_player_animation_finished(animation_name: StringName) -> void:
-	if animation_name == "idle_1":
-		var rand: float = randf()
-		if rand <= 0.5:
-			animation_player.play("idle_2")
-		else:
-			animation_player.play("idle_1")
-	
-	if animation_name == "idle_2":
-		animation_player.play("idle_1")
-	
-	if animation_name == "walk_1":
-		var rand: float = randf()
-		if rand <= 0.5:
-			animation_player.play("walk_2")
-		else:
-			animation_player.play("walk_1")
-	
-	if animation_name == "walk_2":
-		animation_player.play("walk_1")
+func success() -> void:
+	animated_sprite_2d.play("success")
+
+
+func defeat() -> void:
+	animated_sprite_2d.play("defeat")
+	await animated_sprite_2d.animation_finished
+	await get_tree().create_timer(1.0).timeout
+	animated_sprite_2d.play_backwards("defeat")
+	await animated_sprite_2d.animation_finished
+	idle()
+
+
+func idle_boss() -> void:
+	animated_sprite_2d.play("idle")
+	animated_sprite_2d.stop()
+
+
+func victory_boss() -> void:
+	animated_sprite_2d.play("success")

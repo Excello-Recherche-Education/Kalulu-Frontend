@@ -64,4 +64,4 @@ func _on_match_to_file_selected(_custom_action: String) -> void:
 
 func _process(_delta: float) -> void:
 	if my_button:
-		my_button.disabled = file_dialog.get_ok_button().disabled
+		my_button.set_disabled(file_dialog.get_ok_button().is_disabled())

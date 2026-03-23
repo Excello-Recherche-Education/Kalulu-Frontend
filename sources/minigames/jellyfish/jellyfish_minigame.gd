@@ -1,14 +1,13 @@
-@tool
 extends SyllablesMinigame
 
 const JELLYFISH_SCENE: PackedScene = preload("res://sources/minigames/jellyfish/jellyfish.tscn")
 
 var difficulty_settings: Array[DifficultySettings] = [
-	DifficultySettings.new(4, 0.75, 150),
-	DifficultySettings.new(3, 0.66, 175),
-	DifficultySettings.new(2, 0.33, 200),
-	DifficultySettings.new(1, 0.25, 250),
-	DifficultySettings.new(1, 0.25, 300)
+	DifficultySettings.new(4, 0.8, 150),
+	DifficultySettings.new(3, 0.7, 175),
+	DifficultySettings.new(2, 0.6, 200),
+	DifficultySettings.new(1, 0.55, 250),
+	DifficultySettings.new(1, 0.5, 300)
 ]
 var blocking_jellyfish: Array[Jellyfish] = []
 
@@ -18,6 +17,7 @@ var blocking_jellyfish: Array[Jellyfish] = []
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#ffbf94"), Color("#f5a8c8")])
 	spawn_timer.start()
 
 
@@ -28,11 +28,11 @@ func _process(delta: float) -> void:
 			jellyfish.position.y -= _get_difficulty_settings().velocity * delta
 		
 		# Handles the blocking array
-		if jellyfish in blocking_jellyfish and jellyfish.position.y + jellyfish.size.y < spawning_space.size.y:
+		if jellyfish in blocking_jellyfish and jellyfish.position.y + _get_jellyfish_height(jellyfish) < spawning_space.size.y:
 			blocking_jellyfish.erase(jellyfish)
 			
 		# Destroy the jellyfish when it leaves the screen
-		if jellyfish.position.y + jellyfish.size.y < 0:
+		if jellyfish.position.y + _get_jellyfish_height(jellyfish) < 0:
 			jellyfish.queue_free()
 
 
@@ -51,9 +51,11 @@ func _spawn() -> void:
 	# Instantiate a new jellyfish
 	var new_jellyfish: Jellyfish = JELLYFISH_SCENE.instantiate()
 	spawning_space.add_child(new_jellyfish)
+	if not new_jellyfish.is_node_ready():
+		await new_jellyfish.ready
 	
 	# Find the right size for the jellyfish
-	var jellyfish_width: float = new_jellyfish.size.x * new_jellyfish.scale.x
+	var jellyfish_width: float = _get_jellyfish_width(new_jellyfish)
 	
 	# Check if there is enough space to spawn the jellyfish and find a spot
 	var permitted_range: float = 0.
@@ -61,8 +63,8 @@ func _spawn() -> void:
 	# Blocking jellyfish is supposed to be ordered
 	for blocking: Jellyfish in blocking_jellyfish:
 		permitted_range += maxf(0.0, blocking.position.x - left_border - jellyfish_width)
-		left_border = blocking.position.x + blocking.size.x
-	permitted_range += maxf(0.0, spawning_space.size.x - left_border)
+		left_border = blocking.position.x + _get_jellyfish_width(blocking)
+	permitted_range += maxf(0.0, spawning_space.size.x - left_border - jellyfish_width)
 	if permitted_range <= 0:
 		new_jellyfish.queue_free()
 		return
@@ -87,7 +89,7 @@ func _spawn() -> void:
 			random_spawn -= local_permitted_range
 		else:
 			break
-		left_border = blocking.position.x + blocking.size.x
+		left_border = blocking.position.x + _get_jellyfish_width(blocking)
 	new_jellyfish.position.x = left_border + random_spawn
 	new_jellyfish.position.y = spawning_space.size.y
 	
@@ -104,6 +106,14 @@ func _spawn() -> void:
 	
 	# Connects the new jellyfish with the pressed signal
 	new_jellyfish.pressed.connect(_on_stimulus_pressed.bind(new_jellyfish))
+
+
+func _get_jellyfish_width(jellyfish: Jellyfish) -> float:
+	return jellyfish.size.x * jellyfish.scale.x
+
+
+func _get_jellyfish_height(jellyfish: Jellyfish) -> float:
+	return jellyfish.size.y * jellyfish.scale.y
 
 
 func _get_difficulty_settings() -> DifficultySettings:

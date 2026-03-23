@@ -62,8 +62,8 @@ const _MAP: Dictionary = {
 	"ñ": "n" + _TILDE, "ň": "n" + _CARON, "ń": "n" + _ACUTE_ACCENT, "ņ": "n" + _CEDILLA,
 	"Ñ": "N" + _TILDE, "Ň": "N" + _CARON, "Ń": "N" + _ACUTE_ACCENT, "Ņ": "N" + _CEDILLA,
 	
-	"ò": "o" + _GRAVE_ACCENT, "ó": "o" + _ACUTE_ACCENT, "ô": "o" + _CIRCUMFLEX, "õ": "o" + _TILDE, "ö": "o" + _DIARESIS, "ō": "o" + _MACRON, "ő": "o" + _DOUBLE_ACUTE, "ọ": "o" + _DOT_BELOW, "ỏ": "o" + _HOOK_ABOVE, "ơ": "o" + _HORN, "ộ": "o" + _DOT_BELOW + _CIRCUMFLEX, "ớ": "o" + _HORN + _ACUTE_ACCENT, "ở": "o" + _HORN + _HOOK_ABOVE, "ỡ": "o" + _HORN + _TILDE, "ợ": "o" + _HORN + _DOT_BELOW,
-	"Ò": "O" + _GRAVE_ACCENT, "Ó": "O" + _ACUTE_ACCENT, "Ô": "O" + _CIRCUMFLEX, "Õ": "O" + _TILDE, "Ö": "O" + _DIARESIS, "Ō": "O" + _MACRON, "Ő": "O" + _DOUBLE_ACUTE, "Ọ": "O" + _DOT_BELOW, "Ỏ": "O" + _HOOK_ABOVE, "Ơ": "O" + _HORN, "Ộ": "O" + _DOT_BELOW + _CIRCUMFLEX, "Ờ": "O" + _HORN + _GRAVE_ACCENT, "Ở": "O" + _HORN + _HOOK_ABOVE, "Ỡ": "O" + _HORN + _TILDE, "Ợ": "O" + _HORN + _DOT_BELOW,
+	"ò": "o" + _GRAVE_ACCENT, "ó": "o" + _ACUTE_ACCENT, "ô": "o" + _CIRCUMFLEX, "õ": "o" + _TILDE, "ö": "o" + _DIARESIS, "ō": "o" + _MACRON, "ő": "o" + _DOUBLE_ACUTE, "ọ": "o" + _DOT_BELOW, "ỏ": "o" + _HOOK_ABOVE, "ơ": "o" + _HORN, "ộ": "o" + _DOT_BELOW + _CIRCUMFLEX, "ờ": "o" + _HORN + _GRAVE_ACCENT, "ớ": "o" + _HORN + _ACUTE_ACCENT, "ở": "o" + _HORN + _HOOK_ABOVE, "ỡ": "o" + _HORN + _TILDE, "ợ": "o" + _HORN + _DOT_BELOW,
+	"Ò": "O" + _GRAVE_ACCENT, "Ó": "O" + _ACUTE_ACCENT, "Ô": "O" + _CIRCUMFLEX, "Õ": "O" + _TILDE, "Ö": "O" + _DIARESIS, "Ō": "O" + _MACRON, "Ő": "O" + _DOUBLE_ACUTE, "Ọ": "O" + _DOT_BELOW, "Ỏ": "O" + _HOOK_ABOVE, "Ơ": "O" + _HORN, "Ộ": "O" + _DOT_BELOW + _CIRCUMFLEX, "Ờ": "O" + _HORN + _GRAVE_ACCENT, "Ớ": "O" + _HORN + _ACUTE_ACCENT, "Ở": "O" + _HORN + _HOOK_ABOVE, "Ỡ": "O" + _HORN + _TILDE, "Ợ": "O" + _HORN + _DOT_BELOW,
 	
 	"ř": "r" + _CARON, "ŗ": "r" + _CEDILLA, "ŕ": "r" + _ACUTE_ACCENT,
 	"Ř": "R" + _CARON, "Ŗ": "R" + _CEDILLA, "Ŕ": "R" + _ACUTE_ACCENT,

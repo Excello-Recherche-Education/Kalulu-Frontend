@@ -18,9 +18,32 @@ const AVAILABLE_CODES: Array[int] = [123, 124, 125, 126, 132, 134, 135, 136, 142
 @export var email: String
 @export var token: String
 @export var last_modified: String = ""
+@export var _language: String = "" # internal variable exported by the inspector
+@export var server_language_validated: bool = false:
+	set(value):
+		Log.trace("TeacherSettings: set server_language_validated %s" % str(value))
+		server_language_validated = value
 
 var devices_count: int
 var password: String
+var language: String:
+	get:
+		return _language if _language != "" else _get_default_language()
+	set(value):
+		if _language == value:
+			return
+		Log.trace("TeacherSettings: set language from %s to %s" % [_language, value])
+		_language = value
+		if Database != null:
+			Database.language = value
+		else:
+			Log.warn("TeacherSettings: Database is null")
+		TranslationServer.set_locale(value)
+
+
+func _get_default_language() -> String:
+	Log.warn("TeacherSettings: get_language called but language is empty, returning device language by default. This should not happen.")
+	return UserDataManager.get_device_settings().language
 
 
 func update_from_dict(dict: Dictionary) -> void:
@@ -34,6 +57,8 @@ func update_from_dict(dict: Dictionary) -> void:
 		token = dict.token
 	if dict.has("last_modified"):
 		last_modified = dict.last_modified
+	if dict.has("language") and not dict.language == null and dict.language is String and dict.language in Utils.SUPPORTED_LOCALES.keys():
+		UserDataManager.set_language(dict.language as String, true)
 	
 	students.clear()
 	var d_students: Dictionary = dict.students
@@ -112,6 +137,7 @@ func to_dict() -> Dictionary:
 		"password": password,
 		"education_method": education_method,
 		"last_modified": last_modified,
+		"language": language
 	}
 	
 	dict["students"] = {}
@@ -168,10 +194,20 @@ func get_student_device(student_code: int) -> int:
 
 func set_data_student_with_code(student_code: int, new_device_id: int, new_name: String, new_age: int, new_last_modified: String) -> void:
 	update_student_device(student_code, new_device_id)
+	if not students.has(new_device_id):
+		students.set(new_device_id, [])
+	var found: bool = false
 	for student_data: StudentData in students[new_device_id]:
 		if student_data.code == student_code:
 			student_data.name = new_name
 			student_data.age = new_age
 			student_data.last_modified = new_last_modified
 			return
-	Log.error("TeacherSettings: Student %d not found to set data on it" % student_code)
+	if not found:
+		Log.warn("TeacherSettings: Student %d not found to set data on it. Creating new student data" % student_code)
+		var new_student_data: StudentData = StudentData.new()
+		new_student_data.code = student_code
+		new_student_data.name = new_name
+		new_student_data.age = new_age
+		new_student_data.last_modified = new_last_modified
+		students[new_device_id].append(new_student_data)

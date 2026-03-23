@@ -15,21 +15,30 @@ func _ready() -> void:
 	for button: TextureButton in buttons.get_children(false):
 		button.pressed.connect(_on_button_pressed.bind(button))
 
+	password_visualizer.symbol_pressed.connect(_on_password_symbol_pressed)
+
 
 func _on_button_pressed(button: TextureButton) -> void:
-	if password.size() == 3:
-		return
-	
 	# Gets the pressed key
 	var key: String = button.name
+	var existing_index: int = password.find(key)
+	if existing_index >= 0:
+		password.remove_at(existing_index)
+		button.set_modulate(Color(1,1,1))
+		password_visualizer.password = "".join(password)
+		button_pressed.emit(key, password)
+		return
+
+	if password.size() == 3:
+		return
+
 	password.append(key)
 	
 	# Sound effect
 	sound_player.play()
 	
-	# Disables button
+	# Highlights selected button
 	button.set_modulate(Color(0.5,0.5,0.5))
-	button.set_disabled(true)
 	
 	# Updates the visualizer
 	password_visualizer.password = "".join(password)
@@ -45,6 +54,20 @@ func _on_button_pressed(button: TextureButton) -> void:
 		password_entered.emit(code)
 
 
+func _on_password_symbol_pressed(symbol_index: int) -> void:
+	if symbol_index < 0 or symbol_index >= password.size():
+		return
+
+	var removed_key: String = password[symbol_index]
+	password.remove_at(symbol_index)
+
+	var key_button: TextureButton = buttons.get_node_or_null(removed_key) as TextureButton
+	if key_button:
+		key_button.set_modulate(Color(1,1,1))
+
+	password_visualizer.password = "".join(password)
+
+
 func get_password() -> Array[String]:
 	return password
 
@@ -58,6 +81,5 @@ func reset_password() -> void:
 	
 	for button: TextureButton in buttons.get_children(false):
 		button.set_modulate(Color(1,1,1))
-		button.set_disabled(false)
 	
 	password_visualizer.password = ""

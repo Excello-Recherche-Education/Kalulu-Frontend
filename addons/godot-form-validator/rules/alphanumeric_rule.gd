@@ -1,10 +1,10 @@
 @tool
-class_name AlphanumericRule
 extends ValidatorRule
+class_name AlphanumericRule
 
 
 func _init() -> void:
-	fail_message = "Value must contain only alphanumeric characters."
+	fail_message = "Value must contain only alphanumeric cahracters."
 
 
 func apply(control: Control, value) -> RuleResult:

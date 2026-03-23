@@ -1,25 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://df5oba70wj13y"]
+[gd_scene format=3 uid="uid://df5oba70wj13y"]
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_jqkff"]
 [ext_resource type="Script" uid="uid://j3iib02qbv7r" path="res://sources/minigames/ants/ants_minigame.gd" id="2_05d1y"]
 [ext_resource type="Texture2D" uid="uid://bfeos6fwrmrhc" path="res://assets/minigames/ants/graphics/gauge_icon_ant_empty.png" id="5_jm3ut"]
+[ext_resource type="Texture2D" uid="uid://b2bcmo1keh217" path="res://assets/minigames/ants/graphics/sentence_text_box.png" id="6_8t8tw"]
 [ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="6_qfybu"]
 [ext_resource type="Texture2D" uid="uid://b2mj2s3o22i8p" path="res://assets/minigames/ants/graphics/background.png" id="7_ihrng"]
-[ext_resource type="Texture2D" uid="uid://bwciokg3prohr" path="res://assets/minigames/ants/graphics/leaf.png" id="8_b7hhi"]
 
-[node name="AntsMinigame" instance=ExtResource("1_jqkff")]
+[node name="AntsMinigame" unique_id=1394755272 instance=ExtResource("1_jqkff")]
 script = ExtResource("2_05d1y")
 minigame_name = 7
-lesson_nb = 24
+lesson_nb = 40
+difficulty = 4
 max_number_of_lives = 5
 max_progression = 3
 
-[node name="MinigameUI" parent="." index="1"]
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
 empty_progression_icon = ExtResource("5_jm3ut")
 full_progression_icon = ExtResource("6_qfybu")
 stimulus_button_visible = false
 
-[node name="Scenery" type="Control" parent="GameRoot" index="0"]
+[node name="Scenery" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=2099592946]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,7 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Background" type="TextureRect" parent="GameRoot/Scenery" index="0"]
+[node name="Background" type="TextureRect" parent="GameRoot/Scenery" index="0" unique_id=925037739]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,52 +39,55 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("7_ihrng")
 
-[node name="TextureRect" type="TextureRect" parent="GameRoot/Scenery" index="1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -102.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("8_b7hhi")
+[node name="MarginContainer" type="MarginContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1085551937]
+layout_mode = 0
+offset_left = 530.0
+offset_top = 254.0
+offset_right = 530.0
+offset_bottom = 254.0
+theme_override_constants/margin_left = 20
 
-[node name="Sentence" type="HFlowContainer" parent="GameRoot" index="1"]
+[node name="SentenceBackground" type="HFlowContainer" parent="GameRoot/MarginContainer" index="0" unique_id=306719963]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -854.0
-offset_top = -646.0
-offset_right = 1007.0
-offset_bottom = 389.0
-grow_horizontal = 2
-grow_vertical = 2
+visible = false
+custom_minimum_size = Vector2(0, 159)
+layout_mode = 2
 mouse_filter = 2
+theme_override_constants/v_separation = 25
 alignment = 1
 
-[node name="AntsSpawn" type="Node2D" parent="GameRoot" index="2"]
-unique_name_in_owner = true
-position = Vector2(-120, 1642)
+[node name="TextureRect" type="TextureRect" parent="GameRoot/MarginContainer/SentenceBackground" index="0" unique_id=44871661]
+layout_mode = 2
+texture = ExtResource("6_8t8tw")
 
-[node name="AntsStart" type="Node2D" parent="GameRoot" index="3"]
-unique_name_in_owner = true
-position = Vector2(785, 1642)
+[node name="SentenceMargin" type="MarginContainer" parent="GameRoot/MarginContainer" index="1" unique_id=52399268]
+layout_mode = 2
+theme_override_constants/margin_left = 50
 
-[node name="AntsEnd" type="Node2D" parent="GameRoot" index="4"]
+[node name="Sentence" type="HFlowContainer" parent="GameRoot/MarginContainer/SentenceMargin" index="0" unique_id=1268823550]
 unique_name_in_owner = true
-position = Vector2(2312, 1642)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/v_separation = 25
 
-[node name="AntsDespawn" type="Node2D" parent="GameRoot" index="5"]
+[node name="AntsSpawn" type="Marker2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=1673515301]
+unique_name_in_owner = true
+position = Vector2(-200, 1640)
+
+[node name="AntsStart" type="Marker2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=280495281]
+unique_name_in_owner = true
+position = Vector2(680, 1640)
+
+[node name="AntsEnd" type="Marker2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=1507861359]
+unique_name_in_owner = true
+position = Vector2(2360, 1640)
+
+[node name="AntsDespawn" type="Marker2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=1410024633]
 unique_name_in_owner = true
 position = Vector2(2768, 1640)
 
-[node name="Ants" type="Node2D" parent="GameRoot" index="6"]
+[node name="Ants" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=2093451028]
 unique_name_in_owner = true
 
-[node name="Words" type="Node2D" parent="GameRoot" index="7"]
+[node name="Words" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=118245542]
 unique_name_in_owner = true

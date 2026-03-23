@@ -1,71 +1,71 @@
-[gd_scene load_steps=3 format=3 uid="uid://0arkj3ss1fbj"]
+[gd_scene format=3 uid="uid://0arkj3ss1fbj"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_crpog"]
 [ext_resource type="Script" uid="uid://0vcwta1jnwr6" path="res://sources/menus/register/steps/recap_step.gd" id="2_0vlqx"]
 
-[node name="RecapStep" instance=ExtResource("1_crpog")]
+[node name="RecapStep" unique_id=2112802657 instance=ExtResource("1_crpog")]
 script = ExtResource("2_0vlqx")
 
-[node name="ValidateButton" parent="RightMargin/RightContainer" index="0"]
+[node name="ValidateButton" parent="RightMargin/RightContainer" parent_id_path=PackedInt32Array(858860575) index="0" unique_id=1168378881]
 text = "VALIDATE"
 
-[node name="PanelContainer" parent="." index="2"]
+[node name="PanelContainer" parent="." index="2" unique_id=824416175]
 offset_left = -1024.0
 offset_right = 1024.0
 offset_bottom = 1344.0
 
-[node name="VBoxContainer" parent="PanelContainer/QuestionContainer" index="0"]
+[node name="VBoxContainer" parent="PanelContainer/QuestionContainer" parent_id_path=PackedInt32Array(788285574) index="0" unique_id=166746788]
 visible = false
 
-[node name="SummaryContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" index="1"]
+[node name="SummaryContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" parent_id_path=PackedInt32Array(788285574) index="1" unique_id=1825765088]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Title" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer" index="0"]
+[node name="Title" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer" index="0" unique_id=1016477474]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "REGISTRATION_SUMMARY"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/QuestionContainer/SummaryContainer" index="1"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/QuestionContainer/SummaryContainer" index="1" unique_id=1868348724]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer" index="0" unique_id=606916318]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 20
 
-[node name="Email" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="0"]
+[node name="Email" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="0" unique_id=1885311456]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="AccountType" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="1"]
+[node name="AccountType" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="1" unique_id=448321219]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="EducationMethod" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="2"]
+[node name="EducationMethod" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="2" unique_id=1650248119]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="DevicesCount" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="3"]
+[node name="DevicesCount" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="3" unique_id=1474085084]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="StudentsCount" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="4"]
+[node name="StudentsCount" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="4" unique_id=310898875]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
-[node name="RecapContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="5"]
+[node name="RecapContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="5" unique_id=896542999]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="FormValidator" parent="." index="3"]
+[node name="FormValidator" parent="." index="3" unique_id=577712412]
 visible = false

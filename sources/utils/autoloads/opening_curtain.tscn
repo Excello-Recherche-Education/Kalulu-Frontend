@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cp27bjh6v5bkj"]
+[gd_scene format=3 uid="uid://cp27bjh6v5bkj"]
 
 [ext_resource type="Script" uid="uid://c7w4sjmeijxkf" path="res://sources/utils/autoloads/opening_curtain.gd" id="1_xih0r"]
 [ext_resource type="Texture2D" uid="uid://cop8iscyxohrb" path="res://assets/bush_curtain.png" id="2_5yuun"]
@@ -163,16 +163,14 @@ _data = {
 &"open": SubResource("Animation_24r35")
 }
 
-[node name="OpeningCurtain" type="CanvasLayer"]
+[node name="OpeningCurtain" type="CanvasLayer" unique_id=1998775010]
 layer = 100
 script = ExtResource("1_xih0r")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_o5y2b")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=817667923]
+libraries/ = SubResource("AnimationLibrary_o5y2b")
 
-[node name="LeftCurtain" type="TextureRect" parent="."]
+[node name="LeftCurtain" type="TextureRect" parent="." unique_id=1341866737]
 visible = false
 offset_left = -2176.0
 offset_top = -2576.0
@@ -183,7 +181,7 @@ scale = Vector2(1.25, 1.25)
 pivot_offset = Vector2(2050, 2448)
 texture = ExtResource("2_5yuun")
 
-[node name="RightCurtain" type="TextureRect" parent="."]
+[node name="RightCurtain" type="TextureRect" parent="." unique_id=275835896]
 visible = false
 offset_left = 640.0
 offset_top = -2576.0

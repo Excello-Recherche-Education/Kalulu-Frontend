@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxh1torc05k7p"]
+[gd_scene format=3 uid="uid://bxh1torc05k7p"]
 
 [ext_resource type="PackedScene" uid="uid://clbi7qphyh0so" path="res://sources/minigames/base/hear_and_find/syllables_minigame.tscn" id="1_lbq56"]
 [ext_resource type="Script" uid="uid://dg4o0yh1fn33t" path="res://sources/minigames/crabs/crabs_minigame.gd" id="2_gierf"]
@@ -6,14 +6,17 @@
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="6_1r44u"]
 [ext_resource type="Texture2D" uid="uid://5bx8ugh178j1" path="res://assets/minigames/crabs/graphic/background.png" id="7_s0cgt"]
 
-[node name="CrabsMinigame" instance=ExtResource("1_lbq56")]
+[node name="CrabsMinigame" unique_id=1363248968 instance=ExtResource("1_lbq56")]
 script = ExtResource("2_gierf")
+minigame_name = 1
+lesson_nb = 30
+difficulty = 4
 
-[node name="MinigameUI" parent="." index="1"]
+[node name="MinigameUI" parent="." index="1" unique_id=1199249440]
 empty_progression_icon = ExtResource("5_7vlrm")
 full_progression_icon = ExtResource("6_1r44u")
 
-[node name="Background" type="TextureRect" parent="GameRoot" index="0"]
+[node name="Background" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="0" unique_id=1203846689]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -23,10 +26,10 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_s0cgt")
 
-[node name="CrabZone" type="Control" parent="GameRoot" index="1"]
+[node name="CrabZone" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1508276448]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 162.0
-offset_top = 441.0
-offset_right = 2494.0
-offset_bottom = 1787.0
+offset_left = 84.0
+offset_top = 370.0
+offset_right = 2291.0
+offset_bottom = 1488.0

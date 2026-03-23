@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://yk1u0ohwwgb3"]
+[gd_scene format=3 uid="uid://yk1u0ohwwgb3"]
 
 [ext_resource type="Script" uid="uid://bcrcty7bhrpps" path="res://sources/utils/autoloads/server_manager.gd" id="1_n6vsh"]
 
@@ -8,15 +8,15 @@ colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_68deq"]
 gradient = SubResource("Gradient_wm8cn")
 
-[node name="ServerManager" type="CanvasLayer"]
+[node name="ServerManager" type="CanvasLayer" unique_id=441801097]
 script = ExtResource("1_n6vsh")
 
-[node name="InternetCheck" type="HTTPRequest" parent="."]
+[node name="InternetCheck" type="HTTPRequest" parent="." unique_id=1485683070]
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=407999154]
 timeout = 30.0
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=601855576]
 visible = false
 top_level = true
 anchors_preset = 15

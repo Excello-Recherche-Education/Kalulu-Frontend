@@ -1,6 +1,6 @@
 @tool
-class_name ValidatorRule
 extends Resource
+class_name ValidatorRule
 
 @export var fail_message: String = ""
 

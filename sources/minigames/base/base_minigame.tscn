@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://8awe4usnucyv"]
+[gd_scene format=3 uid="uid://8awe4usnucyv"]
 
 [ext_resource type="Script" uid="uid://c0rirj74j3u08" path="res://sources/minigames/base/base_minigame.gd" id="1_jdfsm"]
 [ext_resource type="PackedScene" uid="uid://weree6bnlt6f" path="res://sources/minigames/base/minigame_ui.tscn" id="2_a3tib"]
 [ext_resource type="Script" uid="uid://djkmst1rxksk7" path="res://sources/minigames/base/minigame_audio_stream_player.gd" id="2_dkgx4"]
-[ext_resource type="PackedScene" uid="uid://d1gkvqxe1n8o8" path="res://sources/utils/fx/fireworks.tscn" id="4_yekwo"]
+[ext_resource type="PackedScene" uid="uid://cwxuxey01w8ed" path="res://sources/utils/fx/fireworks.tscn" id="4_yekwo"]
 
-[node name="BaseMinigame" type="Control"]
+[node name="BaseMinigame" type="Control" unique_id=621713840]
 process_mode = 1
 layout_mode = 3
 anchors_preset = 15
@@ -15,14 +15,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jdfsm")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=649246549]
 process_mode = 3
 bus = &"Voice"
 script = ExtResource("2_dkgx4")
 
-[node name="MinigameUI" parent="." instance=ExtResource("2_a3tib")]
+[node name="MinigameUI" parent="." unique_id=1199249440 instance=ExtResource("2_a3tib")]
 
-[node name="GameRoot" type="Control" parent="."]
+[node name="GameRoot" type="Control" parent="." unique_id=1053321881]
 process_mode = 1
 layout_mode = 1
 anchors_preset = 15
@@ -31,9 +31,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Fireworks" parent="." instance=ExtResource("4_yekwo")]
+[node name="Fireworks" parent="." unique_id=265421763 instance=ExtResource("4_yekwo")]
 
-[connection signal="garden_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_garden_button_pressed"]
+[connection signal="back_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_back_button_pressed"]
 [connection signal="kalulu_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_kalulu_button_pressed"]
 [connection signal="restart_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_restart_button_pressed"]
 [connection signal="stimulus_button_pressed" from="MinigameUI" to="." method="_on_minigame_ui_stimulus_button_pressed"]

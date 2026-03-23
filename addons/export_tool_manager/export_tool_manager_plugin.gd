@@ -59,32 +59,32 @@ func _on_tool_selected(index: int) -> void:
 	var settings: EditorSettings = get_editor_interface().get_editor_settings()
 	settings.set_setting("export_tool_manager/current_tool", tool)
 
-func _on_export_all_game_pressed():
+func _on_export_all_game_pressed() -> void:
 	export_all_game_presets()
 
-func export_all_game_presets():
+func export_all_game_presets() -> void:
 	var godot_path: String = OS.get_executable_path()
-	var exportFolder = "../Export/autobuilds/"
+	var exportFolder: String = "../Export/autobuilds/"
 	var presets: Dictionary[String, String]= {
 		"Android Kalulu AAB": "/Android/kalulu_app.aab",
 		"Android Kalulu APK": "/Android/kalulu_app.apk",
-		"Windows Kalulu": "/Windows/Kalulu.exe",
-		"Linux Kalulu": "/Linux/Kalulu.x86_64",
+		"Android Kalulu APK 32 bits": "/Android/kalulu_app_32.apk",
+		"Windows Kalulu": "/Windows/Kalulu-Windows.zip",
+		"Linux Kalulu": "/Linux/Kalulu-Linux.zip",
 		
 		# Apple in last because it's always the most complicated
 		#"iOS Kalulu": "/iOS/KaluluApp.ipa",
-		#"macOS Kalulu": "/macOS/Kalulu.dmg"
+		#"macOS Kalulu": "/macOS/Kalulu-macOS.dmg"
 	}
 
 	for preset_name in presets.keys():
 		await get_tree().create_timer(1).timeout
-		var version = ProjectSettings.get_setting("application/config/version")
-		var output_path: String = exportFolder + version + presets[preset_name]
+		var output_path: String = exportFolder + get_application_version_with_code() + presets[preset_name]
 		print("Start exporting " + preset_name)
 		DirAccess.make_dir_recursive_absolute(output_path.get_base_dir())
 
 		var args: PackedStringArray = ["--headless", "--export-release", preset_name, output_path]
-		var output: Array = []
+		var output: Array[String] = []
 		var result: int = OS.execute(godot_path, args, output, true)
 
 		if result != OK:
@@ -94,3 +94,20 @@ func export_all_game_presets():
 			return
 		else:
 			print("✔ Export success: %s → %s" % [preset_name, output_path])
+
+
+func get_application_config_version() -> String:
+	return str(ProjectSettings.get_setting("application/config/version", "0"))
+
+
+func get_application_version_code() -> String:
+	var preset: ConfigFile = ConfigFile.new()
+	var err: Error = preset.load("res://export_presets.cfg")
+	if err == OK:
+		return str(preset.get_value("preset.0.options", "version/code", "0"))
+	Log.trace("Utils: Failed to load export_presets.cfg")
+	return "0"
+
+
+func get_application_version_with_code() -> String:
+	return "%s  (%s)" % [get_application_config_version(), get_application_version_code()]

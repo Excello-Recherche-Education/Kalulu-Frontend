@@ -25,8 +25,8 @@ var should_play_effects: bool = false
 
 
 func _ready() -> void:
-	guide_sprite.visible = false
-	hand_sprite.visible = false
+	guide_sprite.hide()
+	hand_sprite.hide()
 
 
 func _exit_tree() -> void:
@@ -47,7 +47,7 @@ func _process(delta: float) -> void:
 		line.points = points
 		
 		if is_playing:
-			hand_sprite.visible = false
+			hand_sprite.hide()
 			if Input.is_action_pressed("left_click"):
 				touch_positions.append(get_global_mouse_position())
 			
@@ -57,7 +57,7 @@ func _process(delta: float) -> void:
 				_tracing_process()
 				_reset_hand_offset()
 			elif not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-				hand_sprite.visible = true
+				hand_sprite.show()
 				_hand_process(delta)
 
 
@@ -122,31 +122,9 @@ func _smooth_points(points: Array) -> Array:
 	return Bezier.bezier_sampling(points, maxi(points_per_curve, points.size()))
 
 
-func set_points(points: Array) -> void:
-	curve.clear_points()
-	for point: Vector2 in points:
-		curve.add_point(point)
-
-
-func set_guide_progress(progress: float) -> void:
-	guide.progress = progress
-
-
-func get_guide_progress() -> float:
-	return guide.progress
-
-
-func get_guide_progress_ratio() -> float:
-	return guide.progress_ratio
-
-
-func set_hand_progress(progress: float) -> void:
-	hand.progress = progress
-
-
 func start() -> void:
 	is_playing = true
-	guide_sprite.visible = true
+	guide_sprite.show()
 	
 	guide.progress = 0.0
 	hand.progress = 0.0
@@ -154,14 +132,14 @@ func start() -> void:
 
 func stop() -> void:
 	is_playing = false
-	guide_sprite.visible = false
+	guide_sprite.hide()
 	
 	finished.emit()
 
 
 func demo() -> void:
 	is_in_demo = true
-	hand_sprite.visible = true
+	hand_sprite.show()
 	hand.progress_ratio = 0.0
 	
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
@@ -170,6 +148,6 @@ func demo() -> void:
 
 
 func demo_end() -> void:
-	hand_sprite.visible = false
+	hand_sprite.hide()
 	is_in_demo = false
 	demo_finished.emit()

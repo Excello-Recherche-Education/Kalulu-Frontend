@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://3uwsp0ryoh4r"]
+
+[ext_resource type="Texture2D" uid="uid://dg035yddvs04o" path="res://assets/minigames/caterpillar/graphics/caterpillar_legs_spritesheet.png" id="1_3346p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kljk1"]
+atlas = ExtResource("1_3346p")
+region = Rect2(0, 58, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5x4bm"]
+atlas = ExtResource("1_3346p")
+region = Rect2(58, 58, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hm3do"]
+atlas = ExtResource("1_3346p")
+region = Rect2(116, 58, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2kxuy"]
+atlas = ExtResource("1_3346p")
+region = Rect2(174, 58, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qurmb"]
+atlas = ExtResource("1_3346p")
+region = Rect2(232, 58, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qcxec"]
+atlas = ExtResource("1_3346p")
+region = Rect2(290, 58, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xf60k"]
+atlas = ExtResource("1_3346p")
+region = Rect2(348, 58, 58, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7q7ci"]
+atlas = ExtResource("1_3346p")
+region = Rect2(406, 58, 58, 58)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0q0l8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kljk1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5x4bm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hm3do")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2kxuy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qurmb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qcxec")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xf60k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7q7ci")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="CaterpillarLegBack" type="Node2D" unique_id=1788438449]
+
+[node name="AnimatedSprite2D_Leg_Back" type="AnimatedSprite2D" parent="." unique_id=1007299824]
+sprite_frames = SubResource("SpriteFrames_0q0l8")
+autoplay = "default"
+speed_scale = 2.0

@@ -1,14 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://b75gufapo12p7"]
+[gd_scene format=3 uid="uid://b75gufapo12p7"]
 
 [ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/components/code_keyboard.tscn" id="1_2c1xf"]
 [ext_resource type="Script" uid="uid://c8s16jlnw5x7y" path="res://sources/menus/adult_check/adult_check.gd" id="1_wqrmw"]
-[ext_resource type="Texture2D" uid="uid://wtx3wqs0l4si" path="res://assets/minigames/minigame_ui/graphic/button_back_up.png" id="2_tyffq"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_whxas"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_pni2u"]
-[ext_resource type="Texture2D" uid="uid://cbhip35yyqneg" path="res://assets/minigames/minigame_ui/graphic/button_back_down.png" id="3_ui1cy"]
-[ext_resource type="Texture2D" uid="uid://tcapan0mj64o" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="4_cnq3y"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="5_66qd1"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="6_8202e"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="7_nt72u"]
 
-[node name="AdultCheck" type="Control"]
+[node name="AdultCheck" type="Control" unique_id=1460828883]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,14 +17,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wqrmw")
 
-[node name="Background" parent="." instance=ExtResource("2_whxas")]
+[node name="Background" parent="." unique_id=1473279940 instance=ExtResource("2_whxas")]
 layout_mode = 1
 
-[node name="Palm" parent="Background" instance=ExtResource("3_pni2u")]
+[node name="Palm" parent="Background" unique_id=1342025357 instance=ExtResource("3_pni2u")]
 position = Vector2(1280, 1792)
 scale = Vector2(2.5, 2.5)
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=350805857]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.19375
@@ -35,12 +35,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="LabelContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="LabelContainer" type="MarginContainer" parent="PanelContainer" unique_id=1814152126]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 
-[node name="PasswordLabel" type="Label" parent="PanelContainer/LabelContainer"]
+[node name="PasswordLabel" type="Label" parent="PanelContainer/LabelContainer" unique_id=863595978]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1500, 500)
 layout_mode = 2
@@ -50,7 +50,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="CodeKeyboard" parent="." instance=ExtResource("1_2c1xf")]
+[node name="CodeKeyboard" parent="." unique_id=91385749 instance=ExtResource("1_2c1xf")]
 unique_name_in_owner = true
 layout_mode = 0
 anchors_preset = 0
@@ -61,23 +61,14 @@ offset_bottom = 1800.0
 grow_horizontal = 1
 grow_vertical = 0
 
-[node name="PasswordVisualizer" parent="CodeKeyboard" index="0"]
+[node name="PasswordVisualizer" parent="CodeKeyboard" index="0" unique_id=595055886]
 offset_left = -376.0
 offset_top = -164.0
 offset_right = 376.0
 offset_bottom = 56.0
 key_size = 200
 
-[node name="Icon1" parent="CodeKeyboard/PasswordVisualizer/Panel1" index="0"]
-custom_minimum_size = Vector2(200, 200)
-
-[node name="Icon2" parent="CodeKeyboard/PasswordVisualizer/Panel2" index="0"]
-custom_minimum_size = Vector2(200, 200)
-
-[node name="Icon3" parent="CodeKeyboard/PasswordVisualizer/Panel3" index="0"]
-custom_minimum_size = Vector2(200, 200)
-
-[node name="InterfaceLeft" type="MarginContainer" parent="."]
+[node name="InterfaceLeft" type="MarginContainer" parent="." unique_id=1280706845]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -89,16 +80,17 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="Container" type="VBoxContainer" parent="InterfaceLeft"]
+[node name="Container" type="VBoxContainer" parent="InterfaceLeft" unique_id=333794191]
 layout_mode = 2
 
-[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container"]
+[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1147659212]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
-texture_normal = ExtResource("2_tyffq")
-texture_pressed = ExtResource("3_ui1cy")
-texture_disabled = ExtResource("4_cnq3y")
+texture_normal = ExtResource("5_66qd1")
+texture_pressed = ExtResource("6_8202e")
+texture_disabled = ExtResource("7_nt72u")
+ignore_texture_size = true
 stretch_mode = 4
 
 [connection signal="password_entered" from="CodeKeyboard" to="." method="_on_code_keyboard_password_entered"]

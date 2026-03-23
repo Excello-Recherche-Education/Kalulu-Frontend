@@ -18,6 +18,7 @@ func _ready() -> void:
 			"help_code": "",
 			"tuto_code_oneshot": "",
 		},
+		# TODO: Rename / Move those audio inside the language packs to remove all references to brain_screen which does not exists anymore
 		"brain_screen":{
 			"intro_1": "",
 			"intro_2": "",

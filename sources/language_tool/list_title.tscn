@@ -1,27 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://clf3v6355wond"]
+[gd_scene format=3 uid="uid://clf3v6355wond"]
 
 [ext_resource type="Script" uid="uid://c4ii4csh1ryjn" path="res://sources/language_tool/list_title.gd" id="1_6a540"]
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_ej3gu"]
 [ext_resource type="Texture2D" uid="uid://5n02dxd66fw4" path="res://assets/menus/save_button.png" id="2_dorlw"]
 [ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_e0h3c"]
 
-[node name="ListTitle" type="MarginContainer"]
+[node name="ListTitle" type="MarginContainer" unique_id=2142752404]
 offset_right = 2552.0
 offset_bottom = 220.0
 script = ExtResource("1_6a540")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=1463180511]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1447545814]
 layout_mode = 2
 alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer" unique_id=1448616505]
 layout_mode = 2
 theme_override_constants/margin_left = 80
 
-[node name="TitleLabel" type="Label" parent="HBoxContainer/MarginContainer"]
+[node name="TitleLabel" type="Label" parent="HBoxContainer/MarginContainer" unique_id=836498673]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -29,34 +29,34 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 100
 text = "GP List"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=812363168]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/HBoxContainer" unique_id=4643803]
 layout_mode = 2
 theme_override_constants/margin_right = 50
 
-[node name="Button" type="Button" parent="HBoxContainer/HBoxContainer/MarginContainer"]
+[node name="Button" type="Button" parent="HBoxContainer/HBoxContainer/MarginContainer" unique_id=1651085369]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = " Import CSV file "
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/HBoxContainer" unique_id=944281550]
 custom_minimum_size = Vector2(600, 2.08165e-12)
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
 placeholder_text = "search"
 alignment = 1
 
-[node name="PlusButton" parent="HBoxContainer/HBoxContainer" instance=ExtResource("1_ej3gu")]
+[node name="PlusButton" parent="HBoxContainer/HBoxContainer" unique_id=1463289944 instance=ExtResource("1_ej3gu")]
 custom_minimum_size = Vector2(120, 2.08165e-12)
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Add GP"
 
-[node name="SaveButton" parent="HBoxContainer/HBoxContainer" instance=ExtResource("1_ej3gu")]
+[node name="SaveButton" parent="HBoxContainer/HBoxContainer" unique_id=1087864069 instance=ExtResource("1_ej3gu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 2.08165e-12)
 layout_mode = 2
@@ -66,7 +66,7 @@ tooltip_text = "Save"
 [node name="TextureRect" parent="HBoxContainer/HBoxContainer/SaveButton" index="0"]
 texture = ExtResource("2_dorlw")
 
-[node name="BackButton" parent="HBoxContainer/HBoxContainer" instance=ExtResource("1_ej3gu")]
+[node name="BackButton" parent="HBoxContainer/HBoxContainer" unique_id=1584933352 instance=ExtResource("1_ej3gu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 2.08165e-12)
 layout_mode = 2
@@ -76,7 +76,7 @@ tooltip_text = "Back (no save)"
 [node name="TextureRect" parent="HBoxContainer/HBoxContainer/BackButton" index="0"]
 texture = ExtResource("3_e0h3c")
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="FileDialog" type="FileDialog" parent="." unique_id=177443815]
 title = "Open a File"
 initial_position = 2
 size = Vector2i(1500, 1000)

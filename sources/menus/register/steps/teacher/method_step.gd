@@ -1,0 +1,20 @@
+@tool
+extends Step
+
+@onready var method: ItemList = %MethodSelect
+
+
+func _ready() -> void:
+	method.clear()
+	method.add_item("METHOD_APP_ONLY")
+	method.add_item("METHOD_COMPLETE")
+
+
+func _on_next() -> bool:
+	var register_data: TeacherSettings = data as TeacherSettings
+	if register_data:
+		if register_data.account_type == TeacherSettings.AccountType.Parent:
+			register_data.education_method = TeacherSettings.EducationMethod.AppOnly
+	else:
+		return false
+	return true

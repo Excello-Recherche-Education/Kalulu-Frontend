@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dp4182l80ntvn"]
+[gd_scene format=3 uid="uid://dp4182l80ntvn"]
 
 [ext_resource type="Texture2D" uid="uid://d4nvum0gfs66c" path="res://assets/menus/main/plants/flower_top.png" id="1_wgfw2"]
 [ext_resource type="Texture2D" uid="uid://dgsekh110qlse" path="res://assets/menus/main/plants/flower_body.png" id="2_3d0jj"]
@@ -41,18 +41,16 @@ _data = {
 &"bob": SubResource("Animation_e4e8l")
 }
 
-[node name="Flower" type="Node2D"]
+[node name="Flower" type="Node2D" unique_id=902655299]
 
-[node name="Head" type="Sprite2D" parent="."]
+[node name="Head" type="Sprite2D" parent="." unique_id=1180324273]
 position = Vector2(0, -820)
 texture = ExtResource("1_wgfw2")
 
-[node name="Body" type="Sprite2D" parent="."]
+[node name="Body" type="Sprite2D" parent="." unique_id=1367550020]
 position = Vector2(0, -400)
 texture = ExtResource("2_3d0jj")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_kw7nd")
-}
-autoplay = "bob"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=242320110]
+libraries/ = SubResource("AnimationLibrary_kw7nd")
+autoplay = &"bob"

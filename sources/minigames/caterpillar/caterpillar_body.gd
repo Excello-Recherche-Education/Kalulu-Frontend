@@ -1,32 +1,106 @@
-@tool
 class_name CaterpillarBody
 extends Node2D
+
+const DEFAULT_COLOR: Color = Color("#d0df65")
+const MINIGAMES_LABEL_SETTINGS_CATERPILLAR: LabelSettings = preload("res://resources/themes/minigames_label_settings_caterpillar.tres")
+const MARGIN: float = 1.0
 
 var gp: Dictionary = {}:
 	set(value):
 		gp = value
 		if gp.has("Grapheme"):
 			label.text = gp.Grapheme
+			resize_body()
 		else:
 			label.text = ""
+			resize_body()
+var base_width: int = 10 # Minimal width of the body
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var label: Label = $Label
-@onready var right_FX: RightFX = $RightFX
-
-
-func _ready() -> void:
-	walk()
+# @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var label: Label = %Label
+@onready var right_fx: RightFX = %RightFX
+@onready var right_stars: RightStarsFX = $Position/Right_Stars
+@onready var body_left: Sprite2D = %Sprite2D_Body_Left
+@onready var body_center: TextureRect = %TextureRect_Body_Center
+@onready var body_right: Sprite2D = %Sprite2D_Body_Right
+@onready var caterpillar_leg_back: AnimatedSprite2D = $Position/AnimatedSprite2D_Leg_Back
+@onready var caterpillar_leg_front: AnimatedSprite2D = $Position/AnimatedSprite2D_Leg_Front
 
 
 func idle() -> void:
-	animated_sprite.play("idle")
+	caterpillar_leg_front.pause()
+	caterpillar_leg_back.pause()
 
 
 func walk() -> void:
-	animated_sprite.play("walk")
+	caterpillar_leg_front.play()
+	caterpillar_leg_back.play()
 
 
 func right() -> void:
-	right_FX.play()
-	await right_FX.finished
+	_set_body_color(Minigame.LABEL_COLOR_WIN)
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
+	var fx_position: Vector2 = Vector2(body_center.position.x + body_center.get_size().x/2, right_fx.get_position().y)
+	right_fx.set_position(fx_position)
+	right_stars.set_position(body_center.position)
+	right_fx.play()
+	right_stars.play()
+	await right_fx.finished
+	_set_body_color(DEFAULT_COLOR)
+	label.label_settings = MINIGAMES_LABEL_SETTINGS_CATERPILLAR
+
+
+func get_width() -> float:
+	label.reset_size()
+	var text_w: float = label.size.x
+	var end_width: float = max(float(base_width), text_w + float(MARGIN) * 2.0)
+	return end_width
+
+
+func resize_body() -> void:
+	var letters_count: int = label.text.length()
+	if letters_count <= 0:
+		return
+	
+	var end_width: float = get_width()
+	var center_h: float = float(body_center.texture.get_height())
+	
+	var tween: Tween = get_tree().create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	var apply_width: Callable = func(width: float) -> void:
+		body_center.size = Vector2(width, center_h)
+		_update_body_layout()
+	
+	var start_width: float = body_center.size.x
+	tween.tween_method(apply_width, start_width, end_width, 0.3)
+	
+	await tween.finished
+	
+	caterpillar_leg_back.global_position = Vector2(body_center.global_position.x + end_width/2, caterpillar_leg_back.global_position.y)
+	caterpillar_leg_front.global_position = Vector2(body_center.global_position.x + end_width/2, caterpillar_leg_front.global_position.y)
+
+
+func _update_body_layout() -> void:
+	var left_width: float = float(body_left.texture.get_width())
+	var center_height: float = float(body_center.texture.get_height())
+	var current_center_w: float = body_center.size.x
+	var label_width: float = label.size.x
+	var label_height: float = label.size.y
+	
+	body_left.position = Vector2(0.0, 0.0)
+	body_center.position = Vector2(left_width, 0.0)
+	body_right.position = Vector2(left_width + current_center_w, 0.0)
+	
+	label.position = Vector2(
+		left_width + MARGIN + (current_center_w - 2.0 * MARGIN) * 0.5 - label_width * 0.5,
+		center_height * 0.5 - label_height * 0.5
+	)
+
+
+func _set_body_color(color: Color) -> void:
+	body_left.self_modulate = color
+	body_center.self_modulate = color
+	body_right.self_modulate = color

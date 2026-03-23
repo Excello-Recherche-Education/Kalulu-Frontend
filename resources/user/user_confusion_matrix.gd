@@ -51,7 +51,7 @@ func get_gp_scores(id: int) -> PackedInt32Array:
 	return PackedInt32Array()
 
 
-# Updates the confusion matrix from a minigame scores
+# Updates the confusion matrix from a minigame's scores
 func update_gp_scores(minigame_scores: Dictionary[int, PackedInt32Array]) -> void:
 	if not minigame_scores or minigame_scores.is_empty():
 		return

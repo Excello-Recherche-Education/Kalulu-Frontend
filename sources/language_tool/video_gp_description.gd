@@ -24,7 +24,7 @@ func _video_file_selected(file_path: String) -> void:
 
 func set_video_preview(video_path: String) -> void:
 	video_player.stream = load(video_path)
-	video_player.visible = true
+	video_player.show()
 
 
 func set_gp(p_gp: Dictionary) -> void:
@@ -45,7 +45,7 @@ func _on_video_upload_button_pressed() -> void:
 
 func _on_button_pressed() -> void:
 	video_player.stream = null
-	video_player.visible = false
+	video_player.hide()
 	var current_file: String = Database.get_gp_look_and_learn_video_path(gp)
 	if FileAccess.file_exists(current_file):
 		DirAccess.remove_absolute(current_file)

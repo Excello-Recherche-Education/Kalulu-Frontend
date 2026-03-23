@@ -25,22 +25,23 @@ var current_tracing: int = 0
 
 
 func _ready() -> void:
-	MusicManager.stop()
-	
+	(MusicManager as MusicManagerClass).stop()
 	gardens_data = transition_data
 	transition_data = {}
+	Log.trace("LookAndLearn: Transition data received = %s" % str(gardens_data))
 	lesson_nb = gardens_data.get("current_lesson_number", lesson_nb)
 	Log.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
 	setup()
-	await OpeningCurtain.open()
+	await (OpeningCurtain as OpeningCurtainClass).open()
 
 
 func setup() -> void:
 	gp_list = Database.get_gps_for_lesson(lesson_nb, true, true)
+	Log.info("LookAndLearn: Preparing lesson %d with %d grapheme-phoneme pairs" % [lesson_nb, gp_list.size()])
 	
 	if gp_list.size() <= 0:
-		Log.error("LookAndLearn: setup() did not found any GP for lesson " + str(lesson_nb))
-		await OpeningCurtain.open()
+		Log.error("LookAndLearn: Setup: Did not found any GP for lesson " + str(lesson_nb))
+		await (OpeningCurtain as OpeningCurtainClass).open()
 		_on_tracing_manager_finished()
 		return
 	
@@ -70,6 +71,7 @@ func setup() -> void:
 			gp_display.append((gp.Grapheme as String).to_upper())
 		if tracing_data.lower:
 			gp_display.append((gp.Grapheme as String).to_lower())
+	Log.trace("LookAndLearn: Prepared %d videos, %d images, %d sounds, %d tracings" % [videos.size(), images.size(), sounds.size(), gp_display.size()])
 	
 	if gp_display.is_empty():
 		gp_display.append(gp_list[0].Grapheme as String)
@@ -80,11 +82,10 @@ func setup() -> void:
 func play_videos() -> void:
 	if current_video >= videos.size():
 		animation_player.play("end_videos")
-		video_player.visible = false
+		video_player.hide()
 	else:
 		video_player.stream = videos[current_video]
 		video_player.play()
-		
 		current_video += 1
 
 
@@ -95,7 +96,6 @@ func play_images_and_sounds() -> void:
 		image.texture = images[current_image_and_sound]
 		audio_player.stream = sounds[current_image_and_sound]
 		audio_player.play() 
-		
 		current_image_and_sound += 1
 
 
@@ -151,15 +151,16 @@ func _on_tracing_manager_finished() -> void:
 		animation_player.play("end_tracing")
 		gardens_data.first_clear = UserDataManager.student_progression.look_and_learn_completed(lesson_nb)
 		gardens_data.look_and_learn_completed = true
+		Log.info("LookAndLearn: Lesson %d completed (first_clear=%s)" % [lesson_nb, str(gardens_data.first_clear)])
 		_back_to_gardens()
 
 
 func _back_to_gardens() -> void:
-	await OpeningCurtain.close()
-	
+	Log.info("LookAndLearn: Returning to gardens for lesson %d" % lesson_nb)
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	Gardens.transition_data = gardens_data
 	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
 
 
-func _on_garden_button_pressed() -> void:
+func _on_back_button_pressed() -> void:
 	_back_to_gardens()

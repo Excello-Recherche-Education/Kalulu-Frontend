@@ -38,7 +38,7 @@ extends _BASE_
 
 #12. static_init
 # Called automatically when the class is loaded, after the static variables have been initialized
-static func _static_init():
+static func _static_init() -> void:
 	# my_static_var = 2
 	# A static constructor cannot take arguments and must not return any value.
 	pass
@@ -49,12 +49,15 @@ static func _static_init():
 
 #14-1. overridden built-in virtual methods:
 # Called upon creating the object in memory.
-func _init():
+# Init can have parameters, but it is dangerous because when instantiated by godot, it will not call new() with parameters and so any object that has parameters in _init() will fail to load.
+# Example: func _init(initial_name: String, initial_age: int)
+# Can be called this way: var person: Person = Person.new("Gandalf", 24000)
+func _init() -> void:
 	pass
 
 
 # Called before _ready(). Called when the node enters the scene tree, likewise _exit_tree() is called when it exits the scene tree. 
-func _enter_tree():
+func _enter_tree() -> void:
 	pass
 
 

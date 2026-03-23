@@ -1,0 +1,67 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://ecmie8tg1cf7"]
+
+[ext_resource type="Texture2D" uid="uid://xo0vj3ubvidu" path="res://assets/minigames/parakeets/graphic/green_parakeet_spritesheet.png" id="1_0mxru"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p03nk"]
+atlas = ExtResource("1_0mxru")
+region = Rect2(0, 4800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i5s4f"]
+atlas = ExtResource("1_0mxru")
+region = Rect2(800, 4800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0s2a"]
+atlas = ExtResource("1_0mxru")
+region = Rect2(1600, 4800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tt32a"]
+atlas = ExtResource("1_0mxru")
+region = Rect2(2400, 4800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8qvt"]
+atlas = ExtResource("1_0mxru")
+region = Rect2(3200, 4800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vblis"]
+atlas = ExtResource("1_0mxru")
+region = Rect2(4000, 4800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e757m"]
+atlas = ExtResource("1_0mxru")
+region = Rect2(4800, 4800, 800, 800)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwxb4"]
+atlas = ExtResource("1_0mxru")
+region = Rect2(5600, 4800, 800, 800)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p03nk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i5s4f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0s2a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tt32a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l8qvt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vblis")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e757m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwxb4")
+}],
+"loop": false,
+"name": &"feathers_fall",
+"speed": 7.0
+}]

@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://blos4rn53qkwg"]
+
+[ext_resource type="Script" uid="uid://ih4xg7hi7ts3" path="res://sources/minigames/base/kalulu_ingame.gd" id="1_r2qkn"]
+[ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="2_55gmf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6gsq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dvlyl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1hd4y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd4qd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iqd4x"]
+
+[node name="Kalulu" type="Control" unique_id=142765402]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r2qkn")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1006577593]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.164706, 0.164706, 0.164706, 0.67451)
+
+[node name="KaluluSprite" parent="." unique_id=2101240154 instance=ExtResource("2_55gmf")]
+position = Vector2(320, 1250)
+scale = Vector2(2, 2)
+
+[node name="PassButton" type="Button" parent="KaluluSprite" unique_id=1467057455]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -144.0
+offset_right = -158.0
+offset_bottom = -379.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y6gsq")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dvlyl")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1hd4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_cd4qd")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_iqd4x")
+flat = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=510547683]
+bus = &"Voice"
+
+[connection signal="pressed" from="KaluluSprite/PassButton" to="." method="_on_pass_button_pressed"]

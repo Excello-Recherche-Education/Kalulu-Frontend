@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bwjft0rlj2tu2"]
+[gd_scene format=3 uid="uid://bwjft0rlj2tu2"]
 
 [ext_resource type="Script" uid="uid://dnccsu4wgp1pk" path="res://sources/menus/language_selection/package_downloader.gd" id="1_awls2"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_ntm5g"]
@@ -12,7 +12,7 @@ colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ymust"]
 gradient = SubResource("Gradient_22q4u")
 
-[node name="LocalPackageDownloader" type="Control"]
+[node name="LocalPackageDownloader" type="Control" unique_id=381543155]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,12 +21,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_awls2")
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1958675953]
 
-[node name="Background" parent="." instance=ExtResource("2_ntm5g")]
+[node name="Background" parent="." unique_id=2095439200 instance=ExtResource("2_ntm5g")]
 layout_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2035036121]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,21 +38,21 @@ theme_override_constants/margin_top = 600
 theme_override_constants/margin_right = 400
 theme_override_constants/margin_bottom = 600
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=23913632]
 layout_mode = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="QuestionContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+[node name="QuestionContainer" type="MarginContainer" parent="MarginContainer/PanelContainer" unique_id=827662340]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/QuestionContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/QuestionContainer" unique_id=839141258]
 layout_mode = 2
 
-[node name="CheckingLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="CheckingLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=457048898]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -61,7 +61,7 @@ text = "CHECKING_DATA"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DownloadLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="DownloadLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=509223860]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -71,7 +71,7 @@ text = "DOWNLOADING_DATA"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CopyLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="CopyLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=987291190]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -81,7 +81,7 @@ text = "EXTRACTING_DATA"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DownloadProgressBar" type="ProgressBar" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="DownloadProgressBar" type="ProgressBar" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=1621528030]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(800, 100)
@@ -91,13 +91,13 @@ theme_override_font_sizes/font_size = 60
 max_value = 1.0
 step = 1.0
 
-[node name="DownloadInfo" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="DownloadInfo" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=1025300388]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 clip_text = true
 
-[node name="ExtractProgressBar" type="ProgressBar" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="ExtractProgressBar" type="ProgressBar" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=432173937]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(800, 100)
@@ -107,25 +107,25 @@ theme_override_font_sizes/font_size = 60
 max_value = 1.0
 step = 1.0
 
-[node name="ExtractInfo" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="ExtractInfo" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=1385892440]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 clip_text = true
 
-[node name="ErrorLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer"]
+[node name="ErrorLabel" type="Label" parent="MarginContainer/PanelContainer/QuestionContainer/VBoxContainer" unique_id=49237768]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "ERROR_DOWNLOADING"
 label_settings = ExtResource("4_03o13")
 
-[node name="ErrorPopup" type="CanvasLayer" parent="."]
+[node name="ErrorPopup" type="CanvasLayer" parent="." unique_id=1254216165]
 visible = false
 script = ExtResource("5_dyine")
 content_text = "DISCONNECTED_ERROR"
 
-[node name="TextureRect" type="TextureRect" parent="ErrorPopup"]
+[node name="TextureRect" type="TextureRect" parent="ErrorPopup" unique_id=1139931546]
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -135,7 +135,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = SubResource("GradientTexture1D_ymust")
 
-[node name="PanelContainer" type="PanelContainer" parent="ErrorPopup/TextureRect"]
+[node name="PanelContainer" type="PanelContainer" parent="ErrorPopup/TextureRect" unique_id=1931611638]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -150,21 +150,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer" unique_id=1628129011]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer" unique_id=1053598975]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer" unique_id=1771314941]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="ContentLabel" type="Label" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ContentLabel" type="Label" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1011425160]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1000, 0)
 layout_mode = 2
@@ -173,20 +173,20 @@ theme_override_font_sizes/font_size = 70
 text = "DISCONNECTED_ERROR"
 autowrap_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=193335234]
 layout_mode = 2
 
-[node name="ConfirmButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ConfirmButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1633271192]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "RETURN_TO_MAIN_MENU"
 
-[node name="Separator" type="Control" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Separator" type="Control" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=894057271]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CancelButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CancelButton" type="Button" parent="ErrorPopup/TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=119343722]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

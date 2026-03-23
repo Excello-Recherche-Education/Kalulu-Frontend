@@ -1,6 +1,6 @@
 @tool
-class_name NotBlankRule
 extends ValidatorRule
+class_name NotBlankRule
 
 
 func _init() -> void:

@@ -1,15 +1,15 @@
-@tool
 class_name MinigameUI
 extends CanvasLayer
 
-signal garden_button_pressed()
+signal back_button_pressed()
 signal stimulus_button_pressed()
 signal restart_button_pressed()
 signal kalulu_button_pressed()
 signal kalulu_speech_ended()
 signal pause_ended()
 
-const KALULU := preload("res://sources/minigames/base/kalulu.gd")
+const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
+const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
 
 @export var empty_progression_icon: Texture
 @export var full_progression_icon: Texture
@@ -20,12 +20,11 @@ const KALULU := preload("res://sources/minigames/base/kalulu.gd")
 			_handle_stimulus_button()
 
 var is_paused: bool = false
+var back_button_hold_progress_seconds: float = 0.0
+var is_back_button_hold_active: bool = false
 
-@onready var garden_button: TextureButton = %GardenButton
-@onready var stimulus_margin: MarginContainer = %StimulusMargin
+@onready var back_button: BackButton = %BackButton
 @onready var stimulus_button: TextureButton = %StimulusButton
-@onready var stimulus_texture: TextureRect = %StimulusTexture
-@onready var pause_margin: MarginContainer = %PauseMargin
 @onready var pause_button: TextureButton = %PauseButton
 @onready var kalulu_button: TextureButton = %KaluluButton
 @onready var center_menu: MarginContainer = %CenterMenu
@@ -33,35 +32,53 @@ var is_paused: bool = false
 @onready var progression_container: VBoxContainer = %ProgressionContainer
 @onready var progression_gauge: NinePatchRect = %ProgressionGauge
 @onready var model_progression_rect: TextureRect = %ProgressionIconsRect
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 func _ready() -> void:
 	model_progression_rect.texture = empty_progression_icon
 	_handle_stimulus_button()
+	_cancel_back_button_hold()
+
+
+func _process(delta: float) -> void:
+	_process_back_button_hold(delta)
+
+
+func _process_back_button_hold(delta: float) -> void:
+	if not is_back_button_hold_active:
+		return
+	if is_paused or back_button.disabled:
+		_cancel_back_button_hold()
+		return
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or not back_button.get_global_rect().has_point(get_viewport().get_mouse_position()):
+		_cancel_back_button_hold()
+		return
+	back_button_hold_progress_seconds += delta
+	var progress_ratio: float = clampf(back_button_hold_progress_seconds / BACK_BUTTON_HOLD_DURATION_SECONDS, 0.0, 1.0)
+	back_button.set_hold_progress_ratio(progress_ratio)
+	if progress_ratio >= 1.0:
+		_cancel_back_button_hold()
+		_emit_back_button_pressed()
 
 
 func _handle_stimulus_button() -> void:
-	stimulus_margin.visible = stimulus_button_visible
-	if stimulus_button_visible:
-		pause_margin.size_flags_stretch_ratio = 1
-	else:
-		pause_margin.size_flags_stretch_ratio = 2
+	stimulus_button.set_visible(stimulus_button_visible)
 
 #region Locking
 
 func lock() -> void:
-	garden_button.disabled = true
-	stimulus_button.disabled = true
-	pause_button.disabled = true
-	kalulu_button.disabled = true
+	back_button.set_disabled(true)
+	_cancel_back_button_hold()
+	stimulus_button.set_disabled(true)
+	pause_button.set_disabled(true)
+	kalulu_button.set_disabled(true)
 
 
 func unlock() -> void:
-	garden_button.disabled = false
-	stimulus_button.disabled = false
-	pause_button.disabled = false
-	kalulu_button.disabled = false
+	back_button.set_disabled(false)
+	stimulus_button.set_disabled(false)
+	pause_button.set_disabled(false)
+	kalulu_button.set_disabled(false)
 
 #endregion
 
@@ -80,7 +97,7 @@ func set_max_progression(new_max_progression: int) -> void:
 		new_progression_rect.show()
 		new_progression_rect.texture = empty_progression_icon
 		progression_container.add_child(new_progression_rect)
-	model_progression_rect.visible = new_max_progression >= 1
+	model_progression_rect.set_visible(new_max_progression >= 1)
 
 
 func set_progression(new_progression: int) -> void:
@@ -101,8 +118,26 @@ func set_progression(new_progression: int) -> void:
 
 #region Left Panel
 
-func _on_garden_button_pressed() -> void:
-	garden_button_pressed.emit()
+func _emit_back_button_pressed() -> void:
+	back_button_pressed.emit()
+
+
+func _on_back_button_button_down() -> void:
+	if back_button.disabled or is_back_button_hold_active:
+		return
+	is_back_button_hold_active = true
+	back_button_hold_progress_seconds = 0.0
+	back_button.begin_hold()
+
+
+func _on_back_button_button_up() -> void:
+	_cancel_back_button_hold()
+
+
+func _cancel_back_button_hold() -> void:
+	is_back_button_hold_active = false
+	back_button_hold_progress_seconds = 0.0
+	back_button.cancel_hold()
 
 
 func _on_stimulus_button_pressed() -> void:
@@ -123,11 +158,13 @@ func _on_kalulu_button_pressed() -> void:
 #region Pause Menu
 
 func show_center_menu(show_menu: bool) -> void:
-	center_menu.visible = show_menu
-	garden_button.disabled = show_menu
-	stimulus_button.disabled = show_menu
-	kalulu_button.disabled = show_menu
-	pause_button.visible = !show_menu
+	center_menu.set_visible(show_menu)
+	back_button.set_disabled(show_menu)
+	if show_menu:
+		_cancel_back_button_hold()
+	stimulus_button.set_disabled(show_menu)
+	kalulu_button.set_disabled(show_menu)
+	pause_button.set_visible(!show_menu)
 
 
 func _on_restart_button_pressed() -> void:
@@ -161,10 +198,3 @@ func _on_kalulu_speech_ended() -> void:
 	kalulu_speech_ended.emit()
 
 #endregion
-
-func repeat_stimulus_animation(appear: bool) -> void:
-	if appear:
-		animation_player.play("repeat_stimulus")
-	else:
-		animation_player.play_backwards("repeat_stimulus")
-	await animation_player.animation_finished

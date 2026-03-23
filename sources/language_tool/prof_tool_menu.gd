@@ -36,7 +36,7 @@ func _ready() -> void:
 
 
 func _display_available_languages() -> void:
-	for item: int in range(1, language_select_button.item_count):
+	for item: int in range(language_select_button.item_count - 1, 0, -1):
 		language_select_button.remove_item(item)
 	var available_languages: Array[String] = _get_available_languages()
 	var ind: int = 1
@@ -104,6 +104,8 @@ func _on_exercises_button_pressed() -> void:
 
 
 func _on_export_filename_selected(filename: String) -> void:
+	_normalize_lesson_ids_before_export()
+
 	var version_file: FileAccess = FileAccess.open(BASE_PATH.path_join(Database.language).path_join("version.txt"), FileAccess.WRITE)
 	version_file.store_line(Time.get_datetime_string_from_system(true, false))
 	version_file.close()
@@ -140,6 +142,54 @@ func _on_export_filename_selected(filename: String) -> void:
 	
 	var folder_zipper: FolderZipper = FolderZipper.new()
 	folder_zipper.compress(BASE_PATH.path_join(Database.language), filename)
+
+
+# Forces lessons to have a lessonID corresponding to the lesson number, to avoid confusion in game requests
+func _normalize_lesson_ids_before_export() -> void:
+	Database.db.query("SELECT ID, LessonNb FROM Lessons")
+	var lessons: Array[Dictionary] = Database.db.query_result
+	var remapped_lessons: Array[Dictionary] = []
+	for lesson: Dictionary in lessons:
+		var lesson_id: int = lesson.ID as int
+		var lesson_nb: int = lesson.LessonNb as int
+		if lesson_id != lesson_nb:
+			remapped_lessons.push_back({"from": lesson_id, "to": lesson_nb, "temp": -1000000 - lesson_nb})
+
+	if remapped_lessons.is_empty():
+		return
+
+	Database.db.query("PRAGMA foreign_keys = OFF")
+	Database.db.query("BEGIN TRANSACTION")
+
+	for table_name: String in _get_tables_with_lesson_id_column():
+		for remap_lesson: Dictionary in remapped_lessons:
+			Database.db.query_with_bindings("UPDATE %s SET LessonID = ? WHERE LessonID = ?" % table_name, [remap_lesson.to, remap_lesson.from])
+
+	for remap_lesson: Dictionary in remapped_lessons:
+		Database.db.query_with_bindings("UPDATE Lessons SET ID = ? WHERE ID = ?", [remap_lesson.temp, remap_lesson.from])
+
+	for remap_lesson: Dictionary in remapped_lessons:
+		Database.db.query_with_bindings("UPDATE Lessons SET ID = ? WHERE ID = ?", [remap_lesson.to, remap_lesson.temp])
+
+	Database.db.query("COMMIT")
+	Database.db.query("PRAGMA foreign_keys = ON")
+	Log.trace("ProfToolMenu: Normalized %d mismatched lesson IDs before export" % remapped_lessons.size())
+
+
+func _get_tables_with_lesson_id_column() -> Array[String]:
+	Database.db.query("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
+	var tables: Array[Dictionary] = Database.db.query_result
+	var tables_with_lesson_id_column: Array[String] = []
+	for table_data: Dictionary in tables:
+		var table_name: String = table_data.name as String
+		if table_name == "Lessons":
+			continue
+		Database.db.query("PRAGMA table_info(%s)" % table_name)
+		for table_column: Dictionary in Database.db.query_result:
+			if (table_column.name as String) == "LessonID":
+				tables_with_lesson_id_column.push_back(table_name)
+				break
+	return tables_with_lesson_id_column
 
 #region Database integrity check
 var integrity_checking: bool = false
@@ -227,11 +277,57 @@ func _check_db_integrity() -> void:
 				if !sentence.has("Sentence"):
 					if !log_message("Sentence with no Sentence (key) at lesson ID " + str(lesson_id) + " and sentence ID " + str(sentence.ID)):
 						return
-				var word_count: int = ((sentence.Sentence) as String).replace("!", " ").replace("?", " ").replace(".", " ").replace(",", " ").replace(";", " ").replace(":", " ").replace("'", " ").replace("  ", " ").trim_suffix(" ").split(" ", false).size()
-				var word_list: Array[Dictionary] = Database.get_words_in_sentence(sentence.ID as int)
+				# More robust word count from sentence text
+				var text: String = (sentence.Sentence as String)
+				text = text.replace("’", "'")
+				text = text.replace("!", " ").replace("?", " ").replace(".", " ").replace(",", " ").replace(";", " ").replace(":", " ")
+				text = text.replace("'", " ")
+				while text.find("  ") != -1:
+					text = text.replace("  ", " ")
+				var word_count: int = text.strip_edges().split(" ", false).size()
+
+				var word_list: Array[Dictionary] = Database.get_words_in_sentence_for_integrity_check(sentence.ID as int)
+
+				# Existing check: mismatch between text word count and WordsInSentences entries
 				if word_list.size() != word_count:
-					if !log_message('Sentence "' + (sentence.Sentence as String) + '" has incoherent words count: ' + str(word_list.size())):
+					if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') has incoherent words count: expected ' + str(word_count) + ', got ' + str(word_list.size())):
 						return
+
+				# New check: detect missing WordPosition (holes) in WordsInSentences
+				var positions_present: Dictionary = {} # int -> true
+				var min_pos: int = 999999
+				var max_pos: int = -999999
+				var can_check_positions: bool = true
+
+				for word_pos_entry: Dictionary in word_list:
+					if word_pos_entry.has("WordPosition"):
+						var position_index: int = word_pos_entry.WordPosition as int
+						positions_present[position_index] = true
+						min_pos = mini(min_pos, position_index)
+						max_pos = maxi(max_pos, position_index)
+					else:
+						# If get_words_in_sentence does not return WordPosition, we cannot validate continuity.
+						can_check_positions = false
+						if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') word_list entries have no WordPosition key; cannot check missing words by position.'):
+							return
+						break
+
+				if can_check_positions and word_count > 0:
+					# Expected positions are 0..(word_count-1)
+					if !positions_present.has(0):
+						if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') has missing first word: WordPosition 0 absent. Present positions: ' + str(positions_present.keys())):
+							return
+
+					var expected_last: int = word_count - 1
+					if !positions_present.has(expected_last):
+						if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') has missing last word: expected WordPosition ' + str(expected_last) + ' absent. Present positions: ' + str(positions_present.keys())):
+							return
+
+					for expected_pos: int in range(word_count):
+						if !positions_present.has(expected_pos):
+							if !log_message('Sentence "' + (sentence.Sentence as String) + '" (ID ' + str(sentence.ID) + ') is missing WordPosition ' + str(expected_pos) + ' in WordsInSentences. Present positions: ' + str(positions_present.keys())):
+								return
+				# Continue existing per-word checks
 				for word: Dictionary in word_list:
 					if !word.has("ID"):
 						if !log_message("Word with no ID in lesson ID " + str(lesson_id) + " and sentence ID " + str(sentence.ID)):
@@ -275,7 +371,7 @@ func log_message(message: String) -> bool:
 		var file: FileAccess
 		if FileAccess.file_exists(integrity_log_path):
 			file = FileAccess.open(integrity_log_path, FileAccess.READ_WRITE)
-			file.seek_end() # Se placer à la fin pour ajouter
+			file.seek_end() # Move to the end to append
 		else:
 			file = FileAccess.open(integrity_log_path, FileAccess.WRITE_READ)
 		if file:
@@ -350,6 +446,8 @@ func _on_language_select_button_item_selected(index: int) -> void:
 		new_language_container.show()
 		line_edit.grab_focus()
 		return
+	else:
+		new_language_container.hide()
 	
 	save_file.selected_language = language_select_button.get_item_text(index)
 	ResourceSaver.save(save_file, SAVE_FILE_PATH)
@@ -557,7 +655,7 @@ func create_book() -> void:
 		var raw_headers: PackedStringArray = parse_csv_line(headers_line)
 		var header_map: Dictionary[String, String] = {} # Original -> Normalized
 		
-		# On mesure combien de lignes ont déjà été ajoutées
+		# Measure how many rows have already been added
 		var current_row_count: int = 0
 		if columns.has("Categorie"):
 			current_row_count = columns["Categorie"].size()
@@ -572,10 +670,10 @@ func create_book() -> void:
 				var filler: PackedStringArray
 				filler.resize(current_row_count)
 				for index: int in range(current_row_count):
-					filler[index] = "" # Valeur vide pour rattraper
+					filler[index] = "" # Empty value to catch up
 				columns[normalized] = filler
 
-		# Init colonne "Categorie" si pas encore
+		# Initialize the "Categorie" column if missing
 		if not columns.has("Categorie"):
 			var filler: PackedStringArray
 			filler.resize(current_row_count)
@@ -599,7 +697,7 @@ func create_book() -> void:
 				var normalized: String = header_map.get(original, original)
 				row_dict[normalized] = values[index]
 
-			# Ligne principale
+			# Main row
 			add_row(columns, row_dict, category, all_headers)
 
 			if row_dict.get("Writing", "0") == "1":
@@ -610,16 +708,16 @@ func create_book() -> void:
 
 		file.close()
 
-	# Forcer "Lesson" en tête
+	# Force "Lesson" to be first
 	var ordered_headers: Array[String] = all_headers.duplicate()
 	if "Lesson" in ordered_headers:
 		ordered_headers.erase("Lesson")
-		ordered_headers = ["Lesson"] + ordered_headers
+		ordered_headers = ["Lesson"] as Array[String] + ordered_headers
 
-	# Ajouter Categorie à la fin
+	# Add Categorie at the end
 	ordered_headers.append("Categorie")
 
-	# Écriture du fichier final
+	# Write the final file
 	var output_path: String = lang_path.path_join("booklet.csv")
 	var output_file: FileAccess = FileAccess.open(output_path, FileAccess.WRITE)
 	if output_file == null:
@@ -628,7 +726,7 @@ func create_book() -> void:
 
 	output_file.store_line(escape_csv_line(PackedStringArray(ordered_headers)))
 	
-	var row_count: int = (columns["Categorie"] as PackedStringArray).size() # Toutes les colonnes sont synchronisées
+	var row_count: int = (columns["Categorie"] as PackedStringArray).size() # All columns are synchronized
 	for index: int in range(row_count):
 		var row: PackedStringArray = []
 		for header: String in ordered_headers:
@@ -641,18 +739,18 @@ func create_book() -> void:
 	Log.trace("ProfToolMenu: " + error_label.text)
 
 
-# Fonction qui ajoute une ligne au dictionnaire
+# Function that adds a row to the dictionary
 func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[String, String], categorie: String, all_headers: Array) -> void:
-	# Nombre de lignes déjà enregistrées (doit être égal pour chaque colonne)
+	# Number of rows already recorded (must be equal for each column)
 	var current_size: int = 0
 	if dict.has("Categorie"):
 		current_size= dict["Categorie"].size()
 
-	# S'assurer que toutes les colonnes existantes reçoivent une valeur
+	# Ensure that every existing column receives a value
 	for header: String in all_headers:
 		if not dict.has(header):
 			var filler: PackedStringArray
-			filler.resize(current_size) # rattrape les lignes précédentes
+			filler.resize(current_size) # Catch up with previous rows
 			for index: int in range(current_size):
 				filler[index] = ""
 			dict[header] = filler
@@ -669,7 +767,7 @@ func add_row(dict: Dictionary[String, PackedStringArray], row_data: Dictionary[S
 	dict["Categorie"].append(categorie)
 
 
-# Parse une ligne CSV même si elle contient des virgules et guillemets
+# Parse a CSV line even if it contains commas and quotes
 func parse_csv_line(line: String) -> PackedStringArray:
 	var result: PackedStringArray = []
 	var current: String = ""
@@ -695,7 +793,7 @@ func parse_csv_line(line: String) -> PackedStringArray:
 	return result
 
 
-# Transforme une ligne pour l'écriture CSV, avec échappement
+# Converts a line for CSV writing, with escaping
 func escape_csv_line(fields: PackedStringArray) -> String:
 	var output: String = ""
 	for index: int in range(fields.size()):
@@ -708,12 +806,12 @@ func escape_csv_line(fields: PackedStringArray) -> String:
 	return output
 
 
-# Normalise les noms de colonnes (ex: writing page -> Writing page)
+# Normalizes column names (ex: writing page -> Writing page)
 func normalize_header(header_name: String) -> String:
 	return header_name.strip_edges()[0].to_upper() + header_name.strip_edges().substr(1, -1).to_lower()
 
 
-# Lit une "ligne logique" complète d’un CSV (même si elle est sur plusieurs lignes à cause des guillemets)
+# Reads a complete "logical line" from a CSV (even if it spans multiple lines because of quotes)
 func read_csv_record(file: FileAccess) -> String:
 	var record: String = ""
 	var open_quotes: bool = false

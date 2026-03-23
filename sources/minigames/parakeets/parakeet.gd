@@ -1,4 +1,3 @@
-@tool
 class_name Parakeet
 extends Node2D
 
@@ -10,11 +9,15 @@ enum Colors {
 	Yellow,
 }
 
-const INSTANCE_SCENE: String = "res://sources/minigames/parakeets/parakeet.tscn"
 const ANIMATIONS: Array[SpriteFrames] = [
 	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/green_parakeet_animations.tres"),
 	preload("res://sources/minigames/parakeets/yellow_parakeet_animation.tres")
+]
+const FEATHERS_ANIMATIONS: Array[SpriteFrames] = [
+	preload("res://sources/minigames/parakeets/red_parakeet_feathers_animations.tres"),
+	preload("res://sources/minigames/parakeets/green_parakeet_feathers_animations.tres"),
+	preload("res://sources/minigames/parakeets/yellow_parakeet_feathers_animations.tres")
 ]
 
 @export var sad_duration: float = 2.0
@@ -23,6 +26,7 @@ const ANIMATIONS: Array[SpriteFrames] = [
 		color = value
 		if animated_sprite:
 			animated_sprite.sprite_frames = ANIMATIONS[color]
+			animated_sprite_2d_feathers.sprite_frames = FEATHERS_ANIMATIONS[color]
 @export var uppercase: bool = true:
 	set(value):
 		uppercase = value
@@ -34,20 +38,23 @@ var stimulus: Dictionary = {}:
 		stimulus = value
 		var grapheme: String = value.Grapheme as String
 		label.text = grapheme.to_upper() if uppercase else grapheme
+var original_label_settings: LabelSettings
+var original_text_box_color: Color
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var label: Label = $Label
-@onready var right_FX: RightFX = $RightFX
-@onready var wrong_FX: WrongFX = $WrongFX
-
-
-static func instantiate() -> Parakeet:
-	return (load(INSTANCE_SCENE) as PackedScene).instantiate()
+@onready var animated_sprite_2d_feathers: AnimatedSprite2D = $AnimatedSprite2D_Feathers
+@onready var label: Label = $TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel/Label
+@onready var right_fx: RightFX = $RightFX
+@onready var right_stars: RightStarsFX = $Right_Stars
+@onready var wrong_fx: WrongFX = $WrongFX
+@onready var text_box_sprite_2d: Sprite2D = %TextBox_Sprite2D
 
 
 func _ready() -> void:
 	color = color
 	animated_sprite.play("idle_front")
+	original_label_settings = label.label_settings
+	original_text_box_color = text_box_sprite_2d.self_modulate
 
 
 func _on_button_pressed() -> void:
@@ -63,8 +70,10 @@ func turn_to_back() -> void:
 
 func turn_to_front() -> void:
 	animated_sprite.play_backwards("turn_to_back")
-	await animated_sprite.animation_finished
+	var animation_time: float = Utils.get_animation_duration(animated_sprite, "turn_to_back")
+	await get_tree().create_timer(animation_time/2).timeout
 	label.show()
+	await animated_sprite.animation_finished
 	animated_sprite.play("idle_front")
 
 
@@ -78,7 +87,6 @@ func _on_animated_sprite_2d_animation_looped() -> void:
 
 func fly_to(target: Vector2, duration: float) -> void:
 	animated_sprite.play("fly")
-	label.position.y = -195
 	var tween: Tween = create_tween()
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
@@ -92,19 +100,51 @@ func happy() -> void:
 
 func idle() -> void:
 	animated_sprite.play("idle_front")
-	label.position.y = -166
 
 
 func sad() -> void:
 	animated_sprite.play("sad")
+	animated_sprite_2d_feathers.modulate.a = 1.0
+	animated_sprite_2d_feathers.show()
+	animated_sprite_2d_feathers.play("feathers_fall")
 	await get_tree().create_timer(sad_duration).timeout
+	label.label_settings = original_label_settings
+	text_box_sprite_2d.self_modulate = original_text_box_color
+	call_deferred("_hide_feathers")
+
+
+func _hide_feathers() -> void:
+	await get_tree().create_timer(1).timeout
+	var tween: Tween = create_tween()
+	tween.tween_property(animated_sprite_2d_feathers, "modulate:a", 0.0, 0.5)
+	tween.finished.connect(func() -> void:
+		animated_sprite_2d_feathers.hide()
+	)
 
 
 func right() -> void:
-	right_FX.play()
-	await right_FX.finished
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_WIN
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
+	right_stars.play()
+	right_fx.play()
+	await right_fx.finished
 
 
 func wrong() -> void:
-	wrong_FX.play()
-	await wrong_FX.finished
+	label.label_settings = label.label_settings.duplicate()
+	label.label_settings.font_color = Minigame.LABEL_COLOR_LOSE
+	text_box_sprite_2d.self_modulate = Minigame.LABEL_COLOR_NEUTRAL
+	wrong_fx.play()
+	await wrong_fx.finished
+
+
+func idle_boss() -> void:
+	text_box_sprite_2d.hide()
+	color = Colors.Green
+	animated_sprite.play("idle_front")
+	animated_sprite.stop()
+
+
+func victory_boss() -> void:
+	animated_sprite.play("happy")

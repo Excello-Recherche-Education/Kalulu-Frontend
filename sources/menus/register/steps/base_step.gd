@@ -24,7 +24,7 @@ func on_enter() -> void:
 	if infos:
 		info_label.text = infos
 	else:
-		info_label.visible = false
+		info_label.hide()
 
 
 func _on_back() -> bool:

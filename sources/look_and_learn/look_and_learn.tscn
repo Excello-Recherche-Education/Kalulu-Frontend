@@ -1,12 +1,12 @@
-[gd_scene load_steps=33 format=3 uid="uid://mnvxfhi70bx5"]
+[gd_scene format=3 uid="uid://mnvxfhi70bx5"]
 
 [ext_resource type="Script" uid="uid://ylee262nfnsi" path="res://sources/look_and_learn/look_and_learn.gd" id="1_12st1"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_2efp5"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_up.png" id="3_7ejv4"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="3_7ejv4"]
 [ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="4_1m6x7"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_down.png" id="4_adi05"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="4_adi05"]
 [ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_bxvlx"]
-[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_to_menu_disabled.png" id="5_j5vhb"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_j5vhb"]
 [ext_resource type="Texture2D" uid="uid://c1i3kqeg7ifoo" path="res://assets/look_and_learn/video_foreground.png" id="6_8san1"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="6_e2avu"]
 [ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_ohnh6"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://cboa82q0bjlvc" path="res://sources/look_and_learn/tracing_manager.tscn" id="12_fkd0b"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="13_rp6w3"]
 [ext_resource type="Texture2D" uid="uid://b1227jts6lw67" path="res://assets/theme/play.svg" id="17_dhida"]
+[ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="18_back_button"]
 
 [sub_resource type="Animation" id="Animation_6mi26"]
 length = 0.001
@@ -781,7 +782,7 @@ gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("CurveTexture_f6ycu")
 color_ramp = SubResource("GradientTexture1D_gugw3")
 
-[node name="LookAndLearn" type="Control"]
+[node name="LookAndLearn" type="Control" unique_id=127547693]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -790,30 +791,28 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_12st1")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_s3pa5")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1303696124]
+libraries/ = SubResource("AnimationLibrary_s3pa5")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1584223392]
 bus = &"Voice"
 
-[node name="NightSky" parent="." instance=ExtResource("2_2efp5")]
+[node name="NightSky" parent="." unique_id=1917147223 instance=ExtResource("2_2efp5")]
 layout_mode = 1
 
-[node name="Palm" parent="NightSky" instance=ExtResource("4_1m6x7")]
+[node name="Palm" parent="NightSky" unique_id=1803667113 instance=ExtResource("4_1m6x7")]
 position = Vector2(1382, 1710)
 scale = Vector2(3, 3)
 
-[node name="LargeFlower" parent="NightSky" instance=ExtResource("5_bxvlx")]
+[node name="LargeFlower" parent="NightSky" unique_id=2116207460 instance=ExtResource("5_bxvlx")]
 position = Vector2(188, 1800)
 scale = Vector2(1.5, 1.5)
 
-[node name="Bush" parent="NightSky" instance=ExtResource("6_ohnh6")]
+[node name="Bush" parent="NightSky" unique_id=1254735532 instance=ExtResource("6_ohnh6")]
 position = Vector2(1678, 1942)
 scale = Vector2(2.5, 2.5)
 
-[node name="ColorRect" type="ColorRect" parent="NightSky"]
+[node name="ColorRect" type="ColorRect" parent="NightSky" unique_id=792734471]
 modulate = Color(0.478431, 0.419608, 0.666667, 0.611765)
 layout_mode = 1
 anchors_preset = 15
@@ -822,7 +821,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=1282760663]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -835,7 +834,7 @@ grow_horizontal = 2
 theme = ExtResource("6_e2avu")
 theme_type_variation = &"PanelKalulu"
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=653977276]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 35
@@ -843,7 +842,7 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 5
 
-[node name="GraphemeLabel" type="Label" parent="Panel/MarginContainer"]
+[node name="GraphemeLabel" type="Label" parent="Panel/MarginContainer" unique_id=1486859634]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -853,33 +852,20 @@ text = "o"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LeftContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="LeftContainer"]
-custom_minimum_size = Vector2(450, 0)
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="GardenButton" type="TextureButton" parent="LeftContainer/MarginContainer"]
-unique_name_in_owner = true
+[node name="BackButton" parent="." unique_id=970416480 instance=ExtResource("18_back_button")]
 custom_minimum_size = Vector2(0, 386)
-layout_mode = 2
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 350.0
+offset_bottom = 436.0
 size_flags_vertical = 0
 texture_normal = ExtResource("3_7ejv4")
 texture_pressed = ExtResource("4_adi05")
 texture_disabled = ExtResource("5_j5vhb")
-stretch_mode = 5
+ring_padding = 16.0
 
-[node name="Frame" type="TextureRect" parent="."]
+[node name="Frame" type="TextureRect" parent="." unique_id=1803400322]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -897,12 +883,12 @@ pivot_offset = Vector2(915.5, 0)
 mouse_filter = 2
 texture = ExtResource("6_8san1")
 
-[node name="Mask" type="Sprite2D" parent="Frame"]
+[node name="Mask" type="Sprite2D" parent="Frame" unique_id=1154549895]
 clip_children = 1
 texture = ExtResource("7_8pmth")
 offset = Vector2(915.5, 580)
 
-[node name="ColorRect" type="ColorRect" parent="Frame/Mask"]
+[node name="ColorRect" type="ColorRect" parent="Frame/Mask" unique_id=1615855044]
 custom_minimum_size = Vector2(1280, 962)
 offset_left = 276.0
 offset_top = 99.0
@@ -911,7 +897,7 @@ offset_bottom = 1061.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Image" type="TextureRect" parent="Frame/Mask/ColorRect"]
+[node name="Image" type="TextureRect" parent="Frame/Mask/ColorRect" unique_id=1810934716]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -921,26 +907,26 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TracingManager" parent="Frame/Mask/ColorRect" instance=ExtResource("12_fkd0b")]
+[node name="TracingManager" parent="Frame/Mask/ColorRect" unique_id=1464386034 instance=ExtResource("12_fkd0b")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 
-[node name="RightBush" type="Sprite2D" parent="Frame/Mask"]
+[node name="RightBush" type="Sprite2D" parent="Frame/Mask" unique_id=1584577943]
 position = Vector2(1560.5, 1065)
 rotation = -45.0
 scale = Vector2(2.8, 2.8)
 texture = ExtResource("8_xb5ul")
 offset = Vector2(0, -286)
 
-[node name="LeftBush" type="Sprite2D" parent="Frame/Mask"]
+[node name="LeftBush" type="Sprite2D" parent="Frame/Mask" unique_id=1684947073]
 position = Vector2(271.5, 1065)
 rotation = 45.0
 scale = Vector2(2.8, 2.8)
 texture = ExtResource("8_xb5ul")
 offset = Vector2(0, -286)
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="Frame/Mask"]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="Frame/Mask" unique_id=1756916571]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1280, 962)
 offset_left = 276.0
@@ -952,7 +938,7 @@ expand = true
 buffering_msec = 100
 bus = &"Voice"
 
-[node name="GraphemeButton" type="TextureButton" parent="."]
+[node name="GraphemeButton" type="TextureButton" parent="." unique_id=1724843614]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
@@ -973,7 +959,7 @@ texture_hover = ExtResource("11_trjsl")
 texture_disabled = ExtResource("12_1yr4y")
 stretch_mode = 0
 
-[node name="TextureRect" type="TextureRect" parent="GraphemeButton"]
+[node name="TextureRect" type="TextureRect" parent="GraphemeButton" unique_id=620759668]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -988,7 +974,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("17_dhida")
 
-[node name="GraphemeParticles" type="GPUParticles2D" parent="."]
+[node name="GraphemeParticles" type="GPUParticles2D" parent="." unique_id=1895742574]
 position = Vector2(1280, 1558)
 emitting = false
 amount = 16
@@ -997,7 +983,7 @@ lifetime = 0.5
 process_material = SubResource("ParticleProcessMaterial_vgnm5")
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
-[connection signal="pressed" from="LeftContainer/MarginContainer/GardenButton" to="." method="_on_garden_button_pressed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="finished" from="Frame/Mask/ColorRect/TracingManager" to="." method="_on_tracing_manager_finished"]
 [connection signal="finished" from="Frame/Mask/VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]
 [connection signal="pressed" from="GraphemeButton" to="." method="_on_grapheme_button_pressed"]

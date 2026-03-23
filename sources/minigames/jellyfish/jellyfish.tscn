@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cpkwyypyikpfc"]
+[gd_scene format=3 uid="uid://cpkwyypyikpfc"]
 
 [ext_resource type="Script" uid="uid://bk5oyj8r6aw2h" path="res://sources/utils/sprite_control.gd" id="1_1b85n"]
 [ext_resource type="Script" uid="uid://b1lfi4hen3e7" path="res://sources/minigames/jellyfish/jellyfish.gd" id="1_06uwq"]
@@ -7,30 +7,24 @@
 [ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="3_vllju"]
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="4_26xiq"]
 [ext_resource type="Texture2D" uid="uid://c34sgkbvr3h8q" path="res://assets/minigames/minigame_ui/graphic/primary_text_box.png" id="6_ah5ir"]
-[ext_resource type="SpriteFrames" uid="uid://033w5t1wyg3w" path="res://sources/minigames/jellyfish/blue_jellyfish_animations_arms.tres" id="6_i86t4"]
-[ext_resource type="SpriteFrames" uid="uid://cyllu3lpjcxej" path="res://sources/minigames/jellyfish/blue_jellyfish_animations_body.tres" id="6_p6hdi"]
+[ext_resource type="SpriteFrames" uid="uid://dijfxjt76waan" path="res://sources/minigames/jellyfish/pink_jellyfish_animations_body.tres" id="6_jfr88"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_w1tlu"]
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="8_p6hdi"]
-[ext_resource type="Texture2D" uid="uid://bbtr0cyiapi3g" path="res://assets/minigames/minigame_ui/graphic/primary_text_box_outline.png" id="10_jfr88"]
+[ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="9_ah5ir"]
+[ext_resource type="SpriteFrames" uid="uid://cu631qur8h6sj" path="res://sources/minigames/jellyfish/pink_jellyfish_animations_arms.tres" id="11_4yskd"]
+[ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="13_jfr88"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_qqnw2"]
-font = ExtResource("8_p6hdi")
-font_size = 120
-font_color = Color(0.2, 0.2, 0.2, 1)
-outline_color = Color(0.2, 0.2, 0.2, 1)
-
-[node name="Jellyfish" type="Control"]
+[node name="Jellyfish" type="Control" unique_id=2036427610]
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
-scale = Vector2(1.07045, 1.07045)
+scale = Vector2(1.2724898, 1.2724898)
 script = ExtResource("1_06uwq")
+color = 1
 
-[node name="BackFX" type="Control" parent="."]
+[node name="BackFX" type="Control" parent="." unique_id=880451279]
 custom_minimum_size = Vector2(0, 220)
-layout_mode = 2
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 0.55
@@ -38,7 +32,7 @@ size_flags_vertical = 0
 mouse_filter = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="RightFX" parent="BackFX" instance=ExtResource("2_edt4e")]
+[node name="RightFX" parent="BackFX" unique_id=230299175 instance=ExtResource("2_edt4e")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -49,7 +43,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HighlightFX" parent="BackFX" instance=ExtResource("3_5uhvd")]
+[node name="HighlightFX" parent="BackFX" unique_id=282989015 instance=ExtResource("3_5uhvd")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -62,7 +56,20 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="SpriteControl" type="Control" parent="." node_paths=PackedStringArray("sprites")]
+[node name="WrongFX" parent="BackFX" unique_id=319720193 instance=ExtResource("6_w1tlu")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SpriteControl" type="Control" parent="." unique_id=1071148289 node_paths=PackedStringArray("sprites")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -73,22 +80,22 @@ mouse_filter = 2
 script = ExtResource("1_1b85n")
 sprites = [NodePath("AnimatedSprite2D_Body"), NodePath("AnimatedSprite2D_Arms")]
 
-[node name="AnimatedSprite2D_Body" type="AnimatedSprite2D" parent="SpriteControl"]
+[node name="AnimatedSprite2D_Body" type="AnimatedSprite2D" parent="SpriteControl" unique_id=220917894]
 unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
-sprite_frames = ExtResource("6_p6hdi")
+sprite_frames = ExtResource("6_jfr88")
 animation = &"idle"
-frame_progress = 0.17636
+frame_progress = 0.7250104
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
-[node name="TextBox_Sprite2D" type="Sprite2D" parent="SpriteControl"]
+[node name="TextBox_Sprite2D" type="Sprite2D" parent="SpriteControl" unique_id=1927687114]
 unique_name_in_owner = true
-position = Vector2(200.421, 242.545)
+position = Vector2(200, 242)
 scale = Vector2(0.471, 0.471)
 texture = ExtResource("6_ah5ir")
 
-[node name="PercentMarginContainer" type="Container" parent="SpriteControl/TextBox_Sprite2D"]
+[node name="PercentMarginContainer" type="Container" parent="SpriteControl/TextBox_Sprite2D" unique_id=1086145076]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -104,35 +111,29 @@ margin_top_ratio = 0.1
 margin_right_ratio = 0.2
 margin_bottom_ratio = 0.2
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer" unique_id=884235728]
 layout_mode = 2
 
-[node name="AutoSizeLabel" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" instance=ExtResource("4_26xiq")]
+[node name="AutoSizeLabel" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer" unique_id=946321664 instance=ExtResource("4_26xiq")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0"]
+[node name="Label" parent="SpriteControl/TextBox_Sprite2D/PercentMarginContainer/AspectRatioContainer/AutoSizeLabel" index="0" unique_id=1172353947]
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = ""
-label_settings = SubResource("LabelSettings_qqnw2")
+label_settings = ExtResource("9_ah5ir")
 
-[node name="TextBox_Outline_Sprite2D" type="Sprite2D" parent="SpriteControl/TextBox_Sprite2D"]
-unique_name_in_owner = true
-visible = false
-texture = ExtResource("10_jfr88")
-
-[node name="AnimatedSprite2D_Arms" type="AnimatedSprite2D" parent="SpriteControl"]
+[node name="AnimatedSprite2D_Arms" type="AnimatedSprite2D" parent="SpriteControl" unique_id=1825015543]
 unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
-sprite_frames = ExtResource("6_i86t4")
+sprite_frames = ExtResource("11_4yskd")
 animation = &"idle"
-frame_progress = 0.17636
+frame_progress = 0.7250104
 centered = false
 offset = Vector2(-0.000205994, 0.00019455)
 
-[node name="FrontFX" type="Control" parent="."]
+[node name="FrontFX" type="Control" parent="." unique_id=723899549]
 custom_minimum_size = Vector2(0, 220)
-layout_mode = 2
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 0.55
@@ -140,18 +141,9 @@ size_flags_vertical = 0
 mouse_filter = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="WrongFX" parent="FrontFX" instance=ExtResource("6_w1tlu")]
+[node name="Right_Stars" parent="FrontFX" unique_id=2145521264 instance=ExtResource("13_jfr88")]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+position = Vector2(200, 242)
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 

@@ -16,13 +16,21 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 	if err != OK:
 		Log.error("FolderUnzipper: Error %s while opening %s" % [error_string(err), zip_path])
 		close()
+		file_count.emit(0)
+		finished.emit()
 		return ""
 	
-	var extract_folder: String = extract_path.path_join(zip_path.get_file().get_basename()) if extract_in_subfolder else extract_path
+	var extract_folder: String = extract_path
+	if extract_in_subfolder:
+		extract_folder = extract_path.path_join(zip_path.get_file().get_basename())
 	
 	var all_files: PackedStringArray = get_files()
-	file_count.emit(all_files.size())
-	Log.trace("FolderUnzipper: %d files found" % all_files.size())
+	var total_files: int = 0
+	for sub_path: String in all_files:
+		if not _is_directory_path(sub_path):
+			total_files += 1
+	file_count.emit(total_files)
+	Log.trace("FolderUnzipper: %d files found" % total_files)
 	
 	var copied_file: int = 0
 	var first_folder: String = ""
@@ -59,8 +67,11 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 			continue
 		
 		var data: PackedByteArray = read_file(sub_path)
-		if typeof(data) != TYPE_PACKED_BYTE_ARRAY or data.is_empty():
-			Log.warn("FolderUnzipper: Empty or invalid data for %s" % sub_path)
+		if data.is_empty():
+			# Zero-byte files can be valid files, so we warn but do not skip them.
+			Log.warn("FolderUnzipper: Empty data for %s" % sub_path)
+		if typeof(data) != TYPE_PACKED_BYTE_ARRAY:
+			Log.warn("FolderUnzipper: Invalid data for %s" % sub_path)
 			file.close()
 			continue
 		

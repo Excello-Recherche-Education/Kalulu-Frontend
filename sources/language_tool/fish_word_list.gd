@@ -60,7 +60,7 @@ func _on_list_title_back_pressed() -> void:
 
 func _on_list_title_new_search(new_text: String) -> void:
 	for element: FishWordListElement in elements_container.get_children():
-		element.visible = element.word.begins_with(new_text)
+		element.set_visible(element.word.begins_with(new_text))
 
 
 func _on_list_title_save_pressed() -> void:

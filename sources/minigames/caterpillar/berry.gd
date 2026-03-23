@@ -22,6 +22,7 @@ var is_distractor: bool = false
 @onready var path_follow: PathFollow2D = $Path2D/PathFollow2D
 @onready var highlight_fx: HighlightFX = $HighlightFX
 @onready var wrong_fx: WrongFX = $WrongFX
+@onready var sprite_2d: Sprite2D = $Path2D/PathFollow2D/Sprite2D
 
 
 func highlight() -> void:

@@ -1,4 +1,3 @@
-@tool
 extends Minigame
 
 const LABEL_SCENE: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
@@ -8,7 +7,8 @@ var max_word_progression: int = 0
 var labels: Array[PenguinLabel] = []
 
 @onready var penguin: Penguin = $GameRoot/Penguin
-@onready var labels_container: HFlowContainer = $GameRoot/Control/LabelsContainer
+@onready var sentence_background: HFlowContainer = %SentenceBackground
+@onready var sentence_container: HFlowContainer = %Sentence
 
 
 # Find words with silent GPs
@@ -75,32 +75,34 @@ func _find_stimuli_and_distractions() -> void:
 # Launch the minigame
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#7fc8ff")])
 	if stimuli.is_empty():
 		Log.error("PenguinMinigame: Cannot start game because stimuli is empty")
 		_win()
 		return
 	_setup_word_progression()
+	sentence_background.show()
 
 
-# Setups the word progression for current progression
+# Sets up the word progression for the current progression
 func _setup_word_progression() -> void:
 	max_word_progression = 0
 	
-	for node: Node in labels_container.get_children():
+	for node: Node in sentence_container.get_children():
 		node.queue_free()
 	labels.clear()
 	
 	var stimulus: Dictionary = _get_current_stimulus()
 	
 	var first_gp: bool = true
-	var last_word_id: int
+	var last_word_id: int = -1
 	var word_container: HBoxContainer
 	
 	for gp: Dictionary in stimulus.GPs:
 		if gp.WordID != last_word_id:
 			last_word_id = gp.WordID
 			word_container = HBoxContainer.new()
-			labels_container.add_child(word_container)
+			sentence_container.add_child(word_container)
 		
 		var label: PenguinLabel = LABEL_SCENE.instantiate()
 		if first_gp:
@@ -108,15 +110,36 @@ func _setup_word_progression() -> void:
 			first_gp = false
 		label.gp = gp
 		word_container.add_child(label)
-		
 		label.pressed.connect(_on_snowball_thrown.bind(label))
-		
 		labels.append(label)
 		
 		if gp.Type == 0:
 			max_word_progression += 1
 	
+	setup_sentence_background()
 	current_word_progression = 0
+
+
+func setup_sentence_background() -> void:
+	await get_tree().process_frame
+	var number_of_lines: int = sentence_container.get_line_count()
+	var children: Array[Node] = sentence_background.get_children()
+	if children.is_empty():
+		Log.error("Ants Minigame: sentence_background has no child, but it should always at least keep 1")
+		return
+	if number_of_lines == children.size():
+		return
+	while number_of_lines < sentence_background.get_children().size():
+		var child: Node = sentence_background.get_child(-1) # Get last child
+		child.queue_free()
+		await get_tree().process_frame
+	if number_of_lines == children.size():
+		return
+	var template: Node = children[0]
+	while number_of_lines > sentence_background.get_children().size():
+		var new_child: Node = template.duplicate()
+		sentence_background.add_child(new_child)
+		await get_tree().process_frame
 
 
 func _highlight() -> void:
@@ -158,18 +181,20 @@ func _on_snowball_thrown(pos: Vector2, label: PenguinLabel) -> void:
 	
 	var correct_answer: bool = _is_silent(label.gp)
 	
+	_log_new_response({"gp": label.gp, "is_silent": correct_answer}, {"gp": label.gp, "is_silent": true})
+	
 	if label.gp.has("WordID"):
 		_update_remediation_word_score(label.gp.WordID as int, 1 if correct_answer else -1)
 	else:
 		Log.error("PenguinMinigame: Cannot update remediation score because label GP has no WordID")
 	
 	if correct_answer:
-		penguin.happy()
-		await label.right()
+		label.right()
+		await penguin.happy()
 		current_word_progression += 1
 	else:
-		penguin.sad()
-		await label.wrong()
+		label.wrong()
+		await penguin.sad()
 		current_lives -= 1
 	
 	# Re-enables all labels

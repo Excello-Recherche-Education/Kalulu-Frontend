@@ -6,12 +6,14 @@ uid="uid://ccpq4mu4yjj71"
 
 [deps]
 
-files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation", "res://kalulu_localization.pt_BR.translation"]
+files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation", "res://kalulu_localization.pt_BR.translation", "res://kalulu_localization.it.translation"]
 
 source_file="res://kalulu_localization.csv"
-dest_files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation", "res://kalulu_localization.pt_BR.translation"]
+dest_files=["res://kalulu_localization.fr.translation", "res://kalulu_localization.es.translation", "res://kalulu_localization.pt_BR.translation", "res://kalulu_localization.it.translation"]
 
 [params]
 
 compress=true
 delimiter=0
+unescape_keys=false
+unescape_translations=true

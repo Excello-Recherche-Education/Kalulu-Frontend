@@ -10,13 +10,12 @@ enum UpdateNeeded {
 }
 
 var synchronizing: bool = false
-var account_type_option_button: OptionButton
-var education_method_option_button: OptionButton
 var loading_popup: LoadingPopup
 
 
 func start_sync() -> void:
 	synchronizing = true
+	Log.info("UserDatabaseSynchronizer: Starting synchronization")
 	if loading_popup != null:
 		loading_popup.set_finished(false)
 		set_loading_bar_text("SYNCHRONIZATION_INITIALISATION")
@@ -26,6 +25,7 @@ func start_sync() -> void:
 
 func stop_sync(success: bool = false) -> void:
 	synchronizing = false
+	Log.info("UserDatabaseSynchronizer: Synchronization finished (success=%s)" % str(success))
 	if success:
 		await set_loading_bar_progression(100.0, 1.0)
 		set_loading_bar_text("SYNCHRONIZATION_SUCCESS")
@@ -38,6 +38,7 @@ func _check_internet() -> bool:
 	set_loading_bar_text("SYNCHRONIZATION_CHECK_INTERNET_ACCESS")
 	if await (ServerManager as ServerManagerClass).check_internet_access():
 		return true
+	Log.warn("UserDatabaseSynchronizer: Internet check failed during synchronization")
 	set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_INTERNET")
 	stop_sync()
 	return false
@@ -205,17 +206,17 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 				Log.warn("UserDatabaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)
 
 	for device: int in UserDataManager.teacher_settings.students.keys():
-			var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
-			for student_data: StudentData in students_in_device:
-				if not need_update_students.has(student_data.code):
-					if need_update_user == UpdateNeeded.FromServer:
-						need_update_students[student_data.code] = {}
-						need_update_students[student_data.code]["data"] = UpdateNeeded.DeleteLocal
-					elif need_update_user == UpdateNeeded.FromLocal:
-						need_update_students[student_data.code] = {}
-						need_update_students[student_data.code]["data"] = UpdateNeeded.FromLocal
-					else:
-						Log.warn("UserDatabaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
+		var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
+		for student_data: StudentData in students_in_device:
+			if not need_update_students.has(student_data.code):
+				if need_update_user == UpdateNeeded.FromServer:
+					need_update_students[student_data.code] = {}
+					need_update_students[student_data.code]["data"] = UpdateNeeded.DeleteLocal
+				elif need_update_user == UpdateNeeded.FromLocal:
+					need_update_students[student_data.code] = {}
+					need_update_students[student_data.code]["data"] = UpdateNeeded.FromLocal
+				else:
+					Log.warn("UserDatabaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
 	return need_update_students
 
 
@@ -275,6 +276,7 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 				progression_block =	{
 										"version": student_progression.version,
 										"unlocked": student_progression.unlocks,
+										"highest_boss_defeated": student_progression.highest_boss_defeated,
 										"updated_at": student_progression.last_modified
 									}
 			elif student_entry.progression == UpdateNeeded.FromServer:
@@ -410,7 +412,10 @@ func _apply_server_response(response_body: Dictionary) -> void:
 						(new_unlock_data[key_lesson_int]["games"] as Array).push_back(game_result as int)
 					new_unlock_data[key_lesson_int].merge({"last_duration": PackedInt32Array(received_unlock_data[key_lesson]["last_duration"] as Array)})
 					new_unlock_data[key_lesson_int].merge({"total_duration": PackedInt32Array(received_unlock_data[key_lesson]["total_duration"] as Array)})
-				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String)
+				var highest_boss_defeated: int = -1
+				if (response_student_data.progression as Dictionary).has("highest_boss_defeated"):
+					highest_boss_defeated = int(response_student_data.progression.highest_boss_defeated as float)
+				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String, highest_boss_defeated)
 			if response_student_data.has("remediation_gp") and (response_student_data.remediation_gp as Dictionary).has("score_remediation") and (response_student_data.remediation_gp as Dictionary).has("updated_at"):
 				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
 				if new_array == null:

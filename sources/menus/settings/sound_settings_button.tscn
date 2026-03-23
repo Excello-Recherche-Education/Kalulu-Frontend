@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bo7rpk4gebh24"]
+[gd_scene format=3 uid="uid://bo7rpk4gebh24"]
 
 [ext_resource type="Texture2D" uid="uid://dkvf2b6b1keqf" path="res://assets/minigames/minigame_ui/graphic/volume_up.png" id="1_r06v3"]
 [ext_resource type="Texture2D" uid="uid://blgoagm5j5jh2" path="res://assets/minigames/minigame_ui/graphic/volume_down.png" id="2_uxdkc"]
@@ -6,16 +6,16 @@
 [ext_resource type="Script" uid="uid://7g0kwgsat71n" path="res://sources/menus/settings/sound_settings_button.gd" id="4_crs35"]
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="4_y2ecw"]
 
-[node name="VolumeButton" type="TextureButton"]
+[node name="VolumeButton" type="TextureButton" unique_id=972815194]
 texture_normal = ExtResource("1_r06v3")
 texture_pressed = ExtResource("2_uxdkc")
 texture_disabled = ExtResource("3_u3u18")
 stretch_mode = 4
 script = ExtResource("4_crs35")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1542893775]
 
-[node name="VolumeMenu" type="Control" parent="CanvasLayer"]
+[node name="VolumeMenu" type="Control" parent="CanvasLayer" unique_id=547497432]
 unique_name_in_owner = true
 visible = false
 z_index = 10
@@ -26,129 +26,129 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VolumePanel" type="Panel" parent="CanvasLayer/VolumeMenu"]
+[node name="VolumePanel" type="Panel" parent="CanvasLayer/VolumeMenu" unique_id=1456334721]
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 481.0
 offset_bottom = 456.0
 theme = ExtResource("4_y2ecw")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel" unique_id=1382890390]
 layout_mode = 0
 offset_right = 481.0
 offset_bottom = 456.0
 
-[node name="MasterVolumeMarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer"]
+[node name="MasterVolumeMarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer" unique_id=967394392]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer" unique_id=1472128081]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer" unique_id=580810318]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer" unique_id=512755992]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Master"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer" unique_id=975938815]
 layout_mode = 2
 theme_override_constants/margin_left = 35
 
-[node name="MasterVolumeSlider" type="HSlider" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="MasterVolumeSlider" type="HSlider" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MasterVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1349613606]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="MusicVolumeMarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer"]
+[node name="MusicVolumeMarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer" unique_id=1202570525]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer" unique_id=1267620398]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer" unique_id=545581566]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer" unique_id=996172672]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Music"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer" unique_id=682652025]
 layout_mode = 2
 theme_override_constants/margin_left = 35
 
-[node name="MusicVolumeSlider" type="HSlider" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="MusicVolumeSlider" type="HSlider" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/MusicVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1374540173]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="VoiceVolumeMarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer"]
+[node name="VoiceVolumeMarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer" unique_id=1895337011]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer" unique_id=130414616]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer" unique_id=1550151710]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer" unique_id=835072359]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Voice"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer" unique_id=937698660]
 layout_mode = 2
 theme_override_constants/margin_left = 35
 
-[node name="VoiceVolumeSlider" type="HSlider" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="VoiceVolumeSlider" type="HSlider" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/VoiceVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=113311176]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="EffectsVolumeMarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer"]
+[node name="EffectsVolumeMarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer" unique_id=947392280]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer" unique_id=205811610]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer" unique_id=1284008398]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer" unique_id=513883456]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Effects
 "
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer" unique_id=1878223975]
 layout_mode = 2
 theme_override_constants/margin_left = 35
 
-[node name="EffectsVolumeSlider" type="HSlider" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="EffectsVolumeSlider" type="HSlider" parent="CanvasLayer/VolumeMenu/VolumePanel/VBoxContainer/EffectsVolumeMarginContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1252356700]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2

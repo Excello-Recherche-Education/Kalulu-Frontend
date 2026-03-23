@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cyoioissvrkj8"]
+
+[ext_resource type="Script" uid="uid://dafg6jl2hl0iy" path="res://sources/ui/back_button.gd" id="1_back_button"]
+[ext_resource type="Script" path="res://sources/ui/hold_progress_ring.gd" id="2_hold_ring"]
+
+[node name="BackButton" type="TextureButton"]
+unique_name_in_owner = true
+script = ExtResource("1_back_button")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BackButtonHoldRing" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+mouse_filter = 2
+script = ExtResource("2_hold_ring")

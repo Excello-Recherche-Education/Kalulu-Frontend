@@ -20,11 +20,11 @@ func _ready() -> void:
 	_set_base_color(base_color)
 	_set_completed_color(completed_color)
 	_set_text(text)
-	
+
 
 func show_placeholder(is_shown: bool) -> void:
-	placeholder.visible = is_shown
-	label.visible = !is_shown
+	placeholder.set_visible(is_shown)
+	label.set_visible(!is_shown)
 
 
 func right() -> void:

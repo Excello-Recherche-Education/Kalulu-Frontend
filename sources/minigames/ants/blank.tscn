@@ -1,21 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://b8h3l2dnqlw3m"]
+[gd_scene format=3 uid="uid://b8h3l2dnqlw3m"]
 
-[ext_resource type="Texture2D" uid="uid://b1v26b2ic2fo4" path="res://assets/minigames/ants/graphics/hole_02.png" id="1_tux6u"]
+[ext_resource type="Texture2D" uid="uid://wxh75x4c17x3" path="res://assets/minigames/ants/graphics/white_box.png" id="1_iy5b6"]
 [ext_resource type="Script" uid="uid://bydhpvtn71v5a" path="res://sources/minigames/ants/blank.gd" id="2_mvcny"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pwxu7"]
-size = Vector2(512, 256)
+size = Vector2(610, 230)
 
-[node name="Blank" type="TextureRect"]
+[node name="Blank" type="TextureRect" unique_id=764966448]
+modulate = Color(0.5254902, 0.4509804, 0.8980392, 1)
+offset_right = 594.0
+offset_bottom = 229.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("1_tux6u")
+texture = ExtResource("1_iy5b6")
 script = ExtResource("2_mvcny")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." unique_id=477572327]
 collision_mask = 0
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(256, 128)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2104163297]
+position = Vector2(305, 115)
 shape = SubResource("RectangleShape2D_pwxu7")

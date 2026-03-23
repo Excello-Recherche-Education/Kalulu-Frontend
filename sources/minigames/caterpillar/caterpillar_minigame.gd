@@ -1,4 +1,3 @@
-@tool
 extends WordsMinigame
 
 const BRANCH_SCENE: PackedScene = preload("res://sources/minigames/caterpillar/branch.tscn")
@@ -8,7 +7,7 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(2, 0.66, 450., 2.5),
 	DifficultySettings.new(3, 0.33, 500., 2.),
 	DifficultySettings.new(3, 0.25, 550., 1.),
-	DifficultySettings.new(4, 0.25, 600., 1.)
+	DifficultySettings.new(3, 0.25, 600., 1.)
 ]
 var branches: Array[Branch] = []
 var branches_spawn_indexes: Array[int] = []
@@ -45,7 +44,7 @@ func _setup_minigame() -> void:
 		if index == int(settings.branches/2.0):
 			_on_branch_pressed(branch)
 	
-	# Setups the timer
+	# Sets up the timer
 	berry_timer.wait_time = settings.spawn_rate
 	
 	# Connects the caterpillar signals
@@ -54,6 +53,7 @@ func _setup_minigame() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#a8f0d0"), Color("#7fc8ff")])
 	berry_timer.start()
 
 

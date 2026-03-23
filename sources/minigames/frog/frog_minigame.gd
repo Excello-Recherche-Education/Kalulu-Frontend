@@ -1,4 +1,3 @@
-@tool
 class_name FrogMinigame
 extends WordsMinigame
 
@@ -29,6 +28,8 @@ func _setup_word_progression() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#ffbf94")])
+	frog.last_valid_position = frog.global_position
 
 
 func _highlight() -> void:
@@ -40,94 +41,99 @@ func _highlight() -> void:
 
 func _reset_frog() -> void:
 	frog.global_position = frog_spawn_point.global_position
+	frog.last_valid_position = start.global_position
 	frog.jump_to(start.global_position)
 	await frog.jumped
-	
-	# Returns to the last completed track by jumping on each pad
-	for track: LilypadTrack in lilypad_tracks_container.get_children():
-		if track.is_cleared:
-			frog.jump_to(track.lilypads[0].global_position)
-			await frog.jumped
 
 #region Tracks management
 
 func _free_tracks() -> void:
-	for track: LilypadTrack in lilypad_tracks_container.get_children():
-		await track.reset()
-	
+	var tracks: Array = lilypad_tracks_container.get_children()
+	var tracks_count: int = tracks.size()
+	for index: int in tracks_count:
+		var track: LilypadTrack = tracks[index]
+		if index == tracks_count - 1:
+			await track.reset()
+		else:
+			track.reset()
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		track.queue_free()
-		# Waits for the track to be properly freed
 		await track.tree_exited
 
 
 func _create_tracks() -> void:
 	var current_word: Dictionary = _get_current_stimulus()
 	var current_distractors: Array = _get_current_distractors()
-	
 	for index: int in range((current_word.GPs as Array).size()):
 		var track: LilypadTrack = LILYPAD_TRACK_SCENE.instantiate()
 		lilypad_tracks_container.add_child(track)
-		
 		track.difficulty_settings = difficulty_settings[difficulty]
 		track.gp = current_word.GPs[index]
 		track.distractors = current_distractors[index]
 		track.distractors_queue_size = distractors_queue_size
-		
 		track.lilypad_in_center.connect(_on_track_lilypad_in_center.bind(track))
 
 
 func _start_tracks() -> void:
-	var is_first_track_enabled: bool = false
-	var index: int = 0
-	for track: LilypadTrack in lilypad_tracks_container.get_children():
+	var tracks: Array[Node] = lilypad_tracks_container.get_children()
+	var last_valid_index: int = -1
+	for index: int in tracks.size():
 		if index >= current_word_progression:
+			last_valid_index = index
+	if last_valid_index == -1:
+		return
+	for index: int in tracks.size():
+		if index < current_word_progression:
+			continue
+		var track: LilypadTrack = tracks[index]
+		if index == last_valid_index:
 			await track.reset()
-			if not is_first_track_enabled:
-				track.is_enabled = true
-				is_first_track_enabled = true
-			track.start()
-		index += 1
+		else:
+			track.reset()
+	var is_first_track_enabled: bool = false
+	for index: int in tracks.size():
+		if index < current_word_progression:
+			continue
+		if not is_first_track_enabled:
+			(tracks[index] as LilypadTrack).is_enabled = true
+			is_first_track_enabled = true
+	for index: int in tracks.size():
+		if index < current_word_progression:
+			continue
+		(tracks[index] as LilypadTrack).start()
 
 #endregion
 
 #region Connections
 
 func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
-	# Log the answer
 	_log_new_response_and_score(lilypad.stimulus)
-	
 	# Disable the tracks
 	track.stop()
-	
-	# Makes the frog jumps on the lilypad
 	frog.jump_to(lilypad.global_position)
 	await frog.jumped
-	
 	river.spawn_water_ring(lilypad.global_position)
-	
 	if lilypad.is_distractor:
 		await lilypad.wrong()
-		
-		lilypad.disappear()
-		frog.drown()
-		await frog.drowned
 		await audio_player.play_gp(lilypad.stimulus)
-		
+		lilypad.disappear()
+		await frog.defeat()
 		current_lives -= 1
-		
 		_start_tracks()
-		await _reset_frog()
+		await frog.appear()
 	else:
 		track.is_highlighting = false
 		track.is_cleared = true
 		track.is_enabled = false
+		frog.success()
+		await lilypad.right()
 		await audio_player.play_gp(lilypad.stimulus)
 		current_word_progression += 1
 
 
 func _on_current_word_progression_changed() -> void:
 	# Enables the next track
+	frog.play_frog_sound()
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		if not track.is_cleared:
 			track.is_enabled = true
@@ -135,29 +141,39 @@ func _on_current_word_progression_changed() -> void:
 
 
 func _on_current_progression_changed() -> void:
-	# Makes the frog jumps to the rock on the right
+	var is_final_word: bool = current_progression >= max_progression
 	frog.jump_to(end.global_position)
 	await frog.jumped
-	
-	# Play the animation on each pad
+	frog.win()
 	for track: LilypadTrack in lilypad_tracks_container.get_children():
 		track.right()
-	
-	# Replay the stimulus
 	await audio_player.play_word(_get_previous_stimulus().Word as String)
-	
-	# Makes the frog jumps out of screen
+	if is_final_word:
+		super()
+		return
+	await frog.flip_happy()
 	frog.jump_to(frog_despawn_point.global_position)
 	await frog.jumped
-	
-	# Free the tracks
 	await _free_tracks()
-	
-	# Resets the frog position
 	await _reset_frog()
-	
-	# Setups the next word
 	super()
+
+
+func set_current_progression(p_current_progression: int) -> void:
+	var previous_progression: int = current_progression
+	current_progression = p_current_progression
+	Log.debug("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
+
+	consecutive_errors = 0
+	is_highlighting = false
+
+	if minigame_ui:
+		minigame_ui.set_progression(p_current_progression)
+	if p_current_progression == max_progression and previous_progression != max_progression:
+		await _on_current_progression_changed()
+		await _win()
+	else:
+		await _on_current_progression_changed()
 
 #endregion
 

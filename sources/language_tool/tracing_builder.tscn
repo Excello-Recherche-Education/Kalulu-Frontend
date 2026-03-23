@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d2dsqx38l6yqc"]
+[gd_scene format=3 uid="uid://d2dsqx38l6yqc"]
 
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_kgjbj"]
 [ext_resource type="Script" uid="uid://yu1t33dhbka4" path="res://sources/language_tool/tracing_builder.gd" id="1_rm5fr"]
@@ -20,7 +20,7 @@ corner_radius_top_right = 25
 corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
 
-[node name="TracingBuilder" type="Control"]
+[node name="TracingBuilder" type="Control" unique_id=1181825584]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +31,7 @@ mouse_filter = 2
 script = ExtResource("1_rm5fr")
 gradient = SubResource("Gradient_1lmt0")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2033156989]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,107 +39,107 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=576134127]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer" unique_id=252631990]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer" unique_id=577874427]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
+[node name="Title" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" unique_id=1152849804]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 128
 text = "Tracing Builder"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" unique_id=512390594]
 layout_mode = 2
 
-[node name="Help" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer"]
+[node name="Help" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer" unique_id=1084007438]
 layout_mode = 2
 text = "- Left click to add and move points.
 - Right click on a point to delete it.
 "
 
-[node name="Help2" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer"]
+[node name="Help2" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer" unique_id=1425799183]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.560784, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 42
 text = "- Unsaved changes will be lost"
 
-[node name="SaveButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" instance=ExtResource("1_kgjbj")]
+[node name="SaveButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" unique_id=1142694426 instance=ExtResource("1_kgjbj")]
 layout_mode = 2
 
-[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" index="0"]
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_2sbjh")
 
-[node name="SaveOk" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton"]
+[node name="SaveOk" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/SaveButton" unique_id=584368091]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 texture = ExtResource("4_m23be")
 expand_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" unique_id=31868244]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer" unique_id=126683973]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/VBoxContainer3"]
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/VBoxContainer3" unique_id=1747083567]
 layout_mode = 2
 text = "Select letter:"
 
-[node name="LetterPicker" type="OptionButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/VBoxContainer3"]
+[node name="LetterPicker" type="OptionButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer/VBoxContainer3" unique_id=1764894635]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2"]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" unique_id=2125402477]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer2" unique_id=1901596772]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_v3vyn")
 
-[node name="CopyFrom" type="MenuButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer2/PanelContainer"]
+[node name="CopyFrom" type="MenuButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/MarginContainer2/PanelContainer" unique_id=1493996542]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Copy from"
 
-[node name="BackButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" instance=ExtResource("1_kgjbj")]
+[node name="BackButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2" unique_id=1103013698 instance=ExtResource("1_kgjbj")]
 layout_mode = 2
 
-[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton" index="0"]
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton" index="0" unique_id=1207987905]
 texture = ExtResource("4_83j0b")
 
-[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer" unique_id=1721722587]
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Lower" parent="VBoxContainer/TabContainer" instance=ExtResource("4_frjng")]
+[node name="Lower" parent="VBoxContainer/TabContainer" unique_id=842093729 instance=ExtResource("4_frjng")]
 unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Upper" parent="VBoxContainer/TabContainer" instance=ExtResource("4_frjng")]
+[node name="Upper" parent="VBoxContainer/TabContainer" unique_id=1758012417 instance=ExtResource("4_frjng")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

@@ -1,19 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://cp832jmwru06w"]
+[gd_scene format=3 uid="uid://cp832jmwru06w"]
 
 [ext_resource type="Script" uid="uid://c47yey6m0t3ir" path="res://sources/language_tool/prof_tool_menu.gd" id="1_ibtf2"]
 
 [sub_resource type="FontVariation" id="FontVariation_vmcjv"]
 
-[node name="ProfToolMenu" type="Control"]
+[node name="ProfToolMenu" type="Control" unique_id=1037481795]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -6.0
+offset_right = 12.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ibtf2")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=2551959]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +25,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1042637513]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,95 +33,95 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TabContainer" type="TabContainer" parent="CenterContainer"]
+[node name="TabContainer" type="TabContainer" parent="CenterContainer" unique_id=1581012583]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 current_tab = 0
 use_hidden_tabs_for_min_size = true
 
-[node name="Language" type="VBoxContainer" parent="CenterContainer/TabContainer"]
+[node name="Language" type="VBoxContainer" parent="CenterContainer/TabContainer" unique_id=412186574]
 layout_mode = 2
 theme_override_constants/separation = 50
 metadata/_tab_index = 0
 
-[node name="GPListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
+[node name="GPListButton" type="Button" parent="CenterContainer/TabContainer/Language" unique_id=1896155174]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP List"
 
-[node name="WordListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
+[node name="WordListButton" type="Button" parent="CenterContainer/TabContainer/Language" unique_id=1378602137]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Word List"
 
-[node name="SyllableListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
+[node name="SyllableListButton" type="Button" parent="CenterContainer/TabContainer/Language" unique_id=2129528522]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Syllable List"
 
-[node name="SentenceListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
+[node name="SentenceListButton" type="Button" parent="CenterContainer/TabContainer/Language" unique_id=983765545]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Sentence List"
 
-[node name="LessonListButton" type="Button" parent="CenterContainer/TabContainer/Language"]
+[node name="LessonListButton" type="Button" parent="CenterContainer/TabContainer/Language" unique_id=59942026]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Lesson List"
 
-[node name="LookAndLearnData" type="VBoxContainer" parent="CenterContainer/TabContainer"]
+[node name="LookAndLearnData" type="VBoxContainer" parent="CenterContainer/TabContainer" unique_id=1996734598]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 50
 metadata/_tab_index = 1
 
-[node name="TracingBuilderButton" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData"]
+[node name="TracingBuilderButton" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData" unique_id=382897123]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Tracing Builder
 "
 
-[node name="DataLoaderButton" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData"]
+[node name="DataLoaderButton" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData" unique_id=346366737]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP Image/Sound Loader"
 
-[node name="DataLoaderButton2" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData"]
+[node name="DataLoaderButton2" type="Button" parent="CenterContainer/TabContainer/LookAndLearnData" unique_id=1876207497]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP Video Loader
 "
 
-[node name="GameData" type="VBoxContainer" parent="CenterContainer/TabContainer"]
+[node name="GameData" type="VBoxContainer" parent="CenterContainer/TabContainer" unique_id=727670303]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 50
 metadata/_tab_index = 2
 
-[node name="GameSoundsButton" type="Button" parent="CenterContainer/TabContainer/GameData"]
+[node name="GameSoundsButton" type="Button" parent="CenterContainer/TabContainer/GameData" unique_id=1505903973]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "GP/syllable/word sounds
 "
 
-[node name="PseudowordsButton" type="Button" parent="CenterContainer/TabContainer/GameData"]
+[node name="PseudowordsButton" type="Button" parent="CenterContainer/TabContainer/GameData" unique_id=1007215314]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Pseudowords
 "
 
-[node name="ExercisesButton" type="Button" parent="CenterContainer/TabContainer/GameData"]
+[node name="ExercisesButton" type="Button" parent="CenterContainer/TabContainer/GameData" unique_id=549365738]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Lesson Exercises"
 
-[node name="SpeechesButton" type="Button" parent="CenterContainer/TabContainer/GameData"]
+[node name="SpeechesButton" type="Button" parent="CenterContainer/TabContainer/GameData" unique_id=367625584]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Kalulu Speeches
 "
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=500881106]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -130,7 +134,7 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 120
 text = "Kalulu Language Tool"
 
-[node name="ExportButton" type="Button" parent="."]
+[node name="ExportButton" type="Button" parent="." unique_id=453963793]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 1502.0
@@ -140,7 +144,7 @@ theme_override_font_sizes/font_size = 100
 text = "Export
 "
 
-[node name="CreateBookButton" type="Button" parent="."]
+[node name="CreateBookButton" type="Button" parent="." unique_id=1638670196]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 1304.0
@@ -150,7 +154,7 @@ theme_override_font_sizes/font_size = 100
 text = "Create Book
 "
 
-[node name="CheckIntegrityButton" type="Button" parent="."]
+[node name="CheckIntegrityButton" type="Button" parent="." unique_id=1824370913]
 layout_mode = 0
 offset_left = 1035.33
 offset_top = 1502.0
@@ -160,14 +164,14 @@ theme_override_font_sizes/font_size = 100
 text = "Check Integrity
 "
 
-[node name="CheckBoxLog" type="CheckBox" parent="CheckIntegrityButton"]
+[node name="CheckBoxLog" type="CheckBox" parent="CheckIntegrityButton" unique_id=1888994321]
 layout_mode = 0
 offset_left = -93.0
 offset_top = 39.0
 offset_right = -23.0
 offset_bottom = 109.0
 
-[node name="Label" type="Label" parent="CheckIntegrityButton/CheckBoxLog"]
+[node name="Label" type="Label" parent="CheckIntegrityButton/CheckBoxLog" unique_id=689182662]
 layout_mode = 0
 offset_left = -35.33
 offset_top = 66.0
@@ -176,7 +180,7 @@ offset_bottom = 121.0
 text = "Log all"
 horizontal_alignment = 1
 
-[node name="OpenFolderButton" type="Button" parent="."]
+[node name="OpenFolderButton" type="Button" parent="." unique_id=804331039]
 layout_mode = 0
 offset_left = 1922.0
 offset_top = 1545.0
@@ -185,7 +189,7 @@ offset_bottom = 1636.0
 theme_override_font_sizes/font_size = 42
 text = "Open language resource Folder"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=674870614]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 117.0
@@ -193,12 +197,12 @@ offset_right = 667.0
 offset_bottom = 547.0
 theme_override_constants/separation = 50
 
-[node name="ImportLanguageButton" type="Button" parent="VBoxContainer"]
+[node name="ImportLanguageButton" type="Button" parent="VBoxContainer" unique_id=2144416707]
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
 text = "Import language data"
 
-[node name="LanguageSelectButton" type="OptionButton" parent="VBoxContainer"]
+[node name="LanguageSelectButton" type="OptionButton" parent="VBoxContainer" unique_id=1503619054]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(2.08165e-12, 150)
 layout_mode = 2
@@ -208,12 +212,12 @@ item_count = 1
 popup/item_0/text = "New"
 popup/item_0/id = 0
 
-[node name="AddWordListButton" type="Button" parent="VBoxContainer"]
+[node name="AddWordListButton" type="Button" parent="VBoxContainer" unique_id=90454929]
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
 text = "Change word list"
 
-[node name="NewLanguageContainer" type="PanelContainer" parent="."]
+[node name="NewLanguageContainer" type="PanelContainer" parent="." unique_id=957166960]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(1000, 1000)
@@ -230,31 +234,31 @@ offset_bottom = 650.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NewLanguageContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="NewLanguageContainer" unique_id=1165609542]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="NewLanguageContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="NewLanguageContainer/VBoxContainer" unique_id=2114730140]
 layout_mode = 2
 theme_override_constants/margin_top = 100
 
-[node name="Label" type="Label" parent="NewLanguageContainer/VBoxContainer/MarginContainer"]
+[node name="Label" type="Label" parent="NewLanguageContainer/VBoxContainer/MarginContainer" unique_id=1800563501]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 100
 text = "Enter new language name"
 horizontal_alignment = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="NewLanguageContainer/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="NewLanguageContainer/VBoxContainer" unique_id=354586417]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LineEdit" type="LineEdit" parent="NewLanguageContainer/VBoxContainer/CenterContainer"]
+[node name="LineEdit" type="LineEdit" parent="NewLanguageContainer/VBoxContainer/CenterContainer" unique_id=275288544]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(800, 2.08165e-12)
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 
-[node name="ButtonContainer" type="MarginContainer" parent="NewLanguageContainer/VBoxContainer"]
+[node name="ButtonContainer" type="MarginContainer" parent="NewLanguageContainer/VBoxContainer" unique_id=485101047]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/margin_left = 50
@@ -262,13 +266,13 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="ValidateLanguage" type="Button" parent="NewLanguageContainer/VBoxContainer/ButtonContainer"]
+[node name="ValidateLanguage" type="Button" parent="NewLanguageContainer/VBoxContainer/ButtonContainer" unique_id=591614952]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 100
 text = "Validate"
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="FileDialog" type="FileDialog" parent="." unique_id=841807716]
 title = "Open a File"
 initial_position = 2
 size = Vector2i(1500, 1000)
@@ -278,13 +282,13 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 
-[node name="FileDialogExport" type="FileDialog" parent="."]
+[node name="FileDialogExport" type="FileDialog" parent="." unique_id=223904125]
 initial_position = 2
 size = Vector2i(1500, 1000)
 popup_window = true
 access = 2
 
-[node name="ErrorLabel" type="Label" parent="."]
+[node name="ErrorLabel" type="Label" parent="." unique_id=1041818691]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 12

@@ -23,6 +23,7 @@ const SOUND_EXTENSION: String = ".mp3"
 
 var language: String:
 	set(value):
+		Log.trace("Database: set language from %s to %s" % [language, value])
 		language = value
 		db_path = get_language_folder() + "/language.db"
 		words_path = get_language_folder() + "/words/"
@@ -46,11 +47,19 @@ func _exit_tree() -> void:
 
 func connect_to_db() -> void:
 	if is_open:
+		Log.trace("Database: Opening database while a connection is already opened. Closing the previous one.")
 		db.close_db()
+		is_open = false
 	if FileAccess.file_exists(db.path):
 		is_open = db.open_db()
+		if not is_open:
+			Log.error("Database: Database is not opened")
+			return
+		Log.info("Database: Database opened at %s" % ProjectSettings.globalize_path(db.path))
+		if db.get_error_message() != "" and db.get_error_message() != "not an error":
+			Log.warn("Database: Database just opened but already contains an error message: %s" % db.get_error_message())
 	else:
-		Log.warn("Database: DB file not found at %s" % db.path)
+		Log.warn("Database: Database file not found at %s" % db.path)
 
 
 func get_additional_word_list_path() -> String:
@@ -84,6 +93,7 @@ func load_additional_word_list() -> String:
 				data[title_line[index]] = line[index]
 			additional_word_list[line[ortho_index]] = data
 		file.close()
+		Log.info("Database: Loaded additional word list from %s (%d entries)" % [word_list_path, additional_word_list.size()])
 	else:
 		Log.warn("Database: Additional word list file not found: %s" % word_list_path)
 	return ""
@@ -176,12 +186,24 @@ func get_words_containing_grapheme(grapheme: String) -> Array[Dictionary]:
 
 
 func get_word_id_from_text(text: String) -> int:
-	text = text.replace(".", "").replace(",", "") # Remove points and comas
-	db.query("SELECT ID FROM Words WHERE Word = '%s' COLLATE NOCASE;" % text)
+	var clean_text: String = text.replace(".", "").replace(",", "")
+	db.query_with_bindings(
+		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE;",
+		[clean_text]
+	)
 	if db.query_result.size() > 0:
 		if db.query_result[0].has("ID"):
 			return db.query_result[0].ID
-	Log.trace("Database: Word " + text + " ID not found")
+	# If not found, trying again with even cleaner text
+	clean_text = clean_text.replace("'", "")
+	db.query_with_bindings(
+		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE;",
+		[clean_text]
+	)
+	if db.query_result.size() > 0:
+		if db.query_result[0].has("ID"):
+			return db.query_result[0].ID
+	Log.trace("Database: Word " + clean_text + " ID not found")
 	return -1
 
 
@@ -464,6 +486,22 @@ func get_words_in_sentence(sentence_id: int) -> Array[Dictionary]:
 	return db.query_result
 
 
+func get_words_in_sentence_for_integrity_check(sentence_id: int) -> Array[Dictionary]:
+	db.query_with_bindings(
+		"SELECT
+			Words.ID AS ID,
+			Words.Word AS Word,
+			WordsInSentences.Position AS WordPosition,
+			WordsInSentences.SentenceID AS SentenceID
+		FROM WordsInSentences
+		INNER JOIN Words ON Words.ID = WordsInSentences.WordID
+		WHERE WordsInSentences.SentenceID = ?
+		ORDER BY WordsInSentences.Position ASC",
+		[sentence_id]
+	)
+	return db.query_result
+
+
 func get_lessons_count() -> int:
 	db.query("SELECT MAX(Lessons.LessonNb) as i FROM Lessons")
 	if db.query_result.is_empty() or not db.query_result[0].i:
@@ -606,7 +644,7 @@ func load_external_sound(path: String) -> AudioStreamMP3:
 			path = UnicodeNormalizer.to_nfd_extended(path)
 			Log.trace("Database: Load External Sound: File not found, retrying with Unicode NFD extended: %s" % path)
 			if not FileAccess.file_exists(path):
-				Log.error("Database: Load External Sound: File not found after normalization attempts")
+				Log.error("Database: Load External Sound: File not found after normalization attempts: %s" % path)
 				return null
 	
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)

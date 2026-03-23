@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://buhnx0oblueuq"]
+[gd_scene format=3 uid="uid://buhnx0oblueuq"]
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_ksrhk"]
-[ext_resource type="Script" uid="uid://b23qfes63s2no" path="res://addons/godot-form-validator/control_validator.gd" id="2_03dua"]
+[ext_resource type="Script" uid="uid://dg4qit8mffvjh" path="res://addons/godot-form-validator/control_validator.gd" id="2_03dua"]
+[ext_resource type="Script" uid="uid://ugsjyxqh1s5h" path="res://sources/menus/register/steps/teacher/method_step.gd" id="2_onyn6"]
 [ext_resource type="Script" uid="uid://dv82313fptjgb" path="res://sources/ui/tr_item_list.gd" id="2_qrbn1"]
-[ext_resource type="Script" uid="uid://b0dbsne0vdlsi" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_qewnl"]
+[ext_resource type="Script" uid="uid://dw5aercmfe4" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_qewnl"]
 [ext_resource type="Script" uid="uid://7uwoocpe7ieu" path="res://sources/utils/binder/control_binder.gd" id="4_1k1yt"]
 [ext_resource type="Script" uid="uid://83q48kwp3p6p" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_rimto"]
 [ext_resource type="Script" uid="uid://dg17cfvs2w257" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="4_wmpac"]
@@ -18,14 +19,18 @@ script = ExtResource("4_rimto")
 validation_method = 1
 rules = Array[ExtResource("4_wmpac")]([SubResource("Resource_kw8sn")])
 
-[node name="MethodStep" instance=ExtResource("1_ksrhk")]
+[node name="MethodStep" unique_id=304348596 instance=ExtResource("1_ksrhk")]
+script = ExtResource("2_onyn6")
 question = "EDUCATION_METHOD_PROMPT"
 infos = "EDUCATION_METHOD_INFOS"
 
-[node name="MethodContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" index="0"]
+[node name="InfoLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="1" unique_id=402601850]
+autowrap_mode = 2
+
+[node name="MethodContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" parent_id_path=PackedInt32Array(1375940867) index="0" unique_id=1698495971]
 layout_mode = 2
 
-[node name="MethodSelectLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer" index="0"]
+[node name="MethodSelectLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer" index="0" unique_id=772210247]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -33,24 +38,26 @@ theme_override_font_sizes/font_size = 50
 text = "EDUCATION_METHOD"
 autowrap_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer" index="1" unique_id=903366322]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MethodSelect" type="ItemList" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer" index="0"]
+[node name="MethodSelect" type="ItemList" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer" index="0" unique_id=1258490103]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
+auto_width = true
 auto_height = true
 item_count = 2
 item_0/text = "METHOD_APP_ONLY"
 item_1/text = "METHOD_COMPLETE"
 script = ExtResource("2_qrbn1")
 
-[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="2"]
+[node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="2" unique_id=1479067849]
 script = ExtResource("2_03dua")
 validator = SubResource("Resource_ar6ux")
 
-[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="3"]
+[node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer/MethodSelect" index="3" unique_id=1500721459]
 anchors_preset = 0
 offset_top = 236.0
 offset_right = 411.0
@@ -58,7 +65,7 @@ offset_bottom = 236.0
 script = ExtResource("4_1k1yt")
 property_name = "education_method"
 
-[node name="MethodSelectError" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer" index="1"]
+[node name="MethodSelectError" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/MethodContainer/VBoxContainer" index="1" unique_id=965980781]
 visible = false
 layout_mode = 2
 text = "Test"

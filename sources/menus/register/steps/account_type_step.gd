@@ -6,8 +6,9 @@ extends Step
 
 func _ready() -> void:
 	type.clear()
-	type.add_item(tr("TEACHER"))
-	type.add_item(tr("PARENT"))
+	type.add_item("TEACHER")
+	type.add_item("PARENT")
+	Log.trace("Register/AccountTypeStep: options initialized")
 
 
 func _on_next() -> bool:
@@ -15,6 +16,8 @@ func _on_next() -> bool:
 	if register_data:
 		if register_data.account_type == TeacherSettings.AccountType.Parent:
 			register_data.education_method = TeacherSettings.EducationMethod.AppOnly
+		Log.info("Register/AccountTypeStep: selected account type = %s" % TeacherSettings.AccountType.keys()[register_data.account_type])
 	else:
+		Log.warn("Register/AccountTypeStep: cannot continue because TeacherSettings data is missing")
 		return false
 	return true

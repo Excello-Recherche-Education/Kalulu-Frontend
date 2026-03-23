@@ -1,16 +1,16 @@
-@tool
 extends Minigame
 
 const BLANK_SCENE: PackedScene = preload("res://sources/minigames/ants/blank.tscn")
 const ANT_SCENE: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
 const WORD_SCENE: PackedScene = preload("res://sources/minigames/ants/word.tscn")
-const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_label_settings.tres")
+const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_label_settings_ants.tres")
 
 var current_sentence: Dictionary = {}
 var answer_input_done: Array[bool] = []
-var answers: Dictionary[String, String] # Expected, current
+var answers: Dictionary[String, String] = {} # Expected, current
 
 @onready var sentence_container: HFlowContainer = %Sentence
+@onready var sentence_background: HFlowContainer = %SentenceBackground
 @onready var ants_spawn: Node2D = %AntsSpawn
 @onready var ants_start: Node2D = %AntsStart
 @onready var ants_end: Node2D = %AntsEnd
@@ -83,7 +83,9 @@ func _find_stimuli_and_distractions() -> void:
 
 func _start() -> void:
 	super()
+	fireworks.set_colors([Color("#ffd366"), Color("#ffbf94"), Color("#f5a8c8")])
 	_on_current_progression_changed()
+	sentence_background.show()
 
 
 func _get_new_sentence() -> void:
@@ -91,16 +93,15 @@ func _get_new_sentence() -> void:
 		await audio_player.finished
 	
 	await _next_sentence()
+	shuffle_children(ants)
 	await _start_ants()
 
 
 func _next_sentence() -> void:
+	Log.trace("Ants Minigame: Next sentence")
+	for word: Word in words.get_children():
+		word.set_process(false)
 	var nodes: Array[Node] = []
-	nodes.append_array(sentence_container.get_children())
-	nodes.append_array(words.get_children())
-	for node: Node in nodes:
-		node.queue_free()
-	
 	for ant: Ant in ants.get_children():
 		ant.walk()
 		var tween: Tween = create_tween()
@@ -109,9 +110,15 @@ func _next_sentence() -> void:
 		ant.queue_free()
 		await ant.tree_exited
 	
+	nodes.append_array(sentence_container.get_children())
+	nodes.append_array(words.get_children())
+	for node: Node in nodes:
+		node.queue_free()
+	
 	await get_tree().process_frame
 	
 	current_sentence = stimuli.pop_front()
+	Log.info("Ants Minigame: Selected sentence = %s" % current_sentence)
 	
 	var current_words: PackedStringArray = (current_sentence.Sentence as String).replace("'", " ' ").replace("-", " - ").split(" ")
 	
@@ -129,10 +136,19 @@ func _next_sentence() -> void:
 	inds_to_remove.reverse()
 	for index: int in inds_to_remove:
 		current_words.remove_at(index)
+
+	if not current_words.is_empty() and current_words[-1].ends_with(".") and current_words[-1].length() > 1:
+		current_words[-1] = current_words[-1].left(-1)
+		current_words.append(".")
 	
+	var non_blankable_tokens: PackedStringArray = ["."]
 	var number_of_blanks: int = maxi(2, mini(difficulty, current_words.size()))
-	var blanks: Array = range(current_words.size())
+	var blanks: Array[int] = []
+	for index: int in range(current_words.size()):
+		if current_words[index] not in non_blankable_tokens:
+			blanks.append(index)
 	blanks.shuffle()
+	number_of_blanks = mini(number_of_blanks, blanks.size())
 	while blanks.size() > number_of_blanks:
 		blanks.pop_back()
 	
@@ -166,10 +182,37 @@ func _next_sentence() -> void:
 			var label: Label = Label.new()
 			sentence_container.add_child(label)
 			
-			label.text = current_word + " "
+			if current_word == ".":
+				label.text = current_word + "  "
+			else:
+				label.text = " " + current_word + "  "
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			label.label_settings = LABEL_SETTINGS
+	
+	await setup_sentence_background()
+
+
+func setup_sentence_background() -> void:
+	await get_tree().process_frame
+	var number_of_lines: int = sentence_container.get_line_count()
+	var children: Array[Node] = sentence_background.get_children()
+	if children.is_empty():
+		Log.error("Ants Minigame: sentence_background has no child, but it should always at least keep 1")
+		return
+	if number_of_lines == children.size():
+		return
+	while number_of_lines < sentence_background.get_children().size():
+		var child: Node = sentence_background.get_child(-1) # Get last child
+		child.queue_free()
+		await get_tree().process_frame
+	if number_of_lines == children.size():
+		return
+	var template: Node = children[0]
+	while number_of_lines > sentence_background.get_children().size():
+		var new_child: Node = template.duplicate()
+		sentence_background.add_child(new_child)
+		await get_tree().process_frame
 
 
 func _start_ants() -> void:
@@ -179,14 +222,14 @@ func _start_ants() -> void:
 	for ant_index: int in range(total_ants):
 		var ant: Ant = ants.get_child(ant_index)
 
-		# Start walking animation or logic
 		ant.walk()
 
 		# Create a tween to move the ant from start to end point
 		var tween: Tween = create_tween()
 
 		# Compute interpolation factor (0.0 to 1.0) based on position in the list
-		var position_ratio: float = float(ant_index) / float(total_ants - 1)
+		var denominator: float = maxf(1.0, float(total_ants - 1)) # Avoid division by zero when there is only one ant
+		var position_ratio: float = float(ant_index) / denominator
 
 		# Interpolate position from ants_start to ants_end using the ratio
 		var start_position: Vector2 = ants_start.global_position
@@ -202,7 +245,16 @@ func _start_ants() -> void:
 
 	# Reactivate all words once ants have reached their positions
 	for word: Word in words.get_children():
-		word.disabled = false
+		word.set_disabled(false)
+
+
+func shuffle_children(parent: Node) -> void:
+	var children: Array[Node] = parent.get_children()
+	children.shuffle()
+	for child: Node in children:
+		child.get_parent().remove_child(child)
+	for child: Node in children:
+		parent.add_child(child)
 
 
 func _on_current_progression_changed() -> void:
@@ -212,7 +264,7 @@ func _on_current_progression_changed() -> void:
 		_win()
 
 
-func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureButton) -> void:
+func _on_word_answer(stimulus: String, expected_stimulus: String, word: Button) -> void:
 	_log_new_response({"Word": stimulus}, {"Word": expected_stimulus})
 	
 	answers[expected_stimulus] = stimulus
@@ -243,15 +295,19 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 		for word_i: Word in words.get_children():
 			@warning_ignore("unsafe_method_access")
 			word_i.current_anchor.set_monitorable(true)
-			word_i.disabled = true
+			word_i.set_disabled(true)
 		
 		if is_right:
+			for ant: Ant in ants.get_children():
+				ant.success()
 			for index: int in range(words.get_child_count() - 1):
 				(words.get_child(index) as Word).right()
 			await (words.get_child(words.get_child_count() - 1) as Word).right()
 			
 			current_progression += 1
 		else:
+			for ant: Ant in ants.get_children():
+				ant.defeat()
 			for index: int in range(words.get_child_count() - 1):
 				(words.get_child(index) as Word).wrong()
 			await (words.get_child(words.get_child_count() - 1) as Word).wrong()
@@ -266,8 +322,8 @@ func _on_word_answer(stimulus: String, expected_stimulus: String, word: TextureB
 				ants.get_child(index).set_monitorable(false)
 		
 			for word_i: Word in words.get_children():
-				word_i.disabled = false
+				word_i.set_disabled(false)
 
 
-func _on_word_no_answer(word: TextureButton) -> void:
+func _on_word_no_answer(word: Button) -> void:
 	answer_input_done[word.get_index()] = false

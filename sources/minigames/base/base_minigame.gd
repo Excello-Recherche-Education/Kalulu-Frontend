@@ -16,6 +16,9 @@ enum Type {
 
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
+const LABEL_COLOR_NEUTRAL: Color = Color("#e6f3e0")
+const LABEL_COLOR_WIN: Color = Color("#009344")
+const LABEL_COLOR_LOSE: Color = Color("#be1e2d")
 
 static var transition_data: Dictionary = {}
 
@@ -37,9 +40,6 @@ static var transition_data: Dictionary = {}
 @export var errors_before_help_speech: int = 2
 @export var errors_before_highlight: int = 3
 
-# Lesson
-var minigame_difficulty: int
-var lesson_difficulty: int
 # Logs
 var logs: Dictionary = {}
 # Scores for the remediation engine
@@ -48,6 +48,8 @@ var remediation_syllables_scores: Dictionary = {}
 var remediation_words_scores: Dictionary = {}
 # Scores for the confusion matrix engine
 var confusion_matrix_gp_scores: Dictionary[int, PackedInt32Array] = {}
+# Final boss state
+var is_final_boss: bool = false
 # Stimuli
 var stimuli: Array = []
 var distractions: Array = []
@@ -56,10 +58,10 @@ var current_lives: int = 0:
 	set(value):
 		var previous_lives: int = current_lives
 		current_lives = value
-		
+		if current_lives != previous_lives:
+			Log.trace("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, Type.keys()[minigame_name]])
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
-		
 		if current_lives <= max_number_of_lives - errors_before_help_speech:
 			_play_kalulu_help_speech()
 		elif consecutive_errors == errors_before_highlight:
@@ -98,7 +100,7 @@ func _ready() -> void:
 	gardens_data = transition_data
 	minigame_number = transition_data.get("minigame_number", minigame_number)
 	lesson_nb = transition_data.get("current_lesson_number", lesson_nb)
-	#transition_data = {}
+	is_final_boss = transition_data.get("is_final_boss", false) as bool
 	
 	# Difficulty
 	if (UserDataManager as UserDataManagerClass)._student_difficulty:
@@ -111,7 +113,7 @@ func _ready() -> void:
 	
 	if not Engine.is_editor_hint():
 		# Stop the current music
-		MusicManager.stop()
+		(MusicManager as MusicManagerClass).stop()
 	
 	_reset_logs()
 	_initialize()
@@ -123,6 +125,8 @@ func _initialize() -> void:
 	
 	_setup_minigame()
 	
+	Log.info("BaseMinigame: Initialize %s (lesson %d, minigame #%d, difficulty %d)" % [Type.keys()[minigame_name], lesson_nb, minigame_number, difficulty])
+	
 	if not Engine.is_editor_hint():
 		await _curtains_and_kalulu()
 		_start()
@@ -130,6 +134,7 @@ func _initialize() -> void:
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
+	Log.trace("BaseMinigame: SetupMinigame")
 	max_progression = max_progression
 	max_number_of_lives = max_number_of_lives
 	current_lives = max_number_of_lives
@@ -137,13 +142,13 @@ func _setup_minigame() -> void:
 
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
-	Log.error("Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
+	Log.error("BaseMinigame: Minigame type " + str(minigame_name) + " has not implemented the function _find_stimuli_and_distractions()")
 	return
 
 
 # Opens the curtains and Kalulu explains
 func _curtains_and_kalulu() -> void:
-	await OpeningCurtain.open()
+	await (OpeningCurtain as OpeningCurtainClass).open()
 	
 	# Checks if intro needs to be played
 	if not UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
@@ -161,6 +166,7 @@ var _is_paused: bool = false
 
 # Launch the minigame
 func _start() -> void:
+	Log.info("BaseMinigame: Start minigame=%s lesson=%d difficulty=%d" % [Type.keys()[minigame_name], lesson_nb, difficulty])
 	_start_time = Time.get_ticks_msec() / 1000.0
 	_elapsed_paused = 0.0
 	_is_paused = false
@@ -188,12 +194,11 @@ func _notification(what: int) -> void:
 
 func _reset() -> void:
 	get_tree().paused = false
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	get_tree().reload_current_scene()
 
 
 func _win() -> void:
-	
 	# Lock the UI
 	minigame_ui.lock()
 	
@@ -203,9 +208,17 @@ func _win() -> void:
 		gardens_data.minigame_completed = true
 	
 	if UserDataManager.student_progression:
-		gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
+		if gardens_data.has("boss_gate_lesson"):
+			gardens_data.boss_completed = UserDataManager.student_progression.boss_completed(gardens_data.boss_gate_lesson as int)
+			gardens_data.first_clear = gardens_data.boss_completed
+			if not is_final_boss:
+				UserDataManager.student_progression.reset_boss_failure_streak()
+		else:
+			gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
 	update_scores()
+	
+	Log.info("BaseMinigame: %s won in %d seconds with progression %d/%d and %d/%d lives" % [Type.keys()[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
 	
 	# Difficulty
 	if current_lives <= 0:
@@ -216,7 +229,7 @@ func _win() -> void:
 	audio_player.stream = WIN_SOUND_FX
 	audio_player.play()
 	
-	fireworks.start()
+	fireworks.play()
 	await fireworks.finished
 	
 	minigame_ui.play_kalulu_speech(win_kalulu_speech)
@@ -250,6 +263,8 @@ func _lose() -> void:
 	
 	update_scores()
 	
+	Log.info("BaseMinigame: %s Lose in %d seconds with progression %d/%d and %d/%d lives" % [Type.keys()[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
+	
 	# Difficulty
 	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
 	
@@ -259,27 +274,42 @@ func _lose() -> void:
 	
 	minigame_ui.play_kalulu_speech(lose_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended
+	if gardens_data.has("boss_gate_lesson") and not is_final_boss and UserDataManager.student_progression:
+		var is_blocked: bool = UserDataManager.student_progression.register_boss_failure()
+		if is_blocked:
+			if has_method("show_adult_block"):
+				call("show_adult_block")
+			else:
+				Log.error("BaseMinigame: Adult block requested but no handler exists for %s" % Type.keys()[minigame_name])
+			return
 	
 	_reset()
 
 
 func _submit_student_level_time() -> void:
-	var elapsed_time: int = int(Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused)
-	UserDataManager.add_level_time(lesson_nb, minigame_number, elapsed_time)
+	if gardens_data.has("boss_gate_lesson"):
+		return
+	UserDataManager.add_level_time(lesson_nb, minigame_number, _get_elapsed_time_seconds())
+
+
+func _get_elapsed_time_seconds() -> int:
+	return int(Time.get_ticks_msec() / 1000.0 - _start_time - _elapsed_paused)
 
 #endregion
 
 #region Logs
 
 func _save_logs() -> void:
+	var logs_size: int = -1
+	if logs.has("answers") and logs.get("answers", []) is Array:
+		logs_size = (logs.get("answers", []) as Array).size()
+	Log.info("BaseMinigame: Saving logs for %s with %d answer(s)" % [Type.keys()[minigame_name], logs_size])
 	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
 func _reset_logs() -> void:
-	logs = {
-		"answers": []
-	}
+	logs = {"answers": []}
 
 
 func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> void:
@@ -294,6 +324,15 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"current_lives": current_lives,
 		"max_number_of_lives": max_number_of_lives,
 	}
+	Log.trace("BaseMinigame: Log new response minigame=%s response=%s expected=%s right=%s progression=%d/%d lives=%d/%d" % [
+				Type.keys()[minigame_name],
+				str(response),
+				str(current_stimulus),
+				str(response_log.is_right),
+				current_progression,
+				max_progression,
+				current_lives,
+				max_number_of_lives])
 	
 	var answers: Array = logs["answers"]
 	answers.append(response_log)
@@ -360,7 +399,7 @@ func _update_confusion_matrix_gp_score(expected_id: int, selected_id: int) -> vo
 
 func _go_back_to_the_garden() -> void:
 	get_tree().paused = false
-	await OpeningCurtain.close()
+	await (OpeningCurtain as OpeningCurtainClass).close()
 	
 	_save_logs()
 	
@@ -375,6 +414,7 @@ func _play_stimulus() -> void:
 func _pause_game() -> bool:
 	var pause: bool = not get_tree().paused
 	get_tree().paused = pause
+	Log.trace("BaseMinigame: Pause toggled to %s for %s" % [str(pause), Type.keys()[minigame_name]])
 	return pause
 
 
@@ -398,6 +438,7 @@ func _play_kalulu_help_speech() -> void:
 func set_current_progression(p_current_progression: int) -> void:
 	var previous_progression: int = current_progression
 	current_progression = p_current_progression
+	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
 	
 	consecutive_errors = 0
 	is_highlighting = false
@@ -413,7 +454,7 @@ func set_current_progression(p_current_progression: int) -> void:
 
 #region Connections
 
-func _on_minigame_ui_garden_button_pressed() -> void:
+func _on_minigame_ui_back_button_pressed() -> void:
 	_go_back_to_the_garden()
 	update_scores()
 
@@ -422,12 +463,8 @@ func _on_minigame_ui_stimulus_button_pressed() -> void:
 	_pause_game()
 	minigame_ui.lock()
 	
-	#await minigame_ui.repeat_stimulus_animation(true)
-	
 	@warning_ignore("redundant_await")
 	await _play_stimulus()
-	
-	#await minigame_ui.repeat_stimulus_animation(false)
 	
 	minigame_ui.unlock()
 	_pause_game()
@@ -442,7 +479,9 @@ func _on_minigame_ui_restart_button_pressed() -> void:
 
 
 func _on_current_progression_changed() -> void:
-	# Make Godot understands that this function is a coroutine even if it does nothing, to avoid warning
-	await get_tree().create_timer(0).timeout
+	# Make Godot understand that this function is a coroutine even if it does nothing, to avoid warning
+	var main_loop: MainLoop = Engine.get_main_loop()
+	if main_loop is SceneTree:
+		await (main_loop as SceneTree).create_timer(0).timeout
 
 #endregion
