@@ -170,7 +170,7 @@ func test_full_account_creation_login_and_deletion() -> void:
 			"Account type should be Teacher (0)")
 	assert_eq(login_body.education_method as int, TeacherSettings.EducationMethod.Complete,
 			"Education method should be Complete (1)")
-	assert_eq(str(login_body.language), "fr", "Language should be 'fr'")
+	assert_eq(str(login_body.language), "fr_FR", "Language should be 'fr'")
 	assert_true(login_body.has("token"), "Login response must include token")
 	assert_true(str(login_body.token).length() > 0, "Login token must not be empty")
 	assert_true(login_body.has("last_modified"), "Login response must include last_modified")
