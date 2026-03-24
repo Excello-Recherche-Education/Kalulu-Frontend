@@ -84,8 +84,11 @@ jobs:
           mkdir -p android/build
           unzip -o "$TEMPLATE_DIR/android_source.zip" -d android/build/
           GODOT_VERSION=$(basename "$TEMPLATE_DIR")
+          echo "$GODOT_VERSION" > android/.build_version
           echo "$GODOT_VERSION" > android/build/.build_version
-          echo "Wrote .build_version: $GODOT_VERSION"
+          echo "Wrote .build_version in android/ and android/build/: $GODOT_VERSION"
+          echo "--- android/ structure ---"
+          find android/ -maxdepth 2 -name ".build_version" -o -name "*.gradle" | head -20
 
       - name: Export builds
         run: |
