@@ -159,6 +159,18 @@ jobs:
         with:
           tag_name: v${{ inputs.release_name }}
           name: v${{ inputs.release_name }}
+          body: |
+            ## Instructions
+            Download the platform version you need and, if you wish, 1 language pack (you can also let the application download it and install it for you). All language packs can be found here: [Kalulu Languages](https://github.com/Excello-Recherche-Education/Kalulu-Languages/releases)
+            You need an internet access for the register / first login, but after that you can play offline if needed.
+            If you want to manually install the language pack, put it in this folder depending on your platform :
+            **🪟 Windows :**
+            C:\Users\\\<UserName\>\AppData\Roaming\Godot\app_userdata\Kalulu\language_resources\
+            **🍎 macOS :**
+            /Users/\<UserName\>/Library/Application Support/Godot/app_userdata/Kalulu/language_resources/
+            **🐧 Linux :**
+            /home/\<UserName\>/.local/share/godot/app_userdata/Kalulu/language_resources/
+            It is not possible to manually install the language pack on Android
           files: |
             build/Kalulu-Windows-${{ inputs.release_name }}.zip
             build/Kalulu-Linux-${{ inputs.release_name }}.zip
