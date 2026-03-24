@@ -32,6 +32,9 @@ jobs:
               versions = re.findall(r'"(\d+\.\d+)"', features_match.group(1))
               if versions:
                   godot_version = versions[0]
+          # setup-godot requires full semver (major.minor.patch)
+          if godot_version.count(".") < 2:
+              godot_version += ".0"
           output_path = os.environ["GITHUB_OUTPUT"]
           with open(output_path, "a", encoding="utf-8") as fh:
               fh.write(f"godot_version={godot_version}\n")
