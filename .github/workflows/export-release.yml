@@ -61,11 +61,6 @@ jobs:
           use-dotnet: false
           include-templates: true
 
-      - name: Install Android build template
-        run: |
-          mkdir -p android/build
-          godot --headless --install-android-build-template
-
       - name: Configure Godot Android settings
         run: |
           mkdir -p ~/.config/godot
@@ -78,6 +73,9 @@ jobs:
 
       - name: Import Godot project
         run: godot --headless --import
+
+      - name: Install Android build template
+        run: godot --headless --install-android-build-template
 
       - name: Export builds
         run: |
