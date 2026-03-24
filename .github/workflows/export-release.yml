@@ -124,16 +124,15 @@ jobs:
           echo "--- android/ structure ---"
           find android/ -maxdepth 2 -name ".build_version" -o -name "*.gradle" | head -20
 
-      - name: Clean up .import files from Android build template
-        run: find android/build/res -name "*.import" -delete -print
-
       - name: Export Android APK
         run: |
+          find android/build/res -name "*.import" -delete
           mkdir -p build/Android
           godot --headless --export-release "Android Kalulu APK" "build/Android/Kalulu.apk"
 
       - name: Export Android APK 32 bits
         run: |
+          find android/build/res -name "*.import" -delete
           godot --headless --export-release "Android Kalulu APK 32 bits" "build/Android/Kalulu-32bits.apk"
 
       - name: Export Linux
