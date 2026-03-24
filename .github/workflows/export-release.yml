@@ -83,6 +83,9 @@ jobs:
           echo "Using template dir: $TEMPLATE_DIR"
           mkdir -p android/build
           unzip -o "$TEMPLATE_DIR/android_source.zip" -d android/build/
+          GODOT_VERSION=$(basename "$TEMPLATE_DIR")
+          echo "$GODOT_VERSION" > android/build/.build_version
+          echo "Wrote .build_version: $GODOT_VERSION"
 
       - name: Export builds
         run: |
