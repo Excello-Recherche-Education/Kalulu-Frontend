@@ -100,9 +100,13 @@ jobs:
               r'\1' + keystore_block,
               content
           )
+          # Disable macOS code signing and notarization for CI (no Xcode/Apple ID)
+          content = content.replace("codesign/codesign=3", "codesign/codesign=0")
+          content = content.replace("notarization/notarization=2", "notarization/notarization=0")
+          content = content.replace("export/distribution_type=1", "export/distribution_type=0")
           with open("export_presets.cfg", "w") as f:
               f.write(content)
-          print("Injected release keystore into export_presets.cfg")
+          print("Patched export_presets.cfg: Android keystore + macOS signing disabled")
           PY
 
       - name: Import Godot project
@@ -137,6 +141,11 @@ jobs:
           mkdir -p build/Linux
           godot --headless --export-release "Linux Kalulu" "build/Linux/Kalulu.x86_64"
 
+      - name: Export macOS
+        run: |
+          mkdir -p build/macOS
+          godot --headless --export-release "macOS Kalulu" "build/macOS/Kalulu.zip"
+
       - name: Export Windows
         run: |
           mkdir -p build/Windows
@@ -150,6 +159,8 @@ jobs:
           zip -r "../Kalulu-Windows-${VERSION}.zip" .
           cd ../Linux
           zip -r "../Kalulu-Linux-${VERSION}.zip" .
+          cd ../macOS
+          mv Kalulu.zip "../Kalulu-macOS-${VERSION}.zip"
           cd ../Android
           zip -r "../Kalulu-Android-${VERSION}.zip" Kalulu.apk
           zip -r "../Kalulu-Android-32bits-${VERSION}.zip" Kalulu-32bits.apk
@@ -172,9 +183,10 @@ jobs:
             /home/\<UserName\>/.local/share/godot/app_userdata/Kalulu/language_resources/
             It is not possible to manually install the language pack on Android
           files: |
-            build/Kalulu-Windows-${{ inputs.release_name }}.zip
-            build/Kalulu-Linux-${{ inputs.release_name }}.zip
             build/Kalulu-Android-${{ inputs.release_name }}.zip
             build/Kalulu-Android-32bits-${{ inputs.release_name }}.zip
+            build/Kalulu-Linux-${{ inputs.release_name }}.zip
+            build/Kalulu-macOS-${{ inputs.release_name }}.zip
+            build/Kalulu-Windows-${{ inputs.release_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
