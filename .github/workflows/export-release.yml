@@ -121,19 +121,16 @@ jobs:
           echo "$GODOT_VERSION" > android/.build_version
           echo "$GODOT_VERSION" > android/build/.build_version
           echo "Wrote .build_version in android/ and android/build/: $GODOT_VERSION"
-          echo "--- android/ structure ---"
-          find android/ -maxdepth 2 -name ".build_version" -o -name "*.gradle" | head -20
+          # Prevent Godot from scanning and creating .import files in Android res/
+          touch android/build/res/.gdignore
 
       - name: Export Android APK
         run: |
-          find android/build/res -name "*.import" -delete
           mkdir -p build/Android
           godot --headless --export-release "Android Kalulu APK" "build/Android/Kalulu.apk"
 
       - name: Export Android APK 32 bits
-        run: |
-          find android/build/res -name "*.import" -delete
-          godot --headless --export-release "Android Kalulu APK 32 bits" "build/Android/Kalulu-32bits.apk"
+        run: godot --headless --export-release "Android Kalulu APK 32 bits" "build/Android/Kalulu-32bits.apk"
 
       - name: Export Linux
         run: |
