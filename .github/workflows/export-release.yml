@@ -75,7 +75,10 @@ jobs:
         run: godot --headless --import --quit
 
       - name: Install Android build template
-        run: godot --headless --install-android-build-template --quit
+        run: |
+          TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/${{ steps.version.outputs.godot_version }}.stable"
+          mkdir -p android/build
+          unzip -o "$TEMPLATE_DIR/android_source.zip" -d android/build/
 
       - name: Export builds
         run: |
