@@ -81,10 +81,29 @@ jobs:
           export/android/debug_keystore = "$KEYSTORE_PATH"
           export/android/debug_keystore_user = "androiddebugkey"
           export/android/debug_keystore_pass = "android"
-          export/android/keystore/release = "$KEYSTORE_PATH"
-          export/android/keystore/release_user = "androiddebugkey"
-          export/android/keystore/release_password = "android"
           TRES
+          python3 - "$KEYSTORE_PATH" <<'PY'
+          import sys, re
+          keystore_path = sys.argv[1]
+          with open("export_presets.cfg", "r") as f:
+              content = f.read()
+          # Inject keystore settings after each Android preset options header
+          keystore_block = (
+              f'keystore/release="{keystore_path}"\n'
+              f'keystore/release_user="androiddebugkey"\n'
+              f'keystore/release_password="android"\n'
+          )
+          # Find all [preset.N.options] sections for Android presets
+          # Insert keystore settings right after command_line/extra_args for each Android preset
+          content = re.sub(
+              r'(command_line/extra_args=""\n)',
+              r'\1' + keystore_block,
+              content
+          )
+          with open("export_presets.cfg", "w") as f:
+              f.write(content)
+          print("Injected release keystore into export_presets.cfg")
+          PY
 
       - name: Import Godot project
         run: godot --headless --import --quit
