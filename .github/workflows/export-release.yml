@@ -40,11 +40,19 @@ jobs:
               fh.write(f"godot_version={godot_version}\n")
           PY
 
+      - name: Download godot-sqlite binaries
+        run: |
+          curl -fsSL https://github.com/2shady4u/godot-sqlite/releases/download/v4.7/bin.zip -o /tmp/gdsqlite-bin.zip
+          unzip -o /tmp/gdsqlite-bin.zip -d addons/godot-sqlite/
+
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
         with:
           version: ${{ steps.version.outputs.godot_version }}
           include-templates: true
+
+      - name: Import Godot project
+        run: godot --headless --import
 
       - name: Export builds
         run: |
