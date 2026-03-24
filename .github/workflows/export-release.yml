@@ -124,6 +124,9 @@ jobs:
           echo "--- android/ structure ---"
           find android/ -maxdepth 2 -name ".build_version" -o -name "*.gradle" | head -20
 
+      - name: Clean up .import files from Android build template
+        run: find android/build/res -name "*.import" -delete -print
+
       - name: Export builds
         run: |
           mkdir -p build/Windows build/Linux build/Android
