@@ -45,11 +45,36 @@ jobs:
           curl -fsSL https://github.com/2shady4u/godot-sqlite/releases/download/v4.7/bin.zip -o /tmp/gdsqlite-bin.zip
           unzip -o /tmp/gdsqlite-bin.zip -d addons/godot-sqlite/
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
         with:
           version: ${{ steps.version.outputs.godot_version }}
+          use-dotnet: false
           include-templates: true
+
+      - name: Install Android build template
+        run: |
+          mkdir -p android/build
+          godot --headless --install-android-build-template
+
+      - name: Configure Godot Android settings
+        run: |
+          mkdir -p ~/.config/godot
+          cat > ~/.config/godot/editor_settings-4.tres <<TRES
+          [gd_resource type="EditorSettings" format=3]
+          [resource]
+          export/android/java_sdk_path = "$JAVA_HOME"
+          export/android/android_sdk_path = "$ANDROID_HOME"
+          TRES
 
       - name: Import Godot project
         run: godot --headless --import
