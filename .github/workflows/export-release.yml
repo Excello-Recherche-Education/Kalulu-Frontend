@@ -72,10 +72,10 @@ jobs:
           TRES
 
       - name: Import Godot project
-        run: godot --headless --import
+        run: godot --headless --import --quit
 
       - name: Install Android build template
-        run: godot --headless --install-android-build-template
+        run: godot --headless --install-android-build-template --quit
 
       - name: Export builds
         run: |
