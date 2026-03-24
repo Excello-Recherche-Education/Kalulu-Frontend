@@ -1,0 +1,77 @@
+name: Export and release builds
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: "Release name (e.g. 3.0.1)"
+        required: true
+        type: string
+
+jobs:
+  export-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read Godot version from project
+        id: version
+        run: |
+          python - <<'PY'
+          import re
+          import os
+          from pathlib import Path
+
+          text = Path("project.godot").read_text(encoding="utf-8")
+          features_match = re.search(r'config/features=PackedStringArray\(([^)]*)\)', text)
+          godot_version = "4.6"
+          if features_match:
+              versions = re.findall(r'"(\d+\.\d+)"', features_match.group(1))
+              if versions:
+                  godot_version = versions[0]
+          output_path = os.environ["GITHUB_OUTPUT"]
+          with open(output_path, "a", encoding="utf-8") as fh:
+              fh.write(f"godot_version={godot_version}\n")
+          PY
+
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: ${{ steps.version.outputs.godot_version }}
+          include-templates: true
+
+      - name: Export builds
+        run: |
+          mkdir -p build/Windows build/Linux build/Android
+          godot --headless --export-release "Windows Kalulu" "build/Windows/Kalulu.exe"
+          godot --headless --export-release "Linux Kalulu" "build/Linux/Kalulu.x86_64"
+          godot --headless --export-release "Android Kalulu APK" "build/Android/Kalulu.apk"
+          godot --headless --export-release "Android Kalulu APK 32 bits" "build/Android/Kalulu-32bits.apk"
+
+      - name: Package exports
+        env:
+          VERSION: ${{ inputs.release_name }}
+        run: |
+          cd build/Windows
+          zip -r "../Kalulu-Windows-${VERSION}.zip" .
+          cd ../Linux
+          zip -r "../Kalulu-Linux-${VERSION}.zip" .
+          cd ../Android
+          zip -r "../Kalulu-Android-${VERSION}.zip" Kalulu.apk
+          zip -r "../Kalulu-Android-32bits-${VERSION}.zip" Kalulu-32bits.apk
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.release_name }}
+          name: v${{ inputs.release_name }}
+          files: |
+            build/Kalulu-Windows-${{ inputs.release_name }}.zip
+            build/Kalulu-Linux-${{ inputs.release_name }}.zip
+            build/Kalulu-Android-${{ inputs.release_name }}.zip
+            build/Kalulu-Android-32bits-${{ inputs.release_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
