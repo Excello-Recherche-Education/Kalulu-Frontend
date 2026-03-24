@@ -76,7 +76,11 @@ jobs:
 
       - name: Install Android build template
         run: |
-          TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/${{ steps.version.outputs.godot_version }}.stable"
+          TEMPLATES_ROOT="$HOME/.local/share/godot/export_templates"
+          echo "Available export templates:"
+          ls -la "$TEMPLATES_ROOT/"
+          TEMPLATE_DIR=$(find "$TEMPLATES_ROOT" -maxdepth 1 -type d -name "4.*" | head -1)
+          echo "Using template dir: $TEMPLATE_DIR"
           mkdir -p android/build
           unzip -o "$TEMPLATE_DIR/android_source.zip" -d android/build/
 
