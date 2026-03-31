@@ -6,6 +6,7 @@
 
 [node name="LessonButton" type="TextureButton" unique_id=530361935]
 z_index = 1
+self_modulate = Color(1, 1, 1, 0)
 offset_right = 300.0
 offset_bottom = 300.0
 pivot_offset = Vector2(150, 150)

@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 
 [node name="Garden" type="Control" unique_id=1950346826]
-custom_minimum_size = Vector2(1800, 2.08165e-12)
+custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,16 +19,15 @@ garden_colors = Array[Color]([Color(0.588235, 0.439216, 0.878431, 1), Color(1, 0
 
 [node name="Background" type="TextureRect" parent="." unique_id=667507132]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_left = 350.0
+offset_top = 50.0
+offset_right = 2050.0
+offset_bottom = 1750.0
 mouse_filter = 2
 texture = ExtResource("3_p7iv3")
 expand_mode = 1
-stretch_mode = 3
+stretch_mode = 0
 
 [node name="Buttons" type="Control" parent="." unique_id=1943933146]
 layout_mode = 1
@@ -45,10 +44,10 @@ completed_color = Color(0.588235, 0.439216, 0.878431, 1)
 
 [node name="Jellyfish" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 1300.0
-offset_top = 80.0
-offset_right = 1500.0
-offset_bottom = 420.0
+offset_left = 1550.0
+offset_top = -30.0
+offset_right = 1830.0
+offset_bottom = 450.0
 mouse_filter = 2
 texture = ExtResource("jellyfish_tex")
 expand_mode = 1

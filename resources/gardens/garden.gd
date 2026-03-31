@@ -95,9 +95,11 @@ func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonB
 	for index: int in range(p_lesson_buttons.size()):
 		var lesson_button: GardenLayout.GardenLayoutLessonButton = p_lesson_buttons[index]
 		var lesson_button_control: LessonButton = lesson_buttons[index]
-		lesson_button_control.position = Vector2(lesson_button.position)
+		# Center the button on the generated position
+		var half_size: Vector2 = lesson_button_control.size / 2.0
+		lesson_button_control.position = Vector2(lesson_button.position) - half_size
 		lesson_button_control.show()
-		lesson_button_control.pivot_offset = lesson_button_control.size / 2
+		lesson_button_control.pivot_offset = half_size
 
 
 func set_background(p_color: int) -> void:
@@ -108,6 +110,7 @@ func set_background(p_color: int) -> void:
 		background.texture = load(path)
 	else:
 		background.texture = load(BACKGROUND_PATH_MODEL % [1])
+	background.modulate = Color("176d78")
 	color = garden_colors[p_color]
 	for button: LessonButton in get_lesson_buttons():
 		button.completed_color = color

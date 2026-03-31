@@ -7,6 +7,7 @@
 
 [node name="BossButton" type="TextureButton" unique_id=1297494779]
 z_index = 2
+self_modulate = Color(1, 1, 1, 0)
 offset_right = 512.0
 offset_bottom = 512.0
 pivot_offset = Vector2(180, 180)

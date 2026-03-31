@@ -9,20 +9,19 @@ const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
 const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
-const GARDEN_SIZE: int = 1800
+const GARDEN_SIZE: int = 2400
 const GARDEN_TEXTURES_NB: int = 20
 const FLOWER_TYPES_NB: int = 5
 const FLOWER_OFFSET_FROM_LESSON: float = 150.0
 const GARDEN_CENTER_Y: float = 900.0
-const GARDEN_CIRCLE_RADIUS: float = 650.0
-const LESSON_CIRCLE_RADIUS: float = 450.0
-const LESSON_START_ANGLE: float = -PI / 2.0
+const GARDEN_CIRCLE_RADIUS: float = 850.0
+const LESSON_PATH_SPREAD: float = 0.85
 const FINAL_BOSS_PADDING: float = 120.0
 const TRANSPARENCY_THRESHOLD: float = 0.05
 const POSITION_SEARCH_STEP: int = 40
 const MAX_POSITION_SEARCH_RADIUS: int = 300
 const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
-const LAYOUT_VERSION: int = 2
+const LAYOUT_VERSION: int = 8
 
 static var lesson_button_half_size: Vector2 = Vector2.ZERO
 static var garden_alpha_cache: Dictionary = {}
@@ -751,14 +750,18 @@ static func _generate_lesson_positions(lessons_for_garden: int, garden_index: in
 		positions.append(Vector2i(int(center.x), int(center.y)))
 		Log.trace("Gardens: Garden %s single lesson placed at center" % str(garden_index))
 	else:
-		var angle_step: float = TAU / float(lessons_for_garden)
-		var phase_offset: float = float(garden_index % 5) * 0.4
+		# Diagonal path from bottom-left to upper-right through the circle,
+		# matching the design mockup layout.
+		var half_spread: float = GARDEN_CIRCLE_RADIUS * LESSON_PATH_SPREAD * 0.5
 		for lesson_index: int in range(lessons_for_garden):
-			var angle: float = LESSON_START_ANGLE + phase_offset + angle_step * float(lesson_index)
-			var x_pos: int = int(center.x + cos(angle) * LESSON_CIRCLE_RADIUS)
-			var y_pos: int = int(center.y + sin(angle) * LESSON_CIRCLE_RADIUS)
-			Log.trace("Gardens: Garden %s lesson %s angle: %s, position: (%s, %s)" % [str(garden_index), str(lesson_index), str(angle), str(x_pos), str(y_pos)])
-			positions.append(Vector2i(x_pos, y_pos))
+			var t: float = float(lesson_index) / float(lessons_for_garden - 1)
+			# Diagonal: bottom-left (t=0) to upper-right (t=1)
+			var x_pos: float = center.x + (t - 0.5) * half_spread * 2.0
+			var y_pos: float = center.y + (0.5 - t) * half_spread * 1.6
+			# Slight sine curve to avoid a straight line
+			x_pos += sin(t * PI) * GARDEN_CIRCLE_RADIUS * 0.08
+			Log.trace("Gardens: Garden %s lesson %s t: %s, position: (%s, %s)" % [str(garden_index), str(lesson_index), str(t), str(x_pos), str(y_pos)])
+			positions.append(Vector2i(int(x_pos), int(y_pos)))
 	Log.info("Gardens: Completed lesson positions for garden %s" % str(garden_index))
 	return positions
 
