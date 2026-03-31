@@ -15,10 +15,10 @@ const FLOWER_TYPES_NB: int = 5
 const FLOWER_OFFSET_FROM_LESSON: float = 150.0
 const GARDEN_CENTER_Y: float = 900.0
 const GARDEN_CIRCLE_RADIUS: float = 850.0
-const LESSON_PATH_SPREAD: float = 0.85
+const MAX_POSITIONS_PER_GARDEN: int = 5
 const FINAL_BOSS_PADDING: float = 120.0
 const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
-const LAYOUT_VERSION: int = 9
+const LAYOUT_VERSION: int = 11
 
 static var lesson_button_half_size: Vector2 = Vector2.ZERO
 static var transition_data: Dictionary = {}
@@ -696,6 +696,28 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 	return garden_layout
 
 
+static func _get_garden_slot_positions(center: Vector2) -> Array[Vector2]:
+	var r: float = GARDEN_CIRCLE_RADIUS * 0.6
+	# 5 fixed slots on a diagonal from bottom-left to upper-right
+	var slots: Array[Vector2] = []
+	for i: int in range(MAX_POSITIONS_PER_GARDEN):
+		var t: float = float(i) / float(MAX_POSITIONS_PER_GARDEN - 1)
+		var x: float = center.x + (t - 0.5) * r * 2.0
+		var y: float = center.y + (0.5 - t) * r * 1.6
+		x += sin(t * PI) * GARDEN_CIRCLE_RADIUS * 0.08
+		slots.append(Vector2(x, y))
+	return slots
+
+
+static func _get_selected_slot_indices(lesson_count: int) -> Array[int]:
+	match lesson_count:
+		1: return [2]
+		2: return [1, 3]
+		3: return [0, 2, 4]
+		4: return [0, 1, 3, 4]
+		_: return [0, 1, 2, 3, 4]
+
+
 static func _generate_lesson_positions(lessons_for_garden: int, garden_index: int) -> Array[Vector2i]:
 	Log.info("Gardens: Generating lesson positions for garden %s" % str(garden_index))
 	var positions: Array[Vector2i] = []
@@ -704,22 +726,15 @@ static func _generate_lesson_positions(lessons_for_garden: int, garden_index: in
 		return positions
 	var center: Vector2 = Vector2(float(GARDEN_SIZE) / 2.0, GARDEN_CENTER_Y)
 	Log.trace("Gardens: Garden %s circle center at %s" % [str(garden_index), str(center)])
-	if lessons_for_garden == 1:
-		positions.append(Vector2i(int(center.x), int(center.y)))
-		Log.trace("Gardens: Garden %s single lesson placed at center" % str(garden_index))
-	else:
-		# Diagonal path from bottom-left to upper-right through the circle,
-		# matching the design mockup layout.
-		var half_spread: float = GARDEN_CIRCLE_RADIUS * LESSON_PATH_SPREAD * 0.5
-		for lesson_index: int in range(lessons_for_garden):
-			var t: float = float(lesson_index) / float(lessons_for_garden - 1)
-			# Diagonal: bottom-left (t=0) to upper-right (t=1)
-			var x_pos: float = center.x + (t - 0.5) * half_spread * 2.0
-			var y_pos: float = center.y + (0.5 - t) * half_spread * 1.6
-			# Slight sine curve to avoid a straight line
-			x_pos += sin(t * PI) * GARDEN_CIRCLE_RADIUS * 0.08
-			Log.trace("Gardens: Garden %s lesson %s t: %s, position: (%s, %s)" % [str(garden_index), str(lesson_index), str(t), str(x_pos), str(y_pos)])
-			positions.append(Vector2i(int(x_pos), int(y_pos)))
+	# 5 fixed slots on a diagonal from bottom-left to upper-right.
+	# When fewer lessons exist, pick evenly spaced slots:
+	# 5 → 1,2,3,4,5 | 4 → 1,2,4,5 | 3 → 1,3,5 | 2 → 2,4 | 1 → 3
+	var all_slots: Array[Vector2] = _get_garden_slot_positions(center)
+	var selected_indices: Array[int] = _get_selected_slot_indices(lessons_for_garden)
+	for i: int in range(selected_indices.size()):
+		var slot: Vector2 = all_slots[selected_indices[i]]
+		Log.trace("Gardens: Garden %s lesson %s using slot %s, position: (%s, %s)" % [str(garden_index), str(i), str(selected_indices[i]), str(slot.x), str(slot.y)])
+		positions.append(Vector2i(int(slot.x), int(slot.y)))
 	Log.info("Gardens: Completed lesson positions for garden %s" % str(garden_index))
 	return positions
 

@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
 [ext_resource type="Texture2D" uid="uid://d26hapg1hf8a6" path="res://assets/gardens/gardens/Garden_01.png" id="3_p7iv3"]
-[ext_resource type="Texture2D" uid="uid://bfqwlmmliem8f" path="res://assets/gardens/jellyfish.png" id="jellyfish_tex"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
+[ext_resource type="Texture2D" uid="uid://bfqwlmmliem8f" path="res://assets/gardens/jellyfish.png" id="jellyfish_tex"]
 
 [node name="Garden" type="Control" unique_id=1950346826]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
@@ -27,7 +27,6 @@ offset_bottom = 1750.0
 mouse_filter = 2
 texture = ExtResource("3_p7iv3")
 expand_mode = 1
-stretch_mode = 0
 
 [node name="Buttons" type="Control" parent="." unique_id=1943933146]
 layout_mode = 1
@@ -41,12 +40,12 @@ mouse_filter = 2
 [node name="LessonButton" parent="Buttons" unique_id=1734726442 instance=ExtResource("4_epm30")]
 layout_mode = 0
 
-[node name="Jellyfish" type="TextureRect" parent="."]
+[node name="Jellyfish" type="TextureRect" parent="." unique_id=1070527896]
 layout_mode = 0
-offset_left = 1550.0
-offset_top = -30.0
-offset_right = 1830.0
-offset_bottom = 450.0
+offset_left = 1269.0
+offset_top = 50.0
+offset_right = 1549.0
+offset_bottom = 530.0
 mouse_filter = 2
 texture = ExtResource("jellyfish_tex")
 expand_mode = 1
