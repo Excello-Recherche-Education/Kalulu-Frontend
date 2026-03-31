@@ -12,6 +12,7 @@ enum FlowerSizes{
 const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/plant_%02d_%02d_%s.png"
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/Garden_%02d.png"
 const LESSON_BUTTON_SCENE_PATH: String = "res://sources/lesson_screen/lesson_button.tscn"
+const FLOWER_MATERIAL_PATH: String = "res://resources/gardens/flower_material.tres"
 static var _lesson_button_scene_cache: PackedScene = null
 
 
@@ -19,7 +20,6 @@ static func get_lesson_button_scene() -> PackedScene:
 	if not _lesson_button_scene_cache:
 		_lesson_button_scene_cache = load(LESSON_BUTTON_SCENE_PATH)
 	return _lesson_button_scene_cache
-const FLOWER_MATERIAL_PATH: String = "res://resources/gardens/flower_material.tres"
 const FLOWER_Z_INDEX: int = 1
 
 @export var garden_layout: GardenLayout:
@@ -95,7 +95,6 @@ func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonB
 	for index: int in range(p_lesson_buttons.size()):
 		var lesson_button: GardenLayout.GardenLayoutLessonButton = p_lesson_buttons[index]
 		var lesson_button_control: LessonButton = lesson_buttons[index]
-		# Center the button on the generated position
 		var half_size: Vector2 = lesson_button_control.size / 2.0
 		lesson_button_control.position = Vector2(lesson_button.position) - half_size
 		lesson_button_control.show()
@@ -106,20 +105,15 @@ func set_background(p_color: int) -> void:
 	if not background:
 		return
 	var path: String = BACKGROUND_PATH_MODEL % [p_color + 1]
-	if ResourceLoader.exists(path):
-		background.texture = load(path)
-	else:
-		background.texture = load(BACKGROUND_PATH_MODEL % [1])
-	background.modulate = Color("176d78")
+	var texture: Texture2D = load(path) if ResourceLoader.exists(path) else load(BACKGROUND_PATH_MODEL % [1])
+	background.texture = texture
+	background.modulate = LessonButton.UNLOCKED_FILL_COLOR
 	color = garden_colors[p_color]
-	for button: LessonButton in get_lesson_buttons():
-		button.completed_color = color
 
 
 func _ensure_button_controls_count(target_count: int) -> void:
 	while get_lesson_buttons().size() < target_count:
 		var new_button: LessonButton = get_lesson_button_scene().instantiate()
-		new_button.completed_color = color
 		buttons.add_child(new_button)
 		new_button.owner = self
 

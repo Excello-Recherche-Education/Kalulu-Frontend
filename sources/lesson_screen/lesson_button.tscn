@@ -19,8 +19,6 @@ texture_disabled = ExtResource("lesson_circle")
 texture_focused = ExtResource("lesson_circle")
 stretch_mode = 0
 script = ExtResource("4_mbltp")
-base_color = Color(0.0901961, 0.427451, 0.470588, 1)
-completed_color = Color(0.0901961, 0.427451, 0.470588, 1)
 
 [node name="RightFX" parent="." unique_id=1485482935 instance=ExtResource("7_rtwam")]
 unique_name_in_owner = true

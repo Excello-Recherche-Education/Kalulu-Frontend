@@ -21,8 +21,6 @@ texture_focused = ExtResource("lesson_circle")
 stretch_mode = 0
 script = ExtResource("5_3d6pj")
 icon_texture = ExtResource("8_oy4mt")
-base_color = Color(0.537255, 0.231373, 0.8, 1)
-completed_color = Color(0.537255, 0.231373, 0.8, 1)
 
 [node name="RightFX" parent="." unique_id=1100015067 instance=ExtResource("7_rtwam")]
 unique_name_in_owner = true

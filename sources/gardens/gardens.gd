@@ -17,14 +17,10 @@ const GARDEN_CENTER_Y: float = 900.0
 const GARDEN_CIRCLE_RADIUS: float = 850.0
 const LESSON_PATH_SPREAD: float = 0.85
 const FINAL_BOSS_PADDING: float = 120.0
-const TRANSPARENCY_THRESHOLD: float = 0.05
-const POSITION_SEARCH_STEP: int = 40
-const MAX_POSITION_SEARCH_RADIUS: int = 300
 const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
-const LAYOUT_VERSION: int = 8
+const LAYOUT_VERSION: int = 9
 
 static var lesson_button_half_size: Vector2 = Vector2.ZERO
-static var garden_alpha_cache: Dictionary = {}
 static var transition_data: Dictionary = {}
 static var cached_gardens_layout: GardensLayout
 static var cached_layout_session_id: int = -1
@@ -444,26 +440,6 @@ func _play_brain_tutorial() -> void:
 
 #region Garden layout helpers
 
-static func _get_garden_background_image(garden_color_index: int) -> Image:
-	if garden_alpha_cache.has(garden_color_index):
-		return garden_alpha_cache[garden_color_index]
-
-	var path: String = Garden.BACKGROUND_PATH_MODEL % [garden_color_index + 1]
-	var garden_texture: Texture2D = load(path)
-	if not garden_texture:
-		Log.warn("Gardens: Unable to load garden texture %s, skipping transparency validation" % path)
-		return null
-	var garden_image: Image = garden_texture.get_image()
-	if not garden_image:
-		Log.warn("Gardens: Unable to retrieve image data for garden texture %s, skipping transparency validation" % path)
-		return null
-	garden_alpha_cache[garden_color_index] = garden_image
-	return garden_image
-
-
-static func _get_garden_dimensions(_garden_color_index: int, _garden_image: Image = null) -> Vector2:
-	return Vector2(GARDEN_SIZE, GARDEN_CENTER_Y * 2.0)
-
 
 static func _get_lesson_button_half_size() -> Vector2:
 	if lesson_button_half_size != Vector2.ZERO:
@@ -516,23 +492,6 @@ static func _save_layout_to_cache(layout: GardensLayout, session_id: int, total_
 	if error != OK:
 		Log.warn("Gardens: Failed to save layout cache at %s: %s" % [cache_path, error_string(error)])
 
-
-static func _is_position_on_garden_texture(garden_color_index: int, tested_position: Vector2, garden_dimensions: Vector2, probe_half_size: Vector2 = Vector2.ZERO, garden_image: Image = null) -> bool:
-	if not garden_image:
-		garden_image = _get_garden_background_image(garden_color_index)
-	if not garden_image:
-		return true
-	var safe_dim: Vector2 = Utils.safe_dimensions(garden_dimensions)
-	var base_position: Vector2 = tested_position if probe_half_size == Vector2.ZERO else tested_position + probe_half_size
-	var offsets: Array[Vector2] = Utils.build_probe_offsets(probe_half_size)
-	for offset: Vector2 in offsets:
-		var sample: Vector2 = base_position + offset
-		if sample.x < 0.0 or sample.x > safe_dim.x or sample.y < 0.0 or sample.y > safe_dim.y:
-			return false
-		var pixel: Vector2i = Utils.position_to_pixel(sample, safe_dim, garden_image)
-		if garden_image.get_pixelv(pixel).a < TRANSPARENCY_THRESHOLD:
-			return false
-	return true
 
 
 static func _find_valid_position_on_garden(_garden_color_index: int, tested_position: Vector2, _garden_dimensions: Vector2, _probe_half_size: Vector2 = Vector2.ZERO) -> Vector2:
@@ -682,8 +641,7 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 	var garden_layout: GardenLayout = GardenLayout.new()
 	garden_layout.color = garden_index % GARDEN_TEXTURES_NB
 	Log.trace("Gardens: Garden %s color index set to %s" % [str(garden_index), str(garden_layout.color)])
-	var garden_image: Image = _get_garden_background_image(garden_layout.color)
-	var garden_dimensions: Vector2 = _get_garden_dimensions(garden_layout.color, garden_image)
+	var garden_dimensions: Vector2 = Vector2(GARDEN_SIZE, GARDEN_CENTER_Y * 2.0)
 	var half_size: Vector2 = _get_lesson_button_half_size()
 	
 	# Initial path positions
@@ -827,7 +785,7 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	else:
 		minigame_background_center.modulate = current_garden.color
 	# Lesson button
-	_handle_lesson_button(current_lesson_number, lesson_unlocks["look_and_learn"] as StudentProgression.Status, current_garden.color)
+	_handle_lesson_button(current_lesson_number, lesson_unlocks["look_and_learn"] as StudentProgression.Status)
 	# Minigames
 	var minigame_layouts: Array[MinigameLayout] = _get_minigame_layouts()
 	for layout_index: int in minigame_layouts.size():
@@ -853,9 +811,8 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	minigame_layout_opened.emit()
 
 
-func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status, color: Color) -> void:
+func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status) -> void:
 	lesson_button.text = lessons[lesson_number][0].grapheme
-	lesson_button.completed_color = color
 	lesson_button.set_button_disabled(status == StudentProgression.Status.Locked)
 	lesson_button.completed = status == StudentProgression.Status.Completed
 	lesson_button_particles.emitting = status == StudentProgression.Status.Unlocked
@@ -1012,7 +969,6 @@ func set_up_path() -> void:
 		var garden_control: Garden = garden_parent.get_child(index)
 		for button: GardenLayout.GardenLayoutLessonButton in garden_layout.lesson_buttons:
 			var point_position: Vector2 = garden_parent.position + garden_control.position + Vector2(button.position)
-			point_position += garden_control.get_button_size() / 2
 			var point_in_position: Vector2 = Vector2.ZERO
 			if curve.point_count > 0:
 				point_in_position = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position

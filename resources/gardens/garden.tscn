@@ -40,7 +40,6 @@ mouse_filter = 2
 
 [node name="LessonButton" parent="Buttons" unique_id=1734726442 instance=ExtResource("4_epm30")]
 layout_mode = 0
-completed_color = Color(0.588235, 0.439216, 0.878431, 1)
 
 [node name="Jellyfish" type="TextureRect" parent="."]
 layout_mode = 0
