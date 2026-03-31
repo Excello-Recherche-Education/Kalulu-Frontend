@@ -1,11 +1,7 @@
 [gd_scene format=3 uid="uid://delcgui3v0eek"]
 
-[ext_resource type="Texture2D" uid="uid://3iuuq06ovbos" path="res://assets/theme/button_normal_empty.svg" id="1_pdrhc"]
-[ext_resource type="Texture2D" uid="uid://j7sffldhbunj" path="res://assets/theme/button_pressed_empty.svg" id="2_2g676"]
-[ext_resource type="Texture2D" uid="uid://be30a3cmy0w46" path="res://assets/theme/button_focused_empty.svg" id="3_fksie"]
-[ext_resource type="Texture2D" uid="uid://c0rumwiaimvxy" path="res://assets/theme/button_disabled.svg" id="4_4vg60"]
+[ext_resource type="Texture2D" uid="uid://cxjy5f7oyl8mq" path="res://assets/gardens/buttons/lesson_circle.png" id="lesson_circle"]
 [ext_resource type="Script" uid="uid://d1gj4en3e7b8b" path="res://sources/lesson_screen/lesson_button.gd" id="4_mbltp"]
-[ext_resource type="Texture2D" uid="uid://dwk8xgv3xsmm0" path="res://assets/theme/button_center.svg" id="6_o0qkw"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="7_rtwam"]
 
 [node name="LessonButton" type="TextureButton" unique_id=530361935]
@@ -15,15 +11,15 @@ offset_bottom = 300.0
 pivot_offset = Vector2(150, 150)
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture_normal = ExtResource("1_pdrhc")
-texture_pressed = ExtResource("2_2g676")
-texture_hover = ExtResource("3_fksie")
-texture_disabled = ExtResource("4_4vg60")
-texture_focused = ExtResource("1_pdrhc")
+texture_normal = ExtResource("lesson_circle")
+texture_pressed = ExtResource("lesson_circle")
+texture_hover = ExtResource("lesson_circle")
+texture_disabled = ExtResource("lesson_circle")
+texture_focused = ExtResource("lesson_circle")
 stretch_mode = 0
 script = ExtResource("4_mbltp")
-base_color = Color(0.109804, 0.14902, 0.384314, 1)
-completed_color = Color(0.109804, 0.14902, 0.384314, 1)
+base_color = Color(0.0901961, 0.427451, 0.470588, 1)
+completed_color = Color(0.0901961, 0.427451, 0.470588, 1)
 
 [node name="RightFX" parent="." unique_id=1485482935 instance=ExtResource("7_rtwam")]
 unique_name_in_owner = true
@@ -37,6 +33,23 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Border" type="TextureRect" parent="." unique_id=1026350138]
+unique_name_in_owner = true
+visible = false
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("lesson_circle")
+expand_mode = 1
+
 [node name="Center" type="TextureRect" parent="." unique_id=1026350137]
 unique_name_in_owner = true
 show_behind_parent = true
@@ -46,7 +59,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("6_o0qkw")
+texture = ExtResource("lesson_circle")
+expand_mode = 1
 
 [node name="Label" type="Label" parent="." unique_id=540958749]
 unique_name_in_owner = true
@@ -60,8 +74,6 @@ offset_top = 8.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 110
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -78,4 +90,5 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("6_o0qkw")
+texture = ExtResource("lesson_circle")
+expand_mode = 1

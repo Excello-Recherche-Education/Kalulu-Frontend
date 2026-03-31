@@ -10,8 +10,15 @@ enum FlowerSizes{
 }
 
 const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/plant_%02d_%02d_%s.png"
-const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d_open.png"
-const LESSON_BUTTON_SCENE: PackedScene = preload("res://sources/lesson_screen/lesson_button.tscn")
+const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/Garden_%02d.png"
+const LESSON_BUTTON_SCENE_PATH: String = "res://sources/lesson_screen/lesson_button.tscn"
+static var _lesson_button_scene_cache: PackedScene = null
+
+
+static func get_lesson_button_scene() -> PackedScene:
+	if not _lesson_button_scene_cache:
+		_lesson_button_scene_cache = load(LESSON_BUTTON_SCENE_PATH)
+	return _lesson_button_scene_cache
 const FLOWER_MATERIAL_PATH: String = "res://resources/gardens/flower_material.tres"
 const FLOWER_Z_INDEX: int = 1
 
@@ -96,7 +103,11 @@ func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonB
 func set_background(p_color: int) -> void:
 	if not background:
 		return
-	background.texture = load(BACKGROUND_PATH_MODEL % [p_color+1])
+	var path: String = BACKGROUND_PATH_MODEL % [p_color + 1]
+	if ResourceLoader.exists(path):
+		background.texture = load(path)
+	else:
+		background.texture = load(BACKGROUND_PATH_MODEL % [1])
 	color = garden_colors[p_color]
 	for button: LessonButton in get_lesson_buttons():
 		button.completed_color = color
@@ -104,7 +115,7 @@ func set_background(p_color: int) -> void:
 
 func _ensure_button_controls_count(target_count: int) -> void:
 	while get_lesson_buttons().size() < target_count:
-		var new_button: LessonButton = LESSON_BUTTON_SCENE.instantiate()
+		var new_button: LessonButton = get_lesson_button_scene().instantiate()
 		new_button.completed_color = color
 		buttons.add_child(new_button)
 		new_button.owner = self
