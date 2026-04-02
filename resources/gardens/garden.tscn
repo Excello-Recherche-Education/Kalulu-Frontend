@@ -37,8 +37,45 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="LessonButton" parent="Buttons" unique_id=1734726442 instance=ExtResource("4_epm30")]
+[node name="Slot1" parent="Buttons" instance=ExtResource("4_epm30")]
 layout_mode = 0
+offset_left = 540.0
+offset_top = 1158.0
+offset_right = 840.0
+offset_bottom = 1458.0
+pivot_offset = Vector2(150, 150)
+
+[node name="Slot2" parent="Buttons" instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 843.0
+offset_top = 954.0
+offset_right = 1143.0
+offset_bottom = 1254.0
+pivot_offset = Vector2(150, 150)
+
+[node name="Slot3" parent="Buttons" instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1118.0
+offset_top = 750.0
+offset_right = 1418.0
+offset_bottom = 1050.0
+pivot_offset = Vector2(150, 150)
+
+[node name="Slot4" parent="Buttons" instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1353.0
+offset_top = 546.0
+offset_right = 1653.0
+offset_bottom = 846.0
+pivot_offset = Vector2(150, 150)
+
+[node name="Slot5" parent="Buttons" instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1560.0
+offset_top = 342.0
+offset_right = 1860.0
+offset_bottom = 642.0
+pivot_offset = Vector2(150, 150)
 
 [node name="Jellyfish" type="TextureRect" parent="." unique_id=1070527896]
 layout_mode = 0

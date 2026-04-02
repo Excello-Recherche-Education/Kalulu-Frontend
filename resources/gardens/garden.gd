@@ -11,16 +11,18 @@ enum FlowerSizes{
 
 const FLOWER_PATH_MODEL: String = "res://assets/gardens/flowers/plant_%02d_%02d_%s.png"
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/Garden_%02d.png"
-const LESSON_BUTTON_SCENE_PATH: String = "res://sources/lesson_screen/lesson_button.tscn"
 const FLOWER_MATERIAL_PATH: String = "res://resources/gardens/flower_material.tres"
-static var _lesson_button_scene_cache: PackedScene = null
-
-
-static func get_lesson_button_scene() -> PackedScene:
-	if not _lesson_button_scene_cache:
-		_lesson_button_scene_cache = load(LESSON_BUTTON_SCENE_PATH)
-	return _lesson_button_scene_cache
 const FLOWER_Z_INDEX: int = 1
+const MAX_LESSONS: int = 5
+
+# Maps lesson count → which slot indices to use
+const SLOT_SELECTION: Dictionary = {
+	1: [2],
+	2: [1, 3],
+	3: [0, 2, 4],
+	4: [0, 1, 3, 4],
+	5: [0, 1, 2, 3, 4],
+}
 
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
@@ -33,8 +35,12 @@ var color: Color
 var current_progression: float = 0.0
 var max_progression: float = 0.0
 var garden_index: int = -1
+# Maps visible button index → slot node
+var active_buttons: Array[LessonButton] = []
 
-@onready var buttons: Control = $Buttons
+@onready var all_slots: Array[LessonButton] = [
+	$Buttons/Slot1, $Buttons/Slot2, $Buttons/Slot3, $Buttons/Slot4, $Buttons/Slot5
+]
 @onready var flowers_container: Control = $Flowers
 @onready var flower_material: Material = load(FLOWER_MATERIAL_PATH)
 @onready var flower_controls: Array[TextureRect] = []
@@ -42,10 +48,9 @@ var garden_index: int = -1
 
 
 func get_button_size() -> Vector2:
-	var lesson_buttons: Array[LessonButton] = get_lesson_buttons()
-	if lesson_buttons.is_empty():
+	if all_slots.is_empty():
 		return Vector2.ZERO
-	return lesson_buttons[0].get_size()
+	return all_slots[0].get_size()
 
 
 func set_garden_layout(p_garden_layout: GardenLayout) -> void:
@@ -55,7 +60,7 @@ func set_garden_layout(p_garden_layout: GardenLayout) -> void:
 	garden_layout = p_garden_layout
 	set_flowers(garden_layout.flowers)
 	set_background(garden_layout.color)
-	set_lesson_buttons(garden_layout.lesson_buttons)
+	_configure_slots(garden_layout.lesson_buttons.size())
 
 
 func set_flowers(p_flowers: Array[GardenLayout.Flower], default_size: FlowerSizes = FlowerSizes.NOT_STARTED) -> void:
@@ -87,18 +92,23 @@ func update_flowers() -> void:
 		flower_scene.position = Vector2(flower.position.x - flower_scene.size.x / 2, flower.position.y - flower_scene.size.y)
 
 
-func set_lesson_buttons(p_lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton]) -> void:
-	_ensure_button_controls_count(p_lesson_buttons.size())
-	var lesson_buttons: Array[LessonButton] = get_lesson_buttons()
-	for lesson_button_control: LessonButton in lesson_buttons:
-		lesson_button_control.hide()
-	for index: int in range(p_lesson_buttons.size()):
-		var lesson_button: GardenLayout.GardenLayoutLessonButton = p_lesson_buttons[index]
-		var lesson_button_control: LessonButton = lesson_buttons[index]
-		var half_size: Vector2 = lesson_button_control.size / 2.0
-		lesson_button_control.position = Vector2(lesson_button.position) - half_size
-		lesson_button_control.show()
-		lesson_button_control.pivot_offset = half_size
+func _configure_slots(lesson_count: int) -> void:
+	if not all_slots or all_slots.is_empty():
+		return
+	if lesson_count > MAX_LESSONS:
+		Log.error("Garden: Too many lessons (%d) for garden %d — maximum is %d" % [lesson_count, garden_index, MAX_LESSONS])
+		lesson_count = MAX_LESSONS
+	# Hide all slots
+	for slot: LessonButton in all_slots:
+		slot.hide()
+		slot.set_button_disabled(true)
+	# Show only selected slots
+	active_buttons.clear()
+	var indices: Array = SLOT_SELECTION.get(lesson_count, [])
+	for i: int in range(indices.size()):
+		var slot: LessonButton = all_slots[indices[i]]
+		slot.show()
+		active_buttons.append(slot)
 
 
 func set_background(p_color: int) -> void:
@@ -109,13 +119,6 @@ func set_background(p_color: int) -> void:
 	background.texture = texture
 	background.modulate = LessonButton.UNLOCKED_FILL_COLOR
 	color = garden_colors[p_color]
-
-
-func _ensure_button_controls_count(target_count: int) -> void:
-	while get_lesson_buttons().size() < target_count:
-		var new_button: LessonButton = get_lesson_button_scene().instantiate()
-		buttons.add_child(new_button)
-		new_button.owner = self
 
 
 func _ensure_flower_controls_count(target_count: int) -> void:
@@ -138,17 +141,19 @@ func _create_flower_control() -> TextureRect:
 
 
 func get_lesson_buttons() -> Array[LessonButton]:
-	var lesson_buttons: Array[LessonButton] = []
-	for button: Node in buttons.get_children():
-		if button is LessonButton:
-			lesson_buttons.append(button as LessonButton)
-	return lesson_buttons
+	return active_buttons
 
 
 func set_lesson_label(ind: int, text: String) -> void:
-	var lesson_buttons: Array[LessonButton] = get_lesson_buttons()
-	assert(ind < lesson_buttons.size())
-	lesson_buttons[ind].text = text
+	assert(ind < active_buttons.size())
+	active_buttons[ind].text = text
+
+
+func get_slot_center(slot_index: int) -> Vector2:
+	if slot_index < 0 or slot_index >= all_slots.size():
+		return Vector2.ZERO
+	var slot: LessonButton = all_slots[slot_index]
+	return slot.position + slot.size / 2.0
 
 
 func get_progress_ratio() -> float:
