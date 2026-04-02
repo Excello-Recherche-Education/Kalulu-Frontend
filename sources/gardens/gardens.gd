@@ -374,7 +374,7 @@ func _play_brain_tutorial() -> void:
 
 
 static func _get_lesson_button_half_size() -> Vector2:
-	return Vector2(150, 150)
+	return Vector2(120, 120)
 
 
 static func _get_layout_cache_base_dir() -> String:
