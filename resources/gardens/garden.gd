@@ -4,6 +4,7 @@ extends Control
 
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/Garden_%02d.png"
 const PLANT_PATH_MODEL: String = "res://assets/gardens/plants/garden_plant_%02d.png"
+const PLANT_COLOR: Color = Color("0a555b")
 const PLANT_COUNT: int = 8
 const MAX_LESSONS: int = 5
 
@@ -16,7 +17,7 @@ const SLOT_SELECTION: Dictionary = {
 	5: [0, 1, 2, 3, 4],
 }
 
-# Plant positions and sizes (x, y, w, h) — matching the Explanation.png layout.
+# Plant positions and sizes (x, y, w, h)
 # Positions are relative to the garden control (2400x1800).
 const PLANT_LAYOUTS: Array[Dictionary] = [
 	{x = 280, y = 300, w = 120, h = 950},   # 01: tall seaweed, far left
@@ -99,6 +100,7 @@ func _create_plants() -> void:
 		var layout: Dictionary = PLANT_LAYOUTS[i]
 		plant.position = Vector2(layout.x, layout.y)
 		plant.size = Vector2(layout.w, layout.h)
+		plant.modulate = PLANT_COLOR
 		plant.visible = false
 		plants_container.add_child(plant)
 		plant_controls.append(plant)
