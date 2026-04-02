@@ -23,7 +23,6 @@ const SLOT_CENTERS: Array[Vector2i] = [
 	Vector2i(690, 1308), Vector2i(993, 1104), Vector2i(1268, 900),
 	Vector2i(1503, 696), Vector2i(1710, 492)
 ]
-static var lesson_button_half_size: Vector2 = Vector2.ZERO
 static var transition_data: Dictionary = {}
 static var cached_gardens_layout: GardensLayout
 static var cached_layout_session_id: int = -1
@@ -445,18 +444,7 @@ func _play_brain_tutorial() -> void:
 
 
 static func _get_lesson_button_half_size() -> Vector2:
-	if lesson_button_half_size != Vector2.ZERO:
-		return lesson_button_half_size
-	var button: LessonButton = Garden.get_lesson_button_scene().instantiate()
-	var measured_size: Vector2 = button.get_combined_minimum_size()
-	if measured_size == Vector2.ZERO:
-		measured_size = button.get_rect().size
-	if measured_size == Vector2.ZERO and button.texture_normal:
-		measured_size = button.texture_normal.get_size()
-	if measured_size == Vector2.ZERO:
-		measured_size = Vector2(300, 300)
-	lesson_button_half_size = measured_size * 0.5
-	return lesson_button_half_size
+	return Vector2(150, 150)
 
 
 static func _get_layout_cache_base_dir() -> String:
