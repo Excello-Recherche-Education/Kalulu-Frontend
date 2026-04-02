@@ -144,3 +144,19 @@ Yes! Kalulu is available on:
 ### 💻 Is there a desktop version?
 
 An experimental version for Windows, Mac, and Linux is currently in development. Stay tuned!
+
+---
+
+## Related Repositories
+
+| Repository | Description |
+|---|---|
+| [Kalulu Backend](https://github.com/Excello-Recherche-Education/Kalulu-AWS-Lambda) | Serverless API — authentication, sync, dashboards, and data management |
+| [Kalulu Language Lambda](https://github.com/Excello-Recherche-Education/Kalulu-Language-Lambda) | Pipeline that processes language packs and updates the database |
+| [Kalulu Languages](https://github.com/Excello-Recherche-Education/Kalulu-Languages) | Linguistic data packs (French, Spanish, Portuguese etc...) |
+
+---
+
+Built with care by [Excello Recherche & Education](https://github.com/Excello-Recherche-Education)
+
+We also have a [website](https://excellolab.org/)
