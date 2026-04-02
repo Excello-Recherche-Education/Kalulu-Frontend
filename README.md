@@ -51,18 +51,18 @@ Each lesson follows a structured sequence based on linguistic data drawn from ch
 
 We recommend forking the repository before cloning, so you can easily contribute or manage your own changes.
 
-1. Go to the [Kalulu GitHub Repository](https://github.com/Excello-Recherche-Education/Kalulu).
+1. Go to the [Kalulu GitHub Repository](https://github.com/Excello-Recherche-Education/Kalulu-Frontend).
 2. Click the **Fork** button at the top-right corner to create your own copy of the repo.
 3. Once forked, open your terminal and run the following commands:
 
 ```bash
 # Clone your fork of the repository
-git clone https://github.com/YOUR_USERNAME/Kalulu.git
+git clone https://github.com/YOUR_USERNAME/Kalulu-Frontend.git
 # Or
-git clone git@github.com:YOUR_USERNAME/Kalulu.git
+git clone git@github.com:YOUR_USERNAME/Kalulu-Frontend.git
 
 # Navigate into the project directory
-cd Kalulu
+cd Kalulu-Frontend
 ```
 
 🔁 *Remember to replace `YOUR_USERNAME` with your actual GitHub username.*
@@ -141,9 +141,13 @@ Yes! Kalulu is available on:
 - [![Android](https://img.shields.io/badge/PlayStore-Kalulu-green?logo=google-play)](https://play.google.com/store/apps/details?id=org.godotengine.kalulu)
 - [![iOS](https://img.shields.io/badge/AppStore-Kalulu-blue?logo=apple)](https://apps.apple.com/fr/app/kalulu-education/id1639075967)
 
-### 💻 Is there a desktop version?
+### 💻 Is Kalulu available on desktop?
 
-An experimental version for Windows, Mac, and Linux is currently in development. Stay tuned!
+Yes! Desktop versions for Windows, Mac, and Linux are available in the [Releases](https://github.com/Excello-Recherche-Education/Kalulu-Frontend/releases) section.
+
+### 🌐 Is Kalulu available directly on the web?
+
+We are working on it, stay tuned!
 
 ---
 
