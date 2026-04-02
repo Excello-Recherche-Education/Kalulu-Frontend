@@ -88,7 +88,7 @@ texture = ExtResource("jellyfish_tex")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Flowers" type="Control" parent="." unique_id=1191503680]
+[node name="Plants" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -8,16 +8,13 @@ const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
-const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 const GARDEN_SIZE: int = 2400
 const GARDEN_TEXTURES_NB: int = 20
-const FLOWER_TYPES_NB: int = 5
-const FLOWER_OFFSET_FROM_LESSON: float = 150.0
 const GARDEN_CENTER_Y: float = 900.0
 const GARDEN_CIRCLE_RADIUS: float = 850.0
 const FINAL_BOSS_PADDING: float = 120.0
 const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
-const LAYOUT_VERSION: int = 12
+const LAYOUT_VERSION: int = 13
 # Centers of the 5 fixed button slots (must match garden.tscn positions)
 const SLOT_CENTERS: Array[Vector2i] = [
 	Vector2i(690, 1308), Vector2i(993, 1104), Vector2i(1268, 900),
@@ -55,7 +52,6 @@ var current_lesson_number: int = -1
 var current_garden: Garden
 var current_button_global_position: Vector2 = Vector2.ZERO
 var current_button: LessonButton
-var lesson_to_flower_index: Dictionary = {}
 var scroll_end_base_width: float = 0.0
 var back_button_hold_progress_seconds: float = 0.0
 var is_back_button_hold_active: bool = false
@@ -155,25 +151,19 @@ func _build_transition_context() -> Dictionary:
 func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 	var lesson_index: int = 1
 	for garden_control: Garden in garden_parent.get_children():
-		garden_control.current_progression = 0.0
-		garden_control.max_progression = 0.0
+		var total_minigames: int = 0
+		var completed_minigames_total: int = 0
 		var lesson_buttons: Array[LessonButton] = garden_control.get_lesson_buttons()
 		for button_index: int in range(lesson_buttons.size()):
 			var button: LessonButton = lesson_buttons[button_index]
 			if not lesson_index in lessons:
 				button.set_button_disabled(true)
-				if button_index < garden_control.flowers_visible.size():
-					garden_control.flowers_visible[button_index] = false
 				continue
 
-			lesson_to_flower_index[lesson_index] = {"garden": garden_control, "index": button_index}
 			var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[lesson_index]
 			var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_index)
 			var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.Locked and not is_blocked_by_boss
-			var is_look_and_learn_completed: bool = lesson_unlocks["look_and_learn"] == StudentProgression.Status.Completed and not is_blocked_by_boss
 			button.set_button_disabled(not is_lesson_unlocked)
-			if button_index < garden_control.flowers_visible.size():
-				garden_control.flowers_visible[button_index] = is_look_and_learn_completed
 
 			if transition_context.new_lesson_unlocked and lesson_index == transition_context.newly_unlocked_lesson_number:
 				button.set_button_disabled(true)
@@ -182,19 +172,15 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 				button.completed = UserDataManager.student_progression.is_lesson_completed(lesson_index) and not is_blocked_by_boss
 
 			var completed_minigames: int = 0 if is_blocked_by_boss else _count_completed_minigames(lesson_index)
-			if transition_context.is_current_lesson and transition_context.is_first_clear and transition_context.is_minigame_completed and transition_context.last_played_minigame_number >= 0 and transition_context.last_played_minigame_number < (lesson_unlocks["games"] as Array).size():
-				if lesson_unlocks["games"][transition_context.last_played_minigame_number] == StudentProgression.Status.Completed:
-					completed_minigames = max(0, completed_minigames - 1)
-
-			if button_index < garden_control.flowers_sizes.size():
-				garden_control.flowers_sizes[button_index] = _get_flower_size_for_completion(completed_minigames)
 			if not is_blocked_by_boss:
-				garden_control.current_progression += float(completed_minigames)
-				garden_control.max_progression += float((lesson_unlocks["games"] as Array).size())
+				completed_minigames_total += completed_minigames
+				total_minigames += (lesson_unlocks["games"] as Array).size()
 
+			garden_control.current_progression = float(completed_minigames_total)
+			garden_control.max_progression = float(total_minigames)
 			lesson_index += 1
 
-		garden_control.update_flowers()
+		garden_control.update_plants_visibility(completed_minigames_total, total_minigames)
 	_set_up_boss_buttons()
 
 #endregion
@@ -252,7 +238,6 @@ func _center_scroll_on_x(target_x: float) -> void:
 #region Transitions and animations
 
 func _handle_transition_sequences(transition_context: Dictionary) -> void:
-	await _apply_transition_flowers(transition_context)
 	await get_tree().create_timer(1).timeout
 	if transition_data.has("current_lesson_number") and not transition_data.get("skip_minigame_layout", false):
 		await _open_minigames_layout(_get_current_lesson_button(transition_data.current_lesson_number as int), transition_data.current_lesson_number as int)
@@ -261,60 +246,6 @@ func _handle_transition_sequences(transition_context: Dictionary) -> void:
 	elif transition_context.pending_boss_gate_lesson > 0:
 		await _play_boss_unlock_sequence(transition_context.pending_boss_gate_lesson as int)
 
-
-func _apply_transition_flowers(transition_context: Dictionary) -> void:
-	_reveal_completed_look_and_learn_flower()
-
-	# Play the flowers animation if needed
-	if transition_context.is_current_lesson and transition_context.is_first_clear and transition_context.is_minigame_completed and transition_data.has("current_lesson_number"):
-		await get_tree().create_timer(1).timeout
-		var lesson_number: int = transition_data.current_lesson_number as int
-		var flower_info: Dictionary = _get_flower_info(lesson_number)
-		if flower_info.is_empty():
-			return
-		var target_garden: Garden = flower_info.garden
-		var target_index: int = flower_info.index
-		var new_completed_count: int = _count_completed_minigames(lesson_number)
-		var target_size: Garden.FlowerSizes = _get_flower_size_for_completion(new_completed_count)
-		var current_size: Garden.FlowerSizes = target_garden.flowers_sizes[target_index]
-		target_garden.flowers_visible[target_index] = true
-		if target_size != current_size:
-			var flower_vfx: FlowerVFX = FLOWER_VFX.instantiate()
-			target_garden.flower_controls[target_index].add_child(flower_vfx)
-			flower_vfx.anchor_bottom = 0.5
-			flower_vfx.anchor_top = 0.5
-			flower_vfx.anchor_left = 0.5
-			flower_vfx.anchor_right = 0.5
-			flower_vfx.play()
-			await get_tree().create_timer(0.5).timeout
-			target_garden.flowers_sizes[target_index] = target_size
-			target_garden.update_flowers()
-
-
-func _reveal_completed_look_and_learn_flower() -> void:
-	if not transition_data.get("look_and_learn_completed", false):
-		return
-	var lesson_number_variant: Variant = transition_data.get("current_lesson_number", null)
-	if lesson_number_variant == null:
-		return
-	var lesson_number: int = lesson_number_variant as int
-	var flower_info: Dictionary = _get_flower_info(lesson_number)
-	if flower_info.is_empty():
-		return
-	var target_garden: Garden = flower_info.garden
-	var target_index: int = flower_info.index
-	if target_index < target_garden.flowers_visible.size():
-		target_garden.flowers_visible[target_index] = true
-	if target_index < target_garden.flowers_sizes.size():
-		target_garden.flowers_sizes[target_index] = _get_flower_size_for_completion(_count_completed_minigames(lesson_number))
-	target_garden.update_flowers()
-
-
-func _get_flower_info(lesson_number: int) -> Dictionary:
-	var flower_info: Dictionary = lesson_to_flower_index.get(lesson_number, {})
-	if flower_info and flower_info.has("garden") and flower_info.has("index"):
-		return flower_info
-	return {}
 
 
 func _play_new_lesson_unlock_sequence() -> void:
@@ -396,7 +327,6 @@ func _ready() -> void:
 	
 	_lock()
 	
-	lesson_to_flower_index.clear()
 	var transition_context: Dictionary = _build_transition_context()
 	_set_unlocked_path(transition_context.most_advanced_unlocked_lesson_index as int, (transition_context.pending_boss_gate_lesson <= 0) as bool)
 	_apply_progression_to_gardens(transition_context)
@@ -669,20 +599,6 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 		lesson_buttons.append(GardenLayout.GardenLayoutLessonButton.new(lesson_position, path_out))
 	garden_layout.lesson_buttons = lesson_buttons
 
-	# Build flowers (keep RNG call order identical)
-	var flowers: Array[GardenLayout.Flower] = []
-	for lesson_index: int in range(resolved_positions.size()):
-		var flower_position: Vector2i = Utils.round_vec2(resolved_positions[lesson_index])
-		flower_position.y = max(0, flower_position.y - int(FLOWER_OFFSET_FROM_LESSON))
-		var flower_color: int = garden_layout.color
-		var flower_type: int = (lesson_index + garden_index + rng.randi_range(0, FLOWER_TYPES_NB - 1)) % FLOWER_TYPES_NB
-		var adjusted: Vector2 = _find_valid_position_on_garden(garden_layout.color, Vector2(flower_position), garden_dimensions)
-		if not adjusted.is_equal_approx(Vector2(flower_position)):
-			Log.trace("Gardens: Adjusted flower %s position from %s to %s to stay on background" % [str(lesson_index), str(flower_position), str(adjusted)])
-			flower_position = Utils.round_vec2(adjusted)
-		Log.trace("Gardens: Garden %s flower %s position (%s,%s), color %s, type %s" % [str(garden_index), str(lesson_index), str(flower_position.x), str(flower_position.y), str(flower_color), str(flower_type)])
-		flowers.append(GardenLayout.Flower.new(flower_color, flower_type, flower_position))
-	garden_layout.flowers = flowers
 	Log.info("Gardens: Finished generating garden layout for garden %s" % str(garden_index))
 	return garden_layout
 
@@ -735,11 +651,9 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 		return
 	# Sets the variables for the current garden and lesson
 	current_lesson_number = lesson_number
-	var flower_info: Dictionary = _get_flower_info(current_lesson_number)
-	if flower_info and flower_info.has("garden"):
-		current_garden = flower_info.garden
-	else:
-		Log.warn("Gardens: Flower info corrupted for lesson %d" % lesson_number)
+	var garden_index_for_lesson: int = _get_garden_index_for_lesson(lesson_number)
+	if garden_index_for_lesson >= 0 and garden_index_for_lesson < garden_parent.get_child_count():
+		current_garden = garden_parent.get_child(garden_index_for_lesson)
 	if button:
 		current_button = button
 		current_button.show_placeholder(true)
@@ -836,17 +750,6 @@ func _count_completed_minigames(lesson_number: int) -> int:
 			completed += 1
 	return completed
 
-
-func _get_flower_size_for_completion(completed_minigames: int) -> Garden.FlowerSizes:
-	match completed_minigames:
-		1:
-			return Garden.FlowerSizes.SMALL
-		2:
-			return Garden.FlowerSizes.MEDIUM
-		3:
-			return Garden.FlowerSizes.LARGE
-		_:
-			return Garden.FlowerSizes.NOT_STARTED
 
 
 func _close_minigames_layout() -> void:
