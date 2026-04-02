@@ -836,19 +836,26 @@ func set_up_path() -> void:
 		return
 	points = []
 	var curve: Curve2D = Curve2D.new()
-	for index: int in range(gardens_layout.gardens.size()):
-		if index >= garden_parent.get_child_count():
-			break
-		var garden_layout: GardenLayout = gardens_layout.gardens[index]
+	for index: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(index)
-		for button: GardenLayout.GardenLayoutLessonButton in garden_layout.lesson_buttons:
-			var point_position: Vector2 = garden_parent.position + garden_control.position + Vector2(button.position)
-			var point_in_position: Vector2 = Vector2.ZERO
+		var lesson_buttons: Array[LessonButton] = garden_control.get_lesson_buttons()
+		for button_index: int in range(lesson_buttons.size()):
+			var button: LessonButton = lesson_buttons[button_index]
+			var button_center: Vector2 = button.position + button.size / 2.0
+			var point_position: Vector2 = garden_parent.position + garden_control.position + button_center
+			var path_out: Vector2 = Vector2.ZERO
+			if button_index + 1 < lesson_buttons.size():
+				var next_button: LessonButton = lesson_buttons[button_index + 1]
+				var next_center: Vector2 = next_button.position + next_button.size / 2.0
+				path_out = (next_center - button_center) * 0.5
+			else:
+				path_out = Vector2(GARDEN_SIZE * 0.15, (-1.0 if (index % 2) == 0 else 1.0) * 60)
+			var point_in: Vector2 = Vector2.ZERO
 			if curve.point_count > 0:
-				point_in_position = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position
-			curve.add_point(point_position, point_in_position, button.path_out_position)
-			points.append([point_position, point_in_position, button.path_out_position])
-		locked_line.points = curve.get_baked_points()
+				point_in = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position
+			curve.add_point(point_position, point_in, path_out)
+			points.append([point_position, point_in, path_out])
+	locked_line.points = curve.get_baked_points()
 
 
 func _set_unlocked_path(max_unlocked_lesson_index: int, include_boss_segment: bool = true) -> void:
