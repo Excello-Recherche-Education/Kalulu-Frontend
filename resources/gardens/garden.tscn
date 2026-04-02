@@ -4,6 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://d26hapg1hf8a6" path="res://assets/gardens/gardens/Garden_01.png" id="3_p7iv3"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://bfqwlmmliem8f" path="res://assets/gardens/jellyfish.png" id="jellyfish_tex"]
+[ext_resource type="Texture2D" uid="uid://dcekseb1b3ruw" path="res://assets/gardens/plants/garden_plant_01.png" id="plant_01"]
+[ext_resource type="Texture2D" uid="uid://clkr31osbqs7u" path="res://assets/gardens/plants/garden_plant_02.png" id="plant_02"]
+[ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/plants/garden_plant_03.png" id="plant_03"]
+[ext_resource type="Texture2D" uid="uid://bqp1nkk53y1is" path="res://assets/gardens/plants/garden_plant_04.png" id="plant_04"]
+[ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/plants/garden_plant_05.png" id="plant_05"]
+[ext_resource type="Texture2D" uid="uid://f2arml2f4b8p" path="res://assets/gardens/plants/garden_plant_06.png" id="plant_06"]
+[ext_resource type="Texture2D" uid="uid://dufnm3bkfe5yv" path="res://assets/gardens/plants/garden_plant_07.png" id="plant_07"]
+[ext_resource type="Texture2D" uid="uid://dt2a0dea0hv0c" path="res://assets/gardens/plants/garden_plant_08.png" id="plant_08"]
 
 [node name="Garden" type="Control" unique_id=1950346826]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
@@ -28,7 +36,112 @@ mouse_filter = 2
 texture = ExtResource("3_p7iv3")
 expand_mode = 1
 
-[node name="Buttons" type="Control" parent="." unique_id=1943933146]
+[node name="Plants" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Plant1" type="TextureRect" parent="Plants"]
+modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+layout_mode = 0
+offset_left = 280.0
+offset_top = 300.0
+offset_right = 400.0
+offset_bottom = 1250.0
+mouse_filter = 2
+texture = ExtResource("plant_01")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Plant2" type="TextureRect" parent="Plants"]
+modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+layout_mode = 0
+offset_left = 530.0
+offset_top = 1320.0
+offset_right = 740.0
+offset_bottom = 1670.0
+mouse_filter = 2
+texture = ExtResource("plant_02")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Plant3" type="TextureRect" parent="Plants"]
+modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+layout_mode = 0
+offset_left = 1150.0
+offset_top = 1200.0
+offset_right = 1590.0
+offset_bottom = 1530.0
+mouse_filter = 2
+texture = ExtResource("plant_03")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Plant4" type="TextureRect" parent="Plants"]
+modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+layout_mode = 0
+offset_left = 820.0
+offset_top = 530.0
+offset_right = 1120.0
+offset_bottom = 950.0
+mouse_filter = 2
+texture = ExtResource("plant_04")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Plant5" type="TextureRect" parent="Plants"]
+modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+layout_mode = 0
+offset_left = 650.0
+offset_top = 820.0
+offset_right = 795.0
+offset_bottom = 1130.0
+mouse_filter = 2
+texture = ExtResource("plant_05")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Plant6" type="TextureRect" parent="Plants"]
+modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+layout_mode = 0
+offset_left = 1560.0
+offset_top = 720.0
+offset_right = 1745.0
+offset_bottom = 1035.0
+mouse_filter = 2
+texture = ExtResource("plant_06")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Plant7" type="TextureRect" parent="Plants"]
+modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+layout_mode = 0
+offset_left = 720.0
+offset_top = 1250.0
+offset_right = 850.0
+offset_bottom = 1770.0
+mouse_filter = 2
+texture = ExtResource("plant_07")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Plant8" type="TextureRect" parent="Plants"]
+modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+layout_mode = 0
+offset_left = 1050.0
+offset_top = 480.0
+offset_right = 1450.0
+offset_bottom = 880.0
+mouse_filter = 2
+texture = ExtResource("plant_08")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Buttons" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -77,7 +190,7 @@ offset_right = 1860.0
 offset_bottom = 642.0
 pivot_offset = Vector2(150, 150)
 
-[node name="Jellyfish" type="TextureRect" parent="." unique_id=1070527896]
+[node name="Jellyfish" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = 1269.0
 offset_top = 50.0
@@ -87,12 +200,3 @@ mouse_filter = 2
 texture = ExtResource("jellyfish_tex")
 expand_mode = 1
 stretch_mode = 5
-
-[node name="Plants" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2

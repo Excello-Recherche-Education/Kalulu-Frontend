@@ -3,10 +3,8 @@ class_name Garden
 extends Control
 
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/Garden_%02d.png"
-const PLANT_PATH_MODEL: String = "res://assets/gardens/plants/garden_plant_%02d.png"
-const PLANT_COLOR: Color = Color("0a555b")
-const PLANT_COUNT: int = 8
 const MAX_LESSONS: int = 5
+const PLANT_COUNT: int = 8
 
 # Maps lesson count → which slot indices to use
 const SLOT_SELECTION: Dictionary = {
@@ -17,19 +15,6 @@ const SLOT_SELECTION: Dictionary = {
 	5: [0, 1, 2, 3, 4],
 }
 
-# Plant positions and sizes (x, y, w, h)
-# Positions are relative to the garden control (2400x1800).
-const PLANT_LAYOUTS: Array[Dictionary] = [
-	{x = 280, y = 300, w = 120, h = 950},   # 01: tall seaweed, far left
-	{x = 530, y = 1320, w = 210, h = 350},  # 02: short bush, bottom-left
-	{x = 1150, y = 1200, w = 440, h = 330}, # 03: fish school, bottom-right
-	{x = 820, y = 530, w = 300, h = 420},   # 04: plant cluster, center-left
-	{x = 650, y = 820, w = 145, h = 310},   # 05: small plant, left of center
-	{x = 1560, y = 720, w = 185, h = 315},  # 06: small seaweed, right side
-	{x = 720, y = 1250, w = 130, h = 520},  # 07: medium seaweed, bottom-center
-	{x = 1050, y = 480, w = 400, h = 400},  # 08: fish school, upper-center
-]
-
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
 @export var garden_colors: Array[Color] = []
@@ -39,17 +24,15 @@ var current_progression: float = 0.0
 var max_progression: float = 0.0
 var garden_index: int = -1
 var active_buttons: Array[LessonButton] = []
-var plant_controls: Array[TextureRect] = []
 
 @onready var all_slots: Array[LessonButton] = [
 	$Buttons/Slot1, $Buttons/Slot2, $Buttons/Slot3, $Buttons/Slot4, $Buttons/Slot5
 ]
-@onready var plants_container: Control = $Plants
+@onready var all_plants: Array[TextureRect] = [
+	$Plants/Plant1, $Plants/Plant2, $Plants/Plant3, $Plants/Plant4,
+	$Plants/Plant5, $Plants/Plant6, $Plants/Plant7, $Plants/Plant8
+]
 @onready var background: TextureRect = %Background
-
-
-func _ready() -> void:
-	_create_plants()
 
 
 func set_garden_layout(p_garden_layout: GardenLayout) -> void:
@@ -59,6 +42,7 @@ func set_garden_layout(p_garden_layout: GardenLayout) -> void:
 	garden_layout = p_garden_layout
 	set_background(garden_layout.color)
 	_configure_slots(garden_layout.lesson_buttons.size())
+	_hide_all_plants()
 
 
 func _configure_slots(lesson_count: int) -> void:
@@ -88,37 +72,24 @@ func set_background(p_color: int) -> void:
 	color = garden_colors[p_color]
 
 
-func _create_plants() -> void:
-	if not plants_container:
+func _hide_all_plants() -> void:
+	if not all_plants:
 		return
-	for i: int in range(PLANT_COUNT):
-		var plant: TextureRect = TextureRect.new()
-		plant.texture = load(PLANT_PATH_MODEL % [i + 1])
-		plant.expand_mode = 1
-		plant.stretch_mode = 5
-		plant.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var layout: Dictionary = PLANT_LAYOUTS[i]
-		plant.position = Vector2(layout.x, layout.y)
-		plant.size = Vector2(layout.w, layout.h)
-		plant.modulate = PLANT_COLOR
+	for plant: TextureRect in all_plants:
 		plant.visible = false
-		plants_container.add_child(plant)
-		plant_controls.append(plant)
 
 
 func update_plants_visibility(completed_minigames: int, total_minigames: int) -> void:
-	if total_minigames <= 0:
+	if not all_plants or total_minigames <= 0:
 		return
-	# Distribute 8 plants across the total minigame count.
-	# 0 completed → 0 visible, all completed → all 8 visible.
 	var visible_count: int = 0
 	if completed_minigames >= total_minigames:
 		visible_count = PLANT_COUNT
 	elif completed_minigames > 0:
 		visible_count = int(float(completed_minigames) * float(PLANT_COUNT) / float(total_minigames))
 		visible_count = clampi(visible_count, 1, PLANT_COUNT - 1)
-	for i: int in range(plant_controls.size()):
-		plant_controls[i].visible = i < visible_count
+	for i: int in range(all_plants.size()):
+		all_plants[i].visible = i < visible_count
 
 
 func get_button_size() -> Vector2:
