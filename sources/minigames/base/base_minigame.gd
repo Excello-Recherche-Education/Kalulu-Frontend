@@ -412,9 +412,9 @@ func _play_stimulus() -> void:
 
 
 func _set_root_timers_paused(paused: bool) -> void:
-	for child in get_children():
+	for child: Node in get_children():
 		if child is Timer:
-			child.paused = paused
+			(child as Timer).paused = paused
 
 
 func _highlight() -> void:

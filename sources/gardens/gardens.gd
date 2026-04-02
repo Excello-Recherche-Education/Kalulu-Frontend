@@ -17,8 +17,8 @@ const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
 const LAYOUT_VERSION: int = 13
 # Centers of the 5 fixed button slots (must match garden.tscn positions)
 const SLOT_CENTERS: Array[Vector2i] = [
-	Vector2i(690, 1308), Vector2i(993, 1104), Vector2i(1268, 900),
-	Vector2i(1503, 696), Vector2i(1710, 492)
+	Vector2i(704, 1186), Vector2i(987, 1000), Vector2i(1290, 920),
+	Vector2i(1565, 748), Vector2i(1864, 598)
 ]
 static var transition_data: Dictionary = {}
 static var cached_gardens_layout: GardensLayout

@@ -135,12 +135,12 @@ func _on_filters_changed(checked: bool, index: int) -> void:
 func _input(event: InputEvent) -> void:
 	# Pinch to zoom on mobile
 	if event is InputEventMagnifyGesture:
-		var new_zoom := clampf(zoom_level * event.factor, ZOOM_MIN, ZOOM_MAX)
+		var new_zoom: float = clampf(zoom_level * event.factor, ZOOM_MIN, ZOOM_MAX)
 		_apply_zoom(new_zoom, event.position)
 		get_viewport().set_input_as_handled()
 	# Mouse wheel zoom on desktop
 	elif event is InputEventMouseButton and event.pressed:
-		var new_zoom := zoom_level
+		var new_zoom: float = zoom_level
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			new_zoom = clampf(zoom_level + ZOOM_STEP_WHEEL, ZOOM_MIN, ZOOM_MAX)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
