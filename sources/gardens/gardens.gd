@@ -4,18 +4,33 @@ extends Control
 signal minigame_layout_opened()
 
 const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
-const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
+const GARDEN_SCENES: Array[PackedScene] = [
+	preload("res://resources/gardens/garden_01.tscn"),
+	preload("res://resources/gardens/garden_02.tscn"),
+	preload("res://resources/gardens/garden_03.tscn"),
+	preload("res://resources/gardens/garden_04.tscn"),
+	preload("res://resources/gardens/garden_05.tscn"),
+	preload("res://resources/gardens/garden_06.tscn"),
+	preload("res://resources/gardens/garden_07.tscn"),
+	preload("res://resources/gardens/garden_08.tscn"),
+	preload("res://resources/gardens/garden_09.tscn"),
+	preload("res://resources/gardens/garden_10.tscn"),
+	preload("res://resources/gardens/garden_11.tscn"),
+	preload("res://resources/gardens/garden_12.tscn"),
+]
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
 const GARDEN_SIZE: int = 2400
-const GARDEN_TEXTURES_NB: int = 20
+const GARDENS_COUNT: int = 12
+const MIN_LESSONS: int = 12
+const MAX_LESSONS: int = 60
 const GARDEN_CENTER_Y: float = 900.0
 const GARDEN_CIRCLE_RADIUS: float = 850.0
 const FINAL_BOSS_PADDING: float = 120.0
 const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
-const LAYOUT_VERSION: int = 13
-# Centers of the 5 fixed button slots (must match garden.tscn positions)
+const LAYOUT_VERSION: int = 14
+# Centers of the 5 fixed button slots (must match garden_XX.tscn positions)
 const SLOT_CENTERS: Array[Vector2i] = [
 	Vector2i(704, 1186), Vector2i(987, 1000), Vector2i(1290, 920),
 	Vector2i(1565, 748), Vector2i(1864, 598)
@@ -313,9 +328,14 @@ func _play_new_lesson_unlock_sequence() -> void:
 func _ready() -> void:
 	UserDataManager.start_synchronization_timer()
 	_load_lessons_from_database()
+	var lesson_count: int = lessons.size()
+	if lesson_count < MIN_LESSONS or lesson_count > MAX_LESSONS:
+		Log.error("Gardens: Lesson count must be between %d and %d, got %d" % [MIN_LESSONS, MAX_LESSONS, lesson_count])
+		assert(false, "Lesson count must be between %d and %d, got %d" % [MIN_LESSONS, MAX_LESSONS, lesson_count])
+		return
 	if scroll_end_spacer:
 		scroll_end_base_width = scroll_end_spacer.custom_minimum_size.x
-	gardens_layout = get_session_layout(lessons.size())
+	gardens_layout = get_session_layout(lesson_count)
 	_set_up_lessons()
 	
 	# If there is no data, skips the rest
@@ -541,8 +561,8 @@ static func generate_gardens_layout(total_lessons: int) -> GardensLayout:
 	Log.trace("Gardens: Total lessons to layout: %s" % str(total_lessons))
 	var lessons_left: int = total_lessons
 	var garden_index: int = 0
-	while lessons_left > 0 and garden_index < GARDEN_TEXTURES_NB:
-		var gardens_left: int = GARDEN_TEXTURES_NB - garden_index
+	while lessons_left > 0 and garden_index < GARDENS_COUNT:
+		var gardens_left: int = GARDENS_COUNT - garden_index
 		var lessons_for_garden: int = int(ceili(float(lessons_left) / float(gardens_left)))
 		Log.trace("Gardens: Generating layout for garden %s with %s lessons left" % [str(garden_index), str(lessons_left)])
 		layout.gardens.append(_generate_single_garden_layout(garden_index, lessons_for_garden))
@@ -557,7 +577,7 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 	Log.info("Gardens: Generating single garden layout for garden %s" % str(garden_index))
 	Log.trace("Gardens: Garden %s will include %s lessons" % [str(garden_index), str(lessons_for_garden)])
 	var garden_layout: GardenLayout = GardenLayout.new()
-	garden_layout.color = garden_index % GARDEN_TEXTURES_NB
+	garden_layout.color = garden_index % GARDENS_COUNT
 	Log.trace("Gardens: Garden %s color index set to %s" % [str(garden_index), str(garden_layout.color)])
 	var garden_dimensions: Vector2 = Vector2(GARDEN_SIZE, GARDEN_CENTER_Y * 2.0)
 	var half_size: Vector2 = _get_lesson_button_half_size()
@@ -816,7 +836,7 @@ func add_gardens() -> void:
 	for layout_index: int in range(gardens_layout.gardens.size()):
 		Log.trace("Gardens: Preparing garden %s with layout index %s" % [str(garden_index), str(layout_index)])
 		var garden_layout: GardenLayout = gardens_layout.gardens[layout_index]
-		var garden: Garden = GARDEN_SCENE.instantiate()
+		var garden: Garden = GARDEN_SCENES[layout_index].instantiate()
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
 		garden_index += 1

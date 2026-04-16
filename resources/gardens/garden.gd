@@ -17,7 +17,12 @@ const SLOT_SELECTION: Dictionary = {
 
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
-@export var garden_colors: Array[Color] = []
+## Title is for developer reference only — not used in-game.
+@export var title: String = ""
+@export var unlocked_lesson: Color = Color("176d78")
+@export var unlocked_lesson_text: Color = Color("9be3ea")
+@export var completed_lesson: Color = Color("9be3ea")
+@export var completed_lesson_text: Color = Color("0a555b")
 
 var color: Color
 var current_progression: float = 0.0
@@ -42,6 +47,7 @@ func set_garden_layout(p_garden_layout: GardenLayout) -> void:
 	garden_layout = p_garden_layout
 	set_background(garden_layout.color)
 	_configure_slots(garden_layout.lesson_buttons.size())
+	_apply_colors_to_buttons()
 	_hide_all_plants()
 
 
@@ -68,8 +74,13 @@ func set_background(p_color: int) -> void:
 	var path: String = BACKGROUND_PATH_MODEL % [p_color + 1]
 	var texture: Texture2D = load(path) if ResourceLoader.exists(path) else load(BACKGROUND_PATH_MODEL % [1])
 	background.texture = texture
-	background.modulate = LessonButton.UNLOCKED_FILL_COLOR
-	color = garden_colors[p_color]
+	background.modulate = unlocked_lesson
+	color = unlocked_lesson
+
+
+func _apply_colors_to_buttons() -> void:
+	for button: LessonButton in active_buttons:
+		button.set_garden_colors(unlocked_lesson, unlocked_lesson_text, completed_lesson, completed_lesson_text)
 
 
 func _hide_all_plants() -> void:
