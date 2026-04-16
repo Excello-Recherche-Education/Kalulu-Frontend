@@ -539,16 +539,13 @@ static func generate_gardens_layout(total_lessons: int) -> GardensLayout:
 		return layout
 	Log.info("Gardens: Generating dynamic gardens layout")
 	Log.trace("Gardens: Total lessons to layout: %s" % str(total_lessons))
-	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-	rng.seed = 13985
-	Log.trace("Gardens: RNG seeded with %s" % str(rng.seed))
 	var lessons_left: int = total_lessons
 	var garden_index: int = 0
 	while lessons_left > 0 and garden_index < GARDEN_TEXTURES_NB:
 		var gardens_left: int = GARDEN_TEXTURES_NB - garden_index
 		var lessons_for_garden: int = int(ceili(float(lessons_left) / float(gardens_left)))
 		Log.trace("Gardens: Generating layout for garden %s with %s lessons left" % [str(garden_index), str(lessons_left)])
-		layout.gardens.append(_generate_single_garden_layout(garden_index, lessons_for_garden, rng))
+		layout.gardens.append(_generate_single_garden_layout(garden_index, lessons_for_garden))
 		lessons_left -= lessons_for_garden
 		Log.trace("Gardens: Lessons left after garden %s generation: %s" % [str(garden_index), str(lessons_left)])
 		garden_index += 1
@@ -556,7 +553,7 @@ static func generate_gardens_layout(total_lessons: int) -> GardensLayout:
 	return layout
 
 
-static func _generate_single_garden_layout(garden_index: int, lessons_for_garden: int, rng: RandomNumberGenerator) -> GardenLayout:
+static func _generate_single_garden_layout(garden_index: int, lessons_for_garden: int) -> GardenLayout:
 	Log.info("Gardens: Generating single garden layout for garden %s" % str(garden_index))
 	Log.trace("Gardens: Garden %s will include %s lessons" % [str(garden_index), str(lessons_for_garden)])
 	var garden_layout: GardenLayout = GardenLayout.new()
