@@ -9,15 +9,15 @@ const UNLOCKED_BORDER_COLOR: Color = Color("fbb03b")
 const DEFAULT_COMPLETED_FILL_COLOR: Color = Color("9be3ea")
 const DEFAULT_COMPLETED_LABEL_COLOR: Color = Color("0a555b")
 
-var unlocked_fill_color: Color = DEFAULT_UNLOCKED_FILL_COLOR
-var unlocked_label_color: Color = DEFAULT_UNLOCKED_LABEL_COLOR
-var completed_fill_color: Color = DEFAULT_COMPLETED_FILL_COLOR
-var completed_label_color: Color = DEFAULT_COMPLETED_LABEL_COLOR
-
 @export var text: String:
 	set = _set_text
 @export var completed: bool = false:
 	set = _set_completed
+
+var unlocked_fill_color: Color = DEFAULT_UNLOCKED_FILL_COLOR
+var unlocked_label_color: Color = DEFAULT_UNLOCKED_LABEL_COLOR
+var completed_fill_color: Color = DEFAULT_COMPLETED_FILL_COLOR
+var completed_label_color: Color = DEFAULT_COMPLETED_LABEL_COLOR
 
 @onready var center: TextureRect = %Center
 @onready var border: TextureRect = %Border

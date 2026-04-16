@@ -330,8 +330,7 @@ func _ready() -> void:
 	_load_lessons_from_database()
 	var lesson_count: int = lessons.size()
 	if lesson_count < MIN_LESSONS or lesson_count > MAX_LESSONS:
-		Log.error("Gardens: Lesson count must be between %d and %d, got %d" % [MIN_LESSONS, MAX_LESSONS, lesson_count])
-		assert(false, "Lesson count must be between %d and %d, got %d" % [MIN_LESSONS, MAX_LESSONS, lesson_count])
+		Log.alert("Gardens: Lesson count must be between %d and %d, got %d" % [MIN_LESSONS, MAX_LESSONS, lesson_count])
 		return
 	if scroll_end_spacer:
 		scroll_end_base_width = scroll_end_spacer.custom_minimum_size.x
