@@ -31,6 +31,7 @@ completed_lesson_text = Color(0.345098, 0.266667, 0.490196, 1)
 
 [node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true
+modulate = Color(0.454902, 0.352941, 0.647059, 1)
 layout_mode = 0
 offset_left = 350.0
 offset_top = 50.0

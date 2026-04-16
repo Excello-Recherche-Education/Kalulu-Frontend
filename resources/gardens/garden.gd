@@ -74,7 +74,6 @@ func set_background(p_color: int) -> void:
 	var path: String = BACKGROUND_PATH_MODEL % [p_color + 1]
 	var texture: Texture2D = load(path) if ResourceLoader.exists(path) else load(BACKGROUND_PATH_MODEL % [1])
 	background.texture = texture
-	background.modulate = unlocked_lesson
 	color = unlocked_lesson
 
 
