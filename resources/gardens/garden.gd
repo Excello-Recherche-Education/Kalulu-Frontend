@@ -5,7 +5,6 @@ extends Control
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/Garden_%02d.png"
 const MAX_LESSONS: int = 5
 const PLANT_COUNT: int = 8
-
 # Maps lesson count → which slot indices to use
 const SLOT_SELECTION: Dictionary = {
 	1: [2],
@@ -62,8 +61,8 @@ func _configure_slots(lesson_count: int) -> void:
 		slot.set_button_disabled(true)
 	active_buttons.clear()
 	var indices: Array = SLOT_SELECTION.get(lesson_count, [])
-	for i: int in range(indices.size()):
-		var slot: LessonButton = all_slots[indices[i]]
+	for index: int in range(indices.size()):
+		var slot: LessonButton = all_slots[indices[index]]
 		slot.show()
 		active_buttons.append(slot)
 
@@ -98,8 +97,8 @@ func update_plants_visibility(completed_minigames: int, total_minigames: int) ->
 	elif completed_minigames > 0:
 		visible_count = int(float(completed_minigames) * float(PLANT_COUNT) / float(total_minigames))
 		visible_count = clampi(visible_count, 1, PLANT_COUNT - 1)
-	for i: int in range(all_plants.size()):
-		all_plants[i].visible = i < visible_count
+	for index: int in range(all_plants.size()):
+		all_plants[index].visible = index < visible_count
 
 
 func get_button_size() -> Vector2:

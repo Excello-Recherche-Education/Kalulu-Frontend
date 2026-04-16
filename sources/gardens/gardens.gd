@@ -35,6 +35,7 @@ const SLOT_CENTERS: Array[Vector2i] = [
 	Vector2i(704, 1186), Vector2i(987, 1000), Vector2i(1290, 920),
 	Vector2i(1565, 748), Vector2i(1864, 598)
 ]
+
 static var transition_data: Dictionary = {}
 static var cached_gardens_layout: GardensLayout
 static var cached_layout_session_id: int = -1
@@ -262,7 +263,6 @@ func _handle_transition_sequences(transition_context: Dictionary) -> void:
 		await _play_boss_unlock_sequence(transition_context.pending_boss_gate_lesson as int)
 
 
-
 func _play_new_lesson_unlock_sequence() -> void:
 	var max_lesson: int = UserDataManager.student_progression.get_max_unlocked_lesson_index()
 	await get_tree().create_timer(2).timeout
@@ -392,7 +392,6 @@ func _play_brain_tutorial() -> void:
 
 #region Garden layout helpers
 
-
 static func _get_lesson_button_half_size() -> Vector2:
 	return Vector2(120, 120)
 
@@ -432,7 +431,6 @@ static func _save_layout_to_cache(layout: GardensLayout, session_id: int, total_
 	var error: Error = ResourceSaver.save(layout, cache_path)
 	if error != OK:
 		Log.warn("Gardens: Failed to save layout cache at %s: %s" % [cache_path, error_string(error)])
-
 
 
 static func _find_valid_position_on_garden(_garden_color_index: int, tested_position: Vector2, _garden_dimensions: Vector2, _probe_half_size: Vector2 = Vector2.ZERO) -> Vector2:
@@ -623,8 +621,8 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 static func _get_slot_positions_for_count(lesson_count: int) -> Array[Vector2i]:
 	var indices: Array = Garden.SLOT_SELECTION.get(lesson_count, [])
 	var positions: Array[Vector2i] = []
-	for i: int in indices:
-		positions.append(SLOT_CENTERS[i])
+	for index: int in indices:
+		positions.append(SLOT_CENTERS[index])
 	return positions
 
 #endregion
@@ -766,7 +764,6 @@ func _count_completed_minigames(lesson_number: int) -> int:
 		if game_status == StudentProgression.Status.Completed:
 			completed += 1
 	return completed
-
 
 
 func _close_minigames_layout() -> void:

@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://delcgui3v0eek"]
 
-[ext_resource type="Texture2D" uid="uid://cxjy5f7oyl8mq" path="res://assets/gardens/buttons/lesson_circle.png" id="lesson_circle"]
 [ext_resource type="Script" uid="uid://d1gj4en3e7b8b" path="res://sources/lesson_screen/lesson_button.gd" id="4_mbltp"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="7_rtwam"]
+[ext_resource type="Texture2D" uid="uid://cxjy5f7oyl8mq" path="res://assets/gardens/buttons/lesson_circle.png" id="lesson_circle"]
 
 [node name="LessonButton" type="TextureButton" unique_id=530361935]
-z_index = 1
 self_modulate = Color(1, 1, 1, 0)
+z_index = 1
 offset_right = 300.0
 offset_bottom = 300.0
 pivot_offset = Vector2(150, 150)
