@@ -23,11 +23,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
-title = "Garden 01"
-unlocked_lesson = Color(0.091, 0.427, 0.471, 1)
-unlocked_lesson_text = Color(0.608, 0.89, 0.918, 1)
-completed_lesson = Color(0.608, 0.89, 0.918, 1)
-completed_lesson_text = Color(0.039, 0.333, 0.357, 1)
+title = "Blue Jellyfish Garden"
+unlocked_lesson = Color(0.0392157, 0.333333, 0.356863, 1)
+unlocked_lesson_text = Color(0.607843, 0.890196, 0.917647, 1)
+completed_lesson = Color(0.607843, 0.890196, 0.917647, 1)
+completed_lesson_text = Color(0.0392157, 0.333333, 0.356863, 1)
 
 [node name="Background" type="TextureRect" parent="."]
 unique_name_in_owner = true

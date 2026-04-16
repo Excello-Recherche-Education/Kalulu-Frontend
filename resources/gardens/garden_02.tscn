@@ -23,11 +23,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
-title = "Garden 02"
-unlocked_lesson = Color(0.357, 0.176, 0.557, 1)
-unlocked_lesson_text = Color(0.831, 0.71, 0.941, 1)
-completed_lesson = Color(0.831, 0.71, 0.941, 1)
-completed_lesson_text = Color(0.227, 0.102, 0.369, 1)
+title = "Purple Turtle Garden"
+unlocked_lesson = Color(0.345098, 0.266667, 0.490196, 1)
+unlocked_lesson_text = Color(0.894118, 0.827451, 0.937255, 1)
+completed_lesson = Color(0.894118, 0.827451, 0.937255, 1)
+completed_lesson_text = Color(0.345098, 0.266667, 0.490196, 1)
 
 [node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true

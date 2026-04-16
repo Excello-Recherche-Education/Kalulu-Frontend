@@ -19,7 +19,7 @@ const SLOT_SELECTION: Dictionary = {
 	set = set_garden_layout
 ## Title is for developer reference only — not used in-game.
 @export var title: String = ""
-@export var unlocked_lesson: Color = Color("176d78")
+@export var unlocked_lesson: Color = Color("0a555b")
 @export var unlocked_lesson_text: Color = Color("9be3ea")
 @export var completed_lesson: Color = Color("9be3ea")
 @export var completed_lesson_text: Color = Color("0a555b")
