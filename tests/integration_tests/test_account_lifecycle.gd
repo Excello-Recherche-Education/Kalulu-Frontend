@@ -88,7 +88,7 @@ func test_full_account_creation_login_and_deletion() -> void:
 	register_data.education_method = TeacherSettings.EducationMethod.Complete
 	register_data.email = _test_email
 	register_data.password = TEST_PASSWORD
-	register_data.language = "fr"
+	register_data.language = "fr_FR"
 
 	# Device 1 — two students
 	var student_alice: StudentData = StudentData.new()
