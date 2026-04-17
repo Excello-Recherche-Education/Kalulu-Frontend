@@ -65,7 +65,7 @@ func _ready() -> void:
 	default_label_background_color = texture_rect_text_box.self_modulate
 	
 	# Skips the whole tutorial
-	if UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
+	if UserDataManager.is_speech_played(TYPE_NAMES[minigame_name]):
 		tutorial_count = 2
 
 
@@ -158,7 +158,7 @@ func _present_next_word() -> void:
 	if _is_boss_session():
 		_boss_answer_start_ms = Time.get_ticks_msec()
 	if tutorial_count == 0:
-		var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro_test_game_first_word"))
+		var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "intro_test_game_first_word"))
 		minigame_ui.play_kalulu_speech(speech)
 		await minigame_ui.kalulu_speech_ended
 
@@ -224,12 +224,12 @@ func _on_answer_dropped(is_answered_real: bool) -> void:
 		words_to_present.pop_front()
 		await _play_correct_answer_animation(target_button)
 		if tutorial_count == 0:
-			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_first_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "win_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_second_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "win_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
@@ -245,12 +245,12 @@ func _on_answer_dropped(is_answered_real: bool) -> void:
 			wrong_fx.play()
 		words_to_present_next.append(words_to_present.pop_front())
 		if tutorial_count == 0:
-			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_first_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "lose_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_second_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "lose_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1

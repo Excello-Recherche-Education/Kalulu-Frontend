@@ -15,7 +15,7 @@ func _ready() -> void:
 	Database.db.query(query)
 	if Database.db.query_result.is_empty():
 		Database.db.query("CREATE TABLE ExerciseTypes (ID INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, Type TEXT NOT NULL)")
-	for exercise_name: String in Minigame.Type.keys():
+	for exercise_name: String in Minigame.TYPE_NAMES:
 		Database.db.query("SELECT * FROM ExerciseTypes WHERE Type = '%s'" % exercise_name)
 		if Database.db.query_result.is_empty():
 			Database.db.insert_row("ExerciseTypes",

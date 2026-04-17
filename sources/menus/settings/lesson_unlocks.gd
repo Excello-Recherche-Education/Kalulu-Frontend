@@ -90,7 +90,7 @@ func _on_back_button_pressed() -> void:
 func _get_highest_unlocked_lesson() -> int:
 	var highest_unlocked_lesson: int = 0
 	for lesson_number: int in progression.unlocks.keys():
-		if progression.unlocks[lesson_number]["look_and_learn"] >= StudentProgression.Status.Unlocked:
+		if progression.unlocks[lesson_number]["look_and_learn"] >= StudentProgression.Status.UNLOCKED:
 			highest_unlocked_lesson = max(highest_unlocked_lesson, lesson_number)
 	return highest_unlocked_lesson
 

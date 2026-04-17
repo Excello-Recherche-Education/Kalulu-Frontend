@@ -4,25 +4,38 @@ extends Control
 signal minigame_layout_opened()
 
 const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
-const GARDEN_SCENE: PackedScene = preload("res://resources/gardens/garden.tscn")
+const GARDEN_SCENES: Array[PackedScene] = [
+	preload("res://resources/gardens/garden_01.tscn"),
+	preload("res://resources/gardens/garden_02.tscn"),
+	preload("res://resources/gardens/garden_03.tscn"),
+	preload("res://resources/gardens/garden_04.tscn"),
+	preload("res://resources/gardens/garden_05.tscn"),
+	preload("res://resources/gardens/garden_06.tscn"),
+	preload("res://resources/gardens/garden_07.tscn"),
+	preload("res://resources/gardens/garden_08.tscn"),
+	preload("res://resources/gardens/garden_09.tscn"),
+	preload("res://resources/gardens/garden_10.tscn"),
+	preload("res://resources/gardens/garden_11.tscn"),
+	preload("res://resources/gardens/garden_12.tscn"),
+]
 const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
-const FLOWER_VFX: PackedScene = preload("res://sources/gardens/flower_particle.tscn")
 const GARDEN_SIZE: int = 2400
-const GARDEN_TEXTURES_NB: int = 20
-const FLOWER_TYPES_NB: int = 5
-const FLOWER_OFFSET_FROM_LESSON: float = 200.0
-const LESSON_VERTICAL_BASE: float = 920.0
-const LESSON_VERTICAL_RANGE: float = 300.0
+const GARDENS_COUNT: int = 12
+const MIN_LESSONS: int = 12
+const MAX_LESSONS: int = 60
+const GARDEN_CENTER_Y: float = 900.0
+const GARDEN_CIRCLE_RADIUS: float = 850.0
 const FINAL_BOSS_PADDING: float = 120.0
-const TRANSPARENCY_THRESHOLD: float = 0.05
-const POSITION_SEARCH_STEP: int = 40
-const MAX_POSITION_SEARCH_RADIUS: int = 300
 const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
+const LAYOUT_VERSION: int = 14
+# Centers of the 5 fixed button slots (must match garden_XX.tscn positions)
+const SLOT_CENTERS: Array[Vector2i] = [
+	Vector2i(704, 1186), Vector2i(987, 1000), Vector2i(1290, 920),
+	Vector2i(1565, 748), Vector2i(1864, 598)
+]
 
-static var lesson_button_half_size: Vector2 = Vector2.ZERO
-static var garden_alpha_cache: Dictionary = {}
 static var transition_data: Dictionary = {}
 static var cached_gardens_layout: GardensLayout
 static var cached_layout_session_id: int = -1
@@ -55,7 +68,6 @@ var current_lesson_number: int = -1
 var current_garden: Garden
 var current_button_global_position: Vector2 = Vector2.ZERO
 var current_button: LessonButton
-var lesson_to_flower_index: Dictionary = {}
 var scroll_end_base_width: float = 0.0
 var back_button_hold_progress_seconds: float = 0.0
 var is_back_button_hold_active: bool = false
@@ -155,46 +167,36 @@ func _build_transition_context() -> Dictionary:
 func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 	var lesson_index: int = 1
 	for garden_control: Garden in garden_parent.get_children():
-		garden_control.current_progression = 0.0
-		garden_control.max_progression = 0.0
+		var total_minigames: int = 0
+		var completed_minigames_total: int = 0
 		var lesson_buttons: Array[LessonButton] = garden_control.get_lesson_buttons()
 		for button_index: int in range(lesson_buttons.size()):
 			var button: LessonButton = lesson_buttons[button_index]
 			if not lesson_index in lessons:
-				button.set_disabled(true)
-				if button_index < garden_control.flowers_visible.size():
-					garden_control.flowers_visible[button_index] = false
+				button.set_button_disabled(true)
 				continue
 
-			lesson_to_flower_index[lesson_index] = {"garden": garden_control, "index": button_index}
 			var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[lesson_index]
 			var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_index)
-			var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.Locked and not is_blocked_by_boss
-			var is_look_and_learn_completed: bool = lesson_unlocks["look_and_learn"] == StudentProgression.Status.Completed and not is_blocked_by_boss
-			button.set_disabled(not is_lesson_unlocked)
-			if button_index < garden_control.flowers_visible.size():
-				garden_control.flowers_visible[button_index] = is_look_and_learn_completed
+			var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.LOCKED and not is_blocked_by_boss
+			button.set_button_disabled(not is_lesson_unlocked)
 
 			if transition_context.new_lesson_unlocked and lesson_index == transition_context.newly_unlocked_lesson_number:
-				button.set_disabled(true)
+				button.set_button_disabled(true)
 
 			if not(transition_context.new_lesson_unlocked and lesson_index == transition_context.newly_unlocked_lesson_number - 1):
 				button.completed = UserDataManager.student_progression.is_lesson_completed(lesson_index) and not is_blocked_by_boss
 
 			var completed_minigames: int = 0 if is_blocked_by_boss else _count_completed_minigames(lesson_index)
-			if transition_context.is_current_lesson and transition_context.is_first_clear and transition_context.is_minigame_completed and transition_context.last_played_minigame_number >= 0 and transition_context.last_played_minigame_number < (lesson_unlocks["games"] as Array).size():
-				if lesson_unlocks["games"][transition_context.last_played_minigame_number] == StudentProgression.Status.Completed:
-					completed_minigames = max(0, completed_minigames - 1)
-
-			if button_index < garden_control.flowers_sizes.size():
-				garden_control.flowers_sizes[button_index] = _get_flower_size_for_completion(completed_minigames)
 			if not is_blocked_by_boss:
-				garden_control.current_progression += float(completed_minigames)
-				garden_control.max_progression += float((lesson_unlocks["games"] as Array).size())
+				completed_minigames_total += completed_minigames
+				total_minigames += (lesson_unlocks["games"] as Array).size()
 
+			garden_control.current_progression = float(completed_minigames_total)
+			garden_control.max_progression = float(total_minigames)
 			lesson_index += 1
 
-		garden_control.update_flowers()
+		garden_control.update_plants_visibility(completed_minigames_total, total_minigames)
 	_set_up_boss_buttons()
 
 #endregion
@@ -252,7 +254,6 @@ func _center_scroll_on_x(target_x: float) -> void:
 #region Transitions and animations
 
 func _handle_transition_sequences(transition_context: Dictionary) -> void:
-	await _apply_transition_flowers(transition_context)
 	await get_tree().create_timer(1).timeout
 	if transition_data.has("current_lesson_number") and not transition_data.get("skip_minigame_layout", false):
 		await _open_minigames_layout(_get_current_lesson_button(transition_data.current_lesson_number as int), transition_data.current_lesson_number as int)
@@ -260,61 +261,6 @@ func _handle_transition_sequences(transition_context: Dictionary) -> void:
 		await _play_new_lesson_unlock_sequence()
 	elif transition_context.pending_boss_gate_lesson > 0:
 		await _play_boss_unlock_sequence(transition_context.pending_boss_gate_lesson as int)
-
-
-func _apply_transition_flowers(transition_context: Dictionary) -> void:
-	_reveal_completed_look_and_learn_flower()
-
-	# Play the flowers animation if needed
-	if transition_context.is_current_lesson and transition_context.is_first_clear and transition_context.is_minigame_completed and transition_data.has("current_lesson_number"):
-		await get_tree().create_timer(1).timeout
-		var lesson_number: int = transition_data.current_lesson_number as int
-		var flower_info: Dictionary = _get_flower_info(lesson_number)
-		if flower_info.is_empty():
-			return
-		var target_garden: Garden = flower_info.garden
-		var target_index: int = flower_info.index
-		var new_completed_count: int = _count_completed_minigames(lesson_number)
-		var target_size: Garden.FlowerSizes = _get_flower_size_for_completion(new_completed_count)
-		var current_size: Garden.FlowerSizes = target_garden.flowers_sizes[target_index]
-		target_garden.flowers_visible[target_index] = true
-		if target_size != current_size:
-			var flower_vfx: FlowerVFX = FLOWER_VFX.instantiate()
-			target_garden.flower_controls[target_index].add_child(flower_vfx)
-			flower_vfx.anchor_bottom = 0.5
-			flower_vfx.anchor_top = 0.5
-			flower_vfx.anchor_left = 0.5
-			flower_vfx.anchor_right = 0.5
-			flower_vfx.play()
-			await get_tree().create_timer(0.5).timeout
-			target_garden.flowers_sizes[target_index] = target_size
-			target_garden.update_flowers()
-
-
-func _reveal_completed_look_and_learn_flower() -> void:
-	if not transition_data.get("look_and_learn_completed", false):
-		return
-	var lesson_number_variant: Variant = transition_data.get("current_lesson_number", null)
-	if lesson_number_variant == null:
-		return
-	var lesson_number: int = lesson_number_variant as int
-	var flower_info: Dictionary = _get_flower_info(lesson_number)
-	if flower_info.is_empty():
-		return
-	var target_garden: Garden = flower_info.garden
-	var target_index: int = flower_info.index
-	if target_index < target_garden.flowers_visible.size():
-		target_garden.flowers_visible[target_index] = true
-	if target_index < target_garden.flowers_sizes.size():
-		target_garden.flowers_sizes[target_index] = _get_flower_size_for_completion(_count_completed_minigames(lesson_number))
-	target_garden.update_flowers()
-
-
-func _get_flower_info(lesson_number: int) -> Dictionary:
-	var flower_info: Dictionary = lesson_to_flower_index.get(lesson_number, {})
-	if flower_info and flower_info.has("garden") and flower_info.has("index"):
-		return flower_info
-	return {}
 
 
 func _play_new_lesson_unlock_sequence() -> void:
@@ -373,7 +319,7 @@ func _play_new_lesson_unlock_sequence() -> void:
 
 	# Enable the next lesson button
 	if new_lesson_button:
-		new_lesson_button.set_disabled(false)
+		new_lesson_button.set_button_disabled(false)
 
 #endregion
 
@@ -382,9 +328,13 @@ func _play_new_lesson_unlock_sequence() -> void:
 func _ready() -> void:
 	UserDataManager.start_synchronization_timer()
 	_load_lessons_from_database()
+	var lesson_count: int = lessons.size()
+	if lesson_count < MIN_LESSONS or lesson_count > MAX_LESSONS:
+		Log.alert("Gardens: Lesson count must be between %d and %d, got %d" % [MIN_LESSONS, MAX_LESSONS, lesson_count])
+		return
 	if scroll_end_spacer:
 		scroll_end_base_width = scroll_end_spacer.custom_minimum_size.x
-	gardens_layout = get_session_layout(lessons.size())
+	gardens_layout = get_session_layout(lesson_count)
 	_set_up_lessons()
 	
 	# If there is no data, skips the rest
@@ -396,14 +346,13 @@ func _ready() -> void:
 	
 	_lock()
 	
-	lesson_to_flower_index.clear()
 	var transition_context: Dictionary = _build_transition_context()
 	_set_unlocked_path(transition_context.most_advanced_unlocked_lesson_index as int, (transition_context.pending_boss_gate_lesson <= 0) as bool)
 	_apply_progression_to_gardens(transition_context)
 	_scroll_to_starting_garden(transition_context)
 
 	await (OpeningCurtain as OpeningCurtainClass).open()
-	(MusicManager as MusicManagerClass).play((MusicManager as MusicManagerClass).Track.Garden)
+	(MusicManager as MusicManagerClass).play((MusicManager as MusicManagerClass).Track.GARDEN)
 	
 	# Handles all the animation played when entering the gardens
 	if transition_data:
@@ -442,45 +391,8 @@ func _play_brain_tutorial() -> void:
 
 #region Garden layout helpers
 
-static func _get_garden_background_image(garden_color_index: int) -> Image:
-	if garden_alpha_cache.has(garden_color_index):
-		return garden_alpha_cache[garden_color_index]
-
-	var path: String = Garden.BACKGROUND_PATH_MODEL % [garden_color_index + 1]
-	var garden_texture: Texture2D = load(path)
-	if not garden_texture:
-		Log.warn("Gardens: Unable to load garden texture %s, skipping transparency validation" % path)
-		return null
-	var garden_image: Image = garden_texture.get_image()
-	if not garden_image:
-		Log.warn("Gardens: Unable to retrieve image data for garden texture %s, skipping transparency validation" % path)
-		return null
-	garden_alpha_cache[garden_color_index] = garden_image
-	return garden_image
-
-
-static func _get_garden_dimensions(garden_color_index: int, garden_image: Image = null) -> Vector2:
-	if not garden_image:
-		garden_image = _get_garden_background_image(garden_color_index)
-	if not garden_image:
-		return Vector2(GARDEN_SIZE, LESSON_VERTICAL_BASE + LESSON_VERTICAL_RANGE)
-	var width_scale: float = float(GARDEN_SIZE) / float(maxf(1, garden_image.get_width()))
-	return Vector2(GARDEN_SIZE, float(garden_image.get_height()) * width_scale)
-
-
 static func _get_lesson_button_half_size() -> Vector2:
-	if lesson_button_half_size != Vector2.ZERO:
-		return lesson_button_half_size
-	var button: LessonButton = Garden.LESSON_BUTTON_SCENE.instantiate()
-	var measured_size: Vector2 = button.get_combined_minimum_size()
-	if measured_size == Vector2.ZERO:
-		measured_size = button.get_rect().size
-	if measured_size == Vector2.ZERO and button.texture_normal:
-		measured_size = button.texture_normal.get_size()
-	if measured_size == Vector2.ZERO:
-		measured_size = Vector2(300, 300)
-	lesson_button_half_size = measured_size * 0.5
-	return lesson_button_half_size
+	return Vector2(120, 120)
 
 
 static func _get_layout_cache_base_dir() -> String:
@@ -492,7 +404,7 @@ static func _get_layout_cache_base_dir() -> String:
 
 
 static func _get_layout_cache_path(session_id: int, total_lessons: int) -> String:
-	return _get_layout_cache_base_dir().path_join("layout_%s_%s.tres" % [str(session_id), str(total_lessons)])
+	return _get_layout_cache_base_dir().path_join("layout_v%s_%s_%s.tres" % [str(LAYOUT_VERSION), str(session_id), str(total_lessons)])
 
 
 static func _load_layout_from_cache(session_id: int, total_lessons: int) -> GardensLayout:
@@ -520,67 +432,14 @@ static func _save_layout_to_cache(layout: GardensLayout, session_id: int, total_
 		Log.warn("Gardens: Failed to save layout cache at %s: %s" % [cache_path, error_string(error)])
 
 
-static func _is_position_on_garden_texture(garden_color_index: int, tested_position: Vector2, garden_dimensions: Vector2, probe_half_size: Vector2 = Vector2.ZERO, garden_image: Image = null) -> bool:
-	if not garden_image:
-		garden_image = _get_garden_background_image(garden_color_index)
-	if not garden_image:
-		return true
-	var safe_dim: Vector2 = Utils.safe_dimensions(garden_dimensions)
-	var base_position: Vector2 = tested_position if probe_half_size == Vector2.ZERO else tested_position + probe_half_size
-	var offsets: Array[Vector2] = Utils.build_probe_offsets(probe_half_size)
-	for offset: Vector2 in offsets:
-		var sample: Vector2 = base_position + offset
-		if sample.x < 0.0 or sample.x > safe_dim.x or sample.y < 0.0 or sample.y > safe_dim.y:
-			return false
-		var pixel: Vector2i = Utils.position_to_pixel(sample, safe_dim, garden_image)
-		if garden_image.get_pixelv(pixel).a < TRANSPARENCY_THRESHOLD:
-			return false
-	return true
-
-
-static func _find_valid_position_on_garden(garden_color_index: int, tested_position: Vector2, garden_dimensions: Vector2, probe_half_size: Vector2 = Vector2.ZERO) -> Vector2:
-	var garden_image: Image = _get_garden_background_image(garden_color_index)
-	if not garden_image:
-		return Utils.clamp_position_to_area(tested_position, garden_dimensions, probe_half_size)
-	var clamped: Vector2 = Utils.clamp_position_to_area(tested_position, garden_dimensions, probe_half_size)
-	if _is_position_on_garden_texture(garden_color_index, clamped, garden_dimensions, probe_half_size, garden_image):
-		return clamped
-	# Try moving toward the center first (helps for very irregular shapes).
-	var center: Vector2 = garden_dimensions * 0.5
-	var toward_center: Vector2 = (center - clamped).normalized()
-	if toward_center.length() > 0.0:
-		for radius: int in range(POSITION_SEARCH_STEP, MAX_POSITION_SEARCH_RADIUS + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
-			var candidate: Vector2 = Utils.clamp_position_to_area(clamped + toward_center * float(radius), garden_dimensions, probe_half_size)
-			if _is_position_on_garden_texture(garden_color_index, candidate, garden_dimensions, probe_half_size, garden_image):
-				return candidate
-	# Radial scan around the point.
-	var angles: Array[float] = []
-	for angle_deg: int in range(0, 360, 30):
-		angles.append(deg_to_rad(angle_deg))
-	for radius: int in range(POSITION_SEARCH_STEP, MAX_POSITION_SEARCH_RADIUS + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
-		for angle: float in angles:
-			var offset: Vector2 = Vector2.RIGHT.rotated(angle) * float(radius)
-			var candidate2: Vector2 = Utils.clamp_position_to_area(clamped + offset, garden_dimensions, probe_half_size)
-			if _is_position_on_garden_texture(garden_color_index, candidate2, garden_dimensions, probe_half_size, garden_image):
-				return candidate2
-	# Fallback for very irregular gardens: search the whole texture to find the closest valid spot.
-	# This is slower than the radial scan, so we only run it as a last resort.
-	Log.trace("Gardens: Falling back to full texture scan for garden %s from position %s" % [str(garden_color_index), str(clamped)])
-	var closest_valid_position: Vector2 = clamped
-	var closest_distance: float = INF
-	for height: int in range(0, int(garden_dimensions.y) + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
-		for width: int in range(0, int(garden_dimensions.x) + POSITION_SEARCH_STEP, POSITION_SEARCH_STEP):
-			var candidate3: Vector2 = Utils.clamp_position_to_area(Vector2(float(width), float(height)), garden_dimensions, probe_half_size)
-			if not _is_position_on_garden_texture(garden_color_index, candidate3, garden_dimensions, probe_half_size, garden_image):
-				continue
-			var distance: float = candidate3.distance_squared_to(clamped)
-			if distance < closest_distance:
-				closest_distance = distance
-				closest_valid_position = candidate3
-	if closest_distance < INF:
-		Log.trace("Gardens: Full texture scan selected %s for garden %s" % [str(closest_valid_position), str(garden_color_index)])
-		return closest_valid_position
-	return clamped
+static func _find_valid_position_on_garden(_garden_color_index: int, tested_position: Vector2, _garden_dimensions: Vector2, _probe_half_size: Vector2 = Vector2.ZERO) -> Vector2:
+	var center: Vector2 = Vector2(float(GARDEN_SIZE) / 2.0, GARDEN_CENTER_Y)
+	var distance: float = tested_position.distance_to(center)
+	if distance <= GARDEN_CIRCLE_RADIUS:
+		return tested_position
+	# Clamp to circle boundary
+	var direction: Vector2 = (tested_position - center).normalized()
+	return center + direction * GARDEN_CIRCLE_RADIUS
 
 
 static func _find_overlapping_position_index(tested_position: Vector2, placed_positions: Array[Vector2], min_distance: float, ignore_index: int = -1) -> int:
@@ -697,16 +556,13 @@ static func generate_gardens_layout(total_lessons: int) -> GardensLayout:
 		return layout
 	Log.info("Gardens: Generating dynamic gardens layout")
 	Log.trace("Gardens: Total lessons to layout: %s" % str(total_lessons))
-	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-	rng.seed = 13985
-	Log.trace("Gardens: RNG seeded with %s" % str(rng.seed))
 	var lessons_left: int = total_lessons
 	var garden_index: int = 0
-	while lessons_left > 0 and garden_index < GARDEN_TEXTURES_NB:
-		var gardens_left: int = GARDEN_TEXTURES_NB - garden_index
+	while lessons_left > 0 and garden_index < GARDENS_COUNT:
+		var gardens_left: int = GARDENS_COUNT - garden_index
 		var lessons_for_garden: int = int(ceili(float(lessons_left) / float(gardens_left)))
 		Log.trace("Gardens: Generating layout for garden %s with %s lessons left" % [str(garden_index), str(lessons_left)])
-		layout.gardens.append(_generate_single_garden_layout(garden_index, lessons_for_garden, rng))
+		layout.gardens.append(_generate_single_garden_layout(garden_index, lessons_for_garden))
 		lessons_left -= lessons_for_garden
 		Log.trace("Gardens: Lessons left after garden %s generation: %s" % [str(garden_index), str(lessons_left)])
 		garden_index += 1
@@ -714,18 +570,17 @@ static func generate_gardens_layout(total_lessons: int) -> GardensLayout:
 	return layout
 
 
-static func _generate_single_garden_layout(garden_index: int, lessons_for_garden: int, rng: RandomNumberGenerator) -> GardenLayout:
+static func _generate_single_garden_layout(garden_index: int, lessons_for_garden: int) -> GardenLayout:
 	Log.info("Gardens: Generating single garden layout for garden %s" % str(garden_index))
 	Log.trace("Gardens: Garden %s will include %s lessons" % [str(garden_index), str(lessons_for_garden)])
 	var garden_layout: GardenLayout = GardenLayout.new()
-	garden_layout.color = garden_index % GARDEN_TEXTURES_NB
+	garden_layout.color = garden_index % GARDENS_COUNT
 	Log.trace("Gardens: Garden %s color index set to %s" % [str(garden_index), str(garden_layout.color)])
-	var garden_image: Image = _get_garden_background_image(garden_layout.color)
-	var garden_dimensions: Vector2 = _get_garden_dimensions(garden_layout.color, garden_image)
+	var garden_dimensions: Vector2 = Vector2(GARDEN_SIZE, GARDEN_CENTER_Y * 2.0)
 	var half_size: Vector2 = _get_lesson_button_half_size()
 	
 	# Initial path positions
-	var raw_positions: Array[Vector2i] = _generate_lesson_positions(lessons_for_garden, garden_index)
+	var raw_positions: Array[Vector2i] = _get_slot_positions_for_count(lessons_for_garden)
 	
 	# Clamp to texture + avoid overlaps
 	var resolved_positions: Array[Vector2] = []
@@ -758,41 +613,15 @@ static func _generate_single_garden_layout(garden_index: int, lessons_for_garden
 		lesson_buttons.append(GardenLayout.GardenLayoutLessonButton.new(lesson_position, path_out))
 	garden_layout.lesson_buttons = lesson_buttons
 
-	# Build flowers (keep RNG call order identical)
-	var flowers: Array[GardenLayout.Flower] = []
-	for lesson_index: int in range(resolved_positions.size()):
-		var flower_position: Vector2i = Utils.round_vec2(resolved_positions[lesson_index])
-		flower_position.y = max(0, flower_position.y - int(FLOWER_OFFSET_FROM_LESSON))
-		var flower_color: int = garden_layout.color
-		var flower_type: int = (lesson_index + garden_index + rng.randi_range(0, FLOWER_TYPES_NB - 1)) % FLOWER_TYPES_NB
-		var adjusted: Vector2 = _find_valid_position_on_garden(garden_layout.color, Vector2(flower_position), garden_dimensions)
-		if not adjusted.is_equal_approx(Vector2(flower_position)):
-			Log.trace("Gardens: Adjusted flower %s position from %s to %s to stay on background" % [str(lesson_index), str(flower_position), str(adjusted)])
-			flower_position = Utils.round_vec2(adjusted)
-		Log.trace("Gardens: Garden %s flower %s position (%s,%s), color %s, type %s" % [str(garden_index), str(lesson_index), str(flower_position.x), str(flower_position.y), str(flower_color), str(flower_type)])
-		flowers.append(GardenLayout.Flower.new(flower_color, flower_type, flower_position))
-	garden_layout.flowers = flowers
 	Log.info("Gardens: Finished generating garden layout for garden %s" % str(garden_index))
 	return garden_layout
 
 
-static func _generate_lesson_positions(lessons_for_garden: int, garden_index: int) -> Array[Vector2i]:
-	Log.info("Gardens: Generating lesson positions for garden %s" % str(garden_index))
+static func _get_slot_positions_for_count(lesson_count: int) -> Array[Vector2i]:
+	var indices: Array = Garden.SLOT_SELECTION.get(lesson_count, [])
 	var positions: Array[Vector2i] = []
-	if lessons_for_garden <= 0:
-		Log.trace("Gardens: No lessons for garden %s, returning empty positions" % str(garden_index))
-		return positions
-	var spacing: float = float(GARDEN_SIZE) / float(lessons_for_garden + 1)
-	Log.trace("Gardens: Garden %s lesson spacing calculated as %s" % [str(garden_index), str(spacing)])
-	var vertical_phase: float = float(garden_index % 3) * 0.65
-	Log.trace("Gardens: Garden %s vertical phase set to %s" % [str(garden_index), str(vertical_phase)])
-	for lesson_index: int in range(lessons_for_garden):
-		var x_pos: int = int(spacing * float(lesson_index + 1))
-		var wave_position: float = float(lesson_index) / maxf(1.0, lessons_for_garden - 1)
-		var y_pos: int = int(LESSON_VERTICAL_BASE + sin(vertical_phase + wave_position * PI) * LESSON_VERTICAL_RANGE)
-		Log.trace("Gardens: Garden %s lesson %s position -> x: %s, wave position: %s, y: %s" % [str(garden_index), str(lesson_index), str(x_pos), str(wave_position), str(y_pos)])
-		positions.append(Vector2i(x_pos, y_pos))
-	Log.info("Gardens: Completed lesson positions for garden %s" % str(garden_index))
+	for index: int in indices:
+		positions.append(SLOT_CENTERS[index])
 	return positions
 
 #endregion
@@ -836,18 +665,16 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 		return
 	# Sets the variables for the current garden and lesson
 	current_lesson_number = lesson_number
-	var flower_info: Dictionary = _get_flower_info(current_lesson_number)
-	if flower_info and flower_info.has("garden"):
-		current_garden = flower_info.garden
-	else:
-		Log.warn("Gardens: Flower info corrupted for lesson %d" % lesson_number)
+	var garden_index_for_lesson: int = _get_garden_index_for_lesson(lesson_number)
+	if garden_index_for_lesson >= 0 and garden_index_for_lesson < garden_parent.get_child_count():
+		current_garden = garden_parent.get_child(garden_index_for_lesson)
 	if button:
 		current_button = button
 		current_button.show_placeholder(true)
 	current_button_global_position = button.global_position
 	# Gets the current lesson unlocks
 	var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[current_lesson_number]
-	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.Locked and lesson_unlocks["games"][1] == StudentProgression.Status.Locked and lesson_unlocks["games"][2] == StudentProgression.Status.Locked
+	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.LOCKED and lesson_unlocks["games"][1] == StudentProgression.Status.LOCKED and lesson_unlocks["games"][2] == StudentProgression.Status.LOCKED
 	# Deactivate the mouse filters on the buttons behind the layout
 	for lesson_button_item: LessonButton in current_garden.get_lesson_buttons():
 		lesson_button_item.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -857,7 +684,7 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	else:
 		minigame_background_center.modulate = current_garden.color
 	# Lesson button
-	_handle_lesson_button(current_lesson_number, lesson_unlocks["look_and_learn"] as StudentProgression.Status, current_garden.color)
+	_handle_lesson_button(current_lesson_number, lesson_unlocks["look_and_learn"] as StudentProgression.Status)
 	# Minigames
 	var minigame_layouts: Array[MinigameLayout] = _get_minigame_layouts()
 	for layout_index: int in minigame_layouts.size():
@@ -883,13 +710,12 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	minigame_layout_opened.emit()
 
 
-func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status, color: Color) -> void:
+func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status) -> void:
 	lesson_button.text = lessons[lesson_number][0].grapheme
-	lesson_button.completed_color = color
-	lesson_button.set_disabled(status == StudentProgression.Status.Locked)
-	lesson_button.completed = status == StudentProgression.Status.Completed
-	lesson_button_particles.emitting = status == StudentProgression.Status.Unlocked
-	if status == StudentProgression.Status.Completed:
+	lesson_button.set_button_disabled(status == StudentProgression.Status.LOCKED)
+	lesson_button.completed = status == StudentProgression.Status.COMPLETED
+	lesson_button_particles.emitting = status == StudentProgression.Status.UNLOCKED
+	if status == StudentProgression.Status.COMPLETED:
 		if transition_data and transition_data.has("look_and_learn_completed") and transition_data.look_and_learn_completed:
 			await minigame_layout_opened
 			lesson_button.right()
@@ -897,8 +723,8 @@ func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status
 
 func _fill_minigame_choice(minigame_layout: MinigameLayout, exercise_type: int, status: StudentProgression.Status, minigame_number: int) -> void:
 	minigame_layout.icon.texture = minigames_icons[exercise_type-1]
-	minigame_layout.is_disabled = status == StudentProgression.Status.Locked
-	if status == StudentProgression.Status.Completed:
+	minigame_layout.is_disabled = status == StudentProgression.Status.LOCKED
+	if status == StudentProgression.Status.COMPLETED:
 		if transition_data and transition_data.has("minigame_completed") and transition_data.minigame_completed and transition_data.has("minigame_number") and transition_data.minigame_number == minigame_number and transition_data.has("first_clear") and transition_data.first_clear:
 			minigame_layout.self_modulate = unlocked_color
 			await minigame_layout_opened
@@ -906,7 +732,7 @@ func _fill_minigame_choice(minigame_layout: MinigameLayout, exercise_type: int, 
 			minigame_layout.right()
 		else:
 			minigame_layout.self_modulate.a = 0
-	elif status == StudentProgression.Status.Locked:
+	elif status == StudentProgression.Status.LOCKED:
 		minigame_layout.self_modulate = locked_color
 	else:
 		minigame_layout.self_modulate = unlocked_color
@@ -934,21 +760,9 @@ func _count_completed_minigames(lesson_number: int) -> int:
 		return 0
 	var completed: int = 0
 	for game_status: int in UserDataManager.student_progression.unlocks[lesson_number]["games"]:
-		if game_status == StudentProgression.Status.Completed:
+		if game_status == StudentProgression.Status.COMPLETED:
 			completed += 1
 	return completed
-
-
-func _get_flower_size_for_completion(completed_minigames: int) -> Garden.FlowerSizes:
-	match completed_minigames:
-		1:
-			return Garden.FlowerSizes.SMALL
-		2:
-			return Garden.FlowerSizes.MEDIUM
-		3:
-			return Garden.FlowerSizes.LARGE
-		_:
-			return Garden.FlowerSizes.NOT_STARTED
 
 
 func _close_minigames_layout() -> void:
@@ -1018,7 +832,7 @@ func add_gardens() -> void:
 	for layout_index: int in range(gardens_layout.gardens.size()):
 		Log.trace("Gardens: Preparing garden %s with layout index %s" % [str(garden_index), str(layout_index)])
 		var garden_layout: GardenLayout = gardens_layout.gardens[layout_index]
-		var garden: Garden = GARDEN_SCENE.instantiate()
+		var garden: Garden = GARDEN_SCENES[layout_index].instantiate()
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
 		garden_index += 1
@@ -1035,20 +849,26 @@ func set_up_path() -> void:
 		return
 	points = []
 	var curve: Curve2D = Curve2D.new()
-	for index: int in range(gardens_layout.gardens.size()):
-		if index >= garden_parent.get_child_count():
-			break
-		var garden_layout: GardenLayout = gardens_layout.gardens[index]
+	for index: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(index)
-		for button: GardenLayout.GardenLayoutLessonButton in garden_layout.lesson_buttons:
-			var point_position: Vector2 = garden_parent.position + garden_control.position + Vector2(button.position)
-			point_position += garden_control.get_button_size() / 2
-			var point_in_position: Vector2 = Vector2.ZERO
+		var lesson_buttons: Array[LessonButton] = garden_control.get_lesson_buttons()
+		for button_index: int in range(lesson_buttons.size()):
+			var button: LessonButton = lesson_buttons[button_index]
+			var button_center: Vector2 = button.position + button.size / 2.0
+			var point_position: Vector2 = garden_parent.position + garden_control.position + button_center
+			var path_out: Vector2 = Vector2.ZERO
+			if button_index + 1 < lesson_buttons.size():
+				var next_button: LessonButton = lesson_buttons[button_index + 1]
+				var next_center: Vector2 = next_button.position + next_button.size / 2.0
+				path_out = (next_center - button_center) * 0.5
+			else:
+				path_out = Vector2(GARDEN_SIZE * 0.15, (-1.0 if (index % 2) == 0 else 1.0) * 60)
+			var point_in: Vector2 = Vector2.ZERO
 			if curve.point_count > 0:
-				point_in_position = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position
-			curve.add_point(point_position, point_in_position, button.path_out_position)
-			points.append([point_position, point_in_position, button.path_out_position])
-		locked_line.points = curve.get_baked_points()
+				point_in = curve.get_point_position(curve.point_count - 1) + curve.get_point_out(curve.point_count - 1) - point_position
+			curve.add_point(point_position, point_in, path_out)
+			points.append([point_position, point_in, path_out])
+	locked_line.points = curve.get_baked_points()
 
 
 func _set_unlocked_path(max_unlocked_lesson_index: int, include_boss_segment: bool = true) -> void:
@@ -1148,10 +968,10 @@ func _set_up_boss_buttons() -> void:
 			var is_completed: bool = UserDataManager.student_progression.is_boss_completed(gate_lesson)
 			var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(gate_lesson)
 			var is_unlocked: bool = UserDataManager.student_progression.is_lesson_completed(gate_lesson) and not is_blocked_by_boss
-			boss_button.set_disabled(not is_unlocked and not is_completed)
+			boss_button.set_button_disabled(not is_unlocked and not is_completed)
 			boss_button.completed = is_completed
 		else:
-			boss_button.set_disabled(true)
+			boss_button.set_button_disabled(true)
 		var garden_index: int = _get_garden_index_for_lesson(gate_lesson)
 		boss_button.pressed.connect(_on_boss_button_pressed.bind(gate_lesson, garden_index))
 	_set_up_final_boss_button()
@@ -1178,7 +998,7 @@ func _set_up_final_boss_button() -> void:
 	boss_button.size = final_boss_size
 	boss_button.pivot_offset = final_boss_size * 0.5
 	boss_button.position = final_boss_center - final_boss_size * 0.5
-	boss_button.set_disabled(false)
+	boss_button.set_button_disabled(false)
 	boss_button.pressed.connect(_on_final_boss_button_pressed.bind(final_lesson_number, last_garden_index))
 	_update_final_boss_scroll_space(final_boss_center, final_boss_size)
 

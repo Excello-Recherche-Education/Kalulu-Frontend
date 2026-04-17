@@ -135,19 +135,22 @@ func _on_filters_changed(checked: bool, index: int) -> void:
 func _input(event: InputEvent) -> void:
 	# Pinch to zoom on mobile
 	if event is InputEventMagnifyGesture:
-		var new_zoom := clampf(zoom_level * event.factor, ZOOM_MIN, ZOOM_MAX)
-		_apply_zoom(new_zoom, event.position)
+		var magnify_event: InputEventMagnifyGesture = event as InputEventMagnifyGesture
+		var new_zoom: float = clampf(zoom_level * magnify_event.factor, ZOOM_MIN, ZOOM_MAX)
+		_apply_zoom(new_zoom, magnify_event.position)
 		get_viewport().set_input_as_handled()
 	# Mouse wheel zoom on desktop
-	elif event is InputEventMouseButton and event.pressed:
-		var new_zoom := zoom_level
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			new_zoom = clampf(zoom_level + ZOOM_STEP_WHEEL, ZOOM_MIN, ZOOM_MAX)
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			new_zoom = clampf(zoom_level - ZOOM_STEP_WHEEL, ZOOM_MIN, ZOOM_MAX)
-		if new_zoom != zoom_level:
-			_apply_zoom(new_zoom, event.position)
-			get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton:
+		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
+		if mouse_event.pressed:
+			var new_zoom: float = zoom_level
+			if mouse_event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				new_zoom = clampf(zoom_level + ZOOM_STEP_WHEEL, ZOOM_MIN, ZOOM_MAX)
+			elif mouse_event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				new_zoom = clampf(zoom_level - ZOOM_STEP_WHEEL, ZOOM_MIN, ZOOM_MAX)
+			if new_zoom != zoom_level:
+				_apply_zoom(new_zoom, mouse_event.position)
+				get_viewport().set_input_as_handled()
 
 
 func _apply_zoom(new_zoom: float, screen_pos: Vector2) -> void:

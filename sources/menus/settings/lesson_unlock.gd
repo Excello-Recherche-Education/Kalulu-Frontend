@@ -68,54 +68,54 @@ func _set_lesson_gps(value: String) -> void:
 func _on_look_and_learn_option_button_item_selected(index: int) -> void:
 	unlocks[lesson_number]["look_and_learn"] = index
 	
-	if index == StudentProgression.Status.Locked:
+	if index == StudentProgression.Status.LOCKED:
 		if lesson_number == 1:
-			unlocks[lesson_number]["look_and_learn"] = StudentProgression.Status.Unlocked
+			unlocks[lesson_number]["look_and_learn"] = StudentProgression.Status.UNLOCKED
 		else:
-			unlocks[lesson_number - 1]["look_and_learn"] = StudentProgression.Status.Unlocked
-			unlocks[lesson_number - 1]["games"][0] = StudentProgression.Status.Locked
-			unlocks[lesson_number - 1]["games"][1] = StudentProgression.Status.Locked
-			unlocks[lesson_number - 1]["games"][2] = StudentProgression.Status.Locked
+			unlocks[lesson_number - 1]["look_and_learn"] = StudentProgression.Status.UNLOCKED
+			unlocks[lesson_number - 1]["games"][0] = StudentProgression.Status.LOCKED
+			unlocks[lesson_number - 1]["games"][1] = StudentProgression.Status.LOCKED
+			unlocks[lesson_number - 1]["games"][2] = StudentProgression.Status.LOCKED
 		
-		unlocks[lesson_number]["games"][0] = StudentProgression.Status.Locked
-		unlocks[lesson_number]["games"][1] = StudentProgression.Status.Locked
-		unlocks[lesson_number]["games"][2] = StudentProgression.Status.Locked
+		unlocks[lesson_number]["games"][0] = StudentProgression.Status.LOCKED
+		unlocks[lesson_number]["games"][1] = StudentProgression.Status.LOCKED
+		unlocks[lesson_number]["games"][2] = StudentProgression.Status.LOCKED
 		
 		for lesson: int in unlocks.keys():
 			if lesson > lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][0] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][1] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][2] = StudentProgression.Status.Locked
+				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][0] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][1] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][2] = StudentProgression.Status.LOCKED
 	
-	elif index == StudentProgression.Status.Unlocked:
-		unlocks[lesson_number]["games"][0] = StudentProgression.Status.Locked
-		unlocks[lesson_number]["games"][1] = StudentProgression.Status.Locked
-		unlocks[lesson_number]["games"][2] = StudentProgression.Status.Locked
+	elif index == StudentProgression.Status.UNLOCKED:
+		unlocks[lesson_number]["games"][0] = StudentProgression.Status.LOCKED
+		unlocks[lesson_number]["games"][1] = StudentProgression.Status.LOCKED
+		unlocks[lesson_number]["games"][2] = StudentProgression.Status.LOCKED
 		for lesson: int in unlocks.keys():
 			if lesson < lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.Completed
-				unlocks[lesson]["games"][0] = StudentProgression.Status.Completed
-				unlocks[lesson]["games"][1] = StudentProgression.Status.Completed
-				unlocks[lesson]["games"][2] = StudentProgression.Status.Completed
+				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.COMPLETED
+				unlocks[lesson]["games"][0] = StudentProgression.Status.COMPLETED
+				unlocks[lesson]["games"][1] = StudentProgression.Status.COMPLETED
+				unlocks[lesson]["games"][2] = StudentProgression.Status.COMPLETED
 			elif lesson > lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][0] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][1] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][2] = StudentProgression.Status.Locked
-	elif index == StudentProgression.Status.Completed:
-		unlocks[lesson_number]["games"][0] = StudentProgression.Status.Unlocked
-		unlocks[lesson_number]["games"][1] = StudentProgression.Status.Unlocked
-		unlocks[lesson_number]["games"][2] = StudentProgression.Status.Unlocked
+				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][0] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][1] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][2] = StudentProgression.Status.LOCKED
+	elif index == StudentProgression.Status.COMPLETED:
+		unlocks[lesson_number]["games"][0] = StudentProgression.Status.UNLOCKED
+		unlocks[lesson_number]["games"][1] = StudentProgression.Status.UNLOCKED
+		unlocks[lesson_number]["games"][2] = StudentProgression.Status.UNLOCKED
 		for lesson: int in unlocks.keys():
 			if lesson < lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.Completed
-				unlocks[lesson]["games"][0] = StudentProgression.Status.Completed
-				unlocks[lesson]["games"][1] = StudentProgression.Status.Completed
-				unlocks[lesson]["games"][2] = StudentProgression.Status.Completed
+				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.COMPLETED
+				unlocks[lesson]["games"][0] = StudentProgression.Status.COMPLETED
+				unlocks[lesson]["games"][1] = StudentProgression.Status.COMPLETED
+				unlocks[lesson]["games"][2] = StudentProgression.Status.COMPLETED
 			elif lesson > lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][0] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][1] = StudentProgression.Status.Locked
-				unlocks[lesson]["games"][2] = StudentProgression.Status.Locked
+				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][0] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][1] = StudentProgression.Status.LOCKED
+				unlocks[lesson]["games"][2] = StudentProgression.Status.LOCKED
 	unlocks_changed.emit()

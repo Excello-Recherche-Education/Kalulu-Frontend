@@ -4,9 +4,9 @@ extends Resource
 signal progression_changed()
 
 enum Status{
-	Locked,
-	Unlocked,
-	Completed,
+	LOCKED,
+	UNLOCKED,
+	COMPLETED,
 }
 
 static var cached_boss_gate_lessons: Array[int] = []
@@ -42,11 +42,11 @@ func init_unlocks() -> void:
 		for index: int in range(number_of_lessons):
 			if not unlocks.has(index+1):
 				unlocks[index + 1] = {
-					"look_and_learn": Status.Locked,
+					"look_and_learn": Status.LOCKED,
 					"games": [
-						Status.Locked,
-						Status.Locked,
-						Status.Locked,
+						Status.LOCKED,
+						Status.LOCKED,
+						Status.LOCKED,
 					],
 					"last_duration": PackedInt32Array([0, 0, 0]),
 					"total_duration": PackedInt32Array([0, 0, 0])
@@ -54,8 +54,8 @@ func init_unlocks() -> void:
 		
 	# Make sure that the first garden is always accessible
 	if unlocks.has(1):
-		if unlocks[1]["look_and_learn"] == Status.Locked:
-			unlocks[1]["look_and_learn"] = Status.Unlocked
+		if unlocks[1]["look_and_learn"] == Status.LOCKED:
+			unlocks[1]["look_and_learn"] = Status.UNLOCKED
 	_sanitize_boss_progression()
 
 
@@ -75,8 +75,8 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d missing → added with default values." % index)
 			result[index] = {
-				"games": [Status.Locked, Status.Locked, Status.Locked],
-				"look_and_learn": Status.Locked,
+				"games": [Status.LOCKED, Status.LOCKED, Status.LOCKED],
+				"look_and_learn": Status.LOCKED,
 				"last_duration": PackedInt32Array([0, 0, 0]),
 				"total_duration": PackedInt32Array([0, 0, 0])
 			}
@@ -87,11 +87,11 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 		if not garden.has("games"):
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: Add missing key 'games'." % index)
-			garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
+			garden["games"] = [Status.LOCKED, Status.LOCKED, Status.LOCKED]
 		if not garden.has("look_and_learn"):
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: Add missing key 'look_and_learn'." % index)
-			garden["look_and_learn"] = Status.Locked
+			garden["look_and_learn"] = Status.LOCKED
 		if not garden.has("last_duration"):
 			garden["last_duration"] = PackedInt32Array([0, 0, 0])
 		if not garden.has("total_duration"):
@@ -101,14 +101,14 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 		if typeof(garden["games"]) != TYPE_ARRAY or (garden["games"] as Array).size() != 3:
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: invalid format for 'games' → reset." % index)
-			garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
+			garden["games"] = [Status.LOCKED, Status.LOCKED, Status.LOCKED]
 
 		# Check value outside of possible enum values
 		for game_index: int in range(3):
-			if garden["games"][game_index] not in [Status.Locked, Status.Unlocked, Status.Completed]:
-				garden["games"][game_index] = Status.Locked
-		if garden["look_and_learn"] not in [Status.Locked, Status.Unlocked, Status.Completed]:
-			garden["look_and_learn"] = Status.Locked
+			if garden["games"][game_index] not in [Status.LOCKED, Status.UNLOCKED, Status.COMPLETED]:
+				garden["games"][game_index] = Status.LOCKED
+		if garden["look_and_learn"] not in [Status.LOCKED, Status.UNLOCKED, Status.COMPLETED]:
+			garden["look_and_learn"] = Status.LOCKED
 
 	# Check progression rules
 	for index: int in range(min_key, max_key + 1):
@@ -119,8 +119,8 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 		if result.has(index - 1):
 			var prev: Dictionary = result[index - 1]
 			prev_completed = (
-				prev["look_and_learn"] == Status.Completed and
-				(prev["games"] as Array).all(func(x: int) -> bool: return x == Status.Completed)
+				prev["look_and_learn"] == Status.COMPLETED and
+				(prev["games"] as Array).all(func(x: int) -> bool: return x == Status.COMPLETED)
 			)
 		else:
 			# First garden (key 1) is always unlocked
@@ -129,25 +129,25 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 		# Case: previous garden not completed
 		if not prev_completed:
 			for game_index: int in range(3):
-				if garden["games"][game_index] != Status.Locked or garden["look_and_learn"] != Status.Locked:
+				if garden["games"][game_index] != Status.LOCKED or garden["look_and_learn"] != Status.LOCKED:
 					if not is_init:
 						Log.warn("StudentProgression: Garden %d: invalid progression (previous not finished) → reset." % index)
-					garden["games"] = [Status.Locked, Status.Locked, Status.Locked]
-					garden["look_and_learn"] = Status.Locked
+					garden["games"] = [Status.LOCKED, Status.LOCKED, Status.LOCKED]
+					garden["look_and_learn"] = Status.LOCKED
 					break
 			continue
 
 		# Case: lesson completed → unlock games if needed
-		if garden["look_and_learn"] == Status.Completed:
+		if garden["look_and_learn"] == Status.COMPLETED:
 			for game_index: int in range(3):
-				if garden["games"][game_index] == Status.Locked:
-					garden["games"][game_index] = Status.Unlocked
+				if garden["games"][game_index] == Status.LOCKED:
+					garden["games"][game_index] = Status.UNLOCKED
 					if not is_init:
 						Log.warn("StudentProgression: Garden %d: game %d unlocked because lesson is completed" % [index, game_index + 1])
 
 		# Case: previous garden completed → unlock lesson if needed
-		elif garden["look_and_learn"] == Status.Locked:
-			garden["look_and_learn"] = Status.Unlocked
+		elif garden["look_and_learn"] == Status.LOCKED:
+			garden["look_and_learn"] = Status.UNLOCKED
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: lesson unlocked because previous garden is completed" % index)
 
@@ -229,7 +229,7 @@ func get_max_unlocked_lesson_index() -> int:
 	for index: int in range(unlocks.size()):
 		if is_lesson_blocked_by_boss(index + 1):
 			break
-		if unlocks[index + 1]["look_and_learn"] >= Status.Unlocked:
+		if unlocks[index + 1]["look_and_learn"] >= Status.UNLOCKED:
 			max_unlocked_level = index
 		else:
 			break
@@ -238,18 +238,18 @@ func get_max_unlocked_lesson_index() -> int:
 
 
 func is_lesson_completed(lesson_number: int) -> bool:
-	return unlocks[lesson_number]["look_and_learn"] == Status.Completed and unlocks[lesson_number]["games"][0] == Status.Completed and unlocks[lesson_number]["games"][1] == Status.Completed and unlocks[lesson_number]["games"][2] == Status.Completed
+	return unlocks[lesson_number]["look_and_learn"] == Status.COMPLETED and unlocks[lesson_number]["games"][0] == Status.COMPLETED and unlocks[lesson_number]["games"][1] == Status.COMPLETED and unlocks[lesson_number]["games"][2] == Status.COMPLETED
 
 
 # Return true if the progression is saved or false if the look and learn was already completed
 func look_and_learn_completed(lesson_number: int) -> bool:
-	if unlocks[lesson_number]["look_and_learn"] == Status.Completed:
+	if unlocks[lesson_number]["look_and_learn"] == Status.COMPLETED:
 		return false
 	
-	unlocks[lesson_number]["look_and_learn"] = Status.Completed
+	unlocks[lesson_number]["look_and_learn"] = Status.COMPLETED
 	
 	for index: int in range(3):
-		unlocks[lesson_number]["games"][index] = Status.Unlocked
+		unlocks[lesson_number]["games"][index] = Status.UNLOCKED
 	
 	last_modified = Time.get_datetime_string_from_system(true)
 	progression_changed.emit()
@@ -259,18 +259,18 @@ func look_and_learn_completed(lesson_number: int) -> bool:
 # Return true if the progression is saved or false if the game was already completed
 func game_completed(lesson_number: int, game_number: int) -> bool:
 	# If the game is already completed, do nothing
-	if unlocks[lesson_number]["games"][game_number] == Status.Completed:
+	if unlocks[lesson_number]["games"][game_number] == Status.COMPLETED:
 		return false
 	
-	unlocks[lesson_number]["games"][game_number] = Status.Completed
+	unlocks[lesson_number]["games"][game_number] = Status.COMPLETED
 	
 	var all_completed: bool = true
 	for index: int in range(3):
-		all_completed = all_completed and unlocks[lesson_number]["games"][index] == Status.Completed
+		all_completed = all_completed and unlocks[lesson_number]["games"][index] == Status.COMPLETED
 	
 	if all_completed:
 		if unlocks.has(lesson_number + 1):
-			unlocks[lesson_number + 1]["look_and_learn"] = Status.Unlocked
+			unlocks[lesson_number + 1]["look_and_learn"] = Status.UNLOCKED
 	
 	last_modified = Time.get_datetime_string_from_system(true)
 	progression_changed.emit()

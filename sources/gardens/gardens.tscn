@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bb00fhnenbml5" path="res://assets/lesson_screen/big_button.png" id="20_elp7t"]
 [ext_resource type="Texture2D" uid="uid://dq23np4euf6da" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_full.png" id="20_ouafq"]
 [ext_resource type="Texture2D" uid="uid://dlnklpyefn0m2" path="res://assets/lesson_screen/big_button_center.png" id="21_r0a4h"]
-[ext_resource type="Material" path="res://resources/gardens/minigame_icon_material.tres" id="22_cgp31"]
+[ext_resource type="Material" uid="uid://dne7hgkrp4tdy" path="res://resources/gardens/minigame_icon_material.tres" id="22_cgp31"]
 [ext_resource type="Texture2D" uid="uid://dkomjpclxvmqf" path="res://assets/lesson_screen/top_left.png" id="23_p1d10"]
 [ext_resource type="Texture2D" uid="uid://rux5delnabp5" path="res://assets/lesson_screen/top_right.png" id="24_30f83"]
 [ext_resource type="AudioStream" uid="uid://bgof22p2ofunc" path="res://assets/sfx/ui_yes_button.mp3" id="24_ljadf"]

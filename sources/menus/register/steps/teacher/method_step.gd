@@ -13,8 +13,8 @@ func _ready() -> void:
 func _on_next() -> bool:
 	var register_data: TeacherSettings = data as TeacherSettings
 	if register_data:
-		if register_data.account_type == TeacherSettings.AccountType.Parent:
-			register_data.education_method = TeacherSettings.EducationMethod.AppOnly
+		if register_data.account_type == TeacherSettings.AccountType.PARENT:
+			register_data.education_method = TeacherSettings.EducationMethod.APP_ONLY
 	else:
 		return false
 	return true

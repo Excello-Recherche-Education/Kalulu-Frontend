@@ -5,16 +5,18 @@ signal delete_pressed()
 signal validated()
 
 enum Type {
-	Silent,
-	Vowel,
-	Consonant,
+	SILENT,
+	VOWEL,
+	CONSONANT,
 }
+
+const TYPE_LABELS: Array[String] = ["Silent", "Vowel", "Consonant"]
 
 var grapheme: String = "":
 	set = set_grapheme
 var phoneme: String = "":
 	set = set_phoneme
-var type: GPListElement.Type = Type.Silent:
+var type: GPListElement.Type = Type.SILENT:
 	set = set_type
 var exception: bool = false:
 	set = set_exception
@@ -55,7 +57,7 @@ func set_phoneme(p_phoneme: String) -> void:
 func set_type(p_type: Type) -> void:
 	type = p_type
 	if type_label:
-		type_label.text = Type.keys()[type]
+		type_label.text = TYPE_LABELS[type]
 	if type_edit:
 		type_edit.selected = type
 

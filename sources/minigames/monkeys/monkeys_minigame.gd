@@ -1,9 +1,9 @@
 extends WordsMinigame
 
 enum Audio {
-	SendToKing,
-	SendToPlank,
-	SendToMonkey,
+	SEND_TO_KING,
+	SEND_TO_PLANK,
+	SEND_TO_MONKEY,
 }
 
 const MONKEY_SCENE: PackedScene = preload("res://sources/minigames/monkeys/monkey.tscn")
@@ -123,7 +123,7 @@ func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
 	await monkey.play("start_throw")
 	monkey.play("finish_throw")
 	
-	audio_player.stream = AUDIO_STREAMS[Audio.SendToKing]
+	audio_player.stream = AUDIO_STREAMS[Audio.SEND_TO_KING]
 	audio_player.play()
 	
 	var coconut: Coconut = monkey.coconut.duplicate()
@@ -167,7 +167,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 	
 	if _is_gp_right(monkey.stimulus):
 		await king.play("start_right")
-		audio_player.stream = AUDIO_STREAMS[Audio.SendToPlank]
+		audio_player.stream = AUDIO_STREAMS[Audio.SEND_TO_PLANK]
 		audio_player.play()
 		king.play("finish_right")
 		var tween: Tween = create_tween()
@@ -179,7 +179,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		current_word_progression += 1
 	else:
 		await king.play("start_wrong")
-		audio_player.stream = AUDIO_STREAMS[Audio.SendToMonkey]
+		audio_player.stream = AUDIO_STREAMS[Audio.SEND_TO_MONKEY]
 		audio_player.play()
 		king.play("finish_wrong")
 		var tween: Tween = create_tween()
