@@ -2,7 +2,7 @@
 class_name Garden
 extends Control
 
-const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/Garden_%02d.png"
+const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d.png"
 const MAX_LESSONS: int = 5
 const PLANT_COUNT: int = 8
 # Maps lesson count → which slot indices to use

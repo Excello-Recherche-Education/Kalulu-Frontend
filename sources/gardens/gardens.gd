@@ -178,7 +178,7 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 
 			var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[lesson_index]
 			var is_blocked_by_boss: bool = UserDataManager.student_progression.is_lesson_blocked_by_boss(lesson_index)
-			var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.Locked and not is_blocked_by_boss
+			var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.LOCKED and not is_blocked_by_boss
 			button.set_button_disabled(not is_lesson_unlocked)
 
 			if transition_context.new_lesson_unlocked and lesson_index == transition_context.newly_unlocked_lesson_number:
@@ -352,7 +352,7 @@ func _ready() -> void:
 	_scroll_to_starting_garden(transition_context)
 
 	await (OpeningCurtain as OpeningCurtainClass).open()
-	(MusicManager as MusicManagerClass).play((MusicManager as MusicManagerClass).Track.Garden)
+	(MusicManager as MusicManagerClass).play((MusicManager as MusicManagerClass).Track.GARDEN)
 	
 	# Handles all the animation played when entering the gardens
 	if transition_data:
@@ -674,7 +674,7 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	current_button_global_position = button.global_position
 	# Gets the current lesson unlocks
 	var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[current_lesson_number]
-	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.Locked and lesson_unlocks["games"][1] == StudentProgression.Status.Locked and lesson_unlocks["games"][2] == StudentProgression.Status.Locked
+	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.LOCKED and lesson_unlocks["games"][1] == StudentProgression.Status.LOCKED and lesson_unlocks["games"][2] == StudentProgression.Status.LOCKED
 	# Deactivate the mouse filters on the buttons behind the layout
 	for lesson_button_item: LessonButton in current_garden.get_lesson_buttons():
 		lesson_button_item.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -712,10 +712,10 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 
 func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status) -> void:
 	lesson_button.text = lessons[lesson_number][0].grapheme
-	lesson_button.set_button_disabled(status == StudentProgression.Status.Locked)
-	lesson_button.completed = status == StudentProgression.Status.Completed
-	lesson_button_particles.emitting = status == StudentProgression.Status.Unlocked
-	if status == StudentProgression.Status.Completed:
+	lesson_button.set_button_disabled(status == StudentProgression.Status.LOCKED)
+	lesson_button.completed = status == StudentProgression.Status.COMPLETED
+	lesson_button_particles.emitting = status == StudentProgression.Status.UNLOCKED
+	if status == StudentProgression.Status.COMPLETED:
 		if transition_data and transition_data.has("look_and_learn_completed") and transition_data.look_and_learn_completed:
 			await minigame_layout_opened
 			lesson_button.right()
@@ -723,8 +723,8 @@ func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status
 
 func _fill_minigame_choice(minigame_layout: MinigameLayout, exercise_type: int, status: StudentProgression.Status, minigame_number: int) -> void:
 	minigame_layout.icon.texture = minigames_icons[exercise_type-1]
-	minigame_layout.is_disabled = status == StudentProgression.Status.Locked
-	if status == StudentProgression.Status.Completed:
+	minigame_layout.is_disabled = status == StudentProgression.Status.LOCKED
+	if status == StudentProgression.Status.COMPLETED:
 		if transition_data and transition_data.has("minigame_completed") and transition_data.minigame_completed and transition_data.has("minigame_number") and transition_data.minigame_number == minigame_number and transition_data.has("first_clear") and transition_data.first_clear:
 			minigame_layout.self_modulate = unlocked_color
 			await minigame_layout_opened
@@ -732,7 +732,7 @@ func _fill_minigame_choice(minigame_layout: MinigameLayout, exercise_type: int, 
 			minigame_layout.right()
 		else:
 			minigame_layout.self_modulate.a = 0
-	elif status == StudentProgression.Status.Locked:
+	elif status == StudentProgression.Status.LOCKED:
 		minigame_layout.self_modulate = locked_color
 	else:
 		minigame_layout.self_modulate = unlocked_color
@@ -760,7 +760,7 @@ func _count_completed_minigames(lesson_number: int) -> int:
 		return 0
 	var completed: int = 0
 	for game_status: int in UserDataManager.student_progression.unlocks[lesson_number]["games"]:
-		if game_status == StudentProgression.Status.Completed:
+		if game_status == StudentProgression.Status.COMPLETED:
 			completed += 1
 	return completed
 

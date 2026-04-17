@@ -5,9 +5,9 @@ signal pressed(gp: Dictionary)
 signal animation_changed(position: Vector2)
 
 enum Colors {
-	Green,
-	Khaki,
-	Purple,
+	GREEN,
+	KHAKI,
+	PURPLE,
 }
 
 const ANIMATIONS: Array[SpriteFrames] = [
@@ -18,7 +18,7 @@ const ANIMATIONS: Array[SpriteFrames] = [
 const TURTLE_BACK_RIGHT: CompressedTexture2D = preload("res://assets/minigames/turtles/graphic/turtle_back_right.png")
 const TURTLE_BACK_WRONG: CompressedTexture2D = preload("res://assets/minigames/turtles/graphic/turtle_back_wrong.png")
 
-@export var color: Colors = Colors.Purple:
+@export var color: Colors = Colors.PURPLE:
 	set(value):
 		color = value
 		if sprite:

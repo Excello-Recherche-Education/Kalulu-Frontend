@@ -2,14 +2,14 @@ class_name StudentData
 extends Resource
 
 enum Level {
-	Beginner,
-	Reviewer,
-	Adult
+	BEGINNER,
+	REVIEWER,
+	ADULT
 }
 
 @export var code: int = 0
 @export var name: String = ""
-@export var level: Level = Level.Beginner
+@export var level: Level = Level.BEGINNER
 @export var age: int = 0
 @export var last_modified: String = ""
 

@@ -136,7 +136,11 @@ def _to_snake_case(name: str) -> str:
 def _to_pascal_case(name: str) -> str:
     prefix = '_' if name.startswith('_') else ''
     core = name.lstrip('_')
-    return prefix + ''.join(w.capitalize() for w in re.split(r'[_\s]+', core) if w)
+    # Split on camelCase boundaries first, then on underscores/spaces
+    # e.g. 'myBadEnum' → 'my_Bad_Enum' → 'MyBadEnum'
+    snake = re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', core)
+    snake = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1_\2', snake)
+    return prefix + ''.join(w.capitalize() for w in re.split(r'[_\s]+', snake) if w)
 
 
 def _to_upper_snake_case(name: str) -> str:
@@ -148,30 +152,62 @@ def _to_upper_snake_case(name: str) -> str:
 
 
 CONVENTION_NAMES: dict[str, str] = {
-    'class':    'PascalCase',
-    'function': 'snake_case',
-    'variable': 'snake_case',
-    'constant': 'UPPER_SNAKE_CASE',
-    'signal':   'snake_case',
+    'class':        'PascalCase',
+    'enum_name':    'PascalCase',
+    'enum_member':  'UPPER_SNAKE_CASE',
+    'function':     'snake_case',
+    'variable':     'snake_case',
+    'constant':     'UPPER_SNAKE_CASE',
+    'signal':       'snake_case',
 }
 
 SUGGESTION_FN: dict = {
-    'class':    _to_pascal_case,
-    'function': _to_snake_case,
-    'variable': _to_snake_case,
-    'constant': _to_upper_snake_case,
-    'signal':   _to_snake_case,
+    'class':        _to_pascal_case,
+    'enum_name':    _to_pascal_case,
+    'enum_member':  _to_upper_snake_case,
+    'function':     _to_snake_case,
+    'variable':     _to_snake_case,
+    'constant':     _to_upper_snake_case,
+    'signal':       _to_snake_case,
 }
 
-NAMING_KINDS = frozenset({'class', 'function', 'variable', 'constant', 'signal'})
+NAMING_KINDS = frozenset({'class', 'enum_name', 'enum_member', 'function', 'variable', 'constant', 'signal'})
 
 # ─── Naming check ─────────────────────────────────────────────────────────────
 
+def _check_enum_member(path: str, idx: int, name: str) -> None:
+    """Flag a single enum member name if it is not UPPER_SNAKE_CASE."""
+    if name and not UPPER_SNAKE_CASE.match(name):
+        issues.append((path, idx, 'enum_member', name))
+
+
 def check_naming(path: str, lines: list[str]):
+    in_enum = False  # True while scanning the body of a multi-line enum
+
     for idx, line in enumerate(lines, 1):
         stripped = line.strip()
         if stripped.startswith('#') or stripped.startswith('@warning_ignore(') or not stripped:
             continue
+
+        # ── Enum-body lines ────────────────────────────────────────────────────
+        if in_enum:
+            close = stripped.find('}')
+            if close != -1:
+                in_enum = False
+                # Any identifiers before the closing brace on this line
+                before = stripped[:close]
+                for part in before.split(','):
+                    m = re.match(r"\s*([A-Za-z0-9_]+)", part)
+                    if m:
+                        _check_enum_member(path, idx, m.group(1))
+            else:
+                # One (or more) members on this line: "NAME," or "NAME = val,"
+                for part in stripped.split(','):
+                    m = re.match(r"\s*([A-Za-z0-9_]+)", part)
+                    if m:
+                        _check_enum_member(path, idx, m.group(1))
+            continue
+        # ── End enum-body ──────────────────────────────────────────────────────
 
         match_class = re.match(r"class_name\s+([A-Za-z0-9_]+)", stripped)
         if match_class:
@@ -207,6 +243,26 @@ def check_naming(path: str, lines: list[str]):
             name = match_const.group(1)
             if not UPPER_SNAKE_CASE.match(name):
                 issues.append((path, idx, 'constant', name))
+
+        match_enum = re.match(r"enum\s+([A-Za-z0-9_]+)", stripped)
+        if match_enum:
+            name = match_enum.group(1)
+            if not PASCAL_CASE.match(name):
+                issues.append((path, idx, 'enum_name', name))
+            # Determine whether the enum body is inline or multi-line
+            brace = stripped.find('{')
+            if brace != -1:
+                rest = stripped[brace + 1:]
+                close = rest.find('}')
+                if close != -1:
+                    # Inline enum — check members immediately
+                    for part in rest[:close].split(','):
+                        m = re.match(r"\s*([A-Za-z0-9_]+)", part)
+                        if m:
+                            _check_enum_member(path, idx, m.group(1))
+                else:
+                    # Body continues on following lines
+                    in_enum = True
 
         match_signal = re.match(r"signal\s+([A-Za-z0-9_]+)", stripped)
         if match_signal:
@@ -499,11 +555,23 @@ def categorize(kind: str) -> str:
     return 'other'
 
 
+_KIND_LABEL: dict[str, str] = {
+    'class':        'class names',
+    'enum_name':    'enum names',
+    'enum_member':  'enum member names',
+    'function':     'function names',
+    'variable':     'variable names',
+    'constant':     'constant names',
+    'signal':       'signal names',
+}
+
+
 def format_message(kind: str, data) -> str:
     if kind in NAMING_KINDS:
         suggestion = SUGGESTION_FN[kind](data)
         conv = CONVENTION_NAMES[kind]
-        return f"'{data}' should be '{suggestion}' ({kind}s must be {conv})"
+        label = _KIND_LABEL.get(kind, f"{kind}s")
+        return f"'{data}' should be '{suggestion}' ({label} must be {conv})"
     if kind == 'error':
         return str(data)
     template = MESSAGES.get(kind, kind)

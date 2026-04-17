@@ -2,18 +2,32 @@ class_name Minigame
 extends Control
 
 enum Type {
-	jellyfish,
-	crabs,
-	parakeets,
-	monkey,
-	caterpillar,
-	frog,
-	turtles,
-	ants,
-	penguin,
-	fish
+	JELLYFISH,
+	CRABS,
+	PARAKEETS,
+	MONKEY,
+	CATERPILLAR,
+	FROG,
+	TURTLES,
+	ANTS,
+	PENGUIN,
+	FISH,
 }
 
+# String names used for file paths, database keys, and speech lookups.
+# Kept separate from enum member names so renaming members doesn't affect runtime behaviour.
+const TYPE_NAMES: Array[String] = [
+	"jellyfish",
+	"crabs",
+	"parakeets",
+	"monkey",
+	"caterpillar",
+	"frog",
+	"turtles",
+	"ants",
+	"penguin",
+	"fish",
+]
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
 const LABEL_COLOR_NEUTRAL: Color = Color("#e6f3e0")
@@ -59,7 +73,7 @@ var current_lives: int = 0:
 		var previous_lives: int = current_lives
 		current_lives = value
 		if current_lives != previous_lives:
-			Log.trace("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, Type.keys()[minigame_name]])
+			Log.trace("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, TYPE_NAMES[minigame_name]])
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
 		if current_lives <= max_number_of_lives - errors_before_help_speech:
@@ -104,11 +118,11 @@ func _ready() -> void:
 	
 	# Difficulty
 	if (UserDataManager as UserDataManagerClass)._student_difficulty:
-		difficulty = UserDataManager.get_difficulty_for_minigame(Type.keys()[minigame_name] as String)
+		difficulty = UserDataManager.get_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String)
 	
-	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro"))
-	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "help"))
-	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "end"))
+	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name] as String, "intro"))
+	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name] as String, "help"))
+	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name] as String, "end"))
 	lose_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path("minigame", "lose"))
 	
 	if not Engine.is_editor_hint():
@@ -125,7 +139,7 @@ func _initialize() -> void:
 	
 	_setup_minigame()
 	
-	Log.info("BaseMinigame: Initialize %s (lesson %d, minigame #%d, difficulty %d)" % [Type.keys()[minigame_name], lesson_nb, minigame_number, difficulty])
+	Log.info("BaseMinigame: Initialize %s (lesson %d, minigame #%d, difficulty %d)" % [TYPE_NAMES[minigame_name], lesson_nb, minigame_number, difficulty])
 	
 	if not Engine.is_editor_hint():
 		await _curtains_and_kalulu()
@@ -151,10 +165,10 @@ func _curtains_and_kalulu() -> void:
 	await (OpeningCurtain as OpeningCurtainClass).open()
 	
 	# Checks if intro needs to be played
-	if not UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
+	if not UserDataManager.is_speech_played(TYPE_NAMES[minigame_name] as String):
 		minigame_ui.play_kalulu_speech(intro_kalulu_speech)
 		await minigame_ui.kalulu_speech_ended
-		UserDataManager.mark_speech_as_played(Type.keys()[minigame_name] as String)
+		UserDataManager.mark_speech_as_played(TYPE_NAMES[minigame_name] as String)
 #endregion
 
 #region Timer
@@ -166,7 +180,7 @@ var _is_paused: bool = false
 
 # Launch the minigame
 func _start() -> void:
-	Log.info("BaseMinigame: Start minigame=%s lesson=%d difficulty=%d" % [Type.keys()[minigame_name], lesson_nb, difficulty])
+	Log.info("BaseMinigame: Start minigame=%s lesson=%d difficulty=%d" % [TYPE_NAMES[minigame_name], lesson_nb, difficulty])
 	_start_time = Time.get_ticks_msec() / 1000.0
 	_elapsed_paused = 0.0
 	_is_paused = false
@@ -218,13 +232,13 @@ func _win() -> void:
 	
 	update_scores()
 	
-	Log.info("BaseMinigame: %s won in %d seconds with progression %d/%d and %d/%d lives" % [Type.keys()[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
+	Log.info("BaseMinigame: %s won in %d seconds with progression %d/%d and %d/%d lives" % [TYPE_NAMES[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
 	
 	# Difficulty
 	if current_lives <= 0:
-		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
+		UserDataManager.update_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String, false)
 	else:
-		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, true)
+		UserDataManager.update_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String, true)
 	
 	audio_player.stream = WIN_SOUND_FX
 	audio_player.play()
@@ -263,10 +277,10 @@ func _lose() -> void:
 	
 	update_scores()
 	
-	Log.info("BaseMinigame: %s Lose in %d seconds with progression %d/%d and %d/%d lives" % [Type.keys()[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
+	Log.info("BaseMinigame: %s Lose in %d seconds with progression %d/%d and %d/%d lives" % [TYPE_NAMES[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
+	UserDataManager.update_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String, false)
 	
 	audio_player.stream = LOSE_SOUND_FX
 	audio_player.play()
@@ -280,7 +294,7 @@ func _lose() -> void:
 			if has_method("show_adult_block"):
 				call("show_adult_block")
 			else:
-				Log.error("BaseMinigame: Adult block requested but no handler exists for %s" % Type.keys()[minigame_name])
+				Log.error("BaseMinigame: Adult block requested but no handler exists for %s" % TYPE_NAMES[minigame_name])
 			return
 	
 	_reset()
@@ -303,8 +317,8 @@ func _save_logs() -> void:
 	var logs_size: int = -1
 	if logs.has("answers") and logs.get("answers", []) is Array:
 		logs_size = (logs.get("answers", []) as Array).size()
-	Log.info("BaseMinigame: Saving logs for %s with %d answer(s)" % [Type.keys()[minigame_name], logs_size])
-	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
+	Log.info("BaseMinigame: Saving logs for %s with %d answer(s)" % [TYPE_NAMES[minigame_name], logs_size])
+	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), TYPE_NAMES[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
@@ -317,7 +331,7 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"reponse": response,
 		"awaited_response": current_stimulus,
 		"is_right": response == current_stimulus,
-		"minigame": Type.keys()[minigame_name],
+		"minigame": TYPE_NAMES[minigame_name],
 		"number_of_hints": current_number_of_hints,
 		"current_progression": current_progression,
 		"max_progression": max_progression,
@@ -325,7 +339,7 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"max_number_of_lives": max_number_of_lives,
 	}
 	Log.trace("BaseMinigame: Log new response minigame=%s response=%s expected=%s right=%s progression=%d/%d lives=%d/%d" % [
-				Type.keys()[minigame_name],
+				TYPE_NAMES[minigame_name],
 				str(response),
 				str(current_stimulus),
 				str(response_log.is_right),
@@ -437,7 +451,7 @@ func _play_kalulu_help_speech() -> void:
 func set_current_progression(p_current_progression: int) -> void:
 	var previous_progression: int = current_progression
 	current_progression = p_current_progression
-	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
+	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, TYPE_NAMES[minigame_name]])
 	
 	consecutive_errors = 0
 	is_highlighting = false

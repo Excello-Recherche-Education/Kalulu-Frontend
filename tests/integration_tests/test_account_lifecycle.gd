@@ -84,8 +84,8 @@ func test_full_account_creation_login_and_deletion() -> void:
 	gut.p("Step 2: Building registration payload…")
 
 	var register_data: TeacherSettings = TeacherSettings.new()
-	register_data.account_type = TeacherSettings.AccountType.Teacher
-	register_data.education_method = TeacherSettings.EducationMethod.Complete
+	register_data.account_type = TeacherSettings.AccountType.TEACHER
+	register_data.education_method = TeacherSettings.EducationMethod.COMPLETE
 	register_data.email = _test_email
 	register_data.password = TEST_PASSWORD
 	register_data.language = "fr_FR"
@@ -94,20 +94,20 @@ func test_full_account_creation_login_and_deletion() -> void:
 	var student_alice: StudentData = StudentData.new()
 	student_alice.code = 123
 	student_alice.name = "Alice"
-	student_alice.level = StudentData.Level.Beginner
+	student_alice.level = StudentData.Level.BEGINNER
 	student_alice.age = 7
 
 	var student_bob: StudentData = StudentData.new()
 	student_bob.code = 124
 	student_bob.name = "Bob"
-	student_bob.level = StudentData.Level.Reviewer
+	student_bob.level = StudentData.Level.REVIEWER
 	student_bob.age = 8
 
 	# Device 2 — one student
 	var student_charlie: StudentData = StudentData.new()
 	student_charlie.code = 321
 	student_charlie.name = "Charlie"
-	student_charlie.level = StudentData.Level.Adult
+	student_charlie.level = StudentData.Level.ADULT
 	student_charlie.age = 10
 
 	register_data.students[1] = [student_alice, student_bob]
@@ -166,9 +166,9 @@ func test_full_account_creation_login_and_deletion() -> void:
 
 	# --- Basic fields ---
 	assert_eq(str(login_body.email), _test_email, "Returned email should match")
-	assert_eq(login_body.account_type as int, TeacherSettings.AccountType.Teacher,
+	assert_eq(login_body.account_type as int, TeacherSettings.AccountType.TEACHER,
 			"Account type should be Teacher (0)")
-	assert_eq(login_body.education_method as int, TeacherSettings.EducationMethod.Complete,
+	assert_eq(login_body.education_method as int, TeacherSettings.EducationMethod.COMPLETE,
 			"Education method should be Complete (1)")
 	assert_eq(str(login_body.language), "fr_FR", "Language should be 'fr'")
 	assert_true(login_body.has("token"), "Login response must include token")
@@ -198,13 +198,13 @@ func test_full_account_creation_login_and_deletion() -> void:
 				found_alice = true
 				assert_eq(str(student.name), "Alice", "Student 123 should be Alice")
 				assert_eq(student.age as int, 7, "Alice should be age 7")
-				assert_eq(student.level as int, StudentData.Level.Beginner,
+				assert_eq(student.level as int, StudentData.Level.BEGINNER,
 						"Alice should be Beginner (0)")
 			124:
 				found_bob = true
 				assert_eq(str(student.name), "Bob", "Student 124 should be Bob")
 				assert_eq(student.age as int, 8, "Bob should be age 8")
-				assert_eq(student.level as int, StudentData.Level.Reviewer,
+				assert_eq(student.level as int, StudentData.Level.REVIEWER,
 						"Bob should be Reviewer (1)")
 	assert_true(found_alice, "Alice (code 123) should be present on device 1")
 	assert_true(found_bob, "Bob (code 124) should be present on device 1")
@@ -215,7 +215,7 @@ func test_full_account_creation_login_and_deletion() -> void:
 	assert_eq(charlie.code as int, 321, "Device 2 student should have code 321")
 	assert_eq(str(charlie.name), "Charlie", "Student 321 should be Charlie")
 	assert_eq(charlie.age as int, 10, "Charlie should be age 10")
-	assert_eq(charlie.level as int, StudentData.Level.Adult,
+	assert_eq(charlie.level as int, StudentData.Level.ADULT,
 			"Charlie should be Adult (2)")
 
 	# ------------------------------------------------------------------

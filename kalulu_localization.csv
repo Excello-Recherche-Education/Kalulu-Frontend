@@ -404,7 +404,7 @@ VALIDATE,Confirmer,Confirmar,Confirmar,Conferma
 SUMMARY_EMAIL,Adresse email : {mail},Correo electrónico: {mail},Endereço de e-mail : {mail},Indirizzo email: {mail}
 SUMMARY_TYPE,Type de compte : {type},Tipo de cuenta: {type},Tipo de conta : {type},Tipo di account: {type}
 SUMMARY_METHOD,Méthode d'éducation : {method},Método de enseñanza: {method},Método educacional : {method},Metodo educativo: {method}
-APPONLY,Application uniquement,Solo aplicación,Somente aplicativo,Solo applicazione
+APP_ONLY,Application uniquement,Solo aplicación,Somente aplicativo,Solo applicazione
 COMPLETE,Complète (livrets et jeux papiers),Completo (cuaderno y juegos en papel),Completo (livretos e jogos de papel),Completo (libretti e giochi cartacei)
 SUMMARY_NUMBER_OF_DEVICES,Nombre d'appareils : {number},Cantidad de dispositivos: {number},Número de dispositivos : {number},Numero di dispositivi: {number}
 SUMMARY_NUMBER_OF_STUDENTS,Nombre d'élèves : {number},Cantidad de estudiantes: {number},Número de alunos : {number},Numero di studenti: {number}

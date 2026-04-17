@@ -2,11 +2,11 @@ class_name UserDatabaseSynchronizer
 extends Node
 
 enum UpdateNeeded {
-	Nothing,
-	FromLocal,
-	FromServer,
-	DeleteLocal,
-	DeleteServer
+	NOTHING,
+	FROM_LOCAL,
+	FROM_SERVER,
+	DELETE_LOCAL,
+	DELETE_SERVER
 }
 
 var synchronizing: bool = false
@@ -62,13 +62,13 @@ func _determine_user_update(response_body: Dictionary) -> UpdateNeeded:
 		Log.trace("UserDatabaseSynchronizer: Cannot get user from body. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR_NO_BODY_FROM_SERVER")
 		stop_sync()
-		return UpdateNeeded.Nothing
+		return UpdateNeeded.NOTHING
 	var user: Dictionary = response_body.user
 	if not user.has("last_modified"):
 		Log.trace("UserDatabaseSynchronizer: Cannot get last_modified from user. Canceling synchronization.")
 		set_loading_bar_text("SYNCHRONIZATION_ERROR")
 		stop_sync()
-		return UpdateNeeded.Nothing
+		return UpdateNeeded.NOTHING
 	var server_unix_time_user: int = Time.get_unix_time_from_datetime_string(user.last_modified as String)
 	var local_user_string_time: String = UserDataManager.teacher_settings.last_modified
 	var local_unix_time_user: int = 0
@@ -79,10 +79,10 @@ func _determine_user_update(response_body: Dictionary) -> UpdateNeeded:
 
 func _compute_update_needed(local_unix_time: int, server_unix_time: int) -> UpdateNeeded:
 	if local_unix_time == server_unix_time:
-		return UpdateNeeded.Nothing
+		return UpdateNeeded.NOTHING
 	if local_unix_time > server_unix_time:
-		return UpdateNeeded.FromLocal
-	return UpdateNeeded.FromServer
+		return UpdateNeeded.FROM_LOCAL
+	return UpdateNeeded.FROM_SERVER
 
 
 func _determine_students_update(response_body: Dictionary, need_update_user: UpdateNeeded) -> Dictionary:
@@ -150,7 +150,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					# Synchronize student data
 					var local_student_unix_time: int = Time.get_unix_time_from_datetime_string(student_data.last_modified)
 					student_updates["data"] = _compute_update_needed(local_student_unix_time, server_student_unix_time)
-					if student_updates["data"] == UpdateNeeded.Nothing:
+					if student_updates["data"] == UpdateNeeded.NOTHING:
 						Log.trace("UserDatabaseSynchronizer: Student %d data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 					
 					# Synchronize student progression
@@ -162,7 +162,7 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 						return {}
 					var local_student_progression_unix_time: int = Time.get_unix_time_from_datetime_string(student_progression.last_modified)
 					student_updates["progression"] = _compute_update_needed(local_student_progression_unix_time, server_student_progression_unix_time)
-					if student_updates["progression"] == UpdateNeeded.Nothing:
+					if student_updates["progression"] == UpdateNeeded.NOTHING:
 						Log.trace("UserDatabaseSynchronizer: Student %d progression data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 					
 					# Synchronize student remediation
@@ -170,17 +170,17 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					if student_remediation != null:
 						var local_student_gp_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.gp_last_modified)
 						student_updates["remediation_gp"] = _compute_update_needed(local_student_gp_remediation_unix_time, server_student_remediation_gp_unix_time)
-						if student_updates["remediation_gp"] == UpdateNeeded.Nothing:
+						if student_updates["remediation_gp"] == UpdateNeeded.NOTHING:
 							Log.trace("UserDatabaseSynchronizer: Student %d GP remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 						
 						var local_student_syllables_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.syllables_last_modified)
 						student_updates["remediation_syllables"] = _compute_update_needed(local_student_syllables_remediation_unix_time, server_student_remediation_syllables_unix_time)
-						if student_updates["remediation_syllables"] == UpdateNeeded.Nothing:
+						if student_updates["remediation_syllables"] == UpdateNeeded.NOTHING:
 							Log.trace("UserDatabaseSynchronizer: Student %d syllables remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 						
 						var local_student_words_remediation_unix_time: int = Time.get_unix_time_from_datetime_string(student_remediation.words_last_modified)
 						student_updates["remediation_words"] = _compute_update_needed(local_student_words_remediation_unix_time, server_student_remediation_words_unix_time)
-						if student_updates["remediation_words"] == UpdateNeeded.Nothing:
+						if student_updates["remediation_words"] == UpdateNeeded.NOTHING:
 							Log.trace("UserDatabaseSynchronizer: Student %d words remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 					
 					# Synchronize student confusion matrix
@@ -188,20 +188,20 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 					if student_confusion_matrix != null:
 						var local_student_gp_confusion_matrix_unix_time: int = Time.get_unix_time_from_datetime_string(student_confusion_matrix.gp_last_modified)
 						student_updates["confusion_matrix_gp"] = _compute_update_needed(local_student_gp_confusion_matrix_unix_time, server_student_confusion_matrix_gp_unix_time)
-						if student_updates["confusion_matrix_gp"] == UpdateNeeded.Nothing:
+						if student_updates["confusion_matrix_gp"] == UpdateNeeded.NOTHING:
 							Log.trace("UserDatabaseSynchronizer: Student %d GP confusion matrix data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
 					else:
 						if server_student_confusion_matrix_gp_unix_time > 0:
-							student_updates["confusion_matrix_gp"] = UpdateNeeded.FromServer
+							student_updates["confusion_matrix_gp"] = UpdateNeeded.FROM_SERVER
 					
 					break
 			if found:
 				break
 		if not found:
-			if need_update_user == UpdateNeeded.FromServer:
-				need_update_students[code_to_check]["data"] = UpdateNeeded.FromServer
-			elif need_update_user == UpdateNeeded.FromLocal:
-				need_update_students[code_to_check]["data"] = UpdateNeeded.DeleteServer
+			if need_update_user == UpdateNeeded.FROM_SERVER:
+				need_update_students[code_to_check]["data"] = UpdateNeeded.FROM_SERVER
+			elif need_update_user == UpdateNeeded.FROM_LOCAL:
+				need_update_students[code_to_check]["data"] = UpdateNeeded.DELETE_SERVER
 			else:
 				Log.warn("UserDatabaseSynchronizer: Student %d not found in local, but user doesn't need to be updated...this is theoretically not possible" % code_to_check)
 
@@ -209,12 +209,12 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 		var students_in_device: Array[StudentData] = UserDataManager.teacher_settings.students[device]
 		for student_data: StudentData in students_in_device:
 			if not need_update_students.has(student_data.code):
-				if need_update_user == UpdateNeeded.FromServer:
+				if need_update_user == UpdateNeeded.FROM_SERVER:
 					need_update_students[student_data.code] = {}
-					need_update_students[student_data.code]["data"] = UpdateNeeded.DeleteLocal
-				elif need_update_user == UpdateNeeded.FromLocal:
+					need_update_students[student_data.code]["data"] = UpdateNeeded.DELETE_LOCAL
+				elif need_update_user == UpdateNeeded.FROM_LOCAL:
 					need_update_students[student_data.code] = {}
-					need_update_students[student_data.code]["data"] = UpdateNeeded.FromLocal
+					need_update_students[student_data.code]["data"] = UpdateNeeded.FROM_LOCAL
 				else:
 					Log.warn("UserDatabaseSynchronizer: Student %d not found in server, but user doesn't need to be updated...this is theoretically not possible" % student_data.code)
 	return need_update_students
@@ -223,13 +223,13 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 func _build_message_to_server(need_update_user: UpdateNeeded, need_update_students: Dictionary[int, Dictionary]) -> Dictionary:
 	var message_to_server: Dictionary = {}
 
-	if need_update_user == UpdateNeeded.FromLocal:
+	if need_update_user == UpdateNeeded.FROM_LOCAL:
 		message_to_server["user"] = {
 			"account_type": UserDataManager.teacher_settings.account_type,
 			"education_method": UserDataManager.teacher_settings.education_method,
 			"last_modified": UserDataManager.teacher_settings.last_modified
 		}
-	elif need_update_user == UpdateNeeded.FromServer:
+	elif need_update_user == UpdateNeeded.FROM_SERVER:
 		message_to_server["user"] = {"need_update": true}
 
 	message_to_server["students"] = {}
@@ -241,14 +241,14 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 		if student_entry.has("data"):
 			var student_update: UpdateNeeded = student_entry["data"]
 
-			if student_update == UpdateNeeded.DeleteLocal:
+			if student_update == UpdateNeeded.DELETE_LOCAL:
 				UserDataManager.delete_student(student_code)
 				continue
 
-			elif student_update == UpdateNeeded.DeleteServer:
+			elif student_update == UpdateNeeded.DELETE_SERVER:
 				student_block["delete"] = true
 
-			elif student_update == UpdateNeeded.FromLocal:
+			elif student_update == UpdateNeeded.FROM_LOCAL:
 				var device_id: int = UserDataManager.teacher_settings.get_student_device(student_code)
 				if device_id == -1:
 					Log.error("UserDatabaseSynchronizer: Student code %s has no device ID" % student_code)
@@ -264,7 +264,7 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 					"updated_at": student_data.last_modified
 				})
 
-			elif student_update == UpdateNeeded.FromServer:
+			elif student_update == UpdateNeeded.FROM_SERVER:
 				student_block["need_update"] = true
 		
 		var student_progression: StudentProgression = UserDataManager.get_student_progression_for_code(0, student_code)
@@ -272,16 +272,16 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 			Log.trace("Cannot find progression data for student %s" % str(student_code))
 		elif student_entry.has("progression"):
 			var progression_block: Dictionary = {}
-			if student_entry.progression == UpdateNeeded.FromLocal:
+			if student_entry.progression == UpdateNeeded.FROM_LOCAL:
 				progression_block =	{
 										"version": student_progression.version,
 										"unlocked": student_progression.unlocks,
 										"highest_boss_defeated": student_progression.highest_boss_defeated,
 										"updated_at": student_progression.last_modified
 									}
-			elif student_entry.progression == UpdateNeeded.FromServer:
+			elif student_entry.progression == UpdateNeeded.FROM_SERVER:
 				progression_block = {"need_update": true}
-			elif student_entry.progression == UpdateNeeded.DeleteServer:
+			elif student_entry.progression == UpdateNeeded.DELETE_SERVER:
 				progression_block = {"delete": true}
 			
 			if progression_block.size() > 0:
@@ -290,14 +290,14 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 		var student_remediation: UserRemediation = UserDataManager.get_student_remediation_data(student_code)
 		if student_entry.has("remediation_gp"):
 			var gp_remediation_block: Dictionary = {}
-			if student_entry.remediation_gp == UpdateNeeded.FromLocal:
+			if student_entry.remediation_gp == UpdateNeeded.FROM_LOCAL:
 				var tuple_list: Array = []
 				for key: int in student_remediation.gps_scores.keys():
 					tuple_list.append([key, student_remediation.gps_scores[key]])
 				gp_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.gp_last_modified}
-			elif student_entry.remediation_gp == UpdateNeeded.FromServer:
+			elif student_entry.remediation_gp == UpdateNeeded.FROM_SERVER:
 				gp_remediation_block = {"need_update": true}
-			elif student_entry.remediation_gp == UpdateNeeded.DeleteServer:
+			elif student_entry.remediation_gp == UpdateNeeded.DELETE_SERVER:
 				gp_remediation_block = {"delete": true}
 
 			if gp_remediation_block.size() > 0:
@@ -305,14 +305,14 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 		
 		if student_entry.has("remediation_syllables"):
 			var syllables_remediation_block: Dictionary = {}
-			if student_entry.remediation_syllables == UpdateNeeded.FromLocal:
+			if student_entry.remediation_syllables == UpdateNeeded.FROM_LOCAL:
 				var tuple_list: Array = []
 				for key: int in student_remediation.syllables_scores.keys():
 					tuple_list.append([key, student_remediation.syllables_scores[key]])
 				syllables_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.syllables_last_modified}
-			elif student_entry.remediation_syllables == UpdateNeeded.FromServer:
+			elif student_entry.remediation_syllables == UpdateNeeded.FROM_SERVER:
 				syllables_remediation_block = {"need_update": true}
-			elif student_entry.remediation_syllables == UpdateNeeded.DeleteServer:
+			elif student_entry.remediation_syllables == UpdateNeeded.DELETE_SERVER:
 				syllables_remediation_block = {"delete": true}
 
 			if syllables_remediation_block.size() > 0:
@@ -320,14 +320,14 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 		
 		if student_entry.has("remediation_words"):
 			var words_remediation_block: Dictionary = {}
-			if student_entry.remediation_words == UpdateNeeded.FromLocal:
+			if student_entry.remediation_words == UpdateNeeded.FROM_LOCAL:
 				var tuple_list: Array = []
 				for key: int in student_remediation.words_scores.keys():
 					tuple_list.append([key, student_remediation.words_scores[key]])
 				words_remediation_block = {"score_remediation": tuple_list, "updated_at": student_remediation.words_last_modified}
-			elif student_entry.remediation_words == UpdateNeeded.FromServer:
+			elif student_entry.remediation_words == UpdateNeeded.FROM_SERVER:
 				words_remediation_block = {"need_update": true}
-			elif student_entry.remediation_words == UpdateNeeded.DeleteServer:
+			elif student_entry.remediation_words == UpdateNeeded.DELETE_SERVER:
 				words_remediation_block = {"delete": true}
 
 			if words_remediation_block.size() > 0:
@@ -336,14 +336,14 @@ func _build_message_to_server(need_update_user: UpdateNeeded, need_update_studen
 		var student_confusion_matrix: UserConfusionMatrix = UserDataManager.get_student_confusion_matrix_data(student_code)
 		if student_entry.has("confusion_matrix_gp"):
 			var gp_confusion_matrix_block: Dictionary = {}
-			if student_entry.confusion_matrix_gp == UpdateNeeded.FromLocal:
+			if student_entry.confusion_matrix_gp == UpdateNeeded.FROM_LOCAL:
 				var tuple_list: Array = []
 				for key: int in student_confusion_matrix.gp_scores.keys():
 					tuple_list.append([key, student_confusion_matrix.gp_scores[key]])
 				gp_confusion_matrix_block = {"confusion_matrix": tuple_list, "updated_at": student_confusion_matrix.gp_last_modified}
-			elif student_entry.confusion_matrix_gp == UpdateNeeded.FromServer:
+			elif student_entry.confusion_matrix_gp == UpdateNeeded.FROM_SERVER:
 				gp_confusion_matrix_block = {"need_update": true}
-			elif student_entry.confusion_matrix_gp == UpdateNeeded.DeleteServer:
+			elif student_entry.confusion_matrix_gp == UpdateNeeded.DELETE_SERVER:
 				gp_confusion_matrix_block = {"delete": true}
 
 			if gp_confusion_matrix_block.size() > 0:
@@ -474,7 +474,7 @@ func synchronize() -> void:
 		return
 
 	var need_update_user: UpdateNeeded = _determine_user_update(response_body)
-	if need_update_user == UpdateNeeded.Nothing:
+	if need_update_user == UpdateNeeded.NOTHING:
 		Log.trace("UserDatabaseSynchronizer: User data timestamp is the same in local and on server. No synchronization necessary")
 	if not synchronizing:
 		return

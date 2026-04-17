@@ -3,15 +3,15 @@ class_name GardenLayout
 extends Resource
 
 enum FirstOrLast {
-	First,
-	Neither,
-	Last
+	FIRST,
+	NEITHER,
+	LAST
 }
 
 @export var color: int = 0
 @export var lesson_buttons_export: Array[Dictionary] = []:
 	set = set_lesson_buttons_export
-@export var is_first_or_last: FirstOrLast = FirstOrLast.Neither
+@export var is_first_or_last: FirstOrLast = FirstOrLast.NEITHER
 
 var lesson_buttons: Array[GardenLayoutLessonButton] = []:
 	set = set_lesson_buttons

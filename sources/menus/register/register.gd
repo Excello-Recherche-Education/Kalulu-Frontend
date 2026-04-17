@@ -74,10 +74,10 @@ func _on_step_completed(step: Step) -> void:
 		"type":
 			# Adds teacher or parent steps
 			_remove_future_steps()
-			if register_data.account_type == TeacherSettings.AccountType.Teacher:
+			if register_data.account_type == TeacherSettings.AccountType.TEACHER:
 				for scene: PackedScene in teacher_steps:
 					current_steps.append(scene.instantiate())
-			elif register_data.account_type == TeacherSettings.AccountType.Parent:
+			elif register_data.account_type == TeacherSettings.AccountType.PARENT:
 				for scene: PackedScene in parent_steps:
 					current_steps.append(scene.instantiate())
 			progress_bar.max_value = current_steps.size() + 3

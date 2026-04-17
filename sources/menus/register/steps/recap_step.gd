@@ -22,7 +22,7 @@ func on_enter() -> void:
 	email.text = tr("SUMMARY_EMAIL").format({"mail": teacher_settings.email})
 	account_type.text = tr("SUMMARY_TYPE").format({"type": tr((TeacherSettings.AccountType.keys()[teacher_settings.account_type] as String).to_upper())})
 	
-	if teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
+	if teacher_settings.account_type == TeacherSettings.AccountType.TEACHER:
 		education_method.text = tr("SUMMARY_METHOD").format({"method": tr((TeacherSettings.EducationMethod.keys()[teacher_settings.education_method] as String).to_upper())})
 		education_method.show()
 		
@@ -41,7 +41,7 @@ func on_enter() -> void:
 	for device: int in teacher_settings.students.keys():
 		var device_recap: DeviceRecap = DEVICE_RECAP_SCENE.instantiate()
 		
-		if teacher_settings.account_type == TeacherSettings.AccountType.Teacher:
+		if teacher_settings.account_type == TeacherSettings.AccountType.TEACHER:
 			device_recap.title = tr("DEVICE_NUMBER").format({"number": device})
 		else:
 			device_recap.title = tr("PLAYERS")
