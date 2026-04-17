@@ -174,6 +174,14 @@ func set_user_language(language: String) -> Dictionary:
 	await _post_request("set_language", data)
 	return _response()
 
+
+func reset_language(language: String) -> Dictionary:
+	loading_rect.show()
+	Log.warn("ServerManager: Reset language request initiated for %s" % language)
+	var data: Dictionary = {"language": language}
+	await _post_request("reset_language", data)
+	return _response()
+
 #region Sender functions
 
 func check_internet_access() -> bool:
