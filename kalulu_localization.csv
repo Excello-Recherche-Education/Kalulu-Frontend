@@ -11,6 +11,11 @@ EMAIL,Adresse mail,Correo electrónico,Endereço eletrônico,Indirizzo email
 PASSWORD,Mot de passe,Contraseña,Senha,Password
 LOG_IN,Se connecter,Ingresar,Conexão,Accedi
 INVALID_EMAIL_OR_PASSWORD,Adresse mail ou mot de passe invalide,Correo electrónico o contraseña inválida,Endereço de e-mail ou senha inválidos,Email o password non validi
+LOGIN_USER_NOT_FOUND,Aucun compte ne correspond à cette adresse mail,No existe ninguna cuenta con este correo electrónico,Nenhuma conta corresponde a este e-mail,Nessun account corrisponde a questa email
+LOGIN_WRONG_PASSWORD,Mot de passe incorrect,Contraseña incorrecta,Senha incorreta,Password errata
+LOGIN_MISSING_CREDENTIALS,Veuillez renseigner votre adresse mail et votre mot de passe,"Por favor, introduzca su correo electrónico y su contraseña","Por favor, informe seu e-mail e sua senha",Inserisci email e password
+LOGIN_SERVER_ERROR,"Erreur serveur, veuillez réessayer plus tard","Error del servidor, inténtelo más tarde","Erro do servidor, tente novamente mais tarde","Errore del server, riprova più tardi"
+LOGIN_NETWORK_ERROR,"Connexion au serveur échouée, vérifiez votre accès Internet","Error de conexión al servidor, verifique su acceso a Internet","Falha na conexão com o servidor, verifique seu acesso à Internet","Connessione al server fallita, verifica il tuo accesso a Internet"
 RESET_PASSWORD,Réinitialiser le mot de passe,Restablecer la contraseña,Redefinir senha,Reimposta password
 CHECK_YOUR_EMAIL,Veuillez vérifier votre boîte mail,"Por favor, revise su correo electrónico","Por favor, verifique seu e-mail",Controlla la tua email
 RESET_PASSWORD_FAILED,"Erreur lors de la réinitialisation, réessayez plus tard","Error al restablecer la contraseña, inténtelo más tarde","Erro ao redefinir a senha, tente novamente mais tarde","Errore nel reimpostare la password, riprova più tardi"
