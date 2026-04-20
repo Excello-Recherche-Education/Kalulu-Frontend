@@ -11,6 +11,7 @@ var dev_click_count: int = 0
 var dev_last_click_time: float = 0.0
 
 @onready var version_label: Label = $Informations/BuildVersionValue
+@onready var version_click_area: Control = $Informations/VersionClickArea
 @onready var teacher_label: Label = $Informations/TeacherValue
 @onready var device_id_label: Label = $Informations/DeviceIDValue
 @onready var kalulu: KALULU = $Kalulu
@@ -25,7 +26,7 @@ func _ready() -> void:
 	version_label.text = Utils.get_application_version_with_code()
 	teacher_label.text = UserDataManager.get_device_settings().teacher
 	device_id_label.text = str(UserDataManager.get_device_settings().device_id)
-	version_label.gui_input.connect(_on_version_label_gui_input)
+	version_click_area.gui_input.connect(_on_version_label_gui_input)
 	OpeningCurtain.open()
 
 
