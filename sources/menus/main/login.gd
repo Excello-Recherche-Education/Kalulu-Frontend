@@ -40,7 +40,7 @@ func _on_validate_button_pressed() -> void:
 	if not validator.validate():
 		Log.info("Login: Validation failed for email %s" % email_field.text)
 		return
-	
+
 	# Request server for login
 	Log.info("Login: Sending login request for email %s" % email_field.text)
 	var res: Dictionary = await ServerManager.login(email_field.text, password_field.text)
@@ -52,12 +52,38 @@ func _on_validate_button_pressed() -> void:
 			logged_in.emit()
 		else:
 			Log.info("Login: UserDataManager rejected server response during login")
+			login_message.text = "LOGIN_SERVER_ERROR"
 			login_message.show()
 			reset_password_button.show()
 	else:
 		Log.info("Login: Server responded with code %d for login attempt with email %s" % [res.code, email_field.text])
+		login_message.text = _translation_key_for_error(res)
 		login_message.show()
 		reset_password_button.show()
+
+
+func _translation_key_for_error(res: Dictionary) -> String:
+	# Network failure: no HTTP response received (code stays 0 in ServerManager).
+	if res.code == 0:
+		return "LOGIN_NETWORK_ERROR"
+
+	var body: Dictionary = (res.body as Dictionary) if res.body is Dictionary else {}
+	var error_code: String = str(body.get("error_code", ""))
+	match error_code:
+		"USER_NOT_FOUND":
+			return "LOGIN_USER_NOT_FOUND"
+		"INVALID_PASSWORD":
+			return "LOGIN_WRONG_PASSWORD"
+		"MISSING_CREDENTIALS":
+			return "LOGIN_MISSING_CREDENTIALS"
+		"SERVER_ERROR":
+			return "LOGIN_SERVER_ERROR"
+		"BAD_REQUEST":
+			return "LOGIN_SERVER_ERROR"
+
+	if res.code >= 500:
+		return "LOGIN_SERVER_ERROR"
+	return "INVALID_EMAIL_OR_PASSWORD"
 
 
 func _on_reset_password_button_pressed() -> void:
