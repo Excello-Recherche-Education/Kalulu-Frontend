@@ -219,6 +219,39 @@ func test_full_account_creation_login_and_deletion() -> void:
 			"Charlie should be Adult (2)")
 
 	# ------------------------------------------------------------------
+	# Step 5b – Login with wrong password must report INVALID_PASSWORD
+	# ------------------------------------------------------------------
+	gut.p("Step 5b: Attempting login with a wrong password…")
+	var wrong_pw_res: Dictionary = await ServerManager.login(_test_email, TEST_PASSWORD + "_wrong")
+	assert_eq(wrong_pw_res.code as int, 401,
+			"Login with wrong password should return 401")
+	var wrong_pw_body: Dictionary = wrong_pw_res.body as Dictionary
+	assert_eq(str(wrong_pw_body.get("error_code", "")), "INVALID_PASSWORD",
+			"Wrong password for an existing email should return error_code INVALID_PASSWORD")
+
+	assert_engine_error("Response code = 401",
+			"Expected: server returns 401 for wrong password")
+	assert_engine_error("INVALID_PASSWORD",
+			"Expected: wrong password should report INVALID_PASSWORD")
+
+	# ------------------------------------------------------------------
+	# Step 5c – Login with unknown email must report USER_NOT_FOUND
+	# ------------------------------------------------------------------
+	gut.p("Step 5c: Attempting login with an unknown email…")
+	var unknown_email: String = TEST_EMAIL_PREFIX + "unknown_" + str(Time.get_ticks_usec()) + TEST_EMAIL_DOMAIN
+	var unknown_res: Dictionary = await ServerManager.login(unknown_email, TEST_PASSWORD)
+	assert_eq(unknown_res.code as int, 401,
+			"Login with unknown email should return 401")
+	var unknown_body: Dictionary = unknown_res.body as Dictionary
+	assert_eq(str(unknown_body.get("error_code", "")), "USER_NOT_FOUND",
+			"Unknown email should return error_code USER_NOT_FOUND")
+
+	assert_engine_error("Response code = 401",
+			"Expected: server returns 401 for unknown email")
+	assert_engine_error("USER_NOT_FOUND",
+			"Expected: unknown email should report USER_NOT_FOUND")
+
+	# ------------------------------------------------------------------
 	# Step 6 – Set auth context and delete the account
 	# ------------------------------------------------------------------
 	gut.p("Step 6: Deleting the test account…")
@@ -248,14 +281,17 @@ func test_full_account_creation_login_and_deletion() -> void:
 	UserDataManager.teacher_settings = null
 
 	var login_after_del: Dictionary = await ServerManager.login(_test_email, TEST_PASSWORD)
-	assert_ne(login_after_del.code as int, 200,
-			"Login should fail after account deletion (expected 401, got %d)" % login_after_del.code)
+	assert_eq(login_after_del.code as int, 401,
+			"Login should fail with 401 after account deletion (got %d)" % login_after_del.code)
+	var deleted_body: Dictionary = login_after_del.body as Dictionary
+	assert_eq(str(deleted_body.get("error_code", "")), "USER_NOT_FOUND",
+			"Login after deletion should return error_code USER_NOT_FOUND")
 
 	# Handle expected warnings: server returns 401 for deleted account login
 	assert_engine_error("Response code = 401",
 			"Expected: server returns 401 for deleted account")
-	assert_engine_error("Login or password incorrect",
-			"Expected: login should fail after account deletion")
+	assert_engine_error("USER_NOT_FOUND",
+			"Expected: login after deletion should report USER_NOT_FOUND")
 
 	# ------------------------------------------------------------------
 	# Step 8 – Email should be available again
