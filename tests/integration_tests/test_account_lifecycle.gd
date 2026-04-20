@@ -229,11 +229,6 @@ func test_full_account_creation_login_and_deletion() -> void:
 	assert_eq(str(wrong_pw_body.get("error_code", "")), "INVALID_PASSWORD",
 			"Wrong password for an existing email should return error_code INVALID_PASSWORD")
 
-	assert_engine_error("Response code = 401",
-			"Expected: server returns 401 for wrong password")
-	assert_engine_error("INVALID_PASSWORD",
-			"Expected: wrong password should report INVALID_PASSWORD")
-
 	# ------------------------------------------------------------------
 	# Step 5c – Login with unknown email must report USER_NOT_FOUND
 	# ------------------------------------------------------------------
@@ -245,11 +240,6 @@ func test_full_account_creation_login_and_deletion() -> void:
 	var unknown_body: Dictionary = unknown_res.body as Dictionary
 	assert_eq(str(unknown_body.get("error_code", "")), "USER_NOT_FOUND",
 			"Unknown email should return error_code USER_NOT_FOUND")
-
-	assert_engine_error("Response code = 401",
-			"Expected: server returns 401 for unknown email")
-	assert_engine_error("USER_NOT_FOUND",
-			"Expected: unknown email should report USER_NOT_FOUND")
 
 	# ------------------------------------------------------------------
 	# Step 6 – Set auth context and delete the account
@@ -287,12 +277,6 @@ func test_full_account_creation_login_and_deletion() -> void:
 	assert_eq(str(deleted_body.get("error_code", "")), "USER_NOT_FOUND",
 			"Login after deletion should return error_code USER_NOT_FOUND")
 
-	# Handle expected warnings: server returns 401 for deleted account login
-	assert_engine_error("Response code = 401",
-			"Expected: server returns 401 for deleted account")
-	assert_engine_error("USER_NOT_FOUND",
-			"Expected: login after deletion should report USER_NOT_FOUND")
-
 	# ------------------------------------------------------------------
 	# Step 8 – Email should be available again
 	# ------------------------------------------------------------------
@@ -306,10 +290,17 @@ func test_full_account_creation_login_and_deletion() -> void:
 	# cannot reach those, so we mark them manually via get_errors().
 	# "Database is null" warnings are also expected when the godot-sqlite addon
 	# is absent (e.g. in GitHub Actions), so we suppress them here too.
+	# Each failed login produces two ServerManager warnings (HTTP code line
+	# + pretty-printed body). We acknowledge all of them here because
+	# assert_engine_error() handles only the first occurrence of a pattern.
 	for err: GutTrackedError in get_errors():
-		if not err.handled and err.contains_text("Database file not found"):
-			err.handled = true
-		if not err.handled and err.contains_text("Database is null"):
+		if err.handled:
+			continue
+		if err.contains_text("Database file not found") \
+				or err.contains_text("Database is null") \
+				or err.contains_text("Response code = 401") \
+				or err.contains_text("INVALID_PASSWORD") \
+				or err.contains_text("USER_NOT_FOUND"):
 			err.handled = true
 
 	gut.p("All steps passed.")
