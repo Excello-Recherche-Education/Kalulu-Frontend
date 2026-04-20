@@ -52,14 +52,22 @@ func _on_validate_button_pressed() -> void:
 			logged_in.emit()
 		else:
 			Log.info("Login: UserDataManager rejected server response during login")
-			login_message.text = "LOGIN_SERVER_ERROR"
-			login_message.show()
-			reset_password_button.show()
+			_show_login_error("LOGIN_SERVER_ERROR")
 	else:
 		Log.info("Login: Server responded with code %d for login attempt with email %s" % [res.code, email_field.text])
-		login_message.text = _translation_key_for_error(res)
-		login_message.show()
+		_show_login_error(_translation_key_for_error(res))
+
+
+func _show_login_error(translation_key: String) -> void:
+	login_message.text = translation_key
+	login_message.show()
+	# Offer password reset only when the email exists and the password is wrong —
+	# resetting is useless for any other failure (unknown account, network, server…).
+	if translation_key == "LOGIN_WRONG_PASSWORD":
+		reset_password_button.disabled = false
 		reset_password_button.show()
+	else:
+		reset_password_button.hide()
 
 
 func _translation_key_for_error(res: Dictionary) -> String:
