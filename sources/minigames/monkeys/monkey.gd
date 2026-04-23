@@ -34,7 +34,6 @@ var blink_delay: int = 3
 var blink_random: int = 3
 var grab_animation_name: String = "grab"
 var grab_time: float = 1.0
-
 # Captured on _ready so reset_coconut can spawn replacements with the scene-designed transform.
 var _coconut_initial_position: Vector2
 var _coconut_initial_rotation: float

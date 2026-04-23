@@ -6,7 +6,6 @@ var text: String:
 		text = value
 		if label:
 			label.text = text
-
 # External, shared across all coconuts in the minigame. Set by the minigame before play.
 var broken_fx: BrokenCoconutFX
 
@@ -28,9 +27,7 @@ func explode() -> void:
 	highlight_fx.stop()
 	sprite.hide()
 	label.hide()
-
 	if broken_fx:
 		broken_fx.global_position = global_position
 		await broken_fx.play()
-
 	queue_free()
