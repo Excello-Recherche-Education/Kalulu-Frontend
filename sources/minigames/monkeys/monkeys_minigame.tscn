@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://blejqny5syems" path="res://assets/minigames/monkeys/graphic/billboard.png" id="8_j0b56"]
 [ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="10_ebf48"]
 [ext_resource type="Texture2D" uid="uid://u2x8lg54e1g" path="res://assets/minigames/monkeys/graphic/caterpillar.png" id="11_ebf48"]
+[ext_resource type="PackedScene" uid="uid://cnt2q4hqn1wsq" path="res://sources/minigames/monkeys/broken_coconut_fx.tscn" id="12_brkfx"]
 
 [node name="MonkeysMinigame" unique_id=2041470235 instance=ExtResource("1_6nhsm")]
 script = ExtResource("2_12lw5")
@@ -105,6 +106,9 @@ offset_left = 1316.0
 offset_top = 36.0
 offset_right = 1356.0
 offset_bottom = 76.0
+
+[node name="BrokenCoconutFX" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="8" unique_id=1488112341 instance=ExtResource("12_brkfx")]
+layout_mode = 0
 
 [node name="Caterpillar" type="Sprite2D" parent="." index="4" unique_id=229164884]
 position = Vector2(1124, 1349.0001)

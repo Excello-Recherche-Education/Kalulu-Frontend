@@ -4,6 +4,8 @@ extends Node2D
 signal pressed()
 signal dragged_into_self()
 
+const COCONUT_SCENE: PackedScene = preload("res://sources/minigames/monkeys/coconut.tscn")
+
 var locked: bool = true:
 	set(value):
 		locked = value or stunned
@@ -21,11 +23,21 @@ var stimulus: Dictionary = {}:
 		else:
 			coconut.text = ""
 			drag_preview_label.text = ""
+# Shared explosion FX owned by the minigame. Propagated to the monkey's coconut on assign.
+var broken_fx: BrokenCoconutFX:
+	set(value):
+		broken_fx = value
+		if coconut:
+			coconut.broken_fx = value
 var blink_counter: int = 0
 var blink_delay: int = 3
 var blink_random: int = 3
 var grab_animation_name: String = "grab"
 var grab_time: float = 1.0
+# Captured on _ready so reset_coconut can spawn replacements with the scene-designed transform.
+var _coconut_initial_position: Vector2
+var _coconut_initial_rotation: float
+var _coconut_initial_scale: Vector2
 
 @onready var stars: AnimatedSprite2D = $Stars
 @onready var coconut: Coconut = $Coconut
@@ -40,6 +52,22 @@ var grab_time: float = 1.0
 func _ready() -> void:
 	(button as Control).set_drag_forwarding(_get_drag_data, _can_drop_data, _drop_data)
 	grab_time = Utils.get_animation_duration(animated_sprite_2d, grab_animation_name)
+	_coconut_initial_position = coconut.position
+	_coconut_initial_rotation = coconut.rotation
+	_coconut_initial_scale = coconut.scale
+
+
+# Spawn a fresh coconut child with the scene-designed transform. Called after the
+# previous one was reparented/freed during a throw.
+func reset_coconut() -> void:
+	var new_coconut: Coconut = COCONUT_SCENE.instantiate()
+	new_coconut.position = _coconut_initial_position
+	new_coconut.rotation = _coconut_initial_rotation
+	new_coconut.scale = _coconut_initial_scale
+	new_coconut.broken_fx = broken_fx
+	new_coconut.hide()
+	add_child(new_coconut)
+	coconut = new_coconut
 
 
 func _on_button_pressed() -> void:
