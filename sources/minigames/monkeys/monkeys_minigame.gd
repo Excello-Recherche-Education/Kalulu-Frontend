@@ -47,6 +47,7 @@ func _setup_minigame() -> void:
 	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
 	for index: int in range(settings.distractors_count + 1):
+		await get_tree().process_frame
 		Log.trace("MonkeysMinigame: SetupMinigame: Instantiate new monkey")
 		var monkey: Monkey = MONKEY_SCENE.instantiate()
 		monkeys_node.add_child(monkey)
@@ -74,6 +75,7 @@ func _setup_minigame() -> void:
 	_update_label(0)
 	
 	# Pre-warm particle shaders to avoid stutter on first coconut explosion
+	await get_tree().process_frame
 	await monkeys[0].coconut.broken_coconut_fx.warm_up()
 
 
