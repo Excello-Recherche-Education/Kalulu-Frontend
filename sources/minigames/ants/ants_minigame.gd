@@ -4,6 +4,7 @@ const BLANK_SCENE: PackedScene = preload("res://sources/minigames/ants/blank.tsc
 const ANT_SCENE: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
 const WORD_SCENE: PackedScene = preload("res://sources/minigames/ants/word.tscn")
 const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_label_settings_ants.tres")
+const LINE_HEIGHT: float = 159.0 # Matches sentence_text_box.png and blank row height
 const SPAWN_SPACING: float = 600.0
 const REFERENCE_DURATION: float = 1.3985 # Ants travel duration
 
@@ -183,7 +184,7 @@ func _next_sentence() -> void:
 		else:
 			var label: Label = Label.new()
 			sentence_container.add_child(label)
-			
+
 			if current_word == ".":
 				label.text = current_word + "  "
 			else:
@@ -191,6 +192,7 @@ func _next_sentence() -> void:
 			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			label.label_settings = LABEL_SETTINGS
+			label.custom_minimum_size.y = LINE_HEIGHT
 	
 	await setup_sentence_background()
 
