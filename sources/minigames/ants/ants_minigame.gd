@@ -4,6 +4,8 @@ const BLANK_SCENE: PackedScene = preload("res://sources/minigames/ants/blank.tsc
 const ANT_SCENE: PackedScene = preload("res://sources/minigames/ants/ant.tscn")
 const WORD_SCENE: PackedScene = preload("res://sources/minigames/ants/word.tscn")
 const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_label_settings_ants.tres")
+const SPAWN_SPACING: float = 600.0
+const REFERENCE_DURATION: float = 1.3985 # Ants travel duration
 
 var current_sentence: Dictionary = {}
 var answer_input_done: Array[bool] = []
@@ -217,31 +219,44 @@ func setup_sentence_background() -> void:
 
 func _start_ants() -> void:
 	var total_ants: int = ants.get_child_count()
+	if total_ants == 0:
+		return
 
-	# Animate each ant, one after another
+	var spawn_position: Vector2 = ants_spawn.global_position
+	var start_position: Vector2 = ants_start.global_position
+	var end_position: Vector2 = ants_end.global_position
+	var denominator: float = maxf(1.0, float(total_ants - 1)) # Avoid division by zero when there is only one ant
+
+	# Spawn the ants in a line off-screen in the same order as their on-screen targets:
+	# ant 0 heads to the leftmost target, so it must also be leftmost in the spawn line.
+	# This keeps their relative order constant while they all move right, preventing crossings.
 	for ant_index: int in range(total_ants):
 		var ant: Ant = ants.get_child(ant_index)
+		var offset: float = -float(total_ants - 1 - ant_index) * SPAWN_SPACING
+		ant.global_position = spawn_position + Vector2(offset, 0.0)
 
+	# Constant speed derived from ant 0's travel, so the leftmost ant stops first
+	# and each subsequent ant stops shortly after as it reaches its own target.
+	var ant0: Ant = ants.get_child(0)
+	var reference_distance: float = maxf(1.0, ant0.global_position.distance_to(start_position))
+	var speed: float = reference_distance / REFERENCE_DURATION
+
+	var tweens: Array[Tween] = []
+	for ant_index: int in range(total_ants):
+		var ant: Ant = ants.get_child(ant_index)
 		ant.walk()
 
-		# Create a tween to move the ant from start to end point
-		var tween: Tween = create_tween()
-
-		# Compute interpolation factor (0.0 to 1.0) based on position in the list
-		var denominator: float = maxf(1.0, float(total_ants - 1)) # Avoid division by zero when there is only one ant
 		var position_ratio: float = float(ant_index) / denominator
-
-		# Interpolate position from ants_start to ants_end using the ratio
-		var start_position: Vector2 = ants_start.global_position
-		var end_position: Vector2 = ants_end.global_position
 		var target_position: Vector2 = lerp(start_position, end_position, position_ratio)
+		var duration: float = ant.global_position.distance_to(target_position) / speed
 
-		# Animate the movement over 1 second
-		tween.tween_property(ant, "global_position", target_position, 1.0)
-		await tween.finished
+		var tween: Tween = create_tween()
+		tween.tween_property(ant, "global_position", target_position, duration)
+		tween.tween_callback(ant.idle)
+		tweens.append(tween)
 
-		# Switch to idle state once movement is complete
-		ant.idle()
+	# Wait for the last ant (longest travel) to reach its position.
+	await tweens[tweens.size() - 1].finished
 
 	# Reactivate all words once ants have reached their positions
 	for word: Word in words.get_children():
