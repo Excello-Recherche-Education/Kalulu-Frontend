@@ -2,6 +2,8 @@ extends Minigame
 
 const FINAL_BOSS_GAME_DURATION: int = 20 * 60
 const FINAL_BOSS_TOTAL_WORDS: int = 180
+const GAUGE_COLOR_LOW: Color = Color(0.55, 0.95, 0.45)
+const GAUGE_COLOR_HIGH: Color = Color(0.996078, 0.776471, 0.2)
 
 @export var game_duration: int = 4 * 60
 @export var minimum_correct_ratio: float = 0.8
@@ -19,6 +21,8 @@ var _boss_answer_start_ms: int = 0
 var default_label_settings: LabelSettings
 var default_label_background_color: Color
 var _correct_answer_tween: Tween
+var _victory_pulse_tween: Tween
+var _victory_threshold_reached: bool = false
 
 @onready var text_start_zone: Control = %ControlText
 @onready var texture_button_bin: TextureButton = $GameRoot/TextureButtonBin
@@ -336,8 +340,29 @@ func _update_progression_gauge() -> void:
 		# Keep at least one pixel unfilled while there are still words to answer.
 		margin_top_ratio = max(margin_top_ratio, 1.0 / progress_gauge.size.y)
 	progress_gauge.margin_top_ratio = margin_top_ratio
-	if _get_win_ratio() >= minimum_correct_ratio:
-		progress_gauge_internal.modulate = winning_color
+	var ratio: float = _get_win_ratio()
+	if ratio >= minimum_correct_ratio:
+		if not _victory_threshold_reached:
+			_victory_threshold_reached = true
+			_play_victory_threshold_effect()
+	else:
+		var weight: float = clamp(ratio / minimum_correct_ratio, 0.0, 1.0)
+		progress_gauge_internal.modulate = GAUGE_COLOR_LOW.lerp(GAUGE_COLOR_HIGH, weight)
+
+
+func _play_victory_threshold_effect() -> void:
+	if _victory_pulse_tween and _victory_pulse_tween.is_running():
+		_victory_pulse_tween.kill()
+	right_stars.global_position = progress_gauge_internal.global_position + progress_gauge_internal.size / 2.0
+	right_stars.replay()
+	_victory_pulse_tween = create_tween()
+	_victory_pulse_tween.tween_method(
+		func(hue: float) -> void:
+			progress_gauge_internal.modulate = Color.from_hsv(fmod(hue, 1.0), 0.8, 1.0),
+		0.0, 1.0, 1.8
+	).set_trans(Tween.TRANS_LINEAR)
+	_victory_pulse_tween.tween_property(progress_gauge_internal, "modulate", GAUGE_COLOR_HIGH, 0.4) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 func _get_win_ratio() -> float:

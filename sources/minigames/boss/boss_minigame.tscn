@@ -236,7 +236,7 @@ margin_top_ratio = 0.95
 
 [node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugePercentMarginContainer" index="0" unique_id=1534553679]
 unique_name_in_owner = true
-modulate = Color(0.996078, 0.776471, 0.2, 1)
+modulate = Color(0.54901963, 0.9490196, 0.4509804, 1)
 layout_mode = 2
 texture = ExtResource("12_w5m1b")
 patch_margin_top = 33
