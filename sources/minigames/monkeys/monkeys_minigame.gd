@@ -206,7 +206,6 @@ func _on_current_word_progression_changed() -> void:
 		else:
 			monkey.stimulus = _get_distractor()
 		monkey.stunned = false
-		monkey.coconut.show()
 	
 	var coroutine: Coroutine = Coroutine.new()
 	if audio_player.playing:

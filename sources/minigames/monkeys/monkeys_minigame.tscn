@@ -108,6 +108,7 @@ offset_right = 1356.0
 offset_bottom = 76.0
 
 [node name="BrokenCoconutFX" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="8" unique_id=1488112341 instance=ExtResource("12_brkfx")]
+layout_mode = 0
 
 [node name="Caterpillar" type="Sprite2D" parent="." index="4" unique_id=229164884]
 position = Vector2(1124, 1349.0001)

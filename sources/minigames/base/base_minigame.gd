@@ -137,7 +137,10 @@ func _initialize() -> void:
 	if not Engine.is_editor_hint():
 		_find_stimuli_and_distractions()
 	
-	_setup_minigame()
+	# Await so minigames whose setup is a coroutine (e.g. staged instantiation,
+	# particle shader warmup) finish before the curtain opens and _start() runs.
+	@warning_ignore("redundant_await")
+	await _setup_minigame()
 	
 	Log.info("BaseMinigame: Initialize %s (lesson %d, minigame #%d, difficulty %d)" % [TYPE_NAMES[minigame_name], lesson_nb, minigame_number, difficulty])
 	
@@ -195,7 +198,6 @@ func _notification(what: int) -> void:
 			if not _is_paused:
 				_pause_start = Time.get_ticks_msec() / 1000.0
 				_is_paused = true
-
 		NOTIFICATION_APPLICATION_FOCUS_IN:
 			if _is_paused:
 				var resumed: float = Time.get_ticks_msec() / 1000.0
