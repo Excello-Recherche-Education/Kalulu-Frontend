@@ -41,10 +41,10 @@ texture = ExtResource("7_ihrng")
 
 [node name="MarginContainer" type="MarginContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1085551937]
 layout_mode = 0
-offset_left = 530.0
-offset_top = 254.0
-offset_right = 530.0
-offset_bottom = 254.0
+offset_left = 400.0
+offset_top = 350.0
+offset_right = 470.0
+offset_bottom = 350.0
 theme_override_constants/margin_left = 20
 
 [node name="SentenceBackground" type="HFlowContainer" parent="GameRoot/MarginContainer" index="0" unique_id=306719963]
