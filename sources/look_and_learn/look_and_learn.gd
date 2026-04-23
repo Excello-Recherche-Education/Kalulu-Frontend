@@ -33,6 +33,7 @@ func _ready() -> void:
 	Log.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
 	setup()
 	await (OpeningCurtain as OpeningCurtainClass).open()
+	grapheme_particles.emitting = true
 
 
 func setup() -> void:
