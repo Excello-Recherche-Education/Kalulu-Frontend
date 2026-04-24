@@ -19,7 +19,7 @@
 script = ExtResource("2_x6xn5")
 fly_duration = 3.0
 minigame_name = 2
-lesson_nb = 8
+lesson_nb = 60
 difficulty = 4
 max_number_of_lives = 5
 
