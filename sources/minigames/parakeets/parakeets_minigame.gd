@@ -97,6 +97,9 @@ func _setup_minigame() -> void:
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	stimuli = Database.get_gps_for_lesson(lesson_nb, true)
+	# Only select stimuli with 1 letter, not more
+	stimuli = stimuli.filter(func(stimulus: Dictionary) -> bool:
+		return (stimulus.Grapheme as String).length() == 1)
 
 
 func _start() -> void:
