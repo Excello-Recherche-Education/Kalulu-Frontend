@@ -67,7 +67,20 @@ var is_final_boss: bool = false
 # Stimuli
 var stimuli: Array = []
 var distractions: Array = []
-# Lives
+# Hidden lives counter — used ONLY to compute the next run's difficulty.
+#
+# The player never sees this value and can never "lose" a regular minigame because of it:
+# every run ends with the win screen once `current_progression` reaches `max_progression`.
+# Starts at `max_number_of_lives` and individual minigames decrement it with `current_lives -= 1`
+# each time the child makes a mistake. It is allowed to go negative — that's the whole point.
+#
+# At end of game, `_win()` reads this value:
+#   - `current_lives >= 0` (fewer mistakes than allowed) → counted as a win, difficulty may go up
+#   - `current_lives <  0` (more mistakes than allowed)  → counted as a loss, difficulty may go down
+#
+# The counter is also reused (as a convenient proxy for "how many recent mistakes") to drive
+# the in-game hint system (Kalulu help speech and highlighting). That side effect IS visible to
+# the player, but the raw lives number is not — do not add any UI that exposes it.
 var current_lives: int = 0:
 	set(value):
 		var previous_lives: int = current_lives
@@ -235,12 +248,13 @@ func _win() -> void:
 	update_scores()
 	
 	Log.info("BaseMinigame: %s won in %d seconds with progression %d/%d and %d/%d lives" % [TYPE_NAMES[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
-	
-	# Difficulty
-	if current_lives <= 0:
-		UserDataManager.update_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String, false)
-	else:
-		UserDataManager.update_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String, true)
+
+	# Hidden difficulty check — see the `current_lives` declaration above.
+	# The player always reaches this branch (no visible loss), but if they used up more than
+	# `max_number_of_lives` mistakes (`current_lives` ended strictly negative), this run is
+	# reported to the difficulty system as a loss so the next session eases up.
+	var counted_as_win: bool = current_lives >= 0
+	UserDataManager.update_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String, counted_as_win)
 	
 	audio_player.stream = WIN_SOUND_FX
 	audio_player.play()
