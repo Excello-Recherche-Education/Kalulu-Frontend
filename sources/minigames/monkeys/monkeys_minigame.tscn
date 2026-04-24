@@ -12,6 +12,10 @@
 [ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="10_ebf48"]
 [ext_resource type="Texture2D" uid="uid://u2x8lg54e1g" path="res://assets/minigames/monkeys/graphic/caterpillar.png" id="11_ebf48"]
 [ext_resource type="PackedScene" uid="uid://cnt2q4hqn1wsq" path="res://sources/minigames/monkeys/broken_coconut_fx.tscn" id="12_brkfx"]
+[ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/utils/clouds_manager.gd" id="13_xvtxv"]
+[ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="14_uqlx5"]
+[ext_resource type="Texture2D" uid="uid://dphj3hqfnnw4p" path="res://assets/minigames/parakeets/graphic/cloud_2.png" id="15_8kfwv"]
+[ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="16_j4fko"]
 
 [node name="MonkeysMinigame" unique_id=2041470235 instance=ExtResource("1_6nhsm")]
 script = ExtResource("2_12lw5")
@@ -45,7 +49,25 @@ offset_right = 2561.0
 offset_bottom = 1686.0
 texture = ExtResource("4_awer8")
 
-[node name="Ground" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=220986790]
+[node name="Clouds" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=2057497713]
+script = ExtResource("13_xvtxv")
+max_speed = 80.0
+min_y = 100.0
+max_y = 300.0
+
+[node name="cloud_1" type="Sprite2D" parent="GameRoot/Clouds" index="0" unique_id=1028368352]
+position = Vector2(623, 253.5)
+texture = ExtResource("14_uqlx5")
+
+[node name="cloud_2" type="Sprite2D" parent="GameRoot/Clouds" index="1" unique_id=972157516]
+position = Vector2(1088, 256)
+texture = ExtResource("15_8kfwv")
+
+[node name="cloud_3" type="Sprite2D" parent="GameRoot/Clouds" index="2" unique_id=1712138587]
+position = Vector2(1904, 248)
+texture = ExtResource("16_j4fko")
+
+[node name="Ground" type="TextureRect" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=220986790]
 custom_minimum_size = Vector2(2.08165e-12, 250)
 layout_mode = 0
 offset_left = -0.5
@@ -54,7 +76,7 @@ offset_right = 2560.5
 offset_bottom = 1925.5
 texture = ExtResource("4_m2hoh")
 
-[node name="PalmTreeMonkeys" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=1834595774]
+[node name="PalmTreeMonkeys" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=1834595774]
 position = Vector2(1914, 870)
 scale = Vector2(1.4, 1)
 texture = ExtResource("5_2qxen")
@@ -68,14 +90,14 @@ position = Vector2(-36.428574, 39)
 [node name="Position3" type="Marker2D" parent="GameRoot/PalmTreeMonkeys" index="2" unique_id=624156180]
 position = Vector2(-36.428574, 528)
 
-[node name="PlamTreeKing" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=1643389803]
+[node name="PlamTreeKing" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=1643389803]
 position = Vector2(819, 1039)
 texture = ExtResource("6_f5ri1")
 
 [node name="KingMonkey" parent="GameRoot/PlamTreeKing" index="0" unique_id=450360249 instance=ExtResource("7_43p1x")]
 position = Vector2(7, -701)
 
-[node name="TextPlank" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="5" unique_id=801038290]
+[node name="TextPlank" type="Sprite2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=801038290]
 position = Vector2(863, 1574)
 texture = ExtResource("8_j0b56")
 
@@ -92,7 +114,12 @@ text = "gf[color=green]m[/color]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Monkeys" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=1039805988]
+[node name="Caterpillar" type="Sprite2D" parent="GameRoot/TextPlank" index="1" unique_id=229164884]
+position = Vector2(261, -224.99988)
+scale = Vector2(0.31, 0.31)
+texture = ExtResource("11_ebf48")
+
+[node name="Monkeys" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=1039805988]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,17 +127,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ParabolaSummit" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="7" unique_id=321509035]
+[node name="ParabolaSummit" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="8" unique_id=321509035]
 anchors_preset = 0
 offset_left = 1316.0
 offset_top = 36.0
 offset_right = 1356.0
 offset_bottom = 76.0
 
-[node name="BrokenCoconutFX" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="8" unique_id=1488112341 instance=ExtResource("12_brkfx")]
+[node name="BrokenCoconutFX" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="9" unique_id=1488112341 instance=ExtResource("12_brkfx")]
 layout_mode = 0
-
-[node name="Caterpillar" type="Sprite2D" parent="." index="4" unique_id=229164884]
-position = Vector2(1124, 1349.0001)
-scale = Vector2(0.31, 0.31)
-texture = ExtResource("11_ebf48")

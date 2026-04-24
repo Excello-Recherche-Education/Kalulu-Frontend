@@ -6,7 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://kwcp3ondyggo" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_empty.png" id="3_gdpi3"]
 [ext_resource type="PackedScene" uid="uid://b78362g1yif2n" path="res://sources/minigames/penguin/penguin.tscn" id="4_txvyj"]
 [ext_resource type="Texture2D" uid="uid://dq23np4euf6da" path="res://assets/minigames/penguin/graphic/gauge_icon_penguin_full.png" id="4_yua7j"]
+[ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/utils/clouds_manager.gd" id="6_ikkck"]
 [ext_resource type="Texture2D" uid="uid://b2bcmo1keh217" path="res://assets/minigames/ants/graphics/sentence_text_box.png" id="7_8iqp0"]
+[ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="7_qq4ih"]
+[ext_resource type="Texture2D" uid="uid://dphj3hqfnnw4p" path="res://assets/minigames/parakeets/graphic/cloud_2.png" id="8_mh8b7"]
+[ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="9_b75qo"]
 
 [node name="PenguinMinigame" unique_id=1041323901 instance=ExtResource("1_s6yuv")]
 script = ExtResource("2_ncha4")
@@ -30,10 +34,31 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_8crb3")
 
-[node name="Penguin" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=446017555 instance=ExtResource("4_txvyj")]
+[node name="Clouds" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1471723126]
+script = ExtResource("6_ikkck")
+max_speed = 80.0
+min_y = 100.0
+max_y = 300.0
+
+[node name="cloud_1" type="Sprite2D" parent="GameRoot/Clouds" index="0" unique_id=772964697]
+z_index = -3
+position = Vector2(623, 253.5)
+texture = ExtResource("7_qq4ih")
+
+[node name="cloud_2" type="Sprite2D" parent="GameRoot/Clouds" index="1" unique_id=658891026]
+z_index = -3
+position = Vector2(1088, 256)
+texture = ExtResource("8_mh8b7")
+
+[node name="cloud_3" type="Sprite2D" parent="GameRoot/Clouds" index="2" unique_id=1388350244]
+z_index = -3
+position = Vector2(1904, 248)
+texture = ExtResource("9_b75qo")
+
+[node name="Penguin" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=446017555 instance=ExtResource("4_txvyj")]
 position = Vector2(625, 1398.5)
 
-[node name="SentenceBackground" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=414621906]
+[node name="SentenceBackground" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=414621906]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 159)
@@ -59,7 +84,7 @@ layout_mode = 2
 texture = ExtResource("7_8iqp0")
 stretch_mode = 2
 
-[node name="Sentence" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=162088451]
+[node name="Sentence" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=162088451]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
