@@ -91,7 +91,7 @@ var current_lives: int = 0:
 			consecutive_errors += previous_lives - current_lives
 		if current_lives <= max_number_of_lives - errors_before_help_speech:
 			_play_kalulu_help_speech()
-		elif consecutive_errors == errors_before_highlight:
+		if consecutive_errors == errors_before_highlight:
 			is_highlighting = true
 # Progression
 var current_progression: int = 0: set = set_current_progression
