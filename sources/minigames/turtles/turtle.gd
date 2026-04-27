@@ -121,16 +121,21 @@ func change_font_color_after_collision() -> void:
 	label.label_settings.font_color = Minigame.LABEL_COLOR_NEUTRAL
 
 
-func disappear() -> void:
+func disappear(fast: bool = false) -> void:
 	is_moving = false
 	head_area_collision_shape.set_deferred("disabled", true)
 	body_area_collision_shape.set_deferred("disabled", true)
-	await get_tree().create_timer(randf_range(0.1, 0.2)).timeout
+	var speed_scale: float = 3.0 if fast else 1.0
+	if fast:
+		sprite.speed_scale = speed_scale
+	else:
+		await get_tree().create_timer(randf_range(0.1, 0.2)).timeout
 	sprite.play("disappear")
+	var fade_duration: float = sprite.sprite_frames.get_frame_count(sprite.animation) / sprite.sprite_frames.get_animation_speed(sprite.animation) / speed_scale
 	var tween: Tween = create_tween()
-	tween.tween_property(label, "modulate:a", 0, sprite.sprite_frames.get_frame_count(sprite.animation) /sprite.sprite_frames.get_animation_speed(sprite.animation))
+	tween.tween_property(label, "modulate:a", 0, fade_duration)
 	var tween2: Tween = create_tween()
-	tween2.tween_property(body_back, "modulate:a", 0, sprite.sprite_frames.get_frame_count(sprite.animation) /sprite.sprite_frames.get_animation_speed(sprite.animation))
+	tween2.tween_property(body_back, "modulate:a", 0, fade_duration)
 
 #endregion
 
@@ -184,7 +189,7 @@ func _on_delete_timer_timeout() -> void:
 
 
 func _on_body_area_area_entered(_area: Area2D) -> void:
-	disappear()
+	disappear(true)
 
 #endregion
 
