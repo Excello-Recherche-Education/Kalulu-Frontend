@@ -110,10 +110,17 @@ shape = SubResource("CapsuleShape2D_xsnve")
 debug_color = Color(0.870588, 0.117647, 0, 0.388235)
 
 [node name="Label" type="Label" parent="." unique_id=1496868599]
-offset_left = -64.0
-offset_top = -88.0
-offset_right = 72.0
-offset_bottom = 72.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -80.0
+offset_right = 68.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
 label_settings = ExtResource("6_8k7c6")
 horizontal_alignment = 1
 vertical_alignment = 1
