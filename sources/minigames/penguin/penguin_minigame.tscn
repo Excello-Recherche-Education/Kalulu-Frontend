@@ -16,6 +16,7 @@
 script = ExtResource("2_ncha4")
 minigame_name = 8
 lesson_nb = 60
+difficulty = 4
 max_number_of_lives = 5
 max_progression = 5
 
