@@ -59,47 +59,36 @@ texture = ExtResource("9_b75qo")
 [node name="Penguin" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="2" unique_id=446017555 instance=ExtResource("4_txvyj")]
 position = Vector2(625, 1398.5)
 
-[node name="SentenceBackground" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=414621906]
+[node name="MarginContainer" type="MarginContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=946035874]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.35
+anchor_bottom = 0.35
+offset_left = 400.0
+offset_right = 470.0
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+
+[node name="SentenceBackground" type="HFlowContainer" parent="GameRoot/MarginContainer" index="0" unique_id=419813655]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 159)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -800.0
-offset_top = -630.0
-offset_right = 1008.0
-offset_bottom = -130.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
-theme_override_constants/v_separation = 20
+theme_override_constants/v_separation = 25
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="GameRoot/SentenceBackground" index="0" unique_id=655579677]
-z_index = -2
+[node name="TextureRect" type="TextureRect" parent="GameRoot/MarginContainer/SentenceBackground" index="0" unique_id=1032993373]
 layout_mode = 2
 texture = ExtResource("7_8iqp0")
-stretch_mode = 2
 
-[node name="Sentence" type="HFlowContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=162088451]
+[node name="SentenceMargin" type="MarginContainer" parent="GameRoot/MarginContainer" index="1" unique_id=1134881747]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+
+[node name="Sentence" type="HFlowContainer" parent="GameRoot/MarginContainer/SentenceMargin" index="0" unique_id=1061614278]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -800.0
-offset_top = -630.0
-offset_right = 1008.0
-offset_bottom = -130.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
-theme_override_constants/h_separation = 48
-theme_override_constants/v_separation = 20
-alignment = 1
+theme_override_constants/h_separation = 45
+theme_override_constants/v_separation = 25
