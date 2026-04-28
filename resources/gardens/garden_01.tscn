@@ -1,19 +1,19 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c6b4rj4fdppum"]
 
 [ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
 [ext_resource type="Texture2D" uid="uid://d26hapg1hf8a6" path="res://assets/gardens/gardens/garden_01.png" id="3_p7iv3"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://bfqwlmmliem8f" path="res://assets/gardens/jellyfish.png" id="jellyfish_tex"]
-[ext_resource type="Texture2D" uid="uid://dcekseb1b3ruw" path="res://assets/gardens/plants/garden_plant_01.png" id="plant_01"]
-[ext_resource type="Texture2D" uid="uid://clkr31osbqs7u" path="res://assets/gardens/plants/garden_plant_02.png" id="plant_02"]
-[ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/plants/garden_plant_03.png" id="plant_03"]
-[ext_resource type="Texture2D" uid="uid://bqp1nkk53y1is" path="res://assets/gardens/plants/garden_plant_04.png" id="plant_04"]
-[ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/plants/garden_plant_05.png" id="plant_05"]
-[ext_resource type="Texture2D" uid="uid://f2arml2f4b8p" path="res://assets/gardens/plants/garden_plant_06.png" id="plant_06"]
-[ext_resource type="Texture2D" uid="uid://dufnm3bkfe5yv" path="res://assets/gardens/plants/garden_plant_07.png" id="plant_07"]
-[ext_resource type="Texture2D" uid="uid://dt2a0dea0hv0c" path="res://assets/gardens/plants/garden_plant_08.png" id="plant_08"]
+[ext_resource type="Texture2D" uid="uid://dcekseb1b3ruw" path="res://assets/gardens/victory_assets/victory_asset_plant_01.png" id="plant_01"]
+[ext_resource type="Texture2D" uid="uid://clkr31osbqs7u" path="res://assets/gardens/victory_assets/victory_asset_plant_02.png" id="plant_02"]
+[ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/victory_assets/victory_asset_fish_01.png" id="plant_03"]
+[ext_resource type="Texture2D" uid="uid://bqp1nkk53y1is" path="res://assets/gardens/victory_assets/victory_asset_plant_03.png" id="plant_04"]
+[ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/victory_assets/victory_asset_bubbles_01.png" id="plant_05"]
+[ext_resource type="Texture2D" uid="uid://f2arml2f4b8p" path="res://assets/gardens/victory_assets/victory_asset_plant_04.png" id="plant_06"]
+[ext_resource type="Texture2D" uid="uid://dufnm3bkfe5yv" path="res://assets/gardens/victory_assets/victory_asset_plant_05.png" id="plant_07"]
+[ext_resource type="Texture2D" uid="uid://dt2a0dea0hv0c" path="res://assets/gardens/victory_assets/victory_asset_fish_02.png" id="plant_08"]
 
-[node name="Garden" type="Control"]
+[node name="Garden" type="Control" unique_id=229113687]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -29,7 +29,7 @@ unlocked_lesson_text = Color(0.607843, 0.890196, 0.917647, 1)
 completed_lesson = Color(0.607843, 0.890196, 0.917647, 1)
 completed_lesson_text = Color(0.0392157, 0.333333, 0.356863, 1)
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1905044868]
 unique_name_in_owner = true
 modulate = Color(0.0901961, 0.427451, 0.470588, 1)
 layout_mode = 0
@@ -41,7 +41,8 @@ mouse_filter = 2
 texture = ExtResource("3_p7iv3")
 expand_mode = 1
 
-[node name="Plants" type="Control" parent="."]
+[node name="Victory_Assets" type="Control" parent="." unique_id=1176691180]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,7 +51,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Plant1" type="TextureRect" parent="Plants"]
+[node name="Victory_Asset_01" type="TextureRect" parent="Victory_Assets" unique_id=1312910041]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 395.0
@@ -62,7 +63,7 @@ texture = ExtResource("plant_01")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant2" type="TextureRect" parent="Plants"]
+[node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=460994140]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 574.0
@@ -74,7 +75,7 @@ texture = ExtResource("plant_02")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant3" type="TextureRect" parent="Plants"]
+[node name="Victory_Asset_03" type="TextureRect" parent="Victory_Assets" unique_id=780672007]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 1178.0
@@ -86,7 +87,7 @@ texture = ExtResource("plant_03")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant4" type="TextureRect" parent="Plants"]
+[node name="Victory_Asset_04" type="TextureRect" parent="Victory_Assets" unique_id=251444828]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 864.0
@@ -98,7 +99,7 @@ texture = ExtResource("plant_04")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant5" type="TextureRect" parent="Plants"]
+[node name="Victory_Asset_05" type="TextureRect" parent="Victory_Assets" unique_id=338325053]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 744.0
@@ -110,7 +111,7 @@ texture = ExtResource("plant_05")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant6" type="TextureRect" parent="Plants"]
+[node name="Victory_Asset_06" type="TextureRect" parent="Victory_Assets" unique_id=441814129]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 1742.0
@@ -122,7 +123,7 @@ texture = ExtResource("plant_06")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant7" type="TextureRect" parent="Plants"]
+[node name="Victory_Asset_07" type="TextureRect" parent="Victory_Assets" unique_id=1628951623]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 880.0
@@ -134,7 +135,7 @@ texture = ExtResource("plant_07")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant8" type="TextureRect" parent="Plants"]
+[node name="Victory_Asset_08" type="TextureRect" parent="Victory_Assets" unique_id=1795730999]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 1122.0
@@ -146,7 +147,7 @@ texture = ExtResource("plant_08")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Buttons" type="Control" parent="."]
+[node name="Buttons" type="Control" parent="." unique_id=345562197]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -155,7 +156,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Slot1" parent="Buttons" instance=ExtResource("4_epm30")]
+[node name="Slot1" parent="Buttons" unique_id=180067904 instance=ExtResource("4_epm30")]
 layout_mode = 0
 offset_left = 584.0
 offset_top = 1066.0
@@ -163,7 +164,7 @@ offset_right = 824.0
 offset_bottom = 1306.0
 pivot_offset = Vector2(120, 120)
 
-[node name="Slot2" parent="Buttons" instance=ExtResource("4_epm30")]
+[node name="Slot2" parent="Buttons" unique_id=226995512 instance=ExtResource("4_epm30")]
 layout_mode = 0
 offset_left = 867.0
 offset_top = 880.0
@@ -171,7 +172,7 @@ offset_right = 1107.0
 offset_bottom = 1120.0
 pivot_offset = Vector2(120, 120)
 
-[node name="Slot3" parent="Buttons" instance=ExtResource("4_epm30")]
+[node name="Slot3" parent="Buttons" unique_id=799562597 instance=ExtResource("4_epm30")]
 layout_mode = 0
 offset_left = 1170.0
 offset_top = 800.0
@@ -179,7 +180,7 @@ offset_right = 1410.0
 offset_bottom = 1040.0
 pivot_offset = Vector2(120, 120)
 
-[node name="Slot4" parent="Buttons" instance=ExtResource("4_epm30")]
+[node name="Slot4" parent="Buttons" unique_id=1706300394 instance=ExtResource("4_epm30")]
 layout_mode = 0
 offset_left = 1445.0
 offset_top = 628.0
@@ -187,7 +188,7 @@ offset_right = 1685.0
 offset_bottom = 868.0
 pivot_offset = Vector2(120, 120)
 
-[node name="Slot5" parent="Buttons" instance=ExtResource("4_epm30")]
+[node name="Slot5" parent="Buttons" unique_id=1420840664 instance=ExtResource("4_epm30")]
 layout_mode = 0
 offset_left = 1744.0
 offset_top = 478.0
@@ -195,7 +196,7 @@ offset_right = 1984.0
 offset_bottom = 718.0
 pivot_offset = Vector2(120, 120)
 
-[node name="Jellyfish" type="TextureRect" parent="."]
+[node name="Jellyfish" type="TextureRect" parent="." unique_id=1416633720]
 layout_mode = 0
 offset_left = 1511.0
 offset_top = 32.0

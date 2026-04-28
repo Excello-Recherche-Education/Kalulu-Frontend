@@ -196,7 +196,7 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 			garden_control.max_progression = float(total_minigames)
 			lesson_index += 1
 
-		garden_control.update_plants_visibility(completed_minigames_total, total_minigames)
+		garden_control.update_victory_assets_visibility(completed_minigames_total, total_minigames)
 	_set_up_boss_buttons()
 
 #endregion
