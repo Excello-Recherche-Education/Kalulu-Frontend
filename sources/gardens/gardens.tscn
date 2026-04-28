@@ -196,20 +196,22 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(80, 2.08165e-12)
 layout_mode = 2
 
-[node name="BossButtons" type="Control" parent="ScrollContainer" unique_id=1176317047]
+[node name="BossButtons" type="Control" parent="." unique_id=1176317047]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
 
-[node name="LockedLine" type="Line2D" parent="ScrollContainer" unique_id=1229207154]
+[node name="LockedLine" type="Line2D" parent="." unique_id=1229207154]
 unique_name_in_owner = true
 width = 20.0
 default_color = Color(0.356863, 0.356863, 0.356863, 1)
 
-[node name="UnlockedLine" type="Line2D" parent="ScrollContainer" unique_id=931930346]
+[node name="UnlockedLine" type="Line2D" parent="." unique_id=931930346]
 unique_name_in_owner = true
 width = 50.0
 
-[node name="LineParticles" type="GPUParticles2D" parent="ScrollContainer/UnlockedLine" unique_id=213294011]
+[node name="LineParticles" type="GPUParticles2D" parent="UnlockedLine" unique_id=213294011]
 unique_name_in_owner = true
 z_index = 1
 material = SubResource("CanvasItemMaterial_13bcn")
@@ -218,7 +220,7 @@ scale = Vector2(0.4, 0.4)
 texture = ExtResource("25_00sy7")
 process_material = SubResource("ParticleProcessMaterial_3eofo")
 
-[node name="LineAudioStreamPlayer" type="AudioStreamPlayer2D" parent="ScrollContainer/UnlockedLine/LineParticles" unique_id=1534832715]
+[node name="LineAudioStreamPlayer" type="AudioStreamPlayer2D" parent="UnlockedLine/LineParticles" unique_id=1534832715]
 unique_name_in_owner = true
 stream = ExtResource("26_5g3l0")
 volume_db = -5.0

@@ -73,8 +73,8 @@ var back_button_hold_progress_seconds: float = 0.0
 var is_back_button_hold_active: bool = false
 
 @onready var garden_parent: HBoxContainer = %GardenParent
-@onready var locked_line: Line2D = $ScrollContainer/LockedLine
-@onready var unlocked_line: Line2D = $ScrollContainer/UnlockedLine
+@onready var locked_line: Line2D = $LockedLine
+@onready var unlocked_line: Line2D = $UnlockedLine
 @onready var line_particles: GPUParticles2D = %LineParticles
 @onready var line_audio_stream_player: AudioStreamPlayer2D = %LineAudioStreamPlayer
 @onready var scroll_container: ScrollContainer = $ScrollContainer
@@ -632,6 +632,7 @@ func _process(_delta: float) -> void:
 	_process_back_button_hold(_delta)
 	locked_line.position.x = - scroll_container.scroll_horizontal
 	unlocked_line.position.x = - scroll_container.scroll_horizontal
+	boss_buttons_container.position.x = - scroll_container.scroll_horizontal
 	parallax_background.scroll_offset.x = - scroll_container.scroll_horizontal
 
 
