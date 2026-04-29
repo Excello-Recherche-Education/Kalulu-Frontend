@@ -46,6 +46,8 @@ func _process(delta: float) -> void:
 	if new_width != screen_width:
 		screen_width = new_width
 
+	var world_anchored: bool = spawn_width > 0.0
+
 	for cloud: Node in get_children():
 		if not (cloud is Sprite2D):
 			continue
@@ -57,8 +59,16 @@ func _process(delta: float) -> void:
 		var rendered_x: float = drift_x - scroll_offset * parallax
 		sprite.position.x = rendered_x
 
-		if rendered_x < -sprite.texture.get_width():
-			_reset_cloud(sprite)
+		# Recycling strategy depends on whether we're in world-anchored mode
+		# (gardens-like: drift_x lives in world coordinates, recycle when it
+		# falls past the world's left edge) or in legacy viewport-anchored mode
+		# (minigames: a single fixed screen, recycle on viewport exit).
+		if world_anchored:
+			if drift_x < -sprite.texture.get_width():
+				_reset_cloud(sprite)
+		else:
+			if rendered_x < -sprite.texture.get_width():
+				_reset_cloud(sprite)
 
 
 # Public API: configure the world width clouds spread across, and (re)populate
@@ -146,8 +156,16 @@ func _reset_cloud(cloud: Sprite2D) -> void:
 	cloud_parallax[cloud] = _apply_parallax_factor(cloud)
 	cloud_speeds[cloud] = _apply_parallax_speed(cloud)
 	_apply_parallax_scale(cloud)
-	# Place the cloud just past the right edge of the viewport, accounting for
-	# the current scroll offset so the rendered position lands at screen_width.
-	var target_rendered_x: float = screen_width + cloud.texture.get_width() * 0.5
-	cloud_drift_x[cloud] = target_rendered_x + scroll_offset * cloud_parallax[cloud]
-	cloud.position.x = target_rendered_x
+
+	if spawn_width > 0.0:
+		# World-anchored mode (gardens): the cloud drifted past the left edge
+		# of the world, so wrap it back to the right edge of the world. Its
+		# rendered position is whatever the current scroll dictates.
+		cloud_drift_x[cloud] = spawn_width + cloud.texture.get_width() * 0.5
+		cloud.position.x = cloud_drift_x[cloud] - scroll_offset * cloud_parallax[cloud]
+	else:
+		# Legacy viewport-anchored mode (minigames): place the cloud just past
+		# the right edge of the viewport.
+		var target_rendered_x: float = screen_width + cloud.texture.get_width() * 0.5
+		cloud_drift_x[cloud] = target_rendered_x + scroll_offset * cloud_parallax[cloud]
+		cloud.position.x = target_rendered_x

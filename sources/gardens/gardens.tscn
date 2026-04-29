@@ -202,7 +202,6 @@ layout_mode = 2
 
 [node name="BossButtons" type="Control" parent="." unique_id=1176317047]
 unique_name_in_owner = true
-layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
 
@@ -481,7 +480,6 @@ unique_name_in_owner = true
 visible = false
 
 [node name="CloudsLayer" type="CanvasLayer" parent="." unique_id=100000001]
-layer = 1
 
 [node name="Clouds" type="Node2D" parent="CloudsLayer" unique_id=100000002]
 unique_name_in_owner = true
@@ -490,11 +488,9 @@ script = ExtResource("45_clouds")
 min_speed = 15.0
 max_speed = 45.0
 min_y = 60.0
-max_y = 1100.0
 min_scale = 0.5
 max_scale = 1.2
 min_parallax_factor = 0.5
-max_parallax_factor = 1.0
 clouds_per_screen = 3
 
 [node name="cloud_1" type="Sprite2D" parent="CloudsLayer/Clouds" unique_id=100000003]
