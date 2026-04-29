@@ -488,9 +488,11 @@ script = ExtResource("45_clouds")
 min_speed = 15.0
 max_speed = 45.0
 min_y = 60.0
+max_y = 300.0
 min_scale = 0.5
 max_scale = 1.2
-min_parallax_factor = 0.5
+min_parallax_factor = 1.2
+max_parallax_factor = 1.7
 clouds_per_screen = 3
 
 [node name="cloud_1" type="Sprite2D" parent="CloudsLayer/Clouds" unique_id=100000003]

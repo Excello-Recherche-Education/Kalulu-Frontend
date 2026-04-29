@@ -213,7 +213,14 @@ func _configure_clouds_for_gardens() -> void:
 	if garden_count <= 0:
 		return
 	var content_world_width: float = float(garden_count * GARDEN_SIZE)
-	clouds.configure_world(content_world_width)
+	# max_scroll is what the parent will actually pass through scroll_offset.
+	# The CloudsManager needs this (not just world_width) to position clouds
+	# inside their reachable drift_x range when parallax_factor < 1.0.
+	var viewport_w: float = scroll_container.size.x
+	if viewport_w <= 0.0:
+		viewport_w = float(get_viewport_rect().size.x)
+	var max_scroll: float = maxf(0.0, content_world_width - viewport_w)
+	clouds.configure_world(content_world_width, max_scroll)
 
 
 func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:

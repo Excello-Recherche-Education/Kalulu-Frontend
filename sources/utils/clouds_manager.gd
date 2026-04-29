@@ -29,6 +29,14 @@ extends Node2D
 # Each cloud's rendered X is computed as drift_x - scroll_offset * cloud_parallax_factor.
 var scroll_offset: float = 0.0
 
+# Maximum scroll value the parent will pass through scroll_offset. Set via
+# configure_world(); a non-zero value lets _init_cloud_start spread clouds
+# evenly across the actual scroll range, which matters when parallax_factor
+# is below 1.0 — without this, far clouds (smaller parallax) end up in
+# drift_x positions the user can never bring into the viewport. When 0,
+# the manager falls back to spawn_width-based stratification.
+var max_scroll: float = 0.0
+
 var cloud_speeds: Dictionary[Sprite2D, float] = {}
 var cloud_drift_x: Dictionary[Sprite2D, float] = {}
 var cloud_parallax: Dictionary[Sprite2D, float] = {}
@@ -71,14 +79,22 @@ func _process(delta: float) -> void:
 				_reset_cloud(sprite)
 
 
-# Public API: configure the world width clouds spread across, and (re)populate
-# extra clouds to keep density consistent. Safe to call multiple times.
-func configure_world(world_width: float, override_clouds_per_screen: int = -1) -> void:
+# Public API: configure the world the parent scrolls across.
+#   world_width      — total horizontal extent of the scrollable content;
+#                      drives the population of extra clouds.
+#   p_max_scroll     — the largest scroll value the parent will pass via
+#                      scroll_offset (typically world_width minus the
+#                      visible viewport). When omitted (negative), defaults
+#                      to world_width as a coarse fallback.
+# Safe to call multiple times.
+func configure_world(world_width: float, p_max_scroll: float = -1.0, override_clouds_per_screen: int = -1) -> void:
 	if override_clouds_per_screen >= 0:
 		clouds_per_screen = override_clouds_per_screen
 	spawn_width = world_width
-	if screen_width <= 0.0:
-		screen_width = get_viewport_rect().size.x
+	max_scroll = p_max_scroll if p_max_scroll >= 0.0 else world_width
+	# Always refresh screen_width here — by the time the parent calls this,
+	# the viewport is sized correctly even if our _ready ran beforehand.
+	screen_width = get_viewport_rect().size.x
 	_initialize_clouds()
 
 
@@ -153,23 +169,39 @@ func _spawn_range() -> float:
 
 func _init_cloud_start(cloud: Sprite2D, slot_index: int = 0, slot_count: int = 1) -> void:
 	cloud.position.y = randf_range(min_y, max_y)
-	var spawn_range: float = _spawn_range()
-	var drift_x: float
-	if slot_count > 1 and spawn_range > 0.0:
-		# Stratified placement: split the spawn range into slot_count equal
-		# slots and place this cloud randomly inside its own slot. This
-		# guarantees an upper bound on the gap between any two clouds while
-		# keeping the exact position of each cloud random within its band.
-		var slot_width: float = spawn_range / float(slot_count)
-		var slot_min: float = float(slot_index) * slot_width
-		drift_x = randf_range(slot_min, slot_min + slot_width)
-	else:
-		drift_x = randf_range(0.0, spawn_range)
-	cloud_drift_x[cloud] = drift_x
+	# Compute parallax/speed/scale first so drift_x can take the cloud's
+	# parallax into account.
 	cloud_parallax[cloud] = _apply_parallax_factor(cloud)
 	cloud_speeds[cloud] = _apply_parallax_speed(cloud)
 	_apply_parallax_scale(cloud)
-	cloud.position.x = drift_x - scroll_offset * cloud_parallax[cloud]
+
+	var parallax: float = cloud_parallax[cloud]
+	var drift_x: float
+	if max_scroll > 0.0 and slot_count > 1:
+		# Stratify in *scroll* space: each cloud is assigned a target scroll
+		# value within its own slot of [0, max_scroll], then drift_x is
+		# placed so the cloud is visible somewhere in the viewport when the
+		# parent's scroll matches that target. Multiplying by parallax keeps
+		# the cloud inside its actual reachable drift_x range — without
+		# this, far clouds (parallax < 1) spread across the full world
+		# would end up at drift_x values no scroll value can ever expose.
+		var scroll_slot_width: float = max_scroll / float(slot_count)
+		var slot_min_scroll: float = float(slot_index) * scroll_slot_width
+		var slot_max_scroll: float = float(slot_index + 1) * scroll_slot_width
+		var target_scroll: float = randf_range(slot_min_scroll, slot_max_scroll)
+		var horiz_jitter: float = randf_range(0.0, screen_width)
+		drift_x = target_scroll * parallax + horiz_jitter
+	elif spawn_width > 0.0 and slot_count > 1:
+		# Fallback (no max_scroll info): stratify in world space directly.
+		# Far clouds (parallax < 1) may have dead zones in the upper half
+		# of the world here, but configure_world callers should pass max_scroll.
+		var slot_width: float = spawn_width / float(slot_count)
+		drift_x = randf_range(float(slot_index) * slot_width, float(slot_index + 1) * slot_width)
+	else:
+		drift_x = randf_range(0.0, _spawn_range())
+
+	cloud_drift_x[cloud] = drift_x
+	cloud.position.x = drift_x - scroll_offset * parallax
 
 
 func _reset_cloud(cloud: Sprite2D) -> void:
@@ -178,15 +210,24 @@ func _reset_cloud(cloud: Sprite2D) -> void:
 	cloud_speeds[cloud] = _apply_parallax_speed(cloud)
 	_apply_parallax_scale(cloud)
 
-	if spawn_width > 0.0:
-		# World-anchored mode (gardens): the cloud drifted past the left edge
-		# of the world, so wrap it back to the right edge of the world. Its
-		# rendered position is whatever the current scroll dictates.
+	var parallax: float = cloud_parallax[cloud]
+	if max_scroll > 0.0:
+		# Respawn at the right edge of *this cloud's* visibility range. With
+		# parallax < 1 this is well below the world's right edge — the
+		# cloud now drifts left through the scroll positions where it can
+		# actually be seen, instead of sitting forever in unreachable
+		# drift_x territory.
+		var max_visibility_drift_x: float = max_scroll * parallax + screen_width + cloud.texture.get_width() * 0.5
+		cloud_drift_x[cloud] = max_visibility_drift_x
+		cloud.position.x = max_visibility_drift_x - scroll_offset * parallax
+	elif spawn_width > 0.0:
+		# Fallback world-anchored mode (no max_scroll info): wrap to the
+		# right edge of the world.
 		cloud_drift_x[cloud] = spawn_width + cloud.texture.get_width() * 0.5
-		cloud.position.x = cloud_drift_x[cloud] - scroll_offset * cloud_parallax[cloud]
+		cloud.position.x = cloud_drift_x[cloud] - scroll_offset * parallax
 	else:
-		# Legacy viewport-anchored mode (minigames): place the cloud just past
-		# the right edge of the viewport.
+		# Legacy viewport-anchored mode (minigames): place the cloud just
+		# past the right edge of the viewport.
 		var target_rendered_x: float = screen_width + cloud.texture.get_width() * 0.5
-		cloud_drift_x[cloud] = target_rendered_x + scroll_offset * cloud_parallax[cloud]
+		cloud_drift_x[cloud] = target_rendered_x + scroll_offset * parallax
 		cloud.position.x = target_rendered_x
