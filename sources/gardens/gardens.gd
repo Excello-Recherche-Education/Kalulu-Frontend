@@ -79,6 +79,7 @@ var is_back_button_hold_active: bool = false
 @onready var line_audio_stream_player: AudioStreamPlayer2D = %LineAudioStreamPlayer
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var parallax_background: ParallaxBackground = %ParallaxBackground
+@onready var clouds: Node2D = %Clouds
 @onready var scroll_end_spacer: Control = $"ScrollContainer/HBoxContainer/Control2"
 @onready var boss_buttons_container: Control = %BossButtons
 @onready var minigame_selection: Control = %MinigameSelection
@@ -202,6 +203,18 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 #endregion
 
 #region Scene setup and ready sequence
+
+func _configure_clouds_for_gardens() -> void:
+	if not clouds or not garden_parent:
+		return
+	# Spread clouds across the full scrollable garden width so they remain
+	# visible regardless of which garden the player scrolls to.
+	var garden_count: int = garden_parent.get_child_count()
+	if garden_count <= 0:
+		return
+	var content_world_width: float = float(garden_count * GARDEN_SIZE)
+	clouds.configure_world(content_world_width)
+
 
 func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 	if transition_data:
@@ -336,7 +349,8 @@ func _ready() -> void:
 		scroll_end_base_width = scroll_end_spacer.custom_minimum_size.x
 	gardens_layout = get_session_layout(lesson_count)
 	_set_up_lessons()
-	
+	_configure_clouds_for_gardens()
+
 	# If there is no data, skips the rest
 	if not UserDataManager.student_progression:
 		Log.error("Gardens: Ready: No data for student progression")
@@ -634,6 +648,7 @@ func _process(_delta: float) -> void:
 	unlocked_line.position.x = - scroll_container.scroll_horizontal
 	boss_buttons_container.position.x = - scroll_container.scroll_horizontal
 	parallax_background.scroll_offset.x = - scroll_container.scroll_horizontal
+	clouds.scroll_offset = scroll_container.scroll_horizontal
 
 
 func _process_back_button_hold(delta: float) -> void:
