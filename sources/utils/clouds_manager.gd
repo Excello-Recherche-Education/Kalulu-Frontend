@@ -87,11 +87,21 @@ func _initialize_clouds() -> void:
 	cloud_speeds.clear()
 	cloud_drift_x.clear()
 	cloud_parallax.clear()
+
+	var sprites: Array[Sprite2D] = []
 	for cloud: Node in get_children():
 		if cloud is Sprite2D:
-			_init_cloud_start(cloud as Sprite2D)
+			sprites.append(cloud as Sprite2D)
 		else:
 			Log.error("CloudsManager: A child cloud is not a Sprite2D, this should not be possible")
+
+	# Shuffle so that identical cloud textures (the duplicated templates) don't
+	# end up in adjacent stratified slots in tree order.
+	sprites.shuffle()
+
+	var slot_count: int = sprites.size()
+	for i: int in range(slot_count):
+		_init_cloud_start(sprites[i], i, slot_count)
 
 
 func _populate_extra_clouds() -> void:
@@ -141,9 +151,20 @@ func _spawn_range() -> float:
 	return spawn_width if spawn_width > 0.0 else screen_width
 
 
-func _init_cloud_start(cloud: Sprite2D) -> void:
+func _init_cloud_start(cloud: Sprite2D, slot_index: int = 0, slot_count: int = 1) -> void:
 	cloud.position.y = randf_range(min_y, max_y)
-	var drift_x: float = randf_range(0.0, _spawn_range())
+	var spawn_range: float = _spawn_range()
+	var drift_x: float
+	if slot_count > 1 and spawn_range > 0.0:
+		# Stratified placement: split the spawn range into slot_count equal
+		# slots and place this cloud randomly inside its own slot. This
+		# guarantees an upper bound on the gap between any two clouds while
+		# keeping the exact position of each cloud random within its band.
+		var slot_width: float = spawn_range / float(slot_count)
+		var slot_min: float = float(slot_index) * slot_width
+		drift_x = randf_range(slot_min, slot_min + slot_width)
+	else:
+		drift_x = randf_range(0.0, spawn_range)
 	cloud_drift_x[cloud] = drift_x
 	cloud_parallax[cloud] = _apply_parallax_factor(cloud)
 	cloud_speeds[cloud] = _apply_parallax_speed(cloud)
