@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvxnktx1wiyxp"
-path="res://.godot/imported/victory_asset_bubbles_01.png-bee23d10f4d89637fd232a81e89bc594.ctex"
+uid="uid://d3vt2qpngkkjs"
+path="res://.godot/imported/crab.png-0a38ba7f13130791be164b6db99b3bb7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/victory_assets/victory_asset_bubbles_01.png"
-dest_files=["res://.godot/imported/victory_asset_bubbles_01.png-bee23d10f4d89637fd232a81e89bc594.ctex"]
+source_file="res://assets/gardens/animals/crab.png"
+dest_files=["res://.godot/imported/crab.png-0a38ba7f13130791be164b6db99b3bb7.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv510d5r4dn82"
-path="res://.godot/imported/victory_asset_fragon_fly_01.png-52578592ff6d8514444d323ab5ab9908.ctex"
+uid="uid://l32ekwfso26s"
+path="res://.godot/imported/garden_04.png-4af29a3ee810ade399f7fba358601b39.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/victory_assets/victory_asset_fragon_fly_01.png"
-dest_files=["res://.godot/imported/victory_asset_fragon_fly_01.png-52578592ff6d8514444d323ab5ab9908.ctex"]
+source_file="res://assets/gardens/gardens/garden_04.png"
+dest_files=["res://.godot/imported/garden_04.png-4af29a3ee810ade399f7fba358601b39.ctex"]
 
 [params]
 

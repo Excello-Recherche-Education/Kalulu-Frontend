@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpxc4vhri16pd"
-path="res://.godot/imported/victory_asset_pearl_01.png-4bd0b6be4165503d875af982e9eb94d0.ctex"
+uid="uid://dvxnktx1wiyxp"
+path="res://.godot/imported/victory_asset_bubbles.png-27a3e634297a833979e13e2de7695db2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/victory_assets/victory_asset_pearl_01.png"
-dest_files=["res://.godot/imported/victory_asset_pearl_01.png-4bd0b6be4165503d875af982e9eb94d0.ctex"]
+source_file="res://assets/gardens/victory_assets/victory_asset_bubbles.png"
+dest_files=["res://.godot/imported/victory_asset_bubbles.png-27a3e634297a833979e13e2de7695db2.ctex"]
 
 [params]
 

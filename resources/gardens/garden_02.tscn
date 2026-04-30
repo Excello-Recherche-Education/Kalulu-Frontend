@@ -7,11 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://blaltndbcv2yq" path="res://assets/gardens/victory_assets/victory_asset_plant_08.png" id="6_4i3vl"]
 [ext_resource type="Texture2D" uid="uid://co6vu63bybpnc" path="res://assets/gardens/victory_assets/victory_asset_plant_09.png" id="7_vujr1"]
-[ext_resource type="Texture2D" uid="uid://bv510d5r4dn82" path="res://assets/gardens/victory_assets/victory_asset_fragon_fly_01.png" id="8_556ma"]
+[ext_resource type="Texture2D" uid="uid://bv510d5r4dn82" path="res://assets/gardens/victory_assets/victory_asset_dragon_fly.png" id="8_556ma"]
 [ext_resource type="Texture2D" uid="uid://dckd1xhcdf2ie" path="res://assets/gardens/victory_assets/victory_asset_plant_06.png" id="9_vwhyb"]
-[ext_resource type="Texture2D" uid="uid://bpxc4vhri16pd" path="res://assets/gardens/victory_assets/victory_asset_pearl_01.png" id="10_v4g1g"]
+[ext_resource type="Texture2D" uid="uid://bpxc4vhri16pd" path="res://assets/gardens/victory_assets/victory_asset_pearl.png" id="10_v4g1g"]
 [ext_resource type="Texture2D" uid="uid://bsw6v8ix7bb2s" path="res://assets/gardens/animals/turtle.png" id="12_v4g1g"]
-[ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/victory_assets/victory_asset_bubbles_01.png" id="plant_05"]
+[ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/victory_assets/victory_asset_bubbles.png" id="plant_05"]
 
 [node name="Garden" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
@@ -56,8 +56,9 @@ modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
 layout_mode = 0
 offset_left = 761.0
 offset_top = 1263.0
-offset_right = 939.0
-offset_bottom = 1575.0
+offset_right = 850.0
+offset_bottom = 1419.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("3_b2jov")
 expand_mode = 1
@@ -68,9 +69,10 @@ modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
 layout_mode = 0
 offset_left = 1043.0
 offset_top = 1142.0
-offset_right = 1157.0
-offset_bottom = 1388.0
+offset_right = 1100.0
+offset_bottom = 1265.0
 rotation = 0.2443461
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_05")
 expand_mode = 1
@@ -81,8 +83,9 @@ modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
 layout_mode = 0
 offset_left = 616.0
 offset_top = 648.0
-offset_right = 778.0
-offset_bottom = 812.0
+offset_right = 697.0
+offset_bottom = 730.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("4_7vcey")
 expand_mode = 1
@@ -93,8 +96,9 @@ modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
 layout_mode = 0
 offset_left = 907.0
 offset_top = 275.0
-offset_right = 1233.0
-offset_bottom = 599.0
+offset_right = 1070.0
+offset_bottom = 437.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("6_4i3vl")
 expand_mode = 1
@@ -105,8 +109,9 @@ modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
 layout_mode = 0
 offset_left = 1199.0
 offset_top = 1279.0
-offset_right = 1409.0
-offset_bottom = 1629.0
+offset_right = 1304.0
+offset_bottom = 1454.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("7_vujr1")
 expand_mode = 1
@@ -117,8 +122,9 @@ modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
 layout_mode = 0
 offset_left = 1337.0
 offset_top = 441.0
-offset_right = 1591.0
-offset_bottom = 563.0
+offset_right = 1464.0
+offset_bottom = 502.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("8_556ma")
 expand_mode = 1
@@ -129,8 +135,9 @@ modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
 layout_mode = 0
 offset_left = 1660.0
 offset_top = 526.0
-offset_right = 1978.0
-offset_bottom = 866.0
+offset_right = 1819.0
+offset_bottom = 696.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("9_vwhyb")
 expand_mode = 1
@@ -141,8 +148,9 @@ modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
 layout_mode = 0
 offset_left = 1531.0
 offset_top = 1278.0
-offset_right = 1707.0
-offset_bottom = 1460.0
+offset_right = 1619.0
+offset_bottom = 1369.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("10_v4g1g")
 expand_mode = 1
@@ -203,7 +211,6 @@ offset_left = 500.0
 offset_top = 155.0
 offset_right = 800.0
 offset_bottom = 455.0
-mouse_filter = 2
 texture = ExtResource("12_v4g1g")
 expand_mode = 1
 stretch_mode = 5
@@ -215,7 +222,6 @@ offset_top = 439.0
 offset_right = 531.0
 offset_bottom = 589.0
 rotation = -0.2443461
-mouse_filter = 2
 texture = ExtResource("12_v4g1g")
 expand_mode = 1
 stretch_mode = 5

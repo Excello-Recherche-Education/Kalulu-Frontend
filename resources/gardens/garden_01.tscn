@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://clkr31osbqs7u" path="res://assets/gardens/victory_assets/victory_asset_plant_02.png" id="plant_02"]
 [ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/victory_assets/victory_asset_fish_01.png" id="plant_03"]
 [ext_resource type="Texture2D" uid="uid://bqp1nkk53y1is" path="res://assets/gardens/victory_assets/victory_asset_plant_03.png" id="plant_04"]
-[ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/victory_assets/victory_asset_bubbles_01.png" id="plant_05"]
+[ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/victory_assets/victory_asset_bubbles.png" id="plant_05"]
 [ext_resource type="Texture2D" uid="uid://f2arml2f4b8p" path="res://assets/gardens/victory_assets/victory_asset_plant_04.png" id="plant_06"]
 [ext_resource type="Texture2D" uid="uid://dufnm3bkfe5yv" path="res://assets/gardens/victory_assets/victory_asset_plant_05.png" id="plant_07"]
 [ext_resource type="Texture2D" uid="uid://dt2a0dea0hv0c" path="res://assets/gardens/victory_assets/victory_asset_fish_02.png" id="plant_08"]
@@ -54,10 +54,11 @@ mouse_filter = 2
 [node name="Victory_Asset_01" type="TextureRect" parent="Victory_Assets" unique_id=1312910041]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
-offset_left = 395.0
-offset_top = 475.0
-offset_right = 515.0
-offset_bottom = 1425.0
+offset_left = 405.0
+offset_top = 227.0
+offset_right = 484.0
+offset_bottom = 856.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_01")
 expand_mode = 1
@@ -66,10 +67,11 @@ stretch_mode = 5
 [node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=460994140]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
-offset_left = 574.0
-offset_top = 1322.0
-offset_right = 744.0
-offset_bottom = 1592.0
+offset_left = 615.0
+offset_top = 1346.0
+offset_right = 698.0
+offset_bottom = 1486.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_02")
 expand_mode = 1
@@ -78,10 +80,11 @@ stretch_mode = 5
 [node name="Victory_Asset_03" type="TextureRect" parent="Victory_Assets" unique_id=780672007]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
-offset_left = 1178.0
-offset_top = 1058.0
-offset_right = 1618.0
-offset_bottom = 1388.0
+offset_left = 1202.0
+offset_top = 1091.0
+offset_right = 1379.0
+offset_bottom = 1223.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_03")
 expand_mode = 1
@@ -92,8 +95,9 @@ modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 864.0
 offset_top = 308.0
-offset_right = 1084.0
-offset_bottom = 628.0
+offset_right = 983.0
+offset_bottom = 476.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_04")
 expand_mode = 1
@@ -104,8 +108,9 @@ modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 744.0
 offset_top = 688.0
-offset_right = 889.0
-offset_bottom = 998.0
+offset_right = 801.0
+offset_bottom = 811.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_05")
 expand_mode = 1
@@ -116,8 +121,9 @@ modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 1742.0
 offset_top = 762.0
-offset_right = 1927.0
-offset_bottom = 1077.0
+offset_right = 1815.0
+offset_bottom = 887.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_06")
 expand_mode = 1
@@ -128,8 +134,9 @@ modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 880.0
 offset_top = 1172.0
-offset_right = 1010.0
-offset_bottom = 1592.0
+offset_right = 932.0
+offset_bottom = 1380.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_07")
 expand_mode = 1
@@ -138,10 +145,11 @@ stretch_mode = 5
 [node name="Victory_Asset_08" type="TextureRect" parent="Victory_Assets" unique_id=1795730999]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
-offset_left = 1122.0
-offset_top = 288.0
-offset_right = 1472.0
-offset_bottom = 638.0
+offset_left = 1142.0
+offset_top = 284.0
+offset_right = 1303.0
+offset_bottom = 445.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_08")
 expand_mode = 1
@@ -202,7 +210,6 @@ offset_left = 1511.0
 offset_top = 32.0
 offset_right = 1791.0
 offset_bottom = 512.0
-mouse_filter = 2
 texture = ExtResource("jellyfish_tex")
 expand_mode = 1
 stretch_mode = 5
