@@ -246,11 +246,11 @@ func insert_in_database() -> void:
 			if word != element[table_graph_column] or exception != element.Exception or reading != element.Reading or writing != element.Writing:
 				Database.db.update_rows(table, "ID=%s" % id, {table_graph_column: word, "Exception": exception, "Reading": reading, "Writing": writing})
 			if " ".join(gp_ids) != element[sub_table + "IDs"]:
-				var gps_in_words_ids: Array[String] = Array((element[relational_table + "IDs"] as String).split(" "))
+				var gps_in_words_ids: Array = Array((element[relational_table + "IDs"] as String).split(" "))
 				while gps_in_words_ids.size() > gp_ids.size():
 					Database.db.delete_rows(relational_table, "ID=%s" % int(gps_in_words_ids.pop_back() as String))
 				for index: int in range(gps_in_words_ids.size()):
-					var gps_in_words_id: int = int(gps_in_words_ids[index])
+					var gps_in_words_id: int = int(gps_in_words_ids[index] as String)
 					Database.db.update_rows(relational_table, "ID=%s" % gps_in_words_id, {
 						table_graph_column + "ID": id,
 						sub_table_id: gp_ids[index],
