@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfqwlmmliem8f"
-path="res://.godot/imported/jellyfish.png-c1018169f9288099edf45b4480874278.ctex"
+uid="uid://bsw6v8ix7bb2s"
+path="res://.godot/imported/turtle.png-b25459e1a6a7c121b59fc65afcb3f82e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/jellyfish.png"
-dest_files=["res://.godot/imported/jellyfish.png-c1018169f9288099edf45b4480874278.ctex"]
+source_file="res://assets/gardens/animals/turtle.png"
+dest_files=["res://.godot/imported/turtle.png-b25459e1a6a7c121b59fc65afcb3f82e.ctex"]
 
 [params]
 

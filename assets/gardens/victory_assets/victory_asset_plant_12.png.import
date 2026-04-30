@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsw6v8ix7bb2s"
-path="res://.godot/imported/turtle.png-5a084e80c807d6ac811492f2360a3574.ctex"
+uid="uid://ipos556o7hlw"
+path="res://.godot/imported/victory_asset_plant_12.png-7105825241d97a53391455f102ce3b75.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/turtle.png"
-dest_files=["res://.godot/imported/turtle.png-5a084e80c807d6ac811492f2360a3574.ctex"]
+source_file="res://assets/gardens/victory_assets/victory_asset_plant_12.png"
+dest_files=["res://.godot/imported/victory_asset_plant_12.png-7105825241d97a53391455f102ce3b75.ctex"]
 
 [params]
 

@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bv510d5r4dn82" path="res://assets/gardens/victory_assets/victory_asset_fragon_fly_01.png" id="8_knwjf"]
 [ext_resource type="Texture2D" uid="uid://dckd1xhcdf2ie" path="res://assets/gardens/victory_assets/victory_asset_plant_06.png" id="9_xt7g7"]
 [ext_resource type="Texture2D" uid="uid://bpxc4vhri16pd" path="res://assets/gardens/victory_assets/victory_asset_pearl_01.png" id="10_v68eg"]
-[ext_resource type="Texture2D" uid="uid://bsw6v8ix7bb2s" path="res://assets/gardens/turtle.png" id="12_di1qk"]
+[ext_resource type="Texture2D" uid="uid://bsw6v8ix7bb2s" path="res://assets/gardens/animals/turtle.png" id="12_di1qk"]
 [ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/victory_assets/victory_asset_bubbles_01.png" id="plant_05"]
 
 [node name="Garden" type="Control" unique_id=167073905]

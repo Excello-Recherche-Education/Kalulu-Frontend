@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
 [ext_resource type="Texture2D" uid="uid://d26hapg1hf8a6" path="res://assets/gardens/gardens/garden_01.png" id="3_p7iv3"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
-[ext_resource type="Texture2D" uid="uid://bfqwlmmliem8f" path="res://assets/gardens/jellyfish.png" id="jellyfish_tex"]
+[ext_resource type="Texture2D" uid="uid://bfqwlmmliem8f" path="res://assets/gardens/animals/jellyfish.png" id="jellyfish_tex"]
 [ext_resource type="Texture2D" uid="uid://dcekseb1b3ruw" path="res://assets/gardens/victory_assets/victory_asset_plant_01.png" id="plant_01"]
 [ext_resource type="Texture2D" uid="uid://clkr31osbqs7u" path="res://assets/gardens/victory_assets/victory_asset_plant_02.png" id="plant_02"]
 [ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/victory_assets/victory_asset_fish_01.png" id="plant_03"]
