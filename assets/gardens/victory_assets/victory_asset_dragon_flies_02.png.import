@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db6cwc8crw6wo"
-path="res://.godot/imported/victory_asset_butterfly_2.png-724be0e4156fad981c3fd18ec904c631.ctex"
+uid="uid://o1af03kn2mcg"
+path="res://.godot/imported/victory_asset_dragon_flies_02.png-3837d155bfe6c20cbe0d1e24e148c22f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/victory_assets/victory_asset_butterfly_2.png"
-dest_files=["res://.godot/imported/victory_asset_butterfly_2.png-724be0e4156fad981c3fd18ec904c631.ctex"]
+source_file="res://assets/gardens/victory_assets/victory_asset_dragon_flies_02.png"
+dest_files=["res://.godot/imported/victory_asset_dragon_flies_02.png-3837d155bfe6c20cbe0d1e24e148c22f.ctex"]
 
 [params]
 

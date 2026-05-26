@@ -40,6 +40,7 @@ offset_bottom = 1750.0
 mouse_filter = 2
 texture = ExtResource("3_p7iv3")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Victory_Assets" type="Control" parent="." unique_id=1176691180]
 unique_name_in_owner = true
@@ -82,8 +83,8 @@ modulate = Color(0.0392157, 0.333333, 0.356863, 1)
 layout_mode = 0
 offset_left = 1202.0
 offset_top = 1091.0
-offset_right = 1379.0
-offset_bottom = 1223.0
+offset_right = 1391.0
+offset_bottom = 1233.0
 scale = Vector2(2, 2)
 mouse_filter = 2
 texture = ExtResource("plant_03")

@@ -40,6 +40,7 @@ offset_bottom = 1750.0
 mouse_filter = 2
 texture = ExtResource("2_0vwua")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Victory_Assets" type="Control" parent="." unique_id=787934313]
 unique_name_in_owner = true

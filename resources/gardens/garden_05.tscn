@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://chtr4d0a80s61" path="res://assets/gardens/victory_assets/victory_asset_plant_18.png" id="7_sjfs7"]
 [ext_resource type="Texture2D" uid="uid://c784fmd7v5wkt" path="res://assets/gardens/victory_assets/victory_asset_coconut.png" id="8_se3av"]
 [ext_resource type="Texture2D" uid="uid://bpqo8maufc3gr" path="res://assets/gardens/victory_assets/victory_asset_ladybugs.png" id="9_r7c56"]
-[ext_resource type="Texture2D" uid="uid://its5dfr0ipak" path="res://assets/gardens/victory_assets/victory_asset_butterfly.png" id="10_s6qsy"]
+[ext_resource type="Texture2D" uid="uid://its5dfr0ipak" path="res://assets/gardens/victory_assets/victory_asset_butterfly_01.png" id="10_s6qsy"]
 
 [node name="Garden" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
@@ -40,6 +40,7 @@ offset_bottom = 1750.0
 mouse_filter = 2
 texture = ExtResource("2_l6rp4")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Victory_Assets" type="Control" parent="." unique_id=787934313]
 unique_name_in_owner = true

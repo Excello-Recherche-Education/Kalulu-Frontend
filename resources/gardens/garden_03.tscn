@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dr6cq4ua8fnk3" path="res://assets/gardens/victory_assets/victory_asset_ladybug.png" id="7_rkrhb"]
 [ext_resource type="Texture2D" uid="uid://coxmj8uwyu6vd" path="res://assets/gardens/victory_assets/victory_asset_mushroom.png" id="8_ur7o4"]
 [ext_resource type="Texture2D" uid="uid://dw3qhu03gxfi7" path="res://assets/gardens/victory_assets/victory_asset_bees.png" id="9_ec7px"]
-[ext_resource type="Texture2D" uid="uid://its5dfr0ipak" path="res://assets/gardens/victory_assets/victory_asset_butterfly.png" id="10_j3ks8"]
+[ext_resource type="Texture2D" uid="uid://its5dfr0ipak" path="res://assets/gardens/victory_assets/victory_asset_butterfly_01.png" id="10_j3ks8"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="11_odjw4"]
 [ext_resource type="Texture2D" uid="uid://cn0brlkbklxuu" path="res://assets/gardens/animals/ant.png" id="12_j3ks8"]
 
@@ -40,6 +40,7 @@ offset_bottom = 1750.0
 mouse_filter = 2
 texture = ExtResource("2_j3ks8")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Victory_Assets" type="Control" parent="." unique_id=787934313]
 unique_name_in_owner = true

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv510d5r4dn82"
-path="res://.godot/imported/victory_asset_dragon_fly.png-e8b19f1b238dd7e64214f9f295f1484b.ctex"
+uid="uid://yo3o4m6o7a0"
+path="res://.godot/imported/frog.png-dbd41735c012909d9c488ecbaa029907.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/victory_assets/victory_asset_dragon_fly.png"
-dest_files=["res://.godot/imported/victory_asset_dragon_fly.png-e8b19f1b238dd7e64214f9f295f1484b.ctex"]
+source_file="res://assets/gardens/animals/frog.png"
+dest_files=["res://.godot/imported/frog.png-dbd41735c012909d9c488ecbaa029907.ctex"]
 
 [params]
 

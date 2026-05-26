@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dw3qhu03gxfi7" path="res://assets/gardens/victory_assets/victory_asset_bees.png" id="7_diva3"]
 [ext_resource type="Texture2D" uid="uid://bokqjqq5uaar3" path="res://assets/gardens/victory_assets/victory_asset_leaves.png" id="8_ghdsm"]
 [ext_resource type="Texture2D" uid="uid://coxmj8uwyu6vd" path="res://assets/gardens/victory_assets/victory_asset_mushroom.png" id="9_1053v"]
-[ext_resource type="Texture2D" uid="uid://db6cwc8crw6wo" path="res://assets/gardens/victory_assets/victory_asset_butterfly_2.png" id="10_rqhnb"]
+[ext_resource type="Texture2D" uid="uid://db6cwc8crw6wo" path="res://assets/gardens/victory_assets/victory_asset_butterfly_02.png" id="10_rqhnb"]
 
 [node name="Garden" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
@@ -24,10 +24,10 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
 title = "Purple Turtle Garden"
-unlocked_lesson = Color(0.7490196, 0.2784314, 0, 1)
-unlocked_lesson_text = Color(1, 0.7921569, 0.6901961, 1)
-completed_lesson = Color(1, 0.7921569, 0.6901961, 1)
-completed_lesson_text = Color(0.7490196, 0.2784314, 0, 1)
+unlocked_lesson = Color(0.30588236, 0.38039216, 0.03529412, 1)
+unlocked_lesson_text = Color(0.96862745, 1, 0.7529412, 1)
+completed_lesson = Color(0.96862745, 1, 0.7529412, 1)
+completed_lesson_text = Color(0.30588236, 0.38039216, 0.03529412, 1)
 
 [node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true
@@ -40,6 +40,7 @@ offset_bottom = 1750.0
 mouse_filter = 2
 texture = ExtResource("2_c82qa")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Victory_Assets" type="Control" parent="." unique_id=787934313]
 unique_name_in_owner = true
