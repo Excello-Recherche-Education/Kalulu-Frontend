@@ -205,10 +205,11 @@ pivot_offset = Vector2(120, 120)
 
 [node name="Monkey" type="TextureRect" parent="." unique_id=518902024]
 layout_mode = 0
-offset_left = 1473.0
-offset_top = 1369.0
-offset_right = 1773.0
-offset_bottom = 1669.0
+offset_left = 1467.0
+offset_top = 1372.0
+offset_right = 1625.0
+offset_bottom = 1507.0
+scale = Vector2(2, 2)
 texture = ExtResource("5_fd7lh")
 expand_mode = 1
 stretch_mode = 5
