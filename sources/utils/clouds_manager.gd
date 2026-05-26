@@ -83,15 +83,15 @@ func _initialize_clouds() -> void:
 	sprites.shuffle()
 
 	var slot_count: int = sprites.size()
-	for i: int in range(slot_count):
-		_init_cloud_start(sprites[i], i, slot_count)
+	for index: int in range(slot_count):
+		_init_cloud_start(sprites[index], index, slot_count)
 
 
 func _populate_extra_clouds() -> void:
 	if clouds_per_screen <= 0 or spawn_width <= 0.0:
 		return
 	var viewport_w: float = max(1.0, screen_width)
-	var screens: int = max(1, int(ceil(spawn_width / viewport_w)))
+	var screens: int = maxi(1, ceili(spawn_width / viewport_w))
 	var target_count: int = clouds_per_screen * screens
 
 	var template_clouds: Array[Sprite2D] = []
@@ -102,8 +102,8 @@ func _populate_extra_clouds() -> void:
 		return
 
 	var to_add: int = target_count - template_clouds.size()
-	for i: int in range(to_add):
-		var template: Sprite2D = template_clouds[i % template_clouds.size()]
+	for index: int in range(to_add):
+		var template: Sprite2D = template_clouds[index % template_clouds.size()]
 		var clone: Sprite2D = template.duplicate() as Sprite2D
 		add_child(clone)
 
