@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3i313p52n6h8"
-path="res://.godot/imported/victory_asset_coconut.png-931b3a5a5bc8f484fbb35bf25285930f.ctex"
+uid="uid://kygm5ieixgne"
+path="res://.godot/imported/monkey.png-723d94951cc580ff3e0ae5233294daa2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gardens/victory_assets/victory_asset_coconut.png"
-dest_files=["res://.godot/imported/victory_asset_coconut.png-931b3a5a5bc8f484fbb35bf25285930f.ctex"]
+source_file="res://assets/gardens/animals/monkey.png"
+dest_files=["res://.godot/imported/monkey.png-723d94951cc580ff3e0ae5233294daa2.ctex"]
 
 [params]
 

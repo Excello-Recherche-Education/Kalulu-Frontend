@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bd5pxoufamqy" path="res://assets/gardens/animals/yellow_parakeet.png" id="5_l6rp4"]
 [ext_resource type="Texture2D" uid="uid://bg02dhcrwf5nx" path="res://assets/gardens/victory_assets/victory_asset_plant_17.png" id="6_oapcv"]
 [ext_resource type="Texture2D" uid="uid://chtr4d0a80s61" path="res://assets/gardens/victory_assets/victory_asset_plant_18.png" id="7_sjfs7"]
-[ext_resource type="Texture2D" uid="uid://c784fmd7v5wkt" path="res://assets/gardens/victory_assets/victory_asset_coconut.png" id="8_se3av"]
+[ext_resource type="Texture2D" uid="uid://c784fmd7v5wkt" path="res://assets/gardens/victory_assets/victory_asset_tumbleweeds.png" id="8_se3av"]
 [ext_resource type="Texture2D" uid="uid://bpqo8maufc3gr" path="res://assets/gardens/victory_assets/victory_asset_ladybugs.png" id="9_r7c56"]
 [ext_resource type="Texture2D" uid="uid://its5dfr0ipak" path="res://assets/gardens/victory_assets/victory_asset_butterfly_01.png" id="10_s6qsy"]
 
