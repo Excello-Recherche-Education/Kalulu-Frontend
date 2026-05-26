@@ -209,19 +209,21 @@ pivot_offset = Vector2(120, 120)
 layout_mode = 0
 offset_left = 500.0
 offset_top = 155.0
-offset_right = 800.0
-offset_bottom = 455.0
+offset_right = 640.0
+offset_bottom = 292.0
+scale = Vector2(2, 2)
 texture = ExtResource("12_v4g1g")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Turtle_02" type="TextureRect" parent="." unique_id=1563614410]
+[node name="Turtle_02" type="TextureRect" parent="." unique_id=674773067]
 layout_mode = 0
-offset_left = 381.0
-offset_top = 439.0
-offset_right = 531.0
-offset_bottom = 589.0
-rotation = -0.2443461
+offset_left = 376.99997
+offset_top = 474.99994
+offset_right = 517.0
+offset_bottom = 611.99994
+rotation = -0.33784395
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("12_v4g1g")
 expand_mode = 1
 stretch_mode = 5

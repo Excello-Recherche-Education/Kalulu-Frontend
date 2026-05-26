@@ -190,10 +190,11 @@ pivot_offset = Vector2(120, 120)
 
 [node name="Crab" type="TextureRect" parent="." unique_id=518902024]
 layout_mode = 0
-offset_left = 629.0
-offset_top = 259.0
-offset_right = 929.0
-offset_bottom = 559.0
+offset_left = 630.0
+offset_top = 260.0
+offset_right = 782.0
+offset_bottom = 362.0
+scale = Vector2(2, 2)
 texture = ExtResource("12_2bwv2")
 expand_mode = 1
 stretch_mode = 5
