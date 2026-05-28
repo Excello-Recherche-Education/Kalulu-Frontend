@@ -89,7 +89,8 @@ var current_lives: int = 0:
 			Log.trace("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, TYPE_NAMES[minigame_name]])
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
-		if current_lives <= max_number_of_lives - errors_before_help_speech:
+		var help_speech_threshold: int = max_number_of_lives - errors_before_help_speech
+		if previous_lives > help_speech_threshold and current_lives <= help_speech_threshold:
 			_play_kalulu_help_speech()
 		if consecutive_errors == errors_before_highlight:
 			is_highlighting = true
