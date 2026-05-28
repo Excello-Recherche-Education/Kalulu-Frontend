@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://dkxci0n2tcyxc"]
 
-[ext_resource type="Texture2D" uid="uid://cxjy5f7oyl8mq" path="res://assets/gardens/buttons/lesson_circle.png" id="lesson_circle"]
 [ext_resource type="Script" uid="uid://bbjhs5nta7xxj" path="res://sources/gardens/boss_button.gd" id="5_3d6pj"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="7_rtwam"]
 [ext_resource type="Texture2D" uid="uid://cfnjk06m367r3" path="res://assets/minigames/boss/boss_icon.png" id="8_oy4mt"]
+[ext_resource type="Texture2D" uid="uid://cxjy5f7oyl8mq" path="res://assets/gardens/buttons/lesson_circle.png" id="lesson_circle"]
 
 [node name="BossButton" type="TextureButton" unique_id=1297494779]
-z_index = 2
 self_modulate = Color(1, 1, 1, 0)
+z_index = 2
 offset_right = 512.0
 offset_bottom = 512.0
 pivot_offset = Vector2(180, 180)
@@ -101,12 +101,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 144.0
-offset_top = 80.0
-offset_right = -23.0
-offset_bottom = 84.0
+offset_left = 56.0
+offset_top = 56.0
+offset_right = -56.0
+offset_bottom = -56.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.7, 0.7)
 texture = ExtResource("8_oy4mt")
-stretch_mode = 6
+stretch_mode = 5
