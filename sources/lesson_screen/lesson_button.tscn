@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://delcgui3v0eek"]
 
 [ext_resource type="Script" uid="uid://d1gj4en3e7b8b" path="res://sources/lesson_screen/lesson_button.gd" id="4_mbltp"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="4_t6rjb"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="7_rtwam"]
 [ext_resource type="Texture2D" uid="uid://cxjy5f7oyl8mq" path="res://assets/gardens/buttons/lesson_circle.png" id="lesson_circle"]
 
@@ -73,6 +74,7 @@ offset_top = 8.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+theme_override_fonts/font = ExtResource("4_t6rjb")
 theme_override_font_sizes/font_size = 88
 horizontal_alignment = 1
 vertical_alignment = 1

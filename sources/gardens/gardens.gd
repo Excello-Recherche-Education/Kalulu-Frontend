@@ -79,6 +79,7 @@ var is_back_button_hold_active: bool = false
 @onready var line_audio_stream_player: AudioStreamPlayer2D = %LineAudioStreamPlayer
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var parallax_background: ParallaxBackground = %ParallaxBackground
+@onready var clouds: CloudManager = %Clouds
 @onready var scroll_end_spacer: Control = $"ScrollContainer/HBoxContainer/Control2"
 @onready var boss_buttons_container: Control = %BossButtons
 @onready var minigame_selection: Control = %MinigameSelection
@@ -196,12 +197,47 @@ func _apply_progression_to_gardens(transition_context: Dictionary) -> void:
 			garden_control.max_progression = float(total_minigames)
 			lesson_index += 1
 
-		garden_control.update_plants_visibility(completed_minigames_total, total_minigames)
+		garden_control.update_victory_assets_visibility(completed_minigames_total, total_minigames)
 	_set_up_boss_buttons()
 
 #endregion
 
 #region Scene setup and ready sequence
+
+func _compute_cloud_world_bounds() -> Vector2:
+	if not garden_parent:
+		return Vector2.ZERO
+	var garden_count: int = garden_parent.get_child_count()
+	if garden_count <= 0:
+		return Vector2.ZERO
+	var trailing_spacer_width: float = 0.0
+	if scroll_end_spacer:
+		trailing_spacer_width = scroll_end_spacer.custom_minimum_size.x
+	var content_world_width: float = float(garden_count * GARDEN_SIZE) + trailing_spacer_width
+	var viewport_w: float = scroll_container.size.x
+	if viewport_w <= 0.0:
+		viewport_w = float(get_viewport_rect().size.x)
+	var max_scroll: float = maxf(0.0, content_world_width - viewport_w)
+	return Vector2(content_world_width, max_scroll)
+
+
+func _configure_clouds_for_gardens() -> void:
+	if not clouds:
+		return
+	var bounds: Vector2 = _compute_cloud_world_bounds()
+	if bounds == Vector2.ZERO:
+		return
+	clouds.configure_world(bounds.x, bounds.y)
+
+
+func _refresh_cloud_world_bounds() -> void:
+	if not clouds:
+		return
+	var bounds: Vector2 = _compute_cloud_world_bounds()
+	if bounds == Vector2.ZERO:
+		return
+	clouds.set_world_bounds(bounds.x, bounds.y)
+
 
 func _scroll_to_starting_garden(_transition_context: Dictionary) -> void:
 	if transition_data:
@@ -336,7 +372,8 @@ func _ready() -> void:
 		scroll_end_base_width = scroll_end_spacer.custom_minimum_size.x
 	gardens_layout = get_session_layout(lesson_count)
 	_set_up_lessons()
-	
+	_configure_clouds_for_gardens()
+
 	# If there is no data, skips the rest
 	if not UserDataManager.student_progression:
 		Log.error("Gardens: Ready: No data for student progression")
@@ -634,6 +671,7 @@ func _process(_delta: float) -> void:
 	unlocked_line.position.x = - scroll_container.scroll_horizontal
 	boss_buttons_container.position.x = - scroll_container.scroll_horizontal
 	parallax_background.scroll_offset.x = - scroll_container.scroll_horizontal
+	clouds.scroll_offset = scroll_container.scroll_horizontal
 
 
 func _process_back_button_hold(delta: float) -> void:
@@ -975,6 +1013,7 @@ func _set_up_boss_buttons() -> void:
 			boss_button.set_button_disabled(true)
 		var garden_index: int = _get_garden_index_for_lesson(gate_lesson)
 		boss_button.pressed.connect(_on_boss_button_pressed.bind(gate_lesson, garden_index))
+		boss_button.gui_input.connect(_on_boss_button_gui_input)
 	_set_up_final_boss_button()
 
 
@@ -1001,12 +1040,14 @@ func _set_up_final_boss_button() -> void:
 	boss_button.position = final_boss_center - final_boss_size * 0.5
 	boss_button.set_button_disabled(false)
 	boss_button.pressed.connect(_on_final_boss_button_pressed.bind(final_lesson_number, last_garden_index))
+	boss_button.gui_input.connect(_on_boss_button_gui_input)
 	_update_final_boss_scroll_space(final_boss_center, final_boss_size)
 
 
 func _reset_final_boss_scroll_space() -> void:
 	if scroll_end_spacer:
 		scroll_end_spacer.custom_minimum_size.x = scroll_end_base_width
+	_refresh_cloud_world_bounds()
 
 
 func _update_final_boss_scroll_space(final_boss_center: Vector2, final_boss_size: Vector2) -> void:
@@ -1020,6 +1061,7 @@ func _update_final_boss_scroll_space(final_boss_center: Vector2, final_boss_size
 	var final_boss_right_edge: float = final_boss_center.x + final_boss_size.x * 0.5
 	var extra_width: float = max(0.0, final_boss_right_edge - last_garden_right_edge)
 	scroll_end_spacer.custom_minimum_size.x = scroll_end_base_width + extra_width
+	_refresh_cloud_world_bounds()
 
 
 func _extend_unlocked_path_to_final_boss() -> void:
@@ -1263,6 +1305,19 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 	if is_scrolling and event is InputEventMouseMotion:
 		var motion_event: InputEventMouseMotion = event
 		scroll_container.scroll_horizontal -= int(motion_event.relative.x)
+
+
+func _on_boss_button_gui_input(event: InputEvent) -> void:
+	# Boss buttons live outside the ScrollContainer, so without forwarding,
+	# their default STOP mouse filter would swallow scroll events that pass over them.
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event
+		if mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN \
+				or mb.button_index == MOUSE_BUTTON_WHEEL_LEFT or mb.button_index == MOUSE_BUTTON_WHEEL_RIGHT:
+			_on_scroll_container_gui_input(event)
+			return
+	if is_scrolling and event is InputEventMouseMotion:
+		_on_scroll_container_gui_input(event)
 
 
 func _scroll_by_garden(p_direction: int) -> void:

@@ -4,7 +4,6 @@ extends Control
 
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d.png"
 const MAX_LESSONS: int = 5
-const PLANT_COUNT: int = 8
 # Maps lesson count → which slot indices to use
 const SLOT_SELECTION: Dictionary = {
 	1: [2],
@@ -32,11 +31,14 @@ var active_buttons: Array[LessonButton] = []
 @onready var all_slots: Array[LessonButton] = [
 	$Buttons/Slot1, $Buttons/Slot2, $Buttons/Slot3, $Buttons/Slot4, $Buttons/Slot5
 ]
-@onready var all_plants: Array[TextureRect] = [
-	$Plants/Plant1, $Plants/Plant2, $Plants/Plant3, $Plants/Plant4,
-	$Plants/Plant5, $Plants/Plant6, $Plants/Plant7, $Plants/Plant8
-]
+@onready var all_victory_assets: Array[TextureRect] = []
 @onready var background: TextureRect = %Background
+
+
+func _ready() -> void:
+	all_victory_assets.append_array(%Victory_Assets.get_children().filter(func(node: Node) -> bool:
+		return node is TextureRect
+	))
 
 
 func set_garden_layout(p_garden_layout: GardenLayout) -> void:
@@ -47,7 +49,7 @@ func set_garden_layout(p_garden_layout: GardenLayout) -> void:
 	set_background(garden_layout.color)
 	_configure_slots(garden_layout.lesson_buttons.size())
 	_apply_colors_to_buttons()
-	_hide_all_plants()
+	_hide_all_victory_assets()
 
 
 func _configure_slots(lesson_count: int) -> void:
@@ -81,24 +83,24 @@ func _apply_colors_to_buttons() -> void:
 		button.set_garden_colors(unlocked_lesson, unlocked_lesson_text, completed_lesson, completed_lesson_text)
 
 
-func _hide_all_plants() -> void:
-	if not all_plants:
+func _hide_all_victory_assets() -> void:
+	if not all_victory_assets:
 		return
-	for plant: TextureRect in all_plants:
-		plant.visible = false
+	for asset: TextureRect in all_victory_assets:
+		asset.visible = false
 
 
-func update_plants_visibility(completed_minigames: int, total_minigames: int) -> void:
-	if not all_plants or total_minigames <= 0:
+func update_victory_assets_visibility(completed_minigames: int, total_minigames: int) -> void:
+	if not all_victory_assets or total_minigames <= 0:
 		return
 	var visible_count: int = 0
 	if completed_minigames >= total_minigames:
-		visible_count = PLANT_COUNT
+		visible_count = all_victory_assets.size()
 	elif completed_minigames > 0:
-		visible_count = int(float(completed_minigames) * float(PLANT_COUNT) / float(total_minigames))
-		visible_count = clampi(visible_count, 1, PLANT_COUNT - 1)
-	for index: int in range(all_plants.size()):
-		all_plants[index].visible = index < visible_count
+		visible_count = int(float(completed_minigames) * float(all_victory_assets.size()) / float(total_minigames))
+		visible_count = clampi(visible_count, 1, all_victory_assets.size() - 1)
+	for index: int in range(all_victory_assets.size()):
+		all_victory_assets[index].visible = index < visible_count
 
 
 func get_button_size() -> Vector2:

@@ -1,19 +1,19 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dlq2i1hs2w3n6"]
 
 [ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
-[ext_resource type="Texture2D" uid="uid://d26hapg1hf8a6" path="res://assets/gardens/gardens/garden_01.png" id="3_p7iv3"]
+[ext_resource type="Texture2D" uid="uid://b6pmtjjp4rejb" path="res://assets/gardens/gardens/garden_12.png" id="2_xmsgp"]
+[ext_resource type="Texture2D" uid="uid://jid1k44bn2xx" path="res://assets/gardens/victory_assets/victory_asset_mountain.png" id="3_xmsgp"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
-[ext_resource type="Texture2D" uid="uid://bfqwlmmliem8f" path="res://assets/gardens/jellyfish.png" id="jellyfish_tex"]
-[ext_resource type="Texture2D" uid="uid://dcekseb1b3ruw" path="res://assets/gardens/plants/garden_plant_01.png" id="plant_01"]
-[ext_resource type="Texture2D" uid="uid://clkr31osbqs7u" path="res://assets/gardens/plants/garden_plant_02.png" id="plant_02"]
-[ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/plants/garden_plant_03.png" id="plant_03"]
-[ext_resource type="Texture2D" uid="uid://bqp1nkk53y1is" path="res://assets/gardens/plants/garden_plant_04.png" id="plant_04"]
-[ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/plants/garden_plant_05.png" id="plant_05"]
-[ext_resource type="Texture2D" uid="uid://f2arml2f4b8p" path="res://assets/gardens/plants/garden_plant_06.png" id="plant_06"]
-[ext_resource type="Texture2D" uid="uid://dufnm3bkfe5yv" path="res://assets/gardens/plants/garden_plant_07.png" id="plant_07"]
-[ext_resource type="Texture2D" uid="uid://dt2a0dea0hv0c" path="res://assets/gardens/plants/garden_plant_08.png" id="plant_08"]
+[ext_resource type="Texture2D" uid="uid://cjb3ygn2iycj4" path="res://assets/gardens/victory_assets/victory_asset_plant_26.png" id="4_go3so"]
+[ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/victory_assets/victory_asset_fish_01.png" id="5_88yjd"]
+[ext_resource type="Texture2D" uid="uid://cy1nrnl520goj" path="res://assets/gardens/animals/penguin.png" id="5_xmsgp"]
+[ext_resource type="Texture2D" uid="uid://d0je2xrnu1gem" path="res://assets/gardens/victory_assets/victory_asset_snowman.png" id="6_4h4hf"]
+[ext_resource type="Texture2D" uid="uid://bcjk0l771ugvq" path="res://assets/gardens/victory_assets/victory_asset_snowpile.png" id="7_wf34p"]
+[ext_resource type="Texture2D" uid="uid://0g80o48ewp7d" path="res://assets/gardens/victory_assets/victory_asset_cloud_snow.png" id="8_4h4hf"]
+[ext_resource type="Texture2D" uid="uid://28wjedoatx7c" path="res://assets/gardens/victory_assets/victory_asset_whale.png" id="9_m7voh"]
+[ext_resource type="Texture2D" uid="uid://bqxwflyxhcdvw" path="res://assets/gardens/victory_assets/victory_asset_snowflakes.png" id="10_g51bh"]
 
-[node name="Garden" type="Control"]
+[node name="Garden" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -23,24 +23,26 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
-title = "Garden 12"
-unlocked_lesson = Color(0.478, 0.165, 0.431, 1)
-unlocked_lesson_text = Color(0.878, 0.659, 0.847, 1)
-completed_lesson = Color(0.878, 0.659, 0.847, 1)
-completed_lesson_text = Color(0.314, 0.102, 0.282, 1)
+title = "Purple Turtle Garden"
+unlocked_lesson = Color(0, 0.5529412, 0.76862746, 1)
+unlocked_lesson_text = Color(0.78431374, 0.9019608, 0.9529412, 1)
+completed_lesson = Color(0.78431374, 0.9019608, 0.9529412, 1)
+completed_lesson_text = Color(0, 0.5529412, 0.76862746, 1)
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true
+modulate = Color(0.3372549, 0.76862746, 0.9372549, 1)
 layout_mode = 0
 offset_left = 350.0
 offset_top = 50.0
 offset_right = 2050.0
 offset_bottom = 1750.0
 mouse_filter = 2
-texture = ExtResource("3_p7iv3")
+texture = ExtResource("2_xmsgp")
 expand_mode = 1
 
-[node name="Plants" type="Control" parent="."]
+[node name="Victory_Assets" type="Control" parent="." unique_id=787934313]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,158 +51,167 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Plant1" type="TextureRect" parent="Plants"]
-modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+[node name="Victory_Asset_01" type="TextureRect" parent="Victory_Assets" unique_id=1278004645]
+modulate = Color(0, 0.5529412, 0.76862746, 1)
 layout_mode = 0
-offset_left = 395.0
-offset_top = 475.0
-offset_right = 515.0
-offset_bottom = 1425.0
+offset_left = 755.0
+offset_top = 314.0
+offset_right = 978.0
+offset_bottom = 394.0
+scale = Vector2(2.5, 2.5)
 mouse_filter = 2
-texture = ExtResource("plant_01")
+texture = ExtResource("3_xmsgp")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant2" type="TextureRect" parent="Plants"]
-modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+[node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=668076947]
+modulate = Color(0, 0.5529412, 0.76862746, 1)
 layout_mode = 0
-offset_left = 574.0
-offset_top = 1322.0
-offset_right = 744.0
-offset_bottom = 1592.0
+offset_left = 1376.0
+offset_top = 275.0
+offset_right = 1475.0
+offset_bottom = 409.0
+scale = Vector2(3, 3)
 mouse_filter = 2
-texture = ExtResource("plant_02")
+texture = ExtResource("4_go3so")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant3" type="TextureRect" parent="Plants"]
-modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+[node name="Victory_Asset_03" type="TextureRect" parent="Victory_Assets" unique_id=2032790296]
+modulate = Color(0, 0.5529412, 0.76862746, 1)
 layout_mode = 0
-offset_left = 1178.0
-offset_top = 1058.0
-offset_right = 1618.0
-offset_bottom = 1388.0
+offset_left = 852.0
+offset_top = 1155.0
+offset_right = 1013.0
+offset_bottom = 1316.0
+scale = Vector2(1.5, 1.5)
 mouse_filter = 2
-texture = ExtResource("plant_03")
+texture = ExtResource("5_88yjd")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="Victory_Asset_04" type="TextureRect" parent="Victory_Assets" unique_id=1525582337]
+modulate = Color(0, 0.5529412, 0.76862746, 1)
+layout_mode = 0
+offset_left = 1705.0
+offset_top = 867.0
+offset_right = 1796.0
+offset_bottom = 952.0
+scale = Vector2(3, 3)
+mouse_filter = 2
+texture = ExtResource("6_4h4hf")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant4" type="TextureRect" parent="Plants"]
-modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+[node name="Victory_Asset_05" type="TextureRect" parent="Victory_Assets" unique_id=322571717]
+modulate = Color(0, 0.5529412, 0.76862746, 1)
 layout_mode = 0
-offset_left = 864.0
-offset_top = 308.0
-offset_right = 1084.0
-offset_bottom = 628.0
+offset_left = 1490.0001
+offset_top = 1523.0
+offset_right = 1627.0001
+offset_bottom = 1586.0
+scale = Vector2(3, 3)
 mouse_filter = 2
-texture = ExtResource("plant_04")
+texture = ExtResource("7_wf34p")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant5" type="TextureRect" parent="Plants"]
-modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+[node name="Victory_Asset_06" type="TextureRect" parent="Victory_Assets" unique_id=513223434]
+modulate = Color(0, 0.5529412, 0.76862746, 1)
 layout_mode = 0
-offset_left = 744.0
-offset_top = 688.0
-offset_right = 889.0
-offset_bottom = 998.0
+offset_left = 993.0
+offset_top = 35.0
+offset_right = 1118.0
+offset_bottom = 187.0
+scale = Vector2(2.2, 2.2)
 mouse_filter = 2
-texture = ExtResource("plant_05")
+texture = ExtResource("8_4h4hf")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant6" type="TextureRect" parent="Plants"]
-modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+[node name="Victory_Asset_07" type="TextureRect" parent="Victory_Assets" unique_id=354507578]
+modulate = Color(0, 0.5529412, 0.76862746, 1)
 layout_mode = 0
-offset_left = 1742.0
-offset_top = 762.0
-offset_right = 1927.0
-offset_bottom = 1077.0
+offset_left = 851.0
+offset_top = 927.0
+offset_right = 1009.0
+offset_bottom = 992.0
+scale = Vector2(3, 3)
 mouse_filter = 2
-texture = ExtResource("plant_06")
+texture = ExtResource("9_m7voh")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Plant7" type="TextureRect" parent="Plants"]
-modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+[node name="Victory_Asset_08" type="TextureRect" parent="Victory_Assets" unique_id=705391478]
+modulate = Color(0, 0.5529412, 0.76862746, 1)
 layout_mode = 0
-offset_left = 880.0
-offset_top = 1172.0
-offset_right = 1010.0
-offset_bottom = 1592.0
-mouse_filter = 2
-texture = ExtResource("plant_07")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Plant8" type="TextureRect" parent="Plants"]
-modulate = Color(0.0392157, 0.333333, 0.356863, 1)
-layout_mode = 0
-offset_left = 1122.0
-offset_top = 288.0
-offset_right = 1472.0
-offset_bottom = 638.0
-mouse_filter = 2
-texture = ExtResource("plant_08")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Buttons" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="Slot1" parent="Buttons" instance=ExtResource("4_epm30")]
-layout_mode = 0
-offset_left = 584.0
-offset_top = 1066.0
-offset_right = 824.0
-offset_bottom = 1306.0
-pivot_offset = Vector2(120, 120)
-
-[node name="Slot2" parent="Buttons" instance=ExtResource("4_epm30")]
-layout_mode = 0
-offset_left = 867.0
-offset_top = 880.0
-offset_right = 1107.0
-offset_bottom = 1120.0
-pivot_offset = Vector2(120, 120)
-
-[node name="Slot3" parent="Buttons" instance=ExtResource("4_epm30")]
-layout_mode = 0
-offset_left = 1170.0
-offset_top = 800.0
-offset_right = 1410.0
-offset_bottom = 1040.0
-pivot_offset = Vector2(120, 120)
-
-[node name="Slot4" parent="Buttons" instance=ExtResource("4_epm30")]
-layout_mode = 0
-offset_left = 1445.0
-offset_top = 628.0
+offset_left = 1609.0
+offset_top = 612.0
 offset_right = 1685.0
-offset_bottom = 868.0
-pivot_offset = Vector2(120, 120)
-
-[node name="Slot5" parent="Buttons" instance=ExtResource("4_epm30")]
-layout_mode = 0
-offset_left = 1744.0
-offset_top = 478.0
-offset_right = 1984.0
-offset_bottom = 718.0
-pivot_offset = Vector2(120, 120)
-
-[node name="Jellyfish" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = 1511.0
-offset_top = 32.0
-offset_right = 1791.0
-offset_bottom = 512.0
+offset_bottom = 689.0
+scale = Vector2(3, 3)
 mouse_filter = 2
-texture = ExtResource("jellyfish_tex")
+texture = ExtResource("10_g51bh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Buttons" type="Control" parent="." unique_id=1964597]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Slot1" parent="Buttons" unique_id=1361620593 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 434.0
+offset_top = 452.0
+offset_right = 674.0
+offset_bottom = 692.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Slot2" parent="Buttons" unique_id=1025579258 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 800.0
+offset_top = 537.0
+offset_right = 1040.0
+offset_bottom = 777.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Slot3" parent="Buttons" unique_id=353688519 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1165.0
+offset_top = 658.0
+offset_right = 1405.0
+offset_bottom = 898.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Slot4" parent="Buttons" unique_id=1536126098 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1410.0
+offset_top = 1016.0
+offset_right = 1650.0
+offset_bottom = 1256.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Slot5" parent="Buttons" unique_id=960033946 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1144.0
+offset_top = 1328.0
+offset_right = 1384.0
+offset_bottom = 1568.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Penguin" type="TextureRect" parent="." unique_id=518902024]
+layout_mode = 0
+offset_left = 564.0
+offset_top = 2.0
+offset_right = 691.0
+offset_bottom = 159.0
+scale = Vector2(2, 2)
+texture = ExtResource("5_xmsgp")
 expand_mode = 1
 stretch_mode = 5
