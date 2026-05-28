@@ -695,13 +695,14 @@ func _get_minigame_layouts() -> Array[MinigameLayout]:
 func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	if in_minigame_selection or not UserDataManager.student_progression:
 		return
-	feedback_audio_stream_player2.pitch_scale = 1.1
-	feedback_audio_stream_player2.play()
-	in_minigame_selection = true
 	# Gets the correct exercises for the lesson
 	var exercises: Array[int] = Database.get_exercise_for_lesson(lesson_number)
 	if not exercises or exercises.size() < 3:
+		Log.error("Gardens: Cannot open minigame layout for lesson %d: expected 3 exercises, got %d" % [lesson_number, exercises.size() if exercises else 0])
 		return
+	feedback_audio_stream_player2.pitch_scale = 1.1
+	feedback_audio_stream_player2.play()
+	in_minigame_selection = true
 	# Sets the variables for the current garden and lesson
 	current_lesson_number = lesson_number
 	var garden_index_for_lesson: int = _get_garden_index_for_lesson(lesson_number)
