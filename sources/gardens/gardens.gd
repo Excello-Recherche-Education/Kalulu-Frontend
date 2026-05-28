@@ -1013,6 +1013,7 @@ func _set_up_boss_buttons() -> void:
 			boss_button.set_button_disabled(true)
 		var garden_index: int = _get_garden_index_for_lesson(gate_lesson)
 		boss_button.pressed.connect(_on_boss_button_pressed.bind(gate_lesson, garden_index))
+		boss_button.gui_input.connect(_on_boss_button_gui_input)
 	_set_up_final_boss_button()
 
 
@@ -1039,6 +1040,7 @@ func _set_up_final_boss_button() -> void:
 	boss_button.position = final_boss_center - final_boss_size * 0.5
 	boss_button.set_button_disabled(false)
 	boss_button.pressed.connect(_on_final_boss_button_pressed.bind(final_lesson_number, last_garden_index))
+	boss_button.gui_input.connect(_on_boss_button_gui_input)
 	_update_final_boss_scroll_space(final_boss_center, final_boss_size)
 
 
@@ -1303,6 +1305,19 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 	if is_scrolling and event is InputEventMouseMotion:
 		var motion_event: InputEventMouseMotion = event
 		scroll_container.scroll_horizontal -= int(motion_event.relative.x)
+
+
+func _on_boss_button_gui_input(event: InputEvent) -> void:
+	# Boss buttons live outside the ScrollContainer, so without forwarding,
+	# their default STOP mouse filter would swallow scroll events that pass over them.
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event
+		if mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN \
+				or mb.button_index == MOUSE_BUTTON_WHEEL_LEFT or mb.button_index == MOUSE_BUTTON_WHEEL_RIGHT:
+			_on_scroll_container_gui_input(event)
+			return
+	if is_scrolling and event is InputEventMouseMotion:
+		_on_scroll_container_gui_input(event)
 
 
 func _scroll_by_garden(p_direction: int) -> void:
