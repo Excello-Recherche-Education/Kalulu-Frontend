@@ -70,7 +70,7 @@ offset_left = 568.0
 offset_top = 994.0
 offset_right = 742.0
 offset_bottom = 1221.0
-scale = Vector2(2, 2)
+scale = Vector2(1.6, 1.6)
 texture = ExtResource("4_1pxce")
 stretch_mode = 5
 
@@ -99,11 +99,11 @@ stretch_mode = 4
 [node name="Victory_Asset_05" type="TextureRect" parent="Victory_Assets" unique_id=1947559940]
 modulate = Color(0.7490196, 0.2784314, 0, 1)
 layout_mode = 0
-offset_left = 1624.0
-offset_top = 912.0
-offset_right = 1832.0
-offset_bottom = 1046.0
-scale = Vector2(2, 2)
+offset_left = 1639.0
+offset_top = 950.0
+offset_right = 1847.0
+offset_bottom = 1084.0
+scale = Vector2(1.6, 1.6)
 texture = ExtResource("7_r5gxh")
 stretch_mode = 4
 
@@ -125,18 +125,18 @@ offset_left = 913.0
 offset_top = 1103.0
 offset_right = 1095.0
 offset_bottom = 1230.0
-scale = Vector2(2, 2)
+scale = Vector2(1.6, 1.6)
 texture = ExtResource("9_nt0kr")
 stretch_mode = 4
 
 [node name="Victory_Asset_08" type="TextureRect" parent="Victory_Assets" unique_id=977643190]
 modulate = Color(0.7490196, 0.2784314, 0, 1)
 layout_mode = 0
-offset_left = 1477.0
-offset_top = 500.0
-offset_right = 1636.0
-offset_bottom = 648.0
-scale = Vector2(2, 2)
+offset_left = 1475.0
+offset_top = 525.0
+offset_right = 1634.0
+offset_bottom = 673.0
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("10_0vwua")
 stretch_mode = 4
 

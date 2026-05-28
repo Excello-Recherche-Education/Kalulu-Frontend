@@ -141,11 +141,11 @@ stretch_mode = 5
 [node name="Victory_Asset_08" type="TextureRect" parent="Victory_Assets" unique_id=1465342151]
 modulate = Color(0.52156866, 0.03137255, 0.40392157, 1)
 layout_mode = 0
-offset_left = 1064.0
-offset_top = 205.0
-offset_right = 1230.0
-offset_bottom = 322.0
-scale = Vector2(2, 2)
+offset_left = 984.00006
+offset_top = 214.0
+offset_right = 1211.0
+offset_bottom = 373.0
+scale = Vector2(1.8, 1.8)
 mouse_filter = 2
 texture = ExtResource("10_j3ks8")
 stretch_mode = 5
