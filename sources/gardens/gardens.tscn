@@ -480,6 +480,7 @@ unique_name_in_owner = true
 visible = false
 
 [node name="CloudsLayer" type="CanvasLayer" parent="." unique_id=100000001]
+layer = 0
 
 [node name="Clouds" type="Node2D" parent="CloudsLayer" unique_id=100000002]
 unique_name_in_owner = true
