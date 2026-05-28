@@ -60,10 +60,14 @@ func _process(delta: float) -> void:
 func configure_world(world_width: float, p_max_scroll: float = -1.0, override_clouds_per_screen: int = -1) -> void:
 	if override_clouds_per_screen >= 0:
 		clouds_per_screen = override_clouds_per_screen
-	spawn_width = world_width
-	max_scroll = p_max_scroll if p_max_scroll >= 0.0 else world_width
+	set_world_bounds(world_width, p_max_scroll)
 	screen_width = get_viewport_rect().size.x
 	_initialize_clouds()
+
+
+func set_world_bounds(world_width: float, p_max_scroll: float = -1.0) -> void:
+	spawn_width = world_width
+	max_scroll = p_max_scroll if p_max_scroll >= 0.0 else world_width
 
 
 func _initialize_clouds() -> void:
