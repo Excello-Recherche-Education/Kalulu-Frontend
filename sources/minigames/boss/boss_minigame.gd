@@ -4,6 +4,14 @@ const FINAL_BOSS_GAME_DURATION: int = 20 * 60
 const FINAL_BOSS_TOTAL_WORDS: int = 180
 const GAUGE_COLOR_LOW: Color = Color(0.55, 0.95, 0.45)
 const GAUGE_COLOR_HIGH: Color = Color(0.996078, 0.776471, 0.2)
+const MONKEY_SCENE_PATH: String = "res://sources/minigames/monkeys/monkey.tscn"
+const TURTLE_SCENE_PATH: String = "res://sources/minigames/turtles/turtle.tscn"
+const PENGUIN_SCENE_PATH: String = "res://sources/minigames/penguin/penguin.tscn"
+const FROG_SCENE_PATH: String = "res://sources/minigames/frog/frog.tscn"
+const CRAB_SCENE_PATH: String = "res://sources/minigames/crabs/crab/crab.tscn"
+const PARAKEET_SCENE_PATH: String = "res://sources/minigames/parakeets/parakeet.tscn"
+const ANT_SCENE_PATH: String = "res://sources/minigames/ants/ant.tscn"
+const JELLYFISH_SCENE_PATH: String = "res://sources/minigames/jellyfish/jellyfish.tscn"
 
 @export var game_duration: int = 4 * 60
 @export var minimum_correct_ratio: float = 0.8
@@ -23,6 +31,14 @@ var default_label_background_color: Color
 var _correct_answer_tween: Tween
 var _victory_pulse_tween: Tween
 var _victory_threshold_reached: bool = false
+var turtle: Turtle
+var frog: Frog
+var crab: Crab
+var penguin: Penguin
+var monkey: Monkey
+var parakeet: Parakeet
+var ant: Ant
+var jellyfish: Jellyfish
 
 @onready var text_start_zone: Control = %ControlText
 @onready var texture_button_bin: TextureButton = $GameRoot/TextureButtonBin
@@ -38,21 +54,14 @@ var _victory_threshold_reached: bool = false
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var right_stars: RightStarsFX = $GameRoot/Right_Stars
 @onready var frame_exit: Sprite2D = $GameRoot/Frame/FrameExit
-@onready var turtle: Turtle = $GameRoot/Friends/Turtle
-@onready var frog: Frog = $GameRoot/Friends/Frog
-@onready var crab: Crab = $GameRoot/Friends/Crab
-@onready var penguin: Penguin = $GameRoot/Friends/Penguin
-@onready var monkey: Monkey = $GameRoot/Friends/Monkey
-@onready var parakeet: Parakeet = $GameRoot/Friends/Parakeet
-@onready var ant: Ant = $GameRoot/Friends/Ant
-@onready var jellyfish: Jellyfish = $GameRoot/Friends_Behind_Frame/Jellyfish
+@onready var friends_container: Node2D = $GameRoot/Friends
+@onready var friends_behind_frame_container: Node2D = $GameRoot/Friends_Behind_Frame
 
 
 func _ready() -> void:
 	super()
 	if not is_final_boss:
 		frame_exit.show()
-	setup_animal_friends()
 	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#ffbf94")])
 	if adult_block and adult_block.has_signal("unlocked"):
 		adult_block.unlocked.connect(_on_adult_block_unlocked)
@@ -71,6 +80,95 @@ func _ready() -> void:
 	# Skips the whole tutorial
 	if UserDataManager.is_speech_played(TYPE_NAMES[minigame_name]):
 		tutorial_count = 2
+
+	_instantiate_animal_friends()
+
+
+func _instantiate_animal_friends() -> void:
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	monkey = (load(MONKEY_SCENE_PATH) as PackedScene).instantiate()
+	monkey.position = Vector2(125, 62)
+	monkey.scale = Vector2(0.7, 0.7)
+	friends_container.add_child(monkey)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	turtle = (load(TURTLE_SCENE_PATH) as PackedScene).instantiate()
+	turtle.position = Vector2(-220, 120)
+	turtle.rotation = 1.5707964
+	turtle.scale = Vector2(0.18, 0.18)
+	friends_container.add_child(turtle)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	penguin = (load(PENGUIN_SCENE_PATH) as PackedScene).instantiate()
+	penguin.position = Vector2(28, 114)
+	penguin.scale = Vector2(0.3, 0.3)
+	friends_container.add_child(penguin)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	frog = (load(FROG_SCENE_PATH) as PackedScene).instantiate()
+	frog.offset_left = -43.999985
+	frog.offset_top = 112.0
+	frog.offset_right = -43.999985
+	frog.offset_bottom = 112.0
+	frog.scale = Vector2(0.4, 0.4)
+	friends_container.add_child(frog)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	crab = (load(CRAB_SCENE_PATH) as PackedScene).instantiate()
+	crab.offset_left = -220.0
+	crab.offset_top = 32.0
+	crab.offset_right = 148.0
+	crab.offset_bottom = 352.0
+	crab.scale = Vector2(0.45, 0.45)
+	friends_container.add_child(crab)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	parakeet = (load(PARAKEET_SCENE_PATH) as PackedScene).instantiate()
+	parakeet.position = Vector2(124, -103)
+	parakeet.scale = Vector2(0.09, 0.09)
+	friends_container.add_child(parakeet)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	ant = (load(ANT_SCENE_PATH) as PackedScene).instantiate()
+	ant.position = Vector2(228, 132)
+	ant.scale = Vector2(0.17, 0.17)
+	friends_container.add_child(ant)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	jellyfish = (load(JELLYFISH_SCENE_PATH) as PackedScene).instantiate()
+	jellyfish.offset_left = 1449.0001
+	jellyfish.offset_top = 1301.0001
+	jellyfish.offset_right = 1849.0001
+	jellyfish.offset_bottom = 1701.0001
+	jellyfish.scale = Vector2(0.45, 0.45)
+	jellyfish.boss = true
+	friends_behind_frame_container.add_child(jellyfish)
+
+	setup_animal_friends()
 
 
 func setup_animal_friends() -> void:
