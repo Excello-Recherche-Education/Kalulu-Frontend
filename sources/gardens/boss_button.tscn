@@ -14,6 +14,7 @@ offset_bottom = 512.0
 pivot_offset = Vector2(180, 180)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 1
 texture_normal = ExtResource("lesson_circle")
 texture_pressed = ExtResource("lesson_circle")
 texture_hover = ExtResource("lesson_circle")
@@ -35,6 +36,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Border" type="TextureRect" parent="." unique_id=758604924]
 unique_name_in_owner = true

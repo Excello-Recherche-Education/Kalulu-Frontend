@@ -104,13 +104,13 @@ func get_exercise_for_lesson(lesson_nb: int) -> Array[int]:
 	INNER JOIN Lessons ON Lessons.ID = LessonsExercises.LessonID
 	WHERE LessonNB == " + str(lesson_nb)
 	db.query(query)
-	
+	# Exercise* == 0 means "no minigame in this slot": drop zeros so size = count.
 	var result: Array[int] = []
 	for element: Dictionary in db.query_result:
-		result.append(element.Exercise1)
-		result.append(element.Exercise2)
-		result.append(element.Exercise3)
-	
+		for column: String in ["Exercise1", "Exercise2", "Exercise3"]:
+			var exercise_id: int = element[column] as int
+			if exercise_id > 0:
+				result.append(exercise_id)
 	return result
 
 

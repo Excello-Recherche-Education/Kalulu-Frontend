@@ -9,11 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://dufnm3bkfe5yv" path="res://assets/gardens/victory_assets/victory_asset_plant_05.png" id="6_ipdnh"]
 [ext_resource type="Texture2D" uid="uid://dt2a0dea0hv0c" path="res://assets/gardens/victory_assets/victory_asset_fish_02.png" id="7_xkwcf"]
 [ext_resource type="Texture2D" uid="uid://bqp1nkk53y1is" path="res://assets/gardens/victory_assets/victory_asset_plant_03.png" id="8_w51id"]
-[ext_resource type="Texture2D" uid="uid://dcuobvoav863b" path="res://assets/gardens/animals/pink_jellyfish.png" id="8_xkwcf"]
+[ext_resource type="Texture2D" uid="uid://dcuobvoav863b" path="res://assets/gardens/victory_assets/animals/pink_jellyfish.png" id="8_xkwcf"]
 [ext_resource type="Texture2D" uid="uid://dvxnktx1wiyxp" path="res://assets/gardens/victory_assets/victory_asset_bubbles.png" id="9_knmfc"]
 [ext_resource type="Texture2D" uid="uid://f2arml2f4b8p" path="res://assets/gardens/victory_assets/victory_asset_plant_04.png" id="10_83oc2"]
 
-[node name="Garden" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -28,6 +28,9 @@ unlocked_lesson = Color(0.6509804, 0.2901961, 0.5019608, 1)
 unlocked_lesson_text = Color(1, 0.81960785, 0.9254902, 1)
 completed_lesson = Color(1, 0.81960785, 0.9254902, 1)
 completed_lesson_text = Color(0.6509804, 0.2901961, 0.5019608, 1)
+wheel_wedge_unlocked = Color(1, 0.81960785, 0.9254902, 1)
+wheel_background = Color(0.87058824, 0.3882353, 0.67058825, 1)
+animal_unlocked_color = Color(1, 0.49019608, 0.76862746, 1)
 
 [node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true

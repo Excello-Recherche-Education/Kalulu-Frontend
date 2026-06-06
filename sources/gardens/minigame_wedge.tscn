@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://b1u0xkalulu01"]
+
+[ext_resource type="Script" uid="uid://dh555xp8ebnb8" path="res://sources/gardens/minigame_wedge.gd" id="1_wedge"]
+[ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="3_rightfx"]
+[ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="4_wrongfx"]
+
+[node name="MinigameWedge" type="Control" unique_id=1762693146]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_wedge")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=1912619179]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=870297940]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=1114106226]
+
+[node name="IconBodyRect" type="TextureRect" parent="." unique_id=2053672816]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 256.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconFaceRect" type="TextureRect" parent="." unique_id=2053672817]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 256.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RightFX" parent="IconFaceRect" unique_id=333957231 instance=ExtResource("3_rightfx")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WrongFX" parent="IconFaceRect" unique_id=333957232 instance=ExtResource("4_wrongfx")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2

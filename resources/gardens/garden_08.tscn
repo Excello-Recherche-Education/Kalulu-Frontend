@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://br5gguush2y12" path="res://assets/gardens/victory_assets/victory_asset_plant_14.png" id="3_6wkbm"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://yag8afxcasm1" path="res://assets/gardens/victory_assets/victory_asset_torch.png" id="4_xgdw6"]
-[ext_resource type="Texture2D" uid="uid://kygm5ieixgne" path="res://assets/gardens/animals/monkey.png" id="5_fd7lh"]
+[ext_resource type="Texture2D" uid="uid://kygm5ieixgne" path="res://assets/gardens/victory_assets/animals/monkey.png" id="5_fd7lh"]
 [ext_resource type="Texture2D" uid="uid://8kmojsnwp657" path="res://assets/gardens/victory_assets/victory_asset_plant_23.png" id="5_sqwgp"]
 [ext_resource type="Texture2D" uid="uid://dlxljmb4wnx2o" path="res://assets/gardens/victory_assets/victory_asset_monkey.png" id="6_04ydh"]
 [ext_resource type="Texture2D" uid="uid://dyau6e65xdsb8" path="res://assets/gardens/victory_assets/victory_asset_plant_24.png" id="7_xgdw6"]
@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://c7lgiyapshr23" path="res://assets/gardens/victory_assets/victory_asset_plant_25.png" id="9_08dq4"]
 [ext_resource type="Texture2D" uid="uid://uepox6kvky5" path="res://assets/gardens/victory_assets/victory_asset_crown.png" id="10_7g80l"]
 
-[node name="Garden" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -28,6 +28,9 @@ unlocked_lesson = Color(0.36078432, 0.19607843, 0.03137255, 1)
 unlocked_lesson_text = Color(1, 0.8784314, 0.7607843, 1)
 completed_lesson = Color(1, 0.8784314, 0.7607843, 1)
 completed_lesson_text = Color(0.36078432, 0.19607843, 0.03137255, 1)
+wheel_wedge_unlocked = Color(1, 0.8784314, 0.7607843, 1)
+wheel_background = Color(0.54901963, 0.40784314, 0.26666668, 1)
+animal_unlocked_color = Color(0.8509804, 0.6, 0.33333334, 1)
 
 [node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true

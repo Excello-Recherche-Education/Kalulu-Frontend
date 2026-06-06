@@ -23,7 +23,7 @@ func _ready() -> void:
 		exercise_option_button_1.add_item(tr(status))
 		exercise_option_button_2.add_item(tr(status))
 		exercise_option_button_3.add_item(tr(status))
-	
+
 	reload()
 
 
@@ -45,77 +45,76 @@ func reload() -> void:
 
 func _set_lesson_number(value: int) -> void:
 	lesson_number = value
-	
+
 	if not lesson_label:
 		return
-	
+
 	lesson_label.text = str(lesson_number)
-	
+
 	look_and_learn_option_button.select(unlocks[lesson_number]["look_and_learn"] as int)
-	exercise_option_button_1.select(unlocks[lesson_number]["games"][0] as int)
-	exercise_option_button_2.select(unlocks[lesson_number]["games"][1] as int)
-	exercise_option_button_3.select(unlocks[lesson_number]["games"][2] as int)
+	# A lesson can have 1–3 minigames, so only populate the buttons that map to a
+	# real game and disable the surplus ones (the grid keeps all three cells).
+	var games: Array = unlocks[lesson_number]["games"]
+	var exercise_buttons: Array[OptionButton] = [exercise_option_button_1, exercise_option_button_2, exercise_option_button_3]
+	for index: int in range(exercise_buttons.size()):
+		var button: OptionButton = exercise_buttons[index]
+		if index < games.size():
+			button.disabled = false
+			button.select(games[index] as int)
+		else:
+			button.disabled = true
+			button.select(-1)
 
 
 func _set_lesson_gps(value: String) -> void:
 	lesson_gps = value
 	if not gps_label:
 		return
-	
+
 	gps_label.text = value
 
 
 func _on_look_and_learn_option_button_item_selected(index: int) -> void:
 	unlocks[lesson_number]["look_and_learn"] = index
-	
+
 	if index == StudentProgression.Status.LOCKED:
 		if lesson_number == 1:
 			unlocks[lesson_number]["look_and_learn"] = StudentProgression.Status.UNLOCKED
 		else:
 			unlocks[lesson_number - 1]["look_and_learn"] = StudentProgression.Status.UNLOCKED
-			unlocks[lesson_number - 1]["games"][0] = StudentProgression.Status.LOCKED
-			unlocks[lesson_number - 1]["games"][1] = StudentProgression.Status.LOCKED
-			unlocks[lesson_number - 1]["games"][2] = StudentProgression.Status.LOCKED
-		
-		unlocks[lesson_number]["games"][0] = StudentProgression.Status.LOCKED
-		unlocks[lesson_number]["games"][1] = StudentProgression.Status.LOCKED
-		unlocks[lesson_number]["games"][2] = StudentProgression.Status.LOCKED
-		
+			_set_lesson_games(lesson_number - 1, StudentProgression.Status.LOCKED)
+
+		_set_lesson_games(lesson_number, StudentProgression.Status.LOCKED)
+
 		for lesson: int in unlocks.keys():
 			if lesson > lesson_number:
 				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][0] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][1] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][2] = StudentProgression.Status.LOCKED
-	
+				_set_lesson_games(lesson, StudentProgression.Status.LOCKED)
+
 	elif index == StudentProgression.Status.UNLOCKED:
-		unlocks[lesson_number]["games"][0] = StudentProgression.Status.LOCKED
-		unlocks[lesson_number]["games"][1] = StudentProgression.Status.LOCKED
-		unlocks[lesson_number]["games"][2] = StudentProgression.Status.LOCKED
+		_set_lesson_games(lesson_number, StudentProgression.Status.LOCKED)
 		for lesson: int in unlocks.keys():
 			if lesson < lesson_number:
 				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.COMPLETED
-				unlocks[lesson]["games"][0] = StudentProgression.Status.COMPLETED
-				unlocks[lesson]["games"][1] = StudentProgression.Status.COMPLETED
-				unlocks[lesson]["games"][2] = StudentProgression.Status.COMPLETED
+				_set_lesson_games(lesson, StudentProgression.Status.COMPLETED)
 			elif lesson > lesson_number:
 				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][0] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][1] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][2] = StudentProgression.Status.LOCKED
+				_set_lesson_games(lesson, StudentProgression.Status.LOCKED)
 	elif index == StudentProgression.Status.COMPLETED:
-		unlocks[lesson_number]["games"][0] = StudentProgression.Status.UNLOCKED
-		unlocks[lesson_number]["games"][1] = StudentProgression.Status.UNLOCKED
-		unlocks[lesson_number]["games"][2] = StudentProgression.Status.UNLOCKED
+		_set_lesson_games(lesson_number, StudentProgression.Status.UNLOCKED)
 		for lesson: int in unlocks.keys():
 			if lesson < lesson_number:
 				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.COMPLETED
-				unlocks[lesson]["games"][0] = StudentProgression.Status.COMPLETED
-				unlocks[lesson]["games"][1] = StudentProgression.Status.COMPLETED
-				unlocks[lesson]["games"][2] = StudentProgression.Status.COMPLETED
+				_set_lesson_games(lesson, StudentProgression.Status.COMPLETED)
 			elif lesson > lesson_number:
 				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][0] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][1] = StudentProgression.Status.LOCKED
-				unlocks[lesson]["games"][2] = StudentProgression.Status.LOCKED
+				_set_lesson_games(lesson, StudentProgression.Status.LOCKED)
 	unlocks_changed.emit()
+
+
+# Sets every minigame of a lesson to the same status, respecting the lesson's
+# actual minigame count (1–3) rather than assuming a fixed three.
+func _set_lesson_games(lesson: int, status: StudentProgression.Status) -> void:
+	var games: Array = unlocks[lesson]["games"]
+	for game_index: int in range(games.size()):
+		games[game_index] = status

@@ -12,6 +12,9 @@ const SLOT_SELECTION: Dictionary = {
 	4: [0, 1, 3, 4],
 	5: [0, 1, 2, 3, 4],
 }
+const WHEEL_WEDGE_LOCKED: Color = Color("e6e6e6")
+const ANIMAL_LOCKED_COLOR: Color = Color("c9c9c9")
+const WHEEL_HIGHLIGHT: Color = Color("fbb03b")
 
 @export var garden_layout: GardenLayout:
 	set = set_garden_layout
@@ -21,6 +24,11 @@ const SLOT_SELECTION: Dictionary = {
 @export var unlocked_lesson_text: Color = Color("9be3ea")
 @export var completed_lesson: Color = Color("9be3ea")
 @export var completed_lesson_text: Color = Color("0a555b")
+@export_group("Wheel Colors")
+@export var wheel_wedge_unlocked: Color = Color("9be3ea")
+@export var wheel_background: Color = Color("0a555b")
+## Outline color flagging the next step to play.
+@export var animal_unlocked_color: Color = Color.WHITE
 
 var color: Color
 var current_progression: float = 0.0

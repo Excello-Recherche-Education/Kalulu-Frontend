@@ -28,6 +28,52 @@ func _init() -> void:
 	init_unlocks()
 
 
+static func get_minigame_count_for_lesson(lesson_number: int) -> int:
+	return Database.get_exercise_for_lesson(lesson_number).size()
+
+
+static func _build_default_lesson_unlock(lesson_number: int) -> Dictionary:
+	var minigame_count: int = get_minigame_count_for_lesson(lesson_number)
+	return {
+		"look_and_learn": Status.LOCKED,
+		"games": _make_locked_games_array(minigame_count),
+		"last_duration": _make_zero_durations(minigame_count),
+		"total_duration": _make_zero_durations(minigame_count),
+	}
+
+
+static func _make_locked_games_array(minigame_count: int) -> Array:
+	var games: Array = []
+	for _index: int in range(minigame_count):
+		games.append(Status.LOCKED)
+	return games
+
+
+static func _make_zero_durations(minigame_count: int) -> PackedInt32Array:
+	var durations: PackedInt32Array = PackedInt32Array()
+	durations.resize(minigame_count)
+	return durations
+
+
+# Resizes a games status array to target_size, keeping the existing statuses for
+# the slots that remain (trim surplus / pad new slots with LOCKED). Used when a
+# lesson's minigame count changes so old saves don't lose progress on resize.
+static func _resize_games_array(games: Array, target_size: int) -> Array:
+	var resized: Array = []
+	for index: int in range(target_size):
+		resized.append(games[index] if index < games.size() else Status.LOCKED)
+	return resized
+
+
+# Same idea for the duration metrics: keep recorded times for remaining slots.
+static func _resize_durations(durations: PackedInt32Array, target_size: int) -> PackedInt32Array:
+	var resized: PackedInt32Array = PackedInt32Array()
+	resized.resize(target_size)
+	for index: int in range(mini(target_size, durations.size())):
+		resized[index] = durations[index]
+	return resized
+
+
 # Make sure the unlocks are correct
 func init_unlocks() -> void:
 	if not unlocks:
@@ -35,22 +81,13 @@ func init_unlocks() -> void:
 	else:
 		unlocks = unlocks # Force ensure_data_integrity()
 	_sanitize_boss_progression()
-	
+
 	# Verify the lessons
 	var number_of_lessons: int = Database.get_lessons_count()
 	if unlocks.size() != number_of_lessons:
 		for index: int in range(number_of_lessons):
 			if not unlocks.has(index+1):
-				unlocks[index + 1] = {
-					"look_and_learn": Status.LOCKED,
-					"games": [
-						Status.LOCKED,
-						Status.LOCKED,
-						Status.LOCKED,
-					],
-					"last_duration": PackedInt32Array([0, 0, 0]),
-					"total_duration": PackedInt32Array([0, 0, 0])
-				}
+				unlocks[index + 1] = _build_default_lesson_unlock(index + 1)
 		
 	# Make sure that the first garden is always accessible
 	if unlocks.has(1):
@@ -74,37 +111,46 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 		if not result.has(index):
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d missing → added with default values." % index)
-			result[index] = {
-				"games": [Status.LOCKED, Status.LOCKED, Status.LOCKED],
-				"look_and_learn": Status.LOCKED,
-				"last_duration": PackedInt32Array([0, 0, 0]),
-				"total_duration": PackedInt32Array([0, 0, 0])
-			}
+			result[index] = _build_default_lesson_unlock(index)
 	# Check internal structure
 	for index: int in result.keys():
 		var garden: Dictionary = result[index]
+		var minigame_count: int = get_minigame_count_for_lesson(index)
 		# Check missing keys
 		if not garden.has("games"):
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: Add missing key 'games'." % index)
-			garden["games"] = [Status.LOCKED, Status.LOCKED, Status.LOCKED]
+			garden["games"] = _make_locked_games_array(minigame_count)
 		if not garden.has("look_and_learn"):
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: Add missing key 'look_and_learn'." % index)
 			garden["look_and_learn"] = Status.LOCKED
 		if not garden.has("last_duration"):
-			garden["last_duration"] = PackedInt32Array([0, 0, 0])
+			garden["last_duration"] = _make_zero_durations(minigame_count)
 		if not garden.has("total_duration"):
-			garden["total_duration"] = PackedInt32Array([0, 0, 0])
+			garden["total_duration"] = _make_zero_durations(minigame_count)
 
-		# Check array "games"
-		if typeof(garden["games"]) != TYPE_ARRAY or (garden["games"] as Array).size() != 3:
+		# Check array "games": a corrupt (non-array) value is reset, but a size
+		# mismatch (the lesson's minigame count changed) is resized in place so we
+		# keep existing progress for the slots that remain instead of wiping it.
+		if typeof(garden["games"]) != TYPE_ARRAY:
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: invalid format for 'games' → reset." % index)
-			garden["games"] = [Status.LOCKED, Status.LOCKED, Status.LOCKED]
+			garden["games"] = _make_locked_games_array(minigame_count)
+		elif (garden["games"] as Array).size() != minigame_count:
+			if not is_init:
+				Log.warn("StudentProgression: Garden %d: 'games' resized from %d to %d, progress preserved." % [index, (garden["games"] as Array).size(), minigame_count])
+			garden["games"] = _resize_games_array(garden["games"] as Array, minigame_count)
+
+		# Keep duration metrics aligned with the minigame count, preserving the
+		# recorded times for the slots that remain.
+		if (garden["last_duration"] as PackedInt32Array).size() != minigame_count:
+			garden["last_duration"] = _resize_durations(garden["last_duration"] as PackedInt32Array, minigame_count)
+		if (garden["total_duration"] as PackedInt32Array).size() != minigame_count:
+			garden["total_duration"] = _resize_durations(garden["total_duration"] as PackedInt32Array, minigame_count)
 
 		# Check value outside of possible enum values
-		for game_index: int in range(3):
+		for game_index: int in range((garden["games"] as Array).size()):
 			if garden["games"][game_index] not in [Status.LOCKED, Status.UNLOCKED, Status.COMPLETED]:
 				garden["games"][game_index] = Status.LOCKED
 		if garden["look_and_learn"] not in [Status.LOCKED, Status.UNLOCKED, Status.COMPLETED]:
@@ -126,30 +172,57 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 			# First garden (key 1) is always unlocked
 			prev_completed = true
 
+		var minigame_count: int = (garden["games"] as Array).size()
+
 		# Case: previous garden not completed
 		if not prev_completed:
-			for game_index: int in range(3):
-				if garden["games"][game_index] != Status.LOCKED or garden["look_and_learn"] != Status.LOCKED:
-					if not is_init:
-						Log.warn("StudentProgression: Garden %d: invalid progression (previous not finished) → reset." % index)
-					garden["games"] = [Status.LOCKED, Status.LOCKED, Status.LOCKED]
-					garden["look_and_learn"] = Status.LOCKED
-					break
+			var needs_reset: bool = garden["look_and_learn"] != Status.LOCKED
+			if not needs_reset:
+				for game_index: int in range(minigame_count):
+					if garden["games"][game_index] != Status.LOCKED:
+						needs_reset = true
+						break
+			if needs_reset:
+				if not is_init:
+					Log.warn("StudentProgression: Garden %d: invalid progression (previous not finished) → reset." % index)
+				garden["games"] = _make_locked_games_array(minigame_count)
+				garden["look_and_learn"] = Status.LOCKED
 			continue
 
-		# Case: lesson completed → unlock games if needed
+		# Enforce sequential unlock: first non-COMPLETED game → UNLOCKED, everything
+		# after it → LOCKED (including out-of-order COMPLETED in old saves).
 		if garden["look_and_learn"] == Status.COMPLETED:
-			for game_index: int in range(3):
-				if garden["games"][game_index] == Status.LOCKED:
-					garden["games"][game_index] = Status.UNLOCKED
+			var next_to_play: int = -1
+			for game_index: int in range(minigame_count):
+				if garden["games"][game_index] != Status.COMPLETED:
+					next_to_play = game_index
+					break
+			if next_to_play >= 0:
+				if garden["games"][next_to_play] == Status.LOCKED:
+					garden["games"][next_to_play] = Status.UNLOCKED
 					if not is_init:
-						Log.warn("StudentProgression: Garden %d: game %d unlocked because lesson is completed" % [index, game_index + 1])
-
-		# Case: previous garden completed → unlock lesson if needed
-		elif garden["look_and_learn"] == Status.LOCKED:
-			garden["look_and_learn"] = Status.UNLOCKED
-			if not is_init:
-				Log.warn("StudentProgression: Garden %d: lesson unlocked because previous garden is completed" % index)
+						Log.warn("StudentProgression: Garden %d: minigame %d unlocked because it is next to play" % [index, next_to_play])
+				for game_index: int in range(next_to_play + 1, minigame_count):
+					if garden["games"][game_index] != Status.LOCKED:
+						var was_completed: bool = garden["games"][game_index] == Status.COMPLETED
+						garden["games"][game_index] = Status.LOCKED
+						if not is_init:
+							if was_completed:
+								Log.warn("StudentProgression: Garden %d: minigame %d demoted from COMPLETED to LOCKED (out of play order — minigame %d not yet completed)" % [index, game_index, next_to_play])
+							else:
+								Log.warn("StudentProgression: Garden %d: minigame %d re-locked (waits for minigame %d to be completed)" % [index, game_index, game_index - 1])
+		else:
+			# L&L not completed → no game may be UNLOCKED (COMPLETED preserved).
+			for game_index: int in range(minigame_count):
+				if garden["games"][game_index] == Status.UNLOCKED:
+					garden["games"][game_index] = Status.LOCKED
+					if not is_init:
+						Log.warn("StudentProgression: Garden %d: minigame %d re-locked (look-and-learn not completed)" % [index, game_index])
+			# Case: previous garden completed → unlock lesson if needed
+			if garden["look_and_learn"] == Status.LOCKED:
+				garden["look_and_learn"] = Status.UNLOCKED
+				if not is_init:
+					Log.warn("StudentProgression: Garden %d: lesson unlocked because previous garden is completed" % index)
 
 	_sanitize_boss_progression()
 	return result
@@ -238,19 +311,25 @@ func get_max_unlocked_lesson_index() -> int:
 
 
 func is_lesson_completed(lesson_number: int) -> bool:
-	return unlocks[lesson_number]["look_and_learn"] == Status.COMPLETED and unlocks[lesson_number]["games"][0] == Status.COMPLETED and unlocks[lesson_number]["games"][1] == Status.COMPLETED and unlocks[lesson_number]["games"][2] == Status.COMPLETED
+	if unlocks[lesson_number]["look_and_learn"] != Status.COMPLETED:
+		return false
+	for game_status: int in unlocks[lesson_number]["games"]:
+		if game_status != Status.COMPLETED:
+			return false
+	return true
 
 
 # Return true if the progression is saved or false if the look and learn was already completed
 func look_and_learn_completed(lesson_number: int) -> bool:
 	if unlocks[lesson_number]["look_and_learn"] == Status.COMPLETED:
 		return false
-	
+
 	unlocks[lesson_number]["look_and_learn"] = Status.COMPLETED
-	
-	for index: int in range(3):
-		unlocks[lesson_number]["games"][index] = Status.UNLOCKED
-	
+
+	var games: Array = unlocks[lesson_number]["games"]
+	if games.size() > 0 and games[0] == Status.LOCKED:
+		games[0] = Status.UNLOCKED
+
 	last_modified = Time.get_datetime_string_from_system(true)
 	progression_changed.emit()
 	return true
@@ -258,20 +337,27 @@ func look_and_learn_completed(lesson_number: int) -> bool:
 
 # Return true if the progression is saved or false if the game was already completed
 func game_completed(lesson_number: int, game_number: int) -> bool:
-	# If the game is already completed, do nothing
-	if unlocks[lesson_number]["games"][game_number] == Status.COMPLETED:
+	var games: Array = unlocks[lesson_number]["games"]
+
+	if games[game_number] == Status.COMPLETED:
 		return false
-	
-	unlocks[lesson_number]["games"][game_number] = Status.COMPLETED
-	
+
+	games[game_number] = Status.COMPLETED
+
+	var next_game_index: int = game_number + 1
+	if next_game_index < games.size() and games[next_game_index] == Status.LOCKED:
+		games[next_game_index] = Status.UNLOCKED
+
 	var all_completed: bool = true
-	for index: int in range(3):
-		all_completed = all_completed and unlocks[lesson_number]["games"][index] == Status.COMPLETED
-	
+	for game_status: int in games:
+		if game_status != Status.COMPLETED:
+			all_completed = false
+			break
+
 	if all_completed:
 		if unlocks.has(lesson_number + 1):
 			unlocks[lesson_number + 1]["look_and_learn"] = Status.UNLOCKED
-	
+
 	last_modified = Time.get_datetime_string_from_system(true)
 	progression_changed.emit()
 	return true
@@ -320,12 +406,13 @@ func clear_boss_block() -> void:
 
 func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> void:
 	Log.trace("StudentProgression: Add time to level %d, minigame %d. Time added: %s" % [lesson_number, game_number, time_spent])
-	if game_number > 2:
-		Log.error("StudentProgression: Cannot log a level time for a minigame number superior to 2")
-		return
-	
 	if not unlocks.has(lesson_number):
 		Log.error("StudentProgression: Cannot log a level time for lesson %d because it does not exists in progression data" % lesson_number)
+		return
+
+	var minigame_count: int = (unlocks[lesson_number]["games"] as Array).size()
+	if game_number < 0 or game_number >= minigame_count:
+		Log.error("StudentProgression: Cannot log a level time for minigame %d in lesson %d (lesson has %d minigame(s))" % [game_number, lesson_number, minigame_count])
 		return
 	
 	if not (unlocks[lesson_number] as Dictionary).has("last_duration") or not (unlocks[lesson_number]["last_duration"] as PackedInt32Array).size() > game_number:

@@ -4,6 +4,22 @@ extends Control
 signal minigame_layout_opened()
 
 const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
+const MINIGAME_WEDGE_SCENE: PackedScene = preload("res://sources/gardens/minigame_wedge.tscn")
+# Wheel geometry, in MinigameSelection-local coords (canvas 2560×1800).
+const WHEEL_CENTER: Vector2 = Vector2(1280, 900)
+# Matches the inner edge of big_button.png; past this the gray ring hides everything.
+const WHEEL_RADIUS: float = 815.0
+const WHEEL_ARC_SEGMENTS: int = 48
+const WHEEL_ICON_DISTANCE_RATIO: float = 0.55
+const WHEEL_DIVIDER_WIDTH: float = 12.0
+const WHEEL_HIGHLIGHT_WIDTH: float = 12.0
+# Outline around the central Look-and-Learn button. Drawn at the button's visible
+# edge. Colored dark by default, gold when L&L is the next-to-play step.
+const LESSON_BUTTON_OUTLINE_RADIUS: float = 192.0
+# Top inset of the wheel's central label so the grapheme text sits just below the
+# button center, mirroring the movie icon just above it. The 384x384 button has
+# its center at y=192; the label (vertical-centered) then centers at y=(this+384)/2.
+const LESSON_BUTTON_LABEL_TOP_OFFSET: float = 104.0
 const GARDEN_SCENES: Array[PackedScene] = [
 	preload("res://resources/gardens/garden_01.tscn"),
 	preload("res://resources/gardens/garden_02.tscn"),
@@ -48,12 +64,12 @@ static var cached_layout_lessons: int = 0
 	get:
 		return _gardens_layout
 @export var starting_garden: int = -1
-@export_category("Colors")
-@export var unlocked_color: Color = Color("1c2662")
-@export var locked_color: Color = Color("1d2229")
-@export_group("Minigames")
+@export_category("Minigames")
 @export var minigame_scene_paths: PackedStringArray = PackedStringArray()
-@export var minigames_icons: Array[Texture] = []
+## Animal body (colored by the garden) and face (kept as-is for eyes/mouth details).
+## Both arrays must be the same length and aligned with `minigame_scene_paths`.
+@export var minigames_body_icons: Array[Texture] = []
+@export var minigames_face_icons: Array[Texture] = []
 
 var _minigame_scene_cache: Dictionary = {}
 var lessons: Dictionary = {}
@@ -84,17 +100,16 @@ var is_back_button_hold_active: bool = false
 @onready var boss_buttons_container: Control = %BossButtons
 @onready var minigame_selection: Control = %MinigameSelection
 @onready var lesson_button: LessonButton = %LessonButton
+@onready var lesson_button_outline: Line2D = %LessonButtonOutline
+@onready var lesson_button_movie_icon: TextureRect = %MovieIcon
 @onready var lesson_button_particles: GPUParticles2D = %LessonButtonParticles
 @onready var back_button: BackButton = %BackButton
 @onready var right_audio_stream_player: AudioStreamPlayer = $RightAudioStreamPlayer
 @onready var left_audio_stream_player: AudioStreamPlayer = $LeftAudioStreamPlayer
 @onready var feedback_audio_stream_player: AudioStreamPlayer = $FeedBackAudioStreamPlayer
 @onready var feedback_audio_stream_player2: AudioStreamPlayer = $FeedBackAudioStreamPlayer2
-@onready var minigame_layout_1: MinigameLayout = %MinigameBackground1
-@onready var minigame_layout_2: MinigameLayout = %MinigameBackground2
-@onready var minigame_layout_3: MinigameLayout = %MinigameBackground3
-@onready var minigame_background: TextureRect = %MinigameBackground
-@onready var minigame_background_center: TextureRect = %MinigameBackgroundCenter
+@onready var wedges_container: Control = %WedgesContainer
+@onready var background_rect: ColorRect = %BackgroundRect
 @onready var lock: Control = %Lock
 @onready var kalulu: KALULU = %Kalulu
 @onready var kalulu_button: CanvasItem = %KaluluButton
@@ -669,7 +684,6 @@ func _process(_delta: float) -> void:
 	_process_back_button_hold(_delta)
 	locked_line.position.x = - scroll_container.scroll_horizontal
 	unlocked_line.position.x = - scroll_container.scroll_horizontal
-	boss_buttons_container.position.x = - scroll_container.scroll_horizontal
 	parallax_background.scroll_offset.x = - scroll_container.scroll_horizontal
 	clouds.scroll_offset = scroll_container.scroll_horizontal
 
@@ -688,17 +702,198 @@ func _process_back_button_hold(delta: float) -> void:
 		_confirm_back_button_pressed()
 
 
-func _get_minigame_layouts() -> Array[MinigameLayout]:
-	return [minigame_layout_1, minigame_layout_2, minigame_layout_3]
+# Single source of truth for wedge geometry. Returns the pie-slice's start/end
+# angles and the bisector angle along which the icon sits, for wedge `wedge_index`
+# of a wheel showing `minigame_count` wedges (1..3).
+#   N=1: full disc, icon to the left of the L&L button.
+#   N=2: game 0 left half, game 1 right half.
+#   N=3: game 0 top-right, game 1 bottom, game 2 top-left.
+static func _get_wedge_angles(minigame_count: int, wedge_index: int) -> Dictionary:
+	if minigame_count == 1:
+		return {start = 0.0, end = TAU, icon = PI}
+	if minigame_count == 2:
+		if wedge_index == 0:
+			return {start = PI / 2.0, end = 3.0 * PI / 2.0, icon = PI}
+		return {start = -PI / 2.0, end = PI / 2.0, icon = 0.0}
+	if wedge_index == 0:
+		return {start = -PI / 2.0, end = PI / 6.0, icon = -PI / 6.0}
+	if wedge_index == 1:
+		return {start = PI / 6.0, end = 5.0 * PI / 6.0, icon = PI / 2.0}
+	return {start = 5.0 * PI / 6.0, end = 3.0 * PI / 2.0, icon = 7.0 * PI / 6.0}
+
+
+static func _get_wedge_layout(minigame_count: int, wedge_index: int) -> Dictionary:
+	var angles: Dictionary = _get_wedge_angles(minigame_count, wedge_index)
+	var polygon: PackedVector2Array = _generate_full_disc_polygon() if minigame_count == 1 \
+			else _generate_pie_slice_polygon(angles.start as float, angles.end as float)
+	return {polygon = polygon, icon_center = _wedge_icon_position(angles.icon as float)}
+
+
+static func _generate_pie_slice_polygon(start_angle: float, end_angle: float, radius: float = WHEEL_RADIUS) -> PackedVector2Array:
+	var wheel_points: PackedVector2Array = PackedVector2Array()
+	wheel_points.append(WHEEL_CENTER)
+	var span: float = end_angle - start_angle
+	for index: int in range(WHEEL_ARC_SEGMENTS + 1):
+		var angle: float = start_angle + span * (float(index) / float(WHEEL_ARC_SEGMENTS))
+		wheel_points.append(WHEEL_CENTER + Vector2(cos(angle), sin(angle)) * radius)
+	return wheel_points
+
+
+static func _generate_full_disc_polygon(radius: float = WHEEL_RADIUS) -> PackedVector2Array:
+	var wheel_points: PackedVector2Array = PackedVector2Array()
+	for index: int in range(WHEEL_ARC_SEGMENTS):
+		var angle: float = TAU * float(index) / float(WHEEL_ARC_SEGMENTS)
+		wheel_points.append(WHEEL_CENTER + Vector2(cos(angle), sin(angle)) * radius)
+	return wheel_points
+
+
+# Wedge polygon with outer arc inset by half the stroke width so the gold line
+# stays inside the wedge. Radial edges keep their angles (fall on the dividers).
+static func _generate_wedge_highlight_polygon(minigame_count: int, wedge_index: int) -> PackedVector2Array:
+	var inset_radius: float = WHEEL_RADIUS - WHEEL_HIGHLIGHT_WIDTH * 0.5
+	if minigame_count == 1:
+		return _generate_full_disc_polygon(inset_radius)
+	var angles: Dictionary = _get_wedge_angles(minigame_count, wedge_index)
+	return _generate_pie_slice_polygon(angles.start as float, angles.end as float, inset_radius)
+
+
+static func _wedge_icon_position(angle_rad: float) -> Vector2:
+	return WHEEL_CENTER + Vector2(cos(angle_rad), sin(angle_rad)) * (WHEEL_RADIUS * WHEEL_ICON_DISTANCE_RATIO)
+
+
+static func _get_divider_segments(minigame_count: int) -> Array[PackedVector2Array]:
+	var segments: Array[PackedVector2Array] = []
+	if minigame_count < 2:
+		return segments
+	for wedge_index: int in range(minigame_count):
+		var start_angle: float = _get_wedge_angles(minigame_count, wedge_index).start as float
+		var edge: Vector2 = WHEEL_CENTER + Vector2(cos(start_angle), sin(start_angle)) * WHEEL_RADIUS
+		segments.append(PackedVector2Array([WHEEL_CENTER, edge]))
+	return segments
+
+
+func _clear_wheel() -> void:
+	for child: Node in wedges_container.get_children():
+		child.queue_free()
+
+
+func _build_wheel(exercises: Array[int], lesson_unlocks: Dictionary) -> void:
+	_clear_wheel()
+	var minigame_count: int = exercises.size()
+	for wedge_index: int in range(minigame_count):
+		var layout: Dictionary = _get_wedge_layout(minigame_count, wedge_index)
+		var exercise_type: int = exercises[wedge_index]
+		var icon_index: int = exercise_type - 1
+		# Guard against exercise types with no matching wheel icon (e.g. the
+		# removed fish minigame, type 10): fall back to the highest available one
+		# so we never index past the icon arrays.
+		var max_icon_index: int = minigames_body_icons.size() - 1
+		if icon_index < 0 or icon_index > max_icon_index:
+			Log.error("Gardens: Exercise type %d has no wheel icon (%d available); using the highest available minigame instead." % [exercise_type, minigames_body_icons.size()])
+			icon_index = clampi(icon_index, 0, max_icon_index)
+		var status: StudentProgression.Status = lesson_unlocks["games"][wedge_index] as StudentProgression.Status
+		var wedge: MinigameWedge = MINIGAME_WEDGE_SCENE.instantiate()
+		wedges_container.add_child(wedge)
+		var is_wedge_locked: bool = status == StudentProgression.Status.LOCKED
+		wedge.configure(
+			layout.polygon as PackedVector2Array,
+			layout.icon_center as Vector2,
+			minigames_body_icons[icon_index],
+			minigames_face_icons[icon_index],
+			_wedge_color_for_status(status),
+			_body_color_for_status(status),
+			is_wedge_locked,
+		)
+		wedge.is_disabled = is_wedge_locked
+		wedge.pressed.connect(_on_minigame_button_pressed.bind(icon_index, wedge_index))
+		_apply_wedge_status_effects(wedge, status, wedge_index)
+
+	for line_points: PackedVector2Array in _get_divider_segments(minigame_count):
+		var divider: Line2D = Line2D.new()
+		divider.width = WHEEL_DIVIDER_WIDTH
+		divider.default_color = current_garden.wheel_background
+		divider.points = line_points
+		wedges_container.add_child(divider)
+
+	_draw_next_to_play_highlight(lesson_unlocks, minigame_count)
+
+
+func _next_to_play_wedge_index(lesson_unlocks: Dictionary) -> int:
+	if lesson_unlocks["look_and_learn"] != StudentProgression.Status.COMPLETED:
+		return -1
+	var games: Array = lesson_unlocks["games"]
+	for index: int in range(games.size()):
+		if games[index] == StudentProgression.Status.UNLOCKED:
+			return index
+	return -1
+
+
+func _draw_next_to_play_highlight(lesson_unlocks: Dictionary, minigame_count: int) -> void:
+	# L&L's "next to play" cue is the lesson-button outline color swap, handled
+	# in _configure_lesson_button_outline(). Wedges get a separate gold ring here.
+	var wedge_index: int = _next_to_play_wedge_index(lesson_unlocks)
+	if wedge_index < 0:
+		return
+	_draw_wedge_highlight(minigame_count, wedge_index)
+
+
+func _draw_wedge_highlight(minigame_count: int, wedge_index: int) -> void:
+	_add_highlight_line(_generate_wedge_highlight_polygon(minigame_count, wedge_index))
+
+
+# Adds a gold outline tracing the given polygon to the wheel. The polyline is
+# closed automatically. z_index lifts the line above Branches; LessonButton's
+# higher z_index keeps it on top in turn.
+func _add_highlight_line(polygon_points: PackedVector2Array) -> void:
+	if polygon_points.is_empty():
+		return
+	var outline: PackedVector2Array = PackedVector2Array(polygon_points)
+	outline.append(polygon_points[0])
+	var line: Line2D = Line2D.new()
+	line.width = WHEEL_HIGHLIGHT_WIDTH
+	line.default_color = Garden.WHEEL_HIGHLIGHT
+	line.joint_mode = Line2D.LINE_JOINT_ROUND
+	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	line.points = outline
+	line.z_index = 5
+	wedges_container.add_child(line)
+
+
+func _wedge_color_for_status(status: StudentProgression.Status) -> Color:
+	match status:
+		StudentProgression.Status.LOCKED:
+			return Garden.WHEEL_WEDGE_LOCKED
+		_:
+			return current_garden.wheel_wedge_unlocked
+
+
+# Animal body tint: gray when locked, garden's signature color otherwise.
+func _body_color_for_status(status: StudentProgression.Status) -> Color:
+	if status == StudentProgression.Status.LOCKED:
+		return Garden.ANIMAL_LOCKED_COLOR
+	return current_garden.animal_unlocked_color
+
+
+func _apply_wedge_status_effects(wedge: MinigameWedge, status: StudentProgression.Status, wedge_index: int) -> void:
+	if status != StudentProgression.Status.COMPLETED:
+		return
+	if not transition_data \
+			or not transition_data.get("minigame_completed", false) \
+			or transition_data.get("minigame_number", -1) != wedge_index \
+			or not transition_data.get("first_clear", false):
+		return
+	await minigame_layout_opened
+	create_tween().tween_property(wedge, "modulate:a", 0.6, 0.5)
+	wedge.right()
 
 
 func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	if in_minigame_selection or not UserDataManager.student_progression:
 		return
-	# Gets the correct exercises for the lesson
 	var exercises: Array[int] = Database.get_exercise_for_lesson(lesson_number)
-	if not exercises or exercises.size() < 3:
-		Log.error("Gardens: Cannot open minigame layout for lesson %d: expected 3 exercises, got %d" % [lesson_number, exercises.size() if exercises else 0])
+	if exercises.is_empty():
+		Log.error("Gardens: Cannot open minigame layout for lesson %d: no minigames defined" % lesson_number)
 		return
 	feedback_audio_stream_player2.pitch_scale = 1.1
 	feedback_audio_stream_player2.play()
@@ -714,69 +909,84 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	current_button_global_position = button.global_position
 	# Gets the current lesson unlocks
 	var lesson_unlocks: Dictionary = UserDataManager.student_progression.unlocks[current_lesson_number]
-	var are_minigames_locked: bool = lesson_unlocks["games"][0] == StudentProgression.Status.LOCKED and lesson_unlocks["games"][1] == StudentProgression.Status.LOCKED and lesson_unlocks["games"][2] == StudentProgression.Status.LOCKED
 	# Deactivate the mouse filters on the buttons behind the layout
 	for lesson_button_item: LessonButton in current_garden.get_lesson_buttons():
 		lesson_button_item.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# Background
-	if are_minigames_locked:
-		minigame_background_center.modulate = locked_color
-	else:
-		minigame_background_center.modulate = current_garden.color
-	# Lesson button
-	_handle_lesson_button(current_lesson_number, lesson_unlocks["look_and_learn"] as StudentProgression.Status)
-	# Minigames
-	var minigame_layouts: Array[MinigameLayout] = _get_minigame_layouts()
-	for layout_index: int in minigame_layouts.size():
-		_fill_minigame_choice(minigame_layouts[layout_index], exercises[layout_index], lesson_unlocks["games"][layout_index] as StudentProgression.Status, layout_index)
+	var ll_status: StudentProgression.Status = lesson_unlocks["look_and_learn"] as StudentProgression.Status
+	background_rect.color = current_garden.wheel_background
+	_configure_lesson_button_outline(ll_status)
+	_center_lesson_button_label()
+	_handle_lesson_button(current_lesson_number, ll_status)
+	_build_wheel(exercises, lesson_unlocks)
 	# Animations
 	minigame_selection.show()
 	back_button.hide()
 	kalulu_button.hide()
 	line_particles.hide()
-	minigame_background.size = 300.0 * Vector2.ONE
-	minigame_background.global_position = current_button_global_position
-	minigame_background.show()
-	minigame_background_center.size = 300.0 * Vector2.ONE
-	minigame_background_center.global_position = current_button_global_position
-	minigame_background_center.show()
-	var tween: Tween = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	tween.tween_property(minigame_background_center, "scale", (1800.0 / 300.0) * Vector2.ONE, 0.25)
-	tween.tween_property(minigame_background_center, "global_position", Vector2(380.0, 0), 0.25)
-	tween.tween_property(minigame_background, "scale", (1800.0 / 300.0) * Vector2.ONE, 0.25)
-	tween.tween_property(minigame_background, "global_position", Vector2(380.0, 0), 0.25)
-	tween.chain().tween_property(minigame_selection, "modulate:a", 1.0, 0.25)
+	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(minigame_selection, "modulate:a", 1.0, 0.25)
 	await tween.finished
 	minigame_layout_opened.emit()
 
 
+# Perfectly centers the grapheme label horizontally and drops it just below the
+# button center, so it pairs with the movie icon sitting just above. Done in code
+# because instanced-scene property overrides on the inherited Label don't survive
+# Godot re-saves. This LessonButton is a dedicated wheel instance, so it doesn't
+# affect the garden lesson buttons.
+func _center_lesson_button_label() -> void:
+	var label: Label = lesson_button.label
+	label.anchor_left = 0.0
+	label.anchor_top = 0.0
+	label.anchor_right = 1.0
+	label.anchor_bottom = 1.0
+	label.offset_left = 0.0
+	label.offset_right = 0.0
+	label.offset_top = LESSON_BUTTON_LABEL_TOP_OFFSET
+	label.offset_bottom = 0.0
+
+
+func _configure_lesson_button_outline(ll_status: StudentProgression.Status) -> void:
+	# Gold when L&L is the next-to-play step (UNLOCKED but not yet COMPLETED),
+	# divider color otherwise. Replaces the separate gold ring we used to draw.
+	var color: Color = Garden.WHEEL_HIGHLIGHT if ll_status == StudentProgression.Status.UNLOCKED else current_garden.wheel_background
+	lesson_button_outline.default_color = color
+	var circle_points: PackedVector2Array = _generate_full_disc_polygon(LESSON_BUTTON_OUTLINE_RADIUS)
+	if circle_points.size() > 0:
+		circle_points.append(circle_points[0])
+	lesson_button_outline.points = circle_points
+
+
 func _handle_lesson_button(lesson_number: int, status: StudentProgression.Status) -> void:
 	lesson_button.text = lessons[lesson_number][0].grapheme
+	# Center stays the unlocked-wedge color across all states; pair it with the
+	# garden's dark color so the label and icon stay readable on it.
+	lesson_button.set_garden_colors(
+		current_garden.wheel_wedge_unlocked,
+		current_garden.unlocked_lesson,
+		current_garden.wheel_wedge_unlocked,
+		current_garden.unlocked_lesson,
+	)
 	lesson_button.set_button_disabled(status == StudentProgression.Status.LOCKED)
 	lesson_button.completed = status == StudentProgression.Status.COMPLETED
+	# Override the hardcoded gray LessonButton uses when disabled, so the L&L
+	# center button keeps a uniform background regardless of progression state.
+	lesson_button.center.modulate = current_garden.wheel_wedge_unlocked
 	lesson_button_particles.emitting = status == StudentProgression.Status.UNLOCKED
+	lesson_button_movie_icon.modulate = _lesson_button_label_color(status)
 	if status == StudentProgression.Status.COMPLETED:
 		if transition_data and transition_data.has("look_and_learn_completed") and transition_data.look_and_learn_completed:
 			await minigame_layout_opened
 			lesson_button.right()
 
 
-func _fill_minigame_choice(minigame_layout: MinigameLayout, exercise_type: int, status: StudentProgression.Status, minigame_number: int) -> void:
-	minigame_layout.icon.texture = minigames_icons[exercise_type-1]
-	minigame_layout.is_disabled = status == StudentProgression.Status.LOCKED
+# Mirrors LessonButton._update_visual_state() so the movie icon tracks the label.
+func _lesson_button_label_color(status: StudentProgression.Status) -> Color:
+	if status == StudentProgression.Status.LOCKED:
+		return LessonButton.LOCKED_LABEL_COLOR
 	if status == StudentProgression.Status.COMPLETED:
-		if transition_data and transition_data.has("minigame_completed") and transition_data.minigame_completed and transition_data.has("minigame_number") and transition_data.minigame_number == minigame_number and transition_data.has("first_clear") and transition_data.first_clear:
-			minigame_layout.self_modulate = unlocked_color
-			await minigame_layout_opened
-			create_tween().tween_property(minigame_layout, "self_modulate:a", 0, 0.5)
-			minigame_layout.right()
-		else:
-			minigame_layout.self_modulate.a = 0
-	elif status == StudentProgression.Status.LOCKED:
-		minigame_layout.self_modulate = locked_color
-	else:
-		minigame_layout.self_modulate = unlocked_color
-	minigame_layout.pressed.connect(_on_minigame_button_pressed.bind(exercise_type - 1, minigame_number))
+		return lesson_button.completed_label_color
+	return lesson_button.unlocked_label_color
 
 
 func _get_minigame_scene(scene_index: int) -> PackedScene:
@@ -811,26 +1021,18 @@ func _close_minigames_layout() -> void:
 	in_minigame_selection = false
 	feedback_audio_stream_player2.pitch_scale = 0.75
 	feedback_audio_stream_player2.play()
-	var tween: Tween = create_tween().set_parallel(true).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_selection, "modulate:a", 0.0, 0.25)
-	var other_tween: Tween = tween.chain()
-	other_tween.tween_property(minigame_background_center, "scale", Vector2.ONE, 0.25)
-	other_tween.tween_property(minigame_background_center, "global_position", current_button_global_position, 0.25)
-	other_tween.tween_property(minigame_background, "scale", Vector2.ONE, 0.25)
-	other_tween.tween_property(minigame_background, "global_position", current_button_global_position, 0.25)
 	await tween.finished
 	if current_button:
 		current_button.show_placeholder(false)
 	minigame_selection.hide()
-	minigame_background.hide()
-	minigame_background_center.hide()
 	back_button.show()
 	kalulu_button.show()
 	line_particles.show()
 	for button: LessonButton in current_garden.get_lesson_buttons():
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
-	for layout: MinigameLayout in _get_minigame_layouts():
-		layout.pressed.disconnect(_on_minigame_button_pressed)
+	_clear_wheel()
 
 
 #region Lesson setup and path
@@ -967,8 +1169,6 @@ func _sync_boss_buttons_container() -> void:
 	if not boss_buttons_container or not garden_parent:
 		return
 	boss_buttons_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	boss_buttons_container.position = Vector2.ZERO
-	boss_buttons_container.size = scroll_container.size
 
 
 func _clear_boss_buttons() -> void:
@@ -1014,7 +1214,6 @@ func _set_up_boss_buttons() -> void:
 			boss_button.set_button_disabled(true)
 		var garden_index: int = _get_garden_index_for_lesson(gate_lesson)
 		boss_button.pressed.connect(_on_boss_button_pressed.bind(gate_lesson, garden_index))
-		boss_button.gui_input.connect(_on_boss_button_gui_input)
 	_set_up_final_boss_button()
 
 
@@ -1041,7 +1240,6 @@ func _set_up_final_boss_button() -> void:
 	boss_button.position = final_boss_center - final_boss_size * 0.5
 	boss_button.set_button_disabled(false)
 	boss_button.pressed.connect(_on_final_boss_button_pressed.bind(final_lesson_number, last_garden_index))
-	boss_button.gui_input.connect(_on_boss_button_gui_input)
 	_update_final_boss_scroll_space(final_boss_center, final_boss_size)
 
 
@@ -1268,6 +1466,8 @@ func _on_minigame_button_pressed(scene_index: int, minigame_number: int) -> void
 	if not minigame_scene:
 		Log.error("Gardens: Missing minigame scene for index %d" % scene_index)
 		return
+	# Block a second wedge click during the curtain-close await below.
+	_lock()
 	feedback_audio_stream_player.play()
 	await (OpeningCurtain as OpeningCurtainClass).close()
 	Minigame.transition_data = {
@@ -1308,19 +1508,6 @@ func _on_scroll_container_gui_input(event: InputEvent) -> void:
 		scroll_container.scroll_horizontal -= int(motion_event.relative.x)
 
 
-func _on_boss_button_gui_input(event: InputEvent) -> void:
-	# Boss buttons live outside the ScrollContainer, so without forwarding,
-	# their default STOP mouse filter would swallow scroll events that pass over them.
-	if event is InputEventMouseButton:
-		var mb: InputEventMouseButton = event
-		if mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN \
-				or mb.button_index == MOUSE_BUTTON_WHEEL_LEFT or mb.button_index == MOUSE_BUTTON_WHEEL_RIGHT:
-			_on_scroll_container_gui_input(event)
-			return
-	if is_scrolling and event is InputEventMouseMotion:
-		_on_scroll_container_gui_input(event)
-
-
 func _scroll_by_garden(p_direction: int) -> void:
 	var target_scroll: int = scroll_container.scroll_horizontal + p_direction * 200
 	scroll_container.scroll_horizontal = target_scroll
@@ -1355,6 +1542,31 @@ func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int
 		return
 	if event.is_action_pressed("left_click") and in_minigame_selection:
 		_close_minigames_layout()
+
+
+# BackgroundRect spans the wheel screen with mouse_filter=STOP so it absorbs
+# every click that doesn't hit the L&L button (which is on top of it). We
+# dispatch the click to the matching wedge via point-in-polygon, or close the
+# wheel if the click falls outside every wedge.
+func _on_background_rect_gui_input(event: InputEvent) -> void:
+	if is_locked or not in_minigame_selection:
+		return
+	if not event.is_action_pressed("left_click"):
+		return
+	var click_pos: Vector2 = (event as InputEventMouseButton).position
+	for child: Node in wedges_container.get_children():
+		if child is MinigameWedge:
+			var wedge: MinigameWedge = child
+			if Geometry2D.is_point_in_polygon(click_pos, wedge.polygon.polygon):
+				# Hit on a wedge — enabled ones launch the minigame; disabled
+				# ones play the wrong-click feedback. Either way the click is
+				# consumed so the wheel stays open.
+				if wedge.is_disabled:
+					wedge.wrong()
+				else:
+					wedge.pressed.emit()
+				return
+	_close_minigames_layout()
 
 
 func _on_kalulu_button_pressed() -> void:
