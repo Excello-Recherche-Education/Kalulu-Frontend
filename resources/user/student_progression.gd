@@ -55,6 +55,25 @@ static func _make_zero_durations(minigame_count: int) -> PackedInt32Array:
 	return durations
 
 
+# Resizes a games status array to target_size, keeping the existing statuses for
+# the slots that remain (trim surplus / pad new slots with LOCKED). Used when a
+# lesson's minigame count changes so old saves don't lose progress on resize.
+static func _resize_games_array(games: Array, target_size: int) -> Array:
+	var resized: Array = []
+	for index: int in range(target_size):
+		resized.append(games[index] if index < games.size() else Status.LOCKED)
+	return resized
+
+
+# Same idea for the duration metrics: keep recorded times for remaining slots.
+static func _resize_durations(durations: PackedInt32Array, target_size: int) -> PackedInt32Array:
+	var resized: PackedInt32Array = PackedInt32Array()
+	resized.resize(target_size)
+	for index: int in range(mini(target_size, durations.size())):
+		resized[index] = durations[index]
+	return resized
+
+
 # Make sure the unlocks are correct
 func init_unlocks() -> void:
 	if not unlocks:
@@ -111,17 +130,24 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 		if not garden.has("total_duration"):
 			garden["total_duration"] = _make_zero_durations(minigame_count)
 
-		# Check array "games"
-		if typeof(garden["games"]) != TYPE_ARRAY or (garden["games"] as Array).size() != minigame_count:
+		# Check array "games": a corrupt (non-array) value is reset, but a size
+		# mismatch (the lesson's minigame count changed) is resized in place so we
+		# keep existing progress for the slots that remain instead of wiping it.
+		if typeof(garden["games"]) != TYPE_ARRAY:
 			if not is_init:
 				Log.warn("StudentProgression: Garden %d: invalid format for 'games' → reset." % index)
 			garden["games"] = _make_locked_games_array(minigame_count)
+		elif (garden["games"] as Array).size() != minigame_count:
+			if not is_init:
+				Log.warn("StudentProgression: Garden %d: 'games' resized from %d to %d, progress preserved." % [index, (garden["games"] as Array).size(), minigame_count])
+			garden["games"] = _resize_games_array(garden["games"] as Array, minigame_count)
 
-		# Make sure duration arrays match the minigame count
+		# Keep duration metrics aligned with the minigame count, preserving the
+		# recorded times for the slots that remain.
 		if (garden["last_duration"] as PackedInt32Array).size() != minigame_count:
-			garden["last_duration"] = _make_zero_durations(minigame_count)
+			garden["last_duration"] = _resize_durations(garden["last_duration"] as PackedInt32Array, minigame_count)
 		if (garden["total_duration"] as PackedInt32Array).size() != minigame_count:
-			garden["total_duration"] = _make_zero_durations(minigame_count)
+			garden["total_duration"] = _resize_durations(garden["total_duration"] as PackedInt32Array, minigame_count)
 
 		# Check value outside of possible enum values
 		for game_index: int in range((garden["games"] as Array).size()):
