@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c0lcx7x0naofl" path="res://assets/gardens/victory_assets/victory_asset_clouds.png" id="3_30y1d"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://x0skor7vxadl" path="res://assets/gardens/victory_assets/victory_asset_plant_16.png" id="4_pac6c"]
-[ext_resource type="Texture2D" uid="uid://da7ppeamjqjpw" path="res://assets/gardens/animals/red_parakeet.png" id="5_30y1d"]
+[ext_resource type="Texture2D" uid="uid://da7ppeamjqjpw" path="res://assets/gardens/victory_assets/animals/red_parakeet.png" id="5_30y1d"]
 [ext_resource type="Texture2D" uid="uid://bqafuj82xbdqm" path="res://assets/gardens/victory_assets/victory_asset_bird_treehouse.png" id="5_j4wf1"]
 [ext_resource type="Texture2D" uid="uid://bg02dhcrwf5nx" path="res://assets/gardens/victory_assets/victory_asset_plant_17.png" id="6_ym7nb"]
 [ext_resource type="Texture2D" uid="uid://chtr4d0a80s61" path="res://assets/gardens/victory_assets/victory_asset_plant_18.png" id="7_6bl1j"]
@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bpqo8maufc3gr" path="res://assets/gardens/victory_assets/victory_asset_ladybugs.png" id="9_2xyhj"]
 [ext_resource type="Texture2D" uid="uid://its5dfr0ipak" path="res://assets/gardens/victory_assets/victory_asset_butterfly_01.png" id="10_cr4yr"]
 
-[node name="Garden" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -28,6 +28,9 @@ unlocked_lesson = Color(0.6, 0, 0, 1)
 unlocked_lesson_text = Color(1, 0.7254902, 0.7019608, 1)
 completed_lesson = Color(1, 0.7254902, 0.7019608, 1)
 completed_lesson_text = Color(0.6, 0, 0, 1)
+wheel_wedge_unlocked = Color(1, 0.7607843, 0.7411765, 1)
+wheel_background = Color(0.92156863, 0.3882353, 0.3882353, 1)
+animal_unlocked_color = Color(1, 0.4, 0.4117647, 1)
 
 [node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true

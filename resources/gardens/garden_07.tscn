@@ -6,14 +6,14 @@
 [ext_resource type="Texture2D" uid="uid://n4pv6f7bbtiy" path="res://assets/gardens/victory_assets/victory_asset_plant_21.png" id="3_qm42s"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://vjani6ctt7hc" path="res://assets/gardens/victory_assets/victory_asset_plant_22.png" id="5_4e8bi"]
-[ext_resource type="Texture2D" uid="uid://yo3o4m6o7a0" path="res://assets/gardens/animals/frog.png" id="5_qm42s"]
+[ext_resource type="Texture2D" uid="uid://yo3o4m6o7a0" path="res://assets/gardens/victory_assets/animals/frog.png" id="5_qm42s"]
 [ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/victory_assets/victory_asset_fish_01.png" id="6_qltia"]
 [ext_resource type="Texture2D" uid="uid://bf77plws02i6k" path="res://assets/gardens/victory_assets/victory_asset_flies.png" id="7_vspma"]
 [ext_resource type="Texture2D" uid="uid://crkysknynt38e" path="res://assets/gardens/victory_assets/victory_asset_frog.png" id="8_68wn2"]
 [ext_resource type="Texture2D" uid="uid://o1af03kn2mcg" path="res://assets/gardens/victory_assets/victory_asset_dragon_flies_02.png" id="9_3oqd6"]
 [ext_resource type="Texture2D" uid="uid://ckmw2sfht4bq5" path="res://assets/gardens/victory_assets/victory_asset_hearts.png" id="10_pobi3"]
 
-[node name="Garden" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -28,6 +28,9 @@ unlocked_lesson = Color(0, 0.45882353, 0.25882354, 1)
 unlocked_lesson_text = Color(0.7019608, 1, 0.87058824, 1)
 completed_lesson = Color(0.7019608, 1, 0.87058824, 1)
 completed_lesson_text = Color(0, 0.45882353, 0.25882354, 1)
+wheel_wedge_unlocked = Color(0.7019608, 1, 0.87058824, 1)
+wheel_background = Color(0.078431375, 0.7607843, 0.4627451, 1)
+animal_unlocked_color = Color(0.078431375, 0.7607843, 0.4627451, 1)
 
 [node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true

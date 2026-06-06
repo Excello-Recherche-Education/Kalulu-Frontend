@@ -11,9 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://b2xj4qqvalwar" path="res://assets/gardens/victory_assets/victory_asset_sun.png" id="8_tf7gm"]
 [ext_resource type="Texture2D" uid="uid://qhs2fydvrnhk" path="res://assets/gardens/victory_assets/victory_asset_sea_stars.png" id="9_nt0kr"]
 [ext_resource type="Texture2D" uid="uid://ddneerabvuyoe" path="res://assets/gardens/victory_assets/victory_asset_birds.png" id="10_0vwua"]
-[ext_resource type="Texture2D" uid="uid://d3vt2qpngkkjs" path="res://assets/gardens/animals/crab.png" id="12_2bwv2"]
+[ext_resource type="Texture2D" uid="uid://d3vt2qpngkkjs" path="res://assets/gardens/victory_assets/animals/crab.png" id="12_2bwv2"]
 
-[node name="Garden" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -28,6 +28,9 @@ unlocked_lesson = Color(0.7490196, 0.2784314, 0, 1)
 unlocked_lesson_text = Color(1, 0.7921569, 0.6901961, 1)
 completed_lesson = Color(1, 0.7921569, 0.6901961, 1)
 completed_lesson_text = Color(0.7490196, 0.2784314, 0, 1)
+wheel_wedge_unlocked = Color(1, 0.7921569, 0.6901961, 1)
+wheel_background = Color(1, 0.49803922, 0.2, 1)
+animal_unlocked_color = Color(1, 0.41960785, 0.2509804, 1)
 
 [node name="Background" type="TextureRect" parent="." unique_id=1058030897]
 unique_name_in_owner = true
