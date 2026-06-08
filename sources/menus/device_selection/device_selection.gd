@@ -20,7 +20,7 @@ func _refresh() -> void:
 	for device: int in UserDataManager.teacher_settings.students.keys():
 		var button: DeviceButton = DEVICE_BUTTON_SCENE.instantiate()
 		button.number = device
-		button.background_color = Globals.device_colors[device-1 % Globals.device_colors.size()]
+		button.background_color = Globals.device_colors[(device - 1) % Globals.device_colors.size()]
 		container.add_child(button)
 		button.pressed.connect(_device_button_pressed.bind(device))
 	OpeningCurtain.open()
