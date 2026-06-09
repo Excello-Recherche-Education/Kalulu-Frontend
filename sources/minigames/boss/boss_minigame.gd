@@ -6,6 +6,10 @@ const GAUGE_COLOR_LOW: Color = Color(0.55, 0.95, 0.45)
 const GAUGE_COLOR_HIGH: Color = Color(0.996078, 0.776471, 0.2)
 const MONKEY_SCENE_PATH: String = "res://sources/minigames/monkeys/monkey.tscn"
 const TURTLE_SCENE_PATH: String = "res://sources/minigames/turtles/turtle.tscn"
+# turtle.tscn no longer carries a default SpriteFrames (the three color
+# spritesheets are ~123 MB of VRAM each and the turtles minigame picks one
+# at runtime). For the static boss-friend turtle, pick one here.
+const TURTLE_FRIEND_SPRITE_FRAMES_PATH: String = "res://sources/minigames/turtles/purple_turtle_animations.tres"
 const PENGUIN_SCENE_PATH: String = "res://sources/minigames/penguin/penguin.tscn"
 const FROG_SCENE_PATH: String = "res://sources/minigames/frog/frog.tscn"
 const CRAB_SCENE_PATH: String = "res://sources/minigames/crabs/crab/crab.tscn"
@@ -103,6 +107,7 @@ func _instantiate_animal_friends() -> void:
 	turtle.rotation = 1.5707964
 	turtle.scale = Vector2(0.18, 0.18)
 	friends_container.add_child(turtle)
+	turtle.sprite_frames = load(TURTLE_FRIEND_SPRITE_FRAMES_PATH)
 
 	await get_tree().process_frame
 	if not is_inside_tree():
