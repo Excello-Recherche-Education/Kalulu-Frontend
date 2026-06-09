@@ -4,9 +4,7 @@
 [ext_resource type="Script" uid="uid://b7q0v031ffg1v" path="res://sources/minigames/frog/frog_minigame.gd" id="2_0xg3r"]
 [ext_resource type="Texture2D" uid="uid://jvpu77isfi5b" path="res://assets/minigames/frog/graphics/gauge_icon_frog_empty.png" id="2_e38i1"]
 [ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="3_vjlmb"]
-[ext_resource type="PackedScene" uid="uid://sumrd1i3g6f7" path="res://sources/minigames/frog/river.tscn" id="5_3fy8q"]
 [ext_resource type="Texture2D" uid="uid://bgi4vveige3qv" path="res://assets/minigames/frog/graphics/background.png" id="6_t6p6q"]
-[ext_resource type="PackedScene" uid="uid://bloyucpsbvpx8" path="res://sources/minigames/frog/frog.tscn" id="13_o6mls"]
 
 [node name="FrogMinigame" unique_id=37863016 instance=ExtResource("1_ng5er")]
 script = ExtResource("2_0xg3r")
@@ -32,10 +30,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="River" parent="GameRoot/Background" index="0" unique_id=1451318535 instance=ExtResource("5_3fy8q")]
-layout_mode = 1
-
-[node name="background" type="TextureRect" parent="GameRoot/Background" index="1" unique_id=1762725401]
+[node name="background" type="TextureRect" parent="GameRoot/Background" index="0" unique_id=1762725401]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -99,11 +94,3 @@ offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
-
-[node name="Frog" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=1044684229 instance=ExtResource("13_o6mls")]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 360.0
-offset_top = 900.0
-offset_right = 360.0
-offset_bottom = 900.0
