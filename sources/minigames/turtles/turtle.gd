@@ -4,25 +4,22 @@ extends Node2D
 signal pressed(gp: Dictionary)
 signal animation_changed(position: Vector2)
 
-enum Colors {
-	GREEN,
-	KHAKI,
-	PURPLE,
-}
-
-const ANIMATIONS: Array[SpriteFrames] = [
-	preload("res://sources/minigames/turtles/green_turtle_animations.tres"),
-	preload("res://sources/minigames/turtles/khaki_turtle_animations.tres"),
-	preload("res://sources/minigames/turtles/purple_turtle_animations.tres")
-]
 const TURTLE_BACK_RIGHT: CompressedTexture2D = preload("res://assets/minigames/turtles/graphic/turtle_back_right.png")
 const TURTLE_BACK_WRONG: CompressedTexture2D = preload("res://assets/minigames/turtles/graphic/turtle_back_wrong.png")
+# Only used when a turtle lands on the island, so they're instantiated on
+# demand instead of sitting idle inside every spawned turtle.
+const RIGHT_FX_SCENE: PackedScene = preload("res://sources/utils/fx/right.tscn")
+const WRONG_FX_SCENE: PackedScene = preload("res://sources/utils/fx/wrong.tscn")
+const RIGHT_STARS_SCENE: PackedScene = preload("res://sources/utils/fx/right_stars.tscn")
 
-@export var color: Colors = Colors.PURPLE:
+# Set by the minigame after the random color is picked, so only one of the three
+# 6400x4800 turtle spritesheets is ever in memory.
+@export var sprite_frames: SpriteFrames:
 	set(value):
-		color = value
-		if sprite:
-			sprite.sprite_frames = ANIMATIONS[color]
+		sprite_frames = value
+		if sprite and value:
+			sprite.sprite_frames = value
+			sprite.play("swim")
 
 var gp: Dictionary = {}:
 	set(value):
@@ -37,6 +34,9 @@ var direction: Vector2 = Vector2(0,-1):
 var is_moving: bool = true
 var is_changing_direction: bool = false
 var is_visible_on_screen: bool = false
+var right_fx: RightFX
+var right_stars: RightStarsFX
+var wrong_fx: WrongFX
 
 @onready var body: Node2D = $Body
 @onready var body_back: Sprite2D = $Body/AnimatedSprite2D/Sprite2D_Back
@@ -45,9 +45,8 @@ var is_visible_on_screen: bool = false
 @onready var head_area_collision_shape: CollisionShape2D = $Body/HeadArea/CollisionShape2D
 @onready var body_area_collision_shape: CollisionShape2D = $Body/BodyArea/CollisionShape2D
 @onready var highlight_fx: HighlightFX = %HighlightFX
-@onready var right_fx: RightFX = %RightFX
-@onready var right_stars: RightStarsFX = %Right_Stars
-@onready var wrong_fx: WrongFX = %WrongFX
+@onready var back_fx: Control = $BackFX
+@onready var front_fx: Control = $FrontFX
 @onready var delete_timer: Timer = $DeleteTimer
 @onready var audio_stream_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
@@ -92,6 +91,28 @@ func highlight(value: bool = true) -> void:
 		highlight_fx.stop()
 
 
+func _ensure_right_fx() -> void:
+	if right_fx:
+		return
+	right_fx = RIGHT_FX_SCENE.instantiate()
+	right_fx.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	right_fx.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	right_fx.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	back_fx.add_child(right_fx)
+	right_stars = RIGHT_STARS_SCENE.instantiate()
+	front_fx.add_child(right_stars)
+
+
+func _ensure_wrong_fx() -> void:
+	if wrong_fx:
+		return
+	wrong_fx = WRONG_FX_SCENE.instantiate()
+	wrong_fx.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	wrong_fx.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	wrong_fx.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	back_fx.add_child(wrong_fx)
+
+
 func right() -> void:
 	is_moving = false
 	change_font_color_after_collision()
@@ -99,6 +120,7 @@ func right() -> void:
 	sprite.play("victory")
 	await sprite.animation_finished
 	sprite.play_backwards("victory")
+	_ensure_right_fx()
 	right_fx.play()
 	right_stars.play()
 	await sprite.animation_finished
@@ -109,6 +131,7 @@ func wrong() -> void:
 	is_moving = false
 	change_font_color_after_collision()
 	body_back.texture = TURTLE_BACK_WRONG
+	_ensure_wrong_fx()
 	wrong_fx.play()
 	sprite.play("defeat")
 	await sprite.animation_finished
