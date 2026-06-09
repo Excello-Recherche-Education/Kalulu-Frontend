@@ -7,6 +7,12 @@ const TURTLE_SCENE: PackedScene = preload("res://sources/minigames/turtles/turtl
 const MAX_TURTLE_COUNT: int = 5
 # Defines the minimum distance between turtles when spawning them
 const MIN_DISTANCE: int = 500
+# Each spritesheet is ~123 MB of VRAM; never preload — load only the picked one.
+const TURTLE_ANIMATIONS_PATHS: Array[String] = [
+	"res://sources/minigames/turtles/green_turtle_animations.tres",
+	"res://sources/minigames/turtles/khaki_turtle_animations.tres",
+	"res://sources/minigames/turtles/purple_turtle_animations.tres",
+]
 
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(.75, 200., 4.),
@@ -22,7 +28,8 @@ var turtle_count: int = 0:
 			can_spawn_turtle.emit()
 		turtle_count = value
 var stimulus_spawned: bool = false
-var color: Turtle.Colors
+# Single shared SpriteFrames assigned to every spawned turtle this round.
+var turtle_sprite_frames: SpriteFrames
 
 @onready var water: Water = $GameRoot/Water
 @onready var island: Island = $GameRoot/Island
@@ -61,7 +68,12 @@ func _setup_minigame() -> void:
 
 
 func pick_random_color() -> void:
-	color = randi_range(0, Turtle.Colors.size() - 1) as Turtle.Colors
+	# Drop the previous color first so its ~123 MB texture can be freed by
+	# refcount before we load the next one (turtles still fading out also
+	# hold a ref, so peak overlap is brief).
+	turtle_sprite_frames = null
+	var index: int = randi_range(0, TURTLE_ANIMATIONS_PATHS.size() - 1)
+	turtle_sprite_frames = load(TURTLE_ANIMATIONS_PATHS[index])
 
 
 func _highlight() -> void:
@@ -121,7 +133,7 @@ func _on_spawn_timer_timeout() -> void:
 	)
 	
 	turtles.add_child(turtle)
-	turtle.color = color
+	turtle.sprite_frames = turtle_sprite_frames
 	
 	# Set the direction of the turtle
 	var random_offset: float = deg_to_rad(randf_range(-5, 5))
