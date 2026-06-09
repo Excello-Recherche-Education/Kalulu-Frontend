@@ -38,7 +38,7 @@ func _on_plus_button_pressed() -> void:
 	var element: GPListElement = element_scene.instantiate()
 	element.grapheme = ""
 	element.phoneme = ""
-	element.type = GPListElement.Type.Silent
+	element.type = GPListElement.Type.SILENT
 	element.exception = false
 	element.undo_redo = undo_redo
 	element.delete_pressed.connect(_on_element_delete_pressed.bind(element))
