@@ -12,7 +12,7 @@ const WHEEL_RADIUS: float = 815.0
 const WHEEL_ARC_SEGMENTS: int = 48
 const WHEEL_ICON_DISTANCE_RATIO: float = 0.55
 const WHEEL_DIVIDER_WIDTH: float = 12.0
-const WHEEL_HIGHLIGHT_WIDTH: float = 12.0
+const WHEEL_HIGHLIGHT_WIDTH: float = 24.0
 # Outline around the central Look-and-Learn button. Drawn at the button's visible
 # edge. Colored dark by default, gold when L&L is the next-to-play step.
 const LESSON_BUTTON_OUTLINE_RADIUS: float = 192.0
@@ -884,7 +884,6 @@ func _apply_wedge_status_effects(wedge: MinigameWedge, status: StudentProgressio
 			or not transition_data.get("first_clear", false):
 		return
 	await minigame_layout_opened
-	create_tween().tween_property(wedge, "modulate:a", 0.6, 0.5)
 	wedge.right()
 
 

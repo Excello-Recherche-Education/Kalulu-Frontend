@@ -210,6 +210,7 @@ layout_mode = 2
 
 [node name="BossButtons" type="Control" parent="ScrollContainer" unique_id=1176317047]
 unique_name_in_owner = true
+layout_mode = 2
 mouse_filter = 2
 
 [node name="LockedLine" type="Line2D" parent="." unique_id=1229207154]
