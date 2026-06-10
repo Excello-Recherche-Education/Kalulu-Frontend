@@ -62,6 +62,13 @@ func _ready() -> void:
 	Log.info("SettingsTeacherSettings: Export codes dialog configured")
 
 
+func _exit_tree() -> void:
+	# The synchronizer outlives this scene: clear the popup reference so a
+	# later background synchronization does not call into a freed node.
+	if UserDataManager.user_database_synchronizer.loading_popup == loading_popup:
+		UserDataManager.user_database_synchronizer.loading_popup = null
+
+
 func _on_account_type_option_button_item_selected(index: int) -> void:
 	if TeacherSettings.AccountType.values().has(index):
 		UserDataManager.teacher_settings.account_type = index as TeacherSettings.AccountType
