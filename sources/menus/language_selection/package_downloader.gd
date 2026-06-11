@@ -1,15 +1,29 @@
 class_name PackageDownloader
 extends Control
 
+enum DownloadError {
+	DISCONNECTED,
+	NO_INTERNET,
+	DOWNLOAD_FAILED,
+	INVALID_LOCAL_PACK,
+	EXTRACTION_FAILED,
+	INVALID_PACKAGE,
+	REPLACE_FAILED,
+}
+
 const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
 const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
+# Translation key shown in the error popup for each DownloadError value
 const ERROR_MESSAGES: Array[String] = [
 	"DISCONNECTED_ERROR",
 	"NO_INTERNET_ACCESS",
 	"ERROR_DOWNLOADING",
 	"INVALID_LANGUAGE_DIRECTORY",
+	"ERROR_EXTRACTING_PACKAGE",
+	"ERROR_INVALID_PACKAGE",
+	"ERROR_REPLACING_PACKAGE",
 ]
 
 var language: String
@@ -41,7 +55,7 @@ func _ready() -> void:
 	var teacher_settings: TeacherSettings = UserDataManager.teacher_settings
 	if not teacher_settings:
 		UserDataManager.logout()
-		_show_error(0)
+		_show_error(DownloadError.DISCONNECTED)
 		return
 	
 	if teacher_settings.server_language_validated:
@@ -59,10 +73,10 @@ func _ready() -> void:
 				_go_to_next_scene()
 			else:
 				Log.warn("PackageDownloader: Offline and language directory %s is invalid" % current_language_path)
-				_show_error(3) # Error downloading
+				_show_error(DownloadError.INVALID_LOCAL_PACK)
 		else:
 			Log.warn("PackageDownloader: Offline with no language directory available")
-			_show_error(1) # No internet access
+			_show_error(DownloadError.NO_INTERNET)
 		return
 	
 	# Gets the info of the language pack on the server
@@ -75,12 +89,12 @@ func _ready() -> void:
 	elif res.code == 401:
 		UserDataManager.logout()
 		Log.warn("PackageDownloader: Authentication failed while fetching language pack URL")
-		_show_error(0) # Disconnected error
+		_show_error(DownloadError.DISCONNECTED)
 		return
 	else:
 		UserDataManager.logout()
 		Log.warn("PackageDownloader: Unexpected response %d while fetching language pack URL" % res.code)
-		_show_error(2) # Error downloading
+		_show_error(DownloadError.DOWNLOAD_FAILED)
 		return
 	
 	# If the language pack is not already downloaded or an update is needed
@@ -97,16 +111,16 @@ func _ready() -> void:
 		# Create the language_resources folder
 		if not DirAccess.dir_exists_absolute(USER_LANGUAGE_RESOURCES_PATH):
 			DirAccess.make_dir_recursive_absolute(USER_LANGUAGE_RESOURCES_PATH)
-			
-		# Delete the files from old language pack
-		if DirAccess.dir_exists_absolute(current_language_path):
-			Log.trace("PackageDownloader: Cleaning existing language directory at %s" % current_language_path)
-			Utils.clean_dir(current_language_path)
-		
-		# Download the pack
+
+		# Download the pack. The previous pack is kept on disk so the app can
+		# still run offline if the download fails; it is only removed during
+		# extraction, once the new pack has been fully downloaded.
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(language + ".zip"))
 		Log.trace("PackageDownloader: Downloading pack from %s" % res.body.url)
-		http_request.request(res.body.url as String)
+		var request_error: Error = http_request.request(res.body.url as String)
+		if request_error != OK:
+			Log.error("PackageDownloader: Cannot start language pack download: %s" % error_string(request_error))
+			_show_error(DownloadError.DOWNLOAD_FAILED)
 	else:
 		download_bar.value = 1
 		extract_bar.value = 1
@@ -152,6 +166,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	# Check if a zip exists for the complete locale
 	if not FileAccess.file_exists(USER_LANGUAGE_RESOURCES_PATH.path_join(language + ".zip")):
 		Log.warn("PackageDownloader: No downloaded archive found for %s" % language)
+		this.call_thread_safe("_show_error", DownloadError.EXTRACTION_FAILED)
 		return
 	
 	Log.trace("PackageDownloader: Extracting downloaded package")
@@ -175,33 +190,56 @@ func _copy_data(this: PackageDownloader) -> void:
 			mutex.unlock()
 	)
 	
-	# Cleanup previous files
-	if DirAccess.dir_exists_absolute(current_language_path):
-		Log.trace("PackageDownloader: Removing existing language directory before extraction")
-		Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
-	
-	# Extract the archive
-	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
+	# Extract to a temporary directory so the current pack stays usable if
+	# the extraction fails or is interrupted
+	var temp_extract_path: String = USER_LANGUAGE_RESOURCES_PATH.path_join(language + "_tmp")
+	if DirAccess.dir_exists_absolute(temp_extract_path):
+		Utils.delete_directory_recursive(ProjectSettings.globalize_path(temp_extract_path))
+
+	var subfolder: String = unzipper.extract(language_zip_path, temp_extract_path, false)
 	if subfolder == "":
 		Log.error("PackageDownloader: Extraction failed for %s" % language_zip_path)
+		this.call_thread_safe("_show_error", DownloadError.EXTRACTION_FAILED)
 		return
-	
-	# Move the data to the locale folder of the user
-	var error: Error = DirAccess.rename_absolute(USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path)
+
+	# Check the new pack before replacing the current one
+	var new_pack_path: String = temp_extract_path.path_join(subfolder)
+	if not is_language_directory_valid(new_pack_path):
+		Log.error("PackageDownloader: Extracted package at %s is invalid, keeping the current language pack" % new_pack_path)
+		Utils.delete_directory_recursive(ProjectSettings.globalize_path(temp_extract_path))
+		DirAccess.remove_absolute(language_zip_path)
+		this.call_thread_safe("_show_error", DownloadError.INVALID_PACKAGE)
+		return
+
+	# Replace the previous pack, now that the new one is fully extracted
+	if DirAccess.dir_exists_absolute(current_language_path):
+		Log.trace("PackageDownloader: Removing previous language directory")
+		Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
+		if DirAccess.dir_exists_absolute(current_language_path):
+			# Keep the temporary directory so the new pack is not lost
+			Log.error("PackageDownloader: Cannot remove the previous language directory, aborting swap")
+			this.call_thread_safe("_show_error", DownloadError.REPLACE_FAILED)
+			return
+
+	var error: Error = DirAccess.rename_absolute(new_pack_path, current_language_path)
 	if error != OK:
-		Log.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path])
-	else:
-		Log.trace("PackageDownloader: Package extracted to %s" % current_language_path)
-	
+		# Keep the temporary directory so the data is not lost; the next
+		# launch will detect the missing pack and download it again
+		Log.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [new_pack_path, current_language_path])
+		this.call_thread_safe("_show_error", DownloadError.REPLACE_FAILED)
+		return
+	Log.trace("PackageDownloader: Package extracted to %s" % current_language_path)
+
 	# Cleanup unnecessary files
+	Utils.delete_directory_recursive(ProjectSettings.globalize_path(temp_extract_path))
 	DirAccess.remove_absolute(language_zip_path)
 	Log.trace("PackageDownloader: Removed temporary archive %s" % language_zip_path)
-	
+
 	# Go to main menu
 	this.call_thread_safe("_go_to_next_scene")
 
 
-func _show_error(error: int) -> void:
+func _show_error(error: DownloadError) -> void:
 	Log.warn("PackageDownloader: Displaying error %d (%s)" % [error, ERROR_MESSAGES[error]])
 	error_popup.content_text = ERROR_MESSAGES[error]
 	error_popup.show()

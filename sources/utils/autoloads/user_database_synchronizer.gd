@@ -16,7 +16,7 @@ var loading_popup: LoadingPopup
 func start_sync() -> void:
 	synchronizing = true
 	Log.info("UserDatabaseSynchronizer: Starting synchronization")
-	if loading_popup != null:
+	if is_instance_valid(loading_popup):
 		loading_popup.set_finished(false)
 		set_loading_bar_text("SYNCHRONIZATION_INITIALISATION")
 		await set_loading_bar_progression(0.0)
@@ -29,7 +29,7 @@ func stop_sync(success: bool = false) -> void:
 	if success:
 		await set_loading_bar_progression(100.0, 1.0)
 		set_loading_bar_text("SYNCHRONIZATION_SUCCESS")
-	if loading_popup != null:
+	if is_instance_valid(loading_popup):
 		loading_popup.set_finished(true)
 
 
@@ -398,7 +398,7 @@ func _apply_server_response(response_body: Dictionary) -> void:
 			var response_student_data: Dictionary = response_students[response_student_code]
 			if validate_student_data(response_student_data):
 				UserDataManager.teacher_settings.set_data_student_with_code(int(response_student_code), int(response_student_data.device_id as float), response_student_data.name as String, int(response_student_data.age as float), response_student_data.updated_at as String)
-			if response_student_data.has("progression") and (response_student_data.progression as Dictionary).has("version") and (response_student_data.progression as Dictionary).has("unlocked") and (response_student_data.progression as Dictionary).has("updated_at"):
+			if response_student_data.has("progression") and _is_valid_progression_payload(response_student_data.progression):
 				# Cleaning data because of JSON parsing changing types int / float / string
 				var received_unlock_data: Dictionary = response_student_data.progression.unlocked as Dictionary
 				var new_unlock_data: Dictionary[int, Dictionary] = {}
@@ -407,56 +407,45 @@ func _apply_server_response(response_body: Dictionary) -> void:
 					if key_lesson_int == -1:
 						Log.error("UserDatabaseSynchronizer: Received invalid key for lesson: %s" % str(key_lesson))
 						continue
-					new_unlock_data[key_lesson_int] = {"games": [], "look_and_learn": received_unlock_data[key_lesson]["look_and_learn"] as int}
-					for game_result: Variant in received_unlock_data[key_lesson]["games"]:
-						(new_unlock_data[key_lesson_int]["games"] as Array).push_back(game_result as int)
-					new_unlock_data[key_lesson_int].merge({"last_duration": PackedInt32Array(received_unlock_data[key_lesson]["last_duration"] as Array)})
-					new_unlock_data[key_lesson_int].merge({"total_duration": PackedInt32Array(received_unlock_data[key_lesson]["total_duration"] as Array)})
+					var lesson_data: Variant = received_unlock_data[key_lesson]
+					if not _is_valid_unlock_entry(lesson_data):
+						Log.error("UserDatabaseSynchronizer: Skipping malformed unlock data received from server for lesson %d" % key_lesson_int)
+						continue
+					var lesson_dict: Dictionary = lesson_data
+					new_unlock_data[key_lesson_int] = {"games": [], "look_and_learn": int(lesson_dict.look_and_learn as float)}
+					for game_result: Variant in lesson_dict.games as Array:
+						(new_unlock_data[key_lesson_int]["games"] as Array).push_back(int(game_result as float))
+					new_unlock_data[key_lesson_int].merge({"last_duration": PackedInt32Array(lesson_dict.last_duration as Array)})
+					new_unlock_data[key_lesson_int].merge({"total_duration": PackedInt32Array(lesson_dict.total_duration as Array)})
 				var highest_boss_defeated: int = -1
 				if (response_student_data.progression as Dictionary).has("highest_boss_defeated"):
 					highest_boss_defeated = int(response_student_data.progression.highest_boss_defeated as float)
 				UserDataManager.set_student_progression_data(int(response_student_code), response_student_data.progression.version as String, new_unlock_data, response_student_data.progression.updated_at as String, highest_boss_defeated)
 			if response_student_data.has("remediation_gp") and (response_student_data.remediation_gp as Dictionary).has("score_remediation") and (response_student_data.remediation_gp as Dictionary).has("updated_at"):
-				var new_array: Array = JSON.parse_string(response_student_data.remediation_gp.score_remediation as String) as Array
-				if new_array == null:
-					Log.warn("UserDatabaseSynchronizer: Cannot parse to JSON the received GP score remediation: %s" % response_student_data.remediation_gp.score_remediation as String)
-				else:
-					var new_gp_scores: Dictionary[int, int] = {}
-					for index: int in range(new_array.size()):
-						# TODO ADD SECURITY
-						new_gp_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+				var new_gp_scores: Dictionary[int, int] = {}
+				if _parse_score_remediation(response_student_data.remediation_gp.score_remediation, "GP", new_gp_scores):
 					UserDataManager.set_student_remediation_gp_data(int(response_student_code), new_gp_scores, response_student_data.remediation_gp.updated_at as String)
 			if response_student_data.has("remediation_syllables") and (response_student_data.remediation_syllables as Dictionary).has("score_remediation") and (response_student_data.remediation_syllables as Dictionary).has("updated_at"):
-				var new_array: Array = JSON.parse_string(response_student_data.remediation_syllables.score_remediation as String) as Array
-				if new_array == null:
-					Log.warn("UserDatabaseSynchronizer: Cannot parse to JSON the received syllables score remediation: %s" % response_student_data.remediation_syllables.score_remediation as String)
-				else:
-					var new_syllables_scores: Dictionary[int, int] = {}
-					for index: int in range(new_array.size()):
-						# TODO ADD SECURITY
-						new_syllables_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+				var new_syllables_scores: Dictionary[int, int] = {}
+				if _parse_score_remediation(response_student_data.remediation_syllables.score_remediation, "syllables", new_syllables_scores):
 					UserDataManager.set_student_remediation_syllables_data(int(response_student_code), new_syllables_scores, response_student_data.remediation_syllables.updated_at as String)
 			if response_student_data.has("remediation_words") and (response_student_data.remediation_words as Dictionary).has("score_remediation") and (response_student_data.remediation_words as Dictionary).has("updated_at"):
-				var new_array: Array = JSON.parse_string(response_student_data.remediation_words.score_remediation as String) as Array
-				if new_array == null:
-					Log.warn("UserDatabaseSynchronizer: Cannot parse to JSON the received words score remediation: %s" % response_student_data.remediation_words.score_remediation as String)
-				else:
-					var new_words_scores: Dictionary[int, int] = {}
-					for index: int in range(new_array.size()):
-						# TODO ADD SECURITY
-						new_words_scores[int(new_array[index][0] as float)] = int(new_array[index][1] as float)
+				var new_words_scores: Dictionary[int, int] = {}
+				if _parse_score_remediation(response_student_data.remediation_words.score_remediation, "words", new_words_scores):
 					UserDataManager.set_student_remediation_words_data(int(response_student_code), new_words_scores, response_student_data.remediation_words.updated_at as String)
 			if response_student_data.has("confusion_matrix_gp") and (response_student_data.confusion_matrix_gp as Dictionary).has("confusion_matrix") and (response_student_data.confusion_matrix_gp as Dictionary).has("updated_at"):
-				# TODO ADD SECURITY
-				var new_array: Array = response_student_data.confusion_matrix_gp.confusion_matrix
-				var new_confusion_matrix_gp: Dictionary[int, PackedInt32Array] = {}
-				for index: int in range(new_array.size()):
-					# TODO ADD SECURITY
-					var sub_array: PackedInt32Array = []
-					for subindex: int in range((new_array[index][1] as Array).size()):
-						sub_array.append(int(new_array[index][1][subindex] as float))
-					new_confusion_matrix_gp.set(int(new_array[index][0] as float), sub_array as PackedInt32Array)
-				UserDataManager.set_student_confusion_matrix_gp_data(int(response_student_code), new_confusion_matrix_gp, response_student_data.confusion_matrix_gp.updated_at as String)
+				var received_matrix: Variant = response_student_data.confusion_matrix_gp.confusion_matrix
+				if not (received_matrix is Array):
+					Log.warn("UserDatabaseSynchronizer: Received GP confusion matrix is not an array: %s" % str(received_matrix))
+				else:
+					var new_confusion_matrix_gp: Dictionary[int, PackedInt32Array] = {}
+					for entry: Variant in received_matrix as Array:
+						if not _is_valid_confusion_entry(entry):
+							Log.warn("UserDatabaseSynchronizer: Skipping malformed GP confusion matrix entry received from server: %s" % str(entry))
+							continue
+						var pair: Array = entry
+						new_confusion_matrix_gp[int(pair[0] as float)] = PackedInt32Array(pair[1] as Array)
+					UserDataManager.set_student_confusion_matrix_gp_data(int(response_student_code), new_confusion_matrix_gp, response_student_data.confusion_matrix_gp.updated_at as String)
 
 
 func synchronize() -> void:
@@ -499,6 +488,81 @@ func synchronize() -> void:
 
 #region utils
 
+# Parses a JSON-encoded list of [id, score] pairs received from the server
+# into out_scores. Returns false when the payload cannot be parsed at all;
+# malformed entries are skipped so one bad record cannot abort the whole
+# synchronization.
+func _parse_score_remediation(raw_scores: Variant, score_type: String, out_scores: Dictionary[int, int]) -> bool:
+	if not (raw_scores is String):
+		Log.warn("UserDatabaseSynchronizer: Received %s score remediation is not a string: %s" % [score_type, str(raw_scores)])
+		return false
+	var parsed: Variant = JSON.parse_string(raw_scores as String)
+	if not (parsed is Array):
+		Log.warn("UserDatabaseSynchronizer: Cannot parse to JSON the received %s score remediation: %s" % [score_type, raw_scores])
+		return false
+	for entry: Variant in parsed as Array:
+		if not _is_valid_score_pair(entry):
+			Log.warn("UserDatabaseSynchronizer: Skipping malformed %s score remediation entry received from server: %s" % [score_type, str(entry)])
+			continue
+		var pair: Array = entry
+		out_scores[int(pair[0] as float)] = int(pair[1] as float)
+	return true
+
+
+func _is_number(value: Variant) -> bool:
+	return value is int or value is float
+
+
+# A score entry received from the server must be an [id, score] pair of numbers.
+func _is_valid_score_pair(entry: Variant) -> bool:
+	if not (entry is Array):
+		return false
+	var pair: Array = entry
+	return pair.size() == 2 and _is_number(pair[0]) and _is_number(pair[1])
+
+
+# A confusion matrix entry received from the server must be an [id, [counts...]]
+# pair where every count is a number.
+func _is_valid_confusion_entry(entry: Variant) -> bool:
+	if not (entry is Array):
+		return false
+	var pair: Array = entry
+	if pair.size() != 2 or not _is_number(pair[0]) or not (pair[1] is Array):
+		return false
+	for value: Variant in pair[1] as Array:
+		if not _is_number(value):
+			return false
+	return true
+
+
+# The progression payload received from the server must contain a version,
+# a timestamp, and an unlock dictionary.
+func _is_valid_progression_payload(payload: Variant) -> bool:
+	if not (payload is Dictionary):
+		return false
+	var progression: Dictionary = payload
+	return progression.has("version") and progression.has("updated_at") and progression.get("unlocked") is Dictionary
+
+
+# A lesson unlock entry received from the server must contain a numeric
+# look_and_learn status and games / last_duration / total_duration arrays
+# of numbers.
+func _is_valid_unlock_entry(entry: Variant) -> bool:
+	if not (entry is Dictionary):
+		return false
+	var lesson_dict: Dictionary = entry
+	if not _is_number(lesson_dict.get("look_and_learn")):
+		return false
+	for key: String in ["games", "last_duration", "total_duration"]:
+		var values: Variant = lesson_dict.get(key)
+		if not (values is Array):
+			return false
+		for value: Variant in values as Array:
+			if not _is_number(value):
+				return false
+	return true
+
+
 func validate_student_data(data: Dictionary) -> bool:
 	var required_keys: Array[String] = ["device_id", "name", "age", "updated_at"]
 	var missing: Array[String] = []
@@ -514,13 +578,13 @@ func validate_student_data(data: Dictionary) -> bool:
 
 
 func set_loading_bar_progression(value_percent: float, wait_time: float = 0.2) -> void:
-	if loading_popup != null:
+	if is_instance_valid(loading_popup) and loading_popup.is_inside_tree():
 		loading_popup.set_progress(value_percent)
 		await loading_popup.get_tree().create_timer(wait_time).timeout
 
 
 func set_loading_bar_text(message: String) -> void:
-	if loading_popup != null:
+	if is_instance_valid(loading_popup):
 		loading_popup.set_text(message)
 
 #endregion

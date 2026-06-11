@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bs1twkddxu31y"
-path="res://.godot/imported/text_box_long_outline_dotted.png-fb9c3aa3bc07c3ddb16a444d48552d6d.ctex"
+path.s3tc="res://.godot/imported/text_box_long_outline_dotted.png-fb9c3aa3bc07c3ddb16a444d48552d6d.s3tc.ctex"
+path.etc2="res://.godot/imported/text_box_long_outline_dotted.png-fb9c3aa3bc07c3ddb16a444d48552d6d.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/minigames/boss/text_box_long_outline_dotted.png"
-dest_files=["res://.godot/imported/text_box_long_outline_dotted.png-fb9c3aa3bc07c3ddb16a444d48552d6d.ctex"]
+dest_files=["res://.godot/imported/text_box_long_outline_dotted.png-fb9c3aa3bc07c3ddb16a444d48552d6d.s3tc.ctex", "res://.godot/imported/text_box_long_outline_dotted.png-fb9c3aa3bc07c3ddb16a444d48552d6d.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +25,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
