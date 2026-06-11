@@ -435,7 +435,7 @@ func _go_back_to_the_garden() -> void:
 	_save_logs()
 	
 	Gardens.transition_data = gardens_data
-	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
+	SceneLoader.change_scene("res://sources/gardens/gardens.tscn")
 
 
 func _play_stimulus() -> void:

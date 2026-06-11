@@ -5,8 +5,7 @@ signal lilypad_in_center(lilypad: Lilypad)
 
 const LILYPAD_SCENE_PATH: String = "res://sources/minigames/frog/lilypad.tscn"
 
-static var _lilypad_scene: PackedScene
-
+var _lilypad_scene: PackedScene
 var top_to_bottom: bool = false
 var is_stopped: bool = false
 var is_cleared: bool = false

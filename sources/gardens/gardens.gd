@@ -20,21 +20,25 @@ const LESSON_BUTTON_OUTLINE_RADIUS: float = 192.0
 # button center, mirroring the movie icon just above it. The 384x384 button has
 # its center at y=192; the label (vertical-centered) then centers at y=(this+384)/2.
 const LESSON_BUTTON_LABEL_TOP_OFFSET: float = 104.0
-const GARDEN_SCENES: Array[PackedScene] = [
-	preload("res://resources/gardens/garden_01.tscn"),
-	preload("res://resources/gardens/garden_02.tscn"),
-	preload("res://resources/gardens/garden_03.tscn"),
-	preload("res://resources/gardens/garden_04.tscn"),
-	preload("res://resources/gardens/garden_05.tscn"),
-	preload("res://resources/gardens/garden_06.tscn"),
-	preload("res://resources/gardens/garden_07.tscn"),
-	preload("res://resources/gardens/garden_08.tscn"),
-	preload("res://resources/gardens/garden_09.tscn"),
-	preload("res://resources/gardens/garden_10.tscn"),
-	preload("res://resources/gardens/garden_11.tscn"),
-	preload("res://resources/gardens/garden_12.tscn"),
+# Loaded on demand instead of preloaded: this script never unloads (it has
+# static variables), so preloaded constants would pin every garden's assets in
+# memory for the whole app lifetime — including while minigames run, which
+# OOM-crashes low-memory devices.
+const GARDEN_SCENE_PATHS: Array[String] = [
+	"res://resources/gardens/garden_01.tscn",
+	"res://resources/gardens/garden_02.tscn",
+	"res://resources/gardens/garden_03.tscn",
+	"res://resources/gardens/garden_04.tscn",
+	"res://resources/gardens/garden_05.tscn",
+	"res://resources/gardens/garden_06.tscn",
+	"res://resources/gardens/garden_07.tscn",
+	"res://resources/gardens/garden_08.tscn",
+	"res://resources/gardens/garden_09.tscn",
+	"res://resources/gardens/garden_10.tscn",
+	"res://resources/gardens/garden_11.tscn",
+	"res://resources/gardens/garden_12.tscn",
 ]
-const LOOK_AND_LEARN_SCENE: PackedScene = preload("res://sources/look_and_learn/look_and_learn.tscn")
+const LOOK_AND_LEARN_SCENE_PATH: String = "res://sources/look_and_learn/look_and_learn.tscn"
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
 const GARDEN_SIZE: int = 2400
@@ -71,7 +75,6 @@ static var cached_layout_lessons: int = 0
 @export var minigames_body_icons: Array[Texture] = []
 @export var minigames_face_icons: Array[Texture] = []
 
-var _minigame_scene_cache: Dictionary = {}
 var lessons: Dictionary = {}
 var _gardens_layout: GardensLayout
 var points: Array[Array] = []
@@ -988,20 +991,13 @@ func _lesson_button_label_color(status: StudentProgression.Status) -> Color:
 	return lesson_button.unlocked_label_color
 
 
-func _get_minigame_scene(scene_index: int) -> PackedScene:
+func _get_minigame_scene_path(scene_index: int) -> String:
 	if scene_index < 0 or scene_index >= minigame_scene_paths.size():
-		return null
-	if _minigame_scene_cache.has(scene_index):
-		return _minigame_scene_cache[scene_index] as PackedScene
+		return ""
 	var scene_path: String = minigame_scene_paths[scene_index]
-	if scene_path.is_empty():
-		return null
-	var scene_resource: Resource = load(scene_path)
-	if scene_resource is PackedScene:
-		var packed_scene: PackedScene = scene_resource as PackedScene
-		_minigame_scene_cache[scene_index] = packed_scene
-		return packed_scene
-	return null
+	if scene_path.is_empty() or not ResourceLoader.exists(scene_path):
+		return ""
+	return scene_path
 
 
 func _count_completed_minigames(lesson_number: int) -> int:
@@ -1073,7 +1069,8 @@ func add_gardens() -> void:
 	for layout_index: int in range(gardens_layout.gardens.size()):
 		Log.trace("Gardens: Preparing garden %s with layout index %s" % [str(garden_index), str(layout_index)])
 		var garden_layout: GardenLayout = gardens_layout.gardens[layout_index]
-		var garden: Garden = GARDEN_SCENES[layout_index].instantiate()
+		var garden_scene: PackedScene = load(GARDEN_SCENE_PATHS[layout_index]) as PackedScene
+		var garden: Garden = garden_scene.instantiate()
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
 		garden_index += 1
@@ -1422,7 +1419,7 @@ func _on_lesson_button_pressed() -> void:
 		current_garden_index = current_garden.garden_index,
 		look_and_learn_completed = false
 	}
-	get_tree().change_scene_to_packed(LOOK_AND_LEARN_SCENE)
+	SceneLoader.change_scene(LOOK_AND_LEARN_SCENE_PATH)
 
 
 func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
@@ -1438,7 +1435,7 @@ func _on_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
 		skip_minigame_layout = true,
 		boss_gate_lesson = lesson_number
 	}
-	get_tree().change_scene_to_file(BOSS_MINIGAME_SCENE_PATH)
+	SceneLoader.change_scene(BOSS_MINIGAME_SCENE_PATH)
 
 
 func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> void:
@@ -1455,14 +1452,14 @@ func _on_final_boss_button_pressed(lesson_number: int, garden_index: int) -> voi
 		boss_gate_lesson = lesson_number,
 		is_final_boss = true
 	}
-	get_tree().change_scene_to_file(BOSS_MINIGAME_SCENE_PATH)
+	SceneLoader.change_scene(BOSS_MINIGAME_SCENE_PATH)
 
 
 func _on_minigame_button_pressed(scene_index: int, minigame_number: int) -> void:
 	if is_locked:
 		return
-	var minigame_scene: PackedScene = _get_minigame_scene(scene_index)
-	if not minigame_scene:
+	var scene_path: String = _get_minigame_scene_path(scene_index)
+	if scene_path.is_empty():
 		Log.error("Gardens: Missing minigame scene for index %d" % scene_index)
 		return
 	# Block a second wedge click during the curtain-close await below.
@@ -1476,7 +1473,7 @@ func _on_minigame_button_pressed(scene_index: int, minigame_number: int) -> void
 		minigame_number = minigame_number,
 		minigame_completed = false
 	}
-	get_tree().change_scene_to_packed(minigame_scene)
+	SceneLoader.change_scene(scene_path)
 
 
 func _on_scroll_container_gui_input(event: InputEvent) -> void:
@@ -1515,7 +1512,7 @@ func _scroll_by_garden(p_direction: int) -> void:
 func _confirm_back_button_pressed() -> void:
 	UserDataManager.logout_student()
 	await (OpeningCurtain as OpeningCurtainClass).close()
-	get_tree().change_scene_to_file("res://sources/menus/login/login.tscn")
+	SceneLoader.change_scene("res://sources/menus/login/login.tscn")
 
 
 func _on_back_button_button_down() -> void:
