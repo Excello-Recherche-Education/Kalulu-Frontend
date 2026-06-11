@@ -201,6 +201,11 @@ func _copy_data(this: PackageDownloader) -> void:
 	if DirAccess.dir_exists_absolute(current_language_path):
 		Log.trace("PackageDownloader: Removing previous language directory")
 		Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
+		if DirAccess.dir_exists_absolute(current_language_path):
+			# Keep the temporary directory so the new pack is not lost
+			Log.error("PackageDownloader: Cannot remove the previous language directory, aborting swap")
+			this.call_thread_safe("_show_error", 2) # Error downloading
+			return
 
 	var error: Error = DirAccess.rename_absolute(new_pack_path, current_language_path)
 	if error != OK:

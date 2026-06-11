@@ -94,14 +94,22 @@ func clean_dir(path: String) -> Error:
 		return error
 	if dir == null:
 		return ERR_FILE_BAD_PATH
+	# Hidden files (e.g. .DS_Store created by the macOS Finder) must be removed
+	# too, otherwise the directory is never empty and cannot be deleted
+	dir.include_hidden = true
+	# Best effort: try to remove everything, report the first error encountered
+	var first_error: Error = OK
 	for file: String in dir.get_files():
-		dir.remove(file)
+		error = dir.remove(file)
+		if error != OK and first_error == OK:
+			first_error = error
 	for subfolder: String in dir.get_directories():
 		error = clean_dir(path.path_join(subfolder))
-		if error != OK:
-			return error
-		dir.remove(subfolder)
-	return OK
+		if error == OK:
+			error = dir.remove(subfolder)
+		if error != OK and first_error == OK:
+			first_error = error
+	return first_error
 
 
 func delete_directory_recursive(path: String) -> void:
