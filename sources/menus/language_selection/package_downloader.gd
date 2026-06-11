@@ -176,29 +176,46 @@ func _copy_data(this: PackageDownloader) -> void:
 			mutex.unlock()
 	)
 	
-	# Cleanup previous files
-	if DirAccess.dir_exists_absolute(current_language_path):
-		Log.trace("PackageDownloader: Removing existing language directory before extraction")
-		Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
-	
-	# Extract the archive
-	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
+	# Extract to a temporary directory so the current pack stays usable if
+	# the extraction fails or is interrupted
+	var temp_extract_path: String = USER_LANGUAGE_RESOURCES_PATH.path_join(language + "_tmp")
+	if DirAccess.dir_exists_absolute(temp_extract_path):
+		Utils.delete_directory_recursive(ProjectSettings.globalize_path(temp_extract_path))
+
+	var subfolder: String = unzipper.extract(language_zip_path, temp_extract_path, false)
 	if subfolder == "":
 		Log.error("PackageDownloader: Extraction failed for %s" % language_zip_path)
 		this.call_thread_safe("_show_error", 2) # Error downloading
 		return
-	
-	# Move the data to the locale folder of the user
-	var error: Error = DirAccess.rename_absolute(USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path)
+
+	# Check the new pack before replacing the current one
+	var new_pack_path: String = temp_extract_path.path_join(subfolder)
+	if not is_language_directory_valid(new_pack_path):
+		Log.error("PackageDownloader: Extracted package at %s is invalid, keeping the current language pack" % new_pack_path)
+		Utils.delete_directory_recursive(ProjectSettings.globalize_path(temp_extract_path))
+		DirAccess.remove_absolute(language_zip_path)
+		this.call_thread_safe("_show_error", 3) # Invalid language directory
+		return
+
+	# Replace the previous pack, now that the new one is fully extracted
+	if DirAccess.dir_exists_absolute(current_language_path):
+		Log.trace("PackageDownloader: Removing previous language directory")
+		Utils.delete_directory_recursive(ProjectSettings.globalize_path(current_language_path))
+
+	var error: Error = DirAccess.rename_absolute(new_pack_path, current_language_path)
 	if error != OK:
-		Log.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [USER_LANGUAGE_RESOURCES_PATH.path_join(subfolder), current_language_path])
-	else:
-		Log.trace("PackageDownloader: Package extracted to %s" % current_language_path)
-	
+		# Keep the temporary directory so the data is not lost; the next
+		# launch will detect the missing pack and download it again
+		Log.error("PackageDownloader: Error " + error_string(error) + " while renaming folder from %s to %s" % [new_pack_path, current_language_path])
+		this.call_thread_safe("_show_error", 2) # Error downloading
+		return
+	Log.trace("PackageDownloader: Package extracted to %s" % current_language_path)
+
 	# Cleanup unnecessary files
+	Utils.delete_directory_recursive(ProjectSettings.globalize_path(temp_extract_path))
 	DirAccess.remove_absolute(language_zip_path)
 	Log.trace("PackageDownloader: Removed temporary archive %s" % language_zip_path)
-	
+
 	# Go to main menu
 	this.call_thread_safe("_go_to_next_scene")
 
