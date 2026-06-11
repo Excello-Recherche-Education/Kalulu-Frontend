@@ -63,6 +63,13 @@ func _on_code_keyboard_password_entered(password: String) -> void:
 		var login_success: bool = UserDataManager.login_student(password)
 		Log.info("LoginScreen: Login attempt for student code %s returned %s" % [password, str(login_success)])
 		kalulu_button.hide()
+		if not login_success:
+			# The synchronization above may have deleted or moved the student
+			Log.warn("LoginScreen: Login failed for student code %s after synchronization" % password)
+			await kalulu.play_kalulu_speech(wrong_password_speech)
+			keyboard.reset_password()
+			kalulu_button.show()
+			return
 		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()
 		Log.trace("LoginScreen: Start loading next scene")

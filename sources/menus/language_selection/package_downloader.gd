@@ -97,16 +97,16 @@ func _ready() -> void:
 		# Create the language_resources folder
 		if not DirAccess.dir_exists_absolute(USER_LANGUAGE_RESOURCES_PATH):
 			DirAccess.make_dir_recursive_absolute(USER_LANGUAGE_RESOURCES_PATH)
-			
-		# Delete the files from old language pack
-		if DirAccess.dir_exists_absolute(current_language_path):
-			Log.trace("PackageDownloader: Cleaning existing language directory at %s" % current_language_path)
-			Utils.clean_dir(current_language_path)
-		
-		# Download the pack
+
+		# Download the pack. The previous pack is kept on disk so the app can
+		# still run offline if the download fails; it is only removed during
+		# extraction, once the new pack has been fully downloaded.
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(language + ".zip"))
 		Log.trace("PackageDownloader: Downloading pack from %s" % res.body.url)
-		http_request.request(res.body.url as String)
+		var request_error: Error = http_request.request(res.body.url as String)
+		if request_error != OK:
+			Log.error("PackageDownloader: Cannot start language pack download: %s" % error_string(request_error))
+			_show_error(2) # Error downloading
 	else:
 		download_bar.value = 1
 		extract_bar.value = 1
@@ -152,6 +152,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	# Check if a zip exists for the complete locale
 	if not FileAccess.file_exists(USER_LANGUAGE_RESOURCES_PATH.path_join(language + ".zip")):
 		Log.warn("PackageDownloader: No downloaded archive found for %s" % language)
+		this.call_thread_safe("_show_error", 2) # Error downloading
 		return
 	
 	Log.trace("PackageDownloader: Extracting downloaded package")
@@ -184,6 +185,7 @@ func _copy_data(this: PackageDownloader) -> void:
 	var subfolder: String = unzipper.extract(language_zip_path, USER_LANGUAGE_RESOURCES_PATH, false)
 	if subfolder == "":
 		Log.error("PackageDownloader: Extraction failed for %s" % language_zip_path)
+		this.call_thread_safe("_show_error", 2) # Error downloading
 		return
 	
 	# Move the data to the locale folder of the user
