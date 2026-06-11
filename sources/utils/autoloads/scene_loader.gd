@@ -56,8 +56,12 @@ func _change_scene_deferred(scene_path: String) -> void:
 		Log.error("SceneLoader: %s is not a PackedScene" % scene_path)
 		_finish_with_fallback(tree, scene_path)
 		return
+	error = tree.change_scene_to_packed(packed_scene)
+	if error != OK:
+		Log.error("SceneLoader: Could not change to %s (error %s)" % [scene_path, error_string(error)])
+		_finish_with_fallback(tree, scene_path)
+		return
 	_is_changing = false
-	tree.change_scene_to_packed(packed_scene)
 
 
 func _finish_with_fallback(tree: SceneTree, failed_scene_path: String) -> void:
