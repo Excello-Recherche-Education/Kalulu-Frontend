@@ -6,7 +6,7 @@ Thank you for your interest in Kalulu! This short guide explains **how to contri
 
 ## 1) Requirements
 
-- **Godot 4.x** (recommended in 2025/08: 4.4.1)
+- **Godot 4.x** (recommended in 2026/06: 4.6.3)
 - Cloned repository or fork.
 - **SQLite addon**: install `godot-sqlite` from the AssetLib **after** opening the project in Godot.  
   > The folder `addons/godot-sqlite/bin` is not versioned; do not commit it.
