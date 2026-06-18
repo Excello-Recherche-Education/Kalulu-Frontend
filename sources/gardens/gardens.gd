@@ -41,6 +41,7 @@ const GARDEN_SCENE_PATHS: Array[String] = [
 const LOOK_AND_LEARN_SCENE_PATH: String = "res://sources/look_and_learn/look_and_learn.tscn"
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
+const BRAIN_SCENE_PATH: String = "res://sources/brain/brain.tscn"
 const GARDEN_SIZE: int = 2400
 const GARDENS_COUNT: int = 12
 const MIN_LESSONS: int = 12
@@ -1513,6 +1514,11 @@ func _confirm_back_button_pressed() -> void:
 	UserDataManager.logout_student()
 	await (OpeningCurtain as OpeningCurtainClass).close()
 	SceneLoader.change_scene("res://sources/menus/login/login.tscn")
+
+
+func _on_brain_button_pressed() -> void:
+	await (OpeningCurtain as OpeningCurtainClass).close()
+	SceneLoader.change_scene(BRAIN_SCENE_PATH)
 
 
 func _on_back_button_button_down() -> void:

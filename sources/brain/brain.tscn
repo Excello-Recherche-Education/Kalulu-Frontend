@@ -470,3 +470,5 @@ stretch_mode = 4
 [editable path="Brain/GardenRoot11"]
 [editable path="Brain/GardenRoot12"]
 [editable path="Brain/Finish_Line/AutoSizeLabel"]
+
+[connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
