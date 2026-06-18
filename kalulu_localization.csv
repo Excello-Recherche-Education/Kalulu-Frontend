@@ -484,3 +484,5 @@ CLEAR_LOCAL_DATA_CONFIRM,cliquez sur OK %d fois pour confirmer,haz clic en OK %d
 RESTART_APP_REQUIRED,Veuillez fermer l’application et la relancer,Por favor cierre la aplicación y vuelva a abrirla,"Por favor, feche o aplicativo e reinicie-o",Chiudi l'applicazione e riavviala
 OK,OK,OK,OK,OK
 VALUE_REQUIRED,Ce champ est requis,Este campo es obligatorio,Este campo é obrigatório,Questo campo è obbligatorio
+BRAIN_PLAYER_PROGRESS,Progrès de {name},Progreso de {name},Progresso de {name},Progressi di {name}
+BRAIN_PLAYER_PROGRESS_NO_NAME,Progrès du joueur,Progreso del jugador,Progresso do jogador,Progressi del giocatore
