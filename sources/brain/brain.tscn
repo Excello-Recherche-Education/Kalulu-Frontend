@@ -20,7 +20,6 @@
 [ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="17_fyww8"]
 [ext_resource type="Texture2D" uid="uid://b35ivjsldbu33" path="res://assets/brain/treasure_closed.png" id="18_fyww8"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="19_i5ves"]
-[ext_resource type="Theme" uid="uid://in2kegww5lwv" path="res://resources/themes/brain_theme.tres" id="21_3u1q0"]
 [ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="21_cl7b1"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="22_3u1q0"]
 [ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="23_77her"]
@@ -422,27 +421,18 @@ texture = ExtResource("14_34nxc")
 
 [node name="AutoSizeLabel" parent="Brain/Finish_Line" unique_id=1461916897 instance=ExtResource("15_qqlvb")]
 layout_mode = 1
-offset_left = 226.0
-offset_top = 33.0
-offset_right = -151.0
-offset_bottom = -278.0
+offset_left = 128.0
+offset_top = 20.0
+offset_right = -49.0
+offset_bottom = -270.9999
 theme = ExtResource("16_5glhy")
-ref_size_text = "Progrès de Charles-Henri de Beauvoir"
+ref_size_text = "Player's Progress"
 
 [node name="Label" parent="Brain/Finish_Line/AutoSizeLabel" index="0" unique_id=1172353947]
 theme = ExtResource("16_5glhy")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_fyww8")
-text = "Progrès de Charles-Henri de Beauvoir"
-
-[node name="AutoSizeLabel" parent="Brain/Finish_Line/AutoSizeLabel" unique_id=1147219204 instance=ExtResource("15_qqlvb")]
-layout_mode = 2
-theme = ExtResource("21_3u1q0")
-ref_size_text = "Progrès de Charles-Henri de Beauvoir"
-
-[node name="Label" parent="Brain/Finish_Line/AutoSizeLabel/AutoSizeLabel" index="0" unique_id=1172353947]
-theme = ExtResource("21_3u1q0")
-text = "Progrès de Charles-Henri de Beauvoir"
+text = "Player's Progress"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=256605057]
 
@@ -483,4 +473,3 @@ stretch_mode = 4
 [editable path="Brain/GardenRoot11"]
 [editable path="Brain/GardenRoot12"]
 [editable path="Brain/Finish_Line/AutoSizeLabel"]
-[editable path="Brain/Finish_Line/AutoSizeLabel/AutoSizeLabel"]
