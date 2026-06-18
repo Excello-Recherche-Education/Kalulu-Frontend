@@ -53,11 +53,11 @@ Cada lección sigue una progresión lógica basada en datos lingüísticos extra
 
 ```bash
 # Clona tu fork del repositorio
-git clone https://github.com/TU_USUARIO/Kalulu.git
+git clone https://github.com/TU_USUARIO/Kalulu-Frontend.git
 # O bien
-git clone git@github.com:YOUR_USERNAME/Kalulu.git
+git clone git@github.com:YOUR_USERNAME/Kalulu-Frontend.git
 
-cd Kalulu
+cd Kalulu-Frontend
 ```
 
 🔁 _Reemplaza `TU_USUARIO` con tu nombre de usuario._
@@ -113,13 +113,17 @@ Asegúrate de que tu código siga nuestras convenciones de codificación e inclu
 
 ## ❓ FAQ
 
-### 📱 O Kalulu está disponível para dispositivos móveis?
+### 📱 ¿Está Kalulu disponible en móviles?
 
-Sim! Kalulu está disponível para:
+¡Sí! Kalulu está disponible para:
 
 - [![Android](https://img.shields.io/badge/PlayStore-Kalulu-green?logo=google-play)](https://play.google.com/store/apps/details?id=org.godotengine.kalulu)
 - [![iOS](https://img.shields.io/badge/AppStore-Kalulu-blue?logo=apple)](https://apps.apple.com/fr/app/kalulu-education/id1639075967)
 
-### 💻 Existe uma versão para computador?
+### 💻 ¿Está Kalulu disponible en escritorio?
 
-Uma versão experimental para Windows, Mac e Linux está em desenvolvimento. Fique ligado!
+¡Sí! Las versiones para Windows, Mac y Linux están disponibles en la sección [Releases](https://github.com/Excello-Recherche-Education/Kalulu-Frontend/releases).
+
+### 🌐 ¿Está Kalulu disponible directamente en la web?
+
+¡Estamos trabajando en ello, mantente atento!

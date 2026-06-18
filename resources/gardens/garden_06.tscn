@@ -1,0 +1,220 @@
+[gd_scene format=3 uid="uid://dua725v1fckur"]
+
+[ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
+[ext_resource type="Texture2D" uid="uid://bhamsdjj677b3" path="res://assets/gardens/gardens/garden_06.png" id="2_c82qa"]
+[ext_resource type="Texture2D" uid="uid://c0lcx7x0naofl" path="res://assets/gardens/victory_assets/victory_asset_clouds.png" id="3_c82qa"]
+[ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
+[ext_resource type="Texture2D" uid="uid://ctc6i4o6rtj2m" path="res://assets/gardens/victory_assets/victory_asset_plant_19.png" id="4_o7idj"]
+[ext_resource type="Texture2D" uid="uid://ixkyfsxu07qx" path="res://assets/gardens/victory_assets/animals/caterpillar.png" id="5_c82qa"]
+[ext_resource type="Texture2D" uid="uid://d1jhhus8v37ik" path="res://assets/gardens/victory_assets/victory_asset_plant_20.png" id="5_rqhnb"]
+[ext_resource type="Texture2D" uid="uid://dbxswqqflg4n0" path="res://assets/gardens/victory_assets/victory_asset_snail.png" id="6_o1130"]
+[ext_resource type="Texture2D" uid="uid://dw3qhu03gxfi7" path="res://assets/gardens/victory_assets/victory_asset_bees.png" id="7_diva3"]
+[ext_resource type="Texture2D" uid="uid://bokqjqq5uaar3" path="res://assets/gardens/victory_assets/victory_asset_leaves.png" id="8_ghdsm"]
+[ext_resource type="Texture2D" uid="uid://coxmj8uwyu6vd" path="res://assets/gardens/victory_assets/victory_asset_mushroom.png" id="9_1053v"]
+[ext_resource type="Texture2D" uid="uid://db6cwc8crw6wo" path="res://assets/gardens/victory_assets/victory_asset_butterfly_02.png" id="10_rqhnb"]
+
+[node name="GardenRoot" type="Control" unique_id=167073905]
+custom_minimum_size = Vector2(2400, 2.08165e-12)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_5owem")
+title = "Purple Turtle Garden"
+unlocked_lesson = Color(0.30588236, 0.38039216, 0.03529412, 1)
+unlocked_lesson_text = Color(0.96862745, 1, 0.7529412, 1)
+completed_lesson = Color(0.96862745, 1, 0.7529412, 1)
+completed_lesson_text = Color(0.30588236, 0.38039216, 0.03529412, 1)
+wheel_wedge_unlocked = Color(0.96862745, 1, 0.7529412, 1)
+wheel_background = Color(0.43529412, 0.50980395, 0.16078432, 1)
+animal_unlocked_color = Color(0.7882353, 0.85882354, 0.26666668, 1)
+
+[node name="Background" type="TextureRect" parent="." unique_id=1058030897]
+unique_name_in_owner = true
+modulate = Color(0.43529412, 0.50980395, 0.16078432, 1)
+layout_mode = 0
+offset_left = 350.0
+offset_top = 50.0
+offset_right = 2050.0
+offset_bottom = 1750.0
+mouse_filter = 2
+texture = ExtResource("2_c82qa")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Victory_Assets" type="Control" parent="." unique_id=787934313]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Victory_Asset_01" type="TextureRect" parent="Victory_Assets" unique_id=1278004645]
+modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+layout_mode = 0
+offset_left = 1413.0
+offset_top = 141.0
+offset_right = 1630.0
+offset_bottom = 257.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+texture = ExtResource("3_c82qa")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=1983677388]
+modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 1233.0
+offset_right = 1213.0
+offset_bottom = 1522.0
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("4_o7idj")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Victory_Asset_03" type="TextureRect" parent="Victory_Assets" unique_id=1166073981]
+modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+layout_mode = 0
+offset_left = 1643.0
+offset_top = 503.0
+offset_right = 1760.0
+offset_bottom = 679.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+texture = ExtResource("5_rqhnb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Victory_Asset_04" type="TextureRect" parent="Victory_Assets" unique_id=89715746]
+modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+layout_mode = 0
+offset_left = 661.0
+offset_top = 1295.0
+offset_right = 903.0
+offset_bottom = 1402.0
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("6_o1130")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Victory_Asset_05" type="TextureRect" parent="Victory_Assets" unique_id=728940996]
+modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+layout_mode = 0
+offset_left = 1033.0
+offset_top = 1033.0
+offset_right = 1262.0
+offset_bottom = 1151.0
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("7_diva3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Victory_Asset_06" type="TextureRect" parent="Victory_Assets" unique_id=1963527205]
+modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+layout_mode = 0
+offset_left = 805.0
+offset_top = 543.0
+offset_right = 980.0
+offset_bottom = 709.0
+scale = Vector2(1.2, 1.2)
+mouse_filter = 2
+texture = ExtResource("8_ghdsm")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Victory_Asset_07" type="TextureRect" parent="Victory_Assets" unique_id=418014102]
+modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+layout_mode = 0
+offset_left = 1479.0
+offset_top = 1237.0
+offset_right = 1637.0
+offset_bottom = 1386.0
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("9_1053v")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Victory_Asset_08" type="TextureRect" parent="Victory_Assets" unique_id=1856525272]
+modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+layout_mode = 0
+offset_left = 1113.0
+offset_top = 351.00003
+offset_right = 1299.0
+offset_bottom = 566.0
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("10_rqhnb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Buttons" type="Control" parent="." unique_id=1964597]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Slot1" parent="Buttons" unique_id=1361620593 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 954.0
+offset_right = 736.0
+offset_bottom = 1194.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Slot2" parent="Buttons" unique_id=1025579258 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 764.0
+offset_top = 789.0
+offset_right = 1004.0
+offset_bottom = 1029.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Slot3" parent="Buttons" unique_id=353688519 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1068.0
+offset_top = 712.0
+offset_right = 1308.0
+offset_bottom = 952.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Slot4" parent="Buttons" unique_id=1536126098 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1407.0
+offset_top = 787.0
+offset_right = 1647.0
+offset_bottom = 1027.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Slot5" parent="Buttons" unique_id=960033946 instance=ExtResource("4_epm30")]
+layout_mode = 0
+offset_left = 1722.0
+offset_top = 922.0
+offset_right = 1962.0
+offset_bottom = 1162.0
+pivot_offset = Vector2(120, 120)
+
+[node name="Caterpillar" type="TextureRect" parent="." unique_id=518902024]
+layout_mode = 0
+offset_left = 481.0
+offset_top = 237.0
+offset_right = 660.0
+offset_bottom = 358.0
+scale = Vector2(2, 2)
+texture = ExtResource("5_c82qa")
+expand_mode = 1
+stretch_mode = 5

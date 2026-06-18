@@ -4,8 +4,8 @@ extends Control
 signal pressed(stimulus: Dictionary)
 
 enum Colors {
-	Blue,
-	Pink,
+	BLUE,
+	PINK,
 }
 
 const ANIMATIONS_BODY: Array[SpriteFrames] = [
@@ -28,7 +28,7 @@ const SCALE_FACTOR: float = 0.2
 		if is_node_ready():
 			_apply_visuals()
 
-var _color: int = Colors.Blue
+var _color: int = Colors.BLUE
 var color: int:
 	get: return _color
 	set(value):
@@ -62,7 +62,7 @@ func _ready() -> void:
 		return
 
 	var rand: float = randf()
-	color = Colors.Blue if rand < 0.7 else Colors.Pink
+	color = Colors.BLUE if rand < 0.7 else Colors.PINK
 	var rand_frame: int = randi_range(0, animated_sprite_body.sprite_frames.get_frame_count("idle") - 1)
 	animated_sprite_body.frame = rand_frame
 	animated_sprite_arms.frame = rand_frame
@@ -71,7 +71,7 @@ func _ready() -> void:
 
 func _apply_visuals() -> void:
 	if boss:
-		animated_sprite_body.sprite_frames = ANIMATIONS_BODY[Colors.Pink]
+		animated_sprite_body.sprite_frames = ANIMATIONS_BODY[Colors.PINK]
 		animated_sprite_arms.hide()
 		return
 	else:
@@ -147,7 +147,7 @@ func delete() -> void:
 
 func idle_boss() -> void:
 	text_box_sprite_2d.hide()
-	color = Colors.Pink
+	color = Colors.PINK
 	scale = Vector2(0.45, 0.45)
 	animated_sprite_body.stop()
 	animated_sprite_arms.stop()

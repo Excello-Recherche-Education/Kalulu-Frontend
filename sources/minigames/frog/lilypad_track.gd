@@ -3,8 +3,9 @@ extends Control
 
 signal lilypad_in_center(lilypad: Lilypad)
 
-const LILYPAD_SCENE: PackedScene = preload("res://sources/minigames/frog/lilypad.tscn")
+const LILYPAD_SCENE_PATH: String = "res://sources/minigames/frog/lilypad.tscn"
 
+var _lilypad_scene: PackedScene
 var top_to_bottom: bool = false
 var is_stopped: bool = false
 var is_cleared: bool = false
@@ -79,7 +80,9 @@ func pick_distractor() -> Dictionary:
 #region Lilypads
 
 func _spawn_lilypad() -> void:
-	var lilypad: Lilypad = LILYPAD_SCENE.instantiate()
+	if not _lilypad_scene:
+		_lilypad_scene = load(LILYPAD_SCENE_PATH) as PackedScene
+	var lilypad: Lilypad = _lilypad_scene.instantiate()
 	lilypads.append(lilypad)
 	add_child(lilypad)
 	

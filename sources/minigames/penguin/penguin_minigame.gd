@@ -1,6 +1,7 @@
 extends Minigame
 
 const LABEL_SCENE: PackedScene = preload("res://sources/minigames/penguin/penguin_label.tscn")
+const LABEL_SETTINGS: LabelSettings = preload("res://resources/themes/minigames_label_settings_penguins.tres")
 
 var current_word_progression: int = 0: set = _set_current_word_progression
 var max_word_progression: int = 0
@@ -93,17 +94,25 @@ func _setup_word_progression() -> void:
 	labels.clear()
 	
 	var stimulus: Dictionary = _get_current_stimulus()
-	
+	var sentence_text: String = stimulus.get("Sentence", "") as String
+	var opener: String = _extract_sentence_opener(sentence_text)
+	var terminator: String = _extract_sentence_terminator(sentence_text)
+
 	var first_gp: bool = true
 	var last_word_id: int = -1
 	var word_container: HBoxContainer
-	
+
 	for gp: Dictionary in stimulus.GPs:
 		if gp.WordID != last_word_id:
 			last_word_id = gp.WordID
 			word_container = HBoxContainer.new()
 			sentence_container.add_child(word_container)
-		
+			if first_gp and not opener.is_empty():
+				var opener_label: Label = Label.new()
+				opener_label.text = opener
+				opener_label.label_settings = LABEL_SETTINGS
+				word_container.add_child(opener_label)
+
 		var label: PenguinLabel = LABEL_SCENE.instantiate()
 		if first_gp:
 			label.capitalized = true
@@ -112,10 +121,16 @@ func _setup_word_progression() -> void:
 		word_container.add_child(label)
 		label.pressed.connect(_on_snowball_thrown.bind(label))
 		labels.append(label)
-		
+
 		if gp.Type == 0:
 			max_word_progression += 1
-	
+
+	if word_container and not terminator.is_empty():
+		var terminator_label: Label = Label.new()
+		terminator_label.text = terminator
+		terminator_label.label_settings = LABEL_SETTINGS
+		word_container.add_child(terminator_label)
+
 	setup_sentence_background()
 	current_word_progression = 0
 
@@ -162,6 +177,28 @@ func _get_current_stimulus() -> Dictionary:
 
 func _is_silent(gp: Dictionary) -> bool:
 	return gp.Type == 0
+
+
+# Returns the trailing punctuation that closes the sentence (e.g. ".", "?", "!", "...", "?!").
+# Returns an empty string if none is found.
+func _extract_sentence_terminator(sentence: String) -> String:
+	const TERMINATORS: PackedStringArray = [".", "?", "!", "…"]
+	var trimmed: String = sentence.strip_edges()
+	var end_index: int = trimmed.length()
+	while end_index > 0 and trimmed.substr(end_index - 1, 1) in TERMINATORS:
+		end_index -= 1
+	return trimmed.substr(end_index)
+
+
+# Returns the leading punctuation that opens the sentence (e.g. Spanish "¿", "¡", "¿¡").
+# Returns an empty string if none is found.
+func _extract_sentence_opener(sentence: String) -> String:
+	const OPENERS: PackedStringArray = ["¿", "¡"]
+	var trimmed: String = sentence.strip_edges()
+	var end_index: int = 0
+	while end_index < trimmed.length() and trimmed.substr(end_index, 1) in OPENERS:
+		end_index += 1
+	return trimmed.substr(0, end_index)
 
 
 func _set_current_word_progression(p_current_word_progression: int) -> void:

@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://q6go00k3f50e" path="res://sources/minigames/monkeys/coconut.gd" id="1_yojn5"]
 [ext_resource type="PackedScene" uid="uid://cge0uyn30tcpv" path="res://sources/utils/fx/highlight.tscn" id="2_8nuxj"]
 [ext_resource type="LabelSettings" uid="uid://c4n6n26sxuxbh" path="res://resources/themes/minigames_label_settings_monkey_coconut.tres" id="4_50ros"]
-[ext_resource type="PackedScene" uid="uid://cnt2q4hqn1wsq" path="res://sources/minigames/monkeys/broken_coconut_fx.tscn" id="5_ddd0v"]
 
 [node name="Coconut" type="Node2D" unique_id=458844620]
 script = ExtResource("1_yojn5")
@@ -18,14 +17,18 @@ texture = ExtResource("1_fvymg")
 
 [node name="Label" type="Label" parent="." unique_id=1611286912]
 custom_minimum_size = Vector2(110, 2.08165e-12)
-offset_left = -91.0
-offset_top = -100.0
-offset_right = 94.0
-offset_bottom = 101.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -144.0
+offset_top = -100.5
+offset_right = 144.0
+offset_bottom = 100.5
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_font_sizes/font_size = 70
-text = "e"
 label_settings = ExtResource("4_50ros")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="BrokenCoconutFX" parent="." unique_id=745079414 instance=ExtResource("5_ddd0v")]

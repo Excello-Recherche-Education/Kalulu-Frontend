@@ -13,7 +13,7 @@ func test_reset_logs_initializes_answers_bucket() -> void:
 
 func test_log_new_response_adds_entry_with_right_answer_metadata() -> void:
 	var minigame: Minigame = Minigame.new()
-	minigame.minigame_name = Minigame.Type.jellyfish
+	minigame.minigame_name = Minigame.Type.JELLYFISH
 	minigame.current_number_of_hints = 1
 	minigame.current_progression = 2
 	minigame.max_progression = 10

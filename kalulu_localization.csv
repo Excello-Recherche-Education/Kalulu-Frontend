@@ -11,6 +11,11 @@ EMAIL,Adresse mail,Correo electrónico,Endereço eletrônico,Indirizzo email
 PASSWORD,Mot de passe,Contraseña,Senha,Password
 LOG_IN,Se connecter,Ingresar,Conexão,Accedi
 INVALID_EMAIL_OR_PASSWORD,Adresse mail ou mot de passe invalide,Correo electrónico o contraseña inválida,Endereço de e-mail ou senha inválidos,Email o password non validi
+LOGIN_USER_NOT_FOUND,Aucun compte ne correspond à cette adresse mail,No existe ninguna cuenta con este correo electrónico,Nenhuma conta corresponde a este e-mail,Nessun account corrisponde a questa email
+LOGIN_WRONG_PASSWORD,Mot de passe incorrect,Contraseña incorrecta,Senha incorreta,Password errata
+LOGIN_MISSING_CREDENTIALS,Veuillez renseigner votre adresse mail et votre mot de passe,"Por favor, introduzca su correo electrónico y su contraseña","Por favor, informe seu e-mail e sua senha",Inserisci email e password
+LOGIN_SERVER_ERROR,"Erreur serveur, veuillez réessayer plus tard","Error del servidor, inténtelo más tarde","Erro do servidor, tente novamente mais tarde","Errore del server, riprova più tardi"
+LOGIN_NETWORK_ERROR,"Connexion au serveur échouée, vérifiez votre accès Internet","Error de conexión al servidor, verifique su acceso a Internet","Falha na conexão com o servidor, verifique seu acesso à Internet","Connessione al server fallita, verifica il tuo accesso a Internet"
 RESET_PASSWORD,Réinitialiser le mot de passe,Restablecer la contraseña,Redefinir senha,Reimposta password
 CHECK_YOUR_EMAIL,Veuillez vérifier votre boîte mail,"Por favor, revise su correo electrónico","Por favor, verifique seu e-mail",Controlla la tua email
 RESET_PASSWORD_FAILED,"Erreur lors de la réinitialisation, réessayez plus tard","Error al restablecer la contraseña, inténtelo más tarde","Erro ao redefinir a senha, tente novamente mais tarde","Errore nel reimpostare la password, riprova più tardi"
@@ -404,7 +409,7 @@ VALIDATE,Confirmer,Confirmar,Confirmar,Conferma
 SUMMARY_EMAIL,Adresse email : {mail},Correo electrónico: {mail},Endereço de e-mail : {mail},Indirizzo email: {mail}
 SUMMARY_TYPE,Type de compte : {type},Tipo de cuenta: {type},Tipo de conta : {type},Tipo di account: {type}
 SUMMARY_METHOD,Méthode d'éducation : {method},Método de enseñanza: {method},Método educacional : {method},Metodo educativo: {method}
-APPONLY,Application uniquement,Solo aplicación,Somente aplicativo,Solo applicazione
+APP_ONLY,Application uniquement,Solo aplicación,Somente aplicativo,Solo applicazione
 COMPLETE,Complète (livrets et jeux papiers),Completo (cuaderno y juegos en papel),Completo (livretos e jogos de papel),Completo (libretti e giochi cartacei)
 SUMMARY_NUMBER_OF_DEVICES,Nombre d'appareils : {number},Cantidad de dispositivos: {number},Número de dispositivos : {number},Numero di dispositivi: {number}
 SUMMARY_NUMBER_OF_STUDENTS,Nombre d'élèves : {number},Cantidad de estudiantes: {number},Número de alunos : {number},Numero di studenti: {number}
@@ -434,9 +439,15 @@ CHECKING_DATA,Vérification des données...,Comprobando datos...,Verificação d
 TEACHER_SETTINGS_HELP,"Pour accéder aux paramètres, veuillez appuyer sur le plus et la barre verticale, puis maintenez le bouton ""Paramètres"" pendant 5 secondes","Para acceder a los ajustes, pulse el signo más y la barra vertical y, a continuación, mantenga pulsado el botón «Configuración» durante 5 segundos","Para acessar as configurações, pressione o sinal de mais e a barra vertical e, em seguida, mantenha pressionado o botão ""Parâmetros"" por 5 segundos","Per accedere alle impostazioni, premi il segno più e la barra verticale, quindi tieni premuto il pulsante ""Impostazioni"" per 5 secondi"
 DELETE_ACCOUNT,Supprimer le compte,Eliminar cuenta,Excluir conta,Elimina account
 DELETE_ACCOUNT_POPUP,Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible !,¿De verdad quieres eliminar tu cuenta? ¡Esta acción es irreversible!,Você realmente deseja excluir sua conta? Essa ação é irreversível!,Vuoi davvero eliminare il tuo account? Questa azione è irreversibile!
+CHANGE_LANGUAGE,Changer la langue,Cambiar el idioma,Mudar o idioma,Cambia lingua
+CHANGE_LANGUAGE_POPUP,"Changer la langue du compte supprimera toute la progression et les données de tous les élèves. Cette action est irréversible. Sélectionnez la nouvelle langue ci-dessous.","Cambiar el idioma de la cuenta borrará todo el progreso y los datos de todos los alumnos. Esta acción es irreversible. Seleccione el nuevo idioma a continuación.","Mudar o idioma da conta apagará todo o progresso e os dados de todos os alunos. Essa ação é irreversível. Selecione o novo idioma abaixo.","Cambiare la lingua dell'account cancellerà tutti i progressi e i dati di tutti gli studenti. Questa azione è irreversibile. Seleziona di seguito la nuova lingua."
+CHANGE_LANGUAGE_ERROR,"Impossible de changer la langue. Veuillez vérifier votre connexion et réessayer.","No se pudo cambiar el idioma. Compruebe su conexión y vuelva a intentarlo.","Não foi possível mudar o idioma. Verifique sua conexão e tente novamente.","Impossibile cambiare la lingua. Verifica la connessione e riprova."
 DISCONNECTED_ERROR,Vous avez été déconnecté. Veuillez renseigner vos identifiants à nouveau.,Se ha cerrado la sesión. Vuelva a introducir sus datos de acceso.,Você foi desconectado. Digite seus detalhes de login novamente.,Sei stato disconnesso. Inserisci nuovamente le tue credenziali.
 INVALID_LANGUAGE_DIRECTORY,Dossier de langue invalide,Carpeta de idioma no válida,Pasta de idioma inválida,Cartella lingua non valida
 NO_INTERNET_ACCESS,Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion et réessayer.,No está conectado a Internet. Compruebe su conexión e inténtelo de nuevo.,Você não está conectado à Internet. Verifique sua conexão e tente novamente.,Non sei connesso a Internet. Verifica la connessione e riprova.
+ERROR_EXTRACTING_PACKAGE,Le pack de langue téléchargé n'a pas pu être extrait. Veuillez réessayer.,No se ha podido extraer el paquete de idioma descargado. Inténtelo de nuevo.,Não foi possível extrair o pacote de idioma baixado. Tente novamente.,Impossibile estrarre il pacchetto lingua scaricato. Riprova.
+ERROR_INVALID_PACKAGE,Le pack de langue téléchargé est invalide ou incomplet. Veuillez réessayer plus tard.,El paquete de idioma descargado no es válido o está incompleto. Inténtelo de nuevo más tarde.,O pacote de idioma baixado é inválido ou está incompleto. Tente novamente mais tarde.,Il pacchetto lingua scaricato non è valido o è incompleto. Riprova più tardi.
+ERROR_REPLACING_PACKAGE,Impossible de remplacer l'ancien pack de langue. Veuillez redémarrer l'application et réessayer.,No se ha podido reemplazar el paquete de idioma anterior. Reinicie la aplicación e inténtelo de nuevo.,Não foi possível substituir o pacote de idioma anterior. Reinicie o aplicativo e tente novamente.,Impossibile sostituire il pacchetto lingua precedente. Riavvia l'applicazione e riprova.
 PICK_YOUR_DEVICE,Choisissez votre appareil,Elige tu dispositivo,Escolha seu dispositivo,Scegli il tuo dispositivo
 SIGN_IN,Connexion,Conexión,Conexão,Accedi
 RETURN_TO_MAIN_MENU,Retour à l’accueil,Volver a la página principal,Voltar para a página inicial,Torna alla schermata principale

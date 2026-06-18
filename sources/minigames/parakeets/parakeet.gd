@@ -4,9 +4,9 @@ extends Node2D
 signal pressed()
 
 enum Colors {
-	Red,
-	Green,
-	Yellow,
+	RED,
+	GREEN,
+	YELLOW,
 }
 
 const ANIMATIONS: Array[SpriteFrames] = [
@@ -21,7 +21,7 @@ const FEATHERS_ANIMATIONS: Array[SpriteFrames] = [
 ]
 
 @export var sad_duration: float = 2.0
-@export var color: Colors = Colors.Red:
+@export var color: Colors = Colors.RED:
 	set(value):
 		color = value
 		if animated_sprite:
@@ -141,7 +141,7 @@ func wrong() -> void:
 
 func idle_boss() -> void:
 	text_box_sprite_2d.hide()
-	color = Colors.Green
+	color = Colors.GREEN
 	animated_sprite.play("idle_front")
 	animated_sprite.stop()
 

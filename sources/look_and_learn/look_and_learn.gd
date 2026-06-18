@@ -33,6 +33,7 @@ func _ready() -> void:
 	Log.trace("LookAndLearn: Starting lesson %d" % lesson_nb)
 	setup()
 	await (OpeningCurtain as OpeningCurtainClass).open()
+	grapheme_particles.emitting = true
 
 
 func setup() -> void:
@@ -159,7 +160,7 @@ func _back_to_gardens() -> void:
 	Log.info("LookAndLearn: Returning to gardens for lesson %d" % lesson_nb)
 	await (OpeningCurtain as OpeningCurtainClass).close()
 	Gardens.transition_data = gardens_data
-	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
+	SceneLoader.change_scene("res://sources/gardens/gardens.tscn")
 
 
 func _on_back_button_pressed() -> void:

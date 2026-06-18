@@ -24,42 +24,38 @@ func _ready() -> void:
 		UserDataManager.logout()
 		_show_error(ERROR_MESSAGES[0])
 		return
-	if not teacher_settings.language or not teacher_settings.server_language_validated:
-		Log.trace("LanguageCheck: TeacherSettings needs to be updated")
-		if not await ServerManager.check_internet_access():
-			Log.trace("LanguageCheck: No internet access")
-			try_with_local_data()
-			return
-		else:
-			Log.trace("LanguageCheck: Internet access confirmed. Asking server for user language")
-			var res: Dictionary = await ServerManager.get_user_language()
-			if not res.has("code") or res.code != 200 or not res.has("body") or not (res.body as Dictionary).has("language"):
-				Log.trace("LanguageCheck: Server answer is not usable")
-				try_with_local_data()
+	Log.trace("LanguageCheck: Re-validating language with server on every login")
+	if not await ServerManager.check_internet_access():
+		Log.trace("LanguageCheck: No internet access")
+		try_with_local_data()
+		return
+	Log.trace("LanguageCheck: Internet access confirmed. Asking server for user language")
+	var res: Dictionary = await ServerManager.get_user_language()
+	if not res.has("code") or res.code != 200 or not res.has("body") or not (res.body as Dictionary).has("language"):
+		Log.trace("LanguageCheck: Server answer is not usable")
+		try_with_local_data()
+		return
+	var server_language: Variant = (res.body as Dictionary).language
+	if server_language is String and server_language in Utils.SUPPORTED_LOCALES.keys():
+		Log.trace("LanguageCheck: Language validated by server")
+		teacher_settings.language = server_language
+		teacher_settings.server_language_validated = true
+		UserDataManager.set_language(server_language as String, true)
+	else:
+		Log.warn("LanguageCheck: Language received from server is invalid or not defined")
+		var local_language: String = teacher_settings.language
+		if not local_language in Utils.SUPPORTED_LOCALES.keys():
+			if not device_language in Utils.SUPPORTED_LOCALES.keys():
+				UserDataManager.logout()
+				_show_error(ERROR_MESSAGES[2])
 				return
-			else:
-				var server_language: Variant = (res.body as Dictionary).language
-				if server_language is String and server_language in Utils.SUPPORTED_LOCALES.keys():
-					teacher_settings.language = server_language
-					Log.trace("LanguageCheck: Language validated by server")
-					teacher_settings.server_language_validated = true
-					UserDataManager.set_language(server_language as String, true)
-				else:
-					Log.trace("LanguageCheck: Language received from server is invalid or not defined")
-					var local_language: String = teacher_settings.language
-					if not local_language in Utils.SUPPORTED_LOCALES.keys():
-						if not device_language in Utils.SUPPORTED_LOCALES.keys():
-							UserDataManager.logout()
-							_show_error(ERROR_MESSAGES[2])
-							return
-						else:
-							local_language = device_language
-					res = await ServerManager.set_user_language(local_language)
-					if res.has("code") and res.code == 200:
-						UserDataManager.set_language(local_language, true)
-					else:
-						UserDataManager.set_language(local_language, false)
-	
+			local_language = device_language
+		res = await ServerManager.set_user_language(local_language)
+		if res.has("code") and res.code == 200:
+			UserDataManager.set_language(local_language, true)
+		else:
+			UserDataManager.set_language(local_language, false)
+
 	UserDataManager.save_all()
 	go_to_package_download()
 

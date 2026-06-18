@@ -3,6 +3,7 @@ extends Control
 
 const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
 const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
+const SPLASH_SCREEN_PATH: String = "res://sources/menus/splash_screen/splash_screen.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
 const DEVICE_TAB_SCENE: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
 const PASSWORD_VISUALIZER_SCENE: PackedScene = preload("res://sources/menus/components/password_visualizer.tscn")
@@ -18,6 +19,8 @@ var last_device_id: int = -1
 @onready var devices_tab_container: TabContainer = %DevicesTabContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
+@onready var change_language_popup: ChangeLanguagePopup = %ChangeLanguagePopup
+@onready var change_language_error_popup: ConfirmPopup = %ChangeLanguageErrorPopup
 @onready var loading_popup: LoadingPopup = %LoadingPopup
 @onready var account_type_option_button: OptionButton = %AccountTypeOptionButton
 @onready var education_method_option_button: OptionButton = %EducationMethodOptionButton
@@ -57,6 +60,13 @@ func _ready() -> void:
 	export_codes_file_dialog.add_filter("*.pdf", "pdf")
 	export_codes_file_dialog.file_selected.connect(_on_export_codes_file_selected)
 	Log.info("SettingsTeacherSettings: Export codes dialog configured")
+
+
+func _exit_tree() -> void:
+	# The synchronizer outlives this scene: clear the popup reference so a
+	# later background synchronization does not call into a freed node.
+	if UserDataManager.user_database_synchronizer.loading_popup == loading_popup:
+		UserDataManager.user_database_synchronizer.loading_popup = null
 
 
 func _on_account_type_option_button_item_selected(index: int) -> void:
@@ -123,6 +133,36 @@ func _on_logout_button_pressed() -> void:
 	await OpeningCurtain.close()
 	UserDataManager.logout()
 	get_tree().change_scene_to_file(MAIN_MENU_PATH)
+
+
+func _on_change_language_button_pressed() -> void:
+	var current_language: String = UserDataManager.get_language()
+	change_language_popup.show_for_current_language(current_language)
+
+
+func _on_change_language_popup_accepted(new_language: String) -> void:
+	if not new_language:
+		Log.warn("SettingsTeacherSettings: Change language cancelled - no language selected")
+		return
+	var current_language: String = UserDataManager.get_language()
+	if new_language == current_language:
+		Log.info("SettingsTeacherSettings: Change language skipped - selected language matches current (%s)" % current_language)
+		return
+	Log.warn("SettingsTeacherSettings: Change language from %s to %s" % [current_language, new_language])
+
+	var res: Dictionary = await ServerManager.reset_language(new_language)
+	if res.code != 200:
+		Log.error("SettingsTeacherSettings: Reset language request failed. Error code %d" % res.code)
+		change_language_error_popup.show()
+		return
+
+	# Server confirmed: wipe all local teacher data, apply new language, and restart from splash.
+	UserDataManager.delete_teacher_data()
+	if UserDataManager.teacher_settings:
+		UserDataManager.teacher_settings.server_language_validated = false
+	UserDataManager.set_language(new_language, true)
+	UserDataManager.logout()
+	get_tree().change_scene_to_file(SPLASH_SCREEN_PATH)
 
 
 func _on_devices_tab_container_tab_changed(tab: int) -> void:

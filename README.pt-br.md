@@ -17,7 +17,7 @@
   - [2. Instalar o Godot Engine](#2-instalar-o-godot-engine)
 - [🧩 Addons inclusos](#-addons-inclusos)
 - [🤝 Quer ajudar?](#-quer-ajudar-)
-- [❓ Preguntas Frecuentes](#faq)
+- [❓ Perguntas Frequentes](#faq)
 
 ---
 
@@ -51,11 +51,11 @@ Cada lição segue uma sequência estruturada com base em dados da literatura in
 
 ```bash
 # Clone o seu fork do repositório
-git clone https://github.com/SEU_USUARIO/Kalulu.git
+git clone https://github.com/SEU_USUARIO/Kalulu-Frontend.git
 # Ou então
-git clone git@github.com:YOUR_USERNAME/Kalulu.git
+git clone git@github.com:YOUR_USERNAME/Kalulu-Frontend.git
 
-cd Kalulu
+cd Kalulu-Frontend
 ```
 
 🔁 _Substitua `SEU_USUARIO` pelo seu nome de usuário._
@@ -111,13 +111,17 @@ Certifique-se de que seu código siga nossas convenções de codificação e inc
 
 ## ❓ FAQ
 
-### 📱 ¿Está Kalulu disponible en móviles?
+### 📱 O Kalulu está disponível para dispositivos móveis?
 
-¡Sí! Kalulu está disponible para:
+Sim! Kalulu está disponível para:
 
 - [![Android](https://img.shields.io/badge/PlayStore-Kalulu-green?logo=google-play)](https://play.google.com/store/apps/details?id=org.godotengine.kalulu)
 - [![iOS](https://img.shields.io/badge/AppStore-Kalulu-blue?logo=apple)](https://apps.apple.com/fr/app/kalulu-education/id1639075967)
 
-### 💻 ¿Existe una versión para ordenadores?
+### 💻 O Kalulu está disponível no desktop?
 
-Una versión experimental para Windows, Mac y Linux está en desarrollo. ¡Mantente atento!
+Sim! Versões para Windows, Mac e Linux estão disponíveis na seção [Releases](https://github.com/Excello-Recherche-Education/Kalulu-Frontend/releases).
+
+### 🌐 O Kalulu está disponível diretamente na web?
+
+Estamos trabalhando nisso, fique ligado!

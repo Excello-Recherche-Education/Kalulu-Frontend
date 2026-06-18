@@ -84,30 +84,30 @@ func test_full_account_creation_login_and_deletion() -> void:
 	gut.p("Step 2: Building registration payload…")
 
 	var register_data: TeacherSettings = TeacherSettings.new()
-	register_data.account_type = TeacherSettings.AccountType.Teacher
-	register_data.education_method = TeacherSettings.EducationMethod.Complete
+	register_data.account_type = TeacherSettings.AccountType.TEACHER
+	register_data.education_method = TeacherSettings.EducationMethod.COMPLETE
 	register_data.email = _test_email
 	register_data.password = TEST_PASSWORD
-	register_data.language = "fr"
+	register_data.language = "fr_FR"
 
 	# Device 1 — two students
 	var student_alice: StudentData = StudentData.new()
 	student_alice.code = 123
 	student_alice.name = "Alice"
-	student_alice.level = StudentData.Level.Beginner
+	student_alice.level = StudentData.Level.BEGINNER
 	student_alice.age = 7
 
 	var student_bob: StudentData = StudentData.new()
 	student_bob.code = 124
 	student_bob.name = "Bob"
-	student_bob.level = StudentData.Level.Reviewer
+	student_bob.level = StudentData.Level.REVIEWER
 	student_bob.age = 8
 
 	# Device 2 — one student
 	var student_charlie: StudentData = StudentData.new()
 	student_charlie.code = 321
 	student_charlie.name = "Charlie"
-	student_charlie.level = StudentData.Level.Adult
+	student_charlie.level = StudentData.Level.ADULT
 	student_charlie.age = 10
 
 	register_data.students[1] = [student_alice, student_bob]
@@ -166,9 +166,9 @@ func test_full_account_creation_login_and_deletion() -> void:
 
 	# --- Basic fields ---
 	assert_eq(str(login_body.email), _test_email, "Returned email should match")
-	assert_eq(login_body.account_type as int, TeacherSettings.AccountType.Teacher,
+	assert_eq(login_body.account_type as int, TeacherSettings.AccountType.TEACHER,
 			"Account type should be Teacher (0)")
-	assert_eq(login_body.education_method as int, TeacherSettings.EducationMethod.Complete,
+	assert_eq(login_body.education_method as int, TeacherSettings.EducationMethod.COMPLETE,
 			"Education method should be Complete (1)")
 	assert_eq(str(login_body.language), "fr_FR", "Language should be 'fr'")
 	assert_true(login_body.has("token"), "Login response must include token")
@@ -198,13 +198,13 @@ func test_full_account_creation_login_and_deletion() -> void:
 				found_alice = true
 				assert_eq(str(student.name), "Alice", "Student 123 should be Alice")
 				assert_eq(student.age as int, 7, "Alice should be age 7")
-				assert_eq(student.level as int, StudentData.Level.Beginner,
+				assert_eq(student.level as int, StudentData.Level.BEGINNER,
 						"Alice should be Beginner (0)")
 			124:
 				found_bob = true
 				assert_eq(str(student.name), "Bob", "Student 124 should be Bob")
 				assert_eq(student.age as int, 8, "Bob should be age 8")
-				assert_eq(student.level as int, StudentData.Level.Reviewer,
+				assert_eq(student.level as int, StudentData.Level.REVIEWER,
 						"Bob should be Reviewer (1)")
 	assert_true(found_alice, "Alice (code 123) should be present on device 1")
 	assert_true(found_bob, "Bob (code 124) should be present on device 1")
@@ -215,8 +215,31 @@ func test_full_account_creation_login_and_deletion() -> void:
 	assert_eq(charlie.code as int, 321, "Device 2 student should have code 321")
 	assert_eq(str(charlie.name), "Charlie", "Student 321 should be Charlie")
 	assert_eq(charlie.age as int, 10, "Charlie should be age 10")
-	assert_eq(charlie.level as int, StudentData.Level.Adult,
+	assert_eq(charlie.level as int, StudentData.Level.ADULT,
 			"Charlie should be Adult (2)")
+
+	# ------------------------------------------------------------------
+	# Step 5b – Login with wrong password must report INVALID_PASSWORD
+	# ------------------------------------------------------------------
+	gut.p("Step 5b: Attempting login with a wrong password…")
+	var wrong_pw_res: Dictionary = await ServerManager.login(_test_email, TEST_PASSWORD + "_wrong")
+	assert_eq(wrong_pw_res.code as int, 401,
+			"Login with wrong password should return 401")
+	var wrong_pw_body: Dictionary = wrong_pw_res.body as Dictionary
+	assert_eq(str(wrong_pw_body.get("error_code", "")), "INVALID_PASSWORD",
+			"Wrong password for an existing email should return error_code INVALID_PASSWORD")
+
+	# ------------------------------------------------------------------
+	# Step 5c – Login with unknown email must report USER_NOT_FOUND
+	# ------------------------------------------------------------------
+	gut.p("Step 5c: Attempting login with an unknown email…")
+	var unknown_email: String = TEST_EMAIL_PREFIX + "unknown_" + str(Time.get_ticks_usec()) + TEST_EMAIL_DOMAIN
+	var unknown_res: Dictionary = await ServerManager.login(unknown_email, TEST_PASSWORD)
+	assert_eq(unknown_res.code as int, 401,
+			"Login with unknown email should return 401")
+	var unknown_body: Dictionary = unknown_res.body as Dictionary
+	assert_eq(str(unknown_body.get("error_code", "")), "USER_NOT_FOUND",
+			"Unknown email should return error_code USER_NOT_FOUND")
 
 	# ------------------------------------------------------------------
 	# Step 6 – Set auth context and delete the account
@@ -248,14 +271,11 @@ func test_full_account_creation_login_and_deletion() -> void:
 	UserDataManager.teacher_settings = null
 
 	var login_after_del: Dictionary = await ServerManager.login(_test_email, TEST_PASSWORD)
-	assert_ne(login_after_del.code as int, 200,
-			"Login should fail after account deletion (expected 401, got %d)" % login_after_del.code)
-
-	# Handle expected warnings: server returns 401 for deleted account login
-	assert_engine_error("Response code = 401",
-			"Expected: server returns 401 for deleted account")
-	assert_engine_error("Login or password incorrect",
-			"Expected: login should fail after account deletion")
+	assert_eq(login_after_del.code as int, 401,
+			"Login should fail with 401 after account deletion (got %d)" % login_after_del.code)
+	var deleted_body: Dictionary = login_after_del.body as Dictionary
+	assert_eq(str(deleted_body.get("error_code", "")), "USER_NOT_FOUND",
+			"Login after deletion should return error_code USER_NOT_FOUND")
 
 	# ------------------------------------------------------------------
 	# Step 8 – Email should be available again
@@ -270,10 +290,17 @@ func test_full_account_creation_login_and_deletion() -> void:
 	# cannot reach those, so we mark them manually via get_errors().
 	# "Database is null" warnings are also expected when the godot-sqlite addon
 	# is absent (e.g. in GitHub Actions), so we suppress them here too.
+	# Each failed login produces two ServerManager warnings (HTTP code line
+	# + pretty-printed body). We acknowledge all of them here because
+	# assert_engine_error() handles only the first occurrence of a pattern.
 	for err: GutTrackedError in get_errors():
-		if not err.handled and err.contains_text("Database file not found"):
-			err.handled = true
-		if not err.handled and err.contains_text("Database is null"):
+		if err.handled:
+			continue
+		if err.contains_text("Database file not found") \
+				or err.contains_text("Database is null") \
+				or err.contains_text("Response code = 401") \
+				or err.contains_text("INVALID_PASSWORD") \
+				or err.contains_text("USER_NOT_FOUND"):
 			err.handled = true
 
 	gut.p("All steps passed.")

@@ -4,12 +4,12 @@
 [ext_resource type="Script" uid="uid://bydhpvtn71v5a" path="res://sources/minigames/ants/blank.gd" id="2_mvcny"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pwxu7"]
-size = Vector2(610, 230)
+size = Vector2(610, 160)
 
 [node name="Blank" type="TextureRect" unique_id=764966448]
 modulate = Color(0.5254902, 0.4509804, 0.8980392, 1)
 offset_right = 594.0
-offset_bottom = 229.0
+offset_bottom = 159.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("1_iy5b6")
@@ -20,5 +20,5 @@ collision_mask = 0
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2104163297]
-position = Vector2(305, 115)
+position = Vector2(297, 80)
 shape = SubResource("RectangleShape2D_pwxu7")

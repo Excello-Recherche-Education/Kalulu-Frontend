@@ -1,7 +1,9 @@
 class_name FrogMinigame
 extends WordsMinigame
 
-const LILYPAD_TRACK_SCENE: PackedScene = preload("res://sources/minigames/frog/lilypad_track.tscn")
+const RIVER_SCENE_PATH: String = "res://sources/minigames/frog/river.tscn"
+const FROG_SCENE_PATH: String = "res://sources/minigames/frog/frog.tscn"
+const LILYPAD_TRACK_SCENE_PATH: String = "res://sources/minigames/frog/lilypad_track.tscn"
 
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.75, 100., 200.),
@@ -10,14 +12,52 @@ var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.25, 250., 350.),
 	DifficultySettings.new(0.25, 300., 400.)
 ]
+var river: River
+var frog: Frog
+var lilypad_track_scene: PackedScene
 
 @onready var start: Control = %Start
 @onready var end: Control = %End
 @onready var frog_spawn_point: Control = %FrogSpawnPoint
 @onready var frog_despawn_point: Control = %FrogDespawnPoint
-@onready var river: River = $GameRoot/Background/River
 @onready var lilypad_tracks_container: HBoxContainer = %LilypadTracksContainer
-@onready var frog: Frog = %Frog
+
+
+func _setup_minigame() -> void:
+	super()
+	await _instantiate_subscenes()
+
+
+func _instantiate_subscenes() -> void:
+	var background_node: Control = $GameRoot/Background
+	var game_root_node: Control = $GameRoot
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	river = (load(RIVER_SCENE_PATH) as PackedScene).instantiate()
+	river.name = "River"
+	background_node.add_child(river)
+	background_node.move_child(river, 0)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	frog = (load(FROG_SCENE_PATH) as PackedScene).instantiate()
+	frog.name = "Frog"
+	frog.offset_left = 360.0
+	frog.offset_top = 900.0
+	frog.offset_right = 360.0
+	frog.offset_bottom = 900.0
+	game_root_node.add_child(frog)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	lilypad_track_scene = load(LILYPAD_TRACK_SCENE_PATH) as PackedScene
 
 
 func _setup_word_progression() -> void:
@@ -65,7 +105,7 @@ func _create_tracks() -> void:
 	var current_word: Dictionary = _get_current_stimulus()
 	var current_distractors: Array = _get_current_distractors()
 	for index: int in range((current_word.GPs as Array).size()):
-		var track: LilypadTrack = LILYPAD_TRACK_SCENE.instantiate()
+		var track: LilypadTrack = lilypad_track_scene.instantiate()
 		lilypad_tracks_container.add_child(track)
 		track.difficulty_settings = difficulty_settings[difficulty]
 		track.gp = current_word.GPs[index]
@@ -162,7 +202,7 @@ func _on_current_progression_changed() -> void:
 func set_current_progression(p_current_progression: int) -> void:
 	var previous_progression: int = current_progression
 	current_progression = p_current_progression
-	Log.debug("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
+	Log.debug("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, TYPE_NAMES[minigame_name]])
 
 	consecutive_errors = 0
 	is_highlighting = false

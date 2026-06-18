@@ -2,7 +2,7 @@ extends Control
 
 const TEACHER_PASSWORD: String = "42"
 const BACK_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
-const NEXT_SCENE: PackedScene = preload("res://sources/gardens/gardens.tscn")
+const NEXT_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
@@ -63,11 +63,17 @@ func _on_code_keyboard_password_entered(password: String) -> void:
 		var login_success: bool = UserDataManager.login_student(password)
 		Log.info("LoginScreen: Login attempt for student code %s returned %s" % [password, str(login_success)])
 		kalulu_button.hide()
+		if not login_success:
+			# The synchronization above may have deleted or moved the student
+			Log.warn("LoginScreen: Login failed for student code %s after synchronization" % password)
+			await kalulu.play_kalulu_speech(wrong_password_speech)
+			keyboard.reset_password()
+			kalulu_button.show()
+			return
 		await kalulu.play_kalulu_speech(right_password_speech)
 		await OpeningCurtain.close()
 		Log.trace("LoginScreen: Start loading next scene")
-		get_tree().change_scene_to_packed(NEXT_SCENE)
-		Log.trace("LoginScreen: End loading next scene")
+		SceneLoader.change_scene(NEXT_SCENE_PATH)
 	else:
 		Log.warn("LoginScreen: Unknown student code entered (length=%d)" % password.length())
 		kalulu_button.hide()

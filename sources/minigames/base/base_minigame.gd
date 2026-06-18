@@ -2,18 +2,32 @@ class_name Minigame
 extends Control
 
 enum Type {
-	jellyfish,
-	crabs,
-	parakeets,
-	monkey,
-	caterpillar,
-	frog,
-	turtles,
-	ants,
-	penguin,
-	fish
+	JELLYFISH,
+	CRABS,
+	PARAKEETS,
+	MONKEY,
+	CATERPILLAR,
+	FROG,
+	TURTLES,
+	ANTS,
+	PENGUIN,
+	FISH,
 }
 
+# String names used for file paths, database keys, and speech lookups.
+# Kept separate from enum member names so renaming members doesn't affect runtime behaviour.
+const TYPE_NAMES: Array[String] = [
+	"jellyfish",
+	"crabs",
+	"parakeets",
+	"monkey",
+	"caterpillar",
+	"frog",
+	"turtles",
+	"ants",
+	"penguin",
+	"fish",
+]
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
 const LABEL_COLOR_NEUTRAL: Color = Color("#e6f3e0")
@@ -53,18 +67,32 @@ var is_final_boss: bool = false
 # Stimuli
 var stimuli: Array = []
 var distractions: Array = []
-# Lives
+# Hidden lives counter — used ONLY to compute the next run's difficulty.
+#
+# The player never sees this value and can never "lose" a regular minigame because of it:
+# every run ends with the win screen once `current_progression` reaches `max_progression`.
+# Starts at `max_number_of_lives` and individual minigames decrement it with `current_lives -= 1`
+# each time the child makes a mistake. It is allowed to go negative — that's the whole point.
+#
+# At end of game, `_win()` reads this value:
+#   - `current_lives >= 0` (fewer mistakes than allowed) → counted as a win, difficulty may go up
+#   - `current_lives <  0` (more mistakes than allowed)  → counted as a loss, difficulty may go down
+#
+# The counter is also reused (as a convenient proxy for "how many recent mistakes") to drive
+# the in-game hint system (Kalulu help speech and highlighting). That side effect IS visible to
+# the player, but the raw lives number is not — do not add any UI that exposes it.
 var current_lives: int = 0:
 	set(value):
 		var previous_lives: int = current_lives
 		current_lives = value
 		if current_lives != previous_lives:
-			Log.trace("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, Type.keys()[minigame_name]])
+			Log.trace("BaseMinigame: Lives changed from %d to %d (max %d) for %s" % [previous_lives, current_lives, max_number_of_lives, TYPE_NAMES[minigame_name]])
 		if current_lives < previous_lives:
 			consecutive_errors += previous_lives - current_lives
-		if current_lives <= max_number_of_lives - errors_before_help_speech:
+		var help_speech_threshold: int = max_number_of_lives - errors_before_help_speech
+		if previous_lives > help_speech_threshold and current_lives <= help_speech_threshold:
 			_play_kalulu_help_speech()
-		elif consecutive_errors == errors_before_highlight:
+		if consecutive_errors == errors_before_highlight:
 			is_highlighting = true
 # Progression
 var current_progression: int = 0: set = set_current_progression
@@ -104,11 +132,11 @@ func _ready() -> void:
 	
 	# Difficulty
 	if (UserDataManager as UserDataManagerClass)._student_difficulty:
-		difficulty = UserDataManager.get_difficulty_for_minigame(Type.keys()[minigame_name] as String)
+		difficulty = UserDataManager.get_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String)
 	
-	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro"))
-	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "help"))
-	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "end"))
+	intro_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name] as String, "intro"))
+	help_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name] as String, "help"))
+	win_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name] as String, "end"))
 	lose_kalulu_speech = Database.load_external_sound(Database.get_kalulu_speech_path("minigame", "lose"))
 	
 	if not Engine.is_editor_hint():
@@ -123,9 +151,12 @@ func _initialize() -> void:
 	if not Engine.is_editor_hint():
 		_find_stimuli_and_distractions()
 	
-	_setup_minigame()
+	# Await so minigames whose setup is a coroutine (e.g. staged instantiation,
+	# particle shader warmup) finish before the curtain opens and _start() runs.
+	@warning_ignore("redundant_await")
+	await _setup_minigame()
 	
-	Log.info("BaseMinigame: Initialize %s (lesson %d, minigame #%d, difficulty %d)" % [Type.keys()[minigame_name], lesson_nb, minigame_number, difficulty])
+	Log.info("BaseMinigame: Initialize %s (lesson %d, minigame #%d, difficulty %d)" % [TYPE_NAMES[minigame_name], lesson_nb, minigame_number, difficulty])
 	
 	if not Engine.is_editor_hint():
 		await _curtains_and_kalulu()
@@ -151,10 +182,10 @@ func _curtains_and_kalulu() -> void:
 	await (OpeningCurtain as OpeningCurtainClass).open()
 	
 	# Checks if intro needs to be played
-	if not UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
+	if not UserDataManager.is_speech_played(TYPE_NAMES[minigame_name] as String):
 		minigame_ui.play_kalulu_speech(intro_kalulu_speech)
 		await minigame_ui.kalulu_speech_ended
-		UserDataManager.mark_speech_as_played(Type.keys()[minigame_name] as String)
+		UserDataManager.mark_speech_as_played(TYPE_NAMES[minigame_name] as String)
 #endregion
 
 #region Timer
@@ -166,7 +197,7 @@ var _is_paused: bool = false
 
 # Launch the minigame
 func _start() -> void:
-	Log.info("BaseMinigame: Start minigame=%s lesson=%d difficulty=%d" % [Type.keys()[minigame_name], lesson_nb, difficulty])
+	Log.info("BaseMinigame: Start minigame=%s lesson=%d difficulty=%d" % [TYPE_NAMES[minigame_name], lesson_nb, difficulty])
 	_start_time = Time.get_ticks_msec() / 1000.0
 	_elapsed_paused = 0.0
 	_is_paused = false
@@ -181,7 +212,6 @@ func _notification(what: int) -> void:
 			if not _is_paused:
 				_pause_start = Time.get_ticks_msec() / 1000.0
 				_is_paused = true
-
 		NOTIFICATION_APPLICATION_FOCUS_IN:
 			if _is_paused:
 				var resumed: float = Time.get_ticks_msec() / 1000.0
@@ -218,13 +248,14 @@ func _win() -> void:
 	
 	update_scores()
 	
-	Log.info("BaseMinigame: %s won in %d seconds with progression %d/%d and %d/%d lives" % [Type.keys()[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
-	
-	# Difficulty
-	if current_lives <= 0:
-		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
-	else:
-		UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, true)
+	Log.info("BaseMinigame: %s won in %d seconds with progression %d/%d and %d/%d lives" % [TYPE_NAMES[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
+
+	# Hidden difficulty check — see the `current_lives` declaration above.
+	# The player always reaches this branch (no visible loss), but if they used up more than
+	# `max_number_of_lives` mistakes (`current_lives` ended strictly negative), this run is
+	# reported to the difficulty system as a loss so the next session eases up.
+	var counted_as_win: bool = current_lives >= 0
+	UserDataManager.update_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String, counted_as_win)
 	
 	audio_player.stream = WIN_SOUND_FX
 	audio_player.play()
@@ -263,10 +294,10 @@ func _lose() -> void:
 	
 	update_scores()
 	
-	Log.info("BaseMinigame: %s Lose in %d seconds with progression %d/%d and %d/%d lives" % [Type.keys()[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
+	Log.info("BaseMinigame: %s Lose in %d seconds with progression %d/%d and %d/%d lives" % [TYPE_NAMES[minigame_name], _get_elapsed_time_seconds(), current_progression, max_progression, current_lives, max_number_of_lives])
 	
 	# Difficulty
-	UserDataManager.update_difficulty_for_minigame(Type.keys()[minigame_name] as String, false)
+	UserDataManager.update_difficulty_for_minigame(TYPE_NAMES[minigame_name] as String, false)
 	
 	audio_player.stream = LOSE_SOUND_FX
 	audio_player.play()
@@ -280,7 +311,7 @@ func _lose() -> void:
 			if has_method("show_adult_block"):
 				call("show_adult_block")
 			else:
-				Log.error("BaseMinigame: Adult block requested but no handler exists for %s" % Type.keys()[minigame_name])
+				Log.error("BaseMinigame: Adult block requested but no handler exists for %s" % TYPE_NAMES[minigame_name])
 			return
 	
 	_reset()
@@ -303,8 +334,8 @@ func _save_logs() -> void:
 	var logs_size: int = -1
 	if logs.has("answers") and logs.get("answers", []) is Array:
 		logs_size = (logs.get("answers", []) as Array).size()
-	Log.info("BaseMinigame: Saving logs for %s with %d answer(s)" % [Type.keys()[minigame_name], logs_size])
-	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), Type.keys()[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
+	Log.info("BaseMinigame: Saving logs for %s with %d answer(s)" % [TYPE_NAMES[minigame_name], logs_size])
+	LessonLogger.save_logs(logs, UserDataManager.get_student_folder(), TYPE_NAMES[minigame_name] as String, lesson_nb, Time.get_time_string_from_system())
 	_reset_logs()
 
 
@@ -317,7 +348,7 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"reponse": response,
 		"awaited_response": current_stimulus,
 		"is_right": response == current_stimulus,
-		"minigame": Type.keys()[minigame_name],
+		"minigame": TYPE_NAMES[minigame_name],
 		"number_of_hints": current_number_of_hints,
 		"current_progression": current_progression,
 		"max_progression": max_progression,
@@ -325,7 +356,7 @@ func _log_new_response(response: Dictionary, current_stimulus: Dictionary) -> vo
 		"max_number_of_lives": max_number_of_lives,
 	}
 	Log.trace("BaseMinigame: Log new response minigame=%s response=%s expected=%s right=%s progression=%d/%d lives=%d/%d" % [
-				Type.keys()[minigame_name],
+				TYPE_NAMES[minigame_name],
 				str(response),
 				str(current_stimulus),
 				str(response_log.is_right),
@@ -404,18 +435,17 @@ func _go_back_to_the_garden() -> void:
 	_save_logs()
 	
 	Gardens.transition_data = gardens_data
-	get_tree().change_scene_to_file("res://sources/gardens/gardens.tscn")
+	SceneLoader.change_scene("res://sources/gardens/gardens.tscn")
 
 
 func _play_stimulus() -> void:
 	return
 
 
-func _pause_game() -> bool:
-	var pause: bool = not get_tree().paused
-	get_tree().paused = pause
-	Log.trace("BaseMinigame: Pause toggled to %s for %s" % [str(pause), Type.keys()[minigame_name]])
-	return pause
+func _set_root_timers_paused(paused: bool) -> void:
+	for child: Node in get_children():
+		if child is Timer:
+			(child as Timer).paused = paused
 
 
 func _highlight() -> void:
@@ -438,7 +468,7 @@ func _play_kalulu_help_speech() -> void:
 func set_current_progression(p_current_progression: int) -> void:
 	var previous_progression: int = current_progression
 	current_progression = p_current_progression
-	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, Type.keys()[minigame_name]])
+	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, TYPE_NAMES[minigame_name]])
 	
 	consecutive_errors = 0
 	is_highlighting = false
@@ -460,14 +490,20 @@ func _on_minigame_ui_back_button_pressed() -> void:
 
 
 func _on_minigame_ui_stimulus_button_pressed() -> void:
-	_pause_game()
+	game_root.process_mode = Node.PROCESS_MODE_DISABLED
+	set_process(false)
+	set_physics_process(false)
+	_set_root_timers_paused(true)
 	minigame_ui.lock()
-	
+
 	@warning_ignore("redundant_await")
 	await _play_stimulus()
-	
+
 	minigame_ui.unlock()
-	_pause_game()
+	_set_root_timers_paused(false)
+	set_process(true)
+	set_physics_process(true)
+	game_root.process_mode = Node.PROCESS_MODE_PAUSABLE
 
 
 func _on_minigame_ui_kalulu_button_pressed() -> void:

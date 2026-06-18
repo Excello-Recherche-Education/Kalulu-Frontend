@@ -2,8 +2,8 @@ class_name MusicManagerClass
 extends Node
 
 enum Track {
-	Title,
-	Garden
+	TITLE,
+	GARDEN
 }
 
 const TRACKS: Array = [
@@ -16,7 +16,7 @@ const TRACKS: Array = [
 
 func _ready() -> void:
 	Log.trace("MusicManager: Ready - starting title track")
-	play(Track.Title)
+	play(Track.TITLE)
 
 
 func _on_music_player_finished() -> void:

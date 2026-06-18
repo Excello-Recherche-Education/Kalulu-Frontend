@@ -1,16 +1,16 @@
 extends Minigame
 
 enum State {
-	Locked,
-	Idle,
-	Selected1,
-	Selected2,
+	LOCKED,
+	IDLE,
+	SELECTED_1,
+	SELECTED_2,
 }
 enum Audio {
-	Fly,
-	Happy,
-	Turn,
-	Win,
+	FLY,
+	HAPPY,
+	TURN,
+	WIN,
 }
 
 const AUDIO_STREAMS: Array[AudioStreamMP3] = [
@@ -32,7 +32,7 @@ const PARAKEET_SCENE: PackedScene = preload("res://sources/minigames/parakeets/p
 
 var parakeets: Array[Parakeet] = []
 var selected: Array[Parakeet] = []
-var state: State = State.Locked
+var state: State = State.LOCKED
 
 @onready var branches: Node2D = $GameRoot/TreeTrunk/Branches
 @onready var possible_start_positions_parent: Control = $GameRoot/FlyFrom
@@ -97,6 +97,9 @@ func _setup_minigame() -> void:
 # Find the stimuli and distractions of the minigame.
 func _find_stimuli_and_distractions() -> void:
 	stimuli = Database.get_gps_for_lesson(lesson_nb, true)
+	# Only select stimuli with 1 letter, not more
+	stimuli = stimuli.filter(func(stimulus: Dictionary) -> bool:
+		return (stimulus.Grapheme as String).length() == 1)
 
 
 func _start() -> void:
@@ -114,30 +117,30 @@ func _start() -> void:
 
 func _on_parakeet_pressed(parakeet: Parakeet) -> void:
 	match state:
-		State.Selected2, State.Locked:
+		State.SELECTED_2, State.LOCKED:
 			return
 		
-		State.Selected1:
-			state = State.Locked
+		State.SELECTED_1:
+			state = State.LOCKED
 			if parakeet in selected:
 				selected.erase(parakeet)
 				await _turn(parakeet, true)
-				state = State.Idle
+				state = State.IDLE
 			else:
 				selected.append(parakeet)
 				await _turn(parakeet, false)
-				state = State.Selected2
+				state = State.SELECTED_2
 				_log_new_response({"pair": [selected[0].stimulus, selected[1].stimulus]}, {"pair": [selected[0].stimulus, selected[0].stimulus]})
 				if selected[0].stimulus.Grapheme == selected[1].stimulus.Grapheme:
 					_correct()
 				else:
 					_wrong()
 				
-		State.Idle:
-			state = State.Locked
+		State.IDLE:
+			state = State.LOCKED
 			selected.append(parakeet)
 			await _turn(parakeet, false)
-			state = State.Selected1
+			state = State.SELECTED_1
 
 
 func _correct() -> void:
@@ -151,7 +154,7 @@ func _correct() -> void:
 	await _fly_to(nest_positions)
 	await _make_selected_coo()
 	_fly_to(fly_away_positions)
-	state = State.Idle
+	state = State.IDLE
 	selected.clear()
 
 
@@ -183,14 +186,14 @@ func _present_parakeets() -> void:
 	for parakeet: Parakeet in parakeets:
 		coroutine.add_future(_turn.bind(parakeet, true))
 	await coroutine.join_all()
-	state = State.Idle
+	state = State.IDLE
 
 
 func _make_selected_happy() -> void:
 	for parakeet: Parakeet in selected:
 		parakeet.right()
 		parakeet.happy()
-	audio_player.stream = AUDIO_STREAMS[Audio.Happy]
+	audio_player.stream = AUDIO_STREAMS[Audio.HAPPY]
 	audio_player.play()
 	await audio_player.finished
 
@@ -206,7 +209,7 @@ func _make_selected_sad() -> void:
 func _make_selected_coo() -> void:
 	for parakeet: Parakeet in selected:
 		parakeet.idle()
-	audio_player.stream = AUDIO_STREAMS[Audio.Win]
+	audio_player.stream = AUDIO_STREAMS[Audio.WIN]
 	audio_player.play()
 	await audio_player.finished
 
@@ -216,7 +219,7 @@ func _fly_to(targets: Array[Vector2]) -> void:
 	parent.move_child(selected[0], parent.get_child_count() - 1)
 	parent.move_child(selected[1], parent.get_child_count() - 1)
 	var coroutine: Coroutine = Coroutine.new()
-	audio_player.stream = AUDIO_STREAMS[Audio.Fly]
+	audio_player.stream = AUDIO_STREAMS[Audio.FLY]
 	audio_player.play()
 	coroutine.add_future(audio_player.finished)
 	coroutine.add_future(selected[0].fly_to.bind(targets[0], fly_duration))
@@ -226,7 +229,7 @@ func _fly_to(targets: Array[Vector2]) -> void:
 
 func _turn(parakeet: Parakeet, to_back: bool) -> void:
 	if not audio_player.playing:
-		audio_player.stream = AUDIO_STREAMS[Audio.Turn]
+		audio_player.stream = AUDIO_STREAMS[Audio.TURN]
 		audio_player.play()
 	if to_back:
 		await parakeet.turn_to_back()
@@ -237,7 +240,7 @@ func _turn(parakeet: Parakeet, to_back: bool) -> void:
 func _flying_arrival(to: Array[Vector2]) -> void:
 	assert(parakeets.size() <= to.size(), "Some parakeets don't have a destination")
 	var coroutine: Coroutine = Coroutine.new()
-	audio_player.stream = AUDIO_STREAMS[Audio.Fly]
+	audio_player.stream = AUDIO_STREAMS[Audio.FLY]
 	audio_player.play()
 	coroutine.add_future(audio_player.finished)
 	for index: int in range(parakeets.size()):

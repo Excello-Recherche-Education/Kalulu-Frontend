@@ -1,9 +1,9 @@
 extends WordsMinigame
 
 enum Audio {
-	SendToKing,
-	SendToPlank,
-	SendToMonkey,
+	SEND_TO_KING,
+	SEND_TO_PLANK,
+	SEND_TO_MONKEY,
 }
 
 const MONKEY_SCENE: PackedScene = preload("res://sources/minigames/monkeys/monkey.tscn")
@@ -37,6 +37,7 @@ var is_locked: bool = true:
 @onready var word_label: RichTextLabel = $GameRoot/TextPlank/Label
 @onready var parabola_summit: Control = $GameRoot/ParabolaSummit
 @onready var text_plank: Sprite2D = $GameRoot/TextPlank
+@onready var broken_coconut_fx: BrokenCoconutFX = $GameRoot/BrokenCoconutFX
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
@@ -47,14 +48,16 @@ func _setup_minigame() -> void:
 	var settings: DifficultySettings = difficulty_settings[difficulty]
 	
 	for index: int in range(settings.distractors_count + 1):
+		await get_tree().process_frame
 		Log.trace("MonkeysMinigame: SetupMinigame: Instantiate new monkey")
 		var monkey: Monkey = MONKEY_SCENE.instantiate()
 		monkeys_node.add_child(monkey)
 		monkeys.append(monkey)
-		
+		monkey.broken_fx = broken_coconut_fx
+
 		var pos: Node2D = possible_positions_parent.get_child(index) as Node2D
 		monkey.global_position = pos.global_position
-		
+
 		monkey.pressed.connect(_on_monkey_pressed.bind(monkey))
 		monkey.dragged_into_self.connect(_on_monkey_pressed.bind(monkey))
 	
@@ -72,9 +75,10 @@ func _setup_minigame() -> void:
 	)
 	
 	_update_label(0)
-	
-	# Pre-warm particle shaders to avoid stutter on first coconut explosion
-	await monkeys[0].coconut.broken_coconut_fx.warm_up()
+
+	# Pre-warm particle shaders on the single shared FX instance to avoid stutter on first explosion.
+	await get_tree().process_frame
+	await broken_coconut_fx.warm_up()
 
 
 func _start() -> void:
@@ -119,18 +123,19 @@ func _play_monkey_stimulus(monkey: Monkey) -> void:
 
 func _get_coconut_from_monkey_to_king(monkey: Monkey) -> Node2D:
 	monkey.stop_highlight()
-	
+
 	await monkey.play("start_throw")
 	monkey.play("finish_throw")
-	
-	audio_player.stream = AUDIO_STREAMS[Audio.SendToKing]
+
+	audio_player.stream = AUDIO_STREAMS[Audio.SEND_TO_KING]
 	audio_player.play()
-	
-	var coconut: Coconut = monkey.coconut.duplicate()
-	monkey.coconut.hide()
-	game_root.add_child(coconut)
-	coconut.text = monkey.coconut.text
-	coconut.global_transform = monkey.coconut.global_transform
+
+	# Reparent the monkey's own coconut (keeps global transform) and give the monkey a
+	# fresh one. Avoids allocating a new Coconut subtree — including particle systems —
+	# on every throw, which was a likely cause of stutters / crashes on low-end devices.
+	var coconut: Coconut = monkey.coconut
+	coconut.reparent(game_root)
+	monkey.reset_coconut()
 	var tween: Tween = create_tween()
 	tween.set_parallel()
 	tween.tween_property(coconut, "global_position:x", (coconut.global_position.x + king.catch_position.global_position.x) / 2, throw_to_king_duration / 2).set_trans(Tween.TRANS_LINEAR)
@@ -167,7 +172,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 	
 	if _is_gp_right(monkey.stimulus):
 		await king.play("start_right")
-		audio_player.stream = AUDIO_STREAMS[Audio.SendToPlank]
+		audio_player.stream = AUDIO_STREAMS[Audio.SEND_TO_PLANK]
 		audio_player.play()
 		king.play("finish_right")
 		var tween: Tween = create_tween()
@@ -179,7 +184,7 @@ func _on_coconut_thrown(monkey: Monkey) -> void:
 		current_word_progression += 1
 	else:
 		await king.play("start_wrong")
-		audio_player.stream = AUDIO_STREAMS[Audio.SendToMonkey]
+		audio_player.stream = AUDIO_STREAMS[Audio.SEND_TO_MONKEY]
 		audio_player.play()
 		king.play("finish_wrong")
 		var tween: Tween = create_tween()
@@ -201,7 +206,6 @@ func _on_current_word_progression_changed() -> void:
 		else:
 			monkey.stimulus = _get_distractor()
 		monkey.stunned = false
-		monkey.coconut.show()
 	
 	var coroutine: Coroutine = Coroutine.new()
 	if audio_player.playing:

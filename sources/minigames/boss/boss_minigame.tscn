@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://cax5nncivwq4" path="res://assets/minigames/boss/bin.png" id="7_wij1o"]
 [ext_resource type="Texture2D" uid="uid://xukdk8dobsqy" path="res://assets/minigames/boss/book.png" id="8_mkvne"]
 [ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="8_xrsj0"]
-[ext_resource type="PackedScene" uid="uid://djykrpdu58f3v" path="res://sources/minigames/turtles/turtle.tscn" id="11_je4of"]
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://assets/minigames/minigame_ui/graphic/gauge.png" id="11_p5wnc"]
 [ext_resource type="Texture2D" uid="uid://7w2e4mo7yssm" path="res://assets/minigames/boss/foreground.png" id="12_2c6ay"]
 [ext_resource type="Texture2D" uid="uid://4ci6gmg0c15o" path="res://assets/minigames/minigame_ui/graphic/white_gauge.png" id="12_w5m1b"]
@@ -22,15 +21,8 @@
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="17_47luc"]
 [ext_resource type="PackedScene" uid="uid://dpfn2ag2xv24s" path="res://sources/minigames/boss/kalulu_boss.tscn" id="17_kvjsk"]
 [ext_resource type="PackedScene" uid="uid://b7rx6esglyd6c" path="res://sources/menus/adult_block/adult_block.tscn" id="18_4v0wd"]
-[ext_resource type="PackedScene" uid="uid://bp0b4xkr7nwed" path="res://sources/minigames/monkeys/monkey.tscn" id="18_y0mix"]
 [ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="19_b2wqe"]
-[ext_resource type="PackedScene" uid="uid://b78362g1yif2n" path="res://sources/minigames/penguin/penguin.tscn" id="19_j0ia3"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="19_wi3c5"]
-[ext_resource type="PackedScene" uid="uid://bwe3fp0vkpufb" path="res://sources/minigames/crabs/crab/crab.tscn" id="20_j0ia3"]
-[ext_resource type="PackedScene" uid="uid://bloyucpsbvpx8" path="res://sources/minigames/frog/frog.tscn" id="20_xrsj0"]
-[ext_resource type="PackedScene" uid="uid://cpkwyypyikpfc" path="res://sources/minigames/jellyfish/jellyfish.tscn" id="21_3iy22"]
-[ext_resource type="PackedScene" uid="uid://cmoeum0oc0p2" path="res://sources/minigames/parakeets/parakeet.tscn" id="23_h2hey"]
-[ext_resource type="PackedScene" uid="uid://c6st16roxwloh" path="res://sources/minigames/ants/ant.tscn" id="24_ejade"]
 
 [sub_resource type="Curve2D" id="Curve2D_8d1qx"]
 _data = {
@@ -91,14 +83,6 @@ position = Vector2(1904, 248)
 texture = ExtResource("8_xrsj0")
 
 [node name="Friends_Behind_Frame" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=889769498]
-
-[node name="Jellyfish" parent="GameRoot/Friends_Behind_Frame" index="0" unique_id=2036427610 instance=ExtResource("21_3iy22")]
-offset_left = 1449.0001
-offset_top = 1301.0001
-offset_right = 1849.0001
-offset_bottom = 1701.0001
-scale = Vector2(0.45, 0.45)
-boss = true
 
 [node name="Frame" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="4" unique_id=1674444498]
 position = Vector2(1080, 720)
@@ -236,7 +220,7 @@ margin_top_ratio = 0.95
 
 [node name="ProgressionGaugeInternal" type="NinePatchRect" parent="GameRoot/ProgressionGauge/ProgressionGaugePercentMarginContainer" index="0" unique_id=1534553679]
 unique_name_in_owner = true
-modulate = Color(0.996078, 0.776471, 0.2, 1)
+modulate = Color(0.54901963, 0.9490196, 0.4509804, 1)
 layout_mode = 2
 texture = ExtResource("12_w5m1b")
 patch_margin_top = 33
@@ -250,41 +234,6 @@ texture = ExtResource("12_2c6ay")
 [node name="Friends" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="10" unique_id=1965227465]
 self_modulate = Color(1, 1, 1, 0.34509805)
 position = Vector2(1676, 1280)
-
-[node name="Monkey" parent="GameRoot/Friends" index="0" unique_id=1341983060 instance=ExtResource("18_y0mix")]
-position = Vector2(125, 62)
-scale = Vector2(0.7, 0.7)
-
-[node name="Turtle" parent="GameRoot/Friends" index="1" unique_id=711306409 instance=ExtResource("11_je4of")]
-position = Vector2(-220, 120)
-rotation = 1.5707964
-scale = Vector2(0.17999999, 0.17999999)
-
-[node name="Penguin" parent="GameRoot/Friends" index="2" unique_id=1835464943 instance=ExtResource("19_j0ia3")]
-position = Vector2(28, 114)
-scale = Vector2(0.3, 0.3)
-
-[node name="Frog" parent="GameRoot/Friends" index="3" unique_id=2020692812 instance=ExtResource("20_xrsj0")]
-offset_left = -43.999985
-offset_top = 112.0
-offset_right = -43.999985
-offset_bottom = 112.0
-scale = Vector2(0.4, 0.4)
-
-[node name="Crab" parent="GameRoot/Friends" index="4" unique_id=617305983 instance=ExtResource("20_j0ia3")]
-offset_left = -220.0
-offset_top = 32.0
-offset_right = 148.0
-offset_bottom = 352.0
-scale = Vector2(0.45, 0.45)
-
-[node name="Parakeet" parent="GameRoot/Friends" index="5" unique_id=1132826004 instance=ExtResource("23_h2hey")]
-position = Vector2(124, -103)
-scale = Vector2(0.09, 0.09)
-
-[node name="Ant" parent="GameRoot/Friends" index="6" unique_id=1721368901 instance=ExtResource("24_ejade")]
-position = Vector2(228, 132)
-scale = Vector2(0.17, 0.17)
 
 [node name="KaluluBoss" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="11" unique_id=1776395621 instance=ExtResource("17_kvjsk")]
 unique_name_in_owner = true

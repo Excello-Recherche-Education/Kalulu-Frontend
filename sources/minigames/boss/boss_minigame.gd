@@ -2,6 +2,20 @@ extends Minigame
 
 const FINAL_BOSS_GAME_DURATION: int = 20 * 60
 const FINAL_BOSS_TOTAL_WORDS: int = 180
+const GAUGE_COLOR_LOW: Color = Color(0.55, 0.95, 0.45)
+const GAUGE_COLOR_HIGH: Color = Color(0.996078, 0.776471, 0.2)
+const MONKEY_SCENE_PATH: String = "res://sources/minigames/monkeys/monkey.tscn"
+const TURTLE_SCENE_PATH: String = "res://sources/minigames/turtles/turtle.tscn"
+# turtle.tscn no longer carries a default SpriteFrames (the three color
+# spritesheets are ~123 MB of VRAM each and the turtles minigame picks one
+# at runtime). For the static boss-friend turtle, pick one here.
+const TURTLE_FRIEND_SPRITE_FRAMES_PATH: String = "res://sources/minigames/turtles/purple_turtle_animations.tres"
+const PENGUIN_SCENE_PATH: String = "res://sources/minigames/penguin/penguin.tscn"
+const FROG_SCENE_PATH: String = "res://sources/minigames/frog/frog.tscn"
+const CRAB_SCENE_PATH: String = "res://sources/minigames/crabs/crab/crab.tscn"
+const PARAKEET_SCENE_PATH: String = "res://sources/minigames/parakeets/parakeet.tscn"
+const ANT_SCENE_PATH: String = "res://sources/minigames/ants/ant.tscn"
+const JELLYFISH_SCENE_PATH: String = "res://sources/minigames/jellyfish/jellyfish.tscn"
 
 @export var game_duration: int = 4 * 60
 @export var minimum_correct_ratio: float = 0.8
@@ -19,6 +33,16 @@ var _boss_answer_start_ms: int = 0
 var default_label_settings: LabelSettings
 var default_label_background_color: Color
 var _correct_answer_tween: Tween
+var _victory_pulse_tween: Tween
+var _victory_threshold_reached: bool = false
+var turtle: Turtle
+var frog: Frog
+var crab: Crab
+var penguin: Penguin
+var monkey: Monkey
+var parakeet: Parakeet
+var ant: Ant
+var jellyfish: Jellyfish
 
 @onready var text_start_zone: Control = %ControlText
 @onready var texture_button_bin: TextureButton = $GameRoot/TextureButtonBin
@@ -34,21 +58,14 @@ var _correct_answer_tween: Tween
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var right_stars: RightStarsFX = $GameRoot/Right_Stars
 @onready var frame_exit: Sprite2D = $GameRoot/Frame/FrameExit
-@onready var turtle: Turtle = $GameRoot/Friends/Turtle
-@onready var frog: Frog = $GameRoot/Friends/Frog
-@onready var crab: Crab = $GameRoot/Friends/Crab
-@onready var penguin: Penguin = $GameRoot/Friends/Penguin
-@onready var monkey: Monkey = $GameRoot/Friends/Monkey
-@onready var parakeet: Parakeet = $GameRoot/Friends/Parakeet
-@onready var ant: Ant = $GameRoot/Friends/Ant
-@onready var jellyfish: Jellyfish = $GameRoot/Friends_Behind_Frame/Jellyfish
+@onready var friends_container: Node2D = $GameRoot/Friends
+@onready var friends_behind_frame_container: Node2D = $GameRoot/Friends_Behind_Frame
 
 
 func _ready() -> void:
 	super()
 	if not is_final_boss:
 		frame_exit.show()
-	setup_animal_friends()
 	fireworks.set_colors([Color("#bca4ff"), Color("#f5a8c8"), Color("#ffbf94")])
 	if adult_block and adult_block.has_signal("unlocked"):
 		adult_block.unlocked.connect(_on_adult_block_unlocked)
@@ -65,8 +82,98 @@ func _ready() -> void:
 	default_label_background_color = texture_rect_text_box.self_modulate
 	
 	# Skips the whole tutorial
-	if UserDataManager.is_speech_played(Type.keys()[minigame_name] as String):
+	if UserDataManager.is_speech_played(TYPE_NAMES[minigame_name]):
 		tutorial_count = 2
+
+	_instantiate_animal_friends()
+
+
+func _instantiate_animal_friends() -> void:
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	monkey = (load(MONKEY_SCENE_PATH) as PackedScene).instantiate()
+	monkey.position = Vector2(125, 62)
+	monkey.scale = Vector2(0.7, 0.7)
+	friends_container.add_child(monkey)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	turtle = (load(TURTLE_SCENE_PATH) as PackedScene).instantiate()
+	turtle.position = Vector2(-220, 120)
+	turtle.rotation = 1.5707964
+	turtle.scale = Vector2(0.18, 0.18)
+	friends_container.add_child(turtle)
+	turtle.sprite_frames = load(TURTLE_FRIEND_SPRITE_FRAMES_PATH)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	penguin = (load(PENGUIN_SCENE_PATH) as PackedScene).instantiate()
+	penguin.position = Vector2(28, 114)
+	penguin.scale = Vector2(0.3, 0.3)
+	friends_container.add_child(penguin)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	frog = (load(FROG_SCENE_PATH) as PackedScene).instantiate()
+	frog.offset_left = -43.999985
+	frog.offset_top = 112.0
+	frog.offset_right = -43.999985
+	frog.offset_bottom = 112.0
+	frog.scale = Vector2(0.4, 0.4)
+	friends_container.add_child(frog)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	crab = (load(CRAB_SCENE_PATH) as PackedScene).instantiate()
+	crab.offset_left = -220.0
+	crab.offset_top = 32.0
+	crab.offset_right = 148.0
+	crab.offset_bottom = 352.0
+	crab.scale = Vector2(0.45, 0.45)
+	friends_container.add_child(crab)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	parakeet = (load(PARAKEET_SCENE_PATH) as PackedScene).instantiate()
+	parakeet.position = Vector2(124, -103)
+	parakeet.scale = Vector2(0.09, 0.09)
+	friends_container.add_child(parakeet)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	ant = (load(ANT_SCENE_PATH) as PackedScene).instantiate()
+	ant.position = Vector2(228, 132)
+	ant.scale = Vector2(0.17, 0.17)
+	friends_container.add_child(ant)
+
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+
+	jellyfish = (load(JELLYFISH_SCENE_PATH) as PackedScene).instantiate()
+	jellyfish.offset_left = 1449.0001
+	jellyfish.offset_top = 1301.0001
+	jellyfish.offset_right = 1849.0001
+	jellyfish.offset_bottom = 1701.0001
+	jellyfish.scale = Vector2(0.45, 0.45)
+	jellyfish.boss = true
+	friends_behind_frame_container.add_child(jellyfish)
+
+	setup_animal_friends()
 
 
 func setup_animal_friends() -> void:
@@ -158,7 +265,7 @@ func _present_next_word() -> void:
 	if _is_boss_session():
 		_boss_answer_start_ms = Time.get_ticks_msec()
 	if tutorial_count == 0:
-		var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "intro_test_game_first_word"))
+		var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "intro_test_game_first_word"))
 		minigame_ui.play_kalulu_speech(speech)
 		await minigame_ui.kalulu_speech_ended
 
@@ -224,12 +331,12 @@ func _on_answer_dropped(is_answered_real: bool) -> void:
 		words_to_present.pop_front()
 		await _play_correct_answer_animation(target_button)
 		if tutorial_count == 0:
-			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_first_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "win_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "win_test_game_second_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "win_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
@@ -245,12 +352,12 @@ func _on_answer_dropped(is_answered_real: bool) -> void:
 			wrong_fx.play()
 		words_to_present_next.append(words_to_present.pop_front())
 		if tutorial_count == 0:
-			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_first_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "lose_test_game_first_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
 		elif tutorial_count == 1:
-			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(Type.keys()[minigame_name] as String, "lose_test_game_second_word"))
+			var speech: AudioStreamMP3 = Database.load_external_sound(Database.get_kalulu_speech_path(TYPE_NAMES[minigame_name], "lose_test_game_second_word"))
 			minigame_ui.play_kalulu_speech(speech)
 			await minigame_ui.kalulu_speech_ended
 			tutorial_count += 1
@@ -336,8 +443,29 @@ func _update_progression_gauge() -> void:
 		# Keep at least one pixel unfilled while there are still words to answer.
 		margin_top_ratio = max(margin_top_ratio, 1.0 / progress_gauge.size.y)
 	progress_gauge.margin_top_ratio = margin_top_ratio
-	if _get_win_ratio() >= minimum_correct_ratio:
-		progress_gauge_internal.modulate = winning_color
+	var ratio: float = _get_win_ratio()
+	if ratio >= minimum_correct_ratio:
+		if not _victory_threshold_reached:
+			_victory_threshold_reached = true
+			_play_victory_threshold_effect()
+	else:
+		var weight: float = clamp(ratio / minimum_correct_ratio, 0.0, 1.0)
+		progress_gauge_internal.modulate = GAUGE_COLOR_LOW.lerp(GAUGE_COLOR_HIGH, weight)
+
+
+func _play_victory_threshold_effect() -> void:
+	if _victory_pulse_tween and _victory_pulse_tween.is_running():
+		_victory_pulse_tween.kill()
+	right_stars.global_position = progress_gauge_internal.global_position + progress_gauge_internal.size / 2.0
+	right_stars.replay()
+	_victory_pulse_tween = create_tween()
+	_victory_pulse_tween.tween_method(
+		func(hue: float) -> void:
+			progress_gauge_internal.modulate = Color.from_hsv(fmod(hue, 1.0), 0.8, 1.0),
+		0.0, 1.0, 1.8
+	).set_trans(Tween.TRANS_LINEAR)
+	_victory_pulse_tween.tween_property(progress_gauge_internal, "modulate", GAUGE_COLOR_HIGH, 0.4) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 func _get_win_ratio() -> float:
