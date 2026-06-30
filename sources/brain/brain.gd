@@ -2,15 +2,15 @@ extends Control
 
 const GARDENS_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
 
-@onready var progress_label: Label = %ProgressLabel
-@onready var brain_map: TextureRect = $Brain
-
 # Lesson grapheme data keyed by lesson number (1-based), same shape as Gardens.lessons.
 var lessons: Dictionary = {}
 # How many lessons each garden hosts, from Gardens.compute_lessons_distribution().
 var lesson_distribution: Array[int] = []
 # The embedded garden scenes (GardenRoot01..GardenRoot12), in display order.
 var gardens: Array[Garden] = []
+
+@onready var progress_label: Label = %ProgressLabel
+@onready var brain_map: TextureRect = $Brain
 
 
 func _ready() -> void:

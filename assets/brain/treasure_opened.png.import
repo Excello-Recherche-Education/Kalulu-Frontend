@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bnhltriys65jk"
-path="res://.godot/imported/treasure_opened.png.png-88ee4df5fce1cc6621b83228f97fc395.ctex"
+path="res://.godot/imported/treasure_opened.png-40f910c749e1b4d0be6697ed81a49336.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/brain/treasure_opened.png.png"
-dest_files=["res://.godot/imported/treasure_opened.png.png-88ee4df5fce1cc6621b83228f97fc395.ctex"]
+source_file="res://assets/brain/treasure_opened.png"
+dest_files=["res://.godot/imported/treasure_opened.png-40f910c749e1b4d0be6697ed81a49336.ctex"]
 
 [params]
 
