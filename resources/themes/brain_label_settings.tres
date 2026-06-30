@@ -1,0 +1,11 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://bfiaceq2nlsqg"]
+
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="1_76hct"]
+
+[resource]
+font = ExtResource("1_76hct")
+font_size = 80
+font_color = Color(0, 0, 0, 1)
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.639216)

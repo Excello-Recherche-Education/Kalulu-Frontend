@@ -15,10 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://c2yff8xrssk83" path="res://resources/gardens/garden_11.tscn" id="12_28e1p"]
 [ext_resource type="PackedScene" uid="uid://dlq2i1hs2w3n6" path="res://resources/gardens/garden_12.tscn" id="13_ieruc"]
 [ext_resource type="Texture2D" uid="uid://dk4trllc2fsg6" path="res://assets/brain/name_board.png" id="14_34nxc"]
-[ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="15_qqlvb"]
-[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="16_5glhy"]
-[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="17_fyww8"]
 [ext_resource type="Texture2D" uid="uid://b35ivjsldbu33" path="res://assets/brain/treasure_closed.png" id="18_fyww8"]
+[ext_resource type="LabelSettings" uid="uid://bfiaceq2nlsqg" path="res://resources/themes/brain_label_settings.tres" id="18_jw71m"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="19_i5ves"]
 [ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="21_cl7b1"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="22_3u1q0"]
@@ -419,20 +417,19 @@ offset_bottom = 2031.0
 scale = Vector2(0.45, 0.45)
 texture = ExtResource("14_34nxc")
 
-[node name="AutoSizeLabel" parent="Brain/Finish_Line" unique_id=1461916897 instance=ExtResource("15_qqlvb")]
+[node name="ProgressLabel" type="Label" parent="Brain/Finish_Line" unique_id=1534354328]
+unique_name_in_owner = true
 layout_mode = 1
-offset_left = 128.0
-offset_top = 20.0
-offset_right = -49.0
-offset_bottom = -270.9999
-theme = ExtResource("16_5glhy")
-ref_size_text = "Player's Progress"
-
-[node name="Label" parent="Brain/Finish_Line/AutoSizeLabel" index="0" unique_id=1172353947]
-theme = ExtResource("16_5glhy")
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("17_fyww8")
+anchors_preset = -1
+anchor_left = 0.12
+anchor_top = 0.1
+anchor_right = 0.93
+anchor_bottom = 0.38
 text = "Player's Progress"
+label_settings = ExtResource("18_jw71m")
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=256605057]
 
@@ -472,4 +469,3 @@ stretch_mode = 4
 [editable path="Brain/GardenRoot10"]
 [editable path="Brain/GardenRoot11"]
 [editable path="Brain/GardenRoot12"]
-[editable path="Brain/Finish_Line/AutoSizeLabel"]
