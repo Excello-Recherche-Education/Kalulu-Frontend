@@ -82,7 +82,7 @@ custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "Edit"
 
-[node name="TextureRect" parent="TabContainer/NormalContainer/EditButton" index="0"]
+[node name="TextureRect" parent="TabContainer/NormalContainer/EditButton" index="0" unique_id=1207987905]
 texture = ExtResource("4_eakjn")
 
 [node name="EditContainer" type="HBoxContainer" parent="TabContainer" unique_id=1491769046]
@@ -94,7 +94,7 @@ metadata/_tab_index = 1
 [node name="DeleteButton" parent="TabContainer/EditContainer" unique_id=1766970248 instance=ExtResource("3_1dwyr")]
 layout_mode = 2
 
-[node name="TextureRect" parent="TabContainer/EditContainer/DeleteButton" index="0"]
+[node name="TextureRect" parent="TabContainer/EditContainer/DeleteButton" index="0" unique_id=1207987905]
 texture = ExtResource("5_d5iin")
 
 [node name="ExceptionEditCheckBox" type="CheckBox" parent="TabContainer/EditContainer" unique_id=795260526]
@@ -142,7 +142,7 @@ popup/item_2/id = 2
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 
-[node name="TextureRect" parent="TabContainer/EditContainer/ValidateButton" index="0"]
+[node name="TextureRect" parent="TabContainer/EditContainer/ValidateButton" index="0" unique_id=1207987905]
 texture = ExtResource("4_eakjn")
 
 [connection signal="pressed" from="TabContainer/NormalContainer/EditButton" to="." method="_on_edit_button_pressed"]

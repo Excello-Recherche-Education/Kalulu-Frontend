@@ -1,0 +1,471 @@
+[gd_scene format=3 uid="uid://b80cwnxgreg14"]
+
+[ext_resource type="Script" uid="uid://cf8pybib2hmg4" path="res://sources/brain/brain.gd" id="1_0x383"]
+[ext_resource type="Texture2D" uid="uid://b5o3o678hijhr" path="res://assets/brain/brain.png" id="1_uloie"]
+[ext_resource type="PackedScene" uid="uid://c6b4rj4fdppum" path="res://resources/gardens/garden_01.tscn" id="3_u5vdo"]
+[ext_resource type="PackedScene" uid="uid://btfvuniqgiddp" path="res://resources/gardens/garden_02.tscn" id="4_ch6we"]
+[ext_resource type="PackedScene" uid="uid://fl3fleqx7r0k" path="res://resources/gardens/garden_03.tscn" id="5_ch6we"]
+[ext_resource type="PackedScene" uid="uid://bjs0o30gmhv3l" path="res://resources/gardens/garden_05.tscn" id="5_v6hi2"]
+[ext_resource type="PackedScene" uid="uid://ct6lb3q40fx74" path="res://resources/gardens/garden_04.tscn" id="6_v6hi2"]
+[ext_resource type="PackedScene" uid="uid://dua725v1fckur" path="res://resources/gardens/garden_06.tscn" id="7_msiay"]
+[ext_resource type="PackedScene" uid="uid://bcvw6yolfv1y" path="res://resources/gardens/garden_07.tscn" id="8_b00qe"]
+[ext_resource type="PackedScene" uid="uid://blk1dw8m5qrxx" path="res://resources/gardens/garden_08.tscn" id="9_h0yn1"]
+[ext_resource type="PackedScene" uid="uid://bboubmocwjw80" path="res://resources/gardens/garden_09.tscn" id="10_3yjvw"]
+[ext_resource type="PackedScene" uid="uid://4uyls7ihyc51" path="res://resources/gardens/garden_10.tscn" id="11_nuoum"]
+[ext_resource type="PackedScene" uid="uid://c2yff8xrssk83" path="res://resources/gardens/garden_11.tscn" id="12_28e1p"]
+[ext_resource type="PackedScene" uid="uid://dlq2i1hs2w3n6" path="res://resources/gardens/garden_12.tscn" id="13_ieruc"]
+[ext_resource type="Texture2D" uid="uid://dk4trllc2fsg6" path="res://assets/brain/name_board.png" id="14_34nxc"]
+[ext_resource type="Texture2D" uid="uid://b35ivjsldbu33" path="res://assets/brain/treasure_closed.png" id="18_fyww8"]
+[ext_resource type="LabelSettings" uid="uid://bfiaceq2nlsqg" path="res://resources/themes/brain_label_settings.tres" id="18_jw71m"]
+[ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="19_i5ves"]
+[ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="21_cl7b1"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="22_3u1q0"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="23_77her"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="24_56cqx"]
+[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_normal.png" id="25_aqguf"]
+[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png" id="26_2c5sd"]
+[ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="27_xy24s"]
+
+[node name="Brain_Root" type="Control" unique_id=342016555]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0x383")
+
+[node name="Brain" type="TextureRect" parent="." unique_id=2076370991]
+layout_mode = 0
+offset_right = 2560.0
+offset_bottom = 1800.0
+texture = ExtResource("1_uloie")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="GardenRoot01" parent="Brain" unique_id=229113687 instance=ExtResource("3_u5vdo")]
+layout_mode = 1
+offset_left = 421.99997
+offset_top = 254.0
+offset_right = 422.0
+offset_bottom = 254.0
+scale = Vector2(0.22, 0.22)
+
+[node name="GardenRoot02" parent="Brain" unique_id=167073905 instance=ExtResource("4_ch6we")]
+layout_mode = 1
+offset_left = 826.0
+offset_top = 168.0
+offset_right = 826.0
+offset_bottom = 168.0
+scale = Vector2(0.2, 0.2)
+
+[node name="GardenRoot03" parent="Brain" unique_id=937369274 instance=ExtResource("5_ch6we")]
+layout_mode = 1
+offset_left = 1197.0
+offset_top = 182.0
+offset_right = 1197.0
+offset_bottom = 182.0
+scale = Vector2(0.2, 0.2)
+
+[node name="GardenRoot04" parent="Brain" unique_id=1051822339 instance=ExtResource("6_v6hi2")]
+layout_mode = 1
+offset_left = 1573.9999
+offset_top = 261.0
+offset_right = 1574.0
+offset_bottom = 261.0
+scale = Vector2(0.2, 0.2)
+
+[node name="GardenRoot05" parent="Brain" unique_id=1730432845 instance=ExtResource("5_v6hi2")]
+layout_mode = 1
+offset_left = 1733.9999
+offset_top = 597.0
+offset_right = 1734.0
+offset_bottom = 597.0
+scale = Vector2(0.2, 0.2)
+
+[node name="Victory_Asset_01" parent="Brain/GardenRoot05/Victory_Assets" parent_id_path=PackedInt32Array(1730432845, 787934313) index="0" unique_id=1278004645]
+offset_left = 640.00037
+offset_top = 275.00012
+offset_right = 857.00037
+offset_bottom = 391.00012
+
+[node name="Victory_Asset_05" parent="Brain/GardenRoot05/Victory_Assets" parent_id_path=PackedInt32Array(1730432845, 787934313) index="4" unique_id=1851075152]
+offset_left = 1465.0005
+offset_top = 814.9999
+offset_right = 1593.0005
+offset_bottom = 983.9999
+
+[node name="Victory_Asset_07" parent="Brain/GardenRoot05/Victory_Assets" parent_id_path=PackedInt32Array(1730432845, 787934313) index="6" unique_id=1383257948]
+offset_left = 1460.0002
+offset_top = 255.0
+offset_right = 1619.0002
+offset_bottom = 419.0
+
+[node name="Victory_Asset_08" parent="Brain/GardenRoot05/Victory_Assets" parent_id_path=PackedInt32Array(1730432845, 787934313) index="7" unique_id=1370235462]
+offset_left = 770.0006
+offset_top = 584.9999
+offset_right = 997.0006
+offset_bottom = 743.9999
+
+[node name="Slot1" parent="Brain/GardenRoot05/Buttons" parent_id_path=PackedInt32Array(1730432845, 1964597) index="0" unique_id=1361620593]
+offset_left = 1065.0002
+offset_top = 155.0
+offset_right = 1305.0002
+offset_bottom = 395.0
+
+[node name="Slot2" parent="Brain/GardenRoot05/Buttons" parent_id_path=PackedInt32Array(1730432845, 1964597) index="1" unique_id=1025579258]
+offset_left = 1320.0007
+offset_top = 515.0001
+offset_right = 1560.0007
+offset_bottom = 755.0001
+
+[node name="Slot3" parent="Brain/GardenRoot05/Buttons" parent_id_path=PackedInt32Array(1730432845, 1964597) index="2" unique_id=353688519]
+offset_left = 1105.0005
+offset_top = 814.9999
+offset_right = 1345.0005
+offset_bottom = 1054.9999
+
+[node name="Slot4" parent="Brain/GardenRoot05/Buttons" parent_id_path=PackedInt32Array(1730432845, 1964597) index="3" unique_id=1536126098]
+offset_left = 760.0008
+offset_top = 855.0001
+offset_right = 1000.0008
+offset_bottom = 1095.0001
+
+[node name="Slot5" parent="Brain/GardenRoot05/Buttons" parent_id_path=PackedInt32Array(1730432845, 1964597) index="4" unique_id=960033946]
+offset_left = 410.00012
+offset_top = 880.0
+offset_right = 650.0001
+offset_bottom = 1120.0
+
+[node name="GardenRoot06" parent="Brain" unique_id=1666754878 instance=ExtResource("7_msiay")]
+layout_mode = 1
+offset_left = 1330.0
+offset_top = 574.0
+offset_right = 1330.0
+offset_bottom = 574.0
+scale = Vector2(0.2, 0.2)
+
+[node name="Slot1" parent="Brain/GardenRoot06/Buttons" parent_id_path=PackedInt32Array(1666754878, 1964597) index="0" unique_id=1361620593]
+offset_left = 1722.7273
+offset_top = 922.72723
+offset_right = 1962.7273
+offset_bottom = 1162.7273
+
+[node name="Slot2" parent="Brain/GardenRoot06/Buttons" parent_id_path=PackedInt32Array(1666754878, 1964597) index="1" unique_id=1025579258]
+offset_left = 1409.0911
+offset_top = 786.3636
+offset_right = 1649.0911
+offset_bottom = 1026.3635
+
+[node name="Slot4" parent="Brain/GardenRoot06/Buttons" parent_id_path=PackedInt32Array(1666754878, 1964597) index="3" unique_id=1536126098]
+offset_left = 759.09076
+offset_top = 818.18176
+offset_right = 999.09076
+offset_bottom = 1058.1816
+
+[node name="Slot5" parent="Brain/GardenRoot06/Buttons" parent_id_path=PackedInt32Array(1666754878, 1964597) index="4" unique_id=960033946]
+offset_left = 459.09113
+offset_top = 672.7274
+offset_right = 699.0911
+offset_bottom = 912.7275
+
+[node name="GardenRoot07" parent="Brain" unique_id=660891849 instance=ExtResource("8_b00qe")]
+layout_mode = 1
+offset_left = 945.0
+offset_top = 516.00006
+offset_right = 945.0
+offset_bottom = 516.0
+scale = Vector2(0.21, 0.21)
+
+[node name="Slot1" parent="Brain/GardenRoot07/Buttons" parent_id_path=PackedInt32Array(660891849, 1964597) index="0" unique_id=1361620593]
+offset_left = 1728.5714
+offset_top = 723.8093
+offset_right = 1968.5714
+offset_bottom = 963.8093
+
+[node name="Slot2" parent="Brain/GardenRoot07/Buttons" parent_id_path=PackedInt32Array(660891849, 1964597) index="1" unique_id=1025579258]
+offset_left = 1404.7617
+offset_top = 885.7142
+offset_right = 1644.7617
+offset_bottom = 1125.7141
+
+[node name="Slot4" parent="Brain/GardenRoot07/Buttons" parent_id_path=PackedInt32Array(660891849, 1964597) index="3" unique_id=1536126098]
+offset_left = 757.14264
+offset_top = 842.857
+offset_right = 997.14264
+offset_bottom = 1082.8569
+
+[node name="Slot5" parent="Brain/GardenRoot07/Buttons" parent_id_path=PackedInt32Array(660891849, 1964597) index="4" unique_id=960033946]
+offset_left = 466.66687
+offset_top = 938.0951
+offset_right = 706.6669
+offset_bottom = 1178.0951
+
+[node name="GardenRoot08" parent="Brain" unique_id=1571035262 instance=ExtResource("9_h0yn1")]
+layout_mode = 1
+offset_left = 597.0
+offset_top = 588.0
+offset_right = 597.0
+offset_bottom = 588.0
+scale = Vector2(0.2, 0.2)
+
+[node name="Slot1" parent="Brain/GardenRoot08/Buttons" parent_id_path=PackedInt32Array(1571035262, 1964597) index="0" unique_id=1361620593]
+offset_left = 1729.9999
+offset_top = 710.0
+offset_right = 1969.9999
+offset_bottom = 950.0
+
+[node name="Slot2" parent="Brain/GardenRoot08/Buttons" parent_id_path=PackedInt32Array(1571035262, 1964597) index="1" unique_id=1025579258]
+offset_left = 1445.0
+offset_top = 885.0
+offset_right = 1685.0
+offset_bottom = 1125.0
+
+[node name="Slot3" parent="Brain/GardenRoot08/Buttons" parent_id_path=PackedInt32Array(1571035262, 1964597) index="2" unique_id=353688519]
+offset_left = 1095.0
+offset_top = 914.9999
+offset_right = 1335.0
+offset_bottom = 1154.9999
+
+[node name="Slot4" parent="Brain/GardenRoot08/Buttons" parent_id_path=PackedInt32Array(1571035262, 1964597) index="3" unique_id=1536126098]
+offset_left = 774.9998
+offset_top = 749.99994
+offset_right = 1014.9998
+offset_bottom = 989.99994
+
+[node name="Slot5" parent="Brain/GardenRoot08/Buttons" parent_id_path=PackedInt32Array(1571035262, 1964597) index="4" unique_id=960033946]
+offset_left = 460.0
+offset_top = 860.00006
+offset_right = 700.0
+offset_bottom = 1100.0
+
+[node name="GardenRoot09" parent="Brain" unique_id=2039005351 instance=ExtResource("10_3yjvw")]
+layout_mode = 1
+offset_left = 289.0
+offset_top = 741.0
+offset_right = 289.0
+offset_bottom = 741.0
+scale = Vector2(0.22, 0.22)
+
+[node name="Victory_Asset_07" parent="Brain/GardenRoot09/Victory_Assets" parent_id_path=PackedInt32Array(2039005351, 787934313) index="6" unique_id=1009479170]
+offset_left = 1413.6365
+offset_top = 804.54553
+offset_right = 1572.6365
+offset_bottom = 968.5455
+
+[node name="Victory_Asset_08" parent="Brain/GardenRoot09/Victory_Assets" parent_id_path=PackedInt32Array(2039005351, 787934313) index="7" unique_id=1832005076]
+offset_left = 677.2726
+offset_top = 936.36365
+offset_right = 904.2726
+offset_bottom = 1095.3636
+
+[node name="Slot1" parent="Brain/GardenRoot09/Buttons" parent_id_path=PackedInt32Array(2039005351, 1964597) index="0" unique_id=1361620593]
+offset_left = 1381.8181
+offset_top = 449.99994
+offset_right = 1621.8181
+offset_bottom = 689.99994
+
+[node name="Slot2" parent="Brain/GardenRoot09/Buttons" parent_id_path=PackedInt32Array(2039005351, 1964597) index="1" unique_id=1025579258]
+offset_left = 1140.909
+offset_top = 668.18176
+offset_right = 1380.909
+offset_bottom = 908.18176
+
+[node name="Slot3" parent="Brain/GardenRoot09/Buttons" parent_id_path=PackedInt32Array(2039005351, 1964597) index="2" unique_id=353688519]
+offset_left = 1018.18176
+offset_top = 963.6362
+offset_right = 1258.1818
+offset_bottom = 1203.6362
+
+[node name="Slot4" parent="Brain/GardenRoot09/Buttons" parent_id_path=PackedInt32Array(2039005351, 1964597) index="3" unique_id=1536126098]
+offset_left = 1363.6362
+offset_top = 1086.3635
+offset_right = 1603.6362
+offset_bottom = 1326.3635
+
+[node name="Slot5" parent="Brain/GardenRoot09/Buttons" parent_id_path=PackedInt32Array(2039005351, 1964597) index="4" unique_id=960033946]
+offset_left = 1718.1816
+offset_top = 1018.1817
+offset_right = 1958.1816
+offset_bottom = 1258.1816
+
+[node name="GardenRoot10" parent="Brain" unique_id=960768587 instance=ExtResource("11_nuoum")]
+layout_mode = 1
+offset_left = 759.0
+offset_top = 915.0
+offset_right = 759.0
+offset_bottom = 915.0
+scale = Vector2(0.22, 0.22)
+
+[node name="Victory_Asset_01" parent="Brain/GardenRoot10/Victory_Assets" parent_id_path=PackedInt32Array(960768587, 787934313) index="0" unique_id=1278004645]
+offset_left = 1295.4545
+offset_top = -227.27277
+offset_right = 1374.4545
+offset_bottom = 401.72723
+
+[node name="Victory_Asset_05" parent="Brain/GardenRoot10/Victory_Assets" parent_id_path=PackedInt32Array(960768587, 787934313) index="4" unique_id=287565494]
+offset_left = 936.36365
+offset_top = 240.90923
+offset_right = 1097.3636
+offset_bottom = 401.90924
+
+[node name="Victory_Asset_06" parent="Brain/GardenRoot10/Victory_Assets" parent_id_path=PackedInt32Array(960768587, 787934313) index="5" unique_id=1951757820]
+offset_left = 468.18176
+offset_top = 950.0001
+offset_right = 587.18176
+offset_bottom = 1118.0001
+
+[node name="Victory_Asset_07" parent="Brain/GardenRoot10/Victory_Assets" parent_id_path=PackedInt32Array(960768587, 787934313) index="6" unique_id=574678348]
+offset_left = 1490.9092
+offset_top = 390.90903
+offset_right = 1547.9092
+offset_bottom = 513.90906
+
+[node name="Slot1" parent="Brain/GardenRoot10/Buttons" parent_id_path=PackedInt32Array(960768587, 1964597) index="0" unique_id=1361620593]
+offset_left = 522.7273
+offset_top = 413.63666
+offset_right = 762.7273
+offset_bottom = 653.63666
+
+[node name="Slot2" parent="Brain/GardenRoot10/Buttons" parent_id_path=PackedInt32Array(960768587, 1964597) index="1" unique_id=1025579258]
+offset_left = 759.0908
+offset_top = 618.18176
+offset_right = 999.0908
+offset_bottom = 858.18176
+
+[node name="Slot3" parent="Brain/GardenRoot10/Buttons" parent_id_path=PackedInt32Array(960768587, 1964597) index="2" unique_id=353688519]
+offset_left = 1045.4546
+offset_top = 731.8184
+offset_right = 1285.4546
+offset_bottom = 971.8184
+
+[node name="Slot4" parent="Brain/GardenRoot10/Buttons" parent_id_path=PackedInt32Array(960768587, 1964597) index="3" unique_id=1536126098]
+offset_left = 1363.6364
+offset_top = 731.81793
+offset_right = 1603.6364
+offset_bottom = 971.81793
+
+[node name="Slot5" parent="Brain/GardenRoot10/Buttons" parent_id_path=PackedInt32Array(960768587, 1964597) index="4" unique_id=960033946]
+offset_left = 1627.2731
+offset_top = 881.818
+offset_right = 1867.2731
+offset_bottom = 1121.818
+
+[node name="GardenRoot11" parent="Brain" unique_id=1384019205 instance=ExtResource("12_28e1p")]
+layout_mode = 1
+offset_left = 1264.0
+offset_top = 935.0
+offset_right = 1264.0
+offset_bottom = 935.0
+scale = Vector2(0.2, 0.2)
+
+[node name="Slot1" parent="Brain/GardenRoot11/Buttons" parent_id_path=PackedInt32Array(1384019205, 1964597) index="0" unique_id=1361620593]
+offset_left = 429.99976
+offset_top = 929.9999
+offset_right = 669.99976
+offset_bottom = 1169.9999
+
+[node name="Slot5" parent="Brain/GardenRoot11/Buttons" parent_id_path=PackedInt32Array(1384019205, 1964597) index="4" unique_id=960033946]
+offset_left = 1730.0
+offset_top = 935.0
+offset_right = 1970.0
+offset_bottom = 1175.0
+
+[node name="GardenRoot12" parent="Brain" unique_id=1111820186 instance=ExtResource("13_ieruc")]
+layout_mode = 1
+offset_left = 1654.0001
+offset_top = 970.0
+offset_right = 1654.0
+offset_bottom = 970.0
+scale = Vector2(0.2, 0.2)
+
+[node name="Slot1" parent="Brain/GardenRoot12/Buttons" parent_id_path=PackedInt32Array(1111820186, 1964597) index="0" unique_id=1361620593]
+offset_left = 474.99915
+offset_top = 629.9999
+offset_right = 714.99915
+offset_bottom = 869.9999
+
+[node name="Slot4" parent="Brain/GardenRoot12/Buttons" parent_id_path=PackedInt32Array(1111820186, 1964597) index="3" unique_id=1536126098]
+offset_top = 960.00024
+offset_bottom = 1200.0002
+
+[node name="Slot5" parent="Brain/GardenRoot12/Buttons" parent_id_path=PackedInt32Array(1111820186, 1964597) index="4" unique_id=960033946]
+offset_left = 1224.9991
+offset_top = 1310.0001
+offset_right = 1464.9991
+offset_bottom = 1550.0001
+
+[node name="Treasure" type="TextureRect" parent="Brain" unique_id=968625533]
+layout_mode = 0
+offset_left = 1726.0
+offset_top = 1299.0
+offset_right = 2244.0
+offset_bottom = 1739.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("18_fyww8")
+
+[node name="Kalulu" parent="Brain" unique_id=1277205438 instance=ExtResource("19_i5ves")]
+position = Vector2(1660, 1400)
+scale = Vector2(0.5, 0.5)
+
+[node name="Finish_Line" type="TextureRect" parent="Brain" unique_id=1902000025]
+layout_mode = 0
+offset_left = 1410.0001
+offset_top = 1540.0
+offset_right = 2587.0
+offset_bottom = 2031.0
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("14_34nxc")
+
+[node name="ProgressLabel" type="Label" parent="Brain/Finish_Line" unique_id=1534354328]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.12
+anchor_top = 0.1
+anchor_right = 0.93
+anchor_bottom = 0.38
+text = "Player's Progress"
+label_settings = ExtResource("18_jw71m")
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=256605057]
+
+[node name="BackButton" parent="CanvasLayer" unique_id=2104175949 instance=ExtResource("21_cl7b1")]
+custom_minimum_size = Vector2(275, 275)
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 300.0
+offset_bottom = 300.0
+size_flags_vertical = 0
+texture_normal = ExtResource("22_3u1q0")
+texture_pressed = ExtResource("23_77her")
+texture_disabled = ExtResource("24_56cqx")
+stretch_mode = 4
+ring_padding = 24.0
+
+[node name="KaluluButton" type="TextureButton" parent="CanvasLayer" unique_id=647042246]
+unique_name_in_owner = true
+offset_left = 56.0
+offset_top = 1464.0
+offset_right = 331.0
+offset_bottom = 1739.0
+size_flags_vertical = 10
+texture_normal = ExtResource("25_aqguf")
+texture_pressed = ExtResource("26_2c5sd")
+texture_disabled = ExtResource("27_xy24s")
+ignore_texture_size = true
+stretch_mode = 4
+
+[connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
+
+[editable path="Brain/GardenRoot05"]
+[editable path="Brain/GardenRoot06"]
+[editable path="Brain/GardenRoot07"]
+[editable path="Brain/GardenRoot08"]
+[editable path="Brain/GardenRoot09"]
+[editable path="Brain/GardenRoot10"]
+[editable path="Brain/GardenRoot11"]
+[editable path="Brain/GardenRoot12"]

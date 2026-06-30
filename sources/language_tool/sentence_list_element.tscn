@@ -13,10 +13,10 @@ sub_table_phon_column = "Word"
 relational_table = "WordsInSentences"
 sub_table_id = "WordID"
 
-[node name="ExceptionCheckBox" parent="TabContainer/NormalContainer" index="1"]
+[node name="ExceptionCheckBox" parent="TabContainer/NormalContainer" parent_id_path=PackedInt32Array(175623685) index="1" unique_id=1874848318]
 visible = false
 
-[node name="Word" parent="TabContainer/NormalContainer" index="2"]
+[node name="Word" parent="TabContainer/NormalContainer" parent_id_path=PackedInt32Array(175623685) index="2" unique_id=971120727]
 size_flags_vertical = 1
 vertical_alignment = 1
 autowrap_mode = 2

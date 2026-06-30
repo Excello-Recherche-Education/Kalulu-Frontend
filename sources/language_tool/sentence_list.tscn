@@ -9,27 +9,27 @@
 script = ExtResource("2_q3ll5")
 element_scene = ExtResource("3_ys88k")
 
-[node name="ExportNotFoundButton" type="Button" parent="VBoxContainer" index="5" unique_id=1180980753]
+[node name="ExportNotFoundButton" type="Button" parent="VBoxContainer" parent_id_path=PackedInt32Array(502918846) index="5" unique_id=1180980753]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "-> Click here to export the list of words not found <-"
 
-[node name="Label" parent="NewGPLayer" index="1"]
+[node name="Label" parent="NewGPLayer" parent_id_path=PackedInt32Array(36147464) index="1" unique_id=1702787233]
 text = "New Word"
 
-[node name="VBoxContainer" parent="NewGPLayer" index="2"]
+[node name="VBoxContainer" parent="NewGPLayer" parent_id_path=PackedInt32Array(36147464) index="2" unique_id=1231377366]
 visible = false
 
-[node name="Title" parent="NewGPLayer/VBoxContainer" index="0"]
+[node name="Title" parent="NewGPLayer/VBoxContainer" index="0" unique_id=1852107010]
 visible = false
 
-[node name="NewGP" parent="NewGPLayer/VBoxContainer" index="1"]
+[node name="NewGP" parent="NewGPLayer/VBoxContainer" index="1" unique_id=571530511]
 unique_name_in_owner = false
 visible = false
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="NewGPLayer" index="3" unique_id=1510368362]
+[node name="VBoxContainer2" type="VBoxContainer" parent="NewGPLayer" parent_id_path=PackedInt32Array(36147464) index="3" unique_id=1510368362]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -43,13 +43,13 @@ grow_vertical = 2
 layout_mode = 2
 script = null
 
-[node name="Word" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="2"]
+[node name="Word" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" parent_id_path=PackedInt32Array(1371794616, 175623685) index="2" unique_id=971120727]
 text = "Word"
 
-[node name="Graphemes" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="3"]
+[node name="Graphemes" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" parent_id_path=PackedInt32Array(1371794616, 175623685) index="3" unique_id=376418374]
 text = "Graphemes"
 
-[node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" index="6"]
+[node name="EditButton" parent="NewGPLayer/VBoxContainer2/Title/TabContainer/NormalContainer" parent_id_path=PackedInt32Array(1371794616, 175623685) index="6" unique_id=1575396203]
 modulate = Color(1, 1, 1, 0)
 
 [node name="NewGP" parent="NewGPLayer/VBoxContainer2" index="1" unique_id=248285454 instance=ExtResource("3_jl0ks")]

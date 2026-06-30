@@ -348,6 +348,20 @@ func get_device_settings() -> DeviceSettings:
 	return _device_settings
 
 
+## Returns the display name of the currently logged-in student, or an empty
+## string if no student is logged in or the student has no name set.
+func get_current_student_name() -> String:
+	if not student or not teacher_settings or not _device_settings:
+		return ""
+	if not teacher_settings.students.has(_device_settings.device_id):
+		return ""
+	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
+	for stud: StudentData in students:
+		if stud.code == int(student):
+			return stud.name
+	return ""
+
+
 func _load_device_settings() -> void:
 	Log.info("UserDataManager: Load device settings")
 	var settings_path: String = get_device_settings_path()

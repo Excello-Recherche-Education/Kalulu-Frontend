@@ -87,13 +87,13 @@ layout_mode = 2
 [node name="SaveButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1729708623 instance=ExtResource("3_wd2r3")]
 layout_mode = 2
 
-[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/SaveButton" index="0"]
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/SaveButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_45rqa")
 
 [node name="BackButton" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=540121617 instance=ExtResource("3_wd2r3")]
 layout_mode = 2
 
-[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/BackButton" index="0"]
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/BackButton" index="0" unique_id=1207987905]
 texture = ExtResource("4_x81mj")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1297742699]

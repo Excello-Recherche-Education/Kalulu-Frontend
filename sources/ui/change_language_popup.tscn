@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bsb6r3sjxnv6g"]
 
-[ext_resource type="Script" path="res://sources/ui/change_language_popup.gd" id="1_chglg"]
-[ext_resource type="Theme" path="res://resources/themes/kalulu_theme.tres" id="2_chglg"]
+[ext_resource type="Script" uid="uid://bxqtlx38skcu3" path="res://sources/ui/change_language_popup.gd" id="1_chglg"]
+[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="2_chglg"]
 
 [sub_resource type="Gradient" id="Gradient_chglg"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
@@ -9,10 +9,10 @@ colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_chglg"]
 gradient = SubResource("Gradient_chglg")
 
-[node name="ChangeLanguagePopup" type="CanvasLayer"]
+[node name="ChangeLanguagePopup" type="CanvasLayer" unique_id=923998361]
 script = ExtResource("1_chglg")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1329567877]
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +22,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = SubResource("GradientTexture1D_chglg")
 
-[node name="PanelContainer" type="PanelContainer" parent="TextureRect"]
+[node name="PanelContainer" type="PanelContainer" parent="TextureRect" unique_id=852366242]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -37,21 +37,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"PanelKalulu"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer" unique_id=1873862684]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer/VBoxContainer" unique_id=557121251]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer" unique_id=2052631364]
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="ChangeLanguageContentLabel" type="Label" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ChangeLanguageContentLabel" type="Label" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=853084832]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1200, 0)
 layout_mode = 2
@@ -60,7 +60,7 @@ theme_override_font_sizes/font_size = 60
 text = "CHANGE_LANGUAGE_POPUP"
 autowrap_mode = 2
 
-[node name="ChangeLanguageLanguageField" type="OptionButton" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ChangeLanguageLanguageField" type="OptionButton" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1981901964]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
@@ -68,21 +68,21 @@ theme = ExtResource("2_chglg")
 theme_override_font_sizes/font_size = 60
 autowrap_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1789253135]
 layout_mode = 2
 
-[node name="ChangeLanguageConfirmButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ChangeLanguageConfirmButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2036965152]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DangerButton"
 theme_override_font_sizes/font_size = 70
 text = "VALIDATE"
 
-[node name="Separator" type="Control" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Separator" type="Control" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=894945333]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ChangeLanguageCancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ChangeLanguageCancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1864986488]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 70

@@ -237,7 +237,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7uvrj")
 }],
-"loop": true,
+"loop": 1,
 "name": &"back",
 "speed": 7.0
 }, {
@@ -266,7 +266,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_p15m0")
 }],
-"loop": true,
+"loop": 1,
 "name": &"fly",
 "speed": 9.0
 }, {
@@ -295,7 +295,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1nytk")
 }],
-"loop": true,
+"loop": 1,
 "name": &"happy",
 "speed": 9.0
 }, {
@@ -324,7 +324,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s5y6h")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_front",
 "speed": 7.0
 }, {
@@ -353,7 +353,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_b05lw")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_front_blink",
 "speed": 7.0
 }, {
@@ -382,7 +382,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5stpe")
 }],
-"loop": false,
+"loop": 0,
 "name": &"sad",
 "speed": 7.0
 }, {
@@ -399,7 +399,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qsd3m")
 }],
-"loop": false,
+"loop": 0,
 "name": &"turn_to_back",
 "speed": 7.0
 }]

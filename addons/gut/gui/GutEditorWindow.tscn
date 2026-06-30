@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dnnvwlplf1km7"]
+[gd_scene format=3 uid="uid://dnnvwlplf1km7"]
 
 [ext_resource type="Script" uid="uid://crp2af6k4nmf5" path="res://addons/gut/gui/GutEditorWindow.gd" id="1_qevl3"]
 [ext_resource type="Texture2D" uid="uid://ljc2viafngwd" path="res://addons/gut/images/HSplitContainer.svg" id="2_xw0o2"]
@@ -63,15 +63,15 @@ Panel/styles/panel = SubResource("StyleBoxFlat_fqfwy")
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_qevl3"]
 
-[node name="GutEditorWindow" type="Window"]
+[node name="GutEditorWindow" type="Window" unique_id=1125646537]
 oversampling_override = 1.0
 title = "GUT"
 position = Vector2i(0, 36)
-size = Vector2i(1408, 1728)
+size = Vector2i(800, 800)
 min_size = Vector2i(800, 600)
 script = ExtResource("1_qevl3")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=262415327]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -80,32 +80,32 @@ grow_vertical = 2
 theme = SubResource("Theme_fqfwy")
 color = Color(0.18717614, 0.18717614, 0.18717614, 1)
 
-[node name="Layout" type="VBoxContainer" parent="."]
+[node name="Layout" type="VBoxContainer" parent="." unique_id=636235969]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WinControls" type="HBoxContainer" parent="Layout"]
+[node name="WinControls" type="HBoxContainer" parent="Layout" unique_id=1280095881]
 layout_mode = 2
 
-[node name="MenuBar" type="MenuBar" parent="Layout/WinControls"]
+[node name="MenuBar" type="MenuBar" parent="Layout/WinControls" unique_id=1077826855]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 prefer_global_menu = false
 
-[node name="CenterContainer" type="CenterContainer" parent="Layout/WinControls"]
+[node name="CenterContainer" type="CenterContainer" parent="Layout/WinControls" unique_id=869436010]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OnTop" type="CheckButton" parent="Layout/WinControls"]
+[node name="OnTop" type="CheckButton" parent="Layout/WinControls" unique_id=224590959]
 layout_mode = 2
 text = "Always on Top"
 
-[node name="HorizLayout" type="Button" parent="Layout/WinControls"]
+[node name="HorizLayout" type="Button" parent="Layout/WinControls" unique_id=986847863]
 texture_filter = 1
 layout_mode = 2
 toggle_mode = true
@@ -114,7 +114,7 @@ button_group = SubResource("ButtonGroup_qevl3")
 icon = ExtResource("2_xw0o2")
 icon_alignment = 1
 
-[node name="VertLayout" type="Button" parent="Layout/WinControls"]
+[node name="VertLayout" type="Button" parent="Layout/WinControls" unique_id=764465019]
 layout_mode = 2
 toggle_mode = true
 button_group = SubResource("ButtonGroup_qevl3")

@@ -61,7 +61,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_e6u1x")
 }],
-"loop": false,
+"loop": 0,
 "name": &"feathers_fall",
 "speed": 7.0
 }]

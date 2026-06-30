@@ -25,10 +25,10 @@ theme_override_constants/separation = 0
 [node name="ListTitle" parent="VBoxContainer" unique_id=1782355526 instance=ExtResource("1_mlni4")]
 layout_mode = 2
 
-[node name="TitleLabel" parent="VBoxContainer/ListTitle/HBoxContainer/MarginContainer" index="0"]
+[node name="TitleLabel" parent="VBoxContainer/ListTitle/HBoxContainer/MarginContainer" parent_id_path=PackedInt32Array(1782355526, 1448616505) index="0" unique_id=836498673]
 text = "Pseudowords List"
 
-[node name="MarginContainer" parent="VBoxContainer/ListTitle/HBoxContainer/HBoxContainer" index="0"]
+[node name="MarginContainer" parent="VBoxContainer/ListTitle/HBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1782355526, 812363168) index="0" unique_id=4643803]
 visible = false
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer" unique_id=1549294579]

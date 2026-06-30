@@ -44,7 +44,7 @@ text = "Kalulu Speeches"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/BackButton" index="0"]
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/BackButton" index="0" unique_id=1207987905]
 texture = ExtResource("5_5r4nk")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=398726737]

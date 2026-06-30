@@ -109,7 +109,7 @@ layout_mode = 2
 [node name="SaveButton" parent="MarginContainer/HBoxContainer" unique_id=167447895 instance=ExtResource("2_10y14")]
 layout_mode = 2
 
-[node name="TextureRect" parent="MarginContainer/HBoxContainer/SaveButton" index="0"]
+[node name="TextureRect" parent="MarginContainer/HBoxContainer/SaveButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_ssxih")
 
 [node name="OKTexture" type="TextureRect" parent="MarginContainer/HBoxContainer/SaveButton/TextureRect" index="0" unique_id=1427847198]

@@ -180,7 +180,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wpa4o")
 }],
-"loop": false,
+"loop": 0,
 "name": &"defeat",
 "speed": 5.0
 }, {
@@ -203,7 +203,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xfvua")
 }],
-"loop": false,
+"loop": 0,
 "name": &"disappear",
 "speed": 12.0
 }, {
@@ -232,7 +232,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_txuo7")
 }],
-"loop": true,
+"loop": 1,
 "name": &"swim",
 "speed": 12.0
 }, {
@@ -261,7 +261,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wcywu")
 }],
-"loop": false,
+"loop": 0,
 "name": &"swim_left",
 "speed": 18.0
 }, {
@@ -290,7 +290,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xolj7")
 }],
-"loop": false,
+"loop": 0,
 "name": &"swim_right",
 "speed": 18.0
 }, {
@@ -310,7 +310,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_66br7")
 }],
-"loop": false,
+"loop": 0,
 "name": &"victory",
 "speed": 12.0
 }]

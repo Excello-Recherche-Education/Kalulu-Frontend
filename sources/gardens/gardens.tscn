@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="46_cloud1"]
 [ext_resource type="Texture2D" uid="uid://dphj3hqfnnw4p" path="res://assets/minigames/parakeets/graphic/cloud_2.png" id="47_cloud2"]
 [ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="48_cloud3"]
+[ext_resource type="Texture2D" uid="uid://b5o3o678hijhr" path="res://assets/brain/brain.png" id="49_brain"]
 [ext_resource type="Texture2D" uid="uid://d1j23o6nq476v" path="res://assets/gardens/animals/ant_body.png" id="ant_body"]
 [ext_resource type="Texture2D" uid="uid://by3xfdin7jrsn" path="res://assets/gardens/animals/ant_face.png" id="ant_face"]
 [ext_resource type="Texture2D" uid="uid://b6nrx0dn0h3f2" path="res://assets/gardens/animals/caterpillar_body.png" id="caterpillar_body"]
@@ -335,6 +336,17 @@ texture_disabled = ExtResource("31_b65yw")
 stretch_mode = 4
 ring_padding = 24.0
 
+[node name="BrainButton" type="TextureButton" parent="CanvasLayer" unique_id=1010111999]
+unique_name_in_owner = true
+offset_left = 350.0
+offset_top = 50.0
+offset_right = 625.0
+offset_bottom = 325.0
+size_flags_vertical = 0
+texture_normal = ExtResource("49_brain")
+ignore_texture_size = true
+stretch_mode = 4
+
 [node name="KaluluButton" type="TextureButton" parent="CanvasLayer" unique_id=999341786]
 unique_name_in_owner = true
 offset_left = 56.0
@@ -410,5 +422,6 @@ texture = ExtResource("48_cloud3")
 [connection signal="pressed" from="CanvasLayer/MinigameSelection/LessonButton" to="." method="_on_lesson_button_pressed"]
 [connection signal="button_down" from="CanvasLayer/BackButton" to="." method="_on_back_button_button_down"]
 [connection signal="button_up" from="CanvasLayer/BackButton" to="." method="_on_back_button_button_up"]
+[connection signal="pressed" from="CanvasLayer/BrainButton" to="." method="_on_brain_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="input_event" from="CanvasLayer/Area2D" to="." method="_on_area_2d_input_event"]

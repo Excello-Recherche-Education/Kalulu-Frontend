@@ -41,6 +41,7 @@ const GARDEN_SCENE_PATHS: Array[String] = [
 const LOOK_AND_LEARN_SCENE_PATH: String = "res://sources/look_and_learn/look_and_learn.tscn"
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
+const BRAIN_SCENE_PATH: String = "res://sources/brain/brain.tscn"
 const GARDEN_SIZE: int = 2400
 const GARDENS_COUNT: int = 12
 const MIN_LESSONS: int = 12
@@ -116,6 +117,7 @@ var is_back_button_hold_active: bool = false
 @onready var lock: Control = %Lock
 @onready var kalulu: KALULU = %Kalulu
 @onready var kalulu_button: CanvasItem = %KaluluButton
+@onready var brain_button: TextureButton = %BrainButton
 # TODO: Rename / Move those audio inside the language packs to remove all references to brain_screen which does not exists anymore
 @onready var brain_tutorial_speeches: Array[AudioStream] = [
 	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_1")),
@@ -924,6 +926,7 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	minigame_selection.show()
 	back_button.hide()
 	kalulu_button.hide()
+	brain_button.hide()
 	line_particles.hide()
 	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_selection, "modulate:a", 1.0, 0.25)
@@ -1024,6 +1027,7 @@ func _close_minigames_layout() -> void:
 	minigame_selection.hide()
 	back_button.show()
 	kalulu_button.show()
+	brain_button.show()
 	line_particles.show()
 	for button: LessonButton in current_garden.get_lesson_buttons():
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -1513,6 +1517,11 @@ func _confirm_back_button_pressed() -> void:
 	UserDataManager.logout_student()
 	await (OpeningCurtain as OpeningCurtainClass).close()
 	SceneLoader.change_scene("res://sources/menus/login/login.tscn")
+
+
+func _on_brain_button_pressed() -> void:
+	await (OpeningCurtain as OpeningCurtainClass).close()
+	SceneLoader.change_scene(BRAIN_SCENE_PATH)
 
 
 func _on_back_button_button_down() -> void:
