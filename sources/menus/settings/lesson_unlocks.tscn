@@ -149,9 +149,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LessonRowsStore" type="Node" parent="."]
-unique_name_in_owner = true
-
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=180339992]
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxLine_3kkg7")
@@ -218,6 +215,9 @@ size_flags_vertical = 4
 theme_override_constants/h_separation = 30
 theme_override_constants/v_separation = 30
 columns = 3
+
+[node name="LessonRowsStore" type="Node" parent="." unique_id=402715604]
+unique_name_in_owner = true
 
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer/ChangeDeviceButton" to="." method="_on_device_change_button_pressed"]

@@ -52,7 +52,7 @@ horizontal_alignment = 1
 [node name="Button" parent="HBoxContainer" unique_id=1242959140 instance=ExtResource("2_ywxuc")]
 layout_mode = 2
 
-[node name="TextureRect" parent="HBoxContainer/Button" index="0"]
+[node name="TextureRect" parent="HBoxContainer/Button" index="0" unique_id=1207987905]
 texture = ExtResource("3_qu268")
 
 [connection signal="item_selected" from="HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]

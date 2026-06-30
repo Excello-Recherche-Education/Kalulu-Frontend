@@ -77,7 +77,7 @@ layout_mode = 2
 [node name="BackButton" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=1412061445 instance=ExtResource("1_tjhx5")]
 layout_mode = 2
 
-[node name="TextureRect" parent="VBoxContainer/PanelContainer/HBoxContainer/BackButton" index="0"]
+[node name="TextureRect" parent="VBoxContainer/PanelContainer/HBoxContainer/BackButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_04mkx")
 
 [node name="PanelContainer3" type="PanelContainer" parent="VBoxContainer" unique_id=1669586334]
