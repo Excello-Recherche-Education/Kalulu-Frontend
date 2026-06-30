@@ -17,8 +17,8 @@ func _ready() -> void:
 	_update_progress_label()
 	_collect_gardens()
 	_load_lessons_from_database()
-	_compute_lesson_distribution()
-	_apply_to_gardens()
+	_configure_gardens()
+	_apply_progression_to_gardens()
 	await (OpeningCurtain as OpeningCurtainClass).open()
 
 
@@ -56,48 +56,55 @@ func _load_lessons_from_database() -> void:
 		lesson_content.append({grapheme = element.Grapheme, phoneme = element.Phoneme, gp_id = element.GPID})
 
 
-# Computes how many lessons each garden hosts using the exact same function as the
-# gardens screen, so packs with fewer than 60 lessons distribute identically (e.g.
-# 37 lessons → 4 in the first garden, 3 in each of the 11 others). Each garden's
-# capacity is its number of physical button slots.
-func _compute_lesson_distribution() -> void:
-	var garden_layouts: Array[GardenLayout] = []
+# Distributes the lessons across gardens with Gardens.compute_lessons_distribution()
+# (front-loaded ceiling division, e.g. 37 lessons → 4 in the first garden, 3 in each
+# of the 11 others), then hands each garden its count through Garden.set_garden_layout().
+# That runs Garden._configure_slots(), which uses Garden.SLOT_SELECTION to pick WHICH
+# of the 5 fixed slots are shown (3 lessons → slots 0, 2, 4 — not 0, 1, 2) and hides
+# the rest, so the brain map shows the exact same buttons as the playable garden
+# screen. No button or victory-asset position is ever modified.
+func _configure_gardens() -> void:
+	var capacity_layouts: Array[GardenLayout] = []
 	for garden: Garden in gardens:
-		var layout: GardenLayout = GardenLayout.new()
-		layout.lesson_buttons.resize(garden.all_slots.size())
-		garden_layouts.append(layout)
-	lesson_distribution = Gardens.compute_lessons_distribution(lessons.size(), garden_layouts)
+		var capacity_layout: GardenLayout = GardenLayout.new()
+		capacity_layout.lesson_buttons.resize(garden.all_slots.size())
+		capacity_layouts.append(capacity_layout)
+	lesson_distribution = Gardens.compute_lessons_distribution(lessons.size(), capacity_layouts)
+	for garden_index: int in range(gardens.size()):
+		var garden: Garden = gardens[garden_index]
+		garden.garden_index = garden_index
+		var lesson_count: int = lesson_distribution[garden_index] if garden_index < lesson_distribution.size() else 0
+		var garden_layout: GardenLayout = GardenLayout.new()
+		# color drives Garden.set_background(); garden N keeps its own garden_NN.png.
+		garden_layout.color = garden_index
+		garden_layout.lesson_buttons.resize(lesson_count)
+		garden.garden_layout = garden_layout
 
 
-# For each garden: keep the first N buttons (N = its distributed lesson count),
-# hide the surplus ones, fill the kept buttons with their grapheme, and apply the
-# player's progression. Button and victory-asset positions are never touched.
-func _apply_to_gardens() -> void:
+# Fills each active button with its lesson grapheme and applies the player's
+# progression (locked / unlocked / completed). The single unlocked-but-not-completed
+# button keeps its golden border, marking the current progression point. Victory
+# assets are then revealed proportionally to completed minigames. Mirrors
+# Gardens._set_up_lessons() + Gardens._apply_progression_to_gardens(), minus the
+# transition/unlock animations (the brain is a static overview).
+func _apply_progression_to_gardens() -> void:
 	var progression: StudentProgression = UserDataManager.student_progression
 	if not progression:
 		Log.error("Brain: No data for student progression")
 	var lesson_number: int = 1
-	for garden_index: int in range(gardens.size()):
-		var garden: Garden = gardens[garden_index]
-		var visible_count: int = lesson_distribution[garden_index] if garden_index < lesson_distribution.size() else 0
-		var slots: Array[LessonButton] = garden.all_slots
+	for garden: Garden in gardens:
+		var lesson_buttons: Array[LessonButton] = garden.get_lesson_buttons()
 		var total_minigames: int = 0
 		var completed_minigames_total: int = 0
-		for slot_index: int in range(slots.size()):
-			var button: LessonButton = slots[slot_index]
-			# Hide buttons this garden doesn't need (positions left untouched).
-			if slot_index >= visible_count or not lesson_number in lessons:
-				button.hide()
-				continue
-			button.show()
-			button.set_garden_colors(garden.unlocked_lesson, garden.unlocked_lesson_text, garden.completed_lesson, garden.completed_lesson_text)
+		for index: int in range(lesson_buttons.size()):
+			if not lesson_number in lessons:
+				break
+			var button: LessonButton = lesson_buttons[index]
 			button.text = lessons[lesson_number][0].grapheme as String
 			if progression:
 				var lesson_unlocks: Dictionary = progression.unlocks[lesson_number]
 				var is_blocked_by_boss: bool = progression.is_lesson_blocked_by_boss(lesson_number)
 				var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.LOCKED and not is_blocked_by_boss
-				# Unlocked-but-not-completed buttons show their golden border, which
-				# marks the single current progression point (lessons unlock in order).
 				button.set_button_disabled(not is_lesson_unlocked)
 				button.completed = progression.is_lesson_completed(lesson_number) and not is_blocked_by_boss
 				if not is_blocked_by_boss:
@@ -107,13 +114,7 @@ func _apply_to_gardens() -> void:
 		if progression:
 			garden.current_progression = float(completed_minigames_total)
 			garden.max_progression = float(total_minigames)
-			_hide_all_victory_assets(garden)
 			garden.update_victory_assets_visibility(completed_minigames_total, total_minigames)
-
-
-func _hide_all_victory_assets(garden: Garden) -> void:
-	for asset: TextureRect in garden.all_victory_assets:
-		asset.visible = false
 
 
 func _count_completed_minigames(lesson_number: int) -> int:
