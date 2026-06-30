@@ -337,6 +337,7 @@ stretch_mode = 4
 ring_padding = 24.0
 
 [node name="BrainButton" type="TextureButton" parent="CanvasLayer" unique_id=1010111999]
+unique_name_in_owner = true
 offset_left = 350.0
 offset_top = 50.0
 offset_right = 625.0
