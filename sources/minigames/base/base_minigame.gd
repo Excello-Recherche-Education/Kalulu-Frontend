@@ -243,6 +243,8 @@ func _win() -> void:
 			gardens_data.first_clear = gardens_data.boss_completed
 			if not is_final_boss:
 				UserDataManager.student_progression.reset_boss_failure_streak()
+			else:
+				UserDataManager.student_progression.final_boss_completed()
 		else:
 			gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	

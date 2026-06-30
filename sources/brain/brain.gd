@@ -13,6 +13,10 @@ const UNLOCKED_LINE_COLOR: Color = Color.WHITE
 # brain shows them 20% smaller again so they sit better between the small gardens.
 const BOSS_BUTTON_BASE_SIZE: float = 512.0
 const BOSS_BUTTON_SCALE: float = 0.16
+# The treasure stands in for the final boss: the path reaches it once every lesson is
+# completed, and it opens once the final boss has actually been beaten.
+const TREASURE_CLOSED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_closed.png")
+const TREASURE_OPENED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_opened.png")
 
 # Lesson grapheme data keyed by lesson number (1-based), same shape as Gardens.lessons.
 var lessons: Dictionary = {}
@@ -30,6 +34,7 @@ var boss_buttons_container: Control
 
 @onready var progress_label: Label = %ProgressLabel
 @onready var brain_map: TextureRect = $Brain
+@onready var treasure: TextureRect = $Brain/Treasure
 
 
 func _ready() -> void:
@@ -43,6 +48,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_build_progression_path()
 	_set_up_boss_buttons()
+	_update_treasure()
 	await (OpeningCurtain as OpeningCurtainClass).open()
 
 
@@ -199,6 +205,9 @@ func _build_progression_path() -> void:
 	var unlocked_count: int = clampi(progression.get_max_unlocked_lesson_index() + 1, 0, lesson_centers.size())
 	if unlocked_count >= 2:
 		unlocked_line.points = _build_smooth_curve(lesson_centers, unlocked_count).get_baked_points()
+	# Final boss: once every lesson is completed, the path reaches out to the treasure.
+	if _are_all_lessons_completed():
+		_extend_unlocked_path_to_treasure()
 
 
 # Centre of every active lesson button, in lesson order, expressed in Brain-local
@@ -257,8 +266,50 @@ func _set_up_boss_buttons() -> void:
 		else:
 			boss.set_button_disabled(true)
 
-#endregion
 
+# True when the player has completed every lesson — the condition that unlocks the
+# final boss (the treasure) and draws the path out to it.
+func _are_all_lessons_completed() -> bool:
+	var progression: StudentProgression = UserDataManager.student_progression
+	if not progression:
+		return false
+	for lesson_number: int in range(1, lessons.size() + 1):
+		if not progression.is_lesson_completed(lesson_number):
+			return false
+	return true
+
+
+# Continues the unlocked path from the last lesson out to the treasure (final boss).
+func _extend_unlocked_path_to_treasure() -> void:
+	if lesson_centers.is_empty():
+		return
+	var last_center: Vector2 = lesson_centers[lesson_centers.size() - 1]
+	if unlocked_line.get_point_count() == 0:
+		unlocked_line.add_point(last_center)
+	var extension: Curve2D = Curve2D.new()
+	extension.add_point(last_center)
+	extension.add_point(_treasure_center())
+	var baked: PackedVector2Array = extension.get_baked_points()
+	for index: int in range(1, baked.size()):
+		unlocked_line.add_point(baked[index])
+
+
+# Treasure visual centre in Brain-local space (it is a scaled child of the map).
+func _treasure_center() -> Vector2:
+	var brain_inverse: Transform2D = brain_map.get_global_transform().affine_inverse()
+	return brain_inverse * (treasure.get_global_transform() * (treasure.size * 0.5))
+
+
+# Swaps the treasure texture: opened once the final boss has been beaten, closed
+# otherwise (tracked via StudentProgression.highest_boss_defeated).
+func _update_treasure() -> void:
+	var progression: StudentProgression = UserDataManager.student_progression
+	if progression and progression.is_final_boss_completed():
+		treasure.texture = TREASURE_OPENED_TEXTURE
+	else:
+		treasure.texture = TREASURE_CLOSED_TEXTURE
+
+#endregion
 
 func _on_back_button_pressed() -> void:
 	await (OpeningCurtain as OpeningCurtainClass).close()
