@@ -44,6 +44,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
 vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
 
 [node name="PasswordVisualizer" parent="StudentContainer/MarginContainer/VBoxContainer" unique_id=165257522 instance=ExtResource("1_7chbh")]
 unique_name_in_owner = true
