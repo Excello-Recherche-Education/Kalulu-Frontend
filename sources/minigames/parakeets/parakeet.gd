@@ -9,15 +9,15 @@ enum Colors {
 	YELLOW,
 }
 
-const ANIMATIONS: Array[SpriteFrames] = [
-	preload("res://sources/minigames/parakeets/red_parakeet_animations.tres"),
-	preload("res://sources/minigames/parakeets/green_parakeet_animations.tres"),
-	preload("res://sources/minigames/parakeets/yellow_parakeet_animation.tres")
+const ANIMATIONS_PATHS: Array[String] = [
+	"res://sources/minigames/parakeets/red_parakeet_animations.tres",
+	"res://sources/minigames/parakeets/green_parakeet_animations.tres",
+	"res://sources/minigames/parakeets/yellow_parakeet_animation.tres"
 ]
-const FEATHERS_ANIMATIONS: Array[SpriteFrames] = [
-	preload("res://sources/minigames/parakeets/red_parakeet_feathers_animations.tres"),
-	preload("res://sources/minigames/parakeets/green_parakeet_feathers_animations.tres"),
-	preload("res://sources/minigames/parakeets/yellow_parakeet_feathers_animations.tres")
+const FEATHERS_ANIMATIONS_PATHS: Array[String] = [
+	"res://sources/minigames/parakeets/red_parakeet_feathers_animations.tres",
+	"res://sources/minigames/parakeets/green_parakeet_feathers_animations.tres",
+	"res://sources/minigames/parakeets/yellow_parakeet_feathers_animations.tres"
 ]
 
 @export var sad_duration: float = 2.0
@@ -25,8 +25,8 @@ const FEATHERS_ANIMATIONS: Array[SpriteFrames] = [
 	set(value):
 		color = value
 		if animated_sprite:
-			animated_sprite.sprite_frames = ANIMATIONS[color]
-			animated_sprite_2d_feathers.sprite_frames = FEATHERS_ANIMATIONS[color]
+			animated_sprite.sprite_frames = load(ANIMATIONS_PATHS[color])
+			animated_sprite_2d_feathers.sprite_frames = load(FEATHERS_ANIMATIONS_PATHS[color])
 @export var uppercase: bool = true:
 	set(value):
 		uppercase = value
