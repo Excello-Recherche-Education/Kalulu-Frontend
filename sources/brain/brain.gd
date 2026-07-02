@@ -1,6 +1,22 @@
 extends Control
 
 const GARDENS_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
+const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
+# Path-trace styling. The gardens screen uses width 20 (locked) / 50 (unlocked) over
+# full-size 240 px buttons; the brain shows the gardens at ~0.2 scale, so the lines are
+# scaled down to stay proportionate. Colors match the gardens screen. Tune in-editor.
+const LOCKED_LINE_WIDTH: float = 6.0
+const UNLOCKED_LINE_WIDTH: float = 12.0
+const LOCKED_LINE_COLOR: Color = Color(0.356863, 0.356863, 0.356863)
+const UNLOCKED_LINE_COLOR: Color = Color.WHITE
+# Boss buttons are authored at 512 px; the gardens show them at ~0.2 scale, and the
+# brain shows them 20% smaller again so they sit better between the small gardens.
+const BOSS_BUTTON_BASE_SIZE: float = 512.0
+const BOSS_BUTTON_SCALE: float = 0.16
+# The treasure stands in for the final boss: the path reaches it once every lesson is
+# completed, and it opens once the final boss has actually been beaten.
+const TREASURE_CLOSED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_closed.png")
+const TREASURE_OPENED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_opened.png")
 
 # Lesson grapheme data keyed by lesson number (1-based), same shape as Gardens.lessons.
 var lessons: Dictionary = {}
@@ -8,9 +24,17 @@ var lessons: Dictionary = {}
 var lesson_distribution: Array[int] = []
 # The embedded garden scenes (GardenRoot01..GardenRoot12), in display order.
 var gardens: Array[Garden] = []
+# Lesson-button centres in Brain-local space, in lesson order (1..N). Drives the
+# path-trace and the boss-button placement between gardens.
+var lesson_centers: Array[Vector2] = []
+# Path/boss nodes, created in code so their geometry lives in Brain-local space.
+var locked_line: Line2D
+var unlocked_line: Line2D
+var boss_buttons_container: Control
 
 @onready var progress_label: Label = %ProgressLabel
 @onready var brain_map: TextureRect = $Brain
+@onready var treasure: TextureRect = $Brain/Treasure
 
 
 func _ready() -> void:
@@ -19,6 +43,12 @@ func _ready() -> void:
 	_load_lessons_from_database()
 	_configure_gardens()
 	_apply_progression_to_gardens()
+	_create_path_nodes()
+	# Let the layout settle so button global transforms are final before reading them.
+	await get_tree().process_frame
+	_build_progression_path()
+	_set_up_boss_buttons()
+	_update_treasure()
 	await (OpeningCurtain as OpeningCurtainClass).open()
 
 
@@ -127,6 +157,159 @@ func _count_completed_minigames(lesson_number: int) -> int:
 			completed += 1
 	return completed
 
+
+#region Path-trace and boss buttons
+
+# Creates the two path Line2Ds and the boss-button container as children of the Brain
+# map, so their points/positions live in Brain-local space. They are slotted right
+# after the gardens in the tree: drawn above the garden backgrounds but below the
+# lesson buttons (z 1) and boss buttons (z 2), mirroring the gardens screen's layering.
+func _create_path_nodes() -> void:
+	locked_line = _make_path_line(LOCKED_LINE_WIDTH, LOCKED_LINE_COLOR)
+	unlocked_line = _make_path_line(UNLOCKED_LINE_WIDTH, UNLOCKED_LINE_COLOR)
+	boss_buttons_container = Control.new()
+	boss_buttons_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	brain_map.add_child(locked_line)
+	brain_map.add_child(unlocked_line)
+	brain_map.add_child(boss_buttons_container)
+	if not gardens.is_empty():
+		var after_gardens: int = gardens[gardens.size() - 1].get_index() + 1
+		brain_map.move_child(locked_line, after_gardens)
+		brain_map.move_child(unlocked_line, after_gardens + 1)
+		brain_map.move_child(boss_buttons_container, after_gardens + 2)
+
+
+func _make_path_line(width: float, color: Color) -> Line2D:
+	var line: Line2D = Line2D.new()
+	line.width = width
+	line.default_color = color
+	line.joint_mode = Line2D.LINE_JOINT_ROUND
+	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	return line
+
+
+# Traces the lesson path like the gardens screen: a full grey curve through every
+# lesson button (locked_line) plus a white curve over the portion the player has
+# already reached (unlocked_line, up to the current progression — which naturally
+# stops before any undefeated boss gate).
+func _build_progression_path() -> void:
+	lesson_centers = _collect_lesson_centers()
+	if lesson_centers.size() < 2:
+		return
+	locked_line.points = _build_smooth_curve(lesson_centers, lesson_centers.size()).get_baked_points()
+	unlocked_line.clear_points()
+	var progression: StudentProgression = UserDataManager.student_progression
+	if not progression:
+		return
+	var unlocked_count: int = clampi(progression.get_max_unlocked_lesson_index() + 1, 0, lesson_centers.size())
+	if unlocked_count >= 2:
+		unlocked_line.points = _build_smooth_curve(lesson_centers, unlocked_count).get_baked_points()
+	# Final boss: once every lesson is completed, the path reaches out to the treasure.
+	if _are_all_lessons_completed():
+		_extend_unlocked_path_to_treasure()
+
+
+# Centre of every active lesson button, in lesson order, expressed in Brain-local
+# space (the gardens are scaled children, so we go through global transforms).
+func _collect_lesson_centers() -> Array[Vector2]:
+	var centers: Array[Vector2] = []
+	var brain_inverse: Transform2D = brain_map.get_global_transform().affine_inverse()
+	for garden: Garden in gardens:
+		for button: LessonButton in garden.get_lesson_buttons():
+			var global_center: Vector2 = button.get_global_transform() * (button.size * 0.5)
+			centers.append(brain_inverse * global_center)
+	return centers
+
+
+# Smooth Curve2D through the first `count` centres, each control point's tangents set
+# to half the vector to its neighbours (a Catmull-Rom-like fit).
+func _build_smooth_curve(centers: Array[Vector2], count: int) -> Curve2D:
+	var curve: Curve2D = Curve2D.new()
+	var point_count: int = mini(count, centers.size())
+	for index: int in range(point_count):
+		var point: Vector2 = centers[index]
+		var point_in: Vector2 = (centers[index - 1] - point) * 0.5 if index > 0 else Vector2.ZERO
+		var point_out: Vector2 = (centers[index + 1] - point) * 0.5 if index < point_count - 1 else Vector2.ZERO
+		curve.add_point(point, point_in, point_out)
+	return curve
+
+
+# Places a boss button between two gardens for each boss gate the pack actually uses
+# (StudentProgression.get_boss_gate_lessons() — only garden boundaries with enough
+# pseudowords). Same locked / unlocked / completed states as the gardens screen.
+# Bosses are non-interactive here: the brain is an overview.
+func _set_up_boss_buttons() -> void:
+	for child: Node in boss_buttons_container.get_children():
+		child.queue_free()
+	var total_lessons: int = lessons.size()
+	if total_lessons <= 0 or lesson_centers.size() < total_lessons:
+		return
+	var progression: StudentProgression = UserDataManager.student_progression
+	for gate_lesson: int in StudentProgression.get_boss_gate_lessons():
+		if gate_lesson <= 0 or gate_lesson >= total_lessons:
+			continue
+		# Midway between the gate's last lesson and the first lesson of the next garden.
+		var center: Vector2 = (lesson_centers[gate_lesson - 1] + lesson_centers[gate_lesson]) * 0.5
+		var boss: BossButton = BOSS_BUTTON_SCENE.instantiate()
+		boss_buttons_container.add_child(boss)
+		boss.size = Vector2(BOSS_BUTTON_BASE_SIZE, BOSS_BUTTON_BASE_SIZE)
+		boss.pivot_offset = boss.size * 0.5
+		boss.scale = Vector2(BOSS_BUTTON_SCALE, BOSS_BUTTON_SCALE)
+		boss.position = center - boss.size * 0.5
+		if progression:
+			var is_completed: bool = progression.is_boss_completed(gate_lesson)
+			var is_blocked_by_boss: bool = progression.is_lesson_blocked_by_boss(gate_lesson)
+			var is_unlocked: bool = progression.is_lesson_completed(gate_lesson) and not is_blocked_by_boss
+			boss.set_button_disabled(not is_unlocked and not is_completed)
+			boss.completed = is_completed
+		else:
+			boss.set_button_disabled(true)
+
+
+# True when the player has completed every lesson — the condition that unlocks the
+# final boss (the treasure) and draws the path out to it.
+func _are_all_lessons_completed() -> bool:
+	var progression: StudentProgression = UserDataManager.student_progression
+	if not progression:
+		return false
+	for lesson_number: int in range(1, lessons.size() + 1):
+		if not progression.is_lesson_completed(lesson_number):
+			return false
+	return true
+
+
+# Continues the unlocked path from the last lesson out to the treasure (final boss).
+func _extend_unlocked_path_to_treasure() -> void:
+	if lesson_centers.is_empty():
+		return
+	var last_center: Vector2 = lesson_centers[lesson_centers.size() - 1]
+	if unlocked_line.get_point_count() == 0:
+		unlocked_line.add_point(last_center)
+	var extension: Curve2D = Curve2D.new()
+	extension.add_point(last_center)
+	extension.add_point(_treasure_center())
+	var baked: PackedVector2Array = extension.get_baked_points()
+	for index: int in range(1, baked.size()):
+		unlocked_line.add_point(baked[index])
+
+
+# Treasure visual centre in Brain-local space (it is a scaled child of the map).
+func _treasure_center() -> Vector2:
+	var brain_inverse: Transform2D = brain_map.get_global_transform().affine_inverse()
+	return brain_inverse * (treasure.get_global_transform() * (treasure.size * 0.5))
+
+
+# Swaps the treasure texture: opened once the final boss has been beaten, closed
+# otherwise (tracked via StudentProgression.highest_boss_defeated).
+func _update_treasure() -> void:
+	var progression: StudentProgression = UserDataManager.student_progression
+	if progression and progression.is_final_boss_completed():
+		treasure.texture = TREASURE_OPENED_TEXTURE
+	else:
+		treasure.texture = TREASURE_CLOSED_TEXTURE
+
+#endregion
 
 func _on_back_button_pressed() -> void:
 	await (OpeningCurtain as OpeningCurtainClass).close()

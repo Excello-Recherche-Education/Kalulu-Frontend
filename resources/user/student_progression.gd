@@ -267,6 +267,11 @@ func _sanitize_boss_progression() -> void:
 
 
 func _sanitize_highest_boss(value: int) -> int:
+	# The final boss is not a gate lesson; beating it is recorded as (lessons count + 1).
+	# Allow that marker through instead of clamping it down to the last gate.
+	var final_boss_value: int = Database.get_lessons_count() + 1
+	if value >= final_boss_value:
+		return final_boss_value
 	var gate_lessons: Array[int] = get_boss_gate_lessons()
 	if gate_lessons.is_empty():
 		return 0
@@ -284,6 +289,12 @@ func is_boss_completed(gate_lesson: int) -> bool:
 	if not get_boss_gate_lessons().has(gate_lesson):
 		return false
 	return gate_lesson <= highest_boss_defeated
+
+
+# True once the final boss has been beaten — recorded by pushing highest_boss_defeated
+# one past the last lesson (see final_boss_completed()).
+func is_final_boss_completed() -> bool:
+	return highest_boss_defeated >= Database.get_lessons_count() + 1
 
 
 func is_lesson_blocked_by_boss(lesson_number: int) -> bool:
@@ -371,6 +382,19 @@ func boss_completed(lesson_number: int) -> bool:
 	highest_boss_defeated = lesson_number
 	if boss_failure_streak != 0:
 		boss_failure_streak = 0
+	last_modified = Time.get_datetime_string_from_system(true)
+	progression_changed.emit()
+	return true
+
+
+# Records the final-boss victory by pushing highest_boss_defeated one past the last
+# lesson (the final boss is not a gate lesson), reusing the existing field instead of a
+# dedicated flag.
+func final_boss_completed() -> bool:
+	var final_boss_value: int = Database.get_lessons_count() + 1
+	if highest_boss_defeated >= final_boss_value:
+		return false
+	highest_boss_defeated = final_boss_value
 	last_modified = Time.get_datetime_string_from_system(true)
 	progression_changed.emit()
 	return true

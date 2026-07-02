@@ -45,43 +45,43 @@ stretch_mode = 5
 
 [node name="GardenRoot01" parent="Brain" unique_id=229113687 instance=ExtResource("3_u5vdo")]
 layout_mode = 1
-offset_left = 421.99997
-offset_top = 254.0
-offset_right = 422.0
-offset_bottom = 254.0
-scale = Vector2(0.22, 0.22)
+offset_left = 437.00003
+offset_top = 271.0
+offset_right = 437.0
+offset_bottom = 271.0
+scale = Vector2(0.2, 0.2)
 
 [node name="GardenRoot02" parent="Brain" unique_id=167073905 instance=ExtResource("4_ch6we")]
 layout_mode = 1
-offset_left = 826.0
-offset_top = 168.0
-offset_right = 826.0
-offset_bottom = 168.0
-scale = Vector2(0.2, 0.2)
+offset_left = 842.99994
+offset_top = 178.0
+offset_right = 843.0
+offset_bottom = 178.0
+scale = Vector2(0.18, 0.18)
 
 [node name="GardenRoot03" parent="Brain" unique_id=937369274 instance=ExtResource("5_ch6we")]
 layout_mode = 1
-offset_left = 1197.0
-offset_top = 182.0
-offset_right = 1197.0
-offset_bottom = 182.0
-scale = Vector2(0.2, 0.2)
+offset_left = 1215.0
+offset_top = 221.0
+offset_right = 1215.0
+offset_bottom = 221.0
+scale = Vector2(0.18, 0.18)
 
 [node name="GardenRoot04" parent="Brain" unique_id=1051822339 instance=ExtResource("6_v6hi2")]
 layout_mode = 1
-offset_left = 1573.9999
-offset_top = 261.0
-offset_right = 1574.0
-offset_bottom = 261.0
+offset_left = 1589.0
+offset_top = 263.0
+offset_right = 1589.0
+offset_bottom = 263.0
 scale = Vector2(0.2, 0.2)
 
 [node name="GardenRoot05" parent="Brain" unique_id=1730432845 instance=ExtResource("5_v6hi2")]
 layout_mode = 1
-offset_left = 1733.9999
-offset_top = 597.0
-offset_right = 1734.0
-offset_bottom = 597.0
-scale = Vector2(0.2, 0.2)
+offset_left = 1772.9999
+offset_top = 630.0
+offset_right = 1773.0
+offset_bottom = 630.0
+scale = Vector2(0.18, 0.18)
 
 [node name="Victory_Asset_01" parent="Brain/GardenRoot05/Victory_Assets" parent_id_path=PackedInt32Array(1730432845, 787934313) index="0" unique_id=1278004645]
 offset_left = 640.00037
@@ -139,11 +139,11 @@ offset_bottom = 1120.0
 
 [node name="GardenRoot06" parent="Brain" unique_id=1666754878 instance=ExtResource("7_msiay")]
 layout_mode = 1
-offset_left = 1330.0
-offset_top = 574.0
-offset_right = 1330.0
-offset_bottom = 574.0
-scale = Vector2(0.2, 0.2)
+offset_left = 1392.0
+offset_top = 597.0
+offset_right = 1392.0
+offset_bottom = 597.0
+scale = Vector2(0.18, 0.18)
 
 [node name="Slot1" parent="Brain/GardenRoot06/Buttons" parent_id_path=PackedInt32Array(1666754878, 1964597) index="0" unique_id=1361620593]
 offset_left = 1722.7273
@@ -171,11 +171,11 @@ offset_bottom = 912.7275
 
 [node name="GardenRoot07" parent="Brain" unique_id=660891849 instance=ExtResource("8_b00qe")]
 layout_mode = 1
-offset_left = 945.0
-offset_top = 516.00006
-offset_right = 945.0
-offset_bottom = 516.0
-scale = Vector2(0.21, 0.21)
+offset_left = 959.0
+offset_top = 526.0
+offset_right = 959.0
+offset_bottom = 526.0
+scale = Vector2(0.2, 0.2)
 
 [node name="Slot1" parent="Brain/GardenRoot07/Buttons" parent_id_path=PackedInt32Array(660891849, 1964597) index="0" unique_id=1361620593]
 offset_left = 1728.5714
@@ -203,11 +203,11 @@ offset_bottom = 1178.0951
 
 [node name="GardenRoot08" parent="Brain" unique_id=1571035262 instance=ExtResource("9_h0yn1")]
 layout_mode = 1
-offset_left = 597.0
-offset_top = 588.0
-offset_right = 597.0
-offset_bottom = 588.0
-scale = Vector2(0.2, 0.2)
+offset_left = 604.0
+offset_top = 603.0
+offset_right = 604.0
+offset_bottom = 603.0
+scale = Vector2(0.18, 0.18)
 
 [node name="Slot1" parent="Brain/GardenRoot08/Buttons" parent_id_path=PackedInt32Array(1571035262, 1964597) index="0" unique_id=1361620593]
 offset_left = 1729.9999
@@ -241,11 +241,11 @@ offset_bottom = 1100.0
 
 [node name="GardenRoot09" parent="Brain" unique_id=2039005351 instance=ExtResource("10_3yjvw")]
 layout_mode = 1
-offset_left = 289.0
-offset_top = 741.0
-offset_right = 289.0
-offset_bottom = 741.0
-scale = Vector2(0.22, 0.22)
+offset_left = 324.0
+offset_top = 798.00006
+offset_right = 324.0
+offset_bottom = 798.0
+scale = Vector2(0.18, 0.18)
 
 [node name="Victory_Asset_07" parent="Brain/GardenRoot09/Victory_Assets" parent_id_path=PackedInt32Array(2039005351, 787934313) index="6" unique_id=1009479170]
 offset_left = 1413.6365
@@ -291,10 +291,10 @@ offset_bottom = 1258.1816
 
 [node name="GardenRoot10" parent="Brain" unique_id=960768587 instance=ExtResource("11_nuoum")]
 layout_mode = 1
-offset_left = 759.0
-offset_top = 915.0
-offset_right = 759.0
-offset_bottom = 915.0
+offset_left = 735.0
+offset_top = 911.0
+offset_right = 735.0
+offset_bottom = 911.0
 scale = Vector2(0.22, 0.22)
 
 [node name="Victory_Asset_01" parent="Brain/GardenRoot10/Victory_Assets" parent_id_path=PackedInt32Array(960768587, 787934313) index="0" unique_id=1278004645]
@@ -353,10 +353,10 @@ offset_bottom = 1121.818
 
 [node name="GardenRoot11" parent="Brain" unique_id=1384019205 instance=ExtResource("12_28e1p")]
 layout_mode = 1
-offset_left = 1264.0
-offset_top = 935.0
-offset_right = 1264.0
-offset_bottom = 935.0
+offset_left = 1263.0
+offset_top = 931.0
+offset_right = 1263.0
+offset_bottom = 931.0
 scale = Vector2(0.2, 0.2)
 
 [node name="Slot1" parent="Brain/GardenRoot11/Buttons" parent_id_path=PackedInt32Array(1384019205, 1964597) index="0" unique_id=1361620593]
@@ -373,10 +373,10 @@ offset_bottom = 1175.0
 
 [node name="GardenRoot12" parent="Brain" unique_id=1111820186 instance=ExtResource("13_ieruc")]
 layout_mode = 1
-offset_left = 1654.0001
-offset_top = 970.0
-offset_right = 1654.0
-offset_bottom = 970.0
+offset_left = 1665.0
+offset_top = 969.0
+offset_right = 1665.0
+offset_bottom = 969.0
 scale = Vector2(0.2, 0.2)
 
 [node name="Slot1" parent="Brain/GardenRoot12/Buttons" parent_id_path=PackedInt32Array(1111820186, 1964597) index="0" unique_id=1361620593]
