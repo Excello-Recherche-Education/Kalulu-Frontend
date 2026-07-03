@@ -40,6 +40,27 @@ func test_clean_dir_returns_error_on_missing_directory() -> void:
 	assert_ne(error, OK)
 
 
+func test_delete_directory_recursive_returns_ok_on_success() -> void:
+	# The purge and the language pack swap rely on this return value to know
+	# whether the folder was actually removed before recording the new version
+	_create_file(TEST_ROOT.path_join("visible.txt"))
+	_create_file(TEST_ROOT.path_join("sub").path_join("nested.txt"))
+
+	var error: Error = Utils.delete_directory_recursive(TEST_ROOT)
+
+	assert_eq(error, OK, "successful deletion should return OK")
+	assert_false(DirAccess.dir_exists_absolute(TEST_ROOT), "directory should be fully deleted")
+
+
+func test_delete_directory_recursive_returns_error_on_missing_directory() -> void:
+	var error: Error = Utils.delete_directory_recursive("user://test_delete_dir_does_not_exist")
+
+	assert_ne(error, OK, "deleting a missing directory should report an error")
+	# The failure is logged through Log.error (push_error); assert it so GUT
+	# treats it as expected instead of an unexpected engine error
+	assert_push_error("while cleaning folder")
+
+
 func _create_file(path: String) -> void:
 	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
 	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)

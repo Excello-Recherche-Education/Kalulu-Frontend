@@ -42,14 +42,27 @@ var is_open: bool = false
 
 
 func _exit_tree() -> void:
+	close()
+
+
+## Closes the SQLite connection if one is open.
+## This MUST be called before deleting or replacing the language_resources
+## folder: on Windows the OS keeps a lock on open files, so an open language.db
+## makes the removal of its parent directory fail and leaves a half-deleted,
+## corrupted pack behind. See UserDataManager.purge_user_folders_if_needed and
+## PackageDownloader._copy_data.
+func close() -> void:
+	if not is_open:
+		return
+	Log.info("Database: Closing database connection at %s" % ProjectSettings.globalize_path(db.path))
 	db.close_db()
+	is_open = false
 
 
 func connect_to_db() -> void:
 	if is_open:
 		Log.trace("Database: Opening database while a connection is already opened. Closing the previous one.")
-		db.close_db()
-		is_open = false
+		close()
 	if FileAccess.file_exists(db.path):
 		is_open = db.open_db()
 		if not is_open:

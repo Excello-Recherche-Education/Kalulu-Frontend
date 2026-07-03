@@ -62,6 +62,11 @@ func purge_user_folders_if_needed() -> void:
 	
 	if previous_version == "" or Utils.compare_versions(previous_version, "2.1.3") < 0:
 		Log.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
+		# Close the language database before deleting its folder. On Windows the
+		# OS locks open files, so an open language.db would make the deletion of
+		# language_resources fail and leave a half-emptied, corrupted pack behind.
+		Database.close()
+
 		var dir: DirAccess = DirAccess.open("user://")
 		var error: Error = DirAccess.get_open_error()
 		if error != OK:
@@ -70,14 +75,24 @@ func purge_user_folders_if_needed() -> void:
 		if not dir:
 			Log.warn("UserDataManager: Could not open user:// directory for cleanup.")
 			return
+		var purge_error: Error = OK
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir() and file_name != "." and file_name != ".." and file_name.to_lower() != "logs":
-				Utils.delete_directory_recursive("user://".path_join(file_name))
+				var delete_error: Error = Utils.delete_directory_recursive("user://".path_join(file_name))
+				if delete_error != OK and purge_error == OK:
+					purge_error = delete_error
 			file_name = dir.get_next()
 		dir.list_dir_end()
-		
+
+		if purge_error != OK:
+			# Keep the previous version untouched so the purge runs again on the
+			# next launch instead of leaving incompatible or corrupted data in
+			# place. This avoids the app booting on a partially deleted pack.
+			Log.error("UserDataManager: Purge failed (%s), it will be retried on next launch" % error_string(purge_error))
+			return
+
 		Log.trace("UserDataManager: Purge completed")
 		_device_settings.game_version = current_version
 		ResourceSaver.save(_device_settings, "user://device_settings.tres")
