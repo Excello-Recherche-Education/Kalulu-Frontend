@@ -24,6 +24,12 @@ func _ready() -> void:
 		exercise_option_button_2.add_item(tr(status))
 		exercise_option_button_3.add_item(tr(status))
 
+	# Each present minigame dropdown edits its own slot; surplus ones stay
+	# disabled (see _set_lesson_number) so they never emit.
+	var exercise_buttons: Array[OptionButton] = [exercise_option_button_1, exercise_option_button_2, exercise_option_button_3]
+	for slot: int in range(exercise_buttons.size()):
+		exercise_buttons[slot].item_selected.connect(_on_exercise_option_button_item_selected.bind(slot))
+
 	reload()
 
 
@@ -75,46 +81,10 @@ func _set_lesson_gps(value: String) -> void:
 
 
 func _on_look_and_learn_option_button_item_selected(index: int) -> void:
-	unlocks[lesson_number]["look_and_learn"] = index
-
-	if index == StudentProgression.Status.LOCKED:
-		if lesson_number == 1:
-			unlocks[lesson_number]["look_and_learn"] = StudentProgression.Status.UNLOCKED
-		else:
-			unlocks[lesson_number - 1]["look_and_learn"] = StudentProgression.Status.UNLOCKED
-			_set_lesson_games(lesson_number - 1, StudentProgression.Status.LOCKED)
-
-		_set_lesson_games(lesson_number, StudentProgression.Status.LOCKED)
-
-		for lesson: int in unlocks.keys():
-			if lesson > lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
-				_set_lesson_games(lesson, StudentProgression.Status.LOCKED)
-
-	elif index == StudentProgression.Status.UNLOCKED:
-		_set_lesson_games(lesson_number, StudentProgression.Status.LOCKED)
-		for lesson: int in unlocks.keys():
-			if lesson < lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.COMPLETED
-				_set_lesson_games(lesson, StudentProgression.Status.COMPLETED)
-			elif lesson > lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
-				_set_lesson_games(lesson, StudentProgression.Status.LOCKED)
-	elif index == StudentProgression.Status.COMPLETED:
-		_set_lesson_games(lesson_number, StudentProgression.Status.UNLOCKED)
-		for lesson: int in unlocks.keys():
-			if lesson < lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.COMPLETED
-				_set_lesson_games(lesson, StudentProgression.Status.COMPLETED)
-			elif lesson > lesson_number:
-				unlocks[lesson]["look_and_learn"] = StudentProgression.Status.LOCKED
-				_set_lesson_games(lesson, StudentProgression.Status.LOCKED)
+	StudentProgression.apply_manual_progression(unlocks, lesson_number, StudentProgression.LOOK_AND_LEARN_SLOT, index as StudentProgression.Status)
 	unlocks_changed.emit()
 
 
-# Sets every minigame of a lesson to the same status, respecting the lesson's
-# actual minigame count (1–3) rather than assuming a fixed three.
-func _set_lesson_games(lesson: int, status: StudentProgression.Status) -> void:
-	var games: Array = unlocks[lesson]["games"]
-	for game_index: int in range(games.size()):
-		games[game_index] = status
+func _on_exercise_option_button_item_selected(index: int, slot: int) -> void:
+	StudentProgression.apply_manual_progression(unlocks, lesson_number, slot, index as StudentProgression.Status)
+	unlocks_changed.emit()
