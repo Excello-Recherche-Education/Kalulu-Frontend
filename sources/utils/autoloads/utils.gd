@@ -112,16 +112,21 @@ func clean_dir(path: String) -> Error:
 	return first_error
 
 
-func delete_directory_recursive(path: String) -> void:
+## Recursively deletes the folder at [param path].
+## Returns OK on success, or the first error encountered. Callers that replace
+## critical data (e.g. the language pack) should check the returned value: a
+## non-OK result means the folder may still exist, possibly partially emptied.
+func delete_directory_recursive(path: String) -> Error:
 	var err: Error = clean_dir(path)
 	if err != OK:
 		Log.error("Utils: DeleteDirectoryRecursive: Error " + error_string(err) + " while cleaning folder: %s" % path)
-		return
+		return err
 	err = DirAccess.remove_absolute(path)
 	if err != OK:
 		Log.error("Utils: DeleteDirectoryRecursive: Error " + error_string(err) + " while deleting folder: %s" % path)
 	else:
 		Log.info("Utils: DeleteDirectoryRecursive: Folder deleted: %s" % path)
+	return err
 
 
 ## Returns -1 if version_a is lower than version_b, 0 if they are equals, and 1 if version_a is greater than version_b

@@ -273,6 +273,12 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 		thread = Thread.new()
 		download_label.hide()
 		copy_label.show()
+		# Close the language database on the main thread before the extraction
+		# thread swaps the language_resources folder. On Windows the OS locks
+		# open files, so an open language.db would make the removal of the
+		# previous pack fail (ERROR_REPLACING_PACKAGE). It is reopened in
+		# _go_to_next_scene once the swap is done.
+		Database.close()
 		Log.trace("PackageDownloader: Starting extraction thread")
 		thread.start(_copy_data.bind(self))
 	else:
