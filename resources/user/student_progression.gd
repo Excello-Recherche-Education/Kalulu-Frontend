@@ -9,6 +9,10 @@ enum Status{
 	COMPLETED,
 }
 
+# Timeline slot used by apply_manual_progression() to target a lesson's
+# look-and-learn step (minigames use their 0-based index).
+const LOOK_AND_LEARN_SLOT: int = -1
+
 static var cached_boss_gate_lessons: Array[int] = []
 static var cached_boss_gate_lessons_total: int = -1
 
@@ -30,6 +34,71 @@ func _init() -> void:
 
 static func get_minigame_count_for_lesson(lesson_number: int) -> int:
 	return Database.get_exercise_for_lesson(lesson_number).size()
+
+
+# Manually moves the progression frontier from the teacher settings screen.
+# The whole progression is one linear timeline of steps: for each lesson, its
+# look-and-learn followed by its minigames in order. Editing any step to
+# `status` rewrites the timeline so the sequential invariants always hold —
+# every step before the frontier is COMPLETED, the frontier step is UNLOCKED,
+# and every step after it is LOCKED:
+#   status == UNLOCKED  → the frontier is this step
+#   status == COMPLETED → the frontier is the next step (this and all before COMPLETED)
+#   status == LOCKED    → the frontier is the previous step (this and all after LOCKED)
+# `slot` is LOOK_AND_LEARN_SLOT for the look-and-learn column, otherwise the
+# 0-based minigame index. The frontier is clamped, so lesson 1's look-and-learn
+# can never end up LOCKED and the "everything completed" state is reachable.
+static func apply_manual_progression(target_unlocks: Dictionary, lesson_number: int, slot: int, status: Status) -> void:
+	var steps: Array[Dictionary] = _build_step_timeline(target_unlocks)
+	var target_position: int = _find_step_position(steps, lesson_number, slot)
+	if target_position < 0:
+		return
+
+	var frontier: int = target_position
+	if status == Status.COMPLETED:
+		frontier = target_position + 1
+	elif status == Status.LOCKED:
+		frontier = target_position - 1
+	frontier = clampi(frontier, 0, steps.size())
+
+	for index: int in range(steps.size()):
+		var step_status: Status = Status.LOCKED
+		if index < frontier:
+			step_status = Status.COMPLETED
+		elif index == frontier:
+			step_status = Status.UNLOCKED
+		_write_step_status(target_unlocks, steps[index], step_status)
+
+
+# Flattens the unlocks into the ordered list of steps described above.
+static func _build_step_timeline(target_unlocks: Dictionary) -> Array[Dictionary]:
+	var steps: Array[Dictionary] = []
+	var lesson_numbers: Array = target_unlocks.keys()
+	lesson_numbers.sort()
+	for lesson_number: int in lesson_numbers:
+		steps.append({"lesson": lesson_number, "slot": LOOK_AND_LEARN_SLOT})
+		var games: Array = target_unlocks[lesson_number]["games"]
+		for game_index: int in range(games.size()):
+			steps.append({"lesson": lesson_number, "slot": game_index})
+	return steps
+
+
+static func _find_step_position(steps: Array[Dictionary], lesson_number: int, slot: int) -> int:
+	for index: int in range(steps.size()):
+		if steps[index]["lesson"] == lesson_number and steps[index]["slot"] == slot:
+			return index
+	return -1
+
+
+static func _write_step_status(target_unlocks: Dictionary, step: Dictionary, status: Status) -> void:
+	var lesson_number: int = step["lesson"]
+	var slot: int = step["slot"]
+	if slot == LOOK_AND_LEARN_SLOT:
+		target_unlocks[lesson_number]["look_and_learn"] = status
+	else:
+		var games: Array = target_unlocks[lesson_number]["games"]
+		if slot < games.size():
+			games[slot] = status
 
 
 static func _build_default_lesson_unlock(lesson_number: int) -> Dictionary:
