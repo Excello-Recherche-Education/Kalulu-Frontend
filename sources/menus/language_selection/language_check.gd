@@ -5,7 +5,7 @@ const ERROR_MESSAGES: Array[String] = [
 	"LANGUAGE_NOT_SUPPORTED",
 	"NO_VALID_LANGUAGE_DATA_AVAILABLE"
 ]
-const PACKAGE_LOADER_SCENE: PackedScene = preload("res://sources/menus/language_selection/package_downloader.tscn")
+const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
 var device_language: String
 var teacher_settings: TeacherSettings
@@ -79,7 +79,7 @@ func _show_error(message: String) -> void:
 
 
 func go_to_package_download() -> void:
-	var error: Error = get_tree().change_scene_to_packed(PACKAGE_LOADER_SCENE)
+	var error: Error = get_tree().change_scene_to_file(PACKAGE_LOADER_SCENE_PATH)
 	if error != OK:
 		Log.error(error_string(error))
 		_show_error(error_string(error))

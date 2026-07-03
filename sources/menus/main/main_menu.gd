@@ -1,8 +1,8 @@
 extends Control
 
 const KALULU: GDScript = preload("res://sources/menus/main/kalulu_main_menu.gd")
-const ADULT_CHECK_SCENE_PATH: PackedScene = preload("res://sources/menus/adult_check/adult_check.tscn")
-const LANGUAGE_CHECK_SCENE_PATH: PackedScene = preload("res://sources/menus/language_selection/language_check.tscn")
+const ADULT_CHECK_SCENE_PATH: String = "res://sources/menus/adult_check/adult_check.tscn"
+const LANGUAGE_CHECK_SCENE_PATH: String = "res://sources/menus/language_selection/language_check.tscn"
 const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
 const DEV_CLICK_THRESHOLD: int = 10 # Number of clicks needed to open Developer Settings
 const DEV_CLICK_MAX_DELAY: float = 0.6 # Delay between each clicks (in seconds)
@@ -58,14 +58,14 @@ func _on_back_button_pressed() -> void:
 
 func _on_register_pressed() -> void:
 	await OpeningCurtain.close()
-	var error: Error = get_tree().change_scene_to_packed(ADULT_CHECK_SCENE_PATH)
+	var error: Error = get_tree().change_scene_to_file(ADULT_CHECK_SCENE_PATH)
 	if error != OK:
 		Log.error(error_string(error))
 
 
 func _on_login_in() -> void:
 	Log.trace("MainMenu: Login-in, going to Language Check Scene")
-	var error: Error = get_tree().change_scene_to_packed(LANGUAGE_CHECK_SCENE_PATH)
+	var error: Error = get_tree().change_scene_to_file(LANGUAGE_CHECK_SCENE_PATH)
 	if error != OK:
 		Log.error(error_string(error))
 
