@@ -79,27 +79,18 @@ func _load_lessons_from_database() -> void:
 
 # Distributes the lessons across gardens with Gardens.compute_lessons_distribution()
 # (front-loaded ceiling division, e.g. 37 lessons → 4 in the first garden, 3 in each
-# of the 11 others), then hands each garden its count through Garden.set_garden_layout().
+# of the 11 others), then hands each garden its count through Garden.set_lesson_count().
 # That runs Garden._configure_slots(), which uses Garden.SLOT_SELECTION to pick WHICH
 # of the 5 fixed slots are shown (3 lessons → slots 0, 2, 4 — not 0, 1, 2) and hides
 # the rest, so the brain map shows the exact same buttons as the playable garden
 # screen. No button or victory-asset position is ever modified.
 func _configure_gardens() -> void:
-	var capacity_layouts: Array[GardenLayout] = []
-	for garden: Garden in gardens:
-		var capacity_layout: GardenLayout = GardenLayout.new()
-		capacity_layout.lesson_buttons.resize(garden.all_slots.size())
-		capacity_layouts.append(capacity_layout)
-	lesson_distribution = Gardens.compute_lessons_distribution(lessons.size(), capacity_layouts)
+	lesson_distribution = Gardens.compute_lessons_distribution(lessons.size())
 	for garden_index: int in range(gardens.size()):
 		var garden: Garden = gardens[garden_index]
 		garden.garden_index = garden_index
 		var lesson_count: int = lesson_distribution[garden_index] if garden_index < lesson_distribution.size() else 0
-		var garden_layout: GardenLayout = GardenLayout.new()
-		# color drives Garden.set_background(); garden N keeps its own garden_NN.png.
-		garden_layout.color = garden_index
-		garden_layout.lesson_buttons.resize(lesson_count)
-		garden.garden_layout = garden_layout
+		garden.set_lesson_count(lesson_count)
 
 
 # Fills each active button with its lesson grapheme and applies the player's

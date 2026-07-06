@@ -319,8 +319,7 @@ static func get_boss_gate_lessons() -> Array[int]:
 
 static func _get_garden_boundary_lessons(total_lessons: int) -> Array[int]:
 	var boundaries: Array[int] = []
-	var layout: GardensLayout = Gardens.get_session_layout(total_lessons)
-	var distribution: Array[int] = Gardens.get_lessons_distribution(total_lessons, layout.gardens)
+	var distribution: Array[int] = Gardens.compute_lessons_distribution(total_lessons)
 	var lesson_index: int = 0
 	for count: int in distribution:
 		if count <= 0:
