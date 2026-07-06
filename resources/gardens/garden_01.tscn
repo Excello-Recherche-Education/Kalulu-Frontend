@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c6b4rj4fdppum"]
 
 [ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="3_dtofn"]
 [ext_resource type="Texture2D" uid="uid://d26hapg1hf8a6" path="res://assets/gardens/gardens/garden_01.png" id="3_p7iv3"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://bfqwlmmliem8f" path="res://assets/gardens/victory_assets/animals/jellyfish.png" id="jellyfish_tex"]
@@ -58,6 +59,7 @@ mouse_filter = 2
 
 [node name="Victory_Asset_01" type="TextureRect" parent="Victory_Assets" unique_id=1312910041]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+material = ExtResource("3_dtofn")
 layout_mode = 0
 offset_left = 405.0
 offset_top = 227.0
@@ -71,6 +73,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=460994140]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+material = ExtResource("3_dtofn")
 layout_mode = 0
 offset_left = 615.0
 offset_top = 1346.0
@@ -97,6 +100,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_04" type="TextureRect" parent="Victory_Assets" unique_id=251444828]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+material = ExtResource("3_dtofn")
 layout_mode = 0
 offset_left = 864.0
 offset_top = 308.0
@@ -123,6 +127,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_06" type="TextureRect" parent="Victory_Assets" unique_id=441814129]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+material = ExtResource("3_dtofn")
 layout_mode = 0
 offset_left = 1742.0
 offset_top = 762.0
@@ -136,6 +141,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_07" type="TextureRect" parent="Victory_Assets" unique_id=1628951623]
 modulate = Color(0.0392157, 0.333333, 0.356863, 1)
+material = ExtResource("3_dtofn")
 layout_mode = 0
 offset_left = 880.0
 offset_top = 1172.0

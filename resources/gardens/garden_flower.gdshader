@@ -3,8 +3,8 @@ render_mode blend_mix;
 
 // Wind settings.
 uniform float speed = 1.0;
-uniform float minStrength : hint_range(0.0, 1.0) = 0.05;
-uniform float maxStrength : hint_range(0.0, 1.0) = 0.01;
+uniform float minStrength : hint_range(0.0, 1.0) = 0.02;
+uniform float maxStrength : hint_range(0.0, 1.0) = 0.05;
 uniform float strengthScale = 100.0;
 uniform float interval = 3.5;
 uniform float detail = 1.0;

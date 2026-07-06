@@ -7,7 +7,9 @@ const TURTLE_SCENE: PackedScene = preload("res://sources/minigames/turtles/turtl
 const MAX_TURTLE_COUNT: int = 5
 # Defines the minimum distance between turtles when spawning them
 const MIN_DISTANCE: int = 500
-# Each spritesheet is ~123 MB of VRAM; never preload — load only the picked one.
+# Each spritesheet is ~123 MB of VRAM; never preload. A single color is picked once at the
+# start of the game (see pick_random_color) and only that one is loaded — the two unused
+# colors are never brought into memory.
 const TURTLE_ANIMATIONS_PATHS: Array[String] = [
 	"res://sources/minigames/turtles/green_turtle_animations.tres",
 	"res://sources/minigames/turtles/khaki_turtle_animations.tres",
@@ -28,7 +30,9 @@ var turtle_count: int = 0:
 			can_spawn_turtle.emit()
 		turtle_count = value
 var stimulus_spawned: bool = false
-# Single shared SpriteFrames assigned to every spawned turtle this round.
+# Single shared SpriteFrames assigned to every spawned turtle for the whole game.
+# Chosen once in _setup_minigame(); kept alive until the minigame is freed, at which
+# point its ~123 MB texture is released by refcount.
 var turtle_sprite_frames: SpriteFrames
 
 @onready var water: Water = $GameRoot/Water
@@ -68,10 +72,10 @@ func _setup_minigame() -> void:
 
 
 func pick_random_color() -> void:
-	# Drop the previous color first so its ~123 MB texture can be freed by
-	# refcount before we load the next one (turtles still fading out also
-	# hold a ref, so peak overlap is brief).
-	turtle_sprite_frames = null
+	# Load ONLY the picked color's spritesheet. The two other colors are never
+	# loaded, so at most one ~123 MB spritesheet is resident in VRAM. This runs
+	# once per game (in _setup_minigame), so the color stays the same throughout
+	# and there is never a moment where two colors overlap in memory.
 	var index: int = randi_range(0, TURTLE_ANIMATIONS_PATHS.size() - 1)
 	turtle_sprite_frames = load(TURTLE_ANIMATIONS_PATHS[index])
 
@@ -215,22 +219,28 @@ func _on_current_word_progression_changed() -> void:
 
 
 func _on_current_progression_changed() -> void:
+	var is_final_word: bool = current_progression >= max_progression
+
 	# Stop the spawning
 	spawn_timer.stop()
-	
-	pick_random_color()
-	
+
+	# Color is chosen once in _setup_minigame() and kept for the whole game — do not re-pick here.
+
 	# Replay the stimulus
 	await get_tree().create_timer(time_between_words/2).timeout
 	await audio_player.play_word(_get_previous_stimulus().Word as String)
 	await get_tree().create_timer(time_between_words/2).timeout
-	
-	# Starts a new round
+
+	# Starts a new round (also updates the finished word's remediation score)
 	super()
-	
+
+	# No new round after the final word: skip round setup and let the win sequence run.
+	if is_final_word:
+		return
+
 	# Reset island
 	island.stimulus = self._get_current_stimulus()
-	
+
 	# Restarts the spawning
 	spawn_timer.start()
 
@@ -238,6 +248,26 @@ func _on_current_progression_changed() -> void:
 func _win() -> void:
 	crab.play("victory_claws")
 	super()
+
+
+# Overridden so the final word is replayed (via _on_current_progression_changed) before the win
+# sequence, like every earlier word. The base setter calls _win() directly for the last word,
+# which would otherwise skip the replay. Mirrors the frog minigame.
+func set_current_progression(p_current_progression: int) -> void:
+	var previous_progression: int = current_progression
+	current_progression = p_current_progression
+	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, TYPE_NAMES[minigame_name]])
+
+	consecutive_errors = 0
+	is_highlighting = false
+
+	if minigame_ui:
+		minigame_ui.set_progression(p_current_progression)
+	if p_current_progression == max_progression and previous_progression != max_progression:
+		await _on_current_progression_changed()
+		await _win()
+	else:
+		await _on_current_progression_changed()
 
 #endregion
 

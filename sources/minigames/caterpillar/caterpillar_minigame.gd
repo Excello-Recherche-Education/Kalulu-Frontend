@@ -145,22 +145,50 @@ func _on_berry_eaten(berry: Berry) -> void:
 
 
 func _on_current_progression_changed() -> void:
+	var is_final_word: bool = current_progression >= max_progression
+
 	# Stops the berries
 	berry_timer.stop()
-	
+
 	# Show the word for some time and play the stimulus again
 	await get_tree().create_timer(time_between_words/2).timeout
 	await audio_player.play_word(_get_previous_stimulus().Word as String)
 	await get_tree().create_timer(time_between_words/2).timeout
-	
+
+	# No new round after the final word: just update the finished word's remediation score
+	# (via super) and let the win sequence run.
+	if is_final_word:
+		super()
+		return
+
 	# Reset the caterpillar
 	await caterpillar.reset()
-	
-	# Play the new stimulus
+
+	# Play the new stimulus (also updates the finished word's remediation score)
 	super()
-	
+
 	# Start the timer again
 	berry_timer.start()
+
+
+# Overridden so the final word is replayed (via _on_current_progression_changed) before the win
+# sequence, like every earlier word. The base setter calls _win() directly for the last word,
+# which would otherwise skip the replay. Mirrors the frog minigame.
+func set_current_progression(p_current_progression: int) -> void:
+	var previous_progression: int = current_progression
+	current_progression = p_current_progression
+	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, TYPE_NAMES[minigame_name]])
+
+	consecutive_errors = 0
+	is_highlighting = false
+
+	if minigame_ui:
+		minigame_ui.set_progression(p_current_progression)
+	if p_current_progression == max_progression and previous_progression != max_progression:
+		await _on_current_progression_changed()
+		await _win()
+	else:
+		await _on_current_progression_changed()
 
 #endregion
 

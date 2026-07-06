@@ -2,7 +2,6 @@
 class_name Garden
 extends Control
 
-const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d.png"
 const GRAYSCALE_SHADER: Shader = preload("res://resources/shaders/grayscale.gdshader")
 const MAX_LESSONS: int = 5
 # Maps lesson count → which slot indices to use
@@ -17,8 +16,6 @@ const WHEEL_WEDGE_LOCKED: Color = Color("e6e6e6")
 const ANIMAL_LOCKED_COLOR: Color = Color("c9c9c9")
 const WHEEL_HIGHLIGHT: Color = Color("fbb03b")
 
-@export var garden_layout: GardenLayout:
-	set = set_garden_layout
 ## Title is for developer reference only — not used in-game.
 @export var title: String = ""
 ## The garden's animal sprite(s) (jellyfish, turtle, ...), assigned per garden
@@ -35,7 +32,6 @@ const WHEEL_HIGHLIGHT: Color = Color("fbb03b")
 ## Outline color flagging the next step to play.
 @export var animal_unlocked_color: Color = Color.WHITE
 
-var color: Color
 var current_progression: float = 0.0
 var max_progression: float = 0.0
 var garden_index: int = -1
@@ -58,13 +54,11 @@ func _ready() -> void:
 		_default_background_modulate = background.modulate
 
 
-func set_garden_layout(p_garden_layout: GardenLayout) -> void:
-	if not p_garden_layout:
-		Log.error("Garden: Cannot set garden layout because it is null")
-		return
-	garden_layout = p_garden_layout
-	set_background(garden_layout.color)
-	_configure_slots(garden_layout.lesson_buttons.size())
+# Shows and configures `lesson_count` of the garden's fixed slots (see _configure_slots
+# and SLOT_SELECTION). The background and slot positions are authored in the garden
+# scene, so nothing else needs to be set here.
+func set_lesson_count(lesson_count: int) -> void:
+	_configure_slots(lesson_count)
 	_apply_colors_to_buttons()
 	_hide_all_victory_assets()
 
@@ -84,15 +78,6 @@ func _configure_slots(lesson_count: int) -> void:
 		var slot: LessonButton = all_slots[indices[index]]
 		slot.show()
 		active_buttons.append(slot)
-
-
-func set_background(p_color: int) -> void:
-	if not background:
-		return
-	var path: String = BACKGROUND_PATH_MODEL % [p_color + 1]
-	var texture: Texture2D = load(path) if ResourceLoader.exists(path) else load(BACKGROUND_PATH_MODEL % [1])
-	background.texture = texture
-	color = unlocked_lesson
 
 
 # Brain overview only: a garden with no unlocked lesson is shown "asleep" — its

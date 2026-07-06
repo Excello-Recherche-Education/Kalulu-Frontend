@@ -5,8 +5,8 @@
 [resource]
 shader = ExtResource("1_n3pck")
 shader_parameter/speed = 1.0
-shader_parameter/minStrength = 0.05
-shader_parameter/maxStrength = 0.02
+shader_parameter/minStrength = 0.02000000095
+shader_parameter/maxStrength = 0.050000002375
 shader_parameter/strengthScale = 100.0
 shader_parameter/interval = 5.0
 shader_parameter/detail = 1.0

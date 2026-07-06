@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c0lcx7x0naofl" path="res://assets/gardens/victory_assets/victory_asset_clouds.png" id="3_c82qa"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://ctc6i4o6rtj2m" path="res://assets/gardens/victory_assets/victory_asset_plant_19.png" id="4_o7idj"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="4_o1130"]
 [ext_resource type="Texture2D" uid="uid://ixkyfsxu07qx" path="res://assets/gardens/victory_assets/animals/caterpillar.png" id="5_c82qa"]
 [ext_resource type="Texture2D" uid="uid://d1jhhus8v37ik" path="res://assets/gardens/victory_assets/victory_asset_plant_20.png" id="5_rqhnb"]
 [ext_resource type="Texture2D" uid="uid://dbxswqqflg4n0" path="res://assets/gardens/victory_assets/victory_asset_snail.png" id="6_o1130"]
@@ -23,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
-title = "Purple Turtle Garden"
+title = "Green Caterpillar Garden"
 animal_sprites = [NodePath("Caterpillar")]
 unlocked_lesson = Color(0.30588236, 0.38039216, 0.03529412, 1)
 unlocked_lesson_text = Color(0.96862745, 1, 0.7529412, 1)
@@ -71,6 +72,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=1983677388]
 modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+material = ExtResource("4_o1130")
 layout_mode = 0
 offset_left = 1107.0
 offset_top = 1233.0
@@ -84,6 +86,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_03" type="TextureRect" parent="Victory_Assets" unique_id=1166073981]
 modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+material = ExtResource("4_o1130")
 layout_mode = 0
 offset_left = 1643.0
 offset_top = 503.0
@@ -123,6 +126,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_06" type="TextureRect" parent="Victory_Assets" unique_id=1963527205]
 modulate = Color(0.30588236, 0.38039216, 0.03529412, 1)
+material = ExtResource("4_o1130")
 layout_mode = 0
 offset_left = 805.0
 offset_top = 543.0

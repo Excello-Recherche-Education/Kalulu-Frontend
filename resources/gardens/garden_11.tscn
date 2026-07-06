@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
 [ext_resource type="Texture2D" uid="uid://dpl670l7onk5n" path="res://assets/gardens/gardens/garden_11.png" id="2_13gkf"]
 [ext_resource type="Texture2D" uid="uid://dckd1xhcdf2ie" path="res://assets/gardens/victory_assets/victory_asset_plant_06.png" id="3_13gkf"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="3_t2ok3"]
 [ext_resource type="Texture2D" uid="uid://dro75vltqiq6j" path="res://assets/gardens/victory_assets/victory_asset_plant_07.png" id="3_th10l"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://6bosyi1wv8vu" path="res://assets/gardens/victory_assets/animals/khaki_turtle.png" id="5_13gkf"]
@@ -23,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
-title = "Purple Turtle Garden"
+title = "Mud Turtle Garden"
 animal_sprites = [NodePath("Turtle_01"), NodePath("Turtle_02")]
 unlocked_lesson = Color(0.3372549, 0.29803923, 0.16470589, 1)
 unlocked_lesson_text = Color(0.9490196, 0.8901961, 0.72156864, 1)
@@ -57,6 +58,7 @@ mouse_filter = 2
 
 [node name="Victory_Asset_01" type="TextureRect" parent="Victory_Assets" unique_id=1278004645]
 modulate = Color(0.3372549, 0.29803923, 0.16470589, 1)
+material = ExtResource("3_t2ok3")
 layout_mode = 0
 offset_left = 1623.0
 offset_top = 549.0
@@ -70,6 +72,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=1249100073]
 modulate = Color(0.3372549, 0.29803923, 0.16470589, 1)
+material = ExtResource("3_t2ok3")
 layout_mode = 0
 offset_left = 799.0
 offset_top = 1233.0
@@ -135,6 +138,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_07" type="TextureRect" parent="Victory_Assets" unique_id=990129889]
 modulate = Color(0.3372549, 0.29803923, 0.16470589, 1)
+material = ExtResource("3_t2ok3")
 layout_mode = 0
 offset_left = 853.0
 offset_top = 351.0
