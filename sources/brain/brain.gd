@@ -117,6 +117,7 @@ func _apply_progression_to_gardens() -> void:
 		var lesson_buttons: Array[LessonButton] = garden.get_lesson_buttons()
 		var total_minigames: int = 0
 		var completed_minigames_total: int = 0
+		var has_unlocked_lesson: bool = false
 		for index: int in range(lesson_buttons.size()):
 			if not lesson_number in lessons:
 				break
@@ -128,6 +129,8 @@ func _apply_progression_to_gardens() -> void:
 				var is_lesson_unlocked: bool = lesson_unlocks["look_and_learn"] != StudentProgression.Status.LOCKED and not is_blocked_by_boss
 				button.set_button_disabled(not is_lesson_unlocked)
 				button.completed = progression.is_lesson_completed(lesson_number) and not is_blocked_by_boss
+				if is_lesson_unlocked:
+					has_unlocked_lesson = true
 				if not is_blocked_by_boss:
 					completed_minigames_total += _count_completed_minigames(lesson_number)
 					total_minigames += (lesson_unlocks["games"] as Array).size()
@@ -136,6 +139,8 @@ func _apply_progression_to_gardens() -> void:
 			garden.current_progression = float(completed_minigames_total)
 			garden.max_progression = float(total_minigames)
 			garden.update_victory_assets_visibility(completed_minigames_total, total_minigames)
+			# Grey out gardens the player hasn't reached yet (no unlocked lesson).
+			garden.set_greyed_out(not has_unlocked_lesson)
 
 
 func _count_completed_minigames(lesson_number: int) -> int:
