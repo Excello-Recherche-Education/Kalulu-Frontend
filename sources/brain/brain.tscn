@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://b35ivjsldbu33" path="res://assets/brain/treasure_closed.png" id="18_fyww8"]
 [ext_resource type="LabelSettings" uid="uid://bfiaceq2nlsqg" path="res://resources/themes/brain_label_settings.tres" id="18_jw71m"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="19_i5ves"]
+[ext_resource type="Texture2D" uid="uid://c34sgkbvr3h8q" path="res://assets/minigames/minigame_ui/graphic/primary_text_box.png" id="19_igoht"]
 [ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="21_cl7b1"]
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="22_3u1q0"]
 [ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="23_77her"]
@@ -397,10 +398,10 @@ offset_bottom = 1550.0001
 
 [node name="Treasure" type="TextureRect" parent="Brain" unique_id=968625533]
 layout_mode = 0
-offset_left = 1726.0
-offset_top = 1299.0
-offset_right = 2244.0
-offset_bottom = 1739.0
+offset_left = 1716.0
+offset_top = 1335.0
+offset_right = 2234.0
+offset_bottom = 1775.0
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("18_fyww8")
 
@@ -430,6 +431,361 @@ label_settings = ExtResource("18_jw71m")
 vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
+
+[node name="Road" type="Control" parent="Brain" unique_id=1141372984]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Pavement_01" type="TextureRect" parent="Brain/Road" unique_id=482076205]
+layout_mode = 0
+offset_left = 855.0
+offset_top = 411.0
+offset_right = 1449.0
+offset_bottom = 640.0
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_02" type="TextureRect" parent="Brain/Road" unique_id=986427613]
+layout_mode = 0
+offset_left = 883.99994
+offset_top = 411.0
+offset_right = 1478.0
+offset_bottom = 640.0
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_03" type="TextureRect" parent="Brain/Road" unique_id=560423163]
+layout_mode = 0
+offset_left = 1218.0
+offset_top = 410.58002
+offset_right = 1812.0
+offset_bottom = 639.58
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_04" type="TextureRect" parent="Brain/Road" unique_id=1460800007]
+layout_mode = 0
+offset_left = 1243.0
+offset_top = 410.58002
+offset_right = 1837.0
+offset_bottom = 639.58
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_05" type="TextureRect" parent="Brain/Road" unique_id=833661338]
+layout_mode = 0
+offset_left = 1268.0
+offset_top = 410.58002
+offset_right = 1862.0
+offset_bottom = 639.58
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_06" type="TextureRect" parent="Brain/Road" unique_id=638317581]
+layout_mode = 0
+offset_left = 1590.0
+offset_top = 412.0
+offset_right = 2184.0
+offset_bottom = 641.0
+rotation = -1.4660766
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_07" type="TextureRect" parent="Brain/Road" unique_id=42258318]
+layout_mode = 0
+offset_left = 1614.0001
+offset_top = 416.0
+offset_right = 2208.0
+offset_bottom = 645.0
+rotation = -1.4660766
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_08" type="TextureRect" parent="Brain/Road" unique_id=1602301698]
+layout_mode = 0
+offset_left = 1637.0001
+offset_top = 420.0
+offset_right = 2231.0
+offset_bottom = 649.0
+rotation = -1.4660766
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_09" type="TextureRect" parent="Brain/Road" unique_id=587534871]
+layout_mode = 0
+offset_left = 1932.0001
+offset_top = 591.99994
+offset_right = 2526.0
+offset_bottom = 820.99994
+rotation = -0.3926991
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_10" type="TextureRect" parent="Brain/Road" unique_id=1538926221]
+layout_mode = 0
+offset_left = 1943.0001
+offset_top = 617.99994
+offset_right = 2537.0
+offset_bottom = 846.99994
+rotation = -0.3926991
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_11" type="TextureRect" parent="Brain/Road" unique_id=35627564]
+layout_mode = 0
+offset_left = 1800.0001
+offset_top = 821.00006
+offset_right = 2394.0
+offset_bottom = 1050.0
+rotation = -1.43117
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_12" type="TextureRect" parent="Brain/Road" unique_id=1999333372]
+layout_mode = 0
+offset_left = 1766.0001
+offset_top = 816.00006
+offset_right = 2360.0
+offset_bottom = 1045.0
+rotation = -1.43117
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_13" type="TextureRect" parent="Brain/Road" unique_id=1267850869]
+layout_mode = 0
+offset_left = 1430.0001
+offset_top = 741.00006
+offset_right = 2024.0001
+offset_bottom = 970.00006
+rotation = -1.293289
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_14" type="TextureRect" parent="Brain/Road" unique_id=664796974]
+layout_mode = 0
+offset_left = 1401.0
+offset_top = 732.0
+offset_right = 1995.0
+offset_bottom = 961.0
+rotation = -1.293289
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_15" type="TextureRect" parent="Brain/Road" unique_id=1273514468]
+layout_mode = 0
+offset_left = 1372.0
+offset_top = 724.0
+offset_right = 1966.0
+offset_bottom = 953.0
+rotation = -1.293289
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_16" type="TextureRect" parent="Brain/Road" unique_id=598845417]
+layout_mode = 0
+offset_left = 1013.00006
+offset_top = 766.0
+offset_right = 1607.0
+offset_bottom = 995.0
+rotation = -1.6755161
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_17" type="TextureRect" parent="Brain/Road" unique_id=414793146]
+layout_mode = 0
+offset_left = 985.0
+offset_top = 769.0
+offset_right = 1579.0
+offset_bottom = 998.0
+rotation = -1.6755161
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_18" type="TextureRect" parent="Brain/Road" unique_id=1029674461]
+layout_mode = 0
+offset_left = 661.00006
+offset_top = 838.0
+offset_right = 1255.0
+offset_bottom = 1067.0
+rotation = -2.2636921
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_19" type="TextureRect" parent="Brain/Road" unique_id=1975746129]
+layout_mode = 0
+offset_left = 641.0
+offset_top = 868.0
+offset_right = 1235.0
+offset_bottom = 1097.0
+rotation = -2.576106
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_20" type="TextureRect" parent="Brain/Road" unique_id=1448223033]
+layout_mode = 0
+offset_left = 702.0
+offset_top = 1027.0
+offset_right = 1296.0
+offset_bottom = 1256.0
+rotation = -1.4835298
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_21" type="TextureRect" parent="Brain/Road" unique_id=1576918255]
+layout_mode = 0
+offset_left = 725.99994
+offset_top = 1030.0
+offset_right = 1320.0
+offset_bottom = 1259.0
+rotation = -1.4835298
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_22" type="TextureRect" parent="Brain/Road" unique_id=106664064]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 1033.0
+offset_right = 1344.0
+offset_bottom = 1262.0
+rotation = -1.4835298
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_23" type="TextureRect" parent="Brain/Road" unique_id=1788698339]
+layout_mode = 0
+offset_left = 773.99994
+offset_top = 1035.4218
+offset_right = 1368.0
+offset_bottom = 1264.4218
+rotation = -1.4835298
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_24" type="TextureRect" parent="Brain/Road" unique_id=323342123]
+layout_mode = 0
+offset_left = 798.0
+offset_top = 1038.4218
+offset_right = 1392.0
+offset_bottom = 1267.4218
+rotation = -1.4835298
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_25" type="TextureRect" parent="Brain/Road" unique_id=981712412]
+layout_mode = 0
+offset_left = 1161.0
+offset_top = 1156.0
+offset_right = 1755.0
+offset_bottom = 1385.0
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_26" type="TextureRect" parent="Brain/Road" unique_id=170219942]
+layout_mode = 0
+offset_left = 1185.0
+offset_top = 1156.9999
+offset_right = 1779.0
+offset_bottom = 1385.9999
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_27" type="TextureRect" parent="Brain/Road" unique_id=183672178]
+layout_mode = 0
+offset_left = 1208.9999
+offset_top = 1157.9999
+offset_right = 1802.9999
+offset_bottom = 1386.9999
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_28" type="TextureRect" parent="Brain/Road" unique_id=1247144876]
+layout_mode = 0
+offset_left = 1232.0
+offset_top = 1158.9999
+offset_right = 1826.0
+offset_bottom = 1387.9999
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_29" type="TextureRect" parent="Brain/Road" unique_id=458177449]
+layout_mode = 0
+offset_left = 1255.9999
+offset_top = 1160.0
+offset_right = 1849.9999
+offset_bottom = 1389.0
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_30" type="TextureRect" parent="Brain/Road" unique_id=767268025]
+layout_mode = 0
+offset_left = 1281.0
+offset_top = 1161.0
+offset_right = 1875.0
+offset_bottom = 1390.0
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_31" type="TextureRect" parent="Brain/Road" unique_id=1404598115]
+layout_mode = 0
+offset_left = 1305.9999
+offset_top = 1162.0
+offset_right = 1899.9999
+offset_bottom = 1391.0
+rotation = -1.5707964
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_32" type="TextureRect" parent="Brain/Road" unique_id=1225081853]
+layout_mode = 0
+offset_left = 1688.0
+offset_top = 1157.9999
+offset_right = 2282.0
+offset_bottom = 1386.9999
+rotation = -1.7453293
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_33" type="TextureRect" parent="Brain/Road" unique_id=90958978]
+layout_mode = 0
+offset_left = 1719.0
+offset_top = 1151.9999
+offset_right = 2313.0
+offset_bottom = 1380.9999
+rotation = -1.7453293
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_34" type="TextureRect" parent="Brain/Road" unique_id=313152335]
+layout_mode = 0
+offset_left = 1880.9999
+offset_top = 1335.0
+offset_right = 2475.0
+offset_bottom = 1564.0
+rotation = -2.443461
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
+
+[node name="Pavement_35" type="TextureRect" parent="Brain/Road" unique_id=1530741483]
+layout_mode = 0
+offset_left = 1860.0
+offset_top = 1356.0
+offset_right = 2454.0
+offset_bottom = 1585.0
+rotation = -2.443461
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_igoht")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=256605057]
 

@@ -3,6 +3,7 @@ class_name Garden
 extends Control
 
 const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d.png"
+const GRAYSCALE_SHADER: Shader = preload("res://resources/shaders/grayscale.gdshader")
 const MAX_LESSONS: int = 5
 # Maps lesson count → which slot indices to use
 const SLOT_SELECTION: Dictionary = {
@@ -20,6 +21,10 @@ const WHEEL_HIGHLIGHT: Color = Color("fbb03b")
 	set = set_garden_layout
 ## Title is for developer reference only — not used in-game.
 @export var title: String = ""
+## The garden's animal sprite(s) (jellyfish, turtle, ...), assigned per garden
+## scene. The brain overview desaturates them when the garden has no unlocked
+## lesson. See set_greyed_out().
+@export var animal_sprites: Array[TextureRect] = []
 @export var unlocked_lesson: Color = Color("0a555b")
 @export var unlocked_lesson_text: Color = Color("9be3ea")
 @export var completed_lesson: Color = Color("9be3ea")
@@ -35,6 +40,8 @@ var current_progression: float = 0.0
 var max_progression: float = 0.0
 var garden_index: int = -1
 var active_buttons: Array[LessonButton] = []
+# Background modulate authored in the garden scene, restored when un-greying.
+var _default_background_modulate: Color = Color.WHITE
 
 @onready var all_slots: Array[LessonButton] = [
 	$Buttons/Slot1, $Buttons/Slot2, $Buttons/Slot3, $Buttons/Slot4, $Buttons/Slot5
@@ -47,6 +54,8 @@ func _ready() -> void:
 	all_victory_assets.append_array(%Victory_Assets.get_children().filter(func(node: Node) -> bool:
 		return node is TextureRect
 	))
+	if background:
+		_default_background_modulate = background.modulate
 
 
 func set_garden_layout(p_garden_layout: GardenLayout) -> void:
@@ -84,6 +93,21 @@ func set_background(p_color: int) -> void:
 	var texture: Texture2D = load(path) if ResourceLoader.exists(path) else load(BACKGROUND_PATH_MODEL % [1])
 	background.texture = texture
 	color = unlocked_lesson
+
+
+# Brain overview only: a garden with no unlocked lesson is shown "asleep" — its
+# background drops its color tint (plain white modulate) and its animal(s) are
+# desaturated through grayscale.gdshader. A garden with at least one unlocked
+# lesson keeps its default colors.
+func set_greyed_out(is_greyed_out: bool) -> void:
+	if background:
+		background.modulate = Color.WHITE if is_greyed_out else _default_background_modulate
+	var grayscale: ShaderMaterial = null
+	if is_greyed_out:
+		grayscale = ShaderMaterial.new()
+		grayscale.shader = GRAYSCALE_SHADER
+	for animal: TextureRect in animal_sprites:
+		animal.material = grayscale
 
 
 func _apply_colors_to_buttons() -> void:

@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dufnm3bkfe5yv" path="res://assets/gardens/victory_assets/victory_asset_plant_05.png" id="plant_07"]
 [ext_resource type="Texture2D" uid="uid://dt2a0dea0hv0c" path="res://assets/gardens/victory_assets/victory_asset_fish_02.png" id="plant_08"]
 
-[node name="GardenRoot" type="Control" unique_id=229113687]
+[node name="GardenRoot" type="Control" unique_id=229113687 node_paths=PackedStringArray("animal_sprites")]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -24,6 +24,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
 title = "Blue Jellyfish Garden"
+animal_sprites = [NodePath("Jellyfish")]
 unlocked_lesson = Color(0.0392157, 0.333333, 0.356863, 1)
 unlocked_lesson_text = Color(0.607843, 0.890196, 0.917647, 1)
 completed_lesson = Color(0.607843, 0.890196, 0.917647, 1)

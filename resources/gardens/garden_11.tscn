@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://co6vu63bybpnc" path="res://assets/gardens/victory_assets/victory_asset_plant_09.png" id="9_lswb8"]
 [ext_resource type="Texture2D" uid="uid://gm5x5p2f07rh" path="res://assets/gardens/victory_assets/victory_asset_plant_10.png" id="10_m37ct"]
 
-[node name="GardenRoot" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905 node_paths=PackedStringArray("animal_sprites")]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -24,6 +24,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
 title = "Purple Turtle Garden"
+animal_sprites = [NodePath("Turtle_01"), NodePath("Turtle_02")]
 unlocked_lesson = Color(0.3372549, 0.29803923, 0.16470589, 1)
 unlocked_lesson_text = Color(0.9490196, 0.8901961, 0.72156864, 1)
 completed_lesson = Color(0.9490196, 0.8901961, 0.72156864, 1)
