@@ -1,6 +1,7 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://cpfvnjrabobgn"]
 
 [ext_resource type="Shader" uid="uid://dbje5ee7ridyt" path="res://sources/minigames/turtles/water.gdshader" id="1_3btqb"]
+[ext_resource type="Texture2D" uid="uid://cbkuko45yhi50" path="res://assets/minigames/turtles/graphic/water_layer.png" id="2_wl0ck"]
 
 [resource]
 shader = ExtResource("1_3btqb")
@@ -11,3 +12,4 @@ shader_parameter/FOAM_COL = Color(0.78431374, 0.9098039, 0.8901961, 1)
 shader_parameter/distortion_speed = 0.75
 shader_parameter/tile = Vector2(0.4, 0.4)
 shader_parameter/offset = Vector2(0, 0)
+shader_parameter/water_layer_tex = ExtResource("2_wl0ck")
