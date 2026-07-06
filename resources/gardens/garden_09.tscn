@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dqk14m4demy3a" path="res://assets/gardens/gardens/garden_09.png" id="2_30y1d"]
 [ext_resource type="Texture2D" uid="uid://c0lcx7x0naofl" path="res://assets/gardens/victory_assets/victory_asset_clouds.png" id="3_30y1d"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="4_j4wf1"]
 [ext_resource type="Texture2D" uid="uid://x0skor7vxadl" path="res://assets/gardens/victory_assets/victory_asset_plant_16.png" id="4_pac6c"]
 [ext_resource type="Texture2D" uid="uid://da7ppeamjqjpw" path="res://assets/gardens/victory_assets/animals/red_parakeet.png" id="5_30y1d"]
 [ext_resource type="Texture2D" uid="uid://bqafuj82xbdqm" path="res://assets/gardens/victory_assets/victory_asset_bird_treehouse.png" id="5_j4wf1"]
@@ -70,6 +71,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=155087516]
 modulate = Color(0.6, 0, 0, 1)
+material = ExtResource("4_j4wf1")
 layout_mode = 0
 offset_left = 1195.0
 offset_top = 1383.0
@@ -96,6 +98,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_04" type="TextureRect" parent="Victory_Assets" unique_id=1151142486]
 modulate = Color(0.6, 0, 0, 1)
+material = ExtResource("4_j4wf1")
 layout_mode = 0
 offset_left = 799.0
 offset_top = 1301.0
@@ -109,6 +112,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_05" type="TextureRect" parent="Victory_Assets" unique_id=1467200212]
 modulate = Color(0.6, 0, 0, 1)
+material = ExtResource("4_j4wf1")
 layout_mode = 0
 offset_left = 835.0
 offset_top = 499.0

@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://sjgk8i8m2lhn"]
+[gd_scene format=3 uid="uid://c8s3i6vdhj8d7"]
 
-[ext_resource type="Script" uid="uid://bhq3ocfpct206" path="res://resources/gardens/garden_flower.gd" id="1_mimdi"]
+[ext_resource type="Script" path="res://resources/gardens/garden_flower.gd" id="1_mimdi"]
 [ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="3_xad8g"]
 
 [node name="Flower" type="Node2D" unique_id=772113731]

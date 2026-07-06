@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_5owem"]
 [ext_resource type="Texture2D" uid="uid://4wt50lu3cwbl" path="res://assets/gardens/gardens/garden_02.png" id="2_v4g1g"]
 [ext_resource type="Texture2D" uid="uid://dro75vltqiq6j" path="res://assets/gardens/victory_assets/victory_asset_plant_07.png" id="3_b2jov"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="3_jq8gi"]
 [ext_resource type="Texture2D" uid="uid://gm5x5p2f07rh" path="res://assets/gardens/victory_assets/victory_asset_plant_10.png" id="4_7vcey"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
 [ext_resource type="Texture2D" uid="uid://blaltndbcv2yq" path="res://assets/gardens/victory_assets/victory_asset_plant_08.png" id="6_4i3vl"]
@@ -58,6 +59,7 @@ mouse_filter = 2
 
 [node name="Victory_Asset_01" type="TextureRect" parent="Victory_Assets" unique_id=1278004645]
 modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
+material = ExtResource("3_jq8gi")
 layout_mode = 0
 offset_left = 747.0
 offset_top = 1256.0
@@ -111,6 +113,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_05" type="TextureRect" parent="Victory_Assets" unique_id=520271408]
 modulate = Color(0.34509805, 0.26666668, 0.49019608, 1)
+material = ExtResource("3_jq8gi")
 layout_mode = 0
 offset_left = 1199.0
 offset_top = 1279.0
