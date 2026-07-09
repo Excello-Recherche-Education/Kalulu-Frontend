@@ -151,6 +151,14 @@ func get_progress_ratio() -> float:
 	return current_progression / max_progression
 
 
+func get_reward_color() -> Color:
+	return _default_background_modulate if background else wheel_background
+
+
+func get_reward_rect() -> Rect2:
+	return background.get_global_rect() if background else get_global_rect()
+
+
 #region Reward recolor (brain-screen final-boss animation)
 
 # Assigns a fresh recolor ShaderMaterial (target `color`, mix 0) to the garden's

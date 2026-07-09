@@ -15,14 +15,22 @@ const BRAIN_PURPLE: Color = Color("7b3a8c")
 const RECOLOR_SHADER: Shader = preload("res://resources/shaders/recolor.gdshader")
 const READING_KALULU_SCENE: PackedScene = preload("res://sources/kalulu_animator_reading.tscn")
 const RIGHT_STARS_FX_SCENE: PackedScene = preload("res://sources/utils/fx/right_stars.tscn")
+const FIREWORKS_SCENE: PackedScene = preload("res://sources/utils/fx/fireworks.tscn")
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const TREASURE_OPENED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_opened.png")
 
 const GARDEN_TINT_DURATION: float = 0.5
 const BRAIN_TINT_DURATION: float = 2.0
-const BRAIN_FADE_DURATION: float = 5.0
+const BRAIN_FADE_DURATION: float = 3.0
 const RESTORE_DURATION: float = 1.0
 const TREASURE_PAUSE: float = 1.0
+const GARDEN_FIREWORKS_COUNT: int = 12
+const GARDEN_FIREWORKS_LEAD_IN: float = 0.5
+const GARDEN_FIREWORKS_MIN_DELAY: float = 0.0
+const GARDEN_FIREWORKS_MAX_DELAY: float = 0.005
+const GARDEN_FIREWORKS_MIN_SCALE: float = 0.12
+const GARDEN_FIREWORKS_MAX_SCALE: float = 0.22
+const GARDEN_FIREWORKS_RECT_EXPAND_RATIO: float = 0.05
 
 # References into the brain scene, provided by Brain via setup().
 var _brain_map: TextureRect
@@ -126,6 +134,8 @@ func _open_treasure() -> void:
 
 func _tint_gardens() -> void:
 	for garden: Garden in _gardens:
+		_play_garden_fireworks(garden)
+		await get_tree().create_timer(GARDEN_FIREWORKS_LEAD_IN).timeout
 		var material: ShaderMaterial = garden.apply_recolor(GARDEN_PURPLE)
 		var tween: Tween = create_tween()
 		tween.tween_property(material, "shader_parameter/mix_amount", 1.0, GARDEN_TINT_DURATION)
@@ -147,6 +157,38 @@ func _fade_out_brain() -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(_brain_map, "modulate:a", 0.0, BRAIN_FADE_DURATION)
 	await tween.finished
+
+
+func _play_garden_fireworks(garden: Garden) -> void:
+	var fireworks: Fireworks = FIREWORKS_SCENE.instantiate() as Fireworks
+	if fireworks == null:
+		return
+	fireworks.fireworks_count = GARDEN_FIREWORKS_COUNT
+	fireworks.min_spawn_delay = GARDEN_FIREWORKS_MIN_DELAY
+	fireworks.max_spawn_delay = GARDEN_FIREWORKS_MAX_DELAY
+	fireworks.min_scale = GARDEN_FIREWORKS_MIN_SCALE
+	fireworks.max_scale = GARDEN_FIREWORKS_MAX_SCALE
+	fireworks.set_colors(_garden_firework_colors(garden.get_reward_color()))
+	fireworks.set_spawn_rect(_expand_rect(garden.get_reward_rect(), GARDEN_FIREWORKS_RECT_EXPAND_RATIO))
+	fireworks.finished.connect(Callable(fireworks, "queue_free"), CONNECT_ONE_SHOT)
+	_overlay_layer.add_child(fireworks)
+	fireworks.play()
+
+
+func _garden_firework_colors(garden_color: Color) -> Array[Color]:
+	garden_color.a = 1.0
+	var colors: Array[Color] = []
+	colors.append(garden_color)
+	colors.append(garden_color.lightened(0.25))
+	colors.append(garden_color.lightened(0.45))
+	return colors
+
+
+func _expand_rect(rect: Rect2, expand_ratio: float) -> Rect2:
+	if not rect.has_area():
+		return rect
+	var expand: Vector2 = rect.size * expand_ratio
+	return Rect2(rect.position - expand, rect.size + expand * 2.0)
 
 
 func _show_and_speak() -> void:
