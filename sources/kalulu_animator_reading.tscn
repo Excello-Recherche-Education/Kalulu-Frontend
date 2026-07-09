@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://kmhrk5eyydpo"]
+
+[ext_resource type="SpriteFrames" uid="uid://bcxwklay4go55" path="res://sources/kalulu_reading_animations.tres" id="1_read"]
+[ext_resource type="Script" uid="uid://25yl6wqnud6u" path="res://sources/kalulu_animator.gd" id="2_read"]
+
+[node name="KaluluReading" type="AnimatedSprite2D" unique_id=1583979901]
+visible = false
+sprite_frames = ExtResource("1_read")
+animation = &"Idle"
+script = ExtResource("2_read")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

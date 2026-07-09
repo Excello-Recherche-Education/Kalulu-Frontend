@@ -23,7 +23,8 @@ func _ready() -> void:
 			"intro_1": "",
 			"intro_2": "",
 			"intro_3": "",
-			"help": ""
+			"help": "",
+			"victory": ""
 		},
 		"gardens_screen":{
 			"intro": "",

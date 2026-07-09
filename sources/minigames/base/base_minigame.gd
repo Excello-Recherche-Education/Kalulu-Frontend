@@ -433,9 +433,16 @@ func _update_confusion_matrix_gp_score(expected_id: int, selected_id: int) -> vo
 func _go_back_to_the_garden() -> void:
 	get_tree().paused = false
 	await (OpeningCurtain as OpeningCurtainClass).close()
-	
+
 	_save_logs()
-	
+
+	# Beating the final boss returns to the brain screen (with its reward
+	# animation) instead of the gardens.
+	if is_final_boss:
+		Brain.transition_data = {"final_boss_just_beaten": true}
+		SceneLoader.change_scene("res://sources/brain/brain.tscn")
+		return
+
 	Gardens.transition_data = gardens_data
 	SceneLoader.change_scene("res://sources/gardens/gardens.tscn")
 

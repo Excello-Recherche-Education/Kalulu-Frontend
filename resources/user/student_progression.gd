@@ -208,7 +208,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 			garden["games"] = _make_locked_games_array(minigame_count)
 		elif (garden["games"] as Array).size() != minigame_count:
 			if not is_init:
-				Log.warn("StudentProgression: Garden %d: 'games' resized from %d to %d, progress preserved." % [index, (garden["games"] as Array).size(), minigame_count])
+				Log.info("StudentProgression: Garden %d: 'games' resized from %d to %d, progress preserved." % [index, (garden["games"] as Array).size(), minigame_count])
 			garden["games"] = _resize_games_array(garden["games"] as Array, minigame_count)
 
 		# Keep duration metrics aligned with the minigame count, preserving the
@@ -279,7 +279,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 							if was_completed:
 								Log.warn("StudentProgression: Garden %d: minigame %d demoted from COMPLETED to LOCKED (out of play order — minigame %d not yet completed)" % [index, game_index, next_to_play])
 							else:
-								Log.warn("StudentProgression: Garden %d: minigame %d re-locked (waits for minigame %d to be completed)" % [index, game_index, game_index - 1])
+								Log.info("StudentProgression: Garden %d: minigame %d re-locked (waits for minigame %d to be completed)" % [index, game_index, game_index - 1])
 		else:
 			# L&L not completed → no game may be UNLOCKED (COMPLETED preserved).
 			for game_index: int in range(minigame_count):
