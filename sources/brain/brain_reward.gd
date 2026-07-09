@@ -20,7 +20,7 @@ const TREASURE_OPENED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_
 
 const GARDEN_TINT_DURATION: float = 0.5
 const BRAIN_TINT_DURATION: float = 2.0
-const BRAIN_FADE_DURATION: float = 2.0
+const BRAIN_FADE_DURATION: float = 5.0
 const RESTORE_DURATION: float = 1.0
 const TREASURE_PAUSE: float = 1.0
 

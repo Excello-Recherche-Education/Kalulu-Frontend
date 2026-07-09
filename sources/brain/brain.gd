@@ -238,3 +238,7 @@ func _on_treasure_button_pressed() -> void:
 func _on_back_button_pressed() -> void:
 	await (OpeningCurtain as OpeningCurtainClass).close()
 	SceneLoader.change_scene(GARDENS_SCENE_PATH)
+
+
+func _on_treasure_button_button_up() -> void:
+	reward.play(true)
