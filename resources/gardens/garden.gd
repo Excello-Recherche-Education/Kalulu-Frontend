@@ -197,17 +197,17 @@ func clear_recolor() -> void:
 
 
 func _make_recolor_material(color: Color) -> ShaderMaterial:
-	var material: ShaderMaterial = ShaderMaterial.new()
-	material.shader = RECOLOR_SHADER
-	material.set_shader_parameter("target_color", color)
-	material.set_shader_parameter("mix_amount", 0.0)
-	return material
+	var recolor_material: ShaderMaterial = ShaderMaterial.new()
+	recolor_material.shader = RECOLOR_SHADER
+	recolor_material.set_shader_parameter("target_color", color)
+	recolor_material.set_shader_parameter("mix_amount", 0.0)
+	return recolor_material
 
 
-func _apply_recolor_material(sprite: CanvasItem, material: ShaderMaterial) -> void:
+func _apply_recolor_material(sprite: CanvasItem, recolor_material: ShaderMaterial) -> void:
 	if not _original_recolor_materials.has(sprite):
 		_original_recolor_materials[sprite] = sprite.material
-	sprite.material = material
+	sprite.material = recolor_material
 
 
 func _recolored_sprites() -> Array[CanvasItem]:

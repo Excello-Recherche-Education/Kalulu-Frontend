@@ -886,6 +886,7 @@ ring_padding = 24.0
 
 [node name="KaluluButton" type="TextureButton" parent="CanvasLayer" unique_id=647042246]
 unique_name_in_owner = true
+visible = false
 offset_left = 56.0
 offset_top = 1464.0
 offset_right = 331.0
