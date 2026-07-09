@@ -1,4 +1,9 @@
+class_name Brain
 extends Control
+
+# Set by base_minigame.gd right before navigating here after a final-boss win, so
+# _ready() knows to auto-play the reward animation once. Mirrors Gardens/Minigame.
+static var transition_data: Dictionary = {}
 
 const GARDENS_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
@@ -26,6 +31,9 @@ var boss_buttons_container: Control
 @onready var progress_label: Label = %ProgressLabel
 @onready var brain_map: TextureRect = $Brain
 @onready var treasure: TextureRect = $Brain/Treasure
+@onready var treasure_button: Button = $Brain/Treasure/TreasureButton
+@onready var reward: BrainReward = $Reward
+@onready var ui_layer: CanvasLayer = $CanvasLayer
 
 
 func _ready() -> void:
@@ -40,7 +48,13 @@ func _ready() -> void:
 	lesson_centers = _collect_lesson_centers()
 	_set_up_boss_buttons()
 	_update_treasure()
+	reward.setup(brain_map, treasure, gardens, ui_layer)
+	treasure_button.pressed.connect(_on_treasure_button_pressed)
 	await (OpeningCurtain as OpeningCurtainClass).open()
+	# Auto-play the reward once when arriving straight from a final-boss win.
+	if transition_data.get("final_boss_just_beaten", false):
+		transition_data = {}
+		reward.play(true)
 
 
 func _update_progress_label() -> void:
@@ -207,12 +221,19 @@ func _set_up_boss_buttons() -> void:
 # otherwise (tracked via StudentProgression.highest_boss_defeated).
 func _update_treasure() -> void:
 	var progression: StudentProgression = UserDataManager.student_progression
-	if progression and progression.is_final_boss_completed():
+	var final_done: bool = progression != null and progression.is_final_boss_completed()
+	if final_done:
 		treasure.texture = TREASURE_OPENED_TEXTURE
 	else:
 		treasure.texture = TREASURE_CLOSED_TEXTURE
+	# The chest replays the reward, but only once it has been opened for real.
+	treasure_button.disabled = not final_done
 
 #endregion
+
+func _on_treasure_button_pressed() -> void:
+	reward.play(false)
+
 
 func _on_back_button_pressed() -> void:
 	await (OpeningCurtain as OpeningCurtainClass).close()

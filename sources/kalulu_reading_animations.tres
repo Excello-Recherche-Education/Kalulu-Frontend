@@ -2,6 +2,54 @@
 
 [ext_resource type="Texture2D" uid="uid://dc56gim6ikbl7" path="res://assets/kalulu/kalulu_sheet_read_book.png" id="1_ha3hi"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_be377"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(6875, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gkbtd"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(6250, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxbkf"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(5625, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wdt8m"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(5000, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4f1nk"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(4375, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffc6v"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(3750, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xdbx"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(3125, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvdm7"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(2500, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4aoy"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(1875, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8wp8u"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(1250, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m8ue5"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(625, 0, 625, 1250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hii0c"]
+atlas = ExtResource("1_ha3hi")
+region = Rect2(0, 0, 625, 1250)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_hjbi7"]
 atlas = ExtResource("1_ha3hi")
 region = Rect2(0, 1250, 625, 1250)
@@ -306,6 +354,47 @@ region = Rect2(6875, 5000, 625, 1250)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_be377")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gkbtd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dxbkf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wdt8m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4f1nk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ffc6v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xdbx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vvdm7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x4aoy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8wp8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m8ue5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hii0c")
+}],
+"loop": 0,
+"name": &"Hide",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_hjbi7")
 }, {
 "duration": 1.0,
@@ -326,9 +415,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ci2bf")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"Idle",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -355,9 +444,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pu1hp")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"Idle_blink",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -396,9 +485,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_y3cnb")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"Show",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -437,9 +526,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s81jg")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"Talk",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -478,9 +567,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_rnm58")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"Talk_blink",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -519,9 +608,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2r5cp")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"Talk_ear_bend",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -560,7 +649,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8k8no")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"Talk_ear_wiggle",
-"speed": 5.0
+"speed": 12.0
 }]

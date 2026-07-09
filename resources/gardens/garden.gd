@@ -3,6 +3,7 @@ class_name Garden
 extends Control
 
 const GRAYSCALE_SHADER: Shader = preload("res://resources/shaders/grayscale.gdshader")
+const RECOLOR_SHADER: Shader = preload("res://resources/shaders/recolor.gdshader")
 const MAX_LESSONS: int = 5
 # Maps lesson count → which slot indices to use
 const SLOT_SELECTION: Dictionary = {
@@ -38,6 +39,8 @@ var garden_index: int = -1
 var active_buttons: Array[LessonButton] = []
 # Background modulate authored in the garden scene, restored when un-greying.
 var _default_background_modulate: Color = Color.WHITE
+# Shared recolor material driving the brain-screen final-boss purple animation.
+var _recolor_material: ShaderMaterial
 
 @onready var all_slots: Array[LessonButton] = [
 	$Buttons/Slot1, $Buttons/Slot2, $Buttons/Slot3, $Buttons/Slot4, $Buttons/Slot5
@@ -146,3 +149,43 @@ func get_progress_ratio() -> float:
 	if max_progression <= 0.0:
 		return 0.0
 	return current_progression / max_progression
+
+
+#region Reward recolor (brain-screen final-boss animation)
+
+# Assigns a fresh recolor ShaderMaterial (target `color`, mix 0) to the garden's
+# art sprites — background, victory-asset plants and animals, but NOT the lesson
+# buttons (they stay white and readable). Returns the material so the caller can
+# tween its `shader_parameter/mix_amount` 0 -> 1 for a smooth purple transition.
+# Mirrors the per-sprite material assignment used by set_greyed_out().
+func apply_recolor(color: Color) -> ShaderMaterial:
+	_recolor_material = ShaderMaterial.new()
+	_recolor_material.shader = RECOLOR_SHADER
+	_recolor_material.set_shader_parameter("target_color", color)
+	_recolor_material.set_shader_parameter("mix_amount", 0.0)
+	for sprite: CanvasItem in _recolorable_sprites():
+		sprite.material = _recolor_material
+	return _recolor_material
+
+
+func get_recolor_material() -> ShaderMaterial:
+	return _recolor_material
+
+
+func clear_recolor() -> void:
+	for sprite: CanvasItem in _recolorable_sprites():
+		sprite.material = null
+	_recolor_material = null
+
+
+func _recolorable_sprites() -> Array[CanvasItem]:
+	var sprites: Array[CanvasItem] = []
+	if background:
+		sprites.append(background)
+	for asset: TextureRect in all_victory_assets:
+		sprites.append(asset)
+	for animal: TextureRect in animal_sprites:
+		sprites.append(animal)
+	return sprites
+
+#endregion
