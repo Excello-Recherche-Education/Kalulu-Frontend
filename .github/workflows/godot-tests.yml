@@ -8,8 +8,8 @@ jobs:
   gut:
     runs-on: ubuntu-latest
     env:
-      GODOT_VERSION: 4.6-stable
-      GODOT_BIN: godot/Godot_v4.6-stable_linux.x86_64
+      GODOT_VERSION: 4.7-stable
+      GODOT_BIN: godot/Godot_v4.7-stable_linux.x86_64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
