@@ -9,7 +9,8 @@ extends Node
 ## speaks, then idles; clicking dismisses it (Hide) and the brain is restored.
 
 # Purple tones sampled from the target design; tweak here to taste.
-const GARDEN_PURPLE: Color = Color("6a2d7c")
+const GARDEN_BACKGROUND_PURPLE: Color = Color("842984")
+const GARDEN_VICTORY_ASSET_PURPLE: Color = Color("32113c")
 const BRAIN_PURPLE: Color = Color("7b3a8c")
 
 const RECOLOR_SHADER: Shader = preload("res://resources/shaders/recolor.gdshader")
@@ -136,9 +137,13 @@ func _tint_gardens() -> void:
 	for garden: Garden in _gardens:
 		_play_garden_fireworks(garden)
 		await get_tree().create_timer(GARDEN_FIREWORKS_LEAD_IN).timeout
-		var material: ShaderMaterial = garden.apply_recolor(GARDEN_PURPLE)
+		var materials: Array[ShaderMaterial] = garden.apply_recolor(GARDEN_BACKGROUND_PURPLE, GARDEN_VICTORY_ASSET_PURPLE)
+		if materials.is_empty():
+			continue
 		var tween: Tween = create_tween()
-		tween.tween_property(material, "shader_parameter/mix_amount", 1.0, GARDEN_TINT_DURATION)
+		tween.set_parallel(true)
+		for material: ShaderMaterial in materials:
+			tween.tween_property(material, "shader_parameter/mix_amount", 1.0, GARDEN_TINT_DURATION)
 		await tween.finished
 
 
@@ -231,8 +236,7 @@ func _restore_brain() -> void:
 	if _brain_material:
 		tween.tween_property(_brain_material, "shader_parameter/mix_amount", 0.0, RESTORE_DURATION)
 	for garden: Garden in _gardens:
-		var material: ShaderMaterial = garden.get_recolor_material()
-		if material:
+		for material: ShaderMaterial in garden.get_recolor_materials():
 			tween.tween_property(material, "shader_parameter/mix_amount", 0.0, RESTORE_DURATION)
 	await tween.finished
 	# Detach the materials so the authored look is pixel-exact again.

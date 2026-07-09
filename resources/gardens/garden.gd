@@ -39,8 +39,9 @@ var garden_index: int = -1
 var active_buttons: Array[LessonButton] = []
 # Background modulate authored in the garden scene, restored when un-greying.
 var _default_background_modulate: Color = Color.WHITE
-# Shared recolor material driving the brain-screen final-boss purple animation.
-var _recolor_material: ShaderMaterial
+var _background_recolor_material: ShaderMaterial
+var _victory_assets_recolor_material: ShaderMaterial
+var _original_recolor_materials: Dictionary = {}
 
 @onready var all_slots: Array[LessonButton] = [
 	$Buttons/Slot1, $Buttons/Slot2, $Buttons/Slot3, $Buttons/Slot4, $Buttons/Slot5
@@ -161,39 +162,60 @@ func get_reward_rect() -> Rect2:
 
 #region Reward recolor (brain-screen final-boss animation)
 
-# Assigns a fresh recolor ShaderMaterial (target `color`, mix 0) to the garden's
-# art sprites — background, victory-asset plants and animals, but NOT the lesson
-# buttons (they stay white and readable). Returns the material so the caller can
-# tween its `shader_parameter/mix_amount` 0 -> 1 for a smooth purple transition.
-# Mirrors the per-sprite material assignment used by set_greyed_out().
-func apply_recolor(color: Color) -> ShaderMaterial:
-	_recolor_material = ShaderMaterial.new()
-	_recolor_material.shader = RECOLOR_SHADER
-	_recolor_material.set_shader_parameter("target_color", color)
-	_recolor_material.set_shader_parameter("mix_amount", 0.0)
-	for sprite: CanvasItem in _recolorable_sprites():
-		sprite.material = _recolor_material
-	return _recolor_material
+# Assigns fresh recolor materials to the garden art. The background and victory
+# assets use separate target colours; animals are intentionally left untouched.
+func apply_recolor(background_color: Color, victory_assets_color: Color) -> Array[ShaderMaterial]:
+	var materials: Array[ShaderMaterial] = []
+	if background:
+		_background_recolor_material = _make_recolor_material(background_color)
+		_apply_recolor_material(background, _background_recolor_material)
+		materials.append(_background_recolor_material)
+	if not all_victory_assets.is_empty():
+		_victory_assets_recolor_material = _make_recolor_material(victory_assets_color)
+		for asset: TextureRect in all_victory_assets:
+			_apply_recolor_material(asset, _victory_assets_recolor_material)
+		materials.append(_victory_assets_recolor_material)
+	return materials
 
 
-func get_recolor_material() -> ShaderMaterial:
-	return _recolor_material
+func get_recolor_materials() -> Array[ShaderMaterial]:
+	var materials: Array[ShaderMaterial] = []
+	if _background_recolor_material:
+		materials.append(_background_recolor_material)
+	if _victory_assets_recolor_material:
+		materials.append(_victory_assets_recolor_material)
+	return materials
 
 
 func clear_recolor() -> void:
-	for sprite: CanvasItem in _recolorable_sprites():
-		sprite.material = null
-	_recolor_material = null
+	for sprite: CanvasItem in _recolored_sprites():
+		if _original_recolor_materials.has(sprite):
+			sprite.material = _original_recolor_materials[sprite] as Material
+	_background_recolor_material = null
+	_victory_assets_recolor_material = null
+	_original_recolor_materials.clear()
 
 
-func _recolorable_sprites() -> Array[CanvasItem]:
+func _make_recolor_material(color: Color) -> ShaderMaterial:
+	var material: ShaderMaterial = ShaderMaterial.new()
+	material.shader = RECOLOR_SHADER
+	material.set_shader_parameter("target_color", color)
+	material.set_shader_parameter("mix_amount", 0.0)
+	return material
+
+
+func _apply_recolor_material(sprite: CanvasItem, material: ShaderMaterial) -> void:
+	if not _original_recolor_materials.has(sprite):
+		_original_recolor_materials[sprite] = sprite.material
+	sprite.material = material
+
+
+func _recolored_sprites() -> Array[CanvasItem]:
 	var sprites: Array[CanvasItem] = []
 	if background:
 		sprites.append(background)
 	for asset: TextureRect in all_victory_assets:
 		sprites.append(asset)
-	for animal: TextureRect in animal_sprites:
-		sprites.append(animal)
 	return sprites
 
 #endregion
