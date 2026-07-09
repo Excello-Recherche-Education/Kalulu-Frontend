@@ -12,14 +12,12 @@ extends Node
 const GARDEN_BACKGROUND_PURPLE: Color = Color("842984")
 const GARDEN_VICTORY_ASSET_PURPLE: Color = Color("32113c")
 const BRAIN_PURPLE: Color = Color("7b3a8c")
-
 const RECOLOR_SHADER: Shader = preload("res://resources/shaders/recolor.gdshader")
 const READING_KALULU_SCENE: PackedScene = preload("res://sources/kalulu_animator_reading.tscn")
 const RIGHT_STARS_FX_SCENE: PackedScene = preload("res://sources/utils/fx/right_stars.tscn")
 const FIREWORKS_SCENE: PackedScene = preload("res://sources/utils/fx/fireworks.tscn")
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const TREASURE_OPENED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_opened.png")
-
 const GARDEN_TINT_DURATION: float = 0.5
 const BRAIN_TINT_DURATION: float = 2.0
 const BRAIN_FADE_DURATION: float = 3.0
@@ -38,14 +36,12 @@ var _brain_map: TextureRect
 var _treasure: TextureRect
 var _gardens: Array[Garden] = []
 var _ui_layer: CanvasLayer
-
 # Runtime nodes built in _build_runtime().
 var _overlay_layer: CanvasLayer
 var _reading_kalulu: AnimatedSprite2D
 var _click_catcher: Button
 var _voice_player: AudioStreamPlayer
 var _brain_material: ShaderMaterial
-
 var _is_playing: bool = false
 var _speech: AudioStream
 

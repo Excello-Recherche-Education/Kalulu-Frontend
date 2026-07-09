@@ -1,10 +1,7 @@
 class_name Brain
 extends Control
 
-# Set by base_minigame.gd right before navigating here after a final-boss win, so
-# _ready() knows to auto-play the reward animation once. Mirrors Gardens/Minigame.
-static var transition_data: Dictionary = {}
-
+const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
 const GARDENS_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 # Boss buttons are authored at 512 px; the gardens show them at ~0.2 scale, and the
@@ -16,6 +13,11 @@ const BOSS_BUTTON_SCALE: float = 0.16
 const TREASURE_CLOSED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_closed.png")
 const TREASURE_OPENED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_opened.png")
 
+# Set by base_minigame.gd right before navigating here after a final-boss win, so
+# _ready() knows to auto-play the reward animation once. Mirrors Gardens/Minigame.
+static var transition_data: Dictionary = {}
+
+var _is_kalulu_help_playing: bool = false
 # Lesson grapheme data keyed by lesson number (1-based), same shape as Gardens.lessons.
 var lessons: Dictionary = {}
 # How many lessons each garden hosts, from Gardens.compute_lessons_distribution().
@@ -32,8 +34,13 @@ var boss_buttons_container: Control
 @onready var brain_map: TextureRect = $Brain
 @onready var treasure: TextureRect = $Brain/Treasure
 @onready var treasure_button: Button = $Brain/Treasure/TreasureButton
+@onready var brain_kalulu: AnimatedSprite2D = $Brain/Kalulu
+@onready var brain_kalulu_button: Button = $Brain/KaluluHelpButton
 @onready var reward: BrainReward = $Reward
 @onready var ui_layer: CanvasLayer = $CanvasLayer
+@onready var kalulu: KALULU = $CanvasLayer/Kalulu
+# TODO: replace with Database.get_kalulu_speech_path("brain_screen", "help") once the recording exists.
+@onready var kalulu_help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("title_screen", "tuto_welcome_oneshot"))
 
 
 func _ready() -> void:
@@ -50,6 +57,7 @@ func _ready() -> void:
 	_update_treasure()
 	reward.setup(brain_map, treasure, gardens, ui_layer)
 	treasure_button.pressed.connect(_on_treasure_button_pressed)
+	brain_kalulu_button.pressed.connect(_on_brain_kalulu_button_pressed)
 	await (OpeningCurtain as OpeningCurtainClass).open()
 	# Auto-play the reward once when arriving straight from a final-boss win.
 	if transition_data.get("final_boss_just_beaten", false):
@@ -242,3 +250,20 @@ func _on_back_button_pressed() -> void:
 
 func _on_treasure_button_button_up() -> void:
 	reward.play(true)
+
+
+func _on_brain_kalulu_button_pressed() -> void:
+	if _is_kalulu_help_playing or reward.is_playing():
+		return
+	_is_kalulu_help_playing = true
+	brain_kalulu_button.disabled = true
+	brain_kalulu.play(&"Hide")
+	await brain_kalulu.animation_finished
+	brain_kalulu.hide()
+	await kalulu.play_kalulu_speech(kalulu_help_speech)
+	brain_kalulu.show()
+	brain_kalulu.play(&"Show")
+	await brain_kalulu.animation_finished
+	brain_kalulu.play(&"Idle")
+	brain_kalulu_button.disabled = false
+	_is_kalulu_help_playing = false

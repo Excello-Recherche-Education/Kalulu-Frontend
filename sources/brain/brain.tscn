@@ -28,6 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png" id="26_2c5sd"]
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="27_xy24s"]
 [ext_resource type="Script" uid="uid://bqr8n3kxm2wp4" path="res://sources/brain/brain_reward.gd" id="33_reward"]
+[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="34_kalulu"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_77her"]
 blend_mode = 1
@@ -463,10 +464,10 @@ offset_bottom = 1550.0001
 
 [node name="Treasure" type="TextureRect" parent="Brain" unique_id=968625533]
 layout_mode = 0
-offset_left = 1716.0
-offset_top = 1335.0
-offset_right = 2234.0
-offset_bottom = 1775.0
+offset_left = 1735.0
+offset_top = 1341.0
+offset_right = 2253.0
+offset_bottom = 1781.0
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("18_fyww8")
 
@@ -478,12 +479,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
+mouse_default_cursor_shape = 2
 disabled = true
 flat = true
 
 [node name="Kalulu" parent="Brain" unique_id=1277205438 instance=ExtResource("19_i5ves")]
-position = Vector2(1660, 1400)
+position = Vector2(1586, 1348)
 scale = Vector2(0.5, 0.5)
+
+[node name="KaluluHelpButton" type="Button" parent="Brain" unique_id=25137456]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 1506.0
+offset_top = 1188.0
+offset_right = 1666.0
+offset_bottom = 1493.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+flat = true
 
 [node name="Finish_Line" type="TextureRect" parent="Brain" unique_id=1902000025]
 layout_mode = 0
@@ -897,6 +911,9 @@ texture_pressed = ExtResource("26_2c5sd")
 texture_disabled = ExtResource("27_xy24s")
 ignore_texture_size = true
 stretch_mode = 4
+
+[node name="Kalulu" parent="CanvasLayer" unique_id=1643406022 instance=ExtResource("34_kalulu")]
+visible = false
 
 [connection signal="button_up" from="Brain/Treasure/TreasureButton" to="." method="_on_treasure_button_button_up"]
 [connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
