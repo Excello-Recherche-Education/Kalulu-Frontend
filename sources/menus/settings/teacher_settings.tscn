@@ -10,7 +10,7 @@
 [ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="8_7h0sa"]
 [ext_resource type="PackedScene" uid="uid://qsvbq6ruc44v" path="res://sources/menus/settings/lesson_unlocks.tscn" id="9_mljfd"]
 [ext_resource type="PackedScene" uid="uid://dhowigt8un22u" path="res://sources/ui/loading_popup.tscn" id="10_i488h"]
-[ext_resource type="PackedScene" path="res://sources/ui/change_language_popup.tscn" id="11_chglg"]
+[ext_resource type="PackedScene" uid="uid://bsb6r3sjxnv6g" path="res://sources/ui/change_language_popup.tscn" id="11_chglg"]
 
 [node name="TeacherSettings" type="Control" unique_id=149147235]
 layout_mode = 3
@@ -108,14 +108,12 @@ visible = false
 content_text = "DELETE_ACCOUNT_POPUP"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2087046145]
-custom_minimum_size = Vector2(1970, 1800)
+clip_contents = true
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = -632.0
-grow_horizontal = 0
+offset_left = 590.0
+offset_right = 2560.0
 grow_vertical = 2
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=258975030]
@@ -126,10 +124,12 @@ theme_override_constants/separation = 50
 layout_mode = 2
 
 [node name="AccountTypeLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1808699389]
+custom_minimum_size = Vector2(560, 0)
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
 text = "ACCOUNT_TYPE"
+autowrap_mode = 3
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer" unique_id=250669743]
 layout_mode = 2
@@ -137,11 +137,12 @@ theme_override_constants/separation = 30
 
 [node name="AccountTypeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer" unique_id=1179262769]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 200)
+custom_minimum_size = Vector2(450, 200)
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
-autowrap_mode = 2
+autowrap_mode = 3
+fit_to_longest_item = false
 item_count = 2
 popup/item_0/text = "TEACHER"
 popup/item_0/id = 0
@@ -154,10 +155,12 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 30
 
 [node name="EducationMethodeLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1698158036]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
 text = "EDUCATION_METHOD"
+autowrap_mode = 3
 
 [node name="VSeparator3" type="VSeparator" parent="VBoxContainer/HBoxContainer" unique_id=1023308123]
 layout_mode = 2
@@ -165,11 +168,12 @@ theme_override_constants/separation = 30
 
 [node name="EducationMethodOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer" unique_id=1661492451]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 300)
+custom_minimum_size = Vector2(500, 300)
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 70
-autowrap_mode = 2
+autowrap_mode = 3
+fit_to_longest_item = false
 item_count = 2
 popup/item_0/text = "METHOD_APP_ONLY"
 popup/item_0/id = 0
@@ -201,7 +205,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 60
 text = "SETTINGS_ADD_STUDENT"
 
 [node name="AddDeviceButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container" unique_id=503874336]
@@ -209,21 +213,25 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 60
 text = "SETTINGS_ADD_DEVICE"
 
 [node name="LabelInternetMandatory" type="Label" parent="VBoxContainer/InterfaceBottom/Container" unique_id=1658066828]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("8_7h0sa")
 theme_override_font_sizes/font_size = 60
 text = "SETTINGS_INTERNET_MANDATORY_TO_ADD_STUDENT"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="ExportCodesButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container" unique_id=39310172]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 60
 text = "EXPORT_TO_PDF"
 
 [node name="LessonUnlocks" parent="." unique_id=1063204137 instance=ExtResource("9_mljfd")]

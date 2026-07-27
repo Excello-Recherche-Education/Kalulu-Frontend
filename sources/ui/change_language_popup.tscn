@@ -67,6 +67,7 @@ layout_mode = 2
 theme = ExtResource("2_chglg")
 theme_override_font_sizes/font_size = 60
 autowrap_mode = 2
+fit_to_longest_item = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1789253135]
 layout_mode = 2
