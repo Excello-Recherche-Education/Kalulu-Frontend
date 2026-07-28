@@ -35,6 +35,14 @@ func _ready() -> void:
 		await get_tree().process_frame
 		get_tree().change_scene_to_file(PACKAGE_LOADER_SCENE_PATH)
 	
+	# The synchronization asked for at teacher login is postponed until the
+	# language pack is installed. This screen is the first one reached with the
+	# database open, so catch up here: without it the students stay blank until
+	# someone presses Synchronize by hand.
+	if UserDataManager.user_database_synchronizer.postponed:
+		Log.info("LoginScreen: Running the synchronization postponed during login")
+		await UserDataManager.user_database_synchronizer.synchronize()
+
 	help_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "help_code"))
 	wrong_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_wrong_password"))
 	right_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_right_password"))

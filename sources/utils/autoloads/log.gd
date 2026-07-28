@@ -123,6 +123,11 @@ func _init_log_file(path_override: String = "") -> void:
 		push_error("Log: Init Log File: Could not open log file at " + log_file_path)
 		return
 
+	# Editor-only convenience so the logs folder can be opened straight from the
+	# output panel. Printed rather than logged: it is of no use in the log file.
+	if OS.has_feature("editor"):
+		print("Log: writing logs to %s" % ProjectSettings.globalize_path(LOG_PATH))
+
 
 # Internal log function (renamed to avoid conflict)
 func _log_internal(level: LogLevel, message: String) -> void:
