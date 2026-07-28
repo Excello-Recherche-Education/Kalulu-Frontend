@@ -48,6 +48,10 @@ func _on_validate_button_pressed() -> void:
 		# Login
 		if UserDataManager.login(res.body as Dictionary):
 			Log.info("Login: Login successful, synchronizing user data")
+			# On a fresh install the language pack is not downloaded yet, and the
+			# progression the server sends back can only be read against its lesson
+			# count. synchronize() postpones itself in that case and the login
+			# screen runs it once the package downloader has opened the database.
 			await UserDataManager.user_database_synchronizer.synchronize()
 			logged_in.emit()
 		else:

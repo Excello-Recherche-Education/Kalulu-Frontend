@@ -13,6 +13,11 @@ const LESSON_UNLOCK_SCENE: PackedScene = preload("res://sources/menus/settings/l
 
 var progression: StudentProgression
 var teacher_settings: SettingsTeacherSettings = null
+# Snapshot taken when a student is loaded, so closing the panel without editing
+# anything does not bump `last_modified`. A stale bump makes the local copy look
+# newer than the server's and gets it pushed on the next synchronization.
+var _unlocks_on_open: Dictionary = {}
+var _highest_boss_on_open: int = 0
 
 @onready var lessons_grid: GridContainer = %LessonsGrid
 @onready var lesson_rows_store: Node = %LessonRowsStore
@@ -68,6 +73,12 @@ func _on_device_changed(value: int)-> void:
 func _on_student_changed(value: int)-> void:
 	student = value
 	progression = UserDataManager.get_student_progression_for_code(device, student)
+	if progression:
+		_unlocks_on_open = progression.unlocks.duplicate(true)
+		_highest_boss_on_open = progression.highest_boss_defeated
+	else:
+		_unlocks_on_open = {}
+		_highest_boss_on_open = 0
 	_create_lessons()
 	(%PasswordVisualizer as PasswordVisualizer).password = str(value)
 	Log.info("LessonUnlocks: Loaded student %d for device %d" % [student, device])
@@ -79,11 +90,24 @@ func _on_student_changed(value: int)-> void:
 
 
 func _on_back_button_pressed() -> void:
+	if not progression:
+		hide()
+		return
 	var highest_unlocked_lesson: int = _get_highest_unlocked_lesson()
-	progression.highest_boss_defeated = max(progression.highest_boss_defeated, highest_unlocked_lesson - 1)
+	var new_highest_boss: int = max(progression.highest_boss_defeated, highest_unlocked_lesson - 1)
+	# Only touch the timestamp when the teacher actually changed something. Note
+	# that lowering the progression is a legitimate edit: it is saved and pushed
+	# like any other, because the timestamp genuinely moves forward.
+	if progression.unlocks == _unlocks_on_open and new_highest_boss == _highest_boss_on_open:
+		Log.trace("LessonUnlocks: Progression unchanged for student %d on device %d, nothing to save" % [student, device])
+		hide()
+		return
+	progression.highest_boss_defeated = new_highest_boss
 	progression.last_modified = Time.get_datetime_string_from_system(true)
 	UserDataManager.save_student_progression_for_code(device, student, progression)
 	Log.info("LessonUnlocks: Saved progression for student %d on device %d" % [student, device])
+	_unlocks_on_open = progression.unlocks.duplicate(true)
+	_highest_boss_on_open = progression.highest_boss_defeated
 	hide()
 
 

@@ -708,11 +708,30 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 
 func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String, highest_boss_defeated: int = -1) -> void:
 	Log.trace("UserDataManager: Setting student progression data for code %s version %s" % [str(student_code), version])
+	var lessons_in_pack: int = Database.get_lessons_count()
+	if lessons_in_pack <= 0:
+		# Without the lesson count nothing can be validated, and saving would
+		# stamp the server timestamp on data we cannot interpret. Leave the file
+		# alone so the next synchronization pulls the server copy again.
+		Log.error("UserDataManager: Refusing to save progression for code %s: the lesson database is unavailable" % str(student_code))
+		return
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
 	if current_data == null:
 		current_data = StudentProgression.new()
 	current_data.version = version
 	current_data.unlocks = new_data
+	# Assigning `unlocks` runs ensure_data_integrity(). Dropping lessons beyond
+	# the pack's range is legitimate — the server may still hold rows from a
+	# larger, older pack — so only the lessons the current pack actually has must
+	# survive. Anything less means the integrity check destroyed data we were
+	# asked to store, and persisting it would push the loss back to the server.
+	var received_in_range: int = 0
+	for lesson_number: int in new_data.keys():
+		if lesson_number >= 1 and lesson_number <= lessons_in_pack:
+			received_in_range += 1
+	if current_data.unlocks.size() < received_in_range:
+		Log.error("UserDataManager: Refusing to save progression for code %s: %d lessons in range received from server, %d survived the integrity check" % [str(student_code), received_in_range, current_data.unlocks.size()])
+		return
 	if highest_boss_defeated >= 0:
 		current_data.highest_boss_defeated = highest_boss_defeated
 	current_data.last_modified = updated_at

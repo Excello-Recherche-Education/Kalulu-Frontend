@@ -134,6 +134,18 @@ static func _resize_games_array(games: Array, target_size: int) -> Array:
 	return resized
 
 
+# True when at least one step of a lesson has been completed — its look-and-learn
+# or one of its minigames. An UNLOCKED step does not count: it only means the
+# lesson was reachable, not that the student finished anything in it.
+static func _has_completed_step(garden: Dictionary) -> bool:
+	if garden["look_and_learn"] == Status.COMPLETED:
+		return true
+	for status: int in garden["games"] as Array:
+		if status == Status.COMPLETED:
+			return true
+	return false
+
+
 # Same idea for the duration metrics: keep recorded times for remaining slots.
 static func _resize_durations(durations: PackedInt32Array, target_size: int) -> PackedInt32Array:
 	var resized: PackedInt32Array = PackedInt32Array()
@@ -145,6 +157,11 @@ static func _resize_durations(durations: PackedInt32Array, target_size: int) -> 
 
 # Make sure the unlocks are correct
 func init_unlocks() -> void:
+	if not is_lesson_database_available():
+		# Expected on every launch before the language pack is opened, so this
+		# stays a trace; ensure_data_integrity() warns for the cases that matter.
+		Log.trace("StudentProgression: Lesson database unavailable, skipping unlocks initialization.")
+		return
 	if not unlocks:
 		unlocks = {} # Triggers ensure_data_integrity(), that will fill the default values
 	else:
@@ -165,10 +182,25 @@ func init_unlocks() -> void:
 	_sanitize_boss_progression()
 
 
+# True once the language pack is installed and its database is readable. Every
+# integrity rule below is expressed relative to the number of lessons, so none of
+# them may run before this returns true: a closed database reports 0 lessons,
+# which the pruning step would read as "every lesson is out of range".
+static func is_lesson_database_available() -> bool:
+	return Database.get_lessons_count() > 0
+
+
 func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 	var is_init: bool = data.is_empty()
 	var result: Dictionary[int, Dictionary] = data.duplicate(true)
 	var number_of_lessons: int = Database.get_lessons_count()
+	if number_of_lessons <= 0:
+		# The language pack is not installed yet (fresh install, or the pack is
+		# being swapped). Keep the data untouched instead of erasing it: this
+		# also runs on the progression the server just sent back, and pruning it
+		# here would destroy it silently.
+		Log.warn("StudentProgression: Lesson database unavailable, keeping progression untouched.")
+		return result
 	# Check for extra keys
 	for key: int in result.keys():
 		if key > number_of_lessons:
@@ -229,6 +261,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 	for index: int in range(min_key, max_key + 1):
 		var garden: Dictionary = result[index]
 		var prev_completed: bool = false
+		var prev_partly_completed: bool = false
 
 		# Check previous garden is completed
 		if result.has(index - 1):
@@ -237,6 +270,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 				prev["look_and_learn"] == Status.COMPLETED and
 				(prev["games"] as Array).all(func(x: int) -> bool: return x == Status.COMPLETED)
 			)
+			prev_partly_completed = _has_completed_step(prev)
 		else:
 			# First garden (key 1) is always unlocked
 			prev_completed = true
@@ -245,6 +279,17 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 
 		# Case: previous garden not completed
 		if not prev_completed:
+			# Work already completed here is never taken away when the previous
+			# lesson is itself partly completed. That is the state a pack update
+			# leaves behind when it adds minigames to a lesson the student had
+			# finished: the lesson reopens, and a reopened lesson is
+			# indistinguishable from one left unfinished, so the lessons they went
+			# on to complete must be given the benefit of the doubt. A previous
+			# lesson with nothing completed at all still proves the rest was never
+			# reachable, and the reset then cascades on its own because each lesson
+			# it clears has nothing completed either.
+			if prev_partly_completed and _has_completed_step(garden):
+				continue
 			var needs_reset: bool = garden["look_and_learn"] != Status.LOCKED
 			if not needs_reset:
 				for game_index: int in range(minigame_count):
@@ -335,9 +380,14 @@ func _sanitize_boss_progression() -> void:
 
 
 func _sanitize_highest_boss(value: int) -> int:
+	var lessons_count: int = Database.get_lessons_count()
+	if lessons_count <= 0:
+		# Same reason as in ensure_data_integrity(): without the lesson count every
+		# real value looks out of range and would be clamped down to 1.
+		return value
 	# The final boss is not a gate lesson; beating it is recorded as (lessons count + 1).
 	# Allow that marker through instead of clamping it down to the last gate.
-	var final_boss_value: int = Database.get_lessons_count() + 1
+	var final_boss_value: int = lessons_count + 1
 	if value >= final_boss_value:
 		return final_boss_value
 	var gate_lessons: Array[int] = get_boss_gate_lessons()

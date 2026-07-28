@@ -516,6 +516,12 @@ func get_words_in_sentence_for_integrity_check(sentence_id: int) -> Array[Dictio
 
 
 func get_lessons_count() -> int:
+	if not is_open:
+		# Querying a closed handle only yields an SQLite error and an empty
+		# result. Callers must read 0 as "the lesson count is unknown", never as
+		# "this language has no lessons".
+		Log.warn("Database: Trying to get lessons count when database is not opened.")
+		return 0
 	db.query("SELECT MAX(Lessons.LessonNb) as i FROM Lessons")
 	if db.query_result.is_empty() or not db.query_result[0].i:
 		return 0
