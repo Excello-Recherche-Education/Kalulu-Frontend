@@ -436,10 +436,9 @@ func _go_back_to_the_garden() -> void:
 
 	_save_logs()
 
-	# Beating the final boss returns to the brain screen (with its reward
-	# animation) instead of the gardens.
+	# Beating the final boss returns to the brain screen instead of the gardens: the
+	# chest there is now unlocked and rocking, waiting to be opened.
 	if is_final_boss:
-		Brain.transition_data = {"final_boss_just_beaten": true}
 		SceneLoader.change_scene("res://sources/brain/brain.tscn")
 		return
 
