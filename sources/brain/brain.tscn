@@ -31,6 +31,7 @@
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="34_kalulu"]
 [ext_resource type="Script" uid="uid://dlqk68nkcreb0" path="res://sources/brain/treasure_chest.gd" id="35_chest"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="36_sparkle"]
+[ext_resource type="Texture2D" uid="uid://gbygdv35ltjx" path="res://assets/look_and_learn/student_hand.png" id="37_hand"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_77her"]
 blend_mode = 1
@@ -87,15 +88,15 @@ emission_ring_axis = Vector3(0, 0, 1)
 emission_ring_height = 1.0
 emission_ring_radius = 72.0
 emission_ring_inner_radius = 46.0
+emission_ring_cone_angle = 90.0
 angle_min = -180.0
 angle_max = 180.0
 spread = 0.0
-initial_velocity_max = 0.0
 angular_velocity_min = -60.0
 angular_velocity_max = 60.0
-gravity = Vector3(0, -25, 0)
 radial_velocity_min = 5.0
 radial_velocity_max = 16.0
+gravity = Vector3(0, -25, 0)
 scale_min = 0.15
 scale_max = 0.3
 scale_curve = SubResource("CurveTexture_sparkle")
@@ -501,38 +502,6 @@ offset_top = 1310.0001
 offset_right = 1464.9991
 offset_bottom = 1550.0001
 
-[node name="Treasure" type="TextureRect" parent="Brain" unique_id=968625533]
-layout_mode = 0
-offset_left = 1735.0
-offset_top = 1341.0
-offset_right = 2253.0
-offset_bottom = 1781.0
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("18_fyww8")
-script = ExtResource("35_chest")
-
-[node name="Sparkles" type="GPUParticles2D" parent="Brain/Treasure" unique_id=1478203651]
-top_level = true
-z_index = 100
-emitting = false
-amount = 14
-texture = ExtResource("36_sparkle")
-lifetime = 1.5
-randomness = 0.5
-process_material = SubResource("ParticleProcessMaterial_sparkle")
-
-[node name="TreasureButton" type="Button" parent="Brain/Treasure" unique_id=526139358]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-disabled = true
-flat = true
-
 [node name="Kalulu" parent="Brain" unique_id=1277205438 instance=ExtResource("19_i5ves")]
 position = Vector2(1586, 1348)
 scale = Vector2(0.5, 0.5)
@@ -926,6 +895,46 @@ offset_bottom = 1585.0
 rotation = -2.443461
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("19_igoht")
+
+[node name="Treasure" type="TextureRect" parent="Brain" unique_id=968625533]
+layout_mode = 0
+offset_left = 1735.0
+offset_top = 1341.0
+offset_right = 2253.0
+offset_bottom = 1781.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("18_fyww8")
+script = ExtResource("35_chest")
+
+[node name="Sparkles" type="GPUParticles2D" parent="Brain/Treasure" unique_id=1478203651]
+top_level = true
+z_index = 100
+emitting = false
+amount = 14
+texture = ExtResource("36_sparkle")
+lifetime = 1.5
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_sparkle")
+
+[node name="PointingHand" type="Sprite2D" parent="Brain/Treasure" unique_id=1103482759]
+modulate = Color(1, 1, 1, 0)
+top_level = true
+z_index = 101
+position = Vector2(1838, 1430)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("37_hand")
+centered = false
+
+[node name="TreasureButton" type="Button" parent="Brain/Treasure" unique_id=526139358]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+disabled = true
+flat = true
 
 [node name="Reward" type="Control" parent="." unique_id=1888546505]
 anchors_preset = 0

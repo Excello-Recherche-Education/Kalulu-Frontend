@@ -18,10 +18,21 @@ const TOLERANCE: Vector2 = Vector2(0.01, 0.01)
 # geometry is checked on its own.
 func _make_chest() -> TreasureChest:
 	var chest: TreasureChest = TreasureChest.new()
+	var chest_button: Button = Button.new()
+	chest_button.name = "TreasureButton"
+	chest_button.disabled = true
+	chest.add_child(chest_button)
 	var sparkles: GPUParticles2D = GPUParticles2D.new()
 	sparkles.name = "Sparkles"
 	sparkles.top_level = true
 	chest.add_child(sparkles)
+	var hand: Sprite2D = Sprite2D.new()
+	hand.name = "PointingHand"
+	hand.top_level = true
+	hand.centered = false
+	hand.hide()
+	hand.modulate.a = 0.0
+	chest.add_child(hand)
 	chest.texture = TreasureChest.CLOSED_TEXTURE
 	chest.position = AUTHORED_POSITION
 	chest.size = AUTHORED_SIZE
@@ -107,3 +118,69 @@ func test_stopping_the_attract_before_it_started_is_harmless() -> void:
 	chest.stop_attract()
 	assert_false(chest.is_attracting())
 	assert_eq(chest.scale, AUTHORED_SCALE)
+
+
+# A disabled Control still hands its cursor shape to the viewport, so a chest that
+# cannot be opened yet must not be left holding the hand cursor.
+func test_a_chest_that_cannot_be_opened_keeps_the_plain_cursor() -> void:
+	var chest: TreasureChest = _make_chest()
+	chest.set_clickable(false)
+	assert_true(chest.button.disabled)
+	assert_eq(chest.button.mouse_default_cursor_shape, Control.CURSOR_ARROW)
+
+
+func test_a_chest_that_can_be_opened_shows_the_hand_cursor() -> void:
+	var chest: TreasureChest = _make_chest()
+	chest.set_clickable(true)
+	assert_false(chest.button.disabled)
+	assert_eq(chest.button.mouse_default_cursor_shape, Control.CURSOR_POINTING_HAND)
+
+
+func test_the_hand_cursor_is_taken_back_when_the_chest_locks_again() -> void:
+	var chest: TreasureChest = _make_chest()
+	chest.set_clickable(true)
+	chest.set_clickable(false)
+	assert_eq(chest.button.mouse_default_cursor_shape, Control.CURSOR_ARROW)
+
+
+# -----------------------------
+# Pointing hand
+# -----------------------------
+func test_the_pointing_hand_stays_hidden_while_the_delay_runs() -> void:
+	var chest: TreasureChest = _make_chest()
+	chest.start_attract()
+	assert_false(chest.pointing_hand.visible)
+	assert_eq(chest.pointing_hand.modulate.a, 0.0)
+
+
+# The texture's top-left corner marks the spot being pointed at, so it must land on the
+# middle of the chest's resting right side — clear of the chest, with the finger aiming
+# back into it.
+func test_the_pointing_hand_is_anchored_on_the_chest_right_side() -> void:
+	var chest: TreasureChest = _make_chest()
+	chest.start_attract()
+	var resting: Vector2 = AUTHORED_POSITION + Vector2(AUTHORED_SIZE.x, AUTHORED_SIZE.y * 0.5) * AUTHORED_SCALE
+	assert_almost_eq(chest.pointing_hand.position, resting, TOLERANCE)
+
+
+# The chest is animated under it, but the hand itself must not move.
+func test_the_pointing_hand_ignores_the_breathing_scale() -> void:
+	var chest: TreasureChest = _make_chest()
+	chest.start_attract()
+	var anchored: Vector2 = chest.pointing_hand.position
+	chest.scale = AUTHORED_SCALE * TreasureChest.PULSE_RATIO
+	chest.rotation = TreasureChest.ROCK_ANGLE
+	chest.stop_attract()
+	chest.start_attract()
+	assert_almost_eq(chest.pointing_hand.position, anchored, TOLERANCE)
+
+
+func test_stopping_the_attract_takes_the_pointing_hand_away() -> void:
+	var chest: TreasureChest = _make_chest()
+	chest.start_attract()
+	# Stand in for the tween having faded the hand all the way in.
+	chest.pointing_hand.show()
+	chest.pointing_hand.modulate.a = 1.0
+	chest.stop_attract()
+	assert_false(chest.pointing_hand.visible)
+	assert_eq(chest.pointing_hand.modulate.a, 0.0)

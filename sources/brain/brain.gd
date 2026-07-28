@@ -25,7 +25,6 @@ var boss_buttons_container: Control
 @onready var progress_label: Label = %ProgressLabel
 @onready var brain_map: TextureRect = $Brain
 @onready var treasure: TreasureChest = $Brain/Treasure
-@onready var treasure_button: Button = $Brain/Treasure/TreasureButton
 @onready var brain_kalulu: AnimatedSprite2D = $Brain/Kalulu
 @onready var brain_kalulu_button: Button = $Brain/KaluluHelpButton
 @onready var reward: BrainReward = $Reward
@@ -48,9 +47,15 @@ func _ready() -> void:
 	_set_up_boss_buttons()
 	_update_treasure()
 	reward.setup(brain_map, treasure, gardens, ui_layer)
-	treasure_button.pressed.connect(_on_treasure_button_pressed)
+	treasure.button.pressed.connect(_on_treasure_button_pressed)
 	brain_kalulu_button.pressed.connect(_on_brain_kalulu_button_pressed)
 	await (OpeningCurtain as OpeningCurtainClass).open()
+	# Started only now: the curtain was in the way, and this is the moment the player can
+	# actually see the chest and reach for it. The countdown to the pointing hand runs
+	# from here too, so it measures how long they hesitated, not how long the scene took
+	# to load.
+	if _treasure_awaits_first_opening():
+		treasure.start_attract()
 
 
 func _update_progress_label() -> void:
@@ -214,20 +219,27 @@ func _set_up_boss_buttons() -> void:
 
 
 # The treasure stands in for the final boss, and has three states:
-#   - final boss not beaten yet: closed, still, not clickable;
+#   - final boss not beaten yet: closed, still, and inert down to the mouse cursor;
 #   - beaten but the reward never triggered: closed and calling for attention, so the
 #     player clicks it and discovers the end-game animation (see TreasureChest);
 #   - reward already triggered: opened and still, clicking it replays the animation.
+# Only the look is settled here, before the curtain opens on it. The attract animation
+# of the middle state is started by _ready() once the curtain is out of the way.
 func _update_treasure() -> void:
 	var progression: StudentProgression = UserDataManager.student_progression
 	var final_done: bool = progression != null and progression.is_final_boss_completed()
-	var reward_seen: bool = final_done and progression.endgame_reward_seen
-	treasure.set_opened(reward_seen)
-	treasure_button.disabled = not final_done
-	if final_done and not reward_seen:
-		treasure.start_attract()
-	else:
-		treasure.stop_attract()
+	treasure.set_opened(final_done and progression.endgame_reward_seen)
+	treasure.set_clickable(final_done)
+	treasure.stop_attract()
+
+
+# True while the chest is unlocked but has never been opened: the one state where it has
+# to call the player over.
+func _treasure_awaits_first_opening() -> bool:
+	var progression: StudentProgression = UserDataManager.student_progression
+	if progression == null or not progression.is_final_boss_completed():
+		return false
+	return not progression.endgame_reward_seen
 
 #endregion
 
