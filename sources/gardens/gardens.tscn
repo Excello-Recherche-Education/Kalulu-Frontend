@@ -13,6 +13,9 @@
 [ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="29_cgp31"]
 [ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="30_wnxkf"]
 [ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="31_b65yw"]
+[ext_resource type="Texture2D" uid="uid://ckojv4efmi7wt" path="res://assets/minigames/minigame_ui/graphic/button_brain_normal.png" id="33_jpk1a"]
+[ext_resource type="Texture2D" uid="uid://bgwbsuebnsmrf" path="res://assets/minigames/minigame_ui/graphic/button_brain_pressed.png" id="34_m1spj"]
+[ext_resource type="Texture2D" uid="uid://dn850c53s2nuf" path="res://assets/minigames/minigame_ui/graphic/button_brain_disabled.png" id="35_tlrvo"]
 [ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_normal.png" id="41_xcos2"]
 [ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png" id="42_l35j3"]
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="43_jfyfk"]
@@ -21,7 +24,6 @@
 [ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="46_cloud1"]
 [ext_resource type="Texture2D" uid="uid://dphj3hqfnnw4p" path="res://assets/minigames/parakeets/graphic/cloud_2.png" id="47_cloud2"]
 [ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="48_cloud3"]
-[ext_resource type="Texture2D" uid="uid://b5o3o678hijhr" path="res://assets/brain/brain.png" id="49_brain"]
 [ext_resource type="Texture2D" uid="uid://d1j23o6nq476v" path="res://assets/gardens/animals/ant_body.png" id="ant_body"]
 [ext_resource type="Texture2D" uid="uid://by3xfdin7jrsn" path="res://assets/gardens/animals/ant_face.png" id="ant_face"]
 [ext_resource type="Texture2D" uid="uid://b6nrx0dn0h3f2" path="res://assets/gardens/animals/caterpillar_body.png" id="caterpillar_body"]
@@ -338,21 +340,23 @@ ring_padding = 24.0
 
 [node name="BrainButton" type="TextureButton" parent="CanvasLayer" unique_id=1010111999]
 unique_name_in_owner = true
-offset_left = 350.0
-offset_top = 50.0
-offset_right = 625.0
-offset_bottom = 325.0
-size_flags_vertical = 0
-texture_normal = ExtResource("49_brain")
+offset_left = 56.0
+offset_top = 1464.0
+offset_right = 331.0
+offset_bottom = 1739.0
+size_flags_vertical = 10
+texture_normal = ExtResource("33_jpk1a")
+texture_pressed = ExtResource("34_m1spj")
+texture_disabled = ExtResource("35_tlrvo")
 ignore_texture_size = true
 stretch_mode = 4
 
 [node name="KaluluButton" type="TextureButton" parent="CanvasLayer" unique_id=999341786]
 unique_name_in_owner = true
 offset_left = 56.0
-offset_top = 1464.0
+offset_top = 1139.0
 offset_right = 331.0
-offset_bottom = 1739.0
+offset_bottom = 1414.0
 size_flags_vertical = 10
 texture_normal = ExtResource("41_xcos2")
 texture_pressed = ExtResource("42_l35j3")
