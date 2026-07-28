@@ -134,17 +134,16 @@ static func _resize_games_array(games: Array, target_size: int) -> Array:
 	return resized
 
 
-# True when a lesson's look-and-learn and its first `slot_count` minigames are all
-# COMPLETED. Used to judge a lesson that has just gained minigames on what the
-# student was actually able to play, ignoring the slots the pack added.
-static func _is_completed_up_to(garden: Dictionary, slot_count: int) -> bool:
-	if garden["look_and_learn"] != Status.COMPLETED:
-		return false
-	var games: Array = garden["games"]
-	for game_index: int in range(mini(slot_count, games.size())):
-		if games[game_index] != Status.COMPLETED:
-			return false
-	return true
+# True when at least one step of a lesson has been completed — its look-and-learn
+# or one of its minigames. An UNLOCKED step does not count: it only means the
+# lesson was reachable, not that the student finished anything in it.
+static func _has_completed_step(garden: Dictionary) -> bool:
+	if garden["look_and_learn"] == Status.COMPLETED:
+		return true
+	for status: int in garden["games"] as Array:
+		if status == Status.COMPLETED:
+			return true
+	return false
 
 
 # Same idea for the duration metrics: keep recorded times for remaining slots.
@@ -215,11 +214,6 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 				Log.warn("StudentProgression: Garden %d missing → added with default values." % index)
 			result[index] = _build_default_lesson_unlock(index)
 	# Check internal structure
-	# Lessons whose minigame count grew, mapped to the number of slots that existed
-	# before. A pack update can add minigames to a lesson the student had already
-	# finished; those new slots start LOCKED, which must not read as a hole in
-	# their progression.
-	var grown_lessons: Dictionary[int, int] = {}
 	for index: int in result.keys():
 		var garden: Dictionary = result[index]
 		var minigame_count: int = get_minigame_count_for_lesson(index)
@@ -245,14 +239,8 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 				Log.warn("StudentProgression: Garden %d: invalid format for 'games' → reset." % index)
 			garden["games"] = _make_locked_games_array(minigame_count)
 		elif (garden["games"] as Array).size() != minigame_count:
-			var previous_slot_count: int = (garden["games"] as Array).size()
 			if not is_init:
-				Log.info("StudentProgression: Garden %d: 'games' resized from %d to %d, progress preserved." % [index, previous_slot_count, minigame_count])
-			if previous_slot_count < minigame_count:
-				# Remember how many slots the student could actually play, so the
-				# sequential rules below do not treat the new empty ones as a gap
-				# in their progression.
-				grown_lessons[index] = previous_slot_count
+				Log.info("StudentProgression: Garden %d: 'games' resized from %d to %d, progress preserved." % [index, (garden["games"] as Array).size(), minigame_count])
 			garden["games"] = _resize_games_array(garden["games"] as Array, minigame_count)
 
 		# Keep duration metrics aligned with the minigame count, preserving the
@@ -273,6 +261,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 	for index: int in range(min_key, max_key + 1):
 		var garden: Dictionary = result[index]
 		var prev_completed: bool = false
+		var prev_partly_completed: bool = false
 
 		# Check previous garden is completed
 		if result.has(index - 1):
@@ -281,13 +270,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 				prev["look_and_learn"] == Status.COMPLETED and
 				(prev["games"] as Array).all(func(x: int) -> bool: return x == Status.COMPLETED)
 			)
-			if not prev_completed and grown_lessons.has(index - 1):
-				# The pack gave the previous lesson more minigames than the student
-				# ever had the chance to play, so it can no longer read as
-				# completed. Everything they unlocked after it was still earned:
-				# treat the lesson as done if every slot that used to exist is, and
-				# let the new minigames simply become playable again.
-				prev_completed = _is_completed_up_to(prev, grown_lessons[index - 1])
+			prev_partly_completed = _has_completed_step(prev)
 		else:
 			# First garden (key 1) is always unlocked
 			prev_completed = true
@@ -296,6 +279,15 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 
 		# Case: previous garden not completed
 		if not prev_completed:
+			# A lesson the student partly finished does not invalidate what comes
+			# after it. That is the state a pack update leaves behind when it adds
+			# minigames to a lesson they had already completed: the lesson reopens,
+			# but the lessons they went on to finish were still earned. Only a
+			# previous lesson with nothing completed at all proves the rest was
+			# never reachable, and the reset below then cascades on its own because
+			# each lesson it clears has nothing completed either.
+			if prev_partly_completed:
+				continue
 			var needs_reset: bool = garden["look_and_learn"] != Status.LOCKED
 			if not needs_reset:
 				for game_index: int in range(minigame_count):

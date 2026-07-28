@@ -130,9 +130,11 @@ func test_a_grown_lesson_keeps_its_progress_and_offers_the_new_minigame() -> voi
 	# Lesson 1 had one minigame, done. Slot 1 is the next to play, slot 2 waits.
 	assert_eq(result[1]["look_and_learn"] as int, COMPLETED as int)
 	assert_eq_deep(result[1]["games"], [COMPLETED, UNLOCKED, LOCKED])
-	# Lesson 2 had two minigames, both done, so only the third is new.
+	# Lesson 2 had two minigames, both done, and keeps them. Its new third slot
+	# stays locked until lesson 1 is finished again — the sequential order is
+	# preserved, the student is just no longer sent back to the start.
 	assert_eq(result[2]["look_and_learn"] as int, COMPLETED as int)
-	assert_eq_deep(result[2]["games"], [COMPLETED, COMPLETED, UNLOCKED])
+	assert_eq_deep(result[2]["games"], [COMPLETED, COMPLETED, LOCKED])
 	_accept_integrity_warnings()
 
 
@@ -157,3 +159,29 @@ func test_a_lesson_that_lost_minigames_is_unaffected() -> void:
 	assert_eq_deep(result[1]["games"], [COMPLETED, COMPLETED, COMPLETED])
 	assert_eq(result[LESSON_COUNT]["look_and_learn"] as int, COMPLETED as int)
 	_accept_integrity_warnings()
+
+
+# The check must be idempotent, because it runs again on the result it produced:
+# _load_student_progression() calls init_unlocks() on every load, and the resized
+# lesson no longer looks resized. A rule that only holds on the pass that performs
+# the resize repairs nothing — the next load undoes it.
+func test_the_integrity_check_is_idempotent_after_a_lesson_grew() -> void:
+	var progression: StudentProgression = StudentProgression.new()
+	var first_pass: Dictionary = progression.ensure_data_integrity(_make_grown_pack_unlocks())
+	var second_pass: Dictionary = progression.ensure_data_integrity(_as_typed_unlocks(first_pass))
+	var third_pass: Dictionary = progression.ensure_data_integrity(_as_typed_unlocks(second_pass))
+
+	for lesson_number: int in range(3, LESSON_COUNT + 1):
+		assert_eq(second_pass[lesson_number]["look_and_learn"] as int, COMPLETED as int,
+				"lesson %d must survive a reload" % lesson_number)
+		assert_eq_deep(second_pass[lesson_number]["games"], [COMPLETED, COMPLETED, COMPLETED])
+	assert_eq_deep(second_pass, first_pass)
+	assert_eq_deep(third_pass, second_pass)
+	_accept_integrity_warnings()
+
+
+func _as_typed_unlocks(unlocks: Dictionary) -> Dictionary[int, Dictionary]:
+	var typed: Dictionary[int, Dictionary] = {}
+	for lesson_number: int in unlocks.keys():
+		typed[lesson_number] = unlocks[lesson_number]
+	return typed
