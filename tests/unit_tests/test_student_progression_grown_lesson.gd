@@ -185,3 +185,19 @@ func _as_typed_unlocks(unlocks: Dictionary) -> Dictionary[int, Dictionary]:
 	for lesson_number: int in unlocks.keys():
 		typed[lesson_number] = unlocks[lesson_number]
 	return typed
+
+
+func test_an_unstarted_lesson_after_a_grown_lesson_is_relocked() -> void:
+	# The exemption only protects work that was actually done. A lesson the
+	# student had merely reached, with nothing completed in it, goes back behind
+	# the frontier until the reopened lesson is finished again.
+	var unlocks: Dictionary[int, Dictionary] = {}
+	unlocks[1] = _make_lesson(1, COMPLETED, COMPLETED)
+	unlocks[2] = _make_lesson(MINIGAMES_PER_LESSON, LOCKED, UNLOCKED)
+	for lesson_number: int in range(3, LESSON_COUNT + 1):
+		unlocks[lesson_number] = _make_lesson(MINIGAMES_PER_LESSON, LOCKED, LOCKED)
+	var progression: StudentProgression = StudentProgression.new()
+	var result: Dictionary = progression.ensure_data_integrity(unlocks)
+	assert_eq(result[2]["look_and_learn"] as int, LOCKED as int)
+	assert_eq_deep(result[2]["games"], [LOCKED, LOCKED, LOCKED])
+	_accept_integrity_warnings()

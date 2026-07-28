@@ -279,14 +279,16 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 
 		# Case: previous garden not completed
 		if not prev_completed:
-			# A lesson the student partly finished does not invalidate what comes
-			# after it. That is the state a pack update leaves behind when it adds
-			# minigames to a lesson they had already completed: the lesson reopens,
-			# but the lessons they went on to finish were still earned. Only a
-			# previous lesson with nothing completed at all proves the rest was
-			# never reachable, and the reset below then cascades on its own because
-			# each lesson it clears has nothing completed either.
-			if prev_partly_completed:
+			# Work already completed here is never taken away when the previous
+			# lesson is itself partly completed. That is the state a pack update
+			# leaves behind when it adds minigames to a lesson the student had
+			# finished: the lesson reopens, and a reopened lesson is
+			# indistinguishable from one left unfinished, so the lessons they went
+			# on to complete must be given the benefit of the doubt. A previous
+			# lesson with nothing completed at all still proves the rest was never
+			# reachable, and the reset then cascades on its own because each lesson
+			# it clears has nothing completed either.
+			if prev_partly_completed and _has_completed_step(garden):
 				continue
 			var needs_reset: bool = garden["look_and_learn"] != Status.LOCKED
 			if not needs_reset:
