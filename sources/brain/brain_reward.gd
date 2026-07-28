@@ -2,11 +2,11 @@ class_name BrainReward
 extends Node
 
 ## Orchestrates the celebratory "reward" animation on the brain screen after the
-## player beats the final boss. Triggered by Brain._ready() (when arriving from a
-## final-boss win) and replayable by clicking the open treasure chest. Sequence:
-## treasure opens -> pause -> gardens turn purple one by one -> brain body turns
-## purple -> brain fades out (leaving the starry sky) -> the reading Kalulu shows,
-## speaks, then idles; clicking dismisses it (Hide) and the brain is restored.
+## player beats the final boss. Triggered by clicking the treasure chest: the first
+## time on the closed chest, then replayable on the open one. Sequence: treasure
+## opens -> pause -> gardens turn purple one by one -> brain body turns purple ->
+## brain fades out (leaving the starry sky) -> the reading Kalulu shows, speaks,
+## then idles; clicking dismisses it (Hide) and the brain is restored.
 
 # Purple tones sampled from the target design; tweak here to taste.
 const GARDEN_BACKGROUND_PURPLE: Color = Color("842984")
@@ -17,7 +17,6 @@ const READING_KALULU_SCENE: PackedScene = preload("res://sources/kalulu_animator
 const RIGHT_STARS_FX_SCENE: PackedScene = preload("res://sources/utils/fx/right_stars.tscn")
 const FIREWORKS_SCENE: PackedScene = preload("res://sources/utils/fx/fireworks.tscn")
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
-const TREASURE_OPENED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_opened.png")
 const GARDEN_TINT_DURATION: float = 0.5
 const BRAIN_TINT_DURATION: float = 2.0
 const BRAIN_FADE_DURATION: float = 3.0
@@ -33,7 +32,7 @@ const GARDEN_FIREWORKS_RECT_EXPAND_RATIO: float = 0.05
 
 # References into the brain scene, provided by Brain via setup().
 var _brain_map: TextureRect
-var _treasure: TextureRect
+var _treasure: TreasureChest
 var _gardens: Array[Garden] = []
 var _ui_layer: CanvasLayer
 # Runtime nodes built in _build_runtime().
@@ -46,7 +45,7 @@ var _is_playing: bool = false
 var _speech: AudioStream
 
 
-func setup(brain_map: TextureRect, treasure: TextureRect, gardens: Array[Garden], ui_layer: CanvasLayer) -> void:
+func setup(brain_map: TextureRect, treasure: TreasureChest, gardens: Array[Garden], ui_layer: CanvasLayer) -> void:
 	_brain_map = brain_map
 	_treasure = treasure
 	_gardens = gardens
@@ -58,9 +57,9 @@ func is_playing() -> bool:
 	return _is_playing
 
 
-# Runs the full reward sequence. `open_treasure` is true only for the automatic
-# first play (arriving from a final-boss win); on replays the chest is already
-# open, so steps 1-2 (open + pause) are skipped.
+# Runs the full reward sequence. `open_treasure` is true only for the very first
+# play; on replays the chest is already open, so steps 1-2 (open + pause) are
+# skipped.
 func play(open_treasure: bool) -> void:
 	if _is_playing:
 		return
@@ -117,14 +116,14 @@ func _open_treasure() -> void:
 	# TODO: replace this placeholder star burst with the final "big victory" FX.
 	var fx: Node2D = RIGHT_STARS_FX_SCENE.instantiate() as Node2D
 	fx.scale = Vector2(3.0, 3.0)
-	fx.position = _treasure.get_global_rect().get_center()
+	fx.position = _treasure.get_visible_center()
 	_overlay_layer.add_child(fx)
 	_voice_player.stream = WIN_SOUND_FX
 	_voice_player.play()
 	(fx as RightStarsFX).play()
 	# Swap the texture mid-burst so the FX masks the closed -> open transition.
 	await get_tree().create_timer(0.25).timeout
-	_treasure.texture = TREASURE_OPENED_TEXTURE
+	_treasure.set_opened(true)
 	await get_tree().create_timer(1.0).timeout
 	fx.queue_free()
 

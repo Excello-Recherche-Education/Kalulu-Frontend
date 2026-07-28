@@ -8,14 +8,6 @@ const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_butto
 # brain shows them 20% smaller again so they sit better between the small gardens.
 const BOSS_BUTTON_BASE_SIZE: float = 512.0
 const BOSS_BUTTON_SCALE: float = 0.16
-# The treasure stands in for the final boss: it opens once the final boss has
-# actually been beaten.
-const TREASURE_CLOSED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_closed.png")
-const TREASURE_OPENED_TEXTURE: Texture2D = preload("res://assets/brain/treasure_opened.png")
-
-# Set by base_minigame.gd right before navigating here after a final-boss win, so
-# _ready() knows to auto-play the reward animation once. Mirrors Gardens/Minigame.
-static var transition_data: Dictionary = {}
 
 var _is_kalulu_help_playing: bool = false
 # Lesson grapheme data keyed by lesson number (1-based), same shape as Gardens.lessons.
@@ -32,8 +24,7 @@ var boss_buttons_container: Control
 
 @onready var progress_label: Label = %ProgressLabel
 @onready var brain_map: TextureRect = $Brain
-@onready var treasure: TextureRect = $Brain/Treasure
-@onready var treasure_button: Button = $Brain/Treasure/TreasureButton
+@onready var treasure: TreasureChest = $Brain/Treasure
 @onready var brain_kalulu: AnimatedSprite2D = $Brain/Kalulu
 @onready var brain_kalulu_button: Button = $Brain/KaluluHelpButton
 @onready var reward: BrainReward = $Reward
@@ -56,13 +47,15 @@ func _ready() -> void:
 	_set_up_boss_buttons()
 	_update_treasure()
 	reward.setup(brain_map, treasure, gardens, ui_layer)
-	treasure_button.pressed.connect(_on_treasure_button_pressed)
+	treasure.button.pressed.connect(_on_treasure_button_pressed)
 	brain_kalulu_button.pressed.connect(_on_brain_kalulu_button_pressed)
 	await (OpeningCurtain as OpeningCurtainClass).open()
-	# Auto-play the reward once when arriving straight from a final-boss win.
-	if transition_data.get("final_boss_just_beaten", false):
-		transition_data = {}
-		reward.play(true)
+	# Started only now: the curtain was in the way, and this is the moment the player can
+	# actually see the chest and reach for it. The countdown to the pointing hand runs
+	# from here too, so it measures how long they hesitated, not how long the scene took
+	# to load.
+	if _treasure_awaits_first_opening():
+		treasure.start_attract()
 
 
 func _update_progress_label() -> void:
@@ -225,31 +218,47 @@ func _set_up_boss_buttons() -> void:
 			boss.set_button_disabled(true)
 
 
-# Swaps the treasure texture: opened once the final boss has been beaten, closed
-# otherwise (tracked via StudentProgression.highest_boss_defeated).
+# The treasure stands in for the final boss, and has three states:
+#   - final boss not beaten yet: closed, still, and inert down to the mouse cursor;
+#   - beaten but the reward never triggered: closed and calling for attention, so the
+#     player clicks it and discovers the end-game animation (see TreasureChest);
+#   - reward already triggered: opened and still, clicking it replays the animation.
+# Only the look is settled here, before the curtain opens on it. The attract animation
+# of the middle state is started by _ready() once the curtain is out of the way.
 func _update_treasure() -> void:
 	var progression: StudentProgression = UserDataManager.student_progression
 	var final_done: bool = progression != null and progression.is_final_boss_completed()
-	if final_done:
-		treasure.texture = TREASURE_OPENED_TEXTURE
-	else:
-		treasure.texture = TREASURE_CLOSED_TEXTURE
-	# The chest replays the reward, but only once it has been opened for real.
-	treasure_button.disabled = not final_done
+	treasure.set_opened(final_done and progression.endgame_reward_seen)
+	treasure.set_clickable(final_done)
+	treasure.stop_attract()
+
+
+# True while the chest is unlocked but has never been opened: the one state where it has
+# to call the player over.
+func _treasure_awaits_first_opening() -> bool:
+	var progression: StudentProgression = UserDataManager.student_progression
+	if progression == null or not progression.is_final_boss_completed():
+		return false
+	return not progression.endgame_reward_seen
 
 #endregion
 
 func _on_treasure_button_pressed() -> void:
-	reward.play(false)
+	if reward.is_playing() or _is_kalulu_help_playing:
+		return
+	var progression: StudentProgression = UserDataManager.student_progression
+	# The first play is the one that opens the chest, and it also settles the chest
+	# into its opened state for every later visit.
+	var first_play: bool = progression != null and not progression.endgame_reward_seen
+	if first_play:
+		treasure.stop_attract()
+		progression.endgame_reward_watched()
+	reward.play(first_play)
 
 
 func _on_back_button_pressed() -> void:
 	await (OpeningCurtain as OpeningCurtainClass).close()
 	SceneLoader.change_scene(GARDENS_SCENE_PATH)
-
-
-func _on_treasure_button_button_up() -> void:
-	reward.play(true)
 
 
 func _on_brain_kalulu_button_pressed() -> void:

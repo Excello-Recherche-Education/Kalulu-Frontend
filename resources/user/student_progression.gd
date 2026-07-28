@@ -25,6 +25,12 @@ static var cached_boss_gate_lessons_total: int = -1
 		highest_boss_defeated = _sanitize_highest_boss(value)
 @export var boss_failure_streak: int = 0
 @export var boss_blocked: bool = false
+# True once the end-game reward animation has been triggered, which is what decides
+# whether the brain screen shows a closed chest calling for attention or an already
+# opened one. Purely cosmetic, so it is deliberately left out of the server payload
+# and never bumps `last_modified`: a student picking up on another device simply gets
+# the reward presented once there too.
+@export var endgame_reward_seen: bool = false
 @export var last_modified: String
 
 
@@ -514,6 +520,17 @@ func final_boss_completed() -> bool:
 		return false
 	highest_boss_defeated = final_boss_value
 	last_modified = Time.get_datetime_string_from_system(true)
+	progression_changed.emit()
+	return true
+
+
+# Records that the end-game reward animation has been triggered, so the chest stays
+# open from now on. Returns true the first time only. No `last_modified` bump: the
+# flag is local and cosmetic, see its declaration.
+func endgame_reward_watched() -> bool:
+	if endgame_reward_seen:
+		return false
+	endgame_reward_seen = true
 	progression_changed.emit()
 	return true
 

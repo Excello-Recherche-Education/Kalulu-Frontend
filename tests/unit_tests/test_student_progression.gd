@@ -110,3 +110,34 @@ func test_unknown_slot_leaves_progression_untouched() -> void:
 	StudentProgression.apply_manual_progression(unlocks, 1, 5, COMPLETED)
 	assert_eq(unlocks[1]["look_and_learn"] as int, LOCKED as int)
 	assert_eq_deep(unlocks[1]["games"], [LOCKED, LOCKED])
+
+
+# -----------------------------
+# End-game reward
+# -----------------------------
+# Constructing a progression sanitizes its boss field against the lesson count, which
+# warns when no language pack is installed. The end-game flag does not depend on the
+# database, so acknowledge that warning instead of letting GUT report it as unexpected.
+# This must run inside the test: GUT checks for unhandled errors before after_each().
+func _accept_missing_database_warnings() -> void:
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
+func test_endgame_reward_watched_reports_only_the_first_time() -> void:
+	var progression: StudentProgression = StudentProgression.new()
+	assert_false(progression.endgame_reward_seen)
+	assert_true(progression.endgame_reward_watched())
+	assert_true(progression.endgame_reward_seen)
+	assert_false(progression.endgame_reward_watched())
+	_accept_missing_database_warnings()
+
+
+# The flag is cosmetic and device-local. Bumping the timestamp would make the local
+# progression look newer than the server's and push a pointless synchronization.
+func test_endgame_reward_watched_leaves_the_timestamp_alone() -> void:
+	var progression: StudentProgression = StudentProgression.new()
+	progression.last_modified = "2026-01-01T00:00:00"
+	progression.endgame_reward_watched()
+	assert_eq(progression.last_modified, "2026-01-01T00:00:00")
+	_accept_missing_database_warnings()
