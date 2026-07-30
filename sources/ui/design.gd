@@ -89,6 +89,10 @@ const TOGGLE_INSET: int = 12
 # --- Tab pills (Device 1 | Device 2 ...) -------------------------------------
 const PILL_HEIGHT: int = 74
 const PILL_PADDING: int = 48
+# --- Device cards ------------------------------------------------------------
+const DEVICE_CARD_SIZE: Vector2i = Vector2i(183, 222)
+const DEVICE_CARD_GAP: Vector2i = Vector2i(104, 126)
+const DEVICE_CARD_COLUMNS: int = 6
 # --- Circular buttons --------------------------------------------------------
 const ROUND_BUTTON_LARGE: int = 184 # back / Kalulu corner buttons
 const ROUND_BUTTON_SMALL: int = 90 # icon buttons in headers and cards

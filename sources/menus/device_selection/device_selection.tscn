@@ -1,64 +1,57 @@
-[gd_scene format=3 uid="uid://byg15cat0mmep"]
+[gd_scene load_steps=3 format=3 uid="uid://byg15cat0mmep"]
 
 [ext_resource type="Script" uid="uid://cn7idg6fvby4u" path="res://sources/menus/device_selection/device_selection.gd" id="1_6twkt"]
-[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_83384"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 
-[node name="DeviceSelection" type="Control" unique_id=1703451406]
+[node name="DeviceSelection" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_theme")
 script = ExtResource("1_6twkt")
 
-[node name="NightSky" parent="." unique_id=112199933 instance=ExtResource("2_83384")]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=268912689]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.1
-anchor_right = 0.5
-anchor_bottom = 0.9
-offset_left = -332.5
-offset_top = 50.0
-offset_right = 332.5
-offset_bottom = -50.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_type_variation = &"PanelKaluluBig"
+color = Color(0.164706, 0.211765, 0.490196, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=248962273]
-layout_mode = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 340.0
+offset_top = 440.0
+offset_right = -340.0
+offset_bottom = -196.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 134
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1580150093]
+[node name="Title" type="Label" parent="Content"]
 layout_mode = 2
-theme_override_constants/separation = 40
-
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1716761857]
-layout_mode = 2
-theme_override_font_sizes/font_size = 72
 text = "PICK_YOUR_DEVICE"
 horizontal_alignment = 1
-vertical_alignment = 1
+theme_type_variation = &"Title"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=632763758]
+[node name="ScrollContainer" type="ScrollContainer" parent="Content"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=505066062]
+[node name="GridContainer" type="GridContainer" parent="Content/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 30
-columns = 3
+size_flags_vertical = 0
+theme_override_constants/h_separation = 104
+theme_override_constants/v_separation = 126
+columns = 6
