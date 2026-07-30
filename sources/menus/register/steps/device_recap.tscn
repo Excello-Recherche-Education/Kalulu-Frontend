@@ -20,7 +20,6 @@ layout_mode = 2
 [node name="Title" type="Label" parent="VBoxContainer" unique_id=1112247014]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
 text = "Device 1 :"
 
 [node name="StudentsContainer" type="GridContainer" parent="VBoxContainer" unique_id=885356083]

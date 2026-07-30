@@ -19,15 +19,12 @@ layout_mode = 2
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 50
 text = "LANGUAGE"
 autowrap_mode = 3
 
 [node name="LanguageField" type="OptionButton" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LanguageContainer" index="1" unique_id=699363627]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"Combobox"
-theme_override_font_sizes/font_size = 70
 script = ExtResource("3")
 
 [connection signal="item_selected" from="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/LanguageContainer/LanguageField" to="." method="_on_language_selected"]

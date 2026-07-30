@@ -17,7 +17,6 @@ layout_mode = 2
 [node name="StudentsCountFieldLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/StudentsCountContainer" index="0" unique_id=2070545907]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
 text = "STUDENTS"
 
 [node name="StudentsCountField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/StudentsCountContainer" index="1" unique_id=540523034]

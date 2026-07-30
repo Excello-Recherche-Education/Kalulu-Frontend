@@ -16,7 +16,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 50
 text = "DEVICES"
 autowrap_mode = 3
 
