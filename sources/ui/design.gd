@@ -65,6 +65,9 @@ const FONT_BOLD_PATH: String = "res://assets/fonts/kalulu_mulish_bold.otf"
 const SCREEN_MARGIN: int = 64
 const CONTENT_WIDTH: int = 940
 const FIELD_GAP: int = 104
+# --- Surfaces ----------------------------------------------------------------
+const CARD_RADIUS: int = 14
+const CARD_PADDING: int = 88
 # --- Text fields -------------------------------------------------------------
 const FIELD_HEIGHT: int = 128
 const FIELD_RADIUS: int = 14
@@ -72,7 +75,7 @@ const FIELD_PADDING: int = 56
 # --- Wide buttons (Next / Previous / Cancel) ---------------------------------
 const BUTTON_SIZE: Vector2i = Vector2i(332, 164)
 const BUTTON_RADIUS: int = 8
-const BUTTON_BORDER: int = 2
+const BUTTON_BORDER: int = 3
 # --- Segmented toggle (Login | Sign Up) --------------------------------------
 const TOGGLE_HEIGHT: int = 116
 const TOGGLE_INSET: int = 12
