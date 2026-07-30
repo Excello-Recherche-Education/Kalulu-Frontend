@@ -1,10 +1,19 @@
 extends Control
+## Drives the registration wizard: builds the list of steps and walks it.
+##
+## The step list is not fixed. Choosing an account type appends the teacher or
+## parent branch, and choosing a device count appends one students step per
+## device, so the list grows as the answers come in.
 
-# Registration is only reachable from the welcome screen's Sign Up tab, so
-# backing out of the first step returns there.
 const BACK_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
 const NEXT_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
+## Index into current_steps of the step on screen.
+##
+## This used to be kept in the progress bar's `value`, which made a piece of
+## decoration load-bearing: the wizard could not lose the bar without losing its
+## place. The redesign has no progress bar, so the index lives here.
+var current_step: int = 0
 var current_steps: Array[Step] = []
 
 @onready var language_step: PackedScene = preload("res://sources/menus/register/steps/language/language_step.tscn")
@@ -24,7 +33,6 @@ var current_steps: Array[Step] = []
 @onready var students_step: PackedScene = preload("res://sources/menus/register/steps/teacher/students_count_step.tscn")
 @onready var player_step: PackedScene = preload("res://sources/menus/register/steps/parent/player_step.tscn")
 @onready var register_data: TeacherSettings = TeacherSettings.new()
-@onready var progress_bar: RegisterProgressBar = %ProgressBar
 @onready var steps: Control = %Steps
 @onready var popup: TextureRect = %Popup
 @onready var popup_info_label: Label = %PopupInfo
@@ -33,7 +41,7 @@ var current_steps: Array[Step] = []
 func _ready() -> void:
 	current_steps = [language_step.instantiate(), account_type_step.instantiate()]
 	Log.info("Register: Initialized registration flow with %d steps" % current_steps.size())
-	_go_to_step(int(progress_bar.value))
+	_go_to_step(current_step)
 	OpeningCurtain.open()
 
 
@@ -44,30 +52,29 @@ func _go_to_step(step_index: int) -> void:
 			(step as Step).back.disconnect(_on_step_back)
 			(step as Step).next.disconnect(_on_step_completed)
 			steps.remove_child(step)
-	
+
 	# Instantiate the step
 	var next_step: Step = current_steps[step_index]
 	if not next_step.data:
 		next_step.data = register_data
 	steps.add_child(next_step)
-	
+
 	# Connect the step
 	next_step.back.connect(_on_step_back)
 	next_step.next.connect(_on_step_completed)
 	next_step.on_enter()
 	Log.trace("Register: Entered step %s (%d/%d)" % [next_step.step_name, step_index + 1, current_steps.size()])
-	
-	# Handles progress bar
-	progress_bar.set_value_with_tween(step_index)
+
+	current_step = step_index
 
 
 func _on_step_back(_step: Step) -> void:
-	if progress_bar.value == 0:
+	if current_step == 0:
 		Log.info("Register: Back to the welcome screen from first step")
 		get_tree().change_scene_to_file(BACK_SCENE_PATH)
 	else:
-		Log.trace("Register: Moving back from step %d" % int(progress_bar.value))
-		_go_to_step(int(progress_bar.value-1))
+		Log.trace("Register: Moving back from step %d" % current_step)
+		_go_to_step(current_step - 1)
 
 
 func _on_step_completed(step: Step) -> void:
@@ -82,7 +89,6 @@ func _on_step_completed(step: Step) -> void:
 			elif register_data.account_type == TeacherSettings.AccountType.PARENT:
 				for scene: PackedScene in parent_steps:
 					current_steps.append(scene.instantiate())
-			progress_bar.max_value = current_steps.size() + 3
 		"devices":
 			# Adds students steps for teachers
 			_remove_future_steps()
@@ -96,7 +102,6 @@ func _on_step_completed(step: Step) -> void:
 					students_step_scene.queue_free()
 			for scene: PackedScene in last_steps:
 				current_steps.append(scene.instantiate())
-			progress_bar.max_value = current_steps.size()
 		"players":
 			# Adds students steps for parents
 			_remove_future_steps()
@@ -109,41 +114,44 @@ func _on_step_completed(step: Step) -> void:
 				student_count += 1
 			for scene: PackedScene in last_steps:
 				current_steps.append(scene.instantiate())
-			progress_bar.max_value = current_steps.size()
 		"language":
 			register_data.language = UserDataManager.get_language()
-	
-	if progress_bar.value == current_steps.size()-1:
-		# Send register via API
-		Log.info("Register: Submitting registration for %s" % str(register_data.email))
-		var res: Dictionary = await ServerManager.register(register_data.to_dict())
-		if res.code == 200:
-			Log.info("Register: Registration request successful, saving data")
-			register_data.last_modified = res.body.last_modified
-			register_data.token = res.body.token
-			if UserDataManager.register(register_data):
-				Log.info("Register: Registration stored locally, moving to package downloader")
-				get_tree().change_scene_to_file(NEXT_SCENE_PATH)
-			else:
-				Log.error("Register: Failed to persist registration locally")
-		else:
-			Log.warn("Register: Registration failed with code %d" % res.code)
-			if res.has("body") and (res.body as Dictionary).has("message"):
-				popup_info_label.text = res.body.message
-			else:
-				popup_info_label.text = ''
-			popup.show()
+
+	if current_step == current_steps.size() - 1:
+		await _submit()
 	else:
-		_go_to_step(int(progress_bar.value + 1))
+		_go_to_step(current_step + 1)
+
+
+func _submit() -> void:
+	Log.info("Register: Submitting registration for %s" % str(register_data.email))
+	var res: Dictionary = await ServerManager.register(register_data.to_dict())
+	if res.code != 200:
+		Log.warn("Register: Registration failed with code %d" % res.code)
+		if res.has("body") and (res.body as Dictionary).has("message"):
+			popup_info_label.text = res.body.message
+		else:
+			popup_info_label.text = ''
+		popup.show()
+		return
+
+	Log.info("Register: Registration request successful, saving data")
+	register_data.last_modified = res.body.last_modified
+	register_data.token = res.body.token
+	if UserDataManager.register(register_data):
+		Log.info("Register: Registration stored locally, moving to package downloader")
+		get_tree().change_scene_to_file(NEXT_SCENE_PATH)
+	else:
+		Log.error("Register: Failed to persist registration locally")
 
 
 func _remove_future_steps() -> void:
 	# Free memory
-	for index: int in range(progress_bar.value + 1, current_steps.size(), 1):
+	for index: int in range(current_step + 1, current_steps.size(), 1):
 		current_steps[index].queue_free()
-	
+
 	# Resize the array to remove unwanted steps
-	current_steps.resize(int(progress_bar.value + 1))
+	current_steps.resize(current_step + 1)
 
 
 func _on_popup_button_pressed() -> void:
