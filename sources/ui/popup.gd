@@ -13,17 +13,21 @@ signal refused()
 @export var cancel_text_override: String = ""
 @export var close_on_action: bool = true
 
-@onready var title_label: Label = %TitleLabel
 @onready var content_label: Label = %ContentLabel
 @onready var confirm_button: Button = %ConfirmButton
 @onready var cancel_button: Button = %CancelButton
-@onready var close_button: TextureButton = %CloseButton
+# Optional: several screens build their dialog inline with this script attached
+# rather than instancing popup.tscn, and those copies predate the heading and the
+# close cross. Looked up leniently so this script keeps working on all of them.
+@onready var title_label: Label = get_node_or_null("%TitleLabel") as Label
+@onready var close_button: TextureButton = get_node_or_null("%CloseButton") as TextureButton
 
 
 func _ready() -> void:
-	# The close cross is drawn from a white icon so it can be tinted per surface;
-	# on the dialog's white card it takes the brand navy.
-	close_button.self_modulate = Design.NAVY
+	if close_button:
+		# The cross is drawn from a white icon so it can be tinted per surface;
+		# on the dialog's white card it takes the brand navy.
+		close_button.self_modulate = Design.NAVY
 	_set_title_text(title_text)
 	_set_content_text(content_text)
 	if confirm_text_override != "":

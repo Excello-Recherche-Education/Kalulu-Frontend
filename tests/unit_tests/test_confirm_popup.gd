@@ -89,6 +89,37 @@ func test_cancel_sits_before_confirm() -> void:
 		"Cancel should come before the confirming action")
 
 
+func test_it_survives_a_dialog_built_without_the_new_chrome() -> void:
+	# Regression: three screens build their dialog inline with this script rather
+	# than instancing popup.tscn, and those copies have no heading and no close
+	# cross. Requiring them crashed the language check and the package downloader
+	# on every launch -- which no unit test saw, because they all used the scene.
+	var bare: ConfirmPopup = ConfirmPopup.new()
+	var content: Label = Label.new()
+	content.name = "ContentLabel"
+	var confirm: Button = Button.new()
+	confirm.name = "ConfirmButton"
+	var cancel: Button = Button.new()
+	cancel.name = "CancelButton"
+	# Assembled before entering the tree: _ready fires on add_child, and it is
+	# _ready that has to cope with the missing nodes.
+	for child: Node in [content, confirm, cancel]:
+		bare.add_child(child)
+		child.owner = bare
+		child.unique_name_in_owner = true
+	add_child_autofree(bare)
+	await get_tree().process_frame
+
+	assert_null(bare.title_label, "a bare dialog has no heading")
+	assert_null(bare.close_button, "a bare dialog has no close cross")
+
+	bare.title_text = "IGNORED"
+	bare.content_text = "SOMETHING"
+
+	assert_eq(bare.content_label.text, "SOMETHING",
+		"the parts that do exist should still work")
+
+
 func test_the_dialog_uses_the_redesigned_styles() -> void:
 	assert_eq(popup.confirm_button.theme_type_variation, MenuTheme.VARIATION_PRIMARY_BUTTON)
 	assert_eq(popup.cancel_button.theme_type_variation,
