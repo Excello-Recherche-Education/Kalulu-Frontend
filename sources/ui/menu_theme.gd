@@ -31,6 +31,9 @@ const VARIATION_SECONDARY_BUTTON: StringName = &"SecondaryButton"
 const VARIATION_CARD_SECONDARY_BUTTON: StringName = &"CardSecondaryButton"
 const VARIATION_INLINE_BUTTON: StringName = &"InlineButton"
 const VARIATION_TAB_PILL: StringName = &"TabPill"
+# Circular icon buttons: pale on the navy page, navy on a white card.
+const VARIATION_ICON_BUTTON_LIGHT: StringName = &"IconButtonLight"
+const VARIATION_ICON_BUTTON_DARK: StringName = &"IconButtonDark"
 # Panel variations.
 const VARIATION_CARD: StringName = &"Card"
 
@@ -133,6 +136,11 @@ static func _build_buttons(theme: Theme, regular: Font) -> void:
 		_vertical_margin(regular, Design.FONT_SIZE_BODY, Design.PILL_HEIGHT))
 	theme.set_font_size("font_size", VARIATION_TAB_PILL, Design.FONT_SIZE_BODY)
 
+	# Circular icon buttons. The icon assets are white, so each variation tints
+	# them to read against its own circle.
+	_add_icon_button(theme, VARIATION_ICON_BUTTON_LIGHT, Design.LAVENDER, Design.PURPLE)
+	_add_icon_button(theme, VARIATION_ICON_BUTTON_DARK, Design.NAVY, Color.WHITE)
+
 
 static func _build_fields(theme: Theme, regular: Font) -> void:
 	var margin: float = _vertical_margin(regular, Design.FONT_SIZE_INPUT, Design.FIELD_HEIGHT)
@@ -214,6 +222,28 @@ static func _add_button(theme: Theme, variation: StringName, font: Font, color: 
 	for state: String in styleboxes:
 		theme.set_stylebox(state, variation, styleboxes[state])
 	theme.set_stylebox("focus", variation, StyleBoxEmpty.new())
+
+
+## A round icon button: `circle` behind, `ink` for the glyph.
+static func _add_icon_button(theme: Theme, variation: StringName, circle: Color,
+		ink: Color) -> void:
+	var radius: int = Design.ROUND_BUTTON_SMALL / 2
+	theme.set_type_variation(variation, "Button")
+	for state: String in ["normal", "hover", "pressed", "disabled"]:
+		var fill: Color = circle
+		if state == "hover":
+			fill = circle.lerp(Design.PURPLE, 0.15)
+		elif state == "pressed":
+			fill = circle.darkened(0.15)
+		elif state == "disabled":
+			fill = circle.lerp(Design.GREY_LIGHT, 0.6)
+		theme.set_stylebox(state, variation, flat_stylebox(fill, radius))
+	theme.set_stylebox("focus", variation, StyleBoxEmpty.new())
+	for state: String in ["icon_normal_color", "icon_hover_color", "icon_pressed_color",
+			"icon_focus_color"]:
+		theme.set_color(state, variation, ink)
+	theme.set_color("icon_disabled_color", variation, ink.lerp(Design.GREY_LIGHT, 0.6))
+	theme.set_constant("icon_max_width", variation, Design.FIELD_ICON_SIZE)
 
 
 static func _set_content_margins(theme: Theme, variation: StringName, horizontal: float,

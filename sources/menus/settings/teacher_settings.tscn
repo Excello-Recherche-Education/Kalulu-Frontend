@@ -1,16 +1,22 @@
-[gd_scene format=3 uid="uid://ci7ueo06f24k3"]
+[gd_scene load_steps=21 format=3 uid="uid://ci7ueo06f24k3"]
 
 [ext_resource type="Script" uid="uid://cil0o87dsb7q4" path="res://sources/menus/settings/teacher_settings.gd" id="1_ojivk"]
-[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="1_v06h8"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="3_i488h"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="4_ys1u2"]
-[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="5_y6ou8"]
-[ext_resource type="PackedScene" uid="uid://bo7rpk4gebh24" path="res://sources/menus/settings/sound_settings_button.tscn" id="6_s8nbl"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://b44sv7oylntiq" path="res://assets/menus/buttons/back_button_normal.png" id="3_i488h"]
+[ext_resource type="Texture2D" uid="uid://b01neo7ex0rg7" path="res://assets/menus/buttons/back_button_pressed.png" id="4_ys1u2"]
+[ext_resource type="Texture2D" uid="uid://b7tuf4u5ri2n1" path="res://assets/menus/buttons/back_button_disabled.png" id="5_y6ou8"]
 [ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="7_jetb7"]
-[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="8_7h0sa"]
 [ext_resource type="PackedScene" uid="uid://qsvbq6ruc44v" path="res://sources/menus/settings/lesson_unlocks.tscn" id="9_mljfd"]
 [ext_resource type="PackedScene" uid="uid://dhowigt8un22u" path="res://sources/ui/loading_popup.tscn" id="10_i488h"]
 [ext_resource type="PackedScene" uid="uid://bsb6r3sjxnv6g" path="res://sources/ui/change_language_popup.tscn" id="11_chglg"]
+[ext_resource type="Texture2D" uid="uid://dbi7eoauiqljw" path="res://assets/menus/icons/settings.svg" id="12_gear"]
+[ext_resource type="Texture2D" uid="uid://s5cenjf28uvt" path="res://assets/menus/icons/sync_account.svg" id="13_sync"]
+[ext_resource type="Texture2D" uid="uid://ceknwi1s413f8" path="res://assets/menus/icons/go_to_dashboard.svg" id="14_dash"]
+[ext_resource type="PackedScene" uid="uid://bo7rpk4gebh24" path="res://sources/menus/settings/sound_settings_button.tscn" id="6_s8nbl"]
+[ext_resource type="Texture2D" uid="uid://d2okvvcm8e6r2" path="res://assets/menus/icons/menu.svg" id="16_menu"]
+[ext_resource type="Texture2D" uid="uid://60x0ykce3opm" path="res://assets/menus/icons/download_codes.svg" id="17_codes"]
+[ext_resource type="Texture2D" uid="uid://cmxmweix4fig2" path="res://assets/menus/icons/add_student.svg" id="18_addstu"]
+[ext_resource type="Texture2D" uid="uid://1lpqu41tyc74" path="res://assets/menus/icons/add_device.svg" id="19_adddev"]
 
 [node name="TeacherSettings" type="Control" unique_id=149147235]
 layout_mode = 3
@@ -19,130 +25,79 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_theme")
 script = ExtResource("1_ojivk")
 
-[node name="Background" parent="." unique_id=482800213 instance=ExtResource("1_v06h8")]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
-
-[node name="InterfaceLeft" type="MarginContainer" parent="." unique_id=287585712]
-custom_minimum_size = Vector2(450, 0)
-layout_mode = 1
-anchors_preset = 9
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 450.0
+grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+color = Color(0.164706, 0.211765, 0.490196, 1)
 
-[node name="Container" type="VBoxContainer" parent="InterfaceLeft" unique_id=1286353688]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=2030686467]
-layout_mode = 2
-size_flags_vertical = 3
+[node name="BackButton" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(184, 184)
+layout_mode = 0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 248.0
+offset_bottom = 248.0
 texture_normal = ExtResource("3_i488h")
 texture_pressed = ExtResource("4_ys1u2")
 texture_disabled = ExtResource("5_y6ou8")
 ignore_texture_size = true
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="VolumeContainer" type="MarginContainer" parent="InterfaceLeft/Container" unique_id=1984502757]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 3.0
-theme_override_constants/margin_left = 75
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 75
-
-[node name="VolumeButton" parent="InterfaceLeft/Container/VolumeContainer" unique_id=1259345936 instance=ExtResource("6_s8nbl")]
-layout_mode = 2
-
-[node name="Dashboard" type="Button" parent="InterfaceLeft/Container" unique_id=1049387909]
-layout_mode = 2
-theme_type_variation = &"FlatButton"
-theme_override_font_sizes/font_size = 40
-text = "DASHBOARD"
-
-[node name="SynchronizeButton" type="Button" parent="InterfaceLeft/Container" unique_id=1036367184]
-layout_mode = 2
-theme_type_variation = &"FlatButton"
-theme_override_font_sizes/font_size = 40
-text = "SYNCHRONIZE_ACCOUNT"
-
-[node name="LogoutButton" type="Button" parent="InterfaceLeft/Container" unique_id=808130432]
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "LOGOUT"
-
-[node name="DangerSpacer" type="Control" parent="InterfaceLeft/Container" unique_id=312700845]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-
-[node name="ChangeLanguageButton" type="Button" parent="InterfaceLeft/Container" unique_id=144215823]
-layout_mode = 2
-theme_type_variation = &"DangerButton"
-theme_override_font_sizes/font_size = 40
-text = "CHANGE_LANGUAGE"
-
-[node name="ChangeLanguagePopup" parent="InterfaceLeft/Container/ChangeLanguageButton" unique_id=144215824 instance=ExtResource("11_chglg")]
-unique_name_in_owner = true
-visible = false
-
-[node name="ChangeLanguageErrorPopup" parent="InterfaceLeft/Container/ChangeLanguageButton" unique_id=144215825 instance=ExtResource("7_jetb7")]
-unique_name_in_owner = true
-visible = false
-content_text = "CHANGE_LANGUAGE_ERROR"
-
-[node name="DeleteButton" type="Button" parent="InterfaceLeft/Container" unique_id=721919922]
-layout_mode = 2
-theme_type_variation = &"DangerButton"
-theme_override_font_sizes/font_size = 40
-text = "DELETE_ACCOUNT"
-
-[node name="DeletePopup" parent="InterfaceLeft/Container/DeleteButton" unique_id=635237219 instance=ExtResource("7_jetb7")]
-unique_name_in_owner = true
-visible = false
-title_text = "DELETE_ACCOUNT"
-content_text = "DELETE_ACCOUNT_POPUP"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2087046145]
-clip_contents = true
+[node name="Page" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 9
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 590.0
-offset_right = 2560.0
+offset_left = 340.0
+offset_top = 96.0
+offset_right = -312.0
+offset_bottom = -96.0
+grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 40
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=258975030]
+[node name="TitleRow" type="HBoxContainer" parent="Page"]
 layout_mode = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 24
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1383989464]
+[node name="Gear" type="TextureRect" parent="Page/TitleRow"]
+custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("12_gear")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="AccountTypeLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1808699389]
-custom_minimum_size = Vector2(560, 0)
+[node name="Title" type="Label" parent="Page/TitleRow"]
 layout_mode = 2
-theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 70
+text = "SETTINGS"
+theme_type_variation = &"Title"
+
+[node name="ControlsRow" type="HBoxContainer" parent="Page"]
+layout_mode = 2
+theme_override_constants/separation = 48
+
+[node name="AccountTypeGroup" type="VBoxContainer" parent="Page/ControlsRow"]
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AccountTypeLabel" type="Label" parent="Page/ControlsRow/AccountTypeGroup"]
+layout_mode = 2
 text = "ACCOUNT_TYPE"
+theme_type_variation = &"FieldLabel"
 autowrap_mode = 3
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer" unique_id=250669743]
-layout_mode = 2
-theme_override_constants/separation = 30
-
-[node name="AccountTypeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer" unique_id=1179262769]
+[node name="AccountTypeOptionButton" type="OptionButton" parent="Page/ControlsRow/AccountTypeGroup"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(450, 200)
 layout_mode = 2
-theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 70
-autowrap_mode = 3
 fit_to_longest_item = false
 item_count = 2
 popup/item_0/text = "TEACHER"
@@ -150,30 +105,20 @@ popup/item_0/id = 0
 popup/item_1/text = "PARENT"
 popup/item_1/id = 1
 
-[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/HBoxContainer" unique_id=75958873]
+[node name="EducationMethodGroup" type="VBoxContainer" parent="Page/ControlsRow"]
+custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 30
+theme_override_constants/separation = 12
 
-[node name="EducationMethodeLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1698158036]
-custom_minimum_size = Vector2(300, 0)
+[node name="EducationMethodeLabel" type="Label" parent="Page/ControlsRow/EducationMethodGroup"]
 layout_mode = 2
-theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 70
 text = "EDUCATION_METHOD"
+theme_type_variation = &"FieldLabel"
 autowrap_mode = 3
 
-[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/HBoxContainer" unique_id=1023308123]
-layout_mode = 2
-theme_override_constants/separation = 30
-
-[node name="EducationMethodOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer" unique_id=1661492451]
+[node name="EducationMethodOptionButton" type="OptionButton" parent="Page/ControlsRow/EducationMethodGroup"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(500, 300)
 layout_mode = 2
-theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 70
-autowrap_mode = 3
 fit_to_longest_item = false
 item_count = 2
 popup/item_0/text = "METHOD_APP_ONLY"
@@ -181,112 +126,170 @@ popup/item_0/id = 0
 popup/item_1/text = "METHOD_COMPLETE"
 popup/item_1/id = 1
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer" unique_id=516915003]
+[node name="Spacer" type="Control" parent="Page/ControlsRow"]
 layout_mode = 2
-theme_override_constants/separation = 50
+size_flags_horizontal = 3
 
-[node name="DevicesTabContainer" type="TabContainer" parent="VBoxContainer" unique_id=1657386395]
+[node name="Actions" type="HBoxContainer" parent="Page/ControlsRow"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="SynchronizeButton" type="Button" parent="Page/ControlsRow/Actions"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+tooltip_text = "SYNCHRONIZE_ACCOUNT"
+theme_type_variation = &"IconButtonLight"
+icon = ExtResource("13_sync")
+expand_icon = true
+
+[node name="Dashboard" type="Button" parent="Page/ControlsRow/Actions"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+tooltip_text = "DASHBOARD"
+theme_type_variation = &"IconButtonLight"
+icon = ExtResource("14_dash")
+expand_icon = true
+
+[node name="VolumeButton" parent="Page/ControlsRow/Actions" instance=ExtResource("6_s8nbl")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+
+[node name="MenuButton" type="Button" parent="Page/ControlsRow/Actions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+theme_type_variation = &"IconButtonLight"
+icon = ExtResource("16_menu")
+expand_icon = true
+
+[node name="OverflowMenu" type="PopupMenu" parent="Page/ControlsRow/Actions/MenuButton"]
+unique_name_in_owner = true
+item_count = 3
+item_0/text = "CHANGE_LANGUAGE"
+item_0/id = 0
+item_1/text = "LOGOUT"
+item_1/id = 1
+item_2/text = "DELETE_ACCOUNT"
+item_2/id = 2
+
+[node name="Card" type="PanelContainer" parent="Page"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Card"
+
+[node name="CardMargin" type="MarginContainer" parent="Page/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 56
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 56
+theme_override_constants/margin_bottom = 48
+
+[node name="CardContent" type="VBoxContainer" parent="Page/Card/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="CardActions" type="HBoxContainer" parent="Page/Card/CardMargin/CardContent"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="ExportCodesButton" type="Button" parent="Page/Card/CardMargin/CardContent/CardActions"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+tooltip_text = "EXPORT_STUDENT_CODES"
+theme_type_variation = &"IconButtonDark"
+icon = ExtResource("17_codes")
+expand_icon = true
+
+[node name="AddStudentButton" type="Button" parent="Page/Card/CardMargin/CardContent/CardActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+tooltip_text = "ADD_A_NEW_STUDENT"
+theme_type_variation = &"IconButtonDark"
+icon = ExtResource("18_addstu")
+expand_icon = true
+
+[node name="AddDeviceButton" type="Button" parent="Page/Card/CardMargin/CardContent/CardActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+tooltip_text = "ADD_A_NEW_DEVICE"
+theme_type_variation = &"IconButtonDark"
+icon = ExtResource("19_adddev")
+expand_icon = true
+
+[node name="LabelInternetMandatory" type="Label" parent="Page/Card/CardMargin/CardContent/CardActions"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(900, 0)
+layout_mode = 2
+size_flags_vertical = 4
+text = "SETTINGS_INTERNET_MANDATORY_TO_ADD_STUDENT"
+theme_type_variation = &"CardBody"
+autowrap_mode = 3
+
+[node name="DevicesTabContainer" type="TabContainer" parent="Page/Card/CardMargin/CardContent"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="InterfaceBottom" type="MarginContainer" parent="VBoxContainer" unique_id=987344123]
-layout_mode = 2
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="Container" type="HBoxContainer" parent="VBoxContainer/InterfaceBottom" unique_id=325936073]
-layout_mode = 2
-theme_override_constants/separation = 25
-alignment = 2
-
-[node name="AddStudentButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container" unique_id=1694799167]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 60
-text = "SETTINGS_ADD_STUDENT"
-
-[node name="AddDeviceButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container" unique_id=503874336]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 60
-text = "SETTINGS_ADD_DEVICE"
-
-[node name="LabelInternetMandatory" type="Label" parent="VBoxContainer/InterfaceBottom/Container" unique_id=1658066828]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 60
-text = "SETTINGS_INTERNET_MANDATORY_TO_ADD_STUDENT"
-horizontal_alignment = 2
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="ExportCodesButton" type="Button" parent="VBoxContainer/InterfaceBottom/Container" unique_id=39310172]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("8_7h0sa")
-theme_override_font_sizes/font_size = 60
-text = "EXPORT_TO_PDF"
-
 [node name="LessonUnlocks" parent="." unique_id=1063204137 instance=ExtResource("9_mljfd")]
-visible = false
 layout_mode = 1
+
+[node name="ChangeLanguagePopup" parent="." unique_id=144215824 instance=ExtResource("11_chglg")]
+unique_name_in_owner = true
+
+[node name="ChangeLanguageErrorPopup" parent="." unique_id=144215825 instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+content_text = "CHANGE_LANGUAGE_ERROR"
+
+[node name="DeletePopup" parent="." unique_id=635237219 instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+title_text = "DELETE_ACCOUNT"
+content_text = "DELETE_ACCOUNT_POPUP"
 
 [node name="AddStudentPopup" parent="." unique_id=228068112 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
-visible = false
 title_text = "ADD_A_NEW_STUDENT"
 content_text = "ADD_STUDENT_POPUP"
 
 [node name="AddDevicePopup" parent="." unique_id=1068863729 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
-visible = false
 title_text = "ADD_A_NEW_DEVICE"
 content_text = "ADD_DEVICE_POPUP"
 
 [node name="DeleteStudentPopup" parent="." unique_id=231430561 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
-visible = false
 title_text = "DELETE_STUDENT"
 content_text = "DELETE_STUDENT_POPUP"
 
 [node name="LoadingPopup" parent="." unique_id=303867354 instance=ExtResource("10_i488h")]
 unique_name_in_owner = true
-visible = false
 
 [node name="ExportCodesFileDialog" type="FileDialog" parent="." unique_id=2034874559]
 unique_name_in_owner = true
-oversampling_override = 1.0
-mode = 4
-title = "EXPORT_STUDENT_CODES"
-position = Vector2i(100, 100)
-size = Vector2i(2400, 1600)
-ok_button_text = "EXPORT_STUDENT_CODES"
-cancel_button_text = "CANCEL"
-access = 2
+title = "Save a File"
+initial_position = 2
+size = Vector2i(1200, 800)
+ok_button_text = "Save"
+file_mode = 4
+filters = PackedStringArray("*.pdf")
 
-[connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="InterfaceLeft/Container/Dashboard" to="." method="_on_dashboard_button_pressed"]
-[connection signal="pressed" from="InterfaceLeft/Container/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
-[connection signal="pressed" from="InterfaceLeft/Container/LogoutButton" to="." method="_on_logout_button_pressed"]
-[connection signal="pressed" from="InterfaceLeft/Container/ChangeLanguageButton" to="." method="_on_change_language_button_pressed"]
-[connection signal="accepted" from="InterfaceLeft/Container/ChangeLanguageButton/ChangeLanguagePopup" to="." method="_on_change_language_popup_accepted"]
-[connection signal="pressed" from="InterfaceLeft/Container/DeleteButton" to="." method="_on_delete_button_pressed"]
-[connection signal="accepted" from="InterfaceLeft/Container/DeleteButton/DeletePopup" to="." method="_on_delete_popup_accepted"]
-[connection signal="item_selected" from="VBoxContainer/HBoxContainer/AccountTypeOptionButton" to="." method="_on_account_type_option_button_item_selected"]
-[connection signal="item_selected" from="VBoxContainer/HBoxContainer/EducationMethodOptionButton" to="." method="_on_education_method_option_button_item_selected"]
-[connection signal="tab_changed" from="VBoxContainer/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
-[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddStudentButton" to="." method="_on_add_student_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/InterfaceBottom/Container/ExportCodesButton" to="." method="_on_export_codes_button_pressed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="item_selected" from="Page/ControlsRow/AccountTypeGroup/AccountTypeOptionButton" to="." method="_on_account_type_option_button_item_selected"]
+[connection signal="item_selected" from="Page/ControlsRow/EducationMethodGroup/EducationMethodOptionButton" to="." method="_on_education_method_option_button_item_selected"]
+[connection signal="pressed" from="Page/ControlsRow/Actions/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
+[connection signal="pressed" from="Page/ControlsRow/Actions/Dashboard" to="." method="_on_dashboard_button_pressed"]
+[connection signal="pressed" from="Page/ControlsRow/Actions/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="id_pressed" from="Page/ControlsRow/Actions/MenuButton/OverflowMenu" to="." method="_on_overflow_menu_id_pressed"]
+[connection signal="pressed" from="Page/Card/CardMargin/CardContent/CardActions/ExportCodesButton" to="." method="_on_export_codes_button_pressed"]
+[connection signal="pressed" from="Page/Card/CardMargin/CardContent/CardActions/AddStudentButton" to="." method="_on_add_student_button_pressed"]
+[connection signal="pressed" from="Page/Card/CardMargin/CardContent/CardActions/AddDeviceButton" to="." method="_on_add_device_button_pressed"]
+[connection signal="tab_changed" from="Page/Card/CardMargin/CardContent/DevicesTabContainer" to="." method="_on_devices_tab_container_tab_changed"]
 [connection signal="student_deleted" from="LessonUnlocks" to="." method="_on_lesson_unlocks_student_deleted"]
+[connection signal="accepted" from="ChangeLanguagePopup" to="." method="_on_change_language_popup_accepted"]
+[connection signal="accepted" from="DeletePopup" to="." method="_on_delete_popup_accepted"]
 [connection signal="accepted" from="AddStudentPopup" to="." method="_on_add_student_popup_accepted"]
 [connection signal="accepted" from="AddDevicePopup" to="." method="_on_add_device_popup_accepted"]
 [connection signal="accepted" from="DeleteStudentPopup" to="." method="_on_delete_student_popup_accepted"]

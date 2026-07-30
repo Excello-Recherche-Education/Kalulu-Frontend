@@ -1,6 +1,13 @@
 class_name SettingsTeacherSettings
 extends Control
 
+## Items in the overflow menu, in the order the PopupMenu lists them.
+enum OverflowItem {
+	CHANGE_LANGUAGE,
+	LOGOUT,
+	DELETE_ACCOUNT,
+}
+
 # Both exits below run after the account is logged out or deleted, so the device
 # no longer holds a token and the welcome screen is where it belongs.
 const SIGNED_OUT_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
@@ -33,6 +40,8 @@ var last_device_id: int = -1
 @onready var add_student_popup: CanvasLayer = %AddStudentPopup
 @onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
 @onready var export_codes_file_dialog: FileDialog = %ExportCodesFileDialog
+@onready var menu_button: Button = %MenuButton
+@onready var overflow_menu: PopupMenu = %OverflowMenu
 
 
 func _ready() -> void:
@@ -117,6 +126,27 @@ func _on_back_button_pressed() -> void:
 		get_tree().change_scene_to_file(DEVICE_SELECTION_SCENE_PATH)
 	else:
 		get_tree().change_scene_to_file(LOGIN_MENU_PATH)
+
+
+func _on_menu_button_pressed() -> void:
+	# Dropped just under the button rather than at the pointer, so it lands in
+	# the same place however it was opened.
+	var below: Vector2 = menu_button.global_position + Vector2(0, menu_button.size.y)
+	overflow_menu.position = Vector2i((get_window().position as Vector2) + below)
+	overflow_menu.reset_size()
+	overflow_menu.popup()
+
+
+func _on_overflow_menu_id_pressed(id: int) -> void:
+	match id:
+		OverflowItem.CHANGE_LANGUAGE:
+			_on_change_language_button_pressed()
+		OverflowItem.LOGOUT:
+			_on_logout_button_pressed()
+		OverflowItem.DELETE_ACCOUNT:
+			_on_delete_button_pressed()
+		_:
+			Log.warn("SettingsTeacherSettings: Unknown overflow menu item %d" % id)
 
 
 func _on_delete_button_pressed() -> void:
