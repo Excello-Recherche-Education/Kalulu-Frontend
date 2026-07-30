@@ -18,7 +18,9 @@ func before_each() -> void:
 
 func test_it_builds_one_segment_per_option() -> void:
 	assert_eq(toggle.buttons.size(), 2, "the default options should give two segments")
-	assert_eq(toggle.buttons[0].text, "LOGIN")
+	# LOG_IN, not LOGIN: the latter translates to "Identifiants"/"Credenziali",
+	# which labels a form rather than an action.
+	assert_eq(toggle.buttons[0].text, "LOG_IN")
 	assert_eq(toggle.buttons[1].text, "SIGN_UP")
 
 

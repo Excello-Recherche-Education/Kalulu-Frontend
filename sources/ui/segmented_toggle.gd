@@ -14,7 +14,7 @@ signal selection_changed(index: int)
 
 const ANIMATION_DURATION: float = 0.15
 
-@export var options: PackedStringArray = ["LOGIN", "SIGN_UP"]:
+@export var options: PackedStringArray = ["LOG_IN", "SIGN_UP"]:
 	set(value):
 		options = value
 		_rebuild()

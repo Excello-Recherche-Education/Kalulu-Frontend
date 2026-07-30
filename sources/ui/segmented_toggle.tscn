@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene uid="uid://cv20up0meq087" load_steps=3 format=3]
 
 [ext_resource type="Script" uid="uid://dlo1fl3l3oxqc" path="res://sources/ui/segmented_toggle.gd" id="1_toggle"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]

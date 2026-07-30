@@ -47,7 +47,11 @@ const HIDE_PASSWORD_PATH: String = "res://assets/menus/icons/hide_password.svg"
 ## so it can pick LineEditValidator itself. Handing it a plain Validator is an
 ## easy mistake and a silent one -- the base class reads no value from the
 ## control, so every rule fails no matter what the user typed.
-@export var rules: Array[ValidatorRule] = []
+@export var rules: Array[ValidatorRule] = []:
+	set(value):
+		rules = value
+		if is_node_ready() and not Engine.is_editor_hint():
+			_attach_validator()
 
 var error: String = "":
 	set(value):
@@ -132,9 +136,19 @@ func _reserve_room_for_trailing(texture: Texture2D) -> void:
 	input.add_theme_stylebox_override("normal", box)
 
 
+## (Re)builds the addon plumbing for the current `rules`.
+##
+## Rebuildable so a screen can declare its validation in code: a field's _ready
+## runs before its screen's, so assigning `rules` from the screen has to take
+## effect after the fact.
 func _attach_validator() -> void:
+	for child: Node in input.get_children():
+		if child is ControlValidator:
+			input.remove_child(child)
+			child.queue_free()
 	if rules.is_empty():
 		return
+
 	var validator: LineEditValidator = LineEditValidator.new()
 	validator.rules = rules
 	# The addon finds a ControlValidator through its parent, so it has to hang

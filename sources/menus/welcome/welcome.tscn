@@ -1,0 +1,156 @@
+[gd_scene load_steps=9 format=3 uid="uid://cwyqhwjbxk8m3"]
+
+[ext_resource type="Script" uid="uid://dd73v8cop032e" path="res://sources/menus/welcome/welcome.gd" id="1_welcome"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" uid="uid://cr4q0ywceoasx" path="res://sources/utils/keyboard_spacer.tscn" id="3_spacer"]
+[ext_resource type="PackedScene" uid="uid://cv20up0meq087" path="res://sources/ui/segmented_toggle.tscn" id="4_toggle"]
+[ext_resource type="PackedScene" uid="uid://m58jy4pys3yn" path="res://sources/ui/menu_text_field.tscn" id="5_field"]
+[ext_resource type="PackedScene" uid="uid://ivyitn4nxsm5" path="res://sources/ui/code_keypad.tscn" id="6_keypad"]
+[ext_resource type="Script" uid="uid://bu80rel3g62k2" path="res://addons/godot-form-validator/form_validator.gd" id="7_form"]
+[ext_resource type="Script" uid="uid://dugl3xh4di2a5" path="res://sources/menus/main/language_field.gd" id="8_language"]
+
+[node name="Welcome" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_welcome")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.164706, 0.211765, 0.490196, 1)
+
+[node name="KeyboardSpacer" parent="." instance=ExtResource("3_spacer")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Scroll" type="ScrollContainer" parent="KeyboardSpacer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="KeyboardSpacer/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 72
+alignment = 1
+
+[node name="Title" type="Label" parent="KeyboardSpacer/Scroll/Content"]
+layout_mode = 2
+text = "WELCOME_TO_KALULU"
+horizontal_alignment = 1
+theme_type_variation = &"Title"
+
+[node name="Toggle" parent="KeyboardSpacer/Scroll/Content" instance=ExtResource("4_toggle")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Subtitle" type="Label" parent="KeyboardSpacer/Scroll/Content"]
+layout_mode = 2
+text = "GET_STARTED_NOW"
+horizontal_alignment = 1
+theme_type_variation = &"Heading"
+
+[node name="LoginPanel" type="VBoxContainer" parent="KeyboardSpacer/Scroll/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 72
+script = ExtResource("7_form")
+validation_method = 0
+
+[node name="LoginHeading" type="Label" parent="KeyboardSpacer/Scroll/Content/LoginPanel"]
+layout_mode = 2
+text = "LOGIN_TO_ACCESS_YOUR_ACCOUNT"
+horizontal_alignment = 1
+theme_type_variation = &"Heading"
+
+[node name="LanguageField" type="OptionButton" parent="KeyboardSpacer/Scroll/Content/LoginPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(940, 0)
+layout_mode = 2
+script = ExtResource("8_language")
+
+[node name="EmailField" parent="KeyboardSpacer/Scroll/Content/LoginPanel" instance=ExtResource("5_field")]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder = "EMAIL"
+keyboard_type = 5
+
+[node name="PasswordField" parent="KeyboardSpacer/Scroll/Content/LoginPanel" instance=ExtResource("5_field")]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder = "PASSWORD"
+is_password = true
+
+[node name="ResetRow" type="HBoxContainer" parent="KeyboardSpacer/Scroll/Content/LoginPanel"]
+custom_minimum_size = Vector2(940, 0)
+layout_mode = 2
+alignment = 2
+
+[node name="ResetPasswordButton" type="Button" parent="KeyboardSpacer/Scroll/Content/LoginPanel/ResetRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InlineButton"
+text = "FORGOT_PASSWORD"
+
+[node name="LoginError" type="Label" parent="KeyboardSpacer/Scroll/Content/LoginPanel"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(940, 0)
+layout_mode = 2
+text = "INVALID_EMAIL_OR_PASSWORD"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_type_variation = &"ErrorLabel"
+
+[node name="SignUpPanel" type="VBoxContainer" parent="KeyboardSpacer/Scroll/Content"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 72
+
+[node name="AdultPrompt" type="Label" parent="KeyboardSpacer/Scroll/Content/SignUpPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1640, 0)
+layout_mode = 2
+text = "ADULT_CHECK_PROMPT"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_type_variation = &"Heading"
+
+[node name="Keypad" parent="KeyboardSpacer/Scroll/Content/SignUpPanel" instance=ExtResource("6_keypad")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="NextButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -673.0
+offset_top = -360.0
+offset_right = -341.0
+offset_bottom = -196.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_type_variation = &"PrimaryButton"
+text = "NEXT"

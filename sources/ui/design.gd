@@ -62,9 +62,13 @@ const FONT_SIZE_CAPTION: int = 28 # regular - version strings, captions
 const FONT_REGULAR_PATH: String = "res://assets/fonts/kalulu_mulish_regular.otf"
 const FONT_BOLD_PATH: String = "res://assets/fonts/kalulu_mulish_bold.otf"
 # --- Layout ------------------------------------------------------------------
-const SCREEN_MARGIN: int = 64
-const CONTENT_WIDTH: int = 940
+const SCREEN_MARGIN: int = 64 # corner buttons
+const CONTENT_WIDTH: int = 940 # the column of fields down the middle
 const FIELD_GAP: int = 104
+# The wizard screens inset their footer buttons by this much, and the settings
+# and conditions cards are exactly the resulting width.
+const PAGE_MARGIN: int = 340
+const PAGE_MARGIN_BOTTOM: int = 196
 # --- Surfaces ----------------------------------------------------------------
 const CARD_RADIUS: int = 14
 const CARD_PADDING: int = 88

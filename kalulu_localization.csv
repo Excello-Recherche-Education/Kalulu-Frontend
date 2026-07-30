@@ -486,3 +486,8 @@ OK,OK,OK,OK,OK
 VALUE_REQUIRED,Ce champ est requis,Este campo es obligatorio,Este campo é obrigatório,Questo campo è obbligatorio
 BRAIN_PLAYER_PROGRESS,Progrès de {name},Progreso de {name},Progresso de {name},Progressi di {name}
 BRAIN_PLAYER_PROGRESS_NO_NAME,Progrès du joueur,Progreso del jugador,Progresso do jogador,Progressi del giocatore
+WELCOME_TO_KALULU,Bienvenue dans Kalulu,Bienvenido a Kalulu,Bem-vindo ao Kalulu,Benvenuto in Kalulu
+GET_STARTED_NOW,Commencez maintenant,Empiece ahora,Comece agora,Inizia ora
+LOGIN_TO_ACCESS_YOUR_ACCOUNT,Connectez-vous pour accéder à votre compte,Inicie sesión para acceder a su cuenta,Entre para acessar sua conta,Accedi per entrare nel tuo account
+SIGN_UP,S'inscrire,Registrarse,Cadastrar-se,Registrati
+FORGOT_PASSWORD,Mot de passe oublié ?,¿Olvidó su contraseña?,Esqueceu sua senha?,Password dimenticata?

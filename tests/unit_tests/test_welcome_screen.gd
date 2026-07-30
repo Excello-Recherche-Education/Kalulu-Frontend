@@ -1,0 +1,158 @@
+extends GutTest
+## Wiring of the unified welcome screen.
+##
+## Covers the structure and tab behaviour rather than the network calls: the
+## login request goes through ServerManager, which these tests do not stand up.
+
+const WELCOME_SCENE: String = "res://sources/menus/welcome/welcome.tscn"
+const LOGIN_TAB: int = 0
+const SIGN_UP_TAB: int = 1
+
+var welcome: Control
+
+
+func before_each() -> void:
+	welcome = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	add_child_autofree(welcome)
+	await get_tree().process_frame
+
+
+func test_the_scene_loads_with_every_part_wired() -> void:
+	assert_not_null(welcome.toggle, "the tab switch should be present")
+	assert_not_null(welcome.login_panel, "the login panel should be present")
+	assert_not_null(welcome.sign_up_panel, "the sign up panel should be present")
+	assert_not_null(welcome.keypad, "the adult check keypad should be present")
+	assert_not_null(welcome.next_button, "the primary action should be present")
+
+
+func test_the_login_panel_is_also_the_form_validator() -> void:
+	# The panel needs to be a container so it lays its fields out, and a
+	# FormValidator so the fields find it. A script may attach to any subclass of
+	# the type it extends, so one VBoxContainer is both.
+	assert_true(welcome.login_panel is FormValidator,
+		"the login panel should be a FormValidator")
+	assert_true(welcome.login_panel is VBoxContainer,
+		"the login panel should also be a container")
+
+
+func test_it_opens_on_the_login_tab() -> void:
+	assert_eq(welcome.toggle.selected, LOGIN_TAB)
+	assert_true(welcome.login_panel.visible, "login should be showing")
+	assert_false(welcome.sign_up_panel.visible, "sign up should be hidden")
+	assert_true(welcome.next_button.visible, "login needs its Next button")
+
+
+func test_switching_to_sign_up_swaps_the_panels() -> void:
+	welcome.toggle.selected = SIGN_UP_TAB
+	await get_tree().process_frame
+
+	assert_false(welcome.login_panel.visible, "login should be hidden")
+	assert_true(welcome.sign_up_panel.visible, "sign up should be showing")
+
+
+func test_the_sign_up_tab_has_no_next_button() -> void:
+	# Completing the code is itself the action, as in the mockups.
+	welcome.toggle.selected = SIGN_UP_TAB
+	await get_tree().process_frame
+
+	assert_false(welcome.next_button.visible,
+		"the adult check advances on its own, so Next would be dead weight")
+
+
+func test_the_credential_fields_are_validated() -> void:
+	assert_eq(welcome.email_field.rules.size(), 2, "email should be required and well formed")
+	assert_eq(welcome.password_field.rules.size(), 1, "password should be required")
+
+	var passed: bool = welcome.login_panel.validate()
+
+	assert_false(passed, "an empty form should not validate")
+	assert_true(welcome.email_field.error_label.visible, "the email field should say why")
+
+
+func test_a_well_formed_login_validates() -> void:
+	welcome.email_field.text = "teacher@example.org"
+	welcome.password_field.text = "a-password"
+
+	assert_true(welcome.login_panel.validate(), "a filled, valid form should pass")
+	assert_false(welcome.email_field.error_label.visible)
+	assert_false(welcome.password_field.error_label.visible)
+
+
+func test_the_password_field_starts_masked() -> void:
+	assert_true(welcome.password_field.is_masked(), "a password should not be readable")
+	assert_false(welcome.email_field.is_masked(), "the email is not a secret")
+
+
+func test_the_language_field_lists_the_supported_locales() -> void:
+	var field: OptionButton = welcome.get_node("%LanguageField")
+	assert_eq(field.item_count, Utils.SUPPORTED_LOCALES.size(),
+		"every supported locale should be offered")
+
+
+func test_the_adult_challenge_is_one_of_the_available_codes() -> void:
+	assert_has(TeacherSettings.AVAILABLE_CODES, int(welcome.adult_challenge),
+		"the challenge must be a code the keypad can actually produce")
+
+
+func test_the_adult_prompt_names_the_three_symbols() -> void:
+	var digits: PackedStringArray = welcome.adult_challenge.split("", false)
+	for digit: String in digits:
+		assert_string_contains(welcome.adult_prompt.text, tr(Design.code_symbol_name(digit)),
+			"the prompt should name symbol %s" % digit)
+
+
+func test_a_wrong_code_resets_the_challenge() -> void:
+	welcome.toggle.selected = SIGN_UP_TAB
+	await get_tree().process_frame
+	var wrong: String = _code_other_than(welcome.adult_challenge)
+
+	for digit: String in wrong.split("", false):
+		welcome.keypad.toggle_digit(digit)
+	await get_tree().process_frame
+
+	assert_eq(welcome.keypad.code, "", "a wrong code should clear the keypad")
+
+
+func test_revisiting_sign_up_issues_a_fresh_challenge() -> void:
+	# Otherwise the answer could be memorised from a previous visit.
+	var seen: Dictionary[String, bool] = {}
+	for _attempt: int in 20:
+		welcome.toggle.selected = SIGN_UP_TAB
+		seen[welcome.adult_challenge] = true
+		welcome.toggle.selected = LOGIN_TAB
+	assert_gt(seen.size(), 1, "the challenge should not be the same every visit")
+
+
+func test_the_tabs_use_action_labels() -> void:
+	# LOGIN translates to "Identifiants"/"Credenziali", which labels a form
+	# rather than an action, so the tab uses LOG_IN instead.
+	assert_eq(welcome.toggle.options[0], "LOG_IN")
+	assert_eq(welcome.toggle.options[1], "SIGN_UP")
+
+
+func test_forgot_password_is_always_offered() -> void:
+	# The old screen only revealed it after a wrong-password reply, so nobody
+	# who had simply forgotten their password could find it.
+	assert_true(welcome.reset_password_button.visible,
+		"the reset affordance should be discoverable up front")
+	assert_eq(welcome.reset_password_button.text, "FORGOT_PASSWORD")
+
+
+func test_forgot_password_asks_for_an_address_before_sending() -> void:
+	# It needs somewhere to send the mail, and pressing it must not fire a
+	# request with an empty or malformed address.
+	welcome.email_field.text = "not-an-email"
+
+	welcome.reset_password_button.pressed.emit()
+
+	assert_true(welcome.email_field.error_label.visible,
+		"the email field should report the problem itself")
+	assert_false(welcome.reset_password_button.disabled,
+		"no request should have been started")
+
+
+func _code_other_than(code: String) -> String:
+	for value: int in TeacherSettings.AVAILABLE_CODES:
+		if str(value) != code:
+			return str(value)
+	return code
