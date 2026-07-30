@@ -103,6 +103,7 @@ alignment = 2
 
 [node name="ResetPasswordButton" type="Button" parent="KeyboardSpacer/Scroll/Content/LoginPanel/ResetRow"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_type_variation = &"InlineButton"
 text = "FORGOT_PASSWORD"

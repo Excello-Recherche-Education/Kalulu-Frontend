@@ -130,25 +130,52 @@ func test_the_tabs_use_action_labels() -> void:
 	assert_eq(welcome.toggle.options[1], "SIGN_UP")
 
 
-func test_forgot_password_is_always_offered() -> void:
-	# The old screen only revealed it after a wrong-password reply, so nobody
-	# who had simply forgotten their password could find it.
-	assert_true(welcome.reset_password_button.visible,
-		"the reset affordance should be discoverable up front")
+func test_forgot_password_is_hidden_until_a_login_fails() -> void:
+	assert_false(welcome.reset_password_button.visible,
+		"the reset offer should not be there before an attempt has failed")
 	assert_eq(welcome.reset_password_button.text, "FORGOT_PASSWORD")
 
 
-func test_forgot_password_asks_for_an_address_before_sending() -> void:
-	# It needs somewhere to send the mail, and pressing it must not fire a
-	# request with an empty or malformed address.
-	welcome.email_field.text = "not-an-email"
+func test_a_wrong_password_offers_a_reset() -> void:
+	welcome._show_login_error("LOGIN_WRONG_PASSWORD")
 
-	welcome.reset_password_button.pressed.emit()
+	assert_true(welcome.reset_password_button.visible,
+		"a wrong password is the failure a reset fixes")
+	assert_false(welcome.reset_password_button.disabled)
 
-	assert_true(welcome.email_field.error_label.visible,
-		"the email field should report the problem itself")
-	assert_false(welcome.reset_password_button.disabled,
-		"no request should have been started")
+
+func test_other_failures_do_not_offer_a_reset() -> void:
+	# Resetting cannot help an unknown account, and the network failures could
+	# not send the mail anyway.
+	for key: String in ["LOGIN_USER_NOT_FOUND", "LOGIN_NETWORK_ERROR",
+			"LOGIN_SERVER_ERROR", "LOGIN_MISSING_CREDENTIALS",
+			"INVALID_EMAIL_OR_PASSWORD"]:
+		welcome._show_login_error(key)
+		assert_false(welcome.reset_password_button.visible,
+			"%s should not offer a password reset" % key)
+
+
+func test_editing_the_form_withdraws_the_reset_offer() -> void:
+	welcome._show_login_error("LOGIN_WRONG_PASSWORD")
+
+	welcome.email_field.input.text = "someone@example.org"
+	welcome.email_field.input.text_changed.emit("someone@example.org")
+
+	assert_false(welcome.login_error.visible, "the stale error should go")
+	assert_false(welcome.reset_password_button.visible,
+		"the offer belongs to the failed attempt, not to the new one")
+
+
+func test_switching_tabs_withdraws_the_reset_offer() -> void:
+	welcome._show_login_error("LOGIN_WRONG_PASSWORD")
+
+	welcome.toggle.selected = SIGN_UP_TAB
+	await get_tree().process_frame
+	welcome.toggle.selected = LOGIN_TAB
+	await get_tree().process_frame
+
+	assert_false(welcome.reset_password_button.visible,
+		"coming back to a fresh login form should not still offer a reset")
 
 
 func _code_other_than(code: String) -> String:

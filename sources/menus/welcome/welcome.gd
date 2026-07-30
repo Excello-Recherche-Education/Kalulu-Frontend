@@ -109,10 +109,17 @@ func _on_next_pressed() -> void:
 func _show_login_error(translation_key: String) -> void:
 	login_error.text = translation_key
 	login_error.show()
+	# Only offered once a login has actually failed on the password, which is the
+	# one failure a reset can fix: an unknown account, a network drop or a server
+	# error are not helped by resetting, and the network cases could not send the
+	# mail anyway.
+	reset_password_button.visible = translation_key == "LOGIN_WRONG_PASSWORD"
+	reset_password_button.disabled = false
 
 
 func _hide_login_error() -> void:
 	login_error.hide()
+	reset_password_button.hide()
 	reset_password_button.disabled = false
 
 
@@ -144,17 +151,8 @@ func _translation_key_for_error(response: Dictionary) -> String:
 
 
 func _on_reset_password_pressed() -> void:
-	# "Forgot password?" is always offered, as the mockups show, rather than
-	# appearing only after a wrong-password reply the way the old screen did --
-	# an affordance nobody can find is not much use. It does need an address to
-	# send to, though, so the email field is validated first and reports the
-	# problem itself.
-	if email_field.text.strip_edges().is_empty() or not _email_is_valid():
-		Log.info("Welcome: Password reset needs a valid email first")
-		login_panel.validate()
-		email_field.grab_input_focus()
-		return
-
+	# Reachable only after the form validated and the server replied "wrong
+	# password", so the address is known good and needs no checking here.
 	Log.info("Welcome: Password reset requested for %s" % email_field.text)
 	reset_password_button.disabled = true
 	var response: Dictionary = await ServerManager.reset_password(email_field.text)
@@ -167,11 +165,6 @@ func _on_reset_password_pressed() -> void:
 	Log.info("Welcome: Password reset accepted")
 	login_error.text = "CHECK_YOUR_EMAIL"
 	login_error.show()
-
-
-func _email_is_valid() -> bool:
-	var validator: EmailRule = EmailRule.new()
-	return validator.apply(email_field.input, email_field.text).passed
 
 
 # --- Sign up (adult check) ---------------------------------------------------
