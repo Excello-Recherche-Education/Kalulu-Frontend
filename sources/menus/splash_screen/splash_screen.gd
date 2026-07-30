@@ -1,22 +1,33 @@
 extends Control
+## The Kalulu splash, shown on every launch.
+##
+## Where it goes next is EntryFlow's decision: Kalulu's spoken greeting when the
+## language pack can play it, otherwise straight on to the welcome or
+## access-code screen.
 
-const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
+var is_leaving: bool = false
 
 
-func _go_to_main_menu() -> void:
-	Log.info("SplashScreen: Changing scene to main menu")
-	var err: Error = get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
-	if err != 0:
-		Log.error("SplashScreen: Error while going to main menu: " + str(err))
+func _go_to_next_scene() -> void:
+	# The timer and a tap race each other, and both lead here.
+	if is_leaving:
+		return
+	is_leaving = true
+	var next: String = EntryFlow.scene_after_splash()
+	Log.info("SplashScreen: Changing scene to %s" % next)
+	var error: Error = get_tree().change_scene_to_file(next)
+	if error != OK:
+		Log.error("SplashScreen: Error while leaving the splash: " + str(error))
+		is_leaving = false
 
 
 func _on_timer_timeout() -> void:
-	_go_to_main_menu()
+	_go_to_next_scene()
 
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
-		_go_to_main_menu()
+		_go_to_next_scene()
 
 
 func _on_timer_ready() -> void:
