@@ -105,6 +105,7 @@ text = "DELETE_ACCOUNT"
 [node name="DeletePopup" parent="InterfaceLeft/Container/DeleteButton" unique_id=635237219 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
+title_text = "DELETE_ACCOUNT"
 content_text = "DELETE_ACCOUNT_POPUP"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2087046145]
@@ -241,16 +242,19 @@ layout_mode = 1
 [node name="AddStudentPopup" parent="." unique_id=228068112 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
+title_text = "ADD_A_NEW_STUDENT"
 content_text = "ADD_STUDENT_POPUP"
 
 [node name="AddDevicePopup" parent="." unique_id=1068863729 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
+title_text = "ADD_A_NEW_DEVICE"
 content_text = "ADD_DEVICE_POPUP"
 
 [node name="DeleteStudentPopup" parent="." unique_id=231430561 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
+title_text = "DELETE_STUDENT"
 content_text = "DELETE_STUDENT_POPUP"
 
 [node name="LoadingPopup" parent="." unique_id=303867354 instance=ExtResource("10_i488h")]
