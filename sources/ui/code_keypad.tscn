@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" uid="uid://226yvxtnq57a" path="res://sources/ui/code_keypad.gd" id="1_keypad"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
+
+[node name="CodeKeypad" type="VBoxContainer"]
+theme = ExtResource("2_theme")
+theme_override_constants/separation = 100
+alignment = 1
+script = ExtResource("1_keypad")
+
+[node name="Slots" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="Keys" type="GridContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 3

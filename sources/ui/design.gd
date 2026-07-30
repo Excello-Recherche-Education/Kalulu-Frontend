@@ -88,6 +88,18 @@ const PILL_PADDING: int = 48
 # --- Circular buttons --------------------------------------------------------
 const ROUND_BUTTON_LARGE: int = 184 # back / Kalulu corner buttons
 const ROUND_BUTTON_SMALL: int = 90 # icon buttons in headers and cards
+# --- Access-code keypad ------------------------------------------------------
+# Codes are three symbols long and never repeat a symbol: see
+# TeacherSettings.AVAILABLE_CODES, which lists the distinct-digit permutations.
+const CODE_LENGTH: int = 3
+const CODE_SLOT_SIZE: int = 239
+const CODE_SLOT_GAP: int = 102
+const CODE_SLOT_RADIUS: int = 12
+const CODE_KEY_SIZE: Vector2i = Vector2i(471, 259)
+const CODE_KEY_RADIUS: int = 12
+const CODE_KEY_GAP: Vector2i = Vector2i(110, 69)
+const CODE_SYMBOL_SIZE: int = 110
+const CODE_SYMBOL_PATH_FORMAT: String = "res://assets/menus/login/symbol_%02d.png"
 
 
 ## Colour of the access-code symbol `digit`, white for an unknown digit.
@@ -98,3 +110,10 @@ static func code_color(digit: String) -> Color:
 ## Translation key naming the access-code symbol `digit`, empty if unknown.
 static func code_symbol_name(digit: String) -> String:
 	return CODE_SYMBOL_NAMES.get(digit, "")
+
+
+## White glyph for the access-code symbol `digit`, null for an unknown digit.
+static func code_symbol_texture(digit: String) -> Texture2D:
+	if not CODE_COLORS.has(digit):
+		return null
+	return load(CODE_SYMBOL_PATH_FORMAT % int(digit)) as Texture2D
