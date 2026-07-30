@@ -31,6 +31,16 @@ func test_every_unique_name_the_script_looks_up_exists() -> void:
 			"the script resolves %s at _ready" % name)
 
 
+func test_no_dialog_is_on_screen_at_load() -> void:
+	# Regression: the rebuild dropped `visible = false` from the instanced
+	# dialogs. A ConfirmPopup is a CanvasLayer, which defaults to visible, so all
+	# seven drew at once on top of the screen and settings was unusable.
+	for name: String in ["%ChangeLanguagePopup", "%ChangeLanguageErrorPopup", "%DeletePopup",
+			"%AddStudentPopup", "%AddDevicePopup", "%DeleteStudentPopup", "%LoadingPopup"]:
+		var dialog: CanvasLayer = screen.get_node(name)
+		assert_false(dialog.visible, "%s should start hidden" % name)
+
+
 func test_the_lesson_unlocks_panel_is_still_a_direct_child() -> void:
 	# Looked up as $LessonUnlocks, not by unique name, so its position matters.
 	assert_not_null(screen.get_node_or_null("LessonUnlocks"))

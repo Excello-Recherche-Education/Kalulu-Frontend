@@ -15,6 +15,15 @@ func before_each() -> void:
 	await get_tree().process_frame
 
 
+func test_a_dialog_scene_is_hidden_before_anyone_shows_it() -> void:
+	# The root is a CanvasLayer, which defaults to visible, so every scene that
+	# instanced one had to remember `visible = false` -- and a scene that forgot
+	# drew its dialogs over the whole screen. The default now lives here instead.
+	var fresh: ConfirmPopup = (load(POPUP_SCENE) as PackedScene).instantiate()
+	autofree(fresh)
+	assert_false(fresh.visible, "a dialog should not be on screen until shown")
+
+
 func test_confirming_accepts_and_closes() -> void:
 	watch_signals(popup)
 	popup.show()

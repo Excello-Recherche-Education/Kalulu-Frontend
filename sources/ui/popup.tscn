@@ -11,6 +11,7 @@ colors = PackedColorArray(0.0784314, 0.0980392, 0.223529, 0.6, 0.0784314, 0.0980
 gradient = SubResource("Gradient_22q4u")
 
 [node name="Popup" type="CanvasLayer" unique_id=530426781]
+visible = false
 script = ExtResource("1_o3fd6")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=136426900]

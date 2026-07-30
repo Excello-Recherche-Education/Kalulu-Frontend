@@ -239,33 +239,40 @@ layout_mode = 1
 
 [node name="ChangeLanguagePopup" parent="." unique_id=144215824 instance=ExtResource("11_chglg")]
 unique_name_in_owner = true
+visible = false
 
 [node name="ChangeLanguageErrorPopup" parent="." unique_id=144215825 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
+visible = false
 content_text = "CHANGE_LANGUAGE_ERROR"
 
 [node name="DeletePopup" parent="." unique_id=635237219 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
+visible = false
 title_text = "DELETE_ACCOUNT"
 content_text = "DELETE_ACCOUNT_POPUP"
 
 [node name="AddStudentPopup" parent="." unique_id=228068112 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
+visible = false
 title_text = "ADD_A_NEW_STUDENT"
 content_text = "ADD_STUDENT_POPUP"
 
 [node name="AddDevicePopup" parent="." unique_id=1068863729 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
+visible = false
 title_text = "ADD_A_NEW_DEVICE"
 content_text = "ADD_DEVICE_POPUP"
 
 [node name="DeleteStudentPopup" parent="." unique_id=231430561 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
+visible = false
 title_text = "DELETE_STUDENT"
 content_text = "DELETE_STUDENT_POPUP"
 
 [node name="LoadingPopup" parent="." unique_id=303867354 instance=ExtResource("10_i488h")]
 unique_name_in_owner = true
+visible = false
 
 [node name="ExportCodesFileDialog" type="FileDialog" parent="." unique_id=2034874559]
 unique_name_in_owner = true
