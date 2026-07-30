@@ -1,6 +1,8 @@
 extends Control
 
-const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
+# Registration is only reachable from the welcome screen's Sign Up tab, so
+# backing out of the first step returns there.
+const BACK_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
 const NEXT_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 
 var current_steps: Array[Step] = []
@@ -61,8 +63,8 @@ func _go_to_step(step_index: int) -> void:
 
 func _on_step_back(_step: Step) -> void:
 	if progress_bar.value == 0:
-		Log.info("Register: Back to main menu from first step")
-		get_tree().change_scene_to_file(MAIN_MENU_PATH)
+		Log.info("Register: Back to the welcome screen from first step")
+		get_tree().change_scene_to_file(BACK_SCENE_PATH)
 	else:
 		Log.trace("Register: Moving back from step %d" % int(progress_bar.value))
 		_go_to_step(int(progress_bar.value-1))

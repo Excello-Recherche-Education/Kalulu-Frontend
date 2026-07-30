@@ -86,6 +86,20 @@ func test_the_greeting_is_skipped_without_a_language_pack() -> void:
 		"with no greeting to play the splash should route past it")
 
 
+func test_backing_out_of_registration_returns_to_the_welcome_screen() -> void:
+	# Registration is only reachable from the Sign Up tab, so the first step's
+	# Previous has to lead back there rather than to the old main menu.
+	var register: GDScript = load("res://sources/menus/register/register.gd")
+	assert_eq(register.BACK_SCENE_PATH, EntryFlow.WELCOME_SCENE_PATH)
+
+
+func test_signing_out_lands_on_the_welcome_screen() -> void:
+	# Logging out and deleting an account both drop the token, so neither can
+	# land somewhere that assumes the device is still signed in.
+	var settings: GDScript = load("res://sources/menus/settings/teacher_settings.gd")
+	assert_eq(settings.SIGNED_OUT_SCENE_PATH, EntryFlow.WELCOME_SCENE_PATH)
+
+
 func test_the_greeting_scene_has_the_parts_its_script_expects() -> void:
 	# Instantiated detached on purpose: the greeting starts speaking and then
 	# changes scene as soon as it enters a tree, which would tear this run down.

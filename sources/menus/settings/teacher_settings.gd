@@ -1,7 +1,9 @@
 class_name SettingsTeacherSettings
 extends Control
 
-const MAIN_MENU_PATH: String = "res://sources/menus/main/main_menu.tscn"
+# Both exits below run after the account is logged out or deleted, so the device
+# no longer holds a token and the welcome screen is where it belongs.
+const SIGNED_OUT_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
 const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
 const SPLASH_SCREEN_PATH: String = "res://sources/menus/splash_screen/splash_screen.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
@@ -126,13 +128,13 @@ func _on_delete_popup_accepted() -> void:
 	if res.code == 200:
 		UserDataManager.delete_teacher_data()
 		UserDataManager.logout()
-		get_tree().change_scene_to_file(MAIN_MENU_PATH)
+		get_tree().change_scene_to_file(SIGNED_OUT_SCENE_PATH)
 
 
 func _on_logout_button_pressed() -> void:
 	await OpeningCurtain.close()
 	UserDataManager.logout()
-	get_tree().change_scene_to_file(MAIN_MENU_PATH)
+	get_tree().change_scene_to_file(SIGNED_OUT_SCENE_PATH)
 
 
 func _on_change_language_button_pressed() -> void:
