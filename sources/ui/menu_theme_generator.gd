@@ -11,6 +11,7 @@ extends SceneTree
 
 func _init() -> void:
 	var theme: Theme = MenuTheme.build()
+	var uid: String = _existing_uid()
 	var directory: String = MenuTheme.THEME_PATH.get_base_dir()
 	if not DirAccess.dir_exists_absolute(directory):
 		var make_error: Error = DirAccess.make_dir_recursive_absolute(directory)
@@ -28,5 +29,48 @@ func _init() -> void:
 		quit(1)
 		return
 
+	_restore_uid(uid)
 	print("Wrote %s" % MenuTheme.THEME_PATH)
 	quit()
+
+
+## The uid to stamp on the resource: the one it already carries, or a new one.
+##
+## ResourceSaver does not write a uid of its own, yet the editor assigns one the
+## first time it opens the resource -- which would show up as an unexplained
+## diff on a generated file. Minting the uid here and carrying it across
+## regenerations makes this script idempotent instead.
+func _existing_uid() -> String:
+	if FileAccess.file_exists(MenuTheme.THEME_PATH):
+		var file: FileAccess = FileAccess.open(MenuTheme.THEME_PATH, FileAccess.READ)
+		if file:
+			var header: String = file.get_line()
+			file.close()
+			var found: RegExMatch = _uid_regex().search(header)
+			if found:
+				return found.get_string(1)
+	return ResourceUID.id_to_text(ResourceUID.create_id())
+
+
+func _restore_uid(uid: String) -> void:
+	if uid.is_empty():
+		return
+	var file: FileAccess = FileAccess.open(MenuTheme.THEME_PATH, FileAccess.READ)
+	if not file:
+		return
+	var content: String = file.get_as_text()
+	file.close()
+	if _uid_regex().search(content.get_slice("\n", 0)):
+		return
+	content = content.replace("[gd_resource ", "[gd_resource uid=\"%s\" " % uid)
+	file = FileAccess.open(MenuTheme.THEME_PATH, FileAccess.WRITE)
+	if not file:
+		return
+	file.store_string(content)
+	file.close()
+
+
+func _uid_regex() -> RegEx:
+	var regex: RegEx = RegEx.new()
+	regex.compile("uid=\"(uid://[^\"]+)\"")
+	return regex
