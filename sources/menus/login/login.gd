@@ -16,12 +16,11 @@ var right_password_speech: AudioStream
 var dev_click_count: int = 0
 var dev_last_click_time: float = 0.0
 
-@onready var kalulu: KALULU = $Kalulu
+@onready var kalulu: KALULU = %Kalulu
 @onready var music_player: AudioStreamPlayer = $MusicStreamPlayer
-@onready var device_number_label: Label = $DeviceNumber
-@onready var keyboard: CodeKeyboard = $CodeKeyboard
+@onready var device_number_label: Label = %DeviceNumber
+@onready var keypad: CodeKeypad = %CodeKeypad
 @onready var teacher_timer: Timer = %TeacherTimer
-@onready var teacher_help_label: Label = %TeacherHelpLabel
 @onready var kalulu_button: CanvasItem = %KaluluButton
 @onready var version_label: Label = %BuildVersionValue
 
@@ -47,8 +46,7 @@ func _ready() -> void:
 	wrong_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_wrong_password"))
 	right_password_speech = Database.load_external_sound(Database.get_kalulu_speech_path("login_screen", "feedback_right_password"))
 	
-	device_number_label.show()
-	device_number_label.text = tr("DEVICE_NUMBER").format({"number": UserDataManager.get_device_settings().device_id})
+	device_number_label.text = tr("LOG_IN_TO_DEVICE").format({"number": UserDataManager.get_device_settings().device_id})
 	
 	version_label.text = Utils.get_application_version_with_code()
 	version_label.gui_input.connect(_on_version_label_gui_input)
@@ -63,7 +61,7 @@ func _ready() -> void:
 	music_player.play()
 
 
-func _on_code_keyboard_password_entered(password: String) -> void:
+func _on_code_keypad_code_entered(password: String) -> void:
 	Log.info("LoginScreen: Student code entered (length=%d)" % password.length())
 	if UserDataManager.student_exists(password):
 		Log.info("LoginScreen: Student code %s found locally, synchronizing before login" % password)
@@ -75,7 +73,7 @@ func _on_code_keyboard_password_entered(password: String) -> void:
 			# The synchronization above may have deleted or moved the student
 			Log.warn("LoginScreen: Login failed for student code %s after synchronization" % password)
 			await kalulu.play_kalulu_speech(wrong_password_speech)
-			keyboard.reset_password()
+			keypad.clear()
 			kalulu_button.show()
 			return
 		await kalulu.play_kalulu_speech(right_password_speech)
@@ -86,7 +84,7 @@ func _on_code_keyboard_password_entered(password: String) -> void:
 		Log.warn("LoginScreen: Unknown student code entered (length=%d)" % password.length())
 		kalulu_button.hide()
 		await kalulu.play_kalulu_speech(wrong_password_speech)
-		keyboard.reset_password()
+		keypad.clear()
 
 
 func _on_back_button_pressed() -> void:
@@ -102,7 +100,7 @@ func _on_kalulu_button_pressed() -> void:
 
 
 func _on_teacher_button_button_down() -> void:
-	if keyboard.get_password_as_string() != TEACHER_PASSWORD:
+	if keypad.code != TEACHER_PASSWORD:
 		Log.warn("LoginScreen: Teacher button pressed with incorrect password")
 		return
 	Log.info("LoginScreen: Teacher button pressed with correct password, starting timer")
@@ -110,14 +108,12 @@ func _on_teacher_button_button_down() -> void:
 
 
 func _on_teacher_button_button_up() -> void:
-	Log.trace("LoginScreen: Teacher button released, showing help label")
-	teacher_help_label.show()
+	Log.trace("LoginScreen: Teacher button released")
 	teacher_timer.stop()
 
 
 func _on_teacher_timer_timeout() -> void:
 	Log.info("LoginScreen: Teacher timer elapsed, opening teacher settings")
-	teacher_help_label.hide()
 	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(TEACHER_SCENE_PATH)
 

@@ -1,154 +1,188 @@
-[gd_scene format=3 uid="uid://2wab3q35ssta"]
+[gd_scene load_steps=12 format=3 uid="uid://b0bkosa20avcs"]
 
 [ext_resource type="Script" uid="uid://b6lcp5llq0rsq" path="res://sources/menus/login/login.gd" id="1_spyuf"]
-[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="3_0my6t"]
-[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="3_5b1v0"]
-[ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_yrwu8"]
-[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="5_v3me4"]
-[ext_resource type="PackedScene" uid="uid://djduptonofbh4" path="res://sources/menus/components/code_keyboard.tscn" id="5_xwrca"]
-[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="6_ee48r"]
-[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_normal.png" id="7_2wdoi"]
-[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="7_k0prv"]
-[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png" id="8_nxlxw"]
-[ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="9_k74e3"]
-[ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="24_4xfja"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" uid="uid://ivyitn4nxsm5" path="res://sources/ui/code_keypad.tscn" id="3_keypad"]
+[ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="4_kalulu"]
+[ext_resource type="Texture2D" uid="uid://b44sv7oylntiq" path="res://assets/menus/buttons/back_button_normal.png" id="5_back_n"]
+[ext_resource type="Texture2D" uid="uid://b01neo7ex0rg7" path="res://assets/menus/buttons/back_button_pressed.png" id="6_back_p"]
+[ext_resource type="Texture2D" uid="uid://b7tuf4u5ri2n1" path="res://assets/menus/buttons/back_button_disabled.png" id="7_back_d"]
+[ext_resource type="Texture2D" uid="uid://c01qsr58ufihh" path="res://assets/menus/buttons/kalulu_button_normal.png" id="8_kal_n"]
+[ext_resource type="Texture2D" uid="uid://d2s3kkntep3au" path="res://assets/menus/buttons/kalulu_button_pressed.png" id="9_kal_p"]
+[ext_resource type="Texture2D" uid="uid://w25kyu12snql" path="res://assets/menus/buttons/kalulu_button_disabled.png" id="10_kal_d"]
+[ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="11_music"]
 
-[node name="Login" type="Control" unique_id=552362491]
+[node name="Login" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_theme")
 script = ExtResource("1_spyuf")
 
-[node name="NightSky" parent="." unique_id=2070209105 instance=ExtResource("3_0my6t")]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.164706, 0.211765, 0.490196, 1)
 
-[node name="Palm" parent="." unique_id=912024034 instance=ExtResource("3_yrwu8")]
-position = Vector2(1280, 1800)
-scale = Vector2(2.5, 2.5)
-
-[node name="DeviceNumber" type="Label" parent="." unique_id=1720747619]
-visible = false
+[node name="Header" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -158.5
-offset_top = 100.0
-offset_right = 158.5
-offset_bottom = 176.0
+offset_left = -960.0
+offset_top = 216.0
+offset_right = 960.0
+offset_bottom = 372.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 70
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CodeKeyboard" parent="." unique_id=993213192 instance=ExtResource("5_xwrca")]
-layout_mode = 1
-
-[node name="InterfaceLeft" type="MarginContainer" parent="." unique_id=1784990784]
-custom_minimum_size = Vector2(375, 0)
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="Container" type="VBoxContainer" parent="InterfaceLeft" unique_id=856964308]
-layout_mode = 2
-
-[node name="BackButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1570913515]
-custom_minimum_size = Vector2(0, 275)
-layout_mode = 2
-size_flags_vertical = 0
-size_flags_stretch_ratio = 4.0
-texture_normal = ExtResource("5_v3me4")
-texture_pressed = ExtResource("6_ee48r")
-texture_disabled = ExtResource("7_k0prv")
-ignore_texture_size = true
-stretch_mode = 4
-
-[node name="KaluluButton" type="TextureButton" parent="InterfaceLeft/Container" unique_id=1514720972]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 275)
-layout_mode = 2
-size_flags_vertical = 10
-texture_normal = ExtResource("7_2wdoi")
-texture_pressed = ExtResource("8_nxlxw")
-texture_disabled = ExtResource("9_k74e3")
-ignore_texture_size = true
-stretch_mode = 4
-
-[node name="Padding" type="Control" parent="InterfaceLeft/Container" unique_id=1126926288]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.1
+theme_override_constants/separation = 12
 mouse_filter = 2
 
-[node name="BuildVersionValue" type="Label" parent="InterfaceLeft/Container" unique_id=758975831]
+[node name="DeviceNumber" type="Label" parent="Header"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
-mouse_filter = 0
-theme_override_font_sizes/font_size = 30
-text = "?"
-vertical_alignment = 1
+text = "LOG_IN_TO_DEVICE"
+horizontal_alignment = 1
+theme_type_variation = &"Title"
 
-[node name="InterfaceRight" type="MarginContainer" parent="." unique_id=488022535]
-custom_minimum_size = Vector2(450, 0)
+[node name="Subtitle" type="Label" parent="Header"]
+layout_mode = 2
+text = "ENTER_YOUR_ACCESS_CODE"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CodeKeypad" parent="." instance=ExtResource("3_keypad")]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -820.0
+offset_top = 408.0
+offset_right = 820.0
+offset_bottom = 1335.0
+grow_horizontal = 2
+
+[node name="BackButton" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(184, 184)
+layout_mode = 1
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 248.0
+offset_bottom = 248.0
+texture_normal = ExtResource("5_back_n")
+texture_pressed = ExtResource("6_back_p")
+texture_disabled = ExtResource("7_back_d")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Footer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -450.0
-grow_horizontal = 0
-grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+offset_top = -420.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="InterfaceRight" unique_id=2016021631]
-layout_mode = 2
-theme_override_constants/separation = 50
-alignment = 2
-
-[node name="TeacherHelpLabel" type="Label" parent="InterfaceRight/VBoxContainer" unique_id=1747620295]
+[node name="KaluluButton" type="TextureButton" parent="Footer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(350, 0)
-layout_mode = 2
-size_flags_vertical = 8
-text = "TEACHER_SETTINGS_HELP"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
+custom_minimum_size = Vector2(184, 184)
+layout_mode = 0
+offset_left = 64.0
+offset_top = 40.0
+offset_right = 248.0
+offset_bottom = 224.0
+texture_normal = ExtResource("8_kal_n")
+texture_pressed = ExtResource("9_kal_p")
+texture_disabled = ExtResource("10_kal_d")
+ignore_texture_size = true
+stretch_mode = 5
 
-[node name="TeacherButton" type="Button" parent="InterfaceRight/VBoxContainer" unique_id=1054245540]
+[node name="HelpBlock" type="VBoxContainer" parent="Footer"]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 20.0
+offset_right = 1500.0
+offset_bottom = 224.0
+theme_override_constants/separation = 0
+mouse_filter = 2
+
+[node name="ForgotTitle" type="Label" parent="Footer/HelpBlock"]
 layout_mode = 2
-size_flags_vertical = 8
-theme_override_font_sizes/font_size = 70
+text = "FORGOT_YOUR_CODE"
+theme_type_variation = &"Heading"
+
+[node name="ForgotHint" type="Label" parent="Footer/HelpBlock"]
+layout_mode = 2
+text = "FORGOT_CODE_HELP"
+autowrap_mode = 3
+
+[node name="TeacherHelpLabel" type="Label" parent="Footer/HelpBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "TEACHER_SETTINGS_HELP"
+autowrap_mode = 3
+
+[node name="TeacherButton" type="Button" parent="Footer"]
+custom_minimum_size = Vector2(332, 164)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -672.0
+offset_top = -360.0
+offset_right = -340.0
+offset_bottom = -196.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_type_variation = &"PrimaryButton"
 text = "SETTINGS"
 
-[node name="TeacherTimer" type="Timer" parent="InterfaceRight/VBoxContainer/TeacherButton" unique_id=251985914]
+[node name="TeacherTimer" type="Timer" parent="Footer/TeacherButton"]
 unique_name_in_owner = true
 wait_time = 5.0
+one_shot = true
 
-[node name="Kalulu" parent="." unique_id=1215167356 instance=ExtResource("3_5b1v0")]
+[node name="BuildVersionValue" type="Label" parent="Footer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -108.0
+offset_right = -94.0
+offset_bottom = -60.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_type_variation = &"Caption"
+horizontal_alignment = 2
+
+[node name="Kalulu" parent="." instance=ExtResource("4_kalulu")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=239079320]
-stream = ExtResource("24_4xfja")
+[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_music")
 
-[connection signal="password_entered" from="CodeKeyboard" to="." method="_on_code_keyboard_password_entered"]
-[connection signal="pressed" from="InterfaceLeft/Container/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="InterfaceLeft/Container/KaluluButton" to="." method="_on_kalulu_button_pressed"]
-[connection signal="button_down" from="InterfaceRight/VBoxContainer/TeacherButton" to="." method="_on_teacher_button_button_down"]
-[connection signal="button_up" from="InterfaceRight/VBoxContainer/TeacherButton" to="." method="_on_teacher_button_button_up"]
-[connection signal="timeout" from="InterfaceRight/VBoxContainer/TeacherButton/TeacherTimer" to="." method="_on_teacher_timer_timeout"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Footer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
+[connection signal="button_down" from="Footer/TeacherButton" to="." method="_on_teacher_button_button_down"]
+[connection signal="button_up" from="Footer/TeacherButton" to="." method="_on_teacher_button_button_up"]
+[connection signal="timeout" from="Footer/TeacherButton/TeacherTimer" to="." method="_on_teacher_timer_timeout"]
+[connection signal="code_entered" from="CodeKeypad" to="." method="_on_code_keypad_code_entered"]

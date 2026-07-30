@@ -493,3 +493,7 @@ SIGN_UP,S'inscrire,Registrarse,Cadastrar-se,Registrati
 FORGOT_PASSWORD,Mot de passe oublié ?,¿Olvidó su contraseña?,Esqueceu sua senha?,Password dimenticata?
 ADD_A_NEW_STUDENT,Ajouter un nouvel élève ?,¿Añadir un nuevo alumno?,Adicionar um novo aluno?,Aggiungere un nuovo alunno?
 ADD_A_NEW_DEVICE,Ajouter un nouvel appareil ?,¿Añadir un nuevo dispositivo?,Adicionar um novo dispositivo?,Aggiungere un nuovo dispositivo?
+LOG_IN_TO_DEVICE,Connexion à l'appareil {number},Conexión al dispositivo {number},Conexão ao dispositivo {number},Accesso al dispositivo {number}
+ENTER_YOUR_ACCESS_CODE,Saisis ton code d'accès pour te connecter à Kalulu.,Introduce tu código de acceso para conectarte a Kalulu.,Digite seu código de acesso para entrar no Kalulu.,Inserisci il tuo codice di accesso per entrare in Kalulu.
+FORGOT_YOUR_CODE,Code oublié ?,¿Olvidó el código?,Esqueceu o código?,Codice dimenticato?
+FORGOT_CODE_HELP,Vous le trouverez dans les Paramètres.,Lo encontrará en la Configuración.,Você o encontrará nos Parâmetros.,Lo troverai nelle Impostazioni.
