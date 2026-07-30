@@ -72,6 +72,9 @@ const CARD_PADDING: int = 88
 const FIELD_HEIGHT: int = 128
 const FIELD_RADIUS: int = 14
 const FIELD_PADDING: int = 56
+# On-screen size of a trailing field icon. The icons import at twice this for
+# crispness, so they are drawn scaled down rather than at texture size.
+const FIELD_ICON_SIZE: int = 48
 # --- Wide buttons (Next / Previous / Cancel) ---------------------------------
 const BUTTON_SIZE: Vector2i = Vector2i(332, 164)
 const BUTTON_RADIUS: int = 8
