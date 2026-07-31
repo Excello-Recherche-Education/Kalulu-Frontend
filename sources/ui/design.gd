@@ -46,10 +46,11 @@ const CODE_SYMBOL_NAMES: Dictionary[String, String] = {
 	"5": "SQUARE",
 	"6": "TRIANGLE",
 }
-# Reading order of the 3x2 code keypad in the mockups: star, plus, circle /
-# square, triangle, bar. Deliberately not 1..6 -- the design groups the
-# symbols by shape family rather than by digit.
-const CODE_KEYPAD_ORDER: Array[String] = ["1", "4", "3", "5", "6", "2"]
+# Reading order of the 3x2 code keypad: numerical, 1-2-3 over 4-5-6. The
+# mockups group the symbols by shape family instead, which puts the digits in a
+# scrambled order on screen; codes are handed out and read back as numbers, so
+# the keypad follows the numbers.
+const CODE_KEYPAD_ORDER: Array[String] = ["1", "2", "3", "4", "5", "6"]
 # --- Type scale (Mulish) -----------------------------------------------------
 # Sizes confirmed by matching rendered glyph widths in the mockups against the
 # project's own Mulish faces, so they are exact rather than approximated.

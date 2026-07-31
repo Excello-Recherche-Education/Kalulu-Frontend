@@ -11,16 +11,18 @@ func before_each() -> void:
 	add_child_autofree(keypad)
 
 
-func test_it_lays_the_keys_out_in_the_designed_order() -> void:
-	# Grouped by shape rather than by digit, so this is worth pinning.
+func test_it_lays_the_keys_out_in_numerical_order() -> void:
+	# 1-2-3 over 4-5-6. Codes are handed out and read back as numbers, so the
+	# keypad has to match; the mockups group by shape, which scrambles the digits.
 	assert_eq(keypad.keys.size(), 6, "there should be one key per symbol")
 	var order: Array[String] = []
 	for key: Node in keypad.key_grid.get_children():
 		for digit: String in keypad.keys:
 			if keypad.keys[digit] == key:
 				order.append(digit)
-	assert_eq(order, ["1", "4", "3", "5", "6", "2"] as Array[String],
+	assert_eq(order, ["1", "2", "3", "4", "5", "6"] as Array[String],
 		"keys should follow Design.CODE_KEYPAD_ORDER")
+	assert_eq(keypad.key_grid.columns, 3, "three per row makes it two rows of three")
 
 
 func test_each_key_takes_its_symbol_colour() -> void:
