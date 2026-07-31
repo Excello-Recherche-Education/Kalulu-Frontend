@@ -7,6 +7,10 @@ extends Node
 ## opens -> pause -> gardens turn purple one by one -> brain body turns purple ->
 ## brain fades out (leaving the starry sky) -> the reading Kalulu shows, speaks,
 ## then idles; clicking dismisses it (Hide) and the brain is restored.
+##
+## The endgame music runs under the whole sequence, from the click on the chest to the
+## click that dismisses Kalulu — ducked to half while Kalulu talks, then faded out on
+## the dismissing click. See _start_music() / _fade_out_music().
 
 # Purple tones sampled from the target design; tweak here to taste.
 const GARDEN_BACKGROUND_PURPLE: Color = Color("842984")
@@ -17,6 +21,13 @@ const READING_KALULU_SCENE: PackedScene = preload("res://sources/kalulu_animator
 const RIGHT_STARS_FX_SCENE: PackedScene = preload("res://sources/utils/fx/right_stars.tscn")
 const FIREWORKS_SCENE: PackedScene = preload("res://sources/utils/fx/fireworks.tscn")
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
+const ENDGAME_MUSIC: AudioStreamMP3 = preload("res://assets/music/endgame.mp3")
+# Amplitudes rather than decibels, so "half the volume while Kalulu talks" reads as
+# what it is. The fade-out is a straight ramp down to silence for the same reason: a
+# ramp in decibels would be inaudible for most of its length and then cut.
+const MUSIC_FULL_VOLUME: float = 1.0
+const MUSIC_TALK_VOLUME: float = 0.5
+const MUSIC_FADE_OUT_DURATION: float = 1.39
 const GARDEN_TINT_DURATION: float = 0.5
 const BRAIN_TINT_DURATION: float = 2.0
 const BRAIN_FADE_DURATION: float = 3.0
@@ -40,6 +51,8 @@ var _overlay_layer: CanvasLayer
 var _reading_kalulu: AnimatedSprite2D
 var _click_catcher: Button
 var _voice_player: AudioStreamPlayer
+var _music_player: AudioStreamPlayer
+var _music_fade_tween: Tween
 var _brain_material: ShaderMaterial
 var _is_playing: bool = false
 var _speech: AudioStream
@@ -67,6 +80,7 @@ func play(open_treasure: bool) -> void:
 
 	# Hide the back / kalulu buttons for the duration of the animation.
 	_ui_layer.hide()
+	_start_music()
 
 	if open_treasure:
 		await _open_treasure()
@@ -104,6 +118,13 @@ func _build_runtime() -> void:
 	_voice_player = AudioStreamPlayer.new()
 	_voice_player.bus = &"Voice"
 	add_child(_voice_player)
+
+	# Its own player rather than MusicManager's: that one loops whatever it is given, and
+	# the endgame track is meant to be heard once, from the chest to the last click.
+	_music_player = AudioStreamPlayer.new()
+	_music_player.bus = &"Music"
+	_music_player.stream = ENDGAME_MUSIC
+	add_child(_music_player)
 
 	# TODO: use ("brain_screen", "victory") once the victory speech is recorded.
 	_speech = Database.load_external_sound(Database.get_kalulu_speech_path("title_screen", "tuto_welcome_oneshot"))
@@ -197,9 +218,13 @@ func _show_and_speak() -> void:
 	await _reading_kalulu.animation_finished
 	_reading_kalulu.play(&"Talk")
 	if _speech:
+		# Down to half for as long as the speech lasts, back to full right after: the
+		# music keeps the scene alive without ever talking over Kalulu.
+		_music_player.volume_linear = MUSIC_TALK_VOLUME
 		_voice_player.stream = _speech
 		_voice_player.play()
 		await _voice_player.finished
+		_music_player.volume_linear = MUSIC_FULL_VOLUME
 	else:
 		Log.warn("BrainReward: victory speech not found")
 		await get_tree().create_timer(1.5).timeout
@@ -209,10 +234,52 @@ func _show_and_speak() -> void:
 
 #endregion
 
+#region Music
+
+# Starts the endgame track from the top, at full volume whatever the previous run left
+# behind. The ambient garden track is stopped instead of being mixed underneath: both go
+# through the Music bus, and two tracks at once turn the celebration into noise.
+func _start_music() -> void:
+	_kill_music_fade()
+	(MusicManager as MusicManagerClass).stop()
+	_music_player.volume_linear = MUSIC_FULL_VOLUME
+	_music_player.play()
+
+
+# Lets the music bow out under the closing moves rather than cut on the click. A track
+# that already ran to its end needs no fade, and either way the ambient garden track only
+# comes back once the endgame one is silent.
+func _fade_out_music() -> void:
+	_kill_music_fade()
+	if not _music_player.playing:
+		_restore_ambient_music()
+		return
+	_music_fade_tween = create_tween()
+	_music_fade_tween.tween_property(_music_player, "volume_linear", 0.0, MUSIC_FADE_OUT_DURATION)
+	_music_fade_tween.tween_callback(_music_player.stop)
+	_music_fade_tween.tween_callback(_restore_ambient_music)
+
+
+# A replay can be started while the previous fade is still running — _is_playing clears
+# before the 1.39 s are up — so the tween has to be dropped before it stops a track that
+# is no longer the one it was fading.
+func _kill_music_fade() -> void:
+	if _music_fade_tween:
+		_music_fade_tween.kill()
+		_music_fade_tween = null
+
+
+func _restore_ambient_music() -> void:
+	(MusicManager as MusicManagerClass).play((MusicManager as MusicManagerClass).Track.GARDEN)
+
+#endregion
+
 #region Dismiss & restore
 
 func _on_click_catcher_pressed() -> void:
 	_click_catcher.hide()
+	# Not awaited: the fade runs under the Hide animation and the brain being restored.
+	_fade_out_music()
 	await _hide_kalulu()
 	await _restore_brain()
 	_is_playing = false
