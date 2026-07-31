@@ -96,7 +96,7 @@ const PILL_GAP: int = 46
 # Settings' dropdowns are shorter than the fields on the sign-up screens.
 const COMPACT_FIELD_HEIGHT: int = 88
 const SETTINGS_CARD_PADDING: Vector2i = Vector2i(80, 42)
-const ICON_BUTTON_GAP: int = 40
+const ICON_BUTTON_GAP: int = 36
 # --- Student cards and their code chips ---------------------------------------
 const STUDENT_CARD_SIZE: Vector2i = Vector2i(510, 184)
 const STUDENT_CARD_GAP: int = 58

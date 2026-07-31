@@ -55,7 +55,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 340.0
+offset_left = 349.0
 offset_top = 96.0
 offset_right = -312.0
 offset_bottom = -96.0
@@ -82,7 +82,7 @@ theme_type_variation = &"Title"
 
 [node name="ControlsRow" type="HBoxContainer" parent="Page"]
 layout_mode = 2
-theme_override_constants/separation = 66
+theme_override_constants/separation = 0
 
 [node name="AccountTypeGroup" type="VBoxContainer" parent="Page/ControlsRow"]
 custom_minimum_size = Vector2(649, 0)
@@ -101,11 +101,18 @@ custom_minimum_size = Vector2(649, 88)
 layout_mode = 2
 theme_type_variation = &"FieldCompact"
 fit_to_longest_item = false
+autowrap_mode = 3
+clip_text = true
 item_count = 2
 popup/item_0/text = "TEACHER"
 popup/item_0/id = 0
 popup/item_1/text = "PARENT"
 popup/item_1/id = 1
+
+[node name="DropdownGap" type="Control" parent="Page/ControlsRow"]
+custom_minimum_size = Vector2(66, 0)
+layout_mode = 2
+mouse_filter = 2
 
 [node name="EducationMethodGroup" type="VBoxContainer" parent="Page/ControlsRow"]
 custom_minimum_size = Vector2(649, 0)
@@ -124,6 +131,8 @@ custom_minimum_size = Vector2(649, 88)
 layout_mode = 2
 theme_type_variation = &"FieldCompact"
 fit_to_longest_item = false
+autowrap_mode = 3
+clip_text = true
 item_count = 2
 popup/item_0/text = "METHOD_APP_ONLY"
 popup/item_0/id = 0
@@ -137,7 +146,7 @@ size_flags_horizontal = 3
 [node name="Actions" type="HBoxContainer" parent="Page/ControlsRow"]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/separation = 40
+theme_override_constants/separation = 36
 
 [node name="SynchronizeButton" type="Button" parent="Page/ControlsRow/Actions"]
 custom_minimum_size = Vector2(90, 90)
@@ -158,6 +167,9 @@ expand_icon = true
 [node name="VolumeButton" parent="Page/ControlsRow/Actions" instance=ExtResource("6_s8nbl")]
 custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
+size_flags_vertical = 4
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="MenuButton" type="Button" parent="Page/ControlsRow/Actions"]
 unique_name_in_owner = true
@@ -253,6 +265,7 @@ theme_override_constants/v_separation = 58
 columns = 3
 
 [node name="LessonUnlocks" parent="." unique_id=1063204137 instance=ExtResource("9_mljfd")]
+visible = false
 layout_mode = 1
 
 [node name="ChangeLanguagePopup" parent="." unique_id=144215824 instance=ExtResource("11_chglg")]

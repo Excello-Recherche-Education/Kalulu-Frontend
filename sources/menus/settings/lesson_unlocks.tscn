@@ -10,6 +10,7 @@
 color = Color(1, 1, 1, 1)
 
 [node name="LessonUnlocks" type="Control" unique_id=318924307]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
