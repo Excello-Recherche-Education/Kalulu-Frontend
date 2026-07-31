@@ -36,6 +36,11 @@ const VARIATION_ICON_BUTTON_LIGHT: StringName = &"IconButtonLight"
 const VARIATION_ICON_BUTTON_DARK: StringName = &"IconButtonDark"
 # Panel variations.
 const VARIATION_CARD: StringName = &"Card"
+const VARIATION_STUDENT_CARD: StringName = &"StudentCard"
+# A settings dropdown is shorter than a sign-up field.
+const VARIATION_FIELD_COMPACT: StringName = &"FieldCompact"
+# Small grey label on a white surface, as above a student's code chips.
+const VARIATION_CARD_LABEL: StringName = &"CardLabel"
 
 
 ## A filled, rounded rectangle.
@@ -86,6 +91,7 @@ static func _build_labels(theme: Theme, regular: Font, bold: Font) -> void:
 	_add_label(theme, VARIATION_CARD_TITLE, bold, Design.FONT_SIZE_TITLE, Design.GREY_DARK)
 	_add_label(theme, VARIATION_CARD_HEADING, bold, Design.FONT_SIZE_HEADING, Design.GREY_DARK)
 	_add_label(theme, VARIATION_CARD_BODY, regular, Design.FONT_SIZE_BODY, Design.GREY_DARK)
+	_add_label(theme, VARIATION_CARD_LABEL, regular, Design.FONT_SIZE_LABEL, Design.GREY_DARK)
 
 
 static func _build_buttons(theme: Theme, regular: Font) -> void:
@@ -172,6 +178,15 @@ static func _build_fields(theme: Theme, regular: Font) -> void:
 	theme.set_color("font_disabled_color", "OptionButton", Design.GREY)
 	theme.set_icon("arrow", "OptionButton", load(CHEVRON_DOWN_PATH) as Texture2D)
 
+	var compact: float = _vertical_margin(regular, Design.FONT_SIZE_INPUT,
+		Design.COMPACT_FIELD_HEIGHT)
+	theme.set_type_variation(VARIATION_FIELD_COMPACT, "OptionButton")
+	for state: String in ["normal", "hover", "pressed"]:
+		theme.set_stylebox(state, VARIATION_FIELD_COMPACT, _field_stylebox(compact))
+	theme.set_stylebox("disabled", VARIATION_FIELD_COMPACT,
+		_field_stylebox(compact, Design.GREY_LIGHTER))
+	theme.set_stylebox("focus", VARIATION_FIELD_COMPACT, StyleBoxEmpty.new())
+
 	# The drop-down list itself, so an open OptionButton stays on brand.
 	theme.set_font("font", "PopupMenu", regular)
 	theme.set_font_size("font_size", "PopupMenu", Design.FONT_SIZE_INPUT)
@@ -184,6 +199,11 @@ static func _build_fields(theme: Theme, regular: Font) -> void:
 static func _build_panels(theme: Theme) -> void:
 	theme.set_type_variation(VARIATION_CARD, "PanelContainer")
 	theme.set_stylebox("panel", VARIATION_CARD, flat_stylebox(Color.WHITE, Design.CARD_RADIUS))
+	# A student's card sits on the white settings card, so it needs to be a shade
+	# off white to read as a separate surface.
+	theme.set_type_variation(VARIATION_STUDENT_CARD, "PanelContainer")
+	theme.set_stylebox("panel", VARIATION_STUDENT_CARD,
+		flat_stylebox(Color("f7f7f7"), Design.STUDENT_CARD_RADIUS))
 
 
 static func _field_stylebox(vertical_margin: float, color: Color = Color.WHITE) -> StyleBoxFlat:

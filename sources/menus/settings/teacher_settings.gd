@@ -14,7 +14,7 @@ const SIGNED_OUT_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
 const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
 const SPLASH_SCREEN_PATH: String = "res://sources/menus/splash_screen/splash_screen.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
-const DEVICE_TAB_SCENE: PackedScene = preload("res://sources/menus/settings/device_tab.tscn")
+const STUDENT_PANEL_SCENE: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
 const PASSWORD_VISUALIZER_SCENE: PackedScene = preload("res://sources/menus/components/password_visualizer.tscn")
 const EXPORT_COLUMNS: int = 2
 const EXPORT_TITLE_FONT_SIZE: int = 44
@@ -24,8 +24,11 @@ const EXPORT_STUDENTS_PER_COLUMN: int = 16
 const EXPORT_STUDENTS_PER_PAGE: int = EXPORT_STUDENTS_PER_COLUMN * EXPORT_COLUMNS
 
 var last_device_id: int = -1
+## Device whose students are on screen, or -1 before the first is chosen.
+var selected_device: int = -1
 
-@onready var devices_tab_container: TabContainer = %DevicesTabContainer
+@onready var device_pills: HBoxContainer = %DevicePills
+@onready var students_container: GridContainer = %StudentsContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
 @onready var change_language_popup: ChangeLanguagePopup = %ChangeLanguagePopup
@@ -99,25 +102,62 @@ func _on_education_method_option_button_item_selected(index: int) -> void:
 
 
 func refresh_devices_tabs() -> void:
-	for child: Node in devices_tab_container.get_children(false):
+	for child: Node in device_pills.get_children():
 		child.queue_free()
-	
+
 	if not UserDataManager.teacher_settings:
 		Log.error("SettingsTeacherSettings: Teacher settings not found")
 		return
-	
-	for device: int in UserDataManager.teacher_settings.students.keys():
-		var device_tab: DeviceTab
-		device_tab = DEVICE_TAB_SCENE.instantiate()
-		device_tab.device_id = device
-		devices_tab_container.add_child(device_tab)
-		await get_tree().process_frame # Not optional or an auto-rename bug will occur on the tabs (especially if there are a lot of them)
-		(device_tab as DeviceTab).students = UserDataManager.teacher_settings.students[device] as Array[StudentData]
-		device_tab.name = tr("DEVICE_NUMBER").format({"number": device})
-		device_tab.student_pressed.connect(_on_student_pressed)
-		device_tab.refresh()
-		
+
+	var devices: Array = UserDataManager.teacher_settings.students.keys()
+	devices.sort()
+	var group: ButtonGroup = ButtonGroup.new()
+	for device: int in devices:
+		var pill: Button = Button.new()
+		pill.text = tr("DEVICE_NUMBER").format({"number": device})
+		pill.theme_type_variation = MenuTheme.VARIATION_TAB_PILL
+		pill.custom_minimum_size = Vector2(Design.PILL_WIDTH, Design.PILL_HEIGHT)
+		pill.toggle_mode = true
+		pill.button_group = group
+		pill.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
+		pill.focus_mode = Control.FOCUS_NONE
+		pill.pressed.connect(show_device.bind(device))
+		device_pills.add_child(pill)
 		last_device_id = device
+
+	# Keep the device already on screen selected across a refresh, so adding a
+	# student does not bounce the teacher back to the first device.
+	if not devices.has(selected_device):
+		selected_device = devices[0] if devices else -1
+	show_device(selected_device)
+
+
+## Fills the students grid with the students of `device`.
+func show_device(device: int) -> void:
+	selected_device = device
+	var devices: Array = UserDataManager.teacher_settings.students.keys() if UserDataManager.teacher_settings else []
+	devices.sort()
+	var index: int = devices.find(device)
+	for pill_index: int in device_pills.get_child_count():
+		var pill: Button = device_pills.get_child(pill_index) as Button
+		if pill:
+			pill.set_pressed_no_signal(pill_index == index)
+
+	for child: Node in students_container.get_children():
+		child.queue_free()
+	if device < 0 or not UserDataManager.teacher_settings:
+		return
+	lesson_unlocks.device = device
+
+	var students: Array = UserDataManager.teacher_settings.students.get(device, [])
+	var student_count: int = 1
+	for student: StudentData in students:
+		var panel: StudentPanel = STUDENT_PANEL_SCENE.instantiate()
+		panel.student_count = student_count
+		panel.student_data = student
+		panel.pressed.connect(_on_student_pressed.bind(student.code))
+		students_container.add_child(panel)
+		student_count += 1
 
 
 func _on_back_button_pressed() -> void:
@@ -197,14 +237,6 @@ func _on_change_language_popup_accepted(new_language: String) -> void:
 	get_tree().change_scene_to_file(SPLASH_SCREEN_PATH)
 
 
-func _on_devices_tab_container_tab_changed(tab: int) -> void:
-	var device_tab: DeviceTab = devices_tab_container.get_tab_control(tab) as DeviceTab
-	if not device_tab:
-		Log.error("SettingsTeacherSettings: DeviceTab not found for tab " + str(tab))
-		return
-	lesson_unlocks.device = device_tab.device_id
-
-
 func _on_student_pressed(code: int) -> void:
 	lesson_unlocks.student = code
 	lesson_unlocks.show()
@@ -215,15 +247,13 @@ func _on_add_student_button_pressed() -> void:
 
 
 func _on_add_student_popup_accepted() -> void:
-	var current_tab: DeviceTab = devices_tab_container.get_current_tab_control() as DeviceTab
-	if not current_tab:
-		Log.error("SettingsTeacherSettings: DeviceTab not found")
+	if selected_device < 0:
+		Log.error("SettingsTeacherSettings: No device selected")
 		return
-	var res: Dictionary = await ServerManager.add_student({"device": current_tab.device_id})
+	var res: Dictionary = await ServerManager.add_student({"device": selected_device})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
-		current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
-		current_tab.refresh()
+		show_device(selected_device)
 	else:
 		Log.error("SettingsTeacherSettings: Request to add student failed. Error code " + str(res.code))
 
@@ -236,10 +266,10 @@ func _on_add_device_popup_accepted() -> void:
 	var res: Dictionary = await ServerManager.add_student({"device": last_device_id + 1})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
+		# Show the device just created rather than leaving the teacher on the old
+		# one wondering whether anything happened.
+		selected_device = last_device_id + 1
 		refresh_devices_tabs()
-		await get_tree().create_timer(1).timeout
-		var count: int = devices_tab_container.get_tab_count()
-		devices_tab_container.current_tab = count -1
 
 
 func _on_lesson_unlocks_student_deleted(_code: int) -> void:
@@ -247,27 +277,25 @@ func _on_lesson_unlocks_student_deleted(_code: int) -> void:
 
 
 func _on_delete_student_popup_accepted() -> void:
-	var current_tab: DeviceTab = devices_tab_container.get_current_tab_control() as DeviceTab
-	if not current_tab:
+	if selected_device < 0:
 		return
 	var res: Dictionary = await ServerManager.remove_student(int(lesson_unlocks.student))
 	if res.code == 200:
 		lesson_unlocks.hide()
 		UserDataManager.update_configuration(res.body as Dictionary)
-		await get_tree().create_timer(1).timeout
-		if UserDataManager.teacher_settings.students.has(current_tab.device_id):
-			current_tab.students = UserDataManager.teacher_settings.students[current_tab.device_id]
-			current_tab.refresh()
+		# Deleting the last student on a device removes the device too, so the
+		# pills have to be rebuilt rather than just the grid.
+		if UserDataManager.teacher_settings.students.has(selected_device):
+			show_device(selected_device)
 		else:
 			refresh_devices_tabs()
 
 
 func update_student_name(student_code: int, student_name: String) -> void:
-	for device: DeviceTab in devices_tab_container.get_children(false):
-		for student_panel: StudentPanel in device.students_container.get_children(false):
-			if student_panel.student_data.code == student_code:
-				student_panel.name_label.text = student_name
-				return
+	for student_panel: StudentPanel in students_container.get_children(false):
+		if student_panel.student_data.code == student_code:
+			student_panel.name_label.text = student_name
+			return
 	Log.warn("SettingsTeacherSettings: update_student_name: student not found with code " + str(student_code))
 
 #region Synchronization

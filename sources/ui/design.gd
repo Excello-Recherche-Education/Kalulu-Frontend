@@ -90,6 +90,22 @@ const TOGGLE_INSET: int = 12
 # --- Tab pills (Device 1 | Device 2 ...) -------------------------------------
 const PILL_HEIGHT: int = 74
 const PILL_PADDING: int = 48
+const PILL_WIDTH: int = 272
+const PILL_GAP: int = 46
+# --- Settings -----------------------------------------------------------------
+# Settings' dropdowns are shorter than the fields on the sign-up screens.
+const COMPACT_FIELD_HEIGHT: int = 88
+const SETTINGS_CARD_PADDING: Vector2i = Vector2i(80, 42)
+const ICON_BUTTON_GAP: int = 40
+# --- Student cards and their code chips ---------------------------------------
+const STUDENT_CARD_SIZE: Vector2i = Vector2i(510, 184)
+const STUDENT_CARD_GAP: int = 58
+const STUDENT_CARD_COLUMNS: int = 3
+const STUDENT_CARD_RADIUS: int = 12
+const CODE_CHIP_SIZE: int = 68
+const CODE_CHIP_GAP: int = 21
+const CODE_CHIP_RADIUS: int = 10
+const CODE_CHIP_GLYPH_SIZE: int = 30
 # --- Device cards ------------------------------------------------------------
 const DEVICE_CARD_SIZE: Vector2i = Vector2i(183, 222)
 const DEVICE_CARD_GAP: Vector2i = Vector2i(104, 126)

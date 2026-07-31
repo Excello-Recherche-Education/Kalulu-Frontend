@@ -21,7 +21,7 @@ func before_each() -> void:
 
 
 func test_every_unique_name_the_script_looks_up_exists() -> void:
-	for name: String in ["%DevicesTabContainer", "%DeletePopup", "%ChangeLanguagePopup",
+	for name: String in ["%DevicePills", "%StudentsContainer", "%DeletePopup", "%ChangeLanguagePopup",
 			"%ChangeLanguageErrorPopup", "%LoadingPopup", "%AccountTypeOptionButton",
 			"%EducationMethodOptionButton", "%AddDeviceButton", "%AddStudentButton",
 			"%LabelInternetMandatory", "%AddDevicePopup", "%AddStudentPopup",
@@ -54,7 +54,7 @@ func test_every_handler_the_scene_connects_to_exists() -> void:
 			"_on_dashboard_button_pressed", "_on_menu_button_pressed",
 			"_on_overflow_menu_id_pressed", "_on_export_codes_button_pressed",
 			"_on_add_student_button_pressed", "_on_add_device_button_pressed",
-			"_on_devices_tab_container_tab_changed", "_on_lesson_unlocks_student_deleted",
+			"_on_lesson_unlocks_student_deleted",
 			"_on_change_language_popup_accepted", "_on_delete_popup_accepted",
 			"_on_add_student_popup_accepted", "_on_add_device_popup_accepted",
 			"_on_delete_student_popup_accepted", "_on_loading_popup_cancel",
@@ -117,6 +117,26 @@ func test_the_screen_uses_the_menu_theme() -> void:
 	assert_eq(screen.get_node("%AddStudentButton").theme_type_variation,
 		MenuTheme.VARIATION_ICON_BUTTON_DARK,
 		"card actions sit on white, so they take the dark circle")
+
+
+func test_devices_are_pills_rather_than_tabs() -> void:
+	# The hand-off shows a row of pills, purple for the selected one, over a
+	# single grid of students -- not a TabContainer with a tab strip.
+	var pills: HBoxContainer = screen.get_node("%DevicePills")
+	assert_eq(pills.get_theme_constant("separation"), Design.PILL_GAP)
+	var grid: GridContainer = screen.get_node("%StudentsContainer")
+	assert_eq(grid.columns, Design.STUDENT_CARD_COLUMNS, "three student cards per row")
+	assert_eq(grid.get_theme_constant("h_separation"), Design.STUDENT_CARD_GAP)
+
+
+func test_the_settings_dropdowns_are_the_shorter_kind() -> void:
+	# Settings' dropdowns are 88 tall in the hand-off, where a sign-up field is
+	# 128; without the compact variation the theme makes them the taller one.
+	for name: String in ["%AccountTypeOptionButton", "%EducationMethodOptionButton"]:
+		var field: OptionButton = screen.get_node(name)
+		assert_eq(field.theme_type_variation, MenuTheme.VARIATION_FIELD_COMPACT,
+			"%s should use the compact field" % name)
+		assert_eq(field.custom_minimum_size.y, float(Design.COMPACT_FIELD_HEIGHT))
 
 
 func test_the_dialogs_carry_their_headings() -> void:

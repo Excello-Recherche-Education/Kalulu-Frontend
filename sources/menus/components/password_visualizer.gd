@@ -13,12 +13,25 @@ signal symbol_pressed(index: int)
 ## printable code sheet -- gets a coloured glyph instead, because a white one on
 ## white paper is invisible.
 
+## Size of the glyph inside a chip.
 @export var key_size: int = 200:
 	set(value):
 		key_size = value
 		for icon: TextureRect in icons:
 			icon.custom_minimum_size.x = key_size
 			icon.custom_minimum_size.y = key_size
+## Size of the chip itself. Zero lets the chips stretch to fill the row, which is
+## what the large code displays want; a value pins them, as on a student card.
+@export var chip_size: int = 0:
+	set(value):
+		chip_size = value
+		_apply_chip_size()
+## Space between chips.
+@export var chip_separation: int = 46:
+	set(value):
+		chip_separation = value
+		if is_node_ready():
+			add_theme_constant_override("separation", chip_separation)
 @export var password: String:
 	set(value):
 		password = value
@@ -47,6 +60,22 @@ func _ready() -> void:
 	for icon: TextureRect in icons:
 		icon.custom_minimum_size.x = key_size
 		icon.custom_minimum_size.y = key_size
+	add_theme_constant_override("separation", chip_separation)
+	_apply_chip_size()
+
+
+func _apply_chip_size() -> void:
+	_panels_ready()
+	for panel: PanelContainer in panels:
+		if not panel:
+			continue
+		if chip_size > 0:
+			panel.custom_minimum_size = Vector2(chip_size, chip_size)
+			# Stop expanding, or the row stretches the chips back out.
+			panel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		else:
+			panel.custom_minimum_size = Vector2.ZERO
+			panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 
 func _on_panel_gui_input(event: InputEvent, panel_index: int) -> void:
