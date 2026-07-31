@@ -53,5 +53,5 @@ func _apply_colors() -> void:
 	# A white card wants a navy number, a saturated one wants white.
 	var ink: Color = Design.NAVY if background_color.get_luminance() > 0.5 else Color.WHITE
 	label.add_theme_color_override("font_color", ink)
-	dot.add_theme_stylebox_override("panel", MenuTheme.flat_stylebox(ink, DOT_SIZE / 2))
-	bar.add_theme_stylebox_override("panel", MenuTheme.flat_stylebox(ink, BAR_SIZE.y / 2))
+	dot.add_theme_stylebox_override("panel", MenuTheme.flat_stylebox(ink, floori(float(DOT_SIZE) / 2)))
+	bar.add_theme_stylebox_override("panel", MenuTheme.flat_stylebox(ink, floori(float(BAR_SIZE.y) / 2)))
