@@ -477,9 +477,11 @@ func _build_device_section(device_id: int, students: Array[StudentData]) -> VBox
 	device_label.set("theme_override_colors/font_color", Color.BLACK)
 	section.add_child(device_label)
 
-	var students_container: VBoxContainer = VBoxContainer.new()
-	students_container.set("theme_override_constants/separation", 8)
-	section.add_child(students_container)
+	# Named for the printable sheet it belongs to: the screen's grid of student
+	# cards is a different node with a similar job.
+	var student_rows: VBoxContainer = VBoxContainer.new()
+	student_rows.set("theme_override_constants/separation", 8)
+	section.add_child(student_rows)
 
 	var sorted_students: Array[StudentData] = students.duplicate()
 	sorted_students.sort_custom(func(a: StudentData, b: StudentData) -> bool:
@@ -489,9 +491,9 @@ func _build_device_section(device_id: int, students: Array[StudentData]) -> VBox
 	for student_index: int in range(sorted_students.size()):
 		var student_data: StudentData = sorted_students[student_index]
 		Log.info("SettingsTeacherSettings: Adding student row for %s (%s)" % [student_data.name, str(student_data.code)])
-		students_container.add_child(_build_student_row(student_data))
+		student_rows.add_child(_build_student_row(student_data))
 		if student_index < sorted_students.size() - 1:
-			students_container.add_child(_build_student_separator())
+			student_rows.add_child(_build_student_separator())
 
 	section.add_child(_build_device_separator())
 	return section
