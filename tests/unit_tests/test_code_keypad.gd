@@ -30,6 +30,49 @@ func test_each_key_takes_its_symbol_colour() -> void:
 			"key %s should use its symbol colour" % digit)
 
 
+func test_the_symbol_artwork_is_a_bare_glyph() -> void:
+	# Regression: the keypad first used symbol_0N.png, which is the older artwork
+	# -- an old-palette rounded tile with the glyph already on it. Drawn on the
+	# new flat colours it showed as a small mismatched square, so the glyph has to
+	# be white on transparent with nothing else in it.
+	for digit: String in Design.CODE_KEYPAD_ORDER:
+		var texture: Texture2D = Design.code_symbol_texture(digit)
+		assert_not_null(texture, "symbol %s should have artwork" % digit)
+		var image: Image = texture.get_image()
+		var opaque: int = 0
+		var white: int = 0
+		for y: int in range(0, image.get_height(), 3):
+			for x: int in range(0, image.get_width(), 3):
+				var pixel: Color = image.get_pixel(x, y)
+				if pixel.a < 0.8:
+					continue
+				opaque += 1
+				if minf(minf(pixel.r, pixel.g), pixel.b) > 0.85:
+					white += 1
+		assert_gt(opaque, 0, "symbol %s should draw something" % digit)
+		assert_eq(white, opaque,
+			"every opaque pixel of symbol %s should be white, not a coloured tile" % digit)
+
+
+func test_symbol_glyphs_are_centred_at_the_designed_size() -> void:
+	# They were left-aligned and shrunk when they lived in Button.icon, which
+	# pins the icon to the left edge when the button has no text.
+	for digit: String in keypad.keys:
+		var key: Button = keypad.keys[digit]
+		assert_eq(key.icon, null, "the glyph should not be the button's icon")
+		var centre: CenterContainer = null
+		for child: Node in key.get_children():
+			if child is CenterContainer:
+				centre = child as CenterContainer
+		assert_not_null(centre, "key %s should centre its glyph" % digit)
+		var glyph: TextureRect = centre.get_child(0) as TextureRect
+		assert_eq(glyph.custom_minimum_size,
+			Vector2(Design.CODE_SYMBOL_SIZE, Design.CODE_SYMBOL_SIZE),
+			"key %s glyph should be the designed size" % digit)
+		assert_eq(glyph.mouse_filter, Control.MOUSE_FILTER_IGNORE,
+			"key %s glyph must not swallow the tap" % digit)
+
+
 func test_it_builds_one_slot_per_code_symbol() -> void:
 	assert_eq(keypad.slots.size(), Design.CODE_LENGTH)
 	for glyph: TextureRect in keypad.slot_glyphs:

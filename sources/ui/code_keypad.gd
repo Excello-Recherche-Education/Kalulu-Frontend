@@ -93,15 +93,16 @@ func _build_slots() -> void:
 		slot.custom_minimum_size = Vector2(Design.CODE_SLOT_SIZE, Design.CODE_SLOT_SIZE)
 		slot.gui_input.connect(_on_slot_gui_input.bind(index))
 
-		var glyph: TextureRect = TextureRect.new()
-		glyph.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		glyph.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		slot.add_child(glyph)
+		# Centred at a fixed size rather than filling the slot: a PanelContainer
+		# stretches its child, which would blow the glyph up to the full 239.
+		var centre: CenterContainer = CenterContainer.new()
+		centre.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot.add_child(centre)
+		centre.add_child(_new_glyph())
 
 		slot_row.add_child(slot)
 		slots.append(slot)
-		slot_glyphs.append(glyph)
+		slot_glyphs.append(centre.get_child(0) as TextureRect)
 
 
 func _build_keys() -> void:
@@ -116,9 +117,16 @@ func _build_keys() -> void:
 		var key: Button = Button.new()
 		key.custom_minimum_size = Design.CODE_KEY_SIZE
 		key.focus_mode = Control.FOCUS_NONE
-		key.icon = Design.code_symbol_texture(digit)
-		key.expand_icon = true
-		key.add_theme_constant_override("icon_max_width", Design.CODE_SYMBOL_SIZE)
+		# The glyph goes in a centred child, not in Button.icon: with no text a
+		# Button pins its icon to the left edge, which is how the symbols ended up
+		# small and off to one side.
+		var centre: CenterContainer = CenterContainer.new()
+		centre.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		centre.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var glyph: TextureRect = _new_glyph()
+		glyph.texture = Design.code_symbol_texture(digit)
+		centre.add_child(glyph)
+		key.add_child(centre)
 		var color: Color = Design.code_color(digit)
 		for state: String in ["normal", "hover", "focus"]:
 			key.add_theme_stylebox_override(state,
@@ -141,11 +149,20 @@ func _refresh() -> void:
 		slots[index].add_theme_stylebox_override("panel",
 			MenuTheme.flat_stylebox(background, Design.CODE_SLOT_RADIUS))
 		glyph.texture = Design.code_symbol_texture(digits[index]) if filled else null
-		glyph.custom_minimum_size = Vector2(Design.CODE_SYMBOL_SIZE, Design.CODE_SYMBOL_SIZE)
 
 	# Dim a key whose symbol is already in the code: it cannot be used twice.
 	for digit: String in keys:
 		keys[digit].modulate = Color(0.55, 0.55, 0.55) if digit in code else Color.WHITE
+
+
+## A symbol glyph at the designed size, ready to be centred.
+func _new_glyph() -> TextureRect:
+	var glyph: TextureRect = TextureRect.new()
+	glyph.custom_minimum_size = Vector2(Design.CODE_SYMBOL_SIZE, Design.CODE_SYMBOL_SIZE)
+	glyph.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	glyph.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return glyph
 
 
 func _on_key_pressed(digit: String) -> void:

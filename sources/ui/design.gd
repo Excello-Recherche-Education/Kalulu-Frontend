@@ -107,7 +107,10 @@ const CODE_KEY_SIZE: Vector2i = Vector2i(471, 259)
 const CODE_KEY_RADIUS: int = 12
 const CODE_KEY_GAP: Vector2i = Vector2i(110, 69)
 const CODE_SYMBOL_SIZE: int = 110
-const CODE_SYMBOL_PATH_FORMAT: String = "res://assets/menus/login/symbol_%02d.png"
+# The glyph alone, white on transparent. symbol_0N.png is the older artwork: an
+# old-palette rounded tile with the glyph already on it, which cannot sit on the
+# redesign's flat colours.
+const CODE_SYMBOL_PATH_FORMAT: String = "res://assets/menus/login/symbol_glyph_%02d.png"
 
 
 ## Colour of the access-code symbol `digit`, white for an unknown digit.
