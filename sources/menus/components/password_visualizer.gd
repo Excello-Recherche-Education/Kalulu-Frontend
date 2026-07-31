@@ -4,14 +4,14 @@ extends HBoxContainer
 
 signal symbol_pressed(index: int)
 
-const ICONS_TEXTURES: Dictionary[String, CompressedTexture2D] = {
-	"1": preload("res://assets/menus/login/symbol_01.png"),
-	"2": preload("res://assets/menus/login/symbol_02.png"),
-	"3": preload("res://assets/menus/login/symbol_03.png"),
-	"4": preload("res://assets/menus/login/symbol_04.png"),
-	"5": preload("res://assets/menus/login/symbol_05.png"),
-	"6": preload("res://assets/menus/login/symbol_06.png")
-}
+## Shows an access code as one coloured chip per symbol.
+##
+## The artwork is now the bare glyph (Design.code_symbol_texture) and the colour
+## comes from Design.code_color, so a code looks the same here as on the keypad.
+## Which of the two carries the colour depends on `show_backgrounds`: a chip gets
+## a coloured panel and a white glyph, while a code drawn without chips -- the
+## printable code sheet -- gets a coloured glyph instead, because a white one on
+## white paper is invisible.
 
 @export var key_size: int = 200:
 	set(value):
@@ -67,25 +67,30 @@ func _on_panel_gui_input(event: InputEvent, panel_index: int) -> void:
 
 
 func _draw_password() -> void:
-	
+
 	if not icons:
 		icons = [%Icon1, %Icon2, %Icon3]
-	
+	_panels_ready()
+
 	for icon: TextureRect in icons:
 		icon.texture = null
-	
+
 	if not password:
+		_update_panel_styles()
 		return
-	
+
 	var index: int = 0
 	for value: String in password.split(""):
 		if index >= 3:
 			Log.error("PasswordVisualizer: A password cannot be more than 3 characters long")
 			return
-		
-		if value in ICONS_TEXTURES:
-			icons[index].texture = ICONS_TEXTURES[value]
+
+		if Design.CODE_COLORS.has(value):
+			icons[index].texture = Design.code_symbol_texture(value)
+			icons[index].modulate = Color.WHITE if show_backgrounds else Design.code_color(value)
 		index += 1
+
+	_update_panel_styles()
 
 
 func _panels_ready() -> void:
@@ -96,12 +101,18 @@ func _panels_ready() -> void:
 func _update_panel_styles() -> void:
 	_panels_ready()
 
-	for panel: PanelContainer in panels:
+	var digits: PackedStringArray = password.split("", false) if password else PackedStringArray()
+	for index: int in panels.size():
+		var panel: PanelContainer = panels[index]
 		if not panel:
 			continue
-		if show_backgrounds:
-			panel.remove_theme_stylebox_override("panel")
-			panel.theme_type_variation = panel_theme_variation
-		else:
-			panel.theme_type_variation = &""
+		panel.theme_type_variation = &""
+		if not show_backgrounds:
 			panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+			continue
+		# An empty slot stays white; a filled one takes its symbol's colour, the
+		# same chip the keypad and the registration summary show.
+		var filled: bool = index < digits.size()
+		var background: Color = Design.code_color(digits[index]) if filled else Color.WHITE
+		panel.add_theme_stylebox_override("panel",
+			MenuTheme.flat_stylebox(background, Design.CODE_SLOT_RADIUS))
