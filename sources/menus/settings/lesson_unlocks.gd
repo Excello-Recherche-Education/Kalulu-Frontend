@@ -24,9 +24,15 @@ var _highest_boss_on_open: int = 0
 @onready var name_line_edit: LineEdit = %NameLineEdit
 @onready var device_selection_container: PanelContainer = %DeviceSelectionContainer
 @onready var container: GridContainer = %GridContainer
+@onready var close_button: TextureButton = %CloseButton
+@onready var delete_button: TextureButton = %DeleteButton
 
 
 func _ready() -> void:
+	# The icon assets are white so they can be tinted per surface; on this card
+	# they would otherwise be invisible.
+	close_button.self_modulate = Design.NAVY
+	delete_button.self_modulate = Design.NAVY
 	name_line_edit.connect("text_submitted", _on_name_changed)
 	device_selection_container.hide()
 

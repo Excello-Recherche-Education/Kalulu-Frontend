@@ -41,6 +41,15 @@ const VARIATION_STUDENT_CARD: StringName = &"StudentCard"
 const VARIATION_FIELD_COMPACT: StringName = &"FieldCompact"
 # Small grey label on a white surface, as above a student's code chips.
 const VARIATION_CARD_LABEL: StringName = &"CardLabel"
+# The progress panel titles and labels its sections in the brand navy, not grey.
+const VARIATION_PANEL_TITLE: StringName = &"PanelTitle"
+const VARIATION_PANEL_LABEL: StringName = &"PanelLabel"
+const VARIATION_TABLE_HEADER: StringName = &"TableHeader"
+const VARIATION_TABLE_HEADER_CELL: StringName = &"TableHeaderCell"
+# Fields on a white card: off white, so they still read as fields. A variation
+# can only have one base type, so the text field and the dropdown need their own.
+const VARIATION_FIELD_SUBTLE: StringName = &"FieldSubtle"
+const VARIATION_DROPDOWN_SUBTLE: StringName = &"DropdownSubtle"
 
 
 ## A filled, rounded rectangle.
@@ -92,6 +101,9 @@ static func _build_labels(theme: Theme, regular: Font, bold: Font) -> void:
 	_add_label(theme, VARIATION_CARD_HEADING, bold, Design.FONT_SIZE_HEADING, Design.GREY_DARK)
 	_add_label(theme, VARIATION_CARD_BODY, regular, Design.FONT_SIZE_BODY, Design.GREY_DARK)
 	_add_label(theme, VARIATION_CARD_LABEL, regular, Design.FONT_SIZE_LABEL, Design.GREY_DARK)
+	_add_label(theme, VARIATION_PANEL_TITLE, bold, Design.FONT_SIZE_TITLE, Design.NAVY)
+	_add_label(theme, VARIATION_PANEL_LABEL, regular, Design.FONT_SIZE_LABEL, Design.NAVY)
+	_add_label(theme, VARIATION_TABLE_HEADER, bold, Design.FONT_SIZE_BODY, Design.GREY_DARK)
 
 
 static func _build_buttons(theme: Theme, regular: Font) -> void:
@@ -187,6 +199,21 @@ static func _build_fields(theme: Theme, regular: Font) -> void:
 		_field_stylebox(compact, Design.GREY_LIGHTER))
 	theme.set_stylebox("focus", VARIATION_FIELD_COMPACT, StyleBoxEmpty.new())
 
+	theme.set_type_variation(VARIATION_FIELD_SUBTLE, "LineEdit")
+	theme.set_stylebox("normal", VARIATION_FIELD_SUBTLE,
+		_field_stylebox(compact, Design.SUBTLE_FIELD_FILL))
+	theme.set_stylebox("focus", VARIATION_FIELD_SUBTLE, focus)
+	theme.set_stylebox("read_only", VARIATION_FIELD_SUBTLE,
+		_field_stylebox(compact, Design.GREY_LIGHTER))
+
+	theme.set_type_variation(VARIATION_DROPDOWN_SUBTLE, "OptionButton")
+	for state: String in ["normal", "hover", "pressed"]:
+		theme.set_stylebox(state, VARIATION_DROPDOWN_SUBTLE,
+			_field_stylebox(compact, Design.SUBTLE_FIELD_FILL))
+	theme.set_stylebox("disabled", VARIATION_DROPDOWN_SUBTLE,
+		_field_stylebox(compact, Design.GREY_LIGHTER))
+	theme.set_stylebox("focus", VARIATION_DROPDOWN_SUBTLE, StyleBoxEmpty.new())
+
 	# The drop-down list itself, so an open OptionButton stays on brand.
 	theme.set_font("font", "PopupMenu", regular)
 	theme.set_font_size("font_size", "PopupMenu", Design.FONT_SIZE_INPUT)
@@ -201,6 +228,11 @@ static func _build_panels(theme: Theme) -> void:
 	theme.set_stylebox("panel", VARIATION_CARD, flat_stylebox(Color.WHITE, Design.CARD_RADIUS))
 	# A student's card sits on the white settings card, so it needs to be a shade
 	# off white to read as a separate surface.
+	# Square-cornered so adjacent header cells form one continuous strip across
+	# the table, which a GridContainer cannot give a row on its own.
+	theme.set_type_variation(VARIATION_TABLE_HEADER_CELL, "PanelContainer")
+	theme.set_stylebox("panel", VARIATION_TABLE_HEADER_CELL,
+		flat_stylebox(Design.LAVENDER, 0))
 	theme.set_type_variation(VARIATION_STUDENT_CARD, "PanelContainer")
 	theme.set_stylebox("panel", VARIATION_STUDENT_CARD,
 		flat_stylebox(Color("f7f7f7"), Design.STUDENT_CARD_RADIUS))

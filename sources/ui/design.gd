@@ -97,6 +97,14 @@ const PILL_GAP: int = 46
 const COMPACT_FIELD_HEIGHT: int = 88
 const SETTINGS_CARD_PADDING: Vector2i = Vector2i(80, 42)
 const ICON_BUTTON_GAP: int = 36
+# --- Student progress panel ---------------------------------------------------
+# Fields on a white card are a shade off white rather than white, so they read as
+# fields at all.
+const SUBTLE_FIELD_FILL: Color = Color("fafafa")
+const PROGRESS_CARD_SIZE: Vector2i = Vector2i(2205, 1580)
+const PROGRESS_NAME_FIELD: Vector2i = Vector2i(900, 160)
+const PROGRESS_CHIP_SIZE: int = 151
+const TABLE_HEADER_HEIGHT: int = 136
 # --- Student cards and their code chips ---------------------------------------
 const STUDENT_CARD_SIZE: Vector2i = Vector2i(510, 184)
 const STUDENT_CARD_GAP: int = 58
