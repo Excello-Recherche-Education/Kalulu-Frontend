@@ -133,9 +133,9 @@ func test_a_dropdown_edit_refreshes_rather_than_rebuilds() -> void:
 	assert_eq(_row_ids(), before, "an edit should not rebuild the rows")
 
 
-func test_unlocking_a_lesson_shows_on_the_earlier_lessons() -> void:
-	# The cascade is the reason an edit refreshes every row: unlocking a later
-	# lesson unlocks the ones before it.
+func test_completing_a_lesson_completes_the_ones_before_it() -> void:
+	# Progression is one linear timeline, so a later lesson being finished means
+	# the earlier ones are too. That is why an edit refreshes every row.
 	if _needs_pack():
 		return
 	var student: Dictionary = _any_student()
@@ -149,11 +149,59 @@ func test_unlocking_a_lesson_shows_on_the_earlier_lessons() -> void:
 		return
 
 	var third: LessonUnlock = overlay.lesson_rows_store.get_child(2)
-	third._on_look_and_learn_option_button_item_selected(StudentProgression.Status.COMPLETED)
+	third._on_status_item_selected(StudentProgression.Status.COMPLETED)
 
-	var first: LessonUnlock = overlay.lesson_rows_store.get_child(0)
-	assert_gt(first.look_and_learn_option_button.selected, 0,
-		"unlocking the third lesson should have unlocked the first")
+	for index: int in 3:
+		var row: LessonUnlock = overlay.lesson_rows_store.get_child(index)
+		assert_eq(row.lesson_status(), StudentProgression.Status.COMPLETED,
+			"lesson %d should be completed" % (index + 1))
+
+
+func test_locking_a_lesson_locks_the_ones_after_it() -> void:
+	if _needs_pack():
+		return
+	var student: Dictionary = _any_student()
+	if student.is_empty():
+		pending("needs a registered student")
+		return
+	overlay.device = student.device
+	overlay.student = student.code
+	if overlay.lesson_rows_store.get_child_count() < 4:
+		pending("needs at least four lessons")
+		return
+	overlay.lesson_rows_store.get_child(3)._on_status_item_selected(
+		StudentProgression.Status.COMPLETED)
+
+	overlay.lesson_rows_store.get_child(1)._on_status_item_selected(
+		StudentProgression.Status.LOCKED)
+
+	for index: int in range(1, 4):
+		var row: LessonUnlock = overlay.lesson_rows_store.get_child(index)
+		assert_eq(row.lesson_status(), StudentProgression.Status.LOCKED,
+			"lesson %d should be locked" % (index + 1))
+
+
+func test_a_lesson_reads_back_the_status_it_was_given() -> void:
+	if _needs_pack():
+		return
+	var student: Dictionary = _any_student()
+	if student.is_empty():
+		pending("needs a registered student")
+		return
+	overlay.device = student.device
+	overlay.student = student.code
+	if overlay.lesson_rows_store.get_child_count() < 2:
+		pending("needs at least two lessons")
+		return
+	var second: LessonUnlock = overlay.lesson_rows_store.get_child(1)
+
+	for status: StudentProgression.Status in [StudentProgression.Status.COMPLETED,
+			StudentProgression.Status.UNLOCKED, StudentProgression.Status.LOCKED]:
+		second._on_status_item_selected(status)
+		assert_eq(second.lesson_status(), status,
+			"a lesson set to %d should read back as %d" % [status, status])
+		assert_eq(second.status_option_button.selected, status as int,
+			"and its dropdown should show it")
 
 
 func _any_student() -> Dictionary:

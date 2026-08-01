@@ -138,7 +138,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
-columns = 6
+columns = 3
 
 [node name="LessonHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid"]
 custom_minimum_size = Vector2(0, 136)
@@ -164,51 +164,15 @@ horizontal_alignment = 1
 vertical_alignment = 1
 theme_type_variation = &"TableHeader"
 
-[node name="LookAndLearnHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid"]
+[node name="StatusHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid"]
 custom_minimum_size = Vector2(0, 136)
 layout_mode = 2
 theme_type_variation = &"TableHeaderCell"
 
-[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/LookAndLearnHeader"]
+[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/StatusHeader"]
 layout_mode = 2
-text = "LOOKANDLEARN"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-theme_type_variation = &"TableHeader"
-
-[node name="ExerciseHeader1" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid"]
-custom_minimum_size = Vector2(0, 136)
-layout_mode = 2
-theme_type_variation = &"TableHeaderCell"
-
-[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/ExerciseHeader1"]
-layout_mode = 2
-text = "EXERCISE1"
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_type_variation = &"TableHeader"
-
-[node name="ExerciseHeader2" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid"]
-custom_minimum_size = Vector2(0, 136)
-layout_mode = 2
-theme_type_variation = &"TableHeaderCell"
-
-[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/ExerciseHeader2"]
-layout_mode = 2
-text = "EXERCISE2"
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_type_variation = &"TableHeader"
-
-[node name="ExerciseHeader3" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid"]
-custom_minimum_size = Vector2(0, 136)
-layout_mode = 2
-theme_type_variation = &"TableHeaderCell"
-
-[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/ExerciseHeader3"]
-layout_mode = 2
-text = "EXERCISE3"
+custom_minimum_size = Vector2(340, 0)
+text = "STATUS"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_type_variation = &"TableHeader"

@@ -501,3 +501,7 @@ STUDENT_PROGRESS,Progression de l’élève,Progreso del alumno,Progresso do alu
 NAME,Nom,Nombre,Nome,Nome
 CODE,Code,Código,Código,Codice
 LEARNING_PROGRESS,Progression,Progreso,Progresso,Progressi
+STATUS,Statut,Estado,Estado,Stato
+LOCKED,Verrouillé,Bloqueado,Bloqueado,Bloccato
+UNLOCKED,Débloqué,Desbloqueado,Desbloqueado,Sbloccato
+COMPLETED,Terminé,Completado,Concluído,Completato
