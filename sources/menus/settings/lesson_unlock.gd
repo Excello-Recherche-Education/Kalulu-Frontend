@@ -57,6 +57,13 @@ func _set_lesson_number(value: int) -> void:
 
 	lesson_label.text = str(lesson_number)
 
+	# A student's progression can predate a pack that added lessons, and rows are
+	# now refreshed for each student rather than rebuilt, so a missing lesson must
+	# not take the panel down.
+	if not unlocks.has(lesson_number):
+		Log.trace("LessonUnlock: No progression entry for lesson %d" % lesson_number)
+		return
+
 	look_and_learn_option_button.select(unlocks[lesson_number]["look_and_learn"] as int)
 	# A lesson can have 1–3 minigames, so only populate the buttons that map to a
 	# real game and disable the surplus ones (the grid keeps all three cells).

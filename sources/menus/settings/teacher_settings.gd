@@ -60,6 +60,10 @@ func _ready() -> void:
 		add_student_button.hide()
 		label_internet_mandatory.show()
 	
+	# Built here rather than on the first student tap: it costs about two seconds
+	# and this screen is already loading, so the tap itself stays instant.
+	lesson_unlocks.prepare_lesson_rows()
+
 	OpeningCurtain.open()
 	lesson_unlocks.teacher_settings = self
 	
