@@ -16,6 +16,30 @@ func before_each() -> void:
 	await get_tree().process_frame
 
 
+func test_the_capsule_looks_right_before_anything_is_laid_out() -> void:
+	# Regression: the capsule was only styled inside _move_highlight, which bails
+	# out while the segment row still has no width -- which it does not have during
+	# _ready. So on arrival the highlight showed the engine's default square grey
+	# panel, and only turned into the purple capsule once the selection changed.
+	var fresh: SegmentedToggle = (load(TOGGLE_SCENE) as PackedScene).instantiate()
+	add_child_autofree(fresh)
+	await get_tree().process_frame
+
+	var box: StyleBox = fresh.highlight.get_theme_stylebox("panel")
+	assert_true(box is StyleBoxFlat, "the capsule should be a flat box")
+	var flat: StyleBoxFlat = box as StyleBoxFlat
+	assert_eq(flat.bg_color, Design.PURPLE, "the capsule should be purple from the start")
+	assert_gt(flat.corner_radius_top_left, 0,
+		"the capsule should be rounded from the start, not square")
+
+
+func test_the_capsule_is_rounded_to_a_full_half_circle() -> void:
+	var expected: int = (Design.TOGGLE_HEIGHT - 2 * Design.TOGGLE_INSET) / 2
+	var flat: StyleBoxFlat = toggle.highlight.get_theme_stylebox("panel") as StyleBoxFlat
+	assert_eq(flat.corner_radius_top_left, expected,
+		"the capsule's radius should be half its height")
+
+
 func test_it_builds_one_segment_per_option() -> void:
 	assert_eq(toggle.buttons.size(), 2, "the default options should give two segments")
 	# LOG_IN, not LOGIN: the latter translates to "Identifiants"/"Credenziali",

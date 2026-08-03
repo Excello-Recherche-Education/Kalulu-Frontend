@@ -47,7 +47,15 @@ func _ready() -> void:
 	# inside it; being a Control it ignores its children when reporting a
 	# minimum size, so the pill's height has to be set from the tokens here.
 	content.custom_minimum_size.y = Design.TOGGLE_HEIGHT - 2 * Design.TOGGLE_INSET
+	# The capsule's appearance must not wait for a layout pass. Before the first
+	# one the segment row has no width, so _move_highlight bails out and the
+	# highlight would sit there showing the engine's default square grey panel
+	# until something moved it.
+	highlight.add_theme_stylebox_override("panel", highlight_stylebox())
 	resized.connect(_on_resized)
+	# The row is laid out after this node is, so its own resize is the first
+	# moment the highlight can be placed correctly.
+	segments.resized.connect(_on_resized)
 	_rebuild()
 
 
@@ -56,6 +64,17 @@ func set_selected_silently(index: int) -> void:
 	notify_selection = false
 	selected = index
 	notify_selection = true
+
+
+## The purple capsule behind the selected segment.
+##
+## Sized from the tokens rather than the measured row, so it is correct before
+## any layout has happened.
+func highlight_stylebox(height: int = 0) -> StyleBoxFlat:
+	var capsule: int = height
+	if capsule <= 0:
+		capsule = Design.TOGGLE_HEIGHT - 2 * Design.TOGGLE_INSET
+	return MenuTheme.flat_stylebox(Design.PURPLE, capsule / 2)
 
 
 func _pill_stylebox() -> StyleBoxFlat:
@@ -119,8 +138,7 @@ func _move_highlight(animate: bool) -> void:
 	var target: Vector2 = segments.position + Vector2(segment_size.x * selected, 0.0)
 
 	highlight.size = segment_size
-	highlight.add_theme_stylebox_override("panel",
-		MenuTheme.flat_stylebox(Design.PURPLE, int(segment_size.y / 2.0)))
+	highlight.add_theme_stylebox_override("panel", highlight_stylebox(int(segment_size.y)))
 
 	if highlight_tween and highlight_tween.is_valid():
 		highlight_tween.kill()
