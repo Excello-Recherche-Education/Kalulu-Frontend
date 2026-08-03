@@ -21,6 +21,11 @@ func get_value() -> Variant:
 		return (control as LineEdit).text
 	elif control is TextEdit:
 		return (control as TextEdit).text
+	elif control is OptionButton:
+		# Before OptionButton, because it is a Button and not any of the above,
+		# but it is also not an ItemList even though it means the same thing.
+		var selected: int = (control as OptionButton).selected
+		return null if selected < 0 else selected
 	elif control is ItemList:
 		var selected_indexes: PackedInt32Array = (control as ItemList).get_selected_items()
 		if not selected_indexes or selected_indexes.size() == 0:
@@ -45,6 +50,9 @@ func set_value(value: Variant) -> void:
 		(control as LineEdit).text = str(value)
 	elif control is TextEdit:
 		(control as TextEdit).text = str(value)
+	elif control is OptionButton:
+		if value is int:
+			(control as OptionButton).selected = value as int
 	elif control is ItemList:
 		if value is int:
 			(control as ItemList).select(value as int, true)
