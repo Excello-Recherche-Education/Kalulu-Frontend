@@ -22,7 +22,7 @@ autowrap_mode = 3
 
 [node name="StatusOptionButton" type="OptionButton" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(340, 116)
+custom_minimum_size = Vector2(700, 116)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_type_variation = &"DropdownSubtle"

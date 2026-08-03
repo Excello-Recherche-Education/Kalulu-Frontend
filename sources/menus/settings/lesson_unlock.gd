@@ -1,16 +1,45 @@
 class_name LessonUnlock
 extends Node
-## One row of the student progress table: a lesson and how far into it the
-## student is.
+## One row of the student progress table: a lesson and where the student is in it.
 ##
 ## Progression is a single linear timeline -- for each lesson its look-and-learn
-## then its minigames in order -- so a lesson has one status rather than one per
-## step. Unlocking a step already implies every step before it is finished, and
-## finishing one implies the next is unlocked, which is what
-## StudentProgression.apply_manual_progression enforces. A dropdown per exercise
-## could only ever set states the timeline would immediately rewrite.
+## followed by its minigames in order -- with one frontier marking what the
+## student may play next. A lesson's state names where that frontier sits inside
+## it, so the states are exactly the frontier's possible positions:
+##
+##   Locked          nothing in the lesson is reachable
+##   Look and learn  the look-and-learn is playable, nothing else yet
+##   Exercise N      the look-and-learn and exercises before N are finished, so
+##                   N is playable -- and so is anything before it, again
+##   Finished        every step is done, which puts the next lesson on its
+##                   look-and-learn
+##
+## A lesson has one to three minigames, so it offers three to six states. Setting
+## one moves the frontier, and StudentProgression.apply_manual_progression
+## rewrites the timeline around it.
 
 signal unlocks_changed()
+
+enum State {
+	LOCKED,
+	LOOK_AND_LEARN,
+	EXERCISE_1,
+	EXERCISE_2,
+	EXERCISE_3,
+	FINISHED,
+}
+
+## Translation key per state. "Finished" reuses COMPLETED, which already reads as
+## exactly that in every locale.
+const STATE_LABELS: Dictionary[int, String] = {
+	State.LOCKED: "LOCKED",
+	State.LOOK_AND_LEARN: "LOOKANDLEARN",
+	State.EXERCISE_1: "EXERCISE1",
+	State.EXERCISE_2: "EXERCISE2",
+	State.EXERCISE_3: "EXERCISE3",
+	State.FINISHED: "COMPLETED",
+}
+const MAX_EXERCISES: int = 3
 
 @export var lesson_number: int:
 	set = _set_lesson_number
@@ -24,8 +53,6 @@ signal unlocks_changed()
 
 
 func _ready() -> void:
-	for status: String in StudentProgression.Status:
-		status_option_button.add_item(tr(status))
 	status_option_button.item_selected.connect(_on_status_item_selected)
 	reload()
 
@@ -39,34 +66,60 @@ func reload() -> void:
 	_set_lesson_gps(lesson_gps)
 
 
-## How far the student is into this lesson, read back from its individual steps.
-##
-## Every step finished reads as completed and none started reads as locked;
-## anything in between is the lesson in progress. The timeline keeps the steps
-## consistent, so there is no partial state to disambiguate.
-func lesson_status() -> StudentProgression.Status:
+## Where the student is in this lesson, read back from its steps.
+func lesson_state() -> State:
 	if not unlocks.has(lesson_number):
-		return StudentProgression.Status.LOCKED
-	var completed: bool = true
-	var locked: bool = true
-	for step: int in _step_statuses():
-		if step != StudentProgression.Status.COMPLETED:
-			completed = false
-		if step != StudentProgression.Status.LOCKED:
-			locked = false
-	if completed:
-		return StudentProgression.Status.COMPLETED
-	if locked:
-		return StudentProgression.Status.LOCKED
-	return StudentProgression.Status.UNLOCKED
-
-
-func _step_statuses() -> Array[int]:
+		return State.LOCKED
 	var entry: Dictionary = unlocks[lesson_number]
-	var statuses: Array[int] = [entry["look_and_learn"] as int]
-	for game: int in entry["games"]:
-		statuses.append(game)
-	return statuses
+	var look_and_learn: int = entry["look_and_learn"]
+	# The frontier is a single position, so the look-and-learn being locked means
+	# the whole lesson is, and it being unlocked means nothing past it has started.
+	if look_and_learn == StudentProgression.Status.LOCKED:
+		return State.LOCKED
+	if look_and_learn == StudentProgression.Status.UNLOCKED:
+		return State.LOOK_AND_LEARN
+	var games: Array = entry["games"]
+	for index: int in games.size():
+		if games[index] != StudentProgression.Status.COMPLETED:
+			return (State.EXERCISE_1 + index) as State
+	return State.FINISHED
+
+
+## The states this lesson can be in, which depends on how many minigames it has.
+func offered_states() -> Array[int]:
+	var states: Array[int] = [State.LOCKED, State.LOOK_AND_LEARN]
+	for index: int in mini(_minigame_count(), MAX_EXERCISES):
+		states.append(State.EXERCISE_1 + index)
+	states.append(State.FINISHED)
+	return states
+
+
+func _minigame_count() -> int:
+	if not unlocks.has(lesson_number):
+		return 0
+	return (unlocks[lesson_number]["games"] as Array).size()
+
+
+## Refills the dropdown when the number of exercises offered has changed.
+##
+## Only the minigame count varies, so comparing item counts is enough. It matters
+## that this is cheap: sixty rows are refreshed every time a student is opened,
+## and repopulating each dropdown was most of the two seconds that used to cost.
+func _sync_items() -> void:
+	var states: Array[int] = offered_states()
+	if status_option_button.item_count == states.size():
+		return
+	status_option_button.clear()
+	for state: int in states:
+		status_option_button.add_item(tr(STATE_LABELS[state]), state)
+
+
+func _select_state(state: int) -> void:
+	for index: int in status_option_button.item_count:
+		if status_option_button.get_item_id(index) == state:
+			status_option_button.select(index)
+			return
+	status_option_button.select(-1)
 
 
 func _set_lesson_number(value: int) -> void:
@@ -76,6 +129,7 @@ func _set_lesson_number(value: int) -> void:
 		return
 
 	lesson_label.text = str(lesson_number)
+	_sync_items()
 
 	# A student's progression can predate a pack that added lessons, and rows are
 	# refreshed per student rather than rebuilt, so a missing lesson must not take
@@ -87,7 +141,7 @@ func _set_lesson_number(value: int) -> void:
 		return
 
 	status_option_button.disabled = false
-	status_option_button.select(lesson_status() as int)
+	_select_state(lesson_state())
 
 
 func _set_lesson_gps(value: String) -> void:
@@ -101,14 +155,24 @@ func _set_lesson_gps(value: String) -> void:
 func _on_status_item_selected(index: int) -> void:
 	if not unlocks.has(lesson_number):
 		return
-	var status: StudentProgression.Status = index as StudentProgression.Status
-	# Completing a lesson means its last step is done, so the frontier lands on
-	# the next lesson. Locking or unlocking it moves the frontier to its first
-	# step instead.
+	var state: int = status_option_button.get_item_id(index)
+	var games: Array = unlocks[lesson_number]["games"]
 	var slot: int = StudentProgression.LOOK_AND_LEARN_SLOT
-	if status == StudentProgression.Status.COMPLETED:
-		var games: Array = unlocks[lesson_number]["games"]
-		if not games.is_empty():
-			slot = games.size() - 1
+	var status: StudentProgression.Status = StudentProgression.Status.UNLOCKED
+	match state:
+		State.LOCKED:
+			# Frontier before the lesson, so it and everything after it locks.
+			status = StudentProgression.Status.LOCKED
+		State.LOOK_AND_LEARN:
+			pass # Frontier on the look-and-learn, which is the default above.
+		State.FINISHED:
+			# Frontier past the lesson's last step, which lands it on the next
+			# lesson's look-and-learn.
+			status = StudentProgression.Status.COMPLETED
+			if not games.is_empty():
+				slot = games.size() - 1
+		_:
+			# Frontier on that exercise, so the steps before it read as finished.
+			slot = state - State.EXERCISE_1
 	StudentProgression.apply_manual_progression(unlocks, lesson_number, slot, status)
 	unlocks_changed.emit()

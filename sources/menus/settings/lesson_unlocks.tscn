@@ -171,7 +171,7 @@ theme_type_variation = &"TableHeaderCell"
 
 [node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/StatusHeader"]
 layout_mode = 2
-custom_minimum_size = Vector2(340, 0)
+custom_minimum_size = Vector2(700, 0)
 text = "STATUS"
 horizontal_alignment = 1
 vertical_alignment = 1

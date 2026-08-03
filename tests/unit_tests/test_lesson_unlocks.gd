@@ -133,75 +133,123 @@ func test_a_dropdown_edit_refreshes_rather_than_rebuilds() -> void:
 	assert_eq(_row_ids(), before, "an edit should not rebuild the rows")
 
 
-func test_completing_a_lesson_completes_the_ones_before_it() -> void:
-	# Progression is one linear timeline, so a later lesson being finished means
-	# the earlier ones are too. That is why an edit refreshes every row.
-	if _needs_pack():
-		return
+func _rows() -> Array[Node]:
 	var student: Dictionary = _any_student()
 	if student.is_empty():
 		pending("needs a registered student")
-		return
+		return []
 	overlay.device = student.device
 	overlay.student = student.code
-	if overlay.lesson_rows_store.get_child_count() < 3:
+	return overlay.lesson_rows_store.get_children()
+
+
+func test_a_lesson_offers_one_state_per_step_plus_locked_and_finished() -> void:
+	# A lesson has one to three minigames, so it offers three to six states.
+	if _needs_pack():
+		return
+	var rows: Array[Node] = _rows()
+	if rows.is_empty():
+		return
+
+	for row: LessonUnlock in rows:
+		var games: int = (row.unlocks[row.lesson_number]["games"] as Array).size()
+		assert_between(games, 1, LessonUnlock.MAX_EXERCISES,
+			"lesson %d should have one to three minigames" % row.lesson_number)
+		# locked + look-and-learn + one per exercise + finished
+		assert_eq(row.status_option_button.item_count, games + 3,
+			"lesson %d offers locked, look-and-learn, %d exercises and finished"
+				% [row.lesson_number, games])
+
+
+func test_each_offered_state_reads_back_as_itself() -> void:
+	if _needs_pack():
+		return
+	var rows: Array[Node] = _rows()
+	if rows.size() < 2:
+		pending("needs at least two lessons")
+		return
+	var row: LessonUnlock = rows[1]
+
+	for index: int in row.status_option_button.item_count:
+		var state: int = row.status_option_button.get_item_id(index)
+		row._on_status_item_selected(index)
+		assert_eq(row.lesson_state(), state,
+			"state %d should read back as itself" % state)
+
+
+func test_being_on_an_exercise_means_the_steps_before_it_are_finished() -> void:
+	# "Exercise 2" means exercise 1 is finished and the look-and-learn with it.
+	if _needs_pack():
+		return
+	var rows: Array[Node] = _rows()
+	if rows.is_empty():
+		return
+	var row: LessonUnlock = rows[0]
+	if row.status_option_button.item_count < 5:
+		pending("needs a lesson with at least two exercises")
+		return
+
+	row._on_status_item_selected(row.status_option_button.item_count - 2)
+
+	var entry: Dictionary = row.unlocks[row.lesson_number]
+	assert_eq(entry["look_and_learn"], StudentProgression.Status.COMPLETED,
+		"the look-and-learn should be finished")
+	var games: Array = entry["games"]
+	for index: int in games.size() - 1:
+		assert_eq(games[index], StudentProgression.Status.COMPLETED,
+			"exercise %d should be finished" % (index + 1))
+	assert_eq(games[games.size() - 1], StudentProgression.Status.UNLOCKED,
+		"the last exercise should be the one now playable")
+
+
+func test_finishing_a_lesson_puts_the_next_one_on_its_look_and_learn() -> void:
+	# The rule that ties the lessons together.
+	if _needs_pack():
+		return
+	var rows: Array[Node] = _rows()
+	if rows.size() < 2:
+		pending("needs at least two lessons")
+		return
+
+	var first: LessonUnlock = rows[0]
+	first._on_status_item_selected(first.status_option_button.item_count - 1)
+
+	assert_eq(first.lesson_state(), LessonUnlock.State.FINISHED)
+	assert_eq((rows[1] as LessonUnlock).lesson_state(), LessonUnlock.State.LOOK_AND_LEARN,
+		"finishing a lesson must open the next one's look-and-learn")
+
+
+func test_finishing_a_later_lesson_finishes_the_ones_before_it() -> void:
+	if _needs_pack():
+		return
+	var rows: Array[Node] = _rows()
+	if rows.size() < 3:
 		pending("needs at least three lessons")
 		return
 
-	var third: LessonUnlock = overlay.lesson_rows_store.get_child(2)
-	third._on_status_item_selected(StudentProgression.Status.COMPLETED)
+	var third: LessonUnlock = rows[2]
+	third._on_status_item_selected(third.status_option_button.item_count - 1)
 
 	for index: int in 3:
-		var row: LessonUnlock = overlay.lesson_rows_store.get_child(index)
-		assert_eq(row.lesson_status(), StudentProgression.Status.COMPLETED,
-			"lesson %d should be completed" % (index + 1))
+		assert_eq((rows[index] as LessonUnlock).lesson_state(), LessonUnlock.State.FINISHED,
+			"lesson %d should be finished" % (index + 1))
 
 
 func test_locking_a_lesson_locks_the_ones_after_it() -> void:
 	if _needs_pack():
 		return
-	var student: Dictionary = _any_student()
-	if student.is_empty():
-		pending("needs a registered student")
-		return
-	overlay.device = student.device
-	overlay.student = student.code
-	if overlay.lesson_rows_store.get_child_count() < 4:
+	var rows: Array[Node] = _rows()
+	if rows.size() < 4:
 		pending("needs at least four lessons")
 		return
-	overlay.lesson_rows_store.get_child(3)._on_status_item_selected(
-		StudentProgression.Status.COMPLETED)
+	(rows[3] as LessonUnlock)._on_status_item_selected(
+		(rows[3] as LessonUnlock).status_option_button.item_count - 1)
 
-	overlay.lesson_rows_store.get_child(1)._on_status_item_selected(
-		StudentProgression.Status.LOCKED)
+	(rows[1] as LessonUnlock)._on_status_item_selected(LessonUnlock.State.LOCKED)
 
 	for index: int in range(1, 4):
-		var row: LessonUnlock = overlay.lesson_rows_store.get_child(index)
-		assert_eq(row.lesson_status(), StudentProgression.Status.LOCKED,
+		assert_eq((rows[index] as LessonUnlock).lesson_state(), LessonUnlock.State.LOCKED,
 			"lesson %d should be locked" % (index + 1))
-
-
-func test_a_lesson_reads_back_the_status_it_was_given() -> void:
-	if _needs_pack():
-		return
-	var student: Dictionary = _any_student()
-	if student.is_empty():
-		pending("needs a registered student")
-		return
-	overlay.device = student.device
-	overlay.student = student.code
-	if overlay.lesson_rows_store.get_child_count() < 2:
-		pending("needs at least two lessons")
-		return
-	var second: LessonUnlock = overlay.lesson_rows_store.get_child(1)
-
-	for status: StudentProgression.Status in [StudentProgression.Status.COMPLETED,
-			StudentProgression.Status.UNLOCKED, StudentProgression.Status.LOCKED]:
-		second._on_status_item_selected(status)
-		assert_eq(second.lesson_status(), status,
-			"a lesson set to %d should read back as %d" % [status, status])
-		assert_eq(second.status_option_button.selected, status as int,
-			"and its dropdown should show it")
 
 
 func _any_student() -> Dictionary:
