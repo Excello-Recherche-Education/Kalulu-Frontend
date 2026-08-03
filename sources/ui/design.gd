@@ -70,6 +70,14 @@ const FIELD_GAP: int = 104
 # and conditions cards are exactly the resulting width.
 const PAGE_MARGIN: int = 340
 const PAGE_MARGIN_BOTTOM: int = 196
+# --- Sign-up wizard steps -----------------------------------------------------
+# Every step mockup puts the field column at the same height and grows the
+# question upwards from there, so the field top is the anchor and the question
+# block hangs above it rather than the two being centred together.
+const STEP_FORM_TOP: int = 772
+const STEP_QUESTION_GAP: int = 80 # question block bottom to field top
+const STEP_INFO_GAP: int = 48 # title to the note under it
+const STEP_QUESTION_WIDTH: int = 1500 # wider than the fields, so titles fit on one line
 # --- Surfaces ----------------------------------------------------------------
 const CARD_RADIUS: int = 14
 const CARD_PADDING: int = 88

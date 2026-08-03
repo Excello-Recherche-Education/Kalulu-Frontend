@@ -3,6 +3,7 @@ LOGGED_AS,Connecté en tant que,Conectado como,Conectado como,Connesso come
 BUILD_VERSION,Numéro de version,Número de versión,Número da versão,Numero di versione
 DEVICE_ID,Numéro d'appareil,Identificación del dispositivo,Número do dispositivo,ID del dispositivo
 LANGUAGE,Langue,Idioma,Idioma,Lingua
+SELECT_A_LANGUAGE,Sélectionnez une langue,Seleccione un idioma,Selecione um idioma,Seleziona una lingua
 SIGN_IN_TEACHER,Connexion enseignant,Conexión del docente,Login do professor,Accesso insegnante
 SIGN_IN_PARENT,Connexion parent,Conexión del progenitor,Login dos pais,Accesso genitore
 CREATE_ACCOUNT,Création de compte,Creación de cuenta,Criar uma conta,Creazione account
