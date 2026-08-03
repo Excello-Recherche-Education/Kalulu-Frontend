@@ -23,10 +23,19 @@ const GREETING_SPEECH_CATEGORY: String = "title_screen"
 const GREETING_SPEECH_NAME: String = "tuto_welcome_oneshot"
 
 
+## Whether `settings` describes a signed-in device.
+##
+## Split out from has_connection_token so it can be exercised without
+## substituting UserDataManager's live state. Doing that is not safe: the manager
+## clears the device's teacher and saves it whenever it finds no settings, so a
+## transient null in a test would log the real device out on disk.
+static func is_signed_in(settings: TeacherSettings) -> bool:
+	return settings != null and not settings.token.is_empty()
+
+
 ## True when this device holds a teacher's connection token.
 static func has_connection_token() -> bool:
-	var settings: TeacherSettings = UserDataManager.teacher_settings
-	return settings != null and not settings.token.is_empty()
+	return is_signed_in(UserDataManager.teacher_settings)
 
 
 ## Where Kalulu's greeting speech would be, for the installed language.
@@ -52,8 +61,11 @@ static func scene_after_splash() -> String:
 	return scene_after_greeting()
 
 
+## Where a device goes once past the greeting, given whether it is signed in.
+static func scene_for(signed_in: bool) -> String:
+	return SIGNED_IN_SCENE_PATH if signed_in else WELCOME_SCENE_PATH
+
+
 ## The screen to open once the greeting is done, or skipped.
 static func scene_after_greeting() -> String:
-	if has_connection_token():
-		return SIGNED_IN_SCENE_PATH
-	return WELCOME_SCENE_PATH
+	return scene_for(has_connection_token())
