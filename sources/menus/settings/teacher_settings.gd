@@ -48,7 +48,7 @@ var selected_device: int = -1
 
 
 func _ready() -> void:
-	refresh_devices_tabs()
+	refresh_devices()
 	
 	# Internet mandatory to add student because only the server can ensure the student code is not a duplicate
 	if await ServerManager.check_internet_access():
@@ -105,7 +105,8 @@ func _on_education_method_option_button_item_selected(index: int) -> void:
 		Log.warn("SettingsTeacherSettings: Cannot assign index %d to EducationMethod" % index)
 
 
-func refresh_devices_tabs() -> void:
+## Rebuilds the device pills and shows the selected device's students.
+func refresh_devices() -> void:
 	for child: Node in device_pills.get_children():
 		child.queue_free()
 
@@ -273,7 +274,7 @@ func _on_add_device_popup_accepted() -> void:
 		# Show the device just created rather than leaving the teacher on the old
 		# one wondering whether anything happened.
 		selected_device = last_device_id + 1
-		refresh_devices_tabs()
+		refresh_devices()
 
 
 func _on_lesson_unlocks_student_deleted(_code: int) -> void:
@@ -292,7 +293,7 @@ func _on_delete_student_popup_accepted() -> void:
 		if UserDataManager.teacher_settings.students.has(selected_device):
 			show_device(selected_device)
 		else:
-			refresh_devices_tabs()
+			refresh_devices()
 
 
 func update_student_name(student_code: int, student_name: String) -> void:

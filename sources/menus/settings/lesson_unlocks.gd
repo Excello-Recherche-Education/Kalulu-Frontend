@@ -201,7 +201,7 @@ func _device_selection_refresh() -> void:
 func _device_button_pressed(device_id: int) -> void:
 	device_selection_container.hide()
 	UserDataManager.teacher_settings.update_student_device(student, device_id)
-	await teacher_settings.refresh_devices_tabs()
+	teacher_settings.refresh_devices()
 	device = device_id
 	Log.info("LessonUnlocks: Updated student %d to device %d" % [student, device_id])
 	var res_set: Dictionary = await ServerManager.set_student_data(student, {"device_id": device_id})
