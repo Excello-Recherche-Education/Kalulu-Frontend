@@ -149,6 +149,41 @@ func test_the_content_is_placed_where_the_mockups_put_it() -> void:
 		REFERENCE_VIEWPORT.y - Design.PAGE_MARGIN_BOTTOM, 2.0)
 
 
+func test_every_field_fills_the_content_column() -> void:
+	# The mockups give each field the whole centre column and let the title above
+	# ask the question, instead of putting a label beside every field. A leftover
+	# label both repeats the title and pushes the field off centre, so measuring
+	# the fields is enough to catch one.
+	for path: String in STEP_SCENES:
+		var viewport: SubViewport = SubViewport.new()
+		viewport.size = REFERENCE_VIEWPORT
+		add_child_autofree(viewport)
+		var step: Step = (load(path) as PackedScene).instantiate()
+		viewport.add_child(step)
+		await get_tree().process_frame
+		await get_tree().process_frame
+
+		var expected_left: float = (REFERENCE_VIEWPORT.x - Design.CONTENT_WIDTH) / 2.0
+		for field: Control in _fields_of(step):
+			assert_almost_eq(field.size.x, float(Design.CONTENT_WIDTH), 2.0,
+				"%s: %s should fill the content column" % [path.get_file(), field.name])
+			assert_almost_eq(field.global_position.x, expected_left, 2.0,
+				"%s: %s should start at the column's left edge" % [path.get_file(), field.name])
+			assert_almost_eq(field.size.y, float(Design.FIELD_HEIGHT), 2.0,
+				"%s: %s should be a field height tall" % [path.get_file(), field.name])
+
+
+func _fields_of(step: Step) -> Array[Control]:
+	var fields: Array[Control] = []
+	# Owned nodes only: a SpinBox builds a LineEdit of its own and a dropdown's
+	# PopupMenu keeps a hidden one for type-ahead search, and neither is a field
+	# the layout is meant to place.
+	for node: Node in (step.get_node("%FormContainer") as Control).find_children("*", "", true, true):
+		if node is LineEdit or node is OptionButton or node is SpinBox:
+			fields.append(node as Control)
+	return fields
+
+
 func test_the_language_step_asks_its_question_only_once() -> void:
 	# The field used to carry a "Language" label of its own to its left, which
 	# repeated the title and pushed the field off centre. The mockups have the
