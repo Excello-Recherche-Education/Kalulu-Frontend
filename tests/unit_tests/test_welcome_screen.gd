@@ -249,3 +249,69 @@ func test_the_selector_opens_on_the_language_in_use() -> void:
 
 	assert_eq((field.items as Array[String])[field.get_selected_id()], current,
 		"the field should show the language the app is running in")
+
+
+# --- One request at a time ----------------------------------------------------
+# ServerManager owns a single HTTPRequest and a single set of result fields, and
+# every caller awaits the same request_completed signal. A second request started
+# before the first answers is refused as busy, resets the result the first one is
+# waiting on, and leaves both reading whichever reply arrives -- so a perfectly
+# good login can surface as a server error.
+#
+# These drive the guard rather than the request: starting a real login here would
+# reach the live server.
+func test_the_password_field_stays_usable_while_a_login_runs() -> void:
+	# Which is why disabling Next is not enough on its own, and why the guard is
+	# a flag rather than a disabled control.
+	assert_false(welcome.password_field.input.editable == false,
+		"the field is deliberately left editable, so Enter can still fire")
+
+
+func test_a_second_submit_is_ignored_while_a_login_is_in_flight() -> void:
+	welcome.email_field.text = "teacher@example.org"
+	welcome.password_field.text = "aValidPassword1"
+	welcome.request_in_flight = true
+
+	welcome._on_password_submitted("aValidPassword1")
+
+	assert_false(welcome.next_button.disabled,
+		"the guard should return before a second request is started")
+
+
+func test_the_button_and_enter_share_the_guard() -> void:
+	# They are the same path: Enter calls the button's handler.
+	welcome.email_field.text = "teacher@example.org"
+	welcome.password_field.text = "aValidPassword1"
+	welcome.request_in_flight = true
+
+	welcome._on_next_pressed()
+
+	assert_false(welcome.next_button.disabled, "pressing Next should be ignored too")
+
+
+func test_a_reset_is_ignored_while_a_request_is_in_flight() -> void:
+	# The reset goes through the same HTTPRequest, so it can collide with a login
+	# just as readily.
+	welcome.request_in_flight = true
+	welcome.reset_password_button.disabled = false
+
+	welcome._on_reset_password_pressed()
+
+	assert_false(welcome.reset_password_button.disabled,
+		"the reset should not have started either")
+
+
+func test_finishing_a_request_makes_the_screen_usable_again() -> void:
+	# A refused login has to be retryable, or one wrong password locks the screen.
+	welcome.request_in_flight = true
+	welcome.next_button.disabled = true
+
+	welcome._end_request()
+
+	assert_false(welcome.request_in_flight)
+	assert_false(welcome.next_button.disabled, "Next should come back")
+
+
+func test_nothing_is_in_flight_when_the_screen_opens() -> void:
+	assert_false(welcome.request_in_flight)
+	assert_false(welcome.next_button.disabled)

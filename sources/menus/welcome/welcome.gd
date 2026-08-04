@@ -16,6 +16,15 @@ const LOGIN_TAB: int = 0
 const SIGN_UP_TAB: int = 1
 
 var adult_challenge: AdultChallenge = AdultChallenge.new()
+## True while a request to the server is outstanding.
+##
+## ServerManager owns one HTTPRequest and one set of result fields, and every
+## caller awaits the same request_completed signal. A second request started
+## before the first answers is refused as busy, resets the result the first one is
+## waiting on, and leaves both reading whichever reply arrives -- so a perfectly
+## good login can come back as a server error. Disabling the button was not
+## enough: the password field still submits on Enter.
+var request_in_flight: bool = false
 
 @onready var toggle: SegmentedToggle = %Toggle
 @onready var login_panel: FormValidator = %LoginPanel
@@ -74,23 +83,27 @@ func _on_password_submitted(_text: String) -> void:
 
 
 func _on_next_pressed() -> void:
+	if request_in_flight:
+		Log.trace("Welcome: Ignoring a login while one is already in flight")
+		return
 	if not login_panel.validate():
 		Log.info("Welcome: Login form did not validate")
 		return
 
+	request_in_flight = true
 	next_button.disabled = true
 	Log.info("Welcome: Sending login request for %s" % email_field.text)
 	var response: Dictionary = await ServerManager.login(email_field.text, password_field.text)
 	if response.code != 200:
 		Log.info("Welcome: Server refused login with code %d" % response.code)
 		_show_login_error(_translation_key_for_error(response))
-		next_button.disabled = false
+		_end_request()
 		return
 
 	if not UserDataManager.login(response.body as Dictionary):
 		Log.info("Welcome: UserDataManager rejected the server response")
 		_show_login_error("LOGIN_SERVER_ERROR")
-		next_button.disabled = false
+		_end_request()
 		return
 
 	Log.info("Welcome: Login successful, synchronizing")
@@ -103,7 +116,13 @@ func _on_next_pressed() -> void:
 	var error: Error = get_tree().change_scene_to_file(LANGUAGE_CHECK_SCENE_PATH)
 	if error != OK:
 		Log.error(error_string(error))
-		next_button.disabled = false
+		_end_request()
+
+
+## Lets the screen be used again after a request has finished.
+func _end_request() -> void:
+	request_in_flight = false
+	next_button.disabled = false
 
 
 func _show_login_error(translation_key: String) -> void:
@@ -153,18 +172,26 @@ func _translation_key_for_error(response: Dictionary) -> String:
 func _on_reset_password_pressed() -> void:
 	# Reachable only after the form validated and the server replied "wrong
 	# password", so the address is known good and needs no checking here.
+	if request_in_flight:
+		Log.trace("Welcome: Ignoring a reset while a request is already in flight")
+		return
+
 	Log.info("Welcome: Password reset requested for %s" % email_field.text)
+	request_in_flight = true
 	reset_password_button.disabled = true
 	var response: Dictionary = await ServerManager.reset_password(email_field.text)
 	if response.code != 200:
 		Log.warn("Welcome: Password reset failed with code %d" % response.code)
 		login_error.text = "RESET_PASSWORD_FAILED"
 		login_error.show()
-		reset_password_button.disabled = false
+		_end_request()
 		return
 	Log.info("Welcome: Password reset accepted")
 	login_error.text = "CHECK_YOUR_EMAIL"
 	login_error.show()
+	# The button stays disabled: the mail has been sent, and asking again would
+	# only send another.
+	request_in_flight = false
 
 
 # --- Sign up (adult check) ---------------------------------------------------
