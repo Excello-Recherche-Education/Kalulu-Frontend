@@ -74,11 +74,11 @@ func highlight_stylebox(height: int = 0) -> StyleBoxFlat:
 	var capsule: int = height
 	if capsule <= 0:
 		capsule = Design.TOGGLE_HEIGHT - 2 * Design.TOGGLE_INSET
-	return MenuTheme.flat_stylebox(Design.PURPLE, capsule / 2)
+	return MenuTheme.flat_stylebox(Design.PURPLE, floori(float(capsule) / 2))
 
 
 func _pill_stylebox() -> StyleBoxFlat:
-	var box: StyleBoxFlat = MenuTheme.flat_stylebox(Color.WHITE, Design.TOGGLE_HEIGHT / 2)
+	var box: StyleBoxFlat = MenuTheme.flat_stylebox(Color.WHITE, floori(float(Design.TOGGLE_HEIGHT) / 2))
 	box.content_margin_left = Design.TOGGLE_INSET
 	box.content_margin_right = Design.TOGGLE_INSET
 	box.content_margin_top = Design.TOGGLE_INSET

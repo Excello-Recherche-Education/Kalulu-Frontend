@@ -170,4 +170,4 @@ func _update_panel_styles() -> void:
 func _chip_padding() -> int:
 	if chip_size <= 0 or key_size <= 0 or key_size >= chip_size:
 		return 0
-	return (chip_size - key_size) / 2
+	return floori(float(chip_size - key_size) / 2)
