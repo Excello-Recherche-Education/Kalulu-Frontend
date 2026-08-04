@@ -20,12 +20,17 @@ signal symbol_pressed(index: int)
 		for icon: TextureRect in icons:
 			icon.custom_minimum_size.x = key_size
 			icon.custom_minimum_size.y = key_size
+		# The chip's padding is the difference between the two sizes.
+		if is_node_ready():
+			_update_panel_styles()
 ## Size of the chip itself. Zero lets the chips stretch to fill the row, which is
 ## what the large code displays want; a value pins them, as on a student card.
 @export var chip_size: int = 0:
 	set(value):
 		chip_size = value
 		_apply_chip_size()
+		if is_node_ready():
+			_update_panel_styles()
 ## Space between chips.
 @export var chip_separation: int = 46:
 	set(value):
@@ -143,5 +148,26 @@ func _update_panel_styles() -> void:
 		# same chip the keypad and the registration summary show.
 		var filled: bool = index < digits.size()
 		var background: Color = Design.code_color(digits[index]) if filled else Color.WHITE
-		panel.add_theme_stylebox_override("panel",
-			MenuTheme.flat_stylebox(background, Design.CODE_SLOT_RADIUS))
+		var chip: StyleBoxFlat = MenuTheme.flat_stylebox(background, Design.CODE_SLOT_RADIUS)
+		var padding: int = _chip_padding()
+		chip.content_margin_left = padding
+		chip.content_margin_right = padding
+		chip.content_margin_top = padding
+		chip.content_margin_bottom = padding
+		panel.add_theme_stylebox_override("panel", chip)
+
+
+## How much of a pinned chip is padding rather than glyph.
+##
+## A PanelContainer fits its only child to its own rect, so key_size cannot make
+## the glyph smaller than the chip on its own -- custom_minimum_size is a floor,
+## not a cap, and the panel stretches the glyph straight back out to the edges.
+## Insetting through the chip's own stylebox is what leaves the shape room to be
+## recognised inside its colour.
+##
+## Zero for a chip that has not been pinned to a size: those stretch to fill the
+## row they are in, and there is no chip size to take a share of.
+func _chip_padding() -> int:
+	if chip_size <= 0 or key_size <= 0 or key_size >= chip_size:
+		return 0
+	return (chip_size - key_size) / 2
