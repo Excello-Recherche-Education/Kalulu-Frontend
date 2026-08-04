@@ -34,6 +34,7 @@ const VARIATION_TAB_PILL: StringName = &"TabPill"
 # Circular icon buttons: pale on the navy page, navy on a white card.
 const VARIATION_ICON_BUTTON_LIGHT: StringName = &"IconButtonLight"
 const VARIATION_ICON_BUTTON_DARK: StringName = &"IconButtonDark"
+const VARIATION_CHECK_BOX: StringName = &"CheckBoxSquare"
 # Panel variations.
 const VARIATION_CARD: StringName = &"Card"
 const VARIATION_STUDENT_CARD: StringName = &"StudentCard"
@@ -158,6 +159,19 @@ static func _build_buttons(theme: Theme, regular: Font) -> void:
 	# them to read against its own circle.
 	_add_icon_button(theme, VARIATION_ICON_BUTTON_LIGHT, Design.LAVENDER, Design.PURPLE)
 	_add_icon_button(theme, VARIATION_ICON_BUTTON_DARK, Design.NAVY, Color.WHITE)
+
+	# A square tick box on a white card: off-white until ticked, then filled
+	# green. A toggling Button rather than a CheckBox, because a CheckBox draws
+	# its state as a themed icon and the mockups want a filled square.
+	_add_button(theme, VARIATION_CHECK_BOX, regular, Color.WHITE, {
+		"normal": flat_stylebox(Design.SUBTLE_FIELD_FILL, Design.BUTTON_RADIUS),
+		"hover": flat_stylebox(Design.GREY_LIGHTER, Design.BUTTON_RADIUS),
+		"pressed": flat_stylebox(Design.SUCCESS, Design.BUTTON_RADIUS),
+		"disabled": flat_stylebox(Design.GREY_LIGHTER, Design.BUTTON_RADIUS),
+	})
+	theme.set_color("icon_normal_color", VARIATION_CHECK_BOX, Color.WHITE)
+	theme.set_color("icon_pressed_color", VARIATION_CHECK_BOX, Color.WHITE)
+	theme.set_color("icon_hover_pressed_color", VARIATION_CHECK_BOX, Color.WHITE)
 
 
 static func _build_fields(theme: Theme, regular: Font) -> void:

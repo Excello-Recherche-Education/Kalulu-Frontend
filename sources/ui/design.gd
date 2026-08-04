@@ -78,6 +78,16 @@ const STEP_FORM_TOP: int = 772
 const STEP_QUESTION_GAP: int = 80 # question block bottom to field top
 const STEP_INFO_GAP: int = 48 # title to the note under it
 const STEP_QUESTION_WIDTH: int = 1500 # wider than the fields, so titles fit on one line
+# The conditions and recap steps drop the field column for a full-width card
+# under a heading, rather than a question hanging over a form.
+const STEP_TITLE_TOP: int = 146
+const STEP_CARD_TOP: int = 268
+const STEP_CARD_BOTTOM: int = 1355
+const STEP_CARD_PADDING: Vector2i = Vector2i(80, 56)
+# --- Check box ----------------------------------------------------------------
+# Filled green with a white tick once ticked, off-white before.
+const CHECKBOX_SIZE: int = 90
+const CHECKBOX_GAP: int = 29
 # --- Surfaces ----------------------------------------------------------------
 const CARD_RADIUS: int = 14
 const CARD_PADDING: int = 88

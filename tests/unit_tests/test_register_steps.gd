@@ -211,3 +211,115 @@ func test_the_steps_the_wizard_branches_on_still_carry_their_names() -> void:
 	for branch: String in ["language", "type", "devices", "players"]:
 		assert_has(seen, branch,
 			"the wizard branches on '%s', so a step must carry it" % branch)
+
+
+# --- Conditions step ----------------------------------------------------------
+const CONDITIONS_STEP: String = "res://sources/menus/register/steps/general_conditions_step.tscn"
+
+
+func _mounted_conditions_step() -> Step:
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var step: Step = (load(CONDITIONS_STEP) as PackedScene).instantiate()
+	viewport.add_child(step)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	return step
+
+
+func test_the_conditions_sit_on_a_card_under_a_heading() -> void:
+	# Regression: the terms were white text straight on the background with no
+	# heading and no card, where the mockup puts them on a white card titled
+	# "Conditions". The card is the base step's question board reused, and the
+	# base blanks that panel's stylebox -- a local override beats a type
+	# variation, so the Card variation alone would not have shown.
+	var step: Step = await _mounted_conditions_step()
+
+	var card: PanelContainer = step.get_node("PanelContainer")
+	var box: StyleBox = card.get_theme_stylebox("panel")
+	assert_true(box is StyleBoxFlat, "the terms should sit on a real card")
+	assert_eq((box as StyleBoxFlat).bg_color, Color.WHITE, "the card should be white")
+	assert_almost_eq(card.global_position.y, float(Design.STEP_CARD_TOP), 2.0)
+	assert_almost_eq(card.global_position.y + card.size.y, float(Design.STEP_CARD_BOTTOM), 2.0)
+	assert_almost_eq(card.global_position.x, float(Design.PAGE_MARGIN), 2.0)
+	assert_almost_eq(card.size.x, REFERENCE_VIEWPORT.x - 2.0 * Design.PAGE_MARGIN, 2.0)
+
+	var title: Label = step.get_node("Title")
+	assert_eq(title.text, "CONDITIONS", "the card should be titled")
+	assert_eq(title.theme_type_variation, MenuTheme.VARIATION_TITLE)
+	assert_lt(title.global_position.y + title.size.y, card.global_position.y,
+		"the heading belongs above the card, not inside it")
+
+
+func test_the_terms_are_legible_on_the_card() -> void:
+	# White on white would have been the obvious way to get this wrong.
+	var step: Step = await _mounted_conditions_step()
+	var terms: RichTextLabel = step.get_node("%ConditionsLabel")
+
+	assert_eq(terms.get_theme_color("default_color"), Design.GREY_DARK,
+		"dark text, because the card is white")
+	assert_gt(terms.size.y, 400.0, "the terms should get most of the card")
+
+
+func test_the_tick_box_fills_in_when_the_terms_are_accepted() -> void:
+	var step: Step = await _mounted_conditions_step()
+	var box: Button = step.get_node("%Accept")
+	var label: Label = step.get_node("%AcceptLabel")
+
+	assert_eq(box.custom_minimum_size, Vector2(Design.CHECKBOX_SIZE, Design.CHECKBOX_SIZE))
+	assert_true(box.toggle_mode, "it has to hold its state")
+	assert_null(box.icon, "no tick before it is ticked")
+	assert_eq(label.get_theme_color("font_color"), Design.GREY_DARK)
+	assert_eq((box.get_theme_stylebox("normal") as StyleBoxFlat).bg_color,
+		Design.SUBTLE_FIELD_FILL, "an empty box reads as off-white on the card")
+	assert_eq((box.get_theme_stylebox("pressed") as StyleBoxFlat).bg_color,
+		Design.SUCCESS, "a ticked box is green")
+
+	box.button_pressed = true
+	step._on_accept_pressed()
+
+	assert_not_null(box.icon, "the tick should appear once accepted")
+	assert_eq(label.get_theme_color("font_color"), Design.PURPLE,
+		"the wording turns purple with the box, as in the mockup")
+
+
+func test_going_back_clears_the_tick_and_its_mark() -> void:
+	# button_pressed does not emit pressed, so an untick done in code has to
+	# repaint the box itself or the tick stays drawn on an unticked box.
+	var step: Step = await _mounted_conditions_step()
+	var box: Button = step.get_node("%Accept")
+	box.button_pressed = true
+	step._on_accept_pressed()
+
+	step._on_back()
+
+	assert_false(box.button_pressed)
+	assert_null(box.icon, "the tick should go with the state")
+	assert_eq((step.get_node("%AcceptLabel") as Label).get_theme_color("font_color"),
+		Design.GREY_DARK)
+
+
+func test_the_wizard_will_not_move_on_until_the_terms_are_accepted() -> void:
+	var step: Step = await _mounted_conditions_step()
+	var error: Label = step.get_node("%AcceptError")
+
+	assert_false(step._on_next(), "an unticked box should hold the wizard here")
+	assert_true(error.visible, "and say why")
+
+	(step.get_node("%Accept") as Button).button_pressed = true
+	step._on_accept_pressed()
+
+	assert_true(step._on_next())
+	assert_false(error.visible)
+
+
+func test_the_previous_button_is_translated() -> void:
+	# Regression: the base step's label was the literal "PREVIOUS", which is not
+	# a key, so every step showed the English word next to a translated "Next".
+	var step: Step = (load(BASE_STEP) as PackedScene).instantiate()
+	autofree(step)
+	var previous: Button = step.get_node("LeftMargin/LeftContainer/BackButton")
+
+	assert_ne(tr(previous.text), previous.text,
+		"the back button's label should be a translation key, not a word")
