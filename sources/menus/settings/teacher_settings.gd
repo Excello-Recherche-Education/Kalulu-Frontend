@@ -28,6 +28,7 @@ var last_device_id: int = -1
 var selected_device: int = -1
 
 @onready var device_pills: HBoxContainer = %DevicePills
+@onready var device_pills_scroll: ScrollContainer = %DevicePillsScroll
 @onready var students_container: GridContainer = %StudentsContainer
 @onready var lesson_unlocks: LessonUnlocks = $LessonUnlocks
 @onready var delete_popup: ConfirmPopup = %DeletePopup
@@ -137,6 +138,29 @@ func refresh_devices() -> void:
 	show_device(selected_device)
 
 
+## Brings the pill at `index` into view, so the selected device is on screen.
+##
+## Only ever called when the selection changes, never on its own, so scrolling
+## away from the selected device stays where the teacher left it.
+func _scroll_to_selected_pill(index: int) -> void:
+	# Waited for unconditionally: ensure_control_visible works off real geometry,
+	# and a pill that has just been built has none until the row is laid out --
+	# which is every time the settings are opened, since refresh_devices runs from
+	# _ready. A pill's size is already its minimum by then, so it is no use as a
+	# signal for whether the row has been positioned.
+	#
+	# Two of these overlapping cannot fight: the later call started later, so it
+	# resumes later and has the last word.
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	if index < 0 or index >= device_pills.get_child_count():
+		return
+	var pill: Control = device_pills.get_child(index) as Control
+	if pill:
+		device_pills_scroll.ensure_control_visible(pill)
+
+
 ## Fills the students grid with the students of `device`.
 func show_device(device: int) -> void:
 	selected_device = device
@@ -147,6 +171,7 @@ func show_device(device: int) -> void:
 		var pill: Button = device_pills.get_child(pill_index) as Button
 		if pill:
 			pill.set_pressed_no_signal(pill_index == index)
+	_scroll_to_selected_pill(index)
 
 	for child: Node in students_container.get_children():
 		child.queue_free()

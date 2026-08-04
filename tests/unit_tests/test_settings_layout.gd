@@ -81,6 +81,140 @@ func test_the_sound_button_is_the_same_size_as_the_other_icons() -> void:
 				"%s should be a round icon button's width" % button.name)
 
 
+## Adds `count` pills of the size refresh_devices builds them at.
+##
+## Deliberately not through refresh_devices: that reads UserDataManager's live
+## teacher settings, and substituting those logs the real device out on disk.
+## What is under test here is the row's layout, which only needs the pills.
+func _replace_pills(count: int) -> Array[Button]:
+	var row: HBoxContainer = screen.get_node("%DevicePills")
+	# refresh_devices has already built a pill per device of whatever account this
+	# machine is signed in to, so start from an empty row to get a fixed count.
+	# Freed rather than queue_freed: the row is measured in this same frame.
+	for child: Node in row.get_children():
+		row.remove_child(child)
+		child.free()
+	var pills: Array[Button] = []
+	for index: int in count:
+		var pill: Button = Button.new()
+		pill.text = "Appareil %d" % index
+		pill.custom_minimum_size = Vector2(Design.PILL_WIDTH, Design.PILL_HEIGHT)
+		pill.theme_type_variation = MenuTheme.VARIATION_TAB_PILL
+		row.add_child(pill)
+		pills.append(pill)
+	return pills
+
+
+func _fill_with_pills(count: int) -> Array[Button]:
+	var pills: Array[Button] = _replace_pills(count)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	return pills
+
+
+func test_the_device_row_scrolls_sideways_only() -> void:
+	var scroll: ScrollContainer = screen.get_node("%DevicePillsScroll")
+	var row: HBoxContainer = screen.get_node("%DevicePills")
+
+	assert_eq(row.get_parent(), scroll, "the pills should live inside the scroller")
+	assert_eq(scroll.horizontal_scroll_mode, ScrollContainer.SCROLL_MODE_AUTO,
+		"the row should scroll sideways, and show a bar only when it has to")
+	assert_eq(scroll.vertical_scroll_mode, ScrollContainer.SCROLL_MODE_DISABLED,
+		"the row is one pill tall, so it should never scroll vertically")
+
+
+func test_a_long_device_list_does_not_overflow_the_card() -> void:
+	# Regression, reported from a screenshot of an account with tens of devices:
+	# the pills were a bare HBoxContainer, so its minimum width ran to thousands
+	# of pixels, Godot grew it past its anchors and centred the overflow. The row
+	# then spilled off both edges of the screen with no way to reach either end.
+	await _fill_with_pills(50)
+	var scroll: ScrollContainer = screen.get_node("%DevicePillsScroll")
+	var row: HBoxContainer = screen.get_node("%DevicePills")
+	var available: float = VIEWPORT_SIZE.x - PAGE_LEFT - PAGE_RIGHT_INSET
+
+	assert_lte(scroll.get_combined_minimum_size().x, available,
+		"however many devices there are, the row must still fit the page")
+	assert_lte(screen.get_node("Page/Card").get_combined_minimum_size().x, available,
+		"the card must not be widened by the device list")
+	assert_gt(row.size.x, scroll.size.x,
+		"with 50 devices the row should be wider than its window, so there is "
+		+ "something to scroll")
+	assert_almost_eq(_right_of(scroll), VIEWPORT_SIZE.x - PAGE_RIGHT_INSET - 80.0, 4.0,
+		"the scroller should end at the card's inner right edge")
+
+
+func test_the_selected_device_is_brought_into_view() -> void:
+	var pills: Array[Button] = await _fill_with_pills(50)
+	var scroll: ScrollContainer = screen.get_node("%DevicePillsScroll")
+
+	await screen._scroll_to_selected_pill(45)
+	# ensure_control_visible sets the scroll offset straight away, but the row is
+	# only moved on the next layout pass, so the pill has not moved yet.
+	await get_tree().process_frame
+
+	var pill: Button = pills[45]
+	assert_gte(pill.global_position.x, scroll.global_position.x - 1.0,
+		"the selected device should not be off the left of the row")
+	assert_lte(pill.global_position.x + pill.size.x,
+		scroll.global_position.x + scroll.size.x + 1.0,
+		"the selected device should not be off the right of the row")
+
+
+func test_the_selected_device_is_in_view_on_the_first_open() -> void:
+	# refresh_devices runs from _ready, so on the first open the pills exist but
+	# have not been laid out. ensure_control_visible works off real geometry, and
+	# called too early it scrolls to nowhere -- which is the case that matters,
+	# since it is the one the teacher sees every time they open the settings.
+	var pills: Array[Button] = _replace_pills(50)
+
+	await screen._scroll_to_selected_pill(45)
+	await get_tree().process_frame
+
+	var scroll: ScrollContainer = screen.get_node("%DevicePillsScroll")
+	var pill: Button = pills[45]
+	assert_gt(scroll.scroll_horizontal, 0,
+		"the row should have scrolled to reach the 46th device")
+	assert_lte(pill.global_position.x + pill.size.x,
+		scroll.global_position.x + scroll.size.x + 1.0,
+		"the selected device should be on screen without the teacher scrolling")
+
+
+func test_scrolling_away_from_the_selection_is_left_alone() -> void:
+	# The selected pill is only chased when the selection changes, so a teacher
+	# looking through their devices does not get yanked back.
+	await _fill_with_pills(50)
+	var scroll: ScrollContainer = screen.get_node("%DevicePillsScroll")
+
+	scroll.scroll_horizontal = 4000
+	await get_tree().process_frame
+	var scrolled_to: int = scroll.scroll_horizontal
+	await get_tree().process_frame
+
+	assert_eq(scroll.scroll_horizontal, scrolled_to,
+		"nothing should scroll the row back on its own")
+
+
+func test_the_mouse_wheel_scrolls_the_device_row() -> void:
+	# With no vertical bar to claim it, the wheel has to drive the horizontal one,
+	# or the row is only reachable by dragging -- fine on a tablet, not on a desktop.
+	await _fill_with_pills(50)
+	var scroll: ScrollContainer = screen.get_node("%DevicePillsScroll")
+	var before: int = scroll.scroll_horizontal
+
+	var wheel: InputEventMouseButton = InputEventMouseButton.new()
+	wheel.button_index = MOUSE_BUTTON_WHEEL_DOWN
+	wheel.pressed = true
+	wheel.position = scroll.global_position + scroll.size * 0.5
+	# Local coordinates: a headless run has a 64x64 window, so the canvas
+	# transform would otherwise put the event somewhere else entirely.
+	scroll.get_viewport().push_input(wheel, true)
+	await get_tree().process_frame
+
+	assert_gt(scroll.scroll_horizontal, before,
+		"the wheel should move the row when there is nowhere to scroll vertically")
+
+
 func test_the_student_details_overlay_starts_hidden() -> void:
 	# Regression: it opened over the screen on arrival, empty, because the
 	# rebuild dropped `visible = false` from the instance.
