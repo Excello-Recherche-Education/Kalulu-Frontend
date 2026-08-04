@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d3dv4jeiwga02" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="9_theme"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="10_popup"]
 
 [sub_resource type="Gradient" id="Gradient_dx825"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
@@ -102,4 +103,12 @@ size_flags_vertical = 4
 theme_type_variation = &"PrimaryButton"
 text = "CLOSE"
 
+[node name="CodeLimitPopup" parent="." unique_id=920129447 instance=ExtResource("10_popup")]
+unique_name_in_owner = true
+visible = false
+title_text = "NO_MORE_STUDENT_CODES"
+acknowledge_only = true
+
 [connection signal="pressed" from="Popup/Container/MarginContainer/VBoxContainer/Button" to="." method="_on_popup_button_pressed"]
+[connection signal="accepted" from="CodeLimitPopup" to="." method="_on_code_limit_popup_dismissed"]
+[connection signal="refused" from="CodeLimitPopup" to="." method="_on_code_limit_popup_dismissed"]

@@ -36,6 +36,7 @@ var current_steps: Array[Step] = []
 @onready var steps: Control = %Steps
 @onready var popup: TextureRect = %Popup
 @onready var popup_info_label: Label = %PopupInfo
+@onready var code_limit_popup: ConfirmPopup = %CodeLimitPopup
 
 
 func _ready() -> void:
@@ -117,10 +118,70 @@ func _on_step_completed(step: Step) -> void:
 		"language":
 			register_data.language = UserDataManager.get_language()
 
+	# Both branches allocate codes through the same step script, so both can run
+	# the account dry. The notice carries the flow on once it is dismissed.
+	var device_step: StudentsCountStep = step as StudentsCountStep
+	if device_step and device_step.codes_ran_out:
+		_explain_the_code_limit(device_step)
+		return
+
+	await _continue()
+
+
+## Moves to the next step, or submits when the last one is done.
+func _continue() -> void:
 	if current_step == current_steps.size() - 1:
 		await _submit()
 	else:
 		_go_to_step(current_step + 1)
+
+
+## Explains that the account has run out of student codes.
+##
+## The devices still to come are dropped first: the codes are one fixed set for
+## the whole account, so a device that has not been filled in yet has nothing left
+## to fill it with. Registration carries on from here rather than dead-ending,
+## with however many students did get a code.
+func _explain_the_code_limit(device_step: StudentsCountStep) -> void:
+	var dropped: int = _drop_remaining_device_steps()
+	var created: int = (register_data.students.get(device_step.device_id, []) as Array).size()
+	if created == 0:
+		# A device with no students is not a device.
+		register_data.students.erase(device_step.device_id)
+
+	Log.info("Register: out of student codes on device %d; dropped %d later device(s)"
+		% [device_step.device_id, dropped])
+	if dropped > 0:
+		code_limit_popup.content_text = tr("STUDENT_CODES_EXHAUSTED_DEVICES_POPUP").format({
+			"students": created,
+			"device": device_step.device_id,
+			"devices": dropped,
+		})
+	else:
+		code_limit_popup.content_text = tr("STUDENT_CODES_EXHAUSTED_POPUP").format({
+			"students": created,
+		})
+	code_limit_popup.show()
+
+
+## Removes the device steps still to come, keeping the steps that close the flow.
+##
+## Returns how many devices were dropped, for the message that explains it.
+func _drop_remaining_device_steps() -> int:
+	var kept: Array[Step] = []
+	var dropped: int = 0
+	for index: int in range(current_step + 1, current_steps.size()):
+		var step: Step = current_steps[index]
+		if step is StudentsCountStep:
+			register_data.students.erase((step as StudentsCountStep).device_id)
+			step.queue_free()
+			dropped += 1
+		else:
+			kept.append(step)
+
+	current_steps.resize(current_step + 1)
+	current_steps.append_array(kept)
+	return dropped
 
 
 func _submit() -> void:
@@ -156,3 +217,8 @@ func _remove_future_steps() -> void:
 
 func _on_popup_button_pressed() -> void:
 	popup.hide()
+
+
+## Both ways out of the notice carry on: it reports, it does not ask.
+func _on_code_limit_popup_dismissed() -> void:
+	await _continue()
