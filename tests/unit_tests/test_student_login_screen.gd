@@ -40,34 +40,34 @@ func test_the_teacher_gate_is_the_adult_check() -> void:
 	# the procedure spelled out in the help text beside it. It is now the same
 	# adult check the sign-up tab and the boss minigame ask -- one step, and
 	# nothing to memorise.
+	#
+	# Checked on the detached screen, like everything else in this file: _ready
+	# changes the whole scene tree to the package downloader when the database is
+	# closed, so mounting it here would navigate the test run away. The check's own
+	# behaviour is covered in test_adult_challenge.gd, where the popup can be
+	# mounted on its own.
 	var login: GDScript = load("res://sources/menus/login/login.gd")
 	assert_false("TEACHER_PASSWORD" in login, "the two-symbol gate code should be gone")
 
-	var screen: Control = (load(LOGIN_SCENE) as PackedScene).instantiate()
-	add_child_autofree(screen)
-	await get_tree().process_frame
-
 	assert_null(screen.get_node_or_null("Footer/TeacherButton/TeacherTimer"),
 		"the five-second timer should have gone with the hold it measured")
-	var popup: AdultCheckPopup = screen.get_node_or_null("%AdultCheck")
+	var popup: AdultCheckPopup = screen.get_node_or_null("AdultCheck")
 	assert_not_null(popup, "the screen should carry the adult check")
 	assert_false(popup.visible, "which stays out of the way until asked for")
 
 
-func test_pressing_settings_asks_the_adult_check() -> void:
-	var screen: Control = (load(LOGIN_SCENE) as PackedScene).instantiate()
-	add_child_autofree(screen)
-	await get_tree().process_frame
-	var popup: AdultCheckPopup = screen.get_node("%AdultCheck")
+func test_settings_is_wired_to_the_adult_check_and_back() -> void:
+	# Two connections, either of which would fail silently: the button would do
+	# nothing, or passing the check would go nowhere.
+	var button: Button = screen.get_node("Footer/TeacherButton")
+	assert_true(button.pressed.is_connected(Callable(screen, "_on_teacher_button_pressed")),
+		"Settings should ask the check")
 
-	screen._on_teacher_button_pressed()
-	await get_tree().process_frame
-
-	assert_true(popup.visible, "the check should be on screen")
-	for digit: String in popup.challenge.code.split("", false):
-		assert_string_contains(popup.prompt_label.text,
-			tr(Design.code_symbol_name(digit)),
-			"the instruction should name symbol %s" % digit)
+	var popup: AdultCheckPopup = screen.get_node("AdultCheck")
+	assert_true(popup.passed.is_connected(Callable(screen, "_on_adult_check_passed")),
+		"passing the check should reach the screen")
+	assert_true(screen.has_method("_on_teacher_button_pressed"))
+	assert_true(screen.has_method("_on_adult_check_passed"))
 
 
 func test_the_gate_code_reads_back_before_the_keypad_is_full() -> void:

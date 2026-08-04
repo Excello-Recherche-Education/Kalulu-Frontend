@@ -70,3 +70,85 @@ func test_both_gates_ask_with_their_own_wording() -> void:
 		var instruction: String = challenge.prompt(key)
 		assert_false(instruction.contains("{1}"), "%s should have its symbols filled in" % key)
 		assert_ne(instruction, key, "%s should be translated" % key)
+
+
+# --- The dialog the teacher settings put it behind ----------------------------
+# Mounted on its own rather than through the login screen: that screen's _ready
+# navigates away when no language pack is installed. The popup itself needs
+# nothing but the challenge.
+const POPUP_SCENE: String = "res://sources/ui/adult_check_popup.tscn"
+
+
+func _popup() -> AdultCheckPopup:
+	var popup: AdultCheckPopup = (load(POPUP_SCENE) as PackedScene).instantiate()
+	add_child_autofree(popup)
+	await get_tree().process_frame
+	return popup
+
+
+func test_the_dialog_starts_out_of_the_way() -> void:
+	var popup: AdultCheckPopup = await _popup()
+
+	assert_false(popup.visible, "a CanvasLayer defaults to visible, so this has to be turned off")
+
+
+func test_opening_it_asks_something_and_shows_it() -> void:
+	var popup: AdultCheckPopup = await _popup()
+
+	popup.open()
+	await get_tree().process_frame
+
+	assert_true(popup.visible)
+	for digit: String in popup.challenge.code.split("", false):
+		assert_string_contains(popup.prompt_label.text, tr(Design.code_symbol_name(digit)),
+			"the instruction should name symbol %s" % digit)
+	assert_eq(popup.keypad.code, "", "and start from an empty keypad")
+
+
+func test_a_wrong_answer_asks_again_rather_than_refusing() -> void:
+	# Nothing to learn by guessing.
+	var popup: AdultCheckPopup = await _popup()
+	popup.open()
+	await get_tree().process_frame
+	watch_signals(popup)
+
+	popup._on_code_entered("000")
+
+	assert_true(popup.visible, "it should still be asking")
+	assert_signal_not_emitted(popup, "passed")
+	assert_eq(popup.keypad.code, "", "and the keypad should be clear for another go")
+
+
+func test_the_right_answer_passes_and_gets_out_of_the_way() -> void:
+	var popup: AdultCheckPopup = await _popup()
+	popup.open()
+	await get_tree().process_frame
+	watch_signals(popup)
+
+	popup._on_code_entered(popup.challenge.code)
+
+	assert_signal_emitted(popup, "passed")
+	assert_false(popup.visible)
+
+
+func test_closing_it_cancels_without_passing() -> void:
+	var popup: AdultCheckPopup = await _popup()
+	popup.open()
+	await get_tree().process_frame
+	watch_signals(popup)
+
+	popup._on_close_pressed()
+
+	assert_signal_emitted(popup, "cancelled")
+	assert_signal_not_emitted(popup, "passed")
+	assert_false(popup.visible)
+
+
+func test_reopening_it_asks_something_new() -> void:
+	var popup: AdultCheckPopup = await _popup()
+	var seen: Dictionary[String, bool] = {}
+	for _attempt: int in 20:
+		popup.open()
+		seen[popup.challenge.code] = true
+
+	assert_gt(seen.size(), 1, "a memorised answer should not keep working")
