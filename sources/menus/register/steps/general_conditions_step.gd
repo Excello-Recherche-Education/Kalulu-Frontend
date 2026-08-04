@@ -6,7 +6,6 @@ extends Step
 ## icon is not pulled in with the script on every step that inherits base_step.
 const TICK_ICON_PATH: String = "res://assets/menus/icons/done.svg"
 
-@onready var card: PanelContainer = $PanelContainer
 @onready var conditions_label: RichTextLabel = %ConditionsLabel
 @onready var accept: Button = %Accept
 @onready var accept_label: Label = %AcceptLabel
@@ -14,10 +13,7 @@ const TICK_ICON_PATH: String = "res://assets/menus/icons/done.svg"
 
 
 func _ready() -> void:
-	# base_step blanks the question board's panel so the question reads straight
-	# off the background. This step wants a real card there instead, and a local
-	# override beats the type variation, so the override has to go.
-	card.remove_theme_stylebox_override("panel")
+	show_question_board_as_card()
 	# From the token rather than the scene: a colour written into a .tscn is
 	# rounded to six decimals, so it stops being the token it was copied from.
 	conditions_label.add_theme_color_override("default_color", Design.GREY_DARK)

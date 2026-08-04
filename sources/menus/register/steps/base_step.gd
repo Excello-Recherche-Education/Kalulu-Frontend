@@ -17,6 +17,17 @@ signal next(step: Step)
 @onready var form_container: Control = %FormContainer
 
 
+## Turns the question board into a real card, for the steps that show one.
+##
+## base_step blanks that panel so a question reads straight off the background,
+## and a local override beats a type variation -- so a step that sets the Card
+## variation on it has to lift the override as well, or the card draws nothing.
+func show_question_board_as_card() -> void:
+	var board: PanelContainer = get_node_or_null("PanelContainer") as PanelContainer
+	if board:
+		board.remove_theme_stylebox_override("panel")
+
+
 func on_enter() -> void:
 	form_binder.read(data)
 	question_label.text = question

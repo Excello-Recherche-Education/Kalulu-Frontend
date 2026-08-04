@@ -407,6 +407,7 @@ CONDITIONS,Conditions,Condiciones,Condições,Condizioni
 ACCEPT_GENERAL_CONDITIONS,Accepter les conditions générales,Aceptar las condiciones generales,Aceitar termos e condições,Accetta i termini e le condizioni
 ACCEPT_GENERAL_CONDITIONS_ERROR,Veuillez accepter les conditions générales avant de continuer,Aceptar las condiciones generales antes de avanzar,Aceite os termos e condições antes de continuar,Accetta i termini e le condizioni prima di continuare
 REGISTRATION_SUMMARY,Récapitulatif de l’inscription,Resumen del registro,Resumo do registro,Riepilogo della registrazione
+SAVE_ALL_CODES,Enregistrer tous les codes,Guardar todos los códigos,Salvar todos os códigos,Salva tutti i codici
 VALIDATE,Confirmer,Confirmar,Confirmar,Conferma
 SUMMARY_EMAIL,Adresse email : {mail},Correo electrónico: {mail},Endereço de e-mail : {mail},Indirizzo email: {mail}
 SUMMARY_TYPE,Type de compte : {type},Tipo de cuenta: {type},Tipo de conta : {type},Tipo di account: {type}

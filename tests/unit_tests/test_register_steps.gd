@@ -360,3 +360,118 @@ func _click(step: Step, target: Control) -> void:
 	# Local coordinates: a headless run has a 64x64 window, so the canvas
 	# transform would otherwise put the event somewhere else entirely.
 	step.get_viewport().push_input(click, true)
+
+
+# --- Recap step ---------------------------------------------------------------
+const RECAP_STEP: String = "res://sources/menus/register/steps/recap_step.tscn"
+
+
+## The recap, filled in with an account of `devices` devices, mounted and laid out.
+func _mounted_recap_step(devices: int) -> RecapStep:
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var step: RecapStep = (load(RECAP_STEP) as PackedScene).instantiate()
+	viewport.add_child(step)
+
+	var settings: TeacherSettings = TeacherSettings.new()
+	settings.email = "teacher@example.org"
+	settings.account_type = TeacherSettings.AccountType.TEACHER
+	var code: int = 0
+	for device: int in range(1, devices + 1):
+		var students: Array[StudentData] = []
+		for _index: int in 4:
+			var student: StudentData = StudentData.new()
+			student.code = TeacherSettings.AVAILABLE_CODES[code]
+			students.append(student)
+			code += 1
+		settings.students[device] = students
+	step.data = settings
+	step.on_enter()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	return step
+
+
+func test_the_recap_sits_on_a_card_under_a_heading() -> void:
+	# Regression: the summary was white text straight on the background with no
+	# card, and no way to keep the codes.
+	var step: RecapStep = await _mounted_recap_step(1)
+
+	var card: PanelContainer = step.get_node("PanelContainer")
+	var box: StyleBox = card.get_theme_stylebox("panel")
+	assert_true(box is StyleBoxFlat, "the summary should sit on a real card")
+	assert_eq((box as StyleBoxFlat).bg_color, Color.WHITE)
+	assert_almost_eq(card.global_position.y, float(Design.STEP_CARD_TOP), 2.0)
+	assert_almost_eq(card.global_position.y + card.size.y, float(Design.STEP_CARD_BOTTOM), 2.0)
+
+	assert_eq((step.get_node("Title") as Label).text, "REGISTRATION_SUMMARY")
+	assert_eq((step.get_node("%Email") as Label).get_theme_color("font_color"),
+		Design.GREY_DARK, "dark text, because the card is white")
+
+
+func test_the_recap_offers_to_save_the_codes() -> void:
+	var step: RecapStep = await _mounted_recap_step(1)
+	var save: Button = step.get_node("%SaveAllCodesButton")
+
+	assert_true(save.is_visible_in_tree(), "the export has to be on this screen")
+	assert_eq(save.text, "SAVE_ALL_CODES")
+	assert_eq(save.theme_type_variation, MenuTheme.VARIATION_PRIMARY_BUTTON,
+		"it is the action the mockup highlights")
+	var card: PanelContainer = step.get_node("PanelContainer")
+	assert_almost_eq(save.global_position.x + save.size.x,
+		card.global_position.x + card.size.x - Design.STEP_CARD_PADDING.x, 4.0,
+		"the mockup puts it at the card's right edge")
+
+
+func test_confirm_waits_until_the_codes_have_been_asked_for() -> void:
+	# The codes are the only way a child logs in, and past this screen the sheet
+	# is several taps deep in Settings.
+	var step: RecapStep = await _mounted_recap_step(1)
+	var confirm: Button = step.get_node("RightMargin/RightContainer/ValidateButton")
+
+	assert_true(confirm.disabled, "Confirm should not be available yet")
+	assert_eq((confirm.get_theme_stylebox("disabled") as StyleBoxFlat).bg_color,
+		Design.GREY_LIGHT, "and should look unavailable, as the mockup shows it")
+
+	step._on_save_all_codes_button_pressed()
+	step.export_codes_file_dialog.hide()
+
+	assert_false(confirm.disabled, "asking for the sheet should open Confirm up")
+
+
+func test_cancelling_the_save_dialog_still_lets_the_teacher_continue() -> void:
+	# Asking is what counts. Whether the save was seen through is the teacher's
+	# business, and holding the wizard over it would trap them on the last step.
+	var step: RecapStep = await _mounted_recap_step(1)
+
+	step._on_save_all_codes_button_pressed()
+	step.export_codes_file_dialog.hide()
+
+	assert_true(step.codes_requested)
+	assert_false((step.get_node("RightMargin/RightContainer/ValidateButton") as Button).disabled)
+
+
+func test_the_students_are_shown_as_the_same_cards_as_everywhere_else() -> void:
+	var step: RecapStep = await _mounted_recap_step(2)
+	var sections: Array[Node] = (step.get_node("%RecapContainer") as Control).get_children()
+
+	assert_eq(sections.size(), 2, "one section per device")
+	var grid: GridContainer = (sections[0] as Node).get_node("%StudentsContainer")
+	assert_eq(grid.columns, Design.STUDENT_CARD_COLUMNS, "three cards per row, as in settings")
+	assert_eq(grid.get_theme_constant("h_separation"), Design.STUDENT_CARD_GAP)
+	assert_eq((grid.get_child(0) as Control).size, Vector2(Design.STUDENT_CARD_SIZE),
+		"the same student card the rest of the app uses")
+
+
+func test_the_recap_can_be_scrolled_when_there_are_more_students_than_fit() -> void:
+	var step: RecapStep = await _mounted_recap_step(4)
+	var scroll: ScrollContainer = step.get_node("%RecapScroll")
+	var card: PanelContainer = step.get_node("PanelContainer")
+
+	assert_eq(scroll.horizontal_scroll_mode, ScrollContainer.SCROLL_MODE_DISABLED,
+		"the cards wrap, so there is nothing to scroll sideways")
+	assert_lte(scroll.global_position.y + scroll.size.y,
+		card.global_position.y + card.size.y + 1.0, "the scroller stays inside the card")
+	assert_gt((step.get_node("%RecapContainer") as Control).size.y, scroll.size.y,
+		"four devices should give it something to scroll")
