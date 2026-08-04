@@ -28,25 +28,25 @@ func after_all() -> void:
 
 
 func test_every_unique_name_the_script_looks_up_exists() -> void:
-	for name: String in ["%DevicePills", "%StudentsContainer", "%DeletePopup", "%ChangeLanguagePopup",
+	for unique_name: String in ["%DevicePills", "%StudentsContainer", "%DeletePopup", "%ChangeLanguagePopup",
 			"%ChangeLanguageErrorPopup", "%LoadingPopup", "%AccountTypeOptionButton",
 			"%EducationMethodOptionButton", "%AddDeviceButton", "%AddStudentButton",
 			"%LabelInternetMandatory", "%AddDevicePopup", "%AddStudentPopup",
 			"%DeleteStudentPopup", "%ExportCodesFileDialog", "%MenuButton",
 			"%OverflowMenu", "%AddStudentErrorPopup"]:
-		assert_not_null(screen.get_node_or_null(name),
-			"the script resolves %s at _ready" % name)
+		assert_not_null(screen.get_node_or_null(unique_name),
+			"the script resolves %s at _ready" % unique_name)
 
 
 func test_no_dialog_is_on_screen_at_load() -> void:
 	# Regression: the rebuild dropped `visible = false` from the instanced
 	# dialogs. A ConfirmPopup is a CanvasLayer, which defaults to visible, so all
 	# seven drew at once on top of the screen and settings was unusable.
-	for name: String in ["%ChangeLanguagePopup", "%ChangeLanguageErrorPopup", "%DeletePopup",
+	for node_name: String in ["%ChangeLanguagePopup", "%ChangeLanguageErrorPopup", "%DeletePopup",
 			"%AddStudentPopup", "%AddDevicePopup", "%DeleteStudentPopup", "%LoadingPopup",
 			"%AddStudentErrorPopup"]:
-		var dialog: CanvasLayer = screen.get_node(name)
-		assert_false(dialog.visible, "%s should start hidden" % name)
+		var dialog: CanvasLayer = screen.get_node(node_name)
+		assert_false(dialog.visible, "%s should start hidden" % node_name)
 
 
 func test_the_lesson_unlocks_panel_is_still_a_direct_child() -> void:
@@ -111,10 +111,10 @@ func test_the_dropdowns_keep_their_options() -> void:
 func test_the_dropdowns_still_wrap_their_labels() -> void:
 	# fit_to_longest_item defeats autowrap, and these options are long once
 	# translated, so it has to stay off.
-	for name: String in ["%AccountTypeOptionButton", "%EducationMethodOptionButton"]:
-		var field: OptionButton = screen.get_node(name)
+	for node_name: String in ["%AccountTypeOptionButton", "%EducationMethodOptionButton"]:
+		var field: OptionButton = screen.get_node(node_name)
 		assert_false(field.fit_to_longest_item,
-			"%s must not size to its longest item or its label stops wrapping" % name)
+			"%s must not size to its longest item or its label stops wrapping" % node_name)
 
 
 func test_the_screen_uses_the_menu_theme() -> void:
@@ -208,7 +208,7 @@ func test_a_full_account_is_told_why_no_more_students_can_be_added() -> void:
 		"the count should have been filled in, not left as a placeholder")
 	assert_false(popup.content_text == "MAXIMUM_STUDENTS_REACHED_POPUP",
 		"the message has to be translated here, because it is formatted")
-	assert_string_contains(popup.content_text, str(live.student_count()),
+	assert_string_contains(popup.content_text, str(live.get_student_count()),
 		"the message should quote how many students the account has")
 
 
@@ -265,4 +265,4 @@ func test_the_students_are_counted_across_every_device() -> void:
 	for device_students: Variant in UserDataManager.teacher_settings.students.values():
 		counted += (device_students as Array).size()
 
-	assert_eq(live.student_count(), counted, "every device's students should be counted")
+	assert_eq(live.get_student_count(), counted, "every device's students should be counted")

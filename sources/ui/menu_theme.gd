@@ -143,7 +143,7 @@ static func _build_buttons(theme: Theme, regular: Font) -> void:
 
 	# Fully rounded tab, used for the device tabs in Settings. Pressed is the
 	# selected state, so it takes the brand purple.
-	var pill_radius: int = Design.PILL_HEIGHT / 2
+	var pill_radius: int = floori(float(Design.PILL_HEIGHT) / 2)
 	_add_button(theme, VARIATION_TAB_PILL, regular, Color.WHITE, {
 		"normal": flat_stylebox(Design.NAVY, pill_radius),
 		"hover": flat_stylebox(Design.NAVY.lightened(0.1), pill_radius),
@@ -279,7 +279,7 @@ static func _add_button(theme: Theme, variation: StringName, font: Font, color: 
 ## A round icon button: `circle` behind, `ink` for the glyph.
 static func _add_icon_button(theme: Theme, variation: StringName, circle: Color,
 		ink: Color) -> void:
-	var radius: int = Design.ROUND_BUTTON_SMALL / 2
+	var radius: int = floori(float(Design.ROUND_BUTTON_SMALL) / 2)
 	theme.set_type_variation(variation, "Button")
 	for state: String in ["normal", "hover", "pressed", "disabled"]:
 		var fill: Color = circle

@@ -296,7 +296,7 @@ func _on_add_student_popup_accepted() -> void:
 
 
 ## How many students the account has, across every device.
-func student_count() -> int:
+func get_student_count() -> int:
 	if not UserDataManager.teacher_settings:
 		return 0
 	var total: int = 0
@@ -322,7 +322,7 @@ func _report_add_student_failure(res: Dictionary) -> void:
 		# has just been refused one is sitting exactly on it. A second copy of
 		# that number here could only ever drift.
 		add_student_error_popup.content_text = tr("MAXIMUM_STUDENTS_REACHED_POPUP").format(
-			{"number": student_count()})
+			{"number": get_student_count()})
 	else:
 		add_student_error_popup.title_text = ""
 		add_student_error_popup.content_text = "ADD_STUDENT_FAILED"
