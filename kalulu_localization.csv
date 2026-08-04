@@ -39,6 +39,12 @@ DOWNLOADING_DATA,Téléchargement des données...,Descargando los datos...,Downl
 BACK,Précédent,Atrás,Anterior,Indietro
 NEXT,Suivant,Siguiente,Próximo,Avanti
 CANCEL,Annuler,Cancelar,Cancelar,Annulla
+AUDIO_SETTINGS,Réglages audio,Ajustes de audio,Configurações de áudio,Impostazioni audio
+VOLUME_MASTER,Général,General,Geral,Generale
+VOLUME_MUSIC,Musique,Música,Música,Musica
+VOLUME_VOICE,Voix,Voz,Voz,Voce
+VOLUME_EFFECTS,Effets,Efectos,Efeitos,Effetti
+SAVE,Enregistrer,Guardar,Salvar,Salva
 ACCOUNT_TYPE_PROMPT,Veuillez sélectionner le type de compte que vous souhaitez créer,Seleccionar el tipo de cuenta que desea crear,Selecione o tipo de conta que deseja criar,Seleziona il tipo di account che desideri creare
 ACCOUNT_TYPE,Type de compte,Tipo de cuenta,Tipo de conta,Tipo di account
 TEACHER,Enseignant,Soy docente,Professor,Insegnante

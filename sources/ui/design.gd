@@ -89,6 +89,13 @@ const STEP_CARD_PADDING: Vector2i = Vector2i(80, 56)
 const BADGE_SIZE: int = 204
 const BADGE_TICK_SIZE: Vector2i = Vector2i(97, 70)
 const BADGE_TOP: int = 269
+# --- Audio settings dialog ----------------------------------------------------
+const AUDIO_DIALOG_SIZE: Vector2i = Vector2i(1748, 1351)
+const AUDIO_ROW_PITCH: int = 200
+# A slider's grabber is drawn from an icon, which a theme cannot tint, so the
+# artwork carries the colour and this is the size it was drawn at.
+const SLIDER_GRABBER_SIZE: int = 52
+const SLIDER_TRACK_HEIGHT: int = 19
 # --- Check box ----------------------------------------------------------------
 # An outlined black square, empty until ticked and then holding a green tick.
 # Outlined rather than filled: a pale filled square all but disappears against

@@ -15,6 +15,7 @@ extends Object
 
 const THEME_PATH: String = "res://resources/themes/menu_theme.tres"
 const CHEVRON_DOWN_PATH: String = "res://assets/menus/icons/chevron_down.svg"
+const SLIDER_GRABBER_PATH: String = "res://assets/menus/icons/slider_grabber.png"
 # Label variations. The defaults are for the navy page background; the CARD_*
 # ones are for text sitting on a white surface.
 const VARIATION_TITLE: StringName = &"Title"
@@ -35,6 +36,7 @@ const VARIATION_TAB_PILL: StringName = &"TabPill"
 const VARIATION_ICON_BUTTON_LIGHT: StringName = &"IconButtonLight"
 const VARIATION_ICON_BUTTON_DARK: StringName = &"IconButtonDark"
 const VARIATION_CHECK_BOX: StringName = &"CheckBoxSquare"
+const VARIATION_VOLUME_SLIDER: StringName = &"VolumeSlider"
 # Panel variations.
 const VARIATION_CARD: StringName = &"Card"
 const VARIATION_STUDENT_CARD: StringName = &"StudentCard"
@@ -83,6 +85,7 @@ static func build() -> Theme:
 	_build_labels(theme, regular, bold)
 	_build_buttons(theme, regular)
 	_build_fields(theme, regular)
+	_build_sliders(theme)
 	_build_panels(theme)
 	return theme
 
@@ -183,6 +186,30 @@ static func _build_buttons(theme: Theme, regular: Font) -> void:
 	for state: String in ["icon_normal_color", "icon_pressed_color",
 			"icon_hover_color", "icon_hover_pressed_color"]:
 		theme.set_color(state, VARIATION_CHECK_BOX, Design.SUCCESS)
+
+
+## Volume sliders: a grey track with the played part in purple, and a round
+## purple grabber.
+##
+## A variation rather than the base HSlider, so the developer screen's own sliders
+## keep the look they have.
+static func _build_sliders(theme: Theme) -> void:
+	theme.set_type_variation(VARIATION_VOLUME_SLIDER, "HSlider")
+	var half: float = Design.SLIDER_TRACK_HEIGHT / 2.0
+	for item: Array in [["slider", Design.GREY], ["grabber_area", Design.PURPLE],
+			["grabber_area_highlight", Design.PURPLE]]:
+		# A slider takes its track thickness from the stylebox's own minimum
+		# height, which for a flat box is however much padding it carries.
+		var track: StyleBoxFlat = flat_stylebox(item[1] as Color, int(half))
+		track.content_margin_top = half
+		track.content_margin_bottom = half
+		theme.set_stylebox(item[0] as String, VARIATION_VOLUME_SLIDER, track)
+
+	# The grabber is an icon, and nothing tints it, so the artwork is already the
+	# brand purple at the size the mockup draws it.
+	var grabber: Texture2D = load(SLIDER_GRABBER_PATH) as Texture2D
+	for state: String in ["grabber", "grabber_highlight", "grabber_disabled"]:
+		theme.set_icon(state, VARIATION_VOLUME_SLIDER, grabber)
 
 
 static func _build_fields(theme: Theme, regular: Font) -> void:
