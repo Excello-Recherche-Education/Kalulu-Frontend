@@ -160,18 +160,29 @@ static func _build_buttons(theme: Theme, regular: Font) -> void:
 	_add_icon_button(theme, VARIATION_ICON_BUTTON_LIGHT, Design.LAVENDER, Design.PURPLE)
 	_add_icon_button(theme, VARIATION_ICON_BUTTON_DARK, Design.NAVY, Color.WHITE)
 
-	# A square tick box on a white card: off-white until ticked, then filled
-	# green. A toggling Button rather than a CheckBox, because a CheckBox draws
-	# its state as a themed icon and the mockups want a filled square.
+	# A square tick box on a white card: an empty black outline until ticked, then
+	# the same outline holding a green tick. Outlined rather than filled, because
+	# a pale filled square is nearly invisible against the card. A toggling Button
+	# rather than a CheckBox, which would draw its state as a themed icon beside
+	# its own text instead of as the square itself.
+	var check_border: StyleBoxFlat = outline_stylebox(Color.BLACK, Design.BUTTON_RADIUS,
+		Design.CHECKBOX_BORDER)
+	var check_hover: StyleBoxFlat = outline_stylebox(Color.BLACK, Design.BUTTON_RADIUS,
+		Design.CHECKBOX_BORDER)
+	check_hover.bg_color = Design.GREY_LIGHTER
 	_add_button(theme, VARIATION_CHECK_BOX, regular, Color.WHITE, {
-		"normal": flat_stylebox(Design.SUBTLE_FIELD_FILL, Design.BUTTON_RADIUS),
-		"hover": flat_stylebox(Design.GREY_LIGHTER, Design.BUTTON_RADIUS),
-		"pressed": flat_stylebox(Design.SUCCESS, Design.BUTTON_RADIUS),
-		"disabled": flat_stylebox(Design.GREY_LIGHTER, Design.BUTTON_RADIUS),
+		"normal": check_border,
+		"hover": check_hover,
+		"pressed": check_border,
+		"hover_pressed": check_hover,
+		"disabled": outline_stylebox(Design.GREY_LIGHT, Design.BUTTON_RADIUS,
+			Design.CHECKBOX_BORDER),
 	})
-	theme.set_color("icon_normal_color", VARIATION_CHECK_BOX, Color.WHITE)
-	theme.set_color("icon_pressed_color", VARIATION_CHECK_BOX, Color.WHITE)
-	theme.set_color("icon_hover_pressed_color", VARIATION_CHECK_BOX, Color.WHITE)
+	# The tick artwork is white, so it is tinted here rather than kept as a second
+	# green copy of the same file.
+	for state: String in ["icon_normal_color", "icon_pressed_color",
+			"icon_hover_color", "icon_hover_pressed_color"]:
+		theme.set_color(state, VARIATION_CHECK_BOX, Design.SUCCESS)
 
 
 static func _build_fields(theme: Theme, regular: Font) -> void:

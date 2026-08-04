@@ -76,6 +76,8 @@ vertical_icon_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 0
+mouse_default_cursor_shape = 2
 theme_type_variation = &"CardHeading"
 text = "ACCEPT_GENERAL_CONDITIONS"
 

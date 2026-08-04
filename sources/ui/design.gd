@@ -85,9 +85,14 @@ const STEP_CARD_TOP: int = 268
 const STEP_CARD_BOTTOM: int = 1355
 const STEP_CARD_PADDING: Vector2i = Vector2i(80, 56)
 # --- Check box ----------------------------------------------------------------
-# Filled green with a white tick once ticked, off-white before.
+# An outlined black square, empty until ticked and then holding a green tick.
+# Outlined rather than filled: a pale filled square all but disappears against
+# the white card it sits on, so it stops reading as something to press.
 const CHECKBOX_SIZE: int = 90
 const CHECKBOX_GAP: int = 29
+# Thicker than a wide button's border: the same weight around a 90px box reads
+# as a hairline.
+const CHECKBOX_BORDER: int = 5
 # --- Surfaces ----------------------------------------------------------------
 const CARD_RADIUS: int = 14
 const CARD_PADDING: int = 88

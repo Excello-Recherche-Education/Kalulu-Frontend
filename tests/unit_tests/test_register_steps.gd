@@ -271,10 +271,15 @@ func test_the_tick_box_fills_in_when_the_terms_are_accepted() -> void:
 	assert_true(box.toggle_mode, "it has to hold its state")
 	assert_null(box.icon, "no tick before it is ticked")
 	assert_eq(label.get_theme_color("font_color"), Design.GREY_DARK)
-	assert_eq((box.get_theme_stylebox("normal") as StyleBoxFlat).bg_color,
-		Design.SUBTLE_FIELD_FILL, "an empty box reads as off-white on the card")
-	assert_eq((box.get_theme_stylebox("pressed") as StyleBoxFlat).bg_color,
-		Design.SUCCESS, "a ticked box is green")
+	# Outlined, not filled: a pale filled square all but disappears against the
+	# white card, which is what made the box hard to find in the first place.
+	for state: String in ["normal", "pressed"]:
+		var style: StyleBoxFlat = box.get_theme_stylebox(state) as StyleBoxFlat
+		assert_eq(style.border_color, Color.BLACK, "the %s box is outlined in black" % state)
+		assert_eq(style.border_width_left, Design.CHECKBOX_BORDER)
+		assert_eq(style.bg_color.a, 0.0, "and empty, so only the outline shows")
+	assert_eq(box.get_theme_color("icon_pressed_color"), Design.SUCCESS,
+		"the tick inside it is green")
 
 	box.button_pressed = true
 	step._on_accept_pressed()
@@ -323,3 +328,35 @@ func test_the_previous_button_is_translated() -> void:
 
 	assert_ne(tr(previous.text), previous.text,
 		"the back button's label should be a translation key, not a word")
+
+
+func test_clicking_the_wording_ticks_the_box() -> void:
+	# The sentence is part of the control, not a caption beside it: a 90px square
+	# is a small target next to the words that explain what it means.
+	var step: Step = await _mounted_conditions_step()
+	var box: Button = step.get_node("%Accept")
+	var label: Label = step.get_node("%AcceptLabel")
+
+	assert_eq(label.mouse_filter, Control.MOUSE_FILTER_STOP,
+		"a Label ignores the mouse by default, so it would never see the click")
+	assert_eq(label.mouse_default_cursor_shape, Control.CURSOR_POINTING_HAND,
+		"and it should look clickable")
+
+	_click(step, label)
+	assert_true(box.button_pressed, "clicking the wording should tick the box")
+	assert_not_null(box.icon, "and mark it")
+
+	_click(step, label)
+	assert_false(box.button_pressed, "clicking it again should untick it")
+	assert_null(box.icon)
+
+
+## Clicks the centre of `target`, the way a finger would.
+func _click(step: Step, target: Control) -> void:
+	var click: InputEventMouseButton = InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	click.position = target.global_position + target.size * 0.5
+	# Local coordinates: a headless run has a 64x64 window, so the canvas
+	# transform would otherwise put the event somewhere else entirely.
+	step.get_viewport().push_input(click, true)

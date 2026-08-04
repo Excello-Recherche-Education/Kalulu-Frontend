@@ -21,6 +21,9 @@ func _ready() -> void:
 	# From the token rather than the scene: a colour written into a .tscn is
 	# rounded to six decimals, so it stops being the token it was copied from.
 	conditions_label.add_theme_color_override("default_color", Design.GREY_DARK)
+	# The wording is part of the control, not a caption beside it: a 90px square
+	# is a small target next to the sentence that explains it.
+	accept_label.gui_input.connect(_on_accept_label_gui_input)
 	_refresh_accept()
 
 
@@ -47,6 +50,16 @@ func _on_validate_button_pressed() -> void:
 func _on_accept_pressed() -> void:
 	accept_error.hide()
 	_refresh_accept()
+
+
+## Ticking the box by clicking the sentence next to it.
+func _on_accept_label_gui_input(event: InputEvent) -> void:
+	var click: InputEventMouseButton = event as InputEventMouseButton
+	if not click or click.button_index != MOUSE_BUTTON_LEFT or not click.pressed:
+		return
+	accept_label.accept_event()
+	accept.button_pressed = not accept.button_pressed
+	_on_accept_pressed()
 
 
 ## Fills the box in and turns the wording purple once the terms are accepted.
