@@ -22,6 +22,12 @@ const EXPORT_SECTION_FONT_SIZE: int = 32
 const EXPORT_TEXT_FONT_SIZE: int = 28
 const EXPORT_STUDENTS_PER_COLUMN: int = 16
 const EXPORT_STUDENTS_PER_PAGE: int = EXPORT_STUDENTS_PER_COLUMN * EXPORT_COLUMNS
+## What the server answers with when the account has used up every student code.
+##
+## Matched on the message because that is all the server sends: the status is a
+## plain 400, the same as every other rejection. Should the wording ever change,
+## the teacher gets the generic failure instead of the wrong explanation.
+const STUDENT_LIMIT_ERROR: String = "Maximum student limit reached"
 
 var last_device_id: int = -1
 ## Device whose students are on screen, or -1 before the first is chosen.
@@ -42,6 +48,7 @@ var selected_device: int = -1
 @onready var label_internet_mandatory: Label = %LabelInternetMandatory
 @onready var add_device_popup: CanvasLayer = %AddDevicePopup
 @onready var add_student_popup: CanvasLayer = %AddStudentPopup
+@onready var add_student_error_popup: ConfirmPopup = %AddStudentErrorPopup
 @onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
 @onready var export_codes_file_dialog: FileDialog = %ExportCodesFileDialog
 @onready var menu_button: Button = %MenuButton
@@ -285,7 +292,41 @@ func _on_add_student_popup_accepted() -> void:
 		UserDataManager.update_configuration(res.body as Dictionary)
 		show_device(selected_device)
 	else:
-		Log.error("SettingsTeacherSettings: Request to add student failed. Error code " + str(res.code))
+		_report_add_student_failure(res)
+
+
+## How many students the account has, across every device.
+func student_count() -> int:
+	if not UserDataManager.teacher_settings:
+		return 0
+	var total: int = 0
+	for device_students: Variant in UserDataManager.teacher_settings.students.values():
+		total += (device_students as Array).size()
+	return total
+
+
+## Tells the teacher why the student was not added.
+##
+## Adding a device adds its first student, so both ways in end up here and both
+## can run into the same ceiling.
+func _report_add_student_failure(res: Dictionary) -> void:
+	Log.error("SettingsTeacherSettings: Request to add student failed. Error code %s, body %s"
+		% [str(res.code), str(res.body)])
+	var body: Dictionary = res.body as Dictionary if res.body is Dictionary else {}
+
+	if body.get("error", "") == STUDENT_LIMIT_ERROR:
+		add_student_error_popup.title_text = "MAXIMUM_STUDENTS_REACHED"
+		# The number comes from the account rather than from a copy of the
+		# server's limit kept here: a student's code is what the child taps to
+		# log in, so the ceiling is however many codes exist, and an account that
+		# has just been refused one is sitting exactly on it. A second copy of
+		# that number here could only ever drift.
+		add_student_error_popup.content_text = tr("MAXIMUM_STUDENTS_REACHED_POPUP").format(
+			{"number": student_count()})
+	else:
+		add_student_error_popup.title_text = ""
+		add_student_error_popup.content_text = "ADD_STUDENT_FAILED"
+	add_student_error_popup.show()
 
 
 func _on_add_device_button_pressed() -> void:
@@ -300,6 +341,10 @@ func _on_add_device_popup_accepted() -> void:
 		# one wondering whether anything happened.
 		selected_device = last_device_id + 1
 		refresh_devices()
+	else:
+		# This path used to fail in complete silence, which is how a full account
+		# looked like a broken button.
+		_report_add_student_failure(res)
 
 
 func _on_lesson_unlocks_student_deleted(_code: int) -> void:

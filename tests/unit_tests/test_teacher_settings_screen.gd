@@ -13,11 +13,18 @@ extends GutTest
 const SETTINGS_SCENE: String = "res://sources/menus/settings/teacher_settings.tscn"
 
 var screen: Control
+## Built on demand by _live_screen and shared by every test that needs one.
+var live_screen: SettingsTeacherSettings
 
 
 func before_each() -> void:
 	screen = (load(SETTINGS_SCENE) as PackedScene).instantiate()
 	autofree(screen)
+
+
+func after_all() -> void:
+	if live_screen:
+		live_screen.free()
 
 
 func test_every_unique_name_the_script_looks_up_exists() -> void:
@@ -26,7 +33,7 @@ func test_every_unique_name_the_script_looks_up_exists() -> void:
 			"%EducationMethodOptionButton", "%AddDeviceButton", "%AddStudentButton",
 			"%LabelInternetMandatory", "%AddDevicePopup", "%AddStudentPopup",
 			"%DeleteStudentPopup", "%ExportCodesFileDialog", "%MenuButton",
-			"%OverflowMenu"]:
+			"%OverflowMenu", "%AddStudentErrorPopup"]:
 		assert_not_null(screen.get_node_or_null(name),
 			"the script resolves %s at _ready" % name)
 
@@ -36,7 +43,8 @@ func test_no_dialog_is_on_screen_at_load() -> void:
 	# dialogs. A ConfirmPopup is a CanvasLayer, which defaults to visible, so all
 	# seven drew at once on top of the screen and settings was unusable.
 	for name: String in ["%ChangeLanguagePopup", "%ChangeLanguageErrorPopup", "%DeletePopup",
-			"%AddStudentPopup", "%AddDevicePopup", "%DeleteStudentPopup", "%LoadingPopup"]:
+			"%AddStudentPopup", "%AddDevicePopup", "%DeleteStudentPopup", "%LoadingPopup",
+			"%AddStudentErrorPopup"]:
 		var dialog: CanvasLayer = screen.get_node(name)
 		assert_false(dialog.visible, "%s should start hidden" % name)
 
@@ -147,3 +155,114 @@ func test_the_dialogs_carry_their_headings() -> void:
 		var popup: ConfirmPopup = screen.get_node(pair[0] as String)
 		assert_eq(popup.title_text, pair[1], "%s should have a heading" % pair[0])
 		assert_false(popup.content_text.is_empty(), "%s should have a message" % pair[0])
+
+
+## A screen with _ready actually run, for the tests that drive its handlers.
+##
+## before_each leaves its copy detached on purpose, but the handlers reach the
+## dialogs through @onready lookups, which stay null until the screen is in a
+## tree. Built once and shared: _ready starts a connectivity check and
+## ServerManager owns a single HTTPRequest, so one screen per test would stack
+## requests on top of each other and the engine would refuse the later ones.
+func _live_screen() -> SettingsTeacherSettings:
+	if not live_screen:
+		live_screen = (load(SETTINGS_SCENE) as PackedScene).instantiate()
+		add_child(live_screen)
+		await get_tree().process_frame
+	# Clear whatever the previous test left showing, so an assertion that the
+	# dialog is up cannot pass on the back of another test's work.
+	live_screen.add_student_error_popup.hide()
+	live_screen.add_student_error_popup.title_text = ""
+	live_screen.add_student_error_popup.content_text = ""
+	return live_screen
+
+
+# The screen logs the rejection as well as showing it, which is exactly what is
+# being asked for here. Acknowledge it so GUT does not report it as an unexpected
+# error. Must run inside the test: GUT checks for unhandled errors before
+# after_each().
+func _accept_the_logged_failure() -> void:
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
+func test_a_full_account_is_told_why_no_more_students_can_be_added() -> void:
+	# The server answers a plain 400 with {"error": "Maximum student limit
+	# reached"} once every student code is taken. Both ways of adding a student
+	# run into it -- adding a device adds its first student -- and the add-device
+	# path used to swallow the failure whole, so a full account looked like a
+	# broken button.
+	var live: SettingsTeacherSettings = await _live_screen()
+
+	live._report_add_student_failure({
+		"success": false,
+		"code": 400,
+		"body": {"error": SettingsTeacherSettings.STUDENT_LIMIT_ERROR},
+	})
+
+	_accept_the_logged_failure()
+	var popup: ConfirmPopup = live.add_student_error_popup
+	assert_true(popup.visible, "the teacher should be told, not just the log")
+	assert_eq(popup.title_text, "MAXIMUM_STUDENTS_REACHED")
+	assert_false(popup.content_text.contains("{number}"),
+		"the count should have been filled in, not left as a placeholder")
+	assert_false(popup.content_text == "MAXIMUM_STUDENTS_REACHED_POPUP",
+		"the message has to be translated here, because it is formatted")
+	assert_string_contains(popup.content_text, str(live.student_count()),
+		"the message should quote how many students the account has")
+
+
+func test_any_other_add_student_failure_still_says_something() -> void:
+	# Matching on the server's wording means a change to it must not go back to
+	# failing silently -- it should fall back to the general message.
+	var live: SettingsTeacherSettings = await _live_screen()
+
+	live._report_add_student_failure({"success": false, "code": 500, "body": {}})
+
+	_accept_the_logged_failure()
+	var popup: ConfirmPopup = live.add_student_error_popup
+	assert_true(popup.visible)
+	assert_eq(popup.content_text, "ADD_STUDENT_FAILED",
+		"an unrecognised failure should get the general message")
+	assert_true(popup.title_text.is_empty(),
+		"the general message reads as one sentence, so it needs no heading")
+
+
+func test_a_body_that_is_not_a_dictionary_does_not_break_the_report() -> void:
+	# ServerManager leaves `body` as whatever JSON came back, which for a gateway
+	# error is a bare string rather than an object.
+	var live: SettingsTeacherSettings = await _live_screen()
+
+	live._report_add_student_failure({"success": false, "code": 502, "body": "Bad Gateway"})
+
+	_accept_the_logged_failure()
+	assert_true(live.add_student_error_popup.visible)
+	assert_eq(live.add_student_error_popup.content_text, "ADD_STUDENT_FAILED")
+
+
+func test_the_error_notice_only_offers_a_way_out_of_itself() -> void:
+	# There is nothing to decide, so a Cancel beside Confirm would only make the
+	# reader look for the difference between them.
+	var live: SettingsTeacherSettings = await _live_screen()
+	var popup: ConfirmPopup = live.add_student_error_popup
+
+	assert_true(popup.acknowledge_only, "the error notice should be acknowledge-only")
+	assert_false(popup.cancel_button.visible, "there should be no second button")
+	assert_true(popup.confirm_button.visible, "there should be a way to dismiss it")
+	assert_eq(popup.confirm_button.text, ConfirmPopup.ACKNOWLEDGE_TEXT)
+
+
+func test_the_students_are_counted_across_every_device() -> void:
+	# The limit message quotes this number rather than a copy of the server's,
+	# which could only drift; an account that has just been refused a student is
+	# sitting exactly on the ceiling.
+	if not UserDataManager.teacher_settings:
+		pending("needs a signed-in teacher")
+		return
+	var live: SettingsTeacherSettings = await _live_screen()
+
+	var counted: int = 0
+	for device_students: Variant in UserDataManager.teacher_settings.students.values():
+		counted += (device_students as Array).size()
+
+	assert_eq(live.student_count(), counted, "every device's students should be counted")

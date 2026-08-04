@@ -296,6 +296,11 @@ unique_name_in_owner = true
 visible = false
 content_text = "CHANGE_LANGUAGE_ERROR"
 
+[node name="AddStudentErrorPopup" parent="." unique_id=144215826 instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+visible = false
+acknowledge_only = true
+
 [node name="DeletePopup" parent="." unique_id=635237219 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false
