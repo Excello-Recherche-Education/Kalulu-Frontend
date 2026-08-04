@@ -1,7 +1,7 @@
 extends Control
 
 const TEACHER_PASSWORD: String = "42"
-const BACK_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
+const BACK_SCENE_PATH: String = EntryFlow.DEVICE_SELECTION_SCENE_PATH
 const NEXT_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
@@ -88,7 +88,7 @@ func _on_code_keypad_code_entered(password: String) -> void:
 
 
 func _on_back_button_pressed() -> void:
-	Log.trace("LoginScreen: Back button pressed, returning to main menu")
+	Log.trace("LoginScreen: Back button pressed, returning to device selection")
 	get_tree().change_scene_to_file(BACK_SCENE_PATH)
 
 

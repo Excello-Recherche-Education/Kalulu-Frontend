@@ -19,6 +19,10 @@ const WELCOME_SCENE_PATH: String = "res://sources/menus/welcome/welcome.tscn"
 # language with the server and installs any pack update before the package
 # downloader hands over to the device or access-code screen.
 const SIGNED_IN_SCENE_PATH: String = "res://sources/menus/language_selection/language_check.tscn"
+# Where the child ends up once the pack is in place: the access-code screen, or
+# device selection first when this install has not been given a device yet.
+const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
+const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
 const GREETING_SPEECH_CATEGORY: String = "title_screen"
 const GREETING_SPEECH_NAME: String = "tuto_welcome_oneshot"
 
@@ -69,3 +73,24 @@ static func scene_for(signed_in: bool) -> String:
 ## The screen to open once the greeting is done, or skipped.
 static func scene_after_greeting() -> String:
 	return scene_for(has_connection_token())
+
+
+## The child's own screens: the access-code screen, or device selection when
+## this install has not been assigned a device yet.
+static func device_scene() -> String:
+	var settings: DeviceSettings = UserDataManager.get_device_settings()
+	if settings and settings.device_id:
+		return LOGIN_SCENE_PATH
+	return DEVICE_SELECTION_SCENE_PATH
+
+
+## Where the app belongs when it cannot reach the server.
+##
+## Deliberately not the language check, even though that is where a signed-in
+## device normally goes: the check is what sends it to the downloader in the
+## first place, so returning there after a download failure would loop. A device
+## with an account carries on with whatever pack it already has.
+static func scene_when_offline() -> String:
+	if not has_connection_token():
+		return WELCOME_SCENE_PATH
+	return device_scene()

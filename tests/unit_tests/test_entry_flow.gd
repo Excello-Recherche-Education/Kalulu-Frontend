@@ -115,3 +115,66 @@ func test_the_greeting_uses_the_speech_the_title_screen_always_used() -> void:
 	assert_eq(EntryFlow.greeting_speech_path(),
 		Database.get_kalulu_speech_path("title_screen", "tuto_welcome_oneshot"),
 		"the greeting should be the title screen's welcome speech")
+
+
+func test_the_retired_entry_screens_are_gone() -> void:
+	# The old main menu hid the login form behind a Play button and sent sign-up
+	# off to a separate adult check. The welcome screen replaced both, but four
+	# paths still pointed at the old one -- so a child tapping Back, or a failed
+	# pack download, landed on the pre-redesign design.
+	for path: String in ["res://sources/menus/main/main_menu.tscn",
+			"res://sources/menus/adult_check/adult_check.tscn"]:
+		assert_false(ResourceLoader.exists(path), "%s should no longer exist" % path)
+
+
+func test_the_childs_screens_are_reachable_and_real() -> void:
+	for path: String in [EntryFlow.LOGIN_SCENE_PATH, EntryFlow.DEVICE_SELECTION_SCENE_PATH]:
+		assert_true(ResourceLoader.exists(path), "%s should exist" % path)
+
+
+func test_a_device_with_no_device_number_picks_one_first() -> void:
+	# device_scene is read straight off the device settings, so it is checked
+	# against whatever this machine is: both answers are correct, and which one
+	# comes back has to match the reason for it.
+	var settings: DeviceSettings = UserDataManager.get_device_settings()
+	if settings and settings.device_id:
+		assert_eq(EntryFlow.device_scene(), EntryFlow.LOGIN_SCENE_PATH,
+			"a device that has been assigned a number goes straight to the code screen")
+	else:
+		assert_eq(EntryFlow.device_scene(), EntryFlow.DEVICE_SELECTION_SCENE_PATH,
+			"a device with no number has to be given one first")
+
+
+func test_being_offline_never_routes_back_into_the_downloader() -> void:
+	# The language check is what sends a signed-in device to the downloader, so
+	# answering the download's own failure with the language check would loop.
+	assert_ne(EntryFlow.scene_when_offline(), EntryFlow.SIGNED_IN_SCENE_PATH,
+		"the offline answer must not be the screen that starts the download")
+	assert_true(ResourceLoader.exists(EntryFlow.scene_when_offline()))
+
+
+func test_a_device_with_no_account_goes_to_the_welcome_screen_when_offline() -> void:
+	if EntryFlow.has_connection_token():
+		pending("this device holds a token; the signed-out branch needs one that does not")
+		return
+
+	assert_eq(EntryFlow.scene_when_offline(), EntryFlow.WELCOME_SCENE_PATH)
+
+
+func test_the_access_code_screen_goes_back_to_choosing_a_device() -> void:
+	# Its heading is "Log in to Device 1", so back is where that device was
+	# chosen. It used to be the old main menu.
+	var login: GDScript = load("res://sources/menus/login/login.gd")
+	assert_eq(login.BACK_SCENE_PATH, EntryFlow.DEVICE_SELECTION_SCENE_PATH)
+
+
+func test_a_scene_that_fails_to_load_falls_back_to_the_splash() -> void:
+	# The splash re-runs the whole entry decision, so the fallback does not have
+	# to guess where the player belongs.
+	assert_eq(SceneLoader.FALLBACK_SCENE_PATH, EntryFlow.SPLASH_SCENE_PATH)
+
+
+func test_developer_settings_return_somewhere_that_exists() -> void:
+	var developer: GDScript = load("res://sources/menus/settings/developer_settings.gd")
+	assert_true(ResourceLoader.exists(developer.return_path),
+		"the developer screen's default exit should still be a real scene")

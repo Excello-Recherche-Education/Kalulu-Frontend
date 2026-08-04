@@ -11,9 +11,6 @@ enum DownloadError {
 	REPLACE_FAILED,
 }
 
-const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
-const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
-const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
 # Translation key shown in the error popup for each DownloadError value
 const ERROR_MESSAGES: Array[String] = [
@@ -245,8 +242,8 @@ func _show_error(error: DownloadError) -> void:
 	error_popup.show()
 
 
-func _go_to_main_menu() -> void:
-	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
+func _go_to_offline_scene() -> void:
+	get_tree().change_scene_to_file(EntryFlow.scene_when_offline())
 
 
 func _go_to_next_scene() -> void:
@@ -256,14 +253,9 @@ func _go_to_next_scene() -> void:
 	if not server_language_version.is_empty():
 		UserDataManager.set_language_version(language, server_language_version)
 	
-	# Check if we have a valid device id
-	if not UserDataManager.get_device_settings().device_id:
-		Log.trace("PackageDownloader: No device id found, going to device selection")
-		get_tree().change_scene_to_file(DEVICE_SELECTION_SCENE_PATH)
-	# Go directly to the login scene
-	else:
-		Log.trace("PackageDownloader: Device id found, going to login scene")
-		get_tree().change_scene_to_file(LOGIN_SCENE_PATH)
+	var next_scene: String = EntryFlow.device_scene()
+	Log.trace("PackageDownloader: Handing over to %s" % next_scene)
+	get_tree().change_scene_to_file(next_scene)
 
 
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
@@ -287,4 +279,4 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 
 
 func _on_disconnected_popup_accepted() -> void:
-	_go_to_main_menu()
+	_go_to_offline_scene()

@@ -10,8 +10,8 @@ var items: Array[String] = []
 
 
 func _ready() -> void:
-	# Guarded because main_menu.tscn still makes this connection in the scene, and
-	# Godot errors on connecting the same callable twice.
+	# Guarded so a scene that also makes this connection still works: Godot errors
+	# on connecting the same callable twice.
 	if not item_selected.is_connected(_on_item_selected):
 		item_selected.connect(_on_item_selected)
 

@@ -14,7 +14,7 @@ extends Node
 
 ## Scene shown if the requested scene fails to load, so the player is never
 ## stuck on a black screen.
-const FALLBACK_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
+const FALLBACK_SCENE_PATH: String = EntryFlow.SPLASH_SCENE_PATH
 
 var _is_changing: bool = false
 
