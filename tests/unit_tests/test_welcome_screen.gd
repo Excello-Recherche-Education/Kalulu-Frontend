@@ -90,12 +90,12 @@ func test_the_language_field_lists_the_supported_locales() -> void:
 
 
 func test_the_adult_challenge_is_one_of_the_available_codes() -> void:
-	assert_has(TeacherSettings.AVAILABLE_CODES, int(welcome.adult_challenge),
+	assert_has(TeacherSettings.AVAILABLE_CODES, int(welcome.adult_challenge.code),
 		"the challenge must be a code the keypad can actually produce")
 
 
 func test_the_adult_prompt_names_the_three_symbols() -> void:
-	var digits: PackedStringArray = welcome.adult_challenge.split("", false)
+	var digits: PackedStringArray = welcome.adult_challenge.code.split("", false)
 	for digit: String in digits:
 		assert_string_contains(welcome.adult_prompt.text, tr(Design.code_symbol_name(digit)),
 			"the prompt should name symbol %s" % digit)
@@ -104,7 +104,7 @@ func test_the_adult_prompt_names_the_three_symbols() -> void:
 func test_a_wrong_code_resets_the_challenge() -> void:
 	welcome.toggle.selected = SIGN_UP_TAB
 	await get_tree().process_frame
-	var wrong: String = _code_other_than(welcome.adult_challenge)
+	var wrong: String = _code_other_than(welcome.adult_challenge.code)
 
 	for digit: String in wrong.split("", false):
 		welcome.keypad.toggle_digit(digit)
@@ -118,7 +118,7 @@ func test_revisiting_sign_up_issues_a_fresh_challenge() -> void:
 	var seen: Dictionary[String, bool] = {}
 	for _attempt: int in 20:
 		welcome.toggle.selected = SIGN_UP_TAB
-		seen[welcome.adult_challenge] = true
+		seen[welcome.adult_challenge.code] = true
 		welcome.toggle.selected = LOGIN_TAB
 	assert_gt(seen.size(), 1, "the challenge should not be the same every visit")
 

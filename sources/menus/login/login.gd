@@ -1,6 +1,5 @@
 extends Control
 
-const TEACHER_PASSWORD: String = "42"
 const BACK_SCENE_PATH: String = EntryFlow.DEVICE_SELECTION_SCENE_PATH
 const NEXT_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
@@ -20,7 +19,7 @@ var dev_last_click_time: float = 0.0
 @onready var music_player: AudioStreamPlayer = $MusicStreamPlayer
 @onready var device_number_label: Label = %DeviceNumber
 @onready var keypad: CodeKeypad = %CodeKeypad
-@onready var teacher_timer: Timer = %TeacherTimer
+@onready var adult_check: AdultCheckPopup = %AdultCheck
 @onready var kalulu_button: CanvasItem = %KaluluButton
 @onready var version_label: Label = %BuildVersionValue
 
@@ -99,21 +98,17 @@ func _on_kalulu_button_pressed() -> void:
 	kalulu_button.show()
 
 
-func _on_teacher_button_button_down() -> void:
-	if keypad.code != TEACHER_PASSWORD:
-		Log.warn("LoginScreen: Teacher button pressed with incorrect password")
-		return
-	Log.info("LoginScreen: Teacher button pressed with correct password, starting timer")
-	teacher_timer.start()
+func _on_teacher_button_pressed() -> void:
+	# The settings used to be behind a two-symbol code and a five-second hold on
+	# this button, spelled out in the help text next to it. The adult check asks
+	# the same question -- can you read this? -- in one step, and it is the same
+	# check the sign-up tab and the boss minigame already use.
+	Log.info("LoginScreen: Asking the adult check before opening the teacher settings")
+	adult_check.open()
 
 
-func _on_teacher_button_button_up() -> void:
-	Log.trace("LoginScreen: Teacher button released")
-	teacher_timer.stop()
-
-
-func _on_teacher_timer_timeout() -> void:
-	Log.info("LoginScreen: Teacher timer elapsed, opening teacher settings")
+func _on_adult_check_passed() -> void:
+	Log.info("LoginScreen: Adult check passed, opening teacher settings")
 	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(TEACHER_SCENE_PATH)
 

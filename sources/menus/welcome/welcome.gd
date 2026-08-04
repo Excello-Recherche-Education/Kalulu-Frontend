@@ -15,7 +15,7 @@ const REGISTER_SCENE_PATH: String = "res://sources/menus/register/register.tscn"
 const LOGIN_TAB: int = 0
 const SIGN_UP_TAB: int = 1
 
-var adult_challenge: String = ""
+var adult_challenge: AdultChallenge = AdultChallenge.new()
 
 @onready var toggle: SegmentedToggle = %Toggle
 @onready var login_panel: FormValidator = %LoginPanel
@@ -169,19 +169,14 @@ func _on_reset_password_pressed() -> void:
 
 # --- Sign up (adult check) ---------------------------------------------------
 func _new_adult_challenge() -> void:
-	adult_challenge = str(TeacherSettings.AVAILABLE_CODES.pick_random())
-	var digits: PackedStringArray = adult_challenge.split("", false)
-	adult_prompt.text = tr("ADULT_CHECK_PROMPT").format({
-		"1": tr(Design.code_symbol_name(digits[0])),
-		"2": tr(Design.code_symbol_name(digits[1])),
-		"3": tr(Design.code_symbol_name(digits[2])),
-	})
+	adult_challenge.renew()
+	adult_prompt.text = adult_challenge.prompt("ADULT_CHECK_PROMPT")
 	if is_node_ready():
 		keypad.clear()
 
 
 func _on_adult_code_entered(code: String) -> void:
-	if code != adult_challenge:
+	if not adult_challenge.accepts(code):
 		Log.info("Welcome: Adult check failed")
 		_new_adult_challenge()
 		return

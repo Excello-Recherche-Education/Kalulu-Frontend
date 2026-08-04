@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0bkosa20avcs"]
+[gd_scene load_steps=13 format=3 uid="uid://b0bkosa20avcs"]
 
 [ext_resource type="Script" uid="uid://b6lcp5llq0rsq" path="res://sources/menus/login/login.gd" id="1_spyuf"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://d2s3kkntep3au" path="res://assets/menus/buttons/kalulu_button_pressed.png" id="9_kal_p"]
 [ext_resource type="Texture2D" uid="uid://w25kyu12snql" path="res://assets/menus/buttons/kalulu_button_disabled.png" id="10_kal_d"]
 [ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="11_music"]
+[ext_resource type="PackedScene" path="res://sources/ui/adult_check_popup.tscn" id="99_adult"]
 
 [node name="Login" type="Control"]
 layout_mode = 3
@@ -150,11 +151,6 @@ grow_vertical = 0
 theme_type_variation = &"PrimaryButton"
 text = "SETTINGS"
 
-[node name="TeacherTimer" type="Timer" parent="Footer/TeacherButton"]
-unique_name_in_owner = true
-wait_time = 5.0
-one_shot = true
-
 [node name="BuildVersionValue" type="Label" parent="Footer"]
 unique_name_in_owner = true
 layout_mode = 1
@@ -180,9 +176,12 @@ layout_mode = 1
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_music")
 
+[node name="AdultCheck" parent="." instance=ExtResource("99_adult")]
+unique_name_in_owner = true
+visible = false
+
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Footer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
-[connection signal="button_down" from="Footer/TeacherButton" to="." method="_on_teacher_button_button_down"]
-[connection signal="button_up" from="Footer/TeacherButton" to="." method="_on_teacher_button_button_up"]
-[connection signal="timeout" from="Footer/TeacherButton/TeacherTimer" to="." method="_on_teacher_timer_timeout"]
+[connection signal="pressed" from="Footer/TeacherButton" to="." method="_on_teacher_button_pressed"]
+[connection signal="passed" from="AdultCheck" to="." method="_on_adult_check_passed"]
 [connection signal="code_entered" from="CodeKeypad" to="." method="_on_code_keypad_code_entered"]
