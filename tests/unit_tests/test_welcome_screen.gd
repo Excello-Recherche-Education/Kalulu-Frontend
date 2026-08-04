@@ -303,13 +303,19 @@ func test_a_reset_is_ignored_while_a_request_is_in_flight() -> void:
 
 func test_finishing_a_request_makes_the_screen_usable_again() -> void:
 	# A refused login has to be retryable, or one wrong password locks the screen.
+	# Regression: this restored only Next, so a reset that failed on a transient
+	# network error left "Forgot password?" on screen and permanently dead -- until
+	# another failed login happened to re-enable it.
 	welcome.request_in_flight = true
 	welcome.next_button.disabled = true
+	welcome.reset_password_button.disabled = true
 
 	welcome._end_request()
 
 	assert_false(welcome.request_in_flight)
 	assert_false(welcome.next_button.disabled, "Next should come back")
+	assert_false(welcome.reset_password_button.disabled,
+		"and so should the reset, or a failed one can never be retried")
 
 
 func test_nothing_is_in_flight_when_the_screen_opens() -> void:

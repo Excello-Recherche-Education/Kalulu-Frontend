@@ -120,9 +120,17 @@ func _on_next_pressed() -> void:
 
 
 ## Lets the screen be used again after a request has finished.
+##
+## Restores both actions, not just Next: a failed reset had disabled its own
+## button before starting, and leaving that disabled makes a transient network
+## failure look permanent -- "Forgot password?" stays on screen doing nothing.
+##
+## The reset's success path deliberately does not come through here, because
+## there the mail has gone and asking again would only send another.
 func _end_request() -> void:
 	request_in_flight = false
 	next_button.disabled = false
+	reset_password_button.disabled = false
 
 
 func _show_login_error(translation_key: String) -> void:
