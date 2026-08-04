@@ -1,9 +1,9 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://cyta4dltvcujq"]
 
-[ext_resource type="Script" path="res://sources/menus/register/account_created.gd" id="1_created"]
+[ext_resource type="Script" uid="uid://d4ch5ub6oqh0a" path="res://sources/menus/register/account_created.gd" id="1_created"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" uid="uid://d3ugw5lwdpp06" path="res://assets/menus/icons/done.svg" id="3_tick"]
-[ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="4_kalulu"]
+[ext_resource type="Texture2D" uid="uid://dyew66g5dsnt3" path="res://assets/kalulu/kalulu_sprite_sheet.png" id="4_wpdvg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
 bg_color = Color(1, 1, 1, 1)
@@ -12,7 +12,7 @@ corner_radius_top_right = 102
 corner_radius_bottom_right = 102
 corner_radius_bottom_left = 102
 
-[node name="AccountCreated" type="Control"]
+[node name="AccountCreated" type="Control" unique_id=1108883507]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +22,7 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_created")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1941933352]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +31,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.164706, 0.211765, 0.490196, 1)
 
-[node name="Kalulu" type="Control" parent="."]
+[node name="Kalulu" type="Control" parent="." unique_id=626665607]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -43,9 +43,14 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="Sprite" parent="Kalulu" instance=ExtResource("4_kalulu")]
+[node name="Sprite" type="Sprite2D" parent="Kalulu" unique_id=1773005629]
+scale = Vector2(2, 2)
+texture = ExtResource("4_wpdvg")
+hframes = 12
+vframes = 8
+frame = 43
 
-[node name="Content" type="VBoxContainer" parent="."]
+[node name="Content" type="VBoxContainer" parent="." unique_id=893755119]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -58,7 +63,7 @@ grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/separation = 90
 
-[node name="Badge" type="Panel" parent="Content"]
+[node name="Badge" type="Panel" parent="Content" unique_id=904191946]
 custom_minimum_size = Vector2(204, 204)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -66,7 +71,7 @@ size_flags_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
 
-[node name="Tick" type="TextureRect" parent="Content/Badge"]
+[node name="Tick" type="TextureRect" parent="Content/Badge" unique_id=657475859]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(97, 70)
 layout_mode = 1
@@ -85,33 +90,33 @@ texture = ExtResource("3_tick")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Headline" type="Label" parent="Content"]
+[node name="Headline" type="Label" parent="Content" unique_id=433363084]
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "ACCOUNT_CREATED"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Message" type="VBoxContainer" parent="Content"]
+[node name="Message" type="VBoxContainer" parent="Content" unique_id=835758975]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="Subhead" type="Label" parent="Content/Message"]
+[node name="Subhead" type="Label" parent="Content/Message" unique_id=616117047]
 layout_mode = 2
 theme_type_variation = &"Heading"
 text = "KALULU_READY_TO_EXPLORE"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="CodesNote" type="Label" parent="Content/Message"]
+[node name="CodesNote" type="Label" parent="Content/Message" unique_id=901451472]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="OpenFolderButton" type="Button" parent="Content/Message"]
+[node name="OpenFolderButton" type="Button" parent="Content/Message" unique_id=260987485]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -119,7 +124,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"InlineButton"
 theme_override_font_sizes/font_size = 32
 
-[node name="NextButton" type="Button" parent="."]
+[node name="NextButton" type="Button" parent="." unique_id=430049232]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(332, 164)
 layout_mode = 1
