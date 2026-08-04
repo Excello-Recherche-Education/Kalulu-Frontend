@@ -52,7 +52,7 @@ func test_the_badge_is_where_the_mockup_puts_it() -> void:
 
 	var box: StyleBoxFlat = badge.get_theme_stylebox("panel") as StyleBoxFlat
 	assert_eq(box.bg_color, Color.WHITE, "a white disc")
-	assert_eq(box.corner_radius_top_left, Design.BADGE_SIZE / 2, "and round, not square")
+	assert_eq(box.corner_radius_top_left, floori(float(Design.BADGE_SIZE) / 2), "and round, not square")
 	assert_eq((screen.get_node("%Tick") as TextureRect).self_modulate, Design.PURPLE,
 		"the tick artwork is white, so it is tinted to read on the disc")
 

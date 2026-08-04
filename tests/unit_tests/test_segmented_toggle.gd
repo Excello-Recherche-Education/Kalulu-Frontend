@@ -34,7 +34,7 @@ func test_the_capsule_looks_right_before_anything_is_laid_out() -> void:
 
 
 func test_the_capsule_is_rounded_to_a_full_half_circle() -> void:
-	var expected: int = (Design.TOGGLE_HEIGHT - 2 * Design.TOGGLE_INSET) / 2
+	var expected: int = floori(float(Design.TOGGLE_HEIGHT - 2 * Design.TOGGLE_INSET) / 2)
 	var flat: StyleBoxFlat = toggle.highlight.get_theme_stylebox("panel") as StyleBoxFlat
 	assert_eq(flat.corner_radius_top_left, expected,
 		"the capsule's radius should be half its height")

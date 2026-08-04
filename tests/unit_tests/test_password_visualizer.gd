@@ -129,7 +129,8 @@ func test_both_pinned_sizes_leave_the_shape_room() -> void:
 	for pair: Array in [[Design.CODE_CHIP_GLYPH_SIZE, Design.CODE_CHIP_SIZE], [76, 151]]:
 		var visualizer: PasswordVisualizer = await _sized_visualizer("123",
 			pair[0] as int, pair[1] as int)
-		assert_eq(visualizer._chip_padding(), ((pair[1] as int) - (pair[0] as int)) / 2,
+		assert_eq(visualizer._chip_padding(),
+			floori(float((pair[1] as int) - (pair[0] as int)) / 2),
 			"padding for a %d glyph in a %d chip" % [pair[0], pair[1]])
 
 
