@@ -43,9 +43,9 @@ func test_the_symbol_artwork_is_a_bare_glyph() -> void:
 		var image: Image = texture.get_image()
 		var opaque: int = 0
 		var white: int = 0
-		for y: int in range(0, image.get_height(), 3):
-			for x: int in range(0, image.get_width(), 3):
-				var pixel: Color = image.get_pixel(x, y)
+		for row: int in range(0, image.get_height(), 3):
+			for column: int in range(0, image.get_width(), 3):
+				var pixel: Color = image.get_pixel(column, row)
 				if pixel.a < 0.8:
 					continue
 				opaque += 1
