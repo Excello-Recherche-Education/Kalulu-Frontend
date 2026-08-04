@@ -6,8 +6,13 @@ extends TextureButton
 ## Cancel and the close cross put back the ones the dialog opened on, which is
 ## what makes trying a level out safe.
 
-## The levels the dialog opened on, to put back if it is cancelled.
-var levels_on_open: Dictionary[String, float] = {}
+## The levels the dialog opened on, in the order sliders() lists them, to put back
+## if it is cancelled.
+##
+## A typed Array rather than a Dictionary: Dictionary.get returns a Variant even
+## when the dictionary is typed, and handing that to set_master_volume is an
+## unsafe call.
+var levels_on_open: Array[float] = []
 
 @onready var dialog: CanvasLayer = %Dialog
 @onready var master_volume_slider: HSlider = %MasterVolumeSlider
@@ -26,19 +31,34 @@ func _ready() -> void:
 ## value_changed, which would write the level straight back out again -- and on
 ## cancel would record the value being undone as the one to keep.
 func read_levels() -> void:
-	for slider: HSlider in sliders():
-		slider.set_block_signals(true)
-	master_volume_slider.value = UserDataManager.get_master_volume()
-	music_volume_slider.value = UserDataManager.get_music_volume()
-	voice_volume_slider.value = UserDataManager.get_voice_volume()
-	effects_volume_slider.value = UserDataManager.get_effects_volume()
-	for slider: HSlider in sliders():
-		slider.set_block_signals(false)
+	var levels: Array[float] = saved_levels()
+	var rows: Array[HSlider] = sliders()
+	for index: int in rows.size():
+		rows[index].set_block_signals(true)
+		rows[index].value = levels[index]
+		rows[index].set_block_signals(false)
 
 
 func sliders() -> Array[HSlider]:
 	return [master_volume_slider, music_volume_slider, voice_volume_slider,
 		effects_volume_slider]
+
+
+## The levels currently saved, in the same order as sliders().
+func saved_levels() -> Array[float]:
+	return [UserDataManager.get_master_volume(), UserDataManager.get_music_volume(),
+		UserDataManager.get_voice_volume(), UserDataManager.get_effects_volume()]
+
+
+## Writes `levels` back, in the same order as sliders().
+func apply_levels(levels: Array[float]) -> void:
+	if levels.size() < 4:
+		Log.warn("SoundSettings: Cannot apply %d level(s); four were expected" % levels.size())
+		return
+	UserDataManager.set_master_volume(levels[0])
+	UserDataManager.set_music_volume(levels[1])
+	UserDataManager.set_voice_volume(levels[2])
+	UserDataManager.set_effects_volume(levels[3])
 
 
 func set_master_volume_slider(volume: float) -> void:
@@ -60,12 +80,7 @@ func set_effects_volume_slider(volume: float) -> void:
 
 func _on_volume_button_pressed() -> void:
 	read_levels()
-	levels_on_open = {
-		"master": UserDataManager.get_master_volume(),
-		"music": UserDataManager.get_music_volume(),
-		"voice": UserDataManager.get_voice_volume(),
-		"effects": UserDataManager.get_effects_volume(),
-	}
+	levels_on_open = saved_levels()
 	Log.trace("SoundSettings: Opened on %s" % str(levels_on_open))
 	dialog.show()
 
@@ -78,10 +93,7 @@ func _on_save_pressed() -> void:
 
 func _on_cancel_pressed() -> void:
 	Log.info("SoundSettings: Putting back the levels the dialog opened on")
-	UserDataManager.set_master_volume(levels_on_open.get("master", 0.0))
-	UserDataManager.set_music_volume(levels_on_open.get("music", 0.0))
-	UserDataManager.set_voice_volume(levels_on_open.get("voice", 0.0))
-	UserDataManager.set_effects_volume(levels_on_open.get("effects", 0.0))
+	apply_levels(levels_on_open)
 	read_levels()
 	dialog.hide()
 
