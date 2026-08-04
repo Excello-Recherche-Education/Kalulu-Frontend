@@ -183,3 +183,69 @@ func _code_other_than(code: String) -> String:
 		if str(value) != code:
 			return str(value)
 	return code
+
+
+# --- Language selector -------------------------------------------------------
+# The language really is applied on selection, which means writing it to the
+# device settings on disk. These tests put it back afterwards, unconditionally,
+# so a failure part-way through cannot leave the machine in another language.
+func _language_field() -> OptionButton:
+	return welcome.get_node("KeyboardSpacer/Scroll/Content/LoginPanel/LanguageField")
+
+
+func _index_of(field: OptionButton, locale: String) -> int:
+	return (field.items as Array[String]).find(locale)
+
+
+# Switching language points the database at that language's pack, and only one
+# pack is installed here, so the switch warns about the others. That is inherent
+# to what is being tested. Must run inside the test: GUT checks for unhandled
+# errors before after_each().
+func _accept_the_missing_pack_warnings() -> void:
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
+func test_the_language_selector_is_wired_to_something() -> void:
+	# Regression: the field was carried over from the old main menu without the
+	# connection that scene made for it, so choosing a language did nothing at
+	# all. Nothing errored -- the field just showed one language while the app
+	# stayed in another.
+	var field: OptionButton = _language_field()
+
+	assert_gt(field.item_count, 1, "there should be languages to choose between")
+	assert_true(field.item_selected.get_connections().size() > 0,
+		"choosing a language has to reach something")
+
+
+func test_choosing_a_language_applies_it() -> void:
+	var field: OptionButton = _language_field()
+	var original: String = UserDataManager.get_device_settings().language
+	var target: String = "fr_FR" if original != "fr_FR" else "pt_BR"
+	var index: int = _index_of(field, target)
+	assert_gte(index, 0, "%s should be one of the supported locales" % target)
+
+	field.item_selected.emit(index)
+
+	assert_eq(UserDataManager.get_device_settings().language, target,
+		"the chosen language should be the device's language")
+	assert_eq(TranslationServer.get_locale(), target,
+		"and the interface should already be reading from it")
+
+	UserDataManager.set_language(original)
+	_accept_the_missing_pack_warnings()
+	assert_eq(UserDataManager.get_device_settings().language, original,
+		"the test should leave the device on the language it found it in")
+
+
+func test_the_selector_opens_on_the_language_in_use() -> void:
+	# Otherwise it claims the app is in a language it is not, which is how the
+	# broken selector looked once something had been chosen.
+	var field: OptionButton = _language_field()
+	var current: String = UserDataManager.get_device_settings().language
+	if _index_of(field, current) < 0:
+		pending("the device is on %s, which is not a supported locale" % current)
+		return
+
+	assert_eq((field.items as Array[String])[field.get_selected_id()], current,
+		"the field should show the language the app is running in")
