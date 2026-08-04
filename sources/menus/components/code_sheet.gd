@@ -52,9 +52,7 @@ static func export_to_pdf(host: Node, settings: TeacherSettings, path: String) -
 		images.append(viewport.get_texture().get_image())
 		viewport.queue_free()
 
-	var export_path: String = path
-	if not export_path.ends_with(".pdf"):
-		export_path += ".pdf"
+	var export_path: String = pdf_path(path)
 
 	Log.info("CodeSheet: Writing %s" % export_path)
 	var save_error: Error = save_pdf(export_path, images)
@@ -63,6 +61,14 @@ static func export_to_pdf(host: Node, settings: TeacherSettings, path: String) -
 	else:
 		Log.info("CodeSheet: PDF saved")
 	return save_error
+
+
+## The path the sheet will actually be written to.
+##
+## Exposed because the caller wants to tell the teacher where it went, and it
+## would be wrong about the name if it guessed.
+static func pdf_path(path: String) -> String:
+	return path if path.ends_with(".pdf") else path + ".pdf"
 
 
 ## One Control per printed page, laid out and ready to be rendered.

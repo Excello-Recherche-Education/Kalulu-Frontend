@@ -99,4 +99,9 @@ func _on_export_codes_file_selected(path: String) -> void:
 	# The account does not exist on the server yet, so the sheet is printed from
 	# the registration data rather than from UserDataManager.
 	Log.info("Register/RecapStep: Saving the student codes to %s" % path)
-	await CodeSheet.export_to_pdf(self, data as TeacherSettings, path)
+	var error: Error = await CodeSheet.export_to_pdf(self, data as TeacherSettings, path)
+	# Handed to the confirmation screen, which offers to open the folder. Only on
+	# success: pointing at a file that was never written would be worse than
+	# saying nothing.
+	if error == OK:
+		AccountCreated.saved_codes_path = CodeSheet.pdf_path(path)

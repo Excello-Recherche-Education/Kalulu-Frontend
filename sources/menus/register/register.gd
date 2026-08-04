@@ -6,7 +6,7 @@ extends Control
 ## device, so the list grows as the answers come in.
 
 const BACK_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
-const NEXT_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
+const NEXT_SCENE_PATH: String = "res://sources/menus/register/account_created.tscn"
 
 ## Index into current_steps of the step on screen.
 ##
@@ -40,6 +40,9 @@ var current_steps: Array[Step] = []
 
 
 func _ready() -> void:
+	# A second registration in the same session must not inherit the folder the
+	# first one saved its codes to.
+	AccountCreated.saved_codes_path = ""
 	current_steps = [language_step.instantiate(), account_type_step.instantiate()]
 	Log.info("Register: Initialized registration flow with %d steps" % current_steps.size())
 	_go_to_step(current_step)

@@ -84,6 +84,11 @@ const STEP_TITLE_TOP: int = 146
 const STEP_CARD_TOP: int = 268
 const STEP_CARD_BOTTOM: int = 1355
 const STEP_CARD_PADDING: Vector2i = Vector2i(80, 56)
+# --- Account created confirmation ---------------------------------------------
+# A white disc with a purple tick, over the good news.
+const BADGE_SIZE: int = 204
+const BADGE_TICK_SIZE: Vector2i = Vector2i(97, 70)
+const BADGE_TOP: int = 269
 # --- Check box ----------------------------------------------------------------
 # An outlined black square, empty until ticked and then holding a green tick.
 # Outlined rather than filled: a pale filled square all but disappears against

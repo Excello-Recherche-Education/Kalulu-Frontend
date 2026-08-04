@@ -406,6 +406,10 @@ L’editore del sito si riserva il diritto di modificarla al fine di garantirne 
 CONDITIONS,Conditions,Condiciones,Condições,Condizioni
 ACCEPT_GENERAL_CONDITIONS,Accepter les conditions générales,Aceptar las condiciones generales,Aceitar termos e condições,Accetta i termini e le condizioni
 ACCEPT_GENERAL_CONDITIONS_ERROR,Veuillez accepter les conditions générales avant de continuer,Aceptar las condiciones generales antes de avanzar,Aceite os termos e condições antes de continuar,Accetta i termini e le condizioni prima di continuare
+ACCOUNT_CREATED,Votre compte a bien été créé,Su cuenta se ha creado correctamente,Sua conta foi criada com sucesso,Il tuo account è stato creato
+KALULU_READY_TO_EXPLORE,Kalulu est prêt à explorer avec vous !,¡Kalulu está listo para explorar con usted!,Kalulu está pronto para explorar com você!,Kalulu è pronto a esplorare con te!
+CODES_SAVED_IN_FOLDER,"Vos codes sont enregistrés dans : {folder}","Sus códigos están guardados en: {folder}","Seus códigos estão salvos em: {folder}","I tuoi codici sono salvati in: {folder}"
+CODES_AVAILABLE_IN_SETTINGS,"Vos codes restent accessibles à tout moment dans les paramètres.","Sus códigos siguen estando disponibles en los ajustes.","Seus códigos continuam disponíveis nas configurações.","I tuoi codici restano disponibili nelle impostazioni."
 REGISTRATION_SUMMARY,Récapitulatif de l’inscription,Resumen del registro,Resumo do registro,Riepilogo della registrazione
 SAVE_ALL_CODES,Enregistrer tous les codes,Guardar todos los códigos,Salvar todos os códigos,Salva tutti i codici
 VALIDATE,Confirmer,Confirmar,Confirmar,Conferma
