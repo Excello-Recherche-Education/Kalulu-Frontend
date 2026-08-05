@@ -106,10 +106,27 @@ func _on_education_method_option_button_item_selected(index: int) -> void:
 		Log.warn("SettingsTeacherSettings: Cannot assign index %d to EducationMethod" % index)
 
 
+## Empties a container now, rather than at the end of the frame.
+##
+## queue_free defers, and both callers refill the container in the same call, so
+## the new children would be appended after the old ones instead of replacing
+## them. For the pills that is not just a flicker: show_device presses
+## get_child(index) with an index into the new device list, so with a stale pill
+## still in front of them it pressed the wrong one -- adding a second device left
+## device 1 highlighted over device 2's students. The student grid meanwhile laid
+## out both sets of cards for a frame.
+##
+## Safe to free outright: neither container is rebuilt from one of its own
+## children's signals.
+func _clear_now(container: Node) -> void:
+	for child: Node in container.get_children():
+		container.remove_child(child)
+		child.free()
+
+
 ## Rebuilds the device pills and shows the selected device's students.
 func refresh_devices() -> void:
-	for child: Node in device_pills.get_children():
-		child.queue_free()
+	_clear_now(device_pills)
 
 	if not UserDataManager.teacher_settings:
 		Log.error("SettingsTeacherSettings: Teacher settings not found")
@@ -173,8 +190,7 @@ func show_device(device: int) -> void:
 			pill.set_pressed_no_signal(pill_index == index)
 	_scroll_to_selected_pill(index)
 
-	for child: Node in students_container.get_children():
-		child.queue_free()
+	_clear_now(students_container)
 	if device < 0 or not UserDataManager.teacher_settings:
 		return
 	lesson_unlocks.device = device

@@ -233,3 +233,51 @@ func test_nothing_overlaps_the_back_button() -> void:
 		var node: Control = screen.get_node(path)
 		assert_false(back_rect.intersects(Rect2(node.global_position, node.size)),
 			"%s should not sit under the back button" % path)
+
+
+# --- Replacing the pills, not stacking them ------------------------------------
+func test_a_rebuilt_pill_row_holds_only_the_new_pills() -> void:
+	# Regression: the old pills were queue_freed, which defers to the end of the
+	# frame, and the new ones were appended in the same call. show_device then
+	# pressed get_child(index) with an index into the new device list, so a stale
+	# pill in front of them shifted it -- adding a second device left device 1
+	# highlighted while the grid showed device 2's students.
+	var row: HBoxContainer = screen.get_node("%DevicePills")
+	_replace_pills(1)
+	await get_tree().process_frame
+	assert_eq(row.get_child_count(), 1, "one device to start with")
+
+	# What refresh_devices does: clear, then refill, in one call.
+	screen._clear_now(row)
+	var rebuilt: Array[Button] = _replace_pills_without_clearing(2)
+
+	assert_eq(row.get_child_count(), 2,
+		"the row should hold the new pills alone, with no frame of overlap")
+	for index: int in rebuilt.size():
+		assert_eq(row.get_child(index), rebuilt[index],
+			"child %d should be the pill just built for it" % index)
+
+
+func test_clearing_a_container_empties_it_at_once() -> void:
+	var row: HBoxContainer = screen.get_node("%DevicePills")
+	_replace_pills(3)
+	await get_tree().process_frame
+	assert_gt(row.get_child_count(), 0, "there is something to clear")
+
+	screen._clear_now(row)
+
+	assert_eq(row.get_child_count(), 0,
+		"emptied immediately, so whatever refills it starts from nothing")
+
+
+## Adds `count` pills without clearing what is already there.
+func _replace_pills_without_clearing(count: int) -> Array[Button]:
+	var row: HBoxContainer = screen.get_node("%DevicePills")
+	var pills: Array[Button] = []
+	for index: int in count:
+		var pill: Button = Button.new()
+		pill.text = "Appareil %d" % (index + 1)
+		pill.custom_minimum_size = Vector2(Design.PILL_WIDTH, Design.PILL_HEIGHT)
+		row.add_child(pill)
+		pills.append(pill)
+	return pills
