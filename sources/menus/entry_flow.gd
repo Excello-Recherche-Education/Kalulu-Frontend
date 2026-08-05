@@ -84,13 +84,31 @@ static func device_scene() -> String:
 	return DEVICE_SELECTION_SCENE_PATH
 
 
-## Where the app belongs when it cannot reach the server.
+## Where the app belongs when it cannot reach the server, or "" for nowhere.
 ##
 ## Deliberately not the language check, even though that is where a signed-in
-## device normally goes: the check is what sends it to the downloader in the
-## first place, so returning there after a download failure would loop. A device
-## with an account carries on with whatever pack it already has.
+## device normally goes: the check is what sends it to the downloader in the first
+## place, so returning there after a download failure would loop.
+##
+## An empty answer means every destination would bounce straight back, and the
+## caller has to stay where it is instead.
 static func scene_when_offline() -> String:
-	if not has_connection_token():
+	return scene_when_offline_for(has_connection_token(), Database.is_open)
+
+
+## The offline decision, given whether the device has an account and whether a
+## language pack is usable.
+##
+## Split out so all four answers can be checked without substituting the live
+## state: setting UserDataManager.teacher_settings to null logs the real device
+## out on disk.
+static func scene_when_offline_for(signed_in: bool, pack_usable: bool) -> String:
+	if not signed_in:
+		# The welcome screen needs no pack, so it is always somewhere to go.
 		return WELCOME_SCENE_PATH
+	if not pack_usable:
+		# The child's screens need the pack: the access-code screen sends a device
+		# without one straight back to the downloader, which would bounce between
+		# the two forever. There is nowhere for it to go.
+		return ""
 	return device_scene()

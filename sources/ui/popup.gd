@@ -12,8 +12,13 @@ const ACKNOWLEDGE_TEXT: String = "OK"
 ## fine as a single sentence stays a single sentence.
 @export var title_text: String = "": set = _set_title_text
 @export_multiline var content_text: String = "": set = _set_content_text
-@export var confirm_text_override: String = ""
-@export var cancel_text_override: String = ""
+## Label for the confirm button, when "Validate" is not what it does.
+##
+## A setter like the ones above, so a screen that reuses one dialog for more than
+## one message can relabel the button between shows -- setting it did nothing
+## before, because it was only read once at _ready.
+@export var confirm_text_override: String = "": set = _set_confirm_text_override
+@export var cancel_text_override: String = "": set = _set_cancel_text_override
 @export var close_on_action: bool = true
 ## A message with nothing to decide: one button, which only dismisses.
 ##
@@ -21,6 +26,11 @@ const ACKNOWLEDGE_TEXT: String = "OK"
 ## the reader look for the difference between them. `accepted` still fires, so a
 ## notice can be reacted to.
 @export var acknowledge_only: bool = false: set = _set_acknowledge_only
+
+## The button labels the scene set, to fall back to when an override is cleared.
+## Captured at _ready, before any override is applied.
+var default_confirm_text: String = ""
+var default_cancel_text: String = ""
 
 @onready var content_label: Label = %ContentLabel
 @onready var confirm_button: Button = %ConfirmButton
@@ -37,13 +47,12 @@ func _ready() -> void:
 		# The cross is drawn from a white icon so it can be tinted per surface;
 		# on the dialog's white card it takes the brand navy.
 		close_button.self_modulate = Design.NAVY
+	default_confirm_text = confirm_button.text
+	default_cancel_text = cancel_button.text
 	_set_title_text(title_text)
 	_set_content_text(content_text)
-	if confirm_text_override != "":
-		_set_confirm_text(confirm_text_override)
-	if cancel_text_override != "":
-		_set_cancel_text(cancel_text_override)
-	# After the overrides, so an explicit label still wins over the default one.
+	# Through the setter, not _refresh_button_texts: a scene that asked for an
+	# acknowledge-only dialog also needs Cancel hidden, and only this hides it.
 	_set_acknowledge_only(acknowledge_only)
 
 
@@ -60,13 +69,40 @@ func _set_content_text(p_content_text: String) -> void:
 		content_label.text = content_text
 
 
+func _set_confirm_text_override(p_confirm_text_override: String) -> void:
+	confirm_text_override = p_confirm_text_override
+	_refresh_button_texts()
+
+
+func _set_cancel_text_override(p_cancel_text_override: String) -> void:
+	cancel_text_override = p_cancel_text_override
+	_refresh_button_texts()
+
+
 func _set_acknowledge_only(p_acknowledge_only: bool) -> void:
 	acknowledge_only = p_acknowledge_only
-	if not cancel_button:
+	if cancel_button:
+		cancel_button.visible = not acknowledge_only
+	_refresh_button_texts()
+
+
+## Puts the right label on each button.
+##
+## One place for all of it, because the three cases have to undo each other: a
+## screen that reuses one dialog for several messages sets an override for one and
+## clears it for the next, and clearing it has to bring back the label the scene
+## started with rather than leaving the previous message's.
+func _refresh_button_texts() -> void:
+	if not confirm_button or not cancel_button:
 		return
-	cancel_button.visible = not acknowledge_only
-	if acknowledge_only and confirm_text_override.is_empty():
+	if confirm_text_override != "":
+		_set_confirm_text(confirm_text_override)
+	elif acknowledge_only:
 		_set_confirm_text(ACKNOWLEDGE_TEXT)
+	else:
+		_set_confirm_text(default_confirm_text)
+	_set_cancel_text(cancel_text_override if cancel_text_override != ""
+		else default_cancel_text)
 
 
 func _set_confirm_text(p_content_text: String) -> void:

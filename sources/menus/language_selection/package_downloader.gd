@@ -43,6 +43,15 @@ var current_language_version: Dictionary = {}
 
 
 func _ready() -> void:
+	_start()
+
+
+## Checks the pack and downloads it if need be.
+##
+## Separate from _ready so a failure can be tried again without leaving the
+## screen -- which for a device with no usable pack is the only recoverable
+## place to be.
+func _start() -> void:
 	await get_tree().process_frame
 	
 	language = UserDataManager.get_device_settings().language
@@ -238,12 +247,45 @@ func _copy_data(this: PackageDownloader) -> void:
 
 func _show_error(error: DownloadError) -> void:
 	Log.warn("PackageDownloader: Displaying error %d (%s)" % [error, ERROR_MESSAGES[error]])
-	error_popup.content_text = ERROR_MESSAGES[error]
+	if EntryFlow.scene_when_offline().is_empty():
+		# Nothing to fall back on: no connection and no usable pack, so there is no
+		# screen to send the device to -- the child's access-code screen comes
+		# straight back here. Say what is wrong and what would fix it, and make the
+		# button another go rather than a way out that does not exist.
+		error_popup.title_text = "NO_LANGUAGE_PACK_TITLE"
+		error_popup.content_text = "NO_LANGUAGE_PACK_POPUP"
+		error_popup.confirm_text_override = "TRY_AGAIN"
+		error_popup.acknowledge_only = true
+	else:
+		# The same dialog is reused for every error, so anything set for the case
+		# above has to be put back.
+		error_popup.title_text = ""
+		error_popup.content_text = ERROR_MESSAGES[error]
+		error_popup.confirm_text_override = ""
+		error_popup.acknowledge_only = false
 	error_popup.show()
 
 
 func _go_to_offline_scene() -> void:
-	get_tree().change_scene_to_file(EntryFlow.scene_when_offline())
+	var next_scene: String = EntryFlow.scene_when_offline()
+	if next_scene.is_empty():
+		# Nowhere to go: without a usable pack the child's access-code screen sends
+		# the device straight back here, so leaving would bounce between the two
+		# screens forever. Stay and try again -- each attempt costs a tap on the
+		# error, so it cannot spin on its own.
+		Log.warn("PackageDownloader: No usable language pack and nowhere to go; trying again")
+		_retry()
+		return
+	get_tree().change_scene_to_file(next_scene)
+
+
+## Runs the check again after a failure the user has acknowledged.
+func _retry() -> void:
+	if thread and thread.is_alive():
+		Log.trace("PackageDownloader: Not retrying while the extraction thread runs")
+		return
+	error_label.hide()
+	_start()
 
 
 func _go_to_next_scene() -> void:

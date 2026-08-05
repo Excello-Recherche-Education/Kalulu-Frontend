@@ -135,3 +135,40 @@ func test_the_dialog_uses_the_redesigned_styles() -> void:
 		MenuTheme.VARIATION_CARD_SECONDARY_BUTTON,
 		"on a white card the secondary button needs the navy outline")
 	assert_eq(popup.content_label.theme_type_variation, MenuTheme.VARIATION_CARD_BODY)
+
+
+# --- Reusing one dialog for several messages -----------------------------------
+func test_clearing_a_button_override_brings_the_original_label_back() -> void:
+	# The package downloader shows one dialog for every download error, relabelling
+	# its button "Try again" for the one case that has no way out. Clearing the
+	# override used to do nothing, so every later message kept saying "Try again".
+	var original: String = popup.confirm_button.text
+
+	popup.confirm_text_override = "TRY_AGAIN"
+	assert_eq(popup.confirm_button.text, "TRY_AGAIN")
+
+	popup.confirm_text_override = ""
+
+	assert_eq(popup.confirm_button.text, original,
+		"clearing the override should restore the label the scene set")
+
+
+func test_turning_acknowledge_only_off_restores_both_buttons() -> void:
+	var original: String = popup.confirm_button.text
+
+	popup.acknowledge_only = true
+	assert_eq(popup.confirm_button.text, ConfirmPopup.ACKNOWLEDGE_TEXT)
+	assert_false(popup.cancel_button.visible)
+
+	popup.acknowledge_only = false
+
+	assert_eq(popup.confirm_button.text, original)
+	assert_true(popup.cancel_button.visible, "the choice should come back")
+
+
+func test_an_explicit_label_wins_over_acknowledge_only() -> void:
+	popup.confirm_text_override = "TRY_AGAIN"
+	popup.acknowledge_only = true
+
+	assert_eq(popup.confirm_button.text, "TRY_AGAIN",
+		"a one-button dialog can still say what its button does")

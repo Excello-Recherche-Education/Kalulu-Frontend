@@ -178,3 +178,61 @@ func test_developer_settings_return_somewhere_that_exists() -> void:
 	var developer: GDScript = load("res://sources/menus/settings/developer_settings.gd")
 	assert_true(ResourceLoader.exists(developer.return_path),
 		"the developer screen's default exit should still be a real scene")
+
+
+# --- Nowhere to go -----------------------------------------------------------
+func test_a_device_with_no_account_always_has_the_welcome_screen() -> void:
+	# It needs no language pack, so it is somewhere to go either way.
+	for pack_usable: bool in [true, false]:
+		assert_eq(EntryFlow.scene_when_offline_for(false, pack_usable),
+			EntryFlow.WELCOME_SCENE_PATH,
+			"signed out with pack_usable=%s" % pack_usable)
+
+
+func test_a_signed_in_device_with_no_usable_pack_has_nowhere_to_go() -> void:
+	# Regression: this answered with the child's screens, and the access-code
+	# screen sends a device with a closed database straight back to the package
+	# downloader -- whose own failure came back here. Accepting the offline error
+	# bounced between the two screens forever.
+	assert_eq(EntryFlow.scene_when_offline_for(true, false), "",
+		"there is no screen a device without a pack can be sent to")
+
+
+func test_a_signed_in_device_with_a_pack_goes_to_the_childs_screens() -> void:
+	var destination: String = EntryFlow.scene_when_offline_for(true, true)
+
+	assert_false(destination.is_empty(), "with a usable pack there is somewhere to go")
+	assert_true(destination in [EntryFlow.LOGIN_SCENE_PATH,
+		EntryFlow.DEVICE_SELECTION_SCENE_PATH],
+		"it should be one of the child's screens, was %s" % destination)
+
+
+func test_the_offline_answer_is_never_a_screen_that_comes_straight_back() -> void:
+	# The access-code screen redirects to the downloader whenever the database is
+	# closed, so it must never be the answer while it is.
+	assert_ne(EntryFlow.scene_when_offline_for(true, false), EntryFlow.LOGIN_SCENE_PATH)
+	assert_ne(EntryFlow.scene_when_offline_for(true, false), EntryFlow.SIGNED_IN_SCENE_PATH,
+		"nor the language check, which is what starts the download")
+
+
+func test_the_downloader_stays_put_when_there_is_nowhere_to_go() -> void:
+	# It is the only recoverable place to be: it can try the download again.
+	var script: GDScript = load("res://sources/menus/language_selection/package_downloader.gd")
+	var downloader: Node = script.new()
+	autofree(downloader)
+
+	assert_true(downloader.has_method("_retry"),
+		"the downloader should be able to try again rather than navigate away")
+
+
+func test_the_dead_end_is_explained_in_words_the_reader_can_act_on() -> void:
+	# Being stuck on the downloader is only acceptable if it says why. The message
+	# has to name the cause and the remedy, not just report a bad folder -- the
+	# error it replaces was "Dossier de langue invalide".
+	for key: String in ["NO_LANGUAGE_PACK_TITLE", "NO_LANGUAGE_PACK_POPUP", "TRY_AGAIN"]:
+		assert_ne(tr(key), key, "%s should be translated" % key)
+
+	var message: String = tr("NO_LANGUAGE_PACK_POPUP")
+	assert_gt(message.length(), 60, "it should explain, not just label")
+	assert_string_contains(message.to_lower(), "internet",
+		"it should name what is missing")
