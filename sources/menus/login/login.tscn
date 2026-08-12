@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://b0bkosa20avcs"]
+[gd_scene load_steps=14 format=3 uid="uid://b0bkosa20avcs"]
 
 [ext_resource type="Script" uid="uid://b6lcp5llq0rsq" path="res://sources/menus/login/login.gd" id="1_spyuf"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 [ext_resource type="PackedScene" uid="uid://ivyitn4nxsm5" path="res://sources/ui/code_keypad.tscn" id="3_keypad"]
+[ext_resource type="PackedScene" uid="uid://b7yl4qkxvrn5m" path="res://sources/ui/version_label.tscn" id="11_version"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="4_kalulu"]
 [ext_resource type="Texture2D" uid="uid://b44sv7oylntiq" path="res://assets/menus/buttons/back_button_normal.png" id="5_back_n"]
 [ext_resource type="Texture2D" uid="uid://b01neo7ex0rg7" path="res://assets/menus/buttons/back_button_pressed.png" id="6_back_p"]
@@ -151,22 +152,9 @@ grow_vertical = 0
 theme_type_variation = &"PrimaryButton"
 text = "SETTINGS"
 
-[node name="BuildVersionValue" type="Label" parent="Footer"]
+[node name="BuildVersionValue" parent="Footer" instance=ExtResource("11_version")]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -400.0
-offset_top = -108.0
-offset_right = -94.0
-offset_bottom = -60.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_type_variation = &"Caption"
-horizontal_alignment = 2
 
 [node name="Kalulu" parent="." instance=ExtResource("4_kalulu")]
 unique_name_in_owner = true

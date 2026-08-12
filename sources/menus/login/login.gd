@@ -3,17 +3,12 @@ extends Control
 const BACK_SCENE_PATH: String = EntryFlow.DEVICE_SELECTION_SCENE_PATH
 const NEXT_SCENE_PATH: String = "res://sources/gardens/gardens.tscn"
 const TEACHER_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
-const DEVELOPER_SCENE_PATH: String = "res://sources/menus/settings/developer_settings.tscn"
 const PACKAGE_LOADER_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
 const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd")
-const DEV_CLICK_THRESHOLD: int = 10 # Number of clicks needed to open Developer Settings
-const DEV_CLICK_MAX_DELAY: float = 0.6 # Delay between each clicks (in seconds)
 
 var help_speech: AudioStream
 var wrong_password_speech: AudioStream
 var right_password_speech: AudioStream
-var dev_click_count: int = 0
-var dev_last_click_time: float = 0.0
 
 @onready var kalulu: KALULU = %Kalulu
 @onready var music_player: AudioStreamPlayer = $MusicStreamPlayer
@@ -21,7 +16,6 @@ var dev_last_click_time: float = 0.0
 @onready var keypad: CodeKeypad = %CodeKeypad
 @onready var adult_check: AdultCheckPopup = %AdultCheck
 @onready var kalulu_button: CanvasItem = %KaluluButton
-@onready var version_label: Label = %BuildVersionValue
 
 
 func _ready() -> void:
@@ -47,9 +41,7 @@ func _ready() -> void:
 	
 	device_number_label.text = tr("LOG_IN_TO_DEVICE").format({"number": UserDataManager.get_device_settings().device_id})
 	
-	version_label.text = Utils.get_application_version_with_code()
-	version_label.gui_input.connect(_on_version_label_gui_input)
-	Log.info("LoginScreen: Ready (device_id=%s, version=%s)" % [UserDataManager.get_device_settings().device_id, version_label.text])
+	Log.info("LoginScreen: Ready (device_id=%s)" % UserDataManager.get_device_settings().device_id)
 	
 	await OpeningCurtain.open()
 	
@@ -111,24 +103,3 @@ func _on_adult_check_passed() -> void:
 	Log.info("LoginScreen: Adult check passed, opening teacher settings")
 	await OpeningCurtain.close()
 	get_tree().change_scene_to_file(TEACHER_SCENE_PATH)
-
-
-func _on_version_label_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		var mb: InputEventMouseButton = event
-		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
-			var now: float = Time.get_ticks_msec() / 1000.0
-			if now - dev_last_click_time <= DEV_CLICK_MAX_DELAY:
-				dev_click_count += 1
-			else:
-				dev_click_count = 1
-			dev_last_click_time = now
-			if dev_click_count >= DEV_CLICK_THRESHOLD:
-				Log.info("LoginScreen: Developer click threshold reached, opening Developer Settings")
-				dev_click_count = 0
-				await OpeningCurtain.close()
-				var current_scene: Node = get_tree().current_scene
-				if not current_scene:
-					Log.error("LoginScreen: Developer Settings returning scene will be main menu because current scene is null")
-				DeveloperSettings.return_path = current_scene.scene_file_path if current_scene else ""
-				get_tree().change_scene_to_file(DEVELOPER_SCENE_PATH)

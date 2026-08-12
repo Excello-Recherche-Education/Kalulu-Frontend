@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cwyqhwjbxk8m3"]
+[gd_scene load_steps=10 format=3 uid="uid://cwyqhwjbxk8m3"]
 
 [ext_resource type="Script" uid="uid://dd73v8cop032e" path="res://sources/menus/welcome/welcome.gd" id="1_welcome"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 [ext_resource type="PackedScene" uid="uid://cr4q0ywceoasx" path="res://sources/utils/keyboard_spacer.tscn" id="3_spacer"]
+[ext_resource type="PackedScene" uid="uid://b7yl4qkxvrn5m" path="res://sources/ui/version_label.tscn" id="9_version"]
 [ext_resource type="PackedScene" uid="uid://cv20up0meq087" path="res://sources/ui/segmented_toggle.tscn" id="4_toggle"]
 [ext_resource type="PackedScene" uid="uid://m58jy4pys3yn" path="res://sources/ui/menu_text_field.tscn" id="5_field"]
 [ext_resource type="PackedScene" uid="uid://ivyitn4nxsm5" path="res://sources/ui/code_keypad.tscn" id="6_keypad"]
@@ -155,3 +156,7 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_type_variation = &"PrimaryButton"
 text = "NEXT"
+
+[node name="VersionLabel" parent="." instance=ExtResource("9_version")]
+layout_mode = 1
+
