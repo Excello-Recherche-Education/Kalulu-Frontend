@@ -74,10 +74,15 @@ func _create_lessons() -> void:
 
 func _build_lesson_rows(lessons: Array) -> void:
 	_clear_lessons_grid()
+	# Worked out once for the table rather than per row: which garden a lesson falls
+	# in depends on how many lessons the pack has, which is the same for all of them.
+	var distribution: Array[int] = Gardens.compute_lessons_distribution(lessons.size())
 	for element: Dictionary in lessons:
 		var student_unlock: LessonUnlock = LESSON_UNLOCK_SCENE.instantiate()
+		var lesson_number: int = element.LessonNb
 		student_unlock.lesson_gps = element.GPs
-		student_unlock.lesson_number = element.LessonNb
+		student_unlock.lesson_number = lesson_number
+		student_unlock.garden_index = Gardens.garden_index_for_lesson(lesson_number, distribution)
 		student_unlock.unlocks = progression.unlocks if progression else {}
 		lesson_rows_store.add_child(student_unlock)
 		# Refill rather than rebuild: a teacher changing one dropdown used to pay

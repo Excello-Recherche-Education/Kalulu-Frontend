@@ -260,3 +260,93 @@ func _any_student() -> Dictionary:
 		for student: StudentData in settings.students[device]:
 			return {"device": device, "code": student.code}
 	return {}
+
+
+# --- Each row is marked with the garden the lesson belongs to --------------------
+func test_every_row_carries_its_garden() -> void:
+	if _needs_pack():
+		return
+	overlay.prepare_lesson_rows()
+
+	var rows: Array[Node] = overlay.lesson_rows_store.get_children()
+	var distribution: Array[int] = Gardens.compute_lessons_distribution(rows.size())
+	for row: LessonUnlock in rows:
+		assert_eq(row.garden_index,
+			Gardens.garden_index_for_lesson(row.lesson_number, distribution),
+			"lesson %d should sit in the garden the gardens screen puts it in" % row.lesson_number)
+		assert_not_null(row.garden_animal.texture,
+			"lesson %d should show its garden's animal" % row.lesson_number)
+
+
+func test_the_rows_take_their_colours_from_their_own_garden() -> void:
+	# Regression guard for the obvious way to build this: one style box authored in
+	# the scene is shared between every instance of it, so all sixty rows would come
+	# out the colour of whichever garden was painted last.
+	if _needs_pack():
+		return
+	overlay.prepare_lesson_rows()
+
+	var seen: Dictionary[int, Color] = {}
+	for row: LessonUnlock in overlay.lesson_rows_store.get_children():
+		var fill: StyleBoxFlat = row.lesson_badge.get_theme_stylebox("panel") as StyleBoxFlat
+		assert_not_null(fill, "lesson %d should have a badge to sit in" % row.lesson_number)
+		if not fill:
+			continue
+		assert_eq(fill.bg_color, GardenIdentity.badge_color(row.garden_index),
+			"lesson %d should wear its own garden's colour" % row.lesson_number)
+		seen[row.garden_index] = fill.bg_color
+	assert_gt(seen.size(), 1, "sixty lessons span more than one garden")
+
+
+func test_the_badges_are_round() -> void:
+	if _needs_pack():
+		return
+	overlay.prepare_lesson_rows()
+
+	var row: LessonUnlock = overlay.lesson_rows_store.get_child(0)
+	for badge: Panel in [row.lesson_badge, row.grapheme_badge]:
+		var fill: StyleBoxFlat = badge.get_theme_stylebox("panel") as StyleBoxFlat
+		assert_eq(fill.corner_radius_top_left, floori(float(LessonUnlock.BADGE_DIAMETER) / 2.0),
+			"a corner radius of half the side is what makes the square a circle")
+		assert_eq(badge.custom_minimum_size.x, badge.custom_minimum_size.y,
+			"and it has to be square to begin with")
+
+
+func test_a_row_shows_one_grapheme_rather_than_the_whole_lesson() -> void:
+	if _needs_pack():
+		return
+	overlay.prepare_lesson_rows()
+
+	for row: LessonUnlock in overlay.lesson_rows_store.get_children():
+		assert_false(row.grapheme_label.text.contains(" "),
+			"lesson %d should name one grapheme, not the list" % row.lesson_number)
+		assert_false(row.grapheme_label.text.contains("-"),
+			"lesson %d should show the grapheme without its phoneme" % row.lesson_number)
+		assert_false(row.grapheme_label.text.is_empty(),
+			"lesson %d should name a grapheme" % row.lesson_number)
+
+
+func test_the_first_grapheme_is_cut_out_of_the_joined_pairs() -> void:
+	assert_eq(LessonUnlock.first_grapheme("a-a à-a â-a"), "a")
+	assert_eq(LessonUnlock.first_grapheme("e-%"), "e")
+	assert_eq(LessonUnlock.first_grapheme("ll-l l-l"), "ll")
+	assert_eq(LessonUnlock.first_grapheme(""), "", "a lesson with no pairs shows nothing")
+
+
+func test_the_grapheme_fits_inside_its_badge() -> void:
+	# The badge is a fixed circle, so the longest grapheme the pack teaches has to
+	# fit in it -- there is no room for it to grow into.
+	if _needs_pack():
+		return
+	overlay.prepare_lesson_rows()
+
+	var longest: String = ""
+	for row: LessonUnlock in overlay.lesson_rows_store.get_children():
+		if row.grapheme_label.text.length() > longest.length():
+			longest = row.grapheme_label.text
+	var label: Label = (overlay.lesson_rows_store.get_child(0) as LessonUnlock).grapheme_label
+	var font: Font = label.get_theme_font("font")
+	var size: int = label.get_theme_font_size("font_size")
+	var width: float = font.get_string_size(longest, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+	assert_lt(width, float(LessonUnlock.BADGE_DIAMETER),
+		"\"%s\" is the longest grapheme and it has to fit the badge" % longest)

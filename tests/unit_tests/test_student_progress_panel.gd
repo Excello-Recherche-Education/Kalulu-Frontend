@@ -57,7 +57,7 @@ func test_the_table_header_spans_every_column() -> void:
 	# A GridContainer cannot give a row a background, so the header is one cell per
 	# column with no separation between them, forming a continuous strip.
 	var grid: GridContainer = panel.get_node("%LessonsGrid")
-	assert_eq(grid.columns, 3, "lesson, its graphemes, and one status")
+	assert_eq(grid.columns, 4, "the lesson number, its garden, its grapheme and one status")
 	assert_eq(grid.get_theme_constant("h_separation"), 0,
 		"header cells must touch or the strip is broken by gaps")
 	var header_cells: int = 0

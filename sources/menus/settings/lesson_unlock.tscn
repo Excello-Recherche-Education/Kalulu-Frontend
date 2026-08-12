@@ -2,25 +2,56 @@
 
 [ext_resource type="Script" uid="uid://crrnxt5bwa8wi" path="res://sources/menus/settings/lesson_unlock.gd" id="1_lesson"]
 
-[node name="LessonUnlock" type="Node"]
+[node name="LessonUnlock" type="Node" unique_id=1204418771]
 script = ExtResource("1_lesson")
 
-[node name="LessonLabel" type="Label" parent="."]
+[node name="LessonBadge" type="Panel" parent="." unique_id=1204418772]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 116)
-theme_type_variation = &"CardBody"
+custom_minimum_size = Vector2(96, 96)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="LessonLabel" type="Label" parent="LessonBadge" unique_id=1204418773]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 44
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GPsLabel" type="Label" parent="."]
+[node name="GardenAnimal" type="TextureRect" parent="." unique_id=1204418774]
 unique_name_in_owner = true
-size_flags_horizontal = 3
-theme_type_variation = &"CardLabel"
+custom_minimum_size = Vector2(160, 104)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GraphemeBadge" type="Panel" parent="." unique_id=1204418775]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="GraphemeLabel" type="Label" parent="GraphemeBadge" unique_id=1204418776]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 44
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
 
-[node name="StatusOptionButton" type="OptionButton" parent="."]
+[node name="StatusOptionButton" type="OptionButton" parent="." unique_id=1204418777]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(700, 116)
 size_flags_horizontal = 4

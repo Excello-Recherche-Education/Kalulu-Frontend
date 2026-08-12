@@ -40,15 +40,26 @@ const STATE_LABELS: Dictionary[int, String] = {
 	State.FINISHED: "COMPLETED",
 }
 const MAX_EXERCISES: int = 3
+## Side of the round badges the number and the grapheme sit in.
+const BADGE_DIAMETER: int = 96
 
 @export var lesson_number: int:
 	set = _set_lesson_number
 @export var lesson_gps: String:
 	set = _set_lesson_gps
+## Which garden hosts this lesson, counting from zero, or -1 while it is unknown.
+##
+## It colours the row and picks the animal, so a teacher scanning sixty lessons can
+## see where each one sits by the same landmarks the child navigates by.
+@export var garden_index: int = -1:
+	set = _set_garden_index
 @export var unlocks: Dictionary = {}
 
+@onready var lesson_badge: Panel = %LessonBadge
 @onready var lesson_label: Label = %LessonLabel
-@onready var gps_label: Label = %GPsLabel
+@onready var garden_animal: TextureRect = %GardenAnimal
+@onready var grapheme_badge: Panel = %GraphemeBadge
+@onready var grapheme_label: Label = %GraphemeLabel
 @onready var status_option_button: OptionButton = %StatusOptionButton
 
 
@@ -58,12 +69,13 @@ func _ready() -> void:
 
 
 func get_grid_cells() -> Array[Control]:
-	return [lesson_label, gps_label, status_option_button]
+	return [lesson_badge, garden_animal, grapheme_badge, status_option_button]
 
 
 func reload() -> void:
 	_set_lesson_number(lesson_number)
 	_set_lesson_gps(lesson_gps)
+	_set_garden_index(garden_index)
 
 
 ## Where the student is in this lesson, read back from its steps.
@@ -146,10 +158,43 @@ func _set_lesson_number(value: int) -> void:
 
 func _set_lesson_gps(value: String) -> void:
 	lesson_gps = value
-	if not gps_label:
+	if not grapheme_label:
 		return
 
-	gps_label.text = value
+	grapheme_label.text = first_grapheme(value)
+
+
+## The grapheme a lesson is known by: the first of the ones it teaches.
+##
+## The same one the child reads on the garden button, which takes it from the
+## database in this order. The rest follow from it -- a lesson on "a" also teaches
+## "à" and "â" -- and a table of sixty rows is not where to list them.
+static func first_grapheme(gps: String) -> String:
+	# The pairs arrive already joined, "a-a à-a â-a", so the first grapheme is cut
+	# back out: up to the first space, then up to the dash that starts its phoneme.
+	return gps.get_slice(" ", 0).get_slice("-", 0)
+
+
+func _set_garden_index(value: int) -> void:
+	garden_index = value
+	if not lesson_badge:
+		return
+
+	_paint_badge(lesson_badge, lesson_label)
+	_paint_badge(grapheme_badge, grapheme_label)
+	garden_animal.texture = GardenIdentity.animal_texture(garden_index)
+
+
+## Puts the garden's colours on one badge.
+func _paint_badge(badge: Panel, label: Label) -> void:
+	# A style box per badge rather than one shared in the scene: sub-resources are
+	# shared between instances, so every row would end up the colour of whichever
+	# garden was painted last.
+	var circle: StyleBoxFlat = StyleBoxFlat.new()
+	circle.bg_color = GardenIdentity.badge_color(garden_index)
+	circle.set_corner_radius_all(floori(float(BADGE_DIAMETER) / 2.0))
+	badge.add_theme_stylebox_override("panel", circle)
+	label.add_theme_color_override("font_color", GardenIdentity.badge_text_color(garden_index))
 
 
 func _on_status_item_selected(index: int) -> void:

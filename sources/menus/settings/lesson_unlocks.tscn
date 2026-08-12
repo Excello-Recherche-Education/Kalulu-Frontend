@@ -139,10 +139,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
-columns = 3
+columns = 4
 
 [node name="LessonHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid" unique_id=1822761518]
-custom_minimum_size = Vector2(0, 136)
+custom_minimum_size = Vector2(180, 136)
 layout_mode = 2
 theme_type_variation = &"TableHeaderCell"
 
@@ -153,8 +153,21 @@ text = "LESSON"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="GardenHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid" unique_id=1903104970]
+custom_minimum_size = Vector2(220, 136)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"TableHeaderCell"
+
+[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/GardenHeader" unique_id=1903104971]
+layout_mode = 2
+theme_type_variation = &"TableHeader"
+text = "GARDEN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="GraphemeHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid" unique_id=1903104972]
-custom_minimum_size = Vector2(0, 136)
+custom_minimum_size = Vector2(180, 136)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"TableHeaderCell"
@@ -162,6 +175,7 @@ theme_type_variation = &"TableHeaderCell"
 [node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/GraphemeHeader" unique_id=2075692768]
 layout_mode = 2
 theme_type_variation = &"TableHeader"
+text = "GRAPHEME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
