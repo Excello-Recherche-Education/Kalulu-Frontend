@@ -164,8 +164,7 @@ func _process(_delta: float) -> void:
 
 
 func _exit_tree() -> void:
-	if thread:
-		thread.wait_to_finish()
+	_release_extraction_thread()
 
 
 func _copy_data(this: PackageDownloader) -> void:
@@ -282,10 +281,32 @@ func _go_to_offline_scene() -> void:
 ## Runs the check again after a failure the user has acknowledged.
 func _retry() -> void:
 	if thread and thread.is_alive():
-		Log.trace("PackageDownloader: Not retrying while the extraction thread runs")
+		# Starting over on top of a running extraction would have two of them writing
+		# the same folder, and waiting for it here would freeze the screen that is
+		# drawing its progress. So put the notice back rather than returning to
+		# nothing: on a device with no usable pack this is the only way forward, and
+		# a dialog that closes onto a dead screen leaves nothing left to press.
+		Log.trace("PackageDownloader: Extraction still running, leaving the notice up")
+		error_popup.show()
 		return
+	# The finished worker is joined before its reference can be replaced by the next
+	# attempt. The engine warns when a Thread is destroyed without it -- "A Thread
+	# object is being destroyed without its completion having been realized" -- and
+	# leaks it until the process ends.
+	_release_extraction_thread()
 	error_label.hide()
 	_start()
+
+
+## Joins the extraction thread, if there is one, and lets go of it.
+##
+## Costs nothing once the worker has returned, and blocks until it does otherwise --
+## which is what leaving the scene needs, since the worker writes to its nodes.
+func _release_extraction_thread() -> void:
+	if not thread:
+		return
+	thread.wait_to_finish()
+	thread = null
 
 
 func _go_to_next_scene() -> void:
@@ -304,6 +325,9 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 	Log.trace("PackageDownloader: Download completed with HTTP code %d" % response_code)
 	if response_code == 200:
 		mutex = Mutex.new()
+		# Nothing should be holding a worker by now, but this is the one line that
+		# replaces the reference, so it is where the invariant is worth stating.
+		_release_extraction_thread()
 		thread = Thread.new()
 		download_label.hide()
 		copy_label.show()
