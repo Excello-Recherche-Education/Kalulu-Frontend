@@ -20,6 +20,8 @@ var codes_requested: bool = false
 ## is printed beside their code. Either one leaves the teacher holding a sheet that
 ## no longer describes the account. This is what makes that detectable.
 var exported_sheet: String = ""
+## True while the sheet is being drawn, which happens over several frames.
+var drawing_the_sheet: bool = false
 
 @onready var recap_container: VBoxContainer = %RecapContainer
 @onready var email: Label = %Email
@@ -30,6 +32,7 @@ var exported_sheet: String = ""
 @onready var save_all_codes_button: Button = %SaveAllCodesButton
 @onready var export_codes_file_dialog: FileDialog = %ExportCodesFileDialog
 @onready var validate_button: Button = $RightMargin/RightContainer/ValidateButton
+@onready var back_button: Button = $LeftMargin/LeftContainer/BackButton
 
 
 func _ready() -> void:
@@ -111,9 +114,10 @@ func _invalidate_a_stale_export() -> void:
 	AccountCreated.saved_codes_path = ""
 
 
-## Confirm only opens up once the code sheet has been asked for.
+## Confirm only opens up once the code sheet has been asked for, and shuts again
+## while one is being drawn.
 func _refresh_validate() -> void:
-	validate_button.disabled = not codes_requested
+	validate_button.disabled = not codes_requested or drawing_the_sheet
 
 
 func _on_save_all_codes_button_pressed() -> void:
@@ -131,9 +135,30 @@ func _on_export_codes_file_selected(path: String) -> void:
 	# The account does not exist on the server yet, so the sheet is printed from
 	# the registration data rather than from UserDataManager.
 	Log.info("Register/RecapStep: Saving the student codes to %s" % path)
+	# The step is held shut for as long as the drawing takes. A page is rendered
+	# inside this step over two frames, and there is a page per device, so a school's
+	# worth of them is seconds -- during which anything that takes this step out of
+	# the tree loses the file outright: the pages have nowhere left to render, and the
+	# PDF is only written once they have all been captured. Leaving the one screen
+	# that insisted on the export, without the export, is the outcome to avoid.
+	_hold_the_step_shut(true)
 	var error: Error = await CodeSheet.export_to_pdf(self, data as TeacherSettings, path)
 	# Handed to the confirmation screen, which offers to open the folder. Only on
 	# success: pointing at a file that was never written would be worse than
 	# saying nothing.
 	if error == OK:
 		AccountCreated.saved_codes_path = CodeSheet.pdf_path(path)
+	# Released whether or not it worked. A failed export the teacher cannot walk away
+	# from would strand them on the last step of registration.
+	_hold_the_step_shut(false)
+
+
+## Shuts or reopens everything on this step that could interrupt the drawing.
+##
+## Confirm submits and then changes scene; Previous takes the step out of the tree;
+## and asking for the sheet again would start a second drawing over the first.
+func _hold_the_step_shut(held: bool) -> void:
+	drawing_the_sheet = held
+	save_all_codes_button.disabled = held
+	back_button.disabled = held
+	_refresh_validate()

@@ -477,6 +477,66 @@ func test_the_recap_can_be_scrolled_when_there_are_more_students_than_fit() -> v
 		"four devices should give it something to scroll")
 
 
+# --- Nothing may interrupt the sheet while it is being drawn ---------------------
+## The drawing itself is not exercised here: capturing a page needs a real renderer,
+## which is why test_code_sheet.gd checks build_pages and save_pdf separately rather
+## than running an export. What is checked here is that every way off the step is
+## shut for the duration, and let go of afterwards.
+func test_holding_the_step_shut_closes_every_way_out_of_it() -> void:
+	# The sheet becomes a file only once every page has been captured, two frames
+	# apiece and a page per device. Anything that takes the step out of the tree in the
+	# middle of that loses the file: Confirm submits and then changes scene, Previous
+	# removes the step, and asking again would start a second drawing over the first.
+	var recap: RecapStep = await _mounted_recap_step(2)
+	recap.codes_requested = true
+	recap._refresh_validate()
+	assert_false(recap.validate_button.disabled, "Confirm opens once the sheet is asked for")
+
+	recap._hold_the_step_shut(true)
+
+	assert_true(recap.validate_button.disabled, "Confirm submits, which changes scene")
+	assert_true(recap.back_button.disabled, "Previous takes the step out of the tree")
+	assert_true(recap.save_all_codes_button.disabled, "and a second drawing over the first")
+
+	recap._hold_the_step_shut(false)
+
+	assert_false(recap.validate_button.disabled, "and it all opens again afterwards")
+	assert_false(recap.back_button.disabled)
+	assert_false(recap.save_all_codes_button.disabled)
+
+
+func test_asking_for_the_sheet_is_not_the_same_as_having_it() -> void:
+	# Confirm opens as soon as the sheet is asked for -- deliberately, so a cancelled
+	# save dialog does not strand anybody. That is what made this possible: it was
+	# already open while the drawing was still going.
+	var recap: RecapStep = await _mounted_recap_step(1)
+	recap.codes_requested = true
+	recap.drawing_the_sheet = true
+
+	recap._refresh_validate()
+
+	assert_true(recap.validate_button.disabled,
+		"asked for is not drawn yet, and Confirm must wait for drawn")
+
+
+func test_a_failed_drawing_still_lets_the_teacher_leave() -> void:
+	# The step is held shut on the way in, so it has to be let go of on the way out
+	# whatever happened -- a failed export nobody can walk away from would strand them
+	# on the last step of registration.
+	var recap: RecapStep = await _mounted_recap_step(1)
+	recap.data = null
+
+	await recap._on_export_codes_file_selected("user://recap_export_never_written.pdf")
+
+	# It says so in the log, which is the point; acknowledge it so GUT does not report
+	# it as an unexpected error.
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+	assert_false(recap.drawing_the_sheet, "the step should not stay shut after a failure")
+	assert_false(recap.back_button.disabled, "and Previous should work again")
+	assert_false(recap.save_all_codes_button.disabled, "and another go should be offered")
+
+
 # --- An export only counts for the codes it printed -----------------------------
 ## Walks a two-device teacher account to its recap, filling both device steps.
 func _wizard_at_the_recap() -> Control:
