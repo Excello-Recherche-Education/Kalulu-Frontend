@@ -537,6 +537,129 @@ func test_a_failed_drawing_still_lets_the_teacher_leave() -> void:
 	assert_false(recap.save_all_codes_button.disabled, "and another go should be offered")
 
 
+# --- Running out of codes must not take finished devices with it -----------------
+## A teacher account has one fixed set of codes, so a big one can run the account dry.
+## Walking forward, the devices after that point have nothing to fill them and are
+## dropped. Walking back into an earlier device is not the same thing: the ones after
+## it are already finished.
+func _wizard_with_two_full_devices() -> Control:
+	var wizard: Control = (load("res://sources/menus/register/register.tscn")
+		as PackedScene).instantiate()
+	add_child_autofree(wizard)
+	await get_tree().process_frame
+
+	wizard._go_to_step(1)
+	wizard.register_data.account_type = TeacherSettings.AccountType.TEACHER
+	await wizard._on_step_completed(wizard.current_steps[1])
+	wizard._go_to_step(3)
+	wizard.register_data.devices_count = 2
+	await wizard._on_step_completed(wizard.current_steps[3])
+
+	# Half the codes each, so between them they use every one.
+	var half: int = floori(float(TeacherSettings.AVAILABLE_CODES.size()) / 2.0)
+	for step_index: int in [4, 5]:
+		wizard._go_to_step(step_index)
+		var device_step: StudentsCountStep = wizard.current_steps[step_index]
+		device_step.students_count_field.value = half
+		device_step._on_next()
+	return wizard
+
+
+func test_running_out_of_codes_leaves_the_devices_already_filled_alone() -> void:
+	# Regression: asking for one more student on the first device dropped the second
+	# device outright -- forty-five students, holding codes that worked, deleted for
+	# the sake of one more that was never available.
+	var wizard: Control = await _wizard_with_two_full_devices()
+	var before: String = _codes_of(wizard, 2)
+	assert_ne(before, "", "the second device should be full to start with")
+
+	wizard._go_to_step(4)
+	var first: StudentsCountStep = wizard.current_steps[4]
+	first.students_count_field.value = first.students_count_field.value + 1
+	first._on_next()
+	assert_true(first.codes_ran_out, "there is no ninety-first code")
+	await wizard._on_step_completed(first)
+
+	# Running out of codes is logged as a warning, which is the point of it.
+	# Acknowledge it so GUT does not report it as an unexpected error; it has to happen
+	# inside the test, because GUT checks for unhandled errors before after_each().
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+	assert_true(wizard.register_data.students.has(2),
+		"the device that was already finished should still be there")
+	assert_eq(_codes_of(wizard, 2), before, "with the same students, holding the same codes")
+
+
+func test_the_step_of_a_filled_device_stays_in_the_queue() -> void:
+	# Keeping its students but dropping its step would leave a device the teacher can
+	# no longer reach, on an account that still carries it.
+	var wizard: Control = await _wizard_with_two_full_devices()
+
+	wizard._go_to_step(4)
+	var first: StudentsCountStep = wizard.current_steps[4]
+	first.students_count_field.value = first.students_count_field.value + 1
+	first._on_next()
+	await wizard._on_step_completed(first)
+
+	# Running out of codes is logged as a warning, which is the point of it.
+	# Acknowledge it so GUT does not report it as an unexpected error; it has to happen
+	# inside the test, because GUT checks for unhandled errors before after_each().
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+	var devices_still_queued: Array[int] = []
+	for step: Step in wizard.current_steps:
+		var device_step: StudentsCountStep = step as StudentsCountStep
+		if device_step:
+			devices_still_queued.append(device_step.device_id)
+	assert_true(devices_still_queued.has(2), "the second device should still have its step")
+
+
+func test_walking_forward_into_the_limit_still_drops_the_empty_devices() -> void:
+	# The other half of it, which has to keep working: those devices hold nothing, and
+	# there is nothing left to put in them.
+	var wizard: Control = (load("res://sources/menus/register/register.tscn")
+		as PackedScene).instantiate()
+	add_child_autofree(wizard)
+	await get_tree().process_frame
+	wizard._go_to_step(1)
+	wizard.register_data.account_type = TeacherSettings.AccountType.TEACHER
+	await wizard._on_step_completed(wizard.current_steps[1])
+	wizard._go_to_step(3)
+	wizard.register_data.devices_count = 3
+	await wizard._on_step_completed(wizard.current_steps[3])
+
+	# The first device takes every code there is.
+	wizard._go_to_step(4)
+	var first: StudentsCountStep = wizard.current_steps[4]
+	first.students_count_field.value = TeacherSettings.AVAILABLE_CODES.size()
+	first._on_next()
+	await wizard._on_step_completed(first)
+	# The second then has nothing to draw from.
+	wizard._go_to_step(5)
+	var second: StudentsCountStep = wizard.current_steps[5]
+	second.students_count_field.value = 2
+	second._on_next()
+	assert_true(second.codes_ran_out, "every code is taken")
+	await wizard._on_step_completed(second)
+
+	# Running out of codes is logged as a warning, which is the point of it.
+	# Acknowledge it so GUT does not report it as an unexpected error; it has to happen
+	# inside the test, because GUT checks for unhandled errors before after_each().
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+	assert_eq(wizard.register_data.students.keys().size(), 1,
+		"only the device that got the codes should hold students")
+	assert_true(wizard.register_data.students.has(1))
+	var devices_still_queued: Array[int] = []
+	for step: Step in wizard.current_steps:
+		var device_step: StudentsCountStep = step as StudentsCountStep
+		if device_step:
+			devices_still_queued.append(device_step.device_id)
+	# The device being answered stays: the teacher is standing on it, and only what
+	# comes after it has nothing left to fill it.
+	assert_false(devices_still_queued.has(3), "device 3 has nothing to fill it and should be gone")
+
+
 # --- An export only counts for the codes it printed -----------------------------
 ## Walks a two-device teacher account to its recap, filling both device steps.
 func _wizard_at_the_recap() -> Control:

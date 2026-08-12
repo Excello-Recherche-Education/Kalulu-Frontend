@@ -186,7 +186,12 @@ func _explain_the_code_limit(device_step: StudentsCountStep) -> void:
 	code_limit_popup.show()
 
 
-## Removes the device steps still to come, keeping the steps that close the flow.
+## Removes the device steps still to come that have nothing left to fill them.
+##
+## A device that already holds students is kept: those students have codes that work,
+## and the teacher can arrive here from a device they walked back to rather than from
+## the end of the queue. Dropping them would delete a device that was already
+## finished, for the sake of one code it was never going to give up.
 ##
 ## Returns how many devices were dropped, for the message that explains it.
 func _drop_remaining_device_steps() -> int:
@@ -194,8 +199,9 @@ func _drop_remaining_device_steps() -> int:
 	var dropped: int = 0
 	for index: int in range(current_step + 1, current_steps.size()):
 		var step: Step = current_steps[index]
-		if step is StudentsCountStep:
-			register_data.students.erase((step as StudentsCountStep).device_id)
+		var device_step: StudentsCountStep = step as StudentsCountStep
+		if device_step and _device_is_empty(device_step.device_id):
+			register_data.students.erase(device_step.device_id)
 			step.queue_free()
 			dropped += 1
 		else:
@@ -205,6 +211,11 @@ func _drop_remaining_device_steps() -> int:
 	current_steps.append_array(kept)
 	built_devices_count = NO_DEVICE_STEPS
 	return dropped
+
+
+## True for a device with no students yet, which is what makes it droppable.
+func _device_is_empty(device_id: int) -> bool:
+	return (register_data.students.get(device_id, []) as Array).is_empty()
 
 
 func _submit() -> void:
