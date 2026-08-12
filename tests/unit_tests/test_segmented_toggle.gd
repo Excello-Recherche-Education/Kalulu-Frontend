@@ -131,3 +131,44 @@ func test_shrinking_the_options_clamps_the_selection() -> void:
 
 	assert_eq(toggle.selected, 0, "the selection should clamp when options shrink")
 	assert_eq(toggle.buttons.size(), 1)
+
+
+# --- Locking ---------------------------------------------------------------------
+func test_a_locked_switch_stops_answering() -> void:
+	toggle.disabled = true
+
+	for button: Button in toggle.buttons:
+		assert_true(button.disabled, "%s should not answer while the switch is locked" % button.text)
+
+
+func test_unlocking_gives_it_back() -> void:
+	toggle.disabled = true
+
+	toggle.disabled = false
+
+	for button: Button in toggle.buttons:
+		assert_false(button.disabled, "%s should answer again" % button.text)
+
+
+func test_the_lock_survives_the_segments_being_rebuilt() -> void:
+	# Changing the options rebuilds the buttons, and a fresh button answers unless it
+	# is told otherwise -- which would quietly unlock the switch.
+	toggle.disabled = true
+
+	toggle.options = PackedStringArray(["LOG_IN", "SIGN_UP", "LOG_IN"])
+
+	assert_eq(toggle.buttons.size(), 3, "the segments should have been rebuilt")
+	for button: Button in toggle.buttons:
+		assert_true(button.disabled, "a rebuilt segment should still be locked")
+
+
+func test_locking_does_not_change_which_segment_is_chosen() -> void:
+	watch_signals(toggle)
+	# The one emission the test allows: choosing a segment is a real change.
+	toggle.selected = 1
+
+	toggle.disabled = true
+
+	assert_eq(toggle.selected, 1, "the lock holds the switch, it does not move it")
+	assert_signal_emit_count(toggle, "selection_changed", 1,
+		"locking is not a change of selection and must not announce one")

@@ -24,6 +24,8 @@ var adult_challenge: AdultChallenge = AdultChallenge.new()
 ## waiting on, and leaves both reading whichever reply arrives -- so a perfectly
 ## good login can come back as a server error. Disabling the button was not
 ## enough: the password field still submits on Enter.
+##
+## It also locks the switch, for the reason in _set_request_in_flight.
 var request_in_flight: bool = false
 
 @onready var toggle: SegmentedToggle = %Toggle
@@ -90,7 +92,7 @@ func _on_next_pressed() -> void:
 		Log.info("Welcome: Login form did not validate")
 		return
 
-	request_in_flight = true
+	_set_request_in_flight(true)
 	next_button.disabled = true
 	Log.info("Welcome: Sending login request for %s" % email_field.text)
 	var response: Dictionary = await ServerManager.login(email_field.text, password_field.text)
@@ -119,6 +121,19 @@ func _on_next_pressed() -> void:
 		_end_request()
 
 
+## Starts or ends the wait for a server reply, and locks the switch for its duration.
+##
+## Leaving the switch open let both halves of the screen run at once. A reply arriving
+## while the teacher is on Sign Up still signs the account in and writes it to disk,
+## and the synchronisation that follows takes long enough that the adult challenge can
+## be answered in the middle of it -- which starts registration on a device already
+## signed in as somebody else. Freeing the screen drops the rest of the login, so it
+## never even reaches the screen it was going to.
+func _set_request_in_flight(in_flight: bool) -> void:
+	request_in_flight = in_flight
+	toggle.disabled = in_flight
+
+
 ## Lets the screen be used again after a request has finished.
 ##
 ## Restores both actions, not just Next: a failed reset had disabled its own
@@ -128,7 +143,7 @@ func _on_next_pressed() -> void:
 ## The reset's success path deliberately does not come through here, because
 ## there the mail has gone and asking again would only send another.
 func _end_request() -> void:
-	request_in_flight = false
+	_set_request_in_flight(false)
 	next_button.disabled = false
 	reset_password_button.disabled = false
 
@@ -185,7 +200,7 @@ func _on_reset_password_pressed() -> void:
 		return
 
 	Log.info("Welcome: Password reset requested for %s" % email_field.text)
-	request_in_flight = true
+	_set_request_in_flight(true)
 	reset_password_button.disabled = true
 	var response: Dictionary = await ServerManager.reset_password(email_field.text)
 	if response.code != 200:
@@ -198,8 +213,8 @@ func _on_reset_password_pressed() -> void:
 	login_error.text = "CHECK_YOUR_EMAIL"
 	login_error.show()
 	# The button stays disabled: the mail has been sent, and asking again would
-	# only send another.
-	request_in_flight = false
+	# only send another. The switch does not: nothing is outstanding any more.
+	_set_request_in_flight(false)
 
 
 # --- Sign up (adult check) ---------------------------------------------------

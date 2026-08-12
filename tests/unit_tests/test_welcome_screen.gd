@@ -321,3 +321,41 @@ func test_finishing_a_request_makes_the_screen_usable_again() -> void:
 func test_nothing_is_in_flight_when_the_screen_opens() -> void:
 	assert_false(welcome.request_in_flight)
 	assert_false(welcome.next_button.disabled)
+
+
+# --- One half of the screen at a time --------------------------------------------
+func test_the_switch_is_locked_while_the_server_is_being_waited_on() -> void:
+	# Regression: it stayed open, so the teacher could go to Sign Up mid-login. The
+	# reply still signs the account in and writes it to disk, and the synchronisation
+	# after that runs long enough for the adult challenge to be answered in the middle
+	# of it -- which starts registration on a device already signed in as someone else.
+	assert_false(welcome.toggle.disabled, "the switch is open to begin with")
+
+	welcome._set_request_in_flight(true)
+
+	assert_true(welcome.request_in_flight)
+	assert_true(welcome.toggle.disabled, "the switch should be locked for the wait")
+	for button: Button in welcome.toggle.buttons:
+		assert_true(button.disabled, "including the segment that leads to Sign Up")
+
+
+func test_the_switch_comes_back_when_the_request_ends() -> void:
+	# Both ways out of a request go through here. A switch left locked would strand
+	# the teacher on whichever half they were on.
+	welcome._set_request_in_flight(true)
+
+	welcome._end_request()
+
+	assert_false(welcome.request_in_flight)
+	assert_false(welcome.toggle.disabled, "the switch should open again")
+	assert_false(welcome.next_button.disabled, "and so should the action")
+
+
+func test_the_switch_comes_back_after_a_password_reset_too() -> void:
+	# The reset's success path does not go through _end_request, because its button
+	# deliberately stays disabled -- but nothing is outstanding, so the switch opens.
+	welcome._set_request_in_flight(true)
+
+	welcome._set_request_in_flight(false)
+
+	assert_false(welcome.toggle.disabled)

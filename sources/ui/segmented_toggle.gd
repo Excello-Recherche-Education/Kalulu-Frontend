@@ -31,6 +31,13 @@ const ANIMATION_DURATION: float = 0.15
 		_apply_selection(notify_selection)
 		if notify_selection:
 			selection_changed.emit(selected)
+## Locks the switch: the segments stop answering, without changing which is chosen.
+##
+## For a screen that has started something the switch must not interrupt. The colours
+## stay as they are: the lock lasts as long as a request does, and greying both labels
+## for that long reads as a glitch rather than as an answer.
+@export var disabled: bool = false:
+	set = _set_disabled
 
 var buttons: Array[Button] = []
 var highlight_tween: Tween
@@ -60,6 +67,12 @@ func _ready() -> void:
 
 
 ## Selects an option without emitting selection_changed, for restoring state.
+func _set_disabled(p_disabled: bool) -> void:
+	disabled = p_disabled
+	for button: Button in buttons:
+		button.disabled = disabled
+
+
 func set_selected_silently(index: int) -> void:
 	notify_selection = false
 	selected = index
@@ -112,6 +125,10 @@ func _rebuild() -> void:
 		button.add_theme_color_override("font_hover_color", Design.PURPLE)
 		button.add_theme_color_override("font_pressed_color", Color.WHITE)
 		button.add_theme_color_override("font_hover_pressed_color", Color.WHITE)
+		button.add_theme_color_override("font_disabled_color",
+			Color.WHITE if index == selected else Design.PURPLE)
+		# The lock survives a rebuild, which is what happens when the options change.
+		button.disabled = disabled
 		button.pressed.connect(_on_segment_pressed.bind(index))
 		segments.add_child(button)
 		buttons.append(button)
