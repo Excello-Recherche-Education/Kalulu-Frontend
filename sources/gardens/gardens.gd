@@ -679,9 +679,9 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	in_minigame_selection = true
 	# Sets the variables for the current garden and lesson
 	current_lesson_number = lesson_number
-	var garden_index_for_lesson: int = _get_garden_index_for_lesson(lesson_number)
-	if garden_index_for_lesson >= 0 and garden_index_for_lesson < garden_parent.get_child_count():
-		current_garden = garden_parent.get_child(garden_index_for_lesson)
+	var garden_index: int = _get_garden_index_for_lesson(lesson_number)
+	if garden_index >= 0 and garden_index < garden_parent.get_child_count():
+		current_garden = garden_parent.get_child(garden_index)
 	if button:
 		current_button = button
 		current_button.show_placeholder(true)
@@ -1150,12 +1150,19 @@ func _get_boss_segment_points(gate_lesson: int, segment_ratio: float = 0.5) -> P
 
 
 func _get_garden_index_for_lesson(lesson_number: int) -> int:
+	return garden_index_for_lesson(lesson_number, lesson_distribution)
+
+
+# Which garden hosts a lesson, given a distribution from compute_lessons_distribution.
+# Static so the screens that only name the garden -- the teacher's progress table --
+# can ask without a gardens screen to ask it of.
+static func garden_index_for_lesson(lesson_number: int, distribution: Array[int]) -> int:
 	var lesson_index: int = 0
-	for garden_index: int in range(lesson_distribution.size()):
-		lesson_index += lesson_distribution[garden_index]
+	for garden_index: int in range(distribution.size()):
+		lesson_index += distribution[garden_index]
 		if lesson_number <= lesson_index:
 			return garden_index
-	return max(0, lesson_distribution.size() - 1)
+	return max(0, distribution.size() - 1)
 
 
 func _lock() -> void:

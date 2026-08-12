@@ -10,6 +10,9 @@ jobs:
     env:
       GODOT_VERSION: 4.7-stable
       GODOT_BIN: godot/Godot_v4.7-stable_linux.x86_64
+      # Matches addons/godot-sqlite/plugin.cfg, so CI runs against the version
+      # the project declares rather than whatever is newest.
+      SQLITE_VERSION: v4.7
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,6 +23,36 @@ jobs:
           curl -L -o godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_ZIP}"
           unzip -q godot.zip -d godot
           chmod +x "${GODOT_BIN}"
+
+      # The compiled godot-sqlite libraries are not in the repository (see
+      # .gitignore), so without this step the extension cannot load. The Database
+      # autoload then fails to instantiate, every script that depends on it --
+      # UserDataManager, TeacherSettings, EntryFlow, SceneLoader -- fails to
+      # compile, and the tests fail in bulk on null autoloads rather than on
+      # anything they are actually checking.
+      - name: Cache godot-sqlite library
+        id: sqlite-cache
+        uses: actions/cache@v4
+        with:
+          path: addons/godot-sqlite/bin
+          key: godot-sqlite-${{ env.SQLITE_VERSION }}-linux-x86_64
+
+      - name: Download godot-sqlite library
+        if: steps.sqlite-cache.outputs.cache-hit != 'true'
+        run: |
+          curl -L -o sqlite-bin.zip \
+            "https://github.com/2shady4u/godot-sqlite/releases/download/${SQLITE_VERSION}/bin.zip"
+          # Only the Linux debug library is unpacked: running a project from
+          # source uses the debug build, and the archive also carries iOS and
+          # Android builds worth about eighty megabytes.
+          unzip -q -o sqlite-bin.zip \
+            'bin/libgdsqlite.linux.template_debug.x86_64.so' \
+            -d addons/godot-sqlite/
+          rm sqlite-bin.zip
+
+      - name: Verify the extension is in place
+        run: |
+          test -f addons/godot-sqlite/bin/libgdsqlite.linux.template_debug.x86_64.so
 
       - name: Import project assets
         run: |

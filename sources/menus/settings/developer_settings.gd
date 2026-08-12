@@ -7,7 +7,7 @@ const ZOOM_MIN: float = 1.0
 const ZOOM_MAX: float = 3.0
 const ZOOM_STEP_WHEEL: float = 0.1
 
-static var return_path: String = "res://sources/menus/main/main_menu.tscn"
+static var return_path: String = EntryFlow.SPLASH_SCENE_PATH
 
 var filters: Dictionary[int, bool] = {}
 var line_steps: PackedInt32Array = [10, 50, 100, 200, 500, 1000, -1] # -1 = all
@@ -166,7 +166,7 @@ func _apply_zoom(new_zoom: float, screen_pos: Vector2) -> void:
 func _on_back_button_pressed() -> void:
 	await OpeningCurtain.close()
 	if return_path == "":
-		return_path = "res://sources/menus/main/main_menu.tscn"
+		return_path = EntryFlow.SPLASH_SCENE_PATH
 	get_tree().change_scene_to_file(return_path)
 
 

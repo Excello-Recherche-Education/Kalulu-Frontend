@@ -11,9 +11,6 @@ enum DownloadError {
 	REPLACE_FAILED,
 }
 
-const MAIN_MENU_SCENE_PATH: String = "res://sources/menus/main/main_menu.tscn"
-const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
-const LOGIN_SCENE_PATH: String = "res://sources/menus/login/login.tscn"
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
 # Translation key shown in the error popup for each DownloadError value
 const ERROR_MESSAGES: Array[String] = [
@@ -46,6 +43,15 @@ var current_language_version: Dictionary = {}
 
 
 func _ready() -> void:
+	_start()
+
+
+## Checks the pack and downloads it if need be.
+##
+## Separate from _ready so a failure can be tried again without leaving the
+## screen -- which for a device with no usable pack is the only recoverable
+## place to be.
+func _start() -> void:
 	await get_tree().process_frame
 	
 	language = UserDataManager.get_device_settings().language
@@ -158,8 +164,7 @@ func _process(_delta: float) -> void:
 
 
 func _exit_tree() -> void:
-	if thread:
-		thread.wait_to_finish()
+	_release_extraction_thread()
 
 
 func _copy_data(this: PackageDownloader) -> void:
@@ -241,12 +246,67 @@ func _copy_data(this: PackageDownloader) -> void:
 
 func _show_error(error: DownloadError) -> void:
 	Log.warn("PackageDownloader: Displaying error %d (%s)" % [error, ERROR_MESSAGES[error]])
-	error_popup.content_text = ERROR_MESSAGES[error]
+	if EntryFlow.scene_when_offline().is_empty():
+		# Nothing to fall back on: no connection and no usable pack, so there is no
+		# screen to send the device to -- the child's access-code screen comes
+		# straight back here. Say what is wrong and what would fix it, and make the
+		# button another go rather than a way out that does not exist.
+		error_popup.title_text = "NO_LANGUAGE_PACK_TITLE"
+		error_popup.content_text = "NO_LANGUAGE_PACK_POPUP"
+		error_popup.confirm_text_override = "TRY_AGAIN"
+		error_popup.acknowledge_only = true
+	else:
+		# The same dialog is reused for every error, so anything set for the case
+		# above has to be put back.
+		error_popup.title_text = ""
+		error_popup.content_text = ERROR_MESSAGES[error]
+		error_popup.confirm_text_override = ""
+		error_popup.acknowledge_only = false
 	error_popup.show()
 
 
-func _go_to_main_menu() -> void:
-	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
+func _go_to_offline_scene() -> void:
+	var next_scene: String = EntryFlow.scene_when_offline()
+	if next_scene.is_empty():
+		# Nowhere to go: without a usable pack the child's access-code screen sends
+		# the device straight back here, so leaving would bounce between the two
+		# screens forever. Stay and try again -- each attempt costs a tap on the
+		# error, so it cannot spin on its own.
+		Log.warn("PackageDownloader: No usable language pack and nowhere to go; trying again")
+		_retry()
+		return
+	get_tree().change_scene_to_file(next_scene)
+
+
+## Runs the check again after a failure the user has acknowledged.
+func _retry() -> void:
+	if thread and thread.is_alive():
+		# Starting over on top of a running extraction would have two of them writing
+		# the same folder, and waiting for it here would freeze the screen that is
+		# drawing its progress. So put the notice back rather than returning to
+		# nothing: on a device with no usable pack this is the only way forward, and
+		# a dialog that closes onto a dead screen leaves nothing left to press.
+		Log.trace("PackageDownloader: Extraction still running, leaving the notice up")
+		error_popup.show()
+		return
+	# The finished worker is joined before its reference can be replaced by the next
+	# attempt. The engine warns when a Thread is destroyed without it -- "A Thread
+	# object is being destroyed without its completion having been realized" -- and
+	# leaks it until the process ends.
+	_release_extraction_thread()
+	error_label.hide()
+	_start()
+
+
+## Joins the extraction thread, if there is one, and lets go of it.
+##
+## Costs nothing once the worker has returned, and blocks until it does otherwise --
+## which is what leaving the scene needs, since the worker writes to its nodes.
+func _release_extraction_thread() -> void:
+	if not thread:
+		return
+	thread.wait_to_finish()
+	thread = null
 
 
 func _go_to_next_scene() -> void:
@@ -256,20 +316,18 @@ func _go_to_next_scene() -> void:
 	if not server_language_version.is_empty():
 		UserDataManager.set_language_version(language, server_language_version)
 	
-	# Check if we have a valid device id
-	if not UserDataManager.get_device_settings().device_id:
-		Log.trace("PackageDownloader: No device id found, going to device selection")
-		get_tree().change_scene_to_file(DEVICE_SELECTION_SCENE_PATH)
-	# Go directly to the login scene
-	else:
-		Log.trace("PackageDownloader: Device id found, going to login scene")
-		get_tree().change_scene_to_file(LOGIN_SCENE_PATH)
+	var next_scene: String = EntryFlow.device_scene()
+	Log.trace("PackageDownloader: Handing over to %s" % next_scene)
+	get_tree().change_scene_to_file(next_scene)
 
 
 func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
 	Log.trace("PackageDownloader: Download completed with HTTP code %d" % response_code)
 	if response_code == 200:
 		mutex = Mutex.new()
+		# Nothing should be holding a worker by now, but this is the one line that
+		# replaces the reference, so it is where the invariant is worth stating.
+		_release_extraction_thread()
 		thread = Thread.new()
 		download_label.hide()
 		copy_label.show()
@@ -287,4 +345,4 @@ func _on_http_request_request_completed(_result: int, response_code: int, _heade
 
 
 func _on_disconnected_popup_accepted() -> void:
-	_go_to_main_menu()
+	_go_to_offline_scene()

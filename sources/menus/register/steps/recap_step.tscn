@@ -7,65 +7,110 @@
 script = ExtResource("2_0vlqx")
 
 [node name="ValidateButton" parent="RightMargin/RightContainer" parent_id_path=PackedInt32Array(858860575) index="0" unique_id=1168378881]
+disabled = true
 text = "VALIDATE"
 
-[node name="PanelContainer" parent="." index="2" unique_id=824416175]
-offset_left = -1024.0
-offset_right = 1024.0
-offset_bottom = 1344.0
-
-[node name="VBoxContainer" parent="PanelContainer/QuestionContainer" parent_id_path=PackedInt32Array(788285574) index="0" unique_id=166746788]
-visible = false
-
-[node name="SummaryContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" parent_id_path=PackedInt32Array(788285574) index="1" unique_id=1825765088]
-layout_mode = 2
-theme_override_constants/separation = 50
-
-[node name="Title" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer" index="0" unique_id=1016477474]
-layout_mode = 2
-theme_override_font_sizes/font_size = 70
+[node name="Title" type="Label" parent="." index="2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -940.0
+offset_top = 146.0
+offset_right = 940.0
+offset_bottom = 226.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_type_variation = &"Title"
 text = "REGISTRATION_SUMMARY"
 horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/QuestionContainer/SummaryContainer" index="1" unique_id=1868348724]
+[node name="PanelContainer" parent="." index="3" unique_id=824416175]
+offset_left = -940.0
+offset_top = 268.0
+offset_right = 940.0
+offset_bottom = 1355.0
+theme_type_variation = &"Card"
+
+[node name="QuestionContainer" parent="PanelContainer" index="0" unique_id=788285574]
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 56
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 56
+
+[node name="VBoxContainer" parent="PanelContainer/QuestionContainer" index="0" unique_id=166746788]
+theme_override_constants/separation = 40
+alignment = 0
+
+[node name="TopRow" type="HBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="0" unique_id=1825765088]
 layout_mode = 2
-size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer" index="0" unique_id=606916318]
+[node name="SummaryLines" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow" index="0" unique_id=606916318]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Email" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow/SummaryLines" index="0" unique_id=1885311456]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CardHeading"
+
+[node name="AccountType" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow/SummaryLines" index="1" unique_id=448321219]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CardHeading"
+
+[node name="EducationMethod" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow/SummaryLines" index="2" unique_id=1650248119]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CardHeading"
+
+[node name="DevicesCount" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow/SummaryLines" index="3" unique_id=1474085084]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CardHeading"
+
+[node name="StudentsCount" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow/SummaryLines" index="4" unique_id=310898875]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CardHeading"
+
+[node name="SaveAllCodesButton" type="Button" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow" index="1" unique_id=606916319]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(539, 164)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"PrimaryButton"
+text = "SAVE_ALL_CODES"
+
+[node name="RecapScroll" type="ScrollContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="1" unique_id=1868348724]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 20
+horizontal_scroll_mode = 0
 
-[node name="Email" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="0" unique_id=1885311456]
+[node name="RecapContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/RecapScroll" index="0" unique_id=896542999]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
+size_flags_horizontal = 3
+theme_override_constants/separation = 40
 
-[node name="AccountType" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="1" unique_id=448321219]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-
-[node name="EducationMethod" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="2" unique_id=1650248119]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-
-[node name="DevicesCount" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="3" unique_id=1474085084]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-
-[node name="StudentsCount" type="Label" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="4" unique_id=310898875]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-
-[node name="RecapContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/SummaryContainer/ScrollContainer/VBoxContainer" index="5" unique_id=896542999]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="FormValidator" parent="." index="3" unique_id=577712412]
+[node name="QuestionLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="2" unique_id=473680384]
 visible = false
+
+[node name="InfoLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="3" unique_id=402601850]
+visible = false
+
+[node name="FormValidator" parent="." index="4" unique_id=577712412]
+visible = false
+
+[node name="ExportCodesFileDialog" type="FileDialog" parent="." index="5" unique_id=606916320]
+unique_name_in_owner = true
+title = "Save a File"
+initial_position = 2
+size = Vector2i(1200, 800)
+ok_button_text = "Save"
+file_mode = 4
+filters = PackedStringArray("*.pdf ; pdf")
+
+[connection signal="pressed" from="PanelContainer/QuestionContainer/VBoxContainer/TopRow/SaveAllCodesButton" to="." method="_on_save_all_codes_button_pressed"]
+[connection signal="file_selected" from="ExportCodesFileDialog" to="." method="_on_export_codes_file_selected"]

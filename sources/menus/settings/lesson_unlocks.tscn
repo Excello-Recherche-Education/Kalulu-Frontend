@@ -2,225 +2,252 @@
 
 [ext_resource type="Script" uid="uid://idm8o2vp60up" path="res://sources/menus/settings/lesson_unlocks.gd" id="1_rlqp5"]
 [ext_resource type="PackedScene" uid="uid://c5ey1jk06asiq" path="res://sources/menus/components/password_visualizer.tscn" id="2_jm5xx"]
-[ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="2_wiajt"]
-[ext_resource type="Theme" uid="uid://dqjvrt5nrtwn1" path="res://resources/themes/kalulu_theme.tres" id="3_h5j4j"]
-[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="3_v7dp3"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="3_theme"]
+[ext_resource type="Texture2D" uid="uid://ciey7plfxwjis" path="res://assets/menus/icons/close_window.svg" id="4_close"]
+[ext_resource type="Texture2D" uid="uid://c6wpjhisa1uxr" path="res://assets/menus/icons/delete.svg" id="5_trash"]
 
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_3kkg7"]
-color = Color(1, 1, 1, 1)
-
-[node name="LessonUnlocks" type="Control" unique_id=318924307]
+[node name="LessonUnlocks" type="Control" unique_id=1854468896]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("3_theme")
 script = ExtResource("1_rlqp5")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1649157247]
+[node name="Backdrop" type="ColorRect" parent="." unique_id=1720120367]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 250
-theme_override_constants/margin_top = 250
-theme_override_constants/margin_right = 250
-theme_override_constants/margin_bottom = 250
+color = Color(0.0784314, 0.0980392, 0.223529, 0.6)
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=1523700652]
+[node name="Card" type="PanelContainer" parent="." unique_id=2132073760]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1102.0
+offset_top = -790.0
+offset_right = 1103.0
+offset_bottom = 790.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"Card"
+
+[node name="Margin" type="MarginContainer" parent="Card" unique_id=780552884]
 layout_mode = 2
-theme_type_variation = &"PanelKaluluBig"
+theme_override_constants/margin_left = 122
+theme_override_constants/margin_top = 88
+theme_override_constants/margin_right = 122
+theme_override_constants/margin_bottom = 88
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer" unique_id=1436905564]
-layout_mode = 2
-
-[node name="Header" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1048959767]
-layout_mode = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Header" unique_id=262579793]
-layout_mode = 2
-
-[node name="PasswordVisualizer" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" unique_id=656418156 instance=ExtResource("2_jm5xx")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" unique_id=244633816]
-layout_mode = 2
-theme_override_constants/separation = 200
-
-[node name="NameLineEdit" type="LineEdit" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" unique_id=2093498091]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 4.0
-theme = ExtResource("3_h5j4j")
-theme_override_font_sizes/font_size = 130
-placeholder_text = "Kalulu"
-
-[node name="BackButton" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer" unique_id=1236517531 instance=ExtResource("2_wiajt")]
-layout_mode = 2
-size_flags_horizontal = 10
-
-[node name="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer/BackButton" index="0" unique_id=1207987905]
-texture = ExtResource("3_v7dp3")
-
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1426256265]
-layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_3kkg7")
-
-[node name="Content" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=2074597969]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content" unique_id=1183576919]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer" unique_id=211942115]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="LessonsGrid" type="GridContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer" unique_id=1896367368]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/h_separation = 40
-theme_override_constants/v_separation = 12
-columns = 6
-
-[node name="LessonHeaderLabel" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=1531995288]
-custom_minimum_size = Vector2(100, 80)
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "LESSON"
-vertical_alignment = 1
-
-[node name="GraphemeHeaderSpacer" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=771322481]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="LookAndLearnHeaderLabel" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=682774340]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 34
-text = "LOOKANDLEARN"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="ExerciseHeaderLabel1" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=40356526]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 34
-text = "EXERCISE1"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="ExerciseHeaderLabel2" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=933140768]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 34
-text = "EXERCISE2"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="ExerciseHeaderLabel3" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Content/VBoxContainer/ScrollContainer/LessonsGrid" unique_id=476815784]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 34
-text = "EXERCISE3"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=180339992]
-layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_3kkg7")
-
-[node name="Footer" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1741301409]
-layout_mode = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Footer" unique_id=610002145]
-layout_mode = 2
-alignment = 2
-
-[node name="ChangeDeviceButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer" unique_id=1405404165]
-layout_mode = 2
-theme = ExtResource("3_h5j4j")
-theme_type_variation = &"FlatButton"
-theme_override_font_sizes/font_size = 40
-text = "CHANGE_DEVICE"
-
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer" unique_id=599624560]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="DeleteButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer" unique_id=1377833910]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_h5j4j")
-theme_type_variation = &"DangerButton"
-theme_override_font_sizes/font_size = 40
-text = "DELETE_STUDENT"
-
-[node name="DeviceSelectionContainer" type="PanelContainer" parent="MarginContainer" unique_id=145683349]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-theme_type_variation = &"PanelKaluluBig"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/DeviceSelectionContainer" unique_id=1942248596]
-layout_mode = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/DeviceSelectionContainer/MarginContainer" unique_id=817414558]
+[node name="Body" type="VBoxContainer" parent="Card/Margin" unique_id=708677348]
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="Label" type="Label" parent="MarginContainer/DeviceSelectionContainer/MarginContainer/VBoxContainer" unique_id=9056215]
+[node name="HeaderRow" type="HBoxContainer" parent="Card/Margin/Body" unique_id=1708868689]
 layout_mode = 2
-theme_override_font_sizes/font_size = 72
-text = "PICK_YOUR_DEVICE"
+
+[node name="Title" type="Label" parent="Card/Margin/Body/HeaderRow" unique_id=2045572647]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PanelTitle"
+text = "STUDENT_PROGRESS"
+
+[node name="CloseButton" type="TextureButton" parent="Card/Margin/Body/HeaderRow" unique_id=1305265016]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture_normal = ExtResource("4_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="DetailsRow" type="HBoxContainer" parent="Card/Margin/Body" unique_id=860262684]
+layout_mode = 2
+theme_override_constants/separation = 104
+
+[node name="NameGroup" type="VBoxContainer" parent="Card/Margin/Body/DetailsRow" unique_id=147455816]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="Card/Margin/Body/DetailsRow/NameGroup" unique_id=1450643792]
+layout_mode = 2
+theme_type_variation = &"PanelLabel"
+text = "NAME"
+
+[node name="NameLineEdit" type="LineEdit" parent="Card/Margin/Body/DetailsRow/NameGroup" unique_id=1843457891]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(900, 160)
+layout_mode = 2
+theme_type_variation = &"FieldSubtle"
+
+[node name="CodeGroup" type="VBoxContainer" parent="Card/Margin/Body/DetailsRow" unique_id=661657443]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="CodeLabel" type="Label" parent="Card/Margin/Body/DetailsRow/CodeGroup" unique_id=1709145564]
+layout_mode = 2
+theme_type_variation = &"PanelLabel"
+text = "CODE"
+
+[node name="PasswordVisualizer" parent="Card/Margin/Body/DetailsRow/CodeGroup" unique_id=342613169 instance=ExtResource("2_jm5xx")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 20
+key_size = 76
+chip_size = 151
+chip_separation = 20
+
+[node name="DetailsSpacer" type="Control" parent="Card/Margin/Body/DetailsRow" unique_id=1073983619]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="DeleteButton" type="TextureButton" parent="Card/Margin/Body/DetailsRow" unique_id=1653393283]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture_normal = ExtResource("5_trash")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ProgressLabel" type="Label" parent="Card/Margin/Body" unique_id=1032308291]
+layout_mode = 2
+theme_type_variation = &"PanelLabel"
+text = "LEARNING_PROGRESS"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Card/Margin/Body" unique_id=795116931]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="LessonsGrid" type="GridContainer" parent="Card/Margin/Body/ScrollContainer" unique_id=774750447]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 4
+
+[node name="LessonHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid" unique_id=1822761518]
+custom_minimum_size = Vector2(180, 136)
+layout_mode = 2
+theme_type_variation = &"TableHeaderCell"
+
+[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/LessonHeader" unique_id=1755205586]
+layout_mode = 2
+theme_type_variation = &"TableHeader"
+text = "LESSON"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/DeviceSelectionContainer/MarginContainer/VBoxContainer" unique_id=971220857]
+[node name="GardenHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid" unique_id=1903104970]
+custom_minimum_size = Vector2(220, 136)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"TableHeaderCell"
+
+[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/GardenHeader" unique_id=1903104971]
+layout_mode = 2
+theme_type_variation = &"TableHeader"
+text = "GARDEN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GraphemeHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid" unique_id=1903104972]
+custom_minimum_size = Vector2(180, 136)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"TableHeaderCell"
+
+[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/GraphemeHeader" unique_id=2075692768]
+layout_mode = 2
+theme_type_variation = &"TableHeader"
+text = "GRAPHEME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatusHeader" type="PanelContainer" parent="Card/Margin/Body/ScrollContainer/LessonsGrid" unique_id=1893472010]
+custom_minimum_size = Vector2(0, 136)
+layout_mode = 2
+theme_type_variation = &"TableHeaderCell"
+
+[node name="Label" type="Label" parent="Card/Margin/Body/ScrollContainer/LessonsGrid/StatusHeader" unique_id=1406693334]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+theme_type_variation = &"TableHeader"
+text = "STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FooterRow" type="HBoxContainer" parent="Card/Margin/Body" unique_id=1222535824]
+layout_mode = 2
+
+[node name="ChangeDeviceButton" type="Button" parent="Card/Margin/Body/FooterRow" unique_id=591465690]
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"CardSecondaryButton"
+text = "CHANGE_DEVICE"
+
+[node name="DeviceSelectionContainer" type="PanelContainer" parent="." unique_id=1705961569]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -700.0
+offset_top = -500.0
+offset_right = 700.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"Card"
+
+[node name="Margin" type="MarginContainer" parent="DeviceSelectionContainer" unique_id=852328686]
+layout_mode = 2
+theme_override_constants/margin_left = 88
+theme_override_constants/margin_top = 88
+theme_override_constants/margin_right = 88
+theme_override_constants/margin_bottom = 88
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DeviceSelectionContainer/Margin" unique_id=1329390352]
+layout_mode = 2
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="DeviceSelectionContainer/Margin/VBoxContainer" unique_id=188966923]
+layout_mode = 2
+theme_type_variation = &"CardHeading"
+text = "PICK_YOUR_DEVICE"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="DeviceSelectionContainer/Margin/VBoxContainer" unique_id=432106660]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 30
-columns = 3
+theme_override_constants/h_separation = 58
+theme_override_constants/v_separation = 58
+columns = 4
 
-[node name="LessonRowsStore" type="Node" parent="." unique_id=402715604]
+[node name="LessonRowsStore" type="Node" parent="." unique_id=1493955022]
 unique_name_in_owner = true
 
-[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer/ChangeDeviceButton" to="." method="_on_device_change_button_pressed"]
-[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Footer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
-
-[editable path="MarginContainer/PanelContainer/VBoxContainer/Header/HBoxContainer/BackButton"]
+[connection signal="pressed" from="Card/Margin/Body/HeaderRow/CloseButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Card/Margin/Body/DetailsRow/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="Card/Margin/Body/FooterRow/ChangeDeviceButton" to="." method="_on_device_change_button_pressed"]

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://ctfu2lhk6xaad" path="res://addons/godot-form-validator/control_validator.gd" id="2_hidu6"]
 [ext_resource type="Script" uid="uid://b3lqs6b6vj57r" path="res://sources/menus/register/steps/account_type_step.gd" id="2_k6524"]
 [ext_resource type="Script" uid="uid://btw6a2qw2xnje" path="res://addons/godot-form-validator/rules/required_rule.gd" id="3_54aao"]
-[ext_resource type="Script" uid="uid://83q48kwp3p6p" path="res://sources/menus/register/steps/validation/item_list_validator.gd" id="4_bdvqa"]
+[ext_resource type="Script" path="res://sources/menus/register/steps/validation/option_button_validator.gd" id="4_bdvqa"]
 [ext_resource type="Script" uid="uid://dlg1muqj8qwau" path="res://addons/godot-form-validator/rules/validator_rule.gd" id="4_n022u"]
 [ext_resource type="Script" uid="uid://7uwoocpe7ieu" path="res://sources/utils/binder/control_binder.gd" id="5_w7o0m"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="7_kjn8t"]
@@ -29,27 +29,18 @@ question = "ACCOUNT_TYPE_PROMPT"
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="TypeSelectLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer" index="0" unique_id=1243736844]
-custom_minimum_size = Vector2(350, 0)
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 50
-text = "ACCOUNT_TYPE"
-autowrap_mode = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer" index="1" unique_id=500125814]
+[node name="VBoxContainer" type="VBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer" index="0" unique_id=500125814]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TypeSelect" type="ItemList" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer" index="0" unique_id=1312294067]
+[node name="TypeSelect" type="OptionButton" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer" index="0" unique_id=1312294067]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 70
-allow_search = false
-auto_height = true
-item_count = 2
-item_0/text = "TEACHER"
-item_1/text = "PARENT"
+text = "ACCOUNT_TYPE"
+clip_text = true
+alignment = 0
+selected = -1
+fit_to_longest_item = false
 
 [node name="ControlValidator" type="Node" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="2" unique_id=1609915491]
 script = ExtResource("2_hidu6")
@@ -57,10 +48,6 @@ validator = SubResource("Resource_n0ht0")
 
 [node name="ControlBinder" type="Control" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/TypeContainer/VBoxContainer/TypeSelect" index="3" unique_id=1789211672]
 anchors_preset = 0
-offset_left = -548.0
-offset_top = -20.0
-offset_right = 576.0
-offset_bottom = -20.0
 script = ExtResource("5_w7o0m")
 property_name = "account_type"
 

@@ -10,6 +10,9 @@ enum EducationMethod {
 	COMPLETE
 }
 
+## What get_new_code answers when every code is taken. Not a usable code, so a
+## caller must check for it rather than storing it on a student.
+const NO_CODE_AVAILABLE: int = -1
 const AVAILABLE_CODES: Array[int] = [123, 124, 125, 126, 132, 134, 135, 136, 142, 143, 145, 146, 152, 153, 154, 213, 214, 215, 216, 231, 234, 235, 236, 241, 243, 245, 246, 251, 253, 254, 321, 324, 325, 326, 312, 314, 315, 316, 342, 341, 345, 346, 352, 351, 354, 423, 421, 425, 426, 432, 431, 435, 436, 412, 413, 415, 416, 452, 453, 451, 523, 524, 521, 526, 532, 534, 531, 536, 542, 543, 541, 546, 512, 513, 514, 623, 624, 625, 621, 632, 634, 635, 631, 642, 643, 645, 641, 652, 653, 654]
 
 @export var account_type: AccountType
@@ -113,21 +116,23 @@ func update_student_device(student_code: int, new_student_device: int) -> void:
 	Log.warn("TeacherSettings: update_student_device: student not found with code " + str(student_code))
 
 
+## An unused student code, or NO_CODE_AVAILABLE when every code is taken.
+##
+## Decided on what is left of the pool rather than on how many students there
+## are. Those two only agree while every stored code is a real one: a single
+## student carrying NO_CODE_AVAILABLE -- which is what the caller used to store
+## when this ran out -- pushed the count past the pool's size while leaving the
+## pool empty, so the guard was skipped and pick_random returned null, which
+## cannot come back as an int.
 func get_new_code() -> int:
-	var used_codes: Array[int] = []
+	var codes: Array[int] = AVAILABLE_CODES.duplicate()
 	for student_array: Array[StudentData] in students.values():
 		for student: StudentData in student_array:
-			used_codes.append(student.code)
-	
-	if used_codes.size() == AVAILABLE_CODES.size():
-		return -1
-	
-	var codes: Array[int] = AVAILABLE_CODES.duplicate()
-	for code: int in used_codes:
-		codes.erase(code)
-	
-	var code: int = codes.pick_random()
-	return code
+			codes.erase(student.code)
+
+	if codes.is_empty():
+		return NO_CODE_AVAILABLE
+	return codes.pick_random()
 
 
 func to_dict() -> Dictionary:

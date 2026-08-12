@@ -10,6 +10,7 @@ colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 gradient = SubResource("Gradient_chglg")
 
 [node name="ChangeLanguagePopup" type="CanvasLayer" unique_id=923998361]
+visible = false
 script = ExtResource("1_chglg")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1329567877]
