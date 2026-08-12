@@ -502,18 +502,106 @@ func _wizard_at_the_recap() -> Control:
 	return wizard
 
 
-func test_going_back_through_a_students_step_changes_its_codes() -> void:
-	# The premise of the two tests below, and worth pinning on its own: the step
-	# rebuilds that device's students from scratch, and their codes are random.
+func test_going_back_through_a_students_step_keeps_its_codes() -> void:
+	# Regression: the step used to rebuild that device's students from scratch, and
+	# a code is drawn at random -- so simply passing back through the question
+	# reissued every code on the device, invalidating a sheet already printed.
 	var wizard: Control = await _wizard_at_the_recap()
 	var recap: RecapStep = wizard.current_steps[wizard.current_steps.size() - 1]
 	var before: String = recap.codes_fingerprint()
 
 	wizard._go_to_step(4)
-	(wizard.current_steps[4] as StudentsCountStep)._on_next()
+	var device_step: StudentsCountStep = wizard.current_steps[4]
+	# What the step reconciles against: re-entering must show the count the teacher
+	# gave, or moving on would trim the device down to the field's default.
+	assert_eq(device_step.students_count_field.value, 2.0,
+		"the question comes back answered")
+	device_step._on_next()
 
-	assert_ne(recap.codes_fingerprint(), before,
-		"a trip back and forward should have redrawn that device's codes")
+	assert_eq(recap.codes_fingerprint(), before,
+		"the answer did not change, so neither should the codes")
+
+
+func test_asking_for_one_more_student_leaves_the_others_alone() -> void:
+	# Only the difference is drawn: the students already entered keep their codes,
+	# so a teacher who miscounted does not have to reprint the whole device.
+	var wizard: Control = await _wizard_at_the_recap()
+	var kept: String = _codes_of(wizard, 1)
+
+	wizard._go_to_step(4)
+	var device_step: StudentsCountStep = wizard.current_steps[4]
+	device_step.students_count_field.value = 3
+	device_step._on_next()
+
+	var students: Array[StudentData] = wizard.register_data.students[1]
+	assert_eq(students.size(), 3, "the third student was added")
+	assert_eq("%d,%d" % [students[0].code, students[1].code], kept,
+		"and the first two kept the codes they were given")
+
+
+func test_asking_for_fewer_students_gives_their_codes_back() -> void:
+	# The pool is one fixed set for the whole account, so a code stops being taken
+	# the moment its student goes.
+	var wizard: Control = await _wizard_at_the_recap()
+	var students: Array[StudentData] = wizard.register_data.students[1]
+	var kept: int = students[0].code
+	var dropped: int = students[1].code
+
+	wizard._go_to_step(4)
+	var device_step: StudentsCountStep = wizard.current_steps[4]
+	device_step.students_count_field.value = 1
+	device_step._on_next()
+
+	students = wizard.register_data.students[1]
+	assert_eq(students.size(), 1, "the device is down to one student")
+	assert_eq(students[0].code, kept, "who keeps the code they were given")
+	var still_taken: Array[int] = []
+	for device: int in wizard.register_data.students:
+		for student: StudentData in wizard.register_data.students[device]:
+			still_taken.append(student.code)
+	assert_false(still_taken.has(dropped), "the code of the student who went is free again")
+
+
+func test_answering_the_device_question_the_same_way_changes_nothing() -> void:
+	var wizard: Control = await _wizard_at_the_recap()
+	var recap: RecapStep = wizard.current_steps[wizard.current_steps.size() - 1]
+	var before: String = recap.codes_fingerprint()
+	var step_count: int = wizard.current_steps.size()
+
+	wizard._go_to_step(3)
+	await wizard._on_step_completed(wizard.current_steps[3])
+
+	assert_true(is_instance_valid(recap), "the steps it already walked should not be rebuilt")
+	assert_eq(wizard.current_steps.size(), step_count, "and the queue still fits the answer")
+	assert_eq((wizard.current_steps[wizard.current_steps.size() - 1] as RecapStep).codes_fingerprint(),
+		before, "nobody's code changed")
+
+
+func test_asking_for_fewer_devices_drops_the_ones_removed() -> void:
+	# Regression: the wizard freed the extra device's step but left its students in
+	# the registration data, so the recap counted a device the teacher had just
+	# removed -- and the account would have been created with it.
+	var wizard: Control = await _wizard_at_the_recap()
+	assert_eq(wizard.register_data.students.size(), 2, "two devices to start with")
+
+	wizard._go_to_step(3)
+	wizard.register_data.devices_count = 1
+	await wizard._on_step_completed(wizard.current_steps[3])
+	var device_step: StudentsCountStep = wizard.current_steps[4]
+	device_step.students_count_field.value = 2
+	device_step._on_next()
+
+	assert_eq(wizard.register_data.students.size(), 1, "only the device still asked for is left")
+	assert_false(wizard.register_data.students.has(2),
+		"the device that went took its students with it")
+
+
+## The codes on one device, in order, as a string that is easy to compare.
+func _codes_of(wizard: Control, device: int) -> String:
+	var codes: PackedStringArray = []
+	for student: StudentData in wizard.register_data.students[device]:
+		codes.append(str(student.code))
+	return ",".join(codes)
 
 
 func test_a_saved_sheet_stops_counting_once_the_codes_change() -> void:
@@ -529,7 +617,9 @@ func test_a_saved_sheet_stops_counting_once_the_codes_change() -> void:
 	assert_false(recap.validate_button.disabled, "Confirm opens up once the sheet is asked for")
 
 	wizard._go_to_step(4)
-	(wizard.current_steps[4] as StudentsCountStep)._on_next()
+	var device_step: StudentsCountStep = wizard.current_steps[4]
+	device_step.students_count_field.value = 3
+	device_step._on_next()
 	wizard._go_to_step(wizard.current_steps.size() - 1)
 
 	assert_false(recap.codes_requested, "the sheet no longer matches, so it has to be asked again")
@@ -540,8 +630,8 @@ func test_a_saved_sheet_stops_counting_once_the_codes_change() -> void:
 
 
 func test_a_saved_sheet_survives_a_trip_that_leaves_the_codes_alone() -> void:
-	# Going back only as far as the conditions touches nothing, so the teacher
-	# should not be made to export again for it.
+	# Going back without changing an answer touches nothing, so the teacher should
+	# not be made to export again for it.
 	var original_path: String = AccountCreated.saved_codes_path
 	var wizard: Control = await _wizard_at_the_recap()
 	var recap_index: int = wizard.current_steps.size() - 1
@@ -551,6 +641,9 @@ func test_a_saved_sheet_survives_a_trip_that_leaves_the_codes_alone() -> void:
 	AccountCreated.saved_codes_path = "user://Codes.pdf"
 
 	wizard._go_to_step(recap_index - 1)
+	wizard._go_to_step(recap_index)
+	wizard._go_to_step(4)
+	(wizard.current_steps[4] as StudentsCountStep)._on_next()
 	wizard._go_to_step(recap_index)
 
 	assert_true(recap.codes_requested, "nothing changed, so the sheet still stands")

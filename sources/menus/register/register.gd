@@ -7,6 +7,9 @@ extends Control
 
 const BACK_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
 const NEXT_SCENE_PATH: String = "res://sources/menus/register/account_created.tscn"
+## No device step has been built yet. Not a count any answer can produce, so the
+## first pass through the device question always builds them.
+const NO_DEVICE_STEPS: int = -1
 
 ## Index into current_steps of the step on screen.
 ##
@@ -15,6 +18,12 @@ const NEXT_SCENE_PATH: String = "res://sources/menus/register/account_created.ts
 ## place. The redesign has no progress bar, so the index lives here.
 var current_step: int = 0
 var current_steps: Array[Step] = []
+## The device count the students steps were built for.
+##
+## Read to tell a revisit apart from a change of answer, so passing back through
+## the device question without touching it leaves the students, and their codes,
+## exactly as they were.
+var built_devices_count: int = NO_DEVICE_STEPS
 
 @onready var language_step: PackedScene = preload("res://sources/menus/register/steps/language/language_step.tscn")
 @onready var teacher_steps: Array[PackedScene] = [
@@ -94,8 +103,18 @@ func _on_step_completed(step: Step) -> void:
 				for scene: PackedScene in parent_steps:
 					current_steps.append(scene.instantiate())
 		"devices":
-			# Adds students steps for teachers
+			# Adds students steps for teachers, but only when the number of devices
+			# has actually changed. Rebuilding them on every pass would discard the
+			# students already entered, and a student's code is drawn at random and
+			# cannot be recovered: the teacher may have printed the sheet by then,
+			# and the second draw would not match it.
+			if built_devices_count == register_data.devices_count:
+				Log.trace("Register: %d device steps already match the answer, keeping them"
+					% register_data.devices_count)
+				await _continue()
+				return
 			_remove_future_steps()
+			built_devices_count = register_data.devices_count
 			for device: int in range(register_data.devices_count):
 				var students_step_scene: Node = students_step.instantiate()
 				if students_step_scene is StudentsCountStep:
@@ -184,6 +203,7 @@ func _drop_remaining_device_steps() -> int:
 
 	current_steps.resize(current_step + 1)
 	current_steps.append_array(kept)
+	built_devices_count = NO_DEVICE_STEPS
 	return dropped
 
 
@@ -209,13 +229,23 @@ func _submit() -> void:
 		Log.error("Register: Failed to persist registration locally")
 
 
+## Removes the steps after the current one, along with the data they collected.
+##
+## A step only exists because of an answer given above it, so when that answer
+## changes the step goes -- and what it collected has to go with it. For a device
+## step that is a whole device worth of students: left behind, they would still
+## reach the recap and the server as a device the teacher had just removed.
 func _remove_future_steps() -> void:
 	# Free memory
 	for index: int in range(current_step + 1, current_steps.size(), 1):
+		var device_step: StudentsCountStep = current_steps[index] as StudentsCountStep
+		if device_step and register_data:
+			register_data.students.erase(device_step.device_id)
 		current_steps[index].queue_free()
 
 	# Resize the array to remove unwanted steps
 	current_steps.resize(current_step + 1)
+	built_devices_count = NO_DEVICE_STEPS
 
 
 func _on_popup_button_pressed() -> void:

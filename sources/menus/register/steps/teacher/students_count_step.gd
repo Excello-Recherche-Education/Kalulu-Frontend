@@ -13,29 +13,32 @@ var codes_ran_out: bool = false
 @onready var students_count_field: SpinBox = %StudentsCountField
 
 
-func _on_back() -> bool:
-	var register_data: TeacherSettings = data as TeacherSettings
-	if register_data:
-		Log.trace("Register/StudentsCountStep: removing students for device %d" % device_id)
-		register_data.students.erase(device_id)
-		return true
-	Log.warn("Register/StudentsCountStep: cannot go back because TeacherSettings data is missing")
-	return false
-
-
 func _on_next() -> bool:
 	var register_data: TeacherSettings = data as TeacherSettings
 	if not register_data:
 		Log.warn("Register/StudentsCountStep: cannot continue because TeacherSettings data is missing")
 		return false
 
+	# The students already entered are kept, and only the difference is made up.
+	# A code is drawn at random and cannot be recovered once replaced, so coming
+	# back through this step must not silently reissue them -- the teacher may have
+	# printed them already.
 	var students: Array[StudentData] = []
-	register_data.students[device_id] = students
+	if register_data.students.has(device_id):
+		students = register_data.students[device_id] as Array[StudentData]
+	else:
+		register_data.students[device_id] = students
 	var requested: int = int(students_count_field.value)
-	Log.trace("Register/StudentsCountStep: creating %d students for device %d" % [requested, device_id])
+	Log.trace("Register/StudentsCountStep: device %d wants %d students, has %d"
+		% [device_id, requested, students.size()])
+
+	# Trimmed before anything is drawn, so the codes of the students being dropped
+	# are back in the pool and can be reused by whoever needs them next.
+	while students.size() > requested:
+		students.remove_at(students.size() - 1)
 
 	codes_ran_out = false
-	for _student: int in requested:
+	while students.size() < requested:
 		var code: int = register_data.get_new_code()
 		if code == TeacherSettings.NO_CODE_AVAILABLE:
 			# Keep the students that did get a code rather than failing the step.
