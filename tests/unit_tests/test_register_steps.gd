@@ -596,6 +596,34 @@ func test_asking_for_fewer_devices_drops_the_ones_removed() -> void:
 		"the device that went took its students with it")
 
 
+func test_a_parent_revisiting_the_child_question_keeps_their_codes() -> void:
+	# The parent's own step is a device step, and the wizard clears the data of the
+	# device steps it removes -- so this pins that completing that question does not
+	# wipe the children it just created.
+	var wizard: Control = (load("res://sources/menus/register/register.tscn")
+		as PackedScene).instantiate()
+	add_child_autofree(wizard)
+	await get_tree().process_frame
+
+	wizard._go_to_step(1)
+	wizard.register_data.account_type = TeacherSettings.AccountType.PARENT
+	await wizard._on_step_completed(wizard.current_steps[1])
+	wizard._go_to_step(2)
+	var children_step: StudentsCountStep = wizard.current_steps[2]
+	children_step.students_count_field.value = 2
+	children_step._on_next()
+	await wizard._on_step_completed(children_step)
+	var before: String = _codes_of(wizard, 1)
+	assert_eq((wizard.register_data.students[1] as Array).size(), 2,
+		"two children were created")
+
+	wizard._go_to_step(2)
+	(wizard.current_steps[2] as StudentsCountStep)._on_next()
+	await wizard._on_step_completed(wizard.current_steps[2])
+
+	assert_eq(_codes_of(wizard, 1), before, "and they keep the codes they were given")
+
+
 ## The codes on one device, in order, as a string that is easy to compare.
 func _codes_of(wizard: Control, device: int) -> String:
 	var codes: PackedStringArray = []
