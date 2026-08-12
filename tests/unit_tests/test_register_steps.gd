@@ -508,7 +508,7 @@ func test_going_back_through_a_students_step_keeps_its_codes() -> void:
 	# reissued every code on the device, invalidating a sheet already printed.
 	var wizard: Control = await _wizard_at_the_recap()
 	var recap: RecapStep = wizard.current_steps[wizard.current_steps.size() - 1]
-	var before: String = recap.codes_fingerprint()
+	var before: String = recap.sheet_fingerprint()
 
 	wizard._go_to_step(4)
 	var device_step: StudentsCountStep = wizard.current_steps[4]
@@ -518,7 +518,7 @@ func test_going_back_through_a_students_step_keeps_its_codes() -> void:
 		"the question comes back answered")
 	device_step._on_next()
 
-	assert_eq(recap.codes_fingerprint(), before,
+	assert_eq(recap.sheet_fingerprint(), before,
 		"the answer did not change, so neither should the codes")
 
 
@@ -565,7 +565,7 @@ func test_asking_for_fewer_students_gives_their_codes_back() -> void:
 func test_answering_the_device_question_the_same_way_changes_nothing() -> void:
 	var wizard: Control = await _wizard_at_the_recap()
 	var recap: RecapStep = wizard.current_steps[wizard.current_steps.size() - 1]
-	var before: String = recap.codes_fingerprint()
+	var before: String = recap.sheet_fingerprint()
 	var step_count: int = wizard.current_steps.size()
 
 	wizard._go_to_step(3)
@@ -573,7 +573,7 @@ func test_answering_the_device_question_the_same_way_changes_nothing() -> void:
 
 	assert_true(is_instance_valid(recap), "the steps it already walked should not be rebuilt")
 	assert_eq(wizard.current_steps.size(), step_count, "and the queue still fits the answer")
-	assert_eq((wizard.current_steps[wizard.current_steps.size() - 1] as RecapStep).codes_fingerprint(),
+	assert_eq((wizard.current_steps[wizard.current_steps.size() - 1] as RecapStep).sheet_fingerprint(),
 		before, "nobody's code changed")
 
 
@@ -622,6 +622,64 @@ func test_a_parent_revisiting_the_child_question_keeps_their_codes() -> void:
 	await wizard._on_step_completed(wizard.current_steps[2])
 
 	assert_eq(_codes_of(wizard, 1), before, "and they keep the codes they were given")
+
+
+func test_a_saved_sheet_stops_counting_once_a_child_is_renamed() -> void:
+	# The sheet prints each child's name next to their code, so it is how a parent
+	# knows whose code is whose. Renaming one afterwards leaves the codes untouched
+	# but the paper wrong, and the confirmation screen would still point at it.
+	var original_path: String = AccountCreated.saved_codes_path
+	var wizard: Control = await _wizard_at_the_recap()
+	var recap_index: int = wizard.current_steps.size() - 1
+	var recap: RecapStep = wizard.current_steps[recap_index]
+	(wizard.register_data.students[1] as Array[StudentData])[0].name = "Amina"
+	recap._on_save_all_codes_button_pressed()
+	recap.export_codes_file_dialog.hide()
+	AccountCreated.saved_codes_path = "user://Codes.pdf"
+
+	(wizard.register_data.students[1] as Array[StudentData])[0].name = "Aminata"
+	wizard._go_to_step(recap_index)
+
+	assert_false(recap.codes_requested, "the sheet names the wrong child, so it has to be asked again")
+	assert_true(recap.validate_button.disabled, "and Confirm should close again")
+	assert_eq(AccountCreated.saved_codes_path, "",
+		"the confirmation screen must not point at a sheet that names the wrong child")
+	AccountCreated.saved_codes_path = original_path
+
+
+func test_a_saved_sheet_stops_counting_once_two_children_swap_names() -> void:
+	# The codes and the names are both still there, only paired the other way round
+	# -- and a sheet that hands each child the other one's code is the worst version
+	# of this, because everything on it looks right.
+	var wizard: Control = await _wizard_at_the_recap()
+	var recap_index: int = wizard.current_steps.size() - 1
+	var recap: RecapStep = wizard.current_steps[recap_index]
+	var students: Array[StudentData] = wizard.register_data.students[1]
+	students[0].name = "Amina"
+	students[1].name = "Bakary"
+	recap._on_save_all_codes_button_pressed()
+	recap.export_codes_file_dialog.hide()
+
+	students[0].name = "Bakary"
+	students[1].name = "Amina"
+	wizard._go_to_step(recap_index)
+
+	assert_false(recap.codes_requested, "the sheet pairs the codes with the wrong children")
+
+
+func test_a_saved_sheet_survives_a_child_being_given_a_name_it_already_had() -> void:
+	# Retyping the same name must not cost the parent another export.
+	var wizard: Control = await _wizard_at_the_recap()
+	var recap_index: int = wizard.current_steps.size() - 1
+	var recap: RecapStep = wizard.current_steps[recap_index]
+	(wizard.register_data.students[1] as Array[StudentData])[0].name = "Amina"
+	recap._on_save_all_codes_button_pressed()
+	recap.export_codes_file_dialog.hide()
+
+	(wizard.register_data.students[1] as Array[StudentData])[0].name = "Amina"
+	wizard._go_to_step(recap_index)
+
+	assert_true(recap.codes_requested, "nothing the sheet prints changed")
 
 
 ## The codes on one device, in order, as a string that is easy to compare.

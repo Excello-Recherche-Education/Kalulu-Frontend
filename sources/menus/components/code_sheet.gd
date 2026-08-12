@@ -63,6 +63,38 @@ static func export_to_pdf(host: Node, settings: TeacherSettings, path: String) -
 	return save_error
 
 
+## Everything the sheet would print, as one comparable string.
+##
+## It lives here, beside the code that draws a row, because it has to cover every
+## field a row shows: the recap keeps this when the teacher exports and compares it
+## later to tell whether the sheet in their hands is still the truth. A field added
+## to a row has to be added here too, and sitting in the same file is the only
+## reminder there will be.
+static func content_fingerprint(settings: TeacherSettings) -> String:
+	var lines: PackedStringArray = []
+	var devices: Array = settings.students.keys()
+	devices.sort()
+	for device_id: int in devices:
+		for student: StudentData in settings.students[device_id] as Array[StudentData]:
+			# The name goes last: it is the one field a person types, so it is the one
+			# that could otherwise be mistaken for a separator.
+			lines.append("%d:%d:%s" % [device_id, student.code, printed_name(student)])
+	# Sorted so the answer depends on what is printed and not on the order the
+	# students happen to be held in. Each line carries its own code, so two children
+	# swapping names still comes out different.
+	lines.sort()
+	return "\n".join(lines)
+
+
+## The text a row shows in its name cell.
+##
+## A student with no name yet is printed by number instead, so the teacher still
+## has something to write next to.
+static func printed_name(student_data: StudentData) -> String:
+	return student_data.name if student_data.name \
+		else TranslationServer.translate("STUDENT_NUM").format({"number": student_data.code})
+
+
 ## The path the sheet will actually be written to.
 ##
 ## Exposed because the caller wants to tell the teacher where it went, and it
@@ -184,8 +216,7 @@ static func _build_student_row(student_data: StudentData) -> HBoxContainer:
 	row.set("theme_override_constants/separation", 12)
 
 	var name_label: Label = Label.new()
-	name_label.text = student_data.name if student_data.name \
-		else TranslationServer.translate("STUDENT_NUM").format({"number": student_data.code})
+	name_label.text = printed_name(student_data)
 	name_label.set("theme_override_font_sizes/font_size", TEXT_FONT_SIZE)
 	name_label.set("theme_override_colors/font_color", Color.BLACK)
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL

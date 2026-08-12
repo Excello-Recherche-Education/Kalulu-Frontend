@@ -13,13 +13,13 @@ extends Step
 const DEVICE_RECAP_SCENE: PackedScene = preload("res://sources/menus/register/steps/device_recap.tscn")
 
 var codes_requested: bool = false
-## The codes the sheet was last asked for, so a later change can invalidate it.
+## What the sheet said when it was last asked for, so a later change invalidates it.
 ##
-## Going back to a students step and forward again rebuilds that device's students
-## from scratch, and their codes are drawn at random -- so the sheet the teacher
-## already saved would print codes that no longer log anybody in. This is what
-## makes that detectable.
-var exported_codes: String = ""
+## Every answer above this step can still be changed, and two of them reach the
+## paper: the number of students, which draws new codes, and a child's name, which
+## is printed beside their code. Either one leaves the teacher holding a sheet that
+## no longer describes the account. This is what makes that detectable.
+var exported_sheet: String = ""
 
 @onready var recap_container: VBoxContainer = %RecapContainer
 @onready var email: Label = %Email
@@ -88,33 +88,26 @@ func on_enter() -> void:
 	_refresh_validate()
 
 
-## The codes as they stand, in the order the sheet prints them.
-func codes_fingerprint() -> String:
+## What the sheet would say about the account as it stands.
+func sheet_fingerprint() -> String:
 	var teacher_settings: TeacherSettings = data as TeacherSettings
 	if not teacher_settings:
 		return ""
-	var entries: PackedStringArray = []
-	var devices: Array = teacher_settings.students.keys()
-	devices.sort()
-	for device: int in devices:
-		for student: StudentData in teacher_settings.students[device]:
-			entries.append("%d:%d" % [device, student.code])
-	return ",".join(entries)
+	return CodeSheet.content_fingerprint(teacher_settings)
 
 
-## Asks for the sheet again when the codes are no longer the ones it printed.
+## Asks for the sheet again when it no longer says what the account says.
 ##
-## Compares the codes rather than watching for the ways they can change: the
-## wizard reuses this step, so a trip back to any students step and forward again
-## regenerates that device's codes even if the count is untouched, and there is no
-## single place that knows it happened.
+## Compares the whole sheet rather than watching for the ways it can go stale: the
+## wizard lets every earlier answer be revisited, and there is no single place that
+## knows a code was redrawn or a child renamed.
 func _invalidate_a_stale_export() -> void:
-	if not codes_requested or exported_codes == codes_fingerprint():
+	if not codes_requested or exported_sheet == sheet_fingerprint():
 		return
-	Log.info("Register/RecapStep: The codes changed since the sheet was saved; asking again")
+	Log.info("Register/RecapStep: The sheet no longer matches the account; asking again")
 	codes_requested = false
-	# The confirmation screen would otherwise point at a PDF full of codes that
-	# will not log anybody in, which is worse than not naming a folder at all.
+	# The confirmation screen would otherwise point at a PDF that describes an
+	# account the teacher no longer has, which is worse than naming no folder at all.
 	AccountCreated.saved_codes_path = ""
 
 
@@ -128,7 +121,7 @@ func _on_save_all_codes_button_pressed() -> void:
 	# shown the sheet exists and made the choice, and a cancelled save dialog must
 	# not leave them stuck on this step.
 	codes_requested = true
-	exported_codes = codes_fingerprint()
+	exported_sheet = sheet_fingerprint()
 	_refresh_validate()
 	export_codes_file_dialog.current_file = "Codes.pdf"
 	export_codes_file_dialog.show()
