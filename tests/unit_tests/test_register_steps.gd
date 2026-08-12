@@ -475,3 +475,85 @@ func test_the_recap_can_be_scrolled_when_there_are_more_students_than_fit() -> v
 		card.global_position.y + card.size.y + 1.0, "the scroller stays inside the card")
 	assert_gt((step.get_node("%RecapContainer") as Control).size.y, scroll.size.y,
 		"four devices should give it something to scroll")
+
+
+# --- An export only counts for the codes it printed -----------------------------
+## Walks a two-device teacher account to its recap, filling both device steps.
+func _wizard_at_the_recap() -> Control:
+	var wizard: Control = (load("res://sources/menus/register/register.tscn")
+		as PackedScene).instantiate()
+	add_child_autofree(wizard)
+	await get_tree().process_frame
+
+	wizard._go_to_step(1)
+	wizard.register_data.account_type = TeacherSettings.AccountType.TEACHER
+	await wizard._on_step_completed(wizard.current_steps[1])
+	wizard._go_to_step(3)
+	wizard.register_data.devices_count = 2
+	await wizard._on_step_completed(wizard.current_steps[3])
+
+	for step_index: int in [4, 5]:
+		wizard._go_to_step(step_index)
+		var device_step: StudentsCountStep = wizard.current_steps[step_index]
+		device_step.students_count_field.value = 2
+		device_step._on_next()
+
+	wizard._go_to_step(wizard.current_steps.size() - 1)
+	return wizard
+
+
+func test_going_back_through_a_students_step_changes_its_codes() -> void:
+	# The premise of the two tests below, and worth pinning on its own: the step
+	# rebuilds that device's students from scratch, and their codes are random.
+	var wizard: Control = await _wizard_at_the_recap()
+	var recap: RecapStep = wizard.current_steps[wizard.current_steps.size() - 1]
+	var before: String = recap.codes_fingerprint()
+
+	wizard._go_to_step(4)
+	(wizard.current_steps[4] as StudentsCountStep)._on_next()
+
+	assert_ne(recap.codes_fingerprint(), before,
+		"a trip back and forward should have redrawn that device's codes")
+
+
+func test_a_saved_sheet_stops_counting_once_the_codes_change() -> void:
+	# Regression: the wizard reuses this step, so codes_requested survived the trip
+	# and Confirm stayed enabled. The teacher could submit without exporting again,
+	# keeping a printed sheet whose codes no longer log anybody in.
+	var original_path: String = AccountCreated.saved_codes_path
+	var wizard: Control = await _wizard_at_the_recap()
+	var recap: RecapStep = wizard.current_steps[wizard.current_steps.size() - 1]
+	recap._on_save_all_codes_button_pressed()
+	recap.export_codes_file_dialog.hide()
+	AccountCreated.saved_codes_path = "user://Codes.pdf"
+	assert_false(recap.validate_button.disabled, "Confirm opens up once the sheet is asked for")
+
+	wizard._go_to_step(4)
+	(wizard.current_steps[4] as StudentsCountStep)._on_next()
+	wizard._go_to_step(wizard.current_steps.size() - 1)
+
+	assert_false(recap.codes_requested, "the sheet no longer matches, so it has to be asked again")
+	assert_true(recap.validate_button.disabled, "and Confirm should close again")
+	assert_eq(AccountCreated.saved_codes_path, "",
+		"the confirmation screen must not point at a sheet of codes that will not work")
+	AccountCreated.saved_codes_path = original_path
+
+
+func test_a_saved_sheet_survives_a_trip_that_leaves_the_codes_alone() -> void:
+	# Going back only as far as the conditions touches nothing, so the teacher
+	# should not be made to export again for it.
+	var original_path: String = AccountCreated.saved_codes_path
+	var wizard: Control = await _wizard_at_the_recap()
+	var recap_index: int = wizard.current_steps.size() - 1
+	var recap: RecapStep = wizard.current_steps[recap_index]
+	recap._on_save_all_codes_button_pressed()
+	recap.export_codes_file_dialog.hide()
+	AccountCreated.saved_codes_path = "user://Codes.pdf"
+
+	wizard._go_to_step(recap_index - 1)
+	wizard._go_to_step(recap_index)
+
+	assert_true(recap.codes_requested, "nothing changed, so the sheet still stands")
+	assert_false(recap.validate_button.disabled)
+	assert_eq(AccountCreated.saved_codes_path, "user://Codes.pdf")
+	AccountCreated.saved_codes_path = original_path

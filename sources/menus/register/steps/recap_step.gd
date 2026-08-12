@@ -13,6 +13,13 @@ extends Step
 const DEVICE_RECAP_SCENE: PackedScene = preload("res://sources/menus/register/steps/device_recap.tscn")
 
 var codes_requested: bool = false
+## The codes the sheet was last asked for, so a later change can invalidate it.
+##
+## Going back to a students step and forward again rebuilds that device's students
+## from scratch, and their codes are drawn at random -- so the sheet the teacher
+## already saved would print codes that no longer log anybody in. This is what
+## makes that detectable.
+var exported_codes: String = ""
 
 @onready var recap_container: VBoxContainer = %RecapContainer
 @onready var email: Label = %Email
@@ -77,7 +84,38 @@ func on_enter() -> void:
 
 		recap_container.add_child(device_recap)
 
+	_invalidate_a_stale_export()
 	_refresh_validate()
+
+
+## The codes as they stand, in the order the sheet prints them.
+func codes_fingerprint() -> String:
+	var teacher_settings: TeacherSettings = data as TeacherSettings
+	if not teacher_settings:
+		return ""
+	var entries: PackedStringArray = []
+	var devices: Array = teacher_settings.students.keys()
+	devices.sort()
+	for device: int in devices:
+		for student: StudentData in teacher_settings.students[device]:
+			entries.append("%d:%d" % [device, student.code])
+	return ",".join(entries)
+
+
+## Asks for the sheet again when the codes are no longer the ones it printed.
+##
+## Compares the codes rather than watching for the ways they can change: the
+## wizard reuses this step, so a trip back to any students step and forward again
+## regenerates that device's codes even if the count is untouched, and there is no
+## single place that knows it happened.
+func _invalidate_a_stale_export() -> void:
+	if not codes_requested or exported_codes == codes_fingerprint():
+		return
+	Log.info("Register/RecapStep: The codes changed since the sheet was saved; asking again")
+	codes_requested = false
+	# The confirmation screen would otherwise point at a PDF full of codes that
+	# will not log anybody in, which is worse than not naming a folder at all.
+	AccountCreated.saved_codes_path = ""
 
 
 ## Confirm only opens up once the code sheet has been asked for.
@@ -90,6 +128,7 @@ func _on_save_all_codes_button_pressed() -> void:
 	# shown the sheet exists and made the choice, and a cancelled save dialog must
 	# not leave them stuck on this step.
 	codes_requested = true
+	exported_codes = codes_fingerprint()
 	_refresh_validate()
 	export_codes_file_dialog.current_file = "Codes.pdf"
 	export_codes_file_dialog.show()
