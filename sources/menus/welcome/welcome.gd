@@ -33,6 +33,7 @@ var adult_challenge: AdultChallenge = AdultChallenge.new()
 var request_in_flight: bool = false
 
 @onready var footer_room: MarginContainer = %FooterRoom
+@onready var scroll: ScrollContainer = %Scroll
 @onready var toggle: SegmentedToggle = %Toggle
 @onready var login_panel: FormValidator = %LoginPanel
 @onready var sign_up_panel: Control = %SignUpPanel
@@ -165,6 +166,20 @@ func _show_login_error(translation_key: String) -> void:
 	# mail anyway.
 	reset_password_button.visible = translation_key == "LOGIN_WRONG_PASSWORD"
 	reset_password_button.disabled = false
+	_scroll_to_login_error()
+
+
+## Brings the message into view, for the screen too short to hold it.
+##
+## The message and the offer to reset are both added below the fields, so on a
+## short screen they land past the bottom of the column. The column scrolls and
+## is sitting at the top, so without this the answer to "why did nothing happen"
+## is off screen. Started rather than awaited by the caller, which has nothing to
+## wait for -- the column needs a layout pass before the message has a position
+## to scroll to.
+func _scroll_to_login_error() -> void:
+	await get_tree().process_frame
+	scroll.ensure_control_visible(login_error)
 
 
 func _hide_login_error() -> void:

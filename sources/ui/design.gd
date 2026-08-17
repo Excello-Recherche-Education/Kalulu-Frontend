@@ -86,8 +86,14 @@ const PAGE_MARGIN_BOTTOM: int = 196
 # Every step mockup puts the field column at the same height and grows the
 # question upwards from there, so the field top is the anchor and the question
 # block hangs above it rather than the two being centred together.
-const STEP_FORM_TOP: int = 772
-const STEP_QUESTION_GAP: int = 106 # question block bottom to field top
+#
+# The anchor sits higher than the hand-off put it. The fields grew with the type
+# scale and every one of them can put a validation message under itself, and at
+# the mockups' height a form that had grown both ways ran into the footer
+# buttons -- with a screen's worth of empty space above the question to have
+# taken the room from.
+const STEP_FORM_TOP: int = 600
+const STEP_QUESTION_GAP: int = 80 # question block bottom to field top
 const STEP_INFO_GAP: int = 64 # title to the note under it
 const STEP_QUESTION_WIDTH: int = 1900 # wider than the fields, so titles fit on one line
 # The conditions and recap steps drop the field column for a full-width card

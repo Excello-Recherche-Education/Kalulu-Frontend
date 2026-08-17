@@ -80,7 +80,7 @@ anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -983.0
 offset_right = 983.0
-offset_bottom = 666.0
+offset_bottom = 520.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_question")
@@ -137,7 +137,7 @@ script = ExtResource("3_mk32l")
 
 [node name="Control" parent="FormValidator/FormBinder" unique_id=171519431 instance=ExtResource("6_i4s2p")]
 layout_mode = 1
-theme_override_constants/margin_top = 772
+theme_override_constants/margin_top = 600
 
 [node name="Background" type="MarginContainer" parent="FormValidator/FormBinder/Control" unique_id=1317105634]
 custom_minimum_size = Vector2(1250, 0)
