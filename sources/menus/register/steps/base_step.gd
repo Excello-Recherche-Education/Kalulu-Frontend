@@ -10,6 +10,10 @@ signal next(step: Step)
 @export_multiline var infos: String
 @export var data: Resource
 
+## Where the question board sits with no keyboard open, so the lift is applied
+## to the scene's own position rather than to wherever it was left last time.
+var question_board_offsets: Vector2 = Vector2.ZERO
+
 @onready var question_label: Label = %QuestionLabel
 @onready var info_label: Label = %InfoLabel
 @onready var form_validator: FormValidator = %FormValidator
@@ -17,10 +21,6 @@ signal next(step: Step)
 @onready var form_container: Control = %FormContainer
 @onready var keyboard_spacer: KeyboardSpacer = $FormValidator/FormBinder/Control
 @onready var question_board: Control = get_node_or_null("PanelContainer") as Control
-
-## Where the question board sits with no keyboard open, so the lift is applied
-## to the scene's own position rather than to wherever it was left last time.
-var question_board_offsets: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
