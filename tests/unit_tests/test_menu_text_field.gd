@@ -72,6 +72,40 @@ func test_a_password_field_starts_masked() -> void:
 		"the reveal toggle has to be clickable")
 
 
+func test_a_password_field_asks_for_the_password_keyboard() -> void:
+	# Reported from a phone: the shift key is armed for the first character,
+	# which has to be switched off by hand before every password. The ordinary
+	# text keyboard does that; the password one does not.
+	field.is_password = true
+
+	assert_eq(field.input.virtual_keyboard_type, LineEdit.KEYBOARD_TYPE_PASSWORD,
+		"a masked field should open the password keyboard")
+
+
+func test_the_password_keyboard_survives_the_field_being_revealed() -> void:
+	field.is_password = true
+
+	field.trailing.pressed.emit()
+
+	assert_false(field.is_masked(), "the field should now be readable")
+	assert_eq(field.input.virtual_keyboard_type, LineEdit.KEYBOARD_TYPE_PASSWORD,
+		"revealing what was typed should not bring the shift key back")
+
+
+func test_an_ordinary_field_keeps_the_keyboard_it_was_given() -> void:
+	field.keyboard_type = LineEdit.KEYBOARD_TYPE_EMAIL_ADDRESS
+
+	assert_eq(field.input.virtual_keyboard_type, LineEdit.KEYBOARD_TYPE_EMAIL_ADDRESS,
+		"a plain field should open the keyboard the scene asked for")
+
+
+func test_the_password_keyboard_wins_over_the_one_the_scene_asked_for() -> void:
+	field.keyboard_type = LineEdit.KEYBOARD_TYPE_DEFAULT
+	field.is_password = true
+
+	assert_eq(field.effective_keyboard_type(), LineEdit.KEYBOARD_TYPE_PASSWORD)
+
+
 func test_the_reveal_toggle_flips_masking_and_its_icon() -> void:
 	field.is_password = true
 	var masked_icon: Texture2D = field.trailing.texture_normal

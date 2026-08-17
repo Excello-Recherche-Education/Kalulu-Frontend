@@ -36,11 +36,14 @@ const HIDE_PASSWORD_PATH: String = "res://assets/menus/icons/hide_password.svg"
 		is_password = value
 		if is_node_ready():
 			_refresh_trailing()
+			_apply_keyboard_type()
+## The keyboard a phone should open for this field. Ignored while `is_password`
+## is on, which picks its own -- see effective_keyboard_type.
 @export var keyboard_type: LineEdit.VirtualKeyboardType = LineEdit.KEYBOARD_TYPE_DEFAULT:
 	set(value):
 		keyboard_type = value
 		if is_node_ready():
-			input.virtual_keyboard_type = value
+			_apply_keyboard_type()
 ## Optional validation rules from the godot-form-validator addon.
 ##
 ## Rules rather than a whole Validator: the component always wraps a LineEdit,
@@ -74,7 +77,7 @@ var text: String:
 
 func _ready() -> void:
 	input.placeholder_text = placeholder
-	input.virtual_keyboard_type = keyboard_type
+	_apply_keyboard_type()
 	# The icon assets are white so they can be tinted per context; in a field
 	# the mockups show them in the light grey used for placeholder text.
 	trailing.self_modulate = Design.GREY_LIGHT
@@ -95,6 +98,23 @@ func _ready() -> void:
 ## Moves keyboard focus into the field.
 func grab_input_focus() -> void:
 	input.grab_focus()
+
+
+## The keyboard a phone actually opens for this field.
+##
+## A password field asks for the password keyboard whatever it was given. The
+## ordinary one arms its shift key for the first character -- which is right for
+## a name and wrong for a password, where it has to be switched off by hand
+## every single time before the first letter can be typed. Derived from
+## `is_password` rather than set beside it in each scene, because a field that
+## masks its contents always wants this and the one place it was forgotten is
+## the login screen, the field people type into most.
+func effective_keyboard_type() -> LineEdit.VirtualKeyboardType:
+	return LineEdit.KEYBOARD_TYPE_PASSWORD if is_password else keyboard_type
+
+
+func _apply_keyboard_type() -> void:
+	input.virtual_keyboard_type = effective_keyboard_type()
 
 
 ## True while a password field is masking its contents.
