@@ -32,21 +32,21 @@ theme_type_variation = &"Card"
 
 [node name="CardMargin" type="MarginContainer" parent="Backdrop/Card"]
 layout_mode = 2
-theme_override_constants/margin_left = 88
-theme_override_constants/margin_top = 56
-theme_override_constants/margin_right = 88
-theme_override_constants/margin_bottom = 88
+theme_override_constants/margin_left = 118
+theme_override_constants/margin_top = 74
+theme_override_constants/margin_right = 118
+theme_override_constants/margin_bottom = 118
 
 [node name="CardContent" type="VBoxContainer" parent="Backdrop/Card/CardMargin"]
 layout_mode = 2
-theme_override_constants/separation = 56
+theme_override_constants/separation = 74
 
 [node name="Header" type="HBoxContainer" parent="Backdrop/Card/CardMargin/CardContent"]
 layout_mode = 2
 
 [node name="Prompt" type="Label" parent="Backdrop/Card/CardMargin/CardContent/Header"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(1400, 0)
+custom_minimum_size = Vector2(1640, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"CardHeading"
@@ -55,7 +55,7 @@ autowrap_mode = 2
 
 [node name="CloseButton" type="TextureButton" parent="Backdrop/Card/CardMargin/CardContent/Header"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(48, 48)
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0

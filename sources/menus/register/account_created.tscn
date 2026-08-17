@@ -7,10 +7,10 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
 bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 102
-corner_radius_top_right = 102
-corner_radius_bottom_right = 102
-corner_radius_bottom_left = 102
+corner_radius_top_left = 136
+corner_radius_top_right = 136
+corner_radius_bottom_right = 136
+corner_radius_bottom_left = 136
 
 [node name="AccountCreated" type="Control" unique_id=1108883507]
 layout_mode = 3
@@ -61,10 +61,10 @@ offset_right = 940.0
 offset_bottom = 1042.0
 grow_horizontal = 2
 mouse_filter = 2
-theme_override_constants/separation = 90
+theme_override_constants/separation = 120
 
 [node name="Badge" type="Panel" parent="Content" unique_id=904191946]
-custom_minimum_size = Vector2(204, 204)
+custom_minimum_size = Vector2(272, 272)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -73,17 +73,17 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
 
 [node name="Tick" type="TextureRect" parent="Content/Badge" unique_id=657475859]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(97, 70)
+custom_minimum_size = Vector2(130, 94)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -48.5
-offset_top = -35.0
-offset_right = 48.5
-offset_bottom = 35.0
+offset_left = -65.0
+offset_top = -47.0
+offset_right = 65.0
+offset_bottom = 47.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_tick")
@@ -100,7 +100,7 @@ autowrap_mode = 2
 [node name="Message" type="VBoxContainer" parent="Content" unique_id=835758975]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 14
 
 [node name="Subhead" type="Label" parent="Content/Message" unique_id=616117047]
 layout_mode = 2
@@ -112,7 +112,7 @@ autowrap_mode = 2
 [node name="CodesNote" type="Label" parent="Content/Message" unique_id=901451472]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 42
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -122,19 +122,19 @@ layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 theme_type_variation = &"InlineButton"
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 42
 
 [node name="NextButton" type="Button" parent="." unique_id=430049232]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(332, 164)
+custom_minimum_size = Vector2(442, 218)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -672.0
-offset_top = -360.0
+offset_left = -782.0
+offset_top = -414.0
 offset_right = -340.0
 offset_bottom = -196.0
 grow_horizontal = 0

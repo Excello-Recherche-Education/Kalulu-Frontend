@@ -14,6 +14,10 @@ const LANGUAGE_CHECK_SCENE_PATH: String = "res://sources/menus/language_selectio
 const REGISTER_SCENE_PATH: String = "res://sources/menus/register/register.tscn"
 const LOGIN_TAB: int = 0
 const SIGN_UP_TAB: int = 1
+## The strip the Next button stands in, which the scrolling column must not
+## reach into: at the sizes the fields are drawn at now, the password field is
+## as wide as the button is far from the middle, and the two would overlap.
+const FOOTER_ROOM: int = Design.PAGE_MARGIN_BOTTOM + Design.BUTTON_SIZE.y
 
 var adult_challenge: AdultChallenge = AdultChallenge.new()
 ## True while a request to the server is outstanding.
@@ -28,6 +32,7 @@ var adult_challenge: AdultChallenge = AdultChallenge.new()
 ## It also locks the switch, for the reason in _set_request_in_flight.
 var request_in_flight: bool = false
 
+@onready var footer_room: MarginContainer = %FooterRoom
 @onready var toggle: SegmentedToggle = %Toggle
 @onready var login_panel: FormValidator = %LoginPanel
 @onready var sign_up_panel: Control = %SignUpPanel
@@ -65,8 +70,11 @@ func _show_tab(tab: int) -> void:
 	login_panel.visible = tab == LOGIN_TAB
 	sign_up_panel.visible = tab == SIGN_UP_TAB
 	# The keypad completing is itself the action to take, so the Sign Up tab has
-	# no Next button -- matching the mockups.
+	# no Next button -- matching the mockups. With no button to keep clear of,
+	# that tab gets the whole height for its keypad.
 	next_button.visible = tab == LOGIN_TAB
+	footer_room.add_theme_constant_override("margin_bottom",
+		FOOTER_ROOM if next_button.visible else 0)
 
 
 func _on_tab_changed(index: int) -> void:

@@ -53,19 +53,31 @@ const CODE_SYMBOL_NAMES: Dictionary[String, String] = {
 const CODE_KEYPAD_ORDER: Array[String] = ["1", "2", "3", "4", "5", "6"]
 # --- Type scale (Mulish) -----------------------------------------------------
 # Sizes confirmed by matching rendered glyph widths in the mockups against the
-# project's own Mulish faces, so they are exact rather than approximated.
-const FONT_SIZE_TITLE: int = 60 # bold - screen title
-const FONT_SIZE_HEADING: int = 48 # bold - section heading
-const FONT_SIZE_INPUT: int = 50 # regular - field text, placeholders, buttons
-const FONT_SIZE_BODY: int = 44 # regular - help notes, subtitles
-const FONT_SIZE_LABEL: int = 32 # regular - small field labels
-const FONT_SIZE_CAPTION: int = 28 # regular - version strings, captions
+# project's own Mulish faces, then scaled up for the phone -- see below.
+#
+# The reference viewport is letterboxed into whatever screen it lands on, and a
+# phone held in landscape is limited by its height: 1800 reference pixels are
+# squeezed into the ~1080 real ones a common handset has, so every length in
+# this file is drawn at about three fifths of its value. At the sizes the
+# mockups were drawn at that put body copy at roughly 10sp -- caption size --
+# which is what the "can't read it on a small screen" reports were about.
+#
+# The whole scale is therefore a third larger than the hand-off, rounded to an
+# even number, which puts body copy back at a normal ~14sp on that handset. The
+# tablet the mockups were drawn for keeps the same proportions, only bigger.
+# Every control built to hold a line of text grows with it, further down.
+const FONT_SIZE_TITLE: int = 80 # bold - screen title
+const FONT_SIZE_HEADING: int = 64 # bold - section heading
+const FONT_SIZE_INPUT: int = 66 # regular - field text, placeholders, buttons
+const FONT_SIZE_BODY: int = 58 # regular - help notes, subtitles
+const FONT_SIZE_LABEL: int = 42 # regular - small field labels
+const FONT_SIZE_CAPTION: int = 38 # regular - version strings, captions
 const FONT_REGULAR_PATH: String = "res://assets/fonts/kalulu_mulish_regular.otf"
 const FONT_BOLD_PATH: String = "res://assets/fonts/kalulu_mulish_bold.otf"
 # --- Layout ------------------------------------------------------------------
 const SCREEN_MARGIN: int = 64 # corner buttons
-const CONTENT_WIDTH: int = 940 # the column of fields down the middle
-const FIELD_GAP: int = 104
+const CONTENT_WIDTH: int = 1250 # the column of fields down the middle
+const FIELD_GAP: int = 138
 # The wizard screens inset their footer buttons by this much, and the settings
 # and conditions cards are exactly the resulting width.
 const PAGE_MARGIN: int = 340
@@ -75,19 +87,19 @@ const PAGE_MARGIN_BOTTOM: int = 196
 # question upwards from there, so the field top is the anchor and the question
 # block hangs above it rather than the two being centred together.
 const STEP_FORM_TOP: int = 772
-const STEP_QUESTION_GAP: int = 80 # question block bottom to field top
-const STEP_INFO_GAP: int = 48 # title to the note under it
-const STEP_QUESTION_WIDTH: int = 1500 # wider than the fields, so titles fit on one line
+const STEP_QUESTION_GAP: int = 106 # question block bottom to field top
+const STEP_INFO_GAP: int = 64 # title to the note under it
+const STEP_QUESTION_WIDTH: int = 1900 # wider than the fields, so titles fit on one line
 # The conditions and recap steps drop the field column for a full-width card
 # under a heading, rather than a question hanging over a form.
-const STEP_TITLE_TOP: int = 146
-const STEP_CARD_TOP: int = 268
+const STEP_TITLE_TOP: int = 130
+const STEP_CARD_TOP: int = 300
 const STEP_CARD_BOTTOM: int = 1355
-const STEP_CARD_PADDING: Vector2i = Vector2i(80, 56)
+const STEP_CARD_PADDING: Vector2i = Vector2i(106, 74)
 # --- Account created confirmation ---------------------------------------------
 # A white disc with a purple tick, over the good news.
-const BADGE_SIZE: int = 204
-const BADGE_TICK_SIZE: Vector2i = Vector2i(97, 70)
+const BADGE_SIZE: int = 272
+const BADGE_TICK_SIZE: Vector2i = Vector2i(130, 94)
 const BADGE_TOP: int = 269
 # --- Audio settings dialog ----------------------------------------------------
 const AUDIO_DIALOG_SIZE: Vector2i = Vector2i(1748, 1351)
@@ -100,36 +112,36 @@ const SLIDER_TRACK_HEIGHT: int = 19
 # An outlined black square, empty until ticked and then holding a green tick.
 # Outlined rather than filled: a pale filled square all but disappears against
 # the white card it sits on, so it stops reading as something to press.
-const CHECKBOX_SIZE: int = 90
-const CHECKBOX_GAP: int = 29
-# Thicker than a wide button's border: the same weight around a 90px box reads
+const CHECKBOX_SIZE: int = 120
+const CHECKBOX_GAP: int = 38
+# Thicker than a wide button's border: the same weight around a 120px box reads
 # as a hairline.
-const CHECKBOX_BORDER: int = 5
+const CHECKBOX_BORDER: int = 7
 # --- Surfaces ----------------------------------------------------------------
-const CARD_RADIUS: int = 14
-const CARD_PADDING: int = 88
+const CARD_RADIUS: int = 18
+const CARD_PADDING: int = 118
 # --- Text fields -------------------------------------------------------------
-const FIELD_HEIGHT: int = 128
-const FIELD_RADIUS: int = 14
-const FIELD_PADDING: int = 56
+const FIELD_HEIGHT: int = 170
+const FIELD_RADIUS: int = 18
+const FIELD_PADDING: int = 74
 # On-screen size of a trailing field icon. The icons import at twice this for
 # crispness, so they are drawn scaled down rather than at texture size.
-const FIELD_ICON_SIZE: int = 48
+const FIELD_ICON_SIZE: int = 64
 # --- Wide buttons (Next / Previous / Cancel) ---------------------------------
-const BUTTON_SIZE: Vector2i = Vector2i(332, 164)
-const BUTTON_RADIUS: int = 8
-const BUTTON_BORDER: int = 3
+const BUTTON_SIZE: Vector2i = Vector2i(442, 218)
+const BUTTON_RADIUS: int = 10
+const BUTTON_BORDER: int = 4
 # --- Segmented toggle (Login | Sign Up) --------------------------------------
-const TOGGLE_HEIGHT: int = 116
-const TOGGLE_INSET: int = 12
+const TOGGLE_HEIGHT: int = 154
+const TOGGLE_INSET: int = 16
 # --- Tab pills (Device 1 | Device 2 ...) -------------------------------------
-const PILL_HEIGHT: int = 74
-const PILL_PADDING: int = 48
-const PILL_WIDTH: int = 272
-const PILL_GAP: int = 46
+const PILL_HEIGHT: int = 98
+const PILL_PADDING: int = 64
+const PILL_WIDTH: int = 362
+const PILL_GAP: int = 62
 # --- Settings -----------------------------------------------------------------
 # Settings' dropdowns are shorter than the fields on the sign-up screens.
-const COMPACT_FIELD_HEIGHT: int = 88
+const COMPACT_FIELD_HEIGHT: int = 118
 const SETTINGS_CARD_PADDING: Vector2i = Vector2i(80, 42)
 const ICON_BUTTON_GAP: int = 36
 # --- Student progress panel ---------------------------------------------------
@@ -150,12 +162,14 @@ const CODE_CHIP_GAP: int = 21
 const CODE_CHIP_RADIUS: int = 10
 const CODE_CHIP_GLYPH_SIZE: int = 30
 # --- Device cards ------------------------------------------------------------
-const DEVICE_CARD_SIZE: Vector2i = Vector2i(183, 222)
-const DEVICE_CARD_GAP: Vector2i = Vector2i(104, 126)
-const DEVICE_CARD_COLUMNS: int = 6
+const DEVICE_CARD_SIZE: Vector2i = Vector2i(244, 296)
+const DEVICE_CARD_GAP: Vector2i = Vector2i(138, 168)
+# One column fewer than the hand-off: the cards grew with everything else, and
+# six of them no longer fit between the page margins.
+const DEVICE_CARD_COLUMNS: int = 5
 # --- Circular buttons --------------------------------------------------------
-const ROUND_BUTTON_LARGE: int = 184 # back / Kalulu corner buttons
-const ROUND_BUTTON_SMALL: int = 90 # icon buttons in headers and cards
+const ROUND_BUTTON_LARGE: int = 246 # back / Kalulu corner buttons
+const ROUND_BUTTON_SMALL: int = 120 # icon buttons in headers and cards
 # --- Access-code keypad ------------------------------------------------------
 # Codes are three symbols long and never repeat a symbol: see
 # TeacherSettings.AVAILABLE_CODES, which lists the distinct-digit permutations.

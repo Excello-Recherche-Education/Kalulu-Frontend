@@ -45,14 +45,14 @@ layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer/VBoxContainer" unique_id=312613373]
 layout_mode = 2
-theme_override_constants/margin_left = 88
-theme_override_constants/margin_top = 56
-theme_override_constants/margin_right = 88
-theme_override_constants/margin_bottom = 88
+theme_override_constants/margin_left = 118
+theme_override_constants/margin_top = 74
+theme_override_constants/margin_right = 118
+theme_override_constants/margin_bottom = 118
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer" unique_id=1882938401]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 54
 
 [node name="Header" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -68,7 +68,7 @@ autowrap_mode = 3
 
 [node name="CloseButton" type="TextureButton" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Header"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(48, 48)
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -78,7 +78,7 @@ stretch_mode = 5
 
 [node name="ContentLabel" type="Label" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=819955578]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(1000, 0)
+custom_minimum_size = Vector2(1330, 0)
 layout_mode = 2
 size_flags_vertical = 1
 theme_type_variation = &"CardBody"
@@ -86,11 +86,11 @@ autowrap_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1968438632]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 54
 
 [node name="CancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1493791231]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(332, 164)
+custom_minimum_size = Vector2(442, 218)
 layout_mode = 2
 theme_type_variation = &"CardSecondaryButton"
 text = "CANCEL"
@@ -101,7 +101,7 @@ size_flags_horizontal = 3
 
 [node name="ConfirmButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=207543569]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(332, 164)
+custom_minimum_size = Vector2(442, 218)
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
 text = "VALIDATE"

@@ -40,7 +40,7 @@ alignment = 2
 
 [node name="BackButton" type="Button" parent="LeftMargin/LeftContainer" unique_id=1328987959]
 layout_mode = 2
-custom_minimum_size = Vector2(332, 164)
+custom_minimum_size = Vector2(442, 218)
 theme_type_variation = &"SecondaryButton"
 text = "BACK"
 
@@ -69,7 +69,7 @@ alignment = 2
 
 [node name="ValidateButton" type="Button" parent="RightMargin/RightContainer" unique_id=1168378881]
 layout_mode = 2
-custom_minimum_size = Vector2(332, 164)
+custom_minimum_size = Vector2(442, 218)
 theme_type_variation = &"PrimaryButton"
 text = "NEXT"
 
@@ -78,9 +78,9 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -775.0
-offset_right = 775.0
-offset_bottom = 692.0
+offset_left = -983.0
+offset_right = 983.0
+offset_bottom = 666.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_question")
@@ -88,18 +88,18 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_question")
 [node name="QuestionContainer" type="MarginContainer" parent="PanelContainer" unique_id=788285574]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_right = 25
+theme_override_constants/margin_left = 33
+theme_override_constants/margin_right = 33
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer" unique_id=166746788]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 48
+theme_override_constants/separation = 64
 alignment = 2
 
 [node name="QuestionLabel" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer" unique_id=473680384]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(1500, 0)
+custom_minimum_size = Vector2(1900, 0)
 layout_mode = 2
 theme_type_variation = &"Title"
 horizontal_alignment = 1
@@ -140,7 +140,7 @@ layout_mode = 1
 theme_override_constants/margin_top = 772
 
 [node name="Background" type="MarginContainer" parent="FormValidator/FormBinder/Control" unique_id=1317105634]
-custom_minimum_size = Vector2(940, 0)
+custom_minimum_size = Vector2(1250, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -154,7 +154,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 32
+theme_override_constants/separation = 42
 alignment = 1
 
 [connection signal="pressed" from="LeftMargin/LeftContainer/BackButton" to="." method="_on_back_button_pressed"]

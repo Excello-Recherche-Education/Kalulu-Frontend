@@ -190,7 +190,7 @@ func _code_other_than(code: String) -> String:
 # device settings on disk. These tests put it back afterwards, unconditionally,
 # so a failure part-way through cannot leave the machine in another language.
 func _language_field() -> OptionButton:
-	return welcome.get_node("KeyboardSpacer/Scroll/Content/LoginPanel/LanguageField")
+	return welcome.get_node("KeyboardSpacer/FooterRoom/Scroll/Content/LoginPanel/LanguageField")
 
 
 func _index_of(field: OptionButton, locale: String) -> int:

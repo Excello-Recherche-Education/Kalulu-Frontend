@@ -115,7 +115,7 @@ label_settings = ExtResource("6_nuhb7")
 layout_mode = 2
 
 [node name="AgeField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/AgeContainer" index="0" unique_id=1747003980]
-custom_minimum_size = Vector2(0, 128)
+custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0

@@ -39,11 +39,11 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -960.0
-offset_top = 216.0
+offset_top = 160.0
 offset_right = 960.0
 offset_bottom = 372.0
 grow_horizontal = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
 mouse_filter = 2
 
 [node name="DeviceNumber" type="Label" parent="Header"]
@@ -66,19 +66,19 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -820.0
-offset_top = 408.0
+offset_top = 380.0
 offset_right = 820.0
-offset_bottom = 1335.0
+offset_bottom = 1306.0
 grow_horizontal = 2
 
 [node name="BackButton" type="TextureButton" parent="."]
-custom_minimum_size = Vector2(184, 184)
+custom_minimum_size = Vector2(246, 246)
 layout_mode = 1
 anchors_preset = 0
 offset_left = 64.0
 offset_top = 64.0
-offset_right = 248.0
-offset_bottom = 248.0
+offset_right = 310.0
+offset_bottom = 310.0
 texture_normal = ExtResource("5_back_n")
 texture_pressed = ExtResource("6_back_p")
 texture_disabled = ExtResource("7_back_d")
@@ -91,19 +91,19 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -420.0
+offset_top = -500.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
 [node name="KaluluButton" type="TextureButton" parent="Footer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(184, 184)
+custom_minimum_size = Vector2(246, 246)
 layout_mode = 0
 offset_left = 64.0
-offset_top = 40.0
-offset_right = 248.0
-offset_bottom = 224.0
+offset_top = 60.0
+offset_right = 310.0
+offset_bottom = 306.0
 texture_normal = ExtResource("8_kal_n")
 texture_pressed = ExtResource("9_kal_p")
 texture_disabled = ExtResource("10_kal_d")
@@ -112,10 +112,10 @@ stretch_mode = 5
 
 [node name="HelpBlock" type="VBoxContainer" parent="Footer"]
 layout_mode = 0
-offset_left = 400.0
-offset_top = 20.0
-offset_right = 1500.0
-offset_bottom = 224.0
+offset_left = 640.0
+offset_top = 30.0
+offset_right = 1740.0
+offset_bottom = 434.0
 theme_override_constants/separation = 0
 mouse_filter = 2
 
@@ -136,15 +136,15 @@ text = "TEACHER_SETTINGS_HELP"
 autowrap_mode = 3
 
 [node name="TeacherButton" type="Button" parent="Footer"]
-custom_minimum_size = Vector2(332, 164)
+custom_minimum_size = Vector2(442, 218)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -672.0
-offset_top = -360.0
+offset_left = -782.0
+offset_top = -414.0
 offset_right = -340.0
 offset_bottom = -196.0
 grow_horizontal = 0

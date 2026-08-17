@@ -4,20 +4,20 @@
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 
 [node name="SegmentedToggle" type="PanelContainer"]
-custom_minimum_size = Vector2(940, 116)
+custom_minimum_size = Vector2(1250, 154)
 theme = ExtResource("2_theme")
 script = ExtResource("1_toggle")
 
 [node name="Content" type="Control" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 92)
+custom_minimum_size = Vector2(0, 122)
 layout_mode = 2
 
 [node name="Highlight" type="Panel" parent="Content"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_right = 458.0
-offset_bottom = 92.0
+offset_right = 609.0
+offset_bottom = 122.0
 
 [node name="Segments" type="HBoxContainer" parent="Content"]
 unique_name_in_owner = true
