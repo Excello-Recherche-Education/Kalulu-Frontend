@@ -36,6 +36,7 @@ var drawing_the_sheet: bool = false
 
 
 func _ready() -> void:
+	super()
 	show_question_board_as_card()
 	export_codes_file_dialog.set_title(tr("EXPORT_STUDENT_CODES"))
 	export_codes_file_dialog.set_ok_button_text(tr("EXPORT_STUDENT_CODES"))

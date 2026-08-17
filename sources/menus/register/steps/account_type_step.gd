@@ -5,6 +5,7 @@ extends Step
 
 
 func _ready() -> void:
+	super()
 	type.clear()
 	type.add_item("TEACHER")
 	type.add_item("PARENT")

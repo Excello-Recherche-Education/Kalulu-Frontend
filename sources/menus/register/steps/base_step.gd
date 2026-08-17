@@ -15,6 +15,33 @@ signal next(step: Step)
 @onready var form_validator: FormValidator = %FormValidator
 @onready var form_binder: FormBinder = %FormBinder
 @onready var form_container: Control = %FormContainer
+@onready var keyboard_spacer: KeyboardSpacer = $FormValidator/FormBinder/Control
+@onready var question_board: Control = get_node_or_null("PanelContainer") as Control
+
+## Where the question board sits with no keyboard open, so the lift is applied
+## to the scene's own position rather than to wherever it was left last time.
+var question_board_offsets: Vector2 = Vector2.ZERO
+
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+	if question_board:
+		question_board_offsets = Vector2(question_board.offset_top, question_board.offset_bottom)
+	keyboard_spacer.lift_changed.connect(_on_keyboard_lift_changed)
+
+
+## Keeps the question with its form when the keyboard pushes the form up.
+##
+## The question hangs over the field column with barely a gap, so a form lifted
+## on its own slides straight under it -- trading one thing covering the fields
+## for another. Moving both by the same amount slides the question off the top
+## instead, which is what a phone does with everything above the field anyway.
+func _on_keyboard_lift_changed(lift: float) -> void:
+	if not question_board:
+		return
+	question_board.offset_top = question_board_offsets.x - lift
+	question_board.offset_bottom = question_board_offsets.y - lift
 
 
 ## Turns the question board into a real card, for the steps that show one.

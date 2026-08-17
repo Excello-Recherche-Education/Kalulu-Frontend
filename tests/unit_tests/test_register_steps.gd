@@ -149,6 +149,39 @@ func test_the_content_is_placed_where_the_mockups_put_it() -> void:
 		REFERENCE_VIEWPORT.y - Design.PAGE_MARGIN_BOTTOM, 2.0)
 
 
+func test_the_question_travels_with_the_form_when_the_keyboard_lifts_it() -> void:
+	# The question ends one gap above the field column, so a form lifted clear of
+	# the keyboard on its own would slide straight under it. Both move together.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var step: Step = (load(LANGUAGE_STEP) as PackedScene).instantiate()
+	viewport.add_child(step)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	var field: Control = step.get_node("%LanguageField")
+	var board: Control = step.get_node("PanelContainer")
+	var field_top: float = field.global_position.y
+	var board_top: float = board.global_position.y
+
+	step.keyboard_spacer.apply_lift(400.0)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	assert_almost_eq(field.global_position.y, field_top - 400.0, 2.0,
+		"the field column should rise by the lift")
+	assert_almost_eq(board.global_position.y, board_top - 400.0, 2.0,
+		"the question should rise by the same amount")
+
+	step.keyboard_spacer.apply_lift(0.0)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	assert_almost_eq(board.global_position.y, board_top, 2.0,
+		"and go back where the scene put it once the keyboard closes")
+
+
 func test_every_field_fills_the_content_column() -> void:
 	# The mockups give each field the whole centre column and let the title above
 	# ask the question, instead of putting a label beside every field. A leftover

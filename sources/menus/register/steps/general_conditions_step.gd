@@ -13,6 +13,7 @@ const TICK_ICON_PATH: String = "res://assets/menus/icons/done.svg"
 
 
 func _ready() -> void:
+	super()
 	show_question_board_as_card()
 	# From the token rather than the scene: a colour written into a .tscn is
 	# rounded to six decimals, so it stops being the token it was copied from.
