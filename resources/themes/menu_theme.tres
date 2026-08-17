@@ -1,9 +1,9 @@
-[gd_resource uid="uid://dgm2dtg03o4y8" type="Theme" format=3]
+[gd_resource type="Theme" format=3 uid="uid://dgm2dtg03o4y8"]
 
-[ext_resource type="FontFile" path="res://assets/fonts/kalulu_mulish_regular.otf" id="1_aq7pu"]
-[ext_resource type="FontFile" path="res://assets/fonts/kalulu_mulish_bold.otf" id="2_0jyfp"]
-[ext_resource type="Texture2D" path="res://assets/menus/icons/chevron_down.svg" id="3_wgj3i"]
-[ext_resource type="Texture2D" path="res://assets/menus/icons/slider_grabber.png" id="4_7utmw"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="1_aq7pu"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="2_0jyfp"]
+[ext_resource type="Texture2D" uid="uid://b35rgte5uib82" path="res://assets/menus/icons/chevron_down.svg" id="3_wgj3i"]
+[ext_resource type="Texture2D" uid="uid://co8mxr5poo5hs" path="res://assets/menus/icons/slider_grabber.png" id="4_7utmw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xa0py"]
 bg_color = Color(1, 1, 1, 1)
