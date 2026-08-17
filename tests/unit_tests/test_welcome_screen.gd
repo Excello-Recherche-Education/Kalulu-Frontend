@@ -5,6 +5,7 @@ extends GutTest
 ## login request goes through ServerManager, which these tests do not stand up.
 
 const WELCOME_SCENE: String = "res://sources/menus/welcome/welcome.tscn"
+const REFERENCE_VIEWPORT: Vector2i = Vector2i(2560, 1800)
 const LOGIN_TAB: int = 0
 const SIGN_UP_TAB: int = 1
 
@@ -144,6 +145,30 @@ func test_a_wrong_password_offers_a_reset() -> void:
 	assert_false(welcome.reset_password_button.disabled)
 
 
+func test_a_failure_message_is_scrolled_into_view() -> void:
+	# The message and the reset offer are added under the fields, and on a screen
+	# this short that puts them past the bottom of the column. The column scrolls
+	# and starts at the top, so the reply to a failed login would be off screen.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var screen: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	viewport.add_child(screen)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	screen._show_login_error("LOGIN_WRONG_PASSWORD")
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	var error: Control = screen.login_error
+	var visible_area: Rect2 = screen.scroll.get_global_rect()
+	assert_lte(error.get_global_rect().end.y, visible_area.end.y + 1.0,
+		"the message should have been scrolled into the visible column")
+	assert_gte(error.global_position.y, visible_area.position.y - 1.0,
+		"and not past the top of it")
+
+
 func test_other_failures_do_not_offer_a_reset() -> void:
 	# Resetting cannot help an unknown account, and the network failures could
 	# not send the mail anyway.
@@ -190,7 +215,7 @@ func _code_other_than(code: String) -> String:
 # device settings on disk. These tests put it back afterwards, unconditionally,
 # so a failure part-way through cannot leave the machine in another language.
 func _language_field() -> OptionButton:
-	return welcome.get_node("KeyboardSpacer/Scroll/Content/LoginPanel/LanguageField")
+	return welcome.get_node("KeyboardSpacer/FooterRoom/Scroll/Content/LoginPanel/LanguageField")
 
 
 func _index_of(field: OptionButton, locale: String) -> int:

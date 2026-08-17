@@ -9,6 +9,8 @@ extends GutTest
 
 const BASE_STEP: String = "res://sources/menus/register/steps/base_step.tscn"
 const LANGUAGE_STEP: String = "res://sources/menus/register/steps/language/language_step.tscn"
+# The tallest form of the lot: three fields, each able to put a message under itself.
+const CREDENTIALS_STEP: String = "res://sources/menus/register/steps/credentials_step.tscn"
 # The mockups are drawn at the project's own reference resolution, so their
 # measurements can be checked directly.
 const REFERENCE_VIEWPORT: Vector2i = Vector2i(2560, 1800)
@@ -147,6 +149,72 @@ func test_the_content_is_placed_where_the_mockups_put_it() -> void:
 	assert_almost_eq(previous.global_position.x, float(Design.PAGE_MARGIN), 2.0)
 	assert_almost_eq(previous.global_position.y + previous.size.y,
 		REFERENCE_VIEWPORT.y - Design.PAGE_MARGIN_BOTTOM, 2.0)
+
+
+func test_a_form_full_of_validation_messages_still_clears_the_footer_buttons() -> void:
+	# Reported from a screenshot: submitting the credentials step empty put a
+	# message under each field, the column grew downwards, and the messages ended
+	# up printed across the Previous and Next buttons. The column starts high
+	# enough to hold all of them now, and this is what says so.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var step: Step = (load(CREDENTIALS_STEP) as PackedScene).instantiate()
+	viewport.add_child(step)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	# Every message the step can put up at once, longer than the real ones so a
+	# translation has somewhere to grow into.
+	for name: String in ["EmailFieldError", "APIEmailFieldError", "PasswordFieldError"]:
+		var message: Label = step.find_child(name, true, false) as Label
+		assert_not_null(message, "%s should still be there to fill in" % name)
+		message.text = "Cette valeur est obligatoire pour continuer."
+		message.show()
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	var form: Control = step.get_node("%FormContainer")
+	var next: Control = step.get_node("RightMargin/RightContainer/ValidateButton")
+	var previous: Control = step.get_node("LeftMargin/LeftContainer/BackButton")
+	var lowest: float = form.global_position.y + form.size.y
+	assert_lt(lowest, next.global_position.y,
+		"the messages should stop above the Next button")
+	assert_lt(lowest, previous.global_position.y,
+		"and above the Previous button")
+
+
+func test_the_question_travels_with_the_form_when_the_keyboard_lifts_it() -> void:
+	# The question ends one gap above the field column, so a form lifted clear of
+	# the keyboard on its own would slide straight under it. Both move together.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var step: Step = (load(LANGUAGE_STEP) as PackedScene).instantiate()
+	viewport.add_child(step)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	var field: Control = step.get_node("%LanguageField")
+	var board: Control = step.get_node("PanelContainer")
+	var field_top: float = field.global_position.y
+	var board_top: float = board.global_position.y
+
+	step.keyboard_spacer.apply_lift(400.0)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	assert_almost_eq(field.global_position.y, field_top - 400.0, 2.0,
+		"the field column should rise by the lift")
+	assert_almost_eq(board.global_position.y, board_top - 400.0, 2.0,
+		"the question should rise by the same amount")
+
+	step.keyboard_spacer.apply_lift(0.0)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	assert_almost_eq(board.global_position.y, board_top, 2.0,
+		"and go back where the scene put it once the keyboard closes")
 
 
 func test_every_field_fills_the_content_column() -> void:

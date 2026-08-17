@@ -15,7 +15,7 @@ layout_mode = 2
 
 [node name="StudentsCountField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/StudentsCountContainer" index="0" unique_id=540523034]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 128)
+custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0

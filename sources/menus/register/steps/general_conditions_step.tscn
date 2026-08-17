@@ -13,9 +13,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -940.0
-offset_top = 146.0
+offset_top = 130.0
 offset_right = 940.0
-offset_bottom = 226.0
+offset_bottom = 239.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_type_variation = &"Title"
@@ -24,31 +24,31 @@ horizontal_alignment = 1
 
 [node name="PanelContainer" parent="." index="3" unique_id=824416175]
 offset_left = -940.0
-offset_top = 268.0
+offset_top = 300.0
 offset_right = 940.0
 offset_bottom = 1355.0
 theme_type_variation = &"Card"
 
 [node name="QuestionContainer" parent="PanelContainer" index="0" unique_id=788285574]
-theme_override_constants/margin_left = 80
-theme_override_constants/margin_top = 56
-theme_override_constants/margin_right = 80
-theme_override_constants/margin_bottom = 56
+theme_override_constants/margin_left = 106
+theme_override_constants/margin_top = 74
+theme_override_constants/margin_right = 106
+theme_override_constants/margin_bottom = 74
 
 [node name="VBoxContainer" parent="PanelContainer/QuestionContainer" index="0" unique_id=166746788]
-theme_override_constants/separation = 40
+theme_override_constants/separation = 54
 alignment = 0
 
 [node name="ConditionsLabel" type="RichTextLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="0" unique_id=366575860]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 332)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 32
-theme_override_font_sizes/bold_font_size = 32
-theme_override_font_sizes/bold_italics_font_size = 32
-theme_override_font_sizes/italics_font_size = 32
-theme_override_font_sizes/mono_font_size = 32
+theme_override_font_sizes/normal_font_size = 42
+theme_override_font_sizes/bold_font_size = 42
+theme_override_font_sizes/bold_italics_font_size = 42
+theme_override_font_sizes/italics_font_size = 42
+theme_override_font_sizes/mono_font_size = 42
 text = "GENERAL_CONDITIONS_TEXT"
 autowrap_mode = 2
 shortcut_keys_enabled = false
@@ -56,15 +56,15 @@ shortcut_keys_enabled = false
 [node name="AcceptContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="1" unique_id=740122503]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/separation = 20
+theme_override_constants/separation = 26
 
 [node name="AcceptRow" type="HBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer" index="0" unique_id=810850868]
 layout_mode = 2
-theme_override_constants/separation = 29
+theme_override_constants/separation = 38
 
 [node name="Accept" type="Button" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/AcceptRow" index="0" unique_id=537282954]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(90, 90)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"CheckBoxSquare"

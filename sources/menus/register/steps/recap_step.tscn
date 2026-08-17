@@ -16,9 +16,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -940.0
-offset_top = 146.0
+offset_top = 130.0
 offset_right = 940.0
-offset_bottom = 226.0
+offset_bottom = 239.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_type_variation = &"Title"
@@ -27,19 +27,19 @@ horizontal_alignment = 1
 
 [node name="PanelContainer" parent="." index="3" unique_id=824416175]
 offset_left = -940.0
-offset_top = 268.0
+offset_top = 300.0
 offset_right = 940.0
 offset_bottom = 1355.0
 theme_type_variation = &"Card"
 
 [node name="QuestionContainer" parent="PanelContainer" index="0" unique_id=788285574]
-theme_override_constants/margin_left = 80
-theme_override_constants/margin_top = 56
-theme_override_constants/margin_right = 80
-theme_override_constants/margin_bottom = 56
+theme_override_constants/margin_left = 106
+theme_override_constants/margin_top = 74
+theme_override_constants/margin_right = 106
+theme_override_constants/margin_bottom = 74
 
 [node name="VBoxContainer" parent="PanelContainer/QuestionContainer" index="0" unique_id=166746788]
-theme_override_constants/separation = 40
+theme_override_constants/separation = 54
 alignment = 0
 
 [node name="TopRow" type="HBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="0" unique_id=1825765088]
@@ -76,7 +76,7 @@ theme_type_variation = &"CardHeading"
 
 [node name="SaveAllCodesButton" type="Button" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow" index="1" unique_id=606916319]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(539, 164)
+custom_minimum_size = Vector2(718, 218)
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"PrimaryButton"
@@ -92,7 +92,7 @@ horizontal_scroll_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 40
+theme_override_constants/separation = 54
 
 [node name="QuestionLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="2" unique_id=473680384]
 visible = false

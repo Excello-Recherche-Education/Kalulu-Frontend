@@ -38,7 +38,7 @@ grow_vertical = 2
 color = Color(0.164706, 0.211765, 0.490196, 1)
 
 [node name="BackButton" type="TextureButton" parent="."]
-custom_minimum_size = Vector2(184, 184)
+custom_minimum_size = Vector2(246, 246)
 layout_mode = 0
 offset_left = 64.0
 offset_top = 64.0
@@ -85,7 +85,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="AccountTypeGroup" type="VBoxContainer" parent="Page/ControlsRow"]
-custom_minimum_size = Vector2(649, 0)
+custom_minimum_size = Vector2(630, 0)
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -97,7 +97,7 @@ autowrap_mode = 3
 
 [node name="AccountTypeOptionButton" type="OptionButton" parent="Page/ControlsRow/AccountTypeGroup"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(649, 88)
+custom_minimum_size = Vector2(630, 118)
 layout_mode = 2
 theme_type_variation = &"FieldCompact"
 fit_to_longest_item = false
@@ -110,12 +110,12 @@ popup/item_1/text = "PARENT"
 popup/item_1/id = 1
 
 [node name="DropdownGap" type="Control" parent="Page/ControlsRow"]
-custom_minimum_size = Vector2(66, 0)
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 mouse_filter = 2
 
 [node name="EducationMethodGroup" type="VBoxContainer" parent="Page/ControlsRow"]
-custom_minimum_size = Vector2(649, 0)
+custom_minimum_size = Vector2(630, 0)
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -127,7 +127,7 @@ autowrap_mode = 3
 
 [node name="EducationMethodOptionButton" type="OptionButton" parent="Page/ControlsRow/EducationMethodGroup"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(649, 88)
+custom_minimum_size = Vector2(630, 118)
 layout_mode = 2
 theme_type_variation = &"FieldCompact"
 fit_to_longest_item = false
@@ -149,7 +149,7 @@ size_flags_vertical = 8
 theme_override_constants/separation = 36
 
 [node name="SynchronizeButton" type="Button" parent="Page/ControlsRow/Actions"]
-custom_minimum_size = Vector2(90, 90)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "SYNCHRONIZE_ACCOUNT"
 theme_type_variation = &"IconButtonLight"
@@ -159,7 +159,7 @@ icon = ExtResource("13_sync")
 expand_icon = true
 
 [node name="Dashboard" type="Button" parent="Page/ControlsRow/Actions"]
-custom_minimum_size = Vector2(90, 90)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "DASHBOARD"
 theme_type_variation = &"IconButtonLight"
@@ -169,7 +169,7 @@ icon = ExtResource("14_dash")
 expand_icon = true
 
 [node name="VolumeButton" parent="Page/ControlsRow/Actions" instance=ExtResource("6_s8nbl")]
-custom_minimum_size = Vector2(90, 90)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_vertical = 4
 ignore_texture_size = true
@@ -177,7 +177,7 @@ stretch_mode = 5
 
 [node name="MenuButton" type="Button" parent="Page/ControlsRow/Actions"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(90, 90)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 theme_type_variation = &"IconButtonLight"
 icon_alignment = 1
@@ -216,7 +216,7 @@ layout_mode = 2
 theme_override_constants/separation = 40
 
 [node name="ExportCodesButton" type="Button" parent="Page/Card/CardMargin/CardContent/CardActions"]
-custom_minimum_size = Vector2(90, 90)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "EXPORT_STUDENT_CODES"
 theme_type_variation = &"IconButtonDark"
@@ -227,7 +227,7 @@ expand_icon = true
 
 [node name="AddStudentButton" type="Button" parent="Page/Card/CardMargin/CardContent/CardActions"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(90, 90)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "ADD_A_NEW_STUDENT"
 theme_type_variation = &"IconButtonDark"
@@ -238,7 +238,7 @@ expand_icon = true
 
 [node name="AddDeviceButton" type="Button" parent="Page/Card/CardMargin/CardContent/CardActions"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(90, 90)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "ADD_A_NEW_DEVICE"
 theme_type_variation = &"IconButtonDark"
@@ -267,7 +267,7 @@ vertical_scroll_mode = 0
 [node name="DevicePills" type="HBoxContainer" parent="Page/Card/CardMargin/CardContent/DevicePillsScroll"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 46
+theme_override_constants/separation = 62
 
 [node name="StudentsScroll" type="ScrollContainer" parent="Page/Card/CardMargin/CardContent"]
 layout_mode = 2

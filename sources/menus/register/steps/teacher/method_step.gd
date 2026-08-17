@@ -5,6 +5,7 @@ extends Step
 
 
 func _ready() -> void:
+	super()
 	method.clear()
 	method.add_item("METHOD_APP_ONLY")
 	method.add_item("METHOD_COMPLETE")
