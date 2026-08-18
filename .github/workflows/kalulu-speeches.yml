@@ -12,6 +12,10 @@ jobs:
   speeches:
     runs-on: ubuntu-latest
     permissions:
+      # An explicit block sets every unlisted scope to none. Both repositories are
+      # public today, so checkout would succeed without it, but spelling out the read
+      # access keeps the job working if either one ever goes private.
+      contents: read
       pull-requests: write
     steps:
       - name: Checkout the frontend
