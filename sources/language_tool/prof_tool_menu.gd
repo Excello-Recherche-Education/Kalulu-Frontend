@@ -92,7 +92,7 @@ func _on_game_sounds_button_pressed() -> void:
 
 
 func _on_pseudowords_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://sources/language_tool/fish_word_list.tscn")
+	get_tree().change_scene_to_file("res://sources/language_tool/boss_word_list.tscn")
 
 
 func _on_speeches_button_pressed() -> void:

@@ -30,8 +30,7 @@ var boss_buttons_container: Control
 @onready var reward: BrainReward = $Reward
 @onready var ui_layer: CanvasLayer = $CanvasLayer
 @onready var kalulu: KALULU = $CanvasLayer/Kalulu
-# TODO: replace with Database.get_kalulu_speech_path("brain_screen", "help") once the recording exists.
-@onready var kalulu_help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("title_screen", "tuto_welcome_oneshot"))
+@onready var kalulu_help_speech: AudioStream = Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "help"))
 
 
 func _ready() -> void:

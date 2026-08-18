@@ -52,10 +52,10 @@ func keyboard_height() -> float:
 	var pixels: float = float(DisplayServer.virtual_keyboard_get_height())
 	if pixels <= 0.0:
 		return 0.0
-	var scale: float = get_viewport().get_final_transform().get_scale().y
-	if scale <= 0.0:
+	var y_scale: float = get_viewport().get_final_transform().get_scale().y
+	if y_scale <= 0.0:
 		return pixels
-	return pixels / scale
+	return pixels / y_scale
 
 
 ## How far the contents have to move up for `focused` to be readable over a

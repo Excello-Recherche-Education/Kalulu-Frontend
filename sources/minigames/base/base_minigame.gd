@@ -11,7 +11,7 @@ enum Type {
 	TURTLES,
 	ANTS,
 	PENGUIN,
-	FISH,
+	BOSS,
 }
 
 # String names used for file paths, database keys, and speech lookups.
@@ -26,7 +26,7 @@ const TYPE_NAMES: Array[String] = [
 	"turtles",
 	"ants",
 	"penguin",
-	"fish",
+	"boss",
 ]
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")

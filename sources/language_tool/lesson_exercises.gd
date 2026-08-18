@@ -12,22 +12,43 @@ func _ready() -> void:
 	# "None" option can be saved.
 	_migrate_lessons_exercises_drop_exercise_fk()
 
-	# Retrocompatibility
-	Database.db.query("SELECT Count(*) AS nb FROM ExerciseTypes")
-	if Database.db.query_result[0].nb != Minigame.Type.size():
-		Database.db.query("DROP TABLE ExerciseTypes")
-	
+	# ExerciseTypes mirrors Minigame.TYPE_NAMES, one row per minigame, and its ID is
+	# what LessonsExercises stores -- so the row at a given ID must always hold the name
+	# at that position. Keying the seeding on the ID rather than on the name is what
+	# makes a rename work: seeding by name kept the row count intact, so nothing was
+	# dropped, the new name was found nowhere and got appended as an extra row, leaving
+	# the old name in place and a phantom row a lesson could then be assigned to.
 	var query: String = "SELECT name FROM sqlite_master WHERE type='table' AND name='ExerciseTypes'"
 	Database.db.query(query)
 	if Database.db.query_result.is_empty():
 		Database.db.query("CREATE TABLE ExerciseTypes (ID INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, Type TEXT NOT NULL)")
-	for exercise_name: String in Minigame.TYPE_NAMES:
-		Database.db.query("SELECT * FROM ExerciseTypes WHERE Type = '%s'" % exercise_name)
+	for type_index: int in range(Minigame.TYPE_NAMES.size()):
+		var exercise_id: int = type_index + 1
+		var exercise_name: String = Minigame.TYPE_NAMES[type_index]
+		Database.db.query("SELECT Type FROM ExerciseTypes WHERE ID = %d" % exercise_id)
 		if Database.db.query_result.is_empty():
 			Database.db.insert_row("ExerciseTypes",
 			{
+				ID = exercise_id,
 				Type = exercise_name,
 			})
+			continue
+		var stored_name: String = Database.db.query_result[0].Type as String
+		if stored_name != exercise_name:
+			Log.info("LessonExercises: ExerciseType %d: %s -> %s" % [exercise_id, stored_name, exercise_name])
+			Database.db.update_rows("ExerciseTypes", "ID = %d" % exercise_id,
+			{
+				Type = exercise_name,
+			})
+	# Rows past the enum are leftovers from a longer list, or from the name-based
+	# seeding this replaced. Free any lesson slot still pointing at one before the row
+	# goes: the foreign keys were dropped above, so such an ID would simply dangle, and
+	# the gardens wheel has no icon for it. 0 is the "no minigame in this slot" value.
+	var last_type_id: int = Minigame.TYPE_NAMES.size()
+	var free_slot: String = "UPDATE LessonsExercises SET %s = 0 WHERE %s > %d"
+	for column: String in ["Exercise1", "Exercise2", "Exercise3"]:
+		Database.db.query(free_slot % [column, column, last_type_id])
+	Database.db.query("DELETE FROM ExerciseTypes WHERE ID > %d" % last_type_id)
 	
 	query = "SELECT name FROM sqlite_master WHERE type='table' AND name='LessonsExercises'"
 	Database.db.query(query)

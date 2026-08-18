@@ -1,6 +1,6 @@
 extends Control
 
-const ELEMENT_SCENE: PackedScene = preload("res://sources/language_tool/fish_word_list_element.tscn")
+const ELEMENT_SCENE: PackedScene = preload("res://sources/language_tool/boss_word_list_element.tscn")
 
 var word_list: Array = []
 
@@ -30,7 +30,7 @@ func _ready() -> void:
 	Database.db.query(query)
 	
 	for word: Dictionary in Database.db.query_result.duplicate():
-		var element: FishWordListElement = ELEMENT_SCENE.instantiate()
+		var element: BossWordListElement = ELEMENT_SCENE.instantiate()
 		elements_container.add_child(element)
 		element.set_word_list(word_list)
 		element.word_id = word.WordID
@@ -49,7 +49,7 @@ func sorting_function(node_a: Node, node_b: Node, property_name: String) -> bool
 
 
 func _on_list_title_add_pressed() -> void:
-	var element: FishWordListElement = ELEMENT_SCENE.instantiate()
+	var element: BossWordListElement = ELEMENT_SCENE.instantiate()
 	elements_container.add_child(element)
 	element.set_word_list(word_list)
 
@@ -59,7 +59,7 @@ func _on_list_title_back_pressed() -> void:
 
 
 func _on_list_title_new_search(new_text: String) -> void:
-	for element: FishWordListElement in elements_container.get_children():
+	for element: BossWordListElement in elements_container.get_children():
 		element.set_visible(element.word.begins_with(new_text))
 
 
@@ -73,14 +73,14 @@ func _on_list_title_save_pressed() -> void:
 	# delete elements that are in the DB but not in the list
 	for word: Dictionary in db_word_list:
 		var found: bool = false
-		for element: FishWordListElement in elements_container.get_children():
+		for element: BossWordListElement in elements_container.get_children():
 			if element.pseudoword_id == word.ID:
 				found = true
 				break
 		if not found:
 			Database.db.delete_rows("Pseudowords", "ID=%s" % word.ID)
 	
-	for element: FishWordListElement in elements_container.get_children():
+	for element: BossWordListElement in elements_container.get_children():
 		var found: bool = false
 		if element.pseudoword_id >= 0:
 			var query_with_id: String = query + " WHERE Pseudowords.ID = ?"

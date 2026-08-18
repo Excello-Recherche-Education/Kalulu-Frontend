@@ -13,6 +13,11 @@ extends Object
 ## takes one.
 
 const PASSWORD_VISUALIZER_SCENE: PackedScene = preload("res://sources/menus/components/password_visualizer.tscn")
+## What the sheet is offered under, and what it is: named here rather than at the
+## two screens that export it, so both agree and neither has to know the format.
+const DEFAULT_FILE_NAME: String = "Codes.pdf"
+const FILE_EXTENSION: String = "pdf"
+const MIME_TYPE: String = "application/pdf"
 const COLUMNS: int = 2
 const TITLE_FONT_SIZE: int = 44
 const SECTION_FONT_SIZE: int = 32
@@ -99,8 +104,24 @@ static func printed_name(student_data: StudentData) -> String:
 ##
 ## Exposed because the caller wants to tell the teacher where it went, and it
 ## would be wrong about the name if it guessed.
+##
+## A content:// path is left exactly as it came. Android's own picker does not
+## hand back a name to complete: it creates the document first, from the name and
+## MIME type it was given, and returns a URI addressing that document. Appending
+## to it would name a document that does not exist, and the write would fail on
+## the one platform the native picker was turned on for.
 static func pdf_path(path: String) -> String:
-	return path if path.ends_with(".pdf") else path + ".pdf"
+	if is_document_uri(path) or path.ends_with(".%s" % FILE_EXTENSION):
+		return path
+	return "%s.%s" % [path, FILE_EXTENSION]
+
+
+## Whether `path` addresses a document the system already made, rather than a file.
+##
+## res:// and user:// are Godot's own and behave like paths, extension and all; a
+## content:// URI comes from Android's Storage Access Framework and does not.
+static func is_document_uri(path: String) -> bool:
+	return path.begins_with("content://")
 
 
 ## One Control per printed page, laid out and ready to be rendered.

@@ -126,8 +126,7 @@ func _build_runtime() -> void:
 	_music_player.stream = ENDGAME_MUSIC
 	add_child(_music_player)
 
-	# TODO: use ("brain_screen", "victory") once the victory speech is recorded.
-	_speech = Database.load_external_sound(Database.get_kalulu_speech_path("title_screen", "tuto_welcome_oneshot"))
+	_speech = Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "victory"))
 
 #endregion
 

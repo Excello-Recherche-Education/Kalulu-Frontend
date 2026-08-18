@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cjrhhxq1x7n8r"]
 
-[ext_resource type="Script" uid="uid://8j5fxpx5tefq" path="res://sources/language_tool/fish_word_list.gd" id="1_bdlmx"]
+[ext_resource type="Script" uid="uid://8j5fxpx5tefq" path="res://sources/language_tool/boss_word_list.gd" id="1_bdlmx"]
 [ext_resource type="PackedScene" uid="uid://clf3v6355wond" path="res://sources/language_tool/list_title.tscn" id="1_mlni4"]
 [ext_resource type="Script" uid="uid://c45af60t46e6n" path="res://sources/language_tool/scroll_container.gd" id="2_okviq"]
 
-[node name="FishWordList" type="Control" unique_id=1065746559]
+[node name="BossWordList" type="Control" unique_id=1065746559]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
