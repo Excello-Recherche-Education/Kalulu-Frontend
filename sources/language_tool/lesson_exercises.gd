@@ -41,9 +41,14 @@ func _ready() -> void:
 				Type = exercise_name,
 			})
 	# Rows past the enum are leftovers from a longer list, or from the name-based
-	# seeding this replaced: drop them so no lesson can point at a type the game has no
-	# minigame for.
-	Database.db.query("DELETE FROM ExerciseTypes WHERE ID > %d" % Minigame.TYPE_NAMES.size())
+	# seeding this replaced. Free any lesson slot still pointing at one before the row
+	# goes: the foreign keys were dropped above, so such an ID would simply dangle, and
+	# the gardens wheel has no icon for it. 0 is the "no minigame in this slot" value.
+	var last_type_id: int = Minigame.TYPE_NAMES.size()
+	var free_slot: String = "UPDATE LessonsExercises SET %s = 0 WHERE %s > %d"
+	for column: String in ["Exercise1", "Exercise2", "Exercise3"]:
+		Database.db.query(free_slot % [column, column, last_type_id])
+	Database.db.query("DELETE FROM ExerciseTypes WHERE ID > %d" % last_type_id)
 	
 	query = "SELECT name FROM sqlite_master WHERE type='table' AND name='LessonsExercises'"
 	Database.db.query(query)

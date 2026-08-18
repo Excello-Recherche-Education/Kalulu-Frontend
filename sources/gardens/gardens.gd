@@ -563,13 +563,15 @@ func _build_wheel(exercises: Array[int], lesson_unlocks: Dictionary) -> void:
 		var layout: Dictionary = _get_wedge_layout(minigame_count, wedge_index)
 		var exercise_type: int = exercises[wedge_index]
 		var icon_index: int = exercise_type - 1
-		# Guard against exercise types with no matching wheel icon (the boss,
-		# type 10, has none): fall back to the highest available one so we never
-		# index past the icon arrays.
-		var max_icon_index: int = minigames_body_icons.size() - 1
-		if icon_index < 0 or icon_index > max_icon_index:
-			Log.error("Gardens: Exercise type %d has no wheel icon (%d available); using the highest available minigame instead." % [exercise_type, minigames_body_icons.size()])
-			icon_index = clampi(icon_index, 0, max_icon_index)
+		# Only the nine wheel minigames have an icon. The boss is deliberately not one
+		# of them -- it lives on the boss buttons between gardens -- so an exercise type
+		# without an icon is a data error. Substituting the nearest minigame would be
+		# worse than showing nothing: icon_index is also what the press handler launches
+		# (see the bind below), so the lesson would silently start a game it was never
+		# assigned. Leave that slice empty; every other index stays aligned.
+		if icon_index < 0 or icon_index >= minigames_body_icons.size():
+			Log.error("Gardens: Exercise type %d has no wheel icon (%d available); slice left empty." % [exercise_type, minigames_body_icons.size()])
+			continue
 		var status: StudentProgression.Status = lesson_unlocks["games"][wedge_index] as StudentProgression.Status
 		var wedge: MinigameWedge = MINIGAME_WEDGE_SCENE.instantiate()
 		wedges_container.add_child(wedge)
