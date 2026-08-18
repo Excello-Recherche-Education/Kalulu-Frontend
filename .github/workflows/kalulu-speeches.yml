@@ -1,0 +1,59 @@
+name: Kalulu Voice Lines
+
+# Reminder only: this workflow never fails a build. It posts one comment per pull
+# request, updated in place on each push, listing what each language pack is still
+# missing and which recordings nothing uses any more.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  speeches:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout the frontend
+        uses: actions/checkout@v4
+        with:
+          path: frontend
+
+      - name: Checkout the language packs
+        uses: actions/checkout@v4
+        with:
+          repository: Excello-Recherche-Education/Kalulu-Languages
+          # Only the file names are compared, so the mp3 payloads stay in LFS
+          # storage instead of being downloaded on every pull request.
+          lfs: false
+          path: packs
+
+      - name: Build the report
+        run: |
+          python3 frontend/.github/scripts/check_kalulu_speeches.py \
+            --frontend frontend --packs packs | tee report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post or update the pull-request comment
+        # A pull request from a fork gets a read-only token, so the comment cannot be
+        # posted. The report is in the job summary either way, and a reminder is not
+        # worth a red cross.
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- kalulu-voice-lines -->';
+            const body = `${marker}\n${fs.readFileSync('report.md', 'utf8')}`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number,
+            });
+            const previous = comments.find((comment) => comment.body.includes(marker));
+            if (previous) {
+              await github.rest.issues.updateComment({
+                owner, repo, comment_id: previous.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }

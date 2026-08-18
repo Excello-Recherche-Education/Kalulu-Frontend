@@ -48,8 +48,9 @@ func _ready() -> void:
 			"help": "Help button during this minigame",
 			"end": "Played when this minigame is won",
 		},
-		"fish": {
+		"boss": {
 			"intro": "First play of this minigame",
+			"help": "Help button during this minigame",
 			"intro_test_game_first_word": "Tutorial: first word presented",
 			"lose_test_game_first_word": "Tutorial: first word answered wrong",
 			"win_test_game_first_word": "Tutorial: first word answered right",

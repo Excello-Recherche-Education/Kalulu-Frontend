@@ -1,4 +1,4 @@
-class_name FishWordListElement
+class_name BossWordListElement
 extends MarginContainer
 
 @export var word_id: int = 1:
