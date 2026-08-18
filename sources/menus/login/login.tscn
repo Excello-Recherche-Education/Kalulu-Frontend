@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://b0bkosa20avcs"]
+[gd_scene format=3 uid="uid://b0bkosa20avcs"]
 
 [ext_resource type="Script" uid="uid://b6lcp5llq0rsq" path="res://sources/menus/login/login.gd" id="1_spyuf"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 [ext_resource type="PackedScene" uid="uid://ivyitn4nxsm5" path="res://sources/ui/code_keypad.tscn" id="3_keypad"]
-[ext_resource type="PackedScene" uid="uid://b7yl4qkxvrn5m" path="res://sources/ui/version_label.tscn" id="11_version"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="4_kalulu"]
 [ext_resource type="Texture2D" uid="uid://b44sv7oylntiq" path="res://assets/menus/buttons/back_button_normal.png" id="5_back_n"]
 [ext_resource type="Texture2D" uid="uid://b01neo7ex0rg7" path="res://assets/menus/buttons/back_button_pressed.png" id="6_back_p"]
@@ -12,9 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://d2s3kkntep3au" path="res://assets/menus/buttons/kalulu_button_pressed.png" id="9_kal_p"]
 [ext_resource type="Texture2D" uid="uid://w25kyu12snql" path="res://assets/menus/buttons/kalulu_button_disabled.png" id="10_kal_d"]
 [ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="11_music"]
+[ext_resource type="PackedScene" uid="uid://b7yl4qkxvrn5m" path="res://sources/ui/version_label.tscn" id="11_version"]
 [ext_resource type="PackedScene" path="res://sources/ui/adult_check_popup.tscn" id="99_adult"]
 
-[node name="Login" type="Control"]
+[node name="Login" type="Control" unique_id=772897750]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,7 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_spyuf")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=2092469976]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,7 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.164706, 0.211765, 0.490196, 1)
 
-[node name="Header" type="VBoxContainer" parent="."]
+[node name="Header" type="VBoxContainer" parent="." unique_id=41169522]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -43,23 +43,23 @@ offset_top = 160.0
 offset_right = 960.0
 offset_bottom = 372.0
 grow_horizontal = 2
-theme_override_constants/separation = 16
 mouse_filter = 2
+theme_override_constants/separation = 16
 
-[node name="DeviceNumber" type="Label" parent="Header"]
+[node name="DeviceNumber" type="Label" parent="Header" unique_id=2102008847]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "LOG_IN_TO_DEVICE"
 horizontal_alignment = 1
-theme_type_variation = &"Title"
 
-[node name="Subtitle" type="Label" parent="Header"]
+[node name="Subtitle" type="Label" parent="Header" unique_id=881870904]
 layout_mode = 2
 text = "ENTER_YOUR_ACCESS_CODE"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="CodeKeypad" parent="." instance=ExtResource("3_keypad")]
+[node name="CodeKeypad" parent="." unique_id=1071995312 instance=ExtResource("3_keypad")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 5
@@ -71,10 +71,9 @@ offset_right = 820.0
 offset_bottom = 1306.0
 grow_horizontal = 2
 
-[node name="BackButton" type="TextureButton" parent="."]
+[node name="BackButton" type="TextureButton" parent="." unique_id=1169423491]
 custom_minimum_size = Vector2(246, 246)
 layout_mode = 1
-anchors_preset = 0
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 310.0
@@ -85,7 +84,7 @@ texture_disabled = ExtResource("7_back_d")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="Footer" type="Control" parent="."]
+[node name="Footer" type="Control" parent="." unique_id=1637646211]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -96,7 +95,7 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="KaluluButton" type="TextureButton" parent="Footer"]
+[node name="KaluluButton" type="TextureButton" parent="Footer" unique_id=1676337411]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(246, 246)
 layout_mode = 0
@@ -110,32 +109,32 @@ texture_disabled = ExtResource("10_kal_d")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="HelpBlock" type="VBoxContainer" parent="Footer"]
+[node name="HelpBlock" type="VBoxContainer" parent="Footer" unique_id=1609664747]
 layout_mode = 0
 offset_left = 640.0
 offset_top = 30.0
 offset_right = 1740.0
 offset_bottom = 434.0
-theme_override_constants/separation = 0
 mouse_filter = 2
+theme_override_constants/separation = 0
 
-[node name="ForgotTitle" type="Label" parent="Footer/HelpBlock"]
+[node name="ForgotTitle" type="Label" parent="Footer/HelpBlock" unique_id=142793203]
 layout_mode = 2
-text = "FORGOT_YOUR_CODE"
 theme_type_variation = &"Heading"
+text = "FORGOT_YOUR_CODE"
 
-[node name="ForgotHint" type="Label" parent="Footer/HelpBlock"]
+[node name="ForgotHint" type="Label" parent="Footer/HelpBlock" unique_id=603164053]
 layout_mode = 2
 text = "FORGOT_CODE_HELP"
 autowrap_mode = 3
 
-[node name="TeacherHelpLabel" type="Label" parent="Footer/HelpBlock"]
+[node name="TeacherHelpLabel" type="Label" parent="Footer/HelpBlock" unique_id=173510853]
 unique_name_in_owner = true
 layout_mode = 2
 text = "TEACHER_SETTINGS_HELP"
 autowrap_mode = 3
 
-[node name="TeacherButton" type="Button" parent="Footer"]
+[node name="TeacherButton" type="Button" parent="Footer" unique_id=5607616]
 custom_minimum_size = Vector2(442, 218)
 layout_mode = 1
 anchors_preset = 3
@@ -152,24 +151,22 @@ grow_vertical = 0
 theme_type_variation = &"PrimaryButton"
 text = "SETTINGS"
 
-[node name="BuildVersionValue" parent="Footer" instance=ExtResource("11_version")]
+[node name="BuildVersionValue" parent="Footer" unique_id=864909797 instance=ExtResource("11_version")]
 unique_name_in_owner = true
-layout_mode = 1
 
-[node name="Kalulu" parent="." instance=ExtResource("4_kalulu")]
+[node name="Kalulu" parent="." unique_id=1492530848 instance=ExtResource("4_kalulu")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=760795235]
 stream = ExtResource("11_music")
 
-[node name="AdultCheck" parent="." instance=ExtResource("99_adult")]
+[node name="AdultCheck" parent="." unique_id=1181299668 instance=ExtResource("99_adult")]
 unique_name_in_owner = true
-visible = false
 
+[connection signal="code_entered" from="CodeKeypad" to="." method="_on_code_keypad_code_entered"]
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Footer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
 [connection signal="pressed" from="Footer/TeacherButton" to="." method="_on_teacher_button_pressed"]
 [connection signal="passed" from="AdultCheck" to="." method="_on_adult_check_passed"]
-[connection signal="code_entered" from="CodeKeypad" to="." method="_on_code_keypad_code_entered"]

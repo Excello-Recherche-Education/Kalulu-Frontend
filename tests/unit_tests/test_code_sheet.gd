@@ -95,3 +95,24 @@ func test_it_writes_a_pdf_that_starts_like_one() -> void:
 		"a reader identifies a PDF by its first bytes")
 	file.close()
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+
+
+func test_the_extension_is_added_when_the_teacher_leaves_it_off() -> void:
+	assert_eq(CodeSheet.pdf_path("/tmp/Codes"), "/tmp/Codes.pdf")
+	assert_eq(CodeSheet.pdf_path("/tmp/Codes.pdf"), "/tmp/Codes.pdf",
+		"and not added twice when it is already there")
+
+
+func test_a_document_uri_is_written_to_exactly_as_it_arrived() -> void:
+	# Android's picker creates the document itself, from the name and MIME type it
+	# was handed, and returns a URI addressing that document. Completing the name
+	# would address a document that does not exist and the write would fail.
+	var uri: String = "content://com.android.providers.downloads.documents/document/msf%3A42"
+	assert_true(CodeSheet.is_document_uri(uri))
+	assert_eq(CodeSheet.pdf_path(uri), uri)
+
+
+func test_godot_own_uris_are_completed_like_any_other_path() -> void:
+	# res:// and user:// behave like paths, extension and all.
+	assert_false(CodeSheet.is_document_uri("user://Codes"))
+	assert_eq(CodeSheet.pdf_path("user://Codes"), "user://Codes.pdf")

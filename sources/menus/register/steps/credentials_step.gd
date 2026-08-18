@@ -9,7 +9,7 @@ func _on_validate_button_pressed() -> void:
 	
 	# Validate the fields
 	if not form_validator.validate():
-		Log.warn("CredentialsStep: Validation failed (" + str(self) + ")")
+		Log.warn("CredentialsStep: Validation failed (" + str(self) + "). Validator messages = %s" % form_validator.get_messages())
 		return
 	
 	# Writes data in object

@@ -73,10 +73,8 @@ func _ready() -> void:
 	
 	UserDataManager.user_database_synchronizer.loading_popup = loading_popup
 
-	export_codes_file_dialog.set_title(tr("EXPORT_STUDENT_CODES"))
-	export_codes_file_dialog.set_ok_button_text(tr("EXPORT_STUDENT_CODES"))
-	export_codes_file_dialog.filters = []
-	export_codes_file_dialog.add_filter("*.pdf", "pdf")
+	MobileFileDialog.configure_save(export_codes_file_dialog, tr("EXPORT_STUDENT_CODES"),
+			CodeSheet.FILE_EXTENSION, CodeSheet.MIME_TYPE)
 	export_codes_file_dialog.file_selected.connect(_on_export_codes_file_selected)
 	Log.info("SettingsTeacherSettings: Export codes dialog configured")
 
@@ -414,8 +412,7 @@ func _on_export_codes_button_pressed() -> void:
 		return
 
 	Log.info("SettingsTeacherSettings: Opening export codes dialog")
-	export_codes_file_dialog.current_file = "Codes.pdf"
-	export_codes_file_dialog.show()
+	MobileFileDialog.open(export_codes_file_dialog, CodeSheet.DEFAULT_FILE_NAME)
 
 
 func _on_export_codes_file_selected(path: String) -> void:

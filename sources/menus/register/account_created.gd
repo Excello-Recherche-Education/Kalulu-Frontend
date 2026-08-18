@@ -42,9 +42,16 @@ func _ready() -> void:
 func _show_where_the_codes_are() -> void:
 	if saved_codes_path.is_empty():
 		Log.info("AccountCreated: The codes were not saved; pointing at the settings")
-		codes_note.text = "CODES_AVAILABLE_IN_SETTINGS"
-		codes_note.show()
-		open_folder_button.hide()
+		_point_at_the_settings()
+		return
+
+	# A document URI ends up here too, though the sheet was written. Android's own
+	# picker asked the teacher where it should go and confirmed it at the time, but
+	# what it hands back addresses the document rather than describing a folder, so
+	# there is no folder to name and the URI itself would mean nothing to them.
+	if CodeSheet.is_document_uri(saved_codes_path):
+		Log.info("AccountCreated: The codes went to %s, which names no folder" % saved_codes_path)
+		_point_at_the_settings()
 		return
 
 	# Globalized: the dialog normally hands back a real path, but a res:// or
@@ -62,6 +69,13 @@ func _show_where_the_codes_are() -> void:
 		codes_note.text = wording
 		codes_note.show()
 		open_folder_button.hide()
+
+
+## Says the codes can be had again, for when this screen cannot say where they went.
+func _point_at_the_settings() -> void:
+	codes_note.text = "CODES_AVAILABLE_IN_SETTINGS"
+	codes_note.show()
+	open_folder_button.hide()
 
 
 func _on_open_folder_pressed() -> void:

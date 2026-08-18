@@ -25,7 +25,10 @@ func get_value() -> Variant:
 		# Before OptionButton, because it is a Button and not any of the above,
 		# but it is also not an ItemList even though it means the same thing.
 		var selected: int = (control as OptionButton).selected
-		return null if selected < 0 else selected
+		if selected < 0:
+			return null
+		else:
+			return selected
 	elif control is ItemList:
 		var selected_indexes: PackedInt32Array = (control as ItemList).get_selected_items()
 		if not selected_indexes or selected_indexes.size() == 0:

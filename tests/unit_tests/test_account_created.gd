@@ -86,13 +86,28 @@ func test_no_saved_sheet_points_at_the_settings_instead() -> void:
 
 
 func test_only_one_of_the_two_messages_is_ever_shown() -> void:
-	for saved_path: String in ["", "user://Codes.pdf"]:
+	for saved_path: String in ["", "user://Codes.pdf", "content://com.android.providers.downloads.documents/document/42"]:
 		var screen: AccountCreated = await _mounted(saved_path)
 		var showing: int = 0
 		for path: String in ["%CodesNote", "%OpenFolderButton"]:
 			if (screen.get_node(path) as Control).is_visible_in_tree():
 				showing += 1
 		assert_eq(showing, 1, "exactly one message for saved_codes_path '%s'" % saved_path)
+
+
+func test_a_document_uri_is_not_paraded_as_a_folder() -> void:
+	# What Android's own picker hands back addresses the document rather than
+	# describing a folder. The sheet was saved, and the picker said so at the time,
+	# but there is nothing here to name -- so this screen falls back to saying the
+	# codes can be had again rather than printing a URI at the teacher.
+	var uri: String = "content://com.android.externalstorage.documents/document/primary%3ACodes.pdf"
+	var screen: AccountCreated = await _mounted(uri)
+
+	var note: Label = screen.get_node("%CodesNote")
+	assert_true(note.is_visible_in_tree(), "it should fall back to the settings note")
+	assert_eq(note.text, "CODES_AVAILABLE_IN_SETTINGS")
+	assert_false((screen.get_node("%OpenFolderButton") as Button).is_visible_in_tree(),
+		"there is no folder to open")
 
 
 func test_the_folder_is_only_offered_where_one_can_be_opened() -> void:
