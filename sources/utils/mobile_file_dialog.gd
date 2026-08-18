@@ -31,15 +31,12 @@ extends Object
 ## was 58-pixel text at 116: the buttons ran into the edges of the window and the
 ## file list was squeezed into a three-row strip.
 const NAVIGATION_BUTTON_SIZE: float = 140.0
-
 ## Marks a dialog that has already been opened once, so open() can tell a first
 ## appearance from a return to one.
 const OPENED_BEFORE: StringName = &"mobile_file_dialog_opened"
-
 ## Marks a dialog whose list has been wired for tapping, so configuring one twice
 ## cannot leave it navigating twice per tap.
 const TAP_WIRED: StringName = &"mobile_file_dialog_tap_wired"
-
 ## How much of the dialog's own panel is left showing around everything inside it.
 ##
 ## The stylebox a theme hands an AcceptDialog has content margins of very nearly
@@ -47,7 +44,6 @@ const TAP_WIRED: StringName = &"mobile_file_dialog_tap_wired"
 ## so the file list and the buttons ran into the edges of the window and there was
 ## no seam left between the window and the game drawn behind it.
 const PANEL_INSET: float = 48.0
-
 ## The share of the screen the dialog covers when it opens.
 ##
 ## Generous on purpose: the interface inside it is drawn at INTERFACE_SCALE, and a
