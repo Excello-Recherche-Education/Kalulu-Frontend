@@ -100,7 +100,6 @@ var is_back_button_hold_active: bool = false
 @onready var kalulu: KALULU = %Kalulu
 @onready var kalulu_button: CanvasItem = %KaluluButton
 @onready var brain_button: TextureButton = %BrainButton
-# TODO: Rename / Move those audio inside the language packs to remove all references to brain_screen which does not exists anymore
 @onready var brain_tutorial_speeches: Array[AudioStream] = [
 	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_1")),
 	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_2")),
