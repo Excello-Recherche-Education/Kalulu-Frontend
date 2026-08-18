@@ -1,8 +1,11 @@
 name: Kalulu Voice Lines
 
-# Reminder only: this workflow never fails a build. It posts one comment per pull
-# request, updated in place on each push, listing what each language pack is still
-# missing and which recordings nothing uses any more.
+# Reminder only: a missing recording never fails a build. It posts one comment per
+# pull request, updated in place on each push, listing what each language pack is
+# still missing and which recordings nothing uses any more.
+#
+# The check breaking is a different matter and does go red. A reminder nobody can
+# tell apart from silence is not a reminder.
 
 on:
   pull_request:
@@ -33,9 +36,17 @@ jobs:
           path: packs
 
       - name: Build the report
+        # Written, then copied to the summary, rather than piped through tee: the
+        # status of a pipeline is its last command's, so tee succeeding was enough to
+        # keep the step green while the script had died and left report.md empty --
+        # which then posted as a comment with nothing in it, reading exactly like a
+        # pack with nothing missing. shell: bash also brings pipefail with it, so a
+        # pipe added here later cannot quietly do the same thing again.
+        shell: bash
         run: |
           python3 frontend/.github/scripts/check_kalulu_speeches.py \
-            --frontend frontend --packs packs | tee report.md >> "$GITHUB_STEP_SUMMARY"
+            --frontend frontend --packs packs > report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Post or update the pull-request comment
         # A pull request from a fork gets a read-only token, so the comment cannot be

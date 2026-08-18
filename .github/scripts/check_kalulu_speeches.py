@@ -6,8 +6,10 @@ Three sets are compared:
   - declared:  every slot the Prof Tool exposes for upload
   - shipped:   the mp3 files each language pack actually contains
 
-The report is Markdown, meant to be posted as a pull-request comment. Nothing
-here is a hard failure: a missing recording is a reminder, not a broken build.
+The report is Markdown, meant to be posted as a pull-request comment. A missing
+recording is a reminder, not a broken build, and never fails the job. Being unable
+to read one of the three sets does fail it: a report that silently left a set out
+would say every pack was complete.
 """
 import argparse
 import difflib
@@ -84,8 +86,20 @@ def collect_requested(frontend: pathlib.Path) -> tuple[set, list]:
 
 
 def collect_declared(frontend: pathlib.Path) -> set:
-    source = read(frontend / "sources/language_tool/kalulu_speeches.gd")
-    start, end = source.index("var speeches:"), source.index("\tfor speech_title")
+    """Every (category, name) the Prof Tool offers a slot for.
+
+    The dictionary is read off the source between the declaration above it and the
+    loop that consumes it below. Both bounds are checked and said out loud if they
+    have moved: a refactor of that file must stop this check rather than let it
+    report a Prof Tool with no slots in it at all.
+    """
+    path = frontend / "sources/language_tool/kalulu_speeches.gd"
+    source = read(path)
+    start, end = source.find("var speeches:"), source.find("\tfor speech_title")
+    if start < 0 or end < 0:
+        raise SystemExit(f"{path}: the speeches dictionary is no longer bounded by "
+                         f"`var speeches:` and `for speech_title`, so this check "
+                         f"cannot read it. Fix the anchors in collect_declared().")
     declared, category = set(), None
     for line in source[start:end].split("\n"):
         header = re.match(r'^\t\t"([^"]+)":\s*\{', line)
