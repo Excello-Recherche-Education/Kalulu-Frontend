@@ -72,7 +72,7 @@ PLAYER_NAME,Prénom,Nombre,Primeiro nome,Nome
 PLAYER_AGE,Age,Edad,Idade,Età
 CREDENTIALS_PROMPT,Veuillez saisir vos identifiants de connexion,Ingrese los datos de inicio de sesión,Digite seus detalhes de login,Inserisci le tue credenziali di accesso
 CONFIRM_PASSWORD,Confirmer le mot de passe,Confirmar la contraseña,Confirmar senha,Conferma password
-GENERAL_CONDITIONS_TEXT,"PRÉAMBULE
+GENERAL_CONDITIONS_TEXT,"[b]PRÉAMBULE[/b]
 
 Les présentes Conditions Générales d'Utilisation sont disponibles à tout moment : excellolab.org/cgu
 
@@ -80,60 +80,62 @@ Elles déterminent les règles d'accès à nos plateformes sur le site Excello e
 
 En utilisant cette plateforme, vous reconnaissez, en votre qualité d'utilisateur/enseignant et/ou responsable légal de l'élève mineur à en connaître les termes, les accepter sans réserve et vous y conformer.
 
-Le responsable du traitement se réserve le droit, à leur seule discrétion et sans information préalable, de modifier, supprimer ou ajouter des mentions aux présentes Conditions Générales d'Utilisation, et ce à tout moment afin notamment de prendre en compte toute évolution légale, jurisprudentielle, éditoriale et/ou technique. La version qui prévaut est celle qui est accessible en ligne.
+Le responsable du traitement se réserve le droit, à leur seule discrétion et sans information préalable, de modifier, supprimer ou ajouter des mentions aux présentes [b]Conditions Générales d'Utilisation[/b], et ce à tout moment afin notamment de prendre en compte toute évolution légale, jurisprudentielle, éditoriale et/ou technique. La version qui prévaut est celle qui est accessible en ligne.
 
 Il vous est donc conseillé de vous référer régulièrement à la dernière version desdites Conditions Générales d'Utilisation.
 
-ARTICLE 1 - USAGE UTILISATEUR, INFORMATIONS PRATIQUES
+[b]ARTICLE 1 - USAGE UTILISATEUR, INFORMATIONS PRATIQUES[/b]
+
 L'association Excello a pour objet la recherche, le développement et la diffusion des connaissances dans le domaine de l'éducation, particulièrement en matière d'amélioration de l'apprentissage de la lecture et des mathématiques. Excello élabore et fournit des ressources pédagogiques associées, notamment par le recours aux nouvelles technologies.
 
-1/ Accès aux applications éducative crées par Excello
+[b]1/ Accès aux applications éducative crées par Excello[/b]
 
 Les activités sont disponibles en permanence (24/7) :
 
-Sur les applications mobile d'Excello, disponibles sur les stores Android et Apple pour être jouéee sur une tablette/smartphone Android 5.1+ et iOS 11+. L'usage d'une tablette est recommandé pour une utilisation optimale du service.
-Sur l'application web en utilisant Google Chrome ou Mozilla Firefox sur Windows, Ubuntu et Android et en utilisant Safari sur MacOs et iOs.
-L'utilisation de l'application peut se faire par un enseignant qui crée un compte pour sa classe, ou par un tuteur légal qui crée un compte pour son enfant.
+- Sur les applications mobile d'Excello, disponibles sur les stores Android et Apple pour être jouéee sur une tablette/smartphone Android 5.1+ et iOS 11+. L'usage d'une tablette est recommandé pour une utilisation optimale du service.
+- Sur l'application web en utilisant Google Chrome ou Mozilla Firefox sur Windows, Ubuntu et Android et en utilisant Safari sur MacOs et iOs.
+- L'utilisation de l'application peut se faire par un enseignant qui crée un compte pour sa classe, ou par un tuteur légal qui crée un compte pour son enfant.
 
 Une fois l'application installée, l'usage d'internet n'est pas obligatoire. Certaines fonctionnalités seront en revanche désactivées : transcription de la voix en texte et reconnaissance manuscrite.
 
 Dans le cas où l'application est utilisée hors ligne (sans internet), les traces d'apprentissage (résultats des exercices) sont sauvegardées sur l'appareil et ne seront envoyées sur la plateforme qu'une fois le retour d'une connexion à internet.
 
-2/ Accès aux plateformes créées par Excello
+[b]2/ Accès aux plateformes créées par Excello[/b]
 
 Pour une première utilisation de nos plateformes, il faudra :
 
-Créer un compte adulte (gardien d'enfant/enseignant).
+- Créer un compte adulte (gardien d'enfant/enseignant).
+- Retrouver toutes les informations collectées dans notre politique de confidentialité.
 
-Retrouver toutes les informations collectés dans notre politique de confidentialité.
-
-3/ Assistance technique
+[b]3/ Assistance technique[/b]
 
 En cas d'incident technique sur l'application ou la plateforme, privilégiez l'envoi d'un message à : contact@excellolab.org
 
-Nos équipes mettront tout en uvre pour vous répondre et résoudre les incidents dans les plus brefs délais.
+Nos équipes mettront tout en œuvre pour vous répondre et résoudre les incidents dans les plus brefs délais.
 
-4/ Matériel utilisé
+[b]4/ Matériel utilisé[/b]
 
 L'appareil utilisé devra répondre aux caractéristiques suivantes pour assurer une bonne utilisation des applications Excello :
 
-Minimum :
-Système : PC Android IOS (Chrome, Firefox, Safari >= 13)
-Processeur : 4 coeurs 1.4 GHz
-Mémoire : 2 GB RAM
+[b]Minimum :[/b]
 
-Recommandé, pour un rendu optimal :
-Système : PC Android IOS (Chrome, Firefox, Safari >= 14)
-Processeur : 4 coeurs 2 GHz
-Mémoire : 2 GB RAM
+- Système : PC Android IOS (Chrome, Firefox, Safari >= 13)
+- Processeur : 4 coeurs 1.4 GHz
+- Mémoire : 2 GB RAM
 
-ARTICLE 2 - LICENCE D'UTILISATION
+[b]Recommandé, pour un rendu optimal :[/b]
+
+- Système : PC Android IOS (Chrome, Firefox, Safari >= 14)
+- Processeur : 4 coeurs 2 GHz
+- Mémoire : 2 GB RAM
+
+[b]ARTICLE 2 - LICENCE D'UTILISATION[/b]
 
 L'accès à la présente Plateforme vous confère un droit d'usage de celle-ci à titre non exclusif, privé et/ou collectif.
 
 Votre usage de la Plateforme emporte acceptation sans réserve des présentes Conditions Générales d'Utilisation.
 
-L'ensemble des contenus édités sur la Plateforme, incluant à titre non limitatif : les textes, les photographies, les illustrations, les graphismes, les infographies, les cartes, les vidéogrammes, les musiques, les icônes, les logiciels, ci-après dénommés « les Contenus », sont sous une license CC BY-SA 4.0 .
+L'ensemble des contenus édités sur la Plateforme, incluant à titre non limitatif : les textes, les photographies, les illustrations, les graphismes, les infographies, les cartes, les vidéogrammes, les musiques, les icônes, les logiciels, ci-après dénommés [b]« les Contenus »[/b], sont sous une license CC BY-SA 4.0 .
 
 En application de l'article L. 122-4 du Code de la Propriété Intellectuelle, toute représentation ou reproduction intégrale ou partielle faite sans le consentement de l'auteur ou de ses ayants droit ou ayants cause est illicite. Il en est de même pour la traduction, l'adaptation ou la transformation, l'arrangement ou la reproduction par un art ou un procédé quelconque.
 
@@ -141,19 +143,19 @@ Nous vous rappelons également que la violation des droits d'auteur constitue un
 
 De même, le Code de la propriété intellectuelle punit de trois ans d'emprisonnement et de 300.000 euros d'amende toute fixation, reproduction, communication ou mise à la disposition du public, à titre onéreux ou gratuit, ou toute télédiffusion d'une prestation, d'un phonogramme, d'un vidéogramme ou d'un programme, sans l'autorisation, lorsqu'elle est exigée, du titulaire des droits.
 
-ARTICLE 3 - LIMITATION DE RESPONSABILITÉ
+[b]ARTICLE 3 - LIMITATION DE RESPONSABILITÉ[/b]
 
 Vous êtes seul responsable des dommages et préjudices, directs ou indirects, matériels ou immatériels dès lors qu'ils auraient pour cause, fondement ou origine un usage de la Plateforme  par vous-même ou par toute personne autorisée par vous à utiliser cette Plateforme. Par usage, il convient d'entendre tout usage de la Plateforme quel qu'il soit, frauduleux ou non frauduleux.
 
 Les mineurs sont admis à accéder à la Plateforme, à la condition expresse qu'ils aient préalablement obtenus de leurs parents (ou de la personne exerçant l'autorité parentale) l'autorisation de le faire et de fournir les informations et adresses électroniques par lesquelles toute communication peut leur être transmise. Le fait pour eux de s'inscrire implique qu'ils ont obtenu cette autorisation préalable, laquelle est expressément requise sur la Plateforme au moment de l'inscription.
- 
+
 Les éditeurs de la Plateforme s'engagent à faire leurs meilleurs efforts pour sécuriser l'accès, la consultation et l'utilisation de la Plateforme.
- 
-ARTICLE 4 - APPLICATION DE LA LOI FRANÇAISE
+
+[b]ARTICLE 4 - APPLICATION DE LA LOI FRANÇAISE[/b]
 
 Les règles applicables à l'usage de la Plateforme et à tous les contenus et informations qu'elle comporte sont régies par la loi française. En cas de litige, les tribunaux français seront seuls compétents.
 
-ARTICLE 5 - Conditions de modifications de la politique de confidentialité
+[b]ARTICLE 5 - CONDITIONS DE MODIFICATIONS DE LA POLITIQUE DE CONFIDENTIALITÉ[/b]
 
 L'éditeur du site se réserve le droit de la modifier afin de garantir sa conformité avec le droit et les usages en vigueur.","[b]PREÁMBULO[/b]
 
@@ -163,7 +165,7 @@ En ellas se establecen las normas de acceso a nuestras plataformas de la web Exc
 
 Al utilizar esta plataforma, usted reconoce que, como usuario –profesor y/o tutor legal de un menor–, conoce las condiciones, las acepta sin reservas y las cumple.
 
-El responsable del tratamiento se reserva el derecho, a su entera discreción y sin previo aviso, de modificar, suprimir o completar las presentes ""Condiciones Generales de Uso"" en cualquier momento, en particular para tener en cuenta cualquier evolución jurídica, jurisprudencial, editorial y/o técnica. La versión que prevalece es la que está accesible en línea.
+El responsable del tratamiento se reserva el derecho, a su entera discreción y sin previo aviso, de modificar, suprimir o completar las presentes [b]""Condiciones Generales de Uso""[/b] en cualquier momento, en particular para tener en cuenta cualquier evolución jurídica, jurisprudencial, editorial y/o técnica. La versión que prevalece es la que está accesible en línea.
 
 Por lo tanto, le aconsejamos que consulte regularmente la última versión de las presentes Condiciones Generales de Uso.
 
@@ -202,13 +204,13 @@ El dispositivo utilizado debe cumplir las siguientes especificaciones para garan
 
 [b]Mínimo:[/b]
 
-- Sistema: PC, Android, iOS (Chrome, Firefox, Safari &gt;= 13)
+- Sistema: PC, Android, iOS (Chrome, Firefox, Safari >= 13)
 - Procesador: 4 núcleos 1,4 GHz
 - Memoria: 2 GB RAM
 
 [b]Recomendado, para una óptima renderización:[/b]
 
-- Sistema: PC, Android, iOS (Chrome, Firefox, Safari &gt;= 14)
+- Sistema: PC, Android, iOS (Chrome, Firefox, Safari >= 14)
 - Procesador: 4 núcleos 2 GHz
 - Memoria: 2 GB RAM
 
@@ -218,7 +220,7 @@ El acceso a esta Plataforma le otorga un derecho de uso no exclusivo, privado y/
 
 El uso de la Plataforma implica la aceptación sin reservas de las presentes Condiciones Generales de Uso.
 
-Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografías, ilustraciones, gráficos, infografías, mapas, videogramas, música, iconos y software, en lo sucesivo denominado ""el Contenido"", está sujeto a una licencia CC BY-SA 4.0.
+Todo el contenido publicado en la Plataforma, incluidos, entre otros: textos, fotografías, ilustraciones, gráficos, infografías, mapas, videogramas, música, iconos y software, en lo sucesivo denominado [b]""el Contenido""[/b], está sujeto a una licencia CC BY-SA 4.0.
 
 De conformidad con el artículo L. 122-4 del Código francés de la Propiedad Intelectual, toda representación o reproducción total o parcial sin el consentimiento del autor o de sus derechohabientes o causahabientes es ilícita. Lo mismo se aplica a la traducción, adaptación o transformación, arreglo o reproducción por cualquier arte o procedimiento.
 
@@ -324,7 +326,7 @@ As regras aplicáveis à Plataforma e seus conteúdos são regidas pela lei fran
 
 [b]ARTIGO 5 - MODIFICAÇÕES NA POLÍTICA DE PRIVACIDADE[/b]
 
-O editor do site se reserva o direito de modificar a política de privacidade para garantir sua conformidade com as leis e práticas vigentes.","PREMESSA
+O editor do site se reserva o direito de modificar a política de privacidade para garantir sua conformidade com as leis e práticas vigentes.","[b]PREMESSA[/b]
 
 Le presenti Condizioni Generali di Utilizzo sono disponibili in qualsiasi momento: excellolab.org/cgu
 
@@ -332,60 +334,62 @@ Esse definiscono le regole di accesso alle nostre piattaforme sul sito Excello e
 
 Utilizzando questa piattaforma, l’utente, in qualità di utilizzatore/insegnante e/o responsabile legale dello studente minorenne, dichiara di conoscerne i termini, di accettarli senza riserva e di rispettarli.
 
-Il titolare del trattamento si riserva il diritto, a propria esclusiva discrezione e senza preavviso, di modificare, eliminare o aggiungere disposizioni alle presenti Condizioni Generali di Utilizzo in qualsiasi momento, in particolare per tenere conto di eventuali evoluzioni legislative, giurisprudenziali, editoriali e/o tecniche. La versione valida è quella accessibile online.
+Il titolare del trattamento si riserva il diritto, a propria esclusiva discrezione e senza preavviso, di modificare, eliminare o aggiungere disposizioni alle presenti [b]Condizioni Generali di Utilizzo[/b] in qualsiasi momento, in particolare per tenere conto di eventuali evoluzioni legislative, giurisprudenziali, editoriali e/o tecniche. La versione valida è quella accessibile online.
 
 Si consiglia pertanto di consultare regolarmente l’ultima versione delle presenti Condizioni Generali di Utilizzo.
 
-ARTICOLO 1 - USO DELL’UTENTE, INFORMAZIONI PRATICHE
+[b]ARTICOLO 1 - USO DELL’UTENTE, INFORMAZIONI PRATICHE[/b]
 
 L’associazione Excello ha come obiettivo la ricerca, lo sviluppo e la diffusione delle conoscenze nel campo dell’educazione, in particolare per quanto riguarda il miglioramento dell’apprendimento della lettura e della matematica. Excello sviluppa e fornisce risorse didattiche associate, in particolare attraverso l’utilizzo delle nuove tecnologie.
 
-1/ Accesso alle applicazioni educative create da Excello
+[b]1/ Accesso alle applicazioni educative create da Excello[/b]
 
 Le attività sono disponibili in modo permanente (24/7):
 
-Sulle applicazioni mobili di Excello, disponibili negli store Android e Apple per essere utilizzate su tablet/smartphone Android 5.1+ e iOS 11+. Si raccomanda l’uso di un tablet per un utilizzo ottimale del servizio.
-Sull’applicazione web utilizzando Google Chrome o Mozilla Firefox su Windows, Ubuntu e Android e Safari su macOS e iOS.
-L’applicazione può essere utilizzata da un insegnante che crea un account per la propria classe o da un tutore legale che crea un account per il proprio figlio.
+- Sulle applicazioni mobili di Excello, disponibili negli store Android e Apple per essere utilizzate su tablet/smartphone Android 5.1+ e iOS 11+. Si raccomanda l’uso di un tablet per un utilizzo ottimale del servizio.
+- Sull’applicazione web utilizzando Google Chrome o Mozilla Firefox su Windows, Ubuntu e Android e Safari su macOS e iOS.
+- L’applicazione può essere utilizzata da un insegnante che crea un account per la propria classe o da un tutore legale che crea un account per il proprio figlio.
 
 Una volta installata l’applicazione, l’uso di Internet non è obbligatorio. Tuttavia alcune funzionalità saranno disattivate: trascrizione vocale in testo e riconoscimento della scrittura manuale.
 
 Nel caso in cui l’applicazione venga utilizzata offline (senza Internet), le tracce di apprendimento (risultati degli esercizi) vengono salvate sul dispositivo e saranno inviate alla piattaforma solo al ripristino della connessione Internet.
 
-2/ Accesso alle piattaforme create da Excello
+[b]2/ Accesso alle piattaforme create da Excello[/b]
 
 Per un primo utilizzo delle nostre piattaforme sarà necessario:
 
-Creare un account adulto (genitore/tutore o insegnante).
-Consultare tutte le informazioni raccolte nella nostra informativa sulla privacy.
+- Creare un account adulto (genitore/tutore o insegnante).
+- Consultare tutte le informazioni raccolte nella nostra informativa sulla privacy.
 
-3/ Assistenza tecnica
+[b]3/ Assistenza tecnica[/b]
 
 In caso di problema tecnico sull’applicazione o sulla piattaforma, inviare un messaggio a: contact@excellolab.org
 
 I nostri team faranno il possibile per rispondere e risolvere i problemi nel più breve tempo possibile.
 
-4/ Dispositivo utilizzato
+[b]4/ Dispositivo utilizzato[/b]
 
 Il dispositivo utilizzato deve soddisfare le seguenti caratteristiche per garantire un corretto utilizzo delle applicazioni Excello:
 
-Minimo:
-Sistema: PC Android iOS (Chrome, Firefox, Safari >= 13)
-Processore: 4 core 1.4 GHz
-Memoria: 2 GB RAM
+[b]Minimo:[/b]
 
-Consigliato, per prestazioni ottimali:
-Sistema: PC Android iOS (Chrome, Firefox, Safari >= 14)
-Processore: 4 core 2 GHz
-Memoria: 2 GB RAM
+- Sistema: PC Android iOS (Chrome, Firefox, Safari >= 13)
+- Processore: 4 core 1.4 GHz
+- Memoria: 2 GB RAM
 
-ARTICOLO 2 - LICENZA D’USO
+[b]Consigliato, per prestazioni ottimali:[/b]
+
+- Sistema: PC Android iOS (Chrome, Firefox, Safari >= 14)
+- Processore: 4 core 2 GHz
+- Memoria: 2 GB RAM
+
+[b]ARTICOLO 2 - LICENZA D’USO[/b]
 
 L’accesso alla presente Piattaforma conferisce un diritto di utilizzo non esclusivo, privato e/o collettivo.
 
 L’utilizzo della Piattaforma comporta l’accettazione senza riserva delle presenti Condizioni Generali di Utilizzo.
 
-Tutti i contenuti pubblicati sulla Piattaforma, inclusi a titolo esemplificativo ma non esaustivo: testi, fotografie, illustrazioni, grafici, infografiche, mappe, videogrammi, musiche, icone, software, di seguito denominati «Contenuti», sono soggetti a licenza CC BY-SA 4.0.
+Tutti i contenuti pubblicati sulla Piattaforma, inclusi a titolo esemplificativo ma non esaustivo: testi, fotografie, illustrazioni, grafici, infografiche, mappe, videogrammi, musiche, icone, software, di seguito denominati [b]«Contenuti»[/b], sono soggetti a licenza CC BY-SA 4.0.
 
 Ai sensi dell’articolo L.122-4 del Codice della Proprietà Intellettuale francese, qualsiasi rappresentazione o riproduzione totale o parziale effettuata senza il consenso dell’autore o dei suoi aventi diritto è illecita. Lo stesso vale per traduzione, adattamento, trasformazione, arrangiamento o riproduzione con qualsiasi mezzo o procedimento.
 
@@ -393,7 +397,7 @@ Si ricorda inoltre che la violazione dei diritti d’autore costituisce reato di
 
 Allo stesso modo, il Codice della Proprietà Intellettuale punisce con tre anni di reclusione e 300.000 euro di ammenda qualsiasi fissazione, riproduzione, comunicazione o messa a disposizione del pubblico, a titolo oneroso o gratuito, o qualsiasi trasmissione di una prestazione, di un fonogramma, di un videogramma o di un programma, senza l’autorizzazione del titolare dei diritti, quando richiesta.
 
-ARTICOLO 3 - LIMITAZIONE DI RESPONSABILITÀ
+[b]ARTICOLO 3 - LIMITAZIONE DI RESPONSABILITÀ[/b]
 
 L’utente è l’unico responsabile dei danni e dei pregiudizi, diretti o indiretti, materiali o immateriali, qualora derivino dall’utilizzo della Piattaforma da parte propria o di qualsiasi persona autorizzata. Per utilizzo si intende qualsiasi uso della Piattaforma, fraudolento o meno.
 
@@ -401,11 +405,11 @@ I minori possono accedere alla Piattaforma a condizione espressa di aver ottenut
 
 Gli editori della Piattaforma si impegnano a fare del loro meglio per garantire la sicurezza dell’accesso, della consultazione e dell’utilizzo della Piattaforma.
 
-ARTICOLO 4 - APPLICAZIONE DELLA LEGGE FRANCESE
+[b]ARTICOLO 4 - APPLICAZIONE DELLA LEGGE FRANCESE[/b]
 
 Le regole applicabili all’utilizzo della Piattaforma e a tutti i contenuti e le informazioni in essa contenuti sono disciplinate dalla legge francese. In caso di controversia, saranno competenti esclusivamente i tribunali francesi.
 
-ARTICOLO 5 - Modifiche alla politica sulla privacy
+[b]ARTICOLO 5 - MODIFICHE ALLA POLITICA SULLA PRIVACY[/b]
 
 L’editore del sito si riserva il diritto di modificarla al fine di garantirne la conformità alle leggi e agli usi vigenti."
 

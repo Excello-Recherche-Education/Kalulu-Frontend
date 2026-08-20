@@ -53,6 +53,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"CardHeading"
+autowrap_mode = 3
 
 [node name="AccountType" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/TopRow/SummaryLines" index="1" unique_id=448321219]
 unique_name_in_owner = true

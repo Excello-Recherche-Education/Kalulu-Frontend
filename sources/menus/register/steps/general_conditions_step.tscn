@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_up4b7"]
 [ext_resource type="Script" uid="uid://ccicojpspkpmu" path="res://sources/menus/register/steps/general_conditions_step.gd" id="2_5ibpi"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="3_qdoff"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="4_bfnt7"]
 
 [node name="GeneralConditionsStep" unique_id=554321004 instance=ExtResource("1_up4b7")]
 script = ExtResource("2_5ibpi")
@@ -44,11 +45,13 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 332)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_fonts/bold_font = ExtResource("4_bfnt7")
 theme_override_font_sizes/normal_font_size = 42
 theme_override_font_sizes/bold_font_size = 42
 theme_override_font_sizes/bold_italics_font_size = 42
 theme_override_font_sizes/italics_font_size = 42
 theme_override_font_sizes/mono_font_size = 42
+bbcode_enabled = true
 text = "GENERAL_CONDITIONS_TEXT"
 autowrap_mode = 2
 shortcut_keys_enabled = false

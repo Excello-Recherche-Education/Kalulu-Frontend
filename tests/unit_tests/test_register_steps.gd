@@ -545,6 +545,30 @@ func test_the_recap_can_be_scrolled_when_there_are_more_students_than_fit() -> v
 		"four devices should give it something to scroll")
 
 
+func test_a_long_email_wraps_rather_than_stretching_the_card() -> void:
+	# Regression: the summary lines are plain Labels, and a Label's minimum width
+	# is its whole text on a single line. A long address therefore set the minimum
+	# width of the card itself, which grew past the viewport in both directions and
+	# carried the heading, the save button and the summary off the screen with it.
+	# How long an address is is the teacher's business, so it wraps instead.
+	var step: RecapStep = await _mounted_recap_step(1)
+	var card: PanelContainer = step.get_node("PanelContainer")
+	var email: Label = step.get_node("%Email")
+	var width_for_a_short_address: float = card.size.x
+
+	email.text = "Correo electrónico: azertyuiopazertyuiop@azertyuiopazertyuiop.com"
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	assert_almost_eq(card.size.x, width_for_a_short_address, 1.0,
+		"a long address must not widen the card")
+	assert_gte(card.global_position.x, 0.0, "nor push it off the left edge")
+	assert_lte(card.global_position.x + card.size.x, float(REFERENCE_VIEWPORT.x),
+		"nor off the right edge")
+	assert_gt(email.get_line_count(), 1,
+		"the address wraps onto another line instead of widening its column")
+
+
 # --- Nothing may interrupt the sheet while it is being drawn ---------------------
 ## The drawing itself is not exercised here: capturing a page needs a real renderer,
 ## which is why test_code_sheet.gd checks build_pages and save_pdf separately rather
