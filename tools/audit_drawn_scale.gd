@@ -34,6 +34,24 @@ func _ready() -> void:
 	for _i: int in range(40):
 		await get_tree().process_frame
 	await RenderingServer.frame_post_draw
+
+	# Several minigames spawn their characters in _start(), which the normal flow
+	# only reaches after the opening curtain and the intro speech -- neither of
+	# which completes in a harness with no student behind it. Called directly so
+	# the audit sees the characters rather than just the backdrop.
+	# Extra `name=value` arguments are set on the root first: some characters get
+	# their sprite_frames from a colour assigned at runtime, so without it they
+	# have nothing to measure.
+	for extra: String in args.slice(1):
+		if not extra.contains("="):
+			continue
+		var parts: PackedStringArray = extra.split("=")
+		root.set(StringName(parts[0]), int(parts[1]) if parts[1].is_valid_int() else parts[1])
+	if args.size() > 1 and args.has("start") and root.has_method("_start"):
+		root.call("_start")
+		for _i: int in range(40):
+			await get_tree().process_frame
+		await RenderingServer.frame_post_draw
 	var total: float = Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) - baseline
 
 	_walk(root, root)

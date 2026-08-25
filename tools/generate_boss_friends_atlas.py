@@ -264,13 +264,16 @@ def build(friend: Friend) -> dict:
     # eight 608 px frames cap at six columns, and 6x2 leaves four empty slots --
     # a third of the atlas -- where 4x2 is exact.
     max_cols = max(1, min(n, MAX_ATLAS_SIDE // fw))
+    # Only grids that fit both ways: a prime frame count would otherwise pick a
+    # single column, which has the fewest wasted slots and an impossible height.
+    candidates = [c for c in range(1, max_cols + 1) if math.ceil(n / c) * fh <= MAX_ATLAS_SIDE]
+    if not candidates:
+        raise SystemExit(f"{friend.name}: no {fw}x{fh} grid for {n} frames fits {MAX_ATLAS_SIDE}")
     cols = min(
-        range(1, max_cols + 1),
+        candidates,
         key=lambda c: (c * math.ceil(n / c), abs(c * fw - math.ceil(n / c) * fh)),
     )
     rows = math.ceil(n / cols)
-    if rows * fh > MAX_ATLAS_SIDE:
-        raise SystemExit(f"{friend.name}: atlas would be {cols * fw}x{rows * fh}, over {MAX_ATLAS_SIDE}")
 
     atlas = Image.new("RGBA", (cols * fw, rows * fh), (0, 0, 0, 0))
     placements: list[list[int]] = []

@@ -162,12 +162,15 @@ def main() -> int:
     fh = max(4, int(round(src_h * fw / src_w / 4)) * 4)
 
     n = len(selected)
+    # Fewest wasted slots, but only among grids that fit both ways: a prime frame
+    # count would otherwise pick a single column and blow past the height cap.
     max_cols = max(1, min(n, MAX_ATLAS_SIDE // fw))
-    cols = min(range(1, max_cols + 1),
+    candidates = [c for c in range(1, max_cols + 1) if math.ceil(n / c) * fh <= MAX_ATLAS_SIDE]
+    if not candidates:
+        raise SystemExit(f"no {fw}x{fh} grid for {n} frames fits within {MAX_ATLAS_SIDE}")
+    cols = min(candidates,
                key=lambda c: (c * math.ceil(n / c), abs(c * fw - math.ceil(n / c) * fh)))
     rows = math.ceil(n / cols)
-    if rows * fh > MAX_ATLAS_SIDE:
-        raise SystemExit(f"atlas would be {cols * fw}x{rows * fh}, over {MAX_ATLAS_SIDE}")
 
     sheet = Image.open(sheet_path).convert("RGBA")
     atlas = Image.new("RGBA", (cols * fw, rows * fh), (0, 0, 0, 0))
@@ -187,8 +190,17 @@ def main() -> int:
     res_path = out_png.relative_to(PROJECT_ROOT).as_posix()
     Path(str(out_png) + ".import").write_text(IMPORT_TEMPLATE.format(res_path=res_path))
 
-    # SpriteFrames, written with a path-only ext_resource; Godot fills in the uid.
-    lines = [f'[gd_resource type="SpriteFrames" load_steps={n + 2} format=3]', ""]
+    # Overwriting a resource in place has to keep its uid: every scene referencing
+    # it stores that uid, and a new one leaves them all warning and falling back
+    # to the text path.
+    out_tres = PROJECT_ROOT / args.out_tres
+    existing_uid = ""
+    if out_tres.exists():
+        match = re.search(r'^\[gd_resource[^\]]*uid="(uid://[^"]+)"', out_tres.read_text())
+        if match:
+            existing_uid = ' uid="%s"' % match.group(1)
+
+    lines = [f'[gd_resource type="SpriteFrames" load_steps={n + 2} format=3{existing_uid}]', ""]
     lines.append(f'[ext_resource type="Texture2D" path="res://{res_path}" id="1_sheet"]')
     lines.append("")
     for index, (cx, cy) in enumerate(placements):
@@ -205,7 +217,7 @@ def main() -> int:
         blocks.append('{\n"frames": [%s],\n"loop": %s,\n"name": &"%s",\n"speed": %s\n}'
                       % (frames, str(entry["loop"]).lower(), entry["name"], entry["speed"]))
     lines.append(", ".join(blocks) + "]")
-    (PROJECT_ROOT / args.out_tres).write_text("\n".join(lines) + "\n")
+    out_tres.write_text("\n".join(lines) + "\n")
 
     src_area = sheet.width * sheet.height
     print(f"{sheet_path.relative_to(PROJECT_ROOT)}  {sheet.width}x{sheet.height} ({src_area / 1e6:.2f} Mpx)")
