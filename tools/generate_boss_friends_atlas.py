@@ -39,10 +39,12 @@ MEASURED = PROJECT_ROOT / "tools" / "boss_friends_measured.json"
 # the 4096 px limit that the oldest supported Android devices guarantee.
 MAX_ATLAS_SIDE = 4096
 
-# The friends are drawn at `display_scale` of their source frame size. Store
-# them at 1.5x that so the sprites stay sharp when the 2560x1800 canvas is
-# stretched up on a high-DPI desktop display. Never upscale past the source.
-RESOLUTION_HEADROOM = 1.5
+# The friends are drawn at `display_scale` of their source frame size. Store them
+# at 1.2x that, which is exactly what the canvas can stretch to: `canvas_items`
+# on a 3840x2160 display scales the 2560x1800 canvas by min(1.5, 1.2) = 1.2,
+# limited by height. So the frames are 1:1 at the largest resolution the game can
+# reach, and gently minified below it. Never upscale past the source.
+RESOLUTION_HEADROOM = 1.2
 
 
 @dataclass
@@ -258,7 +260,14 @@ def build(friend: Friend) -> dict:
     fh = min(src_h, round4(src_h * friend.display_scale * RESOLUTION_HEADROOM))
 
     n = len(selected)
-    cols = max(1, min(n, MAX_ATLAS_SIDE // fw))
+    # Pick the grid that wastes the fewest slots rather than just filling rows:
+    # eight 608 px frames cap at six columns, and 6x2 leaves four empty slots --
+    # a third of the atlas -- where 4x2 is exact.
+    max_cols = max(1, min(n, MAX_ATLAS_SIDE // fw))
+    cols = min(
+        range(1, max_cols + 1),
+        key=lambda c: (c * math.ceil(n / c), abs(c * fw - math.ceil(n / c) * fh)),
+    )
     rows = math.ceil(n / cols)
     if rows * fh > MAX_ATLAS_SIDE:
         raise SystemExit(f"{friend.name}: atlas would be {cols * fw}x{rows * fh}, over {MAX_ATLAS_SIDE}")

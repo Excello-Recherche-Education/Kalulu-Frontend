@@ -1,50 +1,50 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://cr8r0bx1d6ie7"]
+[gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" uid="uid://bsgj2xxkep17d" path="res://assets/minigames/boss/friends/penguin.png" id="1_mpmjk"]
+[ext_resource type="Texture2D" path="res://assets/minigames/boss/friends/penguin.png" id="1_mpmjk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qk6lf"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(260, 0, 260, 260)
+region = Rect2(0, 208, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5sitj"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(520, 0, 260, 260)
+region = Rect2(0, 416, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i0eya"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(780, 0, 260, 260)
+region = Rect2(0, 624, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ajsxx"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(1040, 0, 260, 260)
+region = Rect2(0, 832, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sst21"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(1300, 0, 260, 260)
+region = Rect2(0, 1040, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d7cyf"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(1560, 0, 260, 260)
+region = Rect2(0, 1248, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kxa3n"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(1820, 0, 260, 260)
+region = Rect2(0, 1456, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nl712"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(2080, 0, 260, 260)
+region = Rect2(0, 1664, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlnc1"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(2340, 0, 260, 260)
+region = Rect2(0, 1872, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sxlqx"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(2600, 0, 260, 260)
+region = Rect2(0, 2080, 208, 208)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j87vc"]
 atlas = ExtResource("1_mpmjk")
-region = Rect2(0, 0, 260, 260)
+region = Rect2(0, 0, 208, 208)
 
 [resource]
 animations = [{

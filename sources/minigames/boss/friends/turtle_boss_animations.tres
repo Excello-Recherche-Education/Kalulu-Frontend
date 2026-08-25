@@ -1,38 +1,38 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://bmn2xaiisx6hr"]
+[gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" uid="uid://pmm7gdiir5ve" path="res://assets/minigames/boss/friends/turtle.png" id="1_sm65k"]
+[ext_resource type="Texture2D" path="res://assets/minigames/boss/friends/turtle.png" id="1_sm65k"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cseu2"]
 atlas = ExtResource("1_sm65k")
-region = Rect2(0, 0, 176, 176)
+region = Rect2(0, 0, 140, 140)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p77ni"]
 atlas = ExtResource("1_sm65k")
-region = Rect2(176, 0, 176, 176)
+region = Rect2(140, 0, 140, 140)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ebn6v"]
 atlas = ExtResource("1_sm65k")
-region = Rect2(352, 0, 176, 176)
+region = Rect2(0, 140, 140, 140)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l28sx"]
 atlas = ExtResource("1_sm65k")
-region = Rect2(528, 0, 176, 176)
+region = Rect2(140, 140, 140, 140)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7rtah"]
 atlas = ExtResource("1_sm65k")
-region = Rect2(704, 0, 176, 176)
+region = Rect2(0, 280, 140, 140)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_adf8b"]
 atlas = ExtResource("1_sm65k")
-region = Rect2(880, 0, 176, 176)
+region = Rect2(140, 280, 140, 140)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jja4h"]
 atlas = ExtResource("1_sm65k")
-region = Rect2(1056, 0, 176, 176)
+region = Rect2(0, 420, 140, 140)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lp4p4"]
 atlas = ExtResource("1_sm65k")
-region = Rect2(1232, 0, 176, 176)
+region = Rect2(140, 420, 140, 140)
 
 [resource]
 animations = [{

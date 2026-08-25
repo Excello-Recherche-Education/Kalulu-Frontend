@@ -466,13 +466,13 @@
       "flip_h": false,
       "flip_v": false,
       "frame_size": [
-        800.0,
-        800.0
+        384.0,
+        384.0
       ],
       "modulate": "ffffffff",
       "offset": [
-        0.00000000000208164995657567,
-        -82.0
+        0.0,
+        -39.3600006103516
       ],
       "path": "AnimatedSprite2D",
       "position": [
@@ -481,8 +481,8 @@
       ],
       "rotation": 0.0,
       "scale": [
-        0.180000007152557,
-        0.180000007152557
+        0.375,
+        0.375
       ],
       "self_modulate": "ffffffff",
       "skew": 0.0,

@@ -1,38 +1,38 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://1qv5lrwdcxef"]
+[gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" uid="uid://bn2itk5ew3ii5" path="res://assets/minigames/boss/friends/frog.png" id="1_xouqy"]
+[ext_resource type="Texture2D" path="res://assets/minigames/boss/friends/frog.png" id="1_xouqy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y2rjb"]
 atlas = ExtResource("1_xouqy")
-region = Rect2(0, 0, 248, 292)
+region = Rect2(0, 0, 200, 232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f4tv3"]
 atlas = ExtResource("1_xouqy")
-region = Rect2(248, 0, 248, 292)
+region = Rect2(200, 0, 200, 232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_knv72"]
 atlas = ExtResource("1_xouqy")
-region = Rect2(496, 0, 248, 292)
+region = Rect2(400, 0, 200, 232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cjvnv"]
 atlas = ExtResource("1_xouqy")
-region = Rect2(744, 0, 248, 292)
+region = Rect2(600, 0, 200, 232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hwhp6"]
 atlas = ExtResource("1_xouqy")
-region = Rect2(992, 0, 248, 292)
+region = Rect2(0, 232, 200, 232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bxuun"]
 atlas = ExtResource("1_xouqy")
-region = Rect2(1240, 0, 248, 292)
+region = Rect2(200, 232, 200, 232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p01nq"]
 atlas = ExtResource("1_xouqy")
-region = Rect2(1488, 0, 248, 292)
+region = Rect2(400, 232, 200, 232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x4op4"]
 atlas = ExtResource("1_xouqy")
-region = Rect2(1736, 0, 248, 292)
+region = Rect2(600, 232, 200, 232)
 
 [resource]
 animations = [{

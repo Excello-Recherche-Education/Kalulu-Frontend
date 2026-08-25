@@ -19,9 +19,9 @@ const BEHIND_SCENE_PATH: String = "res://sources/minigames/boss/boss_friends_beh
 ## Where a friend's frames are allowed to come from.
 const ATLAS_DIRECTORY: String = "res://assets/minigames/boss/friends/"
 
-## Generous next to the 7.2 Mpx the atlases actually hold, and nowhere near the
-## 198 Mpx of source spritesheets the animal scenes pulled in.
-const PIXEL_BUDGET: int = 12_000_000
+## Generous next to the 4.7 Mpx the atlases actually hold, and nowhere near the
+## 167 Mpx of source spritesheets the animal scenes pulled in.
+const PIXEL_BUDGET: int = 8_000_000
 
 const FRONT_FRIENDS: Array[String] = [
 	"Monkey", "Turtle", "TurtleBack", "Penguin", "Frog", "Crab", "Parakeet", "Ant",

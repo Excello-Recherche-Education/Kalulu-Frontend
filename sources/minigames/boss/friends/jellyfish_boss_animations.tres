@@ -1,10 +1,10 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://yh2aeff3ucny"]
+[gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" uid="uid://cr0bwiggdi811" path="res://assets/minigames/boss/friends/jellyfish.png" id="1_t86y3"]
+[ext_resource type="Texture2D" path="res://assets/minigames/boss/friends/jellyfish.png" id="1_t86y3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ghl4l"]
 atlas = ExtResource("1_t86y3")
-region = Rect2(0, 0, 272, 272)
+region = Rect2(0, 0, 216, 216)
 
 [resource]
 animations = [{
