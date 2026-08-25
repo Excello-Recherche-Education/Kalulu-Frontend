@@ -78,10 +78,13 @@ func _setup_minigame() -> void:
 	for index: int in range(pairs_count):
 		var new_parakeet_uppercase: Parakeet = PARAKEET_SCENE.instantiate()
 		var new_parakeet_lowercase: Parakeet = PARAKEET_SCENE.instantiate()
-		parakeets_node.add_child(new_parakeet_uppercase)
-		parakeets_node.add_child(new_parakeet_lowercase)
+		# Coloured before entering the tree: _ready() applies whatever colour is set
+		# by then, so setting it first means the sheet for the scene's default colour
+		# is never loaded on the way to this round's.
 		new_parakeet_uppercase.color = color
 		new_parakeet_lowercase.color = color
+		parakeets_node.add_child(new_parakeet_uppercase)
+		parakeets_node.add_child(new_parakeet_lowercase)
 		new_parakeet_uppercase.uppercase = true
 		new_parakeet_lowercase.uppercase = false
 		new_parakeet_uppercase.global_position = possible_start_positions[2 * index].global_position
