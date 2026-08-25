@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://cwa3gq7eu7jk8"]
+[gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" uid="uid://by6534dd0r84b" path="res://assets/minigames/boss/friends/ant.png" id="1_cc2nd"]
+[ext_resource type="Texture2D" path="res://assets/minigames/boss/friends/ant.png" id="1_cc2nd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jhmm5"]
 atlas = ExtResource("1_cc2nd")
@@ -44,7 +44,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jhmm5")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"idle",
 "speed": 8.0
 }, {
@@ -73,7 +73,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6xbn5")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"success",
 "speed": 8.0
 }]

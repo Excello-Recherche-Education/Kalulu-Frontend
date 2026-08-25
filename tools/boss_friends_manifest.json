@@ -153,7 +153,7 @@
     "animations": [
       {
         "name": "swim",
-        "loop": false,
+        "loop": true,
         "speed": 12.0,
         "first_index": 0,
         "count": 8
@@ -253,7 +253,7 @@
     "animations": [
       {
         "name": "idle",
-        "loop": false,
+        "loop": true,
         "speed": 12.0,
         "first_index": 0,
         "count": 1
@@ -363,10 +363,10 @@
       188
     ],
     "source_frame_size": [
-      800,
-      800
+      416,
+      416
     ],
-    "display_scale": 0.194399982690811,
+    "display_scale": 0.373846143484116,
     "atlas_size": [
       564,
       564
@@ -437,15 +437,15 @@
       },
       {
         "name": "right",
-        "loop": false,
+        "loop": true,
         "speed": 10.0,
         "first_index": 1,
         "count": 8
       }
     ],
     "kept_pixels": 318096,
-    "source_pixels_full_sheet": 30731201,
-    "source_pixels_kept_frames": 5760000
+    "source_pixels_full_sheet": 5537792,
+    "source_pixels_kept_frames": 1557504
   },
   {
     "name": "parakeet",
@@ -525,14 +525,14 @@
     "animations": [
       {
         "name": "idle_front",
-        "loop": false,
+        "loop": true,
         "speed": 7.0,
         "first_index": 0,
         "count": 1
       },
       {
         "name": "happy",
-        "loop": false,
+        "loop": true,
         "speed": 9.0,
         "first_index": 1,
         "count": 8
@@ -620,14 +620,14 @@
     "animations": [
       {
         "name": "idle",
-        "loop": false,
+        "loop": true,
         "speed": 8.0,
         "first_index": 0,
         "count": 1
       },
       {
         "name": "success",
-        "loop": false,
+        "loop": true,
         "speed": 8.0,
         "first_index": 1,
         "count": 8
@@ -648,10 +648,10 @@
       216
     ],
     "source_frame_size": [
-      800,
-      800
+      720,
+      720
     ],
-    "display_scale": 0.224999994039536,
+    "display_scale": 0.25,
     "atlas_size": [
       216,
       216
@@ -667,14 +667,14 @@
     "animations": [
       {
         "name": "idle",
-        "loop": false,
+        "loop": true,
         "speed": 5.0,
         "first_index": 0,
         "count": 1
       }
     ],
     "kept_pixels": 46656,
-    "source_pixels_full_sheet": 20480000,
-    "source_pixels_kept_frames": 640000
+    "source_pixels_full_sheet": 12960000,
+    "source_pixels_kept_frames": 518400
   }
 ]

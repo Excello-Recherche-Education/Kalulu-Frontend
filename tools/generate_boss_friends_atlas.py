@@ -195,7 +195,8 @@ def parse_sprite_frames(tres_path: Path) -> tuple[Path, dict[str, dict]]:
         ids = re.findall(r'SubResource\("([^"]+)"\)', blob)
         anims[name] = {
             "frames": [regions[i][1] for i in ids],
-            "loop": loop == "true",
+            # Godot writes this as 1/0 in these resources, not true/false.
+            "loop": loop in ("true", "1"),
             "speed": float(speed),
         }
 

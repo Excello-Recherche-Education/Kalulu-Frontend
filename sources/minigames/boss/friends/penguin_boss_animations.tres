@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://brpwoeu0ipw2t"]
+[gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" uid="uid://osjmhhgbroj5" path="res://assets/minigames/boss/friends/penguin.png" id="1_mpmjk"]
+[ext_resource type="Texture2D" path="res://assets/minigames/boss/friends/penguin.png" id="1_mpmjk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qk6lf"]
 atlas = ExtResource("1_mpmjk")
@@ -87,7 +87,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_j87vc")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"idle",
 "speed": 12.0
 }]

@@ -158,8 +158,8 @@
       "flip_h": false,
       "flip_v": false,
       "frame_size": [
-        800.0,
-        800.0
+        416.0,
+        416.0
       ],
       "modulate": "ffffffff",
       "offset": [
@@ -173,8 +173,8 @@
       ],
       "rotation": 0.0,
       "scale": [
-        0.194399982690811,
-        0.194399982690811
+        0.373846143484116,
+        0.373846143484116
       ],
       "self_modulate": "ffffffff",
       "skew": 0.0,
@@ -342,8 +342,8 @@
       "flip_h": false,
       "flip_v": false,
       "frame_size": [
-        800.0,
-        800.0
+        720.0,
+        720.0
       ],
       "modulate": "ffffffff",
       "offset": [
@@ -357,8 +357,8 @@
       ],
       "rotation": 0.0,
       "scale": [
-        0.224999994039536,
-        0.224999994039536
+        0.25,
+        0.25
       ],
       "self_modulate": "ffffffff",
       "skew": 0.0,

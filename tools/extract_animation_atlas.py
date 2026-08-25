@@ -102,7 +102,8 @@ def parse(source: Path) -> tuple[Path, dict[str, dict]]:
         if ids:
             animations[name] = {
                 "frames": [regions[i][1] for i in ids],
-                "loop": loop == "true",
+                # Godot writes this as 1/0 in these resources, not true/false.
+                "loop": loop in ("true", "1"),
                 "speed": float(speed),
                 "atlas": regions[ids[0]][0],
             }
