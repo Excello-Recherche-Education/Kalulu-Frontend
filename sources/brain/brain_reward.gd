@@ -17,7 +17,11 @@ const GARDEN_BACKGROUND_PURPLE: Color = Color("842984")
 const GARDEN_VICTORY_ASSET_PURPLE: Color = Color("32113c")
 const BRAIN_PURPLE: Color = Color("7b3a8c")
 const RECOLOR_SHADER: Shader = preload("res://resources/shaders/recolor.gdshader")
-const READING_KALULU_SCENE: PackedScene = preload("res://sources/kalulu_animator_reading.tscn")
+# A path, not a preload: this scene's spritesheet is 7500x7501 of lossless art,
+# 286 MB of texture memory, and a const preload would pull it in the moment
+# anything so much as referenced BrainReward. It is loaded in the background
+# when a reward starts and freed once Kalulu is dismissed.
+const READING_KALULU_SCENE_PATH: String = "res://sources/kalulu_animator_reading.tscn"
 const RIGHT_STARS_FX_SCENE: PackedScene = preload("res://sources/utils/fx/right_stars.tscn")
 const FIREWORKS_SCENE: PackedScene = preload("res://sources/utils/fx/fireworks.tscn")
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
@@ -82,6 +86,11 @@ func play(open_treasure: bool) -> void:
 	_ui_layer.hide()
 	_start_music()
 
+	# Ask for the reading Kalulu now and carry on: the treasure, the garden tints
+	# and the brain fade below run for several seconds, which is long enough to
+	# hide the load completely.
+	ResourceLoader.load_threaded_request(READING_KALULU_SCENE_PATH)
+
 	if open_treasure:
 		await _open_treasure()
 		await get_tree().create_timer(TREASURE_PAUSE).timeout
@@ -109,11 +118,6 @@ func _build_runtime() -> void:
 	_click_catcher.hide()
 	_click_catcher.pressed.connect(_on_click_catcher_pressed)
 	_overlay_layer.add_child(_click_catcher)
-
-	_reading_kalulu = READING_KALULU_SCENE.instantiate() as AnimatedSprite2D
-	_reading_kalulu.position = Vector2(1280, 900)
-	_reading_kalulu.hide()
-	_overlay_layer.add_child(_reading_kalulu)
 
 	_voice_player = AudioStreamPlayer.new()
 	_voice_player.bus = &"Voice"
@@ -211,7 +215,36 @@ func _expand_rect(rect: Rect2, expand_ratio: float) -> Rect2:
 	return Rect2(rect.position - expand, rect.size + expand * 2.0)
 
 
+## Instantiates the reading Kalulu from the load play() kicked off, waiting for it
+## if the sequence somehow outran it.
+func _build_reading_kalulu() -> void:
+	if _reading_kalulu:
+		return
+
+	while ResourceLoader.load_threaded_get_status(READING_KALULU_SCENE_PATH) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+		await get_tree().process_frame
+
+	var scene: PackedScene
+	if ResourceLoader.load_threaded_get_status(READING_KALULU_SCENE_PATH) == ResourceLoader.THREAD_LOAD_LOADED:
+		scene = ResourceLoader.load_threaded_get(READING_KALULU_SCENE_PATH) as PackedScene
+	else:
+		# No request outstanding, or it failed; a blocking load still beats no Kalulu.
+		scene = load(READING_KALULU_SCENE_PATH) as PackedScene
+	if not scene:
+		return
+
+	_reading_kalulu = scene.instantiate() as AnimatedSprite2D
+	_reading_kalulu.position = Vector2(1280, 900)
+	_reading_kalulu.hide()
+	_overlay_layer.add_child(_reading_kalulu)
+
+
 func _show_and_speak() -> void:
+	await _build_reading_kalulu()
+	if not _reading_kalulu:
+		Log.error("BrainReward: the reading Kalulu could not be loaded")
+		_click_catcher.show()
+		return
 	_reading_kalulu.show()
 	_reading_kalulu.play(&"Show")
 	await _reading_kalulu.animation_finished
@@ -285,9 +318,15 @@ func _on_click_catcher_pressed() -> void:
 
 
 func _hide_kalulu() -> void:
+	if not _reading_kalulu:
+		return
 	_reading_kalulu.play(&"Hide")
 	await _reading_kalulu.animation_finished
 	_reading_kalulu.hide()
+	# Freed rather than kept for a replay the player may never ask for. play()
+	# starts the background load again if they do.
+	_reading_kalulu.queue_free()
+	_reading_kalulu = null
 
 
 func _restore_brain() -> void:
