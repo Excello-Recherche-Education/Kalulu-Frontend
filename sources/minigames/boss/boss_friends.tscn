@@ -1,0 +1,66 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://sources/minigames/boss/boss_friends.gd" id="1_lnrl6"]
+[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/monkey_boss_animations.tres" id="2_crwmh"]
+[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/turtle_boss_animations.tres" id="3_dx8um"]
+[ext_resource type="Texture2D" path="res://assets/minigames/turtles/graphic/turtle_back_neutral.png" id="4_f0njr"]
+[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/penguin_boss_animations.tres" id="5_p04dd"]
+[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/frog_boss_animations.tres" id="6_awlhp"]
+[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/crab_boss_animations.tres" id="7_hn874"]
+[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/parakeet_boss_animations.tres" id="8_2t3q2"]
+[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/ant_boss_animations.tres" id="9_ab2nw"]
+
+[node name="BossFriends" type="Node2D" unique_id=57932684]
+script = ExtResource("1_lnrl6")
+
+[node name="Monkey" type="AnimatedSprite2D" parent="." unique_id=2138177828]
+position = Vector2(125, 62)
+scale = Vector2(0.82894737, 0.82894737)
+sprite_frames = ExtResource("2_crwmh")
+animation = &"idle"
+offset = Vector2(1.5820463e-12, -41.04)
+
+[node name="Turtle" type="AnimatedSprite2D" parent="." unique_id=1137369987]
+position = Vector2(-217.12, 120)
+rotation = 1.5707964
+scale = Vector2(0.8228572, 0.8228572)
+sprite_frames = ExtResource("3_dx8um")
+animation = &"swim"
+
+[node name="TurtleBack" type="Sprite2D" parent="." unique_id=2008510490]
+position = Vector2(-220, 120)
+rotation = 1.5707964
+scale = Vector2(0.14400001, 0.14400001)
+texture = ExtResource("4_f0njr")
+
+[node name="Penguin" type="AnimatedSprite2D" parent="." unique_id=400045]
+position = Vector2(28, 61.80005)
+scale = Vector2(0.8278847, 0.8278847)
+sprite_frames = ExtResource("5_p04dd")
+animation = &"idle"
+
+[node name="Frog" type="AnimatedSprite2D" parent="." unique_id=885299200]
+position = Vector2(-44, 112)
+scale = Vector2(0.82, 0.82758623)
+sprite_frames = ExtResource("6_awlhp")
+animation = &"idle_front"
+
+[node name="Crab" type="AnimatedSprite2D" parent="." unique_id=1580580394]
+position = Vector2(-215.12195, 36.319946)
+scale = Vector2(0.827234, 0.827234)
+sprite_frames = ExtResource("7_hn874")
+animation = &"idle"
+centered = false
+
+[node name="Parakeet" type="AnimatedSprite2D" parent="." unique_id=408156668]
+position = Vector2(124, -103)
+scale = Vector2(0.8181818, 0.8181818)
+sprite_frames = ExtResource("8_2t3q2")
+animation = &"idle_front"
+offset = Vector2(0, -18.04)
+
+[node name="Ant" type="AnimatedSprite2D" parent="." unique_id=1364566678]
+position = Vector2(228.17004, 116.61499)
+scale = Vector2(0.8297619, 0.7892857)
+sprite_frames = ExtResource("9_ab2nw")
+animation = &"idle"

@@ -1,0 +1,67 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/minigames/boss/friends/monkey.png" id="1_1n1la"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ni4qv"]
+atlas = ExtResource("1_1n1la")
+region = Rect2(0, 0, 608, 608)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sye5q"]
+atlas = ExtResource("1_1n1la")
+region = Rect2(608, 0, 608, 608)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uvr3f"]
+atlas = ExtResource("1_1n1la")
+region = Rect2(0, 608, 608, 608)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fg5vp"]
+atlas = ExtResource("1_1n1la")
+region = Rect2(608, 608, 608, 608)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbvle"]
+atlas = ExtResource("1_1n1la")
+region = Rect2(0, 1216, 608, 608)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4mvtm"]
+atlas = ExtResource("1_1n1la")
+region = Rect2(608, 1216, 608, 608)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sohyp"]
+atlas = ExtResource("1_1n1la")
+region = Rect2(0, 1824, 608, 608)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_owcw2"]
+atlas = ExtResource("1_1n1la")
+region = Rect2(608, 1824, 608, 608)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ni4qv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sye5q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uvr3f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fg5vp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbvle")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4mvtm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sohyp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owcw2")
+}],
+"loop": 0,
+"name": &"idle",
+"speed": 8.0
+}]

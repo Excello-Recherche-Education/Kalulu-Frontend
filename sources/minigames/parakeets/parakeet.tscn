@@ -2,13 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cir1ejxole7pu" path="res://sources/minigames/parakeets/parakeet.gd" id="1_p0nqk"]
 [ext_resource type="PackedScene" uid="uid://cn2rw06pltyiu" path="res://sources/utils/fx/right.tscn" id="2_afmcm"]
-[ext_resource type="SpriteFrames" uid="uid://wybpq21deku7" path="res://sources/minigames/parakeets/red_parakeet_animations.tres" id="2_k0dcm"]
 [ext_resource type="Texture2D" uid="uid://c34sgkbvr3h8q" path="res://assets/minigames/minigame_ui/graphic/primary_text_box.png" id="3_jc4en"]
 [ext_resource type="Script" uid="uid://d5qkkg88431w" path="res://sources/utils/percent_margin_container.gd" id="4_oc4sp"]
 [ext_resource type="PackedScene" uid="uid://bgio7muqck2bu" path="res://sources/utils/auto_size_label.tscn" id="5_q71gb"]
 [ext_resource type="LabelSettings" uid="uid://c7aoyw5gjrrnp" path="res://resources/themes/minigames_label_settings_parakeet.tres" id="5_xdkkw"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="6_7mdw2"]
-[ext_resource type="SpriteFrames" uid="uid://bortxskacy6vx" path="res://sources/minigames/parakeets/red_parakeet_feathers_animations.tres" id="9_oc4sp"]
 [ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="12_q71gb"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2q8kg"]
@@ -70,18 +68,13 @@ text = ""
 label_settings = ExtResource("5_xdkkw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1157745331]
-scale = Vector2(2, 2)
-sprite_frames = ExtResource("2_k0dcm")
-animation = &"idle_front"
-autoplay = "idle_front"
-offset = Vector2(2.08165e-12, -82)
+scale = Vector2(4.1666665, 4.1666665)
+offset = Vector2(0, -39.36)
 
 [node name="AnimatedSprite2D_Feathers" type="AnimatedSprite2D" parent="." unique_id=1119538634]
 visible = false
-scale = Vector2(2, 2)
-sprite_frames = ExtResource("9_oc4sp")
-animation = &"feathers_fall"
-offset = Vector2(2.08165e-12, -82)
+scale = Vector2(4.1666665, 4.1666665)
+offset = Vector2(0, -39.36)
 
 [node name="Button" type="Button" parent="." unique_id=1264594927]
 offset_left = -325.0

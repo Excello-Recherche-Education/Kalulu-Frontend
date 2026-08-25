@@ -25,8 +25,13 @@ const FEATHERS_ANIMATIONS_PATHS: Array[String] = [
 	set(value):
 		color = value
 		if animated_sprite:
+			# The scene leaves sprite_frames unset so that only the colour in use
+			# is ever loaded. That also means neither node has a valid animation
+			# until the frames arrive, so both are named here.
 			animated_sprite.sprite_frames = load(ANIMATIONS_PATHS[color])
+			animated_sprite.animation = &"idle_front"
 			animated_sprite_2d_feathers.sprite_frames = load(FEATHERS_ANIMATIONS_PATHS[color])
+			animated_sprite_2d_feathers.animation = &"feathers_fall"
 @export var uppercase: bool = true:
 	set(value):
 		uppercase = value

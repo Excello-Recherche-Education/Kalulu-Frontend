@@ -1,0 +1,680 @@
+[
+  {
+    "name": "monkey",
+    "texture": "res://assets/minigames/boss/friends/monkey.png",
+    "source_tres": "sources/minigames/monkeys/monkey_animations.tres",
+    "source_png": "assets/minigames/monkeys/graphic/monkey_spritesheet.png",
+    "note": "idle_boss() stops on frame 0; victory_boss() replays idle in full",
+    "frame_size": [
+      608,
+      608
+    ],
+    "source_frame_size": [
+      800,
+      800
+    ],
+    "display_scale": 0.629999995231628,
+    "atlas_size": [
+      1216,
+      2432
+    ],
+    "regions": [
+      [
+        0,
+        0,
+        608,
+        608
+      ],
+      [
+        608,
+        0,
+        608,
+        608
+      ],
+      [
+        0,
+        608,
+        608,
+        608
+      ],
+      [
+        608,
+        608,
+        608,
+        608
+      ],
+      [
+        0,
+        1216,
+        608,
+        608
+      ],
+      [
+        608,
+        1216,
+        608,
+        608
+      ],
+      [
+        0,
+        1824,
+        608,
+        608
+      ],
+      [
+        608,
+        1824,
+        608,
+        608
+      ]
+    ],
+    "animations": [
+      {
+        "name": "idle",
+        "loop": false,
+        "speed": 8.0,
+        "first_index": 0,
+        "count": 8
+      }
+    ],
+    "kept_pixels": 2957312,
+    "source_pixels_full_sheet": 51206400,
+    "source_pixels_kept_frames": 5120000
+  },
+  {
+    "name": "turtle",
+    "texture": "res://assets/minigames/boss/friends/turtle.png",
+    "source_tres": "sources/minigames/turtles/purple_turtle_animations.tres",
+    "source_png": "assets/minigames/turtles/graphic/purple_turtle_spritesheet.png",
+    "note": "boss picks the purple turtle explicitly; victory replays swim",
+    "frame_size": [
+      140,
+      140
+    ],
+    "source_frame_size": [
+      800,
+      800
+    ],
+    "display_scale": 0.144000008702278,
+    "atlas_size": [
+      280,
+      560
+    ],
+    "regions": [
+      [
+        0,
+        0,
+        140,
+        140
+      ],
+      [
+        140,
+        0,
+        140,
+        140
+      ],
+      [
+        0,
+        140,
+        140,
+        140
+      ],
+      [
+        140,
+        140,
+        140,
+        140
+      ],
+      [
+        0,
+        280,
+        140,
+        140
+      ],
+      [
+        140,
+        280,
+        140,
+        140
+      ],
+      [
+        0,
+        420,
+        140,
+        140
+      ],
+      [
+        140,
+        420,
+        140,
+        140
+      ]
+    ],
+    "animations": [
+      {
+        "name": "swim",
+        "loop": true,
+        "speed": 12.0,
+        "first_index": 0,
+        "count": 8
+      }
+    ],
+    "kept_pixels": 156800,
+    "source_pixels_full_sheet": 30720000,
+    "source_pixels_kept_frames": 5120000
+  },
+  {
+    "name": "penguin",
+    "texture": "res://assets/minigames/boss/friends/penguin.png",
+    "source_tres": "sources/minigames/penguin/penguin_animations.tres",
+    "source_png": "assets/minigames/penguin/graphic/penguin.png",
+    "note": "",
+    "frame_size": [
+      208,
+      208
+    ],
+    "source_frame_size": [
+      410,
+      410
+    ],
+    "display_scale": 0.420000016689301,
+    "atlas_size": [
+      208,
+      2288
+    ],
+    "regions": [
+      [
+        0,
+        0,
+        208,
+        208
+      ],
+      [
+        0,
+        208,
+        208,
+        208
+      ],
+      [
+        0,
+        416,
+        208,
+        208
+      ],
+      [
+        0,
+        624,
+        208,
+        208
+      ],
+      [
+        0,
+        832,
+        208,
+        208
+      ],
+      [
+        0,
+        1040,
+        208,
+        208
+      ],
+      [
+        0,
+        1248,
+        208,
+        208
+      ],
+      [
+        0,
+        1456,
+        208,
+        208
+      ],
+      [
+        0,
+        1664,
+        208,
+        208
+      ],
+      [
+        0,
+        1872,
+        208,
+        208
+      ],
+      [
+        0,
+        2080,
+        208,
+        208
+      ]
+    ],
+    "animations": [
+      {
+        "name": "idle",
+        "loop": true,
+        "speed": 12.0,
+        "first_index": 0,
+        "count": 1
+      },
+      {
+        "name": "happy",
+        "loop": false,
+        "speed": 12.0,
+        "first_index": 1,
+        "count": 10
+      }
+    ],
+    "kept_pixels": 475904,
+    "source_pixels_full_sheet": 6724000,
+    "source_pixels_kept_frames": 1849100
+  },
+  {
+    "name": "frog",
+    "texture": "res://assets/minigames/boss/friends/frog.png",
+    "source_tres": "sources/minigames/frog/frog_animations.tres",
+    "source_png": "assets/minigames/frog/graphics/frog_spritesheet.png",
+    "note": "victory_boss() replays idle_front, so all frames are needed",
+    "frame_size": [
+      200,
+      232
+    ],
+    "source_frame_size": [
+      410,
+      480
+    ],
+    "display_scale": 0.400000005960464,
+    "atlas_size": [
+      800,
+      464
+    ],
+    "regions": [
+      [
+        0,
+        0,
+        200,
+        232
+      ],
+      [
+        200,
+        0,
+        200,
+        232
+      ],
+      [
+        400,
+        0,
+        200,
+        232
+      ],
+      [
+        600,
+        0,
+        200,
+        232
+      ],
+      [
+        0,
+        232,
+        200,
+        232
+      ],
+      [
+        200,
+        232,
+        200,
+        232
+      ],
+      [
+        400,
+        232,
+        200,
+        232
+      ],
+      [
+        600,
+        232,
+        200,
+        232
+      ]
+    ],
+    "animations": [
+      {
+        "name": "idle_front",
+        "loop": false,
+        "speed": 12.0,
+        "first_index": 0,
+        "count": 8
+      }
+    ],
+    "kept_pixels": 371200,
+    "source_pixels_full_sheet": 14177201,
+    "source_pixels_kept_frames": 1574400
+  },
+  {
+    "name": "crab",
+    "texture": "res://assets/minigames/boss/friends/crab.png",
+    "source_tres": "sources/minigames/crabs/crab/crab_animations.tres",
+    "source_png": "assets/minigames/crabs/graphic/crab_spritesheet.png",
+    "note": "",
+    "frame_size": [
+      188,
+      188
+    ],
+    "source_frame_size": [
+      416,
+      416
+    ],
+    "display_scale": 0.373846143484116,
+    "atlas_size": [
+      564,
+      564
+    ],
+    "regions": [
+      [
+        0,
+        0,
+        188,
+        188
+      ],
+      [
+        188,
+        0,
+        188,
+        188
+      ],
+      [
+        376,
+        0,
+        188,
+        188
+      ],
+      [
+        0,
+        188,
+        188,
+        188
+      ],
+      [
+        188,
+        188,
+        188,
+        188
+      ],
+      [
+        376,
+        188,
+        188,
+        188
+      ],
+      [
+        0,
+        376,
+        188,
+        188
+      ],
+      [
+        188,
+        376,
+        188,
+        188
+      ],
+      [
+        376,
+        376,
+        188,
+        188
+      ]
+    ],
+    "animations": [
+      {
+        "name": "idle",
+        "loop": false,
+        "speed": 10.0,
+        "first_index": 0,
+        "count": 1
+      },
+      {
+        "name": "right",
+        "loop": true,
+        "speed": 10.0,
+        "first_index": 1,
+        "count": 8
+      }
+    ],
+    "kept_pixels": 318096,
+    "source_pixels_full_sheet": 5537792,
+    "source_pixels_kept_frames": 1557504
+  },
+  {
+    "name": "parakeet",
+    "texture": "res://assets/minigames/boss/friends/parakeet.png",
+    "source_tres": "sources/minigames/parakeets/green_parakeet_animations.tres",
+    "source_png": "assets/minigames/parakeets/graphic/green_parakeet_spritesheet.png",
+    "note": "idle_boss() sets color = GREEN, so the green sheet is the one shown",
+    "frame_size": [
+      176,
+      176
+    ],
+    "source_frame_size": [
+      384,
+      384
+    ],
+    "display_scale": 0.375,
+    "atlas_size": [
+      528,
+      528
+    ],
+    "regions": [
+      [
+        0,
+        0,
+        176,
+        176
+      ],
+      [
+        176,
+        0,
+        176,
+        176
+      ],
+      [
+        352,
+        0,
+        176,
+        176
+      ],
+      [
+        0,
+        176,
+        176,
+        176
+      ],
+      [
+        176,
+        176,
+        176,
+        176
+      ],
+      [
+        352,
+        176,
+        176,
+        176
+      ],
+      [
+        0,
+        352,
+        176,
+        176
+      ],
+      [
+        176,
+        352,
+        176,
+        176
+      ],
+      [
+        352,
+        352,
+        176,
+        176
+      ]
+    ],
+    "animations": [
+      {
+        "name": "idle_front",
+        "loop": true,
+        "speed": 7.0,
+        "first_index": 0,
+        "count": 1
+      },
+      {
+        "name": "happy",
+        "loop": true,
+        "speed": 9.0,
+        "first_index": 1,
+        "count": 8
+      }
+    ],
+    "kept_pixels": 278784,
+    "source_pixels_full_sheet": 9437184,
+    "source_pixels_kept_frames": 1327104
+  },
+  {
+    "name": "ant",
+    "texture": "res://assets/minigames/boss/friends/ant.png",
+    "source_tres": "sources/minigames/ants/ant_animations.tres",
+    "source_png": "assets/minigames/ants/graphics/ant_spritesheet.png",
+    "note": "",
+    "frame_size": [
+      84,
+      56
+    ],
+    "source_frame_size": [
+      410,
+      260
+    ],
+    "display_scale": 0.170000001788139,
+    "atlas_size": [
+      252,
+      168
+    ],
+    "regions": [
+      [
+        0,
+        0,
+        84,
+        56
+      ],
+      [
+        84,
+        0,
+        84,
+        56
+      ],
+      [
+        168,
+        0,
+        84,
+        56
+      ],
+      [
+        0,
+        56,
+        84,
+        56
+      ],
+      [
+        84,
+        56,
+        84,
+        56
+      ],
+      [
+        168,
+        56,
+        84,
+        56
+      ],
+      [
+        0,
+        112,
+        84,
+        56
+      ],
+      [
+        84,
+        112,
+        84,
+        56
+      ],
+      [
+        168,
+        112,
+        84,
+        56
+      ]
+    ],
+    "animations": [
+      {
+        "name": "idle",
+        "loop": true,
+        "speed": 8.0,
+        "first_index": 0,
+        "count": 1
+      },
+      {
+        "name": "success",
+        "loop": true,
+        "speed": 8.0,
+        "first_index": 1,
+        "count": 8
+      }
+    ],
+    "kept_pixels": 42336,
+    "source_pixels_full_sheet": 3411200,
+    "source_pixels_kept_frames": 959400
+  },
+  {
+    "name": "jellyfish",
+    "texture": "res://assets/minigames/boss/friends/jellyfish.png",
+    "source_tres": "sources/minigames/jellyfish/pink_jellyfish_animations_body.tres",
+    "source_png": "assets/minigames/jellyfish/graphic/pink_jellyfish_layer_1.png",
+    "note": "boss mode hides the arms layer and never plays the body, so 1 frame",
+    "frame_size": [
+      216,
+      216
+    ],
+    "source_frame_size": [
+      720,
+      720
+    ],
+    "display_scale": 0.25,
+    "atlas_size": [
+      216,
+      216
+    ],
+    "regions": [
+      [
+        0,
+        0,
+        216,
+        216
+      ]
+    ],
+    "animations": [
+      {
+        "name": "idle",
+        "loop": true,
+        "speed": 5.0,
+        "first_index": 0,
+        "count": 1
+      }
+    ],
+    "kept_pixels": 46656,
+    "source_pixels_full_sheet": 12960000,
+    "source_pixels_kept_frames": 518400
+  }
+]
