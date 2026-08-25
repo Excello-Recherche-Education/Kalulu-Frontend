@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://tools/compare_parakeet.gd" id="1_cp"]
-
-[node name="CompareParakeet" type="Node"]
-script = ExtResource("1_cp")
