@@ -68,12 +68,12 @@ text = ""
 label_settings = ExtResource("5_xdkkw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1157745331]
-scale = Vector2(4.1666667, 4.1666667)
+scale = Vector2(4.1666665, 4.1666665)
 offset = Vector2(0, -39.36)
 
 [node name="AnimatedSprite2D_Feathers" type="AnimatedSprite2D" parent="." unique_id=1119538634]
 visible = false
-scale = Vector2(4.1666667, 4.1666667)
+scale = Vector2(4.1666665, 4.1666665)
 offset = Vector2(0, -39.36)
 
 [node name="Button" type="Button" parent="." unique_id=1264594927]
