@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tools/compare_boss_friends.gd" id="1_compare"]
+
+[node name="CompareBossFriends" type="Node"]
+script = ExtResource("1_compare")

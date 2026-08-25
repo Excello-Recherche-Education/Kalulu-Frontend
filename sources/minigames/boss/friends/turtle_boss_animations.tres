@@ -1,0 +1,67 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://bmn2xaiisx6hr"]
+
+[ext_resource type="Texture2D" uid="uid://pmm7gdiir5ve" path="res://assets/minigames/boss/friends/turtle.png" id="1_sm65k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cseu2"]
+atlas = ExtResource("1_sm65k")
+region = Rect2(0, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p77ni"]
+atlas = ExtResource("1_sm65k")
+region = Rect2(176, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ebn6v"]
+atlas = ExtResource("1_sm65k")
+region = Rect2(352, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l28sx"]
+atlas = ExtResource("1_sm65k")
+region = Rect2(528, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7rtah"]
+atlas = ExtResource("1_sm65k")
+region = Rect2(704, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_adf8b"]
+atlas = ExtResource("1_sm65k")
+region = Rect2(880, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jja4h"]
+atlas = ExtResource("1_sm65k")
+region = Rect2(1056, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lp4p4"]
+atlas = ExtResource("1_sm65k")
+region = Rect2(1232, 0, 176, 176)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cseu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p77ni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ebn6v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l28sx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7rtah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_adf8b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jja4h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lp4p4")
+}],
+"loop": 0,
+"name": &"swim",
+"speed": 12.0
+}]

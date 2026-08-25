@@ -1,0 +1,648 @@
+{
+  "ant": [
+    {
+      "animation": "idle",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        410.0,
+        260.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "AnimatedSprite2D",
+      "position": [
+        1904.17004394531,
+        1396.61499023438
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.170000001788139,
+        0.170000001788139
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/ants/graphics/ant_spritesheet.png",
+      "type": "AnimatedSprite2D",
+      "z_index": 0
+    }
+  ],
+  "crab": [
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/RightFX/Halo",
+      "position": [
+        1538.80004882812,
+        1384.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.359999984502792,
+        0.359999984502792
+      ],
+      "self_modulate": "ffd366ff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        512.0,
+        512.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/HighlightFX/Rays",
+      "position": [
+        1538.80004882812,
+        1384.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.216000005602837,
+        0.216000005602837
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/fx_02.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/HighlightFX/Halo",
+      "position": [
+        1538.80004882812,
+        1384.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.216000005602837,
+        0.216000005602837
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/WrongFX/Halo",
+      "position": [
+        1538.80004882812,
+        1384.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.359999984502792,
+        0.359999984502792
+      ],
+      "self_modulate": "be1e2dff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "idle",
+      "centered": false,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        800.0,
+        800.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "Body/AnimatedSprite2D",
+      "position": [
+        1460.87805175781,
+        1316.31994628906
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.194399982690811,
+        0.194399982690811
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/crabs/graphic/crab_spritesheet.png",
+      "type": "AnimatedSprite2D",
+      "z_index": 0
+    }
+  ],
+  "frog": [
+    {
+      "animation": "idle_front",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        410.0,
+        480.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "AnimatedSprite2D",
+      "position": [
+        1632.0,
+        1392.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.400000005960464,
+        0.400000005960464
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/frog/graphics/frog_spritesheet.png",
+      "type": "AnimatedSprite2D",
+      "z_index": 0
+    }
+  ],
+  "jellyfish": [
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/RightFX/Halo",
+      "position": [
+        1539.00012207031,
+        1350.50012207031
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.359999984502792,
+        0.359999984502792
+      ],
+      "self_modulate": "ffd366ff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        512.0,
+        512.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/HighlightFX/Rays",
+      "position": [
+        1539.00012207031,
+        1350.50012207031
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.359999984502792,
+        0.359999984502792
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/fx_02.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/HighlightFX/Halo",
+      "position": [
+        1539.00012207031,
+        1350.50012207031
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.359999984502792,
+        0.359999984502792
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/WrongFX/Halo",
+      "position": [
+        1539.00012207031,
+        1350.50012207031
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.359999984502792,
+        0.359999984502792
+      ],
+      "self_modulate": "be1e2dff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "idle",
+      "centered": false,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        800.0,
+        800.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        -0.000205994001589715,
+        0.000194549997104332
+      ],
+      "path": "SpriteControl/AnimatedSprite2D_Body",
+      "position": [
+        1449.00012207031,
+        1301.00012207031
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.224999994039536,
+        0.224999994039536
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/jellyfish/graphic/pink_jellyfish_layer_1.png",
+      "type": "AnimatedSprite2D",
+      "z_index": 0
+    }
+  ],
+  "monkey": [
+    {
+      "animation": "idle",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        800.0,
+        800.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        0.00000000000208164995657567,
+        -54.0
+      ],
+      "path": "AnimatedSprite2D",
+      "position": [
+        1801.0,
+        1342.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.629999995231628,
+        0.629999995231628
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/monkeys/graphic/monkey_spritesheet.png",
+      "type": "AnimatedSprite2D",
+      "z_index": 0
+    }
+  ],
+  "parakeet": [
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "RightFX/Halo",
+      "position": [
+        1800.0,
+        1231.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.180000007152557,
+        0.180000007152557
+      ],
+      "self_modulate": "ffd366ff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "WrongFX/Halo",
+      "position": [
+        1800.0,
+        1231.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.180000007152557,
+        0.180000007152557
+      ],
+      "self_modulate": "be1e2dff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "idle_front",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        800.0,
+        800.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        0.00000000000208164995657567,
+        -82.0
+      ],
+      "path": "AnimatedSprite2D",
+      "position": [
+        1800.0,
+        1177.0
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.180000007152557,
+        0.180000007152557
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/parakeets/graphic/green_parakeet_spritesheet.png",
+      "type": "AnimatedSprite2D",
+      "z_index": 0
+    }
+  ],
+  "penguin": [
+    {
+      "animation": "idle",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        410.0,
+        410.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "AnimatedSprite2D",
+      "position": [
+        1704.0,
+        1341.80004882812
+      ],
+      "rotation": 0.0,
+      "scale": [
+        0.420000016689301,
+        0.420000016689301
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/penguin/graphic/penguin.png",
+      "type": "AnimatedSprite2D",
+      "z_index": 0
+    }
+  ],
+  "turtle": [
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        512.0,
+        512.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/HighlightFX/Rays",
+      "position": [
+        1456.0,
+        1400.0
+      ],
+      "rotation": 1.57079637050629,
+      "scale": [
+        0.0864000096917152,
+        0.0864000096917152
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/fx_02.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        540.0,
+        540.0
+      ],
+      "modulate": "ffffff00",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "BackFX/HighlightFX/Halo",
+      "position": [
+        1456.0,
+        1400.0
+      ],
+      "rotation": 1.57079637050629,
+      "scale": [
+        0.0864000096917152,
+        0.0864000096917152
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/vfx/halo.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "swim",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        800.0,
+        800.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "Body/AnimatedSprite2D",
+      "position": [
+        1458.88000488281,
+        1400.0
+      ],
+      "rotation": 1.57079637050629,
+      "scale": [
+        0.144000008702278,
+        0.144000008702278
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/turtles/graphic/purple_turtle_spritesheet.png",
+      "type": "AnimatedSprite2D",
+      "z_index": 0
+    },
+    {
+      "animation": "",
+      "centered": true,
+      "flip_h": false,
+      "flip_v": false,
+      "frame_size": [
+        200.0,
+        276.0
+      ],
+      "modulate": "ffffffff",
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "path": "Body/AnimatedSprite2D/Sprite2D_Back",
+      "position": [
+        1456.0,
+        1400.0
+      ],
+      "rotation": 1.57079637050629,
+      "scale": [
+        0.144000008702278,
+        0.144000008702278
+      ],
+      "self_modulate": "ffffffff",
+      "skew": 0.0,
+      "texture": "res://assets/minigames/turtles/graphic/turtle_back_neutral.png",
+      "type": "Sprite2D",
+      "z_index": 0
+    }
+  ]
+}

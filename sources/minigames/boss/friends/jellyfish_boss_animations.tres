@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://yh2aeff3ucny"]
+
+[ext_resource type="Texture2D" uid="uid://cr0bwiggdi811" path="res://assets/minigames/boss/friends/jellyfish.png" id="1_t86y3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghl4l"]
+atlas = ExtResource("1_t86y3")
+region = Rect2(0, 0, 272, 272)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghl4l")
+}],
+"loop": 0,
+"name": &"idle",
+"speed": 5.0
+}]
