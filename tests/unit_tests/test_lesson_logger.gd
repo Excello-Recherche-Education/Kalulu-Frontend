@@ -12,7 +12,6 @@ extends GutTest
 ## whatever either is called later.
 
 const LOGS_SUBFOLDER: String = "logs"
-
 ## The names UserDataManager keeps in the student folder. A minigame called any of
 ## these would have hit exactly the same bug.
 const STUDENT_DATA_FILES: Array[String] = [

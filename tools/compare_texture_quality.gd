@@ -8,7 +8,6 @@ extends Node
 ##   godot --path <project> --resolution 320x200 res://tools/compare_texture_quality.tscn -- before
 
 const CROP_SIZE: Vector2i = Vector2i(1000, 800)
-
 # Subjects: output name, resource, and the region of it to show at 1:1.
 # Regions picked for the highest edge density in each sheet, since that is where
 # block compression does its damage -- a flat region would pass trivially.

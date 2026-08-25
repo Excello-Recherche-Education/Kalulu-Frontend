@@ -11,7 +11,6 @@ extends GutTest
 ## the 286 MB back with nothing to show for it. This is what says otherwise.
 
 const SCENE_PATH: String = "res://sources/kalulu_animator_reading.tscn"
-
 ## Every animation the reward sequence plays, between brain_reward.gd and the
 ## auto-cycling in kalulu_animator.gd.
 const REQUIRED_ANIMATIONS: Array[String] = [

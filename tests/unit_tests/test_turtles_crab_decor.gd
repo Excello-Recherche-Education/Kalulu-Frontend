@@ -13,11 +13,9 @@ extends GutTest
 const MINIGAME_SCENE: String = "res://sources/minigames/turtles/turtles_minigame.tscn"
 const DECOR_FRAMES: String = "res://sources/minigames/turtles/crab_decor_animations.tres"
 const SHARED_CRAB_SHEET: String = "res://assets/minigames/crabs/graphic/crab_spritesheet.png"
-
 ## What the turtles minigame plays: idle_claws from its setup, victory_claws on a
 ## win, and idle from the node's autoplay.
 const REACHABLE_ANIMATIONS: Array[String] = ["idle", "idle_claws", "victory_claws"]
-
 const FRAME_SIZE: float = 288.0
 const DRAWN_SIZE: float = 240.0
 const MAX_TEXTURE_SIZE: int = 4096

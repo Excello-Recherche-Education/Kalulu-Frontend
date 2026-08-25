@@ -15,14 +15,11 @@ extends GutTest
 
 const FRONT_SCENE_PATH: String = "res://sources/minigames/boss/boss_friends.tscn"
 const BEHIND_SCENE_PATH: String = "res://sources/minigames/boss/boss_friends_behind.tscn"
-
 ## Where a friend's frames are allowed to come from.
 const ATLAS_DIRECTORY: String = "res://assets/minigames/boss/friends/"
-
 ## Generous next to the 4.7 Mpx the atlases actually hold, and nowhere near the
 ## 167 Mpx of source spritesheets the animal scenes pulled in.
 const PIXEL_BUDGET: int = 8_000_000
-
 const FRONT_FRIENDS: Array[String] = [
 	"Monkey", "Turtle", "TurtleBack", "Penguin", "Frog", "Crab", "Parakeet", "Ant",
 ]

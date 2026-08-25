@@ -17,12 +17,10 @@ const FRAMES_DIR: String = "res://sources/minigames/boss/friends"
 const SCRIPT_PATH: String = "res://sources/minigames/boss/boss_friends.gd"
 const FRONT_SCENE_PATH: String = "res://sources/minigames/boss/boss_friends.tscn"
 const BEHIND_SCENE_PATH: String = "res://sources/minigames/boss/boss_friends_behind.tscn"
-
 # Origins of the two containers in boss_minigame.tscn that the friends live
 # under, so the measured global transforms become local ones.
 const FRONT_ORIGIN: Vector2 = Vector2(1676, 1280)
 const BEHIND_ORIGIN: Vector2 = Vector2.ZERO
-
 # node name, friend key, node path inside the original animal scene. The order
 # is the order the friends were added as children, which is their draw order.
 const FRONT_FRIENDS: Array = [
@@ -84,8 +82,8 @@ func _build_sprite_frames(name: String) -> void:
 		frames.add_animation(animation_name)
 		frames.set_animation_loop(animation_name, bool(animation.loop))
 		frames.set_animation_speed(animation_name, float(animation.speed))
-		for i: int in range(int(animation.count)):
-			var region: Array = entry.regions[int(animation.first_index) + i]
+		for frame_index: int in range(int(animation.count)):
+			var region: Array = entry.regions[int(animation.first_index) + frame_index]
 			var texture: AtlasTexture = AtlasTexture.new()
 			texture.atlas = atlas
 			texture.region = Rect2(region[0], region[1], region[2], region[3])

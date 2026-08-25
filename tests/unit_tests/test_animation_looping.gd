@@ -30,7 +30,6 @@ const EXPECTED_LOOPS: Dictionary = {
 	"res://sources/minigames/jellyfish/pink_jellyfish_animations_body.tres": {"happy": true, "hit": true, "idle": true},
 	"res://sources/minigames/jellyfish/pink_jellyfish_animations_arms.tres": {"happy": true, "hit": true, "idle": true},
 }
-
 ## Every animation these minigames keep alive by looping. If any of these stopped
 ## looping, the character would freeze mid-scene rather than error.
 const MUST_LOOP: Dictionary = {

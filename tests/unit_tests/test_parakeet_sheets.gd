@@ -14,15 +14,12 @@ extends GutTest
 ## that is wanted.
 
 const PARAKEET_SCENE_PATH: String = "res://sources/minigames/parakeets/parakeet.tscn"
-
 ## The size the bird is drawn at, from the scene's own scales; the minigame never
 ## touches them.
 const DRAWN_SIZE: float = 320.0
 const FRAME_SIZE: float = 384.0
-
 ## Old GPUs are only guaranteed 4096 px in a dimension.
 const MAX_TEXTURE_SIZE: int = 4096
-
 const COLOUR_ANIMATIONS: Array[String] = [
 	"res://sources/minigames/parakeets/red_parakeet_animations.tres",
 	"res://sources/minigames/parakeets/green_parakeet_animations.tres",

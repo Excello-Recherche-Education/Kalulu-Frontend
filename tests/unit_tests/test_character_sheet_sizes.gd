@@ -22,7 +22,6 @@ const CRAB_SCENE: String = "res://sources/minigames/crabs/crab/crab.tscn"
 const CRAB_FRAMES: String = "res://sources/minigames/crabs/crab/crab_animations.tres"
 const CRAB_FRAME_SIZE: float = 416.0
 const CRAB_DRAWN: float = 346.0
-
 const JELLYFISH_SCENE: String = "res://sources/minigames/jellyfish/jellyfish.tscn"
 const JELLYFISH_FRAME_SIZE: float = 720.0
 ## SpriteControl fills this box, whatever the frame size.
@@ -33,7 +32,6 @@ const JELLYFISH_SHEETS: Array[String] = [
 	"res://sources/minigames/jellyfish/pink_jellyfish_animations_body.tres",
 	"res://sources/minigames/jellyfish/pink_jellyfish_animations_arms.tres",
 ]
-
 const MAX_TEXTURE_SIZE: int = 4096
 
 

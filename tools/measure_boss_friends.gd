@@ -14,7 +14,6 @@ extends Node2D
 ##   godot --headless --path <project> res://tools/measure_boss_friends.tscn
 
 const OUTPUT_PATH: String = "res://tools/boss_friends_measured.json"
-
 const MONKEY_SCENE_PATH: String = "res://sources/minigames/monkeys/monkey.tscn"
 const TURTLE_SCENE_PATH: String = "res://sources/minigames/turtles/turtle.tscn"
 const TURTLE_FRIEND_SPRITE_FRAMES_PATH: String = "res://sources/minigames/turtles/purple_turtle_animations.tres"
