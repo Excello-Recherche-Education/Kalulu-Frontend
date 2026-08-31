@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://sources/minigames/boss/boss_friends.gd" id="1_tb7t8"]
+[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/jellyfish_boss_animations.tres" id="2_58md4"]
+
+[node name="BossFriendsBehind" type="Node2D" unique_id=608080191]
+script = ExtResource("1_tb7t8")
+
+[node name="Jellyfish" type="AnimatedSprite2D" parent="." unique_id=307128922]
+position = Vector2(1449.0001, 1301.0001)
+scale = Vector2(0.8333333, 0.8333333)
+sprite_frames = ExtResource("2_58md4")
+animation = &"idle"
+centered = false
+offset = Vector2(-6.17982e-05, 5.8365e-05)

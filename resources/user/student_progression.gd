@@ -9,6 +9,10 @@ enum Status{
 	COMPLETED,
 }
 
+# Timeline slot used by apply_manual_progression() to target a lesson's
+# look-and-learn step (minigames use their 0-based index).
+const LOOK_AND_LEARN_SLOT: int = -1
+
 static var cached_boss_gate_lessons: Array[int] = []
 static var cached_boss_gate_lessons_total: int = -1
 
@@ -21,6 +25,12 @@ static var cached_boss_gate_lessons_total: int = -1
 		highest_boss_defeated = _sanitize_highest_boss(value)
 @export var boss_failure_streak: int = 0
 @export var boss_blocked: bool = false
+# True once the end-game reward animation has been triggered, which is what decides
+# whether the brain screen shows a closed chest calling for attention or an already
+# opened one. Purely cosmetic, so it is deliberately left out of the server payload
+# and never bumps `last_modified`: a student picking up on another device simply gets
+# the reward presented once there too.
+@export var endgame_reward_seen: bool = false
 @export var last_modified: String
 
 
@@ -30,6 +40,71 @@ func _init() -> void:
 
 static func get_minigame_count_for_lesson(lesson_number: int) -> int:
 	return Database.get_exercise_for_lesson(lesson_number).size()
+
+
+# Manually moves the progression frontier from the teacher settings screen.
+# The whole progression is one linear timeline of steps: for each lesson, its
+# look-and-learn followed by its minigames in order. Editing any step to
+# `status` rewrites the timeline so the sequential invariants always hold —
+# every step before the frontier is COMPLETED, the frontier step is UNLOCKED,
+# and every step after it is LOCKED:
+#   status == UNLOCKED  → the frontier is this step
+#   status == COMPLETED → the frontier is the next step (this and all before COMPLETED)
+#   status == LOCKED    → the frontier is the previous step (this and all after LOCKED)
+# `slot` is LOOK_AND_LEARN_SLOT for the look-and-learn column, otherwise the
+# 0-based minigame index. The frontier is clamped, so lesson 1's look-and-learn
+# can never end up LOCKED and the "everything completed" state is reachable.
+static func apply_manual_progression(target_unlocks: Dictionary, lesson_number: int, slot: int, status: Status) -> void:
+	var steps: Array[Dictionary] = _build_step_timeline(target_unlocks)
+	var target_position: int = _find_step_position(steps, lesson_number, slot)
+	if target_position < 0:
+		return
+
+	var frontier: int = target_position
+	if status == Status.COMPLETED:
+		frontier = target_position + 1
+	elif status == Status.LOCKED:
+		frontier = target_position - 1
+	frontier = clampi(frontier, 0, steps.size())
+
+	for index: int in range(steps.size()):
+		var step_status: Status = Status.LOCKED
+		if index < frontier:
+			step_status = Status.COMPLETED
+		elif index == frontier:
+			step_status = Status.UNLOCKED
+		_write_step_status(target_unlocks, steps[index], step_status)
+
+
+# Flattens the unlocks into the ordered list of steps described above.
+static func _build_step_timeline(target_unlocks: Dictionary) -> Array[Dictionary]:
+	var steps: Array[Dictionary] = []
+	var lesson_numbers: Array = target_unlocks.keys()
+	lesson_numbers.sort()
+	for lesson_number: int in lesson_numbers:
+		steps.append({"lesson": lesson_number, "slot": LOOK_AND_LEARN_SLOT})
+		var games: Array = target_unlocks[lesson_number]["games"]
+		for game_index: int in range(games.size()):
+			steps.append({"lesson": lesson_number, "slot": game_index})
+	return steps
+
+
+static func _find_step_position(steps: Array[Dictionary], lesson_number: int, slot: int) -> int:
+	for index: int in range(steps.size()):
+		if steps[index]["lesson"] == lesson_number and steps[index]["slot"] == slot:
+			return index
+	return -1
+
+
+static func _write_step_status(target_unlocks: Dictionary, step: Dictionary, status: Status) -> void:
+	var lesson_number: int = step["lesson"]
+	var slot: int = step["slot"]
+	if slot == LOOK_AND_LEARN_SLOT:
+		target_unlocks[lesson_number]["look_and_learn"] = status
+	else:
+		var games: Array = target_unlocks[lesson_number]["games"]
+		if slot < games.size():
+			games[slot] = status
 
 
 static func _build_default_lesson_unlock(lesson_number: int) -> Dictionary:
@@ -65,6 +140,18 @@ static func _resize_games_array(games: Array, target_size: int) -> Array:
 	return resized
 
 
+# True when at least one step of a lesson has been completed — its look-and-learn
+# or one of its minigames. An UNLOCKED step does not count: it only means the
+# lesson was reachable, not that the student finished anything in it.
+static func _has_completed_step(garden: Dictionary) -> bool:
+	if garden["look_and_learn"] == Status.COMPLETED:
+		return true
+	for status: int in garden["games"] as Array:
+		if status == Status.COMPLETED:
+			return true
+	return false
+
+
 # Same idea for the duration metrics: keep recorded times for remaining slots.
 static func _resize_durations(durations: PackedInt32Array, target_size: int) -> PackedInt32Array:
 	var resized: PackedInt32Array = PackedInt32Array()
@@ -76,6 +163,11 @@ static func _resize_durations(durations: PackedInt32Array, target_size: int) -> 
 
 # Make sure the unlocks are correct
 func init_unlocks() -> void:
+	if not is_lesson_database_available():
+		# Expected on every launch before the language pack is opened, so this
+		# stays a trace; ensure_data_integrity() warns for the cases that matter.
+		Log.trace("StudentProgression: Lesson database unavailable, skipping unlocks initialization.")
+		return
 	if not unlocks:
 		unlocks = {} # Triggers ensure_data_integrity(), that will fill the default values
 	else:
@@ -96,10 +188,25 @@ func init_unlocks() -> void:
 	_sanitize_boss_progression()
 
 
+# True once the language pack is installed and its database is readable. Every
+# integrity rule below is expressed relative to the number of lessons, so none of
+# them may run before this returns true: a closed database reports 0 lessons,
+# which the pruning step would read as "every lesson is out of range".
+static func is_lesson_database_available() -> bool:
+	return Database.get_lessons_count() > 0
+
+
 func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 	var is_init: bool = data.is_empty()
 	var result: Dictionary[int, Dictionary] = data.duplicate(true)
 	var number_of_lessons: int = Database.get_lessons_count()
+	if number_of_lessons <= 0:
+		# The language pack is not installed yet (fresh install, or the pack is
+		# being swapped). Keep the data untouched instead of erasing it: this
+		# also runs on the progression the server just sent back, and pruning it
+		# here would destroy it silently.
+		Log.warn("StudentProgression: Lesson database unavailable, keeping progression untouched.")
+		return result
 	# Check for extra keys
 	for key: int in result.keys():
 		if key > number_of_lessons:
@@ -139,7 +246,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 			garden["games"] = _make_locked_games_array(minigame_count)
 		elif (garden["games"] as Array).size() != minigame_count:
 			if not is_init:
-				Log.warn("StudentProgression: Garden %d: 'games' resized from %d to %d, progress preserved." % [index, (garden["games"] as Array).size(), minigame_count])
+				Log.info("StudentProgression: Garden %d: 'games' resized from %d to %d, progress preserved." % [index, (garden["games"] as Array).size(), minigame_count])
 			garden["games"] = _resize_games_array(garden["games"] as Array, minigame_count)
 
 		# Keep duration metrics aligned with the minigame count, preserving the
@@ -160,6 +267,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 	for index: int in range(min_key, max_key + 1):
 		var garden: Dictionary = result[index]
 		var prev_completed: bool = false
+		var prev_partly_completed: bool = false
 
 		# Check previous garden is completed
 		if result.has(index - 1):
@@ -168,6 +276,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 				prev["look_and_learn"] == Status.COMPLETED and
 				(prev["games"] as Array).all(func(x: int) -> bool: return x == Status.COMPLETED)
 			)
+			prev_partly_completed = _has_completed_step(prev)
 		else:
 			# First garden (key 1) is always unlocked
 			prev_completed = true
@@ -176,6 +285,17 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 
 		# Case: previous garden not completed
 		if not prev_completed:
+			# Work already completed here is never taken away when the previous
+			# lesson is itself partly completed. That is the state a pack update
+			# leaves behind when it adds minigames to a lesson the student had
+			# finished: the lesson reopens, and a reopened lesson is
+			# indistinguishable from one left unfinished, so the lessons they went
+			# on to complete must be given the benefit of the doubt. A previous
+			# lesson with nothing completed at all still proves the rest was never
+			# reachable, and the reset then cascades on its own because each lesson
+			# it clears has nothing completed either.
+			if prev_partly_completed and _has_completed_step(garden):
+				continue
 			var needs_reset: bool = garden["look_and_learn"] != Status.LOCKED
 			if not needs_reset:
 				for game_index: int in range(minigame_count):
@@ -210,7 +330,7 @@ func ensure_data_integrity(data: Dictionary[int, Dictionary]) -> Dictionary:
 							if was_completed:
 								Log.warn("StudentProgression: Garden %d: minigame %d demoted from COMPLETED to LOCKED (out of play order — minigame %d not yet completed)" % [index, game_index, next_to_play])
 							else:
-								Log.warn("StudentProgression: Garden %d: minigame %d re-locked (waits for minigame %d to be completed)" % [index, game_index, game_index - 1])
+								Log.info("StudentProgression: Garden %d: minigame %d re-locked (waits for minigame %d to be completed)" % [index, game_index, game_index - 1])
 		else:
 			# L&L not completed → no game may be UNLOCKED (COMPLETED preserved).
 			for game_index: int in range(minigame_count):
@@ -250,8 +370,7 @@ static func get_boss_gate_lessons() -> Array[int]:
 
 static func _get_garden_boundary_lessons(total_lessons: int) -> Array[int]:
 	var boundaries: Array[int] = []
-	var layout: GardensLayout = Gardens.get_session_layout(total_lessons)
-	var distribution: Array[int] = Gardens.get_lessons_distribution(total_lessons, layout.gardens)
+	var distribution: Array[int] = Gardens.compute_lessons_distribution(total_lessons)
 	var lesson_index: int = 0
 	for count: int in distribution:
 		if count <= 0:
@@ -267,6 +386,16 @@ func _sanitize_boss_progression() -> void:
 
 
 func _sanitize_highest_boss(value: int) -> int:
+	var lessons_count: int = Database.get_lessons_count()
+	if lessons_count <= 0:
+		# Same reason as in ensure_data_integrity(): without the lesson count every
+		# real value looks out of range and would be clamped down to 1.
+		return value
+	# The final boss is not a gate lesson; beating it is recorded as (lessons count + 1).
+	# Allow that marker through instead of clamping it down to the last gate.
+	var final_boss_value: int = lessons_count + 1
+	if value >= final_boss_value:
+		return final_boss_value
 	var gate_lessons: Array[int] = get_boss_gate_lessons()
 	if gate_lessons.is_empty():
 		return 0
@@ -284,6 +413,12 @@ func is_boss_completed(gate_lesson: int) -> bool:
 	if not get_boss_gate_lessons().has(gate_lesson):
 		return false
 	return gate_lesson <= highest_boss_defeated
+
+
+# True once the final boss has been beaten — recorded by pushing highest_boss_defeated
+# one past the last lesson (see final_boss_completed()).
+func is_final_boss_completed() -> bool:
+	return highest_boss_defeated >= Database.get_lessons_count() + 1
 
 
 func is_lesson_blocked_by_boss(lesson_number: int) -> bool:
@@ -372,6 +507,30 @@ func boss_completed(lesson_number: int) -> bool:
 	if boss_failure_streak != 0:
 		boss_failure_streak = 0
 	last_modified = Time.get_datetime_string_from_system(true)
+	progression_changed.emit()
+	return true
+
+
+# Records the final-boss victory by pushing highest_boss_defeated one past the last
+# lesson (the final boss is not a gate lesson), reusing the existing field instead of a
+# dedicated flag.
+func final_boss_completed() -> bool:
+	var final_boss_value: int = Database.get_lessons_count() + 1
+	if highest_boss_defeated >= final_boss_value:
+		return false
+	highest_boss_defeated = final_boss_value
+	last_modified = Time.get_datetime_string_from_system(true)
+	progression_changed.emit()
+	return true
+
+
+# Records that the end-game reward animation has been triggered, so the chest stays
+# open from now on. Returns true the first time only. No `last_modified` bump: the
+# flag is local and cosmetic, see its declaration.
+func endgame_reward_watched() -> bool:
+	if endgame_reward_seen:
+		return false
+	endgame_reward_seen = true
 	progression_changed.emit()
 	return true
 

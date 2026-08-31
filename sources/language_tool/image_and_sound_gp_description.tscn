@@ -48,14 +48,14 @@ expand_mode = 1
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" parent="ImageContainer/HBoxContainer/ImageClearButton" index="0"]
+[node name="TextureRect" parent="ImageContainer/HBoxContainer/ImageClearButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_q62yc")
 
 [node name="ImageUploadButton" parent="ImageContainer/HBoxContainer" unique_id=1418866201 instance=ExtResource("1_uutsu")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" parent="ImageContainer/HBoxContainer/ImageUploadButton" index="0"]
+[node name="TextureRect" parent="ImageContainer/HBoxContainer/ImageUploadButton" index="0" unique_id=1207987905]
 texture = ExtResource("2_0hqnp")
 
 [node name="MarginContainer3" type="MarginContainer" parent="." unique_id=112988935]
@@ -80,14 +80,14 @@ text = "Play"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" parent="MarginContainer3/HBoxContainer/SoundClearButton" index="0"]
+[node name="TextureRect" parent="MarginContainer3/HBoxContainer/SoundClearButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_q62yc")
 
 [node name="SoundUploadButton" parent="MarginContainer3/HBoxContainer" unique_id=180782432 instance=ExtResource("1_uutsu")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" parent="MarginContainer3/HBoxContainer/SoundUploadButton" index="0"]
+[node name="TextureRect" parent="MarginContainer3/HBoxContainer/SoundUploadButton" index="0" unique_id=1207987905]
 texture = ExtResource("2_0hqnp")
 
 [node name="FileDialog" type="FileDialog" parent="." unique_id=994818927]

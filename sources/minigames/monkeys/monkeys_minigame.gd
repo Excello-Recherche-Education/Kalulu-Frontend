@@ -219,6 +219,8 @@ func _on_current_word_progression_changed() -> void:
 
 
 func _on_current_progression_changed() -> void:
+	var is_final_word: bool = current_progression >= max_progression
+
 	# Replay the stimulus
 	await get_tree().create_timer(time_between_words/2).timeout
 	var coroutine: Coroutine = Coroutine.new()
@@ -229,15 +231,39 @@ func _on_current_progression_changed() -> void:
 		coroutine.add_future(audio_player.finished)
 	await coroutine.join_all()
 	await get_tree().create_timer(time_between_words/2).timeout
-	
-	# Starts a new round
+
+	# Starts a new round (also updates the finished word's remediation score)
 	@warning_ignore("redundant_await")
 	await super()
-	
+
+	# No new round after the final word: leave the completed word on screen for the win sequence.
+	if is_final_word:
+		return
+
 	# Reset the label
 	_update_label(0)
-	
+
 	is_locked = false
+
+
+# Overridden so the final word is replayed (via _on_current_progression_changed) before the win
+# sequence, like every earlier word. The base setter calls _win() directly for the last word,
+# which would otherwise skip the replay. Mirrors the frog minigame.
+func set_current_progression(p_current_progression: int) -> void:
+	var previous_progression: int = current_progression
+	current_progression = p_current_progression
+	Log.trace("BaseMinigame: Progression changed from %d to %d/%d for %s" % [previous_progression, current_progression, max_progression, TYPE_NAMES[minigame_name]])
+
+	consecutive_errors = 0
+	is_highlighting = false
+
+	if minigame_ui:
+		minigame_ui.set_progression(p_current_progression)
+	if p_current_progression == max_progression and previous_progression != max_progression:
+		await _on_current_progression_changed()
+		await _win()
+	else:
+		await _on_current_progression_changed()
 
 #endregion
 

@@ -1,30 +1,14 @@
 [gd_scene format=3 uid="uid://b7cfjs2iipagq"]
 
 [ext_resource type="Script" uid="uid://d3dv4jeiwga02" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
-[ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_tirf6"]
-[ext_resource type="PackedScene" uid="uid://dxc82xcl7jncd" path="res://sources/menus/main/plants/palm.tscn" id="3_25mko"]
-[ext_resource type="PackedScene" uid="uid://nwur175781jf" path="res://sources/menus/main/plants/large_flower.tscn" id="5_23tyx"]
-[ext_resource type="PackedScene" uid="uid://dqtclljq6bvtg" path="res://sources/menus/main/plants/bush.tscn" id="6_i6t6f"]
-[ext_resource type="PackedScene" uid="uid://dp4182l80ntvn" path="res://sources/menus/main/plants/flower.tscn" id="7_iqya7"]
-[ext_resource type="Script" uid="uid://yb5np74ubv0d" path="res://sources/menus/register/progress_bar.gd" id="8_h8kqu"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="9_theme"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="10_popup"]
 
 [sub_resource type="Gradient" id="Gradient_dx825"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_l78ph"]
 gradient = SubResource("Gradient_dx825")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dv622"]
-bg_color = Color(0.266667, 0.180392, 0.537255, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 33
-corner_radius_top_right = 33
-corner_radius_bottom_right = 33
-corner_radius_bottom_left = 33
 
 [node name="RegisterScreen" type="Control" unique_id=704077610]
 layout_mode = 3
@@ -33,54 +17,25 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("9_theme")
 script = ExtResource("1_jsnxc")
 
-[node name="NightSky" parent="." unique_id=103364774 instance=ExtResource("2_tirf6")]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
-
-[node name="LargeFlower" parent="NightSky" unique_id=1005080221 instance=ExtResource("5_23tyx")]
-position = Vector2(2064, 1794)
-scale = Vector2(2, 2)
-
-[node name="Bush" parent="NightSky" unique_id=1411759558 instance=ExtResource("6_i6t6f")]
-position = Vector2(2224, 1824)
-
-[node name="Palm" parent="NightSky" unique_id=1605588878 instance=ExtResource("3_25mko")]
-position = Vector2(1280, 1800)
-scale = Vector2(2, 2)
-
-[node name="Flower" parent="NightSky" unique_id=1276580041 instance=ExtResource("7_iqya7")]
-position = Vector2(304, 1800)
-
-[node name="ProgressBarContainer" type="MarginContainer" parent="." unique_id=743218099]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 173.0
-grow_horizontal = 2
-theme_override_constants/margin_left = 150
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 150
-theme_override_constants/margin_bottom = 50
-
-[node name="ProgressBar" type="ProgressBar" parent="ProgressBarContainer" unique_id=2032705965]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 1
-max_value = 10.0
-step = 0.1
-show_percentage = false
-script = ExtResource("8_h8kqu")
-
-[node name="Steps" type="Control" parent="." unique_id=1395259341]
-unique_name_in_owner = true
-layout_mode = 1
-anchor_top = 0.142222
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+color = Color(0.164706, 0.211765, 0.490196, 1)
+
+[node name="Steps" type="Control" parent="." unique_id=1395259341]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Popup" type="TextureRect" parent="." unique_id=920129446]
 unique_name_in_owner = true
@@ -101,31 +56,30 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -850.0
-offset_top = -350.0
-offset_right = 850.0
-offset_bottom = 350.0
+offset_left = -1050.0
+offset_top = -440.0
+offset_right = 1050.0
+offset_bottom = 440.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_type_variation = &"PanelKalulu"
-theme_override_styles/panel = SubResource("StyleBoxFlat_dv622")
+theme_type_variation = &"Card"
 
 [node name="MarginContainer" type="MarginContainer" parent="Popup/Container" unique_id=854702106]
 layout_mode = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
+theme_override_constants/margin_left = 118
+theme_override_constants/margin_top = 118
+theme_override_constants/margin_right = 118
+theme_override_constants/margin_bottom = 118
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Popup/Container/MarginContainer" unique_id=1251943579]
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 64
 
 [node name="Title" type="Label" parent="Popup/Container/MarginContainer/VBoxContainer" unique_id=1382504555]
-custom_minimum_size = Vector2(1500, 0)
+custom_minimum_size = Vector2(1900, 0)
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_font_sizes/font_size = 70
+theme_type_variation = &"CardHeading"
 text = "REGISTER_FAILED"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -136,8 +90,9 @@ unique_name_in_owner = true
 auto_translate_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 50
-text = "TEST"
+theme_type_variation = &"CardBody"
+autowrap_mode = 3
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -145,7 +100,15 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 50
+theme_type_variation = &"PrimaryButton"
 text = "CLOSE"
 
+[node name="CodeLimitPopup" parent="." unique_id=920129447 instance=ExtResource("10_popup")]
+unique_name_in_owner = true
+visible = false
+title_text = "NO_MORE_STUDENT_CODES"
+acknowledge_only = true
+
 [connection signal="pressed" from="Popup/Container/MarginContainer/VBoxContainer/Button" to="." method="_on_popup_button_pressed"]
+[connection signal="accepted" from="CodeLimitPopup" to="." method="_on_code_limit_popup_dismissed"]
+[connection signal="refused" from="CodeLimitPopup" to="." method="_on_code_limit_popup_dismissed"]

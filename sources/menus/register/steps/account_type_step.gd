@@ -1,13 +1,19 @@
 @tool
 extends Step
 
-@onready var type: ItemList = %TypeSelect
+@onready var type: OptionButton = %TypeSelect
 
 
 func _ready() -> void:
+	super()
 	type.clear()
 	type.add_item("TEACHER")
 	type.add_item("PARENT")
+	# add_item selects the first entry it adds, which would replace the
+	# placeholder with an answer the user has not given. on_enter picks the
+	# saved one straight after, so nothing is lost by clearing it here.
+	type.selected = -1
+	type.text = "ACCOUNT_TYPE"
 	Log.trace("Register/AccountTypeStep: options initialized")
 
 

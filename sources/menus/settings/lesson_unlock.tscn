@@ -1,47 +1,61 @@
-[gd_scene format=3 uid="uid://dht5umof6hqqy"]
+[gd_scene load_steps=2 format=3 uid="uid://dht5umof6hqqy"]
 
-[ext_resource type="Script" uid="uid://crrnxt5bwa8wi" path="res://sources/menus/settings/lesson_unlock.gd" id="1_rlnlh"]
+[ext_resource type="Script" uid="uid://crrnxt5bwa8wi" path="res://sources/menus/settings/lesson_unlock.gd" id="1_lesson"]
 
-[node name="LessonUnlock" type="Node" unique_id=2109971470]
-script = ExtResource("1_rlnlh")
+[node name="LessonUnlock" type="Node" unique_id=1204418771]
+script = ExtResource("1_lesson")
 
-[node name="LessonLabel" type="Label" parent="." unique_id=1829884836]
+[node name="LessonBadge" type="Panel" parent="." unique_id=1204418772]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 0
-theme_override_font_sizes/font_size = 64
+custom_minimum_size = Vector2(96, 96)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
 
-[node name="GPsLabel" type="Label" parent="." unique_id=1674528069]
+[node name="LessonLabel" type="Label" parent="LessonBadge" unique_id=1204418773]
 unique_name_in_owner = true
-layout_mode = 0
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 42
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 44
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="LookAndLearnOptionButton" type="OptionButton" parent="." unique_id=1667465526]
+[node name="GardenAnimal" type="TextureRect" parent="." unique_id=1204418774]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 0
-size_flags_horizontal = 3
+custom_minimum_size = Vector2(160, 104)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
 
-[node name="ExerciseOptionButton1" type="OptionButton" parent="." unique_id=1697241722]
+[node name="GraphemeBadge" type="Panel" parent="." unique_id=1204418775]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 0
-size_flags_horizontal = 3
-disabled = true
+custom_minimum_size = Vector2(96, 96)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
 
-[node name="ExerciseOptionButton2" type="OptionButton" parent="." unique_id=796806380]
+[node name="GraphemeLabel" type="Label" parent="GraphemeBadge" unique_id=1204418776]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 0
-size_flags_horizontal = 3
-disabled = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 44
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="ExerciseOptionButton3" type="OptionButton" parent="." unique_id=2010481864]
+[node name="StatusOptionButton" type="OptionButton" parent="." unique_id=1204418777]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 0
-size_flags_horizontal = 3
-disabled = true
-
-[connection signal="item_selected" from="LookAndLearnOptionButton" to="." method="_on_look_and_learn_option_button_item_selected"]
+custom_minimum_size = Vector2(700, 116)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"DropdownSubtle"
+fit_to_longest_item = false
+clip_text = true

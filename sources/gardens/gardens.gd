@@ -41,32 +41,16 @@ const GARDEN_SCENE_PATHS: Array[String] = [
 const LOOK_AND_LEARN_SCENE_PATH: String = "res://sources/look_and_learn/look_and_learn.tscn"
 const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_button.tscn")
 const BOSS_MINIGAME_SCENE_PATH: String = "res://sources/minigames/boss/boss_minigame.tscn"
+const BRAIN_SCENE_PATH: String = "res://sources/brain/brain.tscn"
 const GARDEN_SIZE: int = 2400
 const GARDENS_COUNT: int = 12
 const MIN_LESSONS: int = 12
 const MAX_LESSONS: int = 60
-const GARDEN_CENTER_Y: float = 900.0
-const GARDEN_CIRCLE_RADIUS: float = 850.0
 const FINAL_BOSS_PADDING: float = 120.0
 const BACK_BUTTON_HOLD_DURATION_SECONDS: float = 1.0
-const LAYOUT_VERSION: int = 14
-# Centers of the 5 fixed button slots (must match garden_XX.tscn positions)
-const SLOT_CENTERS: Array[Vector2i] = [
-	Vector2i(704, 1186), Vector2i(987, 1000), Vector2i(1290, 920),
-	Vector2i(1565, 748), Vector2i(1864, 598)
-]
 
 static var transition_data: Dictionary = {}
-static var cached_gardens_layout: GardensLayout
-static var cached_layout_session_id: int = -1
-static var cached_layout_lessons: int = 0
 
-@export_category("Layout")
-@export var gardens_layout: GardensLayout:
-	set(value):
-		set_gardens_layout(value)
-	get:
-		return _gardens_layout
 @export var starting_garden: int = -1
 @export_category("Minigames")
 @export var minigame_scene_paths: PackedStringArray = PackedStringArray()
@@ -76,7 +60,6 @@ static var cached_layout_lessons: int = 0
 @export var minigames_face_icons: Array[Texture] = []
 
 var lessons: Dictionary = {}
-var _gardens_layout: GardensLayout
 var points: Array[Array] = []
 var lesson_distribution: Array[int] = []
 var is_scrolling: bool = false
@@ -116,7 +99,7 @@ var is_back_button_hold_active: bool = false
 @onready var lock: Control = %Lock
 @onready var kalulu: KALULU = %Kalulu
 @onready var kalulu_button: CanvasItem = %KaluluButton
-# TODO: Rename / Move those audio inside the language packs to remove all references to brain_screen which does not exists anymore
+@onready var brain_button: TextureButton = %BrainButton
 @onready var brain_tutorial_speeches: Array[AudioStream] = [
 	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_1")),
 	Database.load_external_sound(Database.get_kalulu_speech_path("brain_screen", "intro_2")),
@@ -388,7 +371,7 @@ func _ready() -> void:
 		return
 	if scroll_end_spacer:
 		scroll_end_base_width = scroll_end_spacer.custom_minimum_size.x
-	gardens_layout = get_session_layout(lesson_count)
+	_build_gardens()
 	_set_up_lessons()
 	_configure_clouds_for_gardens()
 
@@ -446,238 +429,31 @@ func _play_brain_tutorial() -> void:
 
 #region Garden layout helpers
 
-static func _get_lesson_button_half_size() -> Vector2:
-	return Vector2(120, 120)
-
-
-static func _get_layout_cache_base_dir() -> String:
-	if UserDataManager and UserDataManager.has_method("get_student_folder"):
-		var student_folder: String = UserDataManager.get_student_folder()
-		if student_folder != "":
-			return student_folder.path_join("gardens_layout_cache")
-	return "user://gardens_layout_cache"
-
-
-static func _get_layout_cache_path(session_id: int, total_lessons: int) -> String:
-	return _get_layout_cache_base_dir().path_join("layout_v%s_%s_%s.tres" % [str(LAYOUT_VERSION), str(session_id), str(total_lessons)])
-
-
-static func _load_layout_from_cache(session_id: int, total_lessons: int) -> GardensLayout:
-	var cache_path: String = _get_layout_cache_path(session_id, total_lessons)
-	if not FileAccess.file_exists(cache_path):
-		return null
-	if not ResourceLoader.exists(cache_path):
-		return null
-	var cached_layout: Resource = ResourceLoader.load(cache_path)
-	if cached_layout is GardensLayout and not (cached_layout as GardensLayout).gardens.is_empty():
-		Log.info("Gardens: Loaded cached layout from %s" % cache_path)
-		return cached_layout as GardensLayout
-	Log.warn("Gardens: Cached layout at %s was invalid, regenerating" % cache_path)
-	return null
-
-
-static func _save_layout_to_cache(layout: GardensLayout, session_id: int, total_lessons: int) -> void:
-	if not layout:
-		return
-	var base_dir: String = _get_layout_cache_base_dir()
-	DirAccess.make_dir_recursive_absolute(base_dir)
-	var cache_path: String = _get_layout_cache_path(session_id, total_lessons)
-	var error: Error = ResourceSaver.save(layout, cache_path)
-	if error != OK:
-		Log.warn("Gardens: Failed to save layout cache at %s: %s" % [cache_path, error_string(error)])
-
-
-static func _find_valid_position_on_garden(_garden_color_index: int, tested_position: Vector2, _garden_dimensions: Vector2, _probe_half_size: Vector2 = Vector2.ZERO) -> Vector2:
-	var center: Vector2 = Vector2(float(GARDEN_SIZE) / 2.0, GARDEN_CENTER_Y)
-	var distance: float = tested_position.distance_to(center)
-	if distance <= GARDEN_CIRCLE_RADIUS:
-		return tested_position
-	# Clamp to circle boundary
-	var direction: Vector2 = (tested_position - center).normalized()
-	return center + direction * GARDEN_CIRCLE_RADIUS
-
-
-static func _find_overlapping_position_index(tested_position: Vector2, placed_positions: Array[Vector2], min_distance: float, ignore_index: int = -1) -> int:
-	for index: int in range(placed_positions.size()):
-		if index == ignore_index:
-			continue
-		if tested_position.distance_to(placed_positions[index]) < min_distance:
-			return index
-	return -1
-
-
-static func _separate_lesson_position(tested_position: Vector2, garden_color_index: int, garden_dimensions: Vector2, placed_positions: Array[Vector2], half_size: Vector2) -> Vector2:
-	var adjusted: Vector2 = tested_position
-	var minimum_spacing: float = maxf(half_size.x, half_size.y) * 2.0 + 8.0
-	for _attempt: int in range(8):
-		var overlap_index: int = _find_overlapping_position_index(adjusted, placed_positions, minimum_spacing)
-		if overlap_index == -1:
-			return adjusted
-		var overlap_gap: float = minimum_spacing - adjusted.distance_to(placed_positions[overlap_index])
-		var vertical_offset: float = overlap_gap + half_size.y
-		var lifted: Vector2 = _find_valid_position_on_garden(garden_color_index, adjusted + Vector2(0.0, -vertical_offset), garden_dimensions, half_size)
-		if _find_overlapping_position_index(lifted, placed_positions, minimum_spacing) == -1:
-			adjusted = lifted
-			continue
-		var shifted_previous: Vector2 = _find_valid_position_on_garden(garden_color_index, placed_positions[overlap_index] + Vector2(-minimum_spacing, 0.0), garden_dimensions, half_size)
-		if _find_overlapping_position_index(shifted_previous, placed_positions, minimum_spacing, overlap_index) == -1:
-			placed_positions[overlap_index] = shifted_previous
-			continue
-		var shifted_right: Vector2 = _find_valid_position_on_garden(garden_color_index, adjusted + Vector2(minimum_spacing, 0.0), garden_dimensions, half_size)
-		if _find_overlapping_position_index(shifted_right, placed_positions, minimum_spacing) == -1:
-			adjusted = shifted_right
-			continue
-		break
-	return adjusted
-
-
-static func compute_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
-	Log.info("Gardens: Computing lessons distribution")
-	Log.trace("Gardens: ComputeLessonsDistribution: Parameters total_lessons = %s, garden_layouts count = %s" % [str(total_lessons), str(garden_layouts.size())])
-	var total_capacity: int = 0
-	for layout: GardenLayout in garden_layouts:
-		total_capacity += layout.lesson_buttons.size()
+# Distributes total_lessons across the GARDENS_COUNT gardens, front-loaded (ceiling
+# division, so earlier gardens fill first — e.g. 37 lessons → 4 in the first garden,
+# 3 in each of the other 11), capped at Garden.MAX_LESSONS per garden. Returns one
+# lesson count per garden, in display order.
+static func compute_lessons_distribution(total_lessons: int) -> Array[int]:
+	Log.info("Gardens: Computing lessons distribution for %s lessons" % str(total_lessons))
+	var total_capacity: int = GARDENS_COUNT * Garden.MAX_LESSONS
 	if total_lessons > total_capacity:
-		# This should not be even possible. If this log is triggered, there is a bug on layout generation.
-		Log.error("Gardens: Not enough lesson slots in provided layouts (capacity: %s, requested: %s). Some lessons will be left undistributed." % [str(total_capacity), str(total_lessons)])
+		Log.error("Gardens: Not enough lesson slots (capacity: %s, requested: %s). Some lessons will be left undistributed." % [str(total_capacity), str(total_lessons)])
 	var distribution: Array[int] = []
 	var lessons_left: int = total_lessons
-	var gardens_left: int = garden_layouts.size()
-	for layout_index: int in range(garden_layouts.size()):
-		var max_lessons: int = garden_layouts[layout_index].lesson_buttons.size()
-		Log.trace("Gardens: Garden index %s can host up to %s lessons" % [str(layout_index), str(max_lessons)])
+	var gardens_left: int = GARDENS_COUNT
+	for _garden_index: int in range(GARDENS_COUNT):
 		var lessons_for_garden: int = 0
 		if gardens_left > 0:
 			lessons_for_garden = int(ceili(float(lessons_left) / float(gardens_left)))
-		lessons_for_garden = min(lessons_for_garden, max_lessons)
+		lessons_for_garden = min(lessons_for_garden, Garden.MAX_LESSONS)
 		if lessons_for_garden > lessons_left:
 			lessons_for_garden = lessons_left
 		distribution.append(lessons_for_garden)
-		Log.trace("Gardens: Assigning %s lessons to garden index %s (lessons left before assignment: %s)" % [str(lessons_for_garden), str(layout_index), str(lessons_left)])
 		lessons_left -= lessons_for_garden
 		gardens_left -= 1
-		Log.trace("Gardens: Lessons left after assignment: %s, gardens left: %s" % [str(lessons_left), str(gardens_left)])
 	if lessons_left > 0:
-		Log.error("Gardens: %s lessons could not be assigned to any garden layout" % str(lessons_left))
+		Log.error("Gardens: %s lessons could not be assigned to any garden" % str(lessons_left))
 	return distribution
-
-
-static func get_lessons_distribution(total_lessons: int, garden_layouts: Array[GardenLayout]) -> Array[int]:
-	var distribution: Array[int] = []
-	var lessons_from_layout: int = 0
-	var has_cached_distribution: bool = true
-	for layout: GardenLayout in garden_layouts:
-		if layout.lesson_buttons.is_empty():
-			has_cached_distribution = false
-			break
-		distribution.append(layout.lesson_buttons.size())
-		lessons_from_layout += layout.lesson_buttons.size()
-	if has_cached_distribution and lessons_from_layout == total_lessons:
-		Log.trace("Gardens: Using lesson distribution from provided layout")
-		return distribution
-	if has_cached_distribution:
-		Log.warn("Gardens: Layout lesson count mismatch (layout lessons: %s, expected: %s), recomputing distribution" % [str(lessons_from_layout), str(total_lessons)])
-	return compute_lessons_distribution(total_lessons, garden_layouts)
-
-
-static func get_session_layout(total_lessons: int) -> GardensLayout:
-	var session_id: int = UserDataManager.get_student_session_id()
-	var has_cached_layout: bool = cached_gardens_layout != null
-	var session_changed: bool = cached_layout_session_id != session_id
-	var lessons_changed: bool = cached_layout_lessons != total_lessons
-	if session_changed or lessons_changed:
-		if has_cached_layout:
-			Log.info("Gardens: Session or lesson count changed, regenerating gardens layout")
-		cached_gardens_layout = null
-	if not cached_gardens_layout:
-		var disk_cached_layout: GardensLayout = _load_layout_from_cache(session_id, total_lessons)
-		if disk_cached_layout:
-			cached_gardens_layout = disk_cached_layout
-			cached_layout_session_id = session_id
-			cached_layout_lessons = total_lessons
-			return cached_gardens_layout
-		cached_gardens_layout = generate_gardens_layout(total_lessons)
-		cached_layout_session_id = session_id
-		cached_layout_lessons = total_lessons
-		_save_layout_to_cache(cached_gardens_layout, session_id, total_lessons)
-	else:
-		Log.trace("Gardens: Reusing cached layout for session %s" % str(session_id))
-	return cached_gardens_layout
-
-
-static func generate_gardens_layout(total_lessons: int) -> GardensLayout:
-	var layout: GardensLayout = GardensLayout.new()
-	if total_lessons <= 0:
-		return layout
-	Log.info("Gardens: Generating dynamic gardens layout")
-	Log.trace("Gardens: Total lessons to layout: %s" % str(total_lessons))
-	var lessons_left: int = total_lessons
-	var garden_index: int = 0
-	while lessons_left > 0 and garden_index < GARDENS_COUNT:
-		var gardens_left: int = GARDENS_COUNT - garden_index
-		var lessons_for_garden: int = int(ceili(float(lessons_left) / float(gardens_left)))
-		Log.trace("Gardens: Generating layout for garden %s with %s lessons left" % [str(garden_index), str(lessons_left)])
-		layout.gardens.append(_generate_single_garden_layout(garden_index, lessons_for_garden))
-		lessons_left -= lessons_for_garden
-		Log.trace("Gardens: Lessons left after garden %s generation: %s" % [str(garden_index), str(lessons_left)])
-		garden_index += 1
-	Log.info("Gardens: Completed layout generation with %s gardens" % str(layout.gardens.size()))
-	return layout
-
-
-static func _generate_single_garden_layout(garden_index: int, lessons_for_garden: int) -> GardenLayout:
-	Log.info("Gardens: Generating single garden layout for garden %s" % str(garden_index))
-	Log.trace("Gardens: Garden %s will include %s lessons" % [str(garden_index), str(lessons_for_garden)])
-	var garden_layout: GardenLayout = GardenLayout.new()
-	garden_layout.color = garden_index % GARDENS_COUNT
-	Log.trace("Gardens: Garden %s color index set to %s" % [str(garden_index), str(garden_layout.color)])
-	var garden_dimensions: Vector2 = Vector2(GARDEN_SIZE, GARDEN_CENTER_Y * 2.0)
-	var half_size: Vector2 = _get_lesson_button_half_size()
-	
-	# Initial path positions
-	var raw_positions: Array[Vector2i] = _get_slot_positions_for_count(lessons_for_garden)
-	
-	# Clamp to texture + avoid overlaps
-	var resolved_positions: Array[Vector2] = []
-	for lesson_index: int in range(lessons_for_garden):
-		var pos: Vector2 = Vector2(raw_positions[lesson_index])
-		var valid: Vector2 = _find_valid_position_on_garden(garden_layout.color, pos, garden_dimensions, half_size)
-		var separated: Vector2 = _separate_lesson_position(valid, garden_layout.color, garden_dimensions, resolved_positions, half_size)
-		if not separated.is_equal_approx(valid):
-			Log.trace("Gardens: Separated lesson %s position from %s to %s to avoid overlap" % [str(lesson_index), str(valid), str(separated)])
-		resolved_positions.append(separated)
-		var rounded: Vector2i = Utils.round_vec2(separated)
-		if not (rounded as Vector2).is_equal_approx(raw_positions[lesson_index]):
-			Log.trace("Gardens: Adjusted lesson %s position from %s to %s to stay on background" % [str(lesson_index), str(raw_positions[lesson_index]), str(rounded)])
-			raw_positions[lesson_index] = rounded
-		Log.trace("Gardens: Garden %s lesson %s position calculated at %s" % [str(garden_index), str(lesson_index), str(rounded)])
-	
-	# Build lesson buttons with tangents
-	var lesson_buttons: Array[GardenLayout.GardenLayoutLessonButton] = []
-	for lesson_index: int in range(resolved_positions.size()):
-		var lesson_position: Vector2i = Utils.round_vec2(resolved_positions[lesson_index])
-		var path_out: Vector2i = Vector2i.ZERO
-		if lesson_index + 1 < resolved_positions.size():
-			var next_position: Vector2 = resolved_positions[lesson_index + 1]
-			var tangent: Vector2 = (next_position - resolved_positions[lesson_index]) * 0.5
-			Log.trace("Gardens: Garden %s lesson %s tangent to next lesson: %s" % [str(garden_index), str(lesson_index), str(tangent)])
-			path_out = Vector2i(int(tangent.x), int(tangent.y))
-		else:
-			path_out = Vector2i(int(GARDEN_SIZE * 0.15), int((-1.0 if (garden_index % 2) == 0 else 1.0) * 60))
-			Log.trace("Gardens: Garden %s last lesson %s path out set to %s" % [str(garden_index), str(lesson_index), str(path_out)])
-		lesson_buttons.append(GardenLayout.GardenLayoutLessonButton.new(lesson_position, path_out))
-	garden_layout.lesson_buttons = lesson_buttons
-
-	Log.info("Gardens: Finished generating garden layout for garden %s" % str(garden_index))
-	return garden_layout
-
-
-static func _get_slot_positions_for_count(lesson_count: int) -> Array[Vector2i]:
-	var indices: Array = Garden.SLOT_SELECTION.get(lesson_count, [])
-	var positions: Array[Vector2i] = []
-	for index: int in indices:
-		positions.append(SLOT_CENTERS[index])
-	return positions
 
 #endregion
 
@@ -787,13 +563,15 @@ func _build_wheel(exercises: Array[int], lesson_unlocks: Dictionary) -> void:
 		var layout: Dictionary = _get_wedge_layout(minigame_count, wedge_index)
 		var exercise_type: int = exercises[wedge_index]
 		var icon_index: int = exercise_type - 1
-		# Guard against exercise types with no matching wheel icon (e.g. the
-		# removed fish minigame, type 10): fall back to the highest available one
-		# so we never index past the icon arrays.
-		var max_icon_index: int = minigames_body_icons.size() - 1
-		if icon_index < 0 or icon_index > max_icon_index:
-			Log.error("Gardens: Exercise type %d has no wheel icon (%d available); using the highest available minigame instead." % [exercise_type, minigames_body_icons.size()])
-			icon_index = clampi(icon_index, 0, max_icon_index)
+		# Only the nine wheel minigames have an icon. The boss is deliberately not one
+		# of them -- it lives on the boss buttons between gardens -- so an exercise type
+		# without an icon is a data error. Substituting the nearest minigame would be
+		# worse than showing nothing: icon_index is also what the press handler launches
+		# (see the bind below), so the lesson would silently start a game it was never
+		# assigned. Leave that slice empty; every other index stays aligned.
+		if icon_index < 0 or icon_index >= minigames_body_icons.size():
+			Log.error("Gardens: Exercise type %d has no wheel icon (%d available); slice left empty." % [exercise_type, minigames_body_icons.size()])
+			continue
 		var status: StudentProgression.Status = lesson_unlocks["games"][wedge_index] as StudentProgression.Status
 		var wedge: MinigameWedge = MINIGAME_WEDGE_SCENE.instantiate()
 		wedges_container.add_child(wedge)
@@ -902,9 +680,9 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	in_minigame_selection = true
 	# Sets the variables for the current garden and lesson
 	current_lesson_number = lesson_number
-	var garden_index_for_lesson: int = _get_garden_index_for_lesson(lesson_number)
-	if garden_index_for_lesson >= 0 and garden_index_for_lesson < garden_parent.get_child_count():
-		current_garden = garden_parent.get_child(garden_index_for_lesson)
+	var garden_index: int = _get_garden_index_for_lesson(lesson_number)
+	if garden_index >= 0 and garden_index < garden_parent.get_child_count():
+		current_garden = garden_parent.get_child(garden_index)
 	if button:
 		current_button = button
 		current_button.show_placeholder(true)
@@ -924,6 +702,7 @@ func _open_minigames_layout(button: LessonButton, lesson_number: int) -> void:
 	minigame_selection.show()
 	back_button.hide()
 	kalulu_button.hide()
+	brain_button.hide()
 	line_particles.hide()
 	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(minigame_selection, "modulate:a", 1.0, 0.25)
@@ -1024,6 +803,7 @@ func _close_minigames_layout() -> void:
 	minigame_selection.hide()
 	back_button.show()
 	kalulu_button.show()
+	brain_button.show()
 	line_particles.show()
 	for button: LessonButton in current_garden.get_lesson_buttons():
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -1035,8 +815,8 @@ func _set_up_lessons() -> void:
 	var lesson_number: int = 1
 	for garden_ind: int in range(garden_parent.get_child_count()):
 		var garden_control: Garden = garden_parent.get_child(garden_ind)
-		var button_count: int = garden_control.garden_layout.lesson_buttons.size()
 		var lesson_buttons: Array[LessonButton] = garden_control.get_lesson_buttons()
+		var button_count: int = lesson_buttons.size()
 		for index: int in range(button_count):
 			if not lesson_number in lessons:
 				break
@@ -1045,10 +825,11 @@ func _set_up_lessons() -> void:
 			lesson_number += 1
 
 
-func set_gardens_layout(p_gardens_layout: GardensLayout) -> void:
-	Log.info("Gardens: Setting gardens layout")
-	_gardens_layout = p_gardens_layout
-	Log.trace("Gardens: Layout contains %s gardens" % str(_gardens_layout.gardens.size()))
+# Instantiates the garden scenes, then (after a frame so their button transforms are
+# final) builds the progression path and boss buttons. Called fire-and-forget from
+# _ready: add_gardens() runs synchronously, the path/boss setup resumes next frame.
+func _build_gardens() -> void:
+	Log.info("Gardens: Building gardens")
 	add_gardens()
 	if garden_parent:
 		Log.trace("Gardens: Yielding a frame to ensure garden controls are ready before setting up the path")
@@ -1064,21 +845,15 @@ func add_gardens() -> void:
 	for child: Node in garden_parent.get_children():
 		child.free()
 	Log.info("Gardens: Computing lesson distribution for new gardens")
-	lesson_distribution = get_lessons_distribution(lessons.size(), gardens_layout.gardens)
-	var garden_index: int = 0
-	for layout_index: int in range(gardens_layout.gardens.size()):
-		Log.trace("Gardens: Preparing garden %s with layout index %s" % [str(garden_index), str(layout_index)])
-		var garden_layout: GardenLayout = gardens_layout.gardens[layout_index]
-		var garden_scene: PackedScene = load(GARDEN_SCENE_PATHS[layout_index]) as PackedScene
+	lesson_distribution = compute_lessons_distribution(lessons.size())
+	for garden_index: int in range(GARDEN_SCENE_PATHS.size()):
+		var garden_scene: PackedScene = load(GARDEN_SCENE_PATHS[garden_index]) as PackedScene
 		var garden: Garden = garden_scene.instantiate()
 		garden_parent.add_child(garden)
 		garden.garden_index = garden_index
-		garden_index += 1
-		var lessons_for_garden: int = lesson_distribution[layout_index]
-		Log.trace("Gardens: Garden %s will host %s lessons" % [str(garden.garden_index), str(lessons_for_garden)])
-		garden_layout.lesson_buttons.resize(lessons_for_garden)
-		Log.trace("Gardens: Assigning layout to garden %s" % str(garden.garden_index))
-		garden.garden_layout = garden_layout
+		var lessons_for_garden: int = lesson_distribution[garden_index] if garden_index < lesson_distribution.size() else 0
+		Log.trace("Gardens: Garden %s will host %s lessons" % [str(garden_index), str(lessons_for_garden)])
+		garden.set_lesson_count(lessons_for_garden)
 	_sync_boss_buttons_container()
 
 
@@ -1297,7 +1072,7 @@ func _get_final_boss_center_position() -> Vector2:
 
 
 func _get_final_boss_size() -> Vector2:
-	return _get_lesson_button_half_size() * 4.0
+	return Vector2(480, 480)
 
 
 func _should_show_final_boss() -> bool:
@@ -1376,12 +1151,19 @@ func _get_boss_segment_points(gate_lesson: int, segment_ratio: float = 0.5) -> P
 
 
 func _get_garden_index_for_lesson(lesson_number: int) -> int:
+	return garden_index_for_lesson(lesson_number, lesson_distribution)
+
+
+# Which garden hosts a lesson, given a distribution from compute_lessons_distribution.
+# Static so the screens that only name the garden -- the teacher's progress table --
+# can ask without a gardens screen to ask it of.
+static func garden_index_for_lesson(lesson_number: int, distribution: Array[int]) -> int:
 	var lesson_index: int = 0
-	for garden_index: int in range(lesson_distribution.size()):
-		lesson_index += lesson_distribution[garden_index]
+	for garden_index: int in range(distribution.size()):
+		lesson_index += distribution[garden_index]
 		if lesson_number <= lesson_index:
 			return garden_index
-	return max(0, lesson_distribution.size() - 1)
+	return max(0, distribution.size() - 1)
 
 
 func _lock() -> void:
@@ -1513,6 +1295,11 @@ func _confirm_back_button_pressed() -> void:
 	UserDataManager.logout_student()
 	await (OpeningCurtain as OpeningCurtainClass).close()
 	SceneLoader.change_scene("res://sources/menus/login/login.tscn")
+
+
+func _on_brain_button_pressed() -> void:
+	await (OpeningCurtain as OpeningCurtainClass).close()
+	SceneLoader.change_scene(BRAIN_SCENE_PATH)
 
 
 func _on_back_button_button_down() -> void:

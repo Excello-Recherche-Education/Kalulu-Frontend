@@ -4,35 +4,35 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p03nk"]
 atlas = ExtResource("1_0mxru")
-region = Rect2(0, 4800, 800, 800)
+region = Rect2(0, 2304, 384, 384)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i5s4f"]
 atlas = ExtResource("1_0mxru")
-region = Rect2(800, 4800, 800, 800)
+region = Rect2(384, 2304, 384, 384)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l0s2a"]
 atlas = ExtResource("1_0mxru")
-region = Rect2(1600, 4800, 800, 800)
+region = Rect2(768, 2304, 384, 384)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tt32a"]
 atlas = ExtResource("1_0mxru")
-region = Rect2(2400, 4800, 800, 800)
+region = Rect2(1152, 2304, 384, 384)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l8qvt"]
 atlas = ExtResource("1_0mxru")
-region = Rect2(3200, 4800, 800, 800)
+region = Rect2(1536, 2304, 384, 384)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vblis"]
 atlas = ExtResource("1_0mxru")
-region = Rect2(4000, 4800, 800, 800)
+region = Rect2(1920, 2304, 384, 384)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e757m"]
 atlas = ExtResource("1_0mxru")
-region = Rect2(4800, 4800, 800, 800)
+region = Rect2(2304, 2304, 384, 384)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iwxb4"]
 atlas = ExtResource("1_0mxru")
-region = Rect2(5600, 4800, 800, 800)
+region = Rect2(2688, 2304, 384, 384)
 
 [resource]
 animations = [{
@@ -61,7 +61,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_iwxb4")
 }],
-"loop": false,
+"loop": 0,
 "name": &"feathers_fall",
 "speed": 7.0
 }]

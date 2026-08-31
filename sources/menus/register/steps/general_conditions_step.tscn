@@ -3,51 +3,88 @@
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_up4b7"]
 [ext_resource type="Script" uid="uid://ccicojpspkpmu" path="res://sources/menus/register/steps/general_conditions_step.gd" id="2_5ibpi"]
 [ext_resource type="LabelSettings" uid="uid://ohvlqccl2oog" path="res://resources/themes/error_label_settings.tres" id="3_qdoff"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="4_bfnt7"]
 
 [node name="GeneralConditionsStep" unique_id=554321004 instance=ExtResource("1_up4b7")]
 script = ExtResource("2_5ibpi")
 
-[node name="PanelContainer" parent="." index="2" unique_id=824416175]
-offset_left = -785.0
-offset_right = 785.0
-offset_bottom = 1344.0
+[node name="Title" type="Label" parent="." index="2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -940.0
+offset_top = 130.0
+offset_right = 940.0
+offset_bottom = 239.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_type_variation = &"Title"
+text = "CONDITIONS"
+horizontal_alignment = 1
+
+[node name="PanelContainer" parent="." index="3" unique_id=824416175]
+offset_left = -940.0
+offset_top = 300.0
+offset_right = 940.0
+offset_bottom = 1355.0
+theme_type_variation = &"Card"
 
 [node name="QuestionContainer" parent="PanelContainer" index="0" unique_id=788285574]
-theme_override_constants/margin_top = 25
+theme_override_constants/margin_left = 106
+theme_override_constants/margin_top = 74
+theme_override_constants/margin_right = 106
+theme_override_constants/margin_bottom = 74
+
+[node name="VBoxContainer" parent="PanelContainer/QuestionContainer" index="0" unique_id=166746788]
+theme_override_constants/separation = 54
+alignment = 0
 
 [node name="ConditionsLabel" type="RichTextLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="0" unique_id=366575860]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 332)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 32
-theme_override_font_sizes/bold_font_size = 32
-theme_override_font_sizes/bold_italics_font_size = 32
-theme_override_font_sizes/italics_font_size = 32
-theme_override_font_sizes/mono_font_size = 32
+theme_override_fonts/bold_font = ExtResource("4_bfnt7")
+theme_override_font_sizes/normal_font_size = 42
+theme_override_font_sizes/bold_font_size = 42
+theme_override_font_sizes/bold_italics_font_size = 42
+theme_override_font_sizes/italics_font_size = 42
+theme_override_font_sizes/mono_font_size = 42
+bbcode_enabled = true
 text = "GENERAL_CONDITIONS_TEXT"
 autowrap_mode = 2
 shortcut_keys_enabled = false
 
-[node name="AcceptContainer" type="MarginContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="1" unique_id=740122503]
+[node name="AcceptContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="1" unique_id=740122503]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/separation = 26
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer" index="0" unique_id=810850868]
+[node name="AcceptRow" type="HBoxContainer" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer" index="0" unique_id=810850868]
 layout_mode = 2
+theme_override_constants/separation = 38
 
-[node name="Accept" type="CheckBox" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer" index="0" unique_id=537282954]
+[node name="Accept" type="Button" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/AcceptRow" index="0" unique_id=537282954]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"CheckBoxSquare"
+toggle_mode = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+
+[node name="AcceptLabel" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/AcceptRow" index="1" unique_id=537282955]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
+size_flags_vertical = 4
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"CardHeading"
 text = "ACCEPT_GENERAL_CONDITIONS"
-flat = true
 
-[node name="AcceptError" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer" index="1" unique_id=46587503]
+[node name="AcceptError" type="Label" parent="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer" index="1" unique_id=46587503]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -60,7 +97,7 @@ visible = false
 [node name="InfoLabel" parent="PanelContainer/QuestionContainer/VBoxContainer" parent_id_path=PackedInt32Array(166746788) index="3" unique_id=402601850]
 visible = false
 
-[node name="FormValidator" parent="." index="3" unique_id=577712412]
+[node name="FormValidator" parent="." index="4" unique_id=577712412]
 visible = false
 
-[connection signal="pressed" from="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/VBoxContainer/Accept" to="." method="_on_accept_pressed"]
+[connection signal="pressed" from="PanelContainer/QuestionContainer/VBoxContainer/AcceptContainer/AcceptRow/Accept" to="." method="_on_accept_pressed"]

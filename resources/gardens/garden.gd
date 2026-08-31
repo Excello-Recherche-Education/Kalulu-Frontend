@@ -2,7 +2,8 @@
 class_name Garden
 extends Control
 
-const BACKGROUND_PATH_MODEL: String = "res://assets/gardens/gardens/garden_%02d.png"
+const GRAYSCALE_SHADER: Shader = preload("res://resources/shaders/grayscale.gdshader")
+const RECOLOR_SHADER: Shader = preload("res://resources/shaders/recolor.gdshader")
 const MAX_LESSONS: int = 5
 # Maps lesson count → which slot indices to use
 const SLOT_SELECTION: Dictionary = {
@@ -16,10 +17,12 @@ const WHEEL_WEDGE_LOCKED: Color = Color("e6e6e6")
 const ANIMAL_LOCKED_COLOR: Color = Color("c9c9c9")
 const WHEEL_HIGHLIGHT: Color = Color("fbb03b")
 
-@export var garden_layout: GardenLayout:
-	set = set_garden_layout
 ## Title is for developer reference only — not used in-game.
 @export var title: String = ""
+## The garden's animal sprite(s) (jellyfish, turtle, ...), assigned per garden
+## scene. The brain overview desaturates them when the garden has no unlocked
+## lesson. See set_greyed_out().
+@export var animal_sprites: Array[TextureRect] = []
 @export var unlocked_lesson: Color = Color("0a555b")
 @export var unlocked_lesson_text: Color = Color("9be3ea")
 @export var completed_lesson: Color = Color("9be3ea")
@@ -30,11 +33,15 @@ const WHEEL_HIGHLIGHT: Color = Color("fbb03b")
 ## Outline color flagging the next step to play.
 @export var animal_unlocked_color: Color = Color.WHITE
 
-var color: Color
 var current_progression: float = 0.0
 var max_progression: float = 0.0
 var garden_index: int = -1
 var active_buttons: Array[LessonButton] = []
+# Background modulate authored in the garden scene, restored when un-greying.
+var _default_background_modulate: Color = Color.WHITE
+var _background_recolor_material: ShaderMaterial
+var _victory_assets_recolor_material: ShaderMaterial
+var _original_recolor_materials: Dictionary = {}
 
 @onready var all_slots: Array[LessonButton] = [
 	$Buttons/Slot1, $Buttons/Slot2, $Buttons/Slot3, $Buttons/Slot4, $Buttons/Slot5
@@ -47,15 +54,15 @@ func _ready() -> void:
 	all_victory_assets.append_array(%Victory_Assets.get_children().filter(func(node: Node) -> bool:
 		return node is TextureRect
 	))
+	if background:
+		_default_background_modulate = background.modulate
 
 
-func set_garden_layout(p_garden_layout: GardenLayout) -> void:
-	if not p_garden_layout:
-		Log.error("Garden: Cannot set garden layout because it is null")
-		return
-	garden_layout = p_garden_layout
-	set_background(garden_layout.color)
-	_configure_slots(garden_layout.lesson_buttons.size())
+# Shows and configures `lesson_count` of the garden's fixed slots (see _configure_slots
+# and SLOT_SELECTION). The background and slot positions are authored in the garden
+# scene, so nothing else needs to be set here.
+func set_lesson_count(lesson_count: int) -> void:
+	_configure_slots(lesson_count)
 	_apply_colors_to_buttons()
 	_hide_all_victory_assets()
 
@@ -77,13 +84,19 @@ func _configure_slots(lesson_count: int) -> void:
 		active_buttons.append(slot)
 
 
-func set_background(p_color: int) -> void:
-	if not background:
-		return
-	var path: String = BACKGROUND_PATH_MODEL % [p_color + 1]
-	var texture: Texture2D = load(path) if ResourceLoader.exists(path) else load(BACKGROUND_PATH_MODEL % [1])
-	background.texture = texture
-	color = unlocked_lesson
+# Brain overview only: a garden with no unlocked lesson is shown "asleep" — its
+# background drops its color tint (plain white modulate) and its animal(s) are
+# desaturated through grayscale.gdshader. A garden with at least one unlocked
+# lesson keeps its default colors.
+func set_greyed_out(is_greyed_out: bool) -> void:
+	if background:
+		background.modulate = Color.WHITE if is_greyed_out else _default_background_modulate
+	var grayscale: ShaderMaterial = null
+	if is_greyed_out:
+		grayscale = ShaderMaterial.new()
+		grayscale.shader = GRAYSCALE_SHADER
+	for animal: TextureRect in animal_sprites:
+		animal.material = grayscale
 
 
 func _apply_colors_to_buttons() -> void:
@@ -137,3 +150,72 @@ func get_progress_ratio() -> float:
 	if max_progression <= 0.0:
 		return 0.0
 	return current_progression / max_progression
+
+
+func get_reward_color() -> Color:
+	return _default_background_modulate if background else wheel_background
+
+
+func get_reward_rect() -> Rect2:
+	return background.get_global_rect() if background else get_global_rect()
+
+
+#region Reward recolor (brain-screen final-boss animation)
+
+# Assigns fresh recolor materials to the garden art. The background and victory
+# assets use separate target colours; animals are intentionally left untouched.
+func apply_recolor(background_color: Color, victory_assets_color: Color) -> Array[ShaderMaterial]:
+	var materials: Array[ShaderMaterial] = []
+	if background:
+		_background_recolor_material = _make_recolor_material(background_color)
+		_apply_recolor_material(background, _background_recolor_material)
+		materials.append(_background_recolor_material)
+	if not all_victory_assets.is_empty():
+		_victory_assets_recolor_material = _make_recolor_material(victory_assets_color)
+		for asset: TextureRect in all_victory_assets:
+			_apply_recolor_material(asset, _victory_assets_recolor_material)
+		materials.append(_victory_assets_recolor_material)
+	return materials
+
+
+func get_recolor_materials() -> Array[ShaderMaterial]:
+	var materials: Array[ShaderMaterial] = []
+	if _background_recolor_material:
+		materials.append(_background_recolor_material)
+	if _victory_assets_recolor_material:
+		materials.append(_victory_assets_recolor_material)
+	return materials
+
+
+func clear_recolor() -> void:
+	for sprite: CanvasItem in _recolored_sprites():
+		if _original_recolor_materials.has(sprite):
+			sprite.material = _original_recolor_materials[sprite] as Material
+	_background_recolor_material = null
+	_victory_assets_recolor_material = null
+	_original_recolor_materials.clear()
+
+
+func _make_recolor_material(color: Color) -> ShaderMaterial:
+	var recolor_material: ShaderMaterial = ShaderMaterial.new()
+	recolor_material.shader = RECOLOR_SHADER
+	recolor_material.set_shader_parameter("target_color", color)
+	recolor_material.set_shader_parameter("mix_amount", 0.0)
+	return recolor_material
+
+
+func _apply_recolor_material(sprite: CanvasItem, recolor_material: ShaderMaterial) -> void:
+	if not _original_recolor_materials.has(sprite):
+		_original_recolor_materials[sprite] = sprite.material
+	sprite.material = recolor_material
+
+
+func _recolored_sprites() -> Array[CanvasItem]:
+	var sprites: Array[CanvasItem] = []
+	if background:
+		sprites.append(background)
+	for asset: TextureRect in all_victory_assets:
+		sprites.append(asset)
+	return sprites
+
+#endregion

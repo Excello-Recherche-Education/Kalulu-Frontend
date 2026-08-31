@@ -1,0 +1,67 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://d4kxcnvsikpo2"]
+
+[ext_resource type="Texture2D" uid="uid://dvuufrv81k3js" path="res://assets/minigames/boss/friends/frog.png" id="1_xouqy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2rjb"]
+atlas = ExtResource("1_xouqy")
+region = Rect2(0, 0, 200, 232)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4tv3"]
+atlas = ExtResource("1_xouqy")
+region = Rect2(200, 0, 200, 232)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knv72"]
+atlas = ExtResource("1_xouqy")
+region = Rect2(400, 0, 200, 232)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjvnv"]
+atlas = ExtResource("1_xouqy")
+region = Rect2(600, 0, 200, 232)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hwhp6"]
+atlas = ExtResource("1_xouqy")
+region = Rect2(0, 232, 200, 232)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxuun"]
+atlas = ExtResource("1_xouqy")
+region = Rect2(200, 232, 200, 232)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p01nq"]
+atlas = ExtResource("1_xouqy")
+region = Rect2(400, 232, 200, 232)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4op4"]
+atlas = ExtResource("1_xouqy")
+region = Rect2(600, 232, 200, 232)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y2rjb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f4tv3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knv72")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjvnv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hwhp6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxuun")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p01nq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x4op4")
+}],
+"loop": 0,
+"name": &"idle_front",
+"speed": 12.0
+}]

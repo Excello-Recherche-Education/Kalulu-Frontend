@@ -63,7 +63,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 tooltip_text = "Save"
 
-[node name="TextureRect" parent="HBoxContainer/HBoxContainer/SaveButton" index="0"]
+[node name="TextureRect" parent="HBoxContainer/HBoxContainer/SaveButton" index="0" unique_id=1207987905]
 texture = ExtResource("2_dorlw")
 
 [node name="BackButton" parent="HBoxContainer/HBoxContainer" unique_id=1584933352 instance=ExtResource("1_ej3gu")]
@@ -73,7 +73,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 tooltip_text = "Back (no save)"
 
-[node name="TextureRect" parent="HBoxContainer/HBoxContainer/BackButton" index="0"]
+[node name="TextureRect" parent="HBoxContainer/HBoxContainer/BackButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_e0h3c")
 
 [node name="FileDialog" type="FileDialog" parent="." unique_id=177443815]

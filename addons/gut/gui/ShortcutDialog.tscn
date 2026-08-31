@@ -1,28 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://dj5ve0bq7xa5j"]
+[gd_scene format=3 uid="uid://dj5ve0bq7xa5j"]
 
 [ext_resource type="Script" uid="uid://dc5jgemxslgvl" path="res://addons/gut/gui/ShortcutDialog.gd" id="1_qq8qn"]
 [ext_resource type="PackedScene" uid="uid://sfb1fw8j6ufu" path="res://addons/gut/gui/ShortcutButton.tscn" id="2_i3wie"]
 
-[node name="ShortcutDialog" type="ConfirmationDialog"]
+[node name="ShortcutDialog" type="ConfirmationDialog" unique_id=334881043]
 oversampling_override = 1.0
 title = "GUT Shortcuts"
 position = Vector2i(0, 36)
-size = Vector2i(1920, 1728)
+size = Vector2i(2560, 2304)
 visible = true
 script = ExtResource("1_qq8qn")
 
-[node name="Scroll" type="ScrollContainer" parent="."]
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 1912.0
-offset_bottom = 1679.0
+[node name="Scroll" type="ScrollContainer" parent="." unique_id=1071425658]
+offset_right = 2560.0
+offset_bottom = 2237.0
 
-[node name="Layout" type="VBoxContainer" parent="Scroll"]
+[node name="Layout" type="VBoxContainer" parent="Scroll" unique_id=642171887]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ShortcutDescription" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription" type="RichTextLabel" parent="Scroll/Layout" unique_id=1566785414]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true
@@ -33,24 +31,24 @@ Shortcuts that only apply to menus are labeled."
 fit_content = true
 scroll_active = false
 
-[node name="TopPad" type="CenterContainer" parent="Scroll/Layout"]
+[node name="TopPad" type="CenterContainer" parent="Scroll/Layout" unique_id=1461215515]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="CPanelButton" type="HBoxContainer" parent="Scroll/Layout"]
+[node name="CPanelButton" type="HBoxContainer" parent="Scroll/Layout" unique_id=476356627]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/Layout/CPanelButton"]
+[node name="Label" type="Label" parent="Scroll/Layout/CPanelButton" unique_id=696654788]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 7
 text = "Show/Hide GUT"
 
-[node name="ShortcutButton" parent="Scroll/Layout/CPanelButton" instance=ExtResource("2_i3wie")]
+[node name="ShortcutButton" parent="Scroll/Layout/CPanelButton" unique_id=822744995 instance=ExtResource("2_i3wie")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShortcutDescription2" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription2" type="RichTextLabel" parent="Scroll/Layout" unique_id=418975122]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true
@@ -59,20 +57,20 @@ text = "[i]Show/hide the gut panel or move focus to/away from the GUT window.
 fit_content = true
 scroll_active = false
 
-[node name="CRunAll" type="HBoxContainer" parent="Scroll/Layout"]
+[node name="CRunAll" type="HBoxContainer" parent="Scroll/Layout" unique_id=1622526927]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/Layout/CRunAll"]
+[node name="Label" type="Label" parent="Scroll/Layout/CRunAll" unique_id=1624011336]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 7
 text = "Run All"
 
-[node name="ShortcutButton" parent="Scroll/Layout/CRunAll" instance=ExtResource("2_i3wie")]
+[node name="ShortcutButton" parent="Scroll/Layout/CRunAll" unique_id=703613004 instance=ExtResource("2_i3wie")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShortcutDescription3" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription3" type="RichTextLabel" parent="Scroll/Layout" unique_id=176511004]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true
@@ -80,20 +78,20 @@ text = "[i]Run the entire test suite.[/i]"
 fit_content = true
 scroll_active = false
 
-[node name="CRunCurrentScript" type="HBoxContainer" parent="Scroll/Layout"]
+[node name="CRunCurrentScript" type="HBoxContainer" parent="Scroll/Layout" unique_id=1127032732]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/Layout/CRunCurrentScript"]
+[node name="Label" type="Label" parent="Scroll/Layout/CRunCurrentScript" unique_id=518736229]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 7
 text = "Run Current Script"
 
-[node name="ShortcutButton" parent="Scroll/Layout/CRunCurrentScript" instance=ExtResource("2_i3wie")]
+[node name="ShortcutButton" parent="Scroll/Layout/CRunCurrentScript" unique_id=612688583 instance=ExtResource("2_i3wie")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShortcutDescription4" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription4" type="RichTextLabel" parent="Scroll/Layout" unique_id=1557447773]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true
@@ -101,20 +99,20 @@ text = "[i]Run all tests in the currently selected script.[/i]"
 fit_content = true
 scroll_active = false
 
-[node name="CRunCurrentInner" type="HBoxContainer" parent="Scroll/Layout"]
+[node name="CRunCurrentInner" type="HBoxContainer" parent="Scroll/Layout" unique_id=1952035515]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/Layout/CRunCurrentInner"]
+[node name="Label" type="Label" parent="Scroll/Layout/CRunCurrentInner" unique_id=1889055888]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 7
 text = "Run Current Inner Class"
 
-[node name="ShortcutButton" parent="Scroll/Layout/CRunCurrentInner" instance=ExtResource("2_i3wie")]
+[node name="ShortcutButton" parent="Scroll/Layout/CRunCurrentInner" unique_id=689804867 instance=ExtResource("2_i3wie")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShortcutDescription5" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription5" type="RichTextLabel" parent="Scroll/Layout" unique_id=1143884235]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true
@@ -122,20 +120,20 @@ text = "[i]Run only the currently selected inner test class if one is selected.[
 fit_content = true
 scroll_active = false
 
-[node name="CRunCurrentTest" type="HBoxContainer" parent="Scroll/Layout"]
+[node name="CRunCurrentTest" type="HBoxContainer" parent="Scroll/Layout" unique_id=814174614]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/Layout/CRunCurrentTest"]
+[node name="Label" type="Label" parent="Scroll/Layout/CRunCurrentTest" unique_id=1423203832]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 7
 text = "Run Current Test"
 
-[node name="ShortcutButton" parent="Scroll/Layout/CRunCurrentTest" instance=ExtResource("2_i3wie")]
+[node name="ShortcutButton" parent="Scroll/Layout/CRunCurrentTest" unique_id=1060158810 instance=ExtResource("2_i3wie")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShortcutDescription6" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription6" type="RichTextLabel" parent="Scroll/Layout" unique_id=1369427803]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true
@@ -143,20 +141,20 @@ text = "[i]Run only the currently selected test, if one is selected[/i]"
 fit_content = true
 scroll_active = false
 
-[node name="CRunAtCursor" type="HBoxContainer" parent="Scroll/Layout"]
+[node name="CRunAtCursor" type="HBoxContainer" parent="Scroll/Layout" unique_id=43476644]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/Layout/CRunAtCursor"]
+[node name="Label" type="Label" parent="Scroll/Layout/CRunAtCursor" unique_id=1498545532]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 7
 text = "Run At Cursor (menu only)"
 
-[node name="ShortcutButton" parent="Scroll/Layout/CRunAtCursor" instance=ExtResource("2_i3wie")]
+[node name="ShortcutButton" parent="Scroll/Layout/CRunAtCursor" unique_id=1200589698 instance=ExtResource("2_i3wie")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShortcutDescription7" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription7" type="RichTextLabel" parent="Scroll/Layout" unique_id=517926459]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true
@@ -164,20 +162,20 @@ text = "[i]Run the most specific test/inner class/script based on where the curs
 fit_content = true
 scroll_active = false
 
-[node name="CRerun" type="HBoxContainer" parent="Scroll/Layout"]
+[node name="CRerun" type="HBoxContainer" parent="Scroll/Layout" unique_id=1540764724]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/Layout/CRerun"]
+[node name="Label" type="Label" parent="Scroll/Layout/CRerun" unique_id=1880316877]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 7
 text = "Rerun (menu only)"
 
-[node name="ShortcutButton" parent="Scroll/Layout/CRerun" instance=ExtResource("2_i3wie")]
+[node name="ShortcutButton" parent="Scroll/Layout/CRerun" unique_id=546276212 instance=ExtResource("2_i3wie")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShortcutDescription8" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription8" type="RichTextLabel" parent="Scroll/Layout" unique_id=1831133605]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true
@@ -185,20 +183,20 @@ text = "[i]Rerun the test(s) that were last run."
 fit_content = true
 scroll_active = false
 
-[node name="CToggleWindowed" type="HBoxContainer" parent="Scroll/Layout"]
+[node name="CToggleWindowed" type="HBoxContainer" parent="Scroll/Layout" unique_id=50122364]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Scroll/Layout/CToggleWindowed"]
+[node name="Label" type="Label" parent="Scroll/Layout/CToggleWindowed" unique_id=1920621381]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 7
 text = "Toggle Windowed"
 
-[node name="ShortcutButton" parent="Scroll/Layout/CToggleWindowed" instance=ExtResource("2_i3wie")]
+[node name="ShortcutButton" parent="Scroll/Layout/CToggleWindowed" unique_id=1433329463 instance=ExtResource("2_i3wie")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShortcutDescription9" type="RichTextLabel" parent="Scroll/Layout"]
+[node name="ShortcutDescription9" type="RichTextLabel" parent="Scroll/Layout" unique_id=939731592]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 bbcode_enabled = true

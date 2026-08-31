@@ -393,7 +393,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_307cl")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Hide",
 "speed": 12.0
 }, {
@@ -422,7 +422,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_argq8")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Idle",
 "speed": 12.0
 }, {
@@ -451,7 +451,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_t0its")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Idle_blink",
 "speed": 12.0
 }, {
@@ -492,7 +492,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gjfin")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Show",
 "speed": 16.0
 }, {
@@ -533,7 +533,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i17md")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Talk",
 "speed": 12.0
 }, {
@@ -574,7 +574,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_eyd46")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Talk_blink",
 "speed": 12.0
 }, {
@@ -615,7 +615,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wd3f8")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Talk_ear_bend",
 "speed": 12.0
 }, {
@@ -656,7 +656,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fmmvi")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Talk_ear_wiggle",
 "speed": 12.0
 }]

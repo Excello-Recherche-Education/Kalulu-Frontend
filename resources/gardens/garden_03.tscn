@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ch5h4p1o54whq" path="res://resources/gardens/garden.gd" id="1_bwhap"]
 [ext_resource type="Texture2D" uid="uid://ch1ah3nkjy5cl" path="res://assets/gardens/gardens/garden_03.png" id="2_j3ks8"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="3_5rrhr"]
 [ext_resource type="Texture2D" uid="uid://yriarwydqmmg" path="res://assets/gardens/victory_assets/victory_asset_plant_11.png" id="3_gandt"]
 [ext_resource type="Texture2D" uid="uid://ipos556o7hlw" path="res://assets/gardens/victory_assets/victory_asset_plant_12.png" id="4_qxgmk"]
 [ext_resource type="Texture2D" uid="uid://cbq3e4in12oeh" path="res://assets/gardens/victory_assets/victory_asset_moon.png" id="5_3en22"]
@@ -13,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="11_odjw4"]
 [ext_resource type="Texture2D" uid="uid://cn0brlkbklxuu" path="res://assets/gardens/victory_assets/animals/ant.png" id="12_j3ks8"]
 
-[node name="GardenRoot" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905 node_paths=PackedStringArray("animal_sprites")]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -23,7 +24,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_bwhap")
-title = "Purple Turtle Garden"
+title = "Pink Ant Garden"
+animal_sprites = [NodePath("Ant")]
 unlocked_lesson = Color(0.52156866, 0.03137255, 0.40392157, 1)
 unlocked_lesson_text = Color(0.92156863, 0.7529412, 0.87058824, 1)
 completed_lesson = Color(0.92156863, 0.7529412, 0.87058824, 1)
@@ -57,6 +59,7 @@ mouse_filter = 2
 
 [node name="Victory_Asset_01" type="TextureRect" parent="Victory_Assets" unique_id=1278004645]
 modulate = Color(0.52156866, 0.03137255, 0.40392157, 1)
+material = ExtResource("3_5rrhr")
 layout_mode = 0
 offset_left = 521.0
 offset_top = 1273.0
@@ -70,6 +73,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=501856240]
 modulate = Color(0.52156866, 0.03137255, 0.40392157, 1)
+material = ExtResource("3_5rrhr")
 layout_mode = 0
 offset_left = 1511.0
 offset_top = 1078.0
@@ -95,6 +99,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_04" type="TextureRect" parent="Victory_Assets" unique_id=405923099]
 modulate = Color(0.52156866, 0.03137255, 0.40392157, 1)
+material = ExtResource("3_5rrhr")
 layout_mode = 0
 offset_left = 1078.0
 offset_top = 1294.0

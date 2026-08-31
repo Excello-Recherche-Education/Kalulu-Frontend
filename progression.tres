@@ -1,7 +1,3 @@
-[gd_resource type="Resource" script_class="StudentProgression" format=3 uid="uid://d2eidlyvq5bua"]
-
-[ext_resource type="Script" uid="uid://bs5l0l33e7iqf" path="res://resources/user/student_progression.gd" id="1_6qylt"]
+[gd_resource type="Resource" format=3]
 
 [resource]
-script = ExtResource("1_6qylt")
-version = 1.0

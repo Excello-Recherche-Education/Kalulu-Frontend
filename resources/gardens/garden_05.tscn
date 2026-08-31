@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c0lcx7x0naofl" path="res://assets/gardens/victory_assets/victory_asset_clouds.png" id="3_l6rp4"]
 [ext_resource type="Texture2D" uid="uid://x0skor7vxadl" path="res://assets/gardens/victory_assets/victory_asset_plant_16.png" id="4_0y47p"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="4_fja20"]
 [ext_resource type="Texture2D" uid="uid://bqafuj82xbdqm" path="res://assets/gardens/victory_assets/victory_asset_bird_treehouse.png" id="5_fja20"]
 [ext_resource type="Texture2D" uid="uid://bd5pxoufamqy" path="res://assets/gardens/victory_assets/animals/yellow_parakeet.png" id="5_l6rp4"]
 [ext_resource type="Texture2D" uid="uid://bg02dhcrwf5nx" path="res://assets/gardens/victory_assets/victory_asset_plant_17.png" id="6_oapcv"]
@@ -13,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://bpqo8maufc3gr" path="res://assets/gardens/victory_assets/victory_asset_ladybugs.png" id="9_r7c56"]
 [ext_resource type="Texture2D" uid="uid://its5dfr0ipak" path="res://assets/gardens/victory_assets/victory_asset_butterfly_01.png" id="10_s6qsy"]
 
-[node name="GardenRoot" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905 node_paths=PackedStringArray("animal_sprites")]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -23,7 +24,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
-title = "Purple Turtle Garden"
+title = "Yellow Parakeet Garden"
+animal_sprites = [NodePath("Yellow Parakeet")]
 unlocked_lesson = Color(0.7019608, 0.44313726, 0, 1)
 unlocked_lesson_text = Color(1, 0.9411765, 0.78039217, 1)
 completed_lesson = Color(1, 0.9411765, 0.78039217, 1)
@@ -70,6 +72,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=948698376]
 modulate = Color(0.7019608, 0.44313726, 0, 1)
+material = ExtResource("4_fja20")
 layout_mode = 0
 offset_left = 1132.0
 offset_top = 1289.0
@@ -96,6 +99,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_04" type="TextureRect" parent="Victory_Assets" unique_id=1510363231]
 modulate = Color(0.7019608, 0.44313726, 0, 1)
+material = ExtResource("4_fja20")
 layout_mode = 0
 offset_left = 629.0
 offset_top = 1161.0
@@ -109,6 +113,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_05" type="TextureRect" parent="Victory_Assets" unique_id=1851075152]
 modulate = Color(0.7019608, 0.44313726, 0, 1)
+material = ExtResource("4_fja20")
 layout_mode = 0
 offset_left = 1107.0
 offset_top = 347.0

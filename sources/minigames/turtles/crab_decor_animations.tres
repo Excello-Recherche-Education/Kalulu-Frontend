@@ -1,0 +1,211 @@
+[gd_resource type="SpriteFrames" load_steps=26 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/minigames/turtles/graphic/crab_decor.png" id="1_sheet"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_000"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 0, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_001"]
+atlas = ExtResource("1_sheet")
+region = Rect2(288, 0, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_002"]
+atlas = ExtResource("1_sheet")
+region = Rect2(576, 0, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_003"]
+atlas = ExtResource("1_sheet")
+region = Rect2(864, 0, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_004"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 288, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_005"]
+atlas = ExtResource("1_sheet")
+region = Rect2(288, 288, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_006"]
+atlas = ExtResource("1_sheet")
+region = Rect2(576, 288, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_007"]
+atlas = ExtResource("1_sheet")
+region = Rect2(864, 288, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_008"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 576, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_009"]
+atlas = ExtResource("1_sheet")
+region = Rect2(288, 576, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_010"]
+atlas = ExtResource("1_sheet")
+region = Rect2(576, 576, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_011"]
+atlas = ExtResource("1_sheet")
+region = Rect2(864, 576, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_012"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 864, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_013"]
+atlas = ExtResource("1_sheet")
+region = Rect2(288, 864, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_014"]
+atlas = ExtResource("1_sheet")
+region = Rect2(576, 864, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_015"]
+atlas = ExtResource("1_sheet")
+region = Rect2(864, 864, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_016"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 1152, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_017"]
+atlas = ExtResource("1_sheet")
+region = Rect2(288, 1152, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_018"]
+atlas = ExtResource("1_sheet")
+region = Rect2(576, 1152, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_019"]
+atlas = ExtResource("1_sheet")
+region = Rect2(864, 1152, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_020"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 1440, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_021"]
+atlas = ExtResource("1_sheet")
+region = Rect2(288, 1440, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_022"]
+atlas = ExtResource("1_sheet")
+region = Rect2(576, 1440, 288, 288)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_023"]
+atlas = ExtResource("1_sheet")
+region = Rect2(864, 1440, 288, 288)
+
+[resource]
+animations = [
+{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_000")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_001")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_002")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_003")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_004")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_005")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_006")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_007")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_008")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_009")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_010")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_011")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_012")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_013")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_014")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_015")
+}],
+"loop": true,
+"name": &"idle_claws",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_016")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_017")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_018")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_019")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_020")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_021")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_022")
+},
+{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_023")
+}],
+"loop": true,
+"name": &"victory_claws",
+"speed": 5.0
+}]

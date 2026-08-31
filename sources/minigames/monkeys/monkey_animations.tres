@@ -193,7 +193,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ip7tg")
 }],
-"loop": false,
+"loop": 0,
 "name": &"finish_throw",
 "speed": 8.0
 }, {
@@ -210,7 +210,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2ng8h")
 }],
-"loop": false,
+"loop": 0,
 "name": &"grab",
 "speed": 8.0
 }, {
@@ -227,7 +227,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_y4ic7")
 }],
-"loop": false,
+"loop": 0,
 "name": &"hit",
 "speed": 8.0
 }, {
@@ -256,7 +256,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_yk71l")
 }],
-"loop": false,
+"loop": 0,
 "name": &"idle",
 "speed": 8.0
 }, {
@@ -285,7 +285,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_o8dfi")
 }],
-"loop": false,
+"loop": 0,
 "name": &"idle_blink",
 "speed": 8.0
 }, {
@@ -302,7 +302,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s4css")
 }],
-"loop": false,
+"loop": 0,
 "name": &"start_throw",
 "speed": 8.0
 }, {
@@ -331,7 +331,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kb4yv")
 }],
-"loop": true,
+"loop": 1,
 "name": &"stunned",
 "speed": 8.0
 }, {
@@ -348,7 +348,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ew743")
 }],
-"loop": false,
+"loop": 0,
 "name": &"talk",
 "speed": 8.0
 }]

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b6pmtjjp4rejb" path="res://assets/gardens/gardens/garden_12.png" id="2_xmsgp"]
 [ext_resource type="Texture2D" uid="uid://jid1k44bn2xx" path="res://assets/gardens/victory_assets/victory_asset_mountain.png" id="3_xmsgp"]
 [ext_resource type="PackedScene" uid="uid://delcgui3v0eek" path="res://sources/lesson_screen/lesson_button.tscn" id="4_epm30"]
+[ext_resource type="Material" uid="uid://djusd5bu6780j" path="res://resources/gardens/flower_material.tres" id="4_g51bh"]
 [ext_resource type="Texture2D" uid="uid://cjb3ygn2iycj4" path="res://assets/gardens/victory_assets/victory_asset_plant_26.png" id="4_go3so"]
 [ext_resource type="Texture2D" uid="uid://dgssb0oonuqku" path="res://assets/gardens/victory_assets/victory_asset_fish_01.png" id="5_88yjd"]
 [ext_resource type="Texture2D" uid="uid://cy1nrnl520goj" path="res://assets/gardens/victory_assets/animals/penguin.png" id="5_xmsgp"]
@@ -13,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://28wjedoatx7c" path="res://assets/gardens/victory_assets/victory_asset_whale.png" id="9_m7voh"]
 [ext_resource type="Texture2D" uid="uid://bqxwflyxhcdvw" path="res://assets/gardens/victory_assets/victory_asset_snowflakes.png" id="10_g51bh"]
 
-[node name="GardenRoot" type="Control" unique_id=167073905]
+[node name="GardenRoot" type="Control" unique_id=167073905 node_paths=PackedStringArray("animal_sprites")]
 custom_minimum_size = Vector2(2400, 2.08165e-12)
 layout_mode = 3
 anchors_preset = 15
@@ -23,7 +24,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5owem")
-title = "Purple Turtle Garden"
+title = "Blue Penguin Garden"
+animal_sprites = [NodePath("Penguin")]
 unlocked_lesson = Color(0, 0.5529412, 0.76862746, 1)
 unlocked_lesson_text = Color(0.78431374, 0.9019608, 0.9529412, 1)
 completed_lesson = Color(0.78431374, 0.9019608, 0.9529412, 1)
@@ -69,6 +71,7 @@ stretch_mode = 5
 
 [node name="Victory_Asset_02" type="TextureRect" parent="Victory_Assets" unique_id=668076947]
 modulate = Color(0, 0.5529412, 0.76862746, 1)
+material = ExtResource("4_g51bh")
 layout_mode = 0
 offset_left = 1376.0
 offset_top = 275.0

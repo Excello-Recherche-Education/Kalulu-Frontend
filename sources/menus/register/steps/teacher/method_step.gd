@@ -1,13 +1,18 @@
 @tool
 extends Step
 
-@onready var method: ItemList = %MethodSelect
+@onready var method: OptionButton = %MethodSelect
 
 
 func _ready() -> void:
+	super()
 	method.clear()
 	method.add_item("METHOD_APP_ONLY")
 	method.add_item("METHOD_COMPLETE")
+	# add_item selects the first entry it adds; the placeholder has to survive
+	# until on_enter reads the saved answer back.
+	method.selected = -1
+	method.text = "EDUCATION_METHOD"
 
 
 func _on_next() -> bool:

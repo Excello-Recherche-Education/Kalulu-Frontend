@@ -11,7 +11,7 @@ enum Type {
 	TURTLES,
 	ANTS,
 	PENGUIN,
-	FISH,
+	BOSS,
 }
 
 # String names used for file paths, database keys, and speech lookups.
@@ -26,7 +26,7 @@ const TYPE_NAMES: Array[String] = [
 	"turtles",
 	"ants",
 	"penguin",
-	"fish",
+	"boss",
 ]
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
@@ -243,6 +243,8 @@ func _win() -> void:
 			gardens_data.first_clear = gardens_data.boss_completed
 			if not is_final_boss:
 				UserDataManager.student_progression.reset_boss_failure_streak()
+			else:
+				UserDataManager.student_progression.final_boss_completed()
 		else:
 			gardens_data.first_clear = UserDataManager.student_progression.game_completed(lesson_nb, minigame_number)
 	
@@ -431,9 +433,15 @@ func _update_confusion_matrix_gp_score(expected_id: int, selected_id: int) -> vo
 func _go_back_to_the_garden() -> void:
 	get_tree().paused = false
 	await (OpeningCurtain as OpeningCurtainClass).close()
-	
+
 	_save_logs()
-	
+
+	# Beating the final boss returns to the brain screen instead of the gardens: the
+	# chest there is now unlocked and rocking, waiting to be opened.
+	if is_final_boss:
+		SceneLoader.change_scene("res://sources/brain/brain.tscn")
+		return
+
 	Gardens.transition_data = gardens_data
 	SceneLoader.change_scene("res://sources/gardens/gardens.tscn")
 

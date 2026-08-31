@@ -10,6 +10,7 @@ signal finished()
 @export var max_spawn_delay: float = 0.09
 @export var min_scale: float = 0.5
 @export var max_scale: float = 1.0
+@export var spawn_rect: Rect2 = Rect2()
 
 var _colors: Array[Color] = [
 	Color.RED,
@@ -36,6 +37,10 @@ func set_colors(colors: Array[Color]) -> void:
 	_colors = colors
 
 
+func set_spawn_rect(rect: Rect2) -> void:
+	spawn_rect = rect
+
+
 func play() -> void:
 	if firework_scene == null:
 		Log.error("Fireworks: firework_scene is null.")
@@ -60,7 +65,12 @@ func _spawn_one_firework() -> void:
 	if firework == null:
 		_remaining -= 1
 		return
-	firework.position = Vector2(_rng.randf_range(0.0, screen_size.x), _rng.randf_range(0.0, screen_size.y))
+	var active_spawn_rect: Rect2 = spawn_rect if spawn_rect.has_area() else Rect2(Vector2.ZERO, screen_size)
+	var spawn_end: Vector2 = active_spawn_rect.position + active_spawn_rect.size
+	firework.position = Vector2(
+		_rng.randf_range(active_spawn_rect.position.x, spawn_end.x),
+		_rng.randf_range(active_spawn_rect.position.y, spawn_end.y)
+	)
 	add_child(firework)
 	var color: Color = _colors[_rng.randi_range(0, _colors.size() - 1)]
 	firework.play(color, _rng.randf_range(min_scale, max_scale))

@@ -27,7 +27,7 @@ jobs:
 
           text = Path("project.godot").read_text(encoding="utf-8")
           features_match = re.search(r'config/features=PackedStringArray\(([^)]*)\)', text)
-          godot_version = "4.6"
+          godot_version = "4.7"
           if features_match:
               versions = re.findall(r'"(\d+\.\d+)"', features_match.group(1))
               if versions:

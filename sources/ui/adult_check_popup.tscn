@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://sources/ui/adult_check_popup.gd" id="1_adult"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://ciey7plfxwjis" path="res://assets/menus/icons/close_window.svg" id="3_close"]
+[ext_resource type="PackedScene" uid="uid://ivyitn4nxsm5" path="res://sources/ui/code_keypad.tscn" id="4_keypad"]
+
+[node name="AdultCheckPopup" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_adult")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.0784314, 0.0980392, 0.223529, 0.6)
+
+[node name="Card" type="PanelContainer" parent="Backdrop"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+theme_type_variation = &"Card"
+
+[node name="CardMargin" type="MarginContainer" parent="Backdrop/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 118
+theme_override_constants/margin_top = 74
+theme_override_constants/margin_right = 118
+theme_override_constants/margin_bottom = 118
+
+[node name="CardContent" type="VBoxContainer" parent="Backdrop/Card/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 74
+
+[node name="Header" type="HBoxContainer" parent="Backdrop/Card/CardMargin/CardContent"]
+layout_mode = 2
+
+[node name="Prompt" type="Label" parent="Backdrop/Card/CardMargin/CardContent/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1640, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CardHeading"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="CloseButton" type="TextureButton" parent="Backdrop/Card/CardMargin/CardContent/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture_normal = ExtResource("3_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Keypad" parent="Backdrop/Card/CardMargin/CardContent" instance=ExtResource("4_keypad")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4

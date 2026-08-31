@@ -42,14 +42,27 @@ var is_open: bool = false
 
 
 func _exit_tree() -> void:
+	close()
+
+
+## Closes the SQLite connection if one is open.
+## This MUST be called before deleting or replacing the language_resources
+## folder: on Windows the OS keeps a lock on open files, so an open language.db
+## makes the removal of its parent directory fail and leaves a half-deleted,
+## corrupted pack behind. See UserDataManager.purge_user_folders_if_needed and
+## PackageDownloader._copy_data.
+func close() -> void:
+	if not is_open:
+		return
+	Log.info("Database: Closing database connection at %s" % ProjectSettings.globalize_path(db.path))
 	db.close_db()
+	is_open = false
 
 
 func connect_to_db() -> void:
 	if is_open:
 		Log.trace("Database: Opening database while a connection is already opened. Closing the previous one.")
-		db.close_db()
-		is_open = false
+		close()
 	if FileAccess.file_exists(db.path):
 		is_open = db.open_db()
 		if not is_open:
@@ -503,6 +516,12 @@ func get_words_in_sentence_for_integrity_check(sentence_id: int) -> Array[Dictio
 
 
 func get_lessons_count() -> int:
+	if not is_open:
+		# Querying a closed handle only yields an SQLite error and an empty
+		# result. Callers must read 0 as "the lesson count is unknown", never as
+		# "this language has no lessons".
+		Log.warn("Database: Trying to get lessons count when database is not opened.")
+		return 0
 	db.query("SELECT MAX(Lessons.LessonNb) as i FROM Lessons")
 	if db.query_result.is_empty() or not db.query_result[0].i:
 		return 0

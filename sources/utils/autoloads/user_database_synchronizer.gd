@@ -10,6 +10,10 @@ enum UpdateNeeded {
 }
 
 var synchronizing: bool = false
+# Set when synchronize() gave up because the language pack was not installed yet.
+# The login screen picks this up once the pack is in place, so a teacher who has
+# just logged in on a fresh device does not sit in front of blank students.
+var postponed: bool = false
 var loading_popup: LoadingPopup
 
 
@@ -182,7 +186,17 @@ func _determine_students_update(response_body: Dictionary, need_update_user: Upd
 						student_updates["remediation_words"] = _compute_update_needed(local_student_words_remediation_unix_time, server_student_remediation_words_unix_time)
 						if student_updates["remediation_words"] == UpdateNeeded.NOTHING:
 							Log.trace("UserDatabaseSynchronizer: Student %d words remediation data timestamp is the same in local and on server. No synchronization necessary" % code_to_check)
-					
+					else:
+						# No local remediation file (fresh install): pull whatever the
+						# server has, like the confusion matrix does below. Without
+						# this the remediation scores are never restored after a wipe.
+						if server_student_remediation_gp_unix_time > 0:
+							student_updates["remediation_gp"] = UpdateNeeded.FROM_SERVER
+						if server_student_remediation_syllables_unix_time > 0:
+							student_updates["remediation_syllables"] = UpdateNeeded.FROM_SERVER
+						if server_student_remediation_words_unix_time > 0:
+							student_updates["remediation_words"] = UpdateNeeded.FROM_SERVER
+
 					# Synchronize student confusion matrix
 					var student_confusion_matrix: UserConfusionMatrix = UserDataManager.get_student_confusion_matrix_data(code_to_check)
 					if student_confusion_matrix != null:
@@ -453,6 +467,16 @@ func synchronize() -> void:
 	if synchronizing:
 		Log.trace("UserDatabaseSynchronizer: User synchronization already started, cancel double-call.")
 		return
+	if not Database.is_open:
+		# Progression is validated against the lesson count, which is only known
+		# once the language pack is installed. Synchronizing before that applies
+		# the server data to a client that cannot interpret it, and the emptied
+		# result would then be pushed back. The next caller (login screen,
+		# teacher settings, periodic timer) will retry once the pack is ready.
+		Log.warn("UserDatabaseSynchronizer: Language database is not open, postponing synchronization.")
+		postponed = true
+		return
+	postponed = false
 	await start_sync()
 
 	if not await _check_internet():

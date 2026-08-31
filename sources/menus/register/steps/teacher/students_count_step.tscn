@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_par6r"]
 [ext_resource type="Script" uid="uid://cfcfx3tbskkn2" path="res://sources/menus/register/steps/teacher/students_count_step.gd" id="2_susi5"]
-[ext_resource type="Theme" uid="uid://cd7ftmo5x4c2r" path="res://resources/themes/kalulu_theme_big.tres" id="3_pacdw"]
 
 [node name="StudentsCountStep" unique_id=487912445 instance=ExtResource("1_par6r")]
 script = ExtResource("2_susi5")
@@ -14,17 +13,11 @@ infos = "TEACHER_STUDENT_COUNT_INFOS"
 [node name="StudentsCountContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" parent_id_path=PackedInt32Array(1375940867) index="0" unique_id=1808767230]
 layout_mode = 2
 
-[node name="StudentsCountFieldLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/StudentsCountContainer" index="0" unique_id=2070545907]
-custom_minimum_size = Vector2(350, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "STUDENTS"
-
-[node name="StudentsCountField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/StudentsCountContainer" index="1" unique_id=540523034]
+[node name="StudentsCountField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/StudentsCountContainer" index="0" unique_id=540523034]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_pacdw")
 min_value = 1.0
 max_value = 90.0
 value = 1.0

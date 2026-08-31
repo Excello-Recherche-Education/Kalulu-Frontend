@@ -52,14 +52,14 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="TextureRect" parent="MarginContainer/HBoxContainer/PlayButton" index="0"]
+[node name="TextureRect" parent="MarginContainer/HBoxContainer/PlayButton" index="0" unique_id=1207987905]
 texture = ExtResource("2_kpiy8")
 
 [node name="UploadButton" parent="MarginContainer/HBoxContainer" unique_id=1446558308 instance=ExtResource("1_sx2aj")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" parent="MarginContainer/HBoxContainer/UploadButton" index="0"]
+[node name="TextureRect" parent="MarginContainer/HBoxContainer/UploadButton" index="0" unique_id=1207987905]
 texture = ExtResource("3_et87x")
 
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]

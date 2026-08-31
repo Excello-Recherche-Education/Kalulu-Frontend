@@ -62,6 +62,11 @@ func purge_user_folders_if_needed() -> void:
 	
 	if previous_version == "" or Utils.compare_versions(previous_version, "2.1.3") < 0:
 		Log.trace("UserDataManager: Version difference detected, need to purge user folder to avoid data incompatibility")
+		# Close the language database before deleting its folder. On Windows the
+		# OS locks open files, so an open language.db would make the deletion of
+		# language_resources fail and leave a half-emptied, corrupted pack behind.
+		Database.close()
+
 		var dir: DirAccess = DirAccess.open("user://")
 		var error: Error = DirAccess.get_open_error()
 		if error != OK:
@@ -70,14 +75,24 @@ func purge_user_folders_if_needed() -> void:
 		if not dir:
 			Log.warn("UserDataManager: Could not open user:// directory for cleanup.")
 			return
+		var purge_error: Error = OK
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir() and file_name != "." and file_name != ".." and file_name.to_lower() != "logs":
-				Utils.delete_directory_recursive("user://".path_join(file_name))
+				var delete_error: Error = Utils.delete_directory_recursive("user://".path_join(file_name))
+				if delete_error != OK and purge_error == OK:
+					purge_error = delete_error
 			file_name = dir.get_next()
 		dir.list_dir_end()
-		
+
+		if purge_error != OK:
+			# Keep the previous version untouched so the purge runs again on the
+			# next launch instead of leaving incompatible or corrupted data in
+			# place. This avoids the app booting on a partially deleted pack.
+			Log.error("UserDataManager: Purge failed (%s), it will be retried on next launch" % error_string(purge_error))
+			return
+
 		Log.trace("UserDataManager: Purge completed")
 		_device_settings.game_version = current_version
 		ResourceSaver.save(_device_settings, "user://device_settings.tres")
@@ -346,6 +361,20 @@ func get_device_settings() -> DeviceSettings:
 	if not _device_settings:
 		_load_device_settings()
 	return _device_settings
+
+
+## Returns the display name of the currently logged-in student, or an empty
+## string if no student is logged in or the student has no name set.
+func get_current_student_name() -> String:
+	if not student or not teacher_settings or not _device_settings:
+		return ""
+	if not teacher_settings.students.has(_device_settings.device_id):
+		return ""
+	var students: Array[StudentData] = teacher_settings.students[_device_settings.device_id] as Array[StudentData]
+	for stud: StudentData in students:
+		if stud.code == int(student):
+			return stud.name
+	return ""
 
 
 func _load_device_settings() -> void:
@@ -679,11 +708,30 @@ func save_student_progression_for_code(device: int, code: int, progression: Stud
 
 func set_student_progression_data(student_code: int, version: String, new_data: Dictionary[int, Dictionary], updated_at: String, highest_boss_defeated: int = -1) -> void:
 	Log.trace("UserDataManager: Setting student progression data for code %s version %s" % [str(student_code), version])
+	var lessons_in_pack: int = Database.get_lessons_count()
+	if lessons_in_pack <= 0:
+		# Without the lesson count nothing can be validated, and saving would
+		# stamp the server timestamp on data we cannot interpret. Leave the file
+		# alone so the next synchronization pulls the server copy again.
+		Log.error("UserDataManager: Refusing to save progression for code %s: the lesson database is unavailable" % str(student_code))
+		return
 	var current_data: StudentProgression = get_student_progression_for_code(0, student_code)
 	if current_data == null:
 		current_data = StudentProgression.new()
 	current_data.version = version
 	current_data.unlocks = new_data
+	# Assigning `unlocks` runs ensure_data_integrity(). Dropping lessons beyond
+	# the pack's range is legitimate — the server may still hold rows from a
+	# larger, older pack — so only the lessons the current pack actually has must
+	# survive. Anything less means the integrity check destroyed data we were
+	# asked to store, and persisting it would push the loss back to the server.
+	var received_in_range: int = 0
+	for lesson_number: int in new_data.keys():
+		if lesson_number >= 1 and lesson_number <= lessons_in_pack:
+			received_in_range += 1
+	if current_data.unlocks.size() < received_in_range:
+		Log.error("UserDataManager: Refusing to save progression for code %s: %d lessons in range received from server, %d survived the integrity check" % [str(student_code), received_in_range, current_data.unlocks.size()])
+		return
 	if highest_boss_defeated >= 0:
 		current_data.highest_boss_defeated = highest_boss_defeated
 	current_data.last_modified = updated_at

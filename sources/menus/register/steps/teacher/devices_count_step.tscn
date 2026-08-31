@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_w3urq"]
 [ext_resource type="Script" uid="uid://7uwoocpe7ieu" path="res://sources/utils/binder/control_binder.gd" id="2_asuou"]
-[ext_resource type="Theme" uid="uid://cd7ftmo5x4c2r" path="res://resources/themes/kalulu_theme_big.tres" id="2_ux74f"]
 
 [node name="DevicesCountStep" unique_id=47059022 instance=ExtResource("1_w3urq")]
 step_name = "devices"
@@ -12,18 +11,10 @@ infos = "DEVICE_COUNT_INFOS"
 [node name="DevicesCountContainer" type="HBoxContainer" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer" parent_id_path=PackedInt32Array(1375940867) index="0" unique_id=1842142421]
 layout_mode = 2
 
-[node name="DevicesCountLabel" type="Label" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/DevicesCountContainer" index="0" unique_id=216145476]
-custom_minimum_size = Vector2(350, 0)
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 50
-text = "DEVICES"
-autowrap_mode = 3
-
-[node name="DevicesCountField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/DevicesCountContainer" index="1" unique_id=419883061]
+[node name="DevicesCountField" type="SpinBox" parent="FormValidator/FormBinder/Control/Background/FormMargin/FormContainer/DevicesCountContainer" index="0" unique_id=419883061]
+custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_ux74f")
 min_value = 1.0
 max_value = 90.0
 value = 1.0
