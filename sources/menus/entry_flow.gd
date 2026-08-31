@@ -55,7 +55,7 @@ static func greeting_speech_path() -> String:
 static func greeting_speech_available() -> bool:
 	if not Database.is_open:
 		return false
-	return FileAccess.file_exists(Utils.get_safe_file_path(greeting_speech_path()))
+	return Database.external_file_exists(greeting_speech_path())
 
 
 ## The screen to open once the splash has been shown.

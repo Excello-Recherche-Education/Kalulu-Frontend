@@ -651,21 +651,46 @@ func get_kalulu_speech_path(speech_category: String, speech_name: String) -> Str
 	return get_language_sound_folder() + KALULU_FOLDER + speech_category + "_" + speech_name + SOUND_EXTENSION
 
 
+## Resolves an external asset path against the filesystem, retrying the Unicode
+## normalization forms a language pack may have been authored in: the databases store
+## composed text (NFC, "é" as one code point) while the pack files are often named in
+## decomposed form (NFD, "e" + combining acute). macOS looks those up interchangeably,
+## every other platform does not.
+## Returns the path that actually exists, or an empty String when none of them does.
+func resolve_external_file_path(path: String) -> String:
+	var safe_path: String = Utils.get_safe_file_path(path)
+	if FileAccess.file_exists(safe_path):
+		return safe_path
+
+	var nfd_path: String = UnicodeNormalizer.to_nfd_basic(safe_path)
+	Log.trace("Database: Resolve External File Path: File not found, retrying with Unicode NFD: %s" % nfd_path)
+	if FileAccess.file_exists(nfd_path):
+		return nfd_path
+
+	var nfd_extended_path: String = UnicodeNormalizer.to_nfd_extended(safe_path)
+	Log.trace("Database: Resolve External File Path: File not found, retrying with Unicode NFD extended: %s" % nfd_extended_path)
+	if FileAccess.file_exists(nfd_extended_path):
+		return nfd_extended_path
+
+	return ""
+
+
+## Existence counterpart of [method resolve_external_file_path]. Use this instead of
+## [method FileAccess.file_exists] for anything under a language pack, otherwise every
+## accented entry reads as missing off macOS.
+func external_file_exists(path: String) -> bool:
+	return not resolve_external_file_path(path).is_empty()
+
+
 func load_external_sound(path: String) -> AudioStreamMP3:
 	Log.trace("Database: Load External Sound: %s" % path)
-	
-	path = Utils.get_safe_file_path(path)
-	
-	if not FileAccess.file_exists(path):
-		path = UnicodeNormalizer.to_nfd_basic(path)
-		Log.trace("Database: Load External Sound: File not found, retrying with Unicode NFD: %s" % path)
-		if not FileAccess.file_exists(path):
-			path = UnicodeNormalizer.to_nfd_extended(path)
-			Log.trace("Database: Load External Sound: File not found, retrying with Unicode NFD extended: %s" % path)
-			if not FileAccess.file_exists(path):
-				Log.error("Database: Load External Sound: File not found after normalization attempts: %s" % path)
-				return null
-	
+
+	var resolved_path: String = resolve_external_file_path(path)
+	if resolved_path.is_empty():
+		Log.error("Database: Load External Sound: File not found after normalization attempts: %s" % path)
+		return null
+	path = resolved_path
+
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	var error: Error = FileAccess.get_open_error()
 	if error != OK or file == null:
