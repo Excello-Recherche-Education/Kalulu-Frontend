@@ -14,6 +14,13 @@ var teacher_settings: TeacherSettings
 
 
 func _ready() -> void:
+	# Raised here for the same reason as in the package downloader it hands over
+	# to: a teacher who has just logged in arrives with the curtain closed, and
+	# the two server calls below take as long as they take. Behind a closed
+	# curtain that is a black screen, and an error popup nobody can see -- this
+	# one sits under the curtain's layer.
+	OpeningCurtain.open()
+	
 	await get_tree().process_frame
 	device_language = UserDataManager.get_device_settings().language
 	Log.trace("LanguageCheck: Starting with device language %s" % device_language)

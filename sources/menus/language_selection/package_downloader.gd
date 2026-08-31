@@ -52,6 +52,18 @@ func _ready() -> void:
 ## screen -- which for a device with no usable pack is the only recoverable
 ## place to be.
 func _start() -> void:
+	# This screen is reached with the curtain in either state, so it raises it
+	# itself rather than trusting whoever sent it here. A device that is already
+	# signed in comes from the splash, which never lowered it; a teacher who has
+	# just typed their password comes from the welcome screen, which lowers it
+	# before leaving and has nothing on the way here to raise it again. Without
+	# this the download, the extraction and every error popup happen behind a
+	# closed curtain, and a pack that takes a minute to install looks like a
+	# freeze. Started rather than awaited: the check below has no reason to wait
+	# on an animation, and a pack that is already up to date hands over while the
+	# curtain is still rising, which is what the signed-in path already does.
+	OpeningCurtain.open()
+	
 	await get_tree().process_frame
 	
 	language = UserDataManager.get_device_settings().language
