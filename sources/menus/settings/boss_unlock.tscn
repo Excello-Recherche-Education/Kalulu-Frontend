@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://bp3wq1yn6k8ru"]
+
+[ext_resource type="Script" uid="uid://c3wv74pgvysf5" path="res://sources/menus/settings/boss_unlock.gd" id="1_boss"]
+
+[node name="BossUnlock" type="Node" unique_id=1204418800]
+script = ExtResource("1_boss")
+
+[node name="BossIcon" type="TextureRect" parent="." unique_id=1204418802]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GardenAnimal" type="TextureRect" parent="." unique_id=1204418803]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 104)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BossLabel" type="Label" parent="." unique_id=1204418804]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 96)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StatusOptionButton" type="OptionButton" parent="." unique_id=1204418805]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(700, 116)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"DropdownSubtle"
+fit_to_longest_item = false
+clip_text = true

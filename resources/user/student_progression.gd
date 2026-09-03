@@ -586,3 +586,120 @@ func add_level_time(lesson_number: int, game_number: int, time_spent: int) -> vo
 	
 	last_modified = Time.get_datetime_string_from_system(true)
 	progression_changed.emit()
+
+
+#region Manual boss editing
+
+## Where the student stands with the boss that closes `gate_lesson`'s garden.
+##
+## The bosses belong to the same linear timeline as the lessons: the boss closing a
+## garden comes after that garden's last minigame and before the next garden's first
+## look-and-learn. So it takes the same three states the lessons do, and they are
+## again the frontier's possible positions relative to it:
+##
+##   LOCKED     the garden it closes is unfinished, so the boss is out of reach
+##   UNLOCKED   the garden is finished and the boss is what comes next
+##   COMPLETED  the boss is beaten, which is what opens the next garden
+##
+## `gate_lesson` is the last lesson of the garden the boss closes -- for the final
+## boss, the pack's last lesson, which is not a gate of its own (see
+## final_boss_completed()).
+func boss_state(gate_lesson: int, is_final: bool = false) -> Status:
+	if not unlocks.has(gate_lesson) or not is_lesson_completed(gate_lesson):
+		return Status.LOCKED
+	if is_final:
+		if is_final_boss_completed():
+			return Status.COMPLETED
+		# The treasure only appears once every gate has been cleared, so a standing
+		# gate keeps the final boss out of reach however much reading is done.
+		return Status.LOCKED if _has_standing_gate() else Status.UNLOCKED
+	if not get_boss_gate_lessons().has(gate_lesson):
+		return Status.LOCKED
+	if is_lesson_blocked_by_boss(gate_lesson):
+		return Status.LOCKED
+	return Status.COMPLETED if is_boss_completed(gate_lesson) else Status.UNLOCKED
+
+
+## Moves the progression frontier onto, past or back before a boss.
+##
+## The counterpart of apply_manual_progression() for the boss steps, and it works
+## the same way: the lessons are rewritten so the frontier lands where the chosen
+## state says, and `highest_boss_defeated` is set to agree with them.
+##
+##   COMPLETED  the garden it closes is finished and so is the boss, which opens
+##              the next garden
+##   UNLOCKED   the garden is finished, the boss is what the child plays next
+##   LOCKED     the garden goes back to unfinished, so the boss is out of reach
+func apply_manual_boss_progression(gate_lesson: int, status: Status, is_final: bool = false) -> void:
+	if not unlocks.has(gate_lesson):
+		return
+	# The last step of the boss's own garden: that is what the frontier is moved
+	# relative to, since the boss itself is not stored as a step.
+	var games_count: int = (unlocks[gate_lesson]["games"] as Array).size()
+	var lesson_slot: int = games_count - 1 if games_count > 0 else LOOK_AND_LEARN_SLOT
+	# LOCKED pulls the frontier back into the garden; the other two finish it, and
+	# then only `highest_boss_defeated` separates "boss next" from "boss done".
+	var lesson_status: Status = Status.LOCKED if status == Status.LOCKED else Status.COMPLETED
+	apply_manual_progression(unlocks, gate_lesson, lesson_slot, lesson_status)
+	var boss_marker: int = final_boss_marker() if is_final else gate_lesson
+	highest_boss_defeated = boss_marker if status == Status.COMPLETED else _gate_below(boss_marker)
+	derive_boss_progression()
+
+
+## Puts `highest_boss_defeated` back in step with the lessons after a manual edit.
+##
+## Two rules, and whichever grants more wins:
+##
+##   - a boss victory only stands while the garden it closes is still finished, so
+##     pulling an early lesson back takes the later bosses down with it -- otherwise
+##     a child sent back to lesson 1 would find every boss already beaten;
+##   - a child who has finished a lesson beyond a gate must have got through that
+##     gate. This is what makes "put the frontier on lesson 40" work at all: without
+##     it the child would open the app blocked by the first boss they never played.
+func derive_boss_progression() -> void:
+	if not is_lesson_database_available():
+		return
+	var kept: int = highest_boss_defeated
+	while kept > 0 and not _boss_victory_stands(kept):
+		kept = _gate_below(kept)
+	highest_boss_defeated = maxi(kept, _highest_gate_passed())
+
+
+## The value `highest_boss_defeated` carries once the final boss is beaten.
+static func final_boss_marker() -> int:
+	return Database.get_lessons_count() + 1
+
+
+## True while a gate the student has already read past is still unbeaten.
+func _has_standing_gate() -> bool:
+	for gate_lesson: int in get_boss_gate_lessons():
+		if not is_boss_completed(gate_lesson):
+			return true
+	return false
+
+
+## True while the garden the recorded victory closes is still finished.
+func _boss_victory_stands(boss_marker: int) -> bool:
+	var gate_lesson: int = Database.get_lessons_count() if boss_marker >= final_boss_marker() else boss_marker
+	return unlocks.has(gate_lesson) and is_lesson_completed(gate_lesson)
+
+
+## The highest gate the lessons themselves prove was passed: a finished lesson on the
+## far side of a gate could not have been reached with that gate still standing.
+func _highest_gate_passed() -> int:
+	var passed: int = 0
+	for gate_lesson: int in get_boss_gate_lessons():
+		if unlocks.has(gate_lesson + 1) and is_lesson_completed(gate_lesson + 1):
+			passed = maxi(passed, gate_lesson)
+	return passed
+
+
+## The gate before `boss_marker`, or 0 when it is the first one.
+func _gate_below(boss_marker: int) -> int:
+	var below: int = 0
+	for gate_lesson: int in get_boss_gate_lessons():
+		if gate_lesson < boss_marker:
+			below = maxi(below, gate_lesson)
+	return below
+
+#endregion
