@@ -410,3 +410,12 @@ max_scale = 1.2
 min_parallax_factor = 1.2
 max_parallax_factor = 1.7
 clouds_per_screen = 3
+
+[connection signal="gui_input" from="ScrollContainer" to="." method="_on_scroll_container_gui_input"]
+[connection signal="gui_input" from="CanvasLayer/MinigameSelection/BackgroundRect" to="." method="_on_background_rect_gui_input"]
+[connection signal="pressed" from="CanvasLayer/MinigameSelection/LessonButton" to="." method="_on_lesson_button_pressed"]
+[connection signal="button_down" from="CanvasLayer/BackButton" to="." method="_on_back_button_button_down"]
+[connection signal="button_up" from="CanvasLayer/BackButton" to="." method="_on_back_button_button_up"]
+[connection signal="pressed" from="CanvasLayer/BrainButton" to="." method="_on_brain_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
+[connection signal="input_event" from="CanvasLayer/Area2D" to="." method="_on_area_2d_input_event"]
