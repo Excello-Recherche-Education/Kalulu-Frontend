@@ -21,6 +21,7 @@ const KALULU_ANIMATOR_SCENE_PATH: String = "res://sources/kalulu_animator.tscn"
 var kalulu_sprite: AnimatedSprite2D = null
 
 @onready var kalulu_sprite_slot: Node2D = $KaluluSprite
+@onready var pass_button: Button = $KaluluSprite/PassButton
 @onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
 
 
@@ -40,8 +41,14 @@ func _fetch_kalulu() -> void:
 		return
 	kalulu_sprite = scene.instantiate()
 	kalulu_sprite_slot.add_child(kalulu_sprite)
-	# Behind the pass button, which is the slot's other child and has to stay on top.
-	kalulu_sprite_slot.move_child(kalulu_sprite, 0)
+	# The button that skips the speech goes under Kalulu himself, and it has to:
+	# a Control resolves its anchors against its parent's *anchorable rect*, and a
+	# sprite reports the rect of the frame it is drawing while a plain node reports
+	# nothing at all. Left under the slot, this button's 540x730 tap area collapses
+	# to a 28-pixel stub -- and since minigame_ui pauses the whole tree while Kalulu
+	# talks, a skip button that cannot be hit freezes the game until he is finished.
+	kalulu_sprite_slot.remove_child(pass_button)
+	kalulu_sprite.add_child(pass_button)
 
 
 func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_animation: bool = true) -> void:

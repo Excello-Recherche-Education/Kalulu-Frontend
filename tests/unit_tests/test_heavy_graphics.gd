@@ -343,3 +343,180 @@ func test_the_stars_stop_on_a_light_device() -> void:
 	assert_false(stars.emitting)
 	assert_false(stars.visible)
 
+
+# --- Kalulu can still be skipped -------------------------------------------------
+## The tap area that skips a speech, in the coordinates the child actually taps.
+##
+## This is the one that has to hold. minigame_ui pauses the whole tree while Kalulu
+## talks and unpauses on speech_ended, so a skip button that cannot be hit does not
+## just fail to skip -- it freezes the game until the speech runs out. Nothing on
+## screen shows it: Kalulu appears exactly where he should, and the button is
+## invisible by design.
+func _skip_area(light: bool) -> Rect2:
+	UserDataManager.set_light_graphics(light)
+	var helper: Node = _kalulu()
+	# On a light device he arrives with the first speech rather than at load.
+	helper.play_kalulu_speech(null, false, false)
+	await get_tree().process_frame
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+	return (helper.pass_button as Button).get_global_rect()
+
+
+func test_the_skip_area_covers_kalulu() -> void:
+	# The rect the button had while it was authored as a child of the sprite. A
+	# Control resolves its anchors against its parent's anchorable rect, and only a
+	# sprite reports one -- under a plain node this collapsed to 28x28.
+	var area: Rect2 = await _skip_area(false)
+
+	assert_almost_eq(area.position, Vector2(64.0, 962.0), Vector2.ONE,
+		"the skip area should start where it always did")
+	assert_almost_eq(area.size, Vector2(540.0, 730.0), Vector2.ONE,
+		"and be the same 540x730 it always was")
+
+
+func test_the_skip_area_survives_running_light() -> void:
+	var area: Rect2 = await _skip_area(true)
+
+	assert_almost_eq(area.size, Vector2(540.0, 730.0), Vector2.ONE,
+		"fetching Kalulu late must not cost the child the skip button")
+
+
+func test_the_skip_button_sits_on_top_of_kalulu() -> void:
+	# Drawn after him, so the tap lands on the button rather than on the sprite.
+	UserDataManager.set_light_graphics(false)
+	var helper: Node = _kalulu()
+
+	assert_eq(helper.pass_button.get_parent(), helper.kalulu_sprite,
+		"the button belongs to the sprite, which is what gives it a rect")
+	assert_eq(helper.pass_button.get_index(), helper.kalulu_sprite.get_child_count() - 1,
+		"and it is the last child, so it is drawn over him")
+
+
+# --- The clouds keep their place in the stack ------------------------------------
+func test_the_penguins_clouds_stay_behind_the_scenery() -> void:
+	# The three sprites used to be authored in the scene at z_index -3. Built here
+	# instead, they carry the manager's own z, so the manager has to hold it -- or
+	# the sky drifts over the penguin.
+	var scene_text: String = FileAccess.open(
+		"res://sources/minigames/penguin/penguin_minigame.tscn", FileAccess.READ).get_as_text()
+	var clouds: String = scene_text.get_slice('[node name="Clouds"', 1).get_slice("[node", 0)
+	assert_true(clouds.contains("z_index = -3"),
+		"the penguin's sky belongs behind its ice and its mountains")
+
+
+## Tapping to skip actually lets the game run again.
+##
+## The end-to-end version of the test above, because the consequence is worse than
+## a dead button: minigame_ui sets get_tree().paused while Kalulu talks and clears
+## it on speech_ended, so a skip that never lands leaves the whole game frozen --
+## no minigame, no wheel, no way out. That is what a collapsed tap area did.
+func test_tapping_kalulu_unfreezes_the_game() -> void:
+	if not Database.is_open:
+		pending("needs an installed language pack")
+		return
+	var student_on_open: String = UserDataManager.student
+	# Signed in directly rather than through login_student, which would also open a
+	# session and call the server. Put back at the end either way.
+	if not UserDataManager.student_progression:
+		UserDataManager.student = str(_any_student_code())
+	if not UserDataManager.student_progression:
+		pending("needs a registered student")
+		return
+	UserDataManager.set_light_graphics(false)
+	if UserDataManager._student_speeches:
+		# The intro only plays for a minigame this student has not seen.
+		UserDataManager._student_speeches.speeches_played = [] as Array[String]
+	Minigame.transition_data = {
+		current_lesson_number = 12,
+		current_garden_index = 0,
+		minigame_number = 0,
+		minigame_completed = false,
+	}
+	var game: Node = (load(
+		"res://sources/minigames/jellyfish/jellyfish_minigame.tscn") as PackedScene).instantiate()
+	add_child(game)
+	for _index: int in 120:
+		await get_tree().process_frame
+	var kalulu: Node = game.get_node("MinigameUI/MainControl/Kalulu")
+	if not get_tree().paused:
+		game.free()
+		UserDataManager.student = student_on_open
+		pending("the intro speech did not run, so there is nothing to skip")
+		return
+
+	# Tap the middle of the skip area, the way a child does.
+	var centre: Vector2 = (kalulu.pass_button as Button).get_global_rect().get_center()
+	assert_eq(_control_at(centre), kalulu.pass_button,
+		"the tap has to reach the skip button")
+	_tap(centre)
+	# Generous: headless frames carry a tiny delta, so Kalulu's hide animation needs
+	# far more of them than it does seconds.
+	for _index: int in 6000:
+		await get_tree().process_frame
+		if not get_tree().paused:
+			break
+
+	assert_false(get_tree().paused, "the game has to run again once Kalulu is dismissed")
+	assert_false(kalulu.visible, "and his overlay has to be gone")
+	get_tree().paused = false
+	game.free()
+	UserDataManager.student = student_on_open
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
+## Whatever the viewport says is under `point`.
+func _control_at(point: Vector2) -> Control:
+	var motion: InputEventMouseMotion = InputEventMouseMotion.new()
+	motion.position = point
+	# Local coordinates: a headless window is 64x64, and the canvas transform would
+	# otherwise put the event somewhere else entirely.
+	get_viewport().push_input(motion, true)
+	return get_viewport().gui_get_hovered_control()
+
+
+func _tap(point: Vector2) -> void:
+	for pressed: bool in [true, false]:
+		var click: InputEventMouseButton = InputEventMouseButton.new()
+		click.button_index = MOUSE_BUTTON_LEFT
+		click.position = point
+		click.pressed = pressed
+		get_viewport().push_input(click, true)
+
+
+## The first student this account holds, for signing in with.
+func _any_student_code() -> int:
+	var settings: TeacherSettings = UserDataManager.teacher_settings
+	if not settings:
+		return 0
+	for device: int in settings.students.keys():
+		for student: StudentData in settings.students[device]:
+			return student.code
+	return 0
+
+
+## Nothing else is anchored to a node that reports no rect.
+##
+## The same refactor put a plain slot where a sprite used to be in two other places.
+## Neither holds a Control today, and neither may grow one without the trap coming
+## back. Read out of the scene rather than instantiated: the brain wants a signed-in
+## student before it will build.
+func test_no_other_slot_has_a_control_hanging_off_it() -> void:
+	for slot_path: String in ["GameRoot/KaluluBoss", "Brain/Kalulu"]:
+		for scene_path: String in ["res://sources/minigames/boss/boss_minigame.tscn",
+				"res://sources/brain/brain.tscn"]:
+			var state: SceneState = (load(scene_path) as PackedScene).get_state()
+			var found_slot: bool = false
+			for index: int in state.get_node_count():
+				var own_path: String = str(state.get_node_path(index)).trim_prefix("./")
+				if own_path == slot_path:
+					found_slot = true
+					continue
+				if str(state.get_node_path(index, true)).trim_prefix("./") != slot_path:
+					continue
+				assert_false(ClassDB.is_parent_class(state.get_node_type(index), "Control"),
+					"%s in %s anchors against a node with no rect"
+						% [state.get_node_name(index), scene_path])
+			if found_slot:
+				assert_true(found_slot, "%s is still where %s puts it" % [slot_path, scene_path])

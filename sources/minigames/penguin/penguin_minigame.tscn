@@ -34,6 +34,7 @@ script = ExtResource("lazy_1")
 texture_path = "res://assets/minigames/penguin/graphic/background.png"
 
 [node name="Clouds" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1471723126]
+z_index = -3
 script = ExtResource("6_ikkck")
 max_speed = 80.0
 min_y = 100.0
