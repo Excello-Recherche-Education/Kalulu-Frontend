@@ -1186,6 +1186,30 @@ func _get_current_lesson_button(lesson: int) -> LessonButton:
 	return null
 
 
+## Says why a click did nothing, on a screen with three ways to swallow one.
+##
+## The gardens stack a full-screen Lock, Kalulu's dimming overlay and the wheel's
+## BackgroundRect, and any of them can leave the screen looking perfectly normal
+## while nothing responds. Worse, `is_locked` alone is enough: every wheel handler
+## opens with `if is_locked: return`, and opening the wheel is the one path that
+## does not check it -- so the wheel opens and then swallows everything.
+##
+## Runs before the GUI gets the event, so it reports on every click. One TRACE line
+## per click, and the absence of a line is itself the answer: this node is pausable,
+## so a click that logs nothing means the tree is paused.
+func _input(event: InputEvent) -> void:
+	if not event.is_action_pressed("left_click"):
+		return
+	if Log.current_level > Log.LogLevel.TRACE:
+		return
+	var hovered: Control = get_viewport().gui_get_hovered_control()
+	Log.trace("Gardens: click at %s -> %s | locked=%s wheel=%s kalulu=%s lock=%s" % [
+		str(get_viewport().get_mouse_position()),
+		hovered.get_path() if hovered else "<nothing>",
+		str(is_locked), str(in_minigame_selection),
+		str(kalulu.visible), str(lock.visible)])
+
+
 func _on_garden_lesson_button_pressed(button: LessonButton, lesson_number: int) -> void:
 	_open_minigames_layout(button, lesson_number)
 
