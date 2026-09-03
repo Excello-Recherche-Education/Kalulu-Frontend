@@ -24,6 +24,10 @@ extends RefCounted
 ## True on a device that can afford the decoration. Everything below is drawn only
 ## while this holds.
 static func enabled() -> bool:
+	if Engine.is_editor_hint():
+		# The editor has no autoloads to ask, and should show the real artwork
+		# anyway: a @tool script drawing its own preview is not a tablet.
+		return true
 	return not UserDataManager.get_light_graphics()
 
 

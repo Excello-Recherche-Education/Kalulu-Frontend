@@ -30,6 +30,7 @@ const DECORATED_SCENES: PackedStringArray = [
 	"res://sources/minigames/base/base_minigame.tscn",
 	"res://sources/minigames/base/minigame_ui.tscn",
 	"res://sources/minigames/base/kalulu_ingame.tscn",
+	"res://sources/utils/fx/sand.tscn",
 ]
 ## What none of them may name. Every one of these is reached through HeavyGraphics
 ## instead, from a path.
@@ -59,6 +60,13 @@ const ON_DEMAND_ARTWORK: PackedStringArray = [
 	"res://sources/kalulu_animator.tscn",
 	"res://sources/utils/fx/firework.tscn",
 	"res://sources/minigames/frog/river.tscn",
+	"res://assets/vfx/sand_01.png",
+	"res://assets/vfx/sand_02.png",
+	"res://assets/vfx/sand_03.png",
+	"res://assets/vfx/sand_04.png",
+	"res://assets/vfx/sand_05.png",
+	"res://assets/vfx/sand_06.png",
+	"res://assets/vfx/sand_07.png",
 ]
 
 var _light_on_open: bool = false
@@ -520,3 +528,40 @@ func test_no_other_slot_has_a_control_hanging_off_it() -> void:
 						% [state.get_node_name(index), scene_path])
 			if found_slot:
 				assert_true(found_slot, "%s is still where %s puts it" % [slot_path, scene_path])
+
+
+# --- The crabs' sand -------------------------------------------------------------
+func _sand() -> SandVFX:
+	var sand: SandVFX = (load("res://sources/utils/fx/sand.tscn") as PackedScene).instantiate()
+	add_child_autofree(sand)
+	return sand
+
+
+func test_the_crabs_kick_up_sand_when_the_device_can_afford_it() -> void:
+	UserDataManager.set_light_graphics(false)
+	var sand: SandVFX = _sand()
+	await get_tree().process_frame
+
+	assert_eq(sand._textures.size(), SandVFX.TEXTURE_PATHS.size(), "every grain should load")
+	sand.play()
+	assert_not_null(sand.particles.texture, "and a burst should pick one")
+
+
+func test_no_sand_on_a_light_device() -> void:
+	# Seven 128x128 grains is not the point; up to eighteen particles per crab
+	# movement, on every hole in the game, is.
+	UserDataManager.set_light_graphics(true)
+	var sand: SandVFX = _sand()
+	await get_tree().process_frame
+
+	assert_eq(sand._textures.size(), 0, "no grain should have been loaded")
+	assert_false(sand.particles.emitting)
+	assert_false(sand.particles.visible)
+
+	# hole.gd drives this from nine places and none of them checks first.
+	sand.play()
+	sand.start()
+
+	assert_null(sand.particles.texture, "asking for a burst should stay a no-op")
+	assert_false(sand.is_playing, "and the loop should never think it started")
+	sand.stop()

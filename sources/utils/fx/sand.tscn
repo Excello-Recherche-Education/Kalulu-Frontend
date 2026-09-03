@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://dt8ynpufhqs5w"]
 
 [ext_resource type="Script" uid="uid://b3rdx2f6g5m1l" path="res://sources/utils/fx/sand.gd" id="1_rveeh"]
-[ext_resource type="Texture2D" uid="uid://bdf3ydwjg3ry4" path="res://assets/vfx/sand_07.png" id="3_v27vk"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l5ec5"]
 particle_flag_disable_z = true
@@ -19,7 +18,6 @@ script = ExtResource("1_rveeh")
 [node name="Particles" type="GPUParticles2D" parent="." unique_id=590510809]
 emitting = false
 amount = 10
-texture = ExtResource("3_v27vk")
 one_shot = true
 explosiveness = 0.8
 process_material = SubResource("ParticleProcessMaterial_l5ec5")
