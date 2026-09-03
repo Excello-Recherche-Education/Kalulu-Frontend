@@ -187,13 +187,16 @@ expand_icon = true
 
 [node name="OverflowMenu" type="PopupMenu" parent="Page/ControlsRow/Actions/MenuButton"]
 unique_name_in_owner = true
-item_count = 3
-item_0/text = "CHANGE_LANGUAGE"
+item_count = 4
+item_0/text = "LIGHT_GRAPHICS"
+item_0/checkable = 1
 item_0/id = 0
-item_1/text = "LOGOUT"
+item_1/text = "CHANGE_LANGUAGE"
 item_1/id = 1
-item_2/text = "DELETE_ACCOUNT"
+item_2/text = "LOGOUT"
 item_2/id = 2
+item_3/text = "DELETE_ACCOUNT"
+item_3/id = 3
 
 [node name="Card" type="PanelContainer" parent="Page"]
 layout_mode = 2

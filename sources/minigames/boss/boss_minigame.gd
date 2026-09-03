@@ -9,8 +9,14 @@ const GAUGE_COLOR_HIGH: Color = Color(0.996078, 0.776471, 0.2)
 # imported texture data -- to draw eight small, mostly static sprites. These two
 # scenes hold the same sprites with only the frames the boss plays. See
 # sources/minigames/boss/boss_friends.gd.
-const FRIENDS_SCENE: PackedScene = preload("res://sources/minigames/boss/boss_friends.tscn")
-const FRIENDS_BEHIND_SCENE: PackedScene = preload("res://sources/minigames/boss/boss_friends_behind.tscn")
+#
+# Paths rather than preloads, and Kalulu is not in the scene either: the three of
+# them are the decoration of this screen, and on a device running light graphics
+# none of it is loaded -- see HeavyGraphics. Kalulu's own sheet is 2400x2400, which
+# is why he goes too even though he reacts to the answers.
+const FRIENDS_SCENE_PATH: String = "res://sources/minigames/boss/boss_friends.tscn"
+const FRIENDS_BEHIND_SCENE_PATH: String = "res://sources/minigames/boss/boss_friends_behind.tscn"
+const KALULU_BOSS_SCENE_PATH: String = "res://sources/minigames/boss/kalulu_boss.tscn"
 
 @export var game_duration: int = 4 * 60
 @export var minimum_correct_ratio: float = 0.8
@@ -32,6 +38,8 @@ var _victory_pulse_tween: Tween
 var _victory_threshold_reached: bool = false
 var friends: BossFriends
 var friends_behind: BossFriends
+## Kalulu, or null on a device running light graphics.
+var kalulu_boss: KaluluBoss
 
 @onready var text_start_zone: Control = %ControlText
 @onready var texture_button_bin: TextureButton = $GameRoot/TextureButtonBin
@@ -43,7 +51,7 @@ var friends_behind: BossFriends
 @onready var progress_gauge_goal: PercentMarginContainer = %ProgressionGaugeGoalPercentMarginContainer2
 @onready var progress_gauge_internal: NinePatchRect = %ProgressionGaugeInternal
 @onready var adult_block: AdultBlock = %AdultBlock
-@onready var kalulu_boss: KaluluBoss = %KaluluBoss
+@onready var kalulu_boss_slot: Node2D = %KaluluBoss
 @onready var wrong_fx: WrongFX = %WrongFX
 @onready var right_stars: RightStarsFX = $GameRoot/Right_Stars
 @onready var frame_exit: Sprite2D = $GameRoot/Frame/FrameExit
@@ -74,27 +82,38 @@ func _ready() -> void:
 	if UserDataManager.is_speech_played(TYPE_NAMES[minigame_name]):
 		tutorial_count = 2
 
-	_instantiate_animal_friends()
+	_instantiate_decor()
 
 
-func _instantiate_animal_friends() -> void:
-	friends = FRIENDS_SCENE.instantiate()
-	friends_container.add_child(friends)
-
-	friends_behind = FRIENDS_BEHIND_SCENE.instantiate()
-	friends_behind_frame_container.add_child(friends_behind)
-
+## Brings in the animal friends and Kalulu, on a device that draws them.
+func _instantiate_decor() -> void:
+	var friends_scene: PackedScene = HeavyGraphics.load_resource(FRIENDS_SCENE_PATH) as PackedScene
+	var friends_behind_scene: PackedScene = HeavyGraphics.load_resource(FRIENDS_BEHIND_SCENE_PATH) as PackedScene
+	var kalulu_scene: PackedScene = HeavyGraphics.load_resource(KALULU_BOSS_SCENE_PATH) as PackedScene
+	if friends_scene:
+		friends = friends_scene.instantiate()
+		friends_container.add_child(friends)
+	if friends_behind_scene:
+		friends_behind = friends_behind_scene.instantiate()
+		friends_behind_frame_container.add_child(friends_behind)
+	if kalulu_scene:
+		kalulu_boss = kalulu_scene.instantiate()
+		kalulu_boss_slot.add_child(kalulu_boss)
 	setup_animal_friends()
 
 
 func setup_animal_friends() -> void:
-	friends.idle()
-	friends_behind.idle()
+	if friends:
+		friends.idle()
+	if friends_behind:
+		friends_behind.idle()
 
 
 func win_with_friends() -> void:
-	friends.victory()
-	friends_behind.victory()
+	if friends:
+		friends.victory()
+	if friends_behind:
+		friends_behind.victory()
 
 
 func _text_get_drag_data(_at_position: Vector2) -> Variant:
@@ -395,14 +414,16 @@ func _win() -> void:
 	if _is_boss_session() and _boss_session_index >= 0:
 		UserDataManager.finish_boss_session(_boss_session_index, true)
 	win_with_friends()
-	await kalulu_boss.happy()
+	if kalulu_boss:
+		await kalulu_boss.happy()
 	await super()
 
 
 func _lose() -> void:
 	if _is_boss_session() and _boss_session_index >= 0:
 		UserDataManager.finish_boss_session(_boss_session_index, false)
-	await kalulu_boss.sad()
+	if kalulu_boss:
+		await kalulu_boss.sad()
 	await super()
 
 

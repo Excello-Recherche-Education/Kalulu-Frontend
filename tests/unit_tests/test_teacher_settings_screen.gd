@@ -74,7 +74,7 @@ func test_the_rare_and_destructive_actions_moved_into_the_menu() -> void:
 	# They used to be permanent buttons in a sidebar next to everyday ones,
 	# which put "Delete account" a single tap from "Synchronize".
 	var menu: PopupMenu = screen.get_node("%OverflowMenu")
-	assert_eq(menu.item_count, 3)
+	assert_eq(menu.item_count, 4)
 	assert_eq(menu.get_item_text(SettingsTeacherSettings.OverflowItem.CHANGE_LANGUAGE),
 		"CHANGE_LANGUAGE")
 	assert_eq(menu.get_item_text(SettingsTeacherSettings.OverflowItem.LOGOUT), "LOGOUT")
@@ -84,7 +84,8 @@ func test_the_rare_and_destructive_actions_moved_into_the_menu() -> void:
 
 func test_the_menu_items_are_indexed_by_the_enum_the_handler_matches_on() -> void:
 	var menu: PopupMenu = screen.get_node("%OverflowMenu")
-	for item: int in [SettingsTeacherSettings.OverflowItem.CHANGE_LANGUAGE,
+	for item: int in [SettingsTeacherSettings.OverflowItem.LIGHT_GRAPHICS,
+			SettingsTeacherSettings.OverflowItem.CHANGE_LANGUAGE,
 			SettingsTeacherSettings.OverflowItem.LOGOUT,
 			SettingsTeacherSettings.OverflowItem.DELETE_ACCOUNT]:
 		assert_eq(menu.get_item_id(item), item,

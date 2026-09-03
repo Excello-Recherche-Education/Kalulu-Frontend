@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b5own5tlvbofc" path="res://sources/minigames/jellyfish/jellyfish_minigame.gd" id="2_gnjlp"]
 [ext_resource type="Texture2D" uid="uid://c0shai0eqdrbf" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_empty.png" id="4_1m7js"]
 [ext_resource type="Texture2D" uid="uid://cq87j1xw4c31r" path="res://assets/minigames/jellyfish/graphic/gauge_icon_jellyfish_full.png" id="5_4gwjw"]
-[ext_resource type="Texture2D" uid="uid://d60ylt2dvc2s" path="res://assets/minigames/jellyfish/graphic/background.png" id="6_sn7hv"]
+[ext_resource type="Script" uid="uid://bkg6f4bwm0qdx" path="res://sources/utils/lazy_texture_rect.gd" id="lazy_1"]
 
 [node name="JellyfishMinigame" unique_id=342628221 instance=ExtResource("1_hauef")]
 script = ExtResource("2_gnjlp")
@@ -24,7 +24,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("6_sn7hv")
+script = ExtResource("lazy_1")
+texture_path = "res://assets/minigames/jellyfish/graphic/background.png"
 
 [node name="SpawningSpace" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1521195317]
 unique_name_in_owner = true

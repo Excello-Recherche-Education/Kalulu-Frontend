@@ -3,6 +3,7 @@ extends Control
 
 ## Items in the overflow menu, in the order the PopupMenu lists them.
 enum OverflowItem {
+	LIGHT_GRAPHICS,
 	CHANGE_LANGUAGE,
 	LOGOUT,
 	DELETE_ACCOUNT,
@@ -50,6 +51,7 @@ var selected_device: int = -1
 
 func _ready() -> void:
 	refresh_devices()
+	_read_light_graphics()
 	
 	# Internet mandatory to add student because only the server can ensure the student code is not a duplicate
 	if await ServerManager.check_internet_access():
@@ -221,8 +223,31 @@ func _on_menu_button_pressed() -> void:
 	overflow_menu.popup()
 
 
+## Shows the light-graphics switch in the position the device is actually in.
+##
+## Read here rather than authored in the scene: it is a device setting, so the same
+## build opens with it on or off depending on the tablet.
+func _read_light_graphics() -> void:
+	var index: int = overflow_menu.get_item_index(OverflowItem.LIGHT_GRAPHICS)
+	overflow_menu.set_item_checked(index, UserDataManager.get_light_graphics())
+
+
+## Turns the decorative artwork off, or back on.
+##
+## Takes effect the next time a screen is built, which for a teacher leaving these
+## settings means the very next one: the gardens and the minigames read the setting
+## as they load. Nothing already on screen changes, and nothing needs restarting.
+func _toggle_light_graphics() -> void:
+	var index: int = overflow_menu.get_item_index(OverflowItem.LIGHT_GRAPHICS)
+	var light: bool = not overflow_menu.is_item_checked(index)
+	UserDataManager.set_light_graphics(light)
+	overflow_menu.set_item_checked(index, light)
+
+
 func _on_overflow_menu_id_pressed(id: int) -> void:
 	match id:
+		OverflowItem.LIGHT_GRAPHICS:
+			_toggle_light_graphics()
 		OverflowItem.CHANGE_LANGUAGE:
 			_on_change_language_button_pressed()
 		OverflowItem.LOGOUT:

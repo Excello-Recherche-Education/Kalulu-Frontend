@@ -21,9 +21,6 @@
 [ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="43_jfyfk"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="44_okr34"]
 [ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/utils/clouds_manager.gd" id="45_clouds"]
-[ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="46_cloud1"]
-[ext_resource type="Texture2D" uid="uid://dphj3hqfnnw4p" path="res://assets/minigames/parakeets/graphic/cloud_2.png" id="47_cloud2"]
-[ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="48_cloud3"]
 [ext_resource type="Texture2D" uid="uid://d1j23o6nq476v" path="res://assets/gardens/animals/ant_body.png" id="ant_body"]
 [ext_resource type="Texture2D" uid="uid://by3xfdin7jrsn" path="res://assets/gardens/animals/ant_face.png" id="ant_face"]
 [ext_resource type="Texture2D" uid="uid://b6nrx0dn0h3f2" path="res://assets/gardens/animals/caterpillar_body.png" id="caterpillar_body"]
@@ -411,21 +408,3 @@ max_scale = 1.2
 min_parallax_factor = 1.2
 max_parallax_factor = 1.7
 clouds_per_screen = 3
-
-[node name="cloud_1" type="Sprite2D" parent="CloudsLayer/Clouds" unique_id=100000003]
-texture = ExtResource("46_cloud1")
-
-[node name="cloud_2" type="Sprite2D" parent="CloudsLayer/Clouds" unique_id=100000004]
-texture = ExtResource("47_cloud2")
-
-[node name="cloud_3" type="Sprite2D" parent="CloudsLayer/Clouds" unique_id=100000005]
-texture = ExtResource("48_cloud3")
-
-[connection signal="gui_input" from="ScrollContainer" to="." method="_on_scroll_container_gui_input"]
-[connection signal="gui_input" from="CanvasLayer/MinigameSelection/BackgroundRect" to="." method="_on_background_rect_gui_input"]
-[connection signal="pressed" from="CanvasLayer/MinigameSelection/LessonButton" to="." method="_on_lesson_button_pressed"]
-[connection signal="button_down" from="CanvasLayer/BackButton" to="." method="_on_back_button_button_down"]
-[connection signal="button_up" from="CanvasLayer/BackButton" to="." method="_on_back_button_button_up"]
-[connection signal="pressed" from="CanvasLayer/BrainButton" to="." method="_on_brain_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/KaluluButton" to="." method="_on_kalulu_button_pressed"]
-[connection signal="input_event" from="CanvasLayer/Area2D" to="." method="_on_area_2d_input_event"]

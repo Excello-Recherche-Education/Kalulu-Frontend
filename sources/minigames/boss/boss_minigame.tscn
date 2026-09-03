@@ -2,16 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://8awe4usnucyv" path="res://sources/minigames/base/base_minigame.tscn" id="1_itrpi"]
 [ext_resource type="Script" uid="uid://dgodk76761a1n" path="res://sources/minigames/boss/boss_minigame.gd" id="2_68jip"]
-[ext_resource type="Texture2D" uid="uid://ccfocxdqxujvc" path="res://assets/minigames/boss/background.png" id="3_3ty3i"]
 [ext_resource type="Texture2D" uid="uid://bf7od6f56f516" path="res://assets/minigames/boss/sun.png" id="4_2m0ff"]
 [ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/utils/clouds_manager.gd" id="5_rl4hv"]
 [ext_resource type="Texture2D" uid="uid://bk4k8v5yrolt1" path="res://assets/minigames/boss/frame_corner.png" id="5_xo63t"]
 [ext_resource type="Texture2D" uid="uid://2iib006wpkux" path="res://assets/minigames/boss/frame_side.png" id="6_2c6ay"]
-[ext_resource type="Texture2D" uid="uid://rx270y4n7tul" path="res://assets/minigames/parakeets/graphic/cloud_1.png" id="6_je4of"]
-[ext_resource type="Texture2D" uid="uid://dphj3hqfnnw4p" path="res://assets/minigames/parakeets/graphic/cloud_2.png" id="7_bba1f"]
 [ext_resource type="Texture2D" uid="uid://cax5nncivwq4" path="res://assets/minigames/boss/bin.png" id="7_wij1o"]
 [ext_resource type="Texture2D" uid="uid://xukdk8dobsqy" path="res://assets/minigames/boss/book.png" id="8_mkvne"]
-[ext_resource type="Texture2D" uid="uid://1btgagsporxa" path="res://assets/minigames/parakeets/graphic/cloud_3.png" id="8_xrsj0"]
 [ext_resource type="Texture2D" uid="uid://dxqnvbr4tffn7" path="res://assets/minigames/minigame_ui/graphic/gauge.png" id="11_p5wnc"]
 [ext_resource type="Texture2D" uid="uid://7w2e4mo7yssm" path="res://assets/minigames/boss/foreground.png" id="12_2c6ay"]
 [ext_resource type="Texture2D" uid="uid://4ci6gmg0c15o" path="res://assets/minigames/minigame_ui/graphic/white_gauge.png" id="12_w5m1b"]
@@ -19,10 +15,10 @@
 [ext_resource type="Texture2D" uid="uid://bs1twkddxu31y" path="res://assets/minigames/boss/text_box_long_outline_dotted.png" id="15_kvjsk"]
 [ext_resource type="Texture2D" uid="uid://cdmfxx6kt5tla" path="res://assets/minigames/boss/text_box_long.png" id="16_sndot"]
 [ext_resource type="LabelSettings" uid="uid://bguqnhiblwick" path="res://resources/themes/minigames_label_settings.tres" id="17_47luc"]
-[ext_resource type="PackedScene" uid="uid://dpfn2ag2xv24s" path="res://sources/minigames/boss/kalulu_boss.tscn" id="17_kvjsk"]
 [ext_resource type="PackedScene" uid="uid://b7rx6esglyd6c" path="res://sources/menus/adult_block/adult_block.tscn" id="18_4v0wd"]
 [ext_resource type="PackedScene" uid="uid://cs6g7fhc0bjvh" path="res://sources/utils/fx/right_stars.tscn" id="19_b2wqe"]
 [ext_resource type="PackedScene" uid="uid://dlmbxcgiv8tpr" path="res://sources/utils/fx/wrong.tscn" id="19_wi3c5"]
+[ext_resource type="Script" uid="uid://bkg6f4bwm0qdx" path="res://sources/utils/lazy_texture_rect.gd" id="lazy_1"]
 
 [sub_resource type="Curve2D" id="Curve2D_8d1qx"]
 _data = {
@@ -49,7 +45,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_3ty3i")
+script = ExtResource("lazy_1")
+texture_path = "res://assets/minigames/boss/background.png"
 
 [node name="Path2D" type="Path2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=191741591]
 position = Vector2(0, -128)
@@ -69,18 +66,6 @@ script = ExtResource("5_rl4hv")
 max_speed = 40.0
 min_y = 100.0
 max_y = 500.0
-
-[node name="cloud_1" type="Sprite2D" parent="GameRoot/Clouds_Background" index="0" unique_id=41424144]
-position = Vector2(623, 253.5)
-texture = ExtResource("6_je4of")
-
-[node name="cloud_2" type="Sprite2D" parent="GameRoot/Clouds_Background" index="1" unique_id=1350923133]
-position = Vector2(1088, 256)
-texture = ExtResource("7_bba1f")
-
-[node name="cloud_3" type="Sprite2D" parent="GameRoot/Clouds_Background" index="2" unique_id=190014762]
-position = Vector2(1904, 248)
-texture = ExtResource("8_xrsj0")
 
 [node name="Friends_Behind_Frame" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="3" unique_id=889769498]
 
@@ -147,18 +132,6 @@ min_speed = 50.0
 max_speed = 80.0
 min_y = 100.0
 max_y = 500.0
-
-[node name="cloud_1" type="Sprite2D" parent="GameRoot/Clouds_Foreground" index="0" unique_id=1134925507]
-position = Vector2(623, 253.5)
-texture = ExtResource("6_je4of")
-
-[node name="cloud_2" type="Sprite2D" parent="GameRoot/Clouds_Foreground" index="1" unique_id=392578643]
-position = Vector2(1088, 256)
-texture = ExtResource("7_bba1f")
-
-[node name="cloud_3" type="Sprite2D" parent="GameRoot/Clouds_Foreground" index="2" unique_id=1502196887]
-position = Vector2(1904, 248)
-texture = ExtResource("8_xrsj0")
 
 [node name="TextureButtonBin" type="TextureButton" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="6" unique_id=852671648]
 layout_mode = 0
@@ -235,7 +208,7 @@ texture = ExtResource("12_2c6ay")
 self_modulate = Color(1, 1, 1, 0.34509805)
 position = Vector2(1676, 1280)
 
-[node name="KaluluBoss" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="11" unique_id=1776395621 instance=ExtResource("17_kvjsk")]
+[node name="KaluluBoss" type="Node2D" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="11" unique_id=1776395621]
 unique_name_in_owner = true
 position = Vector2(800, 1224)
 scale = Vector2(0.7, 0.7)
