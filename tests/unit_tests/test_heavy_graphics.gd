@@ -342,3 +342,4 @@ func test_the_stars_stop_on_a_light_device() -> void:
 
 	assert_false(stars.emitting)
 	assert_false(stars.visible)
+

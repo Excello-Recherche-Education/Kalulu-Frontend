@@ -15,11 +15,18 @@ const SETTINGS_SCENE: String = "res://sources/menus/settings/teacher_settings.ts
 var screen: Control
 ## Built on demand by _live_screen and shared by every test that needs one.
 var live_screen: SettingsTeacherSettings
+## The light-graphics setting is written to the device, so it is put back after.
+var _light_on_open: bool = false
 
 
 func before_each() -> void:
 	screen = (load(SETTINGS_SCENE) as PackedScene).instantiate()
 	autofree(screen)
+	_light_on_open = UserDataManager.get_light_graphics()
+
+
+func after_each() -> void:
+	UserDataManager.set_light_graphics(_light_on_open)
 
 
 func after_all() -> void:
@@ -33,7 +40,8 @@ func test_every_unique_name_the_script_looks_up_exists() -> void:
 			"%EducationMethodOptionButton", "%AddDeviceButton", "%AddStudentButton",
 			"%LabelInternetMandatory", "%AddDevicePopup", "%AddStudentPopup",
 			"%DeleteStudentPopup", "%ExportCodesFileDialog", "%MenuButton",
-			"%OverflowMenu", "%AddStudentErrorPopup"]:
+			"%OverflowMenu", "%AddStudentErrorPopup", "%LightGraphicsCheck",
+			"%LightGraphicsLabel"]:
 		assert_not_null(screen.get_node_or_null(unique_name),
 			"the script resolves %s at _ready" % unique_name)
 
@@ -66,7 +74,7 @@ func test_every_handler_the_scene_connects_to_exists() -> void:
 			"_on_change_language_popup_accepted", "_on_delete_popup_accepted",
 			"_on_add_student_popup_accepted", "_on_add_device_popup_accepted",
 			"_on_delete_student_popup_accepted", "_on_loading_popup_cancel",
-			"_on_loading_popup_ok"]:
+			"_on_loading_popup_ok", "_on_light_graphics_check_pressed"]:
 		assert_true(screen.has_method(method), "%s should exist" % method)
 
 
@@ -74,7 +82,7 @@ func test_the_rare_and_destructive_actions_moved_into_the_menu() -> void:
 	# They used to be permanent buttons in a sidebar next to everyday ones,
 	# which put "Delete account" a single tap from "Synchronize".
 	var menu: PopupMenu = screen.get_node("%OverflowMenu")
-	assert_eq(menu.item_count, 4)
+	assert_eq(menu.item_count, 3)
 	assert_eq(menu.get_item_text(SettingsTeacherSettings.OverflowItem.CHANGE_LANGUAGE),
 		"CHANGE_LANGUAGE")
 	assert_eq(menu.get_item_text(SettingsTeacherSettings.OverflowItem.LOGOUT), "LOGOUT")
@@ -84,8 +92,7 @@ func test_the_rare_and_destructive_actions_moved_into_the_menu() -> void:
 
 func test_the_menu_items_are_indexed_by_the_enum_the_handler_matches_on() -> void:
 	var menu: PopupMenu = screen.get_node("%OverflowMenu")
-	for item: int in [SettingsTeacherSettings.OverflowItem.LIGHT_GRAPHICS,
-			SettingsTeacherSettings.OverflowItem.CHANGE_LANGUAGE,
+	for item: int in [SettingsTeacherSettings.OverflowItem.CHANGE_LANGUAGE,
 			SettingsTeacherSettings.OverflowItem.LOGOUT,
 			SettingsTeacherSettings.OverflowItem.DELETE_ACCOUNT]:
 		assert_eq(menu.get_item_id(item), item,
@@ -267,3 +274,86 @@ func test_the_students_are_counted_across_every_device() -> void:
 		counted += (device_students as Array).size()
 
 	assert_eq(live.get_student_count(), counted, "every device's students should be counted")
+
+
+# --- The light-graphics box -----------------------------------------------------
+## The box, read back from the device as _ready does.
+##
+## The whole screen is not rebuilt per test: _ready starts a connectivity check and
+## ServerManager owns a single HTTPRequest, so the second screen's check is refused.
+## _read_light_graphics is the function _ready calls, so calling it is the same test.
+func _reopened_box(light: bool) -> Button:
+	var live: SettingsTeacherSettings = await _live_screen()
+	UserDataManager.set_light_graphics(light)
+	live._read_light_graphics()
+	return live.light_graphics_check
+
+
+func test_the_box_is_a_box_and_not_a_menu_entry() -> void:
+	# It was a checkable item in the overflow menu, where a teacher had to open the
+	# menu to find out whether it was on. A box on the page shows its own state.
+	assert_not_null(screen.get_node_or_null("Page/FooterRow/LightGraphicsCheck"),
+		"the box belongs at the bottom of the page, under the card")
+	var box: Button = screen.get_node("%LightGraphicsCheck")
+	assert_true(box.toggle_mode, "it has to hold its position to show it")
+	var menu: PopupMenu = screen.get_node("%OverflowMenu")
+	for index: int in menu.item_count:
+		assert_false(menu.is_item_checkable(index),
+			"nothing in the menu is a switch any more")
+
+
+func test_the_box_shows_the_position_the_device_is_in() -> void:
+	# A device setting, so the same build opens ticked on one tablet and empty on
+	# the next. Authoring the box's state in the scene would show one of them.
+	var box: Button = await _reopened_box(true)
+
+	assert_true(box.button_pressed)
+	assert_not_null(box.icon, "a ticked box is filled in")
+
+
+func test_an_untouched_device_opens_with_an_empty_box() -> void:
+	var box: Button = await _reopened_box(false)
+
+	assert_false(box.button_pressed)
+	assert_null(box.icon)
+
+
+func test_ticking_the_box_turns_the_artwork_off() -> void:
+	var live: SettingsTeacherSettings = await _live_screen()
+	UserDataManager.set_light_graphics(false)
+	live._read_light_graphics()
+
+	live.light_graphics_check.button_pressed = true
+	live._on_light_graphics_check_pressed()
+
+	assert_true(UserDataManager.get_light_graphics())
+	assert_false(HeavyGraphics.enabled())
+	assert_not_null(live.light_graphics_check.icon)
+
+
+func test_clearing_the_box_brings_the_artwork_back() -> void:
+	var live: SettingsTeacherSettings = await _live_screen()
+	UserDataManager.set_light_graphics(true)
+	live._read_light_graphics()
+
+	live.light_graphics_check.button_pressed = false
+	live._on_light_graphics_check_pressed()
+
+	assert_false(UserDataManager.get_light_graphics())
+	assert_true(HeavyGraphics.enabled())
+	assert_null(live.light_graphics_check.icon)
+
+
+func test_the_wording_beside_the_box_is_part_of_the_target() -> void:
+	# A 120-pixel square is a small thing to hit on a tablet.
+	var live: SettingsTeacherSettings = await _live_screen()
+	UserDataManager.set_light_graphics(false)
+	live._read_light_graphics()
+	var click: InputEventMouseButton = InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+
+	live._on_light_graphics_label_gui_input(click)
+
+	assert_true(live.light_graphics_check.button_pressed)
+	assert_true(UserDataManager.get_light_graphics())
