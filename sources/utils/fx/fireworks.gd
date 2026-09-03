@@ -1,9 +1,17 @@
 class_name Fireworks
 extends Node
+## The burst of fireworks over a finished minigame.
+##
+## Named by path rather than preloaded: firework.png is 3200x1600, about 20 MB, and
+## this node sits in base_minigame, so every minigame carried it whether or not it
+## was ever won. A device running light graphics skips the celebration entirely --
+## the victory screen already says the game is won -- and play() finishes at once so
+## the callers that await it carry on. See HeavyGraphics.
 
 signal finished()
 
-@export var firework_scene: PackedScene = preload("res://sources/utils/fx/firework.tscn")
+const FIREWORK_SCENE_PATH: String = "res://sources/utils/fx/firework.tscn"
+
 @export var fireworks_count: int = 50
 @export var screen_size: Vector2 = Vector2(2560, 1800)
 @export var min_spawn_delay: float = 0.01
@@ -12,6 +20,8 @@ signal finished()
 @export var max_scale: float = 1.0
 @export var spawn_rect: Rect2 = Rect2()
 
+## The single firework, fetched on the first celebration and kept after that.
+var firework_scene: PackedScene = null
 var _colors: Array[Color] = [
 	Color.RED,
 	Color.ORANGE,
@@ -42,8 +52,13 @@ func set_spawn_rect(rect: Rect2) -> void:
 
 
 func play() -> void:
+	if not firework_scene:
+		firework_scene = HeavyGraphics.load_resource(FIREWORK_SCENE_PATH) as PackedScene
 	if firework_scene == null:
-		Log.error("Fireworks: firework_scene is null.")
+		# Either the device is running light, or the scene is missing; both mean
+		# there is nothing to show and the caller is waiting on `finished`.
+		if HeavyGraphics.enabled():
+			Log.error("Fireworks: Cannot load %s" % FIREWORK_SCENE_PATH)
 		emit_signal("finished")
 		return
 	if fireworks_count <= 0:

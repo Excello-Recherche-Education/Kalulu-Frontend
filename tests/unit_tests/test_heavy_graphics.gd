@@ -25,6 +25,11 @@ const DECORATED_SCENES: PackedStringArray = [
 	"res://sources/minigames/turtles/turtles_minigame.tscn",
 	"res://sources/minigames/turtles/water.tscn",
 	"res://sources/gardens/gardens.tscn",
+	"res://sources/brain/brain.tscn",
+	"res://sources/menus/login/login.tscn",
+	"res://sources/minigames/base/base_minigame.tscn",
+	"res://sources/minigames/base/minigame_ui.tscn",
+	"res://sources/minigames/base/kalulu_ingame.tscn",
 ]
 ## What none of them may name. Every one of these is reached through HeavyGraphics
 ## instead, from a path.
@@ -51,6 +56,9 @@ const ON_DEMAND_ARTWORK: PackedStringArray = [
 	"res://sources/minigames/boss/boss_friends.tscn",
 	"res://sources/minigames/boss/boss_friends_behind.tscn",
 	"res://sources/minigames/boss/kalulu_boss.tscn",
+	"res://sources/kalulu_animator.tscn",
+	"res://sources/utils/fx/firework.tscn",
+	"res://sources/minigames/frog/river.tscn",
 ]
 
 var _light_on_open: bool = false
@@ -241,3 +249,96 @@ func test_the_setting_survives_being_written() -> void:
 
 	UserDataManager.set_light_graphics(false)
 	assert_false(UserDataManager.get_light_graphics())
+
+
+# --- Kalulu the helper -----------------------------------------------------------
+func _kalulu() -> Node:
+	var scene: PackedScene = load("res://sources/minigames/base/kalulu_ingame.tscn") as PackedScene
+	var helper: Node = scene.instantiate()
+	add_child_autofree(helper)
+	return helper
+
+
+func test_kalulu_is_waiting_when_the_device_draws_him() -> void:
+	UserDataManager.set_light_graphics(false)
+
+	assert_not_null(_kalulu().kalulu_sprite,
+		"a device with room for him keeps him ready, so nothing pauses mid-game")
+
+
+func test_kalulu_is_not_fetched_until_a_child_asks_for_him() -> void:
+	# His sheet is 3600x4801 and this scene is in every minigame, garden and menu
+	# that can call him over. Most children never tap the button.
+	UserDataManager.set_light_graphics(true)
+
+	assert_null(_kalulu().kalulu_sprite)
+
+
+func test_the_first_speech_fetches_him() -> void:
+	UserDataManager.set_light_graphics(true)
+	var helper: Node = _kalulu()
+
+	helper.play_kalulu_speech(null, false, false)
+
+	assert_not_null(helper.kalulu_sprite, "and he stays from then on")
+	# There is no speech to play in a test, and Kalulu says so. Acknowledged here
+	# rather than in after_each: GUT checks for unhandled errors before it runs.
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
+# --- The fireworks ---------------------------------------------------------------
+func test_the_fireworks_are_named_by_path_rather_than_preloaded() -> void:
+	# firework.png is 3200x1600 and Fireworks sits in base_minigame, so a preloaded
+	# default would put it in every minigame whether or not one was ever won.
+	var constants: Dictionary = (Fireworks as Script).get_script_constant_map()
+	assert_true(constants.has("FIREWORK_SCENE_PATH"))
+	assert_true(constants.get("FIREWORK_SCENE_PATH") is String,
+		"FIREWORK_SCENE_PATH should be a String, not a preloaded resource")
+
+
+func test_a_won_game_is_celebrated_when_the_device_can_afford_it() -> void:
+	UserDataManager.set_light_graphics(false)
+	var fireworks: Fireworks = Fireworks.new()
+	add_child_autofree(fireworks)
+
+	fireworks.play()
+
+	assert_not_null(fireworks.firework_scene)
+
+
+func test_a_light_device_finishes_the_celebration_instead_of_showing_it() -> void:
+	# The callers await `finished`, so a skipped celebration still has to answer.
+	UserDataManager.set_light_graphics(true)
+	var fireworks: Fireworks = Fireworks.new()
+	add_child_autofree(fireworks)
+	watch_signals(fireworks)
+
+	fireworks.play()
+
+	assert_signal_emitted(fireworks, "finished")
+	assert_null(fireworks.firework_scene)
+	assert_eq(fireworks.get_child_count(), 0, "and nothing was spawned")
+
+
+# --- The drifting stars ----------------------------------------------------------
+func test_the_stars_drift_when_the_device_can_afford_them() -> void:
+	UserDataManager.set_light_graphics(false)
+	var stars: DecorativeParticles = DecorativeParticles.new()
+	add_child_autofree(stars)
+	await get_tree().process_frame
+
+	assert_true(stars.emitting)
+	assert_true(stars.visible)
+
+
+func test_the_stars_stop_on_a_light_device() -> void:
+	# The one piece of decoration whose cost is the GPU rather than memory: 256 live
+	# particles over the whole screen, every frame.
+	UserDataManager.set_light_graphics(true)
+	var stars: DecorativeParticles = DecorativeParticles.new()
+	add_child_autofree(stars)
+	await get_tree().process_frame
+
+	assert_false(stars.emitting)
+	assert_false(stars.visible)
