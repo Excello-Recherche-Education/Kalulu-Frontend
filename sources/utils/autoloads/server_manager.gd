@@ -12,6 +12,31 @@ const PROTOCOL: String = "https://"
 const STAGE_DEV: String = "dev/"
 const STAGE_PROD: String = "prod/"
 
+## Names for the codes HTTPRequest reports in its request_completed signal.
+##
+## error_string() cannot be used on them: it translates the global Error enum, where the
+## same numbers mean something else entirely. A TLS handshake failure is HTTPRequest's 5,
+## and error_string(5) calls it "Parameter out of range" -- which sent a support ticket
+## chasing a bad login parameter while the real cause was the device never reaching the
+## server. The constant names are kept verbatim so a log line can be grepped straight
+## against the engine documentation.
+const HTTP_RESULT_NAMES: Dictionary[int, String] = {
+	HTTPRequest.RESULT_SUCCESS: "RESULT_SUCCESS",
+	HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH: "RESULT_CHUNKED_BODY_SIZE_MISMATCH",
+	HTTPRequest.RESULT_CANT_CONNECT: "RESULT_CANT_CONNECT",
+	HTTPRequest.RESULT_CANT_RESOLVE: "RESULT_CANT_RESOLVE",
+	HTTPRequest.RESULT_CONNECTION_ERROR: "RESULT_CONNECTION_ERROR",
+	HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR: "RESULT_TLS_HANDSHAKE_ERROR",
+	HTTPRequest.RESULT_NO_RESPONSE: "RESULT_NO_RESPONSE",
+	HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED: "RESULT_BODY_SIZE_LIMIT_EXCEEDED",
+	HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED: "RESULT_BODY_DECOMPRESS_FAILED",
+	HTTPRequest.RESULT_REQUEST_FAILED: "RESULT_REQUEST_FAILED",
+	HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN: "RESULT_DOWNLOAD_FILE_CANT_OPEN",
+	HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR: "RESULT_DOWNLOAD_FILE_WRITE_ERROR",
+	HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED: "RESULT_REDIRECT_LIMIT_REACHED",
+	HTTPRequest.RESULT_TIMEOUT: "RESULT_TIMEOUT",
+}
+
 # Response from the last request
 var success: bool
 var code: int
@@ -297,8 +322,8 @@ func _delete_request(uri: String, params: Dictionary = {}) -> void:
 #endregion
 
 func _on_http_request_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result_code != OK:
-		Log.warn("ServerManager: Cannot complete http request. Error code %d = %s" % [result_code, error_string(result_code)])
+	if result_code != HTTPRequest.RESULT_SUCCESS:
+		Log.warn("ServerManager: Cannot complete http request. Result code %d = %s. No HTTP response, so the response code stays 0." % [result_code, _http_result_name(result_code)])
 	else:
 		code = response_code
 		if code == 200:
@@ -332,18 +357,22 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 				Log.trace("ServerManager: Body received is empty")
 			else:
 				Log.warn("ServerManager: Body received is empty")
-	success = result_code == OK and response_code == 200
+	success = result_code == HTTPRequest.RESULT_SUCCESS and response_code == 200
 	request_completed.emit(success, response_code, json)
 	loading_rect.hide()
 
 
 func _on_internet_check_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
-	if result_code != OK:
-		Log.warn("ServerManager: Cannot check internet request. Error code %d = %s" % [result_code, error_string(result_code)])
+	if result_code != HTTPRequest.RESULT_SUCCESS:
+		Log.warn("ServerManager: Cannot check internet request. Result code %d = %s" % [result_code, _http_result_name(result_code)])
 	else:
 		Log.trace("ServerManager: Internet check completed.\n    Response code = %s. (200 = OK)" % str(response_code))
-	success = result_code == OK and response_code == 200
+	success = result_code == HTTPRequest.RESULT_SUCCESS and response_code == 200
 	internet_check_completed.emit(success)
+
+
+func _http_result_name(result_code: int) -> String:
+	return HTTP_RESULT_NAMES.get(result_code, "unknown result code")
 
 
 func reset_result() -> void:
