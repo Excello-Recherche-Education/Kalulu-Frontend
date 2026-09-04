@@ -69,6 +69,43 @@ func test_only_a_rejected_token_signs_the_device_out() -> void:
 		"401 is the one answer that is about the account")
 
 
+# --- How the pack download ended ----------------------------------------------
+
+func test_a_whole_archive_goes_to_the_extraction_thread() -> void:
+	assert_eq(PackageDownloader.outcome_for_pack_download(HTTPRequest.RESULT_SUCCESS, 200),
+		PackageDownloader.DownloadOutcome.EXTRACT)
+
+
+func test_a_truncated_archive_is_not_extracted() -> void:
+	# The regression this one exists for: an HTTP 200 was enough on its own, so a body
+	# that never arrived whole went to the extraction thread and failed there as a
+	# corrupt package -- which reads as a bad pack rather than a bad connection. A
+	# proxy cutting the download short produces exactly this pair.
+	for result_code: int in [HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED,
+			HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH,
+			HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED]:
+		assert_eq(PackageDownloader.outcome_for_pack_download(result_code, 200),
+			PackageDownloader.DownloadOutcome.NO_RESPONSE,
+			"%s with a 200 still means the file is not all there"
+			% ServerManager.http_result_name(result_code))
+
+
+func test_a_download_that_got_nothing_back_is_the_network() -> void:
+	for result_code: int in [HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR, HTTPRequest.RESULT_TIMEOUT,
+			HTTPRequest.RESULT_CANT_RESOLVE, HTTPRequest.RESULT_CANT_CONNECT]:
+		assert_eq(PackageDownloader.outcome_for_pack_download(result_code, 0),
+			PackageDownloader.DownloadOutcome.NO_RESPONSE)
+
+
+func test_an_answer_that_is_not_the_file_is_a_refusal() -> void:
+	# The pack URL is presigned and short-lived, so a 403 is a URL that went stale
+	# rather than anything wrong with the network. Asking again mints a new one.
+	for response_code: int in [400, 403, 404, 500, 503]:
+		assert_eq(PackageDownloader.outcome_for_pack_download(HTTPRequest.RESULT_SUCCESS, response_code),
+			PackageDownloader.DownloadOutcome.REFUSED,
+			"S3 answered %d, so it is not the connection" % response_code)
+
+
 # --- Which no-server error to report ------------------------------------------
 
 func test_a_reachable_internet_means_kalulu_is_blocked() -> void:

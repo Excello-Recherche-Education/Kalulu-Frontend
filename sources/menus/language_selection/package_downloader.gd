@@ -25,6 +25,13 @@ const ERROR_MESSAGES: Array[String] = [
 	"DOWNLOAD_KALULU_BLOCKED",
 ]
 
+## What to do about the pack download itself.
+enum DownloadOutcome {
+	EXTRACT,      ## The archive arrived whole.
+	NO_RESPONSE,  ## Nothing came back, or not all of it.
+	REFUSED,      ## S3 answered, and not with the file.
+}
+
 ## What to do about the server's answer for the language pack URL.
 enum PackUrlOutcome {
 	USE,       ## The answer carries a URL to download from.
@@ -174,6 +181,42 @@ static func outcome_for_pack_url(code: int) -> PackUrlOutcome:
 	if code == 0:
 		return PackUrlOutcome.OFFLINE
 	return PackUrlOutcome.FAILED
+
+
+## What the pack download amounts to, given how it ended.
+##
+## An HTTP 200 is not enough on its own: a result code that is not SUCCESS means the
+## body never arrived whole, and a truncated archive used to go to the extraction
+## thread anyway, to fail there as a corrupt package. A proxy cutting the download
+## short produces exactly that.
+static func outcome_for_pack_download(result_code: int, response_code: int) -> DownloadOutcome:
+	if result_code != HTTPRequest.RESULT_SUCCESS:
+		return DownloadOutcome.NO_RESPONSE
+	if response_code == 200:
+		return DownloadOutcome.EXTRACT
+	return DownloadOutcome.REFUSED
+
+
+## Explains a download that did not arrive, and offers a way out of the screen.
+##
+## It used to show a label and stop there, which left the reader on the progress bars
+## with nothing to press: the popup is what carries both the retry and the way back to
+## the pack already installed.
+func _report_failed_download(result_code: int, response_code: int) -> void:
+	error_label.show()
+	if outcome_for_pack_download(result_code, response_code) == DownloadOutcome.REFUSED:
+		# S3 answered, so the network is fine and the URL is not. It is presigned and
+		# short-lived, and asking again mints a new one, which is what the retry does.
+		Log.warn("PackageDownloader: The pack download was refused with HTTP code %d" % response_code)
+		_show_error(DownloadError.DOWNLOAD_FAILED)
+		return
+	Log.warn("PackageDownloader: The pack download got no usable response (%s)"
+			% (ServerManager as ServerManagerClass).http_result_name(result_code))
+	# The pack is large and the probe from the start of the attempt is minutes old by
+	# now, so a connection that died halfway through would still be remembered as
+	# reachable. Ask again rather than blame the network for something it may not be.
+	internet_reachable = await (ServerManager as ServerManagerClass).check_internet_access()
+	_show_error(_no_server_error())
 
 
 ## Carries on with what is on disk, the server's answer being unusable.
@@ -419,25 +462,25 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 	# never got a response looking like an HTTP 0 in the log.
 	Log.trace("PackageDownloader: Download completed with result %s and HTTP code %d" % [
 			(ServerManager as ServerManagerClass).http_result_name(result_code), response_code])
-	if response_code == 200:
-		mutex = Mutex.new()
-		# Nothing should be holding a worker by now, but this is the one line that
-		# replaces the reference, so it is where the invariant is worth stating.
-		_release_extraction_thread()
-		thread = Thread.new()
-		download_label.hide()
-		copy_label.show()
-		# Close the language database on the main thread before the extraction
-		# thread swaps the language_resources folder. On Windows the OS locks
-		# open files, so an open language.db would make the removal of the
-		# previous pack fail (ERROR_REPLACING_PACKAGE). It is reopened in
-		# _go_to_next_scene once the swap is done.
-		Database.close()
-		Log.trace("PackageDownloader: Starting extraction thread")
-		thread.start(_copy_data.bind(self))
-	else:
-		Log.warn("PackageDownloader: Download failed with HTTP code %d" % response_code)
-		error_label.show()
+	if outcome_for_pack_download(result_code, response_code) != DownloadOutcome.EXTRACT:
+		_report_failed_download(result_code, response_code)
+		return
+
+	mutex = Mutex.new()
+	# Nothing should be holding a worker by now, but this is the one line that
+	# replaces the reference, so it is where the invariant is worth stating.
+	_release_extraction_thread()
+	thread = Thread.new()
+	download_label.hide()
+	copy_label.show()
+	# Close the language database on the main thread before the extraction
+	# thread swaps the language_resources folder. On Windows the OS locks
+	# open files, so an open language.db would make the removal of the
+	# previous pack fail (ERROR_REPLACING_PACKAGE). It is reopened in
+	# _go_to_next_scene once the swap is done.
+	Database.close()
+	Log.trace("PackageDownloader: Starting extraction thread")
+	thread.start(_copy_data.bind(self))
 
 
 func _on_disconnected_popup_accepted() -> void:
