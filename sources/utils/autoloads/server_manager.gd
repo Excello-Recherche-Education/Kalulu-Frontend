@@ -4,6 +4,13 @@ extends CanvasLayer
 signal request_completed(success: bool, code: int, body: Dictionary)
 signal internet_check_completed(has_access: bool)
 
+## What stopped a request that never reached the server.
+enum ConnectionFailure {
+	NONE,           ## The request did get an HTTP response.
+	NO_NETWORK,     ## The device has no route to the internet at all.
+	KALULU_BLOCKED, ## The internet is reachable, but something stops this app.
+}
+
 const CONFIG_PATH: String = "user://environment.cfg"
 const INTERNET_CHECK_URL: String = "https://google.com"
 const AWS_API_GATEWAY_DOMAIN_ADRESS: String = "api.kalulu.org/"
@@ -41,6 +48,11 @@ const HTTP_RESULT_NAMES: Dictionary[int, String] = {
 var success: bool
 var code: int
 var json: Dictionary = {}
+# The raw HTTPRequest result of the last request and of the last internet probe.
+# A failure that never got an HTTP response leaves code at 0 and says nothing more,
+# so these are what a diagnosis has to work from.
+var last_result_code: int = HTTPRequest.RESULT_SUCCESS
+var last_internet_result_code: int = HTTPRequest.RESULT_SUCCESS
 var environment_url: String = ""
 var custom_environment_url: String = ""
 var environment_setting: int = 1
@@ -214,7 +226,50 @@ func check_internet_access() -> bool:
 	var res: Error = internet_check.request(INTERNET_CHECK_URL)
 	if res == OK:
 		return await internet_check_completed
+	# No probe ran, so the code from the previous one must not be read as this one's.
+	last_internet_result_code = HTTPRequest.RESULT_REQUEST_FAILED
+	Log.warn("ServerManager: Could not start the internet check. Error: %s" % error_string(res))
 	return false
+
+
+## Tells "you have no internet" apart from "this network blocks Kalulu".
+##
+## Both end the same way -- no HTTP response, code left at 0 -- but the teacher has to
+## do two completely different things about them, and "check your internet access" is
+## actively misleading for the second: the internet is fine, and a school firewall or a
+## TLS-intercepting proxy is what refuses the API. One was diagnosed from a
+## RESULT_TLS_HANDSHAKE_ERROR that vanished the moment the teacher got home.
+##
+## The failed request's own result code cannot decide it. Filtering by DNS makes a
+## blocked host look exactly like an absent network, and a proxy makes an unreachable
+## one look like a certificate problem. So the answer comes from a second probe, on a
+## host that has nothing to do with Kalulu.
+func diagnose_connection_failure() -> ConnectionFailure:
+	if last_result_code == HTTPRequest.RESULT_SUCCESS:
+		return ConnectionFailure.NONE
+	var reached: bool = await check_internet_access()
+	var failure: ConnectionFailure = diagnosis_for(reached, last_internet_result_code)
+	Log.info("ServerManager: Diagnosed %s (request %s, probe %s)" % [
+			ConnectionFailure.keys()[failure],
+			_http_result_name(last_result_code),
+			_http_result_name(last_internet_result_code)])
+	return failure
+
+
+## The diagnosis, given what the probe found.
+##
+## Split out so every answer can be checked without a network, the probe's outcome
+## being the only input.
+static func diagnosis_for(probe_reached_internet: bool, probe_result_code: int) -> ConnectionFailure:
+	if probe_reached_internet:
+		# The device is online and only this app is being stopped.
+		return ConnectionFailure.KALULU_BLOCKED
+	# A probe that got as far as a rejected TLS handshake still proves something
+	# answered on the other side. That is a proxy presenting its own certificate for
+	# every host it is asked for, Kalulu included -- not an absent network.
+	if probe_result_code == HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR:
+		return ConnectionFailure.KALULU_BLOCKED
+	return ConnectionFailure.NO_NETWORK
 
 
 func _create_uri_with_parameters(uri: String, params: Dictionary) -> String:
@@ -322,6 +377,7 @@ func _delete_request(uri: String, params: Dictionary = {}) -> void:
 #endregion
 
 func _on_http_request_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	last_result_code = result_code
 	if result_code != HTTPRequest.RESULT_SUCCESS:
 		Log.warn("ServerManager: Cannot complete http request. Result code %d = %s. No HTTP response, so the response code stays 0." % [result_code, _http_result_name(result_code)])
 	else:
@@ -363,6 +419,7 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 
 
 func _on_internet_check_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+	last_internet_result_code = result_code
 	if result_code != HTTPRequest.RESULT_SUCCESS:
 		Log.warn("ServerManager: Cannot check internet request. Result code %d = %s" % [result_code, _http_result_name(result_code)])
 	else:

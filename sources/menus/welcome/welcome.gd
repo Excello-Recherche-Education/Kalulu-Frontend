@@ -106,8 +106,8 @@ func _on_next_pressed() -> void:
 	Log.info("Welcome: Sending login request for %s" % email_field.text)
 	var response: Dictionary = await ServerManager.login(email_field.text, password_field.text)
 	if response.code != 200:
-		Log.info("Welcome: Server refused login with code %d" % response.code)
-		_show_login_error(_translation_key_for_error(response))
+		Log.info("Welcome: Login failed with code %d" % response.code)
+		_show_login_error(await _translation_key_for_error(response))
 		_end_request()
 		return
 
@@ -195,8 +195,16 @@ func _clear_login_error(_text: String) -> void:
 
 func _translation_key_for_error(response: Dictionary) -> String:
 	# A network failure never gets an HTTP response, so ServerManager leaves the
-	# code at 0.
+	# code at 0. Which of the two network stories it is has to be asked, because
+	# "check your internet access" is the wrong instruction -- and sends the teacher
+	# hunting through the wrong settings -- when the internet works and the network
+	# is filtering Kalulu. A school network doing exactly that took a support ticket
+	# to identify, and cleared up the moment the teacher tried it from home.
 	if response.code == 0:
+		var failure: ServerManagerClass.ConnectionFailure = \
+				await (ServerManager as ServerManagerClass).diagnose_connection_failure()
+		if failure == ServerManagerClass.ConnectionFailure.KALULU_BLOCKED:
+			return "LOGIN_KALULU_BLOCKED"
 		return "LOGIN_NETWORK_ERROR"
 
 	var body: Dictionary = (response.body as Dictionary) if response.body is Dictionary else {}
