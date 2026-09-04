@@ -99,7 +99,7 @@ func _start() -> void:
 	Log.trace("PackageDownloader: Checking internet access")
 	internet_reachable = await ServerManager.check_internet_access()
 	if not internet_reachable:
-		_continue_without_the_server()
+		_continue_without_the_server(_no_server_error())
 		return
 	
 	# Gets the info of the language pack on the server
@@ -116,12 +116,11 @@ func _start() -> void:
 			return
 		PackUrlOutcome.OFFLINE:
 			Log.warn("PackageDownloader: No answer from the server while fetching the language pack URL")
-			_continue_without_the_server()
+			_continue_without_the_server(_no_server_error())
 			return
 		_:
-			UserDataManager.logout()
-			Log.warn("PackageDownloader: Unexpected response %d while fetching language pack URL" % res.code)
-			_show_error(DownloadError.DOWNLOAD_FAILED)
+			Log.warn("PackageDownloader: Unusable response %d while fetching language pack URL" % res.code)
+			_continue_without_the_server(DownloadError.DOWNLOAD_FAILED)
 			return
 	
 	# If the language pack is not already downloaded or an update is needed
@@ -157,12 +156,16 @@ func _start() -> void:
 
 ## What the answer for the language pack URL means, given its HTTP code.
 ##
-## Extracted so all four answers can be checked without a server, and so the one that
-## used to be wrong stays frozen: code 0 is no HTTP response at all, which says nothing
-## about the account, yet it used to fall through to the same signing-out as an
-## unusable answer. logout() clears the token from disk, so a school network that
-## blocks the API signed the device out -- and it could then not be signed back in from
-## that network either, which put the pack already installed out of reach as well.
+## Extracted so all four answers can be checked without a server, and so the two that
+## used to be wrong stay frozen. Both signed the device out, and logout() clears the
+## token from disk: a device could then not be signed back in from the network it was
+## on, which put the pack already installed out of reach with it.
+##
+## Only 401 is about the account. The backend says so itself -- core/auth.py catches
+## nothing around its database call on purpose, "so an outage must surface as a 500,
+## not be mistaken for an invalid token" -- and this end was undoing that by treating
+## the 500 as a rejected token anyway. Code 0 is not even an answer: no HTTP response
+## came back at all, which is the network, and is what a school firewall produces.
 static func outcome_for_pack_url(code: int) -> PackUrlOutcome:
 	if code == 200:
 		return PackUrlOutcome.USE
@@ -173,12 +176,18 @@ static func outcome_for_pack_url(code: int) -> PackUrlOutcome:
 	return PackUrlOutcome.FAILED
 
 
-## Carries on with what is on disk, the server being out of reach.
+## Carries on with what is on disk, the server's answer being unusable.
 ##
-## Reached from the probe failing and from the API not answering, because those are
-## two different networks with the same consequence here: the pack cannot be checked
-## for an update, so the installed one is all there is.
-func _continue_without_the_server() -> void:
+## Reached from three failures -- no internet, no answer, and an answer that is not a
+## pack URL -- because they have the same consequence here: the pack cannot be checked
+## for an update, so the installed one is all there is. A device that already has a
+## usable pack does not care which of the three it was, and none of them is a reason
+## to strand it.
+##
+## `no_pack_error` is what to report when there is nothing installed to fall back on,
+## and it is the one thing the three do not share: a network story for the first two,
+## the server's own for the third.
+func _continue_without_the_server(no_pack_error: DownloadError) -> void:
 	if DirAccess.dir_exists_absolute(current_language_path):
 		if is_language_directory_valid(current_language_path):
 			Log.trace("PackageDownloader: No server, but a valid language directory is installed at %s" % current_language_path)
@@ -188,7 +197,7 @@ func _continue_without_the_server() -> void:
 			_show_error(DownloadError.INVALID_LOCAL_PACK)
 		return
 	Log.warn("PackageDownloader: No server and no language directory to fall back on")
-	_show_error(_no_server_error())
+	_show_error(no_pack_error)
 
 
 ## Which of the two no-server errors this is, so the popup can say something true.
@@ -328,6 +337,11 @@ func _show_error(error: DownloadError) -> void:
 			# has, so it would read as nonsense and point at the wrong thing to fix.
 			error_popup.title_text = "KALULU_BLOCKED_TITLE"
 			error_popup.content_text = "DOWNLOAD_KALULU_BLOCKED"
+		elif error == DownloadError.DOWNLOAD_FAILED:
+			# The server answered, badly. Asking for internet would send the reader
+			# looking at a connection that is doing its job.
+			error_popup.title_text = "SERVER_UNAVAILABLE_TITLE"
+			error_popup.content_text = "NO_LANGUAGE_PACK_SERVER_ERROR"
 		else:
 			error_popup.title_text = "NO_LANGUAGE_PACK_TITLE"
 			error_popup.content_text = "NO_LANGUAGE_PACK_POPUP"

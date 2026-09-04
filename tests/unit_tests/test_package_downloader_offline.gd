@@ -47,6 +47,28 @@ func test_an_unusable_answer_is_a_download_failure() -> void:
 			"%d came from the server, so it is the server's problem" % code)
 
 
+func test_a_server_error_never_signs_the_device_out() -> void:
+	# The backend keeps its side of this: core/auth.py deliberately lets a database
+	# outage surface as a 500 rather than a 401, so that an outage is never mistaken
+	# for a bad token. This end used to undo that by signing the device out anyway --
+	# and logout() clears the token from disk, so a bad afternoon on the server logged
+	# every device out for good.
+	for code: int in [500, 502, 503, 504]:
+		assert_ne(PackageDownloader.outcome_for_pack_url(code), PackageDownloader.PackUrlOutcome.SIGN_OUT,
+			"%d is the server's problem, not the account's" % code)
+
+
+func test_only_a_rejected_token_signs_the_device_out() -> void:
+	# The single guard behind the whole thing: _start signs out on this one answer and
+	# no other, so nothing else may ever produce it.
+	var codes: Array[int] = [0, 200, 201, 204, 301, 400, 402, 403, 404, 409, 418, 429, 500, 502, 503, 504]
+	for code: int in codes:
+		assert_ne(PackageDownloader.outcome_for_pack_url(code), PackageDownloader.PackUrlOutcome.SIGN_OUT,
+			"%d must not clear the token from disk" % code)
+	assert_eq(PackageDownloader.outcome_for_pack_url(401), PackageDownloader.PackUrlOutcome.SIGN_OUT,
+		"401 is the one answer that is about the account")
+
+
 # --- Which no-server error to report ------------------------------------------
 
 func test_a_reachable_internet_means_kalulu_is_blocked() -> void:
@@ -87,6 +109,20 @@ func test_the_blocked_message_is_translated_and_says_what_to_do() -> void:
 	assert_gt(message.length(), 60, "it should explain, not just label")
 	assert_string_contains(message.to_lower(), "internet",
 		"it has to say the internet is working, which is the whole point")
+
+
+func test_the_server_error_notice_does_not_blame_the_connection() -> void:
+	# Shown when the server failed and there is no pack to fall back on. The notice it
+	# replaces asks for an internet connection that is working perfectly.
+	for key: String in ["SERVER_UNAVAILABLE_TITLE", "NO_LANGUAGE_PACK_SERVER_ERROR"]:
+		assert_ne(tr(key), key, "%s should be translated" % key)
+
+	var message: String = tr("NO_LANGUAGE_PACK_SERVER_ERROR")
+	assert_gt(message.length(), 60, "it should explain, not just label")
+	# "serv" rather than a whole word: it has to hold in whichever locale the suite
+	# runs in, and serveur / servidor / server all start there.
+	assert_string_contains(message.to_lower(), "serv",
+		"it should name the server as the cause")
 
 
 func test_the_blocked_message_is_the_one_the_error_maps_to() -> void:
