@@ -9,6 +9,7 @@ enum DownloadError {
 	EXTRACTION_FAILED,
 	INVALID_PACKAGE,
 	REPLACE_FAILED,
+	KALULU_BLOCKED,
 }
 
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
@@ -21,7 +22,16 @@ const ERROR_MESSAGES: Array[String] = [
 	"ERROR_EXTRACTING_PACKAGE",
 	"ERROR_INVALID_PACKAGE",
 	"ERROR_REPLACING_PACKAGE",
+	"DOWNLOAD_KALULU_BLOCKED",
 ]
+
+## What to do about the server's answer for the language pack URL.
+enum PackUrlOutcome {
+	USE,       ## The answer carries a URL to download from.
+	SIGN_OUT,  ## The server rejected the token.
+	OFFLINE,   ## Nothing answered, so carry on with what is on disk.
+	FAILED,    ## The server answered something unusable.
+}
 
 var language: String
 var current_language_path: String
@@ -29,6 +39,10 @@ var mutex: Mutex
 var thread: Thread
 var server_language_version: Dictionary = {}
 var current_language_version: Dictionary = {}
+# What the internet probe found this attempt. A network that blocks Kalulu while
+# leaving the rest of the internet alone gets past the probe and only fails at the
+# API, so the probe's answer is half of the diagnosis and has to outlive it.
+var internet_reachable: bool = false
 
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var checking_label: Label = %CheckingLabel
@@ -83,37 +97,32 @@ func _start() -> void:
 	current_language_version = UserDataManager.get_device_settings().language_versions.get(language, {})
 	
 	Log.trace("PackageDownloader: Checking internet access")
-	if not await ServerManager.check_internet_access():
-		# Offline mode, if a pack is already downloaded, go to next scene
-		if DirAccess.dir_exists_absolute(current_language_path):
-			if is_language_directory_valid(current_language_path):
-				Log.trace("PackageDownloader: Offline but valid language directory found at %s" % current_language_path)
-				_go_to_next_scene()
-			else:
-				Log.warn("PackageDownloader: Offline and language directory %s is invalid" % current_language_path)
-				_show_error(DownloadError.INVALID_LOCAL_PACK)
-		else:
-			Log.warn("PackageDownloader: Offline with no language directory available")
-			_show_error(DownloadError.NO_INTERNET)
+	internet_reachable = await ServerManager.check_internet_access()
+	if not internet_reachable:
+		_continue_without_the_server()
 		return
 	
 	# Gets the info of the language pack on the server
 	var res: Dictionary = await ServerManager.get_language_pack_url(language)
 	Log.trace("PackageDownloader: Language pack info received with code %d" % res.code)
-	if res.code == 200:
-		server_language_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
-		Log.trace("PackageDownloader: Server language version parsed as %s" % str(server_language_version))
-	# Authentication failed, disconnect the user
-	elif res.code == 401:
-		UserDataManager.logout()
-		Log.warn("PackageDownloader: Authentication failed while fetching language pack URL")
-		_show_error(DownloadError.DISCONNECTED)
-		return
-	else:
-		UserDataManager.logout()
-		Log.warn("PackageDownloader: Unexpected response %d while fetching language pack URL" % res.code)
-		_show_error(DownloadError.DOWNLOAD_FAILED)
-		return
+	match outcome_for_pack_url(res.code as int):
+		PackUrlOutcome.USE:
+			server_language_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
+			Log.trace("PackageDownloader: Server language version parsed as %s" % str(server_language_version))
+		PackUrlOutcome.SIGN_OUT:
+			UserDataManager.logout()
+			Log.warn("PackageDownloader: Authentication failed while fetching language pack URL")
+			_show_error(DownloadError.DISCONNECTED)
+			return
+		PackUrlOutcome.OFFLINE:
+			Log.warn("PackageDownloader: No answer from the server while fetching the language pack URL")
+			_continue_without_the_server()
+			return
+		_:
+			UserDataManager.logout()
+			Log.warn("PackageDownloader: Unexpected response %d while fetching language pack URL" % res.code)
+			_show_error(DownloadError.DOWNLOAD_FAILED)
+			return
 	
 	# If the language pack is not already downloaded or an update is needed
 	if not DirAccess.dir_exists_absolute(current_language_path) or current_language_version != server_language_version:
@@ -144,6 +153,57 @@ func _start() -> void:
 		extract_bar.value = 1
 		Log.trace("PackageDownloader: Language pack already up to date, moving to next scene")
 		_go_to_next_scene()
+
+
+## What the answer for the language pack URL means, given its HTTP code.
+##
+## Extracted so all four answers can be checked without a server, and so the one that
+## used to be wrong stays frozen: code 0 is no HTTP response at all, which says nothing
+## about the account, yet it used to fall through to the same signing-out as an
+## unusable answer. logout() clears the token from disk, so a school network that
+## blocks the API signed the device out -- and it could then not be signed back in from
+## that network either, which put the pack already installed out of reach as well.
+static func outcome_for_pack_url(code: int) -> PackUrlOutcome:
+	if code == 200:
+		return PackUrlOutcome.USE
+	if code == 401:
+		return PackUrlOutcome.SIGN_OUT
+	if code == 0:
+		return PackUrlOutcome.OFFLINE
+	return PackUrlOutcome.FAILED
+
+
+## Carries on with what is on disk, the server being out of reach.
+##
+## Reached from the probe failing and from the API not answering, because those are
+## two different networks with the same consequence here: the pack cannot be checked
+## for an update, so the installed one is all there is.
+func _continue_without_the_server() -> void:
+	if DirAccess.dir_exists_absolute(current_language_path):
+		if is_language_directory_valid(current_language_path):
+			Log.trace("PackageDownloader: No server, but a valid language directory is installed at %s" % current_language_path)
+			_go_to_next_scene()
+		else:
+			Log.warn("PackageDownloader: No server and language directory %s is invalid" % current_language_path)
+			_show_error(DownloadError.INVALID_LOCAL_PACK)
+		return
+	Log.warn("PackageDownloader: No server and no language directory to fall back on")
+	_show_error(_no_server_error())
+
+
+## Which of the two no-server errors this is, so the popup can say something true.
+##
+## "You are not connected to the internet" is the wrong instruction for a device that
+## is online and being filtered: it sends the adult to the router, where there is
+## nothing to find. ServerManager owns the distinction; this only maps it.
+func _no_server_error() -> DownloadError:
+	var failure: ServerManagerClass.ConnectionFailure = ServerManagerClass.diagnosis_for(
+			internet_reachable,
+			(ServerManager as ServerManagerClass).last_internet_result_code)
+	Log.info("PackageDownloader: No server, diagnosed %s" % ServerManagerClass.ConnectionFailure.keys()[failure])
+	if failure == ServerManagerClass.ConnectionFailure.KALULU_BLOCKED:
+		return DownloadError.KALULU_BLOCKED
+	return DownloadError.NO_INTERNET
 
 
 # Check that folder is not empty and contains a file language.db
@@ -263,8 +323,14 @@ func _show_error(error: DownloadError) -> void:
 		# screen to send the device to -- the child's access-code screen comes
 		# straight back here. Say what is wrong and what would fix it, and make the
 		# button another go rather than a way out that does not exist.
-		error_popup.title_text = "NO_LANGUAGE_PACK_TITLE"
-		error_popup.content_text = "NO_LANGUAGE_PACK_POPUP"
+		if error == DownloadError.KALULU_BLOCKED:
+			# The generic notice asks for an internet connection this device already
+			# has, so it would read as nonsense and point at the wrong thing to fix.
+			error_popup.title_text = "KALULU_BLOCKED_TITLE"
+			error_popup.content_text = "DOWNLOAD_KALULU_BLOCKED"
+		else:
+			error_popup.title_text = "NO_LANGUAGE_PACK_TITLE"
+			error_popup.content_text = "NO_LANGUAGE_PACK_POPUP"
 		error_popup.confirm_text_override = "TRY_AGAIN"
 		error_popup.acknowledge_only = true
 	else:
@@ -333,8 +399,12 @@ func _go_to_next_scene() -> void:
 	get_tree().change_scene_to_file(next_scene)
 
 
-func _on_http_request_request_completed(_result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
-	Log.trace("PackageDownloader: Download completed with HTTP code %d" % response_code)
+func _on_http_request_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+	# The pack comes from S3, not from api.kalulu.org, so a network can block this
+	# leg alone. The result code was being thrown away, which left a download that
+	# never got a response looking like an HTTP 0 in the log.
+	Log.trace("PackageDownloader: Download completed with result %s and HTTP code %d" % [
+			(ServerManager as ServerManagerClass).http_result_name(result_code), response_code])
 	if response_code == 200:
 		mutex = Mutex.new()
 		# Nothing should be holding a worker by now, but this is the one line that

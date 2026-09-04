@@ -53,6 +53,11 @@ var json: Dictionary = {}
 # so these are what a diagnosis has to work from.
 var last_result_code: int = HTTPRequest.RESULT_SUCCESS
 var last_internet_result_code: int = HTTPRequest.RESULT_SUCCESS
+# Whether a probe is in flight. There is one HTTPRequest for it, shared by every
+# caller, and it answers ERR_BUSY while it is working -- which used to be returned
+# as a verdict, so a second caller was told the device had no internet purely
+# because the first one was still asking.
+var internet_check_running: bool = false
 var environment_url: String = ""
 var custom_environment_url: String = ""
 var environment_setting: int = 1
@@ -221,11 +226,28 @@ func reset_language(language: String) -> Dictionary:
 
 #region Sender functions
 
+## Whether anything at all can be reached, on a host unrelated to Kalulu.
+##
+## The probe node carries a 15s timeout, where the request node has 30s. It needs one
+## at all because 0 means never: a network that drops packets rather than refusing
+## them would leave this awaiting forever, and the login screen with its button
+## disabled and no message. 15s rather than something snappier because the answer is
+## used to tell a teacher whether her internet works, and a slow network answering
+## late is not the same as no network -- a 5s limit was measured declaring a probe
+## dead that then completed on its own. A probe on an idle app answers in ~400ms, so
+## the limit only bites when something is genuinely struggling.
 func check_internet_access() -> bool:
+	# Two callers asking at once want the same answer, so the second waits for the
+	# probe already running rather than being refused and reading that as offline.
+	if internet_check_running:
+		Log.trace("ServerManager: An internet check is already running, waiting for its answer")
+		return await internet_check_completed
 	Log.trace("ServerManager: Sending simple request to " + INTERNET_CHECK_URL + " to check if internet is available")
+	internet_check_running = true
 	var res: Error = internet_check.request(INTERNET_CHECK_URL)
 	if res == OK:
 		return await internet_check_completed
+	internet_check_running = false
 	# No probe ran, so the code from the previous one must not be read as this one's.
 	last_internet_result_code = HTTPRequest.RESULT_REQUEST_FAILED
 	Log.warn("ServerManager: Could not start the internet check. Error: %s" % error_string(res))
@@ -251,8 +273,8 @@ func diagnose_connection_failure() -> ConnectionFailure:
 	var failure: ConnectionFailure = diagnosis_for(reached, last_internet_result_code)
 	Log.info("ServerManager: Diagnosed %s (request %s, probe %s)" % [
 			ConnectionFailure.keys()[failure],
-			_http_result_name(last_result_code),
-			_http_result_name(last_internet_result_code)])
+			http_result_name(last_result_code),
+			http_result_name(last_internet_result_code)])
 	return failure
 
 
@@ -379,7 +401,7 @@ func _delete_request(uri: String, params: Dictionary = {}) -> void:
 func _on_http_request_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	last_result_code = result_code
 	if result_code != HTTPRequest.RESULT_SUCCESS:
-		Log.warn("ServerManager: Cannot complete http request. Result code %d = %s. No HTTP response, so the response code stays 0." % [result_code, _http_result_name(result_code)])
+		Log.warn("ServerManager: Cannot complete http request. Result code %d = %s. No HTTP response, so the response code stays 0." % [result_code, http_result_name(result_code)])
 	else:
 		code = response_code
 		if code == 200:
@@ -419,16 +441,17 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 
 
 func _on_internet_check_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+	internet_check_running = false
 	last_internet_result_code = result_code
 	if result_code != HTTPRequest.RESULT_SUCCESS:
-		Log.warn("ServerManager: Cannot check internet request. Result code %d = %s" % [result_code, _http_result_name(result_code)])
+		Log.warn("ServerManager: Cannot check internet request. Result code %d = %s" % [result_code, http_result_name(result_code)])
 	else:
 		Log.trace("ServerManager: Internet check completed.\n    Response code = %s. (200 = OK)" % str(response_code))
 	success = result_code == HTTPRequest.RESULT_SUCCESS and response_code == 200
 	internet_check_completed.emit(success)
 
 
-func _http_result_name(result_code: int) -> String:
+func http_result_name(result_code: int) -> String:
 	return HTTP_RESULT_NAMES.get(result_code, "unknown result code")
 
 

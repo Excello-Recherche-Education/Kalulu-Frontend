@@ -52,3 +52,28 @@ func test_the_two_answers_are_the_ones_the_login_screen_maps() -> void:
 	# failure added here would silently fall back to the internet-access message.
 	assert_eq((ServerManagerClass.ConnectionFailure.keys() as Array).size(), 3,
 		"NONE, NO_NETWORK and KALULU_BLOCKED; a new one needs a message in welcome.gd")
+
+
+# --- One probe, several callers -----------------------------------------------
+
+func test_a_second_caller_waits_instead_of_being_told_it_is_offline() -> void:
+	# There is one HTTPRequest for the probe, shared by every caller, and it answers
+	# ERR_BUSY while it is working. That used to be returned as a verdict, so a
+	# second caller read "busy" as "offline" -- the same false alarm these tests
+	# exist to prevent, on a network with nothing wrong with it at all.
+	var manager: ServerManagerClass = ServerManager as ServerManagerClass
+	var was_running: bool = manager.internet_check_running
+	manager.internet_check_running = true
+
+	var answers: Array[bool] = []
+	var ask: Callable = func() -> void:
+		answers.append(await manager.check_internet_access())
+	ask.call()
+	await get_tree().process_frame
+
+	assert_eq(answers.size(), 0, "the second caller should be waiting, not answered")
+	manager.internet_check_completed.emit(true)
+	await get_tree().process_frame
+	assert_eq(answers, [true] as Array[bool], "it should get the running probe's answer")
+
+	manager.internet_check_running = was_running
