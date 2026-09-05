@@ -77,3 +77,41 @@ func test_a_second_caller_waits_instead_of_being_told_it_is_offline() -> void:
 	assert_eq(answers, [true] as Array[bool], "it should get the running probe's answer")
 
 	manager.internet_check_running = was_running
+
+
+# --- What the message hands to whoever runs the network ------------------------
+
+## The pack is fetched straight from S3 with a presigned URL, so unblocking the API
+## alone leaves the download failing. Kalulu-Languages-Checker reads the same bucket
+## and spells the host out in available_packs.gd.
+const PACK_HOST: String = "kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
+
+
+func test_the_blocked_message_names_the_api_host_the_app_actually_calls() -> void:
+	# Tied to the constant rather than to a copy of it: moving the API without
+	# rewriting the message would hand a network administrator a dead domain.
+	var api_host: String = ServerManagerClass.AWS_API_GATEWAY_DOMAIN_ADRESS.trim_suffix("/")
+	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED"]:
+		assert_string_contains(tr(key), api_host,
+			"%s should name the host that was refused" % key)
+
+
+func test_the_blocked_message_names_the_pack_host_too() -> void:
+	# Both legs have to be named at once. A network opened for one and not the other
+	# fails later, on a different screen, and looks like a new problem.
+	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED"]:
+		assert_string_contains(tr(key), PACK_HOST,
+			"%s should name the language pack host as well" % key)
+
+
+func test_the_domains_are_set_apart_from_the_advice() -> void:
+	# They are for a different reader than the rest of the message, and they are meant
+	# to be copied. One per line, after a blank line, rather than buried in a sentence.
+	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED"]:
+		var message: String = tr(key)
+		assert_string_contains(message, "\n\n", "%s should break before the domains" % key)
+		var lines: PackedStringArray = message.split("\n")
+		assert_eq(lines[lines.size() - 2], ServerManagerClass.AWS_API_GATEWAY_DOMAIN_ADRESS.trim_suffix("/"),
+			"%s should end with one domain per line" % key)
+		assert_eq(lines[lines.size() - 1], PACK_HOST,
+			"%s should end with one domain per line" % key)

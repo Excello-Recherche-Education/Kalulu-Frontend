@@ -169,6 +169,32 @@ func test_a_failure_message_is_scrolled_into_view() -> void:
 		"and not past the top of it")
 
 
+func test_the_longest_message_still_fits_in_the_column() -> void:
+	# The blocked-network message carries the domains for whoever runs the network, so
+	# it is several times longer than the rest and wraps to a handful of lines. The
+	# column scrolls, so the risk is not that it overflows the screen but that the end
+	# of it -- which is where the domains are -- lands below the visible area.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var screen: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	viewport.add_child(screen)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	screen._show_login_error("LOGIN_KALULU_BLOCKED")
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	var error: Control = screen.login_error
+	assert_gt(error.get_global_rect().size.y, 0.0, "the label should have been laid out")
+	var visible_area: Rect2 = screen.scroll.get_global_rect()
+	assert_lte(error.get_global_rect().end.y, visible_area.end.y + 1.0,
+		"the domains at the end of it should be inside the visible column")
+	assert_lte(error.get_global_rect().size.y, visible_area.size.y,
+		"a message taller than the column could never be shown whole")
+
+
 func test_other_failures_do_not_offer_a_reset() -> void:
 	# Resetting cannot help an unknown account, and the network failures could
 	# not send the mail anyway.
