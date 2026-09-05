@@ -223,6 +223,71 @@ func test_the_domains_are_never_split_across_lines() -> void:
 			"\"%s\" needs %d px and the label offers %d" % [line, needed, available])
 
 
+# --- Handing the failure on ---------------------------------------------------
+
+func test_only_the_failures_somebody_else_can_fix_are_worth_copying() -> void:
+	# A wrong password is the reader's own to fix; mailing it to a technician would
+	# send them down a corridor for nothing. The three below are the network's and
+	# the server's, and the blocked one carries the domains to unblock.
+	for key: String in Welcome.REPORTABLE_ERRORS:
+		assert_true(Welcome.offers_copy(key, true), "%s is worth handing on" % key)
+	for key: String in ["LOGIN_WRONG_PASSWORD", "LOGIN_USER_NOT_FOUND",
+			"LOGIN_MISSING_CREDENTIALS", "INVALID_EMAIL_OR_PASSWORD"]:
+		assert_false(Welcome.offers_copy(key, true), "%s is the reader's own to fix" % key)
+
+
+func test_nothing_is_offered_where_there_is_no_clipboard() -> void:
+	# Pressing it would do nothing and then claim it had.
+	for key: String in Welcome.REPORTABLE_ERRORS:
+		assert_false(Welcome.offers_copy(key, false), "%s has nowhere to copy to" % key)
+
+
+func test_the_report_carries_what_its_reader_asks_first() -> void:
+	var report: String = Welcome.report_for("le message", "3.1.4  (86)",
+		HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR)
+	assert_string_contains(report, "le message", "the message the reader saw")
+	assert_string_contains(report, "3.1.4  (86)", "which build it came from")
+	assert_string_contains(report, "RESULT_TLS_HANDSHAKE_ERROR",
+		"and what failed -- this one says the connection was intercepted, not dropped")
+
+
+func test_the_report_does_not_sign_itself_off_as_a_success() -> void:
+	# Nothing failed at that level, so naming the result would contradict the message
+	# above it, and be the first thing a technician queried.
+	var report: String = Welcome.report_for("le message", "3.1.4  (86)",
+		HTTPRequest.RESULT_SUCCESS)
+	assert_false(report.contains("RESULT_SUCCESS"), "a report cannot report success")
+	assert_string_contains(report, "3.1.4  (86)", "the build still goes with it")
+
+
+func test_the_copy_offer_is_translated() -> void:
+	for key: String in ["COPY_ERROR_MESSAGE", "ERROR_MESSAGE_COPIED"]:
+		assert_ne(tr(key), key, "%s should be translated" % key)
+
+
+func test_the_copy_offer_is_scrolled_into_view() -> void:
+	# It sits under a message long enough to leave it below the fold, so the one
+	# control the reader is invited to press would be the one thing off screen.
+	# Shown by hand: headless has no clipboard, so the screen would not offer it.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var screen: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	viewport.add_child(screen)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	screen._show_login_error("LOGIN_KALULU_BLOCKED")
+	screen.copy_error_button.show()
+	await screen._scroll_to_login_error()
+	await get_tree().process_frame
+
+	var button: Rect2 = screen.copy_error_button.get_global_rect()
+	var visible_area: Rect2 = screen.scroll.get_global_rect()
+	assert_lte(button.end.y, visible_area.end.y + 1.0, "the offer should be in the column")
+	assert_gte(button.position.y, visible_area.position.y - 1.0, "and not above it")
+
+
 func test_other_failures_do_not_offer_a_reset() -> void:
 	# Resetting cannot help an unknown account, and the network failures could
 	# not send the mail anyway.

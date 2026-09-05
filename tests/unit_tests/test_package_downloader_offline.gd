@@ -87,7 +87,7 @@ func test_a_truncated_archive_is_not_extracted() -> void:
 		assert_eq(PackageDownloader.outcome_for_pack_download(result_code, 200),
 			PackageDownloader.DownloadOutcome.NO_RESPONSE,
 			"%s with a 200 still means the file is not all there"
-			% ServerManager.http_result_name(result_code))
+			% ServerManagerClass.http_result_name(result_code))
 
 
 func test_a_download_that_got_nothing_back_is_the_network() -> void:

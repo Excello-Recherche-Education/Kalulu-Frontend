@@ -451,7 +451,7 @@ func _on_internet_check_request_completed(result_code: int, response_code: int, 
 	internet_check_completed.emit(success)
 
 
-func http_result_name(result_code: int) -> String:
+static func http_result_name(result_code: int) -> String:
 	return HTTP_RESULT_NAMES.get(result_code, "unknown result code")
 
 

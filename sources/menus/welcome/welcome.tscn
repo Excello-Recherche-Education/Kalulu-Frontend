@@ -125,6 +125,14 @@ horizontal_alignment = 1
 autowrap_mode = 3
 theme_type_variation = &"ErrorLabel"
 
+[node name="CopyErrorButton" type="Button" parent="KeyboardSpacer/FooterRoom/Scroll/Content/LoginPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InlineButton"
+text = "COPY_ERROR_MESSAGE"
+
 [node name="SignUpPanel" type="VBoxContainer" parent="KeyboardSpacer/FooterRoom/Scroll/Content"]
 unique_name_in_owner = true
 visible = false

@@ -1,3 +1,4 @@
+class_name Welcome
 extends Control
 ## The single entry screen: log in, or prove you are an adult and register.
 ##
@@ -41,9 +42,29 @@ var request_in_flight: bool = false
 @onready var password_field: MenuTextField = %PasswordField
 @onready var login_error: Label = %LoginError
 @onready var reset_password_button: Button = %ResetPasswordButton
+@onready var copy_error_button: Button = %CopyErrorButton
 @onready var next_button: Button = %NextButton
 @onready var adult_prompt: Label = %AdultPrompt
 @onready var keypad: CodeKeypad = %Keypad
+
+
+## The failures somebody else has to act on, and which are therefore worth copying.
+##
+## A wrong password or an unknown account are the reader's own to fix, and offering to
+## mail them to a technician would only send them down a corridor for nothing. These
+## three are the network's and the server's -- the blocked one carries the domains to
+## unblock, so it is the message a network administrator actually needs.
+const REPORTABLE_ERRORS: Array[String] = [
+	"LOGIN_KALULU_BLOCKED",
+	"LOGIN_NETWORK_ERROR",
+	"LOGIN_SERVER_ERROR",
+]
+## How long "copied" stays on the button before it offers to copy again.
+const COPIED_FEEDBACK_SECONDS: float = 2.5
+
+## The message currently on display, so the copy sends what was read rather than
+## whatever the screen has moved on to.
+var displayed_error_key: String = ""
 
 
 func _ready() -> void:
@@ -57,6 +78,7 @@ func _ready() -> void:
 	toggle.selection_changed.connect(_on_tab_changed)
 	next_button.pressed.connect(_on_next_pressed)
 	reset_password_button.pressed.connect(_on_reset_password_pressed)
+	copy_error_button.pressed.connect(_on_copy_error_pressed)
 	email_field.text_changed.connect(_clear_login_error)
 	password_field.text_changed.connect(_clear_login_error)
 	password_field.text_submitted.connect(_on_password_submitted)
@@ -166,6 +188,10 @@ func _show_login_error(translation_key: String) -> void:
 	# mail anyway.
 	reset_password_button.visible = translation_key == "LOGIN_WRONG_PASSWORD"
 	reset_password_button.disabled = false
+	displayed_error_key = translation_key
+	copy_error_button.visible = offers_copy(translation_key,
+			DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD))
+	copy_error_button.text = "COPY_ERROR_MESSAGE"
 	_scroll_to_login_error()
 
 
@@ -180,12 +206,66 @@ func _show_login_error(translation_key: String) -> void:
 func _scroll_to_login_error() -> void:
 	await get_tree().process_frame
 	scroll.ensure_control_visible(login_error)
+	# The offer to copy sits under the message, and a message this long leaves it
+	# below the fold -- so the one control the reader is being invited to press would
+	# be the one thing off screen. Ending on it brings the tail of the message, where
+	# the domains are, along with it.
+	if copy_error_button.visible:
+		await get_tree().process_frame
+		scroll.ensure_control_visible(copy_error_button)
+
+
+## Whether the failure on display is one to offer to copy.
+##
+## Split out so the rule can be checked without a display. It also has to answer no
+## where there is no clipboard: a button that does nothing and then says "copied"
+## would be worse than no button, and the test suite runs headless, which is one such
+## place.
+static func offers_copy(translation_key: String, clipboard_available: bool) -> bool:
+	return clipboard_available and translation_key in REPORTABLE_ERRORS
+
+
+## What the copy button puts on the clipboard.
+##
+## Extracted so what a technician receives can be checked without a screen, a
+## clipboard or a server.
+##
+## The result name is left out when nothing actually failed at that level -- a report
+## signed off with RESULT_SUCCESS underneath a message about a refused connection
+## reads as a contradiction, and would be the first thing queried.
+static func report_for(message: String, version: String, result_code: int) -> String:
+	var report: String = "%s\n\nKalulu %s" % [message, version]
+	if result_code != HTTPRequest.RESULT_SUCCESS:
+		report += "\n" + ServerManagerClass.http_result_name(result_code)
+	return report
+
+
+## Puts the failure on the clipboard, for a mail to whoever runs the network.
+##
+## The message alone would arrive without the two things its reader asks first --
+## which build, and what exactly failed -- so the version and the engine's own result
+## name go with it. RESULT_TLS_HANDSHAKE_ERROR in particular is what tells a network
+## administrator the connection was intercepted rather than merely dropped.
+func _on_copy_error_pressed() -> void:
+	var report: String = report_for(tr(displayed_error_key),
+			Utils.get_application_version_with_code(),
+			(ServerManager as ServerManagerClass).last_result_code)
+	DisplayServer.clipboard_set(report)
+	Log.info("Welcome: Copied the %s report to the clipboard" % displayed_error_key)
+	copy_error_button.text = "ERROR_MESSAGE_COPIED"
+	await get_tree().create_timer(COPIED_FEEDBACK_SECONDS).timeout
+	# The screen may have moved on, or gone, while the confirmation was up.
+	if is_instance_valid(copy_error_button) and copy_error_button.visible:
+		copy_error_button.text = "COPY_ERROR_MESSAGE"
 
 
 func _hide_login_error() -> void:
 	login_error.hide()
 	reset_password_button.hide()
 	reset_password_button.disabled = false
+	copy_error_button.hide()
+	copy_error_button.text = "COPY_ERROR_MESSAGE"
+	displayed_error_key = ""
 
 
 func _clear_login_error(_text: String) -> void:

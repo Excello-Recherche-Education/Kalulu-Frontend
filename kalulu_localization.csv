@@ -35,6 +35,8 @@ Per il servizio di rete — domini da autorizzare:
 • api.kalulu.org
 • kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
 RESET_PASSWORD,Réinitialiser le mot de passe,Restablecer la contraseña,Redefinir senha,Reimposta password
+COPY_ERROR_MESSAGE,Copier le message,Copiar el mensaje,Copiar a mensagem,Copia il messaggio
+ERROR_MESSAGE_COPIED,Message copié,Mensaje copiado,Mensagem copiada,Messaggio copiato
 CHECK_YOUR_EMAIL,Veuillez vérifier votre boîte mail,"Por favor, revise su correo electrónico","Por favor, verifique seu e-mail",Controlla la tua email
 RESET_PASSWORD_FAILED,"Erreur lors de la réinitialisation, réessayez plus tard","Error al restablecer la contraseña, inténtelo más tarde","Erro ao redefinir a senha, tente novamente mais tarde","Errore nel reimpostare la password, riprova più tardi"
 DEVICE_NUMBER,Appareil {number},Dispositivo {number},Dispositivo {number},Dispositivo {number}

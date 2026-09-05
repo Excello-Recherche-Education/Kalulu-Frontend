@@ -211,7 +211,7 @@ func _report_failed_download(result_code: int, response_code: int) -> void:
 		_show_error(DownloadError.DOWNLOAD_FAILED)
 		return
 	Log.warn("PackageDownloader: The pack download got no usable response (%s)"
-			% (ServerManager as ServerManagerClass).http_result_name(result_code))
+			% ServerManagerClass.http_result_name(result_code))
 	# The pack is large and the probe from the start of the attempt is minutes old by
 	# now, so a connection that died halfway through would still be remembered as
 	# reachable. Ask again rather than blame the network for something it may not be.
@@ -461,7 +461,7 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 	# leg alone. The result code was being thrown away, which left a download that
 	# never got a response looking like an HTTP 0 in the log.
 	Log.trace("PackageDownloader: Download completed with result %s and HTTP code %d" % [
-			(ServerManager as ServerManagerClass).http_result_name(result_code), response_code])
+			ServerManagerClass.http_result_name(result_code), response_code])
 	if outcome_for_pack_download(result_code, response_code) != DownloadOutcome.EXTRACT:
 		_report_failed_download(result_code, response_code)
 		return
