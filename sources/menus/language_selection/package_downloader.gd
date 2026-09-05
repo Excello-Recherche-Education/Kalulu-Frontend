@@ -13,6 +13,17 @@ enum DownloadError {
 }
 
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
+## The failures somebody else has to act on, and which are therefore worth copying.
+##
+## A pack that will not extract or a folder gone bad are this device's own; mailing
+## them to a network administrator sends the reader down a corridor for nothing.
+const REPORTABLE_ERRORS: Array[DownloadError] = [
+	DownloadError.NO_INTERNET,
+	DownloadError.DOWNLOAD_FAILED,
+	DownloadError.KALULU_BLOCKED,
+]
+## Width the dead-end notice needs so a hostname is not broken across two lines.
+const BLOCKED_CONTENT_WIDTH: float = 1700.0
 # Translation key shown in the error popup for each DownloadError value
 const ERROR_MESSAGES: Array[String] = [
 	"DISCONNECTED_ERROR",
@@ -50,6 +61,10 @@ var current_language_version: Dictionary = {}
 # leaving the rest of the internet alone gets past the probe and only fails at the
 # API, so the probe's answer is half of the diagnosis and has to outlive it.
 var internet_reachable: bool = false
+# The engine's result for whatever failed this attempt. The three legs each carry
+# their own -- the probe's, the API's, the download's -- and a report naming the
+# wrong one would send its reader after the wrong thing.
+var failure_result_code: int = HTTPRequest.RESULT_SUCCESS
 
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var checking_label: Label = %CheckingLabel
@@ -106,6 +121,7 @@ func _start() -> void:
 	Log.trace("PackageDownloader: Checking internet access")
 	internet_reachable = await ServerManager.check_internet_access()
 	if not internet_reachable:
+		failure_result_code = (ServerManager as ServerManagerClass).last_internet_result_code
 		_continue_without_the_server(_no_server_error())
 		return
 	
@@ -123,6 +139,7 @@ func _start() -> void:
 			return
 		PackUrlOutcome.OFFLINE:
 			Log.warn("PackageDownloader: No answer from the server while fetching the language pack URL")
+			failure_result_code = (ServerManager as ServerManagerClass).last_result_code
 			_continue_without_the_server(_no_server_error())
 			return
 		_:
@@ -204,6 +221,7 @@ static func outcome_for_pack_download(result_code: int, response_code: int) -> D
 ## the pack already installed.
 func _report_failed_download(result_code: int, response_code: int) -> void:
 	error_label.show()
+	failure_result_code = result_code
 	if outcome_for_pack_download(result_code, response_code) == DownloadOutcome.REFUSED:
 		# S3 answered, so the network is fine and the URL is not. It is presigned and
 		# short-lived, and asking again mints a new one, which is what the retry does.
@@ -241,6 +259,19 @@ func _continue_without_the_server(no_pack_error: DownloadError) -> void:
 		return
 	Log.warn("PackageDownloader: No server and no language directory to fall back on")
 	_show_error(no_pack_error)
+
+
+## The notice, written out for a mail to somebody who can act on it.
+##
+## Read off the dialog rather than rebuilt, so what is sent is what was on screen --
+## including the heading, which is the line that tells its reader in four words what
+## they are being asked about.
+func _report_for(error: DownloadError) -> String:
+	var heading: String = tr(error_popup.title_text) if not error_popup.title_text.is_empty() else ""
+	var message: String = tr(error_popup.content_text)
+	if not heading.is_empty():
+		message = "%s\n\n%s" % [heading, message]
+	return Utils.support_report(message, failure_result_code)
 
 
 ## Which of the two no-server errors this is, so the popup can say something true.
@@ -390,6 +421,9 @@ func _show_error(error: DownloadError) -> void:
 			error_popup.content_text = "NO_LANGUAGE_PACK_POPUP"
 		error_popup.confirm_text_override = "TRY_AGAIN"
 		error_popup.acknowledge_only = true
+		# Wide enough that the hostnames in it are not broken mid-name: split, they
+		# are no use to the person the notice is written for.
+		error_popup.content_min_width = BLOCKED_CONTENT_WIDTH
 	else:
 		# The same dialog is reused for every error, so anything set for the case
 		# above has to be put back.
@@ -397,6 +431,11 @@ func _show_error(error: DownloadError) -> void:
 		error_popup.content_text = ERROR_MESSAGES[error]
 		error_popup.confirm_text_override = ""
 		error_popup.acknowledge_only = false
+		error_popup.content_min_width = 0.0
+	# Offered on the failures somebody else has to act on, and cleared on the rest:
+	# one dialog is reused for every error here, so what is set for one message has
+	# to be taken back for the next.
+	error_popup.copy_text = _report_for(error) if error in REPORTABLE_ERRORS else ""
 	error_popup.show()
 
 

@@ -243,10 +243,10 @@ func test_nothing_is_offered_where_there_is_no_clipboard() -> void:
 
 
 func test_the_report_carries_what_its_reader_asks_first() -> void:
-	var report: String = Welcome.report_for("le message", "3.1.4  (86)",
-		HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR)
+	var report: String = Utils.support_report("le message", HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR)
 	assert_string_contains(report, "le message", "the message the reader saw")
-	assert_string_contains(report, "3.1.4  (86)", "which build it came from")
+	assert_string_contains(report, Utils.get_application_version_with_code(),
+		"which build it came from")
 	assert_string_contains(report, "RESULT_TLS_HANDSHAKE_ERROR",
 		"and what failed -- this one says the connection was intercepted, not dropped")
 
@@ -254,10 +254,10 @@ func test_the_report_carries_what_its_reader_asks_first() -> void:
 func test_the_report_does_not_sign_itself_off_as_a_success() -> void:
 	# Nothing failed at that level, so naming the result would contradict the message
 	# above it, and be the first thing a technician queried.
-	var report: String = Welcome.report_for("le message", "3.1.4  (86)",
-		HTTPRequest.RESULT_SUCCESS)
+	var report: String = Utils.support_report("le message", HTTPRequest.RESULT_SUCCESS)
 	assert_false(report.contains("RESULT_SUCCESS"), "a report cannot report success")
-	assert_string_contains(report, "3.1.4  (86)", "the build still goes with it")
+	assert_string_contains(report, Utils.get_application_version_with_code(),
+		"the build still goes with it")
 
 
 func test_the_copy_offer_is_translated() -> void:

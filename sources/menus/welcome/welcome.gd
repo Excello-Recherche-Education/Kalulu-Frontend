@@ -225,21 +225,6 @@ static func offers_copy(translation_key: String, clipboard_available: bool) -> b
 	return clipboard_available and translation_key in REPORTABLE_ERRORS
 
 
-## What the copy button puts on the clipboard.
-##
-## Extracted so what a technician receives can be checked without a screen, a
-## clipboard or a server.
-##
-## The result name is left out when nothing actually failed at that level -- a report
-## signed off with RESULT_SUCCESS underneath a message about a refused connection
-## reads as a contradiction, and would be the first thing queried.
-static func report_for(message: String, version: String, result_code: int) -> String:
-	var report: String = "%s\n\nKalulu %s" % [message, version]
-	if result_code != HTTPRequest.RESULT_SUCCESS:
-		report += "\n" + ServerManagerClass.http_result_name(result_code)
-	return report
-
-
 ## Puts the failure on the clipboard, for a mail to whoever runs the network.
 ##
 ## The message alone would arrive without the two things its reader asks first --
@@ -247,8 +232,7 @@ static func report_for(message: String, version: String, result_code: int) -> St
 ## name go with it. RESULT_TLS_HANDSHAKE_ERROR in particular is what tells a network
 ## administrator the connection was intercepted rather than merely dropped.
 func _on_copy_error_pressed() -> void:
-	var report: String = report_for(tr(displayed_error_key),
-			Utils.get_application_version_with_code(),
+	var report: String = Utils.support_report(tr(displayed_error_key),
 			(ServerManager as ServerManagerClass).last_result_code)
 	DisplayServer.clipboard_set(report)
 	Log.info("Welcome: Copied the %s report to the clipboard" % displayed_error_key)
