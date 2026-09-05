@@ -195,6 +195,34 @@ func test_the_longest_message_still_fits_in_the_column() -> void:
 		"a message taller than the column could never be shown whole")
 
 
+func test_the_domains_are_never_split_across_lines() -> void:
+	# What the label was too narrow for: the pack host broke mid-name, and with the
+	# text centred the tail read as a third domain sitting underneath. Nobody can
+	# copy a hostname out of that. The message is for whoever runs the network, so
+	# each domain has to arrive whole, on its own line.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var screen: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	viewport.add_child(screen)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	screen._show_login_error("LOGIN_KALULU_BLOCKED")
+	await get_tree().process_frame
+
+	var label: Label = screen.login_error
+	var font: Font = label.get_theme_font("font")
+	var font_size: int = label.get_theme_font_size("font_size")
+	var available: float = label.get_global_rect().size.x
+	for line: String in tr("LOGIN_KALULU_BLOCKED").split("\n"):
+		if not line.begins_with("•"):
+			continue
+		var needed: float = font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		assert_lte(needed, available,
+			"\"%s\" needs %d px and the label offers %d" % [line, needed, available])
+
+
 func test_other_failures_do_not_offer_a_reset() -> void:
 	# Resetting cannot help an unknown account, and the network failures could
 	# not send the mail anyway.

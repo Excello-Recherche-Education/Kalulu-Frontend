@@ -85,6 +85,10 @@ func test_a_second_caller_waits_instead_of_being_told_it_is_offline() -> void:
 ## alone leaves the download failing. Kalulu-Languages-Checker reads the same bucket
 ## and spells the host out in available_packs.gd.
 const PACK_HOST: String = "kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
+## Each domain is marked, so a line that wraps -- which carries no mark -- cannot be
+## read as one more domain. It was: the pack host broke mid-name and the tail looked
+## like a third entry underneath.
+const DOMAIN_MARK: String = "• "
 
 
 func test_the_blocked_message_names_the_api_host_the_app_actually_calls() -> void:
@@ -111,7 +115,8 @@ func test_the_domains_are_set_apart_from_the_advice() -> void:
 		var message: String = tr(key)
 		assert_string_contains(message, "\n\n", "%s should break before the domains" % key)
 		var lines: PackedStringArray = message.split("\n")
-		assert_eq(lines[lines.size() - 2], ServerManagerClass.AWS_API_GATEWAY_DOMAIN_ADRESS.trim_suffix("/"),
-			"%s should end with one domain per line" % key)
-		assert_eq(lines[lines.size() - 1], PACK_HOST,
-			"%s should end with one domain per line" % key)
+		assert_eq(lines[lines.size() - 2],
+			DOMAIN_MARK + ServerManagerClass.AWS_API_GATEWAY_DOMAIN_ADRESS.trim_suffix("/"),
+			"%s should end with one marked domain per line" % key)
+		assert_eq(lines[lines.size() - 1], DOMAIN_MARK + PACK_HOST,
+			"%s should end with one marked domain per line" % key)

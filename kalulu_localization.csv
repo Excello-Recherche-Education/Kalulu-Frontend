@@ -20,20 +20,20 @@ LOGIN_NETWORK_ERROR,"Connexion au serveur échouée, vérifiez votre accès Inte
 LOGIN_KALULU_BLOCKED,"Vous êtes bien connecté à Internet, mais ce réseau empêche Kalulu de joindre son serveur (pare-feu ou proxy). Deux solutions : faire autoriser Kalulu sur ce réseau, ou vous connecter une fois depuis un autre réseau en laissant le pack de langue se télécharger — ensuite Kalulu fonctionne sans Internet.
 
 À transmettre au service réseau — domaines à autoriser :
-api.kalulu.org
-kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sí está conectado a Internet, pero esta red impide que Kalulu llegue a su servidor (cortafuegos o proxy). Dos soluciones: pedir que se autorice Kalulu en esta red, o conectarse una vez desde otra red dejando que se descargue el paquete de idioma; después Kalulu funciona sin Internet.
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sí está conectado a Internet, pero esta red impide que Kalulu llegue a su servidor (cortafuegos o proxy). Dos soluciones: pedir que se autorice Kalulu en esta red, o conectarse una vez desde otra red dejando que se descargue el paquete de idioma; después Kalulu funciona sin Internet.
 
 Para el servicio de red — dominios que autorizar:
-api.kalulu.org
-kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Você está conectado à Internet, mas esta rede impede que o Kalulu alcance seu servidor (firewall ou proxy). Duas soluções: pedir que o Kalulu seja autorizado nesta rede, ou conectar-se uma vez em outra rede deixando o pacote de idioma ser baixado; depois o Kalulu funciona sem Internet.
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Você está conectado à Internet, mas esta rede impede que o Kalulu alcance seu servidor (firewall ou proxy). Duas soluções: pedir que o Kalulu seja autorizado nesta rede, ou conectar-se uma vez em outra rede deixando o pacote de idioma ser baixado; depois o Kalulu funciona sem Internet.
 
 Para a equipe de rede — domínios a liberar:
-api.kalulu.org
-kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sei connesso a Internet, ma questa rete impedisce a Kalulu di raggiungere il suo server (firewall o proxy). Due soluzioni: chiedere di autorizzare Kalulu su questa rete, oppure collegarsi una volta da un'altra rete lasciando scaricare il pacchetto lingua; dopo Kalulu funziona senza Internet.
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sei connesso a Internet, ma questa rete impedisce a Kalulu di raggiungere il suo server (firewall o proxy). Due soluzioni: chiedere di autorizzare Kalulu su questa rete, oppure collegarsi una volta da un'altra rete lasciando scaricare il pacchetto lingua; dopo Kalulu funziona senza Internet.
 
 Per il servizio di rete — domini da autorizzare:
-api.kalulu.org
-kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
 RESET_PASSWORD,Réinitialiser le mot de passe,Restablecer la contraseña,Redefinir senha,Reimposta password
 CHECK_YOUR_EMAIL,Veuillez vérifier votre boîte mail,"Por favor, revise su correo electrónico","Por favor, verifique seu e-mail",Controlla la tua email
 RESET_PASSWORD_FAILED,"Erreur lors de la réinitialisation, réessayez plus tard","Error al restablecer la contraseña, inténtelo más tarde","Erro ao redefinir a senha, tente novamente mais tarde","Errore nel reimpostare la password, riprova più tardi"
@@ -490,20 +490,20 @@ KALULU_BLOCKED_TITLE,"Ce réseau bloque Kalulu","Esta red bloquea Kalulu","Esta 
 DOWNLOAD_KALULU_BLOCKED,"Vous êtes bien connecté à Internet, mais ce réseau empêche Kalulu de télécharger le pack de langue (pare-feu ou proxy). Deux solutions : faire autoriser Kalulu sur ce réseau, ou terminer ce téléchargement une fois depuis un autre réseau — ensuite Kalulu fonctionne sans Internet.
 
 À transmettre au service réseau — domaines à autoriser :
-api.kalulu.org
-kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sí está conectado a Internet, pero esta red impide que Kalulu descargue el paquete de idioma (cortafuegos o proxy). Dos soluciones: pedir que se autorice Kalulu en esta red, o terminar esta descarga una vez desde otra red; después Kalulu funciona sin Internet.
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sí está conectado a Internet, pero esta red impide que Kalulu descargue el paquete de idioma (cortafuegos o proxy). Dos soluciones: pedir que se autorice Kalulu en esta red, o terminar esta descarga una vez desde otra red; después Kalulu funciona sin Internet.
 
 Para el servicio de red — dominios que autorizar:
-api.kalulu.org
-kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Você está conectado à Internet, mas esta rede impede que o Kalulu baixe o pacote de idioma (firewall ou proxy). Duas soluções: pedir que o Kalulu seja autorizado nesta rede, ou concluir este download uma vez em outra rede; depois o Kalulu funciona sem Internet.
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Você está conectado à Internet, mas esta rede impede que o Kalulu baixe o pacote de idioma (firewall ou proxy). Duas soluções: pedir que o Kalulu seja autorizado nesta rede, ou concluir este download uma vez em outra rede; depois o Kalulu funciona sem Internet.
 
 Para a equipe de rede — domínios a liberar:
-api.kalulu.org
-kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sei connesso a Internet, ma questa rete impedisce a Kalulu di scaricare il pacchetto lingua (firewall o proxy). Due soluzioni: chiedere di autorizzare Kalulu su questa rete, oppure completare questo scaricamento una volta da un'altra rete; dopo Kalulu funziona senza Internet.
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sei connesso a Internet, ma questa rete impedisce a Kalulu di scaricare il pacchetto lingua (firewall o proxy). Due soluzioni: chiedere di autorizzare Kalulu su questa rete, oppure completare questo scaricamento una volta da un'altra rete; dopo Kalulu funziona senza Internet.
 
 Per il servizio di rete — domini da autorizzare:
-api.kalulu.org
-kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
 SERVER_UNAVAILABLE_TITLE,"Le serveur de Kalulu est indisponible","El servidor de Kalulu no está disponible","O servidor do Kalulu está indisponível","Il server di Kalulu non è disponibile"
 NO_LANGUAGE_PACK_SERVER_ERROR,"Kalulu n'a pas pu récupérer le pack de langue : son serveur a répondu par une erreur. Votre connexion Internet n'est pas en cause. Réessayez dans un moment.","Kalulu no pudo obtener el paquete de idioma: su servidor respondió con un error. Su conexión a Internet no tiene la culpa. Inténtelo de nuevo en un momento.","O Kalulu não conseguiu obter o pacote de idioma: seu servidor respondeu com um erro. Sua conexão com a Internet não é a causa. Tente novamente em instantes.","Kalulu non è riuscito a recuperare il pacchetto lingua: il suo server ha risposto con un errore. La tua connessione a Internet non c'entra. Riprova tra poco."
 TRY_AGAIN,Réessayer,Volver a intentarlo,Tentar novamente,Riprova
