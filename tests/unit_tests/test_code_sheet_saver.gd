@@ -117,6 +117,28 @@ func test_a_folder_that_refuses_the_file_costs_a_copy_and_not_the_sheet() -> voi
 		"Documents is tried next rather than giving up on the teacher's copy")
 	assert_true(FileAccess.file_exists(saver.documents_target))
 	assert_false(outcome.could_not_place, "somewhere took it in the end")
+	assert_eq(outcome.asked_for_path, IMPOSSIBLE_PATH,
+		"and what they asked for is remembered, refused or not")
+
+
+func test_a_refused_folder_is_not_reported_as_the_folder_it_went_to() -> void:
+	# The other way into Documents: the teacher did choose, and the folder would not
+	# take the file -- an iPad's dialog browses plenty of places nothing may be
+	# written to. Telling them it went where they chose would send them looking in
+	# the wrong folder, which is the whole complaint this feature is about.
+	var outcome: CodeSheetSaver.Outcome = await _place_and_choose(IMPOSSIBLE_PATH)
+
+	_accept_the_logged_refusal()
+	assert_ne(outcome.asked_for_path, outcome.placed_path, "it went somewhere else")
+	assert_eq(CodeSheetSaver.report_for(outcome),
+		TranslationServer.translate("CODE_SHEET_SAVED_AT").format(
+			{"path": ProjectSettings.globalize_path(outcome.placed_path)})
+		if AccountCreated.can_show_folder()
+		else TranslationServer.translate("CODE_SHEET_SAVED_ELSEWHERE"),
+		"the real path where one can be named, and why it moved where it cannot")
+	assert_ne(CodeSheetSaver.report_for(outcome),
+		TranslationServer.translate("CODE_SHEET_SAVED"),
+		"and never the one that claims it went where they chose")
 
 
 func test_a_device_that_shows_no_picker_gets_the_sheet_put_in_documents() -> void:
@@ -130,7 +152,7 @@ func test_a_device_that_shows_no_picker_gets_the_sheet_put_in_documents() -> voi
 	assert_eq(outcome.placed_path, saver.documents_target,
 		"and the sheet goes where a Files app can find it")
 	assert_false(outcome.cancelled, "nobody cancelled: there was nothing to cancel")
-	assert_true(outcome.placed_unasked, "and the teacher was never asked where")
+	assert_eq(outcome.asked_for_path, "", "and the teacher was never asked where")
 
 
 func test_a_sheet_the_device_placed_itself_says_where_it_went() -> void:
@@ -141,7 +163,7 @@ func test_a_sheet_the_device_placed_itself_says_where_it_went() -> void:
 
 	var outcome: CodeSheetSaver.Outcome = await _place(DRAWN_SHEET.to_utf8_buffer())
 
-	assert_true(outcome.placed_unasked, "nobody was asked, so nobody chose")
+	assert_eq(outcome.asked_for_path, "", "nobody was asked, so nobody chose")
 	assert_eq(CodeSheetSaver.report_for(outcome),
 		TranslationServer.translate("CODE_SHEET_SAVED_AT").format(
 			{"path": ProjectSettings.globalize_path(outcome.placed_path)})
@@ -156,7 +178,8 @@ func test_a_folder_the_teacher_chose_is_not_reported_as_the_device_s_doing() -> 
 
 	var outcome: CodeSheetSaver.Outcome = await _place_and_choose(chosen)
 
-	assert_false(outcome.placed_unasked, "they were asked, and they answered")
+	assert_eq(outcome.asked_for_path, outcome.placed_path,
+		"they were asked, they answered, and that is where it went")
 	_remove(chosen)
 
 
@@ -293,12 +316,17 @@ func test_what_the_teacher_is_told_follows_where_the_sheet_went() -> void:
 			else "CODE_SHEET_KEPT_IN_APP"),
 		"a kept copy alone is worth a word on how to get at it")
 
+	# Both halves below are a copy that went where it was asked to go, so both set
+	# the ask as well as the destination -- that is what the saver records, and an
+	# outcome with only one of the two is a state it never produces.
 	outcome.placed_path = "content://com.android.providers.downloads/document/42"
+	outcome.asked_for_path = outcome.placed_path
 	assert_eq(CodeSheetSaver.report_for(outcome),
 		TranslationServer.translate("CODE_SHEET_SAVED"),
 		"a document URI names no folder, so it is confirmed rather than quoted")
 
 	outcome.placed_path = "user://code_sheet_saver_report.pdf"
+	outcome.asked_for_path = outcome.placed_path
 	var expected: String = TranslationServer.translate("CODE_SHEET_SAVED_AT").format(
 			{"path": ProjectSettings.globalize_path(outcome.placed_path)}) \
 		if AccountCreated.can_show_folder() else TranslationServer.translate("CODE_SHEET_SAVED")
@@ -310,7 +338,8 @@ func test_every_wording_the_report_uses_is_translated() -> void:
 	# A missing row shows the teacher the key instead of the sentence, in a dialog
 	# that only appears on the devices this whole change is for.
 	for key: String in ["CODE_SHEET_FAILED", "CODE_SHEET_SAVED", "CODE_SHEET_SAVED_AT",
-			"CODE_SHEET_SAVED_IN_DOCUMENTS", "CODE_SHEET_KEPT_IN_APP",
+			"CODE_SHEET_SAVED_IN_DOCUMENTS", "CODE_SHEET_SAVED_ELSEWHERE",
+			"CODE_SHEET_KEPT_IN_APP",
 			"CODE_SHEET_KEPT_IN_APP_ONLY", "CODE_SHEET_IN_THE_FILES_APP",
 			"PREPARING_CODE_SHEET"]:
 		for language: String in TranslationServer.get_loaded_locales():

@@ -162,18 +162,29 @@ static func report_for(outcome: Outcome) -> String:
 		# A path is only worth quoting where a teacher could act on one: a content://
 		# URI is a document Android's picker made and names no folder, and on a phone
 		# or a tablet /storage/emulated/0/… is not something anybody goes looking in.
+		# Where one can be quoted it is the whole answer, whichever way the sheet got
+		# there: a path that is not the folder they clicked says so by itself.
 		if AccountCreated.can_show_folder() \
 				and not CodeSheet.is_document_uri(outcome.placed_path):
 			return TranslationServer.translate("CODE_SHEET_SAVED_AT").format(
 					{"path": ProjectSettings.globalize_path(outcome.placed_path)})
-		# Nothing was chosen, so this cannot be answered with "where you chose": the
-		# device showed the teacher nothing to choose with and the sheet went to
-		# Documents on its own. Naming that folder is the whole message -- it is the
-		# only thing that tells them where to look, and this is the very case the
-		# blocked-picker devices land in.
-		if outcome.placed_unasked:
+		# What is left is a platform where no path can be shown, so the sentence has
+		# to carry the folder's name -- and which sentence depends on why the sheet
+		# is where it is. Neither of the next two can be answered with "where you
+		# chose": one had nothing to choose with, the other chose and was refused.
+		if outcome.asked_for_path.is_empty():
+			# The device showed nothing to choose with and the sheet went to
+			# Documents on its own. Naming that folder is the whole message: it is
+			# the only thing that tells them where to look, and this is the case the
+			# blocked-picker tablets land in.
 			return TranslationServer.translate("CODE_SHEET_SAVED_IN_DOCUMENTS")
-		# They chose it themselves a moment ago, so a confirmation is enough.
+		if outcome.asked_for_path != outcome.placed_path:
+			# They picked a folder and it would not take the file -- the sandbox on
+			# an iPad shows plenty of places nothing may be written to. Documents
+			# took it instead, and saying so is what stops them looking where they
+			# clicked.
+			return TranslationServer.translate("CODE_SHEET_SAVED_ELSEWHERE")
+		# It went where they chose a moment ago, so a confirmation is enough.
 		return TranslationServer.translate("CODE_SHEET_SAVED")
 	# Only the kept copy is left, and its path is inside the app: something like
 	# /data/user/0/org.../files, which says nothing to anybody. What is worth
@@ -211,6 +222,10 @@ func _place_a_copy(pdf_data: PackedByteArray, outcome: Outcome) -> void:
 
 	if not chosen.is_empty():
 		var target: String = CodeSheet.pdf_path(chosen)
+		# Recorded before the write is attempted, so a refused folder is still known
+		# to have been asked for -- which is what tells that case from the one where
+		# the teacher was never asked at all.
+		outcome.asked_for_path = target
 		if await _write_outside_the_app(pdf_data, target):
 			outcome.placed_path = target
 			return
@@ -230,7 +245,6 @@ func _place_a_copy(pdf_data: PackedByteArray, outcome: Outcome) -> void:
 		Log.info("CodeSheetSaver: Nothing could be chosen, so the sheet went to %s"
 				% documents_target)
 		outcome.placed_path = documents_target
-		outcome.placed_unasked = chosen.is_empty()
 		return
 
 	Log.warn("CodeSheetSaver: The sheet could not be put anywhere outside the app")
@@ -417,10 +431,13 @@ class Outcome extends RefCounted:
 	var error: Error = OK
 	## The teacher dismissed the picker. Not a failure: they were asked and said no.
 	var cancelled: bool = false
-	## The copy was placed without the teacher choosing where, because nothing could
-	## be shown to choose with. What is told to them afterwards has to differ: they
-	## cannot be pointed at a folder they picked, so they are pointed at Documents.
-	var placed_unasked: bool = false
+	## Where the teacher asked for their copy, whether or not it could go there.
+	##
+	## Empty when they were never asked -- nothing could be shown to choose with.
+	## Different from `placed_path` when the folder they chose would not take the
+	## file and Documents did. Both cases have to be said differently: neither can
+	## be answered with "where you chose", and only this tells them apart.
+	var asked_for_path: String = ""
 	## Nowhere outside the app would take the file, so only the kept copy exists.
 	var could_not_place: bool = false
 
