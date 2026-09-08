@@ -97,6 +97,29 @@ func test_only_the_failures_somebody_else_can_fix_are_worth_copying() -> void:
 			"%s is this device's own" % PackageDownloader.DownloadError.keys()[error])
 
 
+func test_a_fresh_attempt_does_not_report_the_previous_one_s_failure() -> void:
+	# Every retry comes back through _start, which calls this. The leg that gets an
+	# unusable answer from the server sets no result code of its own -- the request
+	# succeeded and an HTTP 500 came back -- so a code left over from the attempt
+	# before would be pasted under a message about the server, and sent to a network
+	# administrator to chase a connection that was working.
+	var downloader: PackageDownloader = autofree(PackageDownloader.new()) as PackageDownloader
+	downloader.error_popup = popup
+	downloader.failure_result_code = HTTPRequest.RESULT_CANT_CONNECT
+	popup.title_text = "SERVER_UNAVAILABLE_TITLE"
+	popup.content_text = "NO_LANGUAGE_PACK_SERVER_ERROR"
+
+	downloader._forget_the_previous_failure()
+
+	var report: String = downloader._report_for(PackageDownloader.DownloadError.DOWNLOAD_FAILED)
+	assert_false(report.contains("RESULT_CANT_CONNECT"),
+		"the previous attempt's failure has no place in this one's report")
+	assert_false(report.contains("RESULT_"),
+		"and nothing failed below HTTP this time, so no result line at all")
+	assert_string_contains(report, tr("NO_LANGUAGE_PACK_SERVER_ERROR"),
+		"what was on screen is still what is sent")
+
+
 func test_the_report_is_what_was_on_screen_plus_what_its_reader_asks() -> void:
 	# Read off the dialog rather than rebuilt, so nobody can be sent a message that
 	# was never shown. The heading goes first: four words saying what this is about.

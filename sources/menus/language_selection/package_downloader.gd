@@ -102,6 +102,7 @@ func _start() -> void:
 	
 	await get_tree().process_frame
 	
+	_forget_the_previous_failure()
 	language = UserDataManager.get_device_settings().language
 	Log.trace("PackageDownloader: Starting with device language %s" % language)
 	
@@ -259,6 +260,20 @@ func _continue_without_the_server(no_pack_error: DownloadError) -> void:
 		return
 	Log.warn("PackageDownloader: No server and no language directory to fall back on")
 	_show_error(no_pack_error)
+
+
+## Clears the result code, so an attempt only ever reports its own failure.
+##
+## Every retry comes back through _start, and the three legs each set this when they
+## fail -- but the leg that gets an unusable answer out of the server has no result
+## code of its own to set: the request succeeded, an HTTP 500 came back. Left over
+## from the previous attempt, a RESULT_CANT_CONNECT would then be pasted under a
+## message about the server answering badly, and sent to a network administrator to
+## chase a connection that was working. RESULT_SUCCESS is also what makes
+## Utils.support_report leave the line out altogether, which is right for a failure
+## that happened above that level.
+func _forget_the_previous_failure() -> void:
+	failure_result_code = HTTPRequest.RESULT_SUCCESS
 
 
 ## The notice, written out for a mail to somebody who can act on it.
