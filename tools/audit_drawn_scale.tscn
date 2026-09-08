@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://dfp6o0hy38le1"]
 
-[ext_resource type="Script" path="res://tools/audit_drawn_scale.gd" id="1_ad"]
+[ext_resource type="Script" uid="uid://d0yndywsucvlk" path="res://tools/audit_drawn_scale.gd" id="1_ad"]
 
-[node name="AuditDrawnScale" type="Node"]
+[node name="AuditDrawnScale" type="Node" unique_id=699090480]
 script = ExtResource("1_ad")
