@@ -25,7 +25,7 @@ func _find_stimuli_and_distractions() -> void:
 	var previous_lesson_words: Array[Dictionary] = []
 	
 	for word: Dictionary in words_list:
-		if not FileAccess.file_exists(Database.get_word_sound_path(word)):
+		if not Database.external_file_exists(Database.get_word_sound_path(word)):
 			continue
 		
 		if word.LessonNb == lesson_nb:
