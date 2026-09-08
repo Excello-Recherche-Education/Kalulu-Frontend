@@ -236,6 +236,22 @@ func test_only_the_failures_somebody_else_can_fix_are_worth_copying() -> void:
 		assert_false(Welcome.offers_copy(key, true), "%s is the reader's own to fix" % key)
 
 
+func test_the_wait_for_a_diagnosis_is_said_out_loud_and_not_offered_for_copy() -> void:
+	# A failure with no HTTP response has to be diagnosed before it can be described,
+	# and that probe can take its full 15 seconds on the very networks this is for.
+	# Answering the press with nothing for that long is the dead-button complaint all
+	# over again -- so the screen says what it is doing. It is not a verdict, so
+	# there is nothing to hand on to anybody yet.
+	assert_false(Welcome.offers_copy(Welcome.DIAGNOSING_ERROR, true),
+		"a diagnosis still in progress is nobody else's to act on")
+	for language: String in TranslationServer.get_loaded_locales():
+		var translation: Translation = TranslationServer.get_translation_object(language)
+		if not translation:
+			continue
+		assert_ne(translation.get_message(Welcome.DIAGNOSING_ERROR), "",
+			"%s should be translated into %s" % [Welcome.DIAGNOSING_ERROR, language])
+
+
 func test_nothing_is_offered_where_there_is_no_clipboard() -> void:
 	# Pressing it would do nothing and then claim it had.
 	for key: String in Welcome.REPORTABLE_ERRORS:

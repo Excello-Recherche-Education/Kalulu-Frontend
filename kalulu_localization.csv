@@ -17,6 +17,7 @@ LOGIN_WRONG_PASSWORD,Mot de passe incorrect,Contraseña incorrecta,Senha incorre
 LOGIN_MISSING_CREDENTIALS,Veuillez renseigner votre adresse mail et votre mot de passe,"Por favor, introduzca su correo electrónico y su contraseña","Por favor, informe seu e-mail e sua senha",Inserisci email e password
 LOGIN_SERVER_ERROR,"Erreur serveur, veuillez réessayer plus tard","Error del servidor, inténtelo más tarde","Erro do servidor, tente novamente mais tarde","Errore del server, riprova più tardi"
 LOGIN_NETWORK_ERROR,"Connexion au serveur échouée, vérifiez votre accès Internet","Error de conexión al servidor, verifique su acceso a Internet","Falha na conexão com o servidor, verifique seu acesso à Internet","Connessione al server fallita, verifica il tuo accesso a Internet"
+LOGIN_DIAGNOSING,"Erreur détectée. Diagnostic en cours, veuillez patienter…","Error detectado. Diagnóstico en curso, espere un momento…","Erro detectado. Diagnóstico em andamento, aguarde…","Errore rilevato. Diagnosi in corso, attendere…"
 LOGIN_KALULU_BLOCKED,"Vous êtes bien connecté à Internet, mais ce réseau empêche Kalulu de joindre son serveur (pare-feu ou proxy). Deux solutions : faire autoriser Kalulu sur ce réseau, ou vous connecter une fois depuis un autre réseau en laissant le pack de langue se télécharger — ensuite Kalulu fonctionne sans Internet.
 
 À transmettre au service réseau — domaines à autoriser :

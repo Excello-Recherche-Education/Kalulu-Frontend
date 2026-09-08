@@ -61,6 +61,13 @@ const REPORTABLE_ERRORS: Array[String] = [
 ]
 ## How long "copied" stays on the button before it offers to copy again.
 const COPIED_FEEDBACK_SECONDS: float = 2.5
+## What is on screen while the two network stories are being told apart.
+##
+## Telling them apart takes a probe of its own, and on the networks this is for --
+## the ones that drop packets rather than refusing them -- that probe can take its
+## full 15 seconds. Without this the screen answers a press with nothing at all for
+## that long, which is precisely the complaint the diagnosis exists to end.
+const DIAGNOSING_ERROR: String = "LOGIN_DIAGNOSING"
 
 ## The message currently on display, so the copy sends what was read rather than
 ## whatever the screen has moved on to.
@@ -129,6 +136,11 @@ func _on_next_pressed() -> void:
 	var response: Dictionary = await ServerManager.login(email_field.text, password_field.text)
 	if response.code != 200:
 		Log.info("Welcome: Login failed with code %d" % response.code)
+		# Said before the diagnosis rather than after it: a failure with no HTTP
+		# response has to be diagnosed before it can be described, and that wait is
+		# long enough to read as a dead button.
+		if response.code == 0:
+			_show_login_error(DIAGNOSING_ERROR)
 		_show_login_error(await _translation_key_for_error(response))
 		_end_request()
 		return
