@@ -559,49 +559,47 @@ func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
 
 
 func get_gp_look_and_learn_image(gp: Dictionary) -> Texture:
-	var path: String = get_gp_look_and_learn_image_path(gp)
-	if FileAccess.file_exists(path):
-		if ResourceLoader.exists(path):
-			return load(path)
-		else:
-			var image: Image = Image.load_from_file(path)
-			var texture: ImageTexture = ImageTexture.create_from_image(image)
-			return texture
-	
-	Log.trace("Database: Look & Learn image not found for GP %s" % str(gp))
-	return null
+	# Through the ladder, because the name comes from the GP's own grapheme: the
+	# database holds "ç" composed and the packs ship the file decomposed, which only
+	# macOS looks up interchangeably. See resolve_external_file_path.
+	var path: String = resolve_external_file_path(get_gp_look_and_learn_image_path(gp))
+	if path.is_empty():
+		Log.trace("Database: Look & Learn image not found for GP %s" % str(gp))
+		return null
+	if ResourceLoader.exists(path):
+		return load(path)
+	var image: Image = Image.load_from_file(path)
+	return ImageTexture.create_from_image(image)
 
 
 func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
-	var path: String = get_gp_look_and_learn_sound_path(gp)
-	if FileAccess.file_exists(path):
-		if ResourceLoader.exists(path):
-			return load(path)
-		else:
-			var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-			var error: Error = FileAccess.get_open_error()
-			if error != OK:
-				Log.error("Database: Get GP look and learn sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
-				return null
-			if file == null:
-				Log.error("Database: Get GP look and learn sound: Cannot open file %s. File is null" % path)
-				return null
-			var sound: AudioStreamMP3 = AudioStreamMP3.new()
-			sound.data = file.get_buffer(file.get_length())
-			return sound
-	
-	Log.trace("Database: Look & Learn sound not found for GP %s" % str(gp))
-	return null
+	# Through the ladder, for the reason in get_gp_look_and_learn_image.
+	var path: String = resolve_external_file_path(get_gp_look_and_learn_sound_path(gp))
+	if path.is_empty():
+		Log.trace("Database: Look & Learn sound not found for GP %s" % str(gp))
+		return null
+	if ResourceLoader.exists(path):
+		return load(path)
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var error: Error = FileAccess.get_open_error()
+	if error != OK:
+		Log.error("Database: Get GP look and learn sound: Cannot open file %s. Error: %s" % [path, error_string(error)])
+		return null
+	if file == null:
+		Log.error("Database: Get GP look and learn sound: Cannot open file %s. File is null" % path)
+		return null
+	var sound: AudioStreamMP3 = AudioStreamMP3.new()
+	sound.data = file.get_buffer(file.get_length())
+	return sound
 
 
 func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:
-	var path: String = get_gp_look_and_learn_video_path(gp)
-	if FileAccess.file_exists(path):
-		var video: VideoStream = load(path)
-		return video
-	
-	Log.trace("Database: Look & Learn video not found for GP %s" % gp)
-	return null
+	# Through the ladder, for the reason in get_gp_look_and_learn_image.
+	var path: String = resolve_external_file_path(get_gp_look_and_learn_video_path(gp))
+	if path.is_empty():
+		Log.trace("Database: Look & Learn video not found for GP %s" % gp)
+		return null
+	return load(path) as VideoStream
 
 
 func get_gp_name(gp: Dictionary) -> String:
