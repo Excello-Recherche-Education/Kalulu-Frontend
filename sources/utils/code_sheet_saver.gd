@@ -77,6 +77,12 @@ var _chosen_path: String = ""
 var _placement_is_settled: bool = false
 ## True while nothing but the teacher's answer is being waited on.
 var _waiting_for_a_folder: bool = false
+## Which wait for a folder is in progress, counted up on every one.
+##
+## A watchdog cannot be called off -- there is no cancelling a SceneTreeTimer that
+## is already running -- so it has to be able to tell whether the wait it was
+## started for is still the wait in front of the teacher.
+var _wait_generation: int = 0
 ## True once a later press has taken over a wait that was going nowhere.
 var _abandoned: bool = false
 ## True once the application lost focus after the picker was asked for -- which is
@@ -153,14 +159,22 @@ static func report_for(outcome: Outcome) -> String:
 	if not outcome.has_a_sheet():
 		return TranslationServer.translate("CODE_SHEET_FAILED")
 	if not outcome.placed_path.is_empty():
-		# A content:// URI is a document Android's picker created for us. It names
-		# no folder a teacher could act on, and they chose it themselves a moment
-		# ago, so the confirmation is enough.
-		if CodeSheet.is_document_uri(outcome.placed_path) \
-				or not AccountCreated.can_show_folder():
-			return TranslationServer.translate("CODE_SHEET_SAVED")
-		return TranslationServer.translate("CODE_SHEET_SAVED_AT").format(
-				{"path": ProjectSettings.globalize_path(outcome.placed_path)})
+		# A path is only worth quoting where a teacher could act on one: a content://
+		# URI is a document Android's picker made and names no folder, and on a phone
+		# or a tablet /storage/emulated/0/… is not something anybody goes looking in.
+		if AccountCreated.can_show_folder() \
+				and not CodeSheet.is_document_uri(outcome.placed_path):
+			return TranslationServer.translate("CODE_SHEET_SAVED_AT").format(
+					{"path": ProjectSettings.globalize_path(outcome.placed_path)})
+		# Nothing was chosen, so this cannot be answered with "where you chose": the
+		# device showed the teacher nothing to choose with and the sheet went to
+		# Documents on its own. Naming that folder is the whole message -- it is the
+		# only thing that tells them where to look, and this is the very case the
+		# blocked-picker devices land in.
+		if outcome.placed_unasked:
+			return TranslationServer.translate("CODE_SHEET_SAVED_IN_DOCUMENTS")
+		# They chose it themselves a moment ago, so a confirmation is enough.
+		return TranslationServer.translate("CODE_SHEET_SAVED")
 	# Only the kept copy is left, and its path is inside the app: something like
 	# /data/user/0/org.../files, which says nothing to anybody. What is worth
 	# saying is how to get at the sheet, and that differs by platform.
@@ -216,6 +230,7 @@ func _place_a_copy(pdf_data: PackedByteArray, outcome: Outcome) -> void:
 		Log.info("CodeSheetSaver: Nothing could be chosen, so the sheet went to %s"
 				% documents_target)
 		outcome.placed_path = documents_target
+		outcome.placed_unasked = chosen.is_empty()
 		return
 
 	Log.warn("CodeSheetSaver: The sheet could not be put anywhere outside the app")
@@ -234,11 +249,12 @@ func _ask_where_it_should_go() -> String:
 	_chosen_path = ""
 	_placement_is_settled = false
 	_left_the_game = false
+	_wait_generation += 1
 	dialog.file_selected.connect(_on_file_selected)
 	dialog.canceled.connect(_on_dialog_canceled)
 
 	MobileFileDialog.open(dialog, CodeSheet.DEFAULT_FILE_NAME)
-	_watch_for_a_picker_that_never_opened()
+	_watch_for_a_picker_that_never_opened(_wait_generation)
 	_waiting_for_a_folder = true
 	await _placement_settled
 	_waiting_for_a_folder = false
@@ -246,6 +262,20 @@ func _ask_where_it_should_go() -> String:
 	dialog.file_selected.disconnect(_on_file_selected)
 	dialog.canceled.disconnect(_on_dialog_canceled)
 	return _chosen_path
+
+
+## Whether a grace period running out means the picker never came up.
+##
+## `generation` is the wait the watchdog was started for and `current_generation` the
+## one in progress. They differ once a later export has begun, and then this timer
+## has nothing left to say: the export it belonged to is over, and the flags it would
+## read have been reset for somebody else's picker. Judging that one by this timer
+## would call a picker blocked while the teacher is looking at it -- and, because the
+## verdict is remembered for the whole session, skip the picker on every export after
+## it. Pure, so all four answers can be checked without a device.
+static func picker_never_opened(generation: int, current_generation: int,
+		settled: bool, left_the_game: bool) -> bool:
+	return generation == current_generation and not settled and not left_the_game
 
 
 ## Notices a platform picker that was asked for and never came up.
@@ -259,7 +289,7 @@ func _ask_where_it_should_go() -> String:
 ## Android only. On the desktops the native dialog belongs to this same process,
 ## so focus never leaves and there would be no way to tell the two apart -- and a
 ## second dialog thrown on top of a working one is worse than the wait.
-func _watch_for_a_picker_that_never_opened() -> void:
+func _watch_for_a_picker_that_never_opened(generation: int) -> void:
 	if not OS.has_feature("android") or not dialog.use_native_dialog:
 		return
 	if not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE):
@@ -268,7 +298,8 @@ func _watch_for_a_picker_that_never_opened() -> void:
 	# The game is paused while the picker is up, so this timer stops with it: it
 	# can only run out if nothing took the foreground.
 	await get_tree().create_timer(PICKER_GRACE_SECONDS).timeout
-	if _placement_is_settled or _left_the_game:
+	if not picker_never_opened(generation, _wait_generation, _placement_is_settled,
+			_left_the_game):
 		return
 
 	Log.warn("CodeSheetSaver: No picker came up in %.0f s; taking it as blocked"
@@ -386,6 +417,10 @@ class Outcome extends RefCounted:
 	var error: Error = OK
 	## The teacher dismissed the picker. Not a failure: they were asked and said no.
 	var cancelled: bool = false
+	## The copy was placed without the teacher choosing where, because nothing could
+	## be shown to choose with. What is told to them afterwards has to differ: they
+	## cannot be pointed at a folder they picked, so they are pointed at Documents.
+	var placed_unasked: bool = false
 	## Nowhere outside the app would take the file, so only the kept copy exists.
 	var could_not_place: bool = false
 

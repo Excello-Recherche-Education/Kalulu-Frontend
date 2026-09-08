@@ -130,6 +130,65 @@ func test_a_device_that_shows_no_picker_gets_the_sheet_put_in_documents() -> voi
 	assert_eq(outcome.placed_path, saver.documents_target,
 		"and the sheet goes where a Files app can find it")
 	assert_false(outcome.cancelled, "nobody cancelled: there was nothing to cancel")
+	assert_true(outcome.placed_unasked, "and the teacher was never asked where")
+
+
+func test_a_sheet_the_device_placed_itself_says_where_it_went() -> void:
+	# The teacher chose nothing -- there was nothing to choose with -- so they cannot
+	# be told it went where they chose. Naming Documents is the only thing that tells
+	# them where to look, and this is exactly the case a blocked tablet lands in.
+	CodeSheetSaver.platform_picker_blocked = true
+
+	var outcome: CodeSheetSaver.Outcome = await _place(DRAWN_SHEET.to_utf8_buffer())
+
+	assert_true(outcome.placed_unasked, "nobody was asked, so nobody chose")
+	assert_eq(CodeSheetSaver.report_for(outcome),
+		TranslationServer.translate("CODE_SHEET_SAVED_AT").format(
+			{"path": ProjectSettings.globalize_path(outcome.placed_path)})
+		if AccountCreated.can_show_folder()
+		else TranslationServer.translate("CODE_SHEET_SAVED_IN_DOCUMENTS"),
+		"a path where one can be acted on, and the folder's name where it cannot")
+
+
+func test_a_folder_the_teacher_chose_is_not_reported_as_the_device_s_doing() -> void:
+	var chosen: String = "user://code_sheet_saver_chosen_report.pdf"
+	_remove(chosen)
+
+	var outcome: CodeSheetSaver.Outcome = await _place_and_choose(chosen)
+
+	assert_false(outcome.placed_unasked, "they were asked, and they answered")
+	_remove(chosen)
+
+
+# --- The watchdog only has a say about the wait it was started for ---------------
+## It cannot be called off: a SceneTreeTimer that is already running keeps running,
+## so a watchdog outlives the export that started it. What stops it speaking for the
+## next one is the generation it was handed.
+func test_a_watchdog_says_nothing_about_a_later_export_than_its_own() -> void:
+	# The teacher exports, picks quickly, and exports again inside the grace period.
+	# Without the generation the first export's timer would call the second one's
+	# picker blocked -- while it is on screen -- and skip the picker for the rest of
+	# the session.
+	assert_false(CodeSheetSaver.picker_never_opened(1, 2, false, false),
+		"the wait it was started for is over; this one is somebody else's")
+	assert_true(CodeSheetSaver.picker_never_opened(2, 2, false, false),
+		"its own wait, unsettled, and the app never left: nothing came up")
+	assert_false(CodeSheetSaver.picker_never_opened(2, 2, true, false),
+		"already answered")
+	assert_false(CodeSheetSaver.picker_never_opened(2, 2, false, true),
+		"the app lost focus, which is what a picker opening looks like")
+
+
+func test_each_wait_is_a_generation_of_its_own() -> void:
+	# The counter is what the watchdog checks against, so a second wait has to move
+	# it. Both waits are answered, so neither is left hanging.
+	var before: int = saver._wait_generation
+	await _place_and_cancel()
+	var after_one: int = saver._wait_generation
+	await _place_and_cancel()
+
+	assert_eq(after_one, before + 1, "the first wait counted up")
+	assert_eq(saver._wait_generation, before + 2, "and so did the second")
 
 
 func test_a_device_that_refuses_everything_still_keeps_the_sheet() -> void:
@@ -251,8 +310,9 @@ func test_every_wording_the_report_uses_is_translated() -> void:
 	# A missing row shows the teacher the key instead of the sentence, in a dialog
 	# that only appears on the devices this whole change is for.
 	for key: String in ["CODE_SHEET_FAILED", "CODE_SHEET_SAVED", "CODE_SHEET_SAVED_AT",
-			"CODE_SHEET_KEPT_IN_APP", "CODE_SHEET_KEPT_IN_APP_ONLY",
-			"CODE_SHEET_IN_THE_FILES_APP", "PREPARING_CODE_SHEET"]:
+			"CODE_SHEET_SAVED_IN_DOCUMENTS", "CODE_SHEET_KEPT_IN_APP",
+			"CODE_SHEET_KEPT_IN_APP_ONLY", "CODE_SHEET_IN_THE_FILES_APP",
+			"PREPARING_CODE_SHEET"]:
 		for language: String in TranslationServer.get_loaded_locales():
 			var translation: Translation = TranslationServer.get_translation_object(language)
 			if not translation:
