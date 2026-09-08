@@ -11,7 +11,6 @@ extends GutTest
 # dropped every accented word from the stimuli pool off macOS.
 
 const TEST_DIR: String = "user://test_external_file_resolution"
-
 # These two differ only in normalization form, which no editor shows you and
 # which a well-meaning tool can silently collapse. If they ever come out equal
 # every assertion below would still pass while testing nothing, so before_each

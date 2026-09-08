@@ -224,7 +224,6 @@ func test_the_domains_are_never_split_across_lines() -> void:
 
 
 # --- Handing the failure on ---------------------------------------------------
-
 func test_only_the_failures_somebody_else_can_fix_are_worth_copying() -> void:
 	# A wrong password is the reader's own to fix; mailing it to a technician would
 	# send them down a corridor for nothing. The three below are the network's and

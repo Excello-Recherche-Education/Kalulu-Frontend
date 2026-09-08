@@ -19,35 +19,6 @@ const SIGN_UP_TAB: int = 1
 ## reach into: at the sizes the fields are drawn at now, the password field is
 ## as wide as the button is far from the middle, and the two would overlap.
 const FOOTER_ROOM: int = Design.PAGE_MARGIN_BOTTOM + Design.BUTTON_SIZE.y
-
-var adult_challenge: AdultChallenge = AdultChallenge.new()
-## True while a request to the server is outstanding.
-##
-## ServerManager owns one HTTPRequest and one set of result fields, and every
-## caller awaits the same request_completed signal. A second request started
-## before the first answers is refused as busy, resets the result the first one is
-## waiting on, and leaves both reading whichever reply arrives -- so a perfectly
-## good login can come back as a server error. Disabling the button was not
-## enough: the password field still submits on Enter.
-##
-## It also locks the switch, for the reason in _set_request_in_flight.
-var request_in_flight: bool = false
-
-@onready var footer_room: MarginContainer = %FooterRoom
-@onready var scroll: ScrollContainer = %Scroll
-@onready var toggle: SegmentedToggle = %Toggle
-@onready var login_panel: FormValidator = %LoginPanel
-@onready var sign_up_panel: Control = %SignUpPanel
-@onready var email_field: MenuTextField = %EmailField
-@onready var password_field: MenuTextField = %PasswordField
-@onready var login_error: Label = %LoginError
-@onready var reset_password_button: Button = %ResetPasswordButton
-@onready var copy_error_button: Button = %CopyErrorButton
-@onready var next_button: Button = %NextButton
-@onready var adult_prompt: Label = %AdultPrompt
-@onready var keypad: CodeKeypad = %Keypad
-
-
 ## The failures somebody else has to act on, and which are therefore worth copying.
 ##
 ## A wrong password or an unknown account are the reader's own to fix, and offering to
@@ -69,9 +40,35 @@ const COPIED_FEEDBACK_SECONDS: float = 2.5
 ## that long, which is precisely the complaint the diagnosis exists to end.
 const DIAGNOSING_ERROR: String = "LOGIN_DIAGNOSING"
 
+var adult_challenge: AdultChallenge = AdultChallenge.new()
+## True while a request to the server is outstanding.
+##
+## ServerManager owns one HTTPRequest and one set of result fields, and every
+## caller awaits the same request_completed signal. A second request started
+## before the first answers is refused as busy, resets the result the first one is
+## waiting on, and leaves both reading whichever reply arrives -- so a perfectly
+## good login can come back as a server error. Disabling the button was not
+## enough: the password field still submits on Enter.
+##
+## It also locks the switch, for the reason in _set_request_in_flight.
+var request_in_flight: bool = false
 ## The message currently on display, so the copy sends what was read rather than
 ## whatever the screen has moved on to.
 var displayed_error_key: String = ""
+
+@onready var footer_room: MarginContainer = %FooterRoom
+@onready var scroll: ScrollContainer = %Scroll
+@onready var toggle: SegmentedToggle = %Toggle
+@onready var login_panel: FormValidator = %LoginPanel
+@onready var sign_up_panel: Control = %SignUpPanel
+@onready var email_field: MenuTextField = %EmailField
+@onready var password_field: MenuTextField = %PasswordField
+@onready var login_error: Label = %LoginError
+@onready var reset_password_button: Button = %ResetPasswordButton
+@onready var copy_error_button: Button = %CopyErrorButton
+@onready var next_button: Button = %NextButton
+@onready var adult_prompt: Label = %AdultPrompt
+@onready var keypad: CodeKeypad = %Keypad
 
 
 func _ready() -> void:

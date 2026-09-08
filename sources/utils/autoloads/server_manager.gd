@@ -6,9 +6,12 @@ signal internet_check_completed(has_access: bool)
 
 ## What stopped a request that never reached the server.
 enum ConnectionFailure {
-	NONE,           ## The request did get an HTTP response.
-	NO_NETWORK,     ## The device has no route to the internet at all.
-	KALULU_BLOCKED, ## The internet is reachable, but something stops this app.
+	## The request did get an HTTP response.
+	NONE,
+	## The device has no route to the internet at all.
+	NO_NETWORK,
+	## The internet is reachable, but something stops this app.
+	KALULU_BLOCKED,
 }
 
 const CONFIG_PATH: String = "user://environment.cfg"
@@ -18,7 +21,6 @@ const SUBDOMAIN_DEV: String = "dev."
 const PROTOCOL: String = "https://"
 const STAGE_DEV: String = "dev/"
 const STAGE_PROD: String = "prod/"
-
 ## Names for the codes HTTPRequest reports in its request_completed signal.
 ##
 ## error_string() cannot be used on them: it translates the global Error enum, where the

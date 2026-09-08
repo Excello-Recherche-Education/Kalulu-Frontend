@@ -11,6 +11,26 @@ enum DownloadError {
 	REPLACE_FAILED,
 	KALULU_BLOCKED,
 }
+## What to do about the pack download itself.
+enum DownloadOutcome {
+	## The archive arrived whole.
+	EXTRACT,
+	## Nothing came back, or not all of it.
+	NO_RESPONSE,
+	## S3 answered, and not with the file.
+	REFUSED,
+}
+## What to do about the server's answer for the language pack URL.
+enum PackUrlOutcome {
+	## The answer carries a URL to download from.
+	USE,
+	## The server rejected the token.
+	SIGN_OUT,
+	## Nothing answered, so carry on with what is on disk.
+	OFFLINE,
+	## The server answered something unusable.
+	FAILED,
+}
 
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
 ## The failures somebody else has to act on, and which are therefore worth copying.
@@ -35,21 +55,6 @@ const ERROR_MESSAGES: Array[String] = [
 	"ERROR_REPLACING_PACKAGE",
 	"DOWNLOAD_KALULU_BLOCKED",
 ]
-
-## What to do about the pack download itself.
-enum DownloadOutcome {
-	EXTRACT,      ## The archive arrived whole.
-	NO_RESPONSE,  ## Nothing came back, or not all of it.
-	REFUSED,      ## S3 answered, and not with the file.
-}
-
-## What to do about the server's answer for the language pack URL.
-enum PackUrlOutcome {
-	USE,       ## The answer carries a URL to download from.
-	SIGN_OUT,  ## The server rejected the token.
-	OFFLINE,   ## Nothing answered, so carry on with what is on disk.
-	FAILED,    ## The server answered something unusable.
-}
 
 var language: String
 var current_language_path: String

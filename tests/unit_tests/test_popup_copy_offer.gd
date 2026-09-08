@@ -17,7 +17,6 @@ func before_each() -> void:
 
 
 # --- The offer ----------------------------------------------------------------
-
 func test_a_dialog_offers_nothing_by_default() -> void:
 	# Every other dialog in the app has to look exactly as it did.
 	assert_eq(popup.copy_text, "", "no text to copy unless a screen sets one")
@@ -42,7 +41,6 @@ func test_clearing_it_takes_the_offer_back() -> void:
 
 
 # --- The room the hostnames need ----------------------------------------------
-
 func test_the_message_keeps_the_width_the_scene_gave_it() -> void:
 	var from_the_scene: float = popup.default_content_min_width
 	assert_gt(from_the_scene, 0.0, "the card sizes its message")
@@ -79,7 +77,6 @@ func test_the_domains_are_never_split_in_the_notice() -> void:
 
 
 # --- What the downloader hands it ---------------------------------------------
-
 func test_only_the_failures_somebody_else_can_fix_are_worth_copying() -> void:
 	# A pack that will not extract is this device's own problem; mailing it to a
 	# network administrator sends the reader down a corridor for nothing.

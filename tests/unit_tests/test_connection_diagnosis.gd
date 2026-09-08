@@ -55,7 +55,6 @@ func test_the_two_answers_are_the_ones_the_login_screen_maps() -> void:
 
 
 # --- One probe, several callers -----------------------------------------------
-
 func test_a_second_caller_waits_instead_of_being_told_it_is_offline() -> void:
 	# There is one HTTPRequest for the probe, shared by every caller, and it answers
 	# ERR_BUSY while it is working. That used to be returned as a verdict, so a

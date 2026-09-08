@@ -22,7 +22,6 @@ func after_each() -> void:
 
 
 # --- The answer for the language pack URL -------------------------------------
-
 func test_a_usable_answer_is_used() -> void:
 	assert_eq(PackageDownloader.outcome_for_pack_url(200), PackageDownloader.PackUrlOutcome.USE)
 
@@ -70,7 +69,6 @@ func test_only_a_rejected_token_signs_the_device_out() -> void:
 
 
 # --- How the pack download ended ----------------------------------------------
-
 func test_a_whole_archive_goes_to_the_extraction_thread() -> void:
 	assert_eq(PackageDownloader.outcome_for_pack_download(HTTPRequest.RESULT_SUCCESS, 200),
 		PackageDownloader.DownloadOutcome.EXTRACT)
@@ -107,7 +105,6 @@ func test_an_answer_that_is_not_the_file_is_a_refusal() -> void:
 
 
 # --- Which no-server error to report ------------------------------------------
-
 func test_a_reachable_internet_means_kalulu_is_blocked() -> void:
 	# The probe got through and the API did not, so the network is filtering this app.
 	downloader.internet_reachable = true
@@ -129,7 +126,6 @@ func test_a_probe_refused_at_the_tls_handshake_still_means_blocked() -> void:
 
 
 # --- The messages -------------------------------------------------------------
-
 func test_every_error_has_a_message() -> void:
 	# The enum indexes into ERROR_MESSAGES, so a value added to one and not the other
 	# reads past the end of the array.
