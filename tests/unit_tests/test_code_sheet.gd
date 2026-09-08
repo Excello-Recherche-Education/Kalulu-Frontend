@@ -73,7 +73,7 @@ func test_writing_with_no_pages_fails_rather_than_leaving_an_empty_file() -> voi
 	var path: String = "user://code_sheet_test_should_not_exist.pdf"
 	var empty: Array[Image] = []
 
-	assert_ne(CodeSheet.save_pdf(path, empty), OK)
+	assert_true(CodeSheet.build_pdf(empty).is_empty())
 	# It says so in the log as well, which is the point. Acknowledge that so GUT
 	# does not report it as an unexpected error; must run inside the test, since
 	# GUT checks for unhandled errors before after_each().
@@ -87,7 +87,7 @@ func test_it_writes_a_pdf_that_starts_like_one() -> void:
 	var page: Image = Image.create(64, 64, false, Image.FORMAT_RGB8)
 	page.fill(Color.WHITE)
 
-	assert_eq(CodeSheet.save_pdf(path, [page] as Array[Image]), OK)
+	assert_eq(CodeSheet.write_pdf(path, CodeSheet.build_pdf([page] as Array[Image])), OK)
 
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	assert_not_null(file, "the file should be there")
