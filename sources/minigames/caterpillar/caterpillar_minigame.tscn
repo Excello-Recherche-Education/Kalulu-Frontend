@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://cnegbjo0qx68k" path="res://sources/minigames/caterpillar/caterpillar_minigame.gd" id="2_ycf8p"]
 [ext_resource type="Texture2D" uid="uid://bqurji8fhnr48" path="res://assets/minigames/caterpillar/graphics/gauge_icon_caterpillar_empty.png" id="6_xkfwj"]
 [ext_resource type="Texture2D" uid="uid://bmdhpgxmur1vo" path="res://assets/minigames/caterpillar/graphics/gauge_icon_caterpillar_full.png" id="7_u5jxc"]
-[ext_resource type="Texture2D" uid="uid://cdc5fnfdssjnt" path="res://assets/minigames/caterpillar/graphics/background.png" id="8_q64mq"]
 [ext_resource type="PackedScene" uid="uid://cqx0qux4msnm7" path="res://sources/minigames/caterpillar/caterpillar.tscn" id="9_m0xwi"]
+[ext_resource type="Script" uid="uid://bkg6f4bwm0qdx" path="res://sources/utils/lazy_texture_rect.gd" id="lazy_1"]
 
 [node name="CaterpillarMinigame" unique_id=663837896 instance=ExtResource("1_ntn14")]
 script = ExtResource("2_ycf8p")
@@ -31,7 +31,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
-texture = ExtResource("8_q64mq")
+script = ExtResource("lazy_1")
+texture_path = "res://assets/minigames/caterpillar/graphics/background.png"
 
 [node name="BranchesZone" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1204536120]
 layout_mode = 1

@@ -44,6 +44,22 @@ func _process(delta: float) -> void:
 	_process_back_button_hold(delta)
 
 
+## Gives the tree back before this screen disappears.
+##
+## Two things here pause the whole tree: the pause menu, and Kalulu talking. Both
+## belong to this screen, and both can be walked out of -- the back and restart
+## buttons sit under this CanvasLayer, whose process_mode is ALWAYS, so they keep
+## working while everything else is frozen. get_tree().paused is global and
+## survives a scene change, so a pause left behind follows the player into the
+## gardens, where _ready() raises its lock and then waits on timers and tweens that
+## are themselves paused: the lock is never lifted, and the whole screen stops
+## responding to clicks while looking perfectly normal.
+func _exit_tree() -> void:
+	if get_tree() and get_tree().paused:
+		Log.trace("MinigameUI: Releasing the tree on the way out")
+		get_tree().paused = false
+
+
 func _process_back_button_hold(delta: float) -> void:
 	if not is_back_button_hold_active:
 		return

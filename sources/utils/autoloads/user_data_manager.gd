@@ -483,6 +483,25 @@ func get_effects_volume() -> float:
 	return _get_volume(EFFECTS_VOLUME_PROPERTY_NAME)
 
 
+func set_light_graphics(value: bool) -> void:
+	if not _device_settings:
+		Log.warn("UserDataManager: Cannot set light graphics because device settings not found")
+		return
+	if _device_settings.light_graphics == value:
+		return
+	_device_settings.light_graphics = value
+	_save_device_settings()
+	Log.info("UserDataManager: Light graphics %s" % ("enabled" if value else "disabled"))
+
+
+func get_light_graphics() -> bool:
+	if not _device_settings:
+		# Before the device settings are read -- the splash screen, mainly -- the
+		# safe answer is the full artwork, which is what every screen expects.
+		return false
+	return _device_settings.light_graphics
+
+
 # Convert the volume from [-80, 6]db to [0, 100] and back
 func normalize_slider(volume: float) -> float:
 	var value: float = pow((volume + 80.0) / 86, 5.0) * 100.0

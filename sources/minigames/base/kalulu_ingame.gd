@@ -1,20 +1,66 @@
 extends Control
+## Kalulu coming over to explain something, in a minigame, a garden or a menu.
+##
+## His spritesheet is 3600x4801 -- about 69 MB of texture -- and this scene sits in
+## every screen that can call him: all eleven minigames through minigame_ui, plus
+## the gardens, the brain and the sign-in screen. On a device running light graphics
+## that is far too much to hold for a character most children never tap, so there he
+## is fetched on the first speech instead and kept from then on. A device drawing the
+## full artwork still gets him at load, as before, so nothing pauses mid-game.
+##
+## Either way the scene does not name him -- see HeavyGraphics for why that is the
+## part that matters.
 
 signal speech_ended()
 
 const SHOW_SOUND: AudioStreamMP3 = preload("res://assets/kalulu/audio/ui_button_on.mp3")
 const HIDE_SOUND: AudioStreamMP3 = preload("res://assets/kalulu/audio/ui_button_off.mp3")
+const KALULU_ANIMATOR_SCENE_PATH: String = "res://sources/kalulu_animator.tscn"
 
+## Kalulu himself, once he has been fetched.
+var kalulu_sprite: AnimatedSprite2D = null
+## True only while the speech audio is the thing being waited on, which is the only
+## moment the skip button may forge its end. See _on_pass_button_pressed.
+var _awaiting_speech: bool = false
 
-@onready var kalulu_sprite: AnimatedSprite2D = $KaluluSprite
+@onready var kalulu_sprite_slot: Node2D = $KaluluSprite
+@onready var pass_button: Button = $KaluluSprite/PassButton
 @onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
 
 
 func _ready() -> void:
 	hide()
+	if HeavyGraphics.enabled():
+		_fetch_kalulu()
+
+
+## Brings Kalulu in, once. Cheap to call again.
+func _fetch_kalulu() -> void:
+	if kalulu_sprite:
+		return
+	var scene: PackedScene = load(KALULU_ANIMATOR_SCENE_PATH) as PackedScene
+	if not scene:
+		Log.error("Kalulu: Cannot load %s" % KALULU_ANIMATOR_SCENE_PATH)
+		return
+	kalulu_sprite = scene.instantiate()
+	kalulu_sprite_slot.add_child(kalulu_sprite)
+	# The button that skips the speech goes under Kalulu himself, and it has to:
+	# a Control resolves its anchors against its parent's *anchorable rect*, and a
+	# sprite reports the rect of the frame it is drawing while a plain node reports
+	# nothing at all. Left under the slot, this button's 540x730 tap area collapses
+	# to a 28-pixel stub -- and since minigame_ui pauses the whole tree while Kalulu
+	# talks, a skip button that cannot be hit freezes the game until he is finished.
+	kalulu_sprite_slot.remove_child(pass_button)
+	kalulu_sprite.add_child(pass_button)
 
 
 func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_animation: bool = true) -> void:
+	# The first tap on a light device is where Kalulu is actually paid for.
+	_fetch_kalulu()
+	if not kalulu_sprite:
+		Log.error("Kalulu: Cannot speak without a sprite")
+		speech_ended.emit()
+		return
 	var ind: int = AudioServer.get_bus_index("Music")
 	var music_volume: float = AudioServer.get_bus_volume_db(ind)
 	AudioServer.set_bus_volume_db(ind, -80.0)
@@ -31,7 +77,9 @@ func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_a
 		kalulu_sprite.play("Talk")
 		audio_player.stream = speech
 		audio_player.play()
+		_awaiting_speech = true
 		await audio_player.finished
+		_awaiting_speech = false
 	else:
 		Log.warn("Kalulu: Speech not found")
 	
@@ -47,7 +95,19 @@ func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_a
 	speech_ended.emit()
 
 
+## Skips the speech Kalulu is in the middle of.
+##
+## Only while the speech is what is being waited on. The button works by forging
+## audio_player.finished, and forging it at any other moment -- during the show
+## animation, where the sound playing is the whoosh rather than the speech -- emits
+## into nothing: the await that comes afterwards then waits on a sound that has
+## already stopped. Kalulu never finishes, speech_ended never fires, and the pause
+## minigame_ui put on the tree is never lifted.
 func _on_pass_button_pressed() -> void:
+	if not _awaiting_speech:
+		return
 	if audio_player.playing:
 		audio_player.stop()
-		audio_player.finished.emit()
+	# Emitted even when the sound has already stopped, so a lost `finished` cannot
+	# leave the speech hanging either.
+	audio_player.finished.emit()

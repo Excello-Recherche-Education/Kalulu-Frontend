@@ -283,6 +283,29 @@ theme_override_constants/h_separation = 58
 theme_override_constants/v_separation = 58
 columns = 3
 
+[node name="FooterRow" type="HBoxContainer" parent="Page"]
+layout_mode = 2
+theme_override_constants/separation = 38
+
+[node name="LightGraphicsCheck" type="Button" parent="Page/FooterRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"CheckBoxSquare"
+toggle_mode = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+
+[node name="LightGraphicsLabel" type="Label" parent="Page/FooterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FieldLabel"
+text = "LIGHT_GRAPHICS"
+
 [node name="LessonUnlocks" parent="." unique_id=1063204137 instance=ExtResource("9_mljfd")]
 visible = false
 layout_mode = 1
@@ -344,6 +367,7 @@ filters = PackedStringArray("*.pdf")
 [connection signal="pressed" from="Page/ControlsRow/Actions/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]
 [connection signal="pressed" from="Page/ControlsRow/Actions/Dashboard" to="." method="_on_dashboard_button_pressed"]
 [connection signal="pressed" from="Page/ControlsRow/Actions/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="pressed" from="Page/FooterRow/LightGraphicsCheck" to="." method="_on_light_graphics_check_pressed"]
 [connection signal="id_pressed" from="Page/ControlsRow/Actions/MenuButton/OverflowMenu" to="." method="_on_overflow_menu_id_pressed"]
 [connection signal="pressed" from="Page/Card/CardMargin/CardContent/CardActions/ExportCodesButton" to="." method="_on_export_codes_button_pressed"]
 [connection signal="pressed" from="Page/Card/CardMargin/CardContent/CardActions/AddStudentButton" to="." method="_on_add_student_button_pressed"]

@@ -36,10 +36,14 @@ func _instantiate_subscenes() -> void:
 	if not is_inside_tree():
 		return
 
-	river = (load(RIVER_SCENE_PATH) as PackedScene).instantiate()
-	river.name = "River"
-	background_node.add_child(river)
-	background_node.move_child(river, 0)
+	# The river is the same kind of decoration as the turtles' sea: a painted
+	# background under a drift shader, with rings on top. See HeavyGraphics.
+	var river_scene: PackedScene = HeavyGraphics.load_resource(RIVER_SCENE_PATH) as PackedScene
+	if river_scene:
+		river = river_scene.instantiate()
+		river.name = "River"
+		background_node.add_child(river)
+		background_node.move_child(river, 0)
 
 	await get_tree().process_frame
 	if not is_inside_tree():
@@ -152,7 +156,8 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 	track.stop()
 	frog.jump_to(lilypad.global_position)
 	await frog.jumped
-	river.spawn_water_ring(lilypad.global_position)
+	if river:
+		river.spawn_water_ring(lilypad.global_position)
 	if lilypad.is_distractor:
 		await lilypad.wrong()
 		await audio_player.play_gp(lilypad.stimulus)

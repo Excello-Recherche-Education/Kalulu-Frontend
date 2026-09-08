@@ -1,7 +1,12 @@
 extends SyllablesMinigame
 
 const HOLE_SCENE: PackedScene = preload("res://sources/minigames/crabs/hole/hole.tscn")
-const BACKGROUND_2: CompressedTexture2D = preload("res://assets/minigames/crabs/graphic/background_2.png")
+## The beach comes in two versions, one picked per game. Paths rather than preloads,
+## so a device running light graphics loads neither -- see HeavyGraphics.
+const BACKGROUND_PATHS: PackedStringArray = [
+	"res://assets/minigames/crabs/graphic/background.png",
+	"res://assets/minigames/crabs/graphic/background_2.png",
+]
 
 var difficulty_settings: Array[DifficultySettings] = [
 	DifficultySettings.new(0.75, [2, 1]),
@@ -14,15 +19,14 @@ var holes: Array[Hole] = []
 var stimulus_spawned: bool = false
 
 @onready var crab_zone: Control = $GameRoot/CrabZone
-@onready var background: TextureRect = %Background
+@onready var background: LazyTextureRect = %Background
 
 
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
 	super._setup_minigame()
 	
-	if randf() < 0.5:
-		background.texture = BACKGROUND_2
+	background.load_from(BACKGROUND_PATHS[randi() % BACKGROUND_PATHS.size()])
 
 	var current_difficulty_settings: DifficultySettings = _get_difficulty_settings()
 

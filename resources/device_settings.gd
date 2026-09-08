@@ -40,6 +40,10 @@ extends Resource
 		var ind: int = AudioServer.get_bus_index("Effects")
 		AudioServer.set_bus_volume_db(ind, volume)
 @export var log_level: Log.LogLevel = Log.LogLevel.INFO
+# True on a device that cannot afford the decorative artwork -- see HeavyGraphics.
+# A device setting rather than a student one: it describes the hardware, so it holds
+# for whoever picks up this tablet, and it must be readable before anyone signs in.
+@export var light_graphics: bool = false
 
 
 func _init() -> void:

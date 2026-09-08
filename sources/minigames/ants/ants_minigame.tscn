@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bfeos6fwrmrhc" path="res://assets/minigames/ants/graphics/gauge_icon_ant_empty.png" id="5_jm3ut"]
 [ext_resource type="Texture2D" uid="uid://b2bcmo1keh217" path="res://assets/minigames/ants/graphics/sentence_text_box.png" id="6_8t8tw"]
 [ext_resource type="Texture2D" uid="uid://nwbekpbuu472" path="res://assets/minigames/ants/graphics/gauge_icon_ant_full.png" id="6_qfybu"]
-[ext_resource type="Texture2D" uid="uid://b2mj2s3o22i8p" path="res://assets/minigames/ants/graphics/background.png" id="7_ihrng"]
+[ext_resource type="Script" uid="uid://bkg6f4bwm0qdx" path="res://sources/utils/lazy_texture_rect.gd" id="lazy_1"]
 
 [node name="AntsMinigame" unique_id=1394755272 instance=ExtResource("1_jqkff")]
 script = ExtResource("2_05d1y")
@@ -37,7 +37,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("7_ihrng")
+script = ExtResource("lazy_1")
+texture_path = "res://assets/minigames/ants/graphics/background.png"
 
 [node name="MarginContainer" type="MarginContainer" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1085551937]
 layout_mode = 1

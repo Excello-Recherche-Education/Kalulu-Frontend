@@ -17,7 +17,6 @@
 [ext_resource type="Texture2D" uid="uid://dk4trllc2fsg6" path="res://assets/brain/name_board.png" id="14_34nxc"]
 [ext_resource type="Texture2D" uid="uid://b35ivjsldbu33" path="res://assets/brain/treasure_closed.png" id="18_fyww8"]
 [ext_resource type="LabelSettings" uid="uid://bfiaceq2nlsqg" path="res://resources/themes/brain_label_settings.tres" id="18_jw71m"]
-[ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="19_i5ves"]
 [ext_resource type="Texture2D" uid="uid://c34sgkbvr3h8q" path="res://assets/minigames/minigame_ui/graphic/primary_text_box.png" id="19_igoht"]
 [ext_resource type="Texture2D" uid="uid://jlwblk7lj7vi" path="res://assets/vfx/fx_10.png" id="21_3u1q0"]
 [ext_resource type="PackedScene" uid="uid://cyoioissvrkj8" path="res://sources/ui/back_button.tscn" id="21_cl7b1"]
@@ -32,6 +31,7 @@
 [ext_resource type="Script" uid="uid://dlqk68nkcreb0" path="res://sources/brain/treasure_chest.gd" id="35_chest"]
 [ext_resource type="Texture2D" uid="uid://cyx6rau3sgwed" path="res://assets/look_and_learn/fx_03.png" id="36_sparkle"]
 [ext_resource type="Texture2D" uid="uid://gbygdv35ltjx" path="res://assets/look_and_learn/student_hand.png" id="37_hand"]
+[ext_resource type="Script" uid="uid://c7cop4he3ynix" path="res://sources/utils/decorative_particles.gd" id="particles_1"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_77her"]
 blend_mode = 1
@@ -140,6 +140,7 @@ preprocess = 5.0
 randomness = 0.5
 visibility_rect = Rect2(-1300, -900, 2600, 1800)
 local_coords = true
+script = ExtResource("particles_1")
 process_material = SubResource("ParticleProcessMaterial_2c5sd")
 
 [node name="Brain" type="TextureRect" parent="." unique_id=2076370991]
@@ -502,7 +503,7 @@ offset_top = 1310.0001
 offset_right = 1464.9991
 offset_bottom = 1550.0001
 
-[node name="Kalulu" parent="Brain" unique_id=1277205438 instance=ExtResource("19_i5ves")]
+[node name="Kalulu" type="Node2D" parent="Brain" unique_id=1277205438]
 position = Vector2(1586, 1348)
 scale = Vector2(0.5, 0.5)
 

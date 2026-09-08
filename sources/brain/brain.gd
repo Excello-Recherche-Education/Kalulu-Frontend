@@ -8,8 +8,13 @@ const BOSS_BUTTON_SCENE: PackedScene = preload("res://sources/gardens/boss_butto
 # brain shows them 20% smaller again so they sit better between the small gardens.
 const BOSS_BUTTON_BASE_SIZE: float = 512.0
 const BOSS_BUTTON_SCALE: float = 0.16
+const KALULU_ANIMATOR_SCENE_PATH: String = "res://sources/kalulu_animator.tscn"
 
 var _is_kalulu_help_playing: bool = false
+# The Kalulu sitting on the map, or null on a device running light graphics -- he
+# shares the 3600x4801 sheet with the one who comes over to talk, and this one is
+# only there to be looked at. His help button still works without him.
+var brain_kalulu: AnimatedSprite2D = null
 # Lesson grapheme data keyed by lesson number (1-based), same shape as Gardens.lessons.
 var lessons: Dictionary = {}
 # How many lessons each garden hosts, from Gardens.compute_lessons_distribution().
@@ -25,7 +30,7 @@ var boss_buttons_container: Control
 @onready var progress_label: Label = %ProgressLabel
 @onready var brain_map: TextureRect = $Brain
 @onready var treasure: TreasureChest = $Brain/Treasure
-@onready var brain_kalulu: AnimatedSprite2D = $Brain/Kalulu
+@onready var brain_kalulu_slot: Node2D = $Brain/Kalulu
 @onready var brain_kalulu_button: Button = $Brain/KaluluHelpButton
 @onready var reward: BrainReward = $Reward
 @onready var ui_layer: CanvasLayer = $CanvasLayer
@@ -34,6 +39,7 @@ var boss_buttons_container: Control
 
 
 func _ready() -> void:
+	_seat_kalulu_on_the_map()
 	_update_progress_label()
 	_collect_gardens()
 	_load_lessons_from_database()
@@ -55,6 +61,15 @@ func _ready() -> void:
 	# to load.
 	if _treasure_awaits_first_opening():
 		treasure.start_attract()
+
+
+## Puts Kalulu on the map, on a device that draws him.
+func _seat_kalulu_on_the_map() -> void:
+	var scene: PackedScene = HeavyGraphics.load_resource(KALULU_ANIMATOR_SCENE_PATH) as PackedScene
+	if not scene:
+		return
+	brain_kalulu = scene.instantiate()
+	brain_kalulu_slot.add_child(brain_kalulu)
 
 
 func _update_progress_label() -> void:
@@ -265,13 +280,17 @@ func _on_brain_kalulu_button_pressed() -> void:
 		return
 	_is_kalulu_help_playing = true
 	brain_kalulu_button.disabled = true
-	brain_kalulu.play(&"Hide")
-	await brain_kalulu.animation_finished
-	brain_kalulu.hide()
+	# Without a Kalulu on the map there is nothing to step aside: the one who comes
+	# over to talk is a separate node, and the help is the point of the button.
+	if brain_kalulu:
+		brain_kalulu.play(&"Hide")
+		await brain_kalulu.animation_finished
+		brain_kalulu.hide()
 	await kalulu.play_kalulu_speech(kalulu_help_speech)
-	brain_kalulu.show()
-	brain_kalulu.play(&"Show")
-	await brain_kalulu.animation_finished
-	brain_kalulu.play(&"Idle")
+	if brain_kalulu:
+		brain_kalulu.show()
+		brain_kalulu.play(&"Show")
+		await brain_kalulu.animation_finished
+		brain_kalulu.play(&"Idle")
 	brain_kalulu_button.disabled = false
 	_is_kalulu_help_playing = false

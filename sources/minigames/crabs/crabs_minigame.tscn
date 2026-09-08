@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dg4o0yh1fn33t" path="res://sources/minigames/crabs/crabs_minigame.gd" id="2_gierf"]
 [ext_resource type="Texture2D" uid="uid://bt7u67errbjls" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_empty.png" id="5_7vlrm"]
 [ext_resource type="Texture2D" uid="uid://cq5wwf7y1msh7" path="res://assets/minigames/crabs/graphic/gauge_icon_crab_full.png" id="6_1r44u"]
-[ext_resource type="Texture2D" uid="uid://5bx8ugh178j1" path="res://assets/minigames/crabs/graphic/background.png" id="7_s0cgt"]
+[ext_resource type="Script" uid="uid://bkg6f4bwm0qdx" path="res://sources/utils/lazy_texture_rect.gd" id="lazy_1"]
 
 [node name="CrabsMinigame" unique_id=1363248968 instance=ExtResource("1_lbq56")]
 script = ExtResource("2_gierf")
@@ -24,7 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("7_s0cgt")
+script = ExtResource("lazy_1")
 
 [node name="CrabZone" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=1508276448]
 layout_mode = 1

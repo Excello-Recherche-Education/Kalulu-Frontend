@@ -15,6 +15,10 @@ const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
 const SPLASH_SCREEN_PATH: String = "res://sources/menus/splash_screen/splash_screen.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
 const STUDENT_PANEL_SCENE: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
+## The tick that fills the light-graphics box in. A path rather than a preload, for
+## the same reason the box itself exists: nothing on this screen should carry
+## artwork it might not draw.
+const TICK_ICON_PATH: String = "res://assets/menus/icons/done.svg"
 ## What the server answers with when the account has used up every student code.
 ##
 ## Matched on the message because that is all the server sends: the status is a
@@ -46,10 +50,14 @@ var selected_device: int = -1
 @onready var export_codes_file_dialog: FileDialog = %ExportCodesFileDialog
 @onready var menu_button: Button = %MenuButton
 @onready var overflow_menu: PopupMenu = %OverflowMenu
+@onready var light_graphics_check: Button = %LightGraphicsCheck
+@onready var light_graphics_label: Label = %LightGraphicsLabel
 
 
 func _ready() -> void:
 	refresh_devices()
+	light_graphics_label.gui_input.connect(_on_light_graphics_label_gui_input)
+	_read_light_graphics()
 	
 	# Internet mandatory to add student because only the server can ensure the student code is not a duplicate
 	if await ServerManager.check_internet_access():
@@ -220,6 +228,60 @@ func _on_menu_button_pressed() -> void:
 	overflow_menu.reset_size()
 	overflow_menu.popup()
 
+
+#region Light graphics
+
+## Puts the light-graphics box in the position the device is actually in.
+##
+## Read here rather than authored in the scene: it is a device setting, so the same
+## build opens with the box ticked or empty depending on the tablet.
+func _read_light_graphics() -> void:
+	light_graphics_check.button_pressed = UserDataManager.get_light_graphics()
+	_refresh_light_graphics()
+
+
+## Draws the box as ticked or empty.
+##
+## A toggling Button rather than a CheckBox, which is what the one other checkbox in
+## the app does: a CheckBox draws its state as a themed icon beside its own text,
+## and the design calls for a filled square with the wording separate. And the
+## square is outlined pale here because this one sits on the navy page rather than
+## on a white card, which is what the theme variation is drawn for.
+func _refresh_light_graphics() -> void:
+	var light: bool = light_graphics_check.button_pressed
+	light_graphics_check.icon = load(TICK_ICON_PATH) as Texture2D if light else null
+	var outline: StyleBoxFlat = MenuTheme.outline_stylebox(Color.WHITE, Design.BUTTON_RADIUS,
+		Design.CHECKBOX_BORDER)
+	for state: String in ["normal", "pressed", "focus"]:
+		light_graphics_check.add_theme_stylebox_override(state, outline)
+	var hovered: StyleBoxFlat = MenuTheme.outline_stylebox(Color.WHITE, Design.BUTTON_RADIUS,
+		Design.CHECKBOX_BORDER)
+	hovered.bg_color = Color(1.0, 1.0, 1.0, 0.15)
+	for state: String in ["hover", "hover_pressed"]:
+		light_graphics_check.add_theme_stylebox_override(state, hovered)
+
+
+## Turns the decorative artwork off, or back on.
+##
+## Takes effect the next time a screen is built, which for a teacher leaving these
+## settings means the very next one: the gardens and the minigames read the setting
+## as they load. Nothing already on screen changes, and nothing needs restarting.
+func _on_light_graphics_check_pressed() -> void:
+	UserDataManager.set_light_graphics(light_graphics_check.button_pressed)
+	_refresh_light_graphics()
+
+
+## The wording toggles the box too, so the whole row is the target rather than a
+## 120-pixel square next to it.
+func _on_light_graphics_label_gui_input(event: InputEvent) -> void:
+	if not (event is InputEventMouseButton and event.pressed
+			and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT):
+		return
+	light_graphics_label.accept_event()
+	light_graphics_check.button_pressed = not light_graphics_check.button_pressed
+	_on_light_graphics_check_pressed()
+
+#endregion
 
 func _on_overflow_menu_id_pressed(id: int) -> void:
 	match id:

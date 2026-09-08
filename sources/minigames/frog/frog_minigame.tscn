@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b7q0v031ffg1v" path="res://sources/minigames/frog/frog_minigame.gd" id="2_0xg3r"]
 [ext_resource type="Texture2D" uid="uid://jvpu77isfi5b" path="res://assets/minigames/frog/graphics/gauge_icon_frog_empty.png" id="2_e38i1"]
 [ext_resource type="Texture2D" uid="uid://re7qgivb3n5w" path="res://assets/minigames/frog/graphics/gauge_icon_frog_full.png" id="3_vjlmb"]
-[ext_resource type="Texture2D" uid="uid://bgi4vveige3qv" path="res://assets/minigames/frog/graphics/background.png" id="6_t6p6q"]
+[ext_resource type="Script" uid="uid://bkg6f4bwm0qdx" path="res://sources/utils/lazy_texture_rect.gd" id="lazy_1"]
 
 [node name="FrogMinigame" unique_id=37863016 instance=ExtResource("1_ng5er")]
 script = ExtResource("2_0xg3r")
@@ -40,7 +40,8 @@ offset_left = -365.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("6_t6p6q")
+script = ExtResource("lazy_1")
+texture_path = "res://assets/minigames/frog/graphics/background.png"
 
 [node name="GameElements" type="Control" parent="GameRoot" parent_id_path=PackedInt32Array(1053321881) index="1" unique_id=662540418]
 anchors_preset = 0

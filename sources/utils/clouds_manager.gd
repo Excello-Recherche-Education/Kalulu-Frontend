@@ -1,5 +1,19 @@
 class_name CloudManager
 extends Node2D
+## The clouds drifting over a garden or a minigame.
+##
+## The sprites are made here rather than authored in the scenes that use them, so a
+## device running light graphics never loads the pictures at all -- a cloud named by
+## a scene is loaded with that scene, and hiding it afterwards saves nothing. See
+## HeavyGraphics.
+
+## The three clouds, shared by every screen that has any: the parakeet minigame drew
+## them first and the rest have used the same three ever since.
+const CLOUD_TEXTURE_PATHS: PackedStringArray = [
+	"res://assets/minigames/parakeets/graphic/cloud_1.png",
+	"res://assets/minigames/parakeets/graphic/cloud_2.png",
+	"res://assets/minigames/parakeets/graphic/cloud_3.png",
+]
 
 @export var min_speed: float = 20.0
 @export var max_speed: float = 60.0
@@ -27,7 +41,27 @@ var screen_width: float = 0.0
 func _ready() -> void:
 	randomize()
 	screen_width = get_viewport_rect().size.x
+	if not _spawn_cloud_sprites():
+		# Nothing was drawn, so there is nothing to lay out or to move: every loop
+		# below walks the children, and there are none.
+		return
 	_initialize_clouds()
+
+
+## Makes one sprite per cloud picture, and reports whether the sky was drawn at all.
+func _spawn_cloud_sprites() -> bool:
+	if get_child_count() > 0:
+		# Already made, which happens when configure_world() runs after _ready().
+		return true
+	for path: String in CLOUD_TEXTURE_PATHS:
+		var texture: Texture2D = HeavyGraphics.load_texture(path)
+		if not texture:
+			# Light graphics: the first refusal is the answer for all of them.
+			return false
+		var cloud: Sprite2D = Sprite2D.new()
+		cloud.texture = texture
+		add_child(cloud)
+	return true
 
 
 func _process(delta: float) -> void:
@@ -62,6 +96,8 @@ func configure_world(world_width: float, p_max_scroll: float = -1.0, override_cl
 		clouds_per_screen = override_clouds_per_screen
 	set_world_bounds(world_width, p_max_scroll)
 	screen_width = get_viewport_rect().size.x
+	if not _spawn_cloud_sprites():
+		return
 	_initialize_clouds()
 
 
