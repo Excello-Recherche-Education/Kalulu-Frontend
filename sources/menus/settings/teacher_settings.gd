@@ -64,6 +64,14 @@ func _ready() -> void:
 	refresh_devices()
 	light_graphics_label.gui_input.connect(_on_light_graphics_label_gui_input)
 	_read_light_graphics()
+	# Read before the await below, not after: nothing here needs the network, and
+	# code that runs after an await runs at a moment nobody chose -- whenever the
+	# internet check answers, which may be long after the teacher has left.
+	# Guarded like refresh_devices, which already bails when the account is gone;
+	# it has logged the reason by the time we get here.
+	if UserDataManager.teacher_settings:
+		account_type_option_button.select(UserDataManager.teacher_settings.account_type)
+		education_method_option_button.select(UserDataManager.teacher_settings.education_method)
 	
 	# Internet mandatory to add student because only the server can ensure the student code is not a duplicate
 	if await ServerManager.check_internet_access():
@@ -81,9 +89,6 @@ func _ready() -> void:
 
 	OpeningCurtain.open()
 	lesson_unlocks.teacher_settings = self
-	
-	account_type_option_button.select(UserDataManager.teacher_settings.account_type)
-	education_method_option_button.select(UserDataManager.teacher_settings.education_method)
 	
 	UserDataManager.user_database_synchronizer.loading_popup = loading_popup
 
