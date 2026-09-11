@@ -43,8 +43,26 @@ var built_devices_count: int = NO_DEVICE_STEPS
 @onready var player_step: PackedScene = preload("res://sources/menus/register/steps/parent/player_step.tscn")
 @onready var register_data: TeacherSettings = TeacherSettings.new()
 @onready var steps: Control = %Steps
+## The heading and the message a failed request deserves, by translation key.
+##
+## An empty message means the server's own words are shown instead, which is all a 4xx
+## has to say. The three above it are ours: nothing came back at all, or nothing
+## usable, and the card is the only place in this wizard with room to explain it.
+const FAILURE_NOTICES: Dictionary[String, Dictionary] = {
+	"blocked": {"title": "KALULU_BLOCKED_TITLE", "message": "REGISTER_KALULU_BLOCKED"},
+	"offline": {"title": "NO_LANGUAGE_PACK_TITLE", "message": "LOGIN_NETWORK_ERROR"},
+	"server": {"title": "SERVER_UNAVAILABLE_TITLE", "message": "LOGIN_SERVER_ERROR"},
+	"other": {"title": "REGISTER_FAILED", "message": ""},
+}
+
+## What the offer to copy would put on the clipboard, for the mail to whoever runs the
+## network. Built when the notice is shown, so it is what was read.
+var popup_copy_text: String = ""
+
 @onready var popup: TextureRect = %Popup
 @onready var popup_info_label: Label = %PopupInfo
+@onready var popup_title_label: Label = %Title
+@onready var popup_copy_button: Button = %CopyButton
 @onready var code_limit_popup: ConfirmPopup = %CodeLimitPopup
 
 
@@ -64,6 +82,7 @@ func _go_to_step(step_index: int) -> void:
 		if step is Step:
 			(step as Step).back.disconnect(_on_step_back)
 			(step as Step).next.disconnect(_on_step_completed)
+			(step as Step).request_failed.disconnect(_on_step_request_failed)
 			steps.remove_child(step)
 
 	# Instantiate the step
@@ -75,6 +94,7 @@ func _go_to_step(step_index: int) -> void:
 	# Connect the step
 	next_step.back.connect(_on_step_back)
 	next_step.next.connect(_on_step_completed)
+	next_step.request_failed.connect(_on_step_request_failed)
 	next_step.on_enter()
 	Log.trace("Register: Entered step %s (%d/%d)" % [next_step.step_name, step_index + 1, current_steps.size()])
 
@@ -223,11 +243,10 @@ func _submit() -> void:
 	var res: Dictionary = await ServerManager.register(register_data.to_dict())
 	if res.code != 200:
 		Log.warn("Register: Registration failed with code %d" % res.code)
+		var from_the_server: String = ""
 		if res.has("body") and (res.body as Dictionary).has("message"):
-			popup_info_label.text = res.body.message
-		else:
-			popup_info_label.text = ''
-		popup.show()
+			from_the_server = str(res.body.message)
+		await _show_failure(res.code as int, from_the_server)
 		return
 
 	Log.info("Register: Registration request successful, saving data")
@@ -257,6 +276,60 @@ func _remove_future_steps() -> void:
 	# Resize the array to remove unwanted steps
 	current_steps.resize(current_step + 1)
 	built_devices_count = NO_DEVICE_STEPS
+
+
+## Which notice a failed request deserves, given its code and the diagnosis.
+##
+## Extracted so every answer can be checked without a server. The one that used to be
+## wrong is `blocked`: a network filtering Kalulu got "Une erreur est survenue" over an
+## empty card, after the whole wizard had been filled in.
+static func notice_for(code: int, blocked: bool) -> Dictionary:
+	if code == 0:
+		return FAILURE_NOTICES["blocked"] if blocked else FAILURE_NOTICES["offline"]
+	if code >= 500:
+		return FAILURE_NOTICES["server"]
+	return FAILURE_NOTICES["other"]
+
+
+## True when the failure is somebody else's to act on, and therefore worth forwarding.
+##
+## A 4xx is this registration's own -- an address already taken, a field the server
+## refused -- and mailing it to a technician sends the reader down a corridor for
+## nothing.
+static func is_reportable(code: int) -> bool:
+	return code == 0 or code >= 500
+
+
+## Puts a failed request in front of the teacher, with something true on the card.
+func _show_failure(code: int, from_the_server: String) -> void:
+	var blocked: bool = false
+	if code == 0:
+		blocked = await (ServerManager as ServerManagerClass).diagnose_connection_failure() \
+				== ServerManagerClass.ConnectionFailure.KALULU_BLOCKED
+	var notice: Dictionary = notice_for(code, blocked)
+	var title: String = tr(str(notice["title"]))
+	# The server's own words only where we have nothing better: they are the backend's
+	# English, and it says nothing at all when the request never reached it.
+	var message: String = tr(str(notice["message"])) if str(notice["message"]) != "" \
+			else from_the_server
+
+	popup_title_label.text = title
+	popup_info_label.text = message
+	popup_copy_text = Utils.support_report("%s\n\n%s" % [title, message],
+			(ServerManager as ServerManagerClass).last_result_code)
+	popup_copy_button.visible = is_reportable(code) \
+			and DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD)
+	popup_copy_button.text = Utils.COPY_TEXT
+	popup.show()
+
+
+## A step could not finish because a request did not come back usable.
+func _on_step_request_failed(code: int) -> void:
+	await _show_failure(code, "")
+
+
+func _on_popup_copy_pressed() -> void:
+	await Utils.copy_report(popup_copy_text, popup_copy_button)
 
 
 func _on_popup_button_pressed() -> void:

@@ -4,6 +4,12 @@ extends Control
 
 signal back(step: Step)
 signal next(step: Step)
+## A request this step made got no usable answer.
+##
+## The step has no dialog of its own and its field messages are one line each -- a
+## column that grows past them prints over the footer buttons, which has happened. The
+## wizard's card has the room, so the diagnosis and the domains are shown there.
+signal request_failed(code: int)
 
 @export var step_name: String
 @export_multiline var question: String

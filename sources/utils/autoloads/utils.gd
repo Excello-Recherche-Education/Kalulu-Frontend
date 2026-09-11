@@ -178,6 +178,29 @@ func support_report(message: String, result_code: int) -> String:
 	return report
 
 
+## Labels on an offer to copy, before and just after it is taken.
+const COPY_TEXT: String = "COPY_ERROR_MESSAGE"
+const COPIED_TEXT: String = "ERROR_MESSAGE_COPIED"
+## How long "copied" stays up before the offer comes back.
+const COPIED_FEEDBACK_SECONDS: float = 2.5
+
+
+## Puts a report on the clipboard and confirms it on the button that asked.
+##
+## Three screens offer this now -- the login, the language pack notice and
+## registration -- and the confirmation is the fiddly half: the button has to say
+## something happened, and then go back to offering, without assuming it is still
+## there when the delay is up.
+func copy_report(report: String, button: Button) -> void:
+	DisplayServer.clipboard_set(report)
+	Log.info("Utils: Copied a support report to the clipboard")
+	button.text = COPIED_TEXT
+	await get_tree().create_timer(COPIED_FEEDBACK_SECONDS).timeout
+	# The screen may have moved on, or gone, while the confirmation was up.
+	if is_instance_valid(button):
+		button.text = COPY_TEXT
+
+
 func get_safe_file_path(file_path: String) -> String:
 	var dir: String = file_path.get_base_dir()
 	var file: String = file_path.get_file()

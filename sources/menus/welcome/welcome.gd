@@ -30,8 +30,6 @@ const REPORTABLE_ERRORS: Array[String] = [
 	"LOGIN_NETWORK_ERROR",
 	"LOGIN_SERVER_ERROR",
 ]
-## How long "copied" stays on the button before it offers to copy again.
-const COPIED_FEEDBACK_SECONDS: float = 2.5
 ## What is on screen while the two network stories are being told apart.
 ##
 ## Telling them apart takes a probe of its own, and on the networks this is for --
@@ -200,7 +198,7 @@ func _show_login_error(translation_key: String) -> void:
 	displayed_error_key = translation_key
 	copy_error_button.visible = offers_copy(translation_key,
 			DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD))
-	copy_error_button.text = "COPY_ERROR_MESSAGE"
+	copy_error_button.text = Utils.COPY_TEXT
 	_scroll_to_login_error()
 
 
@@ -243,13 +241,7 @@ static func offers_copy(translation_key: String, clipboard_available: bool) -> b
 func _on_copy_error_pressed() -> void:
 	var report: String = Utils.support_report(tr(displayed_error_key),
 			(ServerManager as ServerManagerClass).last_result_code)
-	DisplayServer.clipboard_set(report)
-	Log.info("Welcome: Copied the %s report to the clipboard" % displayed_error_key)
-	copy_error_button.text = "ERROR_MESSAGE_COPIED"
-	await get_tree().create_timer(COPIED_FEEDBACK_SECONDS).timeout
-	# The screen may have moved on, or gone, while the confirmation was up.
-	if is_instance_valid(copy_error_button) and copy_error_button.visible:
-		copy_error_button.text = "COPY_ERROR_MESSAGE"
+	await Utils.copy_report(report, copy_error_button)
 
 
 func _hide_login_error() -> void:
@@ -257,7 +249,7 @@ func _hide_login_error() -> void:
 	reset_password_button.hide()
 	reset_password_button.disabled = false
 	copy_error_button.hide()
-	copy_error_button.text = "COPY_ERROR_MESSAGE"
+	copy_error_button.text = Utils.COPY_TEXT
 	displayed_error_key = ""
 
 

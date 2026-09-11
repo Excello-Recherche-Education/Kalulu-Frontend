@@ -76,6 +76,8 @@ layout_mode = 2
 theme_override_constants/separation = 64
 
 [node name="Title" type="Label" parent="Popup/Container/MarginContainer/VBoxContainer" unique_id=1382504555]
+unique_name_in_owner = true
+auto_translate_mode = 2
 custom_minimum_size = Vector2(1900, 0)
 layout_mode = 2
 size_flags_vertical = 0
@@ -96,6 +98,15 @@ text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="CopyButton" type="Button" parent="Popup/Container/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"CardSecondaryButton"
+text = "COPY_ERROR_MESSAGE"
+
 [node name="Button" type="Button" parent="Popup/Container/MarginContainer/VBoxContainer" unique_id=408091364]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -110,5 +121,6 @@ title_text = "NO_MORE_STUDENT_CODES"
 acknowledge_only = true
 
 [connection signal="pressed" from="Popup/Container/MarginContainer/VBoxContainer/Button" to="." method="_on_popup_button_pressed"]
+[connection signal="pressed" from="Popup/Container/MarginContainer/VBoxContainer/CopyButton" to="." method="_on_popup_copy_pressed"]
 [connection signal="accepted" from="CodeLimitPopup" to="." method="_on_code_limit_popup_dismissed"]
 [connection signal="refused" from="CodeLimitPopup" to="." method="_on_code_limit_popup_dismissed"]

@@ -467,6 +467,24 @@ SETTINGS_INTERNET_MANDATORY_TO_ADD_STUDENT,Une connexion internet est obligatoir
 SETTINGS_LESSONS,Leçons,Lecciones,Lições,Lezioni
 CLOSE,Fermer,Cerrar,Fechar,Chiudi
 REGISTER_FAILED,Une erreur est survenue,Se ha producido un error,Ocorreu um erro,Si è verificato un errore
+USED_EMAIL_ADDRESS,"Cette adresse mail est déjà utilisée","Esta dirección de correo ya está en uso","Este e-mail já está em uso","Questo indirizzo email è già utilizzato"
+REGISTER_KALULU_BLOCKED,"Vous êtes bien connecté à Internet, mais ce réseau empêche Kalulu de joindre son serveur (pare-feu ou proxy). La création du compte est impossible tant qu'il est bloqué. Deux solutions : faire autoriser Kalulu sur ce réseau, ou créer le compte une fois depuis un autre réseau.
+
+À transmettre au service réseau — domaines à autoriser :
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sí está conectado a Internet, pero esta red impide que Kalulu llegue a su servidor (cortafuegos o proxy). No se puede crear la cuenta mientras esté bloqueado. Dos soluciones: pedir que se autorice Kalulu en esta red, o crear la cuenta una vez desde otra red.
+
+Para el servicio de red — dominios que autorizar:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Você está conectado à Internet, mas esta rede impede que o Kalulu alcance seu servidor (firewall ou proxy). Não é possível criar a conta enquanto estiver bloqueado. Duas soluções: pedir que o Kalulu seja autorizado nesta rede, ou criar a conta uma vez em outra rede.
+
+Para a equipe de rede — domínios a liberar:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sei connesso a Internet, ma questa rete impedisce a Kalulu di raggiungere il suo server (firewall o proxy). Non è possibile creare l'account finché è bloccato. Due soluzioni: chiedere di autorizzare Kalulu su questa rete, oppure creare l'account una volta da un'altra rete.
+
+Per il servizio di rete — domini da autorizzare:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
 ERROR_DOWNLOADING,Impossible de télécharger les données de jeu,No se pueden descargar los datos del juego,Não é possível fazer o download dos dados do jogo,Impossibile scaricare i dati di gioco
 EXTRACTING_DATA,Extraction des données,Extracción de datos,Extração de dados,Estrazione dei dati
 LESSON,Leçon,Lección,Lição,Lezione
