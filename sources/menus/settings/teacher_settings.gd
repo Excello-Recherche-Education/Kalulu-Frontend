@@ -29,6 +29,9 @@ const STUDENT_LIMIT_ERROR: String = "Maximum student limit reached"
 var last_device_id: int = -1
 ## Device whose students are on screen, or -1 before the first is chosen.
 var selected_device: int = -1
+## Draws the code sheet, keeps a copy inside the app, and offers the teacher one
+## of their own. Built in _ready and added as a child, which is where it renders.
+var code_sheet_saver: CodeSheetSaver
 
 @onready var device_pills: HBoxContainer = %DevicePills
 @onready var device_pills_scroll: ScrollContainer = %DevicePillsScroll
@@ -47,7 +50,10 @@ var selected_device: int = -1
 @onready var add_student_popup: CanvasLayer = %AddStudentPopup
 @onready var add_student_error_popup: ConfirmPopup = %AddStudentErrorPopup
 @onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
+@onready var export_codes_button: Button = %ExportCodesButton
 @onready var export_codes_file_dialog: FileDialog = %ExportCodesFileDialog
+@onready var export_codes_progress_popup: LoadingPopup = %ExportCodesProgressPopup
+@onready var export_codes_result_popup: ConfirmPopup = %ExportCodesResultPopup
 @onready var menu_button: Button = %MenuButton
 @onready var overflow_menu: PopupMenu = %OverflowMenu
 @onready var light_graphics_check: Button = %LightGraphicsCheck
@@ -83,7 +89,14 @@ func _ready() -> void:
 
 	MobileFileDialog.configure_save(export_codes_file_dialog, tr("EXPORT_STUDENT_CODES"),
 			CodeSheet.FILE_EXTENSION, CodeSheet.MIME_TYPE)
-	export_codes_file_dialog.file_selected.connect(_on_export_codes_file_selected)
+	# The saver owns the dialog's signals, so this screen deliberately listens to
+	# none of them: the choice of a folder is one step of a longer job, and the
+	# screen only wants the end of it.
+	code_sheet_saver = CodeSheetSaver.new(self, export_codes_file_dialog)
+	code_sheet_saver.drawing_started.connect(_on_code_sheet_drawing_started)
+	code_sheet_saver.drawing_progressed.connect(_on_code_sheet_drawing_progressed)
+	code_sheet_saver.drawing_finished.connect(_on_code_sheet_drawing_finished)
+	add_child(code_sheet_saver)
 	Log.info("SettingsTeacherSettings: Export codes dialog configured")
 
 
@@ -473,13 +486,44 @@ func _on_export_codes_button_pressed() -> void:
 		Log.warn("SettingsTeacherSettings: Cannot export student codes without teacher settings")
 		return
 
-	Log.info("SettingsTeacherSettings: Opening export codes dialog")
-	MobileFileDialog.open(export_codes_file_dialog, CodeSheet.DEFAULT_FILE_NAME)
+	Log.info("SettingsTeacherSettings: Saving the student codes")
+	var outcome: CodeSheetSaver.Outcome = await code_sheet_saver.save(
+			UserDataManager.teacher_settings)
+	# A second press while the first is still going. Nothing was drawn, nothing
+	# was written, and the dialog the first press put up is answer enough.
+	if outcome.error == ERR_BUSY:
+		return
+	_say_where_the_sheet_went(outcome)
 
 
-func _on_export_codes_file_selected(path: String) -> void:
-	Log.info("SettingsTeacherSettings: Exporting the student codes to %s" % path)
-	await CodeSheet.export_to_pdf(self, UserDataManager.teacher_settings, path)
+## Tells the teacher what became of the sheet, whichever way it went.
+##
+## The one thing this screen never did. The sheet was drawn and written with no
+## sign of it on screen either way, so a save that worked, a save the tablet
+## refused and a picker that never opened all looked exactly alike -- which is
+## what "the button does not work" turned out to be.
+func _say_where_the_sheet_went(outcome: CodeSheetSaver.Outcome) -> void:
+	Log.info("SettingsTeacherSettings: The sheet ended up at '%s' (kept at '%s')"
+			% [outcome.placed_path, outcome.kept_path])
+	export_codes_result_popup.content_text = CodeSheetSaver.report_for(outcome)
+	export_codes_result_popup.show()
+
+
+func _on_code_sheet_drawing_started() -> void:
+	# A page takes a couple of frames and there is one per device, so a school's
+	# worth of them is seconds of a screen that would otherwise sit there.
+	export_codes_button.disabled = true
+	export_codes_progress_popup.show_progress_only(tr("PREPARING_CODE_SHEET"), 0.0)
+
+
+func _on_code_sheet_drawing_progressed(page: int, page_count: int) -> void:
+	export_codes_progress_popup.show_progress_only(tr("PREPARING_CODE_SHEET"),
+			100.0 * float(page) / float(page_count))
+
+
+func _on_code_sheet_drawing_finished() -> void:
+	export_codes_progress_popup.hide()
+	export_codes_button.disabled = false
 
 
 

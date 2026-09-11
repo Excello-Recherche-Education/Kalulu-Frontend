@@ -216,6 +216,7 @@ layout_mode = 2
 theme_override_constants/separation = 40
 
 [node name="ExportCodesButton" type="Button" parent="Page/Card/CardMargin/CardContent/CardActions"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "EXPORT_STUDENT_CODES"
@@ -351,6 +352,16 @@ content_text = "DELETE_STUDENT_POPUP"
 [node name="LoadingPopup" parent="." unique_id=303867354 instance=ExtResource("10_i488h")]
 unique_name_in_owner = true
 visible = false
+
+[node name="ExportCodesProgressPopup" parent="." instance=ExtResource("10_i488h")]
+unique_name_in_owner = true
+visible = false
+
+[node name="ExportCodesResultPopup" parent="." instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+visible = false
+title_text = "STUDENT_CODES"
+acknowledge_only = true
 
 [node name="ExportCodesFileDialog" type="FileDialog" parent="." unique_id=2034874559]
 unique_name_in_owner = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b8y2xqmkl4rnv"]
+[gd_scene format=3 uid="uid://b8y2xqmkl4rnv"]
 
 [ext_resource type="Script" uid="uid://dpl8css7fk78g" path="res://sources/menus/welcome/kalulu_greeting.gd" id="1_greeting"]
 [ext_resource type="PackedScene" uid="uid://wdjp1sv55q4f" path="res://sources/menus/components/night_sky/night_sky.tscn" id="2_sky"]
@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cgwun1jhj53bi" path="res://assets/menus/main/play_button.png" id="8_moon"]
 [ext_resource type="PackedScene" uid="uid://dnuny6200v5b0" path="res://sources/kalulu_animator.tscn" id="9_sprite"]
 
-[node name="KaluluGreeting" type="Control"]
+[node name="KaluluGreeting" type="Control" unique_id=1510612930]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,10 +19,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_greeting")
 
-[node name="Background" parent="." instance=ExtResource("2_sky")]
+[node name="Background" parent="." unique_id=175638773 instance=ExtResource("2_sky")]
 layout_mode = 1
 
-[node name="Plants" type="Control" parent="."]
+[node name="Plants" type="Control" parent="." unique_id=639083768]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,28 +31,28 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="PalmTop" parent="Plants" instance=ExtResource("3_palm")]
+[node name="PalmTop" parent="Plants" unique_id=1157254952 instance=ExtResource("3_palm")]
 position = Vector2(500, 1096)
 scale = Vector2(2, 2)
 
-[node name="PalmBottom" parent="Plants" instance=ExtResource("3_palm")]
+[node name="PalmBottom" parent="Plants" unique_id=1932049338 instance=ExtResource("3_palm")]
 light_mask = 0
 position = Vector2(1620, 1800)
 scale = Vector2(2, 2)
 
-[node name="Bush" parent="Plants" instance=ExtResource("4_bush")]
+[node name="Bush" parent="Plants" unique_id=660483713 instance=ExtResource("4_bush")]
 position = Vector2(730, 1824)
 scale = Vector2(2, 2)
 
-[node name="Flower" parent="Plants" instance=ExtResource("5_flower")]
+[node name="Flower" parent="Plants" unique_id=938175372 instance=ExtResource("5_flower")]
 position = Vector2(330, 1800)
 scale = Vector2(2, 2)
 
-[node name="LargeFlower" parent="Plants" instance=ExtResource("6_large_flower")]
+[node name="LargeFlower" parent="Plants" unique_id=223977027 instance=ExtResource("6_large_flower")]
 position = Vector2(2000, 1875)
 scale = Vector2(2, 2)
 
-[node name="Kalulu" type="Control" parent="."]
+[node name="Kalulu" type="Control" parent="." unique_id=155064547]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -63,7 +63,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Moon" type="TextureRect" parent="Kalulu"]
+[node name="Moon" type="TextureRect" parent="Kalulu" unique_id=196489177]
 custom_minimum_size = Vector2(868, 868)
 layout_mode = 0
 offset_left = -434.0
@@ -76,12 +76,12 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 texture = ExtResource("8_moon")
 
-[node name="Sprite" parent="Kalulu" instance=ExtResource("9_sprite")]
+[node name="Sprite" parent="Kalulu" unique_id=1620791423 instance=ExtResource("9_sprite")]
 unique_name_in_owner = true
 position = Vector2(0, -6.10352e-05)
 scale = Vector2(2, 2)
 
-[node name="Wordmark" type="Panel" parent="Kalulu"]
+[node name="Wordmark" type="Panel" parent="Kalulu" unique_id=969137561]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -500.0
@@ -91,7 +91,7 @@ offset_bottom = 650.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="Title" type="TextureRect" parent="Kalulu"]
+[node name="Title" type="TextureRect" parent="Kalulu" unique_id=855807613]
 unique_name_in_owner = true
 modulate = Color(0.164706, 0.211765, 0.490196, 1)
 layout_mode = 0
@@ -100,15 +100,15 @@ offset_top = 404.0
 offset_right = 323.0
 offset_bottom = 576.0
 grow_horizontal = 2
-mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
+mouse_filter = 2
 texture = ExtResource("7_title")
 
-[node name="SpeechPlayer" type="AudioStreamPlayer" parent="."]
+[node name="SpeechPlayer" type="AudioStreamPlayer" parent="." unique_id=1040970893]
 unique_name_in_owner = true
 
-[node name="ContinueButton" type="Button" parent="."]
+[node name="ContinueButton" type="Button" parent="." unique_id=891733850]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 self_modulate = Color(1, 1, 1, 0)

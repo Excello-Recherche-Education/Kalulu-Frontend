@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://dht5umof6hqqy"]
+[gd_scene format=3 uid="uid://dht5umof6hqqy"]
 
 [ext_resource type="Script" uid="uid://crrnxt5bwa8wi" path="res://sources/menus/settings/lesson_unlock.gd" id="1_lesson"]
 
@@ -57,5 +57,5 @@ custom_minimum_size = Vector2(700, 116)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_type_variation = &"DropdownSubtle"
-fit_to_longest_item = false
 clip_text = true
+fit_to_longest_item = false

@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://bp1t8p5pfrwfl"]
 
-[ext_resource type="Script" path="res://tools/build_boss_friends.gd" id="1_build"]
+[ext_resource type="Script" uid="uid://cc37ec8vbyq8o" path="res://tools/build_boss_friends.gd" id="1_build"]
 
-[node name="BuildBossFriends" type="Node"]
+[node name="BuildBossFriends" type="Node" unique_id=900559524]
 script = ExtResource("1_build")

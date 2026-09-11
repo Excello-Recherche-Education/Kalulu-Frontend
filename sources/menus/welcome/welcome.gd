@@ -1,3 +1,4 @@
+class_name Welcome
 extends Control
 ## The single entry screen: log in, or prove you are an adult and register.
 ##
@@ -18,6 +19,26 @@ const SIGN_UP_TAB: int = 1
 ## reach into: at the sizes the fields are drawn at now, the password field is
 ## as wide as the button is far from the middle, and the two would overlap.
 const FOOTER_ROOM: int = Design.PAGE_MARGIN_BOTTOM + Design.BUTTON_SIZE.y
+## The failures somebody else has to act on, and which are therefore worth copying.
+##
+## A wrong password or an unknown account are the reader's own to fix, and offering to
+## mail them to a technician would only send them down a corridor for nothing. These
+## three are the network's and the server's -- the blocked one carries the domains to
+## unblock, so it is the message a network administrator actually needs.
+const REPORTABLE_ERRORS: Array[String] = [
+	"LOGIN_KALULU_BLOCKED",
+	"LOGIN_NETWORK_ERROR",
+	"LOGIN_SERVER_ERROR",
+]
+## How long "copied" stays on the button before it offers to copy again.
+const COPIED_FEEDBACK_SECONDS: float = 2.5
+## What is on screen while the two network stories are being told apart.
+##
+## Telling them apart takes a probe of its own, and on the networks this is for --
+## the ones that drop packets rather than refusing them -- that probe can take its
+## full 15 seconds. Without this the screen answers a press with nothing at all for
+## that long, which is precisely the complaint the diagnosis exists to end.
+const DIAGNOSING_ERROR: String = "LOGIN_DIAGNOSING"
 
 var adult_challenge: AdultChallenge = AdultChallenge.new()
 ## True while a request to the server is outstanding.
@@ -31,6 +52,9 @@ var adult_challenge: AdultChallenge = AdultChallenge.new()
 ##
 ## It also locks the switch, for the reason in _set_request_in_flight.
 var request_in_flight: bool = false
+## The message currently on display, so the copy sends what was read rather than
+## whatever the screen has moved on to.
+var displayed_error_key: String = ""
 
 @onready var footer_room: MarginContainer = %FooterRoom
 @onready var scroll: ScrollContainer = %Scroll
@@ -41,6 +65,7 @@ var request_in_flight: bool = false
 @onready var password_field: MenuTextField = %PasswordField
 @onready var login_error: Label = %LoginError
 @onready var reset_password_button: Button = %ResetPasswordButton
+@onready var copy_error_button: Button = %CopyErrorButton
 @onready var next_button: Button = %NextButton
 @onready var adult_prompt: Label = %AdultPrompt
 @onready var keypad: CodeKeypad = %Keypad
@@ -57,6 +82,7 @@ func _ready() -> void:
 	toggle.selection_changed.connect(_on_tab_changed)
 	next_button.pressed.connect(_on_next_pressed)
 	reset_password_button.pressed.connect(_on_reset_password_pressed)
+	copy_error_button.pressed.connect(_on_copy_error_pressed)
 	email_field.text_changed.connect(_clear_login_error)
 	password_field.text_changed.connect(_clear_login_error)
 	password_field.text_submitted.connect(_on_password_submitted)
@@ -106,8 +132,13 @@ func _on_next_pressed() -> void:
 	Log.info("Welcome: Sending login request for %s" % email_field.text)
 	var response: Dictionary = await ServerManager.login(email_field.text, password_field.text)
 	if response.code != 200:
-		Log.info("Welcome: Server refused login with code %d" % response.code)
-		_show_login_error(_translation_key_for_error(response))
+		Log.info("Welcome: Login failed with code %d" % response.code)
+		# Said before the diagnosis rather than after it: a failure with no HTTP
+		# response has to be diagnosed before it can be described, and that wait is
+		# long enough to read as a dead button.
+		if response.code == 0:
+			_show_login_error(DIAGNOSING_ERROR)
+		_show_login_error(await _translation_key_for_error(response))
 		_end_request()
 		return
 
@@ -166,6 +197,10 @@ func _show_login_error(translation_key: String) -> void:
 	# mail anyway.
 	reset_password_button.visible = translation_key == "LOGIN_WRONG_PASSWORD"
 	reset_password_button.disabled = false
+	displayed_error_key = translation_key
+	copy_error_button.visible = offers_copy(translation_key,
+			DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD))
+	copy_error_button.text = "COPY_ERROR_MESSAGE"
 	_scroll_to_login_error()
 
 
@@ -180,12 +215,50 @@ func _show_login_error(translation_key: String) -> void:
 func _scroll_to_login_error() -> void:
 	await get_tree().process_frame
 	scroll.ensure_control_visible(login_error)
+	# The offer to copy sits under the message, and a message this long leaves it
+	# below the fold -- so the one control the reader is being invited to press would
+	# be the one thing off screen. Ending on it brings the tail of the message, where
+	# the domains are, along with it.
+	if copy_error_button.visible:
+		await get_tree().process_frame
+		scroll.ensure_control_visible(copy_error_button)
+
+
+## Whether the failure on display is one to offer to copy.
+##
+## Split out so the rule can be checked without a display. It also has to answer no
+## where there is no clipboard: a button that does nothing and then says "copied"
+## would be worse than no button, and the test suite runs headless, which is one such
+## place.
+static func offers_copy(translation_key: String, clipboard_available: bool) -> bool:
+	return clipboard_available and translation_key in REPORTABLE_ERRORS
+
+
+## Puts the failure on the clipboard, for a mail to whoever runs the network.
+##
+## The message alone would arrive without the two things its reader asks first --
+## which build, and what exactly failed -- so the version and the engine's own result
+## name go with it. RESULT_TLS_HANDSHAKE_ERROR in particular is what tells a network
+## administrator the connection was intercepted rather than merely dropped.
+func _on_copy_error_pressed() -> void:
+	var report: String = Utils.support_report(tr(displayed_error_key),
+			(ServerManager as ServerManagerClass).last_result_code)
+	DisplayServer.clipboard_set(report)
+	Log.info("Welcome: Copied the %s report to the clipboard" % displayed_error_key)
+	copy_error_button.text = "ERROR_MESSAGE_COPIED"
+	await get_tree().create_timer(COPIED_FEEDBACK_SECONDS).timeout
+	# The screen may have moved on, or gone, while the confirmation was up.
+	if is_instance_valid(copy_error_button) and copy_error_button.visible:
+		copy_error_button.text = "COPY_ERROR_MESSAGE"
 
 
 func _hide_login_error() -> void:
 	login_error.hide()
 	reset_password_button.hide()
 	reset_password_button.disabled = false
+	copy_error_button.hide()
+	copy_error_button.text = "COPY_ERROR_MESSAGE"
+	displayed_error_key = ""
 
 
 func _clear_login_error(_text: String) -> void:
@@ -195,8 +268,16 @@ func _clear_login_error(_text: String) -> void:
 
 func _translation_key_for_error(response: Dictionary) -> String:
 	# A network failure never gets an HTTP response, so ServerManager leaves the
-	# code at 0.
+	# code at 0. Which of the two network stories it is has to be asked, because
+	# "check your internet access" is the wrong instruction -- and sends the teacher
+	# hunting through the wrong settings -- when the internet works and the network
+	# is filtering Kalulu. A school network doing exactly that took a support ticket
+	# to identify, and cleared up the moment the teacher tried it from home.
 	if response.code == 0:
+		var failure: ServerManagerClass.ConnectionFailure = \
+				await (ServerManager as ServerManagerClass).diagnose_connection_failure()
+		if failure == ServerManagerClass.ConnectionFailure.KALULU_BLOCKED:
+			return "LOGIN_KALULU_BLOCKED"
 		return "LOGIN_NETWORK_ERROR"
 
 	var body: Dictionary = (response.body as Dictionary) if response.body is Dictionary else {}
