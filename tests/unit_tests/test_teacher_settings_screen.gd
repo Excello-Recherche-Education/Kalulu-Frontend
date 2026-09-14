@@ -39,7 +39,8 @@ func test_every_unique_name_the_script_looks_up_exists() -> void:
 			"%ChangeLanguageErrorPopup", "%LoadingPopup", "%AccountTypeOptionButton",
 			"%EducationMethodOptionButton", "%AddDeviceButton", "%AddStudentButton",
 			"%LabelInternetMandatory", "%AddDevicePopup", "%AddStudentPopup",
-			"%DeleteStudentPopup", "%ExportCodesFileDialog", "%MenuButton",
+			"%DeleteStudentPopup", "%ExportCodesFileDialog", "%ExportCodesButton",
+			"%ExportCodesProgressPopup", "%ExportCodesResultPopup", "%MenuButton",
 			"%OverflowMenu", "%AddStudentErrorPopup", "%LightGraphicsCheck",
 			"%LightGraphicsLabel"]:
 		assert_not_null(screen.get_node_or_null(unique_name),
@@ -52,7 +53,7 @@ func test_no_dialog_is_on_screen_at_load() -> void:
 	# seven drew at once on top of the screen and settings was unusable.
 	for node_name: String in ["%ChangeLanguagePopup", "%ChangeLanguageErrorPopup", "%DeletePopup",
 			"%AddStudentPopup", "%AddDevicePopup", "%DeleteStudentPopup", "%LoadingPopup",
-			"%AddStudentErrorPopup"]:
+			"%AddStudentErrorPopup", "%ExportCodesProgressPopup", "%ExportCodesResultPopup"]:
 		var dialog: CanvasLayer = screen.get_node(node_name)
 		assert_false(dialog.visible, "%s should start hidden" % node_name)
 

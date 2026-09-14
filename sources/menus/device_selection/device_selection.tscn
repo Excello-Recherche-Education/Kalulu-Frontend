@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://byg15cat0mmep"]
+[gd_scene format=3 uid="uid://byg15cat0mmep"]
 
 [ext_resource type="Script" uid="uid://cn7idg6fvby4u" path="res://sources/menus/device_selection/device_selection.gd" id="1_6twkt"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 
-[node name="DeviceSelection" type="Control"]
+[node name="DeviceSelection" type="Control" unique_id=1319522140]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_6twkt")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=214651387]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.164706, 0.211765, 0.490196, 1)
 
-[node name="Content" type="VBoxContainer" parent="."]
+[node name="Content" type="VBoxContainer" parent="." unique_id=1360213761]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,19 +35,19 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 178
 
-[node name="Title" type="Label" parent="Content"]
+[node name="Title" type="Label" parent="Content" unique_id=814259426]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "PICK_YOUR_DEVICE"
 horizontal_alignment = 1
-theme_type_variation = &"Title"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Content"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Content" unique_id=234872084]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="GridContainer" type="GridContainer" parent="Content/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="Content/ScrollContainer" unique_id=2109621566]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

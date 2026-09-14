@@ -18,6 +18,17 @@ const PASSWORD_VISUALIZER_SCENE: PackedScene = preload("res://sources/menus/comp
 const DEFAULT_FILE_NAME: String = "Codes.pdf"
 const FILE_EXTENSION: String = "pdf"
 const MIME_TYPE: String = "application/pdf"
+## The copy the app keeps for itself, whatever else happens.
+##
+## user:// is the one place no platform can refuse: it needs no permission, no
+## picker and no folder the teacher can reach, and it is writable inside the macOS
+## App Store sandbox as well as on a locked-down school tablet. So the sheet is
+## written here first and offered elsewhere second -- see CodeSheetSaver.
+##
+## One fixed name rather than one file per export: this is a fallback copy, and a
+## folder quietly filling up with Codes_1.pdf would be worse than overwriting the
+## previous one, which said the same thing unless the codes have changed.
+const KEPT_FILE_PATH: String = "user://%s" % DEFAULT_FILE_NAME
 const COLUMNS: int = 2
 const TITLE_FONT_SIZE: int = 44
 const SECTION_FONT_SIZE: int = 32
@@ -30,14 +41,22 @@ const STUDENT_RULE_COLOR: Color = Color("c7c7c7")
 const DEVICE_RULE_COLOR: Color = Color("8c8c8c")
 
 
-## Renders the sheet for `settings` and writes it to `path` as a PDF.
+## Draws the sheet for `settings` and returns it as the bytes of a PDF.
 ##
-## `host` only has to be in the tree: the pages are rendered inside it and
-## removed again.
-static func export_to_pdf(host: Node, settings: TeacherSettings, path: String) -> Error:
+## Separate from writing it because the drawing is the expensive, fragile half and
+## the writing is the half that gets refused: several frames per page, inside
+## `host`, which has to stay in the tree throughout. Holding the bytes means a
+## folder that turns the file away costs another attempt at the copy rather than
+## the whole sheet.
+##
+## `on_page` is called with (pages drawn so far, pages in total) after each one, so
+## a screen can say how far along it is instead of freezing. Empty bytes mean
+## nothing was drawn, and the reason is already in the log.
+static func render_pdf(host: Node, settings: TeacherSettings,
+		on_page: Callable = Callable()) -> PackedByteArray:
 	if not settings:
 		Log.warn("CodeSheet: Nothing to export without teacher settings")
-		return ERR_INVALID_PARAMETER
+		return PackedByteArray()
 
 	var pages: Array[Control] = build_pages(settings)
 	Log.info("CodeSheet: Prepared %d page(s)" % pages.size())
@@ -56,16 +75,10 @@ static func export_to_pdf(host: Node, settings: TeacherSettings, path: String) -
 		Log.info("CodeSheet: Captured page %d/%d" % [images.size() + 1, pages.size()])
 		images.append(viewport.get_texture().get_image())
 		viewport.queue_free()
+		if on_page.is_valid():
+			on_page.call(images.size(), pages.size())
 
-	var export_path: String = pdf_path(path)
-
-	Log.info("CodeSheet: Writing %s" % export_path)
-	var save_error: Error = save_pdf(export_path, images)
-	if save_error != OK:
-		Log.error("CodeSheet: Failed to save the PDF: %s" % error_string(save_error))
-	else:
-		Log.info("CodeSheet: PDF saved")
-	return save_error
+	return build_pdf(images)
 
 
 ## Everything the sheet would print, as one comparable string.
@@ -264,18 +277,38 @@ static func _build_rule(color: Color, thickness: int) -> HSeparator:
 	return separator
 
 
-## Writes `images` as one page each into a minimal PDF at `path`.
-static func save_pdf(path: String, images: Array[Image]) -> Error:
+## Puts `pdf_data` on disk at `path`, or says why it could not.
+##
+## The half of saving that a school device refuses: a content:// document the
+## picker created, a folder the sandbox does not reach, a tablet with no shared
+## storage. Every caller has to be ready for this to fail.
+static func write_pdf(path: String, pdf_data: PackedByteArray) -> Error:
+	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+	if not file:
+		# FileAccess reports why through its own error rather than through the null,
+		# and the reason is the whole point on a device that turned the write down.
+		var reason: Error = FileAccess.get_open_error()
+		Log.error("CodeSheet: Could not open %s for writing: %s"
+				% [path, error_string(reason)])
+		return reason if reason != OK else ERR_CANT_OPEN
+	file.store_buffer(pdf_data)
+	file.close()
+	Log.info("CodeSheet: Wrote %d bytes to %s" % [pdf_data.size(), path])
+	return OK
+
+
+## `images` as one page each in a minimal PDF, or empty bytes on failure.
+static func build_pdf(images: Array[Image]) -> PackedByteArray:
 	if images.is_empty():
 		Log.error("CodeSheet: No pages to write")
-		return ERR_CANT_CREATE
+		return PackedByteArray()
 
 	var jpg_pages: Array[PackedByteArray] = []
 	for page: Image in images:
 		var jpg_data: PackedByteArray = page.save_jpg_to_buffer(0.9)
 		if jpg_data.is_empty():
 			Log.error("CodeSheet: Failed to encode a page as JPEG")
-			return ERR_CANT_CREATE
+			return PackedByteArray()
 		jpg_pages.append(jpg_data)
 
 	var pdf_data: PackedByteArray = PackedByteArray()
@@ -323,14 +356,7 @@ static func save_pdf(path: String, images: Array[Image]) -> Error:
 	_append_string(pdf_data, "trailer\n<< /Size %d /Root 1 0 R >>\nstartxref\n%d\n%%EOF\n"
 		% [xref_offsets.size(), xref_offset])
 
-	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
-	if not file:
-		Log.error("CodeSheet: Could not open %s for writing" % path)
-		return ERR_CANT_OPEN
-	file.store_buffer(pdf_data)
-	file.close()
-	Log.info("CodeSheet: Wrote %d bytes" % pdf_data.size())
-	return OK
+	return pdf_data
 
 
 static func _add_object(pdf_data: PackedByteArray, offsets: Array[int], object_text: String) -> void:

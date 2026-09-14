@@ -118,12 +118,20 @@ text = "FORGOT_PASSWORD"
 [node name="LoginError" type="Label" parent="KeyboardSpacer/FooterRoom/Scroll/Content/LoginPanel"]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(1250, 0)
+custom_minimum_size = Vector2(1700, 0)
 layout_mode = 2
 text = "INVALID_EMAIL_OR_PASSWORD"
 horizontal_alignment = 1
 autowrap_mode = 3
 theme_type_variation = &"ErrorLabel"
+
+[node name="CopyErrorButton" type="Button" parent="KeyboardSpacer/FooterRoom/Scroll/Content/LoginPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InlineButton"
+text = "COPY_ERROR_MESSAGE"
 
 [node name="SignUpPanel" type="VBoxContainer" parent="KeyboardSpacer/FooterRoom/Scroll/Content"]
 unique_name_in_owner = true

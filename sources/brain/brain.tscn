@@ -140,8 +140,8 @@ preprocess = 5.0
 randomness = 0.5
 visibility_rect = Rect2(-1300, -900, 2600, 1800)
 local_coords = true
-script = ExtResource("particles_1")
 process_material = SubResource("ParticleProcessMaterial_2c5sd")
+script = ExtResource("particles_1")
 
 [node name="Brain" type="TextureRect" parent="." unique_id=2076370991]
 layout_mode = 0

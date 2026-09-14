@@ -82,9 +82,14 @@ func _get_letter_tracings(letter: String) -> Dictionary:
 
 
 func _load_tracing(path: String) -> Array:
-	var real_path: String = _real_path(path)
-	if not FileAccess.file_exists(real_path):
-		Log.trace("TracingManager: Tracing file not found at %s" % real_path)
+	# Through Database's ladder, because the name is built from the letter itself:
+	# the database holds "à" composed and the packs ship à_lower.csv decomposed,
+	# which only macOS looks up interchangeably. Without this every accented letter
+	# comes back with nothing to trace off macOS.
+	var wanted_path: String = _real_path(path)
+	var real_path: String = Database.resolve_external_file_path(wanted_path)
+	if real_path.is_empty():
+		Log.trace("TracingManager: Tracing file not found at %s" % wanted_path)
 		return []
 	var segments: Array = []
 	var file: FileAccess = FileAccess.open(real_path, FileAccess.READ)

@@ -132,7 +132,7 @@ label_settings = ExtResource("8_c4r2k")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body" unique_id=493781622]
 unique_name_in_owner = true
-scale = Vector2(3.4615385, 3.4615385)
+scale = Vector2(3.4615386, 3.4615386)
 sprite_frames = ExtResource("10_c4r2k")
 animation = &"idle"
 autoplay = "idle"

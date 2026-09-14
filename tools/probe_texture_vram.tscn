@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://puc1ow8co8o2"]
 
-[ext_resource type="Script" path="res://tools/probe_texture_vram.gd" id="1_probe"]
+[ext_resource type="Script" uid="uid://cx0gjiu1dxv7f" path="res://tools/probe_texture_vram.gd" id="1_probe"]
 
-[node name="ProbeTextureVram" type="Node"]
+[node name="ProbeTextureVram" type="Node" unique_id=1782104069]
 script = ExtResource("1_probe")

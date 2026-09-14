@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://c0jjhcrats43m"]
 
-[ext_resource type="Script" path="res://tools/measure_boss_friends.gd" id="1_measure"]
+[ext_resource type="Script" uid="uid://bwvo2i40asck" path="res://tools/measure_boss_friends.gd" id="1_measure"]
 
-[node name="MeasureBossFriends" type="Node2D"]
+[node name="MeasureBossFriends" type="Node2D" unique_id=2081466702]
 script = ExtResource("1_measure")

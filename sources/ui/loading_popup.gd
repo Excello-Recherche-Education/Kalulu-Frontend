@@ -25,6 +25,20 @@ func set_progress(percent: float) -> void:
 		ok_button.show()
 
 
+## Puts the dialog up as a wait nobody can act on, `percent` of the way through.
+##
+## Neither button belongs on one: the work cannot be interrupted, and there is
+## nothing to acknowledge afterwards -- whoever showed it takes it down. Both are
+## hidden on every call rather than only the first, because set_progress puts OK up
+## by itself once it reaches 100.
+func show_progress_only(text: String, percent: float) -> void:
+	set_text(text)
+	set_progress(percent)
+	cancel_button.hide()
+	ok_button.hide()
+	show()
+
+
 func set_finished(finished: bool) -> void:
 	if finished:
 		cancel_button.hide()

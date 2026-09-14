@@ -88,6 +88,14 @@ autowrap_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 54
 
+[node name="CopyButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 218)
+layout_mode = 2
+theme_type_variation = &"CardSecondaryButton"
+text = "COPY_ERROR_MESSAGE"
+
 [node name="CancelButton" type="Button" parent="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1493791231]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(442, 218)
@@ -109,3 +117,4 @@ text = "VALIDATE"
 [connection signal="pressed" from="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Header/CloseButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
 [connection signal="pressed" from="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="TextureRect/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]

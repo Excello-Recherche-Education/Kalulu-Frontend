@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://c6h43a5um05i6"]
 
-[ext_resource type="Script" path="res://tools/compare_texture_quality.gd" id="1_quality"]
+[ext_resource type="Script" uid="uid://dv7kfnj7143js" path="res://tools/compare_texture_quality.gd" id="1_quality"]
 
-[node name="CompareTextureQuality" type="Node"]
+[node name="CompareTextureQuality" type="Node" unique_id=450217008]
 script = ExtResource("1_quality")

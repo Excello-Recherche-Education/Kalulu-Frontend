@@ -12,6 +12,7 @@ gradient = SubResource("Gradient_wm8cn")
 script = ExtResource("1_n6vsh")
 
 [node name="InternetCheck" type="HTTPRequest" parent="." unique_id=1485683070]
+timeout = 15.0
 
 [node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=407999154]
 timeout = 30.0

@@ -36,11 +36,11 @@
 [ext_resource type="Texture2D" uid="uid://c1ml42sp1vqga" path="res://assets/gardens/buttons/movie_icon.png" id="movie_icon"]
 [ext_resource type="Texture2D" uid="uid://c2yalimkyunxi" path="res://assets/gardens/animals/parakeet_body.png" id="parakeet_body"]
 [ext_resource type="Texture2D" uid="uid://l52tfb7fdrpt" path="res://assets/gardens/animals/parakeet_face.png" id="parakeet_face"]
+[ext_resource type="Script" uid="uid://c7cop4he3ynix" path="res://sources/utils/decorative_particles.gd" id="particles_1"]
 [ext_resource type="Texture2D" uid="uid://noekve4gjudr" path="res://assets/gardens/animals/penguin_body.png" id="penguin_body"]
 [ext_resource type="Texture2D" uid="uid://dbg7mxg3x7vd4" path="res://assets/gardens/animals/penguin_face.png" id="penguin_face"]
 [ext_resource type="Texture2D" uid="uid://b7rqldqdft30a" path="res://assets/gardens/animals/turtle_body.png" id="turtle_body"]
 [ext_resource type="Texture2D" uid="uid://nu4kpbywwpgn" path="res://assets/gardens/animals/turtle_face.png" id="turtle_face"]
-[ext_resource type="Script" uid="uid://c7cop4he3ynix" path="res://sources/utils/decorative_particles.gd" id="particles_1"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ey6av"]
 blend_mode = 1
@@ -180,8 +180,8 @@ preprocess = 5.0
 randomness = 0.5
 visibility_rect = Rect2(-12800, -900, 25600, 1800)
 local_coords = true
-script = ExtResource("particles_1")
 process_material = SubResource("ParticleProcessMaterial_m12rm")
+script = ExtResource("particles_1")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=90003528]
 layout_mode = 1

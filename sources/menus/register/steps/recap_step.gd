@@ -22,6 +22,9 @@ var codes_requested: bool = false
 var exported_sheet: String = ""
 ## True while the sheet is being drawn, which happens over several frames.
 var drawing_the_sheet: bool = false
+## Draws the sheet, keeps a copy inside the app, and offers the teacher one of
+## their own. Built in _ready and added as a child, which is where it renders.
+var code_sheet_saver: CodeSheetSaver
 
 @onready var recap_container: VBoxContainer = %RecapContainer
 @onready var email: Label = %Email
@@ -31,6 +34,8 @@ var drawing_the_sheet: bool = false
 @onready var students_count: Label = %StudentsCount
 @onready var save_all_codes_button: Button = %SaveAllCodesButton
 @onready var export_codes_file_dialog: FileDialog = %ExportCodesFileDialog
+@onready var export_codes_progress_popup: LoadingPopup = %ExportCodesProgressPopup
+@onready var export_codes_result_popup: ConfirmPopup = %ExportCodesResultPopup
 @onready var validate_button: Button = $RightMargin/RightContainer/ValidateButton
 @onready var back_button: Button = $LeftMargin/LeftContainer/BackButton
 
@@ -40,6 +45,13 @@ func _ready() -> void:
 	show_question_board_as_card()
 	MobileFileDialog.configure_save(export_codes_file_dialog, tr("EXPORT_STUDENT_CODES"),
 			CodeSheet.FILE_EXTENSION, CodeSheet.MIME_TYPE)
+	# The saver owns the dialog's signals; this step listens to none of them, and
+	# only holds itself shut for as long as the drawing takes.
+	code_sheet_saver = CodeSheetSaver.new(self, export_codes_file_dialog)
+	code_sheet_saver.drawing_started.connect(_on_code_sheet_drawing_started)
+	code_sheet_saver.drawing_progressed.connect(_on_code_sheet_drawing_progressed)
+	code_sheet_saver.drawing_finished.connect(_on_code_sheet_drawing_finished)
+	add_child(code_sheet_saver)
 	_refresh_validate()
 
 
@@ -119,35 +131,71 @@ func _refresh_validate() -> void:
 	validate_button.disabled = not codes_requested or drawing_the_sheet
 
 
-func _on_save_all_codes_button_pressed() -> void:
-	# Counted here rather than once the file is written: the teacher has been
-	# shown the sheet exists and made the choice, and a cancelled save dialog must
-	# not leave them stuck on this step.
+## Opens Confirm up, on the press rather than on the file.
+##
+## Counted here rather than once something has been written: the teacher has been
+## shown the sheet exists and made the choice, and neither a cancelled save dialog
+## nor a tablet that refused every folder must leave them stuck on this step. The
+## fingerprint is taken at the same moment, so a later change to a name or a code
+## is what invalidates it -- not the saving.
+func _count_the_sheet_as_asked_for() -> void:
 	codes_requested = true
 	exported_sheet = sheet_fingerprint()
 	_refresh_validate()
-	MobileFileDialog.open(export_codes_file_dialog, CodeSheet.DEFAULT_FILE_NAME)
 
 
-func _on_export_codes_file_selected(path: String) -> void:
+func _on_save_all_codes_button_pressed() -> void:
+	_count_the_sheet_as_asked_for()
+
 	# The account does not exist on the server yet, so the sheet is printed from
 	# the registration data rather than from UserDataManager.
-	Log.info("Register/RecapStep: Saving the student codes to %s" % path)
-	# The step is held shut for as long as the drawing takes. A page is rendered
-	# inside this step over two frames, and there is a page per device, so a school's
-	# worth of them is seconds -- during which anything that takes this step out of
-	# the tree loses the file outright: the pages have nowhere left to render, and the
-	# PDF is only written once they have all been captured. Leaving the one screen
-	# that insisted on the export, without the export, is the outcome to avoid.
+	Log.info("Register/RecapStep: Saving the student codes")
+	var outcome: CodeSheetSaver.Outcome = await code_sheet_saver.save(data as TeacherSettings)
+	# A second press landing while the first is still going: the first one's dialog
+	# is already up, and there is nothing of this press to report.
+	if outcome.error == ERR_BUSY:
+		return
+
+	# Handed to the confirmation screen, which names the folder and offers to open
+	# it -- so only the teacher's own copy goes there. The copy kept inside the app
+	# is a real file, but its folder is something like /data/user/0/…/files, which
+	# is neither openable nor worth showing anybody; the dialog below has already
+	# said where the sheet is, and that screen falls back to saying the codes stay
+	# available in the settings.
+	AccountCreated.saved_codes_path = outcome.placed_path
+	Log.info("Register/RecapStep: The sheet ended up at '%s' (kept at '%s')"
+			% [outcome.placed_path, outcome.kept_path])
+	export_codes_result_popup.content_text = CodeSheetSaver.report_for(outcome)
+	export_codes_result_popup.show()
+
+
+## Holds the step shut while the pages are drawn, and says how far along they are.
+##
+## A page is rendered inside this step over two frames, and there is a page per
+## device, so a school's worth of them is seconds -- during which anything that
+## takes this step out of the tree loses the sheet outright: the pages have nowhere
+## left to render, and nothing is written until all of them have been captured.
+## Leaving the one screen that insisted on the export, without the export, is the
+## outcome to avoid.
+##
+## The picker that follows is deliberately *not* covered by this. It is the
+## teacher's own time, the sheet is already written by then, and a step held shut
+## behind a dialog that never came up would strand them on the last step of
+## registration -- which is the failure this whole change is about.
+func _on_code_sheet_drawing_started() -> void:
 	_hold_the_step_shut(true)
-	var error: Error = await CodeSheet.export_to_pdf(self, data as TeacherSettings, path)
-	# Handed to the confirmation screen, which offers to open the folder. Only on
-	# success: pointing at a file that was never written would be worse than
-	# saying nothing.
-	if error == OK:
-		AccountCreated.saved_codes_path = CodeSheet.pdf_path(path)
-	# Released whether or not it worked. A failed export the teacher cannot walk away
-	# from would strand them on the last step of registration.
+	export_codes_progress_popup.show_progress_only(tr("PREPARING_CODE_SHEET"), 0.0)
+
+
+func _on_code_sheet_drawing_progressed(page: int, page_count: int) -> void:
+	export_codes_progress_popup.show_progress_only(tr("PREPARING_CODE_SHEET"),
+			100.0 * float(page) / float(page_count))
+
+
+func _on_code_sheet_drawing_finished() -> void:
+	export_codes_progress_popup.hide()
+	# Released whether or not it worked. A failed drawing the teacher cannot walk
+	# away from would strand them on the last step of registration.
 	_hold_the_step_shut(false)
 
 

@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://bxd3i06rqpxf0" path="res://sources/menus/register/steps/base_step.tscn" id="1_crpog"]
 [ext_resource type="Script" uid="uid://0vcwta1jnwr6" path="res://sources/menus/register/steps/recap_step.gd" id="2_0vlqx"]
+[ext_resource type="PackedScene" uid="uid://dhowigt8un22u" path="res://sources/ui/loading_popup.tscn" id="3_progress"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="4_result"]
 
 [node name="RecapStep" unique_id=2112802657 instance=ExtResource("1_crpog")]
 script = ExtResource("2_0vlqx")
@@ -113,5 +115,14 @@ ok_button_text = "Save"
 file_mode = 4
 filters = PackedStringArray("*.pdf ; pdf")
 
+[node name="ExportCodesProgressPopup" parent="." index="6" instance=ExtResource("3_progress")]
+unique_name_in_owner = true
+visible = false
+
+[node name="ExportCodesResultPopup" parent="." index="7" instance=ExtResource("4_result")]
+unique_name_in_owner = true
+visible = false
+title_text = "STUDENT_CODES"
+acknowledge_only = true
+
 [connection signal="pressed" from="PanelContainer/QuestionContainer/VBoxContainer/TopRow/SaveAllCodesButton" to="." method="_on_save_all_codes_button_pressed"]
-[connection signal="file_selected" from="ExportCodesFileDialog" to="." method="_on_export_codes_file_selected"]

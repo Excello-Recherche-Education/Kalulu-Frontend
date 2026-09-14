@@ -169,6 +169,140 @@ func test_a_failure_message_is_scrolled_into_view() -> void:
 		"and not past the top of it")
 
 
+func test_the_longest_message_still_fits_in_the_column() -> void:
+	# The blocked-network message carries the domains for whoever runs the network, so
+	# it is several times longer than the rest and wraps to a handful of lines. The
+	# column scrolls, so the risk is not that it overflows the screen but that the end
+	# of it -- which is where the domains are -- lands below the visible area.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var screen: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	viewport.add_child(screen)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	screen._show_login_error("LOGIN_KALULU_BLOCKED")
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	var error: Control = screen.login_error
+	assert_gt(error.get_global_rect().size.y, 0.0, "the label should have been laid out")
+	var visible_area: Rect2 = screen.scroll.get_global_rect()
+	assert_lte(error.get_global_rect().end.y, visible_area.end.y + 1.0,
+		"the domains at the end of it should be inside the visible column")
+	assert_lte(error.get_global_rect().size.y, visible_area.size.y,
+		"a message taller than the column could never be shown whole")
+
+
+func test_the_domains_are_never_split_across_lines() -> void:
+	# What the label was too narrow for: the pack host broke mid-name, and with the
+	# text centred the tail read as a third domain sitting underneath. Nobody can
+	# copy a hostname out of that. The message is for whoever runs the network, so
+	# each domain has to arrive whole, on its own line.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var screen: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	viewport.add_child(screen)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	screen._show_login_error("LOGIN_KALULU_BLOCKED")
+	await get_tree().process_frame
+
+	var label: Label = screen.login_error
+	var font: Font = label.get_theme_font("font")
+	var font_size: int = label.get_theme_font_size("font_size")
+	var available: float = label.get_global_rect().size.x
+	for line: String in tr("LOGIN_KALULU_BLOCKED").split("\n"):
+		if not line.begins_with("•"):
+			continue
+		var needed: float = font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		assert_lte(needed, available,
+			"\"%s\" needs %d px and the label offers %d" % [line, needed, available])
+
+
+# --- Handing the failure on ---------------------------------------------------
+func test_only_the_failures_somebody_else_can_fix_are_worth_copying() -> void:
+	# A wrong password is the reader's own to fix; mailing it to a technician would
+	# send them down a corridor for nothing. The three below are the network's and
+	# the server's, and the blocked one carries the domains to unblock.
+	for key: String in Welcome.REPORTABLE_ERRORS:
+		assert_true(Welcome.offers_copy(key, true), "%s is worth handing on" % key)
+	for key: String in ["LOGIN_WRONG_PASSWORD", "LOGIN_USER_NOT_FOUND",
+			"LOGIN_MISSING_CREDENTIALS", "INVALID_EMAIL_OR_PASSWORD"]:
+		assert_false(Welcome.offers_copy(key, true), "%s is the reader's own to fix" % key)
+
+
+func test_the_wait_for_a_diagnosis_is_said_out_loud_and_not_offered_for_copy() -> void:
+	# A failure with no HTTP response has to be diagnosed before it can be described,
+	# and that probe can take its full 15 seconds on the very networks this is for.
+	# Answering the press with nothing for that long is the dead-button complaint all
+	# over again -- so the screen says what it is doing. It is not a verdict, so
+	# there is nothing to hand on to anybody yet.
+	assert_false(Welcome.offers_copy(Welcome.DIAGNOSING_ERROR, true),
+		"a diagnosis still in progress is nobody else's to act on")
+	for language: String in TranslationServer.get_loaded_locales():
+		var translation: Translation = TranslationServer.get_translation_object(language)
+		if not translation:
+			continue
+		assert_ne(translation.get_message(Welcome.DIAGNOSING_ERROR), "",
+			"%s should be translated into %s" % [Welcome.DIAGNOSING_ERROR, language])
+
+
+func test_nothing_is_offered_where_there_is_no_clipboard() -> void:
+	# Pressing it would do nothing and then claim it had.
+	for key: String in Welcome.REPORTABLE_ERRORS:
+		assert_false(Welcome.offers_copy(key, false), "%s has nowhere to copy to" % key)
+
+
+func test_the_report_carries_what_its_reader_asks_first() -> void:
+	var report: String = Utils.support_report("le message", HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR)
+	assert_string_contains(report, "le message", "the message the reader saw")
+	assert_string_contains(report, Utils.get_application_version_with_code(),
+		"which build it came from")
+	assert_string_contains(report, "RESULT_TLS_HANDSHAKE_ERROR",
+		"and what failed -- this one says the connection was intercepted, not dropped")
+
+
+func test_the_report_does_not_sign_itself_off_as_a_success() -> void:
+	# Nothing failed at that level, so naming the result would contradict the message
+	# above it, and be the first thing a technician queried.
+	var report: String = Utils.support_report("le message", HTTPRequest.RESULT_SUCCESS)
+	assert_false(report.contains("RESULT_SUCCESS"), "a report cannot report success")
+	assert_string_contains(report, Utils.get_application_version_with_code(),
+		"the build still goes with it")
+
+
+func test_the_copy_offer_is_translated() -> void:
+	for key: String in ["COPY_ERROR_MESSAGE", "ERROR_MESSAGE_COPIED"]:
+		assert_ne(tr(key), key, "%s should be translated" % key)
+
+
+func test_the_copy_offer_is_scrolled_into_view() -> void:
+	# It sits under a message long enough to leave it below the fold, so the one
+	# control the reader is invited to press would be the one thing off screen.
+	# Shown by hand: headless has no clipboard, so the screen would not offer it.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var screen: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	viewport.add_child(screen)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	screen._show_login_error("LOGIN_KALULU_BLOCKED")
+	screen.copy_error_button.show()
+	await screen._scroll_to_login_error()
+	await get_tree().process_frame
+
+	var button: Rect2 = screen.copy_error_button.get_global_rect()
+	var visible_area: Rect2 = screen.scroll.get_global_rect()
+	assert_lte(button.end.y, visible_area.end.y + 1.0, "the offer should be in the column")
+	assert_gte(button.position.y, visible_area.position.y - 1.0, "and not above it")
+
+
 func test_other_failures_do_not_offer_a_reset() -> void:
 	# Resetting cannot help an unknown account, and the network failures could
 	# not send the mail anyway.

@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://bxd3i06rqpxf0"]
 
 [ext_resource type="Script" uid="uid://ddg138yuagx4i" path="res://sources/menus/register/steps/base_step.gd" id="1_02ocl"]
-[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="9_theme"]
 [ext_resource type="Script" uid="uid://bu80rel3g62k2" path="res://addons/godot-form-validator/form_validator.gd" id="2_nw61e"]
 [ext_resource type="Script" uid="uid://b11owjubqe3iw" path="res://sources/utils/binder/form_binder.gd" id="3_mk32l"]
 [ext_resource type="PackedScene" uid="uid://cr4q0ywceoasx" path="res://sources/utils/keyboard_spacer.tscn" id="6_i4s2p"]
+[ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="9_theme"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_question"]
 
@@ -39,8 +39,8 @@ mouse_filter = 2
 alignment = 2
 
 [node name="BackButton" type="Button" parent="LeftMargin/LeftContainer" unique_id=1328987959]
-layout_mode = 2
 custom_minimum_size = Vector2(442, 218)
+layout_mode = 2
 theme_type_variation = &"SecondaryButton"
 text = "BACK"
 
@@ -68,8 +68,8 @@ mouse_filter = 2
 alignment = 2
 
 [node name="ValidateButton" type="Button" parent="RightMargin/RightContainer" unique_id=1168378881]
-layout_mode = 2
 custom_minimum_size = Vector2(442, 218)
+layout_mode = 2
 theme_type_variation = &"PrimaryButton"
 text = "NEXT"
 

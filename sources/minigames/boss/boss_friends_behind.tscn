@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bn414q8by5f5u"]
 
-[ext_resource type="Script" path="res://sources/minigames/boss/boss_friends.gd" id="1_tb7t8"]
-[ext_resource type="SpriteFrames" path="res://sources/minigames/boss/friends/jellyfish_boss_animations.tres" id="2_58md4"]
+[ext_resource type="Script" uid="uid://dv8tndbys3dl1" path="res://sources/minigames/boss/boss_friends.gd" id="1_tb7t8"]
+[ext_resource type="SpriteFrames" uid="uid://d1vnf0wnrjkh3" path="res://sources/minigames/boss/friends/jellyfish_boss_animations.tres" id="2_58md4"]
 
 [node name="BossFriendsBehind" type="Node2D" unique_id=608080191]
 script = ExtResource("1_tb7t8")

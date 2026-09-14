@@ -17,7 +17,27 @@ LOGIN_WRONG_PASSWORD,Mot de passe incorrect,Contraseña incorrecta,Senha incorre
 LOGIN_MISSING_CREDENTIALS,Veuillez renseigner votre adresse mail et votre mot de passe,"Por favor, introduzca su correo electrónico y su contraseña","Por favor, informe seu e-mail e sua senha",Inserisci email e password
 LOGIN_SERVER_ERROR,"Erreur serveur, veuillez réessayer plus tard","Error del servidor, inténtelo más tarde","Erro do servidor, tente novamente mais tarde","Errore del server, riprova più tardi"
 LOGIN_NETWORK_ERROR,"Connexion au serveur échouée, vérifiez votre accès Internet","Error de conexión al servidor, verifique su acceso a Internet","Falha na conexão com o servidor, verifique seu acesso à Internet","Connessione al server fallita, verifica il tuo accesso a Internet"
+LOGIN_DIAGNOSING,"Erreur détectée. Diagnostic en cours, veuillez patienter…","Error detectado. Diagnóstico en curso, espere un momento…","Erro detectado. Diagnóstico em andamento, aguarde…","Errore rilevato. Diagnosi in corso, attendere…"
+LOGIN_KALULU_BLOCKED,"Vous êtes bien connecté à Internet, mais ce réseau empêche Kalulu de joindre son serveur (pare-feu ou proxy). Deux solutions : faire autoriser Kalulu sur ce réseau, ou vous connecter une fois depuis un autre réseau en laissant le pack de langue se télécharger — ensuite Kalulu fonctionne sans Internet.
+
+À transmettre au service réseau — domaines à autoriser :
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sí está conectado a Internet, pero esta red impide que Kalulu llegue a su servidor (cortafuegos o proxy). Dos soluciones: pedir que se autorice Kalulu en esta red, o conectarse una vez desde otra red dejando que se descargue el paquete de idioma; después Kalulu funciona sin Internet.
+
+Para el servicio de red — dominios que autorizar:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Você está conectado à Internet, mas esta rede impede que o Kalulu alcance seu servidor (firewall ou proxy). Duas soluções: pedir que o Kalulu seja autorizado nesta rede, ou conectar-se uma vez em outra rede deixando o pacote de idioma ser baixado; depois o Kalulu funciona sem Internet.
+
+Para a equipe de rede — domínios a liberar:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sei connesso a Internet, ma questa rete impedisce a Kalulu di raggiungere il suo server (firewall o proxy). Due soluzioni: chiedere di autorizzare Kalulu su questa rete, oppure collegarsi una volta da un'altra rete lasciando scaricare il pacchetto lingua; dopo Kalulu funziona senza Internet.
+
+Per il servizio di rete — domini da autorizzare:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
 RESET_PASSWORD,Réinitialiser le mot de passe,Restablecer la contraseña,Redefinir senha,Reimposta password
+COPY_ERROR_MESSAGE,Copier le message,Copiar el mensaje,Copiar a mensagem,Copia il messaggio
+ERROR_MESSAGE_COPIED,Message copié,Mensaje copiado,Mensagem copiada,Messaggio copiato
 CHECK_YOUR_EMAIL,Veuillez vérifier votre boîte mail,"Por favor, revise su correo electrónico","Por favor, verifique seu e-mail",Controlla la tua email
 RESET_PASSWORD_FAILED,"Erreur lors de la réinitialisation, réessayez plus tard","Error al restablecer la contraseña, inténtelo más tarde","Erro ao redefinir a senha, tente novamente mais tarde","Errore nel reimpostare la password, riprova più tardi"
 DEVICE_NUMBER,Appareil {number},Dispositivo {number},Dispositivo {number},Dispositivo {number}
@@ -420,6 +440,15 @@ ACCOUNT_CREATED,Votre compte a bien été créé,Su cuenta se ha creado correcta
 KALULU_READY_TO_EXPLORE,Kalulu est prêt à explorer avec vous !,¡Kalulu está listo para explorar con usted!,Kalulu está pronto para explorar com você!,Kalulu è pronto a esplorare con te!
 CODES_SAVED_IN_FOLDER,"Vos codes sont enregistrés dans : {folder}","Sus códigos están guardados en: {folder}","Seus códigos estão salvos em: {folder}","I tuoi codici sono salvati in: {folder}"
 CODES_AVAILABLE_IN_SETTINGS,"Vos codes restent accessibles à tout moment dans les paramètres.","Sus códigos siguen estando disponibles en los ajustes.","Seus códigos continuam disponíveis nas configurações.","I tuoi codici restano disponibili nelle impostazioni."
+PREPARING_CODE_SHEET,"Préparation de la feuille de codes…","Preparando la hoja de códigos…","Preparando a folha de códigos…","Preparazione del foglio dei codici…"
+CODE_SHEET_SAVED_AT,"La feuille de codes est enregistrée : {path}","La hoja de códigos está guardada en: {path}","A folha de códigos está salva em: {path}","Il foglio dei codici è salvato in: {path}"
+CODE_SHEET_SAVED,"La feuille de codes est enregistrée à l'emplacement choisi.","La hoja de códigos se guardó en la ubicación elegida.","A folha de códigos foi salva no local escolhido.","Il foglio dei codici è stato salvato nella posizione scelta."
+CODE_SHEET_SAVED_IN_DOCUMENTS,"Aucun dossier n'a pu être proposé par l'appareil : la feuille de codes est enregistrée dans son dossier Documents.","El dispositivo no pudo ofrecer ninguna carpeta: la hoja de códigos está guardada en su carpeta Documentos.","O aparelho não pôde oferecer nenhuma pasta: a folha de códigos está salva na pasta Documentos dele.","Il dispositivo non ha potuto proporre nessuna cartella: il foglio dei codici è salvato nella sua cartella Documenti."
+CODE_SHEET_SAVED_ELSEWHERE,"Le dossier choisi n'a pas accepté le fichier : la feuille de codes est enregistrée dans le dossier Documents de l'appareil.","La carpeta elegida no aceptó el archivo: la hoja de códigos está guardada en la carpeta Documentos del dispositivo.","A pasta escolhida não aceitou o arquivo: a folha de códigos está salva na pasta Documentos do aparelho.","La cartella scelta non ha accettato il file: il foglio dei codici è salvato nella cartella Documenti del dispositivo."
+CODE_SHEET_KEPT_IN_APP,"Aucun dossier n'a été choisi. Une copie de la feuille de codes est conservée dans l'application : vous pouvez l'enregistrer à nouveau à tout moment depuis les paramètres.","No se eligió ninguna carpeta. Una copia de la hoja de códigos se conserva en la aplicación: puede volver a guardarla en cualquier momento desde los ajustes.","Nenhuma pasta foi escolhida. Uma cópia da folha de códigos fica guardada no aplicativo: você pode salvá-la novamente a qualquer momento nas configurações.","Non è stata scelta nessuna cartella. Una copia del foglio dei codici è conservata nell'applicazione: puoi salvarlo di nuovo in qualsiasi momento dalle impostazioni."
+CODE_SHEET_KEPT_IN_APP_ONLY,"Cet appareil n'autorise pas l'enregistrement dans un dossier. La feuille de codes est conservée dans l'application, et les codes restent affichés dans les paramètres.","Este dispositivo no permite guardar en una carpeta. La hoja de códigos se conserva en la aplicación y los códigos siguen visibles en los ajustes.","Este dispositivo não permite salvar em uma pasta. A folha de códigos fica guardada no aplicativo e os códigos continuam visíveis nas configurações.","Questo dispositivo non consente il salvataggio in una cartella. Il foglio dei codici è conservato nell'applicazione e i codici restano visibili nelle impostazioni."
+CODE_SHEET_IN_THE_FILES_APP,"La feuille de codes est disponible dans l'application Fichiers, dossier Kalulu.","La hoja de códigos está disponible en la app Archivos, carpeta Kalulu.","A folha de códigos está disponível no app Arquivos, pasta Kalulu.","Il foglio dei codici è disponibile nell'app File, cartella Kalulu."
+CODE_SHEET_FAILED,"La feuille de codes n'a pas pu être créée. Les codes restent affichés dans les paramètres.","No se pudo crear la hoja de códigos. Los códigos siguen visibles en los ajustes.","Não foi possível criar a folha de códigos. Os códigos continuam visíveis nas configurações.","Non è stato possibile creare il foglio dei codici. I codici restano visibili nelle impostazioni."
 REGISTRATION_SUMMARY,Récapitulatif de l’inscription,Resumen del registro,Resumo do registro,Riepilogo della registrazione
 SAVE_ALL_CODES,Enregistrer tous les codes,Guardar todos los códigos,Salvar todos os códigos,Salva tutti i codici
 VALIDATE,Confirmer,Confirmar,Confirmar,Conferma
@@ -469,6 +498,26 @@ INVALID_LANGUAGE_DIRECTORY,Dossier de langue invalide,Carpeta de idioma no váli
 NO_INTERNET_ACCESS,Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion et réessayer.,No está conectado a Internet. Compruebe su conexión e inténtelo de nuevo.,Você não está conectado à Internet. Verifique sua conexão e tente novamente.,Non sei connesso a Internet. Verifica la connessione e riprova.
 NO_LANGUAGE_PACK_TITLE,Connexion Internet requise,Se requiere conexión a Internet,É necessária conexão com a Internet,È necessaria una connessione a Internet
 NO_LANGUAGE_PACK_POPUP,"Kalulu a besoin d'une connexion à Internet pour télécharger les données de la langue avant de pouvoir être utilisé. Veuillez vous connecter à Internet, puis réessayer.","Kalulu necesita conexión a Internet para descargar los datos del idioma antes de poder usarse. Conéctese a Internet y vuelva a intentarlo.","O Kalulu precisa de conexão com a Internet para baixar os dados do idioma antes de poder ser usado. Conecte-se à Internet e tente novamente.","Kalulu ha bisogno di una connessione a Internet per scaricare i dati della lingua prima di poter essere usato. Collegati a Internet e riprova."
+KALULU_BLOCKED_TITLE,"Ce réseau bloque Kalulu","Esta red bloquea Kalulu","Esta rede bloqueia o Kalulu","Questa rete blocca Kalulu"
+DOWNLOAD_KALULU_BLOCKED,"Vous êtes bien connecté à Internet, mais ce réseau empêche Kalulu de télécharger le pack de langue (pare-feu ou proxy). Deux solutions : faire autoriser Kalulu sur ce réseau, ou terminer ce téléchargement une fois depuis un autre réseau — ensuite Kalulu fonctionne sans Internet.
+
+À transmettre au service réseau — domaines à autoriser :
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sí está conectado a Internet, pero esta red impide que Kalulu descargue el paquete de idioma (cortafuegos o proxy). Dos soluciones: pedir que se autorice Kalulu en esta red, o terminar esta descarga una vez desde otra red; después Kalulu funciona sin Internet.
+
+Para el servicio de red — dominios que autorizar:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Você está conectado à Internet, mas esta rede impede que o Kalulu baixe o pacote de idioma (firewall ou proxy). Duas soluções: pedir que o Kalulu seja autorizado nesta rede, ou concluir este download uma vez em outra rede; depois o Kalulu funciona sem Internet.
+
+Para a equipe de rede — domínios a liberar:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com","Sei connesso a Internet, ma questa rete impedisce a Kalulu di scaricare il pacchetto lingua (firewall o proxy). Due soluzioni: chiedere di autorizzare Kalulu su questa rete, oppure completare questo scaricamento una volta da un'altra rete; dopo Kalulu funziona senza Internet.
+
+Per il servizio di rete — domini da autorizzare:
+• api.kalulu.org
+• kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
+SERVER_UNAVAILABLE_TITLE,"Le serveur de Kalulu est indisponible","El servidor de Kalulu no está disponible","O servidor do Kalulu está indisponível","Il server di Kalulu non è disponibile"
+NO_LANGUAGE_PACK_SERVER_ERROR,"Kalulu n'a pas pu récupérer le pack de langue : son serveur a répondu par une erreur. Votre connexion Internet n'est pas en cause. Réessayez dans un moment.","Kalulu no pudo obtener el paquete de idioma: su servidor respondió con un error. Su conexión a Internet no tiene la culpa. Inténtelo de nuevo en un momento.","O Kalulu não conseguiu obter o pacote de idioma: seu servidor respondeu com um erro. Sua conexão com a Internet não é a causa. Tente novamente em instantes.","Kalulu non è riuscito a recuperare il pacchetto lingua: il suo server ha risposto con un errore. La tua connessione a Internet non c'entra. Riprova tra poco."
 TRY_AGAIN,Réessayer,Volver a intentarlo,Tentar novamente,Riprova
 ERROR_EXTRACTING_PACKAGE,Le pack de langue téléchargé n'a pas pu être extrait. Veuillez réessayer.,No se ha podido extraer el paquete de idioma descargado. Inténtelo de nuevo.,Não foi possível extrair o pacote de idioma baixado. Tente novamente.,Impossibile estrarre il pacchetto lingua scaricato. Riprova.
 ERROR_INVALID_PACKAGE,Le pack de langue téléchargé est invalide ou incomplet. Veuillez réessayer plus tard.,El paquete de idioma descargado no es válido o está incompleto. Inténtelo de nuevo más tarde.,O pacote de idioma baixado é inválido ou está incompleto. Tente novamente mais tarde.,Il pacchetto lingua scaricato non è valido o è incompleto. Riprova più tardi.
