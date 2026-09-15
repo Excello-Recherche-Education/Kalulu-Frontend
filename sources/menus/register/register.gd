@@ -51,6 +51,11 @@ var built_devices_count: int = NO_DEVICE_STEPS
 const FAILURE_NOTICES: Dictionary[String, Dictionary] = {
 	"blocked": {"title": "KALULU_BLOCKED_TITLE", "message": "REGISTER_KALULU_BLOCKED"},
 	"offline": {"title": "NO_LANGUAGE_PACK_TITLE", "message": "LOGIN_NETWORK_ERROR"},
+	"dns": {"title": "DNS_FILTERED_TITLE", "message": "REGISTER_DNS_FILTERED"},
+	"intercepted": {"title": "TLS_INTERCEPTED_TITLE", "message": "REGISTER_TLS_INTERCEPTED"},
+	"clock": {"title": "CLOCK_SKEW_TITLE", "message": "REGISTER_CLOCK_SKEW"},
+	"proxy_required": {"title": "PROXY_REQUIRED_TITLE", "message": "REGISTER_PROXY_REQUIRED"},
+	"proxy_available": {"title": "PROXY_AVAILABLE_TITLE", "message": "REGISTER_PROXY_AVAILABLE"},
 	"server": {"title": "SERVER_UNAVAILABLE_TITLE", "message": "LOGIN_SERVER_ERROR"},
 	"other": {"title": "REGISTER_FAILED", "message": ""},
 }
@@ -64,6 +69,7 @@ var popup_copy_text: String = ""
 @onready var popup_title_label: Label = %Title
 @onready var popup_copy_button: Button = %CopyButton
 @onready var code_limit_popup: ConfirmPopup = %CodeLimitPopup
+@onready var proxy_panel: ProxySettings = %ProxyPanel
 
 
 func _ready() -> void:
@@ -278,14 +284,19 @@ func _remove_future_steps() -> void:
 	built_devices_count = NO_DEVICE_STEPS
 
 
-## Which notice a failed request deserves, given its code and the diagnosis.
+## Which notice a failed request deserves, given its code and the diagnosed slot.
 ##
 ## Extracted so every answer can be checked without a server. The one that used to be
 ## wrong is `blocked`: a network filtering Kalulu got "Une erreur est survenue" over an
 ## empty card, after the whole wizard had been filled in.
-static func notice_for(code: int, blocked: bool) -> Dictionary:
-	if code == 0:
-		return FAILURE_NOTICES["blocked"] if blocked else FAILURE_NOTICES["offline"]
+##
+## The slot is only consulted for the codes that carry no answer of their own -- see
+## [method ServerManagerClass.needs_diagnosis]. A 4xx has the server's own words and a
+## 5xx is the server's own failure; neither is about the network, and running a
+## diagnosis over either would describe a connection that plainly worked.
+static func notice_for(code: int, slot: String) -> Dictionary:
+	if ServerManagerClass.needs_diagnosis(code):
+		return FAILURE_NOTICES.get(slot, FAILURE_NOTICES["blocked"])
 	if code >= 500:
 		return FAILURE_NOTICES["server"]
 	return FAILURE_NOTICES["other"]
@@ -296,17 +307,21 @@ static func notice_for(code: int, blocked: bool) -> Dictionary:
 ## A 4xx is this registration's own -- an address already taken, a field the server
 ## refused -- and mailing it to a technician sends the reader down a corridor for
 ## nothing.
-static func is_reportable(code: int) -> bool:
-	return code == 0 or code >= 500
+static func is_reportable(code: int, slot: String = "") -> bool:
+	if ServerManagerClass.needs_diagnosis(code):
+		# A clock two years out and a proxy Kalulu has already switched on are the
+		# reader's own, however much they look like network failures from here.
+		return ConnectionNotice.is_reportable(slot)
+	return code >= 500
 
 
 ## Puts a failed request in front of the teacher, with something true on the card.
 func _show_failure(code: int, from_the_server: String) -> void:
-	var blocked: bool = false
-	if code == 0:
-		blocked = await (ServerManager as ServerManagerClass).diagnose_connection_failure() \
-				== ServerManagerClass.ConnectionFailure.KALULU_BLOCKED
-	var notice: Dictionary = notice_for(code, blocked)
+	var slot: String = ""
+	if ServerManagerClass.needs_diagnosis(code):
+		slot = ConnectionNotice.slot_for(
+				await (ServerManager as ServerManagerClass).diagnose_connection_failure(code))
+	var notice: Dictionary = notice_for(code, slot)
 	var title: String = tr(str(notice["title"]))
 	# The server's own words only where we have nothing better: they are the backend's
 	# English, and it says nothing at all when the request never reached it.
@@ -317,9 +332,15 @@ func _show_failure(code: int, from_the_server: String) -> void:
 	popup_info_label.text = message
 	popup_copy_text = Utils.support_report("%s\n\n%s" % [title, message],
 			(ServerManager as ServerManagerClass).last_result_code)
-	popup_copy_button.visible = is_reportable(code) \
+	popup_copy_button.visible = is_reportable(code, slot) \
 			and DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD)
 	popup_copy_button.text = Utils.COPY_TEXT
+	# Only under a network failure: the card also carries "this address is already
+	# used" and a server error, and neither is helped by a proxy.
+	if slot.is_empty():
+		proxy_panel.hide()
+	else:
+		proxy_panel.refresh((ServerManager as ServerManagerClass).last_diagnosis)
 	popup.show()
 
 
