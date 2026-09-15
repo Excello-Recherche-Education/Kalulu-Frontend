@@ -15,6 +15,7 @@ enum DownloadError {
 	CLOCK_SKEW,
 	PROXY_REQUIRED,
 	PROXY_AVAILABLE,
+	CANNOT_SAVE,
 }
 ## What to do about the pack download itself.
 enum DownloadOutcome {
@@ -24,6 +25,8 @@ enum DownloadOutcome {
 	NO_RESPONSE,
 	## S3 answered, and not with the file.
 	REFUSED,
+	## The bytes arrived and this device would not keep them.
+	CANNOT_SAVE,
 }
 ## What to do about the server's answer for the language pack URL.
 enum PackUrlOutcome {
@@ -78,6 +81,8 @@ const DEAD_END_NOTICES: Dictionary[int, Dictionary] = {
 	# a connection that is doing its job.
 	DownloadError.DOWNLOAD_FAILED:
 		{"title": "SERVER_UNAVAILABLE_TITLE", "message": "NO_LANGUAGE_PACK_SERVER_ERROR"},
+	DownloadError.CANNOT_SAVE:
+		{"title": "CANNOT_SAVE_TITLE", "message": "DOWNLOAD_CANNOT_SAVE"},
 }
 ## The failures somebody else has to act on, and which are therefore worth copying.
 ##
@@ -110,6 +115,7 @@ const ERROR_MESSAGES: Array[String] = [
 	"DOWNLOAD_CLOCK_SKEW",
 	"DOWNLOAD_PROXY_REQUIRED",
 	"DOWNLOAD_PROXY_AVAILABLE",
+	"DOWNLOAD_CANNOT_SAVE",
 ]
 
 var language: String
@@ -275,7 +281,16 @@ static func outcome_for_pack_url(code: int) -> PackUrlOutcome:
 ## body never arrived whole, and a truncated archive used to go to the extraction
 ## thread anyway, to fail there as a corrupt package. A proxy cutting the download
 ## short produces exactly that.
+##
+## Two of the result codes are not about the network at all. HTTPRequest writes the
+## archive to disk as it arrives, so a device with no room left, or a language folder
+## it cannot write to, fails here -- and swept in with the rest it was diagnosed as a
+## network problem, which produced a notice about firewalls and a retry that could
+## only ever fail the same way. Nothing on the network can make a full disk writable.
 static func outcome_for_pack_download(result_code: int, response_code: int) -> DownloadOutcome:
+	if result_code in [HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN,
+			HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR]:
+		return DownloadOutcome.CANNOT_SAVE
 	if result_code != HTTPRequest.RESULT_SUCCESS:
 		return DownloadOutcome.NO_RESPONSE
 	if response_code == 200:
@@ -291,7 +306,16 @@ static func outcome_for_pack_download(result_code: int, response_code: int) -> D
 func _report_failed_download(result_code: int, response_code: int) -> void:
 	error_label.show()
 	failure_result_code = result_code
-	if outcome_for_pack_download(result_code, response_code) == DownloadOutcome.REFUSED:
+	var outcome: DownloadOutcome = outcome_for_pack_download(result_code, response_code)
+	if outcome == DownloadOutcome.CANNOT_SAVE:
+		# The bytes were arriving and this device would not keep them. Diagnosing the
+		# network here would name a cause that has nothing to do with it, and offer a
+		# retry that cannot come out differently.
+		Log.error("PackageDownloader: The pack could not be written to disk (%s)"
+				% ServerManagerClass.http_result_name(result_code))
+		_show_error(DownloadError.CANNOT_SAVE)
+		return
+	if outcome == DownloadOutcome.REFUSED:
 		# S3 answered, so the network is fine and the URL is not. It is presigned and
 		# short-lived, and asking again mints a new one, which is what the retry does.
 		Log.warn("PackageDownloader: The pack download was refused with HTTP code %d" % response_code)

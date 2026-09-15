@@ -172,6 +172,22 @@ func test_every_error_has_a_message() -> void:
 		"every DownloadError needs its translation key, in the same order")
 
 
+func test_the_messages_line_up_with_the_values_they_belong_to() -> void:
+	# Matching sizes are not enough: a value inserted in the middle of the enum with
+	# its message appended at the end leaves both lists the same length and every
+	# entry after the insertion pointing at its neighbour's message. It happened here,
+	# and the notice it produced was about somebody else's problem entirely.
+	#
+	# Only the keys written to the convention can be checked this way; the older names
+	# -- NO_INTERNET_ACCESS, ERROR_DOWNLOADING -- predate it and are left alone.
+	for error: int in PackageDownloader.DownloadError.values():
+		var message: String = PackageDownloader.ERROR_MESSAGES[error]
+		if not message.begins_with("DOWNLOAD_"):
+			continue
+		assert_eq(message, "DOWNLOAD_" + PackageDownloader.DownloadError.keys()[error],
+			"%s has its neighbour's message" % PackageDownloader.DownloadError.keys()[error])
+
+
 func test_every_network_notice_is_written_in_every_language_the_app_speaks() -> void:
 	# A row missing from one column of the CSV shows the raw key, in capitals, to the
 	# teachers reading that language and to nobody else -- so it survives every test
@@ -218,3 +234,31 @@ func test_the_blocked_message_is_the_one_the_error_maps_to() -> void:
 	var messages: Array[String] = PackageDownloader.ERROR_MESSAGES
 	assert_eq(messages[PackageDownloader.DownloadError.KALULU_BLOCKED], "DOWNLOAD_KALULU_BLOCKED")
 	assert_eq(messages[PackageDownloader.DownloadError.NO_INTERNET], "NO_INTERNET_ACCESS")
+
+
+# --- A full disk is not a network problem ------------------------------------------
+func test_a_download_the_device_would_not_keep_is_not_diagnosed_as_the_network() -> void:
+	# HTTPRequest writes the archive to disk as it arrives, so no room left -- or a
+	# language folder it cannot write to -- fails here. Swept in with the rest it came
+	# back as a notice about firewalls and proxies, with a retry that could only fail
+	# the same way: nothing on the network makes a full disk writable.
+	for result: int in [HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN,
+			HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR]:
+		assert_eq(PackageDownloader.outcome_for_pack_download(result, 200),
+			PackageDownloader.DownloadOutcome.CANNOT_SAVE,
+			"%s is this device's own" % ServerManagerClass.http_result_name(result))
+
+
+func test_a_connection_that_died_is_still_a_missing_response() -> void:
+	# The distinction has to stay narrow: everything else that stops a transfer is
+	# still the network's, and still worth diagnosing.
+	for result: int in [HTTPRequest.RESULT_TIMEOUT, HTTPRequest.RESULT_CANT_CONNECT,
+			HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR, HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH]:
+		assert_eq(PackageDownloader.outcome_for_pack_download(result, 200),
+			PackageDownloader.DownloadOutcome.NO_RESPONSE,
+			"%s is not about storage" % ServerManagerClass.http_result_name(result))
+
+
+func test_being_unable_to_save_is_nobody_else_s_to_fix() -> void:
+	assert_false(PackageDownloader.DownloadError.CANNOT_SAVE in PackageDownloader.REPORTABLE_ERRORS,
+		"a network administrator cannot free up space on this tablet")
