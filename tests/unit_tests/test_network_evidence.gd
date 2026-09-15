@@ -30,21 +30,40 @@ func test_a_request_that_came_back_is_not_a_failure_at_all() -> void:
 
 # --- DNS ------------------------------------------------------------------------
 
-func test_a_name_that_does_not_resolve_is_filtering_and_not_an_absent_network() -> void:
+func test_a_name_that_does_not_resolve_on_a_working_connection_is_filtering() -> void:
 	# The distinction the old single probe could not make: a refused name and an
-	# unplugged cable both stop the request before anything is dialled.
+	# unplugged cable both stop the request before anything is dialled. What tells
+	# them apart is whether anything else on the device reaches the internet.
 	var evidence: ConnectionEvidence = _failed()
 	evidence.host_resolved = false
 	evidence.host_address = ""
+	evidence.probe_reached_internet = true
 	assert_eq(ServerManagerClass.diagnose(evidence), Cause.DNS_FILTERED)
 
 
-func test_a_name_answered_with_a_local_address_is_filtering_too() -> void:
+func test_a_name_that_does_not_resolve_with_no_internet_either_is_just_offline() -> void:
+	# In airplane mode nothing resolves. Reading that as a DNS filter would send a
+	# teacher to argue with an administrator about a domain nobody has blocked --
+	# and it is the likelier of the two situations by a long way.
+	var evidence: ConnectionEvidence = _failed()
+	evidence.host_resolved = false
+	evidence.host_address = ""
+	evidence.probe_reached_internet = false
+	evidence.probe_result = HTTPRequest.RESULT_CANT_RESOLVE
+	assert_eq(ServerManagerClass.diagnose(evidence), Cause.NO_NETWORK)
+
+
+func test_a_name_answered_with_a_local_address_needs_no_corroboration() -> void:
 	# The commoner half of DNS filtering, and the invisible one: the name resolves,
 	# the connection is made, and what answers is the filter's own block page.
+	#
+	# Unlike a name that will not resolve, this one stands on its own: an absent
+	# network answers nothing at all, it does not answer 127.0.0.1. So it is read as
+	# filtering even with no reachable internet to confirm it.
 	for address: String in ["0.0.0.0", "127.0.0.1", "192.168.1.1", "10.0.0.5", "172.20.1.1"]:
 		var evidence: ConnectionEvidence = _failed()
 		evidence.host_address = address
+		evidence.probe_reached_internet = false
 		assert_eq(ServerManagerClass.diagnose(evidence), Cause.DNS_FILTERED,
 			"%s cannot be Kalulu's API, which is on AWS" % address)
 
@@ -134,6 +153,7 @@ func test_a_working_system_proxy_outranks_naming_what_blocked_the_direct_route()
 	# useless.
 	var evidence: ConnectionEvidence = _failed()
 	evidence.host_resolved = false
+	evidence.probe_reached_internet = true
 	evidence.system_proxy_works = true
 	assert_eq(ServerManagerClass.diagnose(evidence), Cause.PROXY_AVAILABLE)
 

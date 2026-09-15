@@ -56,6 +56,13 @@ const HEALTH_ANSWER_MARKER: String = "\"status\""
 ## Long enough for a slow school line, short enough not to sit on a dead one. The
 ## screen is showing "diagnosing" for the whole of it, so it is a visible cost.
 const UNSAFE_PROBE_TIMEOUT_SECONDS: float = 15.0
+## Passed instead of a result code by a caller whose failure *was* the last request.
+##
+## Not every caller's did. The language pack downloader gives up before it ever calls
+## the API -- its own internet probe failed first -- so [member last_result_code] there
+## belongs to whatever ran last, which may well have succeeded. Read as this failure's,
+## it would report a healthy connection over a screen that cannot reach anything.
+const USE_LAST_RESULT: int = -1
 ## Month names as an HTTP Date header spells them -- the format is fixed by RFC 7231
 ## and is always English, whatever the device's locale.
 const MONTHS: PackedStringArray = [
@@ -446,11 +453,13 @@ func check_internet_access() -> bool:
 ## blocked host look exactly like an absent network, and a proxy makes an unreachable
 ## one look like a certificate problem. So the answer comes from a second probe, on a
 ## host that has nothing to do with Kalulu.
-func diagnose_connection_failure(http_code: int = 0) -> ConnectionFailure:
-	if last_result_code == HTTPRequest.RESULT_SUCCESS and http_code != PROXY_AUTH_REQUIRED_CODE:
+func diagnose_connection_failure(http_code: int = 0,
+		request_result: int = USE_LAST_RESULT) -> ConnectionFailure:
+	var result: int = last_result_code if request_result == USE_LAST_RESULT else request_result
+	if result == HTTPRequest.RESULT_SUCCESS and http_code != PROXY_AUTH_REQUIRED_CODE:
 		return ConnectionFailure.NONE
 
-	var evidence: ConnectionEvidence = await gather_evidence(http_code)
+	var evidence: ConnectionEvidence = await gather_evidence(http_code, request_result)
 	var failure: ConnectionFailure = diagnose(evidence)
 	last_diagnosis = failure
 	Log.info(("ServerManager: Diagnosed %s (request %s, probe %s, host %s, "
@@ -471,9 +480,11 @@ func diagnose_connection_failure(http_code: int = 0) -> ConnectionFailure:
 ## that lets the cheap ones spare the expensive ones: a name that does not resolve
 ## makes the unverified retry pointless, and the retry answering makes the third-party
 ## probe pointless, since something is demonstrably reachable.
-func gather_evidence(http_code: int = 0) -> ConnectionEvidence:
+func gather_evidence(http_code: int = 0,
+		request_result: int = USE_LAST_RESULT) -> ConnectionEvidence:
 	var evidence: ConnectionEvidence = ConnectionEvidence.new()
-	evidence.request_result = last_result_code
+	evidence.request_result = last_result_code if request_result == USE_LAST_RESULT \
+			else request_result
 	evidence.proxy_auth_required = http_code == PROXY_AUTH_REQUIRED_CODE
 	if evidence.proxy_auth_required:
 		# It has named itself. Every further probe would go through the same proxy and
@@ -494,21 +505,23 @@ func gather_evidence(http_code: int = 0) -> ConnectionEvidence:
 	var address: String = await resolve_host(host)
 	evidence.host_resolved = not address.is_empty()
 	evidence.host_address = address
-	if not evidence.host_resolved or ConnectionEvidence.address_is_local(address):
-		# Nothing was ever dialled, or what answers is not on the internet. Probing
-		# further only measures the filter.
+	if ConnectionEvidence.address_is_local(address):
+		# What answers is not on the internet. Probing further only measures the filter.
 		return evidence
 
-	var retry: Dictionary = await probe_without_certificate_check()
-	evidence.unsafe_reached = retry["reached"] as bool
-	evidence.unsafe_body_is_ours = retry["body_is_ours"] as bool
-	if retry["date_header"] != "":
-		evidence.clock_offset_seconds = clock_offset_from(str(retry["date_header"]))
-		evidence.clock_offset_known = true
+	if evidence.host_resolved:
+		var retry: Dictionary = await probe_without_certificate_check()
+		evidence.unsafe_reached = retry["reached"] as bool
+		evidence.unsafe_body_is_ours = retry["body_is_ours"] as bool
+		if retry["date_header"] != "":
+			evidence.clock_offset_seconds = clock_offset_from(str(retry["date_header"]))
+			evidence.clock_offset_known = true
+		if evidence.unsafe_reached:
+			return evidence
 
-	if evidence.unsafe_reached:
-		return evidence
-
+	# Either the name did not resolve, or nothing answered on it. Both leave the same
+	# question, and it is the one that separates a filter from an absent network:
+	# does anything on this device reach the internet at all.
 	evidence.probe_reached_internet = await check_internet_access()
 	evidence.probe_result = last_internet_result_code
 	return evidence
@@ -673,10 +686,11 @@ static func diagnose(evidence: ConnectionEvidence) -> ConnectionFailure:
 	if evidence.system_proxy_works:
 		return ConnectionFailure.PROXY_AVAILABLE
 
-	# Asked before anything about connections, because a name that does not resolve
-	# means no connection was ever attempted -- and a filter that answers with one of
-	# its own addresses would otherwise be read as our server behaving strangely.
-	if not evidence.host_resolved or ConnectionEvidence.address_is_local(evidence.host_address):
+	# An address that belongs to this LAN is positive evidence all on its own: an
+	# absent network answers nothing, it does not answer 127.0.0.1. So this one needs
+	# no corroboration, and is asked before anything about connections -- a filter
+	# answering for our host would otherwise read as our server behaving strangely.
+	if ConnectionEvidence.address_is_local(evidence.host_address):
 		return ConnectionFailure.DNS_FILTERED
 
 	if evidence.unsafe_reached:
@@ -689,6 +703,12 @@ static func diagnose(evidence: ConnectionEvidence) -> ConnectionFailure:
 		return ConnectionFailure.TLS_INTERCEPTED
 
 	if evidence.probe_reached_internet:
+		# A name that does not resolve is only filtering if something else on this
+		# device does reach the internet. With no network at all nothing resolves
+		# either, and calling that a DNS filter sends somebody in airplane mode to
+		# argue with an administrator about a domain nobody blocked.
+		if not evidence.host_resolved:
+			return ConnectionFailure.DNS_FILTERED
 		# The device is online and only this app is being stopped.
 		return ConnectionFailure.KALULU_BLOCKED
 	# A probe that got as far as a rejected TLS handshake still proves something
