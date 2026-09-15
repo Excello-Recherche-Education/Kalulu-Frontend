@@ -199,3 +199,33 @@ func test_the_host_is_taken_out_of_whatever_shape_the_environment_url_is_in() ->
 	assert_eq(ServerManagerClass.host_of("http://192.168.1.4:8000/"), "192.168.1.4")
 	assert_eq(ServerManagerClass.host_of("api.kalulu.org/prod/"), "api.kalulu.org")
 	assert_eq(ServerManagerClass.host_of(""), "")
+
+
+# --- What the unverified retry is and is not allowed to prove ---------------------
+func test_a_retry_that_works_after_a_timeout_is_not_an_antivirus() -> void:
+	# The retry getting through proves the host is reachable *now*, and after a
+	# timeout or a dropped connection it routinely is. Read on its own it turned every
+	# transient failure into "a security program on your machine is intercepting your
+	# connection" -- a specific accusation about the teacher's own computer, and
+	# untrue. So the failed request has to have been about a certificate too.
+	for result: int in [HTTPRequest.RESULT_TIMEOUT, HTTPRequest.RESULT_CANT_CONNECT,
+			HTTPRequest.RESULT_CONNECTION_ERROR, HTTPRequest.RESULT_NO_RESPONSE]:
+		var evidence: ConnectionEvidence = _failed()
+		evidence.request_result = result
+		evidence.unsafe_reached = true
+		evidence.unsafe_body_is_ours = true
+		evidence.probe_reached_internet = true
+		assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.KALULU_BLOCKED,
+			"%s says nothing about a certificate" % ServerManagerClass.http_result_name(result))
+
+
+func test_a_clock_is_only_blamed_when_a_certificate_was_refused() -> void:
+	# Same trap, and worse: it sends a teacher into the device's date settings on a
+	# machine whose clock is perfectly right.
+	var evidence: ConnectionEvidence = _failed()
+	evidence.request_result = HTTPRequest.RESULT_TIMEOUT
+	evidence.unsafe_reached = true
+	evidence.clock_offset_known = true
+	evidence.clock_offset_seconds = -92 * 86400
+	evidence.probe_reached_internet = true
+	assert_ne(ServerManagerClass.diagnose(evidence), CAUSE.CLOCK_SKEW)

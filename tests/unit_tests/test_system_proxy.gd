@@ -155,3 +155,56 @@ func test_the_field_shows_the_pair_the_way_it_reads_it_back() -> void:
 
 func test_no_proxy_shows_an_empty_field_rather_than_a_placeholder_pair() -> void:
 	assert_eq(PROXY_SETTINGS._format("", 0), "")
+
+
+# --- The setting has to survive the next launch --------------------------------------
+func test_a_saved_proxy_is_still_on_disk_after_the_configuration_is_read_back() -> void:
+	# The environment and the proxy share one file, and reading the environment saves
+	# it. Read in the wrong order, the save writes the proxy back at its defaults: the
+	# launch that does it notices nothing -- the values it uses came out of the copy
+	# already in memory -- and the next one comes up with no proxy at all, on exactly
+	# the machines that cannot connect without one.
+	var server: ServerManagerClass = ServerManager as ServerManagerClass
+	var saved_host: String = server.proxy_host
+	var saved_port: int = server.proxy_port
+	var saved_enabled: bool = server.proxy_enabled
+
+	server.set_proxy("proxy.ecole.fr", 3128, true)
+	# A fresh launch, which is the only situation the bug shows in: the members are at
+	# their defaults and the file is the only place the proxy still exists. With them
+	# already filled in, the save during the read writes the right values by accident
+	# and the test cannot fail.
+	server.proxy_host = ""
+	server.proxy_port = 0
+	server.proxy_enabled = false
+	server.load_configuration()
+
+	assert_eq(server.proxy_host, "proxy.ecole.fr", "it should come back into the node")
+	assert_eq(server.proxy_port, 3128)
+	assert_true(server.proxy_enabled)
+
+	var written: ConfigFile = ConfigFile.new()
+	assert_eq(written.load(ServerManagerClass.CONFIG_PATH), OK)
+	assert_eq(str(written.get_value("network", "proxy_host", "")), "proxy.ecole.fr",
+		"and it should still be in the file the next launch will read")
+	assert_true(bool(written.get_value("network", "proxy_enabled", false)))
+
+	server.set_proxy(saved_host, saved_port, saved_enabled)
+
+
+# --- Every way out of the app has to take the same route -------------------------------
+func test_the_language_pack_download_is_routed_through_the_proxy_too() -> void:
+	# Structural, because Godot offers no way to read a proxy back off an HTTPRequest.
+	# The pack is an archive of tens of megabytes fetched straight from S3 through the
+	# download screen's own node, so ServerManager applying the proxy to its own two
+	# requests is not enough: the API would answer through the proxy while the pack
+	# alone kept failing directly, and a fresh install with nothing on disk would have
+	# nowhere to go.
+	var source: String = FileAccess.get_file_as_string(
+			"res://sources/menus/language_selection/package_downloader.gd")
+	assert_false(source.is_empty(), "the download screen should be readable")
+	var applied: int = source.find("apply_proxy_to(http_request)")
+	var requested: int = source.find("http_request.request(")
+	assert_ne(applied, -1, "the pack download should be put on the proxy as well")
+	assert_true(applied < requested,
+		"and before the request, not after it")

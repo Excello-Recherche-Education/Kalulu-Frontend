@@ -138,8 +138,28 @@ var system_proxy_lookup_done: bool = false
 
 
 func _ready() -> void:
+	load_configuration()
+
+
+## Reads the whole of user://environment.cfg into this node.
+##
+## Split out of _ready so the order below can be checked: the environment and the
+## proxy come out of one file, one of them is saved back during the read, and getting
+## that sequence wrong loses the other silently -- a launch that looks perfectly
+## normal, and a next one that cannot connect.
+func load_configuration() -> void:
 	var config: ConfigFile = ConfigFile.new()
 	var load_error: Error = config.load(CONFIG_PATH)
+
+	# Read first, and before set_environment below, which saves the whole file: it
+	# would write these three back at their defaults and a proxy found to work on a
+	# previous run would be gone from disk. This launch would not notice -- the values
+	# are read out of the ConfigFile already in memory just after -- and the next one
+	# would come up unable to connect, on the machines that need a proxy most.
+	proxy_host = str(config.get_value("network", "proxy_host", ""))
+	proxy_port = int(config.get_value("network", "proxy_port", 0) as int)
+	proxy_enabled = bool(config.get_value("network", "proxy_enabled", false))
+
 	if load_error == OK:
 		environment_setting = int(config.get_value("environment", "current", 0) as int)
 		custom_environment_url = str(config.get_value("environment", "custom_url", ""))
@@ -149,12 +169,7 @@ func _ready() -> void:
 		Log.warn("ServerManager: Could not load environment config at %s. Error: %s. Falling back to PROD environment." % [ProjectSettings.globalize_path(CONFIG_PATH), error_string(load_error)])
 		set_environment(1)
 
-	# Read back before anything is sent, so a proxy that was found to work on a
-	# previous run is in place for the first request of this one rather than after
-	# its failure.
-	proxy_host = str(config.get_value("network", "proxy_host", ""))
-	proxy_port = int(config.get_value("network", "proxy_port", 0) as int)
-	proxy_enabled = bool(config.get_value("network", "proxy_enabled", false))
+	# In place before anything is sent, rather than after the first failure.
 	_apply_proxy()
 
 
@@ -294,11 +309,19 @@ func ensure_system_proxy_known() -> void:
 
 
 func _apply_proxy() -> void:
-	_apply_proxy_to(http_request)
-	_apply_proxy_to(internet_check)
+	apply_proxy_to(http_request)
+	apply_proxy_to(internet_check)
 
 
-func _apply_proxy_to(request: HTTPRequest) -> void:
+## Points somebody else's [HTTPRequest] at the same proxy, or back at a direct route.
+##
+## Public because this app does not make all of its requests here. The language pack
+## is an archive of tens of megabytes fetched straight from S3, so the downloader owns
+## the node that fetches it -- and on a network whose only way out is a proxy, leaving
+## that one direct means the API answers, the pack does not, and a fresh install with
+## no pack on disk has nowhere to go. Call it before the request, not once at startup:
+## the proxy is usually set in the middle of a failure, after the node was made.
+func apply_proxy_to(request: HTTPRequest) -> void:
 	if not request:
 		return
 	# An empty host is how HTTPRequest is told to go direct, so switching the proxy
@@ -507,7 +530,12 @@ func gather_evidence(http_code: int = 0,
 		# What answers is not on the internet. Probing further only measures the filter.
 		return evidence
 
-	if evidence.host_resolved:
+	# Only asked when the failure was about a certificate, which is the only thing
+	# this retry can explain -- and it is a request with verification switched off, so
+	# it is not made for curiosity's sake. It also costs up to its full timeout on the
+	# networks this runs on.
+	if evidence.host_resolved \
+			and evidence.request_result == HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR:
 		var retry: Dictionary = await probe_without_certificate_check()
 		evidence.unsafe_reached = retry["reached"] as bool
 		evidence.unsafe_body_is_ours = retry["body_is_ours"] as bool
@@ -596,7 +624,7 @@ func probe_without_certificate_check() -> Dictionary:
 	var probe: HTTPRequest = HTTPRequest.new()
 	probe.timeout = UNSAFE_PROBE_TIMEOUT_SECONDS
 	probe.set_tls_options(TLSOptions.client_unsafe())
-	_apply_proxy_to(probe)
+	apply_proxy_to(probe)
 	add_child(probe)
 	var url: String = environment_url + HEALTH_ROUTE
 	Log.trace("ServerManager: Retrying %s without certificate verification, for diagnosis only" % url)
@@ -691,7 +719,15 @@ static func diagnose(evidence: ConnectionEvidence) -> ConnectionFailure:
 	if ConnectionEvidence.address_is_local(evidence.host_address):
 		return ConnectionFailure.DNS_FILTERED
 
-	if evidence.unsafe_reached:
+	# Both of these say the certificate was the problem, so the failed request has to
+	# have said so too. An unverified retry getting through proves only that the host
+	# is reachable *now*: after a timeout or a dropped connection it succeeds
+	# routinely, and read on its own it turns every transient failure -- and every
+	# pack download that stalled on a different host -- into "an antivirus is
+	# intercepting your connection", which is a specific accusation about software on
+	# the teacher's machine and is simply untrue.
+	if evidence.unsafe_reached \
+			and evidence.request_result == HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR:
 		# Something is there, and the only reason the real request failed is that its
 		# certificate could not be trusted. Two things do that, and they are told
 		# apart by the clock, which is why the offset is measured at all.

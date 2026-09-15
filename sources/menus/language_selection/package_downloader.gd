@@ -229,6 +229,12 @@ func _start() -> void:
 		# still run offline if the download fails; it is only removed during
 		# extraction, once the new pack has been fully downloaded.
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(language + ".zip"))
+		# The archive comes straight from S3 through this screen's own node, so the
+		# proxy ServerManager was given -- by the panel on this very dialog, most
+		# likely -- has to be put on it as well. Without this the API answers through
+		# the proxy and the pack alone keeps failing directly, which on a fresh
+		# install with nothing on disk is a dead end.
+		(ServerManager as ServerManagerClass).apply_proxy_to(http_request)
 		Log.trace("PackageDownloader: Downloading pack from %s" % res.body.url)
 		var request_error: Error = http_request.request(res.body.url as String)
 		if request_error != OK:
