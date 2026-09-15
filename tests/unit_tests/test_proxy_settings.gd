@@ -43,7 +43,6 @@ func after_each() -> void:
 
 
 # --- Whether it is there at all ------------------------------------------------
-
 func test_it_starts_hidden() -> void:
 	# Before any diagnosis there is nothing for it to be about.
 	assert_false(panel.visible, "nothing has failed yet")
@@ -76,7 +75,6 @@ func test_filling_it_in_is_not_read_as_switching_it_on() -> void:
 
 
 # --- What it does with what is typed ---------------------------------------------
-
 func test_a_typed_address_reaches_the_server_manager() -> void:
 	var server: ServerManagerClass = ServerManager as ServerManagerClass
 	watch_signals(panel)
@@ -120,7 +118,6 @@ func test_switching_it_off_keeps_the_address_for_next_time() -> void:
 
 
 # --- The help ---------------------------------------------------------------------
-
 func test_the_help_button_explains_the_word_nobody_is_expected_to_know() -> void:
 	panel.refresh(ServerManagerClass.ConnectionFailure.KALULU_BLOCKED)
 	panel.help_button.pressed.emit()
@@ -147,7 +144,6 @@ func test_the_help_says_what_to_do_when_the_option_is_not_needed() -> void:
 
 
 # --- Both screens that show a network failure carry it -----------------------------
-
 func test_the_login_screen_has_one() -> void:
 	var welcome: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
 	add_child_autofree(welcome)

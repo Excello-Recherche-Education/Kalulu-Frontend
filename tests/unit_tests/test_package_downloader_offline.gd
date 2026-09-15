@@ -111,7 +111,6 @@ func test_an_answer_that_is_not_the_file_is_a_refusal() -> void:
 ## cause to one of its errors, and that is the half that silently rots: the enum here
 ## exists for archives and folders, so a network cause with no entry falls through to
 ## "you have no internet access" -- the wrong instruction for four of the five new ones.
-
 func test_every_diagnosed_cause_has_an_error_of_its_own() -> void:
 	var seen: Array[int] = []
 	for cause: int in ServerManagerClass.ConnectionFailure.values():

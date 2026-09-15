@@ -10,6 +10,22 @@ const NEXT_SCENE_PATH: String = "res://sources/menus/register/account_created.ts
 ## No device step has been built yet. Not a count any answer can produce, so the
 ## first pass through the device question always builds them.
 const NO_DEVICE_STEPS: int = -1
+## The heading and the message a failed request deserves, by translation key.
+##
+## An empty message means the server's own words are shown instead, which is all a 4xx
+## has to say. The three above it are ours: nothing came back at all, or nothing
+## usable, and the card is the only place in this wizard with room to explain it.
+const FAILURE_NOTICES: Dictionary[String, Dictionary] = {
+	"blocked": {"title": "KALULU_BLOCKED_TITLE", "message": "REGISTER_KALULU_BLOCKED"},
+	"offline": {"title": "NO_LANGUAGE_PACK_TITLE", "message": "LOGIN_NETWORK_ERROR"},
+	"dns": {"title": "DNS_FILTERED_TITLE", "message": "REGISTER_DNS_FILTERED"},
+	"intercepted": {"title": "TLS_INTERCEPTED_TITLE", "message": "REGISTER_TLS_INTERCEPTED"},
+	"clock": {"title": "CLOCK_SKEW_TITLE", "message": "REGISTER_CLOCK_SKEW"},
+	"proxy_required": {"title": "PROXY_REQUIRED_TITLE", "message": "REGISTER_PROXY_REQUIRED"},
+	"proxy_available": {"title": "PROXY_AVAILABLE_TITLE", "message": "REGISTER_PROXY_AVAILABLE"},
+	"server": {"title": "SERVER_UNAVAILABLE_TITLE", "message": "LOGIN_SERVER_ERROR"},
+	"other": {"title": "REGISTER_FAILED", "message": ""},
+}
 
 ## Index into current_steps of the step on screen.
 ##
@@ -24,6 +40,9 @@ var current_steps: Array[Step] = []
 ## the device question without touching it leaves the students, and their codes,
 ## exactly as they were.
 var built_devices_count: int = NO_DEVICE_STEPS
+## What the offer to copy would put on the clipboard, for the mail to whoever runs the
+## network. Built when the notice is shown, so it is what was read.
+var popup_copy_text: String = ""
 
 @onready var language_step: PackedScene = preload("res://sources/menus/register/steps/language/language_step.tscn")
 @onready var teacher_steps: Array[PackedScene] = [
@@ -43,27 +62,6 @@ var built_devices_count: int = NO_DEVICE_STEPS
 @onready var player_step: PackedScene = preload("res://sources/menus/register/steps/parent/player_step.tscn")
 @onready var register_data: TeacherSettings = TeacherSettings.new()
 @onready var steps: Control = %Steps
-## The heading and the message a failed request deserves, by translation key.
-##
-## An empty message means the server's own words are shown instead, which is all a 4xx
-## has to say. The three above it are ours: nothing came back at all, or nothing
-## usable, and the card is the only place in this wizard with room to explain it.
-const FAILURE_NOTICES: Dictionary[String, Dictionary] = {
-	"blocked": {"title": "KALULU_BLOCKED_TITLE", "message": "REGISTER_KALULU_BLOCKED"},
-	"offline": {"title": "NO_LANGUAGE_PACK_TITLE", "message": "LOGIN_NETWORK_ERROR"},
-	"dns": {"title": "DNS_FILTERED_TITLE", "message": "REGISTER_DNS_FILTERED"},
-	"intercepted": {"title": "TLS_INTERCEPTED_TITLE", "message": "REGISTER_TLS_INTERCEPTED"},
-	"clock": {"title": "CLOCK_SKEW_TITLE", "message": "REGISTER_CLOCK_SKEW"},
-	"proxy_required": {"title": "PROXY_REQUIRED_TITLE", "message": "REGISTER_PROXY_REQUIRED"},
-	"proxy_available": {"title": "PROXY_AVAILABLE_TITLE", "message": "REGISTER_PROXY_AVAILABLE"},
-	"server": {"title": "SERVER_UNAVAILABLE_TITLE", "message": "LOGIN_SERVER_ERROR"},
-	"other": {"title": "REGISTER_FAILED", "message": ""},
-}
-
-## What the offer to copy would put on the clipboard, for the mail to whoever runs the
-## network. Built when the notice is shown, so it is what was read.
-var popup_copy_text: String = ""
-
 @onready var popup: TextureRect = %Popup
 @onready var popup_info_label: Label = %PopupInfo
 @onready var popup_title_label: Label = %Title

@@ -11,7 +11,7 @@ extends GutTest
 ## passes for the wrong reason is visible: if a field it never touches is what made
 ## the answer, the test above it would have given the same one.
 
-const Cause: Dictionary = ServerManagerClass.ConnectionFailure
+const CAUSE: Dictionary = ServerManagerClass.ConnectionFailure
 
 
 ## A request that failed, with nothing yet learned about why.
@@ -25,11 +25,10 @@ func _failed() -> ConnectionEvidence:
 
 func test_a_request_that_came_back_is_not_a_failure_at_all() -> void:
 	var evidence: ConnectionEvidence = ConnectionEvidence.new()
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.NONE)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.NONE)
 
 
 # --- DNS ------------------------------------------------------------------------
-
 func test_a_name_that_does_not_resolve_on_a_working_connection_is_filtering() -> void:
 	# The distinction the old single probe could not make: a refused name and an
 	# unplugged cable both stop the request before anything is dialled. What tells
@@ -38,7 +37,7 @@ func test_a_name_that_does_not_resolve_on_a_working_connection_is_filtering() ->
 	evidence.host_resolved = false
 	evidence.host_address = ""
 	evidence.probe_reached_internet = true
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.DNS_FILTERED)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.DNS_FILTERED)
 
 
 func test_a_name_that_does_not_resolve_with_no_internet_either_is_just_offline() -> void:
@@ -50,7 +49,7 @@ func test_a_name_that_does_not_resolve_with_no_internet_either_is_just_offline()
 	evidence.host_address = ""
 	evidence.probe_reached_internet = false
 	evidence.probe_result = HTTPRequest.RESULT_CANT_RESOLVE
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.NO_NETWORK)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.NO_NETWORK)
 
 
 func test_a_name_answered_with_a_local_address_needs_no_corroboration() -> void:
@@ -64,7 +63,7 @@ func test_a_name_answered_with_a_local_address_needs_no_corroboration() -> void:
 		var evidence: ConnectionEvidence = _failed()
 		evidence.host_address = address
 		evidence.probe_reached_internet = false
-		assert_eq(ServerManagerClass.diagnose(evidence), Cause.DNS_FILTERED,
+		assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.DNS_FILTERED,
 			"%s cannot be Kalulu's API, which is on AWS" % address)
 
 
@@ -84,14 +83,13 @@ func test_an_address_nobody_asked_for_is_not_evidence_of_anything() -> void:
 
 
 # --- Interception, and the clock it is confused with ------------------------------
-
 func test_an_unverified_retry_getting_through_means_something_is_in_the_way() -> void:
 	# The real request failed on the certificate and a retry that checks no
 	# certificate succeeded. Something is there; only its identity was wrong.
 	var evidence: ConnectionEvidence = _failed()
 	evidence.unsafe_reached = true
 	evidence.unsafe_body_is_ours = true
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.TLS_INTERCEPTED)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.TLS_INTERCEPTED)
 
 
 func test_a_block_page_coming_back_is_interception_as_well() -> void:
@@ -100,7 +98,7 @@ func test_a_block_page_coming_back_is_interception_as_well() -> void:
 	var evidence: ConnectionEvidence = _failed()
 	evidence.unsafe_reached = true
 	evidence.unsafe_body_is_ours = false
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.TLS_INTERCEPTED)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.TLS_INTERCEPTED)
 
 
 func test_a_clock_far_enough_out_is_named_before_interception() -> void:
@@ -112,7 +110,7 @@ func test_a_clock_far_enough_out_is_named_before_interception() -> void:
 	evidence.unsafe_body_is_ours = true
 	evidence.clock_offset_known = true
 	evidence.clock_offset_seconds = -92 * 86400
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.CLOCK_SKEW)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.CLOCK_SKEW)
 
 
 func test_a_clock_that_merely_drifts_is_not_blamed() -> void:
@@ -123,7 +121,7 @@ func test_a_clock_that_merely_drifts_is_not_blamed() -> void:
 	evidence.unsafe_body_is_ours = true
 	evidence.clock_offset_known = true
 	evidence.clock_offset_seconds = 3600
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.TLS_INTERCEPTED)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.TLS_INTERCEPTED)
 
 
 func test_an_unmeasured_clock_is_not_a_clock_of_zero() -> void:
@@ -133,18 +131,17 @@ func test_an_unmeasured_clock_is_not_a_clock_of_zero() -> void:
 	evidence.unsafe_reached = true
 	evidence.clock_offset_seconds = 92 * 86400
 	evidence.clock_offset_known = false
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.TLS_INTERCEPTED)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.TLS_INTERCEPTED)
 
 
 # --- Proxies ---------------------------------------------------------------------
-
 func test_a_407_is_weighed_before_the_request_is_called_a_success() -> void:
 	# It *is* a completed HTTP exchange -- with the proxy. Asked second, it would be
 	# read as a healthy connection and the login screen would blame the password.
 	var evidence: ConnectionEvidence = ConnectionEvidence.new()
 	evidence.request_result = HTTPRequest.RESULT_SUCCESS
 	evidence.proxy_auth_required = true
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.PROXY_REQUIRED)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.PROXY_REQUIRED)
 
 
 func test_a_working_system_proxy_outranks_naming_what_blocked_the_direct_route() -> void:
@@ -155,26 +152,24 @@ func test_a_working_system_proxy_outranks_naming_what_blocked_the_direct_route()
 	evidence.host_resolved = false
 	evidence.probe_reached_internet = true
 	evidence.system_proxy_works = true
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.PROXY_AVAILABLE)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.PROXY_AVAILABLE)
 
 
 # --- The two answers that existed before -----------------------------------------
-
 func test_a_reachable_internet_with_nothing_else_found_is_still_blocked() -> void:
 	var evidence: ConnectionEvidence = _failed()
 	evidence.probe_reached_internet = true
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.KALULU_BLOCKED)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.KALULU_BLOCKED)
 
 
 func test_nothing_reachable_anywhere_is_an_absent_network() -> void:
 	var evidence: ConnectionEvidence = _failed()
 	evidence.probe_reached_internet = false
 	evidence.probe_result = HTTPRequest.RESULT_CANT_CONNECT
-	assert_eq(ServerManagerClass.diagnose(evidence), Cause.NO_NETWORK)
+	assert_eq(ServerManagerClass.diagnose(evidence), CAUSE.NO_NETWORK)
 
 
 # --- Reading a Date header --------------------------------------------------------
-
 func test_the_clock_offset_is_read_off_a_real_header() -> void:
 	# The shape is fixed by RFC 7231 and is always English, whatever the device's
 	# locale -- which is why the month names are a constant and not a translation.
@@ -196,7 +191,6 @@ func test_a_header_that_makes_no_sense_offsets_nothing() -> void:
 
 
 # --- Which host is even asked about ------------------------------------------------
-
 func test_the_host_is_taken_out_of_whatever_shape_the_environment_url_is_in() -> void:
 	# A custom environment URL is typed by hand in the developer settings, so all of
 	# these reach this function.

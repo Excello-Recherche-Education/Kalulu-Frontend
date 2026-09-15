@@ -30,7 +30,6 @@ func after_each() -> void:
 
 
 # --- The email step ------------------------------------------------------------
-
 func test_only_a_400_is_about_the_address() -> void:
 	# The backend uses it for both of the address's own problems: already registered,
 	# or malformed. Nothing else it can answer says a word about the address.
@@ -66,7 +65,6 @@ func test_a_step_can_hand_a_failed_request_to_the_wizard() -> void:
 
 
 # --- Which notice the card carries ---------------------------------------------
-
 func test_a_blocked_network_says_so_and_names_the_domains() -> void:
 	var notice: Dictionary = wizard.notice_for(0, "blocked")
 	assert_eq(notice["title"], "KALULU_BLOCKED_TITLE")
@@ -96,7 +94,6 @@ func test_anything_else_leaves_room_for_the_server_s_own_words() -> void:
 
 
 # --- The offer to copy ----------------------------------------------------------
-
 func test_only_what_somebody_else_can_fix_is_worth_copying() -> void:
 	for code: int in [500, 502, 503]:
 		assert_true(wizard.is_reportable(code), "%d is not hers to fix" % code)

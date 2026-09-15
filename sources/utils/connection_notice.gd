@@ -24,7 +24,6 @@ const SLOTS: Dictionary[int, String] = {
 	ServerManagerClass.ConnectionFailure.PROXY_REQUIRED: "proxy_required",
 	ServerManagerClass.ConnectionFailure.PROXY_AVAILABLE: "proxy_available",
 }
-
 ## The slots nobody else can help with, and which are therefore not worth forwarding.
 ##
 ## A clock is corrected in the device's own settings, and a proxy Kalulu has already

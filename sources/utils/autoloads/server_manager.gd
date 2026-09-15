@@ -44,7 +44,6 @@ enum ConnectionFailure {
 ## nothing else -- a tablet that has been in a cupboard since June comes back
 ## believing it is still June.
 const CLOCK_SKEW_THRESHOLD_SECONDS: int = 86400
-
 const CONFIG_PATH: String = "user://environment.cfg"
 const INTERNET_CHECK_URL: String = "https://google.com"
 ## The status a proxy answers with when it is there and wants to be authenticated to.
@@ -310,7 +309,6 @@ func _apply_proxy_to(request: HTTPRequest) -> void:
 	request.set_https_proxy(host, port)
 
 #endregion
-
 
 func first_login_student() -> void:
 	await _post_json_request("submit_student_session", {"student_id": UserDataManager.student})

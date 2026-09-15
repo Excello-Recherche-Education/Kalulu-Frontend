@@ -11,7 +11,6 @@ const PROXY_SETTINGS: GDScript = preload("res://sources/ui/proxy_settings.gd")
 
 
 # --- Every shape a proxy setting is written in -------------------------------------
-
 func test_a_host_and_port_is_the_ordinary_case() -> void:
 	assert_eq(SystemProxy.parse("proxy.ac-normandie.fr:3128"),
 		{"host": "proxy.ac-normandie.fr", "port": 3128})
@@ -54,7 +53,6 @@ func test_nonsense_is_refused_rather_than_guessed_at() -> void:
 
 
 # --- What the operating systems actually print --------------------------------------
-
 func test_macos_is_read_only_when_the_proxy_is_switched_on() -> void:
 	# The host stays in the dictionary after the proxy is turned off, so reading it
 	# alone would offer a proxy the machine has stopped using.
@@ -111,7 +109,6 @@ func test_https_wins_over_http_in_the_environment_too() -> void:
 
 
 # --- When the field is shown at all --------------------------------------------------
-
 func test_the_field_stays_hidden_on_a_machine_with_no_proxy_and_no_proxy_shaped_failure() -> void:
 	# The default, and the case that matters most: a box labelled "server address"
 	# under a failure message is an invitation to type something into it, and typing
@@ -148,7 +145,6 @@ func test_a_proxy_already_in_use_can_always_be_switched_off_again() -> void:
 
 
 # --- What the field reads and writes --------------------------------------------------
-
 func test_the_field_shows_the_pair_the_way_it_reads_it_back() -> void:
 	# Round trip, because the field is both filled in by us and typed into by a
 	# teacher, and the two have to agree on the shape.
