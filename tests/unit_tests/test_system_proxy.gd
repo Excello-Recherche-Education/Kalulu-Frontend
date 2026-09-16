@@ -243,3 +243,20 @@ func test_a_colon_with_no_number_after_it_is_a_mistake_and_not_a_hostname() -> v
 func test_a_bracketed_address_keeps_the_colons_that_are_its_own() -> void:
 	# Only the colon after the bracket can be a port.
 	assert_eq(SystemProxy.parse("[::1]:3128"), {"host": "[::1]", "port": 3128})
+
+
+func test_gnome_is_only_read_when_it_says_a_proxy_is_in_use() -> void:
+	# The manual host stays in the settings after the mode is switched to "none", so
+	# reading it alone finds an address the user explicitly turned off -- and after any
+	# direct failure Kalulu would switch it on and write it to disk. The same pairing
+	# the macOS and Windows readers already do.
+	assert_eq(SystemProxy.parse_gnome("'manual'", "'proxy.ecole.fr'", "3128"),
+		"proxy.ecole.fr:3128")
+	assert_eq(SystemProxy.parse_gnome("'none'", "'proxy.ecole.fr'", "3128"), "",
+		"switched off is switched off")
+	assert_eq(SystemProxy.parse_gnome("'auto'", "'proxy.ecole.fr'", "3128"), "",
+		"auto names a configuration script, which nothing here can run")
+	assert_eq(SystemProxy.parse_gnome("'manual'", "''", "3128"), "",
+		"manual with no host is no proxy either")
+	assert_eq(SystemProxy.parse_gnome("'manual'", "'proxy.ecole.fr'", "0"),
+		"proxy.ecole.fr", "and a port of zero is no port at all")

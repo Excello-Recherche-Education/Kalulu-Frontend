@@ -176,18 +176,41 @@ static func _from_platform() -> String:
 				return ""
 			return parse_scutil(_joined(output))
 		"Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
-			if OS.execute("gsettings",
-					["get", "org.gnome.system.proxy.http", "host"], output, true) != 0:
+			if OS.execute("gsettings", ["get", "org.gnome.system.proxy", "mode"],
+					output, true) != 0:
 				return ""
-			var host: String = _joined(output).strip_edges().trim_prefix("'").trim_suffix("'")
-			if host.is_empty():
+			var host_output: Array = []
+			if OS.execute("gsettings", ["get", "org.gnome.system.proxy.http", "host"],
+					host_output, true) != 0:
 				return ""
 			var port_output: Array = []
-			if OS.execute("gsettings",
-					["get", "org.gnome.system.proxy.http", "port"], port_output, true) != 0:
-				return host
-			return "%s:%s" % [host, _joined(port_output).strip_edges()]
+			OS.execute("gsettings", ["get", "org.gnome.system.proxy.http", "port"],
+					port_output, true)
+			return parse_gnome(_joined(output), _joined(host_output), _joined(port_output))
 	return ""
+
+
+## The proxy GNOME is set to use, or "".
+##
+## The mode decides, and reading the host without it was the same mistake the other
+## two platforms are written not to make: the manual host stays in the settings after
+## the proxy is switched to "none", so Kalulu would have found an address the user had
+## explicitly turned off -- and, after any direct failure, switched it on and written
+## it to disk. "auto" is refused too: it names a configuration script rather than a
+## proxy, and there is nothing here that can run one.
+static func parse_gnome(mode_output: String, host_output: String, port_output: String) -> String:
+	if _unquote(mode_output) != "manual":
+		return ""
+	var host: String = _unquote(host_output)
+	if host.is_empty():
+		return ""
+	var port: String = _unquote(port_output)
+	return "%s:%s" % [host, port] if port.is_valid_int() and int(port) > 0 else host
+
+
+## gsettings answers strings in single quotes and numbers bare.
+static func _unquote(output: String) -> String:
+	return output.strip_edges().trim_prefix("'").trim_suffix("'")
 
 
 static func _joined(output: Array) -> String:
