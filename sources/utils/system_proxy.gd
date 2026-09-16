@@ -179,14 +179,11 @@ static func _from_platform() -> String:
 			if OS.execute("gsettings", ["get", "org.gnome.system.proxy", "mode"],
 					output, true) != 0:
 				return ""
-			var host_output: Array = []
-			if OS.execute("gsettings", ["get", "org.gnome.system.proxy.http", "host"],
-					host_output, true) != 0:
-				return ""
-			var port_output: Array = []
-			OS.execute("gsettings", ["get", "org.gnome.system.proxy.http", "port"],
-					port_output, true)
-			return parse_gnome(_joined(output), _joined(host_output), _joined(port_output))
+			return parse_gnome(_joined(output),
+					_gsettings("org.gnome.system.proxy.https", "host"),
+					_gsettings("org.gnome.system.proxy.https", "port"),
+					_gsettings("org.gnome.system.proxy.http", "host"),
+					_gsettings("org.gnome.system.proxy.http", "port"))
 	return ""
 
 
@@ -198,14 +195,32 @@ static func _from_platform() -> String:
 ## explicitly turned off -- and, after any direct failure, switched it on and written
 ## it to disk. "auto" is refused too: it names a configuration script rather than a
 ## proxy, and there is nothing here that can run one.
-static func parse_gnome(mode_output: String, host_output: String, port_output: String) -> String:
+static func parse_gnome(mode_output: String, https_host_output: String,
+		https_port_output: String, http_host_output: String,
+		http_port_output: String) -> String:
 	if _unquote(mode_output) != "manual":
 		return ""
-	var host: String = _unquote(host_output)
+	# GNOME keeps a separate setting per scheme, and every address this app speaks to
+	# is https -- so reading the http one, as this did, finds the wrong server on a
+	# machine where the two differ and finds nothing at all where only the secure one
+	# is set. The same preference the macOS reader and the environment reader already
+	# apply; this was the third place and the one that did not.
+	var host: String = _unquote(https_host_output)
+	var port: String = _unquote(https_port_output)
+	if host.is_empty():
+		host = _unquote(http_host_output)
+		port = _unquote(http_port_output)
 	if host.is_empty():
 		return ""
-	var port: String = _unquote(port_output)
 	return "%s:%s" % [host, port] if port.is_valid_int() and int(port) > 0 else host
+
+
+## One gsettings value, or "" when it cannot be read.
+static func _gsettings(schema: String, key: String) -> String:
+	var output: Array = []
+	if OS.execute("gsettings", ["get", schema, key], output, true) != 0:
+		return ""
+	return _joined(output)
 
 
 ## gsettings answers strings in single quotes and numbers bare.

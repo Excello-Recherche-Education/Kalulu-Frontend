@@ -250,13 +250,27 @@ func test_gnome_is_only_read_when_it_says_a_proxy_is_in_use() -> void:
 	# reading it alone finds an address the user explicitly turned off -- and after any
 	# direct failure Kalulu would switch it on and write it to disk. The same pairing
 	# the macOS and Windows readers already do.
-	assert_eq(SystemProxy.parse_gnome("'manual'", "'proxy.ecole.fr'", "3128"),
-		"proxy.ecole.fr:3128")
-	assert_eq(SystemProxy.parse_gnome("'none'", "'proxy.ecole.fr'", "3128"), "",
-		"switched off is switched off")
-	assert_eq(SystemProxy.parse_gnome("'auto'", "'proxy.ecole.fr'", "3128"), "",
+	assert_eq(SystemProxy.parse_gnome("'manual'", "'secure.ecole.fr'", "3129",
+		"'plain.ecole.fr'", "3128"), "secure.ecole.fr:3129")
+	assert_eq(SystemProxy.parse_gnome("'none'", "'secure.ecole.fr'", "3129",
+		"'plain.ecole.fr'", "3128"), "", "switched off is switched off")
+	assert_eq(SystemProxy.parse_gnome("'auto'", "'secure.ecole.fr'", "3129",
+		"'plain.ecole.fr'", "3128"), "",
 		"auto names a configuration script, which nothing here can run")
-	assert_eq(SystemProxy.parse_gnome("'manual'", "''", "3128"), "",
+	assert_eq(SystemProxy.parse_gnome("'manual'", "''", "0", "''", "0"), "",
 		"manual with no host is no proxy either")
-	assert_eq(SystemProxy.parse_gnome("'manual'", "'proxy.ecole.fr'", "0"),
-		"proxy.ecole.fr", "and a port of zero is no port at all")
+	assert_eq(SystemProxy.parse_gnome("'manual'", "'secure.ecole.fr'", "0", "''", "0"),
+		"secure.ecole.fr", "and a port of zero is no port at all")
+
+
+func test_gnome_s_secure_proxy_is_the_one_this_app_needs() -> void:
+	# GNOME keeps a setting per scheme and every address Kalulu speaks to is https, so
+	# reading the http one finds the wrong server where the two differ and nothing at
+	# all where only the secure one is set. The same preference the macOS reader and
+	# the environment reader already apply.
+	assert_eq(SystemProxy.parse_gnome("'manual'", "'secure.ecole.fr'", "3129",
+		"'plain.ecole.fr'", "3128"), "secure.ecole.fr:3129",
+		"the secure one wins where both are set")
+	assert_eq(SystemProxy.parse_gnome("'manual'", "''", "0", "'plain.ecole.fr'", "3128"),
+		"plain.ecole.fr:3128",
+		"and the http one still serves where it is the only one configured")
