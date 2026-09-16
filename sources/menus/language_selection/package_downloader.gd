@@ -190,8 +190,15 @@ func _start() -> void:
 	Log.trace("PackageDownloader: Checking internet access")
 	internet_reachable = await ServerManager.check_internet_access()
 	if not internet_reachable:
-		failure_result_code = (ServerManager as ServerManagerClass).last_internet_result_code
-		_continue_without_the_server(await _no_server_error(failure_result_code))
+		var server: ServerManagerClass = ServerManager as ServerManagerClass
+		failure_result_code = server.last_internet_result_code
+		# The probe's own status goes with it. A proxy wanting credentials answers it
+		# 407 -- a completed exchange, so the result code says success -- and without
+		# the status this reads as a healthy request, which is diagnosed as nothing
+		# being wrong and then shown as the general "this network blocks Kalulu".
+		# A fresh install behind such a proxy would never see the notice written for it.
+		_continue_without_the_server(await _no_server_error(failure_result_code,
+				server.last_internet_response_code))
 		return
 	
 	# Gets the info of the language pack on the server
@@ -397,10 +404,10 @@ func _report_for(error: DownloadError) -> String:
 ## The result code is passed rather than left to be read off ServerManager, because
 ## this screen can give up before it ever calls the API -- its own internet probe
 ## fails first -- and the code sitting there then belongs to whatever ran last.
-func _no_server_error(request_result: int) -> DownloadError:
+func _no_server_error(request_result: int, http_code: int = 0) -> DownloadError:
 	var failure: ServerManagerClass.ConnectionFailure = \
 			await (ServerManager as ServerManagerClass).diagnose_connection_failure(
-					0, request_result)
+					http_code, request_result)
 	Log.info("PackageDownloader: No server, diagnosed %s" % ServerManagerClass.ConnectionFailure.keys()[failure])
 	return error_for(ConnectionNotice.slot_for(failure))
 

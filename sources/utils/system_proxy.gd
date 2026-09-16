@@ -71,12 +71,19 @@ static func parse(value: String) -> Dictionary:
 
 	var host: String = text
 	var port: int = DEFAULT_PORT
+	# A colon says a port follows, so one that is not a number makes the whole value
+	# wrong rather than making the colon part of the hostname. Left as a hostname,
+	# "proxy.ecole.fr:abc" was accepted, saved, and then dialled as a machine of that
+	# name -- a typed mistake that reappeared as a connection failure with no
+	# explanation. The bracket is for [::1]:3128, where the address has colons of its
+	# own and only the last one can be a port.
 	var colon: int = text.rfind(":")
-	if colon > 0:
+	if colon > text.rfind("]") and colon > 0:
 		var tail: String = text.substr(colon + 1)
-		if tail.is_valid_int():
-			host = text.substr(0, colon)
-			port = int(tail)
+		if not tail.is_valid_int():
+			return {}
+		host = text.substr(0, colon)
+		port = int(tail)
 	if host.is_empty() or port <= 0 or port > 65535:
 		return {}
 	return {"host": host, "port": port}

@@ -106,6 +106,14 @@ var json: Dictionary = {}
 # so these are what a diagnosis has to work from.
 var last_result_code: int = HTTPRequest.RESULT_SUCCESS
 var last_internet_result_code: int = HTTPRequest.RESULT_SUCCESS
+## The status the probe was answered with, which its result code does not carry.
+##
+## A proxy demanding credentials answers the probe 407, and that is a completed HTTP
+## exchange: the result code stays RESULT_SUCCESS while the check reports no internet.
+## Kept so a caller working from the probe rather than from an API call -- the pack
+## downloader gives up on it before ever reaching the API -- can still say what came
+## back, instead of handing on a success that would read as nothing being wrong.
+var last_internet_response_code: int = 0
 # Whether a probe is in flight. There is one HTTPRequest for it, shared by every
 # caller, and it answers ERR_BUSY while it is working -- which used to be returned
 # as a verdict, so a second caller was told the device had no internet purely
@@ -933,6 +941,7 @@ func _on_http_request_request_completed(result_code: int, response_code: int, _h
 func _on_internet_check_request_completed(result_code: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
 	internet_check_running = false
 	last_internet_result_code = result_code
+	last_internet_response_code = response_code
 	if result_code != HTTPRequest.RESULT_SUCCESS:
 		Log.warn("ServerManager: Cannot check internet request. Result code %d = %s" % [result_code, http_result_name(result_code)])
 	else:

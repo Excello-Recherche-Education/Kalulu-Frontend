@@ -140,7 +140,12 @@ func _apply() -> void:
 		# Said on the field rather than in a dialog: it is about what was typed, and
 		# the correction happens in the box the message is under.
 		address_field.error = "PROXY_ADDRESS_INVALID"
-		use_proxy.set_pressed_no_signal(false)
+		# The switch stays on, and nothing stored changes. Turning it off here showed
+		# a proxy as disabled while it was still carrying every request, and took the
+		# Apply button away with it -- so the only way back was to type a valid
+		# address, on a panel whose whole reason for existing is that the proxy in use
+		# may be the thing stopping the app. Off is still one press away, and that
+		# press does switch it off, because this branch is never reached for it.
 		_refresh_enabled_state()
 		# The field is where the correction has to happen, and on a screen this long
 		# it may not be the thing under the reader's eye.

@@ -262,3 +262,23 @@ func test_a_connection_that_died_is_still_a_missing_response() -> void:
 func test_being_unable_to_save_is_nobody_else_s_to_fix() -> void:
 	assert_false(PackageDownloader.DownloadError.CANNOT_SAVE in PackageDownloader.REPORTABLE_ERRORS,
 		"a network administrator cannot free up space on this tablet")
+
+
+# --- What the internet probe was answered with --------------------------------------
+func test_a_proxy_demanding_credentials_on_the_probe_is_named_as_one() -> void:
+	# The probe's 407 is a completed HTTP exchange, so its result code says success.
+	# Handed on without the status it reads as a healthy request, is diagnosed as
+	# nothing being wrong, and comes out as the general "this network blocks Kalulu" --
+	# so a fresh install behind an authenticating proxy never saw the notice written
+	# for it. No probes run for this one: a 407 needs no corroboration.
+	assert_eq(await downloader._no_server_error(HTTPRequest.RESULT_SUCCESS, 407),
+		PackageDownloader.DownloadError.PROXY_REQUIRED)
+
+
+func test_the_probe_s_status_reaches_the_diagnosis() -> void:
+	# Structural, like the proxy on the pack download: the value is read off
+	# ServerManager at the call site and there is no way to observe it afterwards.
+	var source: String = FileAccess.get_file_as_string(
+			"res://sources/menus/language_selection/package_downloader.gd")
+	assert_string_contains(source, "server.last_internet_response_code",
+		"the probe's status should go to the diagnosis with its result code")

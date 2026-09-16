@@ -57,16 +57,16 @@ func test_macos_is_read_only_when_the_proxy_is_switched_on() -> void:
 	# The host stays in the dictionary after the proxy is turned off, so reading it
 	# alone would offer a proxy the machine has stopped using.
 	var enabled: String = """<dictionary> {
-  HTTPSEnable : 1
-  HTTPSProxy : proxy.ecole.fr
-  HTTPSPort : 3128
+HTTPSEnable : 1
+HTTPSProxy : proxy.ecole.fr
+HTTPSPort : 3128
 }"""
 	assert_eq(SystemProxy.parse_scutil(enabled), "proxy.ecole.fr:3128")
 
 	var disabled: String = """<dictionary> {
-  HTTPSEnable : 0
-  HTTPSProxy : proxy.ecole.fr
-  HTTPSPort : 3128
+HTTPSEnable : 0
+HTTPSProxy : proxy.ecole.fr
+HTTPSPort : 3128
 }"""
 	assert_eq(SystemProxy.parse_scutil(disabled), "")
 
@@ -74,18 +74,18 @@ func test_macos_is_read_only_when_the_proxy_is_switched_on() -> void:
 func test_a_mac_with_no_proxy_at_all_reads_as_none() -> void:
 	# The shape this machine prints, and the shape most of them print.
 	assert_eq(SystemProxy.parse_scutil("""<dictionary> {
-  ExceptionsList : <array> {
-    0 : *.local
-  }
-  FTPPassive : 1
+ExceptionsList : <array> {
+	0 : *.local
+}
+FTPPassive : 1
 }"""), "")
 
 
 func test_windows_is_read_only_when_the_proxy_is_switched_on() -> void:
 	var enabled: String = """
 HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings
-    ProxyEnable    REG_DWORD    0x1
-    ProxyServer    REG_SZ    proxy.ecole.fr:3128
+	ProxyEnable    REG_DWORD    0x1
+	ProxyServer    REG_SZ    proxy.ecole.fr:3128
 """
 	assert_eq(SystemProxy.parse_windows_registry(enabled), "proxy.ecole.fr:3128")
 	assert_eq(SystemProxy.parse_windows_registry(enabled.replace("0x1", "0x0")), "",
@@ -230,3 +230,16 @@ func test_a_proxy_is_only_trusted_when_the_answer_is_ours() -> void:
 		HTTPRequest.RESULT_CANT_CONNECT, 0, ""))
 	assert_false(ServerManagerClass.proxy_probe_succeeded(
 		HTTPRequest.RESULT_SUCCESS, 407, "proxy authentication required"))
+
+
+func test_a_colon_with_no_number_after_it_is_a_mistake_and_not_a_hostname() -> void:
+	# It used to leave the whole value as the host: "proxy.ecole.fr:abc" was accepted,
+	# saved, and dialled as a machine of that name -- a typo that came back as an
+	# unexplained connection failure instead of the message under the field.
+	for value: String in ["proxy.ecole.fr:abc", "proxy.ecole.fr:", "proxy.ecole.fr:80a"]:
+		assert_eq(SystemProxy.parse(value), {}, "'%s' names no port" % value)
+
+
+func test_a_bracketed_address_keeps_the_colons_that_are_its_own() -> void:
+	# Only the colon after the bracket can be a port.
+	assert_eq(SystemProxy.parse("[::1]:3128"), {"host": "[::1]", "port": 3128})

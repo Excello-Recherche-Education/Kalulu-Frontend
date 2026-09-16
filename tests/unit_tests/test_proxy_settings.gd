@@ -100,7 +100,33 @@ func test_an_address_that_makes_no_sense_is_refused_on_the_field() -> void:
 
 	assert_eq(panel.address_field.error, "PROXY_ADDRESS_INVALID")
 	assert_false(server.proxy_enabled, "nothing usable was given, so nothing was set")
-	assert_false(panel.use_proxy.button_pressed, "and the switch goes back")
+	assert_true(panel.use_proxy.button_pressed,
+		"and the switch stays where the reader put it, with Apply still there")
+	assert_true(panel.apply_button.visible, "so the address can be corrected")
+
+
+func test_a_rejected_address_does_not_report_a_live_proxy_as_switched_off() -> void:
+	# The switch used to go back on a bad address. With a proxy already carrying every
+	# request that made the panel say "off" while it was still on, and hid Apply --
+	# leaving no way to stop using a proxy without first typing a valid one, on the
+	# very panel that exists because the proxy may be what is blocking the app.
+	var server: ServerManagerClass = ServerManager as ServerManagerClass
+	panel.refresh(ServerManagerClass.ConnectionFailure.KALULU_BLOCKED)
+	panel.address_field.text = "proxy.ecole.fr:3128"
+	panel.use_proxy.button_pressed = true
+	await get_tree().process_frame
+	assert_true(server.proxy_enabled, "a working proxy is in use")
+
+	panel.address_field.text = "proxy.ecole.fr:abc"
+	panel.apply_button.pressed.emit()
+	await get_tree().process_frame
+	assert_eq(panel.address_field.error, "PROXY_ADDRESS_INVALID")
+	assert_eq(panel.use_proxy.button_pressed, server.proxy_enabled,
+		"the switch has to say what is actually in use")
+
+	panel.use_proxy.button_pressed = false
+	await get_tree().process_frame
+	assert_false(server.proxy_enabled, "and switching it off still works, always")
 
 
 func test_switching_it_off_keeps_the_address_for_next_time() -> void:
