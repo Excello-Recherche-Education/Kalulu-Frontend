@@ -688,6 +688,40 @@ func get_word_sound_path(word: Dictionary) -> String:
 	return get_language_sound_folder() + _text_to_file_name(word.Word as String) + SOUND_EXTENSION
 
 
+## Finds a word or syllable sound, trying the encoded name and then the raw one.
+##
+## The same ladder as [method resolve_gp_asset_path], for the same reason: a device
+## fetches a pack when its last_modified on S3 moves, not when the app is updated. So
+## an app carrying the encoding reaches a device before the re-encoded pack does, and
+## without this every word the encoding renames is silent in between -- which for the
+## packs as they stand is "Colombia" in two of them, and whatever is added later.
+##
+## The two getters above stay as they are: they name the file a recording is *written*
+## to, which must always be the canonical one, and the Prof Tool uses them for exactly
+## that. Only reading walks the ladder.
+##
+## The second rung is skipped when the names are the same, which they are for every
+## all-lowercase word -- nearly all of them, and this runs once per word when a
+## minigame builds its pool.
+## Returns an empty String when neither name is on disk.
+func resolve_sound_path(canonical_name: String, legacy_name: String) -> String:
+	var path: String = resolve_external_file_path(
+			get_language_sound_folder() + canonical_name + SOUND_EXTENSION)
+	if not path.is_empty() or canonical_name == legacy_name:
+		return path
+	return resolve_external_file_path(
+			get_language_sound_folder() + legacy_name + SOUND_EXTENSION)
+
+
+func resolve_word_sound_path(word: Dictionary) -> String:
+	return resolve_sound_path(_text_to_file_name(word.Word as String), word.Word as String)
+
+
+func resolve_syllable_sound_path(syllable: Dictionary) -> String:
+	return resolve_sound_path(
+			_text_to_file_name(syllable.Grapheme as String), syllable.Grapheme as String)
+
+
 func get_kalulu_speech_path(speech_category: String, speech_name: String) -> String:
 	return get_language_sound_folder() + KALULU_FOLDER + speech_category + "_" + speech_name + SOUND_EXTENSION
 

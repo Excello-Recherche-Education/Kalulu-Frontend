@@ -27,7 +27,10 @@ func play_syllable(syllable: Dictionary) -> void:
 	if not syllable or syllable.is_empty():
 		return
 	
-	var syllable_audiostream: AudioStreamMP3 = Database.load_external_sound(Database.get_syllable_sound_path(syllable))
+	# Through the ladder: a pack installed before the file names were encoded still
+	# holds the raw name. See Database.resolve_sound_path.
+	var syllable_audiostream: AudioStreamMP3 = Database.load_external_sound(
+			Database.resolve_syllable_sound_path(syllable))
 	if not syllable_audiostream:
 		Log.warn("MinigameAudioStreamPlayer: AudioStream not found for syllable %s " % syllable)
 		return
@@ -39,7 +42,9 @@ func play_word(word: String) -> void:
 	if not word or word.is_empty():
 		return
 	
-	var word_audiostream: AudioStreamMP3 = Database.load_external_sound(Database.get_word_sound_path({Word = word}))
+	# Through the ladder, for the reason in play_syllable.
+	var word_audiostream: AudioStreamMP3 = Database.load_external_sound(
+			Database.resolve_word_sound_path({Word = word}))
 	if not word_audiostream:
 		Log.warn("MinigameAudioStreamPlayer: AudioStream not found for word %s " % word)
 		return
