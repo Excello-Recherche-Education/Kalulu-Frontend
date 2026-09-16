@@ -30,7 +30,6 @@ func after_each() -> void:
 
 
 # --- The email step ------------------------------------------------------------
-
 func test_only_a_400_is_about_the_address() -> void:
 	# The backend uses it for both of the address's own problems: already registered,
 	# or malformed. Nothing else it can answer says a word about the address.
@@ -66,23 +65,22 @@ func test_a_step_can_hand_a_failed_request_to_the_wizard() -> void:
 
 
 # --- Which notice the card carries ---------------------------------------------
-
 func test_a_blocked_network_says_so_and_names_the_domains() -> void:
-	var notice: Dictionary = wizard.notice_for(0, true)
+	var notice: Dictionary = wizard.notice_for(0, "blocked")
 	assert_eq(notice["title"], "KALULU_BLOCKED_TITLE")
 	assert_string_contains(tr(str(notice["message"])), "kalulu-app-language-packs",
 		"the domains are the whole point of this one")
 
 
 func test_no_network_at_all_asks_for_a_connection() -> void:
-	var notice: Dictionary = wizard.notice_for(0, false)
+	var notice: Dictionary = wizard.notice_for(0, "offline")
 	assert_eq(notice["title"], "NO_LANGUAGE_PACK_TITLE")
 	assert_ne(tr(str(notice["message"])), str(notice["message"]), "and it is translated")
 
 
 func test_a_server_failure_is_not_blamed_on_the_connection() -> void:
 	for code: int in [500, 502, 503, 504]:
-		var notice: Dictionary = wizard.notice_for(code, false)
+		var notice: Dictionary = wizard.notice_for(code, "")
 		assert_eq(notice["title"], "SERVER_UNAVAILABLE_TITLE",
 			"%d came from the server, so it is the server's" % code)
 
@@ -90,19 +88,38 @@ func test_a_server_failure_is_not_blamed_on_the_connection() -> void:
 func test_anything_else_leaves_room_for_the_server_s_own_words() -> void:
 	# A 4xx is this registration's own -- an address refused, a field rejected -- and
 	# the backend says which. An empty message is how _show_failure knows to use it.
-	var notice: Dictionary = wizard.notice_for(409, false)
+	var notice: Dictionary = wizard.notice_for(409, "")
 	assert_eq(notice["title"], "REGISTER_FAILED")
 	assert_eq(notice["message"], "", "so the server's message is shown instead")
 
 
 # --- The offer to copy ----------------------------------------------------------
-
 func test_only_what_somebody_else_can_fix_is_worth_copying() -> void:
-	for code: int in [0, 500, 502, 503]:
+	for code: int in [500, 502, 503]:
 		assert_true(wizard.is_reportable(code), "%d is not hers to fix" % code)
 	for code: int in [400, 401, 403, 404, 409]:
 		assert_false(wizard.is_reportable(code),
 			"%d is this registration's own, and no use to a technician" % code)
+
+
+func test_a_diagnosed_failure_is_judged_on_the_cause_and_not_the_code() -> void:
+	# Every one of these arrives as the same code 0. What decides whether a technician
+	# can help is what was found out afterwards: a filtering network is theirs, a clock
+	# two years out is the reader's own, and a proxy Kalulu has already switched on has
+	# nobody left to tell.
+	for slot: String in ["blocked", "offline", "dns", "intercepted", "proxy_required"]:
+		assert_true(wizard.is_reportable(0, slot), "%s is somebody else's to act on" % slot)
+	for slot: String in ["clock", "proxy_available"]:
+		assert_false(wizard.is_reportable(0, slot),
+			"%s is fixed where the reader is standing" % slot)
+
+
+func test_a_proxy_demanding_credentials_is_diagnosed_and_not_reported_verbatim() -> void:
+	# 407 is an HTTP answer, from the proxy rather than from Kalulu. Read as an
+	# ordinary code it falls through to the wizard's "an error occurred" -- with the
+	# server's own empty words under it, since the server never saw the request.
+	assert_true(ServerManagerClass.needs_diagnosis(407))
+	assert_eq(wizard.notice_for(407, "proxy_required")["title"], "PROXY_REQUIRED_TITLE")
 
 
 func test_the_card_holds_the_domains_without_breaking_them() -> void:

@@ -19,16 +19,40 @@ const SIGN_UP_TAB: int = 1
 ## reach into: at the sizes the fields are drawn at now, the password field is
 ## as wide as the button is far from the middle, and the two would overlap.
 const FOOTER_ROOM: int = Design.PAGE_MARGIN_BOTTOM + Design.BUTTON_SIZE.y
+## What this screen says about each diagnosed network failure, by the slot
+## [ConnectionNotice] gives that cause.
+##
+## The wording is here rather than shared because it is about signing in: the
+## registration wizard tells the same story about creating an account, and the two
+## sentences are not interchangeable. What must not differ between them -- which cause
+## gets which slot, and which slots are worth forwarding -- is what [ConnectionNotice]
+## owns.
+const NETWORK_ERRORS: Dictionary[String, String] = {
+	"offline": "LOGIN_NETWORK_ERROR",
+	"blocked": "LOGIN_KALULU_BLOCKED",
+	"dns": "LOGIN_DNS_FILTERED",
+	"intercepted": "LOGIN_TLS_INTERCEPTED",
+	"clock": "LOGIN_CLOCK_SKEW",
+	"proxy_required": "LOGIN_PROXY_REQUIRED",
+	"proxy_available": "LOGIN_PROXY_AVAILABLE",
+}
 ## The failures somebody else has to act on, and which are therefore worth copying.
 ##
 ## A wrong password or an unknown account are the reader's own to fix, and offering to
-## mail them to a technician would only send them down a corridor for nothing. These
-## three are the network's and the server's -- the blocked one carries the domains to
-## unblock, so it is the message a network administrator actually needs.
+## mail them to a technician would only send them down a corridor for nothing. So are
+## a wrong clock and a proxy Kalulu has already switched on, which is why neither is
+## here. The rest are the network's and the server's -- the blocked one carries the
+## domains to unblock, so it is the message a network administrator actually needs.
+##
+## Written out rather than derived, because a list is what reads clearly here; a test
+## holds it to [method ConnectionNotice.is_reportable] so the two cannot drift.
 const REPORTABLE_ERRORS: Array[String] = [
 	"LOGIN_KALULU_BLOCKED",
 	"LOGIN_NETWORK_ERROR",
 	"LOGIN_SERVER_ERROR",
+	"LOGIN_DNS_FILTERED",
+	"LOGIN_TLS_INTERCEPTED",
+	"LOGIN_PROXY_REQUIRED",
 ]
 ## What is on screen while the two network stories are being told apart.
 ##
@@ -67,6 +91,7 @@ var displayed_error_key: String = ""
 @onready var next_button: Button = %NextButton
 @onready var adult_prompt: Label = %AdultPrompt
 @onready var keypad: CodeKeypad = %Keypad
+@onready var proxy_panel: ProxySettings = %ProxyPanel
 
 
 func _ready() -> void:
@@ -85,6 +110,7 @@ func _ready() -> void:
 	password_field.text_changed.connect(_clear_login_error)
 	password_field.text_submitted.connect(_on_password_submitted)
 	keypad.code_entered.connect(_on_adult_code_entered)
+	proxy_panel.proxy_changed.connect(_on_proxy_changed)
 
 	_new_adult_challenge()
 	_show_tab(LOGIN_TAB)
@@ -134,7 +160,7 @@ func _on_next_pressed() -> void:
 		# Said before the diagnosis rather than after it: a failure with no HTTP
 		# response has to be diagnosed before it can be described, and that wait is
 		# long enough to read as a dead button.
-		if response.code == 0:
+		if ServerManagerClass.needs_diagnosis(response.code as int):
 			_show_login_error(DIAGNOSING_ERROR)
 		_show_login_error(await _translation_key_for_error(response))
 		_end_request()
@@ -199,7 +225,42 @@ func _show_login_error(translation_key: String) -> void:
 	copy_error_button.visible = offers_copy(translation_key,
 			DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD))
 	copy_error_button.text = Utils.COPY_TEXT
+	_refresh_proxy_panel(translation_key)
 	_scroll_to_login_error()
+
+
+## Offers the proxy field, but only under a message a proxy could be the answer to.
+##
+## Reached for every failure this screen shows, including "wrong password", which is
+## why the message is checked first: [ProxySettings] decides whether a *network*
+## failure is of the right shape, and a rejected password is not one at all -- a box
+## asking for a server address under it would be an invitation to break a working
+## connection.
+func _refresh_proxy_panel(translation_key: String) -> void:
+	var server: ServerManagerClass = ServerManager as ServerManagerClass
+	# A proxy already in use is the exception: one that has started answering with its
+	# own pages turns every request into a server error, which is not a network
+	# message -- so the one control that could switch it back off would be hidden on
+	# exactly the screens where it is needed. There must always be a way out of it.
+	if not translation_key in NETWORK_ERRORS.values() and not server.proxy_enabled:
+		proxy_panel.hide()
+		return
+	proxy_panel.refresh(server.last_diagnosis)
+
+
+## The proxy has been changed, so the failure on screen is about a route that is no
+## longer in use.
+##
+## The login is not retried automatically: the password is still in the field and the
+## button is live, and a screen that fires a second request off the back of a checkbox
+## is how two logins end up in flight at once -- the failure `request_in_flight` exists
+## to prevent.
+func _on_proxy_changed() -> void:
+	login_error.text = "LOGIN_PROXY_CHANGED"
+	login_error.show()
+	displayed_error_key = "LOGIN_PROXY_CHANGED"
+	copy_error_button.hide()
+	reset_password_button.hide()
 
 
 ## Brings the message into view, for the screen too short to hold it.
@@ -220,6 +281,13 @@ func _scroll_to_login_error() -> void:
 	if copy_error_button.visible:
 		await get_tree().process_frame
 		scroll.ensure_control_visible(copy_error_button)
+	# And the proxy field below it, which is the only control on this screen the
+	# message ever asks the reader to use. Left off the fold it is not merely
+	# unnoticed -- the message above it mentions a proxy, so the reader goes looking
+	# for a setting that was on screen all along.
+	if proxy_panel.visible:
+		await get_tree().process_frame
+		scroll.ensure_control_visible(proxy_panel)
 
 
 ## Whether the failure on display is one to offer to copy.
@@ -246,6 +314,7 @@ func _on_copy_error_pressed() -> void:
 
 func _hide_login_error() -> void:
 	login_error.hide()
+	proxy_panel.hide()
 	reset_password_button.hide()
 	reset_password_button.disabled = false
 	copy_error_button.hide()
@@ -265,12 +334,11 @@ func _translation_key_for_error(response: Dictionary) -> String:
 	# hunting through the wrong settings -- when the internet works and the network
 	# is filtering Kalulu. A school network doing exactly that took a support ticket
 	# to identify, and cleared up the moment the teacher tried it from home.
-	if response.code == 0:
+	if ServerManagerClass.needs_diagnosis(response.code as int):
 		var failure: ServerManagerClass.ConnectionFailure = \
-				await (ServerManager as ServerManagerClass).diagnose_connection_failure()
-		if failure == ServerManagerClass.ConnectionFailure.KALULU_BLOCKED:
-			return "LOGIN_KALULU_BLOCKED"
-		return "LOGIN_NETWORK_ERROR"
+				await (ServerManager as ServerManagerClass).diagnose_connection_failure(
+						response.code as int)
+		return NETWORK_ERRORS[ConnectionNotice.slot_for(failure)]
 
 	var body: Dictionary = (response.body as Dictionary) if response.body is Dictionary else {}
 	match str(body.get("error_code", "")):

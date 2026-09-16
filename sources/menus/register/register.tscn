@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d3dv4jeiwga02" path="res://sources/menus/register/register.gd" id="1_jsnxc"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="9_theme"]
 [ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="10_popup"]
+[ext_resource type="PackedScene" uid="uid://ck3p8x1ynqv2e" path="res://sources/ui/proxy_settings.tscn" id="11_proxy"]
 
 [sub_resource type="Gradient" id="Gradient_dx825"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 0.505882, 0.2, 0.2, 0.2, 0.505882)
@@ -106,6 +107,13 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_type_variation = &"CardSecondaryButton"
 text = "COPY_ERROR_MESSAGE"
+
+[node name="ProxyPanel" parent="Popup/Container/MarginContainer/VBoxContainer" instance=ExtResource("11_proxy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+on_card = true
 
 [node name="Button" type="Button" parent="Popup/Container/MarginContainer/VBoxContainer" unique_id=408091364]
 layout_mode = 2

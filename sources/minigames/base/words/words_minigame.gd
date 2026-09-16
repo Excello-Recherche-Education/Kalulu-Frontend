@@ -25,7 +25,10 @@ func _find_stimuli_and_distractions() -> void:
 	var previous_lesson_words: Array[Dictionary] = []
 	
 	for word: Dictionary in words_list:
-		if not Database.external_file_exists(Database.get_word_sound_path(word)):
+		# Through the ladder rather than the canonical name alone: a pack installed
+		# before the names were encoded still holds the raw one, and a word with no
+		# sound is dropped from the pool entirely.
+		if Database.resolve_word_sound_path(word).is_empty():
 			continue
 		
 		if word.LessonNb == lesson_nb:
