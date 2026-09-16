@@ -283,11 +283,27 @@ func system_proxy_reaches_server() -> bool:
 
 	var result: Array = await probe.request_completed
 	probe.queue_free()
-	var reached: bool = (result[0] as int) == HTTPRequest.RESULT_SUCCESS \
-			and (result[1] as int) == 200
+	var reached: bool = proxy_probe_succeeded(result[0] as int, result[1] as int,
+			(result[3] as PackedByteArray).get_string_from_utf8())
 	Log.info("ServerManager: The machine's proxy %s" % [
 			"reaches the server" if reached else "does not reach the server either"])
 	return reached
+
+
+## Whether that probe proves the proxy carries Kalulu's traffic, rather than answering
+## for it.
+##
+## A 200 is not enough, and this is the one place where accepting one does lasting
+## damage: a filtering proxy serving its own page, or a captive portal, answers 200
+## with HTML for any address it is given. Taken as proof, the proxy is switched on and
+## written to disk, and from then on every API call comes back as that page -- an
+## empty body under a successful code, which the login reads as a server error and
+## registration as missing fields. Neither is a network message, so the panel that
+## could switch the proxy back off is hidden on exactly the screens where it is
+## needed. The answer has to be ours.
+static func proxy_probe_succeeded(result_code: int, response_code: int, body: String) -> bool:
+	return result_code == HTTPRequest.RESULT_SUCCESS and response_code == 200 \
+			and body.contains(HEALTH_ANSWER_MARKER)
 
 
 ## Looks the machine's own proxy up, once, the first time it could matter.

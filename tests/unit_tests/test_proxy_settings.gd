@@ -143,6 +143,27 @@ func test_the_help_says_what_to_do_when_the_option_is_not_needed() -> void:
 	assert_string_contains(body.to_lower(), "décochée")
 
 
+# --- There is always a way to switch it back off --------------------------------------
+func test_a_proxy_in_use_keeps_its_switch_on_screen_whatever_the_message_says() -> void:
+	# A proxy that starts answering with its own pages turns every request into a
+	# server error, which is not a network message. Gate the panel on the message
+	# alone and the only control that could undo the proxy disappears exactly when it
+	# is needed, with no way back.
+	var welcome: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()
+	add_child_autofree(welcome)
+	await get_tree().process_frame
+
+	var server: ServerManagerClass = ServerManager as ServerManagerClass
+	welcome._show_login_error("LOGIN_WRONG_PASSWORD")
+	assert_false((welcome.get_node("%ProxyPanel") as Control).visible,
+		"with no proxy in use it stays out of the way")
+
+	server.set_proxy("proxy.ecole.fr", 3128, true)
+	welcome._show_login_error("LOGIN_SERVER_ERROR")
+	assert_true((welcome.get_node("%ProxyPanel") as Control).visible,
+		"but a proxy in use must always be reachable")
+
+
 # --- Both screens that show a network failure carry it -----------------------------
 func test_the_login_screen_has_one() -> void:
 	var welcome: Control = (load(WELCOME_SCENE) as PackedScene).instantiate()

@@ -208,3 +208,25 @@ func test_the_language_pack_download_is_routed_through_the_proxy_too() -> void:
 	assert_ne(applied, -1, "the pack download should be put on the proxy as well")
 	assert_true(applied < requested,
 		"and before the request, not after it")
+
+
+# --- What counts as the proxy working ------------------------------------------------
+func test_a_proxy_is_only_trusted_when_the_answer_is_ours() -> void:
+	# The damaging case, and the reason this is not just a status-code check: a
+	# filtering proxy or a captive portal answers 200 with its own HTML for any
+	# address. Believed, it gets switched on and written to disk, and from then on
+	# every API call comes back as that page -- a successful code over an empty body,
+	# read as a server error, which is not a network message and therefore hides the
+	# one control that could undo it.
+	assert_true(ServerManagerClass.proxy_probe_succeeded(
+		HTTPRequest.RESULT_SUCCESS, 200, '{"status": "ok"}'))
+	assert_false(ServerManagerClass.proxy_probe_succeeded(
+		HTTPRequest.RESULT_SUCCESS, 200, "<html><body>Access blocked</body></html>"),
+		"a block page is not the server answering")
+	assert_false(ServerManagerClass.proxy_probe_succeeded(
+		HTTPRequest.RESULT_SUCCESS, 200, ""),
+		"and neither is nothing at all")
+	assert_false(ServerManagerClass.proxy_probe_succeeded(
+		HTTPRequest.RESULT_CANT_CONNECT, 0, ""))
+	assert_false(ServerManagerClass.proxy_probe_succeeded(
+		HTTPRequest.RESULT_SUCCESS, 407, "proxy authentication required"))

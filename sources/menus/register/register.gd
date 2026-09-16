@@ -335,10 +335,15 @@ func _show_failure(code: int, from_the_server: String) -> void:
 	popup_copy_button.text = Utils.COPY_TEXT
 	# Only under a network failure: the card also carries "this address is already
 	# used" and a server error, and neither is helped by a proxy.
-	if slot.is_empty():
+	# A proxy already in use is the exception: one that has started answering with its
+	# own pages turns every request into a server error, which is not a network
+	# message -- so the one control that could switch it back off would be hidden on
+	# exactly the screens where it is needed. There must always be a way out of it.
+	var server: ServerManagerClass = ServerManager as ServerManagerClass
+	if slot.is_empty() and not server.proxy_enabled:
 		proxy_panel.hide()
 	else:
-		proxy_panel.refresh((ServerManager as ServerManagerClass).last_diagnosis)
+		proxy_panel.refresh(server.last_diagnosis)
 	popup.show()
 
 

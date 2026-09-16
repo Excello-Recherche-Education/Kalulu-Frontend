@@ -556,8 +556,13 @@ func _show_error(error: DownloadError) -> void:
 	error_popup.copy_text = _report_for(error) if error in REPORTABLE_ERRORS else ""
 	# Only under a network notice: the same dialog also reports an archive that will
 	# not extract and a folder gone bad, and neither is helped by a proxy.
-	if error in NETWORK_ERRORS.values():
-		proxy_panel.refresh((ServerManager as ServerManagerClass).last_diagnosis)
+	# A proxy already in use is the exception: one that has started answering with its
+	# own pages turns every request into a server error, which is not a network
+	# message -- so the one control that could switch it back off would be hidden on
+	# exactly the screens where it is needed. There must always be a way out of it.
+	var server: ServerManagerClass = ServerManager as ServerManagerClass
+	if error in NETWORK_ERRORS.values() or server.proxy_enabled:
+		proxy_panel.refresh(server.last_diagnosis)
 	else:
 		proxy_panel.hide()
 	error_popup.show()

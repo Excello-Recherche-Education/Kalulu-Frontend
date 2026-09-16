@@ -237,10 +237,15 @@ func _show_login_error(translation_key: String) -> void:
 ## asking for a server address under it would be an invitation to break a working
 ## connection.
 func _refresh_proxy_panel(translation_key: String) -> void:
-	if not translation_key in NETWORK_ERRORS.values():
+	var server: ServerManagerClass = ServerManager as ServerManagerClass
+	# A proxy already in use is the exception: one that has started answering with its
+	# own pages turns every request into a server error, which is not a network
+	# message -- so the one control that could switch it back off would be hidden on
+	# exactly the screens where it is needed. There must always be a way out of it.
+	if not translation_key in NETWORK_ERRORS.values() and not server.proxy_enabled:
 		proxy_panel.hide()
 		return
-	proxy_panel.refresh((ServerManager as ServerManagerClass).last_diagnosis)
+	proxy_panel.refresh(server.last_diagnosis)
 
 
 ## The proxy has been changed, so the failure on screen is about a route that is no
