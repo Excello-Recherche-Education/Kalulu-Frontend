@@ -110,6 +110,12 @@ var win_kalulu_speech: AudioStreamMP3
 var lose_kalulu_speech: AudioStreamMP3
 # data to go back to the right place in gardens
 var gardens_data: Dictionary = {}
+# How long the run has taken, kept across the app losing focus so a minigame left
+# open on a tablet is not counted as time spent playing. Read in the Timer region.
+var _start_time: float = 0.0
+var _elapsed_paused: float = 0.0
+var _pause_start: float = 0.0
+var _is_paused: bool = false
 
 @onready var minigame_ui: MinigameUI = $MinigameUI
 @onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
@@ -190,11 +196,6 @@ func _curtains_and_kalulu() -> void:
 #endregion
 
 #region Timer
-var _start_time: float = 0.0
-var _elapsed_paused: float = 0.0
-var _pause_start: float = 0.0
-var _is_paused: bool = false
-
 
 # Launch the minigame
 func _start() -> void:

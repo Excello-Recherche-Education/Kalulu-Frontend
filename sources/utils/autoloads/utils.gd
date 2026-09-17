@@ -15,6 +15,11 @@ const RESERVED_FILE_NAMES: Array[String] = [
 	"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
 ]
 const INVALID_FILE_CHARS: Array[String] = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"]
+## Labels on an offer to copy, before and just after it is taken.
+const COPY_TEXT: String = "COPY_ERROR_MESSAGE"
+const COPIED_TEXT: String = "ERROR_MESSAGE_COPIED"
+## How long "copied" stays up before the offer comes back.
+const COPIED_FEEDBACK_SECONDS: float = 2.5
 
 
 func reorder_children_by_property(container: Node, property_name: String) -> void:
@@ -163,13 +168,6 @@ func support_report(message: String, result_code: int) -> String:
 	if result_code != HTTPRequest.RESULT_SUCCESS:
 		report += "\n" + ServerManagerClass.http_result_name(result_code)
 	return report
-
-
-## Labels on an offer to copy, before and just after it is taken.
-const COPY_TEXT: String = "COPY_ERROR_MESSAGE"
-const COPIED_TEXT: String = "ERROR_MESSAGE_COPIED"
-## How long "copied" stays up before the offer comes back.
-const COPIED_FEEDBACK_SECONDS: float = 2.5
 
 
 ## Puts a report on the clipboard and confirms it on the button that asked.

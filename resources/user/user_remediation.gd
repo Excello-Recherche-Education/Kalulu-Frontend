@@ -14,13 +14,19 @@ const MAX_SCORE: int = 0
 # Defines the score from which the GP should be presented for remediation
 const REMEDIATION_SCORE: int = -2
 
-#region GP Scores
-
-# Key is the ID of the GP
-# Value is the score of the GP
+# The stored scores, one pair per kind of item. Every key is the item's ID and
+# every value its score; the timestamp beside it is what the synchronizer compares
+# against the server's. Declared together here rather than inside the region that
+# works on each, because a declaration below the first function is not read by
+# anything looking for the shape of this resource -- the convention check included.
 @export var gps_scores: Dictionary[int, int] = {}
 @export var gp_last_modified: String = ""
+@export var syllables_scores: Dictionary[int, int] = {}
+@export var syllables_last_modified: String = ""
+@export var words_scores: Dictionary[int, int] = {}
+@export var words_last_modified: String = ""
 
+#region GP Scores
 
 # Gets the score of a GP if it is below or equals to the remediation score
 func get_gp_score(id: int) -> int:
@@ -57,12 +63,6 @@ func set_gp_last_modified(new_date: String) -> void:
 
 #region Syllables Scores
 
-# Key is the ID of the syllable
-# Value is the score of the syllable
-@export var syllables_scores: Dictionary[int, int] = {}
-@export var syllables_last_modified: String = ""
-
-
 # Gets the score of a syllable if it is below or equals to the remediation score
 func get_syllable_score(id: int) -> int:
 	if syllables_scores.has(id):
@@ -97,12 +97,6 @@ func set_syllables_last_modified(new_date: String) -> void:
 #endregion
 
 #region Words Scores
-
-# Key is the ID of the word
-# Value is the score of the word
-@export var words_scores: Dictionary[int, int] = {}
-@export var words_last_modified: String = ""
-
 
 # Gets the score of a word if it is below or equals to the remediation score
 func get_word_score(id: int) -> int:

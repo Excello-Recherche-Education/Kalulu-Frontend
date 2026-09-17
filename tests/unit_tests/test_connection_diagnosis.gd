@@ -11,6 +11,16 @@ extends GutTest
 
 const NO_NETWORK: ServerManagerClass.ConnectionFailure = ServerManagerClass.ConnectionFailure.NO_NETWORK
 const BLOCKED: ServerManagerClass.ConnectionFailure = ServerManagerClass.ConnectionFailure.KALULU_BLOCKED
+## The registration wizard, which tells the same story about creating an account.
+const REGISTER_SCRIPT: GDScript = preload("res://sources/menus/register/register.gd")
+## The pack is fetched straight from S3 with a presigned URL, so unblocking the API
+## alone leaves the download failing. Kalulu-Languages-Checker reads the same bucket
+## and spells the host out in available_packs.gd.
+const PACK_HOST: String = "kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
+## Each domain is marked, so a line that wraps -- which carries no mark -- cannot be
+## read as one more domain. It was: the pack host broke mid-name and the tail looked
+## like a third entry underneath.
+const DOMAIN_MARK: String = "• "
 
 
 func test_a_reachable_internet_means_only_kalulu_is_blocked() -> void:
@@ -45,9 +55,6 @@ func test_reaching_the_internet_wins_over_the_stale_code() -> void:
 	# The probe records a code on every run, so a success carries the previous
 	# failure's code with it. Reachability has to be read first.
 	assert_eq(ServerManagerClass.diagnosis_for(true, HTTPRequest.RESULT_CANT_RESOLVE), BLOCKED)
-
-
-const REGISTER_SCRIPT: GDScript = preload("res://sources/menus/register/register.gd")
 
 
 func test_every_cause_has_words_on_both_screens_that_show_one() -> void:
@@ -120,17 +127,6 @@ func test_a_second_caller_waits_instead_of_being_told_it_is_offline() -> void:
 
 
 # --- What the message hands to whoever runs the network ------------------------
-
-## The pack is fetched straight from S3 with a presigned URL, so unblocking the API
-## alone leaves the download failing. Kalulu-Languages-Checker reads the same bucket
-## and spells the host out in available_packs.gd.
-const PACK_HOST: String = "kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
-## Each domain is marked, so a line that wraps -- which carries no mark -- cannot be
-## read as one more domain. It was: the pack host broke mid-name and the tail looked
-## like a third entry underneath.
-const DOMAIN_MARK: String = "• "
-
-
 func test_the_blocked_message_names_the_api_host_the_app_actually_calls() -> void:
 	# Tied to the constant rather than to a copy of it: moving the API without
 	# rewriting the message would hand a network administrator a dead domain.
