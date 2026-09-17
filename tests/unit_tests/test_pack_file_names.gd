@@ -29,6 +29,11 @@ const COLLIDING_PAIRS: Array = [
 	["é", "E", "é", "e"],
 	["ó", "O", "ó", "o"],
 ]
+# The throwaway language the resolver tests write their files into, and the real
+# language they put back afterwards.
+const TEST_LOCALE: String = "zz_TEST"
+
+var _saved_language: String
 
 
 func _gp(grapheme: String, phoneme: String) -> Dictionary:
@@ -96,12 +101,6 @@ func test_the_display_name_stays_readable() -> void:
 
 
 # --- the fallback that lets an updated app read a pack downloaded before it ---
-
-const TEST_LOCALE: String = "zz_TEST"
-
-var _saved_language: String
-
-
 func before_each() -> void:
 	_saved_language = Database.language
 	Database.language = TEST_LOCALE

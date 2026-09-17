@@ -42,9 +42,7 @@ static var transition_data: Dictionary = {}
 @export_range(0, 1) var current_lesson_stimuli_ratio: float = 0.7
 @export var minigame_number: int = 0
 @export_category("Difficulty")
-@export var max_number_of_lives: int = 0:
-	set(value):
-		max_number_of_lives = value
+@export var max_number_of_lives: int = 0
 @export var max_progression: int = 0:
 	set(value):
 		max_progression = value
@@ -112,6 +110,12 @@ var win_kalulu_speech: AudioStreamMP3
 var lose_kalulu_speech: AudioStreamMP3
 # data to go back to the right place in gardens
 var gardens_data: Dictionary = {}
+# How long the run has taken, kept across the app losing focus so a minigame left
+# open on a tablet is not counted as time spent playing. Read in the Timer region.
+var _start_time: float = 0.0
+var _elapsed_paused: float = 0.0
+var _pause_start: float = 0.0
+var _is_paused: bool = false
 
 @onready var minigame_ui: MinigameUI = $MinigameUI
 @onready var audio_player: MinigameAudioStreamPlayer = $AudioStreamPlayer
@@ -166,8 +170,11 @@ func _initialize() -> void:
 # Find and set the parameters of the minigame, like the number of lives or the victory conditions.
 func _setup_minigame() -> void:
 	Log.trace("BaseMinigame: SetupMinigame")
+	# Self-assigned on purpose, and only this one: the scene sets max_progression
+	# before minigame_ui exists, so its setter had nobody to hand the value to. This
+	# runs it again now that there is. max_number_of_lives was written the same way
+	# and has no setter left to run.
 	max_progression = max_progression
-	max_number_of_lives = max_number_of_lives
 	current_lives = max_number_of_lives
 
 
@@ -189,11 +196,6 @@ func _curtains_and_kalulu() -> void:
 #endregion
 
 #region Timer
-var _start_time: float = 0.0
-var _elapsed_paused: float = 0.0
-var _pause_start: float = 0.0
-var _is_paused: bool = false
-
 
 # Launch the minigame
 func _start() -> void:

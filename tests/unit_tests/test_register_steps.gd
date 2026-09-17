@@ -11,6 +11,8 @@ const BASE_STEP: String = "res://sources/menus/register/steps/base_step.tscn"
 const LANGUAGE_STEP: String = "res://sources/menus/register/steps/language/language_step.tscn"
 # The tallest form of the lot: three fields, each able to put a message under itself.
 const CREDENTIALS_STEP: String = "res://sources/menus/register/steps/credentials_step.tscn"
+const CONDITIONS_STEP: String = "res://sources/menus/register/steps/general_conditions_step.tscn"
+const RECAP_STEP: String = "res://sources/menus/register/steps/recap_step.tscn"
 # The mockups are drawn at the project's own reference resolution, so their
 # measurements can be checked directly.
 const REFERENCE_VIEWPORT: Vector2i = Vector2i(2560, 1800)
@@ -282,9 +284,6 @@ func test_the_steps_the_wizard_branches_on_still_carry_their_names() -> void:
 
 
 # --- Conditions step ----------------------------------------------------------
-const CONDITIONS_STEP: String = "res://sources/menus/register/steps/general_conditions_step.tscn"
-
-
 func _mounted_conditions_step() -> Step:
 	var viewport: SubViewport = SubViewport.new()
 	viewport.size = REFERENCE_VIEWPORT
@@ -431,9 +430,6 @@ func _click(step: Step, target: Control) -> void:
 
 
 # --- Recap step ---------------------------------------------------------------
-const RECAP_STEP: String = "res://sources/menus/register/steps/recap_step.tscn"
-
-
 ## The recap, filled in with an account of `devices` devices, mounted and laid out.
 func _mounted_recap_step(devices: int) -> RecapStep:
 	var viewport: SubViewport = SubViewport.new()

@@ -26,6 +26,12 @@ func _ready() -> void:
 		Log.warn("LoginScreen: Database closed, redirecting to package loader")
 		await get_tree().process_frame
 		get_tree().change_scene_to_file(PACKAGE_LOADER_SCENE_PATH)
+		# Nothing below this line may run: the scene is freed at the end of the
+		# frame, so every await after it resumes on a destroyed node, and the
+		# curtain would be opened over the downloader that is about to raise it
+		# itself. The speeches loaded in between come from a database that is,
+		# by the very condition above, closed.
+		return
 	
 	# The synchronization asked for at teacher login is postponed until the
 	# language pack is installed. This screen is the first one reached with the
