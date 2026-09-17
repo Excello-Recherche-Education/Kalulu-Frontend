@@ -71,13 +71,16 @@ func _find_stimuli_and_distractions() -> void:
 		else:
 			stimuli.append_array(previous_lesson_words)
 		
-		# If there are not enough stimuli, fill the rest with current lesson or previous lesson
-		if current_lesson_words:
-			while stimuli.size() < max_progression:
-				if current_lesson_words:
-					stimuli.append(current_lesson_words.pick_random())
-				else:
-					stimuli.append(previous_lesson_words.pick_random())
+		# If there are not enough stimuli, fill the rest with current lesson or previous lesson.
+		# The inner test is the one that matters; an outer copy of it used to wrap this
+		# loop, which meant a lesson whose every word lacks a recording skipped the fill
+		# entirely and left the pool shorter than max_progression. SyllablesMinigame has
+		# never had that wrapper.
+		while stimuli.size() < max_progression:
+			if current_lesson_words:
+				stimuli.append(current_lesson_words.pick_random())
+			else:
+				stimuli.append(previous_lesson_words.pick_random())
 	
 	# Shuffle the stimuli
 	stimuli.shuffle()
@@ -130,10 +133,39 @@ func _set_current_word_progression(p_current_word_progression: int) -> void:
 		await _on_current_word_progression_changed()
 
 
+## Which distractor set belongs to a progression, or -1 when there are none.
+##
+## There is one set per stimulus, and _get_current_stimulus wraps with a modulo so a
+## pool shorter than max_progression repeats rather than running out. The distractors
+## were read straight, so the moment the pool did come out short the game went out of
+## range partway through and stopped on a dead screen. CrabsMinigame and
+## JellyfishMinigame both wrap where this one did not.
+##
+## Static and given the count, so the rule can be checked without standing up a
+## minigame or installing a language pack.
+static func distractor_index(progression: int, distractor_count: int) -> int:
+	if distractor_count <= 0:
+		return -1
+	return progression % distractor_count
+
+
+## Refills the queue of wrong graphemes offered for the GP being asked for.
 func _reset_distractors_queue() -> void:
-	var current_distractors: Array = distractions[current_progression][current_word_progression] as Array
+	# Emptied first, so a guard below leaves the previous GP's distractors nowhere to
+	# be picked up from. _get_distractor answers {} on an empty queue, which the
+	# minigames already draw as a blank.
+	current_gp_distractors_queue = []
+	var index: int = distractor_index(current_progression, distractions.size())
+	if index < 0:
+		return
+	var word_distractors: Array = distractions[index] as Array
+	if current_word_progression >= word_distractors.size():
+		return
 	
-	current_gp_distractors_queue = current_distractors.duplicate()
+	# assign() rather than duplicate(): it copies into the typed array instead of
+	# replacing it, so a distractor list that reached here untyped is converted
+	# rather than refused outright.
+	current_gp_distractors_queue.assign(word_distractors[current_word_progression] as Array)
 	current_gp_distractors_queue.shuffle()
 	while current_gp_distractors_queue.size() > distractors_queue_size:
 		current_gp_distractors_queue.pop_front()
@@ -155,7 +187,8 @@ func _get_current_stimulus() -> Dictionary:
 
 # Get the distractors for current word
 func _get_current_distractors() -> Array:
-	return distractions[current_progression]
+	var index: int = distractor_index(current_progression, distractions.size())
+	return distractions[index] if index >= 0 else []
 
 
 # Get the current GP to find
