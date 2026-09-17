@@ -148,23 +148,10 @@ func get_application_config_version() -> String:
 	return str(ProjectSettings.get_setting("application/config/version", "0"))
 
 
-func get_application_version_code() -> String:
-	var preset: ConfigFile = ConfigFile.new()
-	var err: Error = preset.load("res://export_presets.cfg")
-	if err == OK:
-		return str(preset.get_value("preset.0.options", "version/code", "0"))
-	Log.trace("Utils: Failed to load export_presets.cfg")
-	return "0"
-
-
-func get_application_version_with_code() -> String:
-	return "%s  (%s)" % [get_application_config_version(), get_application_version_code()]
-
-
 ## A failure, written out so it can be pasted into a mail to somebody who can act.
 ##
 ## The message the reader saw, then the two things its recipient asks first: which
-## build it came from, and what actually failed. RESULT_TLS_HANDSHAKE_ERROR in
+## version it came from, and what actually failed. RESULT_TLS_HANDSHAKE_ERROR in
 ## particular is what tells a network administrator the connection was intercepted
 ## rather than merely dropped.
 ##
@@ -172,7 +159,7 @@ func get_application_version_with_code() -> String:
 ## off with RESULT_SUCCESS underneath a message about a refused connection reads as a
 ## contradiction, and would be the first thing queried.
 func support_report(message: String, result_code: int) -> String:
-	var report: String = "%s\n\nKalulu %s" % [message, get_application_version_with_code()]
+	var report: String = "%s\n\nKalulu %s" % [message, get_application_config_version()]
 	if result_code != HTTPRequest.RESULT_SUCCESS:
 		report += "\n" + ServerManagerClass.http_result_name(result_code)
 	return report

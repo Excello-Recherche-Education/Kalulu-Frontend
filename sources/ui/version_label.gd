@@ -1,6 +1,6 @@
 class_name VersionLabel
 extends Label
-## The build version, and the only way in to the developer settings.
+## The app version, and the only way in to the developer settings.
 ##
 ## Ten quick taps on it opens them. That is deliberately undiscoverable: there is no
 ## button for it anywhere, because a child on a shared device must not find it, and
@@ -19,7 +19,7 @@ var last_click_seconds: float = 0.0
 
 
 func _ready() -> void:
-	text = Utils.get_application_version_with_code()
+	text = Utils.get_application_config_version()
 	# A Label ignores the mouse, and that is exactly how this went quiet once: the
 	# handler was connected, the taps landed on whatever was behind it, and nothing
 	# said so. Set here rather than in the scene so every instance has it.
