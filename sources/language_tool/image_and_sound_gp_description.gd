@@ -4,8 +4,15 @@ extends HBoxContainer
 signal deleted()
 
 var gp: Dictionary = {}
+# The get_* pair names the file an upload is written to, always the canonical one.
+# The find_* pair lists what the pack already holds, legacy names included, and is
+# what previewing, replacing and clearing go through. See Database.find_asset_files.
 var get_image_path: Callable = Database.get_gp_look_and_learn_image_path
 var get_sound_path: Callable = Database.get_gp_look_and_learn_sound_path
+var find_image_files: Callable = Database.find_gp_asset_files.bind(
+		Database.LOOK_AND_LEARN_IMAGES, Database.IMAGE_EXTENSION)
+var find_sound_files: Callable = Database.find_gp_asset_files.bind(
+		Database.LOOK_AND_LEARN_SOUNDS, Database.SOUND_EXTENSION)
 
 @onready var gp_menu_button: MenuButton = %GPMenuButton
 @onready var image_preview: TextureRect = %ImagePreview
@@ -21,10 +28,8 @@ var get_sound_path: Callable = Database.get_gp_look_and_learn_sound_path
 func _image_file_selected(file_path: String) -> void:
 	file_dialog.files_selected.connect(_image_file_selected.bind(file_dialog))
 	if FileAccess.file_exists(file_path):
+		_remove_files(find_image_files.call(gp) as PackedStringArray)
 		var current_file: String = get_image_path.call(gp)
-		if FileAccess.file_exists(current_file):
-			DirAccess.remove_absolute(current_file)
-		
 		DirAccess.copy_absolute(file_path, current_file)
 		set_image_preview(current_file)
 
@@ -66,10 +71,8 @@ func set_sound_preview(sound_path: String) -> void:
 
 func _sound_file_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
+		_remove_files(find_sound_files.call(gp) as PackedStringArray)
 		var current_file: String = get_sound_path.call(gp)
-		if FileAccess.file_exists(current_file):
-			DirAccess.remove_absolute(current_file)
-		
 		DirAccess.copy_absolute(file_path, current_file)
 		
 		set_sound_preview(current_file)
@@ -80,15 +83,15 @@ func set_gp(value: Dictionary) -> void:
 	gp = value
 	gp_menu_button.text = Database.get_gp_name(gp)
 	
-	var image_path: String = get_image_path.call(gp)
-	if FileAccess.file_exists(image_path):
-		set_image_preview(image_path)
+	var image_files: PackedStringArray = find_image_files.call(gp)
+	if not image_files.is_empty():
+		set_image_preview(image_files[0])
 	else:
 		image_clear_button.hide()
 	
-	var sound_path: String = get_sound_path.call(gp)
-	if FileAccess.file_exists(sound_path):
-		set_sound_preview(sound_path)
+	var sound_files: PackedStringArray = find_sound_files.call(gp)
+	if not sound_files.is_empty():
+		set_sound_preview(sound_files[0])
 		sound_preview.show()
 	else:
 		sound_preview.hide()
@@ -123,19 +126,20 @@ func _on_sound_preview_pressed() -> void:
 
 
 func _on_image_clear_button_pressed() -> void:
-	var current_file: String = get_image_path.call(gp)
-	if FileAccess.file_exists(current_file):
-		DirAccess.remove_absolute(current_file)
-	
+	_remove_files(find_image_files.call(gp) as PackedStringArray)
 	set_image_preview("")
 
 
 func _on_sound_clear_button_pressed() -> void:
-	var current_file: String = get_sound_path.call(gp)
-	if FileAccess.file_exists(current_file):
-		DirAccess.remove_absolute(current_file)
-	
+	_remove_files(find_sound_files.call(gp) as PackedStringArray)
 	set_sound_preview("")
+
+
+# Both names, not only the canonical one: a legacy file left behind would come
+# straight back the next time the line is shown.
+func _remove_files(files: PackedStringArray) -> void:
+	for file: String in files:
+		DirAccess.remove_absolute(file)
 
 
 func hide_image_part() -> void:

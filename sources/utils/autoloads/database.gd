@@ -722,6 +722,60 @@ func resolve_syllable_sound_path(syllable: Dictionary) -> String:
 			_text_to_file_name(syllable.Grapheme as String), syllable.Grapheme as String)
 
 
+## Every file on disk holding one pack asset, for the Prof Tool, which previews,
+## replaces and deletes what a pack already contains rather than only playing it.
+##
+## The same two rungs as the resolvers above -- the canonical name, then the name the
+## pack used before the encoding -- but it returns every rung that is there, because
+## clearing or replacing an asset has to remove both: deleting only the canonical file
+## would bring the legacy one straight back on the next read.
+##
+## And unlike the resolvers it refuses a file whose name only matches with case
+## folded. macOS and Windows find "e-E.png" when the folder holds "e-e.png", which is
+## another pair's asset: the game accepts that for a pack too old to tell the two
+## apart, but an editor would show the wrong picture, and deleting it would destroy
+## the other pair's file. Only a name carrying an uppercase letter can alias that
+## way, so only those pay for the folder listing.
+## Returns the canonical file first, and nothing when neither name is on disk.
+func find_asset_files(folder: String, canonical_name: String, legacy_name: String, extension: String) -> PackedStringArray:
+	var files: PackedStringArray = []
+	for file_name: String in [canonical_name, legacy_name]:
+		var path: String = resolve_external_file_path(folder + file_name + extension)
+		if path.is_empty() or files.has(path):
+			continue
+		if path.get_file() != path.get_file().to_lower() and not _is_named_exactly(path):
+			continue
+		files.append(path)
+	return files
+
+
+func find_gp_asset_files(gp: Dictionary, folder: String, extension: String) -> PackedStringArray:
+	return find_asset_files(
+			get_language_folder() + folder, get_gp_file_name(gp), get_gp_name(gp), extension)
+
+
+func find_word_sound_files(word: Dictionary) -> PackedStringArray:
+	return find_asset_files(get_language_sound_folder(),
+			_text_to_file_name(word.Word as String), word.Word as String, SOUND_EXTENSION)
+
+
+func find_syllable_sound_files(syllable: Dictionary) -> PackedStringArray:
+	return find_asset_files(get_language_sound_folder(),
+			_text_to_file_name(syllable.Grapheme as String), syllable.Grapheme as String,
+			SOUND_EXTENSION)
+
+
+# Whether the folder holds this file under exactly this name, case included. Unicode
+# normalization is still folded, since resolve_external_file_path already chose the
+# form and the packs mix both.
+func _is_named_exactly(path: String) -> bool:
+	var file_name: String = UnicodeNormalizer.to_nfd_extended(path.get_file())
+	for entry: String in DirAccess.get_files_at(path.get_base_dir()):
+		if UnicodeNormalizer.to_nfd_extended(entry) == file_name:
+			return true
+	return false
+
+
 func get_kalulu_speech_path(speech_category: String, speech_name: String) -> String:
 	return get_language_sound_folder() + KALULU_FOLDER + speech_category + "_" + speech_name + SOUND_EXTENSION
 

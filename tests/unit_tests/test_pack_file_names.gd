@@ -165,3 +165,46 @@ func test_nothing_on_disk_resolves_to_nothing() -> void:
 	var path: String = Database.resolve_gp_asset_path(
 			_gp("e", "E"), Database.LANGUAGE_SOUNDS, Database.SOUND_EXTENSION)
 	assert_eq(path, "", "a GP with no file must resolve to an empty path")
+
+
+# --- what the Prof Tool sees of a pack it is editing ---------------------------
+## The Prof Tool previews, replaces and deletes assets, so it cannot read through the
+## canonical getters alone -- an older pack would look empty -- and it cannot use the
+## game's resolver as is either, because a case insensitive filesystem would hand it
+## another pair's file.
+func test_the_prof_tool_finds_a_legacy_asset() -> void:
+	_write_sound("e-E.mp3")
+	var files: PackedStringArray = Database.find_gp_asset_files(
+			_gp("e", "E"), Database.LANGUAGE_SOUNDS, Database.SOUND_EXTENSION)
+	assert_eq(files.size(), 1, "got " + str(files))
+	assert_true(files[0].ends_with("/e-E.mp3"), "got " + str(files))
+
+
+func test_the_prof_tool_finds_both_names_so_clearing_removes_both() -> void:
+	# Deleting only the canonical file would bring the legacy one straight back.
+	_write_sound("e-E.mp3")
+	_write_sound("e-cap.e.mp3")
+	var files: PackedStringArray = Database.find_gp_asset_files(
+			_gp("e", "E"), Database.LANGUAGE_SOUNDS, Database.SOUND_EXTENSION)
+	assert_eq(files.size(), 2, "got " + str(files))
+	assert_true(files[0].ends_with("/e-cap.e.mp3"), "the canonical file comes first, got " + str(files))
+
+
+func test_the_prof_tool_never_takes_another_pairs_file() -> void:
+	# On macOS and Windows "e-E.mp3" is found when only "e-e.mp3" is on disk. That
+	# is e-e's recording: showing it on e-E's line is wrong, and clearing e-E's line
+	# would delete it.
+	_write_sound("e-e.mp3")
+	var files: PackedStringArray = Database.find_gp_asset_files(
+			_gp("e", "E"), Database.LANGUAGE_SOUNDS, Database.SOUND_EXTENSION)
+	assert_eq(files.size(), 0, "got " + str(files))
+
+
+func test_the_prof_tool_finds_legacy_word_and_syllable_sounds() -> void:
+	_write_sound("Colombia.mp3")
+	_write_sound("Bra.mp3")
+	var words: PackedStringArray = Database.find_word_sound_files({"Word": "Colombia"})
+	assert_eq(words.size(), 1, "got " + str(words))
+	var syllables: PackedStringArray = Database.find_syllable_sound_files({"Grapheme": "Bra"})
+	assert_eq(syllables.size(), 1, "got " + str(syllables))
+	assert_eq(Database.find_word_sound_files({"Word": "absent"}).size(), 0)
