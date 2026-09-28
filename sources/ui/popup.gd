@@ -7,11 +7,10 @@ signal refused()
 
 ## Label on the only button of an acknowledge-only dialog.
 const ACKNOWLEDGE_TEXT: String = "OK"
-## Labels on the offer to copy, before and just after it is taken.
+## The label on the offer to copy. Utils owns the pair and does the copying, but this
+## script is @tool and its setters run in the editor, where an autoload does not exist
+## yet -- so the label it puts back has to be reachable without one.
 const COPY_TEXT: String = "COPY_ERROR_MESSAGE"
-const COPIED_TEXT: String = "ERROR_MESSAGE_COPIED"
-## How long "copied" stays up before the offer comes back.
-const COPIED_FEEDBACK_SECONDS: float = 2.5
 
 ## Short heading above the message. Hidden when empty, so a dialog that reads
 ## fine as a single sentence stays a single sentence.
@@ -123,13 +122,7 @@ func _set_content_min_width(p_content_min_width: float) -> void:
 
 
 func _on_copy_button_pressed() -> void:
-	DisplayServer.clipboard_set(copy_text)
-	Log.info("ConfirmPopup: Copied the notice to the clipboard")
-	copy_button.text = COPIED_TEXT
-	await get_tree().create_timer(COPIED_FEEDBACK_SECONDS).timeout
-	# The dialog may have been dismissed, or gone, while the confirmation was up.
-	if is_instance_valid(copy_button):
-		copy_button.text = COPY_TEXT
+	await Utils.copy_report(copy_text, copy_button)
 
 
 func _set_acknowledge_only(p_acknowledge_only: bool) -> void:

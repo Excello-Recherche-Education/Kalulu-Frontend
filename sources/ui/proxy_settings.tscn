@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://ck3p8x1ynqv2e"]
+
+[ext_resource type="Script" uid="uid://b6owra6j6m77" path="res://sources/ui/proxy_settings.gd" id="1_proxy"]
+[ext_resource type="PackedScene" uid="uid://m58jy4pys3yn" path="res://sources/ui/menu_text_field.tscn" id="2_field"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="3_popup"]
+
+[node name="ProxySettings" type="VBoxContainer"]
+visible = false
+theme_override_constants/separation = 24
+script = ExtResource("1_proxy")
+
+[node name="HeaderRow" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 32
+
+[node name="UseProxy" type="Button" parent="HeaderRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"CheckBoxSquare"
+toggle_mode = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+
+[node name="UseProxyLabel" type="Label" parent="HeaderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"FieldLabel"
+text = "USE_PROXY"
+
+[node name="HelpButton" type="Button" parent="HeaderRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"InlineButton"
+text = "PROXY_HELP_BUTTON"
+
+[node name="AddressField" parent="." instance=ExtResource("2_field")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+placeholder = "PROXY_ADDRESS_PLACEHOLDER"
+
+[node name="ApplyButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InlineButton"
+text = "PROXY_APPLY"
+
+[node name="HelpPopup" parent="." instance=ExtResource("3_popup")]
+unique_name_in_owner = true
+acknowledge_only = true
+content_min_width = 1600.0

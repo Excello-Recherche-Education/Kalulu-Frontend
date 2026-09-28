@@ -111,6 +111,9 @@ MESSAGES = {
     'var_blank_missing':  "missing blank line before the var section",
     'var_blank_extra':    "remove blank line between var declarations — variables must be grouped together",
 
+    # Declarations that turn up below the functions
+    'declaration_after_func': "{found} declared after the first function — every signal, enum, const, static var, @export, var and @onready belongs above them",
+
     # @onready variables
     'onready_position':       "@onready var found after {after} — expected order: signal > enum > const > static var > @export > var > @onready",
     'onready_blank_missing':  "missing blank line before the @onready section",
@@ -285,6 +288,34 @@ ANNOTATION_LINE_RE = re.compile(
 ALLOWED_ANNOTATION_RE = re.compile(r"@(tool|icon|static_unload)\b")
 
 
+## What a top-level declaration looks like, for the pass below the functions.
+##
+## Longest prefix first, so "@onready var" is not reported as a plain "var".
+DECLARATION_PREFIXES = (
+    '@onready var ', '@export', 'static var ', 'const ', 'var ', 'signal ', 'enum ',
+)
+
+
+def _check_nothing_is_declared_below(path: str, content, start: int) -> None:
+    """Flags declarations sitting after the first function.
+
+    The ordering loop above stops at the first func, because everything it knows
+    how to order is meant to be above it. That left the whole rest of the file
+    unread: a const block dropped in halfway down was neither ordered nor
+    reported, which is how one sat in utils.gd between two functions.
+
+    `content` holds only unindented, non-comment lines, so a nested class's
+    members and everything inside a function body are already out of the way.
+    """
+    for line, line_no in content[start:]:
+        stripped = line.strip()
+        for prefix in DECLARATION_PREFIXES:
+            if stripped.startswith(prefix):
+                issues.append((path, line_no, 'declaration_after_func',
+                               {'found': prefix.strip()}))
+                break
+
+
 def check_content_order(path: str, lines: list[str]):
     content = [
         (line.rstrip('\n'), idx)
@@ -344,6 +375,7 @@ def check_content_order(path: str, lines: list[str]):
             j += 1
             continue
         if re.match(r'(?:static\s+)?func\b', stripped):
+            _check_nothing_is_declared_below(path, content, j)
             break
         token = None
         if stripped.startswith('signal'):
@@ -531,6 +563,7 @@ ORDERING_KINDS = frozenset({
     'annotation_order', 'class_position', 'extends_position', 'extends_missing',
     'signal_position', 'enum_position', 'const_position', 'static_position',
     'export_position', 'var_position', 'onready_position',
+    'declaration_after_func',
 })
 FORMATTING_KINDS = frozenset({
     'func_blank',

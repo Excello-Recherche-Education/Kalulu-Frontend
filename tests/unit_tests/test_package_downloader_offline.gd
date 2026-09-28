@@ -105,24 +105,62 @@ func test_an_answer_that_is_not_the_file_is_a_refusal() -> void:
 
 
 # --- Which no-server error to report ------------------------------------------
-func test_a_reachable_internet_means_kalulu_is_blocked() -> void:
+##
+## The diagnosis itself is ServerManager's and is exercised in test_network_evidence.gd
+## against made-up evidence. What is this screen's own is the mapping from a diagnosed
+## cause to one of its errors, and that is the half that silently rots: the enum here
+## exists for archives and folders, so a network cause with no entry falls through to
+## "you have no internet access" -- the wrong instruction for four of the five new ones.
+func test_every_diagnosed_cause_has_an_error_of_its_own() -> void:
+	var seen: Array[int] = []
+	for cause: int in ServerManagerClass.ConnectionFailure.values():
+		if cause == ServerManagerClass.ConnectionFailure.NONE:
+			continue
+		var slot: String = ConnectionNotice.slot_for(cause)
+		assert_true(PackageDownloader.NETWORK_ERRORS.has(slot),
+			"%s (%s) has no error on the download screen"
+				% [ServerManagerClass.ConnectionFailure.keys()[cause], slot])
+		seen.append(PackageDownloader.error_for(slot))
+	assert_eq(seen.size(), (seen as Array).duplicate().size(),
+		"the causes should not share an error")
+
+
+func test_a_reachable_internet_still_means_kalulu_is_blocked() -> void:
 	# The probe got through and the API did not, so the network is filtering this app.
-	downloader.internet_reachable = true
-	assert_eq(downloader._no_server_error(), PackageDownloader.DownloadError.KALULU_BLOCKED)
+	# The general case, and the one every unrecognised cause falls back to.
+	assert_eq(PackageDownloader.error_for("blocked"),
+		PackageDownloader.DownloadError.KALULU_BLOCKED)
+	assert_eq(PackageDownloader.error_for("something-nobody-has-written-yet"),
+		PackageDownloader.DownloadError.KALULU_BLOCKED,
+		"never silence, and never the internet-access message")
 
 
-func test_an_unreachable_internet_means_the_device_is_offline() -> void:
-	downloader.internet_reachable = false
-	ServerManager.last_internet_result_code = HTTPRequest.RESULT_CANT_RESOLVE
-	assert_eq(downloader._no_server_error(), PackageDownloader.DownloadError.NO_INTERNET)
+func test_an_unreachable_internet_still_means_the_device_is_offline() -> void:
+	assert_eq(PackageDownloader.error_for("offline"),
+		PackageDownloader.DownloadError.NO_INTERNET)
 
 
-func test_a_probe_refused_at_the_tls_handshake_still_means_blocked() -> void:
-	# Nothing was reachable, but something answered and then refused its own
-	# certificate: a proxy standing in for every host, Kalulu included.
-	downloader.internet_reachable = false
-	ServerManager.last_internet_result_code = HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR
-	assert_eq(downloader._no_server_error(), PackageDownloader.DownloadError.KALULU_BLOCKED)
+func test_the_causes_the_reader_can_act_on_alone_are_not_offered_for_copying() -> void:
+	# A clock is corrected in the device's settings and a proxy Kalulu has already
+	# switched on has nobody left to tell. Mailing either to a technician sends the
+	# reader down a corridor to be told to go back and press the button.
+	for slot: String in ["clock", "proxy_available"]:
+		assert_false(PackageDownloader.error_for(slot) in PackageDownloader.REPORTABLE_ERRORS,
+			"%s is fixed where the reader is standing" % slot)
+	for slot: String in ["blocked", "offline", "dns", "intercepted", "proxy_required"]:
+		assert_true(PackageDownloader.error_for(slot) in PackageDownloader.REPORTABLE_ERRORS,
+			"%s is somebody else's to act on" % slot)
+
+
+func test_every_network_error_has_a_heading_for_the_dead_end_notice() -> void:
+	# With no usable pack there is nowhere to send the device, so the notice is the
+	# whole screen and a heading-less one reads as a fragment.
+	for slot: String in PackageDownloader.NETWORK_ERRORS:
+		var error: int = PackageDownloader.error_for(slot)
+		if error == PackageDownloader.DownloadError.NO_INTERNET:
+			continue  # keeps the original "an internet connection is required" heading
+		assert_true(PackageDownloader.DEAD_END_NOTICES.has(error),
+			"%s needs a heading" % slot)
 
 
 # --- The messages -------------------------------------------------------------
@@ -132,6 +170,40 @@ func test_every_error_has_a_message() -> void:
 	assert_eq((PackageDownloader.ERROR_MESSAGES as Array[String]).size(),
 		(PackageDownloader.DownloadError.keys() as Array).size(),
 		"every DownloadError needs its translation key, in the same order")
+
+
+func test_the_messages_line_up_with_the_values_they_belong_to() -> void:
+	# Matching sizes are not enough: a value inserted in the middle of the enum with
+	# its message appended at the end leaves both lists the same length and every
+	# entry after the insertion pointing at its neighbour's message. It happened here,
+	# and the notice it produced was about somebody else's problem entirely.
+	#
+	# Only the keys written to the convention can be checked this way; the older names
+	# -- NO_INTERNET_ACCESS, ERROR_DOWNLOADING -- predate it and are left alone.
+	for error: int in PackageDownloader.DownloadError.values():
+		var message: String = PackageDownloader.ERROR_MESSAGES[error]
+		if not message.begins_with("DOWNLOAD_"):
+			continue
+		assert_eq(message, "DOWNLOAD_" + PackageDownloader.DownloadError.keys()[error],
+			"%s has its neighbour's message" % PackageDownloader.DownloadError.keys()[error])
+
+
+func test_every_network_notice_is_written_in_every_language_the_app_speaks() -> void:
+	# A row missing from one column of the CSV shows the raw key, in capitals, to the
+	# teachers reading that language and to nobody else -- so it survives every test
+	# run on a French machine. That is exactly how USED_EMAIL_ADDRESS shipped.
+	var was: String = TranslationServer.get_locale()
+	for locale: String in ["fr", "es", "pt_BR", "it"]:
+		TranslationServer.set_locale(locale)
+		for slot: String in PackageDownloader.NETWORK_ERRORS:
+			var error: int = PackageDownloader.error_for(slot)
+			var keys: Array[String] = [PackageDownloader.ERROR_MESSAGES[error]]
+			if PackageDownloader.DEAD_END_NOTICES.has(error):
+				keys.append(str(PackageDownloader.DEAD_END_NOTICES[error]["title"]))
+				keys.append(str(PackageDownloader.DEAD_END_NOTICES[error]["message"]))
+			for key: String in keys:
+				assert_ne(tr(key), key, "%s has no %s translation" % [key, locale])
+	TranslationServer.set_locale(was)
 
 
 func test_the_blocked_message_is_translated_and_says_what_to_do() -> void:
@@ -162,3 +234,51 @@ func test_the_blocked_message_is_the_one_the_error_maps_to() -> void:
 	var messages: Array[String] = PackageDownloader.ERROR_MESSAGES
 	assert_eq(messages[PackageDownloader.DownloadError.KALULU_BLOCKED], "DOWNLOAD_KALULU_BLOCKED")
 	assert_eq(messages[PackageDownloader.DownloadError.NO_INTERNET], "NO_INTERNET_ACCESS")
+
+
+# --- A full disk is not a network problem ------------------------------------------
+func test_a_download_the_device_would_not_keep_is_not_diagnosed_as_the_network() -> void:
+	# HTTPRequest writes the archive to disk as it arrives, so no room left -- or a
+	# language folder it cannot write to -- fails here. Swept in with the rest it came
+	# back as a notice about firewalls and proxies, with a retry that could only fail
+	# the same way: nothing on the network makes a full disk writable.
+	for result: int in [HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN,
+			HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR]:
+		assert_eq(PackageDownloader.outcome_for_pack_download(result, 200),
+			PackageDownloader.DownloadOutcome.CANNOT_SAVE,
+			"%s is this device's own" % ServerManagerClass.http_result_name(result))
+
+
+func test_a_connection_that_died_is_still_a_missing_response() -> void:
+	# The distinction has to stay narrow: everything else that stops a transfer is
+	# still the network's, and still worth diagnosing.
+	for result: int in [HTTPRequest.RESULT_TIMEOUT, HTTPRequest.RESULT_CANT_CONNECT,
+			HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR, HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH]:
+		assert_eq(PackageDownloader.outcome_for_pack_download(result, 200),
+			PackageDownloader.DownloadOutcome.NO_RESPONSE,
+			"%s is not about storage" % ServerManagerClass.http_result_name(result))
+
+
+func test_being_unable_to_save_is_nobody_else_s_to_fix() -> void:
+	assert_false(PackageDownloader.DownloadError.CANNOT_SAVE in PackageDownloader.REPORTABLE_ERRORS,
+		"a network administrator cannot free up space on this tablet")
+
+
+# --- What the internet probe was answered with --------------------------------------
+func test_a_proxy_demanding_credentials_on_the_probe_is_named_as_one() -> void:
+	# The probe's 407 is a completed HTTP exchange, so its result code says success.
+	# Handed on without the status it reads as a healthy request, is diagnosed as
+	# nothing being wrong, and comes out as the general "this network blocks Kalulu" --
+	# so a fresh install behind an authenticating proxy never saw the notice written
+	# for it. No probes run for this one: a 407 needs no corroboration.
+	assert_eq(await downloader._no_server_error(HTTPRequest.RESULT_SUCCESS, 407),
+		PackageDownloader.DownloadError.PROXY_REQUIRED)
+
+
+func test_the_probe_s_status_reaches_the_diagnosis() -> void:
+	# Structural, like the proxy on the pack download: the value is read off
+	# ServerManager at the call site and there is no way to observe it afterwards.
+	var source: String = FileAccess.get_file_as_string(
+			"res://sources/menus/language_selection/package_downloader.gd")
+	assert_string_contains(source, "server.last_internet_response_code",
+		"the probe's status should go to the diagnosis with its result code")

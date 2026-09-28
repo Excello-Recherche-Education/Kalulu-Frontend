@@ -10,6 +10,12 @@ enum DownloadError {
 	INVALID_PACKAGE,
 	REPLACE_FAILED,
 	KALULU_BLOCKED,
+	DNS_FILTERED,
+	TLS_INTERCEPTED,
+	CLOCK_SKEW,
+	PROXY_REQUIRED,
+	PROXY_AVAILABLE,
+	CANNOT_SAVE,
 }
 ## What to do about the pack download itself.
 enum DownloadOutcome {
@@ -19,6 +25,8 @@ enum DownloadOutcome {
 	NO_RESPONSE,
 	## S3 answered, and not with the file.
 	REFUSED,
+	## The bytes arrived and this device would not keep them.
+	CANNOT_SAVE,
 }
 ## What to do about the server's answer for the language pack URL.
 enum PackUrlOutcome {
@@ -33,14 +41,62 @@ enum PackUrlOutcome {
 }
 
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
+## The download's own name for each cause [ConnectionNotice] can produce.
+##
+## This screen has its own error enum -- most of its failures are about archives and
+## folders and have nothing to do with the network -- so the shared slots are mapped
+## in rather than replacing it. Every slot appears here: a cause with no entry would
+## fall back to "you have no internet access", which is the wrong instruction for
+## four of the five new ones.
+const NETWORK_ERRORS: Dictionary[String, DownloadError] = {
+	"offline": DownloadError.NO_INTERNET,
+	"blocked": DownloadError.KALULU_BLOCKED,
+	"dns": DownloadError.DNS_FILTERED,
+	"intercepted": DownloadError.TLS_INTERCEPTED,
+	"clock": DownloadError.CLOCK_SKEW,
+	"proxy_required": DownloadError.PROXY_REQUIRED,
+	"proxy_available": DownloadError.PROXY_AVAILABLE,
+}
+## What the dead-end notice says, for the errors that need more than one line of it.
+##
+## The dead end is the case with no usable pack and nowhere to send the device: the
+## child's access-code screen comes straight back here, so this notice is the whole
+## screen and has to say what is wrong and what would fix it. Everything not listed
+## falls back to "an internet connection is required", which is right only for a
+## device that genuinely has none.
+const DEAD_END_NOTICES: Dictionary[int, Dictionary] = {
+	DownloadError.KALULU_BLOCKED:
+		{"title": "KALULU_BLOCKED_TITLE", "message": "DOWNLOAD_KALULU_BLOCKED"},
+	DownloadError.DNS_FILTERED:
+		{"title": "DNS_FILTERED_TITLE", "message": "DOWNLOAD_DNS_FILTERED"},
+	DownloadError.TLS_INTERCEPTED:
+		{"title": "TLS_INTERCEPTED_TITLE", "message": "DOWNLOAD_TLS_INTERCEPTED"},
+	DownloadError.CLOCK_SKEW:
+		{"title": "CLOCK_SKEW_TITLE", "message": "DOWNLOAD_CLOCK_SKEW"},
+	DownloadError.PROXY_REQUIRED:
+		{"title": "PROXY_REQUIRED_TITLE", "message": "DOWNLOAD_PROXY_REQUIRED"},
+	DownloadError.PROXY_AVAILABLE:
+		{"title": "PROXY_AVAILABLE_TITLE", "message": "DOWNLOAD_PROXY_AVAILABLE"},
+	# The server answered, badly. Asking for internet would send the reader looking at
+	# a connection that is doing its job.
+	DownloadError.DOWNLOAD_FAILED:
+		{"title": "SERVER_UNAVAILABLE_TITLE", "message": "NO_LANGUAGE_PACK_SERVER_ERROR"},
+	DownloadError.CANNOT_SAVE:
+		{"title": "CANNOT_SAVE_TITLE", "message": "DOWNLOAD_CANNOT_SAVE"},
+}
 ## The failures somebody else has to act on, and which are therefore worth copying.
 ##
 ## A pack that will not extract or a folder gone bad are this device's own; mailing
 ## them to a network administrator sends the reader down a corridor for nothing.
+## A wrong clock is corrected in the device's own settings, and a proxy Kalulu has
+## already switched on has nobody left to tell, so neither is here.
 const REPORTABLE_ERRORS: Array[DownloadError] = [
 	DownloadError.NO_INTERNET,
 	DownloadError.DOWNLOAD_FAILED,
 	DownloadError.KALULU_BLOCKED,
+	DownloadError.DNS_FILTERED,
+	DownloadError.TLS_INTERCEPTED,
+	DownloadError.PROXY_REQUIRED,
 ]
 ## Width the dead-end notice needs so a hostname is not broken across two lines.
 const BLOCKED_CONTENT_WIDTH: float = 1700.0
@@ -54,6 +110,12 @@ const ERROR_MESSAGES: Array[String] = [
 	"ERROR_INVALID_PACKAGE",
 	"ERROR_REPLACING_PACKAGE",
 	"DOWNLOAD_KALULU_BLOCKED",
+	"DOWNLOAD_DNS_FILTERED",
+	"DOWNLOAD_TLS_INTERCEPTED",
+	"DOWNLOAD_CLOCK_SKEW",
+	"DOWNLOAD_PROXY_REQUIRED",
+	"DOWNLOAD_PROXY_AVAILABLE",
+	"DOWNLOAD_CANNOT_SAVE",
 ]
 
 var language: String
@@ -72,6 +134,7 @@ var internet_reachable: bool = false
 var failure_result_code: int = HTTPRequest.RESULT_SUCCESS
 
 @onready var http_request: HTTPRequest = $HTTPRequest
+@onready var proxy_panel: ProxySettings = %ProxyPanel
 @onready var checking_label: Label = %CheckingLabel
 @onready var download_label: Label = %DownloadLabel
 @onready var copy_label: Label = %CopyLabel
@@ -127,8 +190,15 @@ func _start() -> void:
 	Log.trace("PackageDownloader: Checking internet access")
 	internet_reachable = await ServerManager.check_internet_access()
 	if not internet_reachable:
-		failure_result_code = (ServerManager as ServerManagerClass).last_internet_result_code
-		_continue_without_the_server(_no_server_error())
+		var server: ServerManagerClass = ServerManager as ServerManagerClass
+		failure_result_code = server.last_internet_result_code
+		# The probe's own status goes with it. A proxy wanting credentials answers it
+		# 407 -- a completed exchange, so the result code says success -- and without
+		# the status this reads as a healthy request, which is diagnosed as nothing
+		# being wrong and then shown as the general "this network blocks Kalulu".
+		# A fresh install behind such a proxy would never see the notice written for it.
+		_continue_without_the_server(await _no_server_error(failure_result_code,
+				server.last_internet_response_code))
 		return
 	
 	# Gets the info of the language pack on the server
@@ -146,7 +216,7 @@ func _start() -> void:
 		PackUrlOutcome.OFFLINE:
 			Log.warn("PackageDownloader: No answer from the server while fetching the language pack URL")
 			failure_result_code = (ServerManager as ServerManagerClass).last_result_code
-			_continue_without_the_server(_no_server_error())
+			_continue_without_the_server(await _no_server_error(failure_result_code))
 			return
 		_:
 			Log.warn("PackageDownloader: Unusable response %d while fetching language pack URL" % res.code)
@@ -172,6 +242,12 @@ func _start() -> void:
 		# still run offline if the download fails; it is only removed during
 		# extraction, once the new pack has been fully downloaded.
 		http_request.set_download_file(USER_LANGUAGE_RESOURCES_PATH.path_join(language + ".zip"))
+		# The archive comes straight from S3 through this screen's own node, so the
+		# proxy ServerManager was given -- by the panel on this very dialog, most
+		# likely -- has to be put on it as well. Without this the API answers through
+		# the proxy and the pack alone keeps failing directly, which on a fresh
+		# install with nothing on disk is a dead end.
+		(ServerManager as ServerManagerClass).apply_proxy_to(http_request)
 		Log.trace("PackageDownloader: Downloading pack from %s" % res.body.url)
 		var request_error: Error = http_request.request(res.body.url as String)
 		if request_error != OK:
@@ -212,7 +288,16 @@ static func outcome_for_pack_url(code: int) -> PackUrlOutcome:
 ## body never arrived whole, and a truncated archive used to go to the extraction
 ## thread anyway, to fail there as a corrupt package. A proxy cutting the download
 ## short produces exactly that.
+##
+## Two of the result codes are not about the network at all. HTTPRequest writes the
+## archive to disk as it arrives, so a device with no room left, or a language folder
+## it cannot write to, fails here -- and swept in with the rest it was diagnosed as a
+## network problem, which produced a notice about firewalls and a retry that could
+## only ever fail the same way. Nothing on the network can make a full disk writable.
 static func outcome_for_pack_download(result_code: int, response_code: int) -> DownloadOutcome:
+	if result_code in [HTTPRequest.RESULT_DOWNLOAD_FILE_CANT_OPEN,
+			HTTPRequest.RESULT_DOWNLOAD_FILE_WRITE_ERROR]:
+		return DownloadOutcome.CANNOT_SAVE
 	if result_code != HTTPRequest.RESULT_SUCCESS:
 		return DownloadOutcome.NO_RESPONSE
 	if response_code == 200:
@@ -228,7 +313,16 @@ static func outcome_for_pack_download(result_code: int, response_code: int) -> D
 func _report_failed_download(result_code: int, response_code: int) -> void:
 	error_label.show()
 	failure_result_code = result_code
-	if outcome_for_pack_download(result_code, response_code) == DownloadOutcome.REFUSED:
+	var outcome: DownloadOutcome = outcome_for_pack_download(result_code, response_code)
+	if outcome == DownloadOutcome.CANNOT_SAVE:
+		# The bytes were arriving and this device would not keep them. Diagnosing the
+		# network here would name a cause that has nothing to do with it, and offer a
+		# retry that cannot come out differently.
+		Log.error("PackageDownloader: The pack could not be written to disk (%s)"
+				% ServerManagerClass.http_result_name(result_code))
+		_show_error(DownloadError.CANNOT_SAVE)
+		return
+	if outcome == DownloadOutcome.REFUSED:
 		# S3 answered, so the network is fine and the URL is not. It is presigned and
 		# short-lived, and asking again mints a new one, which is what the retry does.
 		Log.warn("PackageDownloader: The pack download was refused with HTTP code %d" % response_code)
@@ -238,9 +332,15 @@ func _report_failed_download(result_code: int, response_code: int) -> void:
 			% ServerManagerClass.http_result_name(result_code))
 	# The pack is large and the probe from the start of the attempt is minutes old by
 	# now, so a connection that died halfway through would still be remembered as
-	# reachable. Ask again rather than blame the network for something it may not be.
-	internet_reachable = await (ServerManager as ServerManagerClass).check_internet_access()
-	_show_error(_no_server_error())
+	# reachable. The diagnosis runs its own probes, which is what asking again means
+	# here.
+	#
+	# Those probes look at the API's host, not the bucket the pack itself comes from.
+	# Three of the answers are about the device rather than the destination -- a wrong
+	# clock, an intercepting antivirus, a proxy -- and hold either way; only a DNS
+	# filter is per-domain, and a bucket blocked while the API is not falls back to
+	# the general notice, which names both hosts.
+	_show_error(await _no_server_error(result_code))
 
 
 ## Carries on with what is on disk, the server's answer being unusable.
@@ -294,19 +394,28 @@ func _report_for(error: DownloadError) -> String:
 	return Utils.support_report(message, failure_result_code)
 
 
-## Which of the two no-server errors this is, so the popup can say something true.
+## Which no-server error this is, so the popup can say something true.
 ##
-## "You are not connected to the internet" is the wrong instruction for a device that
-## is online and being filtered: it sends the adult to the router, where there is
-## nothing to find. ServerManager owns the distinction; this only maps it.
-func _no_server_error() -> DownloadError:
-	var failure: ServerManagerClass.ConnectionFailure = ServerManagerClass.diagnosis_for(
-			internet_reachable,
-			(ServerManager as ServerManagerClass).last_internet_result_code)
+## "You are not connected to the internet" is the wrong instruction for five of the
+## seven answers: a filtered resolver, an antivirus decrypting HTTPS, a clock two
+## years out and a proxy all leave a working connection, and each needs a different
+## thing done about it. ServerManager owns the diagnosis; this only names it here.
+##
+## The result code is passed rather than left to be read off ServerManager, because
+## this screen can give up before it ever calls the API -- its own internet probe
+## fails first -- and the code sitting there then belongs to whatever ran last.
+func _no_server_error(request_result: int, http_code: int = 0) -> DownloadError:
+	var failure: ServerManagerClass.ConnectionFailure = \
+			await (ServerManager as ServerManagerClass).diagnose_connection_failure(
+					http_code, request_result)
 	Log.info("PackageDownloader: No server, diagnosed %s" % ServerManagerClass.ConnectionFailure.keys()[failure])
-	if failure == ServerManagerClass.ConnectionFailure.KALULU_BLOCKED:
-		return DownloadError.KALULU_BLOCKED
-	return DownloadError.NO_INTERNET
+	return error_for(ConnectionNotice.slot_for(failure))
+
+
+## The download's name for a diagnosed cause. Extracted so the mapping can be checked
+## against every slot without a network.
+static func error_for(slot: String) -> DownloadError:
+	return NETWORK_ERRORS.get(slot, DownloadError.KALULU_BLOCKED)
 
 
 # Check that folder is not empty and contains a file language.db
@@ -426,16 +535,12 @@ func _show_error(error: DownloadError) -> void:
 		# screen to send the device to -- the child's access-code screen comes
 		# straight back here. Say what is wrong and what would fix it, and make the
 		# button another go rather than a way out that does not exist.
-		if error == DownloadError.KALULU_BLOCKED:
-			# The generic notice asks for an internet connection this device already
-			# has, so it would read as nonsense and point at the wrong thing to fix.
-			error_popup.title_text = "KALULU_BLOCKED_TITLE"
-			error_popup.content_text = "DOWNLOAD_KALULU_BLOCKED"
-		elif error == DownloadError.DOWNLOAD_FAILED:
-			# The server answered, badly. Asking for internet would send the reader
-			# looking at a connection that is doing its job.
-			error_popup.title_text = "SERVER_UNAVAILABLE_TITLE"
-			error_popup.content_text = "NO_LANGUAGE_PACK_SERVER_ERROR"
+		if DEAD_END_NOTICES.has(error):
+			# The generic notice asks for an internet connection these devices already
+			# have, so it would read as nonsense and point at the wrong thing to fix.
+			var notice: Dictionary = DEAD_END_NOTICES[error]
+			error_popup.title_text = str(notice["title"])
+			error_popup.content_text = str(notice["message"])
 		else:
 			error_popup.title_text = "NO_LANGUAGE_PACK_TITLE"
 			error_popup.content_text = "NO_LANGUAGE_PACK_POPUP"
@@ -456,6 +561,17 @@ func _show_error(error: DownloadError) -> void:
 	# one dialog is reused for every error here, so what is set for one message has
 	# to be taken back for the next.
 	error_popup.copy_text = _report_for(error) if error in REPORTABLE_ERRORS else ""
+	# Only under a network notice: the same dialog also reports an archive that will
+	# not extract and a folder gone bad, and neither is helped by a proxy.
+	# A proxy already in use is the exception: one that has started answering with its
+	# own pages turns every request into a server error, which is not a network
+	# message -- so the one control that could switch it back off would be hidden on
+	# exactly the screens where it is needed. There must always be a way out of it.
+	var server: ServerManagerClass = ServerManager as ServerManagerClass
+	if error in NETWORK_ERRORS.values() or server.proxy_enabled:
+		proxy_panel.refresh(server.last_diagnosis)
+	else:
+		proxy_panel.hide()
 	error_popup.show()
 
 

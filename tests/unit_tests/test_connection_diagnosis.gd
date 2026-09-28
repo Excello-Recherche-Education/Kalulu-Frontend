@@ -11,6 +11,16 @@ extends GutTest
 
 const NO_NETWORK: ServerManagerClass.ConnectionFailure = ServerManagerClass.ConnectionFailure.NO_NETWORK
 const BLOCKED: ServerManagerClass.ConnectionFailure = ServerManagerClass.ConnectionFailure.KALULU_BLOCKED
+## The registration wizard, which tells the same story about creating an account.
+const REGISTER_SCRIPT: GDScript = preload("res://sources/menus/register/register.gd")
+## The pack is fetched straight from S3 with a presigned URL, so unblocking the API
+## alone leaves the download failing. Kalulu-Languages-Checker reads the same bucket
+## and spells the host out in available_packs.gd.
+const PACK_HOST: String = "kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
+## Each domain is marked, so a line that wraps -- which carries no mark -- cannot be
+## read as one more domain. It was: the pack host broke mid-name and the tail looked
+## like a third entry underneath.
+const DOMAIN_MARK: String = "• "
 
 
 func test_a_reachable_internet_means_only_kalulu_is_blocked() -> void:
@@ -47,11 +57,49 @@ func test_reaching_the_internet_wins_over_the_stale_code() -> void:
 	assert_eq(ServerManagerClass.diagnosis_for(true, HTTPRequest.RESULT_CANT_RESOLVE), BLOCKED)
 
 
-func test_the_two_answers_are_the_ones_the_login_screen_maps() -> void:
-	# welcome.gd only distinguishes KALULU_BLOCKED from everything else, so a third
-	# failure added here would silently fall back to the internet-access message.
-	assert_eq((ServerManagerClass.ConnectionFailure.keys() as Array).size(), 3,
-		"NONE, NO_NETWORK and KALULU_BLOCKED; a new one needs a message in welcome.gd")
+func test_every_cause_has_words_on_both_screens_that_show_one() -> void:
+	# This is the drift the enum invites. A cause added here and forgotten in a screen
+	# does not fail loudly -- it falls through to a message about something else, and
+	# telling a teacher with a wrong clock that her network is filtering Kalulu is the
+	# exact class of wrong answer this whole diagnosis exists to end.
+	for cause: int in ServerManagerClass.ConnectionFailure.values():
+		if cause == ServerManagerClass.ConnectionFailure.NONE:
+			continue
+		var name: String = ServerManagerClass.ConnectionFailure.keys()[cause]
+		assert_true(ConnectionNotice.SLOTS.has(cause), "%s needs a slot" % name)
+		var slot: String = ConnectionNotice.slot_for(cause)
+		assert_true(Welcome.NETWORK_ERRORS.has(slot),
+			"%s (%s) needs a message on the login screen" % [name, slot])
+		assert_true(REGISTER_SCRIPT.FAILURE_NOTICES.has(slot),
+			"%s (%s) needs a notice in the registration wizard" % [name, slot])
+
+
+func test_every_cause_is_explained_in_every_language_the_app_speaks() -> void:
+	# A row missing from one column of the CSV shows the raw key, in capitals, to the
+	# teachers reading that language and to nobody else -- so it survives every test
+	# run on a French machine. That is exactly how USED_EMAIL_ADDRESS shipped.
+	var was: String = TranslationServer.get_locale()
+	for locale: String in ["fr", "es", "pt_BR", "it"]:
+		TranslationServer.set_locale(locale)
+		for slot: String in Welcome.NETWORK_ERRORS:
+			var key: String = Welcome.NETWORK_ERRORS[slot]
+			assert_ne(tr(key), key, "%s has no %s translation" % [key, locale])
+			var notice: Dictionary = REGISTER_SCRIPT.FAILURE_NOTICES[slot]
+			assert_ne(tr(str(notice["title"])), str(notice["title"]),
+				"%s has no %s translation" % [notice["title"], locale])
+			assert_ne(tr(str(notice["message"])), str(notice["message"]),
+				"%s has no %s translation" % [notice["message"], locale])
+	TranslationServer.set_locale(was)
+
+
+func test_the_login_screen_offers_to_copy_exactly_what_is_worth_forwarding() -> void:
+	# Two lists say the same thing -- welcome.gd's, which reads well, and
+	# ConnectionNotice's, which the wizard uses. They have to agree, or the same
+	# failure is worth mailing on one screen and not on the other.
+	for slot: String in Welcome.NETWORK_ERRORS:
+		var key: String = Welcome.NETWORK_ERRORS[slot]
+		assert_eq(key in Welcome.REPORTABLE_ERRORS, ConnectionNotice.is_reportable(slot),
+			"%s (%s) is listed differently in the two places" % [key, slot])
 
 
 # --- One probe, several callers -----------------------------------------------
@@ -79,22 +127,11 @@ func test_a_second_caller_waits_instead_of_being_told_it_is_offline() -> void:
 
 
 # --- What the message hands to whoever runs the network ------------------------
-
-## The pack is fetched straight from S3 with a presigned URL, so unblocking the API
-## alone leaves the download failing. Kalulu-Languages-Checker reads the same bucket
-## and spells the host out in available_packs.gd.
-const PACK_HOST: String = "kalulu-app-language-packs.s3.eu-west-3.amazonaws.com"
-## Each domain is marked, so a line that wraps -- which carries no mark -- cannot be
-## read as one more domain. It was: the pack host broke mid-name and the tail looked
-## like a third entry underneath.
-const DOMAIN_MARK: String = "• "
-
-
 func test_the_blocked_message_names_the_api_host_the_app_actually_calls() -> void:
 	# Tied to the constant rather than to a copy of it: moving the API without
 	# rewriting the message would hand a network administrator a dead domain.
 	var api_host: String = ServerManagerClass.AWS_API_GATEWAY_DOMAIN_ADRESS.trim_suffix("/")
-	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED"]:
+	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED", "REGISTER_KALULU_BLOCKED"]:
 		assert_string_contains(tr(key), api_host,
 			"%s should name the host that was refused" % key)
 
@@ -102,7 +139,7 @@ func test_the_blocked_message_names_the_api_host_the_app_actually_calls() -> voi
 func test_the_blocked_message_names_the_pack_host_too() -> void:
 	# Both legs have to be named at once. A network opened for one and not the other
 	# fails later, on a different screen, and looks like a new problem.
-	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED"]:
+	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED", "REGISTER_KALULU_BLOCKED"]:
 		assert_string_contains(tr(key), PACK_HOST,
 			"%s should name the language pack host as well" % key)
 
@@ -110,7 +147,7 @@ func test_the_blocked_message_names_the_pack_host_too() -> void:
 func test_the_domains_are_set_apart_from_the_advice() -> void:
 	# They are for a different reader than the rest of the message, and they are meant
 	# to be copied. One per line, after a blank line, rather than buried in a sentence.
-	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED"]:
+	for key: String in ["LOGIN_KALULU_BLOCKED", "DOWNLOAD_KALULU_BLOCKED", "REGISTER_KALULU_BLOCKED"]:
 		var message: String = tr(key)
 		assert_string_contains(message, "\n\n", "%s should break before the domains" % key)
 		var lines: PackedStringArray = message.split("\n")

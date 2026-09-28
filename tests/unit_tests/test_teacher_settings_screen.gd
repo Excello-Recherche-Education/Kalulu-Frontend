@@ -35,7 +35,7 @@ func after_all() -> void:
 
 
 func test_every_unique_name_the_script_looks_up_exists() -> void:
-	for unique_name: String in ["%DevicePills", "%StudentsContainer", "%DeletePopup", "%ChangeLanguagePopup",
+	for unique_name: String in ["%DevicePills", "%StudentsContainer", "%DeletePopup", "%ActionFailedPopup", "%ChangeLanguagePopup",
 			"%ChangeLanguageErrorPopup", "%LoadingPopup", "%AccountTypeOptionButton",
 			"%EducationMethodOptionButton", "%AddDeviceButton", "%AddStudentButton",
 			"%LabelInternetMandatory", "%AddDevicePopup", "%AddStudentPopup",
@@ -358,3 +358,22 @@ func test_the_wording_beside_the_box_is_part_of_the_target() -> void:
 
 	assert_true(live.light_graphics_check.button_pressed)
 	assert_true(UserDataManager.get_light_graphics())
+
+
+func test_a_refused_deletion_says_so() -> void:
+	# Both deletions used to close their dialog and do nothing at all when the
+	# server refused, which is indistinguishable from one that worked -- and the
+	# account, or the student, was still there afterwards.
+	var live: SettingsTeacherSettings = await _live_screen()
+
+	live._report_action_failure("DELETE_ACCOUNT", "DELETE_ACCOUNT_FAILED")
+
+	assert_true(live.action_failed_popup.visible, "the teacher is told")
+	assert_eq(live.action_failed_popup.title_text, "DELETE_ACCOUNT")
+	assert_eq(live.action_failed_popup.content_text, "DELETE_ACCOUNT_FAILED")
+
+
+func test_the_refusal_notices_are_translated() -> void:
+	# A missing row shows the key itself, which says nothing to a teacher.
+	for key: String in ["DELETE_ACCOUNT_FAILED", "DELETE_STUDENT_FAILED"]:
+		assert_ne(tr(key), key, "%s should be translated" % key)

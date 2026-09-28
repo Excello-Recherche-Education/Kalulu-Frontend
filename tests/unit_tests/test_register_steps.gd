@@ -11,6 +11,8 @@ const BASE_STEP: String = "res://sources/menus/register/steps/base_step.tscn"
 const LANGUAGE_STEP: String = "res://sources/menus/register/steps/language/language_step.tscn"
 # The tallest form of the lot: three fields, each able to put a message under itself.
 const CREDENTIALS_STEP: String = "res://sources/menus/register/steps/credentials_step.tscn"
+const CONDITIONS_STEP: String = "res://sources/menus/register/steps/general_conditions_step.tscn"
+const RECAP_STEP: String = "res://sources/menus/register/steps/recap_step.tscn"
 # The mockups are drawn at the project's own reference resolution, so their
 # measurements can be checked directly.
 const REFERENCE_VIEWPORT: Vector2i = Vector2i(2560, 1800)
@@ -282,9 +284,6 @@ func test_the_steps_the_wizard_branches_on_still_carry_their_names() -> void:
 
 
 # --- Conditions step ----------------------------------------------------------
-const CONDITIONS_STEP: String = "res://sources/menus/register/steps/general_conditions_step.tscn"
-
-
 func _mounted_conditions_step() -> Step:
 	var viewport: SubViewport = SubViewport.new()
 	viewport.size = REFERENCE_VIEWPORT
@@ -431,9 +430,6 @@ func _click(step: Step, target: Control) -> void:
 
 
 # --- Recap step ---------------------------------------------------------------
-const RECAP_STEP: String = "res://sources/menus/register/steps/recap_step.tscn"
-
-
 ## The recap, filled in with an account of `devices` devices, mounted and laid out.
 func _mounted_recap_step(devices: int) -> RecapStep:
 	var viewport: SubViewport = SubViewport.new()
@@ -1017,3 +1013,32 @@ func test_a_saved_sheet_survives_a_trip_that_leaves_the_codes_alone() -> void:
 	assert_false(recap.validate_button.disabled)
 	assert_eq(AccountCreated.saved_codes_path, "user://Codes.pdf")
 	AccountCreated.saved_codes_path = original_path
+
+
+func test_both_password_fields_can_be_revealed() -> void:
+	# The login screen got the eye toggle with MenuTextField; this form predates
+	# that component and keeps plain LineEdits, so it carries the toggle itself.
+	var viewport: SubViewport = SubViewport.new()
+	viewport.size = REFERENCE_VIEWPORT
+	add_child_autofree(viewport)
+	var step: Step = (load(CREDENTIALS_STEP) as PackedScene).instantiate()
+	viewport.add_child(step)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	for name: String in ["PasswordField", "PasswordConfirmField"]:
+		var input: LineEdit = step.find_child(name, true, false) as LineEdit
+		assert_not_null(input, "%s should still be there" % name)
+		var reveal: PasswordRevealButton = null
+		for child: Node in input.get_children():
+			if child is PasswordRevealButton:
+				reveal = child as PasswordRevealButton
+		assert_not_null(reveal, "%s should carry a reveal toggle" % name)
+		if not reveal:
+			continue
+		assert_true(reveal.is_masked(), "%s should start masked" % name)
+		assert_true(input.get_global_rect().encloses(reveal.get_global_rect()),
+			"the toggle on %s should sit inside the field" % name)
+
+		reveal.pressed.emit()
+		assert_false(input.secret, "pressing reveal should unmask %s" % name)

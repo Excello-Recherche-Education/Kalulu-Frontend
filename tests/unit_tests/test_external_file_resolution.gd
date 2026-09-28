@@ -105,6 +105,64 @@ func test_a_missing_file_resolves_to_nothing() -> void:
 	assert_false(Database.external_file_exists(TEST_DIR.path_join("absent.mp3")))
 
 
+# --- A pack installed before the file names were encoded ---------------------------
+## The app and the packs travel separately: a device fetches a pack when its
+## last_modified on S3 moves, not when the app is updated. So a build that names files
+## the encoded way reaches devices holding packs named the old way, and every word the
+## encoding renames is silent in between. The GP assets were given a fallback for this;
+## the word and syllable sounds were not, and these hold that shut.
+func test_a_word_recorded_under_its_raw_name_is_still_found() -> void:
+	_redirect_the_pack()
+	var sounds: String = Database.get_language_sound_folder()
+	DirAccess.make_dir_recursive_absolute(sounds)
+	_write_pack_sound(sounds, "Colombia")
+
+	assert_eq(Database.resolve_word_sound_path({Word = "Colombia"}),
+			sounds + "Colombia" + Database.SOUND_EXTENSION,
+			"the pack on the device holds the raw name, and it has to be played")
+
+
+func test_the_encoded_name_is_preferred_when_both_are_there() -> void:
+	# A pack republished while the old file was left behind, and the case a device
+	# lands in the moment it does re-download. The canonical one wins.
+	_redirect_the_pack()
+	var sounds: String = Database.get_language_sound_folder()
+	DirAccess.make_dir_recursive_absolute(sounds)
+	_write_pack_sound(sounds, "Colombia")
+	_write_pack_sound(sounds, "cap.colombia")
+
+	assert_eq(Database.resolve_word_sound_path({Word = "Colombia"}),
+			sounds + "cap.colombia" + Database.SOUND_EXTENSION)
+
+
+func test_a_syllable_recorded_under_its_raw_name_is_still_found() -> void:
+	# None of the five packs has a syllable the encoding touches today, so this is
+	# about the ones added later: the two getters are written the same way and would
+	# otherwise be fixed one at a time, the second one after a report.
+	_redirect_the_pack()
+	var sounds: String = Database.get_language_sound_folder()
+	DirAccess.make_dir_recursive_absolute(sounds)
+	_write_pack_sound(sounds, "Bra")
+
+	assert_eq(Database.resolve_syllable_sound_path({Grapheme = "Bra"}),
+			sounds + "Bra" + Database.SOUND_EXTENSION)
+
+
+func test_a_lowercase_name_is_looked_up_once() -> void:
+	# Nearly every word is already lowercase, so the two names are identical and the
+	# second rung would be the same lookup again -- once per word, each time a
+	# minigame builds its pool.
+	_redirect_the_pack()
+	var sounds: String = Database.get_language_sound_folder()
+	DirAccess.make_dir_recursive_absolute(sounds)
+	_write_pack_sound(sounds, "colombia")
+
+	assert_eq(Database.resolve_sound_path("colombia", "colombia"),
+			sounds + "colombia" + Database.SOUND_EXTENSION)
+	assert_eq(Database.resolve_sound_path("absent", "absent"), "",
+			"and a missing one still reports nothing rather than inventing a path")
+
+
 # --- The getters that build their own pack path have to walk the ladder too ------
 ## The ladder was written for the word sounds and the greeting, and everything that
 ## names a file after something a person typed needs it just as much: a cedilla
@@ -203,6 +261,15 @@ func _force_delete(path: String) -> void:
 func _write_file(file_name: String) -> void:
 	var file: FileAccess = FileAccess.open(TEST_DIR.path_join(file_name), FileAccess.WRITE)
 	assert_not_null(file, "could not create the fixture %s" % file_name)
+	if file:
+		file.store_string("not really an mp3")
+		file.close()
+
+
+func _write_pack_sound(folder: String, base_name: String) -> void:
+	var file: FileAccess = FileAccess.open(folder + base_name + Database.SOUND_EXTENSION,
+			FileAccess.WRITE)
+	assert_not_null(file, "could not create the fixture %s" % base_name)
 	if file:
 		file.store_string("not really an mp3")
 		file.close()

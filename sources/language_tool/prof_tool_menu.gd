@@ -10,6 +10,11 @@ const BASE_PATH: String = "user://language_resources/"
 const SAVE_FILE_PATH: String = "user://prof_tool_save.tres"
 
 var save_file: ProfToolSave
+# The integrity check's own state. It lives down in its region, but its
+# declarations belong here with the rest.
+var integrity_checking: bool = false
+var integrity_log_path: String = "user://database-integrity-log.txt"
+var total_integrity_warnings: int = 0
 
 @onready var language_select_button: OptionButton = %LanguageSelectButton
 @onready var new_language_container: PanelContainer = %NewLanguageContainer
@@ -19,6 +24,7 @@ var save_file: ProfToolSave
 @onready var add_word_list_button: Button = $VBoxContainer/AddWordListButton
 @onready var error_label: Label = %ErrorLabel
 @onready var tab_container: TabContainer = $CenterContainer/TabContainer
+@onready var check_box_log: CheckBox = $CheckIntegrityButton/CheckBoxLog
 
 
 func _ready() -> void:
@@ -192,11 +198,6 @@ func _get_tables_with_lesson_id_column() -> Array[String]:
 	return tables_with_lesson_id_column
 
 #region Database integrity check
-var integrity_checking: bool = false
-@onready var check_box_log: CheckBox = $CheckIntegrityButton/CheckBoxLog
-var integrity_log_path: String = "user://database-integrity-log.txt"
-var total_integrity_warnings: int = 0
-
 
 func _check_db_integrity() -> void:
 	if integrity_checking:

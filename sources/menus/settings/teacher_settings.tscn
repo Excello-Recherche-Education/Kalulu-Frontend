@@ -325,6 +325,11 @@ unique_name_in_owner = true
 visible = false
 acknowledge_only = true
 
+[node name="ActionFailedPopup" parent="." unique_id=144215827 instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+visible = false
+acknowledge_only = true
+
 [node name="DeletePopup" parent="." unique_id=635237219 instance=ExtResource("7_jetb7")]
 unique_name_in_owner = true
 visible = false

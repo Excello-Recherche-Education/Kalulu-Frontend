@@ -8,6 +8,12 @@ signal score_changed()
 
 const HISTORY_LENGTH: int = 5
 
+# Key is the ID of the expected answer; value is a PackedInt32Array whose entries
+# are the IDs of the answers actually given. The timestamp beside it is what the
+# synchronizer compares against the server's.
+@export var gp_scores: Dictionary[int, PackedInt32Array] = {}
+@export var gp_last_modified: String = ""
+
 #region utils
 
 func append_and_trim(target: Dictionary[int, PackedInt32Array], expected_id: int, additions: PackedInt32Array) -> void:
@@ -36,12 +42,6 @@ func append_and_trim(target: Dictionary[int, PackedInt32Array], expected_id: int
 #endregion
 
 #region GP Scores
-
-# Key is the ID of the expected answer
-# Value is a PackedInt32Array whose entries are the IDs of the answers
-@export var gp_scores: Dictionary[int, PackedInt32Array] = {}
-@export var gp_last_modified: String = ""
-
 
 # Gets (a copy of) the data of a GP
 func get_gp_scores(id: int) -> PackedInt32Array:

@@ -5,6 +5,12 @@ extends GutTest
 ## into the teacher settings -- and each drew its own copy before, including a
 ## second table of symbol names that could drift out of step with Design's.
 
+# The dialog the teacher settings put the challenge behind. Mounted on its own
+# rather than through the login screen: that screen's _ready navigates away when
+# no language pack is installed, and the popup itself needs nothing but the
+# challenge.
+const POPUP_SCENE: String = "res://sources/ui/adult_check_popup.tscn"
+
 
 func test_it_asks_for_a_code_the_keypad_can_produce() -> void:
 	# Anything outside that set could not be answered at all.
@@ -73,12 +79,6 @@ func test_both_gates_ask_with_their_own_wording() -> void:
 
 
 # --- The dialog the teacher settings put it behind ----------------------------
-# Mounted on its own rather than through the login screen: that screen's _ready
-# navigates away when no language pack is installed. The popup itself needs
-# nothing but the challenge.
-const POPUP_SCENE: String = "res://sources/ui/adult_check_popup.tscn"
-
-
 func _popup() -> AdultCheckPopup:
 	var popup: AdultCheckPopup = (load(POPUP_SCENE) as PackedScene).instantiate()
 	add_child_autofree(popup)

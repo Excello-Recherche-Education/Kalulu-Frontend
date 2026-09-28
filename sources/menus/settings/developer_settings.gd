@@ -199,7 +199,7 @@ func _on_api_path_apply_pressed() -> void:
 
 func _on_clear_local_data_button_pressed() -> void:
 	clear_local_data_confirmations = 0
-	clear_local_data_popup.content_text = tr("CLEAR_LOCAL_DATA_CONFIRM") % 5
+	clear_local_data_popup.content_text = tr("CLEAR_LOCAL_DATA_CONFIRM") % CLEAR_LOCAL_DATA_CONFIRMATIONS
 	clear_local_data_popup.show()
 
 
@@ -219,7 +219,7 @@ func _on_clear_local_data_popup_accepted() -> void:
 		await get_tree().process_frame
 		_show_restart_required_popup()
 		return
-	clear_local_data_popup.content_text = tr("CLEAR_LOCAL_DATA_CONFIRM") % (5 - clear_local_data_confirmations)
+	clear_local_data_popup.content_text = tr("CLEAR_LOCAL_DATA_CONFIRM") % (CLEAR_LOCAL_DATA_CONFIRMATIONS - clear_local_data_confirmations)
 	await get_tree().process_frame
 	clear_local_data_popup.show()
 

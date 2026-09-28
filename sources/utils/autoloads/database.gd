@@ -537,19 +537,19 @@ func get_audio_stream_for_path(path: String) -> AudioStream:
 
 func get_audio_stream_for_word(id: int) -> AudioStream:
 	var gps: Array = get_gp_from_word(id)
-	var file_name: String = _phoneme_to_string(gps[0].Phoneme as String)
+	var file_name: String = _text_to_file_name(gps[0].Phoneme as String)
 	for index: int in range(1, gps.size()):
 		var gp: Dictionary = gps[index]
-		file_name += "-" + _phoneme_to_string(gp.Phoneme as String)
+		file_name += "-" + _text_to_file_name(gp.Phoneme as String)
 	file_name += ".mp3"
 	return load(words_path + file_name)
 
 
 func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
 	var phoneme_array: PackedStringArray = phoneme.split("-")
-	var path: String = words_path + _phoneme_to_string(phoneme_array[0])
+	var path: String = words_path + _text_to_file_name(phoneme_array[0])
 	for index: int in range(1, phoneme_array.size()):
-		path += "-" + _phoneme_to_string(phoneme_array[index])
+		path += "-" + _text_to_file_name(phoneme_array[index])
 	path += ".mp3"
 	
 	if FileAccess.file_exists(path) and ResourceLoader.exists(path):
@@ -558,11 +558,32 @@ func get_audio_stream_for_phoneme(phoneme: String) -> AudioStream:
 	return null
 
 
+## Resolves a GP's asset, accepting a pack that predates the file name encoding.
+##
+## The encoded name (see [method get_gp_file_name]) is the canonical one and is
+## what anything *writing* an asset uses. Reading also accepts the older name,
+## which is the pair itself, because the app and the packs travel separately: a
+## device fetches a pack when its last_modified on S3 moves, not when the app is
+## updated, so an update would otherwise silence every uppercase or symbol GP of
+## the pack already on the device until it next reaches the network.
+##
+## For a pack that old this resolves both halves of a case-colliding pair to the
+## one file it holds, which is what that pack could ever do anyway.
+## Returns an empty String when neither name is on disk.
+func resolve_gp_asset_path(gp: Dictionary, folder: String, extension: String) -> String:
+	var path: String = resolve_external_file_path(
+			get_language_folder() + folder + get_gp_file_name(gp) + extension)
+	if not path.is_empty():
+		return path
+	return resolve_external_file_path(
+			get_language_folder() + folder + get_gp_name(gp) + extension)
+
+
 func get_gp_look_and_learn_image(gp: Dictionary) -> Texture:
 	# Through the ladder, because the name comes from the GP's own grapheme: the
 	# database holds "ç" composed and the packs ship the file decomposed, which only
 	# macOS looks up interchangeably. See resolve_external_file_path.
-	var path: String = resolve_external_file_path(get_gp_look_and_learn_image_path(gp))
+	var path: String = resolve_gp_asset_path(gp, LOOK_AND_LEARN_IMAGES, IMAGE_EXTENSION)
 	if path.is_empty():
 		Log.trace("Database: Look & Learn image not found for GP %s" % str(gp))
 		return null
@@ -574,7 +595,7 @@ func get_gp_look_and_learn_image(gp: Dictionary) -> Texture:
 
 func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 	# Through the ladder, for the reason in get_gp_look_and_learn_image.
-	var path: String = resolve_external_file_path(get_gp_look_and_learn_sound_path(gp))
+	var path: String = resolve_gp_asset_path(gp, LOOK_AND_LEARN_SOUNDS, SOUND_EXTENSION)
 	if path.is_empty():
 		Log.trace("Database: Look & Learn sound not found for GP %s" % str(gp))
 		return null
@@ -595,13 +616,15 @@ func get_gp_look_and_learn_sound(gp: Dictionary) -> AudioStream:
 
 func get_gp_look_and_learn_video(gp: Dictionary) -> VideoStream:
 	# Through the ladder, for the reason in get_gp_look_and_learn_image.
-	var path: String = resolve_external_file_path(get_gp_look_and_learn_video_path(gp))
+	var path: String = resolve_gp_asset_path(gp, LOOK_AND_LEARN_VIDEOS, VIDEO_EXTENSION)
 	if path.is_empty():
 		Log.trace("Database: Look & Learn video not found for GP %s" % gp)
 		return null
 	return load(path) as VideoStream
 
 
+## Human-readable name of a grapheme-phoneme pair, "e-E". For display only --
+## it is not a file name, see [method get_gp_file_name].
 func get_gp_name(gp: Dictionary) -> String:
 	var result: String = ""
 	if gp.has("Grapheme"):
@@ -610,6 +633,26 @@ func get_gp_name(gp: Dictionary) -> String:
 		if result != "":
 			result += "-"
 		result += gp["Phoneme"]
+	return result
+
+
+## File name, without extension, for a grapheme-phoneme pair's assets.
+##
+## Not the same thing as [method get_gp_name]: every pack has pairs that differ
+## only by case -- "e-E" against "e-e" in French, "r-R" against "r-r" in Spanish --
+## and those are different sounds. macOS and Windows hold file names case
+## insensitively, so naming the two files after the pairs themselves lets one
+## overwrite the other the moment a pack is built, zipped or unzipped there. Each
+## half goes through [method _text_to_file_name], which spells an uppercase letter
+## out, so the two names stay distinct on every platform.
+func get_gp_file_name(gp: Dictionary) -> String:
+	var result: String = ""
+	if gp.has("Grapheme"):
+		result += _text_to_file_name(gp["Grapheme"] as String)
+	if gp.has("Phoneme"):
+		if result != "":
+			result += "-"
+		result += _text_to_file_name(gp["Phoneme"] as String)
 	return result
 
 
@@ -622,27 +665,61 @@ func get_language_sound_folder() -> String:
 
 
 func get_gp_look_and_learn_image_path(gp: Dictionary) -> String:
-	return get_language_folder() + LOOK_AND_LEARN_IMAGES + get_gp_name(gp) + IMAGE_EXTENSION
+	return get_language_folder() + LOOK_AND_LEARN_IMAGES + get_gp_file_name(gp) + IMAGE_EXTENSION
 
 
 func get_gp_look_and_learn_sound_path(gp: Dictionary) -> String:
-	return get_language_folder() + LOOK_AND_LEARN_SOUNDS + get_gp_name(gp) + SOUND_EXTENSION
+	return get_language_folder() + LOOK_AND_LEARN_SOUNDS + get_gp_file_name(gp) + SOUND_EXTENSION
 
 
 func get_gp_look_and_learn_video_path(gp: Dictionary) -> String:
-	return get_language_folder() + LOOK_AND_LEARN_VIDEOS + get_gp_name(gp) + VIDEO_EXTENSION
+	return get_language_folder() + LOOK_AND_LEARN_VIDEOS + get_gp_file_name(gp) + VIDEO_EXTENSION
 
 
 func get_gp_sound_path(gp: Dictionary) -> String:
-	return get_language_sound_folder() + Database.get_gp_name(gp) + SOUND_EXTENSION
+	return get_language_sound_folder() + Database.get_gp_file_name(gp) + SOUND_EXTENSION
 
 
 func get_syllable_sound_path(syllable: Dictionary) -> String:
-	return get_language_sound_folder() + syllable.Grapheme + SOUND_EXTENSION
+	return get_language_sound_folder() + _text_to_file_name(syllable.Grapheme as String) + SOUND_EXTENSION
 
 
 func get_word_sound_path(word: Dictionary) -> String:
-	return get_language_sound_folder() + word.Word + SOUND_EXTENSION
+	return get_language_sound_folder() + _text_to_file_name(word.Word as String) + SOUND_EXTENSION
+
+
+## Finds a word or syllable sound, trying the encoded name and then the raw one.
+##
+## The same ladder as [method resolve_gp_asset_path], for the same reason: a device
+## fetches a pack when its last_modified on S3 moves, not when the app is updated. So
+## an app carrying the encoding reaches a device before the re-encoded pack does, and
+## without this every word the encoding renames is silent in between -- which for the
+## packs as they stand is "Colombia" in two of them, and whatever is added later.
+##
+## The two getters above stay as they are: they name the file a recording is *written*
+## to, which must always be the canonical one, and the Prof Tool uses them for exactly
+## that. Only reading walks the ladder.
+##
+## The second rung is skipped when the names are the same, which they are for every
+## all-lowercase word -- nearly all of them, and this runs once per word when a
+## minigame builds its pool.
+## Returns an empty String when neither name is on disk.
+func resolve_sound_path(canonical_name: String, legacy_name: String) -> String:
+	var path: String = resolve_external_file_path(
+			get_language_sound_folder() + canonical_name + SOUND_EXTENSION)
+	if not path.is_empty() or canonical_name == legacy_name:
+		return path
+	return resolve_external_file_path(
+			get_language_sound_folder() + legacy_name + SOUND_EXTENSION)
+
+
+func resolve_word_sound_path(word: Dictionary) -> String:
+	return resolve_sound_path(_text_to_file_name(word.Word as String), word.Word as String)
+
+
+func resolve_syllable_sound_path(syllable: Dictionary) -> String:
+	return resolve_sound_path(
+			_text_to_file_name(syllable.Grapheme as String), syllable.Grapheme as String)
 
 
 func get_kalulu_speech_path(speech_category: String, speech_name: String) -> String:
@@ -719,13 +796,23 @@ func load_external_sound(path: String) -> AudioStreamMP3:
 	return audio_stream
 
 
-func _phoneme_to_string(phoneme: String) -> String:
-	if _SYMBOLS_TO_STRING.has(phoneme):
-		return _SYMBOLS_TO_STRING[phoneme]
-	elif phoneme == phoneme.to_lower():
-		return phoneme
+## Encodes one piece of database text -- a grapheme, a phoneme, a word, a
+## syllable -- into a file name that survives a case insensitive filesystem.
+##
+## A symbol becomes a word, so "%" cannot be mangled on the way to disk. Text
+## that is already all lowercase is left alone, which is almost everything.
+## Anything carrying an uppercase letter is lowered and prefixed with "cap.",
+## so "E" and "e" no longer name the same file on macOS and Windows.
+##
+## Every name a pack holds must round-trip through this and stay unique when
+## case is folded; test_database_file_names.gd checks that for the shipped packs.
+func _text_to_file_name(text: String) -> String:
+	if _SYMBOLS_TO_STRING.has(text):
+		return _SYMBOLS_TO_STRING[text]
+	elif text == text.to_lower():
+		return text
 	else:
-		return "cap." + phoneme.to_lower()
+		return "cap." + text.to_lower()
 
 
 # Returns an array containing an int followed by an array of int

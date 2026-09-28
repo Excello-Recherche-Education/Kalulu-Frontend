@@ -49,6 +49,9 @@ var code_sheet_saver: CodeSheetSaver
 @onready var add_device_popup: CanvasLayer = %AddDevicePopup
 @onready var add_student_popup: CanvasLayer = %AddStudentPopup
 @onready var add_student_error_popup: ConfirmPopup = %AddStudentErrorPopup
+## Says that a destructive action did not happen. One dialog for both deletions:
+## each sets its own heading and sentence, and neither has anything to decide.
+@onready var action_failed_popup: ConfirmPopup = %ActionFailedPopup
 @onready var delete_student_popup: CanvasLayer = %DeleteStudentPopup
 @onready var export_codes_button: Button = %ExportCodesButton
 @onready var export_codes_file_dialog: FileDialog = %ExportCodesFileDialog
@@ -64,6 +67,14 @@ func _ready() -> void:
 	refresh_devices()
 	light_graphics_label.gui_input.connect(_on_light_graphics_label_gui_input)
 	_read_light_graphics()
+	# Read before the await below, not after: nothing here needs the network, and
+	# code that runs after an await runs at a moment nobody chose -- whenever the
+	# internet check answers, which may be long after the teacher has left.
+	# Guarded like refresh_devices, which already bails when the account is gone;
+	# it has logged the reason by the time we get here.
+	if UserDataManager.teacher_settings:
+		account_type_option_button.select(UserDataManager.teacher_settings.account_type)
+		education_method_option_button.select(UserDataManager.teacher_settings.education_method)
 	
 	# Internet mandatory to add student because only the server can ensure the student code is not a duplicate
 	if await ServerManager.check_internet_access():
@@ -81,9 +92,6 @@ func _ready() -> void:
 
 	OpeningCurtain.open()
 	lesson_unlocks.teacher_settings = self
-	
-	account_type_option_button.select(UserDataManager.teacher_settings.account_type)
-	education_method_option_button.select(UserDataManager.teacher_settings.education_method)
 	
 	UserDataManager.user_database_synchronizer.loading_popup = loading_popup
 
@@ -314,10 +322,17 @@ func _on_delete_button_pressed() -> void:
 
 func _on_delete_popup_accepted() -> void:
 	var res: Dictionary = await ServerManager.delete_account()
-	if res.code == 200:
-		UserDataManager.delete_teacher_data()
-		UserDataManager.logout()
-		get_tree().change_scene_to_file(SIGNED_OUT_SCENE_PATH)
+	if res.code != 200:
+		# Nothing local is touched on this path, so the account is still there and
+		# the teacher is still signed in -- which is exactly what the notice has to
+		# say. Without it the dialog simply closed and the account stayed, which
+		# reads as a button that does nothing.
+		Log.error("SettingsTeacherSettings: Delete account failed with code %d" % res.code)
+		_report_action_failure("DELETE_ACCOUNT", "DELETE_ACCOUNT_FAILED")
+		return
+	UserDataManager.delete_teacher_data()
+	UserDataManager.logout()
+	get_tree().change_scene_to_file(SIGNED_OUT_SCENE_PATH)
 
 
 func _on_logout_button_pressed() -> void:
@@ -437,15 +452,32 @@ func _on_delete_student_popup_accepted() -> void:
 	if selected_device < 0:
 		return
 	var res: Dictionary = await ServerManager.remove_student(int(lesson_unlocks.student))
-	if res.code == 200:
-		lesson_unlocks.hide()
-		UserDataManager.update_configuration(res.body as Dictionary)
-		# Deleting the last student on a device removes the device too, so the
-		# pills have to be rebuilt rather than just the grid.
-		if UserDataManager.teacher_settings.students.has(selected_device):
-			show_device(selected_device)
-		else:
-			refresh_devices()
+	if res.code != 200:
+		# The student is still on the account, and the panel behind stays open on
+		# them. Saying so is the difference between a refused deletion and a dialog
+		# that looked like it worked.
+		Log.error("SettingsTeacherSettings: Remove student failed with code %d" % res.code)
+		_report_action_failure("DELETE_STUDENT", "DELETE_STUDENT_FAILED")
+		return
+	lesson_unlocks.hide()
+	UserDataManager.update_configuration(res.body as Dictionary)
+	# Deleting the last student on a device removes the device too, so the
+	# pills have to be rebuilt rather than just the grid.
+	if UserDataManager.teacher_settings.students.has(selected_device):
+		show_device(selected_device)
+	else:
+		refresh_devices()
+
+
+## Puts up the notice that a destructive action did not happen.
+##
+## Both callers leave everything as it was, so the wording is about what is still
+## there rather than about what went wrong -- the teacher's next question is whether
+## the account, or the student, survived.
+func _report_action_failure(title_key: String, message_key: String) -> void:
+	action_failed_popup.title_text = title_key
+	action_failed_popup.content_text = message_key
+	action_failed_popup.show()
 
 
 func update_student_name(student_code: int, student_name: String) -> void:

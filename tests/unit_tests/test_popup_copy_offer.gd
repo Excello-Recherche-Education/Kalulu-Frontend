@@ -131,6 +131,7 @@ func test_the_report_is_what_was_on_screen_plus_what_its_reader_asks() -> void:
 	assert_string_contains(report, tr("DOWNLOAD_KALULU_BLOCKED"), "then what was read")
 	assert_string_contains(report, "kalulu-app-language-packs.s3.eu-west-3.amazonaws.com",
 		"the domains have to survive the copy")
-	assert_string_contains(report, Utils.get_application_version_with_code(), "which build")
+	assert_string_contains(report, str(ProjectSettings.get_setting("application/config/version")),
+		"which version")
 	assert_string_contains(report, "RESULT_TLS_HANDSHAKE_ERROR",
 		"and what failed -- this one says intercepted, not merely dropped")

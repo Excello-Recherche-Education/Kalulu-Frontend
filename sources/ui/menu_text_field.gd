@@ -15,8 +15,10 @@ extends VBoxContainer
 signal text_changed(new_text: String)
 signal text_submitted(new_text: String)
 
-const SHOW_PASSWORD_PATH: String = "res://assets/menus/icons/show_password.svg"
-const HIDE_PASSWORD_PATH: String = "res://assets/menus/icons/hide_password.svg"
+# The reveal control owns the eye artwork; the field's own trailing slot draws
+# the same icons when it is acting as one.
+const SHOW_PASSWORD_PATH: String = PasswordRevealButton.SHOW_PASSWORD_PATH
+const HIDE_PASSWORD_PATH: String = PasswordRevealButton.HIDE_PASSWORD_PATH
 
 @export var placeholder: String = "":
 	set(value):

@@ -23,10 +23,13 @@ func _mounted_label() -> VersionLabel:
 	return label
 
 
-func test_it_shows_the_build_version() -> void:
+func test_it_shows_the_application_version() -> void:
 	var label: VersionLabel = await _mounted_label()
 
-	assert_eq(label.text, Utils.get_application_version_with_code(),
+	# Against the project setting rather than against the helper that reads it:
+	# comparing a getter to itself would pass however wrong the answer was, which
+	# is exactly how the label went on showing a build number of "0" unnoticed.
+	assert_eq(label.text, str(ProjectSettings.get_setting("application/config/version")),
 		"the number a support call asks for")
 	assert_ne(label.text, "?", "and it should have been filled in")
 
