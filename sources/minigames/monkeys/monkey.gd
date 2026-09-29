@@ -131,10 +131,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 			animated_sprite_2d.play("idle")
 
 
-func _on_button_dragging() -> void:
-	coconut.hide()
-
-
 func _get_drag_data(at_position: Vector2) -> Variant:
 	if locked:
 		return null

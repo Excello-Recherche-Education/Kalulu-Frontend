@@ -96,18 +96,6 @@ animations = [{
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d4bmj"]
 
-[sub_resource type="GDScript" id="GDScript_fxkfh"]
-script/source = "extends Button
-
-@warning_ignore(\"UNUSED_SIGNAL\")
-signal dragging()
-
-@onready var drag_preview_model: TextureRect = $DragPreview
-
-
-		
-"
-
 [node name="Monkey" type="Node2D" unique_id=1341983060]
 script = ExtResource("1_cvvgu")
 
@@ -148,7 +136,6 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_ma8s2")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_o7lt8")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_i3dnl")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d4bmj")
-script = SubResource("GDScript_fxkfh")
 
 [node name="DragPreview" type="TextureRect" parent="Button" unique_id=1507351032]
 visible = false
@@ -171,6 +158,5 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="dragging" from="Button" to="." method="_on_button_dragging"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="tree_exiting" from="Button/DragPreview" to="." method="_on_drag_preview_tree_exiting"]
