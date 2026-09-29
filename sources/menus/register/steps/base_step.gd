@@ -9,6 +9,7 @@ signal next(step: Step)
 ## The step has no dialog of its own and its field messages are one line each -- a
 ## column that grows past them prints over the footer buttons, which has happened. The
 ## wizard's card has the room, so the diagnosis and the domains are shown there.
+@warning_ignore("unused_signal")
 signal request_failed(code: int)
 
 @export var step_name: String

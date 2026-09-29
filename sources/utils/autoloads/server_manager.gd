@@ -166,7 +166,7 @@ func load_configuration() -> void:
 	# would come up unable to connect, on the machines that need a proxy most.
 	proxy_host = str(config.get_value("network", "proxy_host", ""))
 	proxy_port = int(config.get_value("network", "proxy_port", 0) as int)
-	proxy_enabled = bool(config.get_value("network", "proxy_enabled", false))
+	proxy_enabled = config.get_value("network", "proxy_enabled", false) as bool
 
 	if load_error == OK:
 		environment_setting = int(config.get_value("environment", "current", 0) as int)
@@ -278,8 +278,8 @@ func system_proxy_reaches_server() -> bool:
 
 	var probe: HTTPRequest = HTTPRequest.new()
 	probe.timeout = UNSAFE_PROBE_TIMEOUT_SECONDS
-	probe.set_http_proxy(str(system_proxy["host"]), int(system_proxy["port"]))
-	probe.set_https_proxy(str(system_proxy["host"]), int(system_proxy["port"]))
+	probe.set_http_proxy(str(system_proxy["host"]), system_proxy["port"] as int)
+	probe.set_https_proxy(str(system_proxy["host"]), system_proxy["port"] as int)
 	add_child(probe)
 	Log.trace("ServerManager: Trying the machine's own proxy %s:%d" % [
 			system_proxy["host"], system_proxy["port"]])
@@ -329,7 +329,7 @@ func ensure_system_proxy_known() -> void:
 	# proxy she set herself.
 	if proxy_host.is_empty() and not system_proxy.is_empty():
 		proxy_host = str(system_proxy["host"])
-		proxy_port = int(system_proxy["port"])
+		proxy_port = system_proxy["port"] as int
 
 
 func _apply_proxy() -> void:
@@ -543,7 +543,7 @@ func gather_evidence(http_code: int = 0,
 	if not system_proxy.is_empty() and not proxy_enabled:
 		evidence.system_proxy_works = await system_proxy_reaches_server()
 		if evidence.system_proxy_works:
-			set_proxy(str(system_proxy["host"]), int(system_proxy["port"]), true)
+			set_proxy(str(system_proxy["host"]), system_proxy["port"] as int, true)
 			return evidence
 
 	var host: String = api_host()

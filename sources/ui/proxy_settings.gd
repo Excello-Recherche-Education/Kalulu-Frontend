@@ -153,8 +153,8 @@ func _apply() -> void:
 		return
 
 	address_field.error = ""
-	server.set_proxy(str(parsed["host"]), int(parsed["port"]), true)
-	address_field.text = _format(str(parsed["host"]), int(parsed["port"]))
+	server.set_proxy(str(parsed["host"]), parsed["port"] as int, true)
+	address_field.text = _format(str(parsed["host"]), parsed["port"] as int)
 	proxy_changed.emit()
 
 

@@ -22,5 +22,5 @@ func _on_back_button_pressed() -> void:
 
 
 func _on_line_edit_text_changed(new_text: String) -> void:
-	for description_line in description_container.get_children():
+	for description_line: ImageAndSoundGPDescription in description_container.get_children():
 		description_line.visible = description_line.gp_menu_button.text.begins_with(new_text)
