@@ -166,7 +166,7 @@ func load_configuration() -> void:
 	# would come up unable to connect, on the machines that need a proxy most.
 	proxy_host = str(config.get_value("network", "proxy_host", ""))
 	proxy_port = int(config.get_value("network", "proxy_port", 0) as int)
-	proxy_enabled = bool(config.get_value("network", "proxy_enabled", false))
+	proxy_enabled = config.get_value("network", "proxy_enabled", false) as bool
 
 	if load_error == OK:
 		environment_setting = int(config.get_value("environment", "current", 0) as int)
