@@ -295,7 +295,7 @@ func _on_light_graphics_check_pressed() -> void:
 ## The wording toggles the box too, so the whole row is the target rather than a
 ## 120-pixel square next to it.
 func _on_light_graphics_label_gui_input(event: InputEvent) -> void:
-	if not (event is InputEventMouseButton and event.pressed
+	if not (event is InputEventMouseButton and (event as InputEventMouseButton).pressed
 			and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT):
 		return
 	light_graphics_label.accept_event()

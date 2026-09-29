@@ -386,7 +386,7 @@ func _forget_the_previous_failure() -> void:
 ## Read off the dialog rather than rebuilt, so what is sent is what was on screen --
 ## including the heading, which is the line that tells its reader in four words what
 ## they are being asked about.
-func _report_for(error: DownloadError) -> String:
+func _report_for(_error: DownloadError) -> String:
 	var heading: String = tr(error_popup.title_text) if not error_popup.title_text.is_empty() else ""
 	var message: String = tr(error_popup.content_text)
 	if not heading.is_empty():
