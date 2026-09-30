@@ -211,8 +211,7 @@ func _on_current_word_progression_changed() -> void:
 		monkey.stunned = false
 	
 	var coroutine: Coroutine = Coroutine.new()
-	if audio_player.playing:
-		coroutine.add_future(audio_player.finished)
+	coroutine.add_future(AudioWait.until_done.bind(audio_player))
 	for monkey: Monkey in monkeys:
 		monkey.coconut.hide()
 		coroutine.add_future(monkey.play.bind("grab"))

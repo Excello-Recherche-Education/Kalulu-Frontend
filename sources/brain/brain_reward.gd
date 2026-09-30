@@ -255,7 +255,7 @@ func _show_and_speak() -> void:
 		_music_player.volume_linear = MUSIC_TALK_VOLUME
 		_voice_player.stream = _speech
 		_voice_player.play()
-		await _voice_player.finished
+		await AudioWait.until_done(_voice_player)
 		_music_player.volume_linear = MUSIC_FULL_VOLUME
 	else:
 		Log.warn("BrainReward: victory speech not found")

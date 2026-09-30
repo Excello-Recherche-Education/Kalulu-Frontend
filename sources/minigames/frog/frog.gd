@@ -68,7 +68,7 @@ func defeat() -> void:
 	audio_player.stream = FROG_SPLASH
 	audio_player.play()
 	await animated_sprite.animation_finished
-	await audio_player.finished
+	await AudioWait.until_done(audio_player)
 
 
 func success() -> void:

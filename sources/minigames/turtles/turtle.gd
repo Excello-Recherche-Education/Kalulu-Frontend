@@ -188,12 +188,8 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation in ["swim_left", "swim_right"]:
 		sprite.play("swim")
 	elif sprite.animation == "disappear":
-		var coroutine: Coroutine = Coroutine.new()
 		audio_stream_player.play()
-		if audio_stream_player.playing:
-			coroutine.add_future(audio_stream_player.finished)
-		
-		await coroutine.join_all()
+		await AudioWait.until_done(audio_stream_player)
 		queue_free()
 
 

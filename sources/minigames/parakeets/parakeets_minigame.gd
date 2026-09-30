@@ -198,7 +198,7 @@ func _make_selected_happy() -> void:
 		parakeet.happy()
 	audio_player.stream = AUDIO_STREAMS[Audio.HAPPY]
 	audio_player.play()
-	await audio_player.finished
+	await AudioWait.until_done(audio_player)
 
 
 func _make_selected_sad() -> void:
@@ -214,7 +214,7 @@ func _make_selected_coo() -> void:
 		parakeet.idle()
 	audio_player.stream = AUDIO_STREAMS[Audio.WIN]
 	audio_player.play()
-	await audio_player.finished
+	await AudioWait.until_done(audio_player)
 
 
 func _fly_to(targets: Array[Vector2]) -> void:
@@ -224,7 +224,7 @@ func _fly_to(targets: Array[Vector2]) -> void:
 	var coroutine: Coroutine = Coroutine.new()
 	audio_player.stream = AUDIO_STREAMS[Audio.FLY]
 	audio_player.play()
-	coroutine.add_future(audio_player.finished)
+	coroutine.add_future(AudioWait.until_done.bind(audio_player))
 	coroutine.add_future(selected[0].fly_to.bind(targets[0], fly_duration))
 	coroutine.add_future(selected[1].fly_to.bind(targets[1], fly_duration))
 	await coroutine.join_all()
@@ -245,7 +245,7 @@ func _flying_arrival(to: Array[Vector2]) -> void:
 	var coroutine: Coroutine = Coroutine.new()
 	audio_player.stream = AUDIO_STREAMS[Audio.FLY]
 	audio_player.play()
-	coroutine.add_future(audio_player.finished)
+	coroutine.add_future(AudioWait.until_done.bind(audio_player))
 	for index: int in range(parakeets.size()):
 		coroutine.add_future(parakeets[index].fly_to.bind(to[index], fly_duration))
 	await coroutine.join_all()
