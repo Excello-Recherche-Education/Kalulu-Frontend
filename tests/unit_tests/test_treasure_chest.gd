@@ -22,7 +22,7 @@ func _make_chest() -> TreasureChest:
 	chest_button.name = "TreasureButton"
 	chest_button.disabled = true
 	chest.add_child(chest_button)
-	var sparkles: GPUParticles2D = GPUParticles2D.new()
+	var sparkles: CPUParticles2D = CPUParticles2D.new()
 	sparkles.name = "Sparkles"
 	sparkles.top_level = true
 	chest.add_child(sparkles)
