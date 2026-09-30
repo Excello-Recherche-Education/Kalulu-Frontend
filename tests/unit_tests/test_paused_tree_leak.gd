@@ -118,11 +118,12 @@ func test_a_paused_tree_would_leave_the_gardens_locked() -> void:
 
 # --- Skipping cannot strand the speech -------------------------------------------
 func test_skipping_before_the_speech_starts_does_not_strand_kalulu() -> void:
-	# The skip button works by forging audio_player.finished. Pressed during the
-	# show animation -- where the sound playing is the whoosh, not the speech -- it
-	# used to emit into nothing, and the await that came afterwards waited forever
-	# on a sound that had already stopped. speech_ended never fired, so the pause
-	# was never lifted.
+	# The skip button used to work by forging audio_player.finished. Pressed during
+	# the show animation -- where the sound playing is the whoosh, not the speech --
+	# it emitted into nothing, and the await that came afterwards waited forever on
+	# a sound that had already stopped. speech_ended never fired, so the pause was
+	# never lifted. It now only stops the speech, but pressing it early must still
+	# leave Kalulu able to finish.
 	var helper: Node = (load(
 		"res://sources/minigames/base/kalulu_ingame.tscn") as PackedScene).instantiate()
 	add_child_autofree(helper)

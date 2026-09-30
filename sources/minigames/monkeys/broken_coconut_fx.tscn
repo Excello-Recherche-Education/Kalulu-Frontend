@@ -7,99 +7,72 @@
 [ext_resource type="Texture2D" uid="uid://p5yp028d4s4b" path="res://assets/minigames/monkeys/graphic/broken_coconut_03.png" id="2_logsj"]
 [ext_resource type="Texture2D" uid="uid://dif3xpncwixbh" path="res://assets/vfx/fx_09.png" id="5_5n842"]
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_o67aw"]
-gradient = ExtResource("2_d6ibk")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_iijg8"]
-particle_flag_disable_z = true
-emission_shape_scale = Vector3(1, -1, 1)
-angle_max = 90.0
-direction = Vector3(0, -1, 0)
-initial_velocity_min = 400.0
-initial_velocity_max = 500.0
-gravity = Vector3(0, 900, 0)
-color_ramp = SubResource("GradientTexture1D_o67aw")
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_mpadx"]
-gradient = ExtResource("2_d6ibk")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ivqj5"]
-particle_flag_disable_z = true
-emission_shape = 1
-emission_sphere_radius = 64.0
-angle_max = 360.0
-direction = Vector3(0, -1, 0)
-initial_velocity_min = 400.0
-initial_velocity_max = 550.0
-gravity = Vector3(0, 900, 0)
-color_ramp = SubResource("GradientTexture1D_mpadx")
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ug0v0"]
-gradient = ExtResource("2_d6ibk")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d8slu"]
-particle_flag_disable_z = true
-angle_max = 90.0
-direction = Vector3(0, -1, 0)
-initial_velocity_min = 400.0
-initial_velocity_max = 500.0
-gravity = Vector3(0, 900, 0)
-color_ramp = SubResource("GradientTexture1D_ug0v0")
-
 [sub_resource type="Gradient" id="Gradient_k4jun"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_owuer"]
-gradient = SubResource("Gradient_k4jun")
 
 [sub_resource type="Curve" id="Curve_u1y4t"]
 _limits = [0.5, 2.0, 0.0, 1.0]
 _data = [Vector2(0, 0.5), 0.0, 1.38153, 0, 0, Vector2(0.983547, 2), 1.5246, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_2nhtu"]
-curve = SubResource("Curve_u1y4t")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b1p8e"]
-particle_flag_disable_z = true
-angle_max = 360.0
-direction = Vector3(0, 0, 0)
-scale_curve = SubResource("CurveTexture_2nhtu")
-color_ramp = SubResource("GradientTexture1D_owuer")
-
 [node name="BrokenCoconutFX" type="Control" unique_id=356892500]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_vwvtm")
 
-[node name="TopParticles" type="GPUParticles2D" parent="." unique_id=1414483585]
+[node name="TopParticles" type="CPUParticles2D" parent="." unique_id=1414483585]
+texture = ExtResource("1_ivxel")
 emitting = false
 amount = 1
-texture = ExtResource("1_ivxel")
 one_shot = true
-process_material = SubResource("ParticleProcessMaterial_iijg8")
+draw_order = 1
+direction = Vector2(0, -1)
+gravity = Vector2(0, 900)
+initial_velocity_min = 400.0
+initial_velocity_max = 500.0
+angle_max = 90.0
+color_ramp = ExtResource("2_d6ibk")
 
-[node name="ShardsParticles" type="GPUParticles2D" parent="." unique_id=1749583745]
-emitting = false
+[node name="ShardsParticles" type="CPUParticles2D" parent="." unique_id=1749583745]
 texture = ExtResource("2_logsj")
+emitting = false
 one_shot = true
 explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_ivqj5")
+draw_order = 1
+emission_shape = 1
+emission_sphere_radius = 64.0
+direction = Vector2(0, -1)
+gravity = Vector2(0, 900)
+initial_velocity_min = 400.0
+initial_velocity_max = 550.0
+angle_max = 360.0
+color_ramp = ExtResource("2_d6ibk")
 
-[node name="BottomParticles" type="GPUParticles2D" parent="." unique_id=1698907707]
+[node name="BottomParticles" type="CPUParticles2D" parent="." unique_id=1698907707]
+texture = ExtResource("2_kd03l")
 emitting = false
 amount = 1
-texture = ExtResource("2_kd03l")
 one_shot = true
-process_material = SubResource("ParticleProcessMaterial_d8slu")
+draw_order = 1
+direction = Vector2(0, -1)
+gravity = Vector2(0, 900)
+initial_velocity_min = 400.0
+initial_velocity_max = 500.0
+angle_max = 90.0
+color_ramp = ExtResource("2_d6ibk")
 
-[node name="LinesParticles" type="GPUParticles2D" parent="." unique_id=160029704]
+[node name="LinesParticles" type="CPUParticles2D" parent="." unique_id=160029704]
 position = Vector2(0, -16)
+texture = ExtResource("5_5n842")
 emitting = false
 amount = 3
-texture = ExtResource("5_5n842")
 one_shot = true
 explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_b1p8e")
+draw_order = 1
+direction = Vector2(0, 0)
+gravity = Vector2(0, -9.8)
+angle_max = 360.0
+scale_amount_curve = SubResource("Curve_u1y4t")
+color_ramp = SubResource("Gradient_k4jun")
 
 [connection signal="finished" from="ShardsParticles" to="." method="_on_shards_particles_finished"]

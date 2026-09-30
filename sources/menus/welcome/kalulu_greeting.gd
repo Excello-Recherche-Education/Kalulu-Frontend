@@ -42,7 +42,7 @@ func _speak() -> void:
 	sprite.play("Talk")
 	speech_player.stream = speech
 	speech_player.play()
-	await speech_player.finished
+	await AudioWait.until_done(speech_player)
 	sprite.play("Idle")
 
 

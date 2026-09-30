@@ -5,7 +5,7 @@ signal finished()
 
 @onready var tracing_path: TracingPath = $TracingPath
 @onready var tracing_effects: TracingEffects = $TracingEffects
-@onready var complete_particles: GPUParticles2D = $CompleteParticles
+@onready var complete_particles: CPUParticles2D = $CompleteParticles
 @onready var complete_sound: AudioStreamPlayer = $CompleteAudioStreamPlayer
 
 

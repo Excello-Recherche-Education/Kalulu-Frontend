@@ -5,7 +5,7 @@ var target_position: Vector2
 
 @onready var path_follow: PathFollow2D = $PathFollow2D
 @onready var sprite: Sprite2D = $PathFollow2D/Sprite2D
-@onready var particles: GPUParticles2D = $PathFollow2D/Particles
+@onready var particles: CPUParticles2D = $PathFollow2D/Particles
 
 
 func _ready() -> void:

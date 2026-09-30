@@ -6,38 +6,29 @@
 [sub_resource type="Gradient" id="Gradient_cfyxj"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_6qqd3"]
-gradient = SubResource("Gradient_cfyxj")
-
 [sub_resource type="Curve" id="Curve_1dvj3"]
 _limits = [0.0, 2.0, 0.0, 1.0]
 _data = [Vector2(0, 0.851735), 0.0, 0.0, 0, 0, Vector2(0.32626, 1.55475), 1.41985, 1.41985, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
 point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_snsu0"]
-curve = SubResource("Curve_1dvj3")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7w1vm"]
-particle_flag_disable_z = true
-direction = Vector3(0, 0, 0)
-spread = 0.0
-gravity = Vector3(0, 0, 0)
-scale_max = 1.25
-scale_curve = SubResource("CurveTexture_snsu0")
-color_ramp = SubResource("GradientTexture1D_6qqd3")
 
 [node name="WaterRingFX" type="Control" unique_id=560116690]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_tgn6m")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1711244913]
+[node name="Particles" type="CPUParticles2D" parent="." unique_id=1711244913]
+texture = ExtResource("2_rqr5s")
 emitting = false
 amount = 1
-texture = ExtResource("2_rqr5s")
 lifetime = 3.0
 one_shot = true
 explosiveness = 0.95
-process_material = SubResource("ParticleProcessMaterial_7w1vm")
+draw_order = 1
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(0, 0)
+scale_amount_max = 1.25
+scale_amount_curve = SubResource("Curve_1dvj3")
+color_ramp = SubResource("Gradient_cfyxj")
 
-[connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]
+[connection signal="finished" from="Particles" to="." method="_on_gpu_particles_2d_finished"]
