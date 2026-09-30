@@ -15,8 +15,10 @@ class DeadAudioPlayer:
 	var pitch_scale: float = 1.0
 	var has_playback: bool = true
 
+
 	func has_stream_playback() -> bool:
 		return has_playback
+
 
 	func get_playback_position() -> float:
 		return 0.0

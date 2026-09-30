@@ -1,6 +1,5 @@
 class_name AudioWait
 extends RefCounted
-
 ## Waits for the sound on an audio player to end, without trusting its finished signal.
 ##
 ## finished is only emitted once a sound has actually been mixed to its end. When the
