@@ -115,10 +115,11 @@ func _stop_highlight() -> void:
 func _play_monkey_stimulus(monkey: Monkey) -> void:
 	var coroutine: Coroutine = Coroutine.new()
 	coroutine.add_future(monkey.talk)
-	# Wait on play_gp itself, not on audio_player.finished. A language pack sound is an
-	# AudioStreamMP3 built at runtime, and waiting on its finished signal left the king
-	# holding the coconut forever on iOS (3.1.5). play_gp waits on the stream length
-	# instead, like every other caller of the language pack sounds.
+	# Wait on play_gp itself, not on audio_player.finished. finished only comes when a
+	# sound is actually played to its end, so a device whose audio output has stopped
+	# never sends it: seen in 3.1.5 on a tablet whose sound had died, where the king
+	# held the coconut forever. play_gp waits on the stream length instead, which runs
+	# whether or not anything is heard.
 	coroutine.add_future(audio_player.play_gp.bind(monkey.stimulus))
 	await coroutine.join_all()
 
