@@ -156,12 +156,15 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 		await jellyfish.wrong()
 		current_lives -= 1
 		
+		# Finding the right jellyfish clears the whole field, which can free this one
+		# while its syllable plays. A release build does not check that, it crashes.
 		# Play the pressed jellyfish phoneme
-		if jellyfish.stimulus:
+		if is_instance_valid(jellyfish) and jellyfish.stimulus:
 			await audio_player.play_syllable(jellyfish.stimulus)
 		
 		# Remove the jellyfish
-		await jellyfish.delete()
+		if is_instance_valid(jellyfish):
+			await jellyfish.delete()
 	
 	# Handle the blocking array
 	if jellyfish in blocking_jellyfish:
