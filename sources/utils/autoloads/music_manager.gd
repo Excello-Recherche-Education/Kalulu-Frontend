@@ -16,11 +16,21 @@ const TRACKS: Array[String] = [
 ]
 
 var _loaded_streams: Dictionary[Track, AudioStream] = {}
+## Set by play() and stop(), so the title track started after the first frame does
+## not override a scene that has already decided what should be heard.
+var _has_been_told_what_to_play: bool = false
 
 @onready var music_player: AudioStreamPlayer = $MusicPlayer
 
 
 func _ready() -> void:
+	# Every autoload's _ready runs before the first frame, which Android counts in
+	# the cold start, and starting the title track loads it from disk. Nothing on
+	# the first frame needs it, so it starts once that frame is on screen.
+	await RenderingServer.frame_post_draw
+	if _has_been_told_what_to_play:
+		Log.trace("MusicManager: Ready - title track skipped, a scene already chose the music")
+		return
 	Log.trace("MusicManager: Ready - starting title track")
 	play(Track.TITLE)
 
@@ -32,6 +42,7 @@ func _on_music_player_finished() -> void:
 
 
 func play(track: Track) -> void:
+	_has_been_told_what_to_play = true
 	if track < 0 or track >= Track.size():
 		Log.warn("MusicManager: Cannot play %d because this key is out of Track range" % track)
 		return
@@ -48,6 +59,7 @@ func play(track: Track) -> void:
 
 
 func stop() -> void:
+	_has_been_told_what_to_play = true
 	music_player.stop()
 
 
