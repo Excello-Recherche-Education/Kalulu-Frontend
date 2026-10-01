@@ -6,10 +6,16 @@ enum Track {
 	GARDEN
 }
 
-const TRACKS: Array = [
-	preload("res://assets/music/title.mp3"),
-	preload("res://assets/music/garden.mp3")
+## Paths rather than preloads: an autoload's preloads are read before the first
+## frame, so preloading the garden track put it on every cold start although it
+## is only heard once a child reaches the gardens. Each track is loaded the first
+## time it is played and kept from then on.
+const TRACKS: Array[String] = [
+	"res://assets/music/title.mp3",
+	"res://assets/music/garden.mp3"
 ]
+
+var _loaded_streams: Dictionary[Track, AudioStream] = {}
 
 @onready var music_player: AudioStreamPlayer = $MusicPlayer
 
@@ -33,12 +39,22 @@ func play(track: Track) -> void:
 	if track >= TRACKS.size():
 		Log.warn("MusicManager: Cannot play %d because this key is out of TRACKS range" % track)
 		return
-	if TRACKS[track] == null:
-		Log.warn("MusicManager: Cannot play %d because it is null" % track)
+	var stream: AudioStream = _get_stream(track)
+	if stream == null:
+		Log.warn("MusicManager: Cannot play %d because its stream could not be loaded" % track)
 		return
-	music_player.stream = TRACKS[track]
+	music_player.stream = stream
 	music_player.play()
 
 
 func stop() -> void:
 	music_player.stop()
+
+
+func _get_stream(track: Track) -> AudioStream:
+	if not _loaded_streams.has(track):
+		var stream: AudioStream = load(TRACKS[track]) as AudioStream
+		if stream == null:
+			return null
+		_loaded_streams[track] = stream
+	return _loaded_streams[track]
