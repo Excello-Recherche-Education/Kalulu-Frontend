@@ -16,6 +16,13 @@ var _preloaded_scene_path: String = ""
 
 
 func _ready() -> void:
+	# Not before the first frame: the load runs on a worker thread, but on a slow
+	# tablet it still competes for the CPU and storage that frame needs, and Android
+	# times a cold start up to it. The splash's two seconds leave ample time after.
+	# Should the splash already be leaving, it is loading the scene directly.
+	await RenderingServer.frame_post_draw
+	if is_leaving:
+		return
 	var next: String = EntryFlow.scene_after_splash()
 	var error: Error = ResourceLoader.load_threaded_request(next)
 	if error != OK:
