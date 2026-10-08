@@ -38,6 +38,10 @@ var words_path: String = get_language_folder() + "/words/"
 var additional_word_list: Dictionary = {}
 var is_open: bool = false
 
+# See _get_folder_listing.
+var _folder_listings: Dictionary[String, Dictionary] = {}
+var _folder_listings_frame: int = -1
+
 @onready var db: SQLite = SQLite.new()
 
 
@@ -734,8 +738,8 @@ func resolve_syllable_sound_path(syllable: Dictionary) -> String:
 ## folded. macOS and Windows find "e-E.png" when the folder holds "e-e.png", which is
 ## another pair's asset: the game accepts that for a pack too old to tell the two
 ## apart, but an editor would show the wrong picture, and deleting it would destroy
-## the other pair's file. Only a name carrying an uppercase letter can alias that
-## way, so only those pay for the folder listing.
+## the other pair's file. That runs both ways -- "e-e.png" is found when only
+## "e-E.png" is there -- so every candidate is checked, lowercase names included.
 ## Returns the canonical file first, and nothing when neither name is on disk.
 func find_asset_files(folder: String, canonical_name: String, legacy_name: String, extension: String) -> PackedStringArray:
 	var files: PackedStringArray = []
@@ -743,7 +747,7 @@ func find_asset_files(folder: String, canonical_name: String, legacy_name: Strin
 		var path: String = resolve_external_file_path(folder + file_name + extension)
 		if path.is_empty() or files.has(path):
 			continue
-		if path.get_file() != path.get_file().to_lower() and not _is_named_exactly(path):
+		if not _is_named_exactly(path):
 			continue
 		files.append(path)
 	return files
@@ -765,15 +769,37 @@ func find_syllable_sound_files(syllable: Dictionary) -> PackedStringArray:
 			SOUND_EXTENSION)
 
 
+## Drops the folder listings find_asset_files keeps for the current frame. Only
+## needed by something that writes into a pack folder and reads it back through
+## find_asset_files within the same frame -- the tests do.
+func forget_folder_listings() -> void:
+	_folder_listings.clear()
+
+
 # Whether the folder holds this file under exactly this name, case included. Unicode
 # normalization is still folded, since resolve_external_file_path already chose the
 # form and the packs mix both.
 func _is_named_exactly(path: String) -> bool:
-	var file_name: String = UnicodeNormalizer.to_nfd_extended(path.get_file())
-	for entry: String in DirAccess.get_files_at(path.get_base_dir()):
-		if UnicodeNormalizer.to_nfd_extended(entry) == file_name:
-			return true
-	return false
+	return _get_folder_listing(path.get_base_dir()).has(
+			UnicodeNormalizer.to_nfd_extended(path.get_file()))
+
+
+# The names in a folder, normalized, as a set. Kept for one frame: the In-Game
+# Sounds screen checks every word, syllable and GP of a pack as it opens -- about
+# 3400 lines against a folder of as many files for fr_FR -- and listing the folder
+# for each would cost millions of normalizations. A frame is short enough that a
+# file uploaded or cleared from the screen is never answered from a stale listing.
+func _get_folder_listing(folder: String) -> Dictionary:
+	var frame: int = Engine.get_process_frames()
+	if frame != _folder_listings_frame:
+		_folder_listings.clear()
+		_folder_listings_frame = frame
+	if not _folder_listings.has(folder):
+		var names: Dictionary[String, bool] = {}
+		for entry: String in DirAccess.get_files_at(folder):
+			names[UnicodeNormalizer.to_nfd_extended(entry)] = true
+		_folder_listings[folder] = names
+	return _folder_listings[folder]
 
 
 func get_kalulu_speech_path(speech_category: String, speech_name: String) -> String:
