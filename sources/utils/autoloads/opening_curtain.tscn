@@ -180,6 +180,7 @@ rotation = 4.71239
 scale = Vector2(1.25, 1.25)
 pivot_offset = Vector2(2050, 2448)
 texture = ExtResource("2_5yuun")
+expand_mode = 1
 
 [node name="RightCurtain" type="TextureRect" parent="." unique_id=275835896]
 visible = false
@@ -191,5 +192,6 @@ rotation = -4.71239
 scale = Vector2(1.25, 1.25)
 pivot_offset = Vector2(2050, 2448)
 texture = ExtResource("2_5yuun")
+expand_mode = 1
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

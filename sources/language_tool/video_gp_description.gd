@@ -15,9 +15,8 @@ var gp: Dictionary = {}
 func _video_file_selected(file_path: String) -> void:
 	file_dialog.files_selected.connect(_video_file_selected.bind(file_dialog))
 	if FileAccess.file_exists(file_path):
+		_remove_video_files()
 		var current_file: String = Database.get_gp_look_and_learn_video_path(gp)
-		if FileAccess.file_exists(current_file):
-			DirAccess.remove_absolute(current_file)
 		DirAccess.copy_absolute(file_path, current_file)
 		set_video_preview(current_file)
 
@@ -30,8 +29,12 @@ func set_video_preview(video_path: String) -> void:
 func set_gp(p_gp: Dictionary) -> void:
 	gp = p_gp
 	gp_menu_button.text = Database.get_gp_name(gp)
-	if FileAccess.file_exists(Database.get_gp_look_and_learn_video_path(gp)):
-		set_video_preview(Database.get_gp_look_and_learn_video_path(gp))
+	# Through find_gp_asset_files, so a pack that predates the file name encoding
+	# still shows its videos. Uploads are written under the canonical name.
+	var files: PackedStringArray = Database.find_gp_asset_files(
+			gp, Database.LOOK_AND_LEARN_VIDEOS, Database.VIDEO_EXTENSION)
+	if not files.is_empty():
+		set_video_preview(files[0])
 
 
 func _on_video_upload_button_pressed() -> void:
@@ -46,9 +49,15 @@ func _on_video_upload_button_pressed() -> void:
 func _on_button_pressed() -> void:
 	video_player.stream = null
 	video_player.hide()
-	var current_file: String = Database.get_gp_look_and_learn_video_path(gp)
-	if FileAccess.file_exists(current_file):
-		DirAccess.remove_absolute(current_file)
+	_remove_video_files()
+
+
+# Both names, not only the canonical one: a legacy file left behind would come
+# straight back the next time the line is shown.
+func _remove_video_files() -> void:
+	for file: String in Database.find_gp_asset_files(
+			gp, Database.LOOK_AND_LEARN_VIDEOS, Database.VIDEO_EXTENSION):
+		DirAccess.remove_absolute(file)
 
 
 func _on_video_stream_player_gui_input(event: InputEvent) -> void:

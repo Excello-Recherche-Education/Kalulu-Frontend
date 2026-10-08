@@ -11,7 +11,7 @@ func _ready() -> void:
 	_description_line.queue_free()
 	
 	Database.db.query("Select * FROM GPs WHERE GPs.Exception=0")
-	for gp in Database.db.query_result:
+	for gp: Dictionary in Database.db.query_result:
 		var description_line: VideoGPDescription = DESCRIPTION_LINE_SCENE.instantiate()
 		description_container.add_child(description_line)
 		description_line.set_gp(gp)

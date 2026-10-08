@@ -341,7 +341,7 @@ func test_the_stars_drift_when_the_device_can_afford_them() -> void:
 
 
 func test_the_stars_stop_on_a_light_device() -> void:
-	# The one piece of decoration whose cost is the GPU rather than memory: 256 live
+	# The one piece of decoration whose cost is per frame rather than memory: 256 live
 	# particles over the whole screen, every frame.
 	UserDataManager.set_light_graphics(true)
 	var stars: DecorativeParticles = DecorativeParticles.new()

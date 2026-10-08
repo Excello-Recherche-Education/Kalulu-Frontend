@@ -92,8 +92,7 @@ func _start() -> void:
 
 
 func _get_new_sentence() -> void:
-	if audio_player.playing:
-		await audio_player.finished
+	await AudioWait.until_done(audio_player)
 	
 	await _next_sentence()
 	shuffle_children(ants)

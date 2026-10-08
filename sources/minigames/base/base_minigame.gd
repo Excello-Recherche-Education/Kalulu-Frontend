@@ -305,7 +305,7 @@ func _lose() -> void:
 	
 	audio_player.stream = LOSE_SOUND_FX
 	audio_player.play()
-	await audio_player.finished
+	await AudioWait.until_done(audio_player)
 	
 	minigame_ui.play_kalulu_speech(lose_kalulu_speech)
 	await minigame_ui.kalulu_speech_ended

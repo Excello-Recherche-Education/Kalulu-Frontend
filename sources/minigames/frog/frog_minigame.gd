@@ -161,7 +161,10 @@ func _on_track_lilypad_in_center(lilypad: Lilypad, track: LilypadTrack) -> void:
 	if lilypad.is_distractor:
 		await lilypad.wrong()
 		await audio_player.play_gp(lilypad.stimulus)
-		lilypad.disappear()
+		# The lilypad may have been freed while the sound played, as in the jellyfish
+		# minigame, and a release build crashes rather than reporting it.
+		if is_instance_valid(lilypad):
+			lilypad.disappear()
 		await frog.defeat()
 		current_lives -= 1
 		_start_tracks()

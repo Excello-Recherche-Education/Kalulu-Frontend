@@ -1,7 +1,7 @@
 class_name SpitVFX
 extends Control
 
-@onready var particles: GPUParticles2D = $Particles
+@onready var particles: CPUParticles2D = $Particles
 
 
 func play() -> void:

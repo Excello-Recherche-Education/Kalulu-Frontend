@@ -9,26 +9,9 @@
 [sub_resource type="Gradient" id="Gradient_tmnc4"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_5inok"]
-gradient = SubResource("Gradient_tmnc4")
-width = 32
-
 [sub_resource type="Curve" id="Curve_lgbaw"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_he5ko"]
-width = 32
-curve = SubResource("Curve_lgbaw")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dpfdt"]
-particle_flag_disable_z = true
-spread = 180.0
-initial_velocity_min = 500.0
-initial_velocity_max = 500.0
-gravity = Vector3(0, 98, 0)
-scale_curve = SubResource("CurveTexture_he5ko")
-color_ramp = SubResource("GradientTexture1D_5inok")
 
 [node name="LetterSegment" type="Node2D" unique_id=1368810197]
 z_index = 100
@@ -36,14 +19,20 @@ script = ExtResource("1")
 
 [node name="TracingPath" parent="." unique_id=1954691601 instance=ExtResource("2_hdjbu")]
 
-[node name="CompleteParticles" type="GPUParticles2D" parent="." unique_id=1819117536]
+[node name="CompleteParticles" type="CPUParticles2D" parent="." unique_id=1819117536]
+texture = ExtResource("4")
 emitting = false
 amount = 32
-texture = ExtResource("4")
 lifetime = 2.0
 one_shot = true
 explosiveness = 0.8
-process_material = SubResource("ParticleProcessMaterial_dpfdt")
+draw_order = 1
+spread = 180.0
+gravity = Vector2(0, 98)
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+scale_amount_curve = SubResource("Curve_lgbaw")
+color_ramp = SubResource("Gradient_tmnc4")
 
 [node name="CompleteAudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=163231365]
 stream = ExtResource("5")

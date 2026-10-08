@@ -1,7 +1,7 @@
 class_name TracingEffects
 extends Node2D
 
-@onready var particles_effect: GPUParticles2D = $TracingParticles
+@onready var particles_effect: CPUParticles2D = $TracingParticles
 @onready var sound_effect: AudioStreamPlayer = $TracingAudioStreamPlayer
 @onready var timer: Timer = $Timer
 

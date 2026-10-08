@@ -38,7 +38,7 @@ var _pulse_tween: Tween
 var _hand_tween: Tween
 
 @onready var button: Button = $TreasureButton
-@onready var sparkles: GPUParticles2D = $Sparkles
+@onready var sparkles: CPUParticles2D = $Sparkles
 @onready var pointing_hand: Sprite2D = $PointingHand
 
 

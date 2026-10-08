@@ -3,10 +3,10 @@ extends Control
 
 signal finished()
 
-@onready var top_particles: GPUParticles2D = $TopParticles
-@onready var shards_particles: GPUParticles2D = $ShardsParticles
-@onready var bottom_particles: GPUParticles2D = $BottomParticles
-@onready var lines_particles: GPUParticles2D = $LinesParticles
+@onready var top_particles: CPUParticles2D = $TopParticles
+@onready var shards_particles: CPUParticles2D = $ShardsParticles
+@onready var bottom_particles: CPUParticles2D = $BottomParticles
+@onready var lines_particles: CPUParticles2D = $LinesParticles
 
 
 func warm_up() -> void:

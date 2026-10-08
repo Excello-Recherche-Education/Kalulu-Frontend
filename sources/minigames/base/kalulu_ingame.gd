@@ -78,7 +78,7 @@ func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_a
 		audio_player.stream = speech
 		audio_player.play()
 		_awaiting_speech = true
-		await audio_player.finished
+		await AudioWait.until_done(audio_player)
 		_awaiting_speech = false
 	else:
 		Log.warn("Kalulu: Speech not found")
@@ -97,17 +97,11 @@ func play_kalulu_speech(speech: AudioStream, show_animation: bool = true, hide_a
 
 ## Skips the speech Kalulu is in the middle of.
 ##
-## Only while the speech is what is being waited on. The button works by forging
-## audio_player.finished, and forging it at any other moment -- during the show
-## animation, where the sound playing is the whoosh rather than the speech -- emits
-## into nothing: the await that comes afterwards then waits on a sound that has
-## already stopped. Kalulu never finishes, speech_ended never fires, and the pause
-## minigame_ui put on the tree is never lifted.
+## Only while the speech is what is being waited on: pressed during the show
+## animation it would cut the whoosh rather than the speech. Stopping is enough --
+## AudioWait.until_done ends as soon as the player has no playback left, so there is
+## no finished signal to forge, and a lost one cannot strand the speech.
 func _on_pass_button_pressed() -> void:
 	if not _awaiting_speech:
 		return
-	if audio_player.playing:
-		audio_player.stop()
-	# Emitted even when the sound has already stopped, so a lost `finished` cannot
-	# leave the speech hanging either.
-	audio_player.finished.emit()
+	audio_player.stop()

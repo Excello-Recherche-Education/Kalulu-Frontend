@@ -152,26 +152,31 @@ func _ready() -> void:
 ## Reads the whole of user://environment.cfg into this node.
 ##
 ## Split out of _ready so the order below can be checked: the environment and the
-## proxy come out of one file, one of them is saved back during the read, and getting
+## proxy come out of one file, the file can be saved back during the read, and getting
 ## that sequence wrong loses the other silently -- a launch that looks perfectly
 ## normal, and a next one that cannot connect.
+##
+## It is only saved back when the read changed something: a missing or unreadable
+## file, or a custom URL the read normalised. Rewriting an unchanged file put a disk
+## write on every cold start, which slow tablet storage pays for before the first frame.
 func load_configuration() -> void:
 	var config: ConfigFile = ConfigFile.new()
 	var load_error: Error = config.load(CONFIG_PATH)
 
-	# Read first, and before set_environment below, which saves the whole file: it
-	# would write these three back at their defaults and a proxy found to work on a
+	# Read first, and before any save below, which writes the whole file: it would
+	# write these three back at their defaults and a proxy found to work on a
 	# previous run would be gone from disk. This launch would not notice -- the values
 	# are read out of the ConfigFile already in memory just after -- and the next one
 	# would come up unable to connect, on the machines that need a proxy most.
 	proxy_host = str(config.get_value("network", "proxy_host", ""))
 	proxy_port = int(config.get_value("network", "proxy_port", 0) as int)
-	proxy_enabled = bool(config.get_value("network", "proxy_enabled", false))
+	proxy_enabled = config.get_value("network", "proxy_enabled", false) as bool
 
 	if load_error == OK:
-		environment_setting = int(config.get_value("environment", "current", 0) as int)
-		custom_environment_url = str(config.get_value("environment", "custom_url", ""))
-		set_environment(environment_setting, custom_environment_url)
+		var stored_custom_url: String = str(config.get_value("environment", "custom_url", ""))
+		_apply_environment(int(config.get_value("environment", "current", 0) as int), stored_custom_url)
+		if custom_environment_url != stored_custom_url:
+			_save_environment_config()
 		Log.info("ServerManager: Loaded environment config (setting=%d, custom_url=%s)" % [environment_setting, custom_environment_url])
 	else:
 		Log.warn("ServerManager: Could not load environment config at %s. Error: %s. Falling back to PROD environment." % [ProjectSettings.globalize_path(CONFIG_PATH), error_string(load_error)])
@@ -182,10 +187,15 @@ func load_configuration() -> void:
 
 
 func set_environment(env: int, custom_url: String = "") -> void:
+	_apply_environment(env, custom_url)
+	_save_environment_config()
+
+
+## Puts the environment in force without saving it.
+func _apply_environment(env: int, custom_url: String) -> void:
 	environment_setting = env
 	custom_environment_url = _normalize_url(custom_url)
 	environment_url = _resolve_environment_url()
-	_save_environment_config()
 	Log.info("ServerManager: Environment URL set to " + environment_url)
 
 
@@ -278,8 +288,8 @@ func system_proxy_reaches_server() -> bool:
 
 	var probe: HTTPRequest = HTTPRequest.new()
 	probe.timeout = UNSAFE_PROBE_TIMEOUT_SECONDS
-	probe.set_http_proxy(str(system_proxy["host"]), int(system_proxy["port"]))
-	probe.set_https_proxy(str(system_proxy["host"]), int(system_proxy["port"]))
+	probe.set_http_proxy(str(system_proxy["host"]), system_proxy["port"] as int)
+	probe.set_https_proxy(str(system_proxy["host"]), system_proxy["port"] as int)
 	add_child(probe)
 	Log.trace("ServerManager: Trying the machine's own proxy %s:%d" % [
 			system_proxy["host"], system_proxy["port"]])
@@ -329,7 +339,7 @@ func ensure_system_proxy_known() -> void:
 	# proxy she set herself.
 	if proxy_host.is_empty() and not system_proxy.is_empty():
 		proxy_host = str(system_proxy["host"])
-		proxy_port = int(system_proxy["port"])
+		proxy_port = system_proxy["port"] as int
 
 
 func _apply_proxy() -> void:
@@ -543,7 +553,7 @@ func gather_evidence(http_code: int = 0,
 	if not system_proxy.is_empty() and not proxy_enabled:
 		evidence.system_proxy_works = await system_proxy_reaches_server()
 		if evidence.system_proxy_works:
-			set_proxy(str(system_proxy["host"]), int(system_proxy["port"]), true)
+			set_proxy(str(system_proxy["host"]), system_proxy["port"] as int, true)
 			return evidence
 
 	var host: String = api_host()

@@ -354,7 +354,14 @@ func _check_db_integrity() -> void:
 				if !log_message("GP " + Database.get_gp_name(gp) + " sound file exists, but its name does not match the expected casing"):
 					return
 			FileCheckResult.ERROR_NOT_FOUND:
-				if !log_message("GP " + Database.get_gp_name(gp) + " sound file does not exists"):
+				# A pack that predates the file name encoding still plays, but it
+				# should be told apart from a recording that is really missing.
+				var found_files: PackedStringArray = Database.find_gp_asset_files(
+						gp, Database.LANGUAGE_SOUNDS, Database.SOUND_EXTENSION)
+				if not found_files.is_empty():
+					if !log_message("GP " + Database.get_gp_name(gp) + " sound file is only found as " + found_files[0].get_file() + ", expected " + gp_sound_path.get_file()):
+						return
+				elif !log_message("GP " + Database.get_gp_name(gp) + " sound file does not exists"):
 					return
 	
 	error_label.text = "Database integrity check finished. " + str(total_integrity_warnings) + " warnings found."

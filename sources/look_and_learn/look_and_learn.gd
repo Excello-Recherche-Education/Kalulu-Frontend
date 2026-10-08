@@ -21,7 +21,7 @@ var current_tracing: int = 0
 @onready var image: TextureRect = %Image
 @onready var grapheme_label: Label = %GraphemeLabel
 @onready var tracing_manager: TracingManager = %TracingManager
-@onready var grapheme_particles: GPUParticles2D = $GraphemeParticles
+@onready var grapheme_particles: CPUParticles2D = $GraphemeParticles
 
 
 func _ready() -> void:

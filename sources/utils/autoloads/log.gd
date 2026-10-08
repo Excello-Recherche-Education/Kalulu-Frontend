@@ -31,7 +31,6 @@ func _ready() -> void:
 	session_filename_regex = RegEx.new()
 	session_filename_regex.compile("^%s_(\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2})(?:_(\\d+))?\\.txt$" % FILE_BASE_NAME)
 
-	delete_old_logs()
 	_init_log_file()
 	if Engine.is_editor_hint() or OS.has_feature("editor"):
 		current_level = LogLevel.TRACE # In-editor: full logs
@@ -42,6 +41,33 @@ func _ready() -> void:
 	initialized = true
 	_log_internal(LogLevel.INFO, "--- Logging started at " + Time.get_datetime_string_from_system() + " ---")
 	_log_internal(LogLevel.INFO, "--- Logging set at level " + str(current_level) + " ---")
+	_delete_old_logs_after_first_frame()
+
+
+## Every autoload's _ready runs before the app draws its first frame, and Android
+## times a cold start up to that frame. Clearing out old logs is a scan of the whole
+## folder that nothing at launch depends on, so it waits until a frame is on screen.
+##
+## The cleanup used to run before the session's file was opened, so a device whose
+## storage old logs had filled got the space back first. Opened first instead, that
+## file can fail to open, and is tried again once the cleanup has made room.
+func _delete_old_logs_after_first_frame() -> void:
+	await RenderingServer.frame_post_draw
+	delete_old_logs()
+	if log_file == null:
+		_reopen_log_file()
+
+
+## Opens the session's log file after an earlier attempt failed, and writes into it
+## everything logged meanwhile, which all_logs has kept in memory.
+func _reopen_log_file() -> void:
+	_init_log_file()
+	if log_file == null:
+		return
+	for line: String in all_logs:
+		log_file.store_line(line)
+	log_file.flush()
+	_log_internal(LogLevel.INFO, "Log: Log file opened once old logs were cleared")
 
 
 func delete_old_logs(days_threshold: float = 10) -> void:

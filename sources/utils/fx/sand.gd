@@ -28,7 +28,7 @@ var is_playing: bool = false
 ## what play() and start() read to know there is no sand to throw.
 var _textures: Array[Texture2D] = []
 
-@onready var particles: GPUParticles2D = $Particles
+@onready var particles: CPUParticles2D = $Particles
 @onready var timer: Timer = $Timer
 
 
