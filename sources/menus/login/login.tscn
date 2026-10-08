@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://b6lcp5llq0rsq" path="res://sources/menus/login/login.gd" id="1_spyuf"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 [ext_resource type="PackedScene" uid="uid://ivyitn4nxsm5" path="res://sources/ui/code_keypad.tscn" id="3_keypad"]
+[ext_resource type="Texture2D" uid="uid://dj0ygi5q6kbdw" path="res://assets/minigames/minigame_ui/graphic/button_back_normal.png" id="4_ee48r"]
 [ext_resource type="PackedScene" uid="uid://blos4rn53qkwg" path="res://sources/minigames/base/kalulu_ingame.tscn" id="4_kalulu"]
-[ext_resource type="Texture2D" uid="uid://b44sv7oylntiq" path="res://assets/menus/buttons/back_button_normal.png" id="5_back_n"]
-[ext_resource type="Texture2D" uid="uid://b01neo7ex0rg7" path="res://assets/menus/buttons/back_button_pressed.png" id="6_back_p"]
-[ext_resource type="Texture2D" uid="uid://b7tuf4u5ri2n1" path="res://assets/menus/buttons/back_button_disabled.png" id="7_back_d"]
-[ext_resource type="Texture2D" uid="uid://c01qsr58ufihh" path="res://assets/menus/buttons/kalulu_button_normal.png" id="8_kal_n"]
-[ext_resource type="Texture2D" uid="uid://d2s3kkntep3au" path="res://assets/menus/buttons/kalulu_button_pressed.png" id="9_kal_p"]
-[ext_resource type="Texture2D" uid="uid://w25kyu12snql" path="res://assets/menus/buttons/kalulu_button_disabled.png" id="10_kal_d"]
+[ext_resource type="Texture2D" uid="uid://gmoc5mxxfqin" path="res://assets/minigames/minigame_ui/graphic/button_back_pressed.png" id="5_k0prv"]
+[ext_resource type="Texture2D" uid="uid://bnvx1mujmy3vf" path="res://assets/minigames/minigame_ui/graphic/button_back_disabled.png" id="6_i0wqd"]
+[ext_resource type="Texture2D" uid="uid://iw84x6mx8h2g" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_normal.png" id="7_ee48r"]
+[ext_resource type="Texture2D" uid="uid://ub1dnysbojn8" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_pressed.png" id="8_k0prv"]
+[ext_resource type="Texture2D" uid="uid://crnxawhf68po3" path="res://assets/minigames/minigame_ui/graphic/button_kalulu_disabled.png" id="9_i0wqd"]
 [ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="11_music"]
 [ext_resource type="PackedScene" uid="uid://b7yl4qkxvrn5m" path="res://sources/ui/version_label.tscn" id="11_version"]
 [ext_resource type="PackedScene" path="res://sources/ui/adult_check_popup.tscn" id="99_adult"]
@@ -78,9 +78,9 @@ offset_left = 64.0
 offset_top = 64.0
 offset_right = 310.0
 offset_bottom = 310.0
-texture_normal = ExtResource("5_back_n")
-texture_pressed = ExtResource("6_back_p")
-texture_disabled = ExtResource("7_back_d")
+texture_normal = ExtResource("4_ee48r")
+texture_pressed = ExtResource("5_k0prv")
+texture_disabled = ExtResource("6_i0wqd")
 ignore_texture_size = true
 stretch_mode = 5
 
@@ -103,9 +103,9 @@ offset_left = 64.0
 offset_top = 60.0
 offset_right = 310.0
 offset_bottom = 306.0
-texture_normal = ExtResource("8_kal_n")
-texture_pressed = ExtResource("9_kal_p")
-texture_disabled = ExtResource("10_kal_d")
+texture_normal = ExtResource("7_ee48r")
+texture_pressed = ExtResource("8_k0prv")
+texture_disabled = ExtResource("9_i0wqd")
 ignore_texture_size = true
 stretch_mode = 5
 

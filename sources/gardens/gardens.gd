@@ -7,7 +7,6 @@ const KALULU: GDScript = preload("res://sources/minigames/base/kalulu_ingame.gd"
 const MINIGAME_WEDGE_SCENE: PackedScene = preload("res://sources/gardens/minigame_wedge.tscn")
 # Wheel geometry, in MinigameSelection-local coords (canvas 2560×1800).
 const WHEEL_CENTER: Vector2 = Vector2(1280, 900)
-# Matches the inner edge of big_button.png; past this the gray ring hides everything.
 const WHEEL_RADIUS: float = 815.0
 const WHEEL_ARC_SEGMENTS: int = 48
 const WHEEL_ICON_DISTANCE_RATIO: float = 0.55
