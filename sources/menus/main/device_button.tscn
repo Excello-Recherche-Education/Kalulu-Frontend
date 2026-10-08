@@ -1,18 +1,72 @@
-[gd_scene load_steps=3 format=3 uid="uid://cv3krbytq75h4"]
+[gd_scene format=3 uid="uid://cv3krbytq75h4"]
 
 [ext_resource type="Script" uid="uid://c8lcf4y0g28wt" path="res://sources/menus/main/device_button.gd" id="1_device"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
 
-[node name="DeviceButton" type="Button"]
-custom_minimum_size = Vector2(183, 222)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6anc"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uppb2"]
+bg_color = Color(0.88, 0.88, 0.88, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fcvai"]
+bg_color = Color(0.95, 0.95, 0.95, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qc2ed"]
+bg_color = Color(0.88, 0.88, 0.88, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kuo8p"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fa8dn"]
+bg_color = Color(0.16470589, 0.21176471, 0.49019608, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blx7k"]
+bg_color = Color(0.16470589, 0.21176471, 0.49019608, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="DeviceButton" type="Button" unique_id=1439646959]
+custom_minimum_size = Vector2(244, 296)
 theme = ExtResource("2_theme")
+theme_override_styles/normal = SubResource("StyleBoxFlat_a6anc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_uppb2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fcvai")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_qc2ed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kuo8p")
 script = ExtResource("1_device")
 
-[node name="Dot" type="Panel" parent="."]
+[node name="Dot" type="Panel" parent="." unique_id=1882751759]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 1
-anchors_preset = 1
+anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -10.0
@@ -21,8 +75,9 @@ offset_right = 10.0
 offset_bottom = 40.0
 grow_horizontal = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fa8dn")
 
-[node name="Bar" type="Panel" parent="."]
+[node name="Bar" type="Panel" parent="." unique_id=1687750603]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 14)
 layout_mode = 1
@@ -38,8 +93,9 @@ offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_blx7k")
 
-[node name="Number" type="Label" parent="."]
+[node name="Number" type="Label" parent="." unique_id=331413656]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -47,8 +103,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_type_variation = &"Title"
+theme_override_colors/font_color = Color(0.16470589, 0.21176471, 0.49019608, 1)
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
