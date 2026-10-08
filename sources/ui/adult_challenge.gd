@@ -7,9 +7,10 @@ extends RefCounted
 ## and nothing to type in secret.
 ##
 ## The logic lives here because three screens ask it: the boss minigame's block,
-## the Sign Up tab, and the way into the teacher settings. They each draw it
-## differently, but a second copy of "which symbols, and did they match" is a
-## second place for the symbol names to drift out of step.
+## the Sign Up tab, and the way into the teacher settings. The boss block and the
+## teacher settings share AdultCheckPopup; the Sign Up tab draws the same keypad
+## inline. A second copy of "which symbols, and did they match" would be a second
+## place for the symbol names to drift out of step.
 
 ## The answer currently being asked for.
 var code: String = ""

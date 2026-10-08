@@ -152,3 +152,65 @@ func test_reopening_it_asks_something_new() -> void:
 		seen[popup.challenge.code] = true
 
 	assert_gt(seen.size(), 1, "a memorised answer should not keep working")
+
+
+func test_the_settings_dialog_can_be_backed_out_of() -> void:
+	var popup: AdultCheckPopup = await _popup()
+
+	assert_true(popup.close_button.visible, "the teacher may change their mind")
+
+
+# --- The boss block, the same dialog with its own wording ---------------------
+const BLOCK_SCENE: String = "res://sources/menus/adult_block/adult_block.tscn"
+
+
+func _block() -> AdultBlock:
+	var block: AdultBlock = (load(BLOCK_SCENE) as PackedScene).instantiate()
+	add_child_autofree(block)
+	await get_tree().process_frame
+	return block
+
+
+func after_each() -> void:
+	# The block pauses the tree; a failed test must not leave the run paused.
+	get_tree().paused = false
+
+
+func test_the_boss_block_is_the_settings_dialog() -> void:
+	# It used to be a screen of its own, with the old keyboard.
+	var block: AdultBlock = await _block()
+
+	assert_eq(block.adult_check.scene_file_path, POPUP_SCENE)
+
+
+func test_the_boss_block_keeps_its_own_wording() -> void:
+	var block: AdultBlock = await _block()
+
+	block.show_block()
+
+	assert_eq(block.adult_check.prompt_label.text,
+		block.adult_check.challenge.prompt("ADULT_BOSS_BLOCK_PROMPT"))
+
+
+func test_the_boss_block_cannot_be_closed() -> void:
+	# Closing it would be the way past the adult.
+	var block: AdultBlock = await _block()
+
+	block.show_block()
+
+	assert_false(block.adult_check.close_button.visible)
+
+
+func test_the_boss_block_pauses_until_an_adult_answers() -> void:
+	var block: AdultBlock = await _block()
+	watch_signals(block)
+
+	block.show_block()
+	assert_true(get_tree().paused, "the game should wait for the adult")
+	assert_true(block.adult_check.visible)
+
+	block.adult_check._on_code_entered(block.adult_check.challenge.code)
+
+	assert_false(get_tree().paused, "and resume once answered")
+	assert_false(block.visible)
+	assert_signal_emitted(block, "unlocked")
