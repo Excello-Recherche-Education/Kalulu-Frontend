@@ -133,6 +133,10 @@ const FIELD_PADDING: int = 74
 # On-screen size of a trailing field icon. The icons import at twice this for
 # crispness, so they are drawn scaled down rather than at texture size.
 const FIELD_ICON_SIZE: int = 64
+# The up / down arrows beside a number field: each half of the field's height,
+# and wider than the chevron drawn in it so a finger can find it.
+const SPIN_BUTTONS_WIDTH: int = 96
+const SPIN_BUTTONS_GAP: int = 24
 # --- Wide buttons (Next / Previous / Cancel) ---------------------------------
 const BUTTON_SIZE: Vector2i = Vector2i(442, 218)
 const BUTTON_RADIUS: int = 10

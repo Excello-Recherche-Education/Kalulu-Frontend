@@ -52,21 +52,39 @@ func _existing_uid() -> String:
 	return ResourceUID.id_to_text(ResourceUID.create_id())
 
 
+## Writes the uids into the saved file the way the editor does: the resource's
+## own at the end of its header, and each ext_resource's beside its path.
+##
+## ResourceSaver leaves both out when run from a script, so the editor added them
+## the first time it opened the file -- a diff nobody made, on a file that is
+## meant to change only when the tokens do.
 func _restore_uid(uid: String) -> void:
-	if uid.is_empty():
-		return
 	var file: FileAccess = FileAccess.open(MenuTheme.THEME_PATH, FileAccess.READ)
 	if not file:
 		return
-	var content: String = file.get_as_text()
+	var lines: PackedStringArray = file.get_as_text().split("\n")
 	file.close()
-	if _uid_regex().search(content.get_slice("\n", 0)):
-		return
-	content = content.replace("[gd_resource ", "[gd_resource uid=\"%s\" " % uid)
+
+	var header: String = _uid_regex().sub(lines[0], "").replace("  ", " ").replace(" ]", "]")
+	if not uid.is_empty():
+		header = header.trim_suffix("]") + " uid=\"%s\"]" % uid
+	lines[0] = header
+
+	var path_regex: RegEx = RegEx.new()
+	path_regex.compile("^\\[ext_resource (.*)path=\"([^\"]+)\"")
+	for index: int in lines.size():
+		var found: RegExMatch = path_regex.search(lines[index])
+		if not found or _uid_regex().search(lines[index]):
+			continue
+		var id: int = ResourceLoader.get_resource_uid(found.get_string(2))
+		if id == ResourceUID.INVALID_ID:
+			continue
+		lines[index] = lines[index].replace("path=", "uid=\"%s\" path=" % ResourceUID.id_to_text(id))
+
 	file = FileAccess.open(MenuTheme.THEME_PATH, FileAccess.WRITE)
 	if not file:
 		return
-	file.store_string(content)
+	file.store_string("\n".join(lines))
 	file.close()
 
 
