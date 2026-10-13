@@ -136,6 +136,9 @@ func _write_sound(file_name: String) -> void:
 	assert_not_null(file, "could not create the fixture " + file_name)
 	file.store_string("not really an mp3")
 	file.close()
+	# find_asset_files keeps a folder's listing for the frame, and a test writes and
+	# reads back within one.
+	Database.forget_folder_listings()
 
 
 func test_the_encoded_name_is_found() -> void:
@@ -197,6 +200,15 @@ func test_the_prof_tool_never_takes_another_pairs_file() -> void:
 	_write_sound("e-e.mp3")
 	var files: PackedStringArray = Database.find_gp_asset_files(
 			_gp("e", "E"), Database.LANGUAGE_SOUNDS, Database.SOUND_EXTENSION)
+	assert_eq(files.size(), 0, "got " + str(files))
+
+
+func test_the_prof_tool_never_takes_another_pairs_file_under_a_lowercase_name() -> void:
+	# The same alias the other way round: "e-e.mp3" is found when only "e-E.mp3" is
+	# on disk, and that is the legacy file of e-E.
+	_write_sound("e-E.mp3")
+	var files: PackedStringArray = Database.find_gp_asset_files(
+			_gp("e", "e"), Database.LANGUAGE_SOUNDS, Database.SOUND_EXTENSION)
 	assert_eq(files.size(), 0, "got " + str(files))
 
 

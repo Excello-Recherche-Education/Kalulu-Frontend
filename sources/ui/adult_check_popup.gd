@@ -9,9 +9,20 @@ extends CanvasLayer
 ##
 ## A wrong answer asks again with different symbols rather than saying no, so
 ## there is nothing to learn by guessing.
+##
+## The one dialog every adult gate uses -- the teacher settings and the boss
+## block -- so they look and behave alike. Each says why it is asking through
+## `prompt_key`.
 
 signal passed()
 signal cancelled()
+
+## The instruction to show. Its message takes {1}, {2} and {3}, the symbols to tap.
+@export var prompt_key: String = "ADULT_CHECK_PROMPT"
+## Whether the cross is offered. A gate that guards somewhere the player chose to
+## go can be backed out of; one that blocks the game until an adult steps in
+## cannot, or closing it would be the way past.
+@export var closable: bool = true
 
 var challenge: AdultChallenge = AdultChallenge.new()
 
@@ -24,6 +35,7 @@ func _ready() -> void:
 	# The cross is drawn from a white icon so it can be tinted per surface; on the
 	# dialog's white card it takes the brand navy.
 	close_button.self_modulate = Design.NAVY
+	close_button.visible = closable
 	keypad.code_entered.connect(_on_code_entered)
 	close_button.pressed.connect(_on_close_pressed)
 	hide()
@@ -38,7 +50,7 @@ func open() -> void:
 
 func _ask() -> void:
 	challenge.renew()
-	prompt_label.text = challenge.prompt("ADULT_CHECK_PROMPT")
+	prompt_label.text = challenge.prompt(prompt_key)
 	if is_node_ready():
 		keypad.clear()
 

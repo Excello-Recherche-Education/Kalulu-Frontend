@@ -14,6 +14,11 @@ const SOURCES_DIR: String = "res://sources"
 const ICON_BUTTON_VARIATIONS: Array[String] = ["IconButtonLight", "IconButtonDark"]
 ## HORIZONTAL_ALIGNMENT_CENTER / VERTICAL_ALIGNMENT_CENTER.
 const CENTRED: String = "1"
+## What a property absent from the scene file is worth: the editor writes only
+## values that differ from the default, and drops the others when it resaves.
+## icon_alignment defaults to LEFT, vertical_icon_alignment to CENTER, so a
+## missing vertical_icon_alignment line is a centred icon.
+const LEFT: String = "0"
 
 
 func test_every_round_icon_button_centres_its_icon() -> void:
@@ -25,9 +30,9 @@ func test_every_round_icon_button_centres_its_icon() -> void:
 				continue
 			checked += 1
 			var name: String = _node_name(block)
-			if _property(block, "icon_alignment") != CENTRED:
+			if _property(block, "icon_alignment", LEFT) != CENTRED:
 				offenders.append("%s / %s (icon_alignment)" % [path.get_file(), name])
-			elif _property(block, "vertical_icon_alignment") != CENTRED:
+			elif _property(block, "vertical_icon_alignment", CENTRED) != CENTRED:
 				offenders.append("%s / %s (vertical_icon_alignment)" % [path.get_file(), name])
 
 	assert_gt(checked, 0, "the check should have found some icon buttons to inspect")
@@ -80,11 +85,11 @@ func _node_name(block: String) -> String:
 	return found.get_string(1) if found else "?"
 
 
-func _property(block: String, key: String) -> String:
+func _property(block: String, key: String, default: String) -> String:
 	# Anchored to a line start so vertical_icon_alignment is not mistaken for
 	# icon_alignment, which it ends with.
 	var found: RegExMatch = _regex("(?m)^%s = (\\S+)" % key).search(block)
-	return found.get_string(1) if found else ""
+	return found.get_string(1) if found else default
 
 
 func _regex(pattern: String) -> RegEx:

@@ -2,7 +2,9 @@ extends GutTest
 ## Behaviour of the redesigned text field.
 
 const FIELD_SCENE: String = "res://sources/ui/menu_text_field.tscn"
-const EMAIL_ICON: String = "res://assets/menus/icons/email.svg"
+# Any icon the app ships will do: no field in the app shows a decorative icon
+# today, and the envelope these tests used was removed as unused.
+const DECORATIVE_ICON: String = "res://assets/menus/icons/done.svg"
 
 var field: MenuTextField
 
@@ -123,9 +125,9 @@ func test_the_reveal_toggle_flips_masking_and_its_icon() -> void:
 
 
 func test_a_decorative_icon_does_not_swallow_taps() -> void:
-	# Tapping anywhere on an email field should focus it, so the envelope must
-	# not be a click target.
-	field.icon = load(EMAIL_ICON)
+	# Tapping anywhere on a field should focus it, so a decorative icon must not
+	# be a click target.
+	field.icon = load(DECORATIVE_ICON)
 
 	assert_true(field.trailing.visible)
 	assert_eq(field.trailing.mouse_filter, Control.MOUSE_FILTER_IGNORE,
@@ -139,7 +141,7 @@ func test_a_field_without_an_icon_hides_the_trailing_slot() -> void:
 func test_an_icon_reserves_padding_so_text_cannot_run_under_it() -> void:
 	var plain: float = field.input.get_theme_stylebox("normal").content_margin_right
 
-	field.icon = load(EMAIL_ICON)
+	field.icon = load(DECORATIVE_ICON)
 
 	var padded: float = field.input.get_theme_stylebox("normal").content_margin_right
 	assert_gt(padded, plain, "an icon should widen the right padding")

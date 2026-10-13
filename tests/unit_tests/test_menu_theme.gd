@@ -94,3 +94,15 @@ func test_secondary_buttons_are_outlines_over_a_transparent_centre() -> void:
 		assert_eq(flat.bg_color.a, 0.0, "%s should not paint a background" % variation)
 		assert_eq(flat.border_width_top, Design.BUTTON_BORDER,
 			"%s should use the designed border width" % variation)
+
+
+func test_number_fields_step_with_the_redesign_chevrons() -> void:
+	# Left to the engine, a SpinBox's arrows are 16x8 glyphs that all but vanish
+	# beside a 170-pixel field. The committed resource is checked, not a fresh
+	# build, since it is what the screens load.
+	for state: String in ["", "_hover", "_pressed", "_disabled"]:
+		assert_eq(theme.get_icon("up" + state, "SpinBox").resource_path,
+			MenuTheme.CHEVRON_UP_PATH, "up%s should be the up chevron" % state)
+		assert_eq(theme.get_icon("down" + state, "SpinBox").resource_path,
+			MenuTheme.CHEVRON_DOWN_PATH, "down%s should be the down chevron" % state)
+	assert_eq(theme.get_constant("buttons_width", "SpinBox"), Design.SPIN_BUTTONS_WIDTH)

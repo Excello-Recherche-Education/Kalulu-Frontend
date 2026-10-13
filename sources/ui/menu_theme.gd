@@ -15,6 +15,7 @@ extends Object
 
 const THEME_PATH: String = "res://resources/themes/menu_theme.tres"
 const CHEVRON_DOWN_PATH: String = "res://assets/menus/icons/chevron_down.svg"
+const CHEVRON_UP_PATH: String = "res://assets/menus/icons/chevron_up.svg"
 const SLIDER_GRABBER_PATH: String = "res://assets/menus/icons/slider_grabber.png"
 # Label variations. The defaults are for the navy page background; the CARD_*
 # ones are for text sitting on a white surface.
@@ -85,6 +86,7 @@ static func build() -> Theme:
 	_build_labels(theme, regular, bold)
 	_build_buttons(theme, regular)
 	_build_fields(theme, regular)
+	_build_spin_boxes(theme)
 	_build_sliders(theme)
 	_build_panels(theme)
 	return theme
@@ -273,6 +275,39 @@ static func _build_fields(theme: Theme, regular: Font) -> void:
 	theme.set_color("font_hover_color", "PopupMenu", Design.PURPLE)
 	theme.set_stylebox("panel", "PopupMenu", flat_stylebox(Color.WHITE, Design.FIELD_RADIUS))
 	theme.set_stylebox("hover", "PopupMenu", flat_stylebox(Design.LAVENDER, 0))
+
+
+## The up and down arrows beside a number field, as on the sign-up steps.
+##
+## Without this they are the engine's own 16x8 glyphs, a barely visible speck
+## at the field's edge. They take the same white chevrons as the dropdown, and
+## stand beside the field on the navy page rather than inside it: SpinBox draws
+## them after its LineEdit, which keeps the field's rounded corners whole.
+static func _build_spin_boxes(theme: Theme) -> void:
+	var icons: Dictionary[String, Texture2D] = {
+		"up": load(CHEVRON_UP_PATH) as Texture2D,
+		"down": load(CHEVRON_DOWN_PATH) as Texture2D,
+	}
+	# The engine's hover and pressed backgrounds are grey boxes, and its colours a
+	# dimmed white; pressing dims the chevron instead.
+	var modulates: Dictionary[String, Color] = {
+		"": Color.WHITE,
+		"_hover": Color.WHITE,
+		"_pressed": Design.GREY_LIGHT,
+		"_disabled": Color(Color.WHITE, 0.4),
+	}
+	var backgrounds: Dictionary[String, String] = {
+		"": "", "_hover": "_hovered", "_pressed": "_pressed", "_disabled": "_disabled",
+	}
+	var no_background: StyleBoxEmpty = StyleBoxEmpty.new()
+	for direction: String in icons:
+		for state: String in modulates:
+			theme.set_icon(direction + state, "SpinBox", icons[direction])
+			theme.set_color(direction + state + "_icon_modulate", "SpinBox", modulates[state])
+			theme.set_stylebox(direction + "_background" + backgrounds[state], "SpinBox",
+				no_background)
+	theme.set_constant("buttons_width", "SpinBox", Design.SPIN_BUTTONS_WIDTH)
+	theme.set_constant("field_and_buttons_separation", "SpinBox", Design.SPIN_BUTTONS_GAP)
 
 
 static func _build_panels(theme: Theme) -> void:

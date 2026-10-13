@@ -133,6 +133,10 @@ const FIELD_PADDING: int = 74
 # On-screen size of a trailing field icon. The icons import at twice this for
 # crispness, so they are drawn scaled down rather than at texture size.
 const FIELD_ICON_SIZE: int = 64
+# The up / down arrows beside a number field: each half of the field's height,
+# and wider than the chevron drawn in it so a finger can find it.
+const SPIN_BUTTONS_WIDTH: int = 96
+const SPIN_BUTTONS_GAP: int = 24
 # --- Wide buttons (Next / Previous / Cancel) ---------------------------------
 const BUTTON_SIZE: Vector2i = Vector2i(442, 218)
 const BUTTON_RADIUS: int = 10
@@ -187,9 +191,7 @@ const CODE_KEY_SIZE: Vector2i = Vector2i(471, 259)
 const CODE_KEY_RADIUS: int = 12
 const CODE_KEY_GAP: Vector2i = Vector2i(110, 69)
 const CODE_SYMBOL_SIZE: int = 110
-# The glyph alone, white on transparent. symbol_0N.png is the older artwork: an
-# old-palette rounded tile with the glyph already on it, which cannot sit on the
-# redesign's flat colours.
+# The glyph alone, white on transparent, so it can sit on the keypad's flat colours.
 const CODE_SYMBOL_PATH_FORMAT: String = "res://assets/menus/login/symbol_glyph_%02d.png"
 
 
