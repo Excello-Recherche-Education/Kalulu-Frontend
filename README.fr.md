@@ -74,7 +74,6 @@ cd Kalulu-Frontend
 ## 🧩 Addons intégrés
 
 - 🔄 **EnvironmentSwitcher** – Basculer facilement entre les environnements dev/prod
-- 📤 **export_tool_manager** – Gère les exports multi-plateformes
 - ✅ **godot-form-validator** – Plugin Godot 4 pour valider les éléments d’interface
 - 🗃️ **godot-sqlite** – Intégration SQLite
 

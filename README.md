@@ -88,9 +88,6 @@ Kalulu includes several useful addons to enhance development and streamline work
 ### 🔄 EnvironmentSwitcher
 A utility to easily switch between development and production environments.
 
-### 📤 export_tool_manager
-Facilitates export to various platforms and simplifies the export process for additional tools like `prof_tools`.
-
 ### ✅ godot-form-validator
 A plugin for Godot 4 that adds validation logic to any control element in your project.
 
