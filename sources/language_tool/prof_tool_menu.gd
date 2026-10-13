@@ -29,7 +29,7 @@ var total_integrity_warnings: int = 0
 
 func _ready() -> void:
 	MusicManager.stop()
-	Database.load_additional_word_list()
+	WordImporter.load_word_list()
 	_update_add_word_list_button()
 	save_file = _load_save_file()
 	_display_available_languages()
@@ -68,7 +68,7 @@ func _display_available_languages() -> void:
 
 
 func _update_add_word_list_button() -> void:
-	if FileAccess.file_exists(Database.get_additional_word_list_path()):
+	if FileAccess.file_exists(WordImporter.word_list_path()):
 		add_word_list_button.text = "Change Word List"
 	else:
 		add_word_list_button.text = "Add Word List"
@@ -300,7 +300,7 @@ func _check_db_integrity() -> void:
 					text = text.replace("  ", " ")
 				var word_count: int = text.strip_edges().split(" ", false).size()
 
-				var word_list: Array[Dictionary] = Database.get_words_in_sentence_for_integrity_check(sentence.ID as int)
+				var word_list: Array[Dictionary] = _get_words_in_sentence_for_integrity_check(sentence.ID as int)
 
 				# Existing check: mismatch between text word count and WordsInSentences entries
 				if word_list.size() != word_count:
@@ -383,6 +383,22 @@ func _check_db_integrity() -> void:
 		var file_path: String = ProjectSettings.globalize_path(integrity_log_path)
 		Log.trace("ProfToolMenu: Logs saved at " + file_path)
 		OS.shell_open(file_path)
+
+
+func _get_words_in_sentence_for_integrity_check(sentence_id: int) -> Array[Dictionary]:
+	Database.db.query_with_bindings(
+		"SELECT
+			Words.ID AS ID,
+			Words.Word AS Word,
+			WordsInSentences.Position AS WordPosition,
+			WordsInSentences.SentenceID AS SentenceID
+		FROM WordsInSentences
+		INNER JOIN Words ON Words.ID = WordsInSentences.WordID
+		WHERE WordsInSentences.SentenceID = ?
+		ORDER BY WordsInSentences.Position ASC",
+		[sentence_id]
+	)
+	return Database.db.query_result
 
 #endregion
 
@@ -492,8 +508,8 @@ func _on_validate_language_pressed() -> void:
 
 func _word_list_file_selected(file_path: String) -> void:
 	if FileAccess.file_exists(file_path):
-		DirAccess.copy_absolute(file_path, Database.get_additional_word_list_path())
-		var msg: String = Database.load_additional_word_list()
+		DirAccess.copy_absolute(file_path, WordImporter.word_list_path())
+		var msg: String = WordImporter.load_word_list()
 		error_label.text = msg
 		# Check that the words we have in database have the correct gpmatch, if not update them
 		var query: String = "SELECT Words.ID as WordId, Word, group_concat(Grapheme, ' ') as Graphemes, group_concat(Phoneme, ' ') as Phonemes, group_concat(GPs.ID, ' ') as GPIDs, Words.Exception 
@@ -506,7 +522,7 @@ func _word_list_file_selected(file_path: String) -> void:
 		var word_list_element: WordListElement = (load("res://sources/language_tool/word_list_element.tscn") as PackedScene).instantiate()
 		for result: Dictionary in results:
 			var same: bool = true
-			var master_gpmatch: String = Database.additional_word_list[result.Word].GPMATCH
+			var master_gpmatch: String = WordImporter.word_list[result.Word].GPMATCH
 			var master_gplist: PackedStringArray = master_gpmatch.trim_prefix("(").trim_suffix(")").split(".")
 			var graphemes: PackedStringArray = (result.Graphemes as String).split(" ")
 			var phonemes: PackedStringArray = (result.Phonemes as String).split(" ")

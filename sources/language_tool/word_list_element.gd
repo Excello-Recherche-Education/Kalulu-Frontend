@@ -312,10 +312,10 @@ func _already_in_database(text: String) -> int:
 
 
 func _add_from_additional_word_list(new_text: String) -> int:
-	if new_text in Database.additional_word_list:
+	if new_text in WordImporter.word_list:
 		var is_word: bool = table == "Words"
 		# res contains an int, followed by an array of int
-		var res: Array[Variant] = Database._import_word_from_csv(new_text, Database.additional_word_list[new_text].GPMATCH as String, is_word)
+		var res: Array[Variant] = WordImporter.import_from_gpmatch(new_text, WordImporter.word_list[new_text].GPMATCH as String, is_word)
 		gps_updated.emit()
 		id = res[0]
 		gp_ids = res[1]

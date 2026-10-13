@@ -16,7 +16,6 @@ const LOOK_AND_LEARN_SOUNDS: String = "/look_and_learn/sounds/"
 const LOOK_AND_LEARN_VIDEOS: String = "/look_and_learn/video/"
 const LANGUAGE_SOUNDS: String = "/language_sounds/"
 const KALULU_FOLDER: String = "/kalulu/"
-const ADDITIONAL_WORD_LIST_PATH: String = "word_list.csv"
 const VIDEO_EXTENSION: String = ".ogv"
 const IMAGE_EXTENSION: String = ".png"
 const SOUND_EXTENSION: String = ".mp3"
@@ -35,7 +34,6 @@ var db_path: String = get_language_folder() + "/language.db":
 			db.foreign_keys = true
 			connect_to_db()
 var words_path: String = get_language_folder() + "/words/"
-var additional_word_list: Dictionary = {}
 var is_open: bool = false
 # See _get_folder_listing.
 var _folder_listings: Dictionary[String, Dictionary] = {}
@@ -76,43 +74,6 @@ func connect_to_db() -> void:
 			Log.warn("Database: Database just opened but already contains an error message: %s" % db.get_error_message())
 	else:
 		Log.warn("Database: Database file not found at %s" % db.path)
-
-
-func get_additional_word_list_path() -> String:
-	return BASE_PATH.path_join(ADDITIONAL_WORD_LIST_PATH)
-
-
-func load_additional_word_list() -> String:
-	additional_word_list.clear()
-	var word_list_path: String = get_additional_word_list_path()
-	if FileAccess.file_exists(word_list_path):
-		var file: FileAccess = FileAccess.open(word_list_path, FileAccess.READ)
-		var error: Error = FileAccess.get_open_error()
-		if error != OK:
-			Log.error("Database: Load additional word list: Cannot open file %s. Error: %s" % [word_list_path, error_string(error)])
-			return ""
-		if file == null:
-			Log.error("Database: Load additional word list: Cannot open file %s. File is null" % word_list_path)
-			return ""
-		var title_line: PackedStringArray = file.get_csv_line()
-		if (not "ORTHO" in title_line) or (not "PHON" in title_line) or (not "GPMATCH" in title_line):
-			var msg: String = "word list should have columns ORTHO, PHON and GPMATCH"
-			Log.error("Database: " + msg)
-			return msg
-		var ortho_index: int = title_line.find("ORTHO")
-		while not file.eof_reached():
-			var line: PackedStringArray = file.get_csv_line()
-			if line.size() != title_line.size():
-				return "Formatting error on: %s" % line
-			var data: Dictionary = {}
-			for index: int in range(line.size()):
-				data[title_line[index]] = line[index]
-			additional_word_list[line[ortho_index]] = data
-		file.close()
-		Log.info("Database: Loaded additional word list from %s (%d entries)" % [word_list_path, additional_word_list.size()])
-	else:
-		Log.warn("Database: Additional word list file not found: %s" % word_list_path)
-	return ""
 
 
 func get_exercise_for_lesson(lesson_nb: int) -> Array[int]:
@@ -502,22 +463,6 @@ func get_words_in_sentence(sentence_id: int) -> Array[Dictionary]:
 	return db.query_result
 
 
-func get_words_in_sentence_for_integrity_check(sentence_id: int) -> Array[Dictionary]:
-	db.query_with_bindings(
-		"SELECT
-			Words.ID AS ID,
-			Words.Word AS Word,
-			WordsInSentences.Position AS WordPosition,
-			WordsInSentences.SentenceID AS SentenceID
-		FROM WordsInSentences
-		INNER JOIN Words ON Words.ID = WordsInSentences.WordID
-		WHERE WordsInSentences.SentenceID = ?
-		ORDER BY WordsInSentences.Position ASC",
-		[sentence_id]
-	)
-	return db.query_result
-
-
 func get_lessons_count() -> int:
 	if not is_open:
 		# Querying a closed handle only yields an SQLite error and an empty
@@ -892,57 +837,3 @@ func _text_to_file_name(text: String) -> String:
 		return text
 	else:
 		return "cap." + text.to_lower()
-
-
-# Returns an array containing an int followed by an array of int
-func _import_word_from_csv(ortho: String, gpmatch: String, is_word: bool = true) -> Array[Variant]:
-	var gp_list: PackedStringArray = gpmatch.trim_prefix("(").trim_suffix(")").split(".")
-	var gp_ids: Array[int] = []
-	for gp: String in gp_list:
-		var split: PackedStringArray = gp.split("-")
-		var grapheme: String = split[0]
-		var phoneme: String = split[1]
-		db.query_with_bindings("SELECT * FROM GPs WHERE Grapheme = ? AND Phoneme = ?", [grapheme, phoneme])
-		var gp_id: int = -1
-		if db.query_result.is_empty():
-			db.insert_row("GPs", {
-				Grapheme = grapheme,
-				Phoneme = phoneme,
-			})
-			gp_id = db.last_insert_rowid
-		else:
-			gp_id = db.query_result[0].ID
-		gp_ids.append(gp_id)
-	if is_word:
-		db.query_with_bindings("SELECT * FROM Words WHERE Word = ?", [ortho])
-	else:
-		db.query_with_bindings("SELECT * FROM Syllables WHERE Syllable = ?", [ortho])
-	var word_id: int = -1
-	if db.query_result.is_empty():
-		if is_word:
-			db.insert_row("Words", {
-				Word = ortho,
-			})
-			word_id = db.last_insert_rowid
-			for index: int in range(gp_ids.size()):
-				var gp_id: int = gp_ids[index]
-				db.insert_row("GPsInWords", {
-					WordID = word_id,
-					GPID = gp_id,
-					Position = index
-				})
-		else:
-			db.insert_row("Syllables", {
-				Syllable = ortho,
-			})
-			word_id = db.last_insert_rowid
-			for index: int in range(gp_ids.size()):
-				var gp_id: int = gp_ids[index]
-				db.insert_row("GPsInSyllables", {
-					SyllableID = word_id,
-					GPID = gp_id,
-					Position = index
-				})
-	else:
-		word_id = db.query_result[0].ID
-	return [word_id, gp_ids]

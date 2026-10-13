@@ -16,7 +16,7 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 		if _element._already_in_database(line[0]) >= 0:
 			continue
 		var is_word: bool = _element.table == "Words"
-		Database._import_word_from_csv(line[0], line[1], is_word)
+		WordImporter.import_from_gpmatch(line[0], line[1], is_word)
 	get_tree().reload_current_scene()
 	
 	# delete elements that are not in file
