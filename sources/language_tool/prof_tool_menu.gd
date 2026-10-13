@@ -8,6 +8,7 @@ enum FileCheckResult {
 
 const BASE_PATH: String = "user://language_resources/"
 const SAVE_FILE_PATH: String = "user://prof_tool_save.tres"
+const MODEL_DATABASE_PATH: String = "res://model_database.db"
 
 var save_file: ProfToolSave
 # The integrity check's own state. It lives down in its region, but its
@@ -505,9 +506,24 @@ func _on_validate_language_pressed() -> void:
 	if not line_edit.text:
 		return
 		
+	# The model is a .db, not a Godot resource, so an export only carries it when
+	# the preset's include_filter names it. Opened before the folder is made, so a
+	# build without it leaves no empty language behind.
+	var file: FileAccess = FileAccess.open(MODEL_DATABASE_PATH, FileAccess.READ)
+	if file == null:
+		var msg: String = "Cannot create a language: %s is missing from this build (%s)" % [MODEL_DATABASE_PATH, error_string(FileAccess.get_open_error())]
+		Log.error("ProfToolMenu: " + msg)
+		error_label.text = msg
+		return
 	DirAccess.make_dir_recursive_absolute(BASE_PATH.path_join(line_edit.text))
-	var file: FileAccess = FileAccess.open("res://model_database.db", FileAccess.READ)
-	var dest: FileAccess = FileAccess.open(BASE_PATH.path_join(line_edit.text).path_join("language.db"), FileAccess.WRITE)
+	var dest_path: String = BASE_PATH.path_join(line_edit.text).path_join("language.db")
+	var dest: FileAccess = FileAccess.open(dest_path, FileAccess.WRITE)
+	if dest == null:
+		var msg: String = "Cannot create a language: %s cannot be written (%s)" % [dest_path, error_string(FileAccess.get_open_error())]
+		Log.error("ProfToolMenu: " + msg)
+		error_label.text = msg
+		file.close()
+		return
 	dest.store_buffer(file.get_buffer(file.get_length()))
 	file.close()
 	dest.close()
