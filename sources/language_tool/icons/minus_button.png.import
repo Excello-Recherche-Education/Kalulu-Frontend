@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgdfoujfibsow"
-path="res://.godot/imported/point_button.png-30b59efe1ad3d5d4c187bf52c37d1f99.ctex"
+uid="uid://b8tctfnsj3prx"
+path="res://.godot/imported/minus_button.png-4494375812527325a2ad88e69ed6c205.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/menus/point_button.png"
-dest_files=["res://.godot/imported/point_button.png-30b59efe1ad3d5d4c187bf52c37d1f99.ctex"]
+source_file="res://sources/language_tool/icons/minus_button.png"
+dest_files=["res://.godot/imported/minus_button.png-4494375812527325a2ad88e69ed6c205.ctex"]
 
 [params]
 

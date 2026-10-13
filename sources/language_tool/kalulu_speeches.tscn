@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dbl3r8426473v" path="res://sources/language_tool/plus_button.tscn" id="1_2m4af"]
 [ext_resource type="Script" uid="uid://8a7fw3x4pgmn" path="res://sources/language_tool/kalulu_speeches.gd" id="1_ea2f2"]
-[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://assets/menus/back_button.png" id="5_5r4nk"]
+[ext_resource type="Texture2D" uid="uid://cw15lg6j37pvj" path="res://sources/language_tool/icons/back_button.png" id="5_5r4nk"]
 
 [node name="KaluluSpeeches" type="Control" unique_id=63492641]
 layout_mode = 3

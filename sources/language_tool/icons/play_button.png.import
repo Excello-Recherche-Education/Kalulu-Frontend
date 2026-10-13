@@ -2,20 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8tctfnsj3prx"
-path="res://.godot/imported/minus_button.png-dfc039f87b0bc10ec97b0dbf27a59b66.ctex"
+uid="uid://ctike5jfpr68v"
+path.s3tc="res://.godot/imported/play_button.png-503929ae783858570001d9b3e1c00155.s3tc.ctex"
+path.etc2="res://.godot/imported/play_button.png-503929ae783858570001d9b3e1c00155.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/menus/minus_button.png"
-dest_files=["res://.godot/imported/minus_button.png-dfc039f87b0bc10ec97b0dbf27a59b66.ctex"]
+source_file="res://sources/language_tool/icons/play_button.png"
+dest_files=["res://.godot/imported/play_button.png-503929ae783858570001d9b3e1c00155.s3tc.ctex", "res://.godot/imported/play_button.png-503929ae783858570001d9b3e1c00155.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +25,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

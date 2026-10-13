@@ -2,22 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5n02dxd66fw4"
-path.s3tc="res://.godot/imported/save_button.png-e0abff5de73db7c1ad84988080c20282.s3tc.ctex"
-path.etc2="res://.godot/imported/save_button.png-e0abff5de73db7c1ad84988080c20282.etc2.ctex"
+uid="uid://bgdfoujfibsow"
+path="res://.godot/imported/point_button.png-a4994bf97409cccef775d2632198e715.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/menus/save_button.png"
-dest_files=["res://.godot/imported/save_button.png-e0abff5de73db7c1ad84988080c20282.s3tc.ctex", "res://.godot/imported/save_button.png-e0abff5de73db7c1ad84988080c20282.etc2.ctex"]
+source_file="res://sources/language_tool/icons/point_button.png"
+dest_files=["res://.godot/imported/point_button.png-a4994bf97409cccef775d2632198e715.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -25,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

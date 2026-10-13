@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5jiyxrmmjmdb"
-path.s3tc="res://.godot/imported/modify_button.png-2b8dde2439c7c1a06f1d07c9263d0418.s3tc.ctex"
-path.etc2="res://.godot/imported/modify_button.png-2b8dde2439c7c1a06f1d07c9263d0418.etc2.ctex"
+uid="uid://cw15lg6j37pvj"
+path.s3tc="res://.godot/imported/back_button.png-19a412c35d0c883167c68122ef71242c.s3tc.ctex"
+path.etc2="res://.godot/imported/back_button.png-19a412c35d0c883167c68122ef71242c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/menus/modify_button.png"
-dest_files=["res://.godot/imported/modify_button.png-2b8dde2439c7c1a06f1d07c9263d0418.s3tc.ctex", "res://.godot/imported/modify_button.png-2b8dde2439c7c1a06f1d07c9263d0418.etc2.ctex"]
+source_file="res://sources/language_tool/icons/back_button.png"
+dest_files=["res://.godot/imported/back_button.png-19a412c35d0c883167c68122ef71242c.s3tc.ctex", "res://.godot/imported/back_button.png-19a412c35d0c883167c68122ef71242c.etc2.ctex"]
 
 [params]
 
