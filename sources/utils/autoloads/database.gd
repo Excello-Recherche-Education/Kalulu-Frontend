@@ -757,7 +757,7 @@ func get_kalulu_speech_path(speech_category: String, speech_name: String) -> Str
 ## every other platform does not.
 ## Returns the path that actually exists, or an empty String when none of them does.
 func resolve_external_file_path(path: String) -> String:
-	var safe_path: String = Utils.get_safe_file_path(path)
+	var safe_path: String = SafeFilePath.from(path)
 	if FileAccess.file_exists(safe_path):
 		return safe_path
 
