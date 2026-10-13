@@ -10,6 +10,8 @@ extends GutTest
 # no language pack is installed, and the popup itself needs nothing but the
 # challenge.
 const POPUP_SCENE: String = "res://sources/ui/adult_check_popup.tscn"
+# The boss block, which reuses that dialog with its own wording.
+const BLOCK_SCENE: String = "res://sources/menus/adult_block/adult_block.tscn"
 
 
 func test_it_asks_for_a_code_the_keypad_can_produce() -> void:
@@ -161,9 +163,6 @@ func test_the_settings_dialog_can_be_backed_out_of() -> void:
 
 
 # --- The boss block, the same dialog with its own wording ---------------------
-const BLOCK_SCENE: String = "res://sources/menus/adult_block/adult_block.tscn"
-
-
 func _block() -> AdultBlock:
 	var block: AdultBlock = (load(BLOCK_SCENE) as PackedScene).instantiate()
 	add_child_autofree(block)

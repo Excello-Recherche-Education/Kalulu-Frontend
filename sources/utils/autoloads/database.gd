@@ -37,7 +37,6 @@ var db_path: String = get_language_folder() + "/language.db":
 var words_path: String = get_language_folder() + "/words/"
 var additional_word_list: Dictionary = {}
 var is_open: bool = false
-
 # See _get_folder_listing.
 var _folder_listings: Dictionary[String, Dictionary] = {}
 var _folder_listings_frame: int = -1
