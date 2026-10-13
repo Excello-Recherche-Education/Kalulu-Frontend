@@ -28,13 +28,23 @@ var total_integrity_warnings: int = 0
 
 
 func _ready() -> void:
-	MusicManager.stop()
+	_silence_game_music()
 	WordImporter.load_word_list()
 	_update_add_word_list_button()
 	save_file = _load_save_file()
 	_display_available_languages()
 	tab_container.current_tab = save_file.main_menu_selected_tab
 	tab_container.tab_changed.connect(_on_tab_container_tab_changed)
+
+
+## Stops the game's title track, which its MusicManager autoload starts by
+## itself after the first frame unless something has asked for music first.
+## Looked up by path rather than by name, so the Prof Tool still compiles in a
+## project that has no MusicManager -- where there is nothing to stop.
+func _silence_game_music() -> void:
+	var music_manager: Node = get_node_or_null(^"/root/MusicManager")
+	if music_manager:
+		music_manager.call(&"stop")
 
 
 ## The session file, or a fresh one when there is none or it no longer loads.
