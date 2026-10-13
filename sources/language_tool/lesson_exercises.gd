@@ -12,7 +12,7 @@ func _ready() -> void:
 	# "None" option can be saved.
 	_migrate_lessons_exercises_drop_exercise_fk()
 
-	# ExerciseTypes mirrors Minigame.TYPE_NAMES, one row per minigame, and its ID is
+	# ExerciseTypes mirrors MinigameTypes.NAMES, one row per minigame, and its ID is
 	# what LessonsExercises stores -- so the row at a given ID must always hold the name
 	# at that position. Keying the seeding on the ID rather than on the name is what
 	# makes a rename work: seeding by name kept the row count intact, so nothing was
@@ -22,9 +22,9 @@ func _ready() -> void:
 	Database.db.query(query)
 	if Database.db.query_result.is_empty():
 		Database.db.query("CREATE TABLE ExerciseTypes (ID INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, Type TEXT NOT NULL)")
-	for type_index: int in range(Minigame.TYPE_NAMES.size()):
+	for type_index: int in range(MinigameTypes.NAMES.size()):
 		var exercise_id: int = type_index + 1
-		var exercise_name: String = Minigame.TYPE_NAMES[type_index]
+		var exercise_name: String = MinigameTypes.NAMES[type_index]
 		Database.db.query("SELECT Type FROM ExerciseTypes WHERE ID = %d" % exercise_id)
 		if Database.db.query_result.is_empty():
 			Database.db.insert_row("ExerciseTypes",
@@ -44,7 +44,7 @@ func _ready() -> void:
 	# seeding this replaced. Free any lesson slot still pointing at one before the row
 	# goes: the foreign keys were dropped above, so such an ID would simply dangle, and
 	# the gardens wheel has no icon for it. 0 is the "no minigame in this slot" value.
-	var last_type_id: int = Minigame.TYPE_NAMES.size()
+	var last_type_id: int = MinigameTypes.NAMES.size()
 	var free_slot: String = "UPDATE LessonsExercises SET %s = 0 WHERE %s > %d"
 	for column: String in ["Exercise1", "Exercise2", "Exercise3"]:
 		Database.db.query(free_slot % [column, column, last_type_id])
