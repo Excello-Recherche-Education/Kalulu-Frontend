@@ -16,18 +16,8 @@ enum Type {
 
 # String names used for file paths, database keys, and speech lookups.
 # Kept separate from enum member names so renaming members doesn't affect runtime behaviour.
-const TYPE_NAMES: Array[String] = [
-	"jellyfish",
-	"crabs",
-	"parakeets",
-	"monkey",
-	"caterpillar",
-	"frog",
-	"turtles",
-	"ants",
-	"penguin",
-	"boss",
-]
+# They live in MinigameTypes because a language pack stores them too.
+const TYPE_NAMES: Array[String] = MinigameTypes.NAMES
 const WIN_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_win.mp3")
 const LOSE_SOUND_FX: AudioStreamMP3 = preload("res://assets/sfx/sfx_game_over_lose.mp3")
 const LABEL_COLOR_NEUTRAL: Color = Color("#e6f3e0")

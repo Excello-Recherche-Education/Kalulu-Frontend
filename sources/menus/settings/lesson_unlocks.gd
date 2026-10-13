@@ -6,6 +6,29 @@ signal student_deleted(code: int)
 const DEVICE_BUTTON_SCENE: PackedScene = preload("res://sources/menus/main/device_button.tscn")
 const LESSON_UNLOCK_SCENE: PackedScene = preload("res://sources/menus/settings/lesson_unlock.tscn")
 const BOSS_UNLOCK_SCENE: PackedScene = preload("res://sources/menus/settings/boss_unlock.tscn")
+# One tint per device card, cycled when a teacher has more devices than colours.
+const DEVICE_COLORS: Array[Color] = [
+	Color("9670e0"),
+	Color("ffe823"),
+	Color("ed9ab5"),
+	Color("a84349"),
+	Color("3f32a5"),
+	Color("9ef9ab"),
+	Color("c3c2c4"),
+	Color("ffaf57"),
+	Color("4efee4"),
+	Color("7ad1ff"),
+	Color("c3c2c4"),
+	Color("ffe823"),
+	Color("a84349"),
+	Color("ed9ab5"),
+	Color("9ef9ab"),
+	Color("3f32a5"),
+	Color("4efee4"),
+	Color("7ad1ff"),
+	Color("ffaf57"),
+	Color("9670e0"),
+]
 
 @export var device: int:
 	set = _on_device_changed
@@ -229,7 +252,7 @@ func _device_selection_refresh() -> void:
 	for device_id: int in UserDataManager.teacher_settings.students.keys():
 		var button: DeviceButton = DEVICE_BUTTON_SCENE.instantiate()
 		button.number = device_id
-		button.background_color = Globals.device_colors[(device_id - 1) % Globals.device_colors.size()]
+		button.background_color = DEVICE_COLORS[(device_id - 1) % DEVICE_COLORS.size()]
 		container.add_child(button)
 		button.pressed.connect(_device_button_pressed.bind(device_id))
 

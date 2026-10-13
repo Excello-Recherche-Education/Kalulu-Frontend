@@ -28,7 +28,6 @@ buses/default_bus_layout="res://resources/audio_buses/main_audio_bus_layout.tres
 
 Log="*res://sources/utils/autoloads/log.gd"
 Database="*res://sources/utils/autoloads/database.gd"
-Globals="*res://sources/language_tool/globals.gd"
 LessonLogger="*res://sources/utils/autoloads/lesson_logger.gd"
 MusicManager="*res://sources/utils/autoloads/music_manager.tscn"
 OpeningCurtain="*res://sources/utils/autoloads/opening_curtain.tscn"
@@ -58,7 +57,7 @@ window/handheld/orientation=4
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/export_tool_manager/plugin.cfg", "res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-form-validator/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 

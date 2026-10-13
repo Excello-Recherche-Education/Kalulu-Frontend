@@ -9,35 +9,11 @@ const SUPPORTED_LOCALES: Dictionary[String, String] = {
 	"es_DO": "Español (República Dominicana)",
 	"it_IT": "Italiano (Italia) (BETA)",
 }
-const RESERVED_FILE_NAMES: Array[String] = [
-	"CON", "PRN", "AUX", "NUL",
-	"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-	"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
-]
-const INVALID_FILE_CHARS: Array[String] = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"]
 ## Labels on an offer to copy, before and just after it is taken.
 const COPY_TEXT: String = "COPY_ERROR_MESSAGE"
 const COPIED_TEXT: String = "ERROR_MESSAGE_COPIED"
 ## How long "copied" stays up before the offer comes back.
 const COPIED_FEEDBACK_SECONDS: float = 2.5
-
-
-func reorder_children_by_property(container: Node, property_name: String) -> void:
-	var children: Array[Node] = container.get_children()
-	children.sort_custom(Utils.sort_by_property.bind(property_name))
-	for element: Node in children:
-		container.remove_child(element)
-	for element: Node in children:
-		container.add_child(element)
-
-
-func sort_by_property(node_a: Node, node_b: Node, property_name: String) -> bool:
-	return node_a.get(property_name) < node_b.get(property_name)
-
-
-func disconnect_all(disconnecting_signal: Signal) -> void:
-	for connection: Dictionary in disconnecting_signal.get_connections():
-		disconnecting_signal.disconnect(connection["callable"] as Callable)
 
 
 func round_vec2(vec: Vector2) -> Vector2i:
@@ -184,29 +160,6 @@ func copy_report(report: String, button: Button) -> void:
 	# The screen may have moved on, or gone, while the confirmation was up.
 	if is_instance_valid(button):
 		button.text = COPY_TEXT
-
-
-func get_safe_file_path(file_path: String) -> String:
-	var dir: String = file_path.get_base_dir()
-	var file: String = file_path.get_file()
-	var base: String = file.get_basename()
-	var ext: String = file.get_extension()
-	
-	for chara: String in INVALID_FILE_CHARS:
-		base = base.replace(chara, "_")
-	
-	var modified: bool = false
-	if base.to_upper() in RESERVED_FILE_NAMES:
-		base = "_" + base
-		modified = true
-	
-	var new_name: String = "%s.%s" % [base, ext] if ext != "" else base
-	var new_path: String = dir.path_join(new_name) if dir != "" else new_name
-	
-	if modified or new_path != file_path:
-		Log.trace("Utils: GetSafeFilePath: Renamed invalid file path: '%s' → '%s'" % [file_path, new_path])
-	
-	return new_path
 
 
 func get_animation_duration(sprite: AnimatedSprite2D, anim_name: String) -> float:

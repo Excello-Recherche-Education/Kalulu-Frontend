@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Cross-checks Kalulu's voice lines across the frontend and the language packs.
 
-Three sets are compared:
-  - requested: every speech the game can ask for, harvested from the call sites
-  - declared:  every slot the Prof Tool exposes for upload
-  - shipped:   the mp3 files each language pack actually contains
+Three sets are compared, from three repositories:
+  - requested: every speech the game can ask for, harvested from its call sites
+               (this repository)
+  - declared:  every slot the Prof Tool exposes for upload (Kalulu-ProfTool)
+  - shipped:   the mp3 files each language pack actually contains (Kalulu-Languages)
 
 The report is Markdown, meant to be posted as a pull-request comment. A missing
 recording is a reminder, not a broken build, and never fails the job. Being unable
@@ -36,10 +37,20 @@ def read(path: pathlib.Path) -> str:
 
 
 def type_names(frontend: pathlib.Path) -> list[str]:
-    """The minigame name strings, read from the enum's companion array."""
-    source = read(frontend / "sources/minigames/base/base_minigame.gd")
-    block = re.search(r"const TYPE_NAMES: Array\[String\] = \[(.*?)\]", source, re.S)
-    return re.findall(r'"([^"]+)"', block.group(1)) if block else []
+    """The minigame name strings, from MinigameTypes.NAMES.
+
+    Minigame.TYPE_NAMES only points at that list. Finding no names fails the check:
+    every speech looked up through TYPE_NAMES would otherwise drop out of the
+    requested set, and the report would read as if no minigame had a voice line.
+    """
+    path = frontend / "sources/utils/minigame_types.gd"
+    source = read(path)
+    block = re.search(r"const NAMES: Array\[String\] = \[(.*?)\]", source, re.S)
+    names = re.findall(r'"([^"]+)"', block.group(1)) if block else []
+    if not names:
+        raise SystemExit(f"{path}: no `const NAMES: Array[String] = [...]` with names in "
+                         f"it, so the minigame speeches cannot be listed. Fix type_names().")
+    return names
 
 
 def resolve_consts(source: str, names: tuple[str, str]) -> tuple[str, str] | None:
@@ -58,8 +69,6 @@ def collect_requested(frontend: pathlib.Path) -> tuple[set, list]:
     games = type_names(frontend)
     for path in sorted(frontend.glob("sources/**/*.gd")):
         relative = path.relative_to(frontend).as_posix()
-        if relative.startswith("sources/language_tool/"):
-            continue
         source = read(path)
         if "get_kalulu_speech_path" not in source:
             continue
@@ -85,7 +94,7 @@ def collect_requested(frontend: pathlib.Path) -> tuple[set, list]:
     return requested, warnings
 
 
-def collect_declared(frontend: pathlib.Path) -> set:
+def collect_declared(proftool: pathlib.Path) -> set:
     """Every (category, name) the Prof Tool offers a slot for.
 
     The dictionary is read off the source between the declaration above it and the
@@ -93,7 +102,7 @@ def collect_declared(frontend: pathlib.Path) -> set:
     have moved: a refactor of that file must stop this check rather than let it
     report a Prof Tool with no slots in it at all.
     """
-    path = frontend / "sources/language_tool/kalulu_speeches.gd"
+    path = proftool / "project/sources/language_tool/kalulu_speeches.gd"
     source = read(path)
     start, end = source.find("var speeches:"), source.find("\tfor speech_title")
     if start < 0 or end < 0:
@@ -160,9 +169,9 @@ def verdict_for(name: str, known: set[str], categories: list[str]) -> str:
     return "no live category, no close match — **delete?**"
 
 
-def report(frontend: pathlib.Path, packs: pathlib.Path) -> str:
+def report(frontend: pathlib.Path, proftool: pathlib.Path, packs: pathlib.Path) -> str:
     requested, warnings = collect_requested(frontend)
-    declared = collect_declared(frontend)
+    declared = collect_declared(proftool)
     shipped = collect_shipped(packs)
 
     lines = ["## 🎙️ Kalulu voice lines", ""]
@@ -235,10 +244,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--frontend", default=".", type=pathlib.Path,
                         help="path to the Kalulu-Frontend checkout (default: .)")
+    parser.add_argument("--proftool", default="../Kalulu-ProfTool", type=pathlib.Path,
+                        help="path to the Kalulu-ProfTool checkout")
     parser.add_argument("--packs", default="../Kalulu-Languages", type=pathlib.Path,
                         help="path to the Kalulu-Languages checkout")
     args = parser.parse_args()
-    print(report(args.frontend, args.packs))
+    print(report(args.frontend, args.proftool, args.packs))
     return 0
 
 

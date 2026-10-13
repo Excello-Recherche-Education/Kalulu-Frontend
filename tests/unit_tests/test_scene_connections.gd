@@ -33,15 +33,12 @@ const SCENE_DIRECTORIES: Array[String] = ["res://sources", "res://resources"]
 ## `[connection]` line left behind, so the signal fires into nothing:
 ##
 ##   water_ring / highlight   the FX never learn their particles or animation ended
-##   the two Prof Tool lists  their plus button does nothing
 ##
 ## Listed rather than quietly skipped: they are real, they are somebody's next
 ## small fix, and the sweep stays strict for anything new.
 const KNOWN_DANGLING: Array[String] = [
 	"res://sources/utils/fx/water_ring.tscn::_on_gpu_particles_2d_finished",
 	"res://sources/utils/fx/highlight.tscn::_on_animation_player_animation_finished",
-	"res://sources/language_tool/gp_image_and_sound_descriptions.tscn::_on_plus_button_pressed",
-	"res://sources/language_tool/gp_video_descriptions.tscn::_on_plus_button_pressed",
 ]
 
 

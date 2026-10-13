@@ -15,9 +15,9 @@ jobs:
   speeches:
     runs-on: ubuntu-latest
     permissions:
-      # An explicit block sets every unlisted scope to none. Both repositories are
+      # An explicit block sets every unlisted scope to none. All three repositories are
       # public today, so checkout would succeed without it, but spelling out the read
-      # access keeps the job working if either one ever goes private.
+      # access keeps the job working if any of them ever goes private.
       contents: read
       pull-requests: write
     steps:
@@ -25,6 +25,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: frontend
+
+      - name: Checkout the Prof Tool
+        # Its upload slots are the second of the three sets compared. It left this
+        # repository for its own; only kalulu_speeches.gd is read.
+        uses: actions/checkout@v4
+        with:
+          repository: Excello-Recherche-Education/Kalulu-ProfTool
+          path: proftool
 
       - name: Checkout the language packs
         uses: actions/checkout@v4
@@ -45,7 +53,7 @@ jobs:
         shell: bash
         run: |
           python3 frontend/.github/scripts/check_kalulu_speeches.py \
-            --frontend frontend --packs packs > report.md
+            --frontend frontend --proftool proftool --packs packs > report.md
           cat report.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Post or update the pull-request comment

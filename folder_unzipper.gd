@@ -50,7 +50,7 @@ func extract(zip_path: String, extract_path: String, extract_in_subfolder: bool 
 			continue
 		
 		var file_name: String = extract_folder.path_join(sub_path)
-		file_name = Utils.get_safe_file_path(file_name)
+		file_name = SafeFilePath.from(file_name)
 		
 		var folder_name: String = file_name.get_base_dir()
 		if not DirAccess.dir_exists_absolute(folder_name):
