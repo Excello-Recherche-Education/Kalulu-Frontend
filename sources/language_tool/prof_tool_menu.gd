@@ -31,14 +31,27 @@ func _ready() -> void:
 	MusicManager.stop()
 	Database.load_additional_word_list()
 	_update_add_word_list_button()
-	if not ResourceLoader.exists(SAVE_FILE_PATH):
-		save_file = ProfToolSave.new()
-		save_file.resource_path = SAVE_FILE_PATH
-		ResourceSaver.save(save_file, SAVE_FILE_PATH)
-	save_file = load(SAVE_FILE_PATH)
+	save_file = _load_save_file()
 	_display_available_languages()
-	tab_container.current_tab = Globals.main_menu_selected_tab
+	tab_container.current_tab = save_file.main_menu_selected_tab
 	tab_container.tab_changed.connect(_on_tab_container_tab_changed)
+
+
+## The session file, or a fresh one when there is none or it no longer loads.
+##
+## A save written before prof_tool_save.gd moved under sources/language_tool/
+## names the script by its old path only, so it cannot load any more. Starting
+## fresh costs the user one language selection. The cache is bypassed so a failed
+## load is never handed back again on the next return to this menu.
+func _load_save_file() -> ProfToolSave:
+	if ResourceLoader.exists(SAVE_FILE_PATH):
+		var existing: ProfToolSave = ResourceLoader.load(SAVE_FILE_PATH, "", ResourceLoader.CACHE_MODE_IGNORE) as ProfToolSave
+		if existing:
+			return existing
+		Log.warn("ProfToolMenu: %s could not be loaded, starting a new one" % SAVE_FILE_PATH)
+	var fresh: ProfToolSave = ProfToolSave.new()
+	ResourceSaver.save(fresh, SAVE_FILE_PATH)
+	return fresh
 
 
 func _display_available_languages() -> void:
@@ -632,7 +645,8 @@ func _on_open_folder_button_pressed() -> void:
 
 
 func _on_tab_container_tab_changed(tab: int) -> void:
-	Globals.main_menu_selected_tab = tab
+	save_file.main_menu_selected_tab = tab
+	ResourceSaver.save(save_file, SAVE_FILE_PATH)
 
 #region Book Generation
 
