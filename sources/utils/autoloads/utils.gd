@@ -22,24 +22,6 @@ const COPIED_TEXT: String = "ERROR_MESSAGE_COPIED"
 const COPIED_FEEDBACK_SECONDS: float = 2.5
 
 
-func reorder_children_by_property(container: Node, property_name: String) -> void:
-	var children: Array[Node] = container.get_children()
-	children.sort_custom(Utils.sort_by_property.bind(property_name))
-	for element: Node in children:
-		container.remove_child(element)
-	for element: Node in children:
-		container.add_child(element)
-
-
-func sort_by_property(node_a: Node, node_b: Node, property_name: String) -> bool:
-	return node_a.get(property_name) < node_b.get(property_name)
-
-
-func disconnect_all(disconnecting_signal: Signal) -> void:
-	for connection: Dictionary in disconnecting_signal.get_connections():
-		disconnecting_signal.disconnect(connection["callable"] as Callable)
-
-
 func round_vec2(vec: Vector2) -> Vector2i:
 	return Vector2i(roundi(vec.x), roundi(vec.y))
 

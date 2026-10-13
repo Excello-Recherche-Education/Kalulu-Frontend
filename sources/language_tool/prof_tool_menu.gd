@@ -539,7 +539,7 @@ func _word_list_file_selected(file_path: String) -> void:
 func _on_add_word_list_button_pressed() -> void:
 	file_dialog.filters = []
 	file_dialog.add_filter("*.csv", "csv")
-	Utils.disconnect_all(file_dialog.file_selected)
+	ProfToolUtils.disconnect_all(file_dialog.file_selected)
 	file_dialog.file_selected.connect(_word_list_file_selected)
 	file_dialog.show()
 	_update_add_word_list_button()
@@ -548,7 +548,7 @@ func _on_add_word_list_button_pressed() -> void:
 func _on_import_language_button_pressed() -> void:
 	file_dialog.filters = []
 	file_dialog.add_filter("*.zip", "zip")
-	Utils.disconnect_all(file_dialog.file_selected)
+	ProfToolUtils.disconnect_all(file_dialog.file_selected)
 	file_dialog.file_selected.connect(_language_data_selected)
 	file_dialog.show()
 
@@ -556,7 +556,7 @@ func _on_import_language_button_pressed() -> void:
 func _on_export_button_pressed() -> void:
 	file_dialog_export.filters = []
 	file_dialog_export.add_filter("*.zip", "zip")
-	Utils.disconnect_all(file_dialog_export.file_selected)
+	ProfToolUtils.disconnect_all(file_dialog_export.file_selected)
 	file_dialog_export.file_selected.connect(_on_export_filename_selected)
 	file_dialog_export.show()
 

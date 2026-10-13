@@ -195,7 +195,7 @@ func _on_back_button_pressed() -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	Utils.reorder_children_by_property(elements_container, property_name)
+	ProfToolUtils.reorder_children_by_property(elements_container, property_name)
 
 
 func _on_list_title_add_pressed() -> void:

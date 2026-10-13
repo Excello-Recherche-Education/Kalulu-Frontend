@@ -44,8 +44,8 @@ func _on_button_pressed() -> void:
 	
 	file_dialog.ok_button_text = "Add new elements"
 	
-	Utils.disconnect_all(file_dialog.file_selected)
-	Utils.disconnect_all(file_dialog.custom_action)
+	ProfToolUtils.disconnect_all(file_dialog.file_selected)
+	ProfToolUtils.disconnect_all(file_dialog.custom_action)
 	
 	file_dialog.file_selected.connect(_on_filename_selected)
 	file_dialog.custom_action.connect(_on_match_to_file_selected)

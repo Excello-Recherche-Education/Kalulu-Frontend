@@ -84,7 +84,7 @@ func _on_grapheme_gui_input(event: InputEvent) -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	Utils.reorder_children_by_property(elements_container, property_name)
+	ProfToolUtils.reorder_children_by_property(elements_container, property_name)
 
 
 func sorting_function(a_node: Node, b_node: Node, property_name: String) -> bool:

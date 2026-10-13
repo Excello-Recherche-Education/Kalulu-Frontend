@@ -41,7 +41,7 @@ func _ready() -> void:
 
 
 func _reorder_by(property_name: String) -> void:
-	Utils.reorder_children_by_property(elements_container, property_name)
+	ProfToolUtils.reorder_children_by_property(elements_container, property_name)
 
 
 func sorting_function(node_a: Node, node_b: Node, property_name: String) -> bool:

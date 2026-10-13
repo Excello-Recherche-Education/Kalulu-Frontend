@@ -41,7 +41,7 @@ func _on_video_upload_button_pressed() -> void:
 	if not gp.is_empty():
 		file_dialog.filters = []
 		file_dialog.add_filter("*" + Database.VIDEO_EXTENSION, "Videos")
-		Utils.disconnect_all(file_dialog.file_selected)
+		ProfToolUtils.disconnect_all(file_dialog.file_selected)
 		file_dialog.file_selected.connect(_video_file_selected)
 		file_dialog.show()
 

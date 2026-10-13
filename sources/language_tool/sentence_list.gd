@@ -104,7 +104,7 @@ func _on_list_title_import_path_selected(path: String, match_to_file: bool) -> v
 func _on_export_not_found_button_pressed() -> void:
 	file_dialog_export.filters = []
 	file_dialog_export.add_filter("*.txt", "txt")
-	Utils.disconnect_all(file_dialog_export.file_selected)
+	ProfToolUtils.disconnect_all(file_dialog_export.file_selected)
 	file_dialog_export.file_selected.connect(_on_export_filename_selected)
 	file_dialog_export.show()
 
