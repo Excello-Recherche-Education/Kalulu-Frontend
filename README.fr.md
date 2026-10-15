@@ -20,6 +20,7 @@
 - [🧩 Addons intégrés](#-addons-intégrés)
 - [🤝 Envie d'aider ?](#-envie-daider-)
 - [❓ FAQ](#faq)
+- [🔗 Dépôts associés](#dépôts-associés)
 
 ---
 
@@ -126,3 +127,14 @@ Oui ! Des versions pour Windows, Mac et Linux sont disponibles dans la section [
 ### 🌐 Kalulu est-il disponible directement sur le web ?
 
 Nous y travaillons, restez à l’écoute !
+
+---
+
+## Dépôts associés
+
+| Dépôt | Description |
+|---|---|
+| [Kalulu Backend](https://github.com/Excello-Recherche-Education/Kalulu-AWS-Lambda) | API serverless — authentification, synchronisation, tableaux de bord et gestion des données |
+| [Kalulu Language Lambda](https://github.com/Excello-Recherche-Education/Kalulu-Language-Lambda) | Pipeline qui traite les packs de langue et met à jour la base de données |
+| [Kalulu Languages](https://github.com/Excello-Recherche-Education/Kalulu-Languages) | Packs de données linguistiques (français, espagnol, portugais, etc.) |
+| [Kalulu Prof Tool](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool) | Éditeur de packs de langue — crée les packs utilisés par le jeu : correspondances graphème-phonème, mots, phrases, leçons, enregistrements |
