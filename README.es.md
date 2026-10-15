@@ -134,7 +134,7 @@ Asegúrate de que tu código siga nuestras convenciones de codificación e inclu
 
 | Repositorio | Descripción |
 |---|---|
-| [Kalulu Backend](https://github.com/Excello-Recherche-Education/Kalulu-AWS-Lambda) | API serverless — autenticación, sincronización, paneles y gestión de datos |
-| [Kalulu Language Lambda](https://github.com/Excello-Recherche-Education/Kalulu-Language-Lambda) | Pipeline que procesa los paquetes de idioma y actualiza la base de datos |
-| [Kalulu Languages](https://github.com/Excello-Recherche-Education/Kalulu-Languages) | Paquetes de datos lingüísticos (francés, español, portugués, etc.) |
-| [Kalulu Prof Tool](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool) | Editor de paquetes de idioma — crea los paquetes que usa el juego: correspondencias grafema-fonema, palabras, frases, lecciones, grabaciones |
+| [Kalulu-Backend](https://github.com/Excello-Recherche-Education/Kalulu-Backend) | API serverless — autenticación, sincronización, paneles y gestión de datos |
+| [Kalulu-Language-Lambda](https://github.com/Excello-Recherche-Education/Kalulu-Language-Lambda) | Pipeline que procesa los paquetes de idioma y actualiza la base de datos |
+| [Kalulu-Languages](https://github.com/Excello-Recherche-Education/Kalulu-Languages) | Paquetes de datos lingüísticos (francés, español, portugués, etc.) |
+| [Kalulu-ProfTool](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool) | Editor de paquetes de idioma — crea los paquetes que usa el juego: correspondencias grafema-fonema, palabras, frases, lecciones, grabaciones |

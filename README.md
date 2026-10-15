@@ -153,10 +153,10 @@ We are working on it, stay tuned!
 
 | Repository | Description |
 |---|---|
-| [Kalulu Backend](https://github.com/Excello-Recherche-Education/Kalulu-AWS-Lambda) | Serverless API — authentication, sync, dashboards, and data management |
-| [Kalulu Language Lambda](https://github.com/Excello-Recherche-Education/Kalulu-Language-Lambda) | Pipeline that processes language packs and updates the database |
-| [Kalulu Languages](https://github.com/Excello-Recherche-Education/Kalulu-Languages) | Linguistic data packs (French, Spanish, Portuguese etc...) |
-| [Kalulu Prof Tool](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool) | Language pack editor — builds the packs the game plays: grapheme-phoneme pairs, words, sentences, lessons, recordings |
+| [Kalulu-Backend](https://github.com/Excello-Recherche-Education/Kalulu-Backend) | Serverless API — authentication, sync, dashboards, and data management |
+| [Kalulu-Language-Lambda](https://github.com/Excello-Recherche-Education/Kalulu-Language-Lambda) | Pipeline that processes language packs and updates the database |
+| [Kalulu-Languages](https://github.com/Excello-Recherche-Education/Kalulu-Languages) | Linguistic data packs (French, Spanish, Portuguese etc...) |
+| [Kalulu-ProfTool](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool) | Language pack editor — builds the packs the game plays: grapheme-phoneme pairs, words, sentences, lessons, recordings |
 
 ---
 
