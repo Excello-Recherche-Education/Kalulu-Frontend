@@ -8,6 +8,7 @@ extends GutTest
 const TEST_DIR: String = "user://test_database_booklet_only"
 const TEST_DB: String = TEST_DIR + "/language.db"
 const MODEL_DB: String = "res://model_database.db"
+const BOOKLET_TABLES: Array[String] = ["Words", "Syllables", "Sentences"]
 
 var _saved_path: String
 var _saved_is_open: bool
@@ -29,9 +30,10 @@ func after_each() -> void:
 		Database.connect_to_db()
 
 
-# One lesson teaching l and a; in it the game's words "la" and "lala", the
-# booklet-only word "alla", a syllable of each kind, a sentence of each kind and
-# a pseudoword tied to each word.
+# One lesson teaching l, a and a silent e. The game's words "la", "lala" and
+# "lae" (silent e), the booklet-only "alla" and "ale" (silent e); a syllable of
+# each kind; game and booklet-only sentences, with and without a silent letter;
+# a pseudoword tied to a game word and one tied to a booklet-only word.
 func _seed_language_database() -> void:
 	DirAccess.remove_absolute(TEST_DB)
 	assert_eq(DirAccess.copy_absolute(MODEL_DB, TEST_DB), OK, "the model database must be copyable")
@@ -41,28 +43,30 @@ func _seed_language_database() -> void:
 	for statement: String in [
 		"INSERT INTO Lessons (ID, LessonNb) VALUES (1, 1)",
 		"INSERT INTO LessonsExercises (LessonID, Exercise1, Exercise2, Exercise3) VALUES (1, 1, 0, 0)",
-		"INSERT INTO GPs (ID, Grapheme, Phoneme, Type) VALUES (1, 'l', 'l', 2), (2, 'a', 'a', 1)",
-		"INSERT INTO GPsInLessons (GPID, LessonID) VALUES (1, 1), (2, 1)",
-		"INSERT INTO Words (ID, Word, BookletOnly) VALUES (1, 'la', 0), (2, 'lala', 0), (3, 'alla', 1)",
-		"INSERT INTO GPsInWords (WordID, GPID, Position) VALUES (1, 1, 0), (1, 2, 1), (2, 1, 0), (2, 2, 1), (2, 1, 2), (2, 2, 3), (3, 2, 0), (3, 1, 1), (3, 1, 2), (3, 2, 3)",
+		"INSERT INTO GPs (ID, Grapheme, Phoneme, Type) VALUES (1, 'l', 'l', 2), (2, 'a', 'a', 1), (3, 'e', '#', 0)",
+		"INSERT INTO GPsInLessons (GPID, LessonID) VALUES (1, 1), (2, 1), (3, 1)",
+		"INSERT INTO Words (ID, Word, BookletOnly) VALUES (1, 'la', 0), (2, 'lala', 0), (3, 'alla', 1), (4, 'lae', 0), (5, 'ale', 1)",
+		"INSERT INTO GPsInWords (WordID, GPID, Position) VALUES (1, 1, 0), (1, 2, 1), (2, 1, 0), (2, 2, 1), (2, 1, 2), (2, 2, 3), (3, 2, 0), (3, 1, 1), (3, 1, 2), (3, 2, 3), (4, 1, 0), (4, 2, 1), (4, 3, 2), (5, 2, 0), (5, 1, 1), (5, 3, 2)",
 		"INSERT INTO Syllables (ID, Syllable, BookletOnly) VALUES (1, 'la', 0), (2, 'al', 1)",
 		"INSERT INTO GPsInSyllables (SyllableID, GPID, Position) VALUES (1, 1, 0), (1, 2, 1), (2, 2, 0), (2, 1, 1)",
-		"INSERT INTO Sentences (ID, Sentence, BookletOnly) VALUES (1, 'La lala.', 0), (2, 'Alla la.', 1)",
-		"INSERT INTO WordsInSentences (SentenceID, WordID, Position) VALUES (1, 1, 0), (1, 2, 1), (2, 3, 0), (2, 1, 1)",
+		"INSERT INTO Sentences (ID, Sentence, BookletOnly) VALUES (1, 'La lala.', 0), (2, 'Alla la.', 1), (3, 'Lae la.', 0), (4, 'Ale la.', 1)",
+		"INSERT INTO WordsInSentences (SentenceID, WordID, Position) VALUES (1, 1, 0), (1, 2, 1), (2, 3, 0), (2, 1, 1), (3, 4, 0), (3, 1, 1), (4, 5, 0), (4, 1, 1)",
 		"INSERT INTO Pseudowords (Pseudoword, WordID) VALUES ('lalo', 2), ('allo', 3)",
 	]:
 		assert_true(seed_db.query(statement), "seeding: %s" % statement)
 	seed_db.close_db()
 
 
-# Turns the fixture into a pack from before version 2.
-func _drop_booklet_only_columns() -> void:
+# Turns the fixture into a pack from before version 2, or one where only some
+# tables have the column.
+func _drop_booklet_only_columns(tables: Array[String]) -> void:
 	var seed_db: SQLite = SQLite.new()
 	seed_db.path = TEST_DB
 	seed_db.open_db()
-	for table: String in ["Words", "Syllables", "Sentences"]:
+	for table: String in tables:
 		assert_true(seed_db.query('ALTER TABLE "%s" DROP COLUMN "BookletOnly"' % table), "dropping %s.BookletOnly" % table)
-	seed_db.query("PRAGMA user_version = 1")
+	if tables.size() == BOOKLET_TABLES.size():
+		seed_db.query("PRAGMA user_version = 1")
 	seed_db.close_db()
 
 
@@ -90,15 +94,22 @@ func _distinct_texts(rows: Array, key: String) -> Array[String]:
 	return texts
 
 
-func test_a_version_2_pack_is_seen_to_mark_booklet_only_entries() -> void:
+func test_a_version_2_pack_marks_booklet_only_entries_in_three_tables() -> void:
 	_open()
-	assert_true(Database.has_booklet_only)
+	assert_eq(Database.booklet_only_tables, BOOKLET_TABLES)
+
+
+func test_closing_the_pack_forgets_its_marks() -> void:
+	_open()
+	Database.close()
+	assert_eq(Database.booklet_only_tables, [] as Array[String])
 
 
 func test_booklet_only_words_are_left_out() -> void:
 	_open()
-	assert_eq(_texts(Database.get_words_for_lesson(1), "Word"), ["la", "lala"] as Array[String])
-	assert_eq(_texts(Database.get_words_for_lesson(1, true), "Word"), ["la", "lala"] as Array[String])
+	assert_eq(_texts(Database.get_words_for_lesson(1), "Word"), ["la", "lae", "lala"] as Array[String])
+	assert_eq(_texts(Database.get_words_for_lesson(1, true), "Word"), ["la", "lae", "lala"] as Array[String])
+	assert_eq(_texts(Database.get_words_with_silent_gp_for_lesson(1), "Word"), ["lae"] as Array[String])
 
 
 func test_booklet_only_syllables_are_left_out() -> void:
@@ -109,8 +120,9 @@ func test_booklet_only_syllables_are_left_out() -> void:
 
 func test_booklet_only_sentences_are_left_out() -> void:
 	_open()
-	assert_eq(_texts(Database.get_sentences_for_lesson(1, 1, 5), "Sentence"), ["La lala."] as Array[String])
-	assert_eq(_texts(Database.get_sentences(2), "Sentence"), ["La lala."] as Array[String])
+	assert_eq(_texts(Database.get_sentences_for_lesson(1, 1, 5), "Sentence"), ["La lala.", "Lae la."] as Array[String])
+	assert_eq(_texts(Database.get_sentences(2), "Sentence"), ["La lala.", "Lae la."] as Array[String])
+	assert_eq(_texts(Database.get_sentences_for_lesson_with_silent_gps(1), "Sentence"), ["Lae la."] as Array[String])
 
 
 func test_pseudowords_of_booklet_only_words_are_left_out() -> void:
@@ -119,14 +131,26 @@ func test_pseudowords_of_booklet_only_words_are_left_out() -> void:
 
 
 func test_a_pack_from_before_version_2_offers_everything() -> void:
-	_drop_booklet_only_columns()
+	_drop_booklet_only_columns(BOOKLET_TABLES)
 	_open()
-	assert_false(Database.has_booklet_only)
-	assert_eq(_texts(Database.get_words_for_lesson(1), "Word"), ["alla", "la", "lala"] as Array[String])
+	assert_eq(Database.booklet_only_tables, [] as Array[String])
+	assert_eq(_texts(Database.get_words_for_lesson(1), "Word"), ["ale", "alla", "la", "lae", "lala"] as Array[String])
+	assert_eq(_texts(Database.get_words_with_silent_gp_for_lesson(1), "Word"), ["ale", "lae"] as Array[String])
 	assert_eq(_texts(Database.get_syllables_for_lesson(1), "Grapheme"), ["al", "la"] as Array[String])
-	assert_eq(_texts(Database.get_sentences_for_lesson(1, 1, 5), "Sentence"), ["Alla la.", "La lala."] as Array[String])
-	assert_eq(_texts(Database.get_sentences(2), "Sentence"), ["Alla la.", "La lala."] as Array[String])
+	assert_eq(_texts(Database.get_sentences_for_lesson(1, 1, 5), "Sentence"), ["Ale la.", "Alla la.", "La lala.", "Lae la."] as Array[String])
+	assert_eq(_texts(Database.get_sentences(2), "Sentence"), ["Ale la.", "Alla la.", "La lala.", "Lae la."] as Array[String])
+	assert_eq(_texts(Database.get_sentences_for_lesson_with_silent_gps(1), "Sentence"), ["Ale la.", "Lae la."] as Array[String])
 	assert_eq(_texts(Database.get_pseudowords_for_lesson(1), "Pseudoword"), ["allo", "lalo"] as Array[String])
+
+
+# A pack where only some tables have the column must not break the others'
+# queries: each table is checked on its own.
+func test_each_table_is_checked_on_its_own() -> void:
+	_drop_booklet_only_columns(["Syllables"] as Array[String])
+	_open()
+	assert_eq(Database.booklet_only_tables, ["Words", "Sentences"] as Array[String])
+	assert_eq(_texts(Database.get_syllables_for_lesson(1), "Grapheme"), ["al", "la"] as Array[String])
+	assert_eq(_texts(Database.get_words_for_lesson(1), "Word"), ["la", "lae", "lala"] as Array[String])
 
 
 func _delete_test_directory() -> void:

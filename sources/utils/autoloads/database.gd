@@ -35,11 +35,11 @@ var db_path: String = get_language_folder() + "/language.db":
 			connect_to_db()
 var words_path: String = get_language_folder() + "/words/"
 var is_open: bool = false
-## Whether the open pack marks entries only the printed booklets use (schema
-## version 2 on, the BookletOnly column of Words, Syllables and Sentences). The
-## game leaves those out of every pool. A pack downloaded before version 2 has no
-## such column, and every entry in it is the game's.
-var has_booklet_only: bool = false
+## The tables of the open pack that mark entries only the printed booklets use:
+## from schema version 2, Words, Syllables and Sentences each have a BookletOnly
+## column. The game leaves those entries out of every pool. A pack downloaded
+## before version 2 has no such column, and every entry in it is the game's.
+var booklet_only_tables: Array[String] = []
 # See _get_folder_listing.
 var _folder_listings: Dictionary[String, Dictionary] = {}
 var _folder_listings_frame: int = -1
@@ -63,6 +63,7 @@ func close() -> void:
 	Log.info("Database: Closing database connection at %s" % ProjectSettings.globalize_path(db.path))
 	db.close_db()
 	is_open = false
+	booklet_only_tables.clear()
 
 
 func connect_to_db() -> void:
@@ -77,16 +78,28 @@ func connect_to_db() -> void:
 		Log.info("Database: Database opened at %s" % ProjectSettings.globalize_path(db.path))
 		if db.get_error_message() != "" and db.get_error_message() != "not an error":
 			Log.warn("Database: Database just opened but already contains an error message: %s" % db.get_error_message())
-		db.query("SELECT name FROM pragma_table_info('Words') WHERE name = 'BookletOnly'")
-		has_booklet_only = not db.query_result.is_empty()
+		detect_booklet_only()
 	else:
 		Log.warn("Database: Database file not found at %s" % db.path)
 
 
+## Looks for the BookletOnly column in each table that can have one. Runs when a
+## pack is opened; the Prof Tool runs it again after upgrading a pack's schema.
+## The plain PRAGMA rather than the pragma_table_info() function, which an SQLite
+## build may leave out.
+func detect_booklet_only() -> void:
+	booklet_only_tables.clear()
+	for table: String in ["Words", "Syllables", "Sentences"]:
+		db.query("PRAGMA table_info('%s')" % table)
+		for column: Dictionary in db.query_result:
+			if column.name == "BookletOnly":
+				booklet_only_tables.append(table)
+
+
 ## SQL condition keeping only the entries of [param table] the game may offer:
-## those not marked booklet-only. Always true for a pack with no such mark.
+## those not marked booklet-only. Always true for a table with no such mark.
 func _in_game(table: String) -> String:
-	if has_booklet_only:
+	if table in booklet_only_tables:
 		return "%s.BookletOnly = 0" % table
 	return "1"
 
@@ -180,7 +193,7 @@ func get_words_containing_grapheme(grapheme: String) -> Array[Dictionary]:
 func get_word_id_from_text(text: String) -> int:
 	var clean_text: String = text.replace(".", "").replace(",", "")
 	db.query_with_bindings(
-		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE;",
+		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE ORDER BY %s;" % _game_words_first(),
 		[clean_text]
 	)
 	if db.query_result.size() > 0:
@@ -189,7 +202,7 @@ func get_word_id_from_text(text: String) -> int:
 	# If not found, trying again with even cleaner text
 	clean_text = clean_text.replace("'", "")
 	db.query_with_bindings(
-		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE;",
+		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE ORDER BY %s;" % _game_words_first(),
 		[clean_text]
 	)
 	if db.query_result.size() > 0:
@@ -197,6 +210,11 @@ func get_word_id_from_text(text: String) -> int:
 			return db.query_result[0].ID
 	Log.trace("Database: Word " + clean_text + " ID not found")
 	return -1
+
+
+# The game's own word first, when a booklet-only word has the same spelling.
+func _game_words_first() -> String:
+	return "BookletOnly, ID" if "Words" in booklet_only_tables else "ID"
 
 
 func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[Dictionary]:
