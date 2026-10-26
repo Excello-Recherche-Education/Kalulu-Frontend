@@ -35,6 +35,11 @@ var db_path: String = get_language_folder() + "/language.db":
 			connect_to_db()
 var words_path: String = get_language_folder() + "/words/"
 var is_open: bool = false
+## Whether the open pack marks entries only the printed booklets use (schema
+## version 2 on, the BookletOnly column of Words, Syllables and Sentences). The
+## game leaves those out of every pool. A pack downloaded before version 2 has no
+## such column, and every entry in it is the game's.
+var has_booklet_only: bool = false
 # See _get_folder_listing.
 var _folder_listings: Dictionary[String, Dictionary] = {}
 var _folder_listings_frame: int = -1
@@ -72,8 +77,18 @@ func connect_to_db() -> void:
 		Log.info("Database: Database opened at %s" % ProjectSettings.globalize_path(db.path))
 		if db.get_error_message() != "" and db.get_error_message() != "not an error":
 			Log.warn("Database: Database just opened but already contains an error message: %s" % db.get_error_message())
+		db.query("SELECT name FROM pragma_table_info('Words') WHERE name = 'BookletOnly'")
+		has_booklet_only = not db.query_result.is_empty()
 	else:
 		Log.warn("Database: Database file not found at %s" % db.path)
+
+
+## SQL condition keeping only the entries of [param table] the game may offer:
+## those not marked booklet-only. Always true for a pack with no such mark.
+func _in_game(table: String) -> String:
+	if has_booklet_only:
+		return "%s.BookletOnly = 0" % table
+	return "1"
 
 
 func get_exercise_for_lesson(lesson_nb: int) -> Array[int]:
@@ -201,6 +216,8 @@ func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[D
 		query += " INNER JOIN GPsInSyllables ON GPsInSyllables.SyllableID = Syllables.ID 
 			INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInSyllables.GPID 
 			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb = ?"
+	query += " WHERE " + _in_game("Syllables")
+	if only_new:
 		db.query_with_bindings(query, [lesson_nb, lesson_nb])
 	else:
 		db.query_with_bindings(query, [lesson_nb])
@@ -239,7 +256,7 @@ FROM Words
 			INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb = ?"
 		parameters.append(lesson_nb)
 	
-	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ?"
+	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ? and " + _in_game("Words")
 
 	if not include_exception:
 		query += " and Words.Exception = false"
@@ -289,6 +306,7 @@ FROM Words
 	
 	query += " WHERE TotalCount.Count <= ? and TotalCount.Count >= ?
 	AND VerifiedCount.gpphoneme LIKE '%#%' 
+	AND " + _in_game("Words") + "
 	ORDER BY LessonNb, VerifiedCount.Count ASC"
 	parameters.append(max_length)
 	parameters.append(min_length)
@@ -300,7 +318,7 @@ FROM Words
 func get_sentences_by_lessons() -> Dictionary:
 	var sentences_by_lesson: Dictionary = {}
 	
-	db.query("SELECT * FROM Sentences")
+	db.query("SELECT * FROM Sentences WHERE " + _in_game("Sentences"))
 	var sentences: Array[Dictionary] = db.query_result
 	
 	for sentence: Dictionary in sentences:
@@ -347,6 +365,7 @@ INNER JOIN
 	GROUP BY SentenceID 
 	) VerifiedCount ON VerifiedCount.SentenceID = Sentences.ID AND VerifiedCount.Count = TotalCount.Count
 WHERE Sentences.Exception = 0
+	AND " + _in_game("Sentences") + "
 	AND WordsCount >=? 
 	AND WordsCount <=?
 	ORDER BY LessonNb"
@@ -378,6 +397,7 @@ INNER JOIN
 	GROUP BY SentenceID 
 	) VerifiedCount ON VerifiedCount.SentenceID = Sentences.ID AND VerifiedCount.Count = TotalCount.Count
 WHERE Sentences.Exception = 0
+	AND " + _in_game("Sentences") + "
 	AND WordsCount >=? 
 	AND WordsCount <=? 
 	AND VerifiedCount.SentencePhoneme LIKE '%#%'"
@@ -399,7 +419,8 @@ func get_pseudowords_for_lesson(p_lesson_nb: int) -> Array[Dictionary]:
 		INNER JOIN GPsInLessons ON GPsInLessons.GPID = GPsInWords.GPID 
 		INNER JOIN Lessons ON Lessons.ID = GPsInLessons.LessonID AND Lessons.LessonNb <= ? 
 		GROUP BY WordID 
-		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count"
+		) VerifiedCount ON VerifiedCount.WordID = Words.ID AND VerifiedCount.Count = TotalCount.Count
+	WHERE " + _in_game("Words")
 	db.query_with_bindings(query, [p_lesson_nb])
 	return db.query_result
 
