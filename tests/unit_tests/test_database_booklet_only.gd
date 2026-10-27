@@ -84,8 +84,8 @@ func _texts(rows: Array, key: String) -> Array[String]:
 	return texts
 
 
-# get_syllables_for_lesson(only_new) returns a syllable once per GP of it the
-# lesson teaches, which this test is not about.
+# get_syllables_for_lesson(only_new) and get_words_with_silent_gp_for_lesson(only_new)
+# return an entry once per GP of it the lesson teaches, which this test is not about.
 func _distinct_texts(rows: Array, key: String) -> Array[String]:
 	var texts: Array[String] = []
 	for text: String in _texts(rows, key):
@@ -110,6 +110,7 @@ func test_booklet_only_words_are_left_out() -> void:
 	assert_eq(_texts(Database.get_words_for_lesson(1), "Word"), ["la", "lae", "lala"] as Array[String])
 	assert_eq(_texts(Database.get_words_for_lesson(1, true), "Word"), ["la", "lae", "lala"] as Array[String])
 	assert_eq(_texts(Database.get_words_with_silent_gp_for_lesson(1), "Word"), ["lae"] as Array[String])
+	assert_eq(_distinct_texts(Database.get_words_with_silent_gp_for_lesson(1, true), "Word"), ["lae"] as Array[String])
 
 
 func test_booklet_only_syllables_are_left_out() -> void:
@@ -131,8 +132,9 @@ func test_words_containing_a_grapheme_leave_booklet_only_words_out() -> void:
 
 
 # get_word_id_from_text() matches case-insensitively, so "LA" (booklet-only, the
-# lower ID) and "la" (the game's) both match "la": the game's must win.
-func test_the_games_word_wins_over_a_booklet_only_homograph() -> void:
+# lower ID) and "la" (the game's) both match "la": the game's must win, and a
+# booklet-only word alone is no word of the game's.
+func test_text_lookup_finds_only_the_games_words() -> void:
 	var seed_db: SQLite = SQLite.new()
 	seed_db.path = TEST_DB
 	seed_db.open_db()
@@ -141,6 +143,20 @@ func test_the_games_word_wins_over_a_booklet_only_homograph() -> void:
 	_open()
 	assert_eq(Database.get_word_id_from_text("la"), 1)
 	assert_eq(Database.get_word_id_from_text("La."), 1)
+	assert_eq(Database.get_word_id_from_text("alla"), -1, "booklet-only")
+	# The second attempt, apostrophes stripped: "l'ala" is no word, "lala" is.
+	assert_eq(Database.get_word_id_from_text("l'ala"), 2)
+
+
+func test_a_column_named_in_another_case_is_found() -> void:
+	var seed_db: SQLite = SQLite.new()
+	seed_db.path = TEST_DB
+	seed_db.open_db()
+	assert_true(seed_db.query('ALTER TABLE "Words" RENAME COLUMN "BookletOnly" TO "bookletonly"'), "renaming the column")
+	seed_db.close_db()
+	_open()
+	assert_eq(Database.booklet_only_tables, BOOKLET_TABLES)
+	assert_eq(_texts(Database.get_words_for_lesson(1), "Word"), ["la", "lae", "lala"] as Array[String])
 
 
 func test_pseudowords_of_booklet_only_words_are_left_out() -> void:
@@ -170,6 +186,7 @@ func test_each_table_is_checked_on_its_own() -> void:
 	assert_eq(Database.booklet_only_tables, ["Words", "Sentences"] as Array[String])
 	assert_eq(_texts(Database.get_syllables_for_lesson(1), "Grapheme"), ["al", "la"] as Array[String])
 	assert_eq(_texts(Database.get_words_for_lesson(1), "Word"), ["la", "lae", "lala"] as Array[String])
+	assert_eq(_texts(Database.get_sentences_for_lesson(1, 1, 5), "Sentence"), ["La lala.", "Lae la."] as Array[String])
 
 
 func _delete_test_directory() -> void:

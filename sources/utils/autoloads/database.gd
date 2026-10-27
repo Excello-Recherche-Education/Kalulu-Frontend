@@ -92,7 +92,8 @@ func detect_booklet_only() -> void:
 	for table: String in ["Words", "Syllables", "Sentences"]:
 		db.query("PRAGMA table_info('%s')" % table)
 		for column: Dictionary in db.query_result:
-			if column.name == "BookletOnly":
+			# SQLite names are not case sensitive, a hand-made pack's may differ.
+			if str(column.name).to_lower() == "bookletonly":
 				booklet_only_tables.append(table)
 
 
@@ -193,7 +194,7 @@ func get_words_containing_grapheme(grapheme: String) -> Array[Dictionary]:
 func get_word_id_from_text(text: String) -> int:
 	var clean_text: String = text.replace(".", "").replace(",", "")
 	db.query_with_bindings(
-		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE ORDER BY %s;" % _game_words_first(),
+		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE AND %s ORDER BY ID;" % _in_game("Words"),
 		[clean_text]
 	)
 	if db.query_result.size() > 0:
@@ -202,7 +203,7 @@ func get_word_id_from_text(text: String) -> int:
 	# If not found, trying again with even cleaner text
 	clean_text = clean_text.replace("'", "")
 	db.query_with_bindings(
-		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE ORDER BY %s;" % _game_words_first(),
+		"SELECT ID FROM Words WHERE Word = ? COLLATE NOCASE AND %s ORDER BY ID;" % _in_game("Words"),
 		[clean_text]
 	)
 	if db.query_result.size() > 0:
@@ -210,11 +211,6 @@ func get_word_id_from_text(text: String) -> int:
 			return db.query_result[0].ID
 	Log.trace("Database: Word " + clean_text + " ID not found")
 	return -1
-
-
-# The game's own word first, when a booklet-only word has the same spelling.
-func _game_words_first() -> String:
-	return "BookletOnly, ID" if "Words" in booklet_only_tables else "ID"
 
 
 func get_syllables_for_lesson(lesson_nb: int, only_new: bool = false) -> Array[Dictionary]:
