@@ -125,6 +125,24 @@ func test_booklet_only_sentences_are_left_out() -> void:
 	assert_eq(_texts(Database.get_sentences_for_lesson_with_silent_gps(1), "Sentence"), ["Lae la."] as Array[String])
 
 
+func test_words_containing_a_grapheme_leave_booklet_only_words_out() -> void:
+	_open()
+	assert_eq(_texts(Database.get_words_containing_grapheme("e"), "Word"), ["lae"] as Array[String])
+
+
+# get_word_id_from_text() matches case-insensitively, so "LA" (booklet-only, the
+# lower ID) and "la" (the game's) both match "la": the game's must win.
+func test_the_games_word_wins_over_a_booklet_only_homograph() -> void:
+	var seed_db: SQLite = SQLite.new()
+	seed_db.path = TEST_DB
+	seed_db.open_db()
+	assert_true(seed_db.query("INSERT INTO Words (ID, Word, BookletOnly) VALUES (0, 'LA', 1)"), "seeding a homograph")
+	seed_db.close_db()
+	_open()
+	assert_eq(Database.get_word_id_from_text("la"), 1)
+	assert_eq(Database.get_word_id_from_text("La."), 1)
+
+
 func test_pseudowords_of_booklet_only_words_are_left_out() -> void:
 	_open()
 	assert_eq(_texts(Database.get_pseudowords_for_lesson(1), "Pseudoword"), ["lalo"] as Array[String])
@@ -141,6 +159,7 @@ func test_a_pack_from_before_version_2_offers_everything() -> void:
 	assert_eq(_texts(Database.get_sentences(2), "Sentence"), ["Ale la.", "Alla la.", "La lala.", "Lae la."] as Array[String])
 	assert_eq(_texts(Database.get_sentences_for_lesson_with_silent_gps(1), "Sentence"), ["Ale la.", "Lae la."] as Array[String])
 	assert_eq(_texts(Database.get_pseudowords_for_lesson(1), "Pseudoword"), ["allo", "lalo"] as Array[String])
+	assert_eq(_texts(Database.get_words_containing_grapheme("e"), "Word"), ["ale", "lae"] as Array[String])
 
 
 # A pack where only some tables have the column must not break the others'

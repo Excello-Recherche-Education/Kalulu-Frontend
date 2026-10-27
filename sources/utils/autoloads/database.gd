@@ -186,7 +186,7 @@ ORDER BY WordPosition ASC, GPPosition ASC", [sentence_id])
 
 
 func get_words_containing_grapheme(grapheme: String) -> Array[Dictionary]:
-	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPs.ID = GPsInWords.GPID", [grapheme])
+	db.query_with_bindings("SELECT Word FROM Words INNER JOIN GPsInWords INNER JOIN GPs on Words.ID = GPsInWords.WordID AND GPs.Grapheme=? AND GPs.ID = GPsInWords.GPID WHERE " + _in_game("Words"), [grapheme])
 	return db.query_result
 
 
