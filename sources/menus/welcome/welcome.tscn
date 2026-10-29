@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cwyqhwjbxk8m3"]
+[gd_scene load_steps=12 format=3 uid="uid://cwyqhwjbxk8m3"]
 
 [ext_resource type="Script" uid="uid://dd73v8cop032e" path="res://sources/menus/welcome/welcome.gd" id="1_welcome"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bu80rel3g62k2" path="res://addons/godot-form-validator/form_validator.gd" id="7_form"]
 [ext_resource type="Script" uid="uid://dugl3xh4di2a5" path="res://sources/menus/main/language_field.gd" id="8_language"]
 [ext_resource type="PackedScene" uid="uid://ck3p8x1ynqv2e" path="res://sources/ui/proxy_settings.tscn" id="10_proxy"]
+[ext_resource type="PackedScene" path="res://sources/ui/server_warning.tscn" id="11_server"]
 
 [node name="Welcome" type="Control"]
 layout_mode = 3
@@ -179,5 +180,9 @@ theme_type_variation = &"PrimaryButton"
 text = "NEXT"
 
 [node name="VersionLabel" parent="." instance=ExtResource("9_version")]
+layout_mode = 1
+
+[node name="ServerWarning" parent="." instance=ExtResource("11_server")]
+unique_name_in_owner = true
 layout_mode = 1
 

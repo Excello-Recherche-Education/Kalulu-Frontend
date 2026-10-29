@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://b85wy2h7fmvvf" path="res://assets/menus/login/intro_title_card.mp3" id="11_music"]
 [ext_resource type="PackedScene" uid="uid://b7yl4qkxvrn5m" path="res://sources/ui/version_label.tscn" id="11_version"]
 [ext_resource type="PackedScene" path="res://sources/ui/adult_check_popup.tscn" id="99_adult"]
+[ext_resource type="PackedScene" path="res://sources/ui/server_warning.tscn" id="12_server"]
 
 [node name="Login" type="Control" unique_id=772897750]
 layout_mode = 3
@@ -161,6 +162,10 @@ layout_mode = 1
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=760795235]
 stream = ExtResource("11_music")
+
+[node name="ServerWarning" parent="." instance=ExtResource("12_server")]
+unique_name_in_owner = true
+layout_mode = 1
 
 [node name="AdultCheck" parent="." unique_id=1181299668 instance=ExtResource("99_adult")]
 unique_name_in_owner = true
