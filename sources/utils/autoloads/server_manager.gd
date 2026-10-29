@@ -212,8 +212,34 @@ func _resolve_environment_url() -> String:
 
 	match environment_setting:
 		0: return PROTOCOL + SUBDOMAIN_DEV + AWS_API_GATEWAY_DOMAIN_ADRESS + STAGE_DEV
-		1: return PROTOCOL + 				 AWS_API_GATEWAY_DOMAIN_ADRESS + STAGE_PROD
+		1: return production_url()
 		_: return ""
+
+
+## The server every published build talks to, and the only one real accounts are on.
+static func production_url() -> String:
+	return PROTOCOL + AWS_API_GATEWAY_DOMAIN_ADRESS + STAGE_PROD
+
+
+## Whether `url` is the production server.
+##
+## Judged on the address rather than on the setting, because a custom URL wins over
+## the setting: PROD selected with a custom URL typed over it is not on production,
+## and the production address typed in by hand is. Case and the trailing slash are
+## not differences anybody meant.
+static func is_production_url(url: String) -> bool:
+	return url.strip_edges().trim_suffix("/").to_lower() == production_url().trim_suffix("/")
+
+
+## Whether this device is talking to the production server right now.
+func is_on_production() -> bool:
+	return is_production_url(environment_url)
+
+
+## Back to the production server, with any custom URL forgotten, and saved.
+func reset_to_production() -> void:
+	Log.info("ServerManager: Resetting to the production server (was %s)" % environment_url)
+	set_environment(1, "")
 
 
 func _normalize_url(url: String) -> String:
