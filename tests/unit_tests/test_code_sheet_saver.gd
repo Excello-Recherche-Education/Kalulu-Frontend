@@ -272,6 +272,26 @@ func test_a_real_drawing_ends_up_in_the_kept_copy() -> void:
 		"%PDF-1.4", "and what was written is a PDF")
 
 
+func test_a_screen_that_leaves_mid_sheet_gives_the_sheet_up() -> void:
+	# render_pdf is static, so nothing stops it resuming after the screen hosting
+	# the drawing is freed -- and a release build crashes on the next use of a
+	# freed object instead of reporting it. Freed at the end of this frame, so
+	# while the first page is being waited on.
+	var leaving: Node = Node.new()
+	add_child(leaving)
+	leaving.queue_free()
+
+	var pdf_data: PackedByteArray = await CodeSheet.render_pdf(leaving, _settings())
+
+	# Only the warning that says the sheet was given up is expected. A debug build
+	# reports a use of the freed screen as a script error and also returns empty
+	# bytes, so the emptiness alone would not tell the two apart.
+	for tracked_error: GutTrackedError in get_errors():
+		if tracked_error.contains_text("closed while the sheet was drawing"):
+			tracked_error.handled = true
+	assert_true(pdf_data.is_empty(), "the sheet is given up rather than drawn on a freed screen")
+
+
 func test_a_press_takes_over_a_wait_that_is_going_nowhere() -> void:
 	# The wait can only be reached with the picker gone -- it holds the screen while
 	# it is up -- so a press arriving during one means the picker answered nothing,
