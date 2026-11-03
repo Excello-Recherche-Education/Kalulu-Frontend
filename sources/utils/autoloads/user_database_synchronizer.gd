@@ -24,7 +24,9 @@ func start_sync() -> void:
 		loading_popup.set_finished(false)
 		set_loading_bar_text("SYNCHRONIZATION_INITIALISATION")
 		await set_loading_bar_progression(0.0)
-		loading_popup.show()
+		# Checked again: the settings screen can leave during that wait.
+		if is_instance_valid(loading_popup):
+			loading_popup.show()
 
 
 func stop_sync(success: bool = false) -> void:

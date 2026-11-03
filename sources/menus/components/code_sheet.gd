@@ -69,8 +69,18 @@ static func render_pdf(host: Node, settings: TeacherSettings,
 		viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 		viewport.add_child(page)
 		host.add_child(viewport)
-		await host.get_tree().process_frame
-		await host.get_tree().process_frame
+		# This is static, so nothing stops it resuming after `host` is freed -- the
+		# screen leaving mid-sheet -- and a release build crashes on a freed object
+		# rather than reporting it. Wait on the tree, which outlives the screen, and
+		# give the sheet up if the screen went.
+		var tree: SceneTree = host.get_tree()
+		await tree.process_frame
+		await tree.process_frame
+		if not is_instance_valid(host) or not is_instance_valid(viewport):
+			Log.warn("CodeSheet: The screen closed while the sheet was drawing")
+			for unused: Control in pages.slice(images.size() + 1):
+				unused.free()
+			return PackedByteArray()
 
 		Log.info("CodeSheet: Captured page %d/%d" % [images.size() + 1, pages.size()])
 		images.append(viewport.get_texture().get_image())
