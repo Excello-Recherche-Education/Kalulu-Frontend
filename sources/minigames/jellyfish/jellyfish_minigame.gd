@@ -166,8 +166,10 @@ func _on_stimulus_pressed(stimulus: Dictionary, node: Node) -> bool:
 		if is_instance_valid(jellyfish):
 			await jellyfish.delete()
 	
-	# Handle the blocking array
-	if jellyfish in blocking_jellyfish:
+	# Handle the blocking array. A jellyfish freed meanwhile went with the whole
+	# field, which empties this array too -- and `in` on a typed array reads the
+	# object's class, so a freed one would crash here as well.
+	if is_instance_valid(jellyfish) and jellyfish in blocking_jellyfish:
 		blocking_jellyfish.erase(jellyfish)
 	
 	# Replay the current stimulus
