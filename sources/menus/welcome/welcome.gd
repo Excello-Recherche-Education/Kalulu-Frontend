@@ -401,12 +401,19 @@ func _on_guest_pressed() -> void:
 	if request_in_flight or leaving:
 		Log.trace("Welcome: Ignoring the guest button while a request or a departure is under way")
 		return
+	var unreadable: bool = false
 	if UserDataManager.guest_exists():
 		Log.info("Welcome: Resuming the guest account already on this device")
 		if UserDataManager.resume_guest():
 			await _leave_for(LANGUAGE_CHECK_SCENE_PATH)
 			return
-		Log.warn("Welcome: The guest account could not be resumed; offering a new one")
+		# Still there, so it is a guest that would not open -- not one that has just
+		# been finished registering, which leaves no guest folder behind.
+		unreadable = DirAccess.dir_exists_absolute("user://".path_join(UserDataManagerClass.GUEST_FOLDER))
+		Log.warn("Welcome: The guest account could not be resumed (unreadable: %s)" % str(unreadable))
+	# Said plainly when a guest was there: a new one starts from nothing, and the old
+	# one is kept aside on the device rather than thrown away.
+	guest_popup.content_text = "GUEST_ACCOUNT_UNREADABLE_POPUP" if unreadable else "GUEST_ACCOUNT_POPUP"
 	guest_popup.show()
 
 

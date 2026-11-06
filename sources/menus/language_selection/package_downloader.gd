@@ -16,6 +16,9 @@ enum DownloadError {
 	PROXY_REQUIRED,
 	PROXY_AVAILABLE,
 	CANNOT_SAVE,
+	## The server is asking to be left alone for a while: too many requests from this
+	## address (429). Nothing to fix but waiting.
+	SERVER_BUSY,
 }
 ## What to do about the pack download itself.
 enum DownloadOutcome {
@@ -38,6 +41,8 @@ enum PackUrlOutcome {
 	OFFLINE,
 	## The server answered something unusable.
 	FAILED,
+	## The server asked to be tried again later.
+	BUSY,
 }
 
 const USER_LANGUAGE_RESOURCES_PATH: String = "user://language_resources"
@@ -83,6 +88,8 @@ const DEAD_END_NOTICES: Dictionary[int, Dictionary] = {
 		{"title": "SERVER_UNAVAILABLE_TITLE", "message": "NO_LANGUAGE_PACK_SERVER_ERROR"},
 	DownloadError.CANNOT_SAVE:
 		{"title": "CANNOT_SAVE_TITLE", "message": "DOWNLOAD_CANNOT_SAVE"},
+	DownloadError.SERVER_BUSY:
+		{"title": "SERVER_BUSY_TITLE", "message": "NO_LANGUAGE_PACK_SERVER_BUSY"},
 }
 ## The failures somebody else has to act on, and which are therefore worth copying.
 ##
@@ -116,6 +123,7 @@ const ERROR_MESSAGES: Array[String] = [
 	"DOWNLOAD_PROXY_REQUIRED",
 	"DOWNLOAD_PROXY_AVAILABLE",
 	"DOWNLOAD_CANNOT_SAVE",
+	"NO_LANGUAGE_PACK_SERVER_BUSY",
 ]
 
 var language: String
@@ -218,6 +226,10 @@ func _start() -> void:
 			failure_result_code = (ServerManager as ServerManagerClass).last_result_code
 			_continue_without_the_server(await _no_server_error(failure_result_code))
 			return
+		PackUrlOutcome.BUSY:
+			Log.warn("PackageDownloader: The server asked to wait (%d) before fetching the language pack URL" % res.code)
+			_continue_without_the_server(DownloadError.SERVER_BUSY)
+			return
 		_:
 			Log.warn("PackageDownloader: Unusable response %d while fetching language pack URL" % res.code)
 			_continue_without_the_server(DownloadError.DOWNLOAD_FAILED)
@@ -284,6 +296,11 @@ static func outcome_for_pack_url(code: int, guest: bool = false) -> PackUrlOutco
 		return PackUrlOutcome.FAILED if guest else PackUrlOutcome.SIGN_OUT
 	if code == 0:
 		return PackUrlOutcome.OFFLINE
+	# What the backend answers an anonymous caller over its limit: a wait, not a fault,
+	# and not worth a network diagnosis either. A 503 stays a server failure -- for a
+	# signed-in device it is an outage, and the server-error notice already says so.
+	if code == 429:
+		return PackUrlOutcome.BUSY
 	return PackUrlOutcome.FAILED
 
 

@@ -79,8 +79,8 @@ func _ready() -> void:
 ## left behind in the old language. Changing a guest's language goes through the
 ## settings, which warn and erase the progress, exactly as for an account.
 func _use_the_guest_language() -> void:
-	var guest_language: String = language_for_guest(teacher_settings._language, device_language)
-	if guest_language != teacher_settings._language:
+	var guest_language: String = language_for_guest(teacher_settings._language)
+	if guest_language.is_empty():
 		Log.warn("LanguageCheck: Guest language '%s' unusable, using the device's" % teacher_settings._language)
 		try_with_local_data()
 		return
@@ -91,11 +91,10 @@ func _use_the_guest_language() -> void:
 	go_to_package_download()
 
 
-## The language a guest plays in: its own, unless that is not one Kalulu has.
-static func language_for_guest(guest_language: String, device_language: String) -> String:
-	if guest_language in Utils.SUPPORTED_LOCALES.keys():
-		return guest_language
-	return device_language
+## The language a guest plays in -- its own -- or "" when that is not one Kalulu has,
+## and the device's has to do.
+static func language_for_guest(guest_language: String) -> String:
+	return guest_language if guest_language in Utils.SUPPORTED_LOCALES.keys() else ""
 
 
 func try_with_local_data() -> void:

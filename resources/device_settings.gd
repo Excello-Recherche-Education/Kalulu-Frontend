@@ -44,6 +44,11 @@ extends Resource
 # A device setting rather than a student one: it describes the hardware, so it holds
 # for whoever picks up this tablet, and it must be readable before anyone signs in.
 @export var light_graphics: bool = false
+# The account a guest is being registered as, while its folder has yet to become the
+# account's. Set before the move and cleared once the device points at the account,
+# so a move interrupted by a crash, or refused by the system, is finished at the
+# next launch rather than lost -- see UserDataManager.register_guest.
+@export var pending_account: String = ""
 
 
 func _init() -> void:

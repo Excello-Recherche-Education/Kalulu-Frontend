@@ -47,6 +47,8 @@ var user_database_synchronizer: UserDatabaseSynchronizer = UserDatabaseSynchroni
 
 func _ready() -> void:
 	Log.info("UserDataManager initialization")
+	# Before the account is loaded, so it is loaded from where it now lives.
+	_complete_pending_registration()
 	if get_device_settings().teacher:
 		_load_teacher_settings()
 	
@@ -364,16 +366,23 @@ func guest_exists() -> bool:
 
 ## Makes `settings` this device's guest account and signs it in.
 ##
-## Whatever guest was here before is deleted first: this is only reached from
-## "Continue as guest" when there was none to resume, so anything left in the
-## folder is debris that would otherwise be mixed into the new account.
+## Whatever is in the guest folder already is set aside, never deleted: this is only
+## reached when there was no guest to resume, so anything there is a guest that could
+## not be opened -- a settings file that would not load, while every student's
+## progress beside it may be intact. It stays on the device, renamed, where it can
+## still be recovered by hand.
 func create_guest(settings: TeacherSettings) -> bool:
 	if not settings:
 		Log.warn("UserDataManager: CreateGuest: called without settings")
 		return false
 	var folder: String = "user://".path_join(GUEST_FOLDER)
 	if DirAccess.dir_exists_absolute(folder):
-		Utils.delete_directory_recursive(folder)
+		var aside: String = "user://%s_unreadable_%d" % [GUEST_FOLDER, int(Time.get_unix_time_from_system())]
+		var aside_error: Error = DirAccess.rename_absolute(folder, aside)
+		if aside_error != OK:
+			Log.error("UserDataManager: CreateGuest: cannot set the old guest aside: %s" % error_string(aside_error))
+			return false
+		Log.warn("UserDataManager: CreateGuest: an unreadable guest was set aside at %s" % aside)
 
 	settings.is_guest = true
 	settings.email = ""
@@ -399,6 +408,11 @@ func resume_guest() -> bool:
 	if not guest_exists():
 		Log.warn("UserDataManager: ResumeGuest: no guest account on this device")
 		return false
+	# A registration whose move was refused earlier is tried again first: what is in
+	# the guest folder may already be the account.
+	_complete_pending_registration()
+	if not guest_exists():
+		return false
 	_device_settings.teacher = GUEST_FOLDER
 	teacher_settings = null
 	_load_teacher_settings()
@@ -414,10 +428,23 @@ func resume_guest() -> bool:
 
 ## Turns the guest account into the account the server has just registered.
 ##
-## The guest folder is renamed to the account's own, so every student's progress,
-## remediation and boss data comes along untouched, and the guest folder is gone
-## afterwards -- "Continue as guest" starts a brand-new guest from then on. The
-## synchronization that follows pushes the progress up: the server has none for
+## In three steps, each of which leaves a device that works if the app stops there:
+##
+## 1. The account's settings replace the guest's, in the guest folder. From here the
+##    device is signed in to the account -- with its token, synchronizing -- only
+##    from a folder still called "guest". Nothing has moved, so nothing can be lost.
+## 2. The folder is renamed to the account's (copied where renaming is refused),
+##    with the account's address noted on the device first.
+## 3. The device points at the account's folder and the note is cleared.
+##
+## A failed or interrupted step 2 or 3 is finished at the next launch, from the
+## note -- see _complete_pending_registration -- so neither a crash nor a teacher
+## leaving the wizard can strand the guest's progress. Only step 1 can fail outright,
+## and then nothing has changed: the device is still the guest it was.
+##
+## Every student's progress, remediation and boss data comes along untouched, and the
+## guest folder is gone afterwards, so "Continue as guest" starts a brand-new guest.
+## The synchronization that follows pushes the progress up: the server has none for
 ## these students yet, so every local timestamp is newer than its.
 ##
 ## `registered` must carry the email, the token and the server's last_modified.
@@ -425,41 +452,78 @@ func register_guest(registered: TeacherSettings) -> bool:
 	if not registered or registered.email.is_empty() or registered.token.is_empty():
 		Log.error("UserDataManager: RegisterGuest: the registration is incomplete")
 		return false
-	var guest_folder: String = "user://".path_join(GUEST_FOLDER)
-	var account_folder: String = "user://".path_join(registered.email)
-
-	# Whatever sits under this address is from an account that no longer exists:
-	# the server has just accepted the address as new. Left in place, the rename
-	# below would fail, or worse, merge an old account's students into this one.
-	if DirAccess.dir_exists_absolute(account_folder):
-		Log.warn("UserDataManager: RegisterGuest: removing stale data at %s" % account_folder)
-		Utils.delete_directory_recursive(account_folder)
-
-	if DirAccess.dir_exists_absolute(guest_folder):
-		var error: Error = _move_directory(guest_folder, account_folder)
-		if error != OK:
-			Log.error("UserDataManager: RegisterGuest: cannot move %s to %s: %s"
-					% [guest_folder, account_folder, error_string(error)])
-			return false
-	else:
-		DirAccess.make_dir_recursive_absolute(account_folder)
-
-	# The account's settings are written before the device is pointed at them. In the
-	# other order, an app killed in between would reopen on the guest's file sitting
-	# in the account's folder -- flagged a guest, with no token -- and could neither
-	# synchronize nor register again.
 	registered.is_guest = false
-	var settings_path: String = _get_teacher_settings_path(registered.email)
-	var save_error: Error = ResourceSaver.save(registered, settings_path)
+	var guest_folder: String = "user://".path_join(GUEST_FOLDER)
+
+	if not DirAccess.dir_exists_absolute(guest_folder):
+		# Nothing left to move: an earlier attempt moved it and stopped before the
+		# device followed, or there was no guest data at all. Never delete anything
+		# here -- the account's folder may hold the guest's progress already.
+		var account_folder: String = "user://".path_join(registered.email)
+		DirAccess.make_dir_recursive_absolute(account_folder)
+		var late_error: Error = ResourceSaver.save(registered, _get_teacher_settings_path(registered.email))
+		if late_error != OK:
+			Log.error("UserDataManager: RegisterGuest: cannot save the account: %s" % error_string(late_error))
+			return false
+		teacher_settings = registered
+		_point_device_at(registered.email)
+		return true
+
+	# Step 1.
+	var save_error: Error = ResourceSaver.save(registered, _get_teacher_settings_path(GUEST_FOLDER))
 	if save_error != OK:
-		Log.error("UserDataManager: RegisterGuest: cannot save %s: %s"
-				% [settings_path, error_string(save_error)])
+		Log.error("UserDataManager: RegisterGuest: cannot save the account over the guest: %s"
+				% error_string(save_error))
 		return false
 	teacher_settings = registered
-	_device_settings.teacher = registered.email
-	_save_device_settings()
 	Log.info("UserDataManager: Guest account registered as %s" % registered.email)
+
+	# Steps 2 and 3.
+	_device_settings.pending_account = registered.email
+	_save_device_settings()
+	_complete_pending_registration()
 	return true
+
+
+## Finishes moving a registered guest into its account's folder, if one is pending.
+##
+## Called at launch, before the account is loaded, and by register_guest itself.
+## Safe to call any number of times, and safe after a crash at any point: the guest
+## folder is only deleted once a full copy of it exists, and a folder at the account's
+## address while the guest folder still exists can only be an earlier, partial copy.
+func _complete_pending_registration() -> void:
+	var email: String = get_device_settings().pending_account
+	if email.is_empty():
+		return
+	var guest_folder: String = "user://".path_join(GUEST_FOLDER)
+	var account_folder: String = "user://".path_join(email)
+	if DirAccess.dir_exists_absolute(guest_folder):
+		if DirAccess.dir_exists_absolute(account_folder):
+			Utils.delete_directory_recursive(account_folder)
+		var move_error: Error = _move_directory(guest_folder, account_folder)
+		if move_error != OK:
+			# The account works from the guest folder meanwhile; the next launch tries again.
+			Log.warn("UserDataManager: Cannot move the registered guest to %s yet: %s"
+					% [account_folder, error_string(move_error)])
+			if _device_settings.teacher == email:
+				_device_settings.teacher = GUEST_FOLDER
+				_save_device_settings()
+			return
+	if not FileAccess.file_exists(_get_teacher_settings_path(email)):
+		Log.error("UserDataManager: Pending registration for %s, but its folder holds no account" % email)
+		_device_settings.pending_account = ""
+		_save_device_settings()
+		return
+	_point_device_at(email)
+
+
+## Points the device at an account's folder and clears any pending registration.
+func _point_device_at(email: String) -> void:
+	if _device_settings.teacher == GUEST_FOLDER or _device_settings.teacher == email:
+		_device_settings.teacher = email
+	_device_settings.pending_account = ""
+	_save_device_settings()
+	Log.info("UserDataManager: Registered guest now lives at %s" % "user://".path_join(email))
 
 
 ## Moves a folder, by renaming it where the system allows and by copying it where it
