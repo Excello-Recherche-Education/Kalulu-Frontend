@@ -484,6 +484,30 @@ func remove_guest_student(code: int) -> void:
 	Log.info("UserDataManager: Guest student %d removed" % code)
 
 
+## Erases every student's saves in the guest account, keeping the students and their
+## codes -- what /reset_language does to a registered account on the server.
+##
+## A change of language goes through here, exactly as it does for an account, and the
+## warning before it says so. Keeping the old language's progress instead would make
+## the guest something no account can be: the server holds one progression per
+## student, with no language to it, so registering could carry only one language and
+## the rest would be stranded on the device.
+func reset_guest_progress() -> void:
+	if not is_guest():
+		Log.error("UserDataManager: ResetGuestProgress: only a guest is reset locally")
+		return
+	if student:
+		student = ""
+	var folder: String = get_teacher_folder()
+	# The saves live in one folder per device; teacher_settings.tres beside them is
+	# the students and their codes, which stay.
+	for device: String in DirAccess.get_directories_at(folder):
+		Utils.delete_directory_recursive(folder.path_join(device))
+	teacher_settings.last_modified = Time.get_datetime_string_from_system(true)
+	save_teacher_settings()
+	Log.warn("UserDataManager: Guest progress erased for every student")
+
+
 ## The device to sign in on, when the account has exactly one; 0 otherwise, which
 ## sends the device through device selection first.
 static func _only_device_of(settings: TeacherSettings) -> int:

@@ -420,9 +420,10 @@ func _on_change_language_popup_accepted(new_language: String) -> void:
 	Log.warn("SettingsTeacherSettings: Change language from %s to %s" % [current_language, new_language])
 
 	if UserDataManager.is_guest():
-		# No server to reset, and nothing to wipe: progress is kept per language, so
-		# the students start the new one from scratch and find the old one intact if
-		# they come back. The splash takes the guest through the new language's pack.
+		# What the server does for an account, done here: every student's progress
+		# goes, the students and their codes stay -- as the popup has just warned. The
+		# splash then takes the guest through the new language's pack.
+		UserDataManager.reset_guest_progress()
 		UserDataManager.set_language(new_language)
 		UserDataManager.save_all()
 		get_tree().change_scene_to_file(SPLASH_SCREEN_PATH)

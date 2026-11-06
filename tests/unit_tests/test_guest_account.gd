@@ -163,6 +163,38 @@ func test_a_guest_adds_and_removes_students_on_its_own() -> void:
 	assert_eq(UserDataManager.get_number_of_students(), 1)
 
 
+func test_resetting_a_guest_erases_progress_but_keeps_its_students() -> void:
+	# A change of language does to a guest what /reset_language does to an account:
+	# the server keeps one progression per student, so a guest cannot keep two.
+	if _skip_if_this_machine_has_a_guest():
+		return
+	UserDataManager.create_guest(_guest_settings(2))
+	var codes: Array[int] = []
+	for student: StudentData in UserDataManager.teacher_settings.get_all_students_data():
+		codes.append(student.code)
+	var saves: Array[String] = []
+	for language: String in ["fr_FR", "es_AR"]:
+		var path: String = "user://".path_join(UserDataManagerClass.GUEST_FOLDER) \
+				.path_join("1").path_join(language).path_join(str(codes[0])).path_join("progression.tres")
+		DirAccess.make_dir_recursive_absolute(path.get_base_dir())
+		assert_eq(ResourceSaver.save(StudentProgression.new(), path), OK)
+		saves.append(path)
+
+	UserDataManager.reset_guest_progress()
+
+	for path: String in saves:
+		assert_false(FileAccess.file_exists(path), "%s is erased" % path)
+	assert_true(UserDataManager.guest_exists(), "the account itself stays")
+	var kept: Array[int] = []
+	for student: StudentData in UserDataManager.teacher_settings.get_all_students_data():
+		kept.append(student.code)
+	assert_eq(kept, codes, "the same students, with the same codes")
+	var saved: TeacherSettings = load(UserDataManager.get_teacher_settings_path()) as TeacherSettings
+	assert_eq(saved.get_number_of_students(), 2, "and on disk too")
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
 func test_registering_moves_everything_and_clears_the_guest() -> void:
 	if _skip_if_this_machine_has_a_guest():
 		return
