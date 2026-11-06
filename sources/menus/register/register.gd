@@ -1,12 +1,36 @@
+class_name RegisterWizard
 extends Control
 ## Drives the registration wizard: builds the list of steps and walks it.
 ##
 ## The step list is not fixed. Choosing an account type appends the teacher or
 ## parent branch, and choosing a device count appends one students step per
 ## device, so the list grows as the answers come in.
+##
+## It also runs the two guest journeys, which are the same machinery over fewer
+## steps -- see [enum Mode].
+
+## Which journey the wizard is on.
+enum Mode {
+	## The ordinary sign-up from the welcome screen.
+	REGISTER,
+	## "Continue as guest": how many students, then their codes. No email, no
+	## password, and nothing sent anywhere -- the account is made on this device.
+	CREATE_GUEST,
+	## Registering the guest signed in here, from the settings. Its students and
+	## their codes are kept, so neither the devices nor the students are asked for:
+	## only what a guest never had -- account type, email, password, conditions.
+	REGISTER_GUEST,
+}
 
 const BACK_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
+const SETTINGS_SCENE_PATH: String = "res://sources/menus/settings/teacher_settings.tscn"
 const NEXT_SCENE_PATH: String = "res://sources/menus/register/account_created.tscn"
+## Where a new guest goes: the pack is checked, and installed if need be, before
+## the downloader hands over to the access-code screen.
+const GUEST_NEXT_SCENE_PATH: String = "res://sources/menus/language_selection/package_downloader.tscn"
+## The device a guest is made with. A guest is one device; more can be added from
+## the settings, like any account.
+const GUEST_DEVICE: int = 1
 ## No device step has been built yet. Not a count any answer can produce, so the
 ## first pass through the device question always builds them.
 const NO_DEVICE_STEPS: int = -1
@@ -43,6 +67,18 @@ var built_devices_count: int = NO_DEVICE_STEPS
 ## What the offer to copy would put on the clipboard, for the mail to whoever runs the
 ## network. Built when the notice is shown, so it is what was read.
 var popup_copy_text: String = ""
+## The journey this run of the wizard is on, taken from [member next_mode] on entry.
+var mode: Mode = Mode.REGISTER
+
+## The journey the next wizard opened is to run.
+##
+## Static because the wizard is reached by a scene change, so there is no instance to
+## hand it to. Read once and put back to REGISTER as the wizard opens, so a later
+## sign-up from the welcome screen cannot inherit a guest journey.
+static var next_mode: Mode = Mode.REGISTER
+## The registration the server accepted, when the guest's data has yet to be moved to
+## it. Set only in REGISTER_GUEST, between the server's answer and a successful move.
+var accepted_registration: TeacherSettings = null
 
 @onready var language_step: PackedScene = preload("res://sources/menus/register/steps/language/language_step.tscn")
 @onready var teacher_steps: Array[PackedScene] = [
@@ -74,8 +110,26 @@ func _ready() -> void:
 	# A second registration in the same session must not inherit the folder the
 	# first one saved its codes to.
 	AccountCreated.saved_codes_path = ""
-	current_steps = [language_step.instantiate(), account_type_step.instantiate()]
-	Log.info("Register: Initialized registration flow with %d steps" % current_steps.size())
+	mode = next_mode
+	next_mode = Mode.REGISTER
+	match mode:
+		Mode.CREATE_GUEST:
+			current_steps = _guest_creation_steps()
+		Mode.REGISTER_GUEST:
+			if not UserDataManager.is_guest():
+				# Nothing to register: reached with no guest signed in, which only a
+				# stale next_mode could do. The ordinary sign-up is the safe reading.
+				Log.error("Register: Asked to register a guest, but no guest is signed in")
+				mode = Mode.REGISTER
+				current_steps = [language_step.instantiate(), account_type_step.instantiate()]
+			else:
+				# A copy, so backing out of the wizard leaves the guest untouched.
+				register_data = UserDataManager.teacher_settings.detached_copy()
+				register_data.language = UserDataManager.get_language()
+				current_steps = [account_type_step.instantiate()]
+		_:
+			current_steps = [language_step.instantiate(), account_type_step.instantiate()]
+	Log.info("Register: Initialized %s flow with %d steps" % [Mode.keys()[mode], current_steps.size()])
 	_go_to_step(current_step)
 	OpeningCurtain.open()
 
@@ -105,8 +159,25 @@ func _go_to_step(step_index: int) -> void:
 	current_step = step_index
 
 
+## The steps of a guest's creation: how many students, then their codes.
+func _guest_creation_steps() -> Array[Step]:
+	register_data.language = UserDataManager.get_device_settings().language
+	var count_step: StudentsCountStep = students_step.instantiate() as StudentsCountStep
+	count_step.device_id = GUEST_DEVICE
+	count_step.step_name = "guest_students"
+	count_step.question = "GUEST_STUDENT_COUNT_PROMPT"
+	count_step.infos = "GUEST_STUDENT_COUNT_INFOS"
+	var codes_step: RecapStep = last_steps[-1].instantiate() as RecapStep
+	codes_step.guest_codes_only = true
+	return [count_step, codes_step]
+
+
 func _on_step_back(_step: Step) -> void:
 	if current_step == 0:
+		if mode == Mode.REGISTER_GUEST:
+			Log.info("Register: Back to the settings, the guest stays a guest")
+			get_tree().change_scene_to_file(SETTINGS_SCENE_PATH)
+			return
 		Log.info("Register: Back to the welcome screen from first step")
 		get_tree().change_scene_to_file(BACK_SCENE_PATH)
 	else:
@@ -117,6 +188,9 @@ func _on_step_back(_step: Step) -> void:
 func _on_step_completed(step: Step) -> void:
 	Log.trace("Register: Completed step %s" % step.step_name)
 	match step.step_name:
+		"type" when mode == Mode.REGISTER_GUEST:
+			_remove_future_steps()
+			_append_guest_registration_steps()
 		"type":
 			# Adds teacher or parent steps
 			_remove_future_steps()
@@ -172,6 +246,30 @@ func _on_step_completed(step: Step) -> void:
 		return
 
 	await _continue()
+
+
+## Adds what registering a guest asks after the account type.
+##
+## A teacher is asked the method, a parent each child's name, level and age -- what
+## either branch would have asked anyway, minus the counts the guest already has
+## answers for. Each child step edits the copy's own StudentData, so the names typed
+## here reach the server along with the codes.
+func _append_guest_registration_steps() -> void:
+	if register_data.account_type == TeacherSettings.AccountType.TEACHER:
+		current_steps.append(teacher_steps[0].instantiate())
+	else:
+		var student_count: int = 1
+		for student: StudentData in register_data.get_all_students_data():
+			var student_step_scene: Step = player_step.instantiate()
+			student_step_scene.question = tr(student_step_scene.question).format({"number": student_count})
+			student_step_scene.data = student
+			current_steps.append(student_step_scene)
+			student_count += 1
+	for scene: PackedScene in last_steps:
+		current_steps.append(scene.instantiate())
+	var recap: RecapStep = current_steps[-1] as RecapStep
+	if recap:
+		recap.codes_already_given = true
 
 
 ## Moves to the next step, or submits when the last one is done.
@@ -243,6 +341,16 @@ func _device_is_empty(device_id: int) -> bool:
 
 
 func _submit() -> void:
+	if mode == Mode.CREATE_GUEST:
+		_create_guest()
+		return
+	if accepted_registration:
+		# The server accepted this registration already and only the move of the
+		# guest's data failed. Registering again would be refused -- the address is
+		# taken now, by this very account -- so Confirm retries the move instead.
+		Log.info("Register: Account already created, retrying the move of the guest's data")
+		await _finish_guest_registration()
+		return
 	Log.info("Register: Submitting registration for %s" % str(register_data.email))
 	var res: Dictionary = await ServerManager.register(register_data.to_dict())
 	if res.code != 200:
@@ -256,11 +364,47 @@ func _submit() -> void:
 	Log.info("Register: Registration request successful, saving data")
 	register_data.last_modified = res.body.last_modified
 	register_data.token = res.body.token
+	if mode == Mode.REGISTER_GUEST:
+		# Frozen as the server accepted it, so a retry cannot be steered by an answer
+		# changed afterwards: the account exists under this address, with these codes.
+		accepted_registration = register_data.detached_copy()
+		await _finish_guest_registration()
+		return
 	if UserDataManager.register(register_data):
 		Log.info("Register: Registration stored locally, moving to package downloader")
 		get_tree().change_scene_to_file(NEXT_SCENE_PATH)
 	else:
 		Log.error("Register: Failed to persist registration locally")
+
+
+## Saves the new guest on this device and heads for the child's screens.
+func _create_guest() -> void:
+	register_data.account_type = TeacherSettings.AccountType.TEACHER
+	register_data.education_method = TeacherSettings.EducationMethod.APP_ONLY
+	if not UserDataManager.create_guest(register_data):
+		Log.error("Register: Failed to save the guest account")
+		_show_local_failure("GUEST_SAVE_FAILED")
+		return
+	Log.info("Register: Guest account created, moving to the package downloader")
+	get_tree().change_scene_to_file(GUEST_NEXT_SCENE_PATH)
+
+
+## Moves the guest's data under the account the server has just created.
+##
+## The server already has the account at this point. A failure leaves the device a
+## guest with every file in place, and the wizard on its last step: Confirm then
+## retries the move, without asking the server again.
+func _finish_guest_registration() -> void:
+	if not UserDataManager.register_guest(accepted_registration):
+		Log.error("Register: The account exists, but the guest's data could not be moved to it")
+		_show_local_failure("GUEST_MOVE_FAILED")
+		return
+	Log.info("Register: Guest registered; pushing its progress to the server")
+	# The server has none of the guest's progress yet, so every local timestamp is
+	# newer and this sends all of it. A failure here loses nothing: the data is in
+	# the account's folder now, and the next synchronization sends it.
+	await UserDataManager.user_database_synchronizer.synchronize()
+	get_tree().change_scene_to_file(NEXT_SCENE_PATH)
 
 
 ## Removes the steps after the current one, along with the data they collected.
@@ -344,6 +488,16 @@ func _show_failure(code: int, from_the_server: String) -> void:
 		proxy_panel.hide()
 	else:
 		proxy_panel.refresh(server.last_diagnosis)
+	popup.show()
+
+
+## Puts a failure that happened on this device on the card -- no diagnosis, no proxy
+## and nothing to copy, since no network was involved.
+func _show_local_failure(message_key: String) -> void:
+	popup_title_label.text = tr("REGISTER_FAILED")
+	popup_info_label.text = tr(message_key)
+	popup_copy_button.hide()
+	proxy_panel.hide()
 	popup.show()
 
 
