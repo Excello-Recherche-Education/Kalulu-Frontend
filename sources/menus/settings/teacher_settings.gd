@@ -461,7 +461,7 @@ func _on_add_student_popup_accepted() -> void:
 		if UserDataManager.add_guest_student(selected_device):
 			show_device(selected_device)
 		else:
-			_report_add_student_failure(_guest_student_limit_response())
+			_report_student_limit()
 		return
 	var res: Dictionary = await ServerManager.add_student({"device": selected_device})
 	if res.code == 200:
@@ -491,28 +491,29 @@ func _report_add_student_failure(res: Dictionary) -> void:
 	var body: Dictionary = res.body as Dictionary if res.body is Dictionary else {}
 
 	if body.get("error", "") == STUDENT_LIMIT_ERROR:
-		add_student_error_popup.title_text = "MAXIMUM_STUDENTS_REACHED"
-		# The number comes from the account rather than from a copy of the
-		# server's limit kept here: a student's code is what the child taps to
-		# log in, so the ceiling is however many codes exist, and an account that
-		# has just been refused one is sitting exactly on it. A second copy of
-		# that number here could only ever drift.
-		add_student_error_popup.content_text = tr("MAXIMUM_STUDENTS_REACHED_POPUP").format(
-			{"number": get_student_count()})
-	else:
-		add_student_error_popup.title_text = ""
-		add_student_error_popup.content_text = "ADD_STUDENT_FAILED"
+		_report_student_limit()
+		return
+	add_student_error_popup.title_text = ""
+	add_student_error_popup.content_text = "ADD_STUDENT_FAILED"
+	add_student_error_popup.show()
+
+
+## Says the account has used every student code. Reached from the server's refusal,
+## and directly by a guest, which runs out of codes on its own.
+func _report_student_limit() -> void:
+	add_student_error_popup.title_text = "MAXIMUM_STUDENTS_REACHED"
+	# The number comes from the account rather than from a copy of the server's
+	# limit kept here: a student's code is what the child taps to log in, so the
+	# ceiling is however many codes exist, and an account that has just been refused
+	# one is sitting exactly on it. A second copy of that number here could only
+	# ever drift.
+	add_student_error_popup.content_text = tr("MAXIMUM_STUDENTS_REACHED_POPUP").format(
+		{"number": get_student_count()})
 	add_student_error_popup.show()
 
 
 func _on_add_device_button_pressed() -> void:
 	add_device_popup.show()
-
-
-## What the server says when the codes have run out, for a guest that ran out on its
-## own -- so both kinds of account get the same notice from the same place.
-func _guest_student_limit_response() -> Dictionary:
-	return {"code": 400, "body": {"error": STUDENT_LIMIT_ERROR}}
 
 
 func _on_add_device_popup_accepted() -> void:
@@ -521,7 +522,7 @@ func _on_add_device_popup_accepted() -> void:
 			selected_device = last_device_id + 1
 			refresh_devices()
 		else:
-			_report_add_student_failure(_guest_student_limit_response())
+			_report_student_limit()
 		return
 	var res: Dictionary = await ServerManager.add_student({"device": last_device_id + 1})
 	if res.code == 200:
@@ -544,8 +545,10 @@ func _on_delete_student_popup_accepted() -> void:
 	if selected_device < 0:
 		return
 	if UserDataManager.is_guest():
+		if not UserDataManager.remove_guest_student(int(lesson_unlocks.student)):
+			_report_action_failure("DELETE_STUDENT", "GUEST_LAST_STUDENT")
+			return
 		lesson_unlocks.hide()
-		UserDataManager.remove_guest_student(int(lesson_unlocks.student))
 		if UserDataManager.teacher_settings.students.has(selected_device):
 			show_device(selected_device)
 		else:

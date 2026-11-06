@@ -436,7 +436,7 @@ func register_guest(registered: TeacherSettings) -> bool:
 		Utils.delete_directory_recursive(account_folder)
 
 	if DirAccess.dir_exists_absolute(guest_folder):
-		var error: Error = DirAccess.rename_absolute(guest_folder, account_folder)
+		var error: Error = _move_directory(guest_folder, account_folder)
 		if error != OK:
 			Log.error("UserDataManager: RegisterGuest: cannot move %s to %s: %s"
 					% [guest_folder, account_folder, error_string(error)])
@@ -444,13 +444,55 @@ func register_guest(registered: TeacherSettings) -> bool:
 	else:
 		DirAccess.make_dir_recursive_absolute(account_folder)
 
+	# The account's settings are written before the device is pointed at them. In the
+	# other order, an app killed in between would reopen on the guest's file sitting
+	# in the account's folder -- flagged a guest, with no token -- and could neither
+	# synchronize nor register again.
 	registered.is_guest = false
+	var settings_path: String = _get_teacher_settings_path(registered.email)
+	var save_error: Error = ResourceSaver.save(registered, settings_path)
+	if save_error != OK:
+		Log.error("UserDataManager: RegisterGuest: cannot save %s: %s"
+				% [settings_path, error_string(save_error)])
+		return false
+	teacher_settings = registered
 	_device_settings.teacher = registered.email
 	_save_device_settings()
-	teacher_settings = registered
-	save_teacher_settings()
 	Log.info("UserDataManager: Guest account registered as %s" % registered.email)
 	return true
+
+
+## Moves a folder, by renaming it where the system allows and by copying it where it
+## does not -- a file held open on Windows refuses the rename, not the copy. The
+## source is only deleted once every file has been copied.
+static func _move_directory(from: String, to: String) -> Error:
+	if DirAccess.rename_absolute(from, to) == OK:
+		return OK
+	Log.warn("UserDataManager: Cannot rename %s, copying it instead" % from)
+	var copy_error: Error = _copy_directory(from, to)
+	if copy_error != OK:
+		return copy_error
+	if Utils.delete_directory_recursive(from) != OK:
+		# Everything is in its new place, so the move has happened. What is left must
+		# at least stop looking like an account: without its settings file it is no
+		# longer a guest "Continue as guest" would resume.
+		DirAccess.remove_absolute(from.path_join("teacher_settings.tres"))
+	return OK
+
+
+static func _copy_directory(from: String, to: String) -> Error:
+	var make_error: Error = DirAccess.make_dir_recursive_absolute(to)
+	if make_error != OK:
+		return make_error
+	for file_name: String in DirAccess.get_files_at(from):
+		var file_error: Error = DirAccess.copy_absolute(from.path_join(file_name), to.path_join(file_name))
+		if file_error != OK:
+			return file_error
+	for folder_name: String in DirAccess.get_directories_at(from):
+		var folder_error: Error = _copy_directory(from.path_join(folder_name), to.path_join(folder_name))
+		if folder_error != OK:
+			return folder_error
+	return OK
 
 
 ## Adds a student to the guest account, on `device`. Null when the codes have run out.
@@ -466,14 +508,22 @@ func add_guest_student(device: int) -> StudentData:
 
 
 ## Removes a student from the guest account, along with everything saved for them.
+## Returns false, and removes nothing, for the last student.
 ##
 ## What update_configuration does once the server has removed a student, done here
 ## because there is no server to ask: the saves go, and a device left with no
 ## students stops being this tablet's device.
-func remove_guest_student(code: int) -> void:
+##
+## The last student stays because an account with none is a dead end: the tablet has
+## no device to sign in on, and the server refuses to register an account without
+## students, so the guest could never be registered either.
+func remove_guest_student(code: int) -> bool:
 	if not is_guest():
 		Log.error("UserDataManager: RemoveGuestStudent: only a guest removes students locally")
-		return
+		return false
+	if teacher_settings.get_number_of_students() <= 1:
+		Log.info("UserDataManager: RemoveGuestStudent: %d is the guest's last student, kept" % code)
+		return false
 	teacher_settings.delete_student(code)
 	teacher_settings.last_modified = Time.get_datetime_string_from_system(true)
 	save_teacher_settings()
@@ -482,6 +532,7 @@ func remove_guest_student(code: int) -> void:
 		_save_device_settings()
 	_delete_inexistants_students_saves()
 	Log.info("UserDataManager: Guest student %d removed" % code)
+	return true
 
 
 ## Erases every student's saves in the guest account, keeping the students and their

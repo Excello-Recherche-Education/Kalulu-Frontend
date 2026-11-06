@@ -77,6 +77,8 @@ var request_in_flight: bool = false
 ## The message currently on display, so the copy sends what was read rather than
 ## whatever the screen has moved on to.
 var displayed_error_key: String = ""
+## True once the screen has started leaving for the guest's next screen.
+var leaving: bool = false
 
 @onready var footer_room: MarginContainer = %FooterRoom
 @onready var scroll: ScrollContainer = %Scroll
@@ -396,30 +398,47 @@ func _on_reset_password_pressed() -> void:
 ## Only a new guest gets the warning -- that nothing leaves this device, and that
 ## uninstalling the app loses all of it.
 func _on_guest_pressed() -> void:
-	if request_in_flight:
-		Log.trace("Welcome: Ignoring the guest button while a request is in flight")
+	if request_in_flight or leaving:
+		Log.trace("Welcome: Ignoring the guest button while a request or a departure is under way")
 		return
 	if UserDataManager.guest_exists():
 		Log.info("Welcome: Resuming the guest account already on this device")
 		if UserDataManager.resume_guest():
-			await OpeningCurtain.close()
-			_change_scene(LANGUAGE_CHECK_SCENE_PATH)
+			await _leave_for(LANGUAGE_CHECK_SCENE_PATH)
 			return
 		Log.warn("Welcome: The guest account could not be resumed; offering a new one")
 	guest_popup.show()
 
 
 func _on_guest_popup_accepted() -> void:
+	if leaving:
+		return
 	Log.info("Welcome: Guest account confirmed, asking how many students")
 	RegisterWizard.next_mode = RegisterWizard.Mode.CREATE_GUEST
+	await _leave_for(REGISTER_SCENE_PATH)
+
+
+## Lowers the curtain and changes scene, once.
+##
+## The curtain takes a moment to close, and a second tap landing in it -- a double
+## tap on a slow tablet -- would resume the guest again and race a second scene
+## change against the first.
+func _leave_for(path: String) -> void:
+	leaving = true
+	guest_button.disabled = true
 	await OpeningCurtain.close()
-	_change_scene(REGISTER_SCENE_PATH)
+	if _change_scene(path) != OK:
+		# Still here: let the screen be used again rather than leave a dead button.
+		leaving = false
+		guest_button.disabled = false
+		OpeningCurtain.open()
 
 
-func _change_scene(path: String) -> void:
+func _change_scene(path: String) -> Error:
 	var error: Error = get_tree().change_scene_to_file(path)
 	if error != OK:
 		Log.error(error_string(error))
+	return error
 
 
 # --- Sign up (adult check) ---------------------------------------------------

@@ -76,6 +76,9 @@ var mode: Mode = Mode.REGISTER
 ## hand it to. Read once and put back to REGISTER as the wizard opens, so a later
 ## sign-up from the welcome screen cannot inherit a guest journey.
 static var next_mode: Mode = Mode.REGISTER
+## The registration the server accepted, when the guest's data has yet to be moved to
+## it. Set only in REGISTER_GUEST, between the server's answer and a successful move.
+var accepted_registration: TeacherSettings = null
 
 @onready var language_step: PackedScene = preload("res://sources/menus/register/steps/language/language_step.tscn")
 @onready var teacher_steps: Array[PackedScene] = [
@@ -341,6 +344,13 @@ func _submit() -> void:
 	if mode == Mode.CREATE_GUEST:
 		_create_guest()
 		return
+	if accepted_registration:
+		# The server accepted this registration already and only the move of the
+		# guest's data failed. Registering again would be refused -- the address is
+		# taken now, by this very account -- so Confirm retries the move instead.
+		Log.info("Register: Account already created, retrying the move of the guest's data")
+		await _finish_guest_registration()
+		return
 	Log.info("Register: Submitting registration for %s" % str(register_data.email))
 	var res: Dictionary = await ServerManager.register(register_data.to_dict())
 	if res.code != 200:
@@ -355,6 +365,9 @@ func _submit() -> void:
 	register_data.last_modified = res.body.last_modified
 	register_data.token = res.body.token
 	if mode == Mode.REGISTER_GUEST:
+		# Frozen as the server accepted it, so a retry cannot be steered by an answer
+		# changed afterwards: the account exists under this address, with these codes.
+		accepted_registration = register_data.detached_copy()
 		await _finish_guest_registration()
 		return
 	if UserDataManager.register(register_data):
@@ -378,11 +391,11 @@ func _create_guest() -> void:
 
 ## Moves the guest's data under the account the server has just created.
 ##
-## The server already has the account at this point, so a failure here leaves an
-## account with no data on this device -- said in the log, since there is nothing
-## more useful to do from this screen than sign in to it normally.
+## The server already has the account at this point. A failure leaves the device a
+## guest with every file in place, and the wizard on its last step: Confirm then
+## retries the move, without asking the server again.
 func _finish_guest_registration() -> void:
-	if not UserDataManager.register_guest(register_data):
+	if not UserDataManager.register_guest(accepted_registration):
 		Log.error("Register: The account exists, but the guest's data could not be moved to it")
 		_show_local_failure("GUEST_MOVE_FAILED")
 		return

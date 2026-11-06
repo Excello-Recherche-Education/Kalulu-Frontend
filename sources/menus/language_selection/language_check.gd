@@ -1,3 +1,4 @@
+class_name LanguageCheck
 extends Node
 
 const ERROR_MESSAGES: Array[String] = [
@@ -32,10 +33,7 @@ func _ready() -> void:
 		_show_error(ERROR_MESSAGES[0])
 		return
 	if teacher_settings.is_guest:
-		# The server keeps no language for an account it has never heard of: the
-		# device's own is the guest's, which is where the welcome screen put it.
-		Log.trace("LanguageCheck: Guest account, using the device language")
-		try_with_local_data()
+		_use_the_guest_language()
 		return
 	Log.trace("LanguageCheck: Re-validating language with server on every login")
 	if not await ServerManager.check_internet_access():
@@ -71,6 +69,33 @@ func _ready() -> void:
 
 	UserDataManager.save_all()
 	go_to_package_download()
+
+
+## Puts the device back on the guest's own language, which no server keeps for it.
+##
+## The guest's, not the device's: the welcome screen's language field changes the
+## device language, so a guest resumed after somebody picked another language there
+## would otherwise switch to it -- silently, onto blank progress, with its own saves
+## left behind in the old language. Changing a guest's language goes through the
+## settings, which warn and erase the progress, exactly as for an account.
+func _use_the_guest_language() -> void:
+	var guest_language: String = language_for_guest(teacher_settings._language, device_language)
+	if guest_language != teacher_settings._language:
+		Log.warn("LanguageCheck: Guest language '%s' unusable, using the device's" % teacher_settings._language)
+		try_with_local_data()
+		return
+	if guest_language != device_language:
+		Log.info("LanguageCheck: Device on %s, putting it back on the guest's %s"
+				% [device_language, guest_language])
+	UserDataManager.set_language(guest_language)
+	go_to_package_download()
+
+
+## The language a guest plays in: its own, unless that is not one Kalulu has.
+static func language_for_guest(guest_language: String, device_language: String) -> String:
+	if guest_language in Utils.SUPPORTED_LOCALES.keys():
+		return guest_language
+	return device_language
 
 
 func try_with_local_data() -> void:
