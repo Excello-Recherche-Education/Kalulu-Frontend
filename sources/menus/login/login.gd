@@ -16,10 +16,13 @@ var right_password_speech: AudioStream
 @onready var keypad: CodeKeypad = %CodeKeypad
 @onready var adult_check: AdultCheckPopup = %AdultCheck
 @onready var kalulu_button: CanvasItem = %KaluluButton
+@onready var guest_reminder: PanelContainer = %GuestReminder
+@onready var guest_reminder_label: Label = %GuestReminderLabel
 
 
 func _ready() -> void:
 	UserDataManager.stop_synchronization_timer()
+	_show_guest_reminder()
 	
 	# Check if the database is connected, if not go to loader
 	if not Database.is_open:
@@ -56,6 +59,22 @@ func _ready() -> void:
 	kalulu_button.show()
 	
 	music_player.play()
+
+
+## Reminds whoever holds the tablet, on every visit, that this is a guest account.
+##
+## This is the screen a guest device opens on each time, so it is the one place the
+## reminder is sure to be read: nothing is saved anywhere else, uninstalling the app
+## loses all of it, and the way out is the Register button in the settings.
+## Amber, like the server warning, because it is a warning -- not a decoration.
+func _show_guest_reminder() -> void:
+	guest_reminder.visible = UserDataManager.is_guest()
+	if not guest_reminder.visible:
+		return
+	var panel: StyleBoxFlat = MenuTheme.flat_stylebox(Design.WARNING, Design.CARD_RADIUS)
+	panel.set_content_margin_all(32)
+	guest_reminder.add_theme_stylebox_override("panel", panel)
+	guest_reminder_label.add_theme_color_override("font_color", Design.NAVY)
 
 
 func _on_code_keypad_code_entered(password: String) -> void:

@@ -5,6 +5,9 @@ const MASTER_VOLUME_PROPERTY_NAME: String = "master_volume"
 const MUSIC_VOLUME_PROPERTY_NAME: String = "music_volume"
 const VOICE_VOLUME_PROPERTY_NAME: String = "voice_volume"
 const EFFECTS_VOLUME_PROPERTY_NAME: String = "effects_volume"
+## The folder a guest account keeps its data in, under user://, where a registered
+## account uses its email address. Cannot clash with one: it has no "@".
+const GUEST_FOLDER: String = "guest"
 
 var student: String = "":
 	set(student_name):
@@ -306,7 +309,9 @@ func login_student(code: String) -> bool:
 			if int(stud.code) == int(code):
 				student = code
 				_start_student_session()
-				(ServerManager as ServerManagerClass).first_login_student()
+				# A guest is unknown to the server, which would only refuse the session.
+				if not is_guest():
+					(ServerManager as ServerManagerClass).first_login_student()
 				Log.info("UserDataManager: Student %s logged in" % code)
 				return true
 	
@@ -342,6 +347,149 @@ func _start_student_session(reset_only: bool = false) -> void:
 	while student_session_id == 0:
 		student_session_id = rng.randi()
 	Log.trace("UserDataManager: New student session id %s" % str(student_session_id))
+
+#endregion
+
+#region Guest account
+
+## True when the account signed in on this device is a guest.
+func is_guest() -> bool:
+	return teacher_settings != null and teacher_settings.is_guest
+
+
+## True when this device holds a guest account, signed in or not.
+func guest_exists() -> bool:
+	return FileAccess.file_exists(_get_teacher_settings_path(GUEST_FOLDER))
+
+
+## Makes `settings` this device's guest account and signs it in.
+##
+## Whatever guest was here before is deleted first: this is only reached from
+## "Continue as guest" when there was none to resume, so anything left in the
+## folder is debris that would otherwise be mixed into the new account.
+func create_guest(settings: TeacherSettings) -> bool:
+	if not settings:
+		Log.warn("UserDataManager: CreateGuest: called without settings")
+		return false
+	var folder: String = "user://".path_join(GUEST_FOLDER)
+	if DirAccess.dir_exists_absolute(folder):
+		Utils.delete_directory_recursive(folder)
+
+	settings.is_guest = true
+	settings.email = ""
+	settings.token = ""
+	settings.last_modified = Time.get_datetime_string_from_system(true)
+
+	_device_settings.teacher = GUEST_FOLDER
+	_device_settings.device_id = _only_device_of(settings)
+	_save_device_settings()
+
+	var error: Error = DirAccess.make_dir_recursive_absolute(folder)
+	if error != OK:
+		Log.error("UserDataManager: CreateGuest: cannot create %s: %s" % [folder, error_string(error)])
+		return false
+	teacher_settings = settings
+	save_teacher_settings()
+	Log.info("UserDataManager: Guest account created with %d students" % settings.get_number_of_students())
+	return true
+
+
+## Signs this device back into the guest account it already holds.
+func resume_guest() -> bool:
+	if not guest_exists():
+		Log.warn("UserDataManager: ResumeGuest: no guest account on this device")
+		return false
+	_device_settings.teacher = GUEST_FOLDER
+	teacher_settings = null
+	_load_teacher_settings()
+	if not teacher_settings:
+		# _load_teacher_settings has already signed the device out and said why.
+		return false
+	if not teacher_settings.students.has(_device_settings.device_id):
+		_device_settings.device_id = _only_device_of(teacher_settings)
+	_save_device_settings()
+	Log.info("UserDataManager: Guest account resumed")
+	return true
+
+
+## Turns the guest account into the account the server has just registered.
+##
+## The guest folder is renamed to the account's own, so every student's progress,
+## remediation and boss data comes along untouched, and the guest folder is gone
+## afterwards -- "Continue as guest" starts a brand-new guest from then on. The
+## synchronization that follows pushes the progress up: the server has none for
+## these students yet, so every local timestamp is newer than its.
+##
+## `registered` must carry the email, the token and the server's last_modified.
+func register_guest(registered: TeacherSettings) -> bool:
+	if not registered or registered.email.is_empty() or registered.token.is_empty():
+		Log.error("UserDataManager: RegisterGuest: the registration is incomplete")
+		return false
+	var guest_folder: String = "user://".path_join(GUEST_FOLDER)
+	var account_folder: String = "user://".path_join(registered.email)
+
+	# Whatever sits under this address is from an account that no longer exists:
+	# the server has just accepted the address as new. Left in place, the rename
+	# below would fail, or worse, merge an old account's students into this one.
+	if DirAccess.dir_exists_absolute(account_folder):
+		Log.warn("UserDataManager: RegisterGuest: removing stale data at %s" % account_folder)
+		Utils.delete_directory_recursive(account_folder)
+
+	if DirAccess.dir_exists_absolute(guest_folder):
+		var error: Error = DirAccess.rename_absolute(guest_folder, account_folder)
+		if error != OK:
+			Log.error("UserDataManager: RegisterGuest: cannot move %s to %s: %s"
+					% [guest_folder, account_folder, error_string(error)])
+			return false
+	else:
+		DirAccess.make_dir_recursive_absolute(account_folder)
+
+	registered.is_guest = false
+	_device_settings.teacher = registered.email
+	_save_device_settings()
+	teacher_settings = registered
+	save_teacher_settings()
+	Log.info("UserDataManager: Guest account registered as %s" % registered.email)
+	return true
+
+
+## Adds a student to the guest account, on `device`. Null when the codes have run out.
+func add_guest_student(device: int) -> StudentData:
+	if not is_guest():
+		Log.error("UserDataManager: AddGuestStudent: only a guest adds students locally")
+		return null
+	var student_data: StudentData = teacher_settings.add_local_student(device)
+	if student_data:
+		save_teacher_settings()
+		Log.info("UserDataManager: Guest student %d added on device %d" % [student_data.code, device])
+	return student_data
+
+
+## Removes a student from the guest account, along with everything saved for them.
+##
+## What update_configuration does once the server has removed a student, done here
+## because there is no server to ask: the saves go, and a device left with no
+## students stops being this tablet's device.
+func remove_guest_student(code: int) -> void:
+	if not is_guest():
+		Log.error("UserDataManager: RemoveGuestStudent: only a guest removes students locally")
+		return
+	teacher_settings.delete_student(code)
+	teacher_settings.last_modified = Time.get_datetime_string_from_system(true)
+	save_teacher_settings()
+	if not _device_settings.device_id in teacher_settings.students.keys():
+		_device_settings.device_id = 0
+		_save_device_settings()
+	_delete_inexistants_students_saves()
+	Log.info("UserDataManager: Guest student %d removed" % code)
+
+
+## The device to sign in on, when the account has exactly one; 0 otherwise, which
+## sends the device through device selection first.
+static func _only_device_of(settings: TeacherSettings) -> int:
+	if settings.students.size() == 1:
+		return settings.students.keys()[0] as int
+	return 0
 
 #endregion
 

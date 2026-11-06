@@ -31,6 +31,12 @@ func _ready() -> void:
 		UserDataManager.logout()
 		_show_error(ERROR_MESSAGES[0])
 		return
+	if teacher_settings.is_guest:
+		# The server keeps no language for an account it has never heard of: the
+		# device's own is the guest's, which is where the welcome screen put it.
+		Log.trace("LanguageCheck: Guest account, using the device language")
+		try_with_local_data()
+		return
 	Log.trace("LanguageCheck: Re-validating language with server on every login")
 	if not await ServerManager.check_internet_access():
 		Log.trace("LanguageCheck: No internet access")

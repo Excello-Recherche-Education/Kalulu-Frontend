@@ -204,7 +204,7 @@ func _start() -> void:
 	# Gets the info of the language pack on the server
 	var res: Dictionary = await ServerManager.get_language_pack_url(language)
 	Log.trace("PackageDownloader: Language pack info received with code %d" % res.code)
-	match outcome_for_pack_url(res.code as int):
+	match outcome_for_pack_url(res.code as int, teacher_settings.is_guest):
 		PackUrlOutcome.USE:
 			server_language_version = Time.get_datetime_dict_from_datetime_string(res.body.last_modified as String, false)
 			Log.trace("PackageDownloader: Server language version parsed as %s" % str(server_language_version))
@@ -272,11 +272,16 @@ func _start() -> void:
 ## not be mistaken for an invalid token" -- and this end was undoing that by treating
 ## the 500 as a rejected token anyway. Code 0 is not even an answer: no HTTP response
 ## came back at all, which is the network, and is what a school firewall produces.
-static func outcome_for_pack_url(code: int) -> PackUrlOutcome:
+##
+## A guest sends no token, so a 401 cannot be about its account -- it is a server
+## that still wants one for packs (the backend before Kalulu-Backend#99). Signing the
+## guest out over it would hide its only account behind "Continue as guest" for
+## nothing; it is a failed download like any other.
+static func outcome_for_pack_url(code: int, guest: bool = false) -> PackUrlOutcome:
 	if code == 200:
 		return PackUrlOutcome.USE
 	if code == 401:
-		return PackUrlOutcome.SIGN_OUT
+		return PackUrlOutcome.FAILED if guest else PackUrlOutcome.SIGN_OUT
 	if code == 0:
 		return PackUrlOutcome.OFFLINE
 	return PackUrlOutcome.FAILED

@@ -80,6 +80,32 @@ layout_mode = 2
 theme_type_variation = &"Title"
 text = "SETTINGS"
 
+[node name="GuestBanner" type="PanelContainer" parent="Page"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="GuestBannerRow" type="HBoxContainer" parent="Page/GuestBanner"]
+layout_mode = 2
+theme_override_constants/separation = 48
+
+[node name="GuestBannerLabel" type="Label" parent="Page/GuestBanner/GuestBannerRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CardLabel"
+text = "GUEST_SETTINGS_WARNING"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RegisterButton" type="Button" parent="Page/GuestBanner/GuestBannerRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(640, 180)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"PrimaryButton"
+text = "REGISTER_GUEST_ACCOUNT"
+
 [node name="ControlsRow" type="HBoxContainer" parent="Page" unique_id=1498000772]
 layout_mode = 2
 theme_override_constants/separation = 0
@@ -149,6 +175,7 @@ size_flags_vertical = 8
 theme_override_constants/separation = 36
 
 [node name="SynchronizeButton" type="Button" parent="Page/ControlsRow/Actions" unique_id=1862840753]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "SYNCHRONIZE_ACCOUNT"
@@ -158,6 +185,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="Dashboard" type="Button" parent="Page/ControlsRow/Actions" unique_id=1011060742]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 tooltip_text = "DASHBOARD"
@@ -346,6 +374,12 @@ unique_name_in_owner = true
 title_text = "STUDENT_CODES"
 acknowledge_only = true
 
+[node name="RegisterOfflinePopup" parent="." instance=ExtResource("7_jetb7")]
+unique_name_in_owner = true
+title_text = "REGISTER_GUEST_ACCOUNT"
+content_text = "GUEST_REGISTER_NEEDS_INTERNET"
+acknowledge_only = true
+
 [node name="ExportCodesFileDialog" type="FileDialog" parent="." unique_id=2034874559]
 unique_name_in_owner = true
 initial_position = 2
@@ -354,6 +388,7 @@ ok_button_text = "Save"
 filters = PackedStringArray("*.pdf")
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Page/GuestBanner/GuestBannerRow/RegisterButton" to="." method="_on_register_button_pressed"]
 [connection signal="item_selected" from="Page/ControlsRow/AccountTypeGroup/AccountTypeOptionButton" to="." method="_on_account_type_option_button_item_selected"]
 [connection signal="item_selected" from="Page/ControlsRow/EducationMethodGroup/EducationMethodOptionButton" to="." method="_on_education_method_option_button_item_selected"]
 [connection signal="pressed" from="Page/ControlsRow/Actions/SynchronizeButton" to="." method="_on_synchronize_button_pressed"]

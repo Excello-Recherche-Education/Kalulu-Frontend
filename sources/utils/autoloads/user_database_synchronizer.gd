@@ -469,6 +469,12 @@ func synchronize() -> void:
 	if synchronizing:
 		Log.trace("UserDatabaseSynchronizer: User synchronization already started, cancel double-call.")
 		return
+	if UserDataManager.is_guest():
+		# Nothing to synchronize with: the server has never heard of a guest, and
+		# would answer every request with a 401.
+		Log.trace("UserDatabaseSynchronizer: Guest account, nothing to synchronize.")
+		postponed = false
+		return
 	if not Database.is_open:
 		# Progression is validated against the lesson count, which is only known
 		# once the language pack is installed. Synchronizing before that applies
