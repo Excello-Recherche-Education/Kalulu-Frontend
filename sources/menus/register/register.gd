@@ -31,6 +31,8 @@ const GUEST_NEXT_SCENE_PATH: String = "res://sources/menus/language_selection/pa
 ## The device a guest is made with. A guest is one device; more can be added from
 ## the settings, like any account.
 const GUEST_DEVICE: int = 1
+## What the server answers a registration whose address is already an account's.
+const ADDRESS_TAKEN_CODE: int = 409
 ## No device step has been built yet. Not a count any answer can produce, so the
 ## first pass through the device question always builds them.
 const NO_DEVICE_STEPS: int = -1
@@ -352,7 +354,14 @@ func _submit() -> void:
 		await _finish_guest_registration()
 		return
 	Log.info("Register: Submitting registration for %s" % str(register_data.email))
+	if mode == Mode.REGISTER_GUEST:
+		# Before the request, not after: its answer can be lost once the server has
+		# created the account, and this note is what lets the account claim the guest.
+		UserDataManager.note_guest_registration(register_data.email)
 	var res: Dictionary = await ServerManager.register(register_data.to_dict())
+	if res.code == ADDRESS_TAKEN_CODE and mode == Mode.REGISTER_GUEST \
+			and await _claim_existing_registration():
+		return
 	if res.code != 200:
 		Log.warn("Register: Registration failed with code %d" % res.code)
 		var from_the_server: String = ""
@@ -375,6 +384,27 @@ func _submit() -> void:
 		get_tree().change_scene_to_file(NEXT_SCENE_PATH)
 	else:
 		Log.error("Register: Failed to persist registration locally")
+
+
+## The address is taken -- perhaps by this very registration, created on an earlier
+## attempt whose answer never came back. The password typed here settles it: when it
+## opens the account, and the account holds exactly this guest's codes, the guest
+## joins it, as it would have the first time. Returns false when it is someone
+## else's account, and the ordinary "already used" failure is shown.
+func _claim_existing_registration() -> bool:
+	if not UserDataManager.is_guest() \
+			or UserDataManager.teacher_settings.registering_as != register_data.email:
+		return false
+	Log.info("Register: %s is taken; checking whether it is this guest's own account" % register_data.email)
+	var signed_in: Dictionary = await ServerManager.login(register_data.email, register_data.password)
+	if signed_in.code != 200 or not signed_in.body is Dictionary:
+		return false
+	if not UserDataManager.adopt_guest_for(signed_in.body as Dictionary):
+		return false
+	Log.info("Register: The account was this guest's; its data has joined it")
+	await UserDataManager.user_database_synchronizer.synchronize()
+	get_tree().change_scene_to_file(NEXT_SCENE_PATH)
+	return true
 
 
 ## Saves the new guest on this device and heads for the child's screens.

@@ -31,6 +31,10 @@ const AVAILABLE_CODES: Array[int] = [123, 124, 125, 126, 132, 134, 135, 136, 142
 ## lives in this device's storage only -- uninstalling the app loses all of it.
 ## Registering it from the settings turns it into an ordinary account.
 @export var is_guest: bool = false
+## The address a guest was last sent off to be registered under, written before the
+## request leaves. Lets that account claim the guest if the answer never came back
+## -- see UserDataManager.adopt_guest_for. Empty on any other account.
+@export var registering_as: String = ""
 
 var devices_count: int
 var password: String
@@ -163,31 +167,12 @@ func to_dict() -> Dictionary:
 ## A copy of these settings that shares nothing with them.
 ##
 ## Registering a guest walks the wizard over a copy, so a teacher who changes the
-## account type and then backs out leaves the guest exactly as it was. Built by
-## hand because Resource.duplicate(true) does not copy the StudentData held inside
-## the arrays of `students`: the copy and the original would rename the same child.
+## account type and then backs out leaves the guest exactly as it was. A deep
+## duplicate, so the StudentData inside the arrays of `students` are copies too --
+## and so a field added to either class later comes along without anyone having to
+## remember this function.
 func detached_copy() -> TeacherSettings:
-	var copy: TeacherSettings = TeacherSettings.new()
-	copy.account_type = account_type
-	copy.education_method = education_method
-	copy.email = email
-	copy.token = token
-	copy.last_modified = last_modified
-	copy._language = _language
-	copy.server_language_validated = server_language_validated
-	copy.is_guest = is_guest
-	for device: int in students.keys():
-		var device_students: Array[StudentData] = []
-		for student_data: StudentData in students[device]:
-			var student_copy: StudentData = StudentData.new()
-			student_copy.code = student_data.code
-			student_copy.name = student_data.name
-			student_copy.level = student_data.level
-			student_copy.age = student_data.age
-			student_copy.last_modified = student_data.last_modified
-			device_students.append(student_copy)
-		copy.students[device] = device_students
-	return copy
+	return duplicate_deep(Resource.DEEP_DUPLICATE_ALL) as TeacherSettings
 
 
 ## Adds a student with a fresh code to `device`, for an account that allocates its

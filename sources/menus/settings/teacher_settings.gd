@@ -420,6 +420,14 @@ func _on_change_language_popup_accepted(new_language: String) -> void:
 	Log.warn("SettingsTeacherSettings: Change language from %s to %s" % [current_language, new_language])
 
 	if UserDataManager.is_guest():
+		# Nothing is erased until the new language's pack is in reach: installed, or
+		# offered by the server. An account's change is gated the same way, by needing
+		# the server to reset it; without this a guest offline would lose its progress
+		# and then land on a pack it cannot download, on every launch.
+		if not await _guest_can_reach_pack(new_language):
+			Log.warn("SettingsTeacherSettings: No %s pack in reach; the guest's language is unchanged" % new_language)
+			change_language_error_popup.show()
+			return
 		# What the server does for an account, done here: every student's progress
 		# goes, the students and their codes stay -- as the popup has just warned. The
 		# splash then takes the guest through the new language's pack.
@@ -442,6 +450,14 @@ func _on_change_language_popup_accepted(new_language: String) -> void:
 	UserDataManager.set_language(new_language, true)
 	UserDataManager.logout()
 	get_tree().change_scene_to_file(SPLASH_SCREEN_PATH)
+
+
+## Whether the pack for `language` is installed, or the server will hand it over.
+func _guest_can_reach_pack(language: String) -> bool:
+	if DirAccess.dir_exists_absolute(PackageDownloader.USER_LANGUAGE_RESOURCES_PATH.path_join(language)):
+		return true
+	var res: Dictionary = await ServerManager.get_language_pack_url(language)
+	return res.code == 200
 
 
 func _on_student_pressed(code: int) -> void:

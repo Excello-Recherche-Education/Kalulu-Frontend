@@ -435,7 +435,9 @@ func _leave_for(path: String) -> void:
 	guest_button.disabled = true
 	await OpeningCurtain.close()
 	if _change_scene(path) != OK:
-		# Still here: let the screen be used again rather than leave a dead button.
+		# Still here: let the screen be used again rather than leave a dead button --
+		# and an ordinary sign-up from it must not open the guest journey.
+		RegisterWizard.next_mode = RegisterWizard.Mode.REGISTER
 		leaving = false
 		guest_button.disabled = false
 		OpeningCurtain.open()

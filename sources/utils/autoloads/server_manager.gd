@@ -96,9 +96,11 @@ const HTTP_RESULT_NAMES: Dictionary[int, String] = {
 	HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED: "RESULT_REDIRECT_LIMIT_REACHED",
 	HTTPRequest.RESULT_TIMEOUT: "RESULT_TIMEOUT",
 }
-## The routes a guest may call: the ones that need no account. Every other route
-## acts on an account the server has never heard of for a guest.
-const GUEST_ROUTES: PackedStringArray = ["language", "checkemail", "register"]
+## The routes a guest may call: the ones that need no account, and signing in --
+## which registering a guest uses to claim an account it created on an attempt whose
+## answer was lost. Every other route acts on an account the server has never heard
+## of for a guest.
+const GUEST_ROUTES: PackedStringArray = ["language", "checkemail", "register", "login"]
 ## What a refused guest request answers, in place of the server's 401. Not 401: a
 ## caller reading that as "the account is gone" would sign the guest out.
 const GUEST_REFUSED_CODE: int = 403

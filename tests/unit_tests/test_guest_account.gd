@@ -60,11 +60,13 @@ func _restore(teacher: String, device_id: int) -> void:
 	DirAccess.remove_absolute(RUN_NOTE)
 
 
-## The guests create_guest has set aside on this machine.
+## The folders set aside on this machine: unreadable guests, and account folders that
+## were in a registered guest's way.
 func _aside_folders() -> PackedStringArray:
 	var found: PackedStringArray = []
 	for folder: String in DirAccess.get_directories_at("user://"):
-		if folder.begins_with(UserDataManagerClass.GUEST_FOLDER + "_unreadable_"):
+		if folder.begins_with(UserDataManagerClass.GUEST_FOLDER + "_unreadable_") \
+				or folder.begins_with(REGISTERED_EMAIL + "_previous_"):
 			found.append(folder)
 	return found
 
@@ -153,6 +155,9 @@ func test_a_detached_copy_shares_no_student() -> void:
 	assert_eq(settings.account_type, TeacherSettings.AccountType.TEACHER)
 	assert_eq(settings.get_number_of_students(), 2)
 	assert_true(copy.is_guest, "the copy keeps what it was copied from")
+	settings.registering_as = "noted@example.invalid"
+	assert_eq(settings.detached_copy().registering_as, "noted@example.invalid",
+			"a field added later comes along without anyone listing it")
 	assert_eq(copy.get_all_students_data()[1].code, settings.get_all_students_data()[1].code)
 
 
@@ -303,12 +308,50 @@ func test_a_guest_request_to_an_account_route_never_leaves() -> void:
 		tracked_error.handled = true
 
 
-func test_a_folder_that_cannot_be_renamed_is_copied() -> void:
-	# The fallback of the registration's move: renaming onto a folder that is not empty
-	# is refused, and the copy that follows must bring everything, nested folders
-	# included, and only then remove the source.
+func test_an_unfinished_copy_is_finished_where_the_rename_is_refused() -> void:
+	# The fallback of the registration's move: an unfinished copy of its own is in the
+	# way, so the rename is refused and the copy starts again. Everything arrives,
+	# nested folders included, and only then does the source go.
 	var from: String = "user://gut_copy_test_from"
 	var to: String = "user://gut_copy_test_to"
+	_fresh_copy_folders(from, to)
+	_write(to.path_join(UserDataManagerClass.INCOMPLETE_COPY_MARKER), "")
+	_write(to.path_join("half_copied.txt"), "left over")
+	assert_ne(DirAccess.rename_absolute(from, to), OK, "the rename is refused, as intended")
+
+	assert_eq(UserDataManagerClass._move_directory(from, to), OK)
+
+	assert_eq(FileAccess.get_file_as_string(to.path_join("1/fr_FR/125/progression.tres")), "progress")
+	assert_eq(FileAccess.get_file_as_string(to.path_join("teacher_settings.tres")), "settings")
+	assert_false(FileAccess.file_exists(to.path_join(UserDataManagerClass.INCOMPLETE_COPY_MARKER)),
+			"the copy is marked finished")
+	assert_false(DirAccess.dir_exists_absolute(from), "the source goes once it is all copied")
+	Utils.delete_directory_recursive(to)
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
+func test_nothing_is_copied_into_a_folder_that_is_not_our_own() -> void:
+	# A folder in the way that is not an unfinished copy holds somebody's data: the
+	# move is refused, and both folders are left exactly as they were.
+	var from: String = "user://gut_copy_test_from"
+	var to: String = "user://gut_copy_test_to"
+	_fresh_copy_folders(from, to)
+	_write(to.path_join("someone_else.txt"), "theirs")
+
+	assert_eq(UserDataManagerClass._move_directory(from, to), ERR_ALREADY_EXISTS)
+
+	assert_eq(FileAccess.get_file_as_string(to.path_join("someone_else.txt")), "theirs")
+	assert_false(FileAccess.file_exists(to.path_join("teacher_settings.tres")), "nothing mixed in")
+	assert_true(FileAccess.file_exists(from.path_join("teacher_settings.tres")), "the source is kept")
+	for path: String in [from, to]:
+		Utils.delete_directory_recursive(path)
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
+## A source folder like a guest's, and an empty slate where the copy goes.
+func _fresh_copy_folders(from: String, to: String) -> void:
 	for path: String in [from, to]:
 		if DirAccess.dir_exists_absolute(path):
 			Utils.delete_directory_recursive(path)
@@ -316,17 +359,6 @@ func test_a_folder_that_cannot_be_renamed_is_copied() -> void:
 	_write(from.path_join("1/fr_FR/125/progression.tres"), "progress")
 	_write(from.path_join("teacher_settings.tres"), "settings")
 	DirAccess.make_dir_recursive_absolute(to)
-	_write(to.path_join("in_the_way.txt"), "blocks the rename")
-	assert_ne(DirAccess.rename_absolute(from, to), OK, "the rename is refused, as intended")
-
-	assert_eq(UserDataManagerClass._move_directory(from, to), OK)
-
-	assert_eq(FileAccess.get_file_as_string(to.path_join("1/fr_FR/125/progression.tres")), "progress")
-	assert_eq(FileAccess.get_file_as_string(to.path_join("teacher_settings.tres")), "settings")
-	assert_false(DirAccess.dir_exists_absolute(from), "the source goes once it is all copied")
-	Utils.delete_directory_recursive(to)
-	for tracked_error: GutTrackedError in get_errors():
-		tracked_error.handled = true
 
 
 ## Writes a file, standing in for a save the code under test only moves or deletes.
@@ -400,6 +432,152 @@ func test_registering_twice_is_harmless() -> void:
 	assert_true(UserDataManager.register_guest(played["registered"]))
 	assert_true(UserDataManager.register_guest((played["registered"] as TeacherSettings).detached_copy()))
 	assert_true(FileAccess.file_exists(_registered_progression(played["code"])))
+
+
+## Step 1 of a registration, by hand: the account's settings over the guest's.
+func _save_over_the_guest(registered: TeacherSettings) -> void:
+	registered.is_guest = false
+	ResourceSaver.save(registered, UserDataManager._get_teacher_settings_path(UserDataManagerClass.GUEST_FOLDER))
+
+
+func _note_pending(email: String) -> void:
+	UserDataManager.get_device_settings().pending_account = email
+	UserDataManager._save_device_settings()
+
+
+func test_a_note_left_without_step_one_is_dropped() -> void:
+	# Killed after noting the address, before the account replaced the guest: there is
+	# no account on the device to move, and the guest stays the guest.
+	if _skip_if_this_machine_has_a_guest():
+		return
+	UserDataManager.create_guest(_guest_settings(1))
+	_note_pending(REGISTERED_EMAIL)
+
+	UserDataManager._complete_pending_registration()
+
+	assert_eq(UserDataManager.get_device_settings().pending_account, "")
+	assert_true(UserDataManager.guest_exists(), "nothing moved")
+	assert_false(DirAccess.dir_exists_absolute("user://".path_join(REGISTERED_EMAIL)))
+
+
+func test_an_account_folder_in_the_way_is_set_aside_not_deleted() -> void:
+	# Signed in to the account meanwhile, which made its folder: it may hold play not
+	# yet synchronized, so it is renamed, never deleted, and the guest moves in.
+	if _skip_if_this_machine_has_a_guest():
+		return
+	var played: Dictionary = _played_guest()
+	_save_over_the_guest(played["registered"])
+	_note_pending(REGISTERED_EMAIL)
+	var account_folder: String = "user://".path_join(REGISTERED_EMAIL)
+	DirAccess.make_dir_recursive_absolute(account_folder)
+	_write(account_folder.path_join("played_meanwhile.txt"), "kept")
+
+	UserDataManager._complete_pending_registration()
+
+	assert_true(FileAccess.file_exists(_registered_progression(played["code"])), "the guest moved in")
+	var aside: PackedStringArray = []
+	for found: String in _aside_folders():
+		if not found in existing_aside:
+			aside.append(found)
+	assert_eq(aside.size(), 1, "the folder in the way is kept")
+	assert_eq(FileAccess.get_file_as_string("user://".path_join(aside[0]).path_join("played_meanwhile.txt")), "kept")
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
+
+
+func test_an_unfinished_copy_in_the_way_is_started_again() -> void:
+	if _skip_if_this_machine_has_a_guest():
+		return
+	var played: Dictionary = _played_guest()
+	_save_over_the_guest(played["registered"])
+	_note_pending(REGISTERED_EMAIL)
+	var account_folder: String = "user://".path_join(REGISTERED_EMAIL)
+	DirAccess.make_dir_recursive_absolute(account_folder)
+	_write(account_folder.path_join(UserDataManagerClass.INCOMPLETE_COPY_MARKER), "")
+
+	UserDataManager._complete_pending_registration()
+
+	assert_true(FileAccess.file_exists(_registered_progression(played["code"])))
+	assert_false(FileAccess.file_exists(account_folder.path_join(UserDataManagerClass.INCOMPLETE_COPY_MARKER)))
+	assert_eq(UserDataManager.get_device_settings().teacher, REGISTERED_EMAIL)
+
+
+func test_a_guest_already_copied_to_its_account_is_never_resumed() -> void:
+	if _skip_if_this_machine_has_a_guest():
+		return
+	UserDataManager.create_guest(_guest_settings(1))
+	_write("user://".path_join(UserDataManagerClass.GUEST_FOLDER).path_join(UserDataManagerClass.MOVED_MARKER), "")
+
+	assert_false(UserDataManager.guest_exists())
+
+
+func test_an_account_still_in_the_guest_folder_resumes_as_the_account() -> void:
+	# Its move refused, the account lives on in the guest folder: "Continue as guest"
+	# signs in to it -- with its token -- and never treats it as a guest again.
+	if _skip_if_this_machine_has_a_guest():
+		return
+	var played: Dictionary = _played_guest()
+	_save_over_the_guest(played["registered"])
+
+	assert_true(UserDataManager.resume_guest())
+	assert_false(UserDataManager.is_guest())
+	assert_eq(UserDataManager.teacher_settings.token, "a-token")
+
+
+## What the server answers a sign-in to the registered account.
+func _sign_in_answer(codes: Array[int]) -> Dictionary:
+	var device_students: Array = []
+	for code: int in codes:
+		device_students.append({"code": code, "name": "", "level": 0, "age": 0})
+	return {"email": REGISTERED_EMAIL, "token": "a-token", "account_type": 0,
+			"students": {"1": device_students}}
+
+
+func test_signing_in_claims_the_guest_registered_under_that_address() -> void:
+	# The registration reached the server and its answer was lost: signing in to the
+	# account brings the guest's progress along instead of leaving it behind.
+	if _skip_if_this_machine_has_a_guest():
+		return
+	var played: Dictionary = _played_guest()
+	UserDataManager.note_guest_registration(REGISTERED_EMAIL)
+	UserDataManager.logout()
+
+	assert_true(UserDataManager.login(_sign_in_answer([played["code"]])))
+
+	assert_eq(UserDataManager.get_device_settings().teacher, REGISTERED_EMAIL)
+	assert_true(FileAccess.file_exists(_registered_progression(played["code"])), "the progress came along")
+	assert_false(UserDataManager.guest_exists(), "and the guest is the account now")
+
+
+func test_signing_in_leaves_a_guest_noted_for_another_address() -> void:
+	# A matching set of codes is not enough: on a shared tablet another teacher's
+	# account could hold the same ones.
+	if _skip_if_this_machine_has_a_guest():
+		return
+	var played: Dictionary = _played_guest()
+	UserDataManager.note_guest_registration("someone-else@example.invalid")
+	UserDataManager.logout()
+
+	assert_true(UserDataManager.login(_sign_in_answer([played["code"]])))
+
+	assert_true(UserDataManager.guest_exists(), "the guest is untouched")
+	assert_false(FileAccess.file_exists(_registered_progression(played["code"])))
+
+
+func test_signing_in_leaves_a_guest_whose_codes_differ() -> void:
+	if _skip_if_this_machine_has_a_guest():
+		return
+	var played: Dictionary = _played_guest()
+	UserDataManager.note_guest_registration(REGISTERED_EMAIL)
+	UserDataManager.logout()
+	var other_code: int = TeacherSettings.AVAILABLE_CODES[0] \
+			if TeacherSettings.AVAILABLE_CODES[0] != played["code"] else TeacherSettings.AVAILABLE_CODES[1]
+
+	assert_true(UserDataManager.login(_sign_in_answer([other_code])))
+
+	assert_true(UserDataManager.guest_exists(), "a different account does not take the guest")
+	for tracked_error: GutTrackedError in get_errors():
+		tracked_error.handled = true
 
 
 func test_an_unreadable_guest_is_set_aside_not_deleted() -> void:

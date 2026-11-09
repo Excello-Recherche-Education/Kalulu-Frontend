@@ -28,13 +28,18 @@ func _on_validate_button_pressed() -> void:
 		Log.warn("CredentialsStep: Impossible to write data in object (" + str(self) + ")")
 		return
 	
-	var res: Dictionary = await ServerManager.check_email((data as TeacherSettings).email as String)
-	if is_about_the_address(res.code as int):
+	var email: String = (data as TeacherSettings).email
+	var res: Dictionary = await ServerManager.check_email(email)
+	if is_about_the_address(res.code as int) and _is_this_guests_own(email):
+		# Taken by this guest's own registration, whose answer was lost: let it through,
+		# so the submit can sign in to it and join the guest to it.
+		Log.info("CredentialsStep: %s is the address this guest was being registered under" % email)
+	elif is_about_the_address(res.code as int):
 		# The address is taken, or malformed: the field's own problem, and the one this
 		# message was written for.
 		api_email_field_error.show()
 		return
-	if res.code != 200:
+	elif res.code != 200:
 		# Anything else is the network or the server, and neither says a word about
 		# this address. Claiming it was already used -- which is what every non-200
 		# used to do here -- sends the teacher off to invent a second address, and a
@@ -45,3 +50,9 @@ func _on_validate_button_pressed() -> void:
 	
 	if _on_next():
 		next.emit(self)
+
+
+## Whether `email` is the address the guest signed in here was last sent off under.
+static func _is_this_guests_own(email: String) -> bool:
+	return UserDataManager.is_guest() and not email.is_empty() \
+			and UserDataManager.teacher_settings.registering_as == email
