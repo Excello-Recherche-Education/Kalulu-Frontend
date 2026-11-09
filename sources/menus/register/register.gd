@@ -51,6 +51,13 @@ const FAILURE_NOTICES: Dictionary[String, Dictionary] = {
 	"other": {"title": "REGISTER_FAILED", "message": ""},
 }
 
+## The journey the next wizard opened is to run.
+##
+## Static because the wizard is reached by a scene change, so there is no instance to
+## hand it to. Read once and put back to REGISTER as the wizard opens, so a later
+## sign-up from the welcome screen cannot inherit a guest journey.
+static var next_mode: Mode = Mode.REGISTER
+
 ## Index into current_steps of the step on screen.
 ##
 ## This used to be kept in the progress bar's `value`, which made a piece of
@@ -69,13 +76,6 @@ var built_devices_count: int = NO_DEVICE_STEPS
 var popup_copy_text: String = ""
 ## The journey this run of the wizard is on, taken from [member next_mode] on entry.
 var mode: Mode = Mode.REGISTER
-
-## The journey the next wizard opened is to run.
-##
-## Static because the wizard is reached by a scene change, so there is no instance to
-## hand it to. Read once and put back to REGISTER as the wizard opens, so a later
-## sign-up from the welcome screen cannot inherit a guest journey.
-static var next_mode: Mode = Mode.REGISTER
 ## The registration the server accepted, when the guest's data has yet to be moved to
 ## it. Set only in REGISTER_GUEST, between the server's answer and a successful move.
 var accepted_registration: TeacherSettings = null

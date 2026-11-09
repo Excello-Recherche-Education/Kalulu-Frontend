@@ -118,7 +118,6 @@ func _skip_if_this_machine_has_a_guest() -> bool:
 
 
 # --- Settings ----------------------------------------------------------------
-
 func test_local_students_get_distinct_codes() -> void:
 	var settings: TeacherSettings = _guest_settings(30)
 	var codes: Dictionary = {}
@@ -158,7 +157,6 @@ func test_a_detached_copy_shares_no_student() -> void:
 
 
 # --- Entry flow and pack -----------------------------------------------------
-
 func test_a_guest_is_signed_in_without_a_token() -> void:
 	var settings: TeacherSettings = TeacherSettings.new()
 	settings.is_guest = true
@@ -189,7 +187,6 @@ func test_a_busy_server_is_told_apart_from_a_broken_one() -> void:
 
 
 # --- Lifecycle ---------------------------------------------------------------
-
 func test_creating_a_guest_signs_it_in_on_its_only_device() -> void:
 	if _skip_if_this_machine_has_a_guest():
 		return
@@ -251,7 +248,7 @@ func test_resetting_a_guest_erases_progress_but_keeps_its_students() -> void:
 		var path: String = "user://".path_join(UserDataManagerClass.GUEST_FOLDER) \
 				.path_join("1").path_join(language).path_join(str(codes[0])).path_join("progression.tres")
 		DirAccess.make_dir_recursive_absolute(path.get_base_dir())
-		assert_eq(ResourceSaver.save(StudentProgression.new(), path), OK)
+		_write(path, "progress")
 		saves.append(path)
 
 	UserDataManager.reset_guest_progress()
@@ -332,6 +329,10 @@ func test_a_folder_that_cannot_be_renamed_is_copied() -> void:
 		tracked_error.handled = true
 
 
+## Writes a file, standing in for a save the code under test only moves or deletes.
+##
+## Not a real StudentProgression: creating one reads the lesson count, which warns when
+## no language pack is installed -- as on CI -- and GUT fails a test on any warning.
 func _write(path: String, text: String) -> void:
 	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(text)
@@ -344,7 +345,7 @@ func _played_guest() -> Dictionary:
 	var code: int = UserDataManager.teacher_settings.get_all_students_data()[0].code
 	var progression_path: String = UserDataManager.get_student_progression_path(1, code)
 	DirAccess.make_dir_recursive_absolute(progression_path.get_base_dir())
-	ResourceSaver.save(StudentProgression.new(), progression_path)
+	_write(progression_path, "progress")
 	var registered: TeacherSettings = UserDataManager.teacher_settings.detached_copy()
 	registered.email = REGISTERED_EMAIL
 	registered.token = "a-token"
@@ -432,7 +433,7 @@ func test_registering_moves_everything_and_clears_the_guest() -> void:
 	# Something a child played, so there is progress to carry over.
 	var progression_path: String = UserDataManager.get_student_progression_path(1, code)
 	DirAccess.make_dir_recursive_absolute(progression_path.get_base_dir())
-	assert_eq(ResourceSaver.save(StudentProgression.new(), progression_path), OK)
+	_write(progression_path, "progress")
 
 	var registered: TeacherSettings = UserDataManager.teacher_settings.detached_copy()
 	registered.email = REGISTERED_EMAIL

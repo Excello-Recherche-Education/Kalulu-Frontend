@@ -96,6 +96,12 @@ const HTTP_RESULT_NAMES: Dictionary[int, String] = {
 	HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED: "RESULT_REDIRECT_LIMIT_REACHED",
 	HTTPRequest.RESULT_TIMEOUT: "RESULT_TIMEOUT",
 }
+## The routes a guest may call: the ones that need no account. Every other route
+## acts on an account the server has never heard of for a guest.
+const GUEST_ROUTES: PackedStringArray = ["language", "checkemail", "register"]
+## What a refused guest request answers, in place of the server's 401. Not 401: a
+## caller reading that as "the account is gone" would sign the guest out.
+const GUEST_REFUSED_CODE: int = 403
 
 # Response from the last request
 var success: bool
@@ -493,14 +499,6 @@ func reset_language(language: String) -> Dictionary:
 	return _response()
 
 #region Sender functions
-
-## The routes a guest may call: the ones that need no account. Every other route
-## acts on an account the server has never heard of for a guest.
-const GUEST_ROUTES: PackedStringArray = ["language", "checkemail", "register"]
-## What a refused guest request answers, in place of the server's 401. Not 401: a
-## caller reading that as "the account is gone" would sign the guest out.
-const GUEST_REFUSED_CODE: int = 403
-
 
 ## Stops a guest's request to an account route before it leaves the device.
 ##
