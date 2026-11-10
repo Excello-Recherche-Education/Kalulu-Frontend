@@ -37,6 +37,7 @@ UnicodeNormalizer="*res://sources/utils/autoloads/unicode_normalizer.gd"
 UserDataManager="*res://sources/utils/autoloads/user_data_manager.gd"
 Utils="*res://sources/utils/autoloads/utils.gd"
 Validation="*uid://bv3og5utuwv0c"
+UpdateManager="*res://sources/utils/autoloads/update_manager.gd"
 
 [debug]
 
