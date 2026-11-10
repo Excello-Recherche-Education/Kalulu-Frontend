@@ -8,9 +8,10 @@ extends PanelContainer
 ## child has to get rid of is one they tap away without reading.
 ##
 ## What the button does is UpdateManager's call: open the store, install in the
-## app, or open the download in the browser. On a signed-in device it first asks
-## for an adult, for the same reason ServerWarning does -- the access-code screen is
-## the child's, and a tap there would download and restart the app.
+## app, or open the download in the browser. It always asks for an adult first:
+## on the access-code screen a child's tap would download and restart the app, and
+## everywhere it leads out of the app, to a store or a browser -- which Apple asks
+## a children's app to put behind a parental gate.
 ##
 ## The cross hides the card until the next launch.
 
@@ -61,7 +62,9 @@ func _stack_under(warning: Control) -> void:
 ## Shows the card when a newer release is on offer, and says which.
 func refresh() -> void:
 	var manager: UpdateManagerClass = UpdateManager as UpdateManagerClass
-	visible = manager.available != null and not dismissed
+	# No card for an update this build has no way to get (the 32-bit APK).
+	visible = manager.available != null and not dismissed \
+			and manager.action() != UpdateManagerClass.Action.NONE
 	if visible:
 		body_label.text = tr("UPDATE_NOTICE_TEXT").format({
 			"version": manager.available.version,
@@ -91,11 +94,8 @@ func _on_close_pressed() -> void:
 
 
 func _on_update_pressed() -> void:
-	if EntryFlow.has_connection_token():
-		Log.info("UpdateNotice: Asking the adult check before updating")
-		adult_check.open()
-		return
-	_act()
+	Log.info("UpdateNotice: Asking the adult check before updating")
+	adult_check.open()
 
 
 ## Does what this build can do about the update.
@@ -132,7 +132,8 @@ func _on_dialog_accepted() -> void:
 			dialog.set_meta("step", "installing")
 			# Only Cancel while downloading: there is nothing left to confirm.
 			dialog.confirm_button.visible = false
-			(UpdateManager as UpdateManagerClass).start_install()
+			if not (UpdateManager as UpdateManagerClass).start_install():
+				_on_install_failed("could not start")
 		"failed":
 			dialog.hide()
 			_open_download()
@@ -151,8 +152,10 @@ func _on_install_progressed(stage: UpdateManagerClass.InstallStage, fraction: fl
 		return
 	match stage:
 		UpdateManagerClass.InstallStage.DOWNLOADING:
-			dialog.content_text = tr("UPDATE_DOWNLOADING").format({
-				"percent": str(roundi(fraction * 100.0)) if fraction >= 0.0 else "…"})
+			if fraction >= 0.0:
+				dialog.content_text = tr("UPDATE_DOWNLOADING").format({"percent": str(roundi(fraction * 100.0))})
+			else:
+				dialog.content_text = tr("UPDATE_DOWNLOADING_NO_SIZE")
 		UpdateManagerClass.InstallStage.INSTALLING:
 			# The files are being swapped: cancelling now could not be honoured.
 			_set_dialog_closable(false)
@@ -177,7 +180,7 @@ func _on_install_failed(_reason: String) -> void:
 
 func _open_download() -> void:
 	if (UpdateManager as UpdateManagerClass).open_download():
-		_show_message(tr("UPDATE_BROWSER_TEXT"))
+		_show_message(tr("UPDATE_BROWSER_TEXT_MOBILE" if OS.has_feature("android") else "UPDATE_BROWSER_TEXT"))
 	else:
 		_show_message(tr("UPDATE_STORE_FAILED"))
 

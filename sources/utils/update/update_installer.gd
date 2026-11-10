@@ -50,6 +50,21 @@ const RELEASED_APP_NAMES: Dictionary[Platform, String] = {
 	Platform.LINUX: "Kalulu-Linux",
 	Platform.MACOS: "Kalulu.app",
 }
+## Every file a release zip may hold, besides the app itself: what must be there,
+## and patterns for what may. Anything else refuses the whole release. The zip is
+## unpacked over a folder that is often the user's Downloads or Desktop, and an
+## unexpected name in it -- a README, a `__MACOSX` folder -- would move one of the
+## user's own files aside, to be deleted at the next launch.
+const RELEASED_REQUIRED_ENTRIES: Dictionary[Platform, PackedStringArray] = {
+	Platform.WINDOWS: ["Kalulu-Windows.exe"],
+	Platform.LINUX: ["Kalulu-Linux", "Kalulu-Linux.pck"],
+	Platform.MACOS: ["Kalulu.app"],
+}
+const RELEASED_OPTIONAL_PATTERNS: Dictionary[Platform, PackedStringArray] = {
+	Platform.WINDOWS: ["libgdsqlite.windows.*.dll"],
+	Platform.LINUX: ["libgdsqlite.linux.*.so"],
+	Platform.MACOS: [],
+}
 
 var platform: Platform = Platform.OTHER
 ## The running program, as the OS reports it.
@@ -57,6 +72,9 @@ var executable_path: String = ""
 ## What happened along the way, for the log. Collected rather than logged because
 ## `install` runs on a worker thread and Log is not safe to call from one.
 var notes: PackedStringArray = []
+## What the last successful swap moved, as [destination, aside] pairs (aside empty
+## for an entry that did not exist before), so `revert_last_swap` can undo it.
+var last_swap: Array[PackedStringArray] = []
 
 
 ## The installer for the build that is running.
@@ -116,6 +134,10 @@ func blocker() -> String:
 		return ""
 	if not is_desktop():
 		return "platform not supported"
+	if executable_path.begins_with("//") or executable_path.begins_with("\\\\"):
+		# A network share: other computers may be running these very files, and
+		# swapping them would pull their data file from under them mid-lesson.
+		return "running from a network share"
 	if app_entry_name().is_empty() or install_dir().is_empty():
 		return "cannot tell which files are the app (%s)" % executable_path
 	if app_entry_name() != RELEASED_APP_NAMES.get(platform, ""):
@@ -154,6 +176,16 @@ static func check_download(path: String, expected_size: int, expected_sha256: St
 	return ""
 
 
+## Checks the download against what the release announced, then installs it. The
+## two together, so the hashing of up to 90 MB happens on the caller's worker
+## thread rather than freezing the screen.
+func install_verified(zip_path: String, expected_size: int, expected_sha256: String) -> Dictionary:
+	var problem: String = check_download(zip_path, expected_size, expected_sha256)
+	if not problem.is_empty():
+		return _failure(problem)
+	return install(zip_path)
+
+
 ## Installs the release in `zip_path`. Returns a Dictionary with `error` ("" on
 ## success) and `launch` -- the path to start: the new program on a computer, the
 ## APK on Android.
@@ -179,11 +211,9 @@ func _stage_and_swap(zip_path: String, staging: String) -> Dictionary:
 		return _failure("could not unpack %s" % zip_path)
 	var entries: PackedStringArray = _entries_of(staging)
 	var app_name: String = app_entry_name()
-	if not app_name in entries:
-		# The release's app is named differently from this one -- the user renamed
-		# the app, or the release changed its file names. Swapping would leave two
-		# apps side by side, or a program missing its data file.
-		return _failure("the release has no %s (it has %s)" % [app_name, ", ".join(entries)])
+	var entries_problem: String = unexpected_entries(entries)
+	if not entries_problem.is_empty():
+		return _failure(entries_problem)
 	var new_app: String = staging.path_join(app_name)
 	if platform == Platform.MACOS:
 		var signature_problem: String = macos_signature_problem(new_app, macos_bundle_path())
@@ -192,19 +222,69 @@ func _stage_and_swap(zip_path: String, staging: String) -> Dictionary:
 	elif platform == Platform.LINUX:
 		# Unpacking tools do not all keep the executable bit.
 		FileAccess.set_unix_permissions(new_app, _executable_permissions())
-	var swap_error: String = swap(staging, install_dir(), entries)
+	var moved: Array[PackedStringArray] = []
+	var swap_error: String = swap(staging, install_dir(), entries, moved)
 	if not swap_error.is_empty():
 		return _failure(swap_error)
+	last_swap = moved
 	return {"error": "", "launch": install_dir().path_join(app_name)}
+
+
+## Why the unpacked release does not hold exactly the files a release of this
+## platform is made of, or "" when it does.
+func unexpected_entries(entries: PackedStringArray) -> String:
+	var required: PackedStringArray = RELEASED_REQUIRED_ENTRIES.get(platform, PackedStringArray())
+	if required.is_empty():
+		return "no release layout for this platform"
+	for entry: String in required:
+		if not entry in entries:
+			return "the release has no %s (it has %s)" % [entry, ", ".join(entries)]
+	for entry: String in entries:
+		if entry in required:
+			continue
+		var allowed: bool = false
+		for pattern: String in RELEASED_OPTIONAL_PATTERNS.get(platform, PackedStringArray()):
+			if entry.match(pattern):
+				allowed = true
+		if not allowed:
+			return "the release holds an unexpected %s" % entry
+	return ""
+
+
+## Undoes the last swap: the new files go aside (to be deleted at the next launch)
+## and the old ones come back. For when the new version would not start, so the
+## reader is left with the app they had rather than one that cannot open. Returns
+## "" when everything went back.
+func revert_last_swap() -> String:
+	var problems: String = ""
+	var folder: String = install_dir()
+	for index: int in range(last_swap.size() - 1, -1, -1):
+		var destination: String = last_swap[index][0]
+		var aside: String = last_swap[index][1]
+		var rejected: String = _free_aside_path(folder, destination.get_file() + ".rejected")
+		var out_error: Error = DirAccess.rename_absolute(destination, rejected)
+		if out_error != OK:
+			problems += "; cannot move the new %s out (%s)" % [destination, error_string(out_error)]
+			continue
+		if aside.is_empty():
+			continue
+		var back_error: Error = DirAccess.rename_absolute(aside, destination)
+		if back_error != OK:
+			problems += "; cannot put %s back (%s)" % [destination, error_string(back_error)]
+	last_swap.clear()
+	return problems
 
 
 ## Moves every entry of `staging` into `target`, moving aside what it replaces.
 ## Puts everything back and returns why when a move fails; returns "" when done.
-static func swap(staging: String, target: String, entries: PackedStringArray) -> String:
+## `moved`, when given, receives a [destination, aside] pair per entry placed.
+static func swap(staging: String, target: String, entries: PackedStringArray,
+		moved: Array[PackedStringArray] = []) -> String:
 	var moved_aside: Array[PackedStringArray] = []
 	var placed: PackedStringArray = []
 	for entry: String in entries:
 		var destination: String = target.path_join(entry)
+		var aside_of_entry: String = ""
 		if _exists(destination):
 			var aside: String = _free_aside_path(target, entry)
 			var aside_error: Error = DirAccess.rename_absolute(destination, aside)
@@ -212,11 +292,13 @@ static func swap(staging: String, target: String, entries: PackedStringArray) ->
 				return "cannot move %s aside (%s)%s" % [destination, error_string(aside_error),
 						_undo_swap(staging, target, moved_aside, placed)]
 			moved_aside.append(PackedStringArray([destination, aside]))
+			aside_of_entry = aside
 		var place_error: Error = DirAccess.rename_absolute(staging.path_join(entry), destination)
 		if place_error != OK:
 			return "cannot move %s into place (%s)%s" % [entry, error_string(place_error),
 					_undo_swap(staging, target, moved_aside, placed)]
 		placed.append(entry)
+		moved.append(PackedStringArray([destination, aside_of_entry]))
 	return ""
 
 
@@ -303,9 +385,13 @@ func unpack(zip_path: String, destination: String) -> bool:
 				attempts.append(PackedStringArray([tar, "-xf", native_zip, "-C", native_destination]))
 			var powershell: String = _windows_tool("WindowsPowerShell/v1.0/powershell.exe")
 			if not powershell.is_empty():
+				# The paths reach PowerShell through the environment, never inside the
+				# command: a folder named with a typographic apostrophe or a bracket
+				# would otherwise end the string or be read as a wildcard.
+				OS.set_environment("KALULU_UPDATE_ZIP", native_zip)
+				OS.set_environment("KALULU_UPDATE_DESTINATION", native_destination)
 				attempts.append(PackedStringArray([powershell, "-NoProfile", "-NonInteractive", "-Command",
-						"Expand-Archive -LiteralPath '%s' -DestinationPath '%s' -Force" % [
-							native_zip.replace("'", "''"), native_destination.replace("'", "''")]]))
+						"Expand-Archive -LiteralPath $env:KALULU_UPDATE_ZIP -DestinationPath ([Management.Automation.WildcardPattern]::Escape($env:KALULU_UPDATE_DESTINATION)) -Force"]))
 	for attempt: PackedStringArray in attempts:
 		var output: Array = []
 		var exit_code: int = OS.execute(attempt[0], attempt.slice(1), output, true)

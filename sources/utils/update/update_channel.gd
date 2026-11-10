@@ -10,12 +10,13 @@ extends RefCounted
 ##
 ## The export presets say which build is which, through custom feature tags --
 ## nothing at run time could tell an APK from an AAB, or the Mac App Store build
-## from the notarized zip. A build with no tag (the editor, a test export) is
-## treated as a direct download that may only open the download page, never as
-## something that could install over itself.
+## from the notarized zip. A build with no tag (the editor, a preset added later
+## and not tagged yet) looks for no update at all: guessing would risk sending a
+## store build's users to GitHub, which its store forbids.
 
 enum Kind {
-	## Not checked at all: the web build, which is always current.
+	## Not checked at all: the web build, which is always current, and any build
+	## whose preset does not say where it comes from.
 	NONE,
 	GOOGLE_PLAY,
 	APP_STORE,
@@ -54,14 +55,15 @@ static func kind_for(has_feature: Callable) -> Kind:
 		return Kind.GOOGLE_PLAY
 	if has_feature.call(FEATURE_MAC_APP_STORE):
 		return Kind.MAC_APP_STORE
-	return Kind.DIRECT
+	if has_feature.call(FEATURE_DIRECT):
+		return Kind.DIRECT
+	return Kind.NONE
 
 
-## Whether the running build may replace itself. Only a direct-download build
-## exported from its preset, never the editor or an untagged export.
+## Whether the running build may replace itself: a direct-download build, never
+## the editor.
 static func may_install_itself() -> bool:
-	return current() == Kind.DIRECT and OS.has_feature(FEATURE_DIRECT) \
-			and not OS.has_feature("editor")
+	return current() == Kind.DIRECT and not OS.has_feature("editor")
 
 
 ## The store pages to try in turn: the store app's own address first, the web

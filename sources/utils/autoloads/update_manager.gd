@@ -50,8 +50,18 @@ const CHECK_INTERVAL_SECONDS: int = 6 * 3600
 const RETRY_INTERVAL_SECONDS: int = 3600
 const FIRST_CHECK_DELAY_SECONDS: float = 4.0
 const CHECK_TIMEOUT_SECONDS: float = 20.0
-## Debug builds only: read the releases from here instead of GitHub, to test the
-## whole flow against a local server.
+## Written by every direct-download build as it starts, so the copy that installed
+## it knows the new version really did start before it quits.
+const HANDSHAKE_PATH: String = "user://update_started.cfg"
+## How long the installing copy waits for that. A first start of a 640 MB program
+## under an antivirus scan is slow; one that has not started by then will not.
+const HANDSHAKE_TIMEOUT_SECONDS: float = 45.0
+## When to try again to delete what the update moved aside: at the first attempt
+## the previous version is usually still quitting, and Windows will not delete a
+## program that is running.
+const SECOND_CLEANUP_DELAY_SECONDS: float = 30.0
+## Debug exports only: read the releases from here instead of GitHub, to rehearse
+## the whole flow against a fork's releases.
 const FEED_OVERRIDE_ENVIRONMENT: String = "KALULU_UPDATE_FEED_URL"
 
 ## The newer release, when there is one.
@@ -65,6 +75,9 @@ var _download_asset: Dictionary = {}
 var _install_thread: Thread = null
 var _installer: UpdateInstaller = null
 var _current_version: String = ""
+## The release being installed, kept apart from `available`, which a check finishing
+## during the download may change.
+var _installing_release: AppRelease = null
 
 
 func _ready() -> void:
@@ -74,7 +87,9 @@ func _ready() -> void:
 		return
 	_installer = UpdateInstaller.for_running_build()
 	if UpdateChannel.may_install_itself():
+		_write_handshake()
 		_installer.remove_leftovers()
+		get_tree().create_timer(SECOND_CLEANUP_DELAY_SECONDS).timeout.connect(_installer.remove_leftovers)
 	_remove_downloads()
 	var cache: ConfigFile = _load_cache()
 	_offer(AppRelease.from_dictionary(cache.get_value("release", "data", {}) as Dictionary))
@@ -84,14 +99,10 @@ func _ready() -> void:
 	check()
 
 
-## Whether this build looks for updates at all. Not the web build, which is always
-## current, and not the editor, unless a test feed is set.
+## Whether this build looks for updates at all: only the exported builds whose
+## preset says where they come from, never the editor or the web build.
 func is_enabled() -> bool:
-	if channel == UpdateChannel.Kind.NONE:
-		return false
-	if OS.has_feature("editor") and _feed_override().is_empty():
-		return false
-	return true
+	return channel != UpdateChannel.Kind.NONE and not OS.has_feature("editor")
 
 
 ## Asks GitHub for the releases, unless a check is already under way.
@@ -152,6 +163,11 @@ func _offer(release: AppRelease) -> void:
 	available = newer
 	if changed:
 		release_changed.emit(available)
+	if _download_request and _installing_release \
+			and (not newer or newer.version != _installing_release.version):
+		# The release was withdrawn -- put back to Pre-release, which is how a bad
+		# build is pulled -- or replaced while it was downloading.
+		_fail("release %s was withdrawn during the download" % _installing_release.version)
 
 
 ## What the reader can do about the available release.
@@ -162,6 +178,9 @@ func action() -> Action:
 		UpdateChannel.Kind.GOOGLE_PLAY, UpdateChannel.Kind.APP_STORE, UpdateChannel.Kind.MAC_APP_STORE:
 			return Action.OPEN_STORE
 		UpdateChannel.Kind.DIRECT:
+			if UpdateChannel.current_asset_prefix().is_empty():
+				# The 32-bit APK: nothing is published that such a device could install.
+				return Action.NONE
 			return Action.INSTALL_IN_APP if _can_install_in_app() else Action.OPEN_DOWNLOAD
 	return Action.NONE
 
@@ -203,10 +222,15 @@ func open_download() -> bool:
 
 
 ## Downloads the release, checks it, installs it and restarts into it -- or, on
-## Android, hands it to the system installer.
-func start_install() -> void:
-	if is_installing or action() != Action.INSTALL_IN_APP:
-		return
+## Android, hands it to the system installer. False when it cannot start, in which
+## case the reader is to be offered the browser download.
+func start_install() -> bool:
+	if is_installing:
+		return true
+	if action() != Action.INSTALL_IN_APP:
+		Log.warn("UpdateManager: Asked to install, but this build can no longer do so")
+		return false
+	_installing_release = available
 	_download_asset = available.asset_for(UpdateChannel.current_asset_prefix())
 	is_installing = true
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(DOWNLOAD_DIR))
@@ -216,14 +240,17 @@ func start_install() -> void:
 	_download_request.download_file = _download_path
 	add_child(_download_request)
 	(ServerManager as ServerManagerClass).apply_proxy_to(_download_request)
-	_download_request.request_completed.connect(_on_download_completed)
+	# Bound to its request: a cancelled download still reports completion, a frame
+	# later, and that report must not be taken for the next download's.
+	_download_request.request_completed.connect(_on_download_completed.bind(_download_request))
 	Log.info("UpdateManager: Downloading %s" % _download_asset["url"])
 	var error: Error = _download_request.request(str(_download_asset["url"]),
 			PackedStringArray(["User-Agent: Kalulu/%s" % _current_version]))
 	if error != OK:
 		_fail("could not start the download (%s)" % error_string(error))
-		return
+		return true
 	install_progressed.emit(InstallStage.DOWNLOADING, 0.0)
+	return true
 
 
 ## Stops a download under way. Once the files are being swapped it is too late,
@@ -236,6 +263,7 @@ func cancel_install() -> void:
 	_finish_download()
 	_remove_downloads()
 	is_installing = false
+	_installing_release = null
 
 
 func _process(_delta: float) -> void:
@@ -248,26 +276,23 @@ func _process(_delta: float) -> void:
 	install_progressed.emit(InstallStage.DOWNLOADING, fraction)
 
 
-func _on_download_completed(result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+func _on_download_completed(result: int, response_code: int, _headers: PackedStringArray,
+		_body: PackedByteArray, request: HTTPRequest) -> void:
+	if request != _download_request:
+		return
 	_finish_download()
 	if result != HTTPRequest.RESULT_SUCCESS or response_code != 200:
 		_fail("the download failed (result %d, HTTP %d)" % [result, response_code])
 		return
-	var problem: String = UpdateInstaller.check_download(_download_path,
-			int(_download_asset.get("size", 0)), str(_download_asset.get("sha256", "")))
-	if not problem.is_empty():
-		_fail(problem)
-		return
 	install_progressed.emit(InstallStage.INSTALLING, 1.0)
 	_install_thread = Thread.new()
-	_install_thread.start(_installer.install.bind(ProjectSettings.globalize_path(_download_path)))
+	_install_thread.start(_installer.install_verified.bind(ProjectSettings.globalize_path(_download_path),
+			int(_download_asset.get("size", 0)), str(_download_asset.get("sha256", ""))))
 	while _install_thread.is_alive():
 		await get_tree().process_frame
 	var outcome: Dictionary = _install_thread.wait_to_finish()
 	_install_thread = null
-	for note: String in _installer.notes:
-		Log.info("UpdateInstaller: " + note)
-	_installer.notes.clear()
+	_log_installer_notes()
 	# The zip has served its purpose either way. On Android the APK taken out of
 	# it stays, for the system installer to read; the next launch removes it.
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(_download_path))
@@ -275,21 +300,63 @@ func _on_download_completed(result: int, response_code: int, _headers: PackedStr
 		_fail(str(outcome["error"]))
 		return
 	var launch_path: String = str(outcome["launch"])
-	var launch_error: Error = _installer.launch(launch_path)
-	if launch_error != OK:
-		_fail("could not start %s (%s)" % [launch_path, error_string(launch_error)])
-		return
 	if _installer.platform == UpdateInstaller.Platform.ANDROID:
+		var open_error: Error = _installer.launch(launch_path)
+		if open_error != OK:
+			_fail("could not open the installer on %s (%s)" % [launch_path, error_string(open_error)])
+			return
 		Log.info("UpdateManager: Android's installer opened on %s" % launch_path)
 		is_installing = false
+		_installing_release = null
 		install_progressed.emit(InstallStage.SYSTEM_INSTALLER, 1.0)
 		return
-	Log.info("UpdateManager: Version %s installed, restarting into %s" % [available.version, launch_path])
-	install_progressed.emit(InstallStage.RESTARTING, 1.0)
-	# A moment for the reader to see that it worked, and for the new process to
-	# start before this one's window goes.
-	await get_tree().create_timer(1.5).timeout
-	get_tree().quit()
+	await _restart_into(launch_path)
+
+
+## Starts the version just installed and quits, once it has said it is running.
+## When it does not -- blocked by an antivirus, missing a library -- the swap is
+## undone and this copy carries on: the reader keeps a working app rather than
+## files that will not open.
+func _restart_into(launch_path: String) -> void:
+	var version: String = _installing_release.version
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(HANDSHAKE_PATH))
+	var launch_error: Error = _installer.launch(launch_path)
+	if launch_error == OK:
+		var waited: float = 0.0
+		while waited < HANDSHAKE_TIMEOUT_SECONDS and not _new_version_started(version):
+			await get_tree().create_timer(0.25).timeout
+			waited += 0.25
+		if _new_version_started(version):
+			Log.info("UpdateManager: Version %s installed and started from %s; quitting" % [version, launch_path])
+			install_progressed.emit(InstallStage.RESTARTING, 1.0)
+			# A moment for the reader to see that it worked before this window goes.
+			await get_tree().create_timer(1.0).timeout
+			get_tree().quit()
+			return
+	var revert_problems: String = _installer.revert_last_swap()
+	_fail("version %s did not start (%s)%s" % [version,
+			error_string(launch_error) if launch_error != OK else "no word from it", revert_problems])
+
+
+func _new_version_started(version: String) -> bool:
+	var handshake: ConfigFile = ConfigFile.new()
+	if handshake.load(HANDSHAKE_PATH) != OK:
+		return false
+	return str(handshake.get_value("started", "version", "")) == version \
+			and int(handshake.get_value("started", "pid", 0)) != OS.get_process_id()
+
+
+func _write_handshake() -> void:
+	var handshake: ConfigFile = ConfigFile.new()
+	handshake.set_value("started", "version", _current_version)
+	handshake.set_value("started", "pid", OS.get_process_id())
+	handshake.save(HANDSHAKE_PATH)
+
+
+func _log_installer_notes() -> void:
+	for note: String in _installer.notes:
+		Log.info("UpdateInstaller: " + note)
+	_installer.notes.clear()
 
 
 func _finish_download() -> void:
@@ -303,6 +370,7 @@ func _fail(reason: String) -> void:
 	_finish_download()
 	_remove_downloads()
 	is_installing = false
+	_installing_release = null
 	install_failed.emit(reason)
 
 

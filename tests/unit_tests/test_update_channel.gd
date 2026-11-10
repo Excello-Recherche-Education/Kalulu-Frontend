@@ -17,6 +17,13 @@ func test_each_export_has_its_channel() -> void:
 	assert_eq(UpdateChannel.kind_for(_features(["web"])), UpdateChannel.Kind.NONE)
 
 
+func test_a_build_that_does_not_say_where_it_comes_from_looks_for_nothing() -> void:
+	# A store preset added later without its tag must not send store users to GitHub.
+	assert_eq(UpdateChannel.kind_for(_features(["windows"])), UpdateChannel.Kind.NONE)
+	assert_eq(UpdateChannel.kind_for(_features(["android"])), UpdateChannel.Kind.NONE)
+	assert_eq(UpdateChannel.kind_for(_features(["macos"])), UpdateChannel.Kind.NONE)
+
+
 func test_store_builds_only_open_their_own_store() -> void:
 	for url: String in UpdateChannel.store_urls(UpdateChannel.Kind.GOOGLE_PLAY):
 		assert_true("play.google.com" in url or url.begins_with("market://"), url)
@@ -71,8 +78,9 @@ func test_every_export_preset_carries_its_channel() -> void:
 	assert_eq(seen.size(), expected.size(), "every preset was found")
 
 
-## Only the sideloaded APKs may ask to install packages: Google Play refuses an
-## app that does, unless that is its purpose.
+## Only the 64-bit sideloaded APK may ask to install packages: Google Play refuses
+## an app that does, unless that is its purpose, and the 32-bit APK has no release
+## download it could install.
 func test_only_the_direct_apks_may_install_packages() -> void:
 	var presets: ConfigFile = ConfigFile.new()
 	assert_eq(presets.load("res://export_presets.cfg"), OK)
@@ -85,4 +93,4 @@ func test_only_the_direct_apks_may_install_packages() -> void:
 		var permissions: PackedStringArray = presets.get_value(section + ".options",
 				"permissions/custom_permissions", PackedStringArray()) as PackedStringArray
 		var asks: bool = "android.permission.REQUEST_INSTALL_PACKAGES" in permissions
-		assert_eq(asks, preset_name != "Android Kalulu AAB", preset_name)
+		assert_eq(asks, preset_name == "Android Kalulu APK", preset_name)

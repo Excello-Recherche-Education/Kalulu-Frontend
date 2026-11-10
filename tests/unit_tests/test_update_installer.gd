@@ -97,13 +97,14 @@ func test_install_replaces_the_app_and_leaves_the_users_files_alone() -> void:
 	var installer: UpdateInstaller = _linux_installer()
 	assert_eq(installer.blocker(), "")
 	var zip_path: String = root.path_join("Kalulu-Linux-9.9.9.zip")
-	_zip(zip_path, {"Kalulu-Linux": "new program", "Kalulu-Linux.pck": "new data", "libnew.so": "new library"})
+	_zip(zip_path, {"Kalulu-Linux": "new program", "Kalulu-Linux.pck": "new data",
+			"libgdsqlite.linux.template_release.x86_64.so": "new library"})
 	var outcome: Dictionary = installer.install(zip_path)
 	assert_eq(outcome["error"], "", "notes: %s" % ", ".join(installer.notes))
 	assert_eq(outcome["launch"], root.path_join("app/Kalulu-Linux"))
 	assert_eq(_read(root.path_join("app/Kalulu-Linux")), "new program")
 	assert_eq(_read(root.path_join("app/Kalulu-Linux.pck")), "new data")
-	assert_eq(_read(root.path_join("app/libnew.so")), "new library")
+	assert_eq(_read(root.path_join("app/libgdsqlite.linux.template_release.x86_64.so")), "new library")
 	assert_eq(_read(root.path_join("app/notes of the user.txt")), "mine")
 	assert_ne(FileAccess.get_unix_permissions(root.path_join("app/Kalulu-Linux")) & FileAccess.UNIX_EXECUTE_OWNER, 0,
 			"the program can be run")
@@ -126,6 +127,72 @@ func test_a_release_without_the_app_changes_nothing() -> void:
 	assert_ne(outcome["error"], "")
 	assert_eq(_read(root.path_join("app/Kalulu-Linux")), "old program")
 	assert_false(FileAccess.file_exists(root.path_join("app/Something-Else")))
+
+
+func test_a_release_with_an_unexpected_file_changes_nothing() -> void:
+	if OS.has_feature("windows"):
+		pass_test("this test unpacks with the Unix tools")
+		return
+	var installer: UpdateInstaller = _linux_installer()
+	var zip_path: String = root.path_join("extra.zip")
+	# Moving it in would move the user's own file of that name aside, to be deleted.
+	_zip(zip_path, {"Kalulu-Linux": "new program", "Kalulu-Linux.pck": "new data",
+			"notes of the user.txt": "from the release"})
+	var outcome: Dictionary = installer.install(zip_path)
+	assert_ne(outcome["error"], "")
+	assert_eq(_read(root.path_join("app/notes of the user.txt")), "mine")
+	assert_eq(_read(root.path_join("app/Kalulu-Linux")), "old program")
+
+
+func test_the_expected_files_are_exactly_a_releases() -> void:
+	var installer: UpdateInstaller = UpdateInstaller.new()
+	installer.platform = UpdateInstaller.Platform.LINUX
+	assert_eq(installer.unexpected_entries(["Kalulu-Linux", "Kalulu-Linux.pck",
+			"libgdsqlite.linux.template_release.x86_64.so"]), "")
+	assert_ne(installer.unexpected_entries(["Kalulu-Linux"]), "", "a program without its data file")
+	assert_ne(installer.unexpected_entries(["Kalulu-Linux", "Kalulu-Linux.pck", "README.txt"]), "")
+	installer.platform = UpdateInstaller.Platform.MACOS
+	assert_eq(installer.unexpected_entries(["Kalulu.app"]), "")
+	assert_ne(installer.unexpected_entries(["Kalulu.app", "__MACOSX"]), "")
+	installer.platform = UpdateInstaller.Platform.WINDOWS
+	assert_eq(installer.unexpected_entries(["Kalulu-Windows.exe",
+			"libgdsqlite.windows.template_release.x86_64.dll"]), "")
+
+
+func test_an_install_that_would_not_start_can_be_undone() -> void:
+	if OS.has_feature("windows"):
+		pass_test("this test unpacks with the Unix tools")
+		return
+	var installer: UpdateInstaller = _linux_installer()
+	var zip_path: String = root.path_join("Kalulu-Linux-9.9.9.zip")
+	_zip(zip_path, {"Kalulu-Linux": "new program", "Kalulu-Linux.pck": "new data",
+			"libgdsqlite.linux.template_release.x86_64.so": "new library"})
+	assert_eq(installer.install(zip_path)["error"], "")
+	assert_eq(installer.revert_last_swap(), "")
+	assert_eq(_read(root.path_join("app/Kalulu-Linux")), "old program")
+	assert_eq(_read(root.path_join("app/Kalulu-Linux.pck")), "old data")
+	assert_false(FileAccess.file_exists(root.path_join("app/libgdsqlite.linux.template_release.x86_64.so")),
+			"a file the old version did not have is moved out too")
+	installer.remove_leftovers()
+	assert_eq(_read(root.path_join("app/Kalulu-Linux")), "old program", "the cleanup keeps the restored app")
+	assert_eq(DirAccess.get_files_at(root.path_join("app")), PackedStringArray(
+			["Kalulu-Linux", "Kalulu-Linux.pck", "notes of the user.txt"]), "only the old files are left")
+
+
+func test_an_app_on_a_network_share_is_not_updated_in_place() -> void:
+	var installer: UpdateInstaller = UpdateInstaller.new()
+	installer.platform = UpdateInstaller.Platform.WINDOWS
+	installer.executable_path = "//school-server/apps/Kalulu/Kalulu-Windows.exe"
+	assert_ne(installer.blocker(), "")
+
+
+func test_a_download_is_verified_before_it_is_installed() -> void:
+	var installer: UpdateInstaller = _linux_installer()
+	var zip_path: String = root.path_join("Kalulu-Linux-9.9.9.zip")
+	_zip(zip_path, {"Kalulu-Linux": "new program", "Kalulu-Linux.pck": "new data"})
+	var outcome: Dictionary = installer.install_verified(zip_path, 0, "0".repeat(64))
+	assert_ne(outcome["error"], "")
+	assert_eq(_read(root.path_join("app/Kalulu-Linux")), "old program")
 
 
 func test_a_corrupt_archive_changes_nothing() -> void:
