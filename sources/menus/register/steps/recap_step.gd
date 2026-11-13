@@ -25,7 +25,16 @@ var drawing_the_sheet: bool = false
 ## Draws the sheet, keeps a copy inside the app, and offers the teacher one of
 ## their own. Built in _ready and added as a child, which is where it renders.
 var code_sheet_saver: CodeSheetSaver
+## Creating a guest: there is no email, account type or method to recap yet, so the
+## step is only the codes -- which a guest needs exactly as much as an account does.
+## Set by the wizard before the step is shown.
+var guest_codes_only: bool = false
+## Registering a guest: its codes were handed out when the guest was made, and the
+## registration keeps every one of them, so the sheet already printed is still right
+## and Confirm does not wait for another. Set by the wizard before the step is shown.
+var codes_already_given: bool = false
 
+@onready var title_label: Label = $Title
 @onready var recap_container: VBoxContainer = %RecapContainer
 @onready var email: Label = %Email
 @onready var account_type: Label = %AccountType
@@ -82,6 +91,16 @@ func on_enter() -> void:
 		teacher_settings.students.size()})
 	devices_count.show()
 
+	if guest_codes_only:
+		title_label.text = "GUEST_CODES_TITLE"
+		email.hide()
+		account_type.hide()
+		education_method.hide()
+		devices_count.hide()
+		students_count.text = tr("SUMMARY_NUMBER_OF_STUDENTS").format({"number":
+			teacher_settings.get_number_of_students()})
+		students_count.show()
+
 	for child: Node in recap_container.get_children(false):
 		child.queue_free()
 
@@ -90,7 +109,9 @@ func on_enter() -> void:
 	for device: int in devices:
 		var device_recap: DeviceRecap = DEVICE_RECAP_SCENE.instantiate()
 
-		if teacher_settings.account_type == TeacherSettings.AccountType.TEACHER:
+		if guest_codes_only:
+			device_recap.title = tr("STUDENT_CODES")
+		elif teacher_settings.account_type == TeacherSettings.AccountType.TEACHER:
 			device_recap.title = tr("DEVICE_NUMBER").format({"number": device})
 		else:
 			device_recap.title = tr("PLAYERS")
@@ -116,6 +137,8 @@ func sheet_fingerprint() -> String:
 ## wizard lets every earlier answer be revisited, and there is no single place that
 ## knows a code was redrawn or a child renamed.
 func _invalidate_a_stale_export() -> void:
+	if codes_already_given:
+		return
 	if not codes_requested or exported_sheet == sheet_fingerprint():
 		return
 	Log.info("Register/RecapStep: The sheet no longer matches the account; asking again")
@@ -128,7 +151,8 @@ func _invalidate_a_stale_export() -> void:
 ## Confirm only opens up once the code sheet has been asked for, and shuts again
 ## while one is being drawn.
 func _refresh_validate() -> void:
-	validate_button.disabled = not codes_requested or drawing_the_sheet
+	validate_button.disabled = (not codes_requested and not codes_already_given) \
+			or drawing_the_sheet
 
 
 ## Opens Confirm up, on the press rather than on the file.

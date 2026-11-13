@@ -77,6 +77,8 @@ var request_in_flight: bool = false
 ## The message currently on display, so the copy sends what was read rather than
 ## whatever the screen has moved on to.
 var displayed_error_key: String = ""
+## True once the screen has started leaving for the guest's next screen.
+var leaving: bool = false
 
 @onready var footer_room: MarginContainer = %FooterRoom
 @onready var scroll: ScrollContainer = %Scroll
@@ -92,6 +94,8 @@ var displayed_error_key: String = ""
 @onready var adult_prompt: Label = %AdultPrompt
 @onready var keypad: CodeKeypad = %Keypad
 @onready var proxy_panel: ProxySettings = %ProxyPanel
+@onready var guest_button: Button = %GuestButton
+@onready var guest_popup: ConfirmPopup = %GuestPopup
 
 
 func _ready() -> void:
@@ -111,6 +115,8 @@ func _ready() -> void:
 	password_field.text_submitted.connect(_on_password_submitted)
 	keypad.code_entered.connect(_on_adult_code_entered)
 	proxy_panel.proxy_changed.connect(_on_proxy_changed)
+	guest_button.pressed.connect(_on_guest_pressed)
+	guest_popup.accepted.connect(_on_guest_popup_accepted)
 
 	_new_adult_challenge()
 	_show_tab(LOGIN_TAB)
@@ -124,6 +130,9 @@ func _show_tab(tab: int) -> void:
 	# no Next button -- matching the mockups. With no button to keep clear of,
 	# that tab gets the whole height for its keypad.
 	next_button.visible = tab == LOGIN_TAB
+	# Opposite Next, on the same strip the column keeps clear -- which only the Login
+	# tab does, so that is the tab it lives on, and the tab the screen opens on.
+	guest_button.visible = tab == LOGIN_TAB
 	footer_room.add_theme_constant_override("margin_bottom",
 		FOOTER_ROOM if next_button.visible else 0)
 
@@ -379,6 +388,66 @@ func _on_reset_password_pressed() -> void:
 	# The button stays disabled: the mail has been sent, and asking again would
 	# only send another. The switch does not: nothing is outstanding any more.
 	_set_request_in_flight(false)
+
+
+# --- Guest -------------------------------------------------------------------
+## Plays without an account, or goes back to the guest already on this device.
+##
+## A guest that exists is resumed without a word: the explanation was given and
+## confirmed when it was made, and what it holds is the reason to come back to it.
+## Only a new guest gets the warning -- that nothing leaves this device, and that
+## uninstalling the app loses all of it.
+func _on_guest_pressed() -> void:
+	if request_in_flight or leaving:
+		Log.trace("Welcome: Ignoring the guest button while a request or a departure is under way")
+		return
+	var unreadable: bool = false
+	if UserDataManager.guest_exists():
+		Log.info("Welcome: Resuming the guest account already on this device")
+		if UserDataManager.resume_guest():
+			await _leave_for(LANGUAGE_CHECK_SCENE_PATH)
+			return
+		# Still there, so it is a guest that would not open -- not one that has just
+		# been finished registering, which leaves no guest folder behind.
+		unreadable = DirAccess.dir_exists_absolute("user://".path_join(UserDataManagerClass.GUEST_FOLDER))
+		Log.warn("Welcome: The guest account could not be resumed (unreadable: %s)" % str(unreadable))
+	# Said plainly when a guest was there: a new one starts from nothing, and the old
+	# one is kept aside on the device rather than thrown away.
+	guest_popup.content_text = "GUEST_ACCOUNT_UNREADABLE_POPUP" if unreadable else "GUEST_ACCOUNT_POPUP"
+	guest_popup.show()
+
+
+func _on_guest_popup_accepted() -> void:
+	if leaving:
+		return
+	Log.info("Welcome: Guest account confirmed, asking how many students")
+	RegisterWizard.next_mode = RegisterWizard.Mode.CREATE_GUEST
+	await _leave_for(REGISTER_SCENE_PATH)
+
+
+## Lowers the curtain and changes scene, once.
+##
+## The curtain takes a moment to close, and a second tap landing in it -- a double
+## tap on a slow tablet -- would resume the guest again and race a second scene
+## change against the first.
+func _leave_for(path: String) -> void:
+	leaving = true
+	guest_button.disabled = true
+	await OpeningCurtain.close()
+	if _change_scene(path) != OK:
+		# Still here: let the screen be used again rather than leave a dead button --
+		# and an ordinary sign-up from it must not open the guest journey.
+		RegisterWizard.next_mode = RegisterWizard.Mode.REGISTER
+		leaving = false
+		guest_button.disabled = false
+		OpeningCurtain.open()
+
+
+func _change_scene(path: String) -> Error:
+	var error: Error = get_tree().change_scene_to_file(path)
+	if error != OK:
+		Log.error(error_string(error))
+	return error
 
 
 # --- Sign up (adult check) ---------------------------------------------------

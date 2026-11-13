@@ -29,17 +29,30 @@ const GREETING_SPEECH_NAME: String = "tuto_welcome_oneshot"
 
 ## Whether `settings` describes a signed-in device.
 ##
+## A guest account counts: it has no token, since no server knows it, but it is
+## the account this device plays on and opens straight onto, exactly like one
+## that has.
+##
 ## Split out from has_connection_token so it can be exercised without
 ## substituting UserDataManager's live state. Doing that is not safe: the manager
 ## clears the device's teacher and saves it whenever it finds no settings, so a
 ## transient null in a test would log the real device out on disk.
 static func is_signed_in(settings: TeacherSettings) -> bool:
-	return settings != null and not settings.token.is_empty()
+	return settings != null and (settings.is_guest or not settings.token.is_empty())
 
 
-## True when this device holds a teacher's connection token.
+## True when this device is signed in, with a token or as a guest.
 static func has_connection_token() -> bool:
 	return is_signed_in(UserDataManager.teacher_settings)
+
+
+## True when the account signed in here was opened on a server, so belongs to it.
+##
+## Not the same question as has_connection_token: a guest is signed in but no
+## server has ever heard of it, so moving to another server takes nothing from it.
+static func has_server_session() -> bool:
+	var settings: TeacherSettings = UserDataManager.teacher_settings
+	return settings != null and not settings.token.is_empty()
 
 
 ## Where Kalulu's greeting speech would be, for the installed language.

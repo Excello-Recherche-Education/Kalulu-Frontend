@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cwyqhwjbxk8m3"]
+[gd_scene load_steps=14 format=3 uid="uid://cwyqhwjbxk8m3"]
 
 [ext_resource type="Script" uid="uid://dd73v8cop032e" path="res://sources/menus/welcome/welcome.gd" id="1_welcome"]
 [ext_resource type="Theme" uid="uid://dgm2dtg03o4y8" path="res://resources/themes/menu_theme.tres" id="2_theme"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://ck3p8x1ynqv2e" path="res://sources/ui/proxy_settings.tscn" id="10_proxy"]
 [ext_resource type="PackedScene" path="res://sources/ui/server_warning.tscn" id="11_server"]
 [ext_resource type="PackedScene" path="res://sources/ui/update_notice.tscn" id="12_update"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="12_popup"]
 
 [node name="Welcome" type="Control"]
 layout_mode = 3
@@ -180,6 +181,20 @@ grow_vertical = 0
 theme_type_variation = &"PrimaryButton"
 text = "NEXT"
 
+[node name="GuestButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 340.0
+offset_top = -414.0
+offset_right = 1340.0
+offset_bottom = -196.0
+grow_vertical = 0
+theme_type_variation = &"SecondaryButton"
+text = "CONTINUE_AS_GUEST"
+
 [node name="VersionLabel" parent="." instance=ExtResource("9_version")]
 layout_mode = 1
 
@@ -191,3 +206,8 @@ layout_mode = 1
 unique_name_in_owner = true
 layout_mode = 1
 
+[node name="GuestPopup" parent="." instance=ExtResource("12_popup")]
+unique_name_in_owner = true
+title_text = "GUEST_ACCOUNT"
+content_text = "GUEST_ACCOUNT_POPUP"
+confirm_text_override = "GUEST_ACCOUNT_CONFIRM"

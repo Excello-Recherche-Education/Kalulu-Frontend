@@ -263,6 +263,9 @@ func _device_button_pressed(device_id: int) -> void:
 	teacher_settings.refresh_devices()
 	device = device_id
 	Log.info("LessonUnlocks: Updated student %d to device %d" % [student, device_id])
+	if UserDataManager.is_guest():
+		# Nothing to tell: no server knows this student.
+		return
 	var res_set: Dictionary = await ServerManager.set_student_data(student, {"device_id": device_id})
 	if not res_set.success:
 		Log.trace("LessonUnlocks: Device was updated locally for the student, but the network update failed.")

@@ -156,6 +156,24 @@ text = "SETTINGS"
 [node name="BuildVersionValue" parent="Footer" unique_id=864909797 instance=ExtResource("11_version")]
 unique_name_in_owner = true
 
+[node name="GuestReminder" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 64.0
+offset_top = 360.0
+offset_right = 440.0
+offset_bottom = 360.0
+mouse_filter = 2
+
+[node name="GuestReminderLabel" type="Label" parent="GuestReminder"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"CardLabel"
+text = "GUEST_LOGIN_REMINDER"
+autowrap_mode = 3
+
 [node name="Kalulu" parent="." unique_id=1492530848 instance=ExtResource("4_kalulu")]
 unique_name_in_owner = true
 visible = false
