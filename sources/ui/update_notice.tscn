@@ -1,0 +1,65 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://sources/ui/update_notice.gd" id="1_notice"]
+[ext_resource type="PackedScene" path="res://sources/ui/adult_check_popup.tscn" id="2_adult"]
+[ext_resource type="PackedScene" uid="uid://bhdh5xfyauss0" path="res://sources/ui/popup.tscn" id="3_popup"]
+[ext_resource type="Texture2D" uid="uid://ciey7plfxwjis" path="res://assets/menus/icons/close_window.svg" id="4_close"]
+
+[node name="UpdateNotice" type="PanelContainer"]
+visible = false
+custom_minimum_size = Vector2(506, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -570.0
+offset_top = 64.0
+offset_right = -64.0
+grow_horizontal = 0
+script = ExtResource("1_notice")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CardLabel"
+text = "UPDATE_NOTICE_TITLE"
+autowrap_mode = 3
+
+[node name="CloseButton" type="TextureButton" parent="Content/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 0
+texture_normal = ExtResource("4_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Body" type="Label" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CardLabel"
+autowrap_mode = 3
+
+[node name="UpdateButton" type="Button" parent="Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+theme_type_variation = &"CardSecondaryButton"
+text = "UPDATE_NOTICE_BUTTON"
+autowrap_mode = 3
+
+[node name="AdultCheck" parent="." instance=ExtResource("2_adult")]
+unique_name_in_owner = true
+prompt_key = "ADULT_UPDATE_PROMPT"
+
+[node name="UpdateDialog" parent="." instance=ExtResource("3_popup")]
+unique_name_in_owner = true
+close_on_action = false
