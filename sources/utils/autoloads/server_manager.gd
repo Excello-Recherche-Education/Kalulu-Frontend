@@ -96,6 +96,14 @@ const HTTP_RESULT_NAMES: Dictionary[int, String] = {
 	HTTPRequest.RESULT_REDIRECT_LIMIT_REACHED: "RESULT_REDIRECT_LIMIT_REACHED",
 	HTTPRequest.RESULT_TIMEOUT: "RESULT_TIMEOUT",
 }
+## The routes a guest may call: the ones that need no account, and signing in --
+## which registering a guest uses to claim an account it created on an attempt whose
+## answer was lost. Every other route acts on an account the server has never heard
+## of for a guest.
+const GUEST_ROUTES: PackedStringArray = ["language", "checkemail", "register", "login"]
+## What a refused guest request answers, in place of the server's 401. Not 401: a
+## caller reading that as "the account is gone" would sign the guest out.
+const GUEST_REFUSED_CODE: int = 403
 
 # Response from the last request
 var success: bool
@@ -494,6 +502,21 @@ func reset_language(language: String) -> Dictionary:
 
 #region Sender functions
 
+## Stops a guest's request to an account route before it leaves the device.
+##
+## The screens give a guest its own local path for each account action. This is the
+## net under them: a server call added later without a guest branch fails here, at
+## once and in the log, instead of going out unauthenticated and coming back a 401.
+func _refused_for_guest(uri: String) -> bool:
+	if not UserDataManager.is_guest() or uri in GUEST_ROUTES:
+		return false
+	Log.error("ServerManager: Refused '%s' for a guest account, which no server knows" % uri)
+	code = GUEST_REFUSED_CODE
+	json = {"error": "Guest account"}
+	loading_rect.hide()
+	return true
+
+
 ## Whether anything at all can be reached, on a host unrelated to Kalulu.
 ##
 ## The probe node carries a 15s timeout, where the request node has 30s. It needs one
@@ -868,6 +891,8 @@ func _response() -> Dictionary:
 
 func _get_request(uri: String, params: Dictionary) -> void:
 	reset_result()
+	if _refused_for_guest(uri):
+		return
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
 		Log.trace("ServerManager: Sending GET request.\n    URI = %s\n    Parameters not logged because it contains a password." % uri)
@@ -885,6 +910,8 @@ func _get_request(uri: String, params: Dictionary) -> void:
 
 func _post_request(uri: String, params: Dictionary) -> void:
 	reset_result()
+	if _refused_for_guest(uri):
+		return
 	var url: String = _create_uri_with_parameters(environment_url + uri, params)
 	var headers: PackedStringArray = _create_request_headers()
 	if params.has("password"):
@@ -902,6 +929,8 @@ func _post_request(uri: String, params: Dictionary) -> void:
 
 func _post_json_request(uri: String, data: Dictionary) -> void:
 	reset_result()
+	if _refused_for_guest(uri):
+		return
 	var req: String = environment_url + uri
 	var headers: PackedStringArray = _create_request_headers(true)
 	if data.has("password"):
@@ -919,6 +948,8 @@ func _post_json_request(uri: String, data: Dictionary) -> void:
 
 func _delete_request(uri: String, params: Dictionary = {}) -> void:
 	reset_result()
+	if _refused_for_guest(uri):
+		return
 	var req: String = _create_uri_with_parameters(environment_url + uri, params)
 	var headers: PackedStringArray = _create_request_headers()
 	Log.trace("ServerManager: Sending DELETE request.\n    URI = %s\n    Parameters = %s" % [uri, params])

@@ -86,7 +86,7 @@ func test_the_warning_names_the_server_in_use_off_production() -> void:
 
 
 func test_resetting_a_signed_out_device_goes_back_to_production_and_hides() -> void:
-	if EntryFlow.has_connection_token():
+	if EntryFlow.has_server_session():
 		pending("this device is signed in, where the reset asks for an adult first")
 		return
 	(ServerManager as ServerManagerClass)._apply_environment(0, "")

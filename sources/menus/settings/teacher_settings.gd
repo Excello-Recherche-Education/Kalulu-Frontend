@@ -13,6 +13,7 @@ enum OverflowItem {
 const SIGNED_OUT_SCENE_PATH: String = EntryFlow.WELCOME_SCENE_PATH
 const LOGIN_MENU_PATH: String = "res://sources/menus/login/login.tscn"
 const SPLASH_SCREEN_PATH: String = "res://sources/menus/splash_screen/splash_screen.tscn"
+const REGISTER_SCENE_PATH: String = "res://sources/menus/register/register.tscn"
 const DEVICE_SELECTION_SCENE_PATH: String = "res://sources/menus/device_selection/device_selection.tscn"
 const STUDENT_PANEL_SCENE: PackedScene = preload("res://sources/menus/settings/student_panel.tscn")
 ## The tick that fills the light-graphics box in. A path rather than a preload, for
@@ -61,6 +62,12 @@ var code_sheet_saver: CodeSheetSaver
 @onready var overflow_menu: PopupMenu = %OverflowMenu
 @onready var light_graphics_check: Button = %LightGraphicsCheck
 @onready var light_graphics_label: Label = %LightGraphicsLabel
+@onready var guest_banner: PanelContainer = %GuestBanner
+@onready var guest_banner_label: Label = %GuestBannerLabel
+@onready var register_button: Button = %RegisterButton
+@onready var register_offline_popup: ConfirmPopup = %RegisterOfflinePopup
+@onready var synchronize_button: Button = %SynchronizeButton
+@onready var dashboard_button: Button = %Dashboard
 
 
 func _ready() -> void:
@@ -75,9 +82,11 @@ func _ready() -> void:
 	if UserDataManager.teacher_settings:
 		account_type_option_button.select(UserDataManager.teacher_settings.account_type)
 		education_method_option_button.select(UserDataManager.teacher_settings.education_method)
-	
-	# Internet mandatory to add student because only the server can ensure the student code is not a duplicate
-	if await ServerManager.check_internet_access():
+	_show_guest_state()
+
+	# Internet mandatory to add student because only the server can ensure the student code is not a duplicate.
+	# A guest allocates its own codes, so it needs no server and does not wait on the check.
+	if UserDataManager.is_guest() or await ServerManager.check_internet_access():
 		add_device_button.show()
 		add_student_button.show()
 		label_internet_mandatory.hide()
@@ -114,6 +123,53 @@ func _exit_tree() -> void:
 	if UserDataManager.user_database_synchronizer.loading_popup == loading_popup:
 		UserDataManager.user_database_synchronizer.loading_popup = null
 
+
+#region Guest account
+
+## Shapes the screen for a guest: the warning and the Register button up top, and
+## nothing that would ask a server about an account it has never heard of.
+##
+## The banner is amber, like the server warning, and sits above everything else on
+## the page: registering is the only way this account survives the app being
+## uninstalled, and the button for it must not be something a teacher finds later.
+func _show_guest_state() -> void:
+	var guest: bool = UserDataManager.is_guest()
+	guest_banner.visible = guest
+	synchronize_button.visible = not guest
+	dashboard_button.visible = not guest
+	if not guest:
+		return
+	var panel: StyleBoxFlat = MenuTheme.flat_stylebox(Design.WARNING, Design.CARD_RADIUS)
+	panel.set_content_margin_all(40)
+	guest_banner.add_theme_stylebox_override("panel", panel)
+	guest_banner_label.add_theme_color_override("font_color", Design.NAVY)
+	# Not the account's deletion: a guest's is only this device's data, and the
+	# warning before it has to say so.
+	overflow_menu.set_item_text(overflow_menu.get_item_index(OverflowItem.DELETE_ACCOUNT),
+			"DELETE_GUEST_ACCOUNT")
+	delete_popup.title_text = "DELETE_GUEST_ACCOUNT"
+	delete_popup.content_text = "DELETE_GUEST_ACCOUNT_POPUP"
+
+
+## Registering needs the server, so the connection is checked on the press: a
+## teacher with no connection is told so here, rather than after filling in every
+## step of the wizard.
+func _on_register_button_pressed() -> void:
+	register_button.disabled = true
+	var online: bool = await ServerManager.check_internet_access()
+	if not is_inside_tree():
+		return
+	register_button.disabled = false
+	if not online:
+		Log.info("SettingsTeacherSettings: No internet, the guest cannot register now")
+		register_offline_popup.show()
+		return
+	Log.info("SettingsTeacherSettings: Registering the guest account")
+	RegisterWizard.next_mode = RegisterWizard.Mode.REGISTER_GUEST
+	await OpeningCurtain.close()
+	get_tree().change_scene_to_file(REGISTER_SCENE_PATH)
+
+#endregion
 
 func _on_account_type_option_button_item_selected(index: int) -> void:
 	if TeacherSettings.AccountType.values().has(index):
@@ -321,6 +377,13 @@ func _on_delete_button_pressed() -> void:
 
 
 func _on_delete_popup_accepted() -> void:
+	if UserDataManager.is_guest():
+		# Only this device holds a guest, so deleting it is deleting the folder.
+		Log.warn("SettingsTeacherSettings: Deleting the guest account and all its data")
+		UserDataManager.delete_teacher_data()
+		UserDataManager.logout()
+		get_tree().change_scene_to_file(SIGNED_OUT_SCENE_PATH)
+		return
 	var res: Dictionary = await ServerManager.delete_account()
 	if res.code != 200:
 		# Nothing local is touched on this path, so the account is still there and
@@ -356,6 +419,24 @@ func _on_change_language_popup_accepted(new_language: String) -> void:
 		return
 	Log.warn("SettingsTeacherSettings: Change language from %s to %s" % [current_language, new_language])
 
+	if UserDataManager.is_guest():
+		# Nothing is erased until the new language's pack is in reach: installed, or
+		# offered by the server. An account's change is gated the same way, by needing
+		# the server to reset it; without this a guest offline would lose its progress
+		# and then land on a pack it cannot download, on every launch.
+		if not await _guest_can_reach_pack(new_language):
+			Log.warn("SettingsTeacherSettings: No %s pack in reach; the guest's language is unchanged" % new_language)
+			change_language_error_popup.show()
+			return
+		# What the server does for an account, done here: every student's progress
+		# goes, the students and their codes stay -- as the popup has just warned. The
+		# splash then takes the guest through the new language's pack.
+		UserDataManager.reset_guest_progress()
+		UserDataManager.set_language(new_language)
+		UserDataManager.save_all()
+		get_tree().change_scene_to_file(SPLASH_SCREEN_PATH)
+		return
+
 	var res: Dictionary = await ServerManager.reset_language(new_language)
 	if res.code != 200:
 		Log.error("SettingsTeacherSettings: Reset language request failed. Error code %d" % res.code)
@@ -371,6 +452,14 @@ func _on_change_language_popup_accepted(new_language: String) -> void:
 	get_tree().change_scene_to_file(SPLASH_SCREEN_PATH)
 
 
+## Whether the pack for `language` is installed, or the server will hand it over.
+func _guest_can_reach_pack(language: String) -> bool:
+	if DirAccess.dir_exists_absolute(PackageDownloader.USER_LANGUAGE_RESOURCES_PATH.path_join(language)):
+		return true
+	var res: Dictionary = await ServerManager.get_language_pack_url(language)
+	return res.code == 200
+
+
 func _on_student_pressed(code: int) -> void:
 	lesson_unlocks.student = code
 	lesson_unlocks.show()
@@ -383,6 +472,12 @@ func _on_add_student_button_pressed() -> void:
 func _on_add_student_popup_accepted() -> void:
 	if selected_device < 0:
 		Log.error("SettingsTeacherSettings: No device selected")
+		return
+	if UserDataManager.is_guest():
+		if UserDataManager.add_guest_student(selected_device):
+			show_device(selected_device)
+		else:
+			_report_student_limit()
 		return
 	var res: Dictionary = await ServerManager.add_student({"device": selected_device})
 	if res.code == 200:
@@ -412,17 +507,24 @@ func _report_add_student_failure(res: Dictionary) -> void:
 	var body: Dictionary = res.body as Dictionary if res.body is Dictionary else {}
 
 	if body.get("error", "") == STUDENT_LIMIT_ERROR:
-		add_student_error_popup.title_text = "MAXIMUM_STUDENTS_REACHED"
-		# The number comes from the account rather than from a copy of the
-		# server's limit kept here: a student's code is what the child taps to
-		# log in, so the ceiling is however many codes exist, and an account that
-		# has just been refused one is sitting exactly on it. A second copy of
-		# that number here could only ever drift.
-		add_student_error_popup.content_text = tr("MAXIMUM_STUDENTS_REACHED_POPUP").format(
-			{"number": get_student_count()})
-	else:
-		add_student_error_popup.title_text = ""
-		add_student_error_popup.content_text = "ADD_STUDENT_FAILED"
+		_report_student_limit()
+		return
+	add_student_error_popup.title_text = ""
+	add_student_error_popup.content_text = "ADD_STUDENT_FAILED"
+	add_student_error_popup.show()
+
+
+## Says the account has used every student code. Reached from the server's refusal,
+## and directly by a guest, which runs out of codes on its own.
+func _report_student_limit() -> void:
+	add_student_error_popup.title_text = "MAXIMUM_STUDENTS_REACHED"
+	# The number comes from the account rather than from a copy of the server's
+	# limit kept here: a student's code is what the child taps to log in, so the
+	# ceiling is however many codes exist, and an account that has just been refused
+	# one is sitting exactly on it. A second copy of that number here could only
+	# ever drift.
+	add_student_error_popup.content_text = tr("MAXIMUM_STUDENTS_REACHED_POPUP").format(
+		{"number": get_student_count()})
 	add_student_error_popup.show()
 
 
@@ -431,6 +533,13 @@ func _on_add_device_button_pressed() -> void:
 
 
 func _on_add_device_popup_accepted() -> void:
+	if UserDataManager.is_guest():
+		if UserDataManager.add_guest_student(last_device_id + 1):
+			selected_device = last_device_id + 1
+			refresh_devices()
+		else:
+			_report_student_limit()
+		return
 	var res: Dictionary = await ServerManager.add_student({"device": last_device_id + 1})
 	if res.code == 200:
 		UserDataManager.update_configuration(res.body as Dictionary)
@@ -450,6 +559,16 @@ func _on_lesson_unlocks_student_deleted(_code: int) -> void:
 
 func _on_delete_student_popup_accepted() -> void:
 	if selected_device < 0:
+		return
+	if UserDataManager.is_guest():
+		if not UserDataManager.remove_guest_student(int(lesson_unlocks.student)):
+			_report_action_failure("DELETE_STUDENT", "GUEST_LAST_STUDENT")
+			return
+		lesson_unlocks.hide()
+		if UserDataManager.teacher_settings.students.has(selected_device):
+			show_device(selected_device)
+		else:
+			refresh_devices()
 		return
 	var res: Dictionary = await ServerManager.remove_student(int(lesson_unlocks.student))
 	if res.code != 200:

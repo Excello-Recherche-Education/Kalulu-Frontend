@@ -56,7 +56,7 @@ func _style() -> void:
 
 
 func _on_reset_pressed() -> void:
-	if EntryFlow.has_connection_token():
+	if EntryFlow.has_server_session():
 		Log.info("ServerWarning: Asking the adult check before signing the device out")
 		adult_check.open()
 		return
@@ -64,7 +64,7 @@ func _on_reset_pressed() -> void:
 
 
 func _reset() -> void:
-	var signed_in: bool = EntryFlow.has_connection_token()
+	var signed_in: bool = EntryFlow.has_server_session()
 	(ServerManager as ServerManagerClass).reset_to_production()
 	if not signed_in:
 		hide()
