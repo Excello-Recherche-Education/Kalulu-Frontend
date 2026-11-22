@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # fonts/ is the Kalulu-Fonts submodule: without it the game has no font.
+          submodules: true
 
       - name: Read Godot version from project
         id: version

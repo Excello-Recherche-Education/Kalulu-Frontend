@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://fex5yvybinsx" path="res://assets/minigames/monkeys/graphic/palmtree_02.png" id="6_f5ri1"]
 [ext_resource type="PackedScene" uid="uid://b8r26vroslasj" path="res://sources/minigames/monkeys/king_monkey.tscn" id="7_43p1x"]
 [ext_resource type="Texture2D" uid="uid://blejqny5syems" path="res://assets/minigames/monkeys/graphic/billboard.png" id="8_j0b56"]
-[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="10_ebf48"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://fonts/mulish/kalulu_mulish_bold.otf" id="10_ebf48"]
 [ext_resource type="Texture2D" uid="uid://u2x8lg54e1g" path="res://assets/minigames/monkeys/graphic/caterpillar.png" id="11_ebf48"]
 [ext_resource type="PackedScene" uid="uid://cnt2q4hqn1wsq" path="res://sources/minigames/monkeys/broken_coconut_fx.tscn" id="12_brkfx"]
 [ext_resource type="Script" uid="uid://cgtd34f7vi2tj" path="res://sources/utils/clouds_manager.gd" id="13_xvtxv"]
