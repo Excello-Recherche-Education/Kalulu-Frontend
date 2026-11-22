@@ -57,16 +57,23 @@ We recommend forking the repository before cloning, so you can easily contribute
 3. Once forked, open your terminal and run the following commands:
 
 ```bash
-# Clone your fork of the repository
-git clone https://github.com/YOUR_USERNAME/Kalulu-Frontend.git
+# Clone your fork of the repository, with its submodule
+git clone --recurse-submodules https://github.com/YOUR_USERNAME/Kalulu-Frontend.git
 # Or
-git clone git@github.com:YOUR_USERNAME/Kalulu-Frontend.git
+git clone --recurse-submodules git@github.com:YOUR_USERNAME/Kalulu-Frontend.git
 
 # Navigate into the project directory
 cd Kalulu-Frontend
 ```
 
 🔁 *Remember to replace `YOUR_USERNAME` with your actual GitHub username.*
+
+🔤 *The game's fonts are in `fonts/`, a submodule: the
+[Kalulu-Fonts](https://github.com/Excello-Recherche-Education/Kalulu-Fonts) repository.
+If you cloned without `--recurse-submodules`, run `git submodule update --init` before
+opening the project, or every text in the game is missing its font. The fonts are under
+the SIL Open Font License, not this repository's license, and are changed in Kalulu-Fonts,
+never here.*
 
 ---
 

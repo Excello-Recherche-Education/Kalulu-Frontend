@@ -72,8 +72,8 @@ const FONT_SIZE_INPUT: int = 66 # regular - field text, placeholders, buttons
 const FONT_SIZE_BODY: int = 58 # regular - help notes, subtitles
 const FONT_SIZE_LABEL: int = 42 # regular - small field labels
 const FONT_SIZE_CAPTION: int = 38 # regular - version strings, captions
-const FONT_REGULAR_PATH: String = "res://assets/fonts/kalulu_mulish_regular.otf"
-const FONT_BOLD_PATH: String = "res://assets/fonts/kalulu_mulish_bold.otf"
+const FONT_REGULAR_PATH: String = "res://fonts/mulish/kalulu_mulish_regular.otf"
+const FONT_BOLD_PATH: String = "res://fonts/mulish/kalulu_mulish_bold.otf"
 # --- Layout ------------------------------------------------------------------
 const SCREEN_MARGIN: int = 64 # corner buttons
 const CONTENT_WIDTH: int = 1250 # the column of fields down the middle

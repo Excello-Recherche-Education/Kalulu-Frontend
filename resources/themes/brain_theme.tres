@@ -1,7 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://in2kegww5lwv"]
 
-[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://assets/fonts/kalulu_mulish_regular.otf" id="1_akljd"]
-[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="1_x5eah"]
+[ext_resource type="FontFile" uid="uid://bw8cb4e0a7ayj" path="res://fonts/mulish/kalulu_mulish_regular.otf" id="1_akljd"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://fonts/mulish/kalulu_mulish_bold.otf" id="1_x5eah"]
 [ext_resource type="Texture2D" uid="uid://7q3lm3o8ihxn" path="res://assets/menus/checkbox_transparent_background_checked.png" id="2_x5eah"]
 [ext_resource type="Texture2D" uid="uid://dji28uchuubxn" path="res://assets/menus/checkbox_white_background_checked.png" id="3_12g6o"]
 [ext_resource type="Texture2D" uid="uid://s0k8emrncuwk" path="res://assets/menus/checkbox_transparent_background_unchecked.png" id="4_6j3uy"]

@@ -1,6 +1,6 @@
 [gd_resource type="LabelSettings" format=3 uid="uid://jpm7cxm0xaeq"]
 
-[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://assets/fonts/kalulu_mulish_bold.otf" id="1_k63mv"]
+[ext_resource type="FontFile" uid="uid://bj2rpti6g24kk" path="res://fonts/mulish/kalulu_mulish_bold.otf" id="1_k63mv"]
 
 [resource]
 font = ExtResource("1_k63mv")
